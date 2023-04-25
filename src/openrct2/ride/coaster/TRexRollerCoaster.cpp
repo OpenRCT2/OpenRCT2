@@ -61,7 +61,7 @@ namespace TRexRC
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -83,7 +83,7 @@ namespace TRexRC
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -120,7 +120,7 @@ namespace TRexRC
             { { 0, 2, height }, { 32, 28, 2 } });
         TrackPaintUtilDrawStationMetalSupports2(
             session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Tubes);
-        TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 4, 7);
+        TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -193,7 +193,7 @@ namespace TRexRC
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -245,7 +245,7 @@ namespace TRexRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, 4, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -276,7 +276,7 @@ namespace TRexRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, 4, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -327,7 +327,7 @@ namespace TRexRC
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -357,7 +357,7 @@ namespace TRexRC
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -454,7 +454,7 @@ namespace TRexRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -514,7 +514,7 @@ namespace TRexRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, 4, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -551,7 +551,7 @@ namespace TRexRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, 4, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -602,7 +602,7 @@ namespace TRexRC
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -632,7 +632,7 @@ namespace TRexRC
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -778,7 +778,7 @@ namespace TRexRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, 4, 40, height, session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 if (direction == 0 || direction == 3)
                 {
@@ -923,7 +923,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -995,7 +995,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -1054,7 +1054,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -1199,7 +1199,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -1258,7 +1258,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -1349,7 +1349,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CURVE + 3)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -1420,7 +1420,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -1511,7 +1511,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CURVE + 19)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -1664,7 +1664,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1672,15 +1672,15 @@ namespace TRexRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_FLAT_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -1829,15 +1829,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_LIFT_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -1986,15 +1986,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_LIFT_TRACK_GENTLE_DIAGONAL + 5)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2004,7 +2004,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2134,7 +2134,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 0, height + 2, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 4, height + 2, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2143,15 +2143,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_LIFT_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 0, height + 2, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 4, height + 2, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2161,7 +2161,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2169,15 +2169,15 @@ namespace TRexRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2291,7 +2291,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2300,15 +2300,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_LIFT_TRACK_GENTLE_DIAGONAL + 11)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2318,7 +2318,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2326,15 +2326,15 @@ namespace TRexRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_DIAGONAL + 11)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2445,7 +2445,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2454,15 +2454,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_LIFT_TRACK_GENTLE_DIAGONAL + 7)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2472,7 +2472,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2480,15 +2480,15 @@ namespace TRexRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_DIAGONAL + 7)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2603,7 +2603,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2612,15 +2612,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_LIFT_TRACK_GENTLE_DIAGONAL + 3)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2630,7 +2630,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2638,15 +2638,15 @@ namespace TRexRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_DIAGONAL + 3)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2760,7 +2760,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 38, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 42, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2769,15 +2769,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_LIFT_TRACK_STEEP_DIAGONAL + 9)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 40, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 38, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 42, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 40, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2787,7 +2787,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 38, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 42, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2795,15 +2795,15 @@ namespace TRexRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_STEEP_DIAGONAL + 9)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 40, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 38, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 42, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 40, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2917,7 +2917,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2926,15 +2926,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_LIFT_TRACK_STEEP_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2944,7 +2944,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2952,15 +2952,15 @@ namespace TRexRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_STEEP_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -3074,7 +3074,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 25, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -3083,15 +3083,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_LIFT_TRACK_STEEP_DIAGONAL + 5)),
                                 { -16, -16, height }, { { 0, 0, height }, { 16, 16, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 25, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 25, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 25, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -3101,7 +3101,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 25, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -3109,15 +3109,15 @@ namespace TRexRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_STEEP_DIAGONAL + 5)),
                                 { -16, -16, height }, { { 0, 0, height }, { 16, 16, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 25, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 25, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 25, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -3231,7 +3231,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -3240,15 +3240,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_LIFT_TRACK_STEEP_DIAGONAL + 11)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -3258,7 +3258,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -3266,15 +3266,15 @@ namespace TRexRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_STEEP_DIAGONAL + 11)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -3388,7 +3388,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -3397,15 +3397,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_LIFT_TRACK_STEEP_DIAGONAL + 7)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -3415,7 +3415,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -3423,15 +3423,15 @@ namespace TRexRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_STEEP_DIAGONAL + 7)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -3545,7 +3545,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -3554,15 +3554,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_LIFT_TRACK_STEEP_DIAGONAL + 3)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -3572,7 +3572,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -3580,15 +3580,15 @@ namespace TRexRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_STEEP_DIAGONAL + 3)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -3640,7 +3640,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -3689,7 +3689,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -3752,7 +3752,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -3808,7 +3808,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -3864,7 +3864,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -3920,7 +3920,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -3996,7 +3996,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -4072,7 +4072,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4081,15 +4081,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_BANK_TRANSITION_DIAGONAL + 2)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4160,7 +4160,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4169,15 +4169,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_BANK_TRANSITION_DIAGONAL + 6)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4248,7 +4248,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4257,15 +4257,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_BANK_TRANSITION_DIAGONAL + 9)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4336,7 +4336,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4345,15 +4345,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_BANK_TRANSITION_DIAGONAL + 4)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4424,7 +4424,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4433,15 +4433,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_BANK_TRANSITION_DIAGONAL + 12)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4512,7 +4512,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4521,15 +4521,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_BANK_TRANSITION_DIAGONAL + 16)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4600,7 +4600,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4609,15 +4609,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_BANK_TRANSITION_DIAGONAL + 22)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4688,7 +4688,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4697,15 +4697,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_BANK_TRANSITION_DIAGONAL + 26)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4773,7 +4773,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4782,15 +4782,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_BANK_TRANSITION_DIAGONAL + 29)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4859,7 +4859,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4868,15 +4868,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_BANK_TRANSITION_DIAGONAL + 24)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4948,7 +4948,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4957,15 +4957,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_BANK_TRANSITION_DIAGONAL + 19)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5036,7 +5036,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5045,15 +5045,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_BANK_TRANSITION_DIAGONAL + 14)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5119,7 +5119,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5128,15 +5128,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_BANK_TRANSITION_DIAGONAL + 31)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5202,7 +5202,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5211,15 +5211,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_BANK_TRANSITION_DIAGONAL + 33)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5267,7 +5267,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -5343,7 +5343,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -5406,7 +5406,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -5555,7 +5555,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -5614,7 +5614,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -5705,7 +5705,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CURVE_BANKED + 3)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5713,7 +5713,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CURVE_BANKED + 7)),
                             { 0, 0, height }, { { 0, 16, height + 27 }, { 16, 18, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -5721,7 +5721,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CURVE_BANKED + 11)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -5729,7 +5729,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CURVE_BANKED + 15)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5776,7 +5776,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -5867,7 +5867,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CURVE_BANKED + 19)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5875,7 +5875,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CURVE_BANKED + 23)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -5883,7 +5883,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CURVE_BANKED + 27)),
                             { 0, 0, height }, { { 0, 16, height + 27 }, { 16, 18, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -5891,7 +5891,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CURVE_BANKED + 31)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5954,7 +5954,7 @@ namespace TRexRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -5997,7 +5997,7 @@ namespace TRexRC
                             { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -6048,7 +6048,7 @@ namespace TRexRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -6072,7 +6072,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_SMALL_CURVE + 9)),
                             { 6, 0, height }, { 20, 32, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -6080,7 +6080,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_SMALL_CURVE + 11)),
                             { 6, 0, height }, { 20, 32, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -6088,7 +6088,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_SMALL_CURVE + 13)),
                             { 6, 0, height }, { 20, 32, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -6096,7 +6096,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_SMALL_CURVE + 15)),
                             { 6, 0, height }, { 20, 32, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 switch (direction)
@@ -6165,7 +6165,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -6310,7 +6310,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -6361,7 +6361,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -6506,7 +6506,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -6812,7 +6812,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -6864,7 +6864,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -6916,7 +6916,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -6968,7 +6968,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7044,7 +7044,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7092,7 +7092,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7140,7 +7140,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7188,7 +7188,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7264,7 +7264,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7312,7 +7312,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7378,7 +7378,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7430,7 +7430,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7482,7 +7482,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7534,7 +7534,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7615,7 +7615,7 @@ namespace TRexRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -7662,7 +7662,7 @@ namespace TRexRC
                             { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -7717,7 +7717,7 @@ namespace TRexRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -7742,7 +7742,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_SMALL_CURVE_BANKED + 9)),
                             { 6, 0, height }, { 20, 32, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -7751,7 +7751,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_SMALL_CURVE_BANKED + 11)),
                             { 6, 0, height }, { { 27, 0, height }, { 1, 32, 34 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -7760,7 +7760,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_SMALL_CURVE_BANKED + 13)),
                             { 6, 0, height }, { { 27, 0, height }, { 1, 32, 34 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -7769,7 +7769,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_SMALL_CURVE_BANKED + 15)),
                             { 6, 0, height }, { 20, 32, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 switch (direction)
@@ -7842,7 +7842,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -8003,7 +8003,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -8058,7 +8058,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -8219,7 +8219,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -8286,7 +8286,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -8304,7 +8304,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_S_BEND + 1)),
                             { 0, 0, height }, { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 5, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -8312,7 +8312,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_S_BEND + 5)),
                             { 0, 0, height }, { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 1, height - 1, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 6, 5, height - 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -8355,7 +8355,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_S_BEND + 1)),
                             { 0, 0, height }, { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 5, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -8363,7 +8363,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_S_BEND + 5)),
                             { 0, 0, height }, { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 1, height - 1, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 6, 5, height - 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -8401,7 +8401,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 1:
@@ -8452,7 +8452,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -8470,7 +8470,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_S_BEND + 9)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 8, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -8478,7 +8478,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_S_BEND + 13)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 7, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -8521,7 +8521,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_S_BEND + 9)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 8, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -8529,7 +8529,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_S_BEND + 13)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 7, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -8567,7 +8567,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 1:
@@ -8622,7 +8622,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -8699,7 +8699,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 6, 0, height + 8 }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -8746,7 +8746,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -8828,7 +8828,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
@@ -8879,7 +8879,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -8956,7 +8956,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -9003,7 +9003,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -9085,7 +9085,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
@@ -9162,7 +9162,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -9312,7 +9312,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 6, 0, height + 8 }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -9359,7 +9359,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -9514,7 +9514,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
@@ -9564,7 +9564,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -9691,7 +9691,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HELIX + 26)),
                             { 0, 0, height }, { { 6, 0, height + 8 }, { 20, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -9703,7 +9703,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HELIX + 32)),
                             { 0, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -9711,7 +9711,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HELIX + 37)),
                             { 0, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -9719,7 +9719,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HELIX + 43)),
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 switch (direction)
@@ -9768,7 +9768,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -9904,7 +9904,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HELIX + 32)),
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -9912,7 +9912,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HELIX + 37)),
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -9920,7 +9920,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HELIX + 43)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -9928,7 +9928,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HELIX + 26)),
                             { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -9988,7 +9988,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_BARREL_ROLL + 1)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 4, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 8, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -10000,7 +10000,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_BARREL_ROLL + 7)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 8, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -10012,7 +10012,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_BARREL_ROLL + 13)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 4, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -10024,7 +10024,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_BARREL_ROLL + 19)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -10167,7 +10167,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_BARREL_ROLL + 25)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -10179,7 +10179,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_BARREL_ROLL + 31)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 4, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -10191,7 +10191,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_BARREL_ROLL + 37)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 8, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -10203,7 +10203,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_BARREL_ROLL + 43)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 4, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 8, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -10375,7 +10375,7 @@ namespace TRexRC
                             { 0, 6, height }, { 32, 20, 7 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -10393,7 +10393,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_HALF_LOOP + 1)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -10401,7 +10401,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_HALF_LOOP + 5)),
                             { 0, 14, height }, { { 28, 6, height }, { 3, 20, 63 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 19, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -10409,7 +10409,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_HALF_LOOP + 9)),
                             { 0, 6, height }, { { 28, 6, height }, { 3, 20, 63 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -10417,7 +10417,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_HALF_LOOP + 13)),
                             { 0, 6, height }, { 32, 20, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -10525,7 +10525,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -10542,8 +10542,8 @@ namespace TRexRC
             case 0:
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 5, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 8, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_FLAT + 0)),
                     { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 0 } });
@@ -10551,8 +10551,8 @@ namespace TRexRC
             case 1:
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 6, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 7, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_FLAT + 1)),
                     { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 0 } });
@@ -10560,8 +10560,8 @@ namespace TRexRC
             case 2:
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 5, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 8, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_FLAT + 0)),
                     { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 0 } });
@@ -10569,8 +10569,8 @@ namespace TRexRC
             case 3:
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 6, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 7, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_FLAT + 1)),
                     { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 0 } });
@@ -10619,7 +10619,7 @@ namespace TRexRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 if (direction == 0 || direction == 3)
                 {
@@ -10660,7 +10660,7 @@ namespace TRexRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, 4, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -10697,7 +10697,7 @@ namespace TRexRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, 4, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -10734,7 +10734,7 @@ namespace TRexRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 19, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, 4, 23, height, session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 switch (direction)
                 {
@@ -10788,7 +10788,7 @@ namespace TRexRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, 4, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 if (direction == 0 || direction == 3)
                 {
@@ -10829,7 +10829,7 @@ namespace TRexRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, 4, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -10866,7 +10866,7 @@ namespace TRexRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, 4, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -10903,7 +10903,7 @@ namespace TRexRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 switch (direction)
                 {
@@ -10958,7 +10958,7 @@ namespace TRexRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -11001,7 +11001,7 @@ namespace TRexRC
                         break;
                 }
 
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -11076,7 +11076,7 @@ namespace TRexRC
                     session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 0, height + 33, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, 4, 4, height + 33, session.TrackColours[SCHEME_SUPPORTS]);
 
                 switch (direction)
                 {
@@ -11126,7 +11126,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height + 4 }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -11200,7 +11200,7 @@ namespace TRexRC
                     session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 0, height + 33, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, 4, 4, height + 33, session.TrackColours[SCHEME_SUPPORTS]);
 
                 switch (direction)
                 {
@@ -11265,7 +11265,7 @@ namespace TRexRC
                         break;
                 }
 
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -11285,7 +11285,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CORKSCREW + 1)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 34, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 6, 38, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -11293,7 +11293,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CORKSCREW + 6)),
                             { 0, 0, height }, { { 0, 29, height }, { 26, 1, 32 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 22, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 8, 26, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -11301,7 +11301,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CORKSCREW + 11)),
                             { 0, 0, height }, { { 0, 6, height }, { 20, 20, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 7, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -11309,7 +11309,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CORKSCREW + 16)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 5, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -11368,7 +11368,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CORKSCREW + 3)),
                             { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 5, 4, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -11376,7 +11376,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CORKSCREW + 8)),
                             { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 6, 4, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -11384,7 +11384,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CORKSCREW + 13)),
                             { 0, 0, height }, { { 2, 2, height + 50 }, { 24, 28, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 8, 4, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -11392,7 +11392,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CORKSCREW + 18)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 7, 4, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -11481,7 +11481,7 @@ namespace TRexRC
                         break;
                 }
 
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -11501,7 +11501,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CORKSCREW + 21)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 6, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -11509,7 +11509,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CORKSCREW + 26)),
                             { 0, 0, height }, { { 0, 6, height }, { 20, 20, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 8, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -11517,7 +11517,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CORKSCREW + 31)),
                             { 0, 0, height }, { { 0, 29, height }, { 26, 1, 32 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 22, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 7, 26, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -11525,7 +11525,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CORKSCREW + 36)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 34, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 5, 38, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -11584,7 +11584,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CORKSCREW + 23)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 8, 4, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -11592,7 +11592,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CORKSCREW + 28)),
                             { 0, 0, height }, { { 2, 2, height + 50 }, { 24, 28, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 7, 4, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -11600,7 +11600,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CORKSCREW + 33)),
                             { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 5, 4, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -11608,7 +11608,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_CORKSCREW + 38)),
                             { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 6, 4, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
@@ -11710,7 +11710,7 @@ namespace TRexRC
                         break;
                 }
 
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -11765,7 +11765,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_MEDIUM_HALF_LOOP + 2)),
                             { 0, 0, height }, { { 0, 0, height + 2 }, { 32, 32, 0 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 5, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -11773,7 +11773,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_MEDIUM_HALF_LOOP + 7)),
                             { 0, 0, height }, { { 29, 0, height }, { 1, 32, 96 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 6, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -11781,7 +11781,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_MEDIUM_HALF_LOOP + 12)),
                             { 0, 0, height }, { { 31, 0, height }, { 1, 32, 96 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 8, 22, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -11789,7 +11789,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_MEDIUM_HALF_LOOP + 17)),
                             { 0, 0, height }, { { 0, 0, height }, { 32, 32, 0 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 7, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -11907,7 +11907,7 @@ namespace TRexRC
                         break;
                 }
 
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -11962,7 +11962,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_MEDIUM_HALF_LOOP + 22)),
                             { 0, 0, height }, { { 0, 0, height }, { 32, 32, 0 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 8, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -11970,7 +11970,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_MEDIUM_HALF_LOOP + 27)),
                             { 0, 0, height }, { { 30, 0, height }, { 0, 32, 96 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 7, 22, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -11978,7 +11978,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_MEDIUM_HALF_LOOP + 32)),
                             { 0, 0, height }, { { 29, 0, height }, { 0, 32, 96 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 5, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -11986,7 +11986,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_MEDIUM_HALF_LOOP + 37)),
                             { 0, 0, height }, { { 0, 0, height + 2 }, { 32, 32, 0 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 6, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -12102,7 +12102,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_ZERO_G_ROLL + 1)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -12114,7 +12114,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_ZERO_G_ROLL + 5)),
                             { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -12122,7 +12122,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_ZERO_G_ROLL + 8)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -12130,7 +12130,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_ZERO_G_ROLL + 12)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -12228,7 +12228,7 @@ namespace TRexRC
                         SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, 4, 4, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
                 break;
         }
@@ -12249,7 +12249,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_ZERO_G_ROLL + 16)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -12257,7 +12257,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_ZERO_G_ROLL + 20)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -12269,7 +12269,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_ZERO_G_ROLL + 25)),
                             { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -12281,7 +12281,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_ZERO_G_ROLL + 29)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -12378,7 +12378,7 @@ namespace TRexRC
                         SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, 4, 4, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
                 break;
         }
@@ -12437,7 +12437,7 @@ namespace TRexRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 25, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, 4, 29, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -12535,7 +12535,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_ZERO_G_ROLL + 4)),
                             { 0, 0, height }, { { 0, 26, height }, { 26, 0, 20 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 7, 4, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -12543,7 +12543,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_ZERO_G_ROLL + 8)),
                             { 0, 0, height }, { { 0, 26, height }, { 26, 0, 20 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 5, 4, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -12555,7 +12555,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_ZERO_G_ROLL + 14)),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 6, 4, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -12563,7 +12563,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_ZERO_G_ROLL + 19)),
                             { 0, 0, height }, { { 0, 18, height }, { 32, 10, 20 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 8, 4, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 switch (direction)
@@ -12619,7 +12619,7 @@ namespace TRexRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 25, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, 4, 29, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -12718,7 +12718,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_ZERO_G_ROLL + 24)),
                             { 0, 0, height }, { { 0, 18, height }, { 32, 10, 20 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 7, 4, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -12730,7 +12730,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_ZERO_G_ROLL + 30)),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 5, 4, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -12738,7 +12738,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_ZERO_G_ROLL + 34)),
                             { 0, 0, height }, { { 0, 26, height }, { 26, 0, 20 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 6, 4, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -12746,7 +12746,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_ZERO_G_ROLL + 39)),
                             { 0, 0, height }, { { 0, 26, height }, { 26, 0, 20 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 8, 4, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 switch (direction)
@@ -12931,7 +12931,7 @@ namespace TRexRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -12975,7 +12975,7 @@ namespace TRexRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 8, height - 6, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, 4, 12, height - 6, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -13030,7 +13030,7 @@ namespace TRexRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -13074,7 +13074,7 @@ namespace TRexRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 8, height - 6, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, 4, 12, height - 6, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -13126,7 +13126,7 @@ namespace TRexRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 8, height - 6, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, 4, 12, height - 6, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
@@ -13173,7 +13173,7 @@ namespace TRexRC
                             { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -13225,7 +13225,7 @@ namespace TRexRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 8, height - 6, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, 4, 12, height - 6, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
@@ -13272,7 +13272,7 @@ namespace TRexRC
                             { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -13323,7 +13323,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -13341,7 +13341,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HALF_LOOP + 1)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 19, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -13349,7 +13349,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HALF_LOOP + 8)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 9 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -13357,7 +13357,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HALF_LOOP + 15)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -13365,7 +13365,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HALF_LOOP + 22)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -13416,7 +13416,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HALF_LOOP + 3)),
                             { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 5, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -13424,7 +13424,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HALF_LOOP + 10)),
                             { 0, 0, height }, { { 0, 0, height + 200 }, { 32, 16, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 6, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -13432,7 +13432,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HALF_LOOP + 17)),
                             { 0, 0, height }, { { 0, 16, height + 200 }, { 32, 16, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 8, 4, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -13440,7 +13440,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HALF_LOOP + 24)),
                             { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 7, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -13593,7 +13593,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -13611,7 +13611,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HALF_LOOP + 29)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -13619,7 +13619,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HALF_LOOP + 36)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -13627,7 +13627,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HALF_LOOP + 43)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 9 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -13635,7 +13635,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HALF_LOOP + 50)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 4, 19, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -13686,7 +13686,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HALF_LOOP + 31)),
                             { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 8, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -13694,7 +13694,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HALF_LOOP + 38)),
                             { 0, 0, height }, { { 0, 16, height + 200 }, { 32, 16, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 7, 4, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -13702,7 +13702,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HALF_LOOP + 45)),
                             { 0, 0, height }, { { 0, 0, height + 200 }, { 32, 16, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 5, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -13710,7 +13710,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_LARGE_HALF_LOOP + 52)),
                             { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 6, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -13857,7 +13857,7 @@ namespace TRexRC
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 0)),
                         { 0, 0, height }, { { 0, 2, height }, { 32, 27, 4 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -13869,7 +13869,7 @@ namespace TRexRC
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 1)),
                         { 0, 0, height }, { { 0, 4, height }, { 32, 2, 43 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 0, height + 4, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, 4, 4, height + 4, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -13881,7 +13881,7 @@ namespace TRexRC
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 3)),
                         { 0, 0, height }, { { 0, 4, height }, { 32, 2, 43 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 0, height + 4, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, 4, 4, height + 4, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -13889,7 +13889,7 @@ namespace TRexRC
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 5)),
                         { 0, 0, height }, { { 0, 2, height }, { 32, 27, 4 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
         }
@@ -13903,7 +13903,7 @@ namespace TRexRC
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_SMALL_FLAT_TO_STEEP + 0)),
                         { 0, 0, height }, { { 0, 2, height }, { 32, 27, 4 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -13915,7 +13915,7 @@ namespace TRexRC
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_SMALL_FLAT_TO_STEEP + 1)),
                         { 0, 0, height }, { { 0, 4, height }, { 32, 2, 43 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 0, height + 4, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, 4, 4, height + 4, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -13927,7 +13927,7 @@ namespace TRexRC
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_SMALL_FLAT_TO_STEEP + 3)),
                         { 0, 0, height }, { { 0, 4, height }, { 32, 2, 43 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 0, height + 4, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, 4, 4, height + 4, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -13935,7 +13935,7 @@ namespace TRexRC
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_SMALL_FLAT_TO_STEEP + 5)),
                         { 0, 0, height }, { { 0, 2, height }, { 32, 27, 4 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
         }
@@ -13993,7 +13993,7 @@ namespace TRexRC
                         { 0, 0, height }, { { 0, 2, height }, { 32, 27, 4 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         else
         {
@@ -14032,7 +14032,7 @@ namespace TRexRC
                         { 0, 0, height }, { { 0, 2, height }, { 32, 27, 4 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -14167,7 +14167,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -14176,15 +14176,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 13)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -14194,7 +14194,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -14203,15 +14203,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_TRACK_SMALL_FLAT_TO_STEEP + 13)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -14328,7 +14328,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -14337,15 +14337,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 17)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -14355,7 +14355,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -14364,15 +14364,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_TRACK_SMALL_FLAT_TO_STEEP + 17)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -14489,7 +14489,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -14498,15 +14498,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 19)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -14516,7 +14516,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -14525,15 +14525,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_TRACK_SMALL_FLAT_TO_STEEP + 19)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -14650,7 +14650,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -14659,15 +14659,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 15)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -14677,7 +14677,7 @@ namespace TRexRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -14686,15 +14686,15 @@ namespace TRexRC
                                     (SPR_G2_T_REX_TRACK_SMALL_FLAT_TO_STEEP + 15)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -14755,7 +14755,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -14846,7 +14846,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE + 3)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -14854,7 +14854,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE + 7)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -14862,7 +14862,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE + 11)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -14870,7 +14870,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE + 15)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -14917,7 +14917,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -15008,7 +15008,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE + 19)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -15016,7 +15016,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE + 23)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -15024,7 +15024,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE + 27)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -15032,7 +15032,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE + 31)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -15060,7 +15060,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE + 32)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -15068,7 +15068,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE + 36)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -15076,7 +15076,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE + 40)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -15084,7 +15084,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE + 44)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -15195,7 +15195,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 1 || direction == 2)
                 {
@@ -15224,7 +15224,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE + 48)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -15232,7 +15232,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE + 52)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -15240,7 +15240,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE + 56)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -15248,7 +15248,7 @@ namespace TRexRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE + 60)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -15359,7 +15359,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 1)
                 {
                     PaintUtilPushTunnelRotated(session, direction + 1, height + 8, TUNNEL_2);
@@ -15466,7 +15466,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -15475,15 +15475,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 2)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -15554,7 +15554,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -15563,15 +15563,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 6)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -15642,7 +15642,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -15651,15 +15651,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 12)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -15730,7 +15730,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -15739,15 +15739,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 16)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -15841,7 +15841,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -15850,15 +15850,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 21)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -15924,7 +15924,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -15933,15 +15933,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 25)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16007,7 +16007,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -16016,15 +16016,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 29)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16090,7 +16090,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -16099,15 +16099,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 33)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16201,7 +16201,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -16210,15 +16210,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 37)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16284,7 +16284,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -16293,15 +16293,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 41)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16386,7 +16386,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -16395,15 +16395,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 46)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16474,7 +16474,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -16483,15 +16483,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 50)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16562,7 +16562,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -16571,15 +16571,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 56)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16650,7 +16650,7 @@ namespace TRexRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -16659,15 +16659,15 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 60)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16743,7 +16743,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -16843,7 +16843,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 67)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -16852,7 +16852,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 71)),
                             { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -16861,7 +16861,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 75)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -16870,7 +16870,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 79)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16921,7 +16921,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -17021,7 +17021,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 83)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -17030,7 +17030,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 87)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -17039,7 +17039,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 91)),
                             { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -17048,7 +17048,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 95)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -17077,7 +17077,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 96)),
                             { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -17086,7 +17086,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 100)),
                             { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -17095,7 +17095,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 104)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -17104,7 +17104,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 108)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -17227,7 +17227,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 1 || direction == 2)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
@@ -17255,7 +17255,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 112)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -17264,7 +17264,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 116)),
                             { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 3, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -17273,7 +17273,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 120)),
                             { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -17282,7 +17282,7 @@ namespace TRexRC
                                 (SPR_G2_T_REX_TRACK_GENTLE_LARGE_CURVE_BANKED + 124)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -17405,7 +17405,7 @@ namespace TRexRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 1)
                 {
                     PaintUtilPushTunnelRotated(session, direction + 1, height + 8, TUNNEL_2);
