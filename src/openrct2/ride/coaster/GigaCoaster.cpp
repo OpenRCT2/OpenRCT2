@@ -14558,7 +14558,7 @@ switch (trackSequence)
 		    { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 		break;
 	}
-	MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+	MetalBSupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
 	if (direction == 0 || direction == 3)
 	{
 	    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -14648,32 +14648,32 @@ switch (trackSequence)
 		    session, direction,
 		    session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 3)),
 		    { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
 		PaintAddImageAsParentRotated(
 		    session, direction,
 		    session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 7)),
 		    { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
 		PaintAddImageAsParentRotated(
 		    session, direction,
 		    session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 11)),
 		    { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
 		PaintAddImageAsParentRotated(
 		    session, direction,
 		    session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 15)),
 		    { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
 	PaintUtilSetSegmentSupportHeight(
@@ -14720,7 +14720,7 @@ switch (trackSequence)
 		    { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 		break;
 	}
-	MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+	MetalBSupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
 	if (direction == 0 || direction == 3)
 	{
 	    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -14810,32 +14810,32 @@ switch (trackSequence)
 		    session, direction,
 		    session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 19)),
 		    { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
 		PaintAddImageAsParentRotated(
 		    session, direction,
 		    session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 23)),
 		    { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
 		PaintAddImageAsParentRotated(
 		    session, direction,
 		    session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 27)),
 		    { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
 		PaintAddImageAsParentRotated(
 		    session, direction,
 		    session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 31)),
 		    { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
 	PaintUtilSetSegmentSupportHeight(
@@ -14862,32 +14862,32 @@ switch (trackSequence)
 		    session, direction,
 		    session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 32)),
 		    { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 2, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
 		PaintAddImageAsParentRotated(
 		    session, direction,
 		    session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 36)),
 		    { 0, 0, height }, { { 16, 16, height }, { 16, 18, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 3, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
 		PaintAddImageAsParentRotated(
 		    session, direction,
 		    session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 40)),
 		    { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 1, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
 		PaintAddImageAsParentRotated(
 		    session, direction,
 		    session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 44)),
 		    { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
 	PaintUtilSetSegmentSupportHeight(
@@ -14998,7 +14998,7 @@ switch (trackSequence)
 		    { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 		break;
 	}
-	MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+	MetalBSupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
 
 	if (direction == 1 || direction == 2)
 	{
@@ -15026,32 +15026,32 @@ switch (trackSequence)
 		    session, direction,
 		    session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 48)),
 		    { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 2, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
 		PaintAddImageAsParentRotated(
 		    session, direction,
 		    session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 52)),
 		    { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 3, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
 		PaintAddImageAsParentRotated(
 		    session, direction,
 		    session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 56)),
 		    { 0, 0, height }, { { 16, 0, height }, { 16, 18, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 1, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
 		PaintAddImageAsParentRotated(
 		    session, direction,
 		    session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 60)),
 		    { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
 	PaintUtilSetSegmentSupportHeight(
@@ -15162,7 +15162,7 @@ switch (trackSequence)
 		    { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
 		break;
 	}
-	MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+	MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
 	if (direction == 0 || direction == 1)
 	{
 	    PaintUtilPushTunnelRotated(session, direction + 1, height + 8, TUNNEL_2);
@@ -15268,8 +15268,8 @@ switch (trackSequence)
 	switch (direction)
 	{
 	    case 0:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 1, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
 		PaintAddImageAsParentRotated(
@@ -15277,16 +15277,16 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 2)),
 		    { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 0, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 2, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 3, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
 	PaintUtilSetSegmentSupportHeight(
@@ -15356,8 +15356,8 @@ switch (trackSequence)
 	switch (direction)
 	{
 	    case 0:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
 		PaintAddImageAsParentRotated(
@@ -15365,16 +15365,16 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 6)),
 		    { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 0, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 2, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 3, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
 	PaintUtilSetSegmentSupportHeight(
@@ -15444,8 +15444,8 @@ switch (trackSequence)
 	switch (direction)
 	{
 	    case 0:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 1, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
 		PaintAddImageAsParentRotated(
@@ -15453,15 +15453,15 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 12)),
 		    { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
@@ -15532,7 +15532,7 @@ switch (trackSequence)
 	switch (direction)
 	{
 	    case 0:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
@@ -15541,15 +15541,15 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 16)),
 		    { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 2, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
@@ -15643,8 +15643,8 @@ switch (trackSequence)
 	switch (direction)
 	{
 	    case 0:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
 		PaintAddImageAsParentRotated(
@@ -15652,15 +15652,15 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 21)),
 		    { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
@@ -15726,7 +15726,7 @@ switch (trackSequence)
 	switch (direction)
 	{
 	    case 0:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
@@ -15735,15 +15735,15 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 25)),
 		    { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
@@ -15809,8 +15809,8 @@ switch (trackSequence)
 	switch (direction)
 	{
 	    case 0:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
 		PaintAddImageAsParentRotated(
@@ -15818,16 +15818,16 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 29)),
 		    { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
 	PaintUtilSetSegmentSupportHeight(
@@ -15892,8 +15892,8 @@ switch (trackSequence)
 	switch (direction)
 	{
 	    case 0:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
 		PaintAddImageAsParentRotated(
@@ -15901,16 +15901,16 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 33)),
 		    { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
 	PaintUtilSetSegmentSupportHeight(
@@ -16003,8 +16003,8 @@ switch (trackSequence)
 	switch (direction)
 	{
 	    case 0:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 1, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
 		PaintAddImageAsParentRotated(
@@ -16012,15 +16012,15 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 37)),
 		    { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 2, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 3, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
@@ -16086,7 +16086,7 @@ switch (trackSequence)
 	switch (direction)
 	{
 	    case 0:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 1, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
@@ -16095,15 +16095,15 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 41)),
 		    { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 2, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 3, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
@@ -16188,8 +16188,8 @@ switch (trackSequence)
 	switch (direction)
 	{
 	    case 0:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
 		PaintAddImageAsParentRotated(
@@ -16197,15 +16197,15 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 46)),
 		    { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
@@ -16276,7 +16276,7 @@ switch (trackSequence)
 	switch (direction)
 	{
 	    case 0:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
@@ -16285,15 +16285,15 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 50)),
 		    { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
@@ -16364,8 +16364,8 @@ switch (trackSequence)
 	switch (direction)
 	{
 	    case 0:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
 		PaintAddImageAsParentRotated(
@@ -16373,15 +16373,15 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 56)),
 		    { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
@@ -16452,7 +16452,7 @@ switch (trackSequence)
 	switch (direction)
 	{
 	    case 0:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
@@ -16461,15 +16461,15 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 60)),
 		    { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
-		MetalASupportsPaintSetup(
-		    session, METAL_SUPPORTS_TUBES, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+		MetalBSupportsPaintSetup(
+		    session, METAL_SUPPORTS_TUBES, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
@@ -16546,7 +16546,7 @@ switch (trackSequence)
 		    { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 		break;
 	}
-	MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+	MetalBSupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 	if (direction == 0 || direction == 3)
 	{
 	    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -16645,7 +16645,7 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 67)),
 		    { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
@@ -16654,7 +16654,7 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 71)),
 		    { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
@@ -16663,7 +16663,7 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 75)),
 		    { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
@@ -16672,7 +16672,7 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 79)),
 		    { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
@@ -16724,7 +16724,7 @@ switch (trackSequence)
 		    { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 		break;
 	}
-	MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+	MetalBSupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 	if (direction == 0 || direction == 3)
 	{
 	    PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -16823,7 +16823,7 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 83)),
 		    { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
@@ -16832,7 +16832,7 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 87)),
 		    { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
@@ -16841,7 +16841,7 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 91)),
 		    { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
@@ -16850,7 +16850,7 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 95)),
 		    { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
@@ -16879,7 +16879,7 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 96)),
 		    { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
@@ -16888,7 +16888,7 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 100)),
 		    { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
@@ -16897,7 +16897,7 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 104)),
 		    { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
@@ -16906,7 +16906,7 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 108)),
 		    { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
@@ -17030,7 +17030,7 @@ switch (trackSequence)
 		    { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 		break;
 	}
-	MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+	MetalBSupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 	if (direction == 1 || direction == 2)
 	{
 	    PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
@@ -17057,7 +17057,7 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 112)),
 		    { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 1:
@@ -17066,7 +17066,7 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 116)),
 		    { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 2:
@@ -17075,7 +17075,7 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 120)),
 		    { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	    case 3:
@@ -17084,7 +17084,7 @@ switch (trackSequence)
 		    session.TrackColours[SCHEME_TRACK].WithIndex(
 			(SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 124)),
 		    { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
-		MetalASupportsPaintSetup(
+		MetalBSupportsPaintSetup(
 		    session, METAL_SUPPORTS_TUBES, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 		break;
 	}
@@ -17208,7 +17208,7 @@ switch (trackSequence)
 		    { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
 		break;
 	}
-	MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+	MetalBSupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
 	if (direction == 0 || direction == 1)
 	{
 	    PaintUtilPushTunnelRotated(session, direction + 1, height + 8, TUNNEL_2);
