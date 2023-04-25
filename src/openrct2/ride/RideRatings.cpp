@@ -97,8 +97,8 @@ static void RideRatingsCalculateValue(Ride& ride);
 static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, TileElement* inputTileElement);
 static void RideRatingsAdd(RatingTuple* rating, int32_t excitement, int32_t intensity, int32_t nausea);
 
-static ShelteredEights get_num_of_sheltered_eighths(const Ride& ride);
-static money64 ride_compute_upkeep(RideRatingUpdateState& state, const Ride& ride);
+static ShelteredEights GetNumOfShelteredEighths(const Ride& ride);
+static money64 RideComputeUpkeep(RideRatingUpdateState& state, const Ride& ride);
 static void SetUnreliabilityFactor(Ride& ride);
 
 static void RideRatingsApplyAdjustments(const Ride& ride, RatingTuple* ratings);
@@ -870,7 +870,7 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
 
 static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
 {
-    RideRatingsDescriptor rrd = ride.GetRideTypeDescriptor().RatingsData;
+    const auto& rrd = ride.GetRideTypeDescriptor().RatingsData;
 
     switch (rrd.Type)
     {
@@ -883,7 +883,7 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
             ride.lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
             break;
         case RatingsCalculationType::Stall:
-            ride.upkeep_cost = ride_compute_upkeep(state, ride);
+            ride.upkeep_cost = RideComputeUpkeep(state, ride);
             ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
             // Exit ratings
             return;
@@ -892,7 +892,7 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
     ride.unreliability_factor = rrd.Unreliability;
     SetUnreliabilityFactor(ride);
 
-    auto shelteredEighths = get_num_of_sheltered_eighths(ride);
+    const auto shelteredEighths = GetNumOfShelteredEighths(ride);
     ride.sheltered_eighths = (rrd.RideShelter == -1) ? shelteredEighths.TotalShelteredEighths : rrd.RideShelter;
 
     RatingTuple ratings = rrd.BaseRatings;
@@ -1043,7 +1043,7 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
     RideRatingsApplyAdjustments(ride, &ratings);
     ride.ratings = ratings;
 
-    ride.upkeep_cost = ride_compute_upkeep(state, ride);
+    ride.upkeep_cost = RideComputeUpkeep(state, ride);
     ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
 #ifdef ORIGINAL_RATINGS
@@ -1190,7 +1190,7 @@ static void RideRatingsCalculateValue(Ride& ride)
  * inputs
  * - edi: ride ptr
  */
-static money64 ride_compute_upkeep(RideRatingUpdateState& state, const Ride& ride)
+static money64 RideComputeUpkeep(RideRatingUpdateState& state, const Ride& ride)
 {
     // data stored at 0x0057E3A8, incrementing 18 bytes at a time
     auto upkeep = ride.GetRideTypeDescriptor().UpkeepCosts.BaseCost;
@@ -1427,7 +1427,7 @@ static uint32_t ride_ratings_get_proximity_score(RideRatingUpdateState& state)
  * Calculates how much of the track is sheltered in eighths.
  *  rct2: 0x0065E72D
  */
-static ShelteredEights get_num_of_sheltered_eighths(const Ride& ride)
+static ShelteredEights GetNumOfShelteredEighths(const Ride& ride)
 {
     int32_t totalLength = ride.GetTotalLength();
     int32_t shelteredLength = ride.sheltered_length;
