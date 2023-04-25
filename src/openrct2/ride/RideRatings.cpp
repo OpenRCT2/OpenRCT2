@@ -95,61 +95,61 @@ static void ride_ratings_begin_proximity_loop(RideRatingUpdateState& state);
 static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride);
 static void RideRatingsCalculateValue(Ride& ride);
 static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, TileElement* inputTileElement);
-static void RideRatingsAdd(RatingTuple* rating, int32_t excitement, int32_t intensity, int32_t nausea);
+static void RideRatingsAdd(RatingTuple& ratings, int32_t excitement, int32_t intensity, int32_t nausea);
 
 static ShelteredEights GetNumOfShelteredEighths(const Ride& ride);
 static money64 RideComputeUpkeep(RideRatingUpdateState& state, const Ride& ride);
 static void SetUnreliabilityFactor(Ride& ride);
 
-static void RideRatingsApplyAdjustments(const Ride& ride, RatingTuple* ratings);
-static void RideRatingsApplyIntensityPenalty(RatingTuple* ratings);
+static void RideRatingsApplyAdjustments(const Ride& ride, RatingTuple& ratings);
+static void RideRatingsApplyIntensityPenalty(RatingTuple& ratings);
 
-static void RideRatingsApplyBonusLength(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusSynchronisation(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusTrainLength(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusMaxSpeed(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusAverageSpeed(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusDuration(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusGForces(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusTurns(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusDrops(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusSheltered(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusRotations(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusOperationOption(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusGoKartRace(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusTowerRide(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusRotoDrop(RatingTuple* ratings, const Ride& ride);
-static void RideRatingsApplyBonusMazeSize(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusBoatHireNoCircuit(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusSlideUnlimitedRides(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusMotionSimulatorMode(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonus3DCinemaMode(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusTopSpinMode(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusLength(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusSynchronisation(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusTrainLength(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusMaxSpeed(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusAverageSpeed(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusDuration(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusGForces(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusTurns(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusDrops(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusSheltered(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusRotations(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusOperationOption(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusGoKartRace(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusTowerRide(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusRotoDrop(RatingTuple& ratings, const Ride& ride);
+static void RideRatingsApplyBonusMazeSize(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusBoatHireNoCircuit(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusSlideUnlimitedRides(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusMotionSimulatorMode(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonus3DCinemaMode(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusTopSpinMode(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusReversals(
-    RatingTuple* ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier);
-static void RideRatingsApplyBonusHoles(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusNumTrains(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyBonusDownwardLaunch(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+    RatingTuple& ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier);
+static void RideRatingsApplyBonusHoles(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusNumTrains(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusDownwardLaunch(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusLaunchedFreefallSpecial(
-    RatingTuple* ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier);
+    RatingTuple& ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier);
 static void RideRatingsApplyBonusProximity(
-    RatingTuple* ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier);
-static void RideRatingsApplyBonusScenery(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyRequirementLength(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyRequirementDropHeight(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyRequirementMaxSpeed(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyRequirementNumDrops(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyRequirementNegativeGs(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyRequirementLateralGs(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyRequirementInversions(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+    RatingTuple& ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier);
+static void RideRatingsApplyBonusScenery(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementLength(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementDropHeight(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementMaxSpeed(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementNumDrops(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementNegativeGs(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementLateralGs(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementInversions(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyRequirementUnsheltered(
-    RatingTuple* ratings, const Ride& ride, uint8_t shelteredEighths, RatingsModifier modifier);
+    RatingTuple& ratings, const Ride& ride, uint8_t shelteredEighths, RatingsModifier modifier);
 static void RideRatingsApplyRequirementReversals(
-    RatingTuple* ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier);
-static void RideRatingsApplyRequirementHoles(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyRequirementStations(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyRequirementSplashdown(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
-static void RideRatingsApplyPenaltyLateralGs(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier);
+    RatingTuple& ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier);
+static void RideRatingsApplyRequirementHoles(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementStations(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyRequirementSplashdown(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyPenaltyLateralGs(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
 
 RideRatingUpdateStates& RideRatingGetUpdateStates()
 {
@@ -902,118 +902,118 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
         switch (modifier.Type)
         {
             case RatingsModifierType::BonusLength:
-                RideRatingsApplyBonusLength(&ratings, ride, modifier);
+                RideRatingsApplyBonusLength(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusSynchronisation:
-                RideRatingsApplyBonusSynchronisation(&ratings, ride, modifier);
+                RideRatingsApplyBonusSynchronisation(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusTrainLength:
-                RideRatingsApplyBonusTrainLength(&ratings, ride, modifier);
+                RideRatingsApplyBonusTrainLength(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusMaxSpeed:
-                RideRatingsApplyBonusMaxSpeed(&ratings, ride, modifier);
+                RideRatingsApplyBonusMaxSpeed(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusAverageSpeed:
-                RideRatingsApplyBonusAverageSpeed(&ratings, ride, modifier);
+                RideRatingsApplyBonusAverageSpeed(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusDuration:
-                RideRatingsApplyBonusDuration(&ratings, ride, modifier);
+                RideRatingsApplyBonusDuration(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusGForces:
-                RideRatingsApplyBonusGForces(&ratings, ride, modifier);
+                RideRatingsApplyBonusGForces(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusTurns:
-                RideRatingsApplyBonusTurns(&ratings, ride, modifier);
+                RideRatingsApplyBonusTurns(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusDrops:
-                RideRatingsApplyBonusDrops(&ratings, ride, modifier);
+                RideRatingsApplyBonusDrops(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusSheltered:
-                RideRatingsApplyBonusSheltered(&ratings, ride, modifier);
+                RideRatingsApplyBonusSheltered(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusProximity:
-                RideRatingsApplyBonusProximity(&ratings, ride, state, modifier);
+                RideRatingsApplyBonusProximity(ratings, ride, state, modifier);
                 break;
             case RatingsModifierType::BonusScenery:
-                RideRatingsApplyBonusScenery(&ratings, ride, modifier);
+                RideRatingsApplyBonusScenery(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusRotations:
-                RideRatingsApplyBonusRotations(&ratings, ride, modifier);
+                RideRatingsApplyBonusRotations(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusOperationOption:
-                RideRatingsApplyBonusOperationOption(&ratings, ride, modifier);
+                RideRatingsApplyBonusOperationOption(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusGoKartRace:
-                RideRatingsApplyBonusGoKartRace(&ratings, ride, modifier);
+                RideRatingsApplyBonusGoKartRace(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusTowerRide:
-                RideRatingsApplyBonusTowerRide(&ratings, ride, modifier);
+                RideRatingsApplyBonusTowerRide(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusRotoDrop:
-                RideRatingsApplyBonusRotoDrop(&ratings, ride);
+                RideRatingsApplyBonusRotoDrop(ratings, ride);
                 break;
             case RatingsModifierType::BonusMazeSize:
-                RideRatingsApplyBonusMazeSize(&ratings, ride, modifier);
+                RideRatingsApplyBonusMazeSize(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusBoatHireNoCircuit:
-                RideRatingsApplyBonusBoatHireNoCircuit(&ratings, ride, modifier);
+                RideRatingsApplyBonusBoatHireNoCircuit(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusSlideUnlimitedRides:
-                RideRatingsApplyBonusSlideUnlimitedRides(&ratings, ride, modifier);
+                RideRatingsApplyBonusSlideUnlimitedRides(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusMotionSimulatorMode:
-                RideRatingsApplyBonusMotionSimulatorMode(&ratings, ride, modifier);
+                RideRatingsApplyBonusMotionSimulatorMode(ratings, ride, modifier);
                 break;
             case RatingsModifierType::Bonus3DCinemaMode:
-                RideRatingsApplyBonus3DCinemaMode(&ratings, ride, modifier);
+                RideRatingsApplyBonus3DCinemaMode(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusTopSpinMode:
-                RideRatingsApplyBonusTopSpinMode(&ratings, ride, modifier);
+                RideRatingsApplyBonusTopSpinMode(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusReversals:
-                RideRatingsApplyBonusReversals(&ratings, ride, state, modifier);
+                RideRatingsApplyBonusReversals(ratings, ride, state, modifier);
                 break;
             case RatingsModifierType::BonusHoles:
-                RideRatingsApplyBonusHoles(&ratings, ride, modifier);
+                RideRatingsApplyBonusHoles(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusNumTrains:
-                RideRatingsApplyBonusNumTrains(&ratings, ride, modifier);
+                RideRatingsApplyBonusNumTrains(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusDownwardLaunch:
-                RideRatingsApplyBonusDownwardLaunch(&ratings, ride, modifier);
+                RideRatingsApplyBonusDownwardLaunch(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusLaunchedFreefallSpecial:
-                RideRatingsApplyBonusLaunchedFreefallSpecial(&ratings, ride, state, modifier);
+                RideRatingsApplyBonusLaunchedFreefallSpecial(ratings, ride, state, modifier);
                 break;
             case RatingsModifierType::RequirementLength:
-                RideRatingsApplyRequirementLength(&ratings, ride, modifier);
+                RideRatingsApplyRequirementLength(ratings, ride, modifier);
                 break;
             case RatingsModifierType::RequirementMaxSpeed:
-                RideRatingsApplyRequirementMaxSpeed(&ratings, ride, modifier);
+                RideRatingsApplyRequirementMaxSpeed(ratings, ride, modifier);
                 break;
             case RatingsModifierType::RequirementLateralGs:
-                RideRatingsApplyRequirementLateralGs(&ratings, ride, modifier);
+                RideRatingsApplyRequirementLateralGs(ratings, ride, modifier);
                 break;
             case RatingsModifierType::RequirementInversions:
-                RideRatingsApplyRequirementInversions(&ratings, ride, modifier);
+                RideRatingsApplyRequirementInversions(ratings, ride, modifier);
                 break;
             case RatingsModifierType::RequirementUnsheltered:
-                RideRatingsApplyRequirementUnsheltered(&ratings, ride, shelteredEighths.TrackShelteredEighths, modifier);
+                RideRatingsApplyRequirementUnsheltered(ratings, ride, shelteredEighths.TrackShelteredEighths, modifier);
                 break;
             case RatingsModifierType::RequirementReversals:
-                RideRatingsApplyRequirementReversals(&ratings, ride, state, modifier);
+                RideRatingsApplyRequirementReversals(ratings, ride, state, modifier);
                 break;
             case RatingsModifierType::RequirementHoles:
-                RideRatingsApplyRequirementHoles(&ratings, ride, modifier);
+                RideRatingsApplyRequirementHoles(ratings, ride, modifier);
                 break;
             case RatingsModifierType::RequirementStations:
-                RideRatingsApplyRequirementStations(&ratings, ride, modifier);
+                RideRatingsApplyRequirementStations(ratings, ride, modifier);
                 break;
             case RatingsModifierType::RequirementSplashdown:
-                RideRatingsApplyRequirementSplashdown(&ratings, ride, modifier);
+                RideRatingsApplyRequirementSplashdown(ratings, ride, modifier);
                 break;
             case RatingsModifierType::PenaltyLateralGs:
-                RideRatingsApplyPenaltyLateralGs(&ratings, ride, modifier);
+                RideRatingsApplyPenaltyLateralGs(ratings, ride, modifier);
                 break;
             default:
                 break;
@@ -1025,13 +1025,13 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
             switch (modifier.Type)
             {
                 case RatingsModifierType::RequirementDropHeight:
-                    RideRatingsApplyRequirementDropHeight(&ratings, ride, modifier);
+                    RideRatingsApplyRequirementDropHeight(ratings, ride, modifier);
                     break;
                 case RatingsModifierType::RequirementNumDrops:
-                    RideRatingsApplyRequirementNumDrops(&ratings, ride, modifier);
+                    RideRatingsApplyRequirementNumDrops(ratings, ride, modifier);
                     break;
                 case RatingsModifierType::RequirementNegativeGs:
-                    RideRatingsApplyRequirementNegativeGs(&ratings, ride, modifier);
+                    RideRatingsApplyRequirementNegativeGs(ratings, ride, modifier);
                     break;
                 default:
                     break;
@@ -1039,8 +1039,8 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
         }
     }
     // Universl ratings adjustments
-    RideRatingsApplyIntensityPenalty(&ratings);
-    RideRatingsApplyAdjustments(ride, &ratings);
+    RideRatingsApplyIntensityPenalty(ratings);
+    RideRatingsApplyAdjustments(ride, ratings);
     ride.ratings = ratings;
 
     ride.upkeep_cost = RideComputeUpkeep(state, ride);
@@ -1270,7 +1270,7 @@ static money64 RideComputeUpkeep(RideRatingUpdateState& state, const Ride& ride)
  * - bp: nausea
  * - edi: ride ptr
  */
-static void RideRatingsApplyAdjustments(const Ride& ride, RatingTuple* ratings)
+static void RideRatingsApplyAdjustments(const Ride& ride, RatingTuple& ratings)
 {
     const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
 
@@ -1281,9 +1281,9 @@ static void RideRatingsApplyAdjustments(const Ride& ride, RatingTuple* ratings)
 
     // Apply ride entry multipliers
     RideRatingsAdd(
-        ratings, ((static_cast<int32_t>(ratings->Excitement) * rideEntry->excitement_multiplier) >> 7),
-        ((static_cast<int32_t>(ratings->Intensity) * rideEntry->intensity_multiplier) >> 7),
-        ((static_cast<int32_t>(ratings->Nausea) * rideEntry->nausea_multiplier) >> 7));
+        ratings, ((static_cast<int32_t>(ratings.Excitement) * rideEntry->excitement_multiplier) >> 7),
+        ((static_cast<int32_t>(ratings.Intensity) * rideEntry->intensity_multiplier) >> 7),
+        ((static_cast<int32_t>(ratings.Nausea) * rideEntry->nausea_multiplier) >> 7));
 
     // Apply total air time
 #ifdef ORIGINAL_RATINGS
@@ -1295,14 +1295,14 @@ static void RideRatingsApplyAdjustments(const Ride& ride, RatingTuple* ratings)
             if (totalAirTime >= 96)
             {
                 totalAirTime -= 96;
-                ratings->excitement -= totalAirTime / 8;
-                ratings->nausea += totalAirTime / 16;
+                ratings.excitement -= totalAirTime / 8;
+                ratings.nausea += totalAirTime / 16;
             }
         }
         else
         {
-            ratings->excitement += totalAirTime / 8;
-            ratings->nausea += totalAirTime / 16;
+            ratings.excitement += totalAirTime / 8;
+            ratings.nausea += totalAirTime / 16;
         }
     }
 #else
@@ -1329,18 +1329,18 @@ static void RideRatingsApplyAdjustments(const Ride& ride, RatingTuple* ratings)
  * Lowers excitement, the higher the intensity.
  *  rct2: 0x0065E7A3
  */
-static void RideRatingsApplyIntensityPenalty(RatingTuple* ratings)
+static void RideRatingsApplyIntensityPenalty(RatingTuple& ratings)
 {
     static constexpr ride_rating intensityBounds[] = { 1000, 1100, 1200, 1320, 1450 };
-    ride_rating excitement = ratings->Excitement;
+    ride_rating excitement = ratings.Excitement;
     for (auto intensityBound : intensityBounds)
     {
-        if (ratings->Intensity >= intensityBound)
+        if (ratings.Intensity >= intensityBound)
         {
             excitement -= excitement / 4;
         }
     }
-    ratings->Excitement = excitement;
+    ratings.Excitement = excitement;
 }
 
 /**
@@ -1748,7 +1748,7 @@ static RatingTuple ride_ratings_get_drop_ratings(const Ride& ride)
 
     // Apply highest drop factor
     RideRatingsAdd(
-        &result, ((ride.highest_drop_height * 2) * 16000) >> 16, ((ride.highest_drop_height * 2) * 32000) >> 16,
+        result, ((ride.highest_drop_height * 2) * 16000) >> 16, ((ride.highest_drop_height * 2) * 32000) >> 16,
         ((ride.highest_drop_height * 2) * 10240) >> 16);
 
     return result;
@@ -1814,33 +1814,33 @@ static int32_t ride_ratings_get_scenery_score(const Ride& ride)
 
 #pragma region Ride rating calculation helpers
 
-static void RideRatingsSet(RatingTuple* ratings, int32_t excitement, int32_t intensity, int32_t nausea)
+static void RideRatingsSet(RatingTuple& ratings, int32_t excitement, int32_t intensity, int32_t nausea)
 {
-    ratings->Excitement = 0;
-    ratings->Intensity = 0;
-    ratings->Nausea = 0;
+    ratings.Excitement = 0;
+    ratings.Intensity = 0;
+    ratings.Nausea = 0;
     RideRatingsAdd(ratings, excitement, intensity, nausea);
 }
 
 /**
  * Add to a ride rating with overflow protection.
  */
-static void RideRatingsAdd(RatingTuple* rating, int32_t excitement, int32_t intensity, int32_t nausea)
+static void RideRatingsAdd(RatingTuple& ratings, int32_t excitement, int32_t intensity, int32_t nausea)
 {
-    int32_t newExcitement = rating->Excitement + excitement;
-    int32_t newIntensity = rating->Intensity + intensity;
-    int32_t newNausea = rating->Nausea + nausea;
-    rating->Excitement = std::clamp<int32_t>(newExcitement, 0, INT16_MAX);
-    rating->Intensity = std::clamp<int32_t>(newIntensity, 0, INT16_MAX);
-    rating->Nausea = std::clamp<int32_t>(newNausea, 0, INT16_MAX);
+    int32_t newExcitement = ratings.Excitement + excitement;
+    int32_t newIntensity = ratings.Intensity + intensity;
+    int32_t newNausea = ratings.Nausea + nausea;
+    ratings.Excitement = std::clamp<int32_t>(newExcitement, 0, INT16_MAX);
+    ratings.Intensity = std::clamp<int32_t>(newIntensity, 0, INT16_MAX);
+    ratings.Nausea = std::clamp<int32_t>(newNausea, 0, INT16_MAX);
 }
 
-static void RideRatingsApplyBonusLength(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusLength(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     RideRatingsAdd(ratings, (std::min(ride.GetTotalLength() >> 16, modifier.Threshold) * modifier.Excitement) >> 16, 0, 0);
 }
 
-static void RideRatingsApplyBonusSynchronisation(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusSynchronisation(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if ((ride.depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) && RideHasAdjacentStation(ride))
     {
@@ -1848,12 +1848,12 @@ static void RideRatingsApplyBonusSynchronisation(RatingTuple* ratings, const Rid
     }
 }
 
-static void RideRatingsApplyBonusTrainLength(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusTrainLength(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     RideRatingsAdd(ratings, ((ride.num_cars_per_train - 1) * modifier.Excitement) >> 16, 0, 0);
 }
 
-static void RideRatingsApplyBonusMaxSpeed(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusMaxSpeed(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     int32_t maxSpeedMod = ride.max_speed >> 16;
     RideRatingsAdd(
@@ -1861,18 +1861,18 @@ static void RideRatingsApplyBonusMaxSpeed(RatingTuple* ratings, const Ride& ride
         (maxSpeedMod * modifier.Nausea) >> 16);
 }
 
-static void RideRatingsApplyBonusAverageSpeed(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusAverageSpeed(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     int32_t avgSpeedMod = ride.average_speed >> 16;
     RideRatingsAdd(ratings, (avgSpeedMod * modifier.Excitement) >> 16, (avgSpeedMod * modifier.Intensity) >> 16, 0);
 }
 
-static void RideRatingsApplyBonusDuration(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusDuration(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     RideRatingsAdd(ratings, (std::min(ride.GetTotalTime(), modifier.Threshold) * modifier.Excitement) >> 16, 0, 0);
 }
 
-static void RideRatingsApplyBonusGForces(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusGForces(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     RatingTuple subRating = ride_ratings_get_gforce_ratings(ride);
     RideRatingsAdd(
@@ -1880,7 +1880,7 @@ static void RideRatingsApplyBonusGForces(RatingTuple* ratings, const Ride& ride,
         (subRating.Nausea * modifier.Nausea) >> 16);
 }
 
-static void RideRatingsApplyBonusTurns(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusTurns(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     RatingTuple subRating = ride_ratings_get_turns_ratings(ride);
     RideRatingsAdd(
@@ -1888,7 +1888,7 @@ static void RideRatingsApplyBonusTurns(RatingTuple* ratings, const Ride& ride, R
         (subRating.Nausea * modifier.Nausea) >> 16);
 }
 
-static void RideRatingsApplyBonusDrops(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusDrops(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     RatingTuple subRating = ride_ratings_get_drop_ratings(ride);
     RideRatingsAdd(
@@ -1896,7 +1896,7 @@ static void RideRatingsApplyBonusDrops(RatingTuple* ratings, const Ride& ride, R
         (subRating.Nausea * modifier.Nausea) >> 16);
 }
 
-static void RideRatingsApplyBonusSheltered(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusSheltered(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     RatingTuple subRating = ride_ratings_get_sheltered_ratings(ride);
     RideRatingsAdd(
@@ -1904,20 +1904,20 @@ static void RideRatingsApplyBonusSheltered(RatingTuple* ratings, const Ride& rid
         (subRating.Nausea * modifier.Nausea) >> 16);
 }
 
-static void RideRatingsApplyBonusRotations(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusRotations(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     RideRatingsAdd(
         ratings, ride.rotations * modifier.Excitement, ride.rotations * modifier.Intensity, ride.rotations * modifier.Nausea);
 }
 
-static void RideRatingsApplyBonusOperationOption(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusOperationOption(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     int32_t intensity = (modifier.Intensity >= 0) ? (ride.operation_option * modifier.Intensity)
                                                   : (ride.operation_option / std::abs(modifier.Intensity));
     RideRatingsAdd(ratings, ride.operation_option * modifier.Excitement, intensity, ride.operation_option * modifier.Nausea);
 }
 
-static void RideRatingsApplyBonusGoKartRace(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusGoKartRace(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.mode == RideMode::Race && ride.NumTrains >= modifier.Threshold)
     {
@@ -1928,7 +1928,7 @@ static void RideRatingsApplyBonusGoKartRace(RatingTuple* ratings, const Ride& ri
     }
 }
 
-static void RideRatingsApplyBonusTowerRide(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusTowerRide(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     int32_t lengthFactor = (ride.GetTotalLength() >> 16);
     RideRatingsAdd(
@@ -1936,19 +1936,19 @@ static void RideRatingsApplyBonusTowerRide(RatingTuple* ratings, const Ride& rid
         (lengthFactor * modifier.Nausea) >> 16);
 }
 
-static void RideRatingsApplyBonusRotoDrop(RatingTuple* ratings, const Ride& ride)
+static void RideRatingsApplyBonusRotoDrop(RatingTuple& ratings, const Ride& ride)
 {
     int32_t lengthFactor = ((ride.GetTotalLength() >> 16) * 209715) >> 16;
     RideRatingsAdd(ratings, lengthFactor, lengthFactor * 2, lengthFactor * 2);
 }
 
-static void RideRatingsApplyBonusMazeSize(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusMazeSize(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     int32_t size = std::min<uint16_t>(ride.maze_tiles, modifier.Threshold);
     RideRatingsAdd(ratings, size * modifier.Excitement, size * modifier.Intensity, size * modifier.Nausea);
 }
 
-static void RideRatingsApplyBonusBoatHireNoCircuit(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusBoatHireNoCircuit(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     // Most likely checking if the ride has does not have a circuit
     if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_TESTED))
@@ -1957,7 +1957,7 @@ static void RideRatingsApplyBonusBoatHireNoCircuit(RatingTuple* ratings, const R
     }
 }
 
-static void RideRatingsApplyBonusSlideUnlimitedRides(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusSlideUnlimitedRides(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.mode == RideMode::UnlimitedRidesPerAdmission)
     {
@@ -1965,7 +1965,7 @@ static void RideRatingsApplyBonusSlideUnlimitedRides(RatingTuple* ratings, const
     }
 }
 
-static void RideRatingsApplyBonusMotionSimulatorMode(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusMotionSimulatorMode(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     // Hardcoded until ride mode refactor
     if (ride.mode == RideMode::FilmThrillRiders)
@@ -1978,7 +1978,7 @@ static void RideRatingsApplyBonusMotionSimulatorMode(RatingTuple* ratings, const
     }
 }
 
-static void RideRatingsApplyBonus3DCinemaMode(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonus3DCinemaMode(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     // Hardcoded until ride mode refactor
     switch (ride.mode)
@@ -1996,7 +1996,7 @@ static void RideRatingsApplyBonus3DCinemaMode(RatingTuple* ratings, const Ride& 
     }
 }
 
-static void RideRatingsApplyBonusTopSpinMode(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusTopSpinMode(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     // Hardcoded until ride mode refactor
     switch (ride.mode)
@@ -2015,20 +2015,20 @@ static void RideRatingsApplyBonusTopSpinMode(RatingTuple* ratings, const Ride& r
 }
 
 static void RideRatingsApplyBonusReversals(
-    RatingTuple* ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier)
+    RatingTuple& ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier)
 {
     int32_t numReversers = std::min<uint16_t>(state.AmountOfReversers, modifier.Threshold);
     RideRatingsAdd(
         ratings, numReversers * modifier.Excitement, numReversers * modifier.Intensity, numReversers * modifier.Nausea);
 }
 
-static void RideRatingsApplyBonusHoles(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusHoles(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     RideRatingsAdd(
         ratings, (ride.holes) * modifier.Excitement, (ride.holes) * modifier.Intensity, (ride.holes) * modifier.Nausea);
 }
 
-static void RideRatingsApplyBonusNumTrains(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusNumTrains(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     // For some reason the original code ran this twice, before and after the operation option bonus
     // Has been changed to call once with double value
@@ -2038,7 +2038,7 @@ static void RideRatingsApplyBonusNumTrains(RatingTuple* ratings, const Ride& rid
     }
 }
 
-static void RideRatingsApplyBonusDownwardLaunch(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusDownwardLaunch(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.mode == RideMode::DownwardLaunch)
     {
@@ -2046,7 +2046,7 @@ static void RideRatingsApplyBonusDownwardLaunch(RatingTuple* ratings, const Ride
     }
 }
 
-static void RideRatingsApplyBonusOperationOptionFreefall(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusOperationOptionFreefall(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     RideRatingsAdd(
         ratings, (ride.operation_option * modifier.Excitement) >> 16, (ride.operation_option * modifier.Intensity) >> 16,
@@ -2054,7 +2054,7 @@ static void RideRatingsApplyBonusOperationOptionFreefall(RatingTuple* ratings, c
 }
 
 static void RideRatingsApplyBonusLaunchedFreefallSpecial(
-    RatingTuple* ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier)
+    RatingTuple& ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier)
 {
     int32_t excitement = ((ride.GetTotalLength() >> 16) * 32768) >> 16;
     RideRatingsAdd(ratings, excitement, 0, 0);
@@ -2079,136 +2079,136 @@ static void RideRatingsApplyBonusLaunchedFreefallSpecial(
 }
 
 static void RideRatingsApplyBonusProximity(
-    RatingTuple* ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier)
+    RatingTuple& ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier)
 {
     RideRatingsAdd(ratings, (ride_ratings_get_proximity_score(state) * modifier.Excitement) >> 16, 0, 0);
 }
 
-static void RideRatingsApplyBonusScenery(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyBonusScenery(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     RideRatingsAdd(ratings, (ride_ratings_get_scenery_score(ride) * modifier.Excitement) >> 16, 0, 0);
 }
 
-static void RideRatingsApplyRequirementLength(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementLength(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.GetStation().SegmentLength < modifier.Threshold)
     {
-        ratings->Excitement /= modifier.Excitement;
-        ratings->Intensity /= modifier.Intensity;
-        ratings->Nausea /= modifier.Nausea;
+        ratings.Excitement /= modifier.Excitement;
+        ratings.Intensity /= modifier.Intensity;
+        ratings.Nausea /= modifier.Nausea;
     }
 }
 
-static void RideRatingsApplyRequirementDropHeight(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementDropHeight(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.highest_drop_height < modifier.Threshold)
     {
-        ratings->Excitement /= modifier.Excitement;
-        ratings->Intensity /= modifier.Intensity;
-        ratings->Nausea /= modifier.Nausea;
+        ratings.Excitement /= modifier.Excitement;
+        ratings.Intensity /= modifier.Intensity;
+        ratings.Nausea /= modifier.Nausea;
     }
 }
 
-static void RideRatingsApplyRequirementMaxSpeed(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementMaxSpeed(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.max_speed < modifier.Threshold)
     {
-        ratings->Excitement /= modifier.Excitement;
-        ratings->Intensity /= modifier.Intensity;
-        ratings->Nausea /= modifier.Nausea;
+        ratings.Excitement /= modifier.Excitement;
+        ratings.Intensity /= modifier.Intensity;
+        ratings.Nausea /= modifier.Nausea;
     }
 }
 
-static void RideRatingsApplyRequirementNumDrops(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementNumDrops(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if ((ride.drops & 0x3F) < modifier.Threshold)
     {
-        ratings->Excitement /= modifier.Excitement;
-        ratings->Intensity /= modifier.Intensity;
-        ratings->Nausea /= modifier.Nausea;
+        ratings.Excitement /= modifier.Excitement;
+        ratings.Intensity /= modifier.Intensity;
+        ratings.Nausea /= modifier.Nausea;
     }
 }
 
-static void RideRatingsApplyRequirementNegativeGs(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementNegativeGs(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.max_negative_vertical_g >= modifier.Threshold)
     {
-        ratings->Excitement /= modifier.Excitement;
-        ratings->Intensity /= modifier.Intensity;
-        ratings->Nausea /= modifier.Nausea;
+        ratings.Excitement /= modifier.Excitement;
+        ratings.Intensity /= modifier.Intensity;
+        ratings.Nausea /= modifier.Nausea;
     }
 }
 
-static void RideRatingsApplyRequirementLateralGs(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementLateralGs(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.max_lateral_g < modifier.Threshold)
     {
-        ratings->Excitement /= modifier.Excitement;
-        ratings->Intensity /= modifier.Intensity;
-        ratings->Nausea /= modifier.Nausea;
+        ratings.Excitement /= modifier.Excitement;
+        ratings.Intensity /= modifier.Intensity;
+        ratings.Nausea /= modifier.Nausea;
     }
 }
 
-static void RideRatingsApplyRequirementInversions(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementInversions(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.inversions < modifier.Threshold)
     {
-        ratings->Excitement /= modifier.Excitement;
-        ratings->Intensity /= modifier.Intensity;
-        ratings->Nausea /= modifier.Nausea;
+        ratings.Excitement /= modifier.Excitement;
+        ratings.Intensity /= modifier.Intensity;
+        ratings.Nausea /= modifier.Nausea;
     }
 }
 
 static void RideRatingsApplyRequirementUnsheltered(
-    RatingTuple* ratings, const Ride& ride, uint8_t shelteredEighths, RatingsModifier modifier)
+    RatingTuple& ratings, const Ride& ride, uint8_t shelteredEighths, RatingsModifier modifier)
 {
     if (shelteredEighths >= modifier.Threshold)
     {
-        ratings->Excitement /= modifier.Excitement;
-        ratings->Intensity /= modifier.Intensity;
-        ratings->Nausea /= modifier.Nausea;
+        ratings.Excitement /= modifier.Excitement;
+        ratings.Intensity /= modifier.Intensity;
+        ratings.Nausea /= modifier.Nausea;
     }
 }
 
 static void RideRatingsApplyRequirementReversals(
-    RatingTuple* ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier)
+    RatingTuple& ratings, const Ride& ride, RideRatingUpdateState& state, RatingsModifier modifier)
 {
     if (state.AmountOfReversers < modifier.Threshold)
     {
-        ratings->Excitement /= modifier.Excitement;
-        ratings->Intensity /= modifier.Intensity;
-        ratings->Nausea /= modifier.Nausea;
+        ratings.Excitement /= modifier.Excitement;
+        ratings.Intensity /= modifier.Intensity;
+        ratings.Nausea /= modifier.Nausea;
     }
 }
 
-static void RideRatingsApplyRequirementHoles(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementHoles(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.holes < modifier.Threshold)
     {
-        ratings->Excitement /= modifier.Excitement;
-        ratings->Intensity /= modifier.Intensity;
-        ratings->Nausea /= modifier.Nausea;
+        ratings.Excitement /= modifier.Excitement;
+        ratings.Intensity /= modifier.Intensity;
+        ratings.Nausea /= modifier.Nausea;
     }
 }
 
-static void RideRatingsApplyRequirementStations(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementStations(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (ride.num_stations <= modifier.Threshold)
     {
         // Excitement is set to 0 in original code - this could be changed for consistency
-        ratings->Excitement = 0;
-        ratings->Intensity /= modifier.Intensity;
-        ratings->Nausea /= modifier.Nausea;
+        ratings.Excitement = 0;
+        ratings.Intensity /= modifier.Intensity;
+        ratings.Nausea /= modifier.Nausea;
     }
 }
 
-static void RideRatingsApplyRequirementSplashdown(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyRequirementSplashdown(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     if (!(ride.special_track_elements & RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS))
     {
-        ratings->Excitement /= modifier.Excitement;
-        ratings->Intensity /= modifier.Intensity;
-        ratings->Nausea /= modifier.Nausea;
+        ratings.Excitement /= modifier.Excitement;
+        ratings.Intensity /= modifier.Intensity;
+        ratings.Nausea /= modifier.Nausea;
     }
 }
 
@@ -2242,7 +2242,7 @@ static RatingTuple ride_ratings_get_excessive_lateral_g_penalty(const Ride& ride
     return result;
 }
 
-static void RideRatingsApplyPenaltyLateralGs(RatingTuple* ratings, const Ride& ride, RatingsModifier modifier)
+static void RideRatingsApplyPenaltyLateralGs(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
 #ifndef ORIGINAL_RATINGS
     RatingTuple subRating = ride_ratings_get_excessive_lateral_g_penalty(ride);
