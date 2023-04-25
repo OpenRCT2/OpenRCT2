@@ -944,7 +944,7 @@ const uint8_t PitchInvertTable[] = {
     0,  0,  0,  0,  0,  0,                                                          // Helices
     53, 54, 55, 50, 51, 52,                                                         // Slopes 2
     56, 57, 58,                                                                     // Zero-G Rolls
-    0 // 59 = Spiral Lift. This is the only pitch with no corresponding pitch down, so flat will be used instead
+    60, 59                                                                          // Spiral Lift Hills
 };
 
 // Opposite Bank values for reversed cars
