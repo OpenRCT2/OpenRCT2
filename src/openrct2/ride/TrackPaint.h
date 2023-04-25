@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../paint/Paint.h"
+#include "../paint/Supports.h"
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../world/Map.h"
 
@@ -312,7 +313,7 @@ void TrackPaintUtilDrawPier(
     int32_t height, const TrackElement& trackElement, uint8_t rotation);
 void TrackPaintUtilDrawStationMetalSupports(PaintSession& session, Direction direction, uint16_t height, ImageId colour);
 void TrackPaintUtilDrawStationMetalSupports2(
-    PaintSession& session, Direction direction, uint16_t height, ImageId colour, uint8_t type);
+    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type);
 
 void TrackPaintUtilRightQuarterTurn5TilesPaint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,

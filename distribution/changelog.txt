@@ -2,9 +2,13 @@
 ------------------------------------------------------------------------
 - Feature: [#18713] Block brakes have speed control and brakes slower than adjacent block brakes copy block brake speed when block brake open.
 - Feature: [#19276] Add Powered Lifthill to Giga Coaster.
+- Feature: [#19305] Add new Reversed Trains ride setting to run trains backwards.
+- Feature: [#19305] [Plugin] Add “Car.isReversed” to allow individual ride vehicles to run backwards.
 - Feature: [#19446] Add new color options to color dropdown.
 - Feature: [#19547] Add large sloped turns to hybrid coaster and single rail coaster.
+- Feature: [#19930] Add plugin APIs for research.
 - Feature: [OpenMusic#25] Added Prehistoric ride music style.
+- Improved: [#17739] Raise water and land height limits to 254 units/182m/600ft.
 - Improved: [#18490] Reduce guests walking through trains on level crossing next to station.
 - Improved: [#18996] When marketing campaigns are disabled, disable the Marketing tab in the Finances window.
 - Improved: [#19764] Miscellaneous scenery tab now grouped next to the all-scenery tab.
@@ -12,14 +16,19 @@
 - Improved: [#19905] Add prompt before resetting shortcut keys.
 - Improved: [#19952] Add colour preset to Spiral Slide using the new colour options.
 - Improved: [#19953] Add keyboard shortcut to Keyboard Shortcuts window.
+- Change: [OpenSFX#17] Update Hybrid RC lifthill loop.
 - Fix: [#12598] Number of holes is not set correctly when saving track designs.
 - Fix: [#13130] Android always defaulting to UK locale for language, currency and temperature.
+- Fix: [#13397] Ride simulation causes strange station behaviour and makes the ride unusable in some cases.
+- Fix: [#16791] Rotodrop top piece replicates when walls are placed around it and clearance checks are disabled (original bug).
+- Fix: [#18583] Land dropdown is incorrect if there are surface entry index holes.
 - Fix: [#18895] Responding mechanic blocked at level crossing.
-- Fix: [#19231] Crash due to null pointer to previously deleted banner in tile copy/paste functionality
+- Fix: [#19231] Crash due to null pointer to previously deleted banner in tile copy/paste functionality.
 - Fix: [#19296] Crash due to a race condition for parallel object loading.
-- Fix: [#19733] Favorite ride of X guests integer overflow
+- Fix: [#19733] Favorite ride of X guests integer overflow.
 - Fix: [#19756] Crash with title sequences containing no commands.
 - Fix: [#19767] No message when path is not connected to ride exit and is therefore unreachable for mechanics.
+- Fix: [#19800] Crash when displaying station stats with more than 62 stations.
 - Fix: [#19801] The in-game load/save window cannot be resized anymore.
 - Fix: [#19854] Looping Coaster trains clipping through steep quarter turns down.
 - Fix: [#19858] Issue drawing simulate flag icon on alternate colour palettes.
@@ -29,7 +38,9 @@
 - Fix: [#19950] Mine train block brake supports drawn incorrectly.
 - Fix: [#19955] Mine Train Roller Coaster has incorrect supports on the sloped left small turn (original bug).
 - Fix: [#19987] [Plugin] ‘SetCheatAction’ has wrong ID in plugin API.
-- Fix: [#19991] Crash using cut-away view.
+- Fix: [#20016] The group box for small scenery details in the Tile Inspector window has unused empty space.
+- Fix: [#20018] Shops not calculating up-keep cost.
+- Fix: [#20033] Asset packs cannot reference game data.
 
 0.4.4 (2023-03-28)
 ------------------------------------------------------------------------

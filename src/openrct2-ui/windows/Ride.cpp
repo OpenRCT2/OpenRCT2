@@ -5733,7 +5733,10 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo& dpi)
                     // Ride time
                     ft = Formatter();
                     int32_t numTimes = 0;
-                    for (int32_t i = 0; i < ride->num_stations; i++)
+                    // TODO: STR_RIDE_TIME only takes up to 4 stations modify to take more
+                    // also if modified may need to be split into multiple format strings
+                    // as formatter cannot take more than 256 bytes
+                    for (int32_t i = 0; i < std::min<int32_t>(ride->num_stations, 4); i++)
                     {
                         StationIndex stationIndex = StationIndex::FromUnderlying(numTimes);
                         auto time = ride->GetStation(stationIndex).SegmentTime;
@@ -5771,7 +5774,8 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo& dpi)
                 // Ride length
                 ft = Formatter();
                 int32_t numLengths = 0;
-                for (int32_t i = 0; i < ride->num_stations; i++)
+                // TODO: see above STR_RIDE_LENGTH is also only able to display max 4
+                for (int32_t i = 0; i < std::min<int32_t>(ride->num_stations, 4); i++)
                 {
                     StationIndex stationIndex = StationIndex::FromUnderlying(i);
                     auto length = ride->GetStation(stationIndex).SegmentLength;

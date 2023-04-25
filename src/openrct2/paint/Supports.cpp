@@ -102,36 +102,36 @@ static constexpr const CoordsXY _97B062[] = {
 
 /** rct2: 0x0097B072 */
 static constexpr const uint32_t _metalSupportTypeToCrossbeamImages[][8] = {
-    { 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 }, // METAL_SUPPORTS_TUBES
-    { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // METAL_SUPPORTS_FORK
-    { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // METAL_SUPPORTS_FORK_ALT
-    { 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 }, // METAL_SUPPORTS_BOXED
-    { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // METAL_SUPPORTS_STICK
-    { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // METAL_SUPPORTS_STICK_ALT
-    { 3378, 3383, 3378, 3383, 3380, 3385, 3380, 3385 }, // METAL_SUPPORTS_THICK_CENTRED
-    { 3378, 3383, 3378, 3383, 3380, 3385, 3380, 3385 }, // METAL_SUPPORTS_THICK
-    { 3382, 3379, 3382, 3379, 3384, 3381, 3384, 3381 }, // METAL_SUPPORTS_THICK_ALT
-    { 3382, 3379, 3382, 3379, 3384, 3381, 3384, 3381 }, // METAL_SUPPORTS_THICK_ALT_CENTRED
-    { 3378, 3379, 3378, 3379, 3380, 3381, 3380, 3381 }, // METAL_SUPPORTS_TRUSS
-    { 3386, 3387, 3386, 3387, 3388, 3389, 3388, 3389 }, // METAL_SUPPORTS_TUBES_INVERTED
-    { 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 }, // METAL_SUPPORTS_BOXED_COATED
+    { 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 }, // MetalSupportType::Tubes
+    { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // MetalSupportType::Fork
+    { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // MetalSupportType::ForkAlt
+    { 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 }, // MetalSupportType::Boxed
+    { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // MetalSupportType::Stick
+    { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // MetalSupportType::StickAlt
+    { 3378, 3383, 3378, 3383, 3380, 3385, 3380, 3385 }, // MetalSupportType::ThickCentred
+    { 3378, 3383, 3378, 3383, 3380, 3385, 3380, 3385 }, // MetalSupportType::Thick
+    { 3382, 3379, 3382, 3379, 3384, 3381, 3384, 3381 }, // MetalSupportType::ThickAlt
+    { 3382, 3379, 3382, 3379, 3384, 3381, 3384, 3381 }, // MetalSupportType::ThickAltCentred
+    { 3378, 3379, 3378, 3379, 3380, 3381, 3380, 3381 }, // MetalSupportType::Truss
+    { 3386, 3387, 3386, 3387, 3388, 3389, 3388, 3389 }, // MetalSupportType::TubesInverted
+    { 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 }, // MetalSupportType::BoxedCoated
 };
 
 /** rct2: 0x0097B142 */
 static constexpr const uint8_t supportTypeToHeight[] = {
-    6, // METAL_SUPPORTS_TUBES
-    3, // METAL_SUPPORTS_FORK
-    3, // METAL_SUPPORTS_FORK_ALT
-    6, // METAL_SUPPORTS_BOXED
-    3, // METAL_SUPPORTS_STICK
-    3, // METAL_SUPPORTS_STICK_ALT
-    6, // METAL_SUPPORTS_THICK_CENTRED
-    6, // METAL_SUPPORTS_THICK
-    6, // METAL_SUPPORTS_THICK_ALT
-    6, // METAL_SUPPORTS_THICK_ALT_CENTRED
-    4, // METAL_SUPPORTS_TRUSS
-    3, // METAL_SUPPORTS_TUBES_INVERTED
-    6, // METAL_SUPPORTS_BOXED_COATED
+    6, // MetalSupportType::Tubes
+    3, // MetalSupportType::Fork
+    3, // MetalSupportType::ForkAlt
+    6, // MetalSupportType::Boxed
+    3, // MetalSupportType::Stick
+    3, // MetalSupportType::StickAlt
+    6, // MetalSupportType::ThickCentred
+    6, // MetalSupportType::Thick
+    6, // MetalSupportType::ThickAlt
+    6, // MetalSupportType::ThickAltCentred
+    4, // MetalSupportType::Truss
+    3, // MetalSupportType::TubesInverted
+    6, // MetalSupportType::BoxedCoated
 };
 
 struct MetalSupportsImages {
@@ -141,19 +141,19 @@ struct MetalSupportsImages {
 
 /** rct2: 0x0097B15C */
 static constexpr const MetalSupportsImages _97B15C[] = {
-    { 3243, 3209 }, // METAL_SUPPORTS_TUBES
-    { 3279, 3262 }, // METAL_SUPPORTS_FORK
-    { 3298, 3262 }, // METAL_SUPPORTS_FORK_ALT
-    { 3334, 3317 }, // METAL_SUPPORTS_BOXED
-    {    0, 3658 }, // METAL_SUPPORTS_STICK
-    {    0, 3658 }, // METAL_SUPPORTS_STICK_ALT
-    {    0, 3141 }, // METAL_SUPPORTS_THICK_CENTRED
-    {    0, 3158 }, // METAL_SUPPORTS_THICK
-    {    0, 3175 }, // METAL_SUPPORTS_THICK_ALT
-    {    0, 3192 }, // METAL_SUPPORTS_THICK_ALT_CENTRED
-    {    0, 3124 }, // METAL_SUPPORTS_TRUSS
-    { 3243, 3209 }, // METAL_SUPPORTS_TUBES_INVERTED
-    { 3334, 3353 }, // METAL_SUPPORTS_BOXED_COATED
+    { 3243, 3209 }, // MetalSupportType::Tubes
+    { 3279, 3262 }, // MetalSupportType::Fork
+    { 3298, 3262 }, // MetalSupportType::ForkAlt
+    { 3334, 3317 }, // MetalSupportType::Boxed
+    {    0, 3658 }, // MetalSupportType::Stick
+    {    0, 3658 }, // MetalSupportType::StickAlt
+    {    0, 3141 }, // MetalSupportType::ThickCentred
+    {    0, 3158 }, // MetalSupportType::Thick
+    {    0, 3175 }, // MetalSupportType::ThickAlt
+    {    0, 3192 }, // MetalSupportType::ThickAltCentred
+    {    0, 3124 }, // MetalSupportType::Truss
+    { 3243, 3209 }, // MetalSupportType::TubesInverted
+    { 3334, 3353 }, // MetalSupportType::BoxedCoated
 };
 
 /** rct2: 0x0097B190 */
@@ -824,6 +824,28 @@ bool WoodenBSupportsPaintSetup(
     return hasSupports;
 }
 
+bool WoodenBSupportsPaintSetup(
+    PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
+    WoodenSupportTransitionType transitionType, Direction direction)
+{
+    int32_t oldSupportType = (EnumValue(supportType) * 6) + EnumValue(subType);
+    int32_t special = 0;
+    if (transitionType != WoodenSupportTransitionType::None)
+    {
+        special = (EnumValue(transitionType) * NumOrthogonalDirections) + direction + 1;
+    }
+
+    return WoodenBSupportsPaintSetup(session, oldSupportType, special, height, imageTemplate);
+}
+
+bool WoodenBSupportsPaintSetupRotated(
+    PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, Direction direction, int32_t height,
+    ImageId imageTemplate, WoodenSupportTransitionType transitionType)
+{
+    subType = rotatedWoodenSupportSubTypes[EnumValue(subType)][direction];
+    return WoodenBSupportsPaintSetup(session, supportType, subType, height, imageTemplate, transitionType, direction);
+}
+
 /**
  * Metal pole supports
  * @param supportType (edi)
@@ -834,8 +856,10 @@ bool WoodenBSupportsPaintSetup(
  *  rct2: 0x00663105
  */
 bool MetalASupportsPaintSetup(
-    PaintSession& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageTemplate)
+    PaintSession& session, MetalSupportType supportTypeMember, uint8_t segment, int32_t special, int32_t height,
+    ImageId imageTemplate)
 {
+    auto supportType = EnumValue(supportTypeMember);
     SupportHeight* supportSegments = session.SupportSegments;
 
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
@@ -1030,8 +1054,10 @@ bool MetalASupportsPaintSetup(
  * @return (Carry Flag)
  */
 bool MetalBSupportsPaintSetup(
-    PaintSession& session, uint8_t supportType, uint8_t segment, int32_t special, int32_t height, ImageId imageTemplate)
+    PaintSession& session, MetalSupportType supportTypeMember, uint8_t segment, int32_t special, int32_t height,
+    ImageId imageTemplate)
 {
+    auto supportType = EnumValue(supportTypeMember);
     SupportHeight* supportSegments = session.SupportSegments;
     uint8_t originalSegment = segment;
 

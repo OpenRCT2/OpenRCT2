@@ -156,7 +156,8 @@ public:
                 if (dropdownIndex == -1)
                     dropdownIndex = gDropdownHighlightedIndex;
 
-                type = (dropdownIndex == -1) ? _selectedFloorTexture : dropdownIndex;
+                type = (dropdownIndex == -1) ? _selectedFloorTexture
+                                             : LandTool::GetSurfaceStyleFromDropdownIndex(static_cast<size_t>(dropdownIndex));
 
                 if (gLandToolTerrainSurface == type)
                 {
@@ -173,7 +174,8 @@ public:
                 if (dropdownIndex == -1)
                     dropdownIndex = gDropdownHighlightedIndex;
 
-                type = (dropdownIndex == -1) ? _selectedWallTexture : dropdownIndex;
+                type = (dropdownIndex == -1) ? _selectedWallTexture
+                                             : LandTool::GetEdgeStyleFromDropdownIndex(static_cast<size_t>(dropdownIndex));
 
                 if (gLandToolTerrainEdge == type)
                 {
