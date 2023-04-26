@@ -123,19 +123,19 @@ public:
         height = WH_DEVELOPMENT;
     }
 
-    void SetPage(int32_t p)
+    void SetPage(int32_t newPageIndex)
     {
-        page = p;
+        page = newPageIndex;
         frame_no = 0;
         RemoveViewport();
 
         hold_down_widgets = 0;
-        widgets = window_research_page_widgets[p];
+        widgets = window_research_page_widgets[newPageIndex];
         disabled_widgets = 0;
         pressed_widgets = 0;
 
         Invalidate();
-        if (p == WINDOW_RESEARCH_PAGE_DEVELOPMENT)
+        if (newPageIndex == WINDOW_RESEARCH_PAGE_DEVELOPMENT)
         {
             width = WW_DEVELOPMENT;
             height = WH_DEVELOPMENT;
@@ -145,8 +145,7 @@ public:
             width = WW_FUNDING;
             height = WH_FUNDING;
         }
-        WindowEventResizeCall(this);
-        WindowEventInvalidateCall(this);
+        OnResize();
 
         InitScrollWidgets();
         Invalidate();
@@ -535,7 +534,7 @@ void WindowResearchFundingPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex
 {
     auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_RESEARCH_FUNDING);
 
-    if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
+    if ((gParkFlags & PARK_FLAGS_NO_MONEY) || gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
     {
         w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].type = WindowWidgetType::Empty;
         w->widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset].type = WindowWidgetType::Empty;
@@ -545,9 +544,9 @@ void WindowResearchFundingPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex
         w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].type = WindowWidgetType::DropdownMenu;
         w->widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset].type = WindowWidgetType::Button;
     }
-    int32_t currentResearchLevel = gResearchFundingLevel;
 
     // Current funding
+    int32_t currentResearchLevel = gResearchFundingLevel;
     w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].text = ResearchFundingLevelNames[currentResearchLevel];
 
     // Checkboxes
