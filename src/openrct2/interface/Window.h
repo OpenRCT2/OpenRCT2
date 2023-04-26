@@ -723,7 +723,7 @@ void WindowMoveAndSnap(WindowBase& w, ScreenCoordsXY newWindowCoords, int32_t sn
 int32_t WindowCanResize(const WindowBase& w);
 
 void WindowStartTextbox(
-    WindowBase& call_w, WidgetIndex call_widget, StringId existing_text, char* existing_args, int32_t maxLength);
+    WindowBase& call_w, WidgetIndex call_widget, StringId existing_text, const char* existing_args, int32_t maxLength);
 void WindowCancelTextbox();
 void WindowUpdateTextboxCaret();
 void WindowUpdateTextbox();
