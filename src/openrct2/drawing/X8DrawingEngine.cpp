@@ -380,7 +380,7 @@ void X8DrawingEngine::DrawAllDirtyBlocks()
     //   8 - - - - - - - - -
     //   9 - - - - - - - - -
     //
-    // Would would currently redraw {2,2} to {3,5} where {3,4} and {3,5} are not dirty. Choosing to do this
+    // Would currently redraw {2,2} to {3,5} where {3,4} and {3,5} are not dirty. Choosing to do this
     // per column eliminates this issue but limits it to rendering just a single column at a time.
 
     for (uint32_t x = 0; x < _dirtyGrid.BlockColumns; x++)
@@ -393,7 +393,7 @@ void X8DrawingEngine::DrawAllDirtyBlocks()
                 continue;
             }
 
-            // See comment above to why this is 1.
+            // See comment above as to why this is 1.
             const uint32_t columns = 1;
 
             // Check rows
