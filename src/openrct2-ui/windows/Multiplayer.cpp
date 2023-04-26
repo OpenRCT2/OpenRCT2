@@ -445,24 +445,20 @@ void MultiplayerWindow::OnDraw(DrawPixelInfo& dpi)
     {
         case WINDOW_MULTIPLAYER_PAGE_INFORMATION:
         {
-            std::cout << "Here" << std::endl;
             InformationPaint(dpi);
             break;
         }
         case WINDOW_MULTIPLAYER_PAGE_PLAYERS:
         {
-            std::cout << "THere" << std::endl;
             PlayersPaint(dpi);
             break;
         }
         case WINDOW_MULTIPLAYER_PAGE_GROUPS:
         {
-            std::cout << "Somewhere" << std::endl;
             GroupsPaint(dpi);
             break;
         }
     }
-    std::cout << "None?" << std::endl;
 }
 
 void MultiplayerWindow::OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex)
