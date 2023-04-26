@@ -109,7 +109,7 @@ enum : uint32_t
 
 /*
  * When adding a sprite group, add multiplier to SpriteGroupMultiplier in RideObject.cpp and add sprite group data to cable
- * lifthill vehicle in RideData.cpp
+ * lifthill vehicle in RideData.cpp and update the SpriteGroups interface in distribution/openrct2.d.ts
  */
 enum class SpriteGroupType : uint8_t
 {
