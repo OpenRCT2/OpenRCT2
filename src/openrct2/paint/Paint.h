@@ -270,6 +270,43 @@ struct FootpathPaintInfo
     colour_t SupportColour = 255;
 };
 
+using RotatedImageIndex = std::array<ImageIndex, NumOrthogonalDirections>;
+
+class RotatedTrackPiece
+{
+protected:
+    RotatedImageIndex Regular;
+
+public:
+    RotatedTrackPiece(const RotatedImageIndex& _regular)
+    {
+        Regular = _regular;
+    }
+
+    constexpr RotatedImageIndex Get()
+    {
+        return Regular;
+    }
+};
+
+class RotatedChainedPiece : RotatedTrackPiece
+{
+protected:
+    RotatedImageIndex WithChain;
+
+public:
+    RotatedChainedPiece(const RotatedImageIndex& _regular, const RotatedImageIndex& _withChain)
+        : RotatedTrackPiece(_regular)
+    {
+        WithChain = _withChain;
+    }
+
+    constexpr RotatedImageIndex Get(bool hasChain) const
+    {
+        return hasChain ? WithChain : Regular;
+    }
+};
+
 struct RecordedPaintSession
 {
     PaintSessionCore Session;
@@ -325,6 +362,14 @@ PaintStruct* PaintAddImageAsChildRotated(
 PaintStruct* PaintAddImageAsParentRotated(
     PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset,
     const BoundBoxXYZ& boundBox);
+inline PaintStruct* PaintAddImageAsParentRotated(
+    PaintSession& session, const uint8_t direction, const RotatedImageIndex imageIds, const CoordsXYZ& offset,
+    const BoundBoxXYZ& boundBox)
+{
+    // 0 = SCHEME_TRACK
+    return PaintAddImageAsParentRotated(
+        session, direction, session.TrackColours[0].WithIndex(imageIds[direction]), offset, boundBox);
+}
 
 inline PaintStruct* PaintAddImageAsParentRotated(
     PaintSession& session, const uint8_t direction, const ImageId imageId, const CoordsXYZ& offset,
