@@ -8,7 +8,7 @@
  *****************************************************************************/
 
 #include "JuniorRollerCoaster.h"
-#include "sprites/JuniorRollerCoaster.h"
+
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
 #include "../../interface/Window.h"
@@ -21,9 +21,9 @@
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
+#include "sprites/JuniorRollerCoaster.h"
 
 #include <algorithm>
-
 
 static constexpr const uint32_t junior_rc_track_pieces_flat[3][4] = {
     {
