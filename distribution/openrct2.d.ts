@@ -1701,11 +1701,22 @@ declare global {
         readonly slopes12Banked22?: SpriteGroup;
         readonly slopes8Banked22?: SpriteGroup;
         readonly slopes25Banked22?: SpriteGroup;
+        readonly slopes8Banked45?: SpriteGroup;
+        readonly slopes16Banked22?: SpriteGroup;
+        readonly slopes16Banked45?: SpriteGroup;
         readonly slopes25Banked45?: SpriteGroup;
         readonly slopes12Banked45?: SpriteGroup;
+        readonly slopes25Banked67?: SpriteGroup;
+        readonly slopes25Banked67?: SpriteGroup;
+        readonly slopes25InlineTwists?: SpriteGroup;
+        readonly slopes42Banked22?: SpriteGroup;
+        readonly slopes42Banked45?: SpriteGroup;
+        readonly slopes42Banked90?: SpriteGroup;
+        readonly slopes60Banked22?: SpriteGroup;
         readonly corkscrews?: SpriteGroup;
         readonly restraintAnimation?: SpriteGroup;
-        readonly curvedLiftHill?: SpriteGroup;
+        readonly curvedLiftHillUp?: SpriteGroup;
+        readonly curvedLiftHillDown?: SpriteGroup;
     }
 
     /**

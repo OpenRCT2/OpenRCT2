@@ -38,9 +38,25 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Entity::Yaw;
 
+/*
+ * The number of sprites in the sprite group is the specified precision multiplied by this number. General rule is any slope or
+ * bank has its mirror included in the group:
+ * - flat unbanked is 1
+ * - flat banked is 2 (left/right)
+ * - sloped unbanked is 2 (up/down)
+ * - sloped & banked is 4 (left/right * up/down)
+ * Exceptions:
+ * - slopesLoop is 10 (5 slope angles * up/down)
+ * - inlineTwists is 6 (3 bank angles * left/right)
+ * - slopes25InlineTwists is 12 (3 bank angles * left/right * up/down)
+ * - corkscrews is 20 (10 sprites for an entire corkscrew * left/right)
+ * - restraints is 3
+ * - curvedLiftHillUp and curvedLiftHillDown are 1 (normally would be combined, but aren't due to RCT2)
+ */
 static const uint8_t SpriteGroupMultiplier[EnumValue(SpriteGroupType::Count)] = {
-    1, 2, 2, 2, 2, 2, 2, 10, 1, 2, 2, 2, 2, 2, 2, 2, 6, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 12, 4, 4, 4, 4, 4, 20, 3, 1,
+    1, 2, 2, 2, 2, 2, 2, 10, 1, 2, 2, 2, 2, 2, 2, 2, 6, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 12, 4, 4, 4, 4, 4, 20, 3, 1, 1,
 };
+static_assert(std::size(SpriteGroupMultiplier) == EnumValue(SpriteGroupType::Count));
 
 constexpr const uint8_t DefaultSteamSpawnPosition[] = { 11, 22 };
 
@@ -1103,7 +1119,7 @@ void RideObject::ReadLegacySpriteGroups(CarEntry* vehicle, uint16_t spriteGroups
     }
     if (spriteGroups & CAR_SPRITE_FLAG_CURVED_LIFT_HILL)
     {
-        vehicle->SpriteGroups[EnumValue(SpriteGroupType::CurvedLiftHill)].spritePrecision = baseSpritePrecision;
+        vehicle->SpriteGroups[EnumValue(SpriteGroupType::CurvedLiftHillUp)].spritePrecision = baseSpritePrecision;
     }
 }
 

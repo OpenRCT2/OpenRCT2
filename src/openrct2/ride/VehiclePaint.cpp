@@ -944,7 +944,7 @@ const uint8_t PitchInvertTable[] = {
     0,  0,  0,  0,  0,  0,                                                          // Helices
     53, 54, 55, 50, 51, 52,                                                         // Slopes 2
     56, 57, 58,                                                                     // Zero-G Rolls
-    0 // 59 = Spiral Lift. This is the only pitch with no corresponding pitch down, so flat will be used instead
+    60, 59                                                                          // Spiral Lift Hills
 };
 
 // Opposite Bank values for reversed cars
@@ -3674,13 +3674,28 @@ static void VehiclePitchInvertingDown60(
 #pragma region SpiralLiftSlopes
 
 // 6D4773
-static void VehiclePitchSpiralLift(
+static void VehiclePitchSpiralLiftUp(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    if (carEntry->GroupEnabled(SpriteGroupType::CurvedLiftHill))
+    if (carEntry->GroupEnabled(SpriteGroupType::CurvedLiftHillUp))
     {
         int32_t boundingBoxNum = YawTo16(imageDirection);
-        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::CurvedLiftHill, imageDirection, 0);
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::CurvedLiftHillUp, imageDirection, 0);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
+    }
+    else
+    {
+        VehiclePitchFlat(session, vehicle, imageDirection, z, carEntry);
+    }
+}
+
+static void VehiclePitchSpiralLiftDown(
+    PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
+{
+    if (carEntry->GroupEnabled(SpriteGroupType::CurvedLiftHillDown))
+    {
+        int32_t boundingBoxNum = YawTo16(imageDirection);
+        int32_t spriteNum = carEntry->SpriteOffset(SpriteGroupType::CurvedLiftHillDown, imageDirection, 0);
         VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, carEntry);
     }
     else
@@ -3756,7 +3771,8 @@ static constexpr const vehicle_sprite_func PaintFunctionsByPitch[] = {
     VehiclePitchInvertingDown25,
     VehiclePitchInvertingDown42,
     VehiclePitchInvertingDown60,
-    VehiclePitchSpiralLift,
+    VehiclePitchSpiralLiftUp,
+    VehiclePitchSpiralLiftDown,
 };
 // clang-format on
 
