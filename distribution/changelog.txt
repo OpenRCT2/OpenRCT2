@@ -16,6 +16,7 @@
 - Improved: [#19905] Add prompt before resetting shortcut keys.
 - Improved: [#19952] Add colour preset to Spiral Slide using the new colour options.
 - Improved: [#19953] Add keyboard shortcut to Keyboard Shortcuts window.
+- Improved: [#20055] Performance improvement for the software renderer.
 - Change: [OpenSFX#17] Update Hybrid RC lifthill loop.
 - Fix: [#12598] Number of holes is not set correctly when saving track designs.
 - Fix: [#13130] Android always defaulting to UK locale for language, currency and temperature.

@@ -352,7 +352,7 @@ void X8DrawingEngine::OnDrawDirtyBlock(
 void X8DrawingEngine::ConfigureDirtyGrid()
 {
     _dirtyGrid.BlockShiftX = 7;
-    _dirtyGrid.BlockShiftY = 6;
+    _dirtyGrid.BlockShiftY = 5; // Keep column at 32 (1 << 5)
     _dirtyGrid.BlockWidth = 1 << _dirtyGrid.BlockShiftX;
     _dirtyGrid.BlockHeight = 1 << _dirtyGrid.BlockShiftY;
     _dirtyGrid.BlockColumns = (_width >> _dirtyGrid.BlockShiftX) + 1;
@@ -364,6 +364,25 @@ void X8DrawingEngine::ConfigureDirtyGrid()
 
 void X8DrawingEngine::DrawAllDirtyBlocks()
 {
+    // TODO: For optimal performance it is currently limited to a single column.
+    // The optimal approach would be to extract all dirty regions as rectangles not including
+    // parts that are not marked dirty and have the grid more fine grained.
+    // A situation like following:
+    //
+    //   0 1 2 3 4 5 6 7 8 9
+    //   1 - - - - - - - - -
+    //   2 - x x x x - - - -
+    //   3 - x x - - - - - -
+    //   4 - - - - - - - - -
+    //   5 - - - - - - - - -
+    //   6 - - - - - - - - -
+    //   7 - - - - - - - - -
+    //   8 - - - - - - - - -
+    //   9 - - - - - - - - -
+    //
+    // Would currently redraw {2,2} to {3,5} where {3,4} and {3,5} are not dirty. Choosing to do this
+    // per column eliminates this issue but limits it to rendering just a single column at a time.
+
     for (uint32_t x = 0; x < _dirtyGrid.BlockColumns; x++)
     {
         for (uint32_t y = 0; y < _dirtyGrid.BlockRows; y++)
@@ -374,18 +393,10 @@ void X8DrawingEngine::DrawAllDirtyBlocks()
                 continue;
             }
 
-            // Determine columns
-            uint32_t xx;
-            for (xx = x; xx < _dirtyGrid.BlockColumns; xx++)
-            {
-                if (_dirtyGrid.Blocks[yOffset + xx] == 0)
-                {
-                    break;
-                }
-            }
+            // See comment above as to why this is 1.
+            const uint32_t columns = 1;
 
             // Check rows
-            uint32_t columns = xx - x;
             auto rows = GetNumDirtyRows(x, y, columns);
             DrawDirtyBlocks(x, y, columns, rows);
         }
