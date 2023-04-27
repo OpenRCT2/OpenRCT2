@@ -1707,7 +1707,6 @@ declare global {
         readonly slopes25Banked45?: SpriteGroup;
         readonly slopes12Banked45?: SpriteGroup;
         readonly slopes25Banked67?: SpriteGroup;
-        readonly slopes25Banked67?: SpriteGroup;
         readonly slopes25InlineTwists?: SpriteGroup;
         readonly slopes42Banked22?: SpriteGroup;
         readonly slopes42Banked45?: SpriteGroup;
