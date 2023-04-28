@@ -3684,6 +3684,9 @@ STR_6579    :Freios bloqueadores serão configurados para a velocidade padrão q
 STR_6580    :Redefinir
 STR_6581    :Tem certeza que quer redefinir todas as teclas de atalho nessa aba?
 STR_6582    :Abrir janela de atalhos do teclado
+STR_6583    :{WINDOW_COLOUR_2}Trens Invertidos
+STR_6584    :Selecione para que os trens operem de costas
+STR_6585    :Não é possível fazer alterações…
 
 #############
 # Scenarios #

@@ -3684,6 +3684,9 @@ STR_6579    :Blokparto-bremsoj estos agorditaj al defaŭlta rapideco, kiam konse
 STR_6580    :Restarigi
 STR_6581    :Ĉu vi certas, ke vi volas restarigi ĉiujn klavarokomandojn sur ĉi tiu langeto?
 STR_6582    :Malfermi klavarokomandoj-fenestron
+STR_6583    :{WINDOW_COLOUR_2}Inversaj Trajnoj
+STR_6584    :Elektu por funkciigi trajnojn inverse
+STR_6585    :Ne eblas ŝanĝi tion…
 
 #############
 # Scenarios #

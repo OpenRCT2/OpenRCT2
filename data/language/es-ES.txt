@@ -3688,6 +3688,9 @@ STR_6579    :Los frenos bloqueantes se establecerán a la velocidad predetermina
 STR_6580    :Restablecer
 STR_6581    :¿Estás seguro de que quieres restablecer todos los atajos de teclado en esta pestaña?
 STR_6582    :Abrir ventana de atajos de teclado
+STR_6583    :{WINDOW_COLOUR_2}Trenes Invertidos
+STR_6584    :Selecciona para que los trenes viajen marcha atrás
+STR_6585    :No se puede realizar cambios…
 
 ##############
 # Escenarios #
