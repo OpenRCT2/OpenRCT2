@@ -15,7 +15,7 @@
 class FootpathItemObject final : public SceneryObject
 {
 private:
-    PathBitEntry _legacyType = {};
+    PathAdditionEntry _legacyType = {};
 
 public:
     void* GetLegacyData() override

@@ -1631,11 +1631,11 @@ ObjectEntryIndex PathElement::GetAdditionEntryIndex() const
     return GetAddition() - 1;
 }
 
-const PathBitEntry* PathElement::GetAdditionEntry() const
+const PathAdditionEntry* PathElement::GetAdditionEntry() const
 {
     if (!HasAddition())
         return nullptr;
-    return OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(GetAdditionEntryIndex());
+    return OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(GetAdditionEntryIndex());
 }
 
 void PathElement::SetAddition(uint8_t newAddition)

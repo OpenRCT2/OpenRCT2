@@ -1152,9 +1152,9 @@ public:
                     // Path addition
                     if (tileElement->AsPath()->HasAddition())
                     {
-                        const auto pathBitEntry = tileElement->AsPath()->GetAdditionEntry();
-                        StringId additionNameId = pathBitEntry != nullptr ? pathBitEntry->name
-                                                                          : static_cast<StringId>(STR_UNKNOWN_OBJECT_TYPE);
+                        const auto pathAdditionEntry = tileElement->AsPath()->GetAdditionEntry();
+                        StringId additionNameId = pathAdditionEntry != nullptr ? pathAdditionEntry->name
+                                                                               : static_cast<StringId>(STR_UNKNOWN_OBJECT_TYPE);
                         auto ft = Formatter();
                         ft.Add<StringId>(additionNameId);
                         DrawTextBasic(

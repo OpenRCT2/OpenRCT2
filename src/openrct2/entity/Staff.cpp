@@ -1243,7 +1243,7 @@ void Staff::UpdateEmptyingBin()
         }
 
         auto* pathAddEntry = tile_element->AsPath()->GetAdditionEntry();
-        if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN) || tile_element->AsPath()->IsBroken()
+        if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN) || tile_element->AsPath()->IsBroken()
             || tile_element->AsPath()->AdditionIsGhost())
         {
             StateReset();
@@ -1616,7 +1616,7 @@ bool Staff::UpdatePatrollingFindBin()
     if (pathAddEntry == nullptr)
         return false;
 
-    if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN))
+    if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN))
         return false;
 
     if (tileElement->AsPath()->IsBroken())

@@ -486,9 +486,9 @@ public:
                         OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(tabSelectedScenery.EntryIndex)->tool_id);
                 }
                 else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_PATH_ITEM)
-                { // path bit
+                {
                     gCurrentToolId = static_cast<Tool>(
-                        OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(tabSelectedScenery.EntryIndex)->tool_id);
+                        OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(tabSelectedScenery.EntryIndex)->tool_id);
                 }
                 else
                 { // small scenery
@@ -932,10 +932,9 @@ public:
             }
         }
 
-        // path bits
         for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_PATH_ADDITION_OBJECTS; sceneryId++)
         {
-            const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(sceneryId);
+            const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(sceneryId);
             if (sceneryEntry != nullptr)
             {
                 InitSceneryEntry({ SCENERY_TYPE_PATH_ITEM, sceneryId }, sceneryEntry->scenery_tab_id);
@@ -1412,7 +1411,7 @@ private:
                 }
                 case SCENERY_TYPE_PATH_ITEM:
                 {
-                    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(selectedScenery.EntryIndex);
+                    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(selectedScenery.EntryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         price = sceneryEntry->price;
@@ -1530,8 +1529,8 @@ private:
         }
         else if (scenerySelection.SceneryType == SCENERY_TYPE_PATH_ITEM)
         {
-            auto* pathBitEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(scenerySelection.EntryIndex);
-            auto imageId = ImageId(pathBitEntry->image);
+            auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(scenerySelection.EntryIndex);
+            auto imageId = ImageId(pathAdditionEntry->image);
             GfxDrawSprite(dpi, imageId, { 11, 16 });
         }
         else

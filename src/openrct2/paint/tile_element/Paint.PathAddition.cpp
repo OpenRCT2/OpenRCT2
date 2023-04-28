@@ -32,36 +32,36 @@ static ImageIndex GetEdgeImageOffset(edge_t edge)
     }
 }
 
-static ImageIndex GetFootpathLampImage(const PathBitEntry& pathBitEntry, edge_t edge, bool isBroken)
+static ImageIndex GetFootpathLampImage(const PathAdditionEntry& pathAdditionEntry, edge_t edge, bool isBroken)
 {
     auto offset = GetEdgeImageOffset(edge);
     if (offset == 0)
         return ImageIndexUndefined;
-    return pathBitEntry.image + offset + (isBroken ? 4 : 0);
+    return pathAdditionEntry.image + offset + (isBroken ? 4 : 0);
 }
 
-static ImageIndex GetFootpathBinImage(const PathBitEntry& pathBitEntry, edge_t edge, bool isBroken, bool isFull)
+static ImageIndex GetFootpathBinImage(const PathAdditionEntry& pathAdditionEntry, edge_t edge, bool isBroken, bool isFull)
 {
     auto offset = GetEdgeImageOffset(edge);
     if (offset == 0)
         return ImageIndexUndefined;
 
     auto stateOffset = isBroken ? 4 : (isFull ? 8 : 0);
-    return pathBitEntry.image + offset + stateOffset;
+    return pathAdditionEntry.image + offset + stateOffset;
 }
 
-static ImageIndex GetFootpathBenchImage(const PathBitEntry& pathBitEntry, edge_t edge, bool isBroken)
+static ImageIndex GetFootpathBenchImage(const PathAdditionEntry& pathAdditionEntry, edge_t edge, bool isBroken)
 {
     auto offset = GetEdgeImageOffset(edge);
     if (offset == 0)
         return ImageIndexUndefined;
-    return pathBitEntry.image + offset + (isBroken ? 4 : 0);
+    return pathAdditionEntry.image + offset + (isBroken ? 4 : 0);
 }
 
 /* rct2: 0x006A5AE5 */
-static void PathBitLightsPaint(
-    PaintSession& session, const PathBitEntry& pathBitEntry, const PathElement& pathElement, int32_t height, uint8_t edges,
-    ImageId imageTemplate)
+static void PathAdditionLightsPaint(
+    PaintSession& session, const PathAdditionEntry& pathAdditionEntry, const PathElement& pathElement, int32_t height,
+    uint8_t edges, ImageId imageTemplate)
 {
     if (pathElement.IsSloped())
         height += 8;
@@ -69,25 +69,25 @@ static void PathBitLightsPaint(
     auto isBroken = pathElement.IsBroken();
     if (edges & EDGE_NE)
     {
-        auto imageIndex = GetFootpathLampImage(pathBitEntry, EDGE_NE, isBroken);
+        auto imageIndex = GetFootpathLampImage(pathAdditionEntry, EDGE_NE, isBroken);
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(imageIndex), { 2, 16, height }, { { 6, 8, height + 2 }, { 0, 16, 23 } });
     }
     if (edges & EDGE_SE)
     {
-        auto imageIndex = GetFootpathLampImage(pathBitEntry, EDGE_SE, isBroken);
+        auto imageIndex = GetFootpathLampImage(pathAdditionEntry, EDGE_SE, isBroken);
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(imageIndex), { 16, 30, height }, { { 8, 23, height + 2 }, { 16, 0, 23 } });
     }
     if (edges & EDGE_SW)
     {
-        auto imageIndex = GetFootpathLampImage(pathBitEntry, EDGE_SW, isBroken);
+        auto imageIndex = GetFootpathLampImage(pathAdditionEntry, EDGE_SW, isBroken);
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(imageIndex), { 30, 16, height }, { { 23, 8, height + 2 }, { 0, 16, 23 } });
     }
     if (edges & EDGE_NW)
     {
-        auto imageIndex = GetFootpathLampImage(pathBitEntry, EDGE_NW, isBroken);
+        auto imageIndex = GetFootpathLampImage(pathAdditionEntry, EDGE_NW, isBroken);
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(imageIndex), { 16, 2, height }, { { 8, 6, height + 2 }, { 16, 0, 23 } });
     }
@@ -111,9 +111,9 @@ static bool IsBinFull(PaintSession& session, const PathElement& pathElement, edg
 }
 
 /* rct2: 0x006A5C94 */
-static void PathBitBinsPaint(
-    PaintSession& session, const PathBitEntry& pathBitEntry, const PathElement& pathElement, int32_t height, uint8_t edges,
-    ImageId imageTemplate)
+static void PathAdditionBinsPaint(
+    PaintSession& session, const PathAdditionEntry& pathAdditionEntry, const PathElement& pathElement, int32_t height,
+    uint8_t edges, ImageId imageTemplate)
 {
     if (pathElement.IsSloped())
         height += 8;
@@ -124,7 +124,7 @@ static void PathBitBinsPaint(
     if (edges & EDGE_NE)
     {
         auto binIsFull = IsBinFull(session, pathElement, EDGE_NE);
-        auto imageIndex = GetFootpathBinImage(pathBitEntry, EDGE_NE, binsAreVandalised, binIsFull);
+        auto imageIndex = GetFootpathBinImage(pathAdditionEntry, EDGE_NE, binsAreVandalised, binIsFull);
         if (!highlightPathIssues || binIsFull || binsAreVandalised)
             PaintAddImageAsParent(
                 session, imageTemplate.WithIndex(imageIndex), { 7, 16, height }, { { 6, 8, height + 2 }, { 0, 16, 7 } });
@@ -132,7 +132,7 @@ static void PathBitBinsPaint(
     if (edges & EDGE_SE)
     {
         auto binIsFull = IsBinFull(session, pathElement, EDGE_SE);
-        auto imageIndex = GetFootpathBinImage(pathBitEntry, EDGE_SE, binsAreVandalised, binIsFull);
+        auto imageIndex = GetFootpathBinImage(pathAdditionEntry, EDGE_SE, binsAreVandalised, binIsFull);
         if (!highlightPathIssues || binIsFull || binsAreVandalised)
             PaintAddImageAsParent(
                 session, imageTemplate.WithIndex(imageIndex), { 16, 25, height }, { { 8, 23, height + 2 }, { 16, 0, 7 } });
@@ -140,7 +140,7 @@ static void PathBitBinsPaint(
     if (edges & EDGE_SW)
     {
         auto binIsFull = IsBinFull(session, pathElement, EDGE_SW);
-        auto imageIndex = GetFootpathBinImage(pathBitEntry, EDGE_SW, binsAreVandalised, binIsFull);
+        auto imageIndex = GetFootpathBinImage(pathAdditionEntry, EDGE_SW, binsAreVandalised, binIsFull);
         if (!highlightPathIssues || binIsFull || binsAreVandalised)
             PaintAddImageAsParent(
                 session, imageTemplate.WithIndex(imageIndex), { 25, 16, height }, { { 23, 8, height + 2 }, { 0, 16, 7 } });
@@ -148,7 +148,7 @@ static void PathBitBinsPaint(
     if (edges & EDGE_NW)
     {
         auto binIsFull = IsBinFull(session, pathElement, EDGE_NW);
-        auto imageIndex = GetFootpathBinImage(pathBitEntry, EDGE_NW, binsAreVandalised, binIsFull);
+        auto imageIndex = GetFootpathBinImage(pathAdditionEntry, EDGE_NW, binsAreVandalised, binIsFull);
         if (!highlightPathIssues || binIsFull || binsAreVandalised)
             PaintAddImageAsParent(
                 session, imageTemplate.WithIndex(imageIndex), { 16, 7, height }, { { 8, 6, height + 2 }, { 16, 0, 7 } });
@@ -156,54 +156,55 @@ static void PathBitBinsPaint(
 }
 
 /* rct2: 0x006A5E81 */
-static void PathBitBenchesPaint(
-    PaintSession& session, const PathBitEntry& pathBitEntry, const PathElement& pathElement, int32_t height, uint8_t edges,
-    ImageId imageTemplate)
+static void PathAdditionBenchesPaint(
+    PaintSession& session, const PathAdditionEntry& pathAdditionEntry, const PathElement& pathElement, int32_t height,
+    uint8_t edges, ImageId imageTemplate)
 {
     auto isBroken = pathElement.IsBroken();
     if (edges & EDGE_NE)
     {
-        auto imageIndex = GetFootpathBenchImage(pathBitEntry, EDGE_NE, isBroken);
+        auto imageIndex = GetFootpathBenchImage(pathAdditionEntry, EDGE_NE, isBroken);
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(imageIndex), { 7, 16, height }, { { 6, 8, height + 2 }, { 0, 16, 7 } });
     }
     if (edges & EDGE_SE)
     {
-        auto imageIndex = GetFootpathBenchImage(pathBitEntry, EDGE_SE, isBroken);
+        auto imageIndex = GetFootpathBenchImage(pathAdditionEntry, EDGE_SE, isBroken);
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(imageIndex), { 16, 25, height }, { { 8, 23, height + 2 }, { 16, 0, 7 } });
     }
 
     if (edges & EDGE_SW)
     {
-        auto imageIndex = GetFootpathBenchImage(pathBitEntry, EDGE_SW, isBroken);
+        auto imageIndex = GetFootpathBenchImage(pathAdditionEntry, EDGE_SW, isBroken);
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(imageIndex), { 25, 16, height }, { { 23, 8, height + 2 }, { 0, 16, 7 } });
     }
 
     if (edges & EDGE_NW)
     {
-        auto imageIndex = GetFootpathBenchImage(pathBitEntry, EDGE_NW, isBroken);
+        auto imageIndex = GetFootpathBenchImage(pathAdditionEntry, EDGE_NW, isBroken);
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(imageIndex), { 16, 7, height }, { { 8, 6, height + 2 }, { 16, 0, 7 } });
     }
 }
 
 /* rct2: 0x006A6008 */
-static void PathBitJumpingFountainsPaint(
-    PaintSession& session, const PathBitEntry& pathBitEntry, int32_t height, ImageId imageTemplate, DrawPixelInfo& dpi)
+static void PathAdditionJumpingFountainsPaint(
+    PaintSession& session, const PathAdditionEntry& pathAdditionEntry, int32_t height, ImageId imageTemplate,
+    DrawPixelInfo& dpi)
 {
     if (dpi.zoom_level > ZoomLevel{ 0 })
         return;
 
-    auto imageId = imageTemplate.WithIndex(pathBitEntry.image);
+    auto imageId = imageTemplate.WithIndex(pathAdditionEntry.image);
     PaintAddImageAsParent(session, imageId.WithIndexOffset(1), { 0, 0, height }, { { 6, 8, height + 2 }, { 1, 1, 2 } });
     PaintAddImageAsParent(session, imageId.WithIndexOffset(2), { 0, 0, height }, { { 8, 23, height + 2 }, { 1, 1, 2 } });
     PaintAddImageAsParent(session, imageId.WithIndexOffset(3), { 0, 0, height }, { { 23, 8, height + 2 }, { 1, 1, 2 } });
     PaintAddImageAsParent(session, imageId.WithIndexOffset(4), { 0, 0, height }, { { 8, 6, height + 2 }, { 1, 1, 2 } });
 }
 
-inline bool PathAdditionIsVisible(uint32_t viewFlags, const PathBitEntry& pathAdditionEntry, bool isBroken)
+inline bool PathAdditionIsVisible(uint32_t viewFlags, const PathAdditionEntry& pathAdditionEntry, bool isBroken)
 {
     if (!(viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return true;
@@ -211,7 +212,7 @@ inline bool PathAdditionIsVisible(uint32_t viewFlags, const PathBitEntry& pathAd
     if (isBroken)
         return true;
 
-    if (pathAdditionEntry.draw_type == PathBitDrawType::Bin)
+    if (pathAdditionEntry.draw_type == PathAdditionDrawType::Bin)
         return true;
 
     return false;
@@ -229,7 +230,6 @@ void Sub6A3F61PathAddition(PaintSession& session, const PathElement& pathElement
         session.InteractionType = ViewportInteractionItem::None;
     }
 
-    // Draw additional path bits (bins, benches, lamps, queue screens)
     auto* pathAddEntry = pathElement.GetAdditionEntry();
     // Can be null if the object is not loaded.
     if (pathAddEntry == nullptr || !PathAdditionIsVisible(session.ViewFlags, *pathAddEntry, pathElement.IsBroken()))
@@ -239,17 +239,17 @@ void Sub6A3F61PathAddition(PaintSession& session, const PathElement& pathElement
 
     switch (pathAddEntry->draw_type)
     {
-        case PathBitDrawType::Light:
-            PathBitLightsPaint(session, *pathAddEntry, pathElement, height, rotatedEdges, sceneryImageTemplate);
+        case PathAdditionDrawType::Light:
+            PathAdditionLightsPaint(session, *pathAddEntry, pathElement, height, rotatedEdges, sceneryImageTemplate);
             break;
-        case PathBitDrawType::Bin:
-            PathBitBinsPaint(session, *pathAddEntry, pathElement, height, rotatedEdges, sceneryImageTemplate);
+        case PathAdditionDrawType::Bin:
+            PathAdditionBinsPaint(session, *pathAddEntry, pathElement, height, rotatedEdges, sceneryImageTemplate);
             break;
-        case PathBitDrawType::Bench:
-            PathBitBenchesPaint(session, *pathAddEntry, pathElement, height, rotatedEdges, sceneryImageTemplate);
+        case PathAdditionDrawType::Bench:
+            PathAdditionBenchesPaint(session, *pathAddEntry, pathElement, height, rotatedEdges, sceneryImageTemplate);
             break;
-        case PathBitDrawType::JumpingFountain:
-            PathBitJumpingFountainsPaint(session, *pathAddEntry, height, sceneryImageTemplate, session.DPI);
+        case PathAdditionDrawType::JumpingFountain:
+            PathAdditionJumpingFountainsPaint(session, *pathAddEntry, height, sceneryImageTemplate, session.DPI);
             break;
     }
 
@@ -271,7 +271,7 @@ void PaintLampLightEffects(PaintSession& session, const PathElement& pathEl, uin
         if (pathEl.HasAddition() && !(pathEl.IsBroken()))
         {
             auto* pathAddEntry = pathEl.GetAdditionEntry();
-            if (pathAddEntry != nullptr && pathAddEntry->flags & PATH_BIT_FLAG_LAMP)
+            if (pathAddEntry != nullptr && pathAddEntry->flags & PATH_ADDITION_FLAG_LAMP)
             {
                 if (!(pathEl.GetEdges() & EDGE_NE))
                 {

@@ -1598,8 +1598,8 @@ private:
             case ViewportInteractionItem::FootpathItem:
             {
                 auto entryIndex = info.Element->AsPath()->GetAdditionEntryIndex();
-                auto* pathBitEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(entryIndex);
-                if (pathBitEntry != nullptr)
+                auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(entryIndex);
+                if (pathAdditionEntry != nullptr)
                 {
                     WindowScenerySetSelectedItem(
                         { SCENERY_TYPE_PATH_ITEM, entryIndex }, std::nullopt, std::nullopt, std::nullopt, std::nullopt);

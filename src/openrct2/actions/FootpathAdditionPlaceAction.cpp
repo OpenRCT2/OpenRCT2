@@ -95,38 +95,38 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
 
     if (_pathItemType != 0)
     {
-        auto* pathBitEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(_pathItemType - 1);
-        if (pathBitEntry == nullptr)
+        auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(_pathItemType - 1);
+        if (pathAdditionEntry == nullptr)
         {
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
         }
-        uint16_t sceneryFlags = pathBitEntry->flags;
+        uint16_t sceneryFlags = pathAdditionEntry->flags;
 
-        if ((sceneryFlags & PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE) && pathElement->IsSloped())
+        if ((sceneryFlags & PATH_ADDITION_FLAG_DONT_ALLOW_ON_SLOPE) && pathElement->IsSloped())
         {
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_ON_SLOPED_FOOTPATH);
         }
 
-        if ((sceneryFlags & PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE) && pathElement->IsQueue())
+        if ((sceneryFlags & PATH_ADDITION_FLAG_DONT_ALLOW_ON_QUEUE) && pathElement->IsQueue())
         {
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CANNOT_PLACE_THESE_ON_QUEUE_LINE_AREA);
         }
 
-        if (!(sceneryFlags & (PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER | PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW))
+        if (!(sceneryFlags & (PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER | PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW))
             && (pathElement->GetEdges()) == 0x0F)
         {
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
         }
 
-        if ((sceneryFlags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) && !pathElement->IsQueue())
+        if ((sceneryFlags & PATH_ADDITION_FLAG_IS_QUEUE_SCREEN) && !pathElement->IsQueue())
         {
             return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA);
         }
 
-        res.Cost = pathBitEntry->price;
+        res.Cost = pathAdditionEntry->price;
     }
 
     // Should place a ghost?
@@ -165,13 +165,13 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
 
     if (_pathItemType != 0)
     {
-        auto* pathBitEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(_pathItemType - 1);
-        if (pathBitEntry == nullptr)
+        auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(_pathItemType - 1);
+        if (pathAdditionEntry == nullptr)
         {
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
         }
 
-        res.Cost = pathBitEntry->price;
+        res.Cost = pathAdditionEntry->price;
     }
 
     if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
@@ -193,8 +193,8 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
     pathElement->SetIsBroken(false);
     if (_pathItemType != 0)
     {
-        auto* pathBitEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(_pathItemType - 1);
-        if (pathBitEntry != nullptr && pathBitEntry->flags & PATH_BIT_FLAG_IS_BIN)
+        auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(_pathItemType - 1);
+        if (pathAdditionEntry != nullptr && pathAdditionEntry->flags & PATH_ADDITION_FLAG_IS_BIN)
         {
             pathElement->SetAdditionStatus(255);
         }

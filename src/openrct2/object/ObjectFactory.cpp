@@ -345,7 +345,7 @@ namespace ObjectFactory
             case ObjectType::Paths:
                 result = std::make_unique<FootpathObject>();
                 break;
-            case ObjectType::PathBits:
+            case ObjectType::PathAdditions:
                 result = std::make_unique<FootpathItemObject>();
                 break;
             case ObjectType::SceneryGroup:
@@ -393,7 +393,7 @@ namespace ObjectFactory
         if (s == "footpath_banner")
             return ObjectType::Banners;
         if (s == "footpath_item")
-            return ObjectType::PathBits;
+            return ObjectType::PathAdditions;
         if (s == "scenery_small")
             return ObjectType::SmallScenery;
         if (s == "scenery_large")

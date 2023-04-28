@@ -153,7 +153,7 @@ ObjectType static TabOrder[] = {
     ObjectType::Ride,         ObjectType::Station,         ObjectType::Music,
     ObjectType::SceneryGroup, ObjectType::SmallScenery,    ObjectType::LargeScenery,
     ObjectType::Walls,        ObjectType::FootpathSurface, ObjectType::FootpathRailings,
-    ObjectType::Paths,        ObjectType::PathBits,        ObjectType::Banners,
+    ObjectType::Paths,        ObjectType::PathAdditions,   ObjectType::Banners,
     ObjectType::ParkEntrance, ObjectType::TerrainSurface,  ObjectType::TerrainEdge,
     ObjectType::Water,
 };

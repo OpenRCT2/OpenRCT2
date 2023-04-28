@@ -249,8 +249,8 @@ void JumpingFountain::AdvanceAnimation()
 
 bool JumpingFountain::IsJumpingFountain(const JumpingFountainType newType, const CoordsXYZ& newLoc)
 {
-    const int32_t pathBitFlagMask = newType == JumpingFountainType::Snow ? PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW
-                                                                         : PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER;
+    const int32_t pathAdditionFlagMask = newType == JumpingFountainType::Snow ? PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW
+                                                                              : PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER;
 
     TileElement* tileElement = MapGetFirstElementAt(newLoc);
     if (tileElement == nullptr)
@@ -266,8 +266,8 @@ bool JumpingFountain::IsJumpingFountain(const JumpingFountainType newType, const
         if (!tileElement->AsPath()->HasAddition())
             continue;
 
-        auto* pathBitEntry = tileElement->AsPath()->GetAdditionEntry();
-        if (pathBitEntry != nullptr && pathBitEntry->flags & pathBitFlagMask)
+        auto* pathAdditionEntry = tileElement->AsPath()->GetAdditionEntry();
+        if (pathAdditionEntry != nullptr && pathAdditionEntry->flags & pathAdditionFlagMask)
         {
             return true;
         }
