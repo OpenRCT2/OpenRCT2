@@ -11,7 +11,7 @@
 
 #include "../../core/Numerics.hpp"
 #include "../../drawing/LightFX.h"
-#include "../../object/FootpathItemEntry.h"
+#include "../../object/PathAdditionEntry.h"
 #include "../../profiling/Profiling.h"
 #include "Paint.TileElement.h"
 
@@ -224,7 +224,7 @@ void Sub6A3F61PathAddition(PaintSession& session, const PathElement& pathElement
     const auto edges = pathElement.GetEdges() ^ 0b1111;
     const auto rotatedEdges = ((edges << session.CurrentRotation) & 0xF) | (((edges) << session.CurrentRotation) >> 4);
 
-    session.InteractionType = ViewportInteractionItem::FootpathItem;
+    session.InteractionType = ViewportInteractionItem::PathAddition;
     if (sceneryImageTemplate.IsRemap())
     {
         session.InteractionType = ViewportInteractionItem::None;

@@ -54,9 +54,9 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/BannerSceneryEntry.h>
-#include <openrct2/object/FootpathItemEntry.h>
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
+#include <openrct2/object/PathAdditionEntry.h>
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/paint/VirtualFloor.h>
@@ -1537,7 +1537,7 @@ private:
     {
         auto flag = EnumsToFlags(
             ViewportInteractionItem::Scenery, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
-            ViewportInteractionItem::Banner, ViewportInteractionItem::FootpathItem);
+            ViewportInteractionItem::Banner, ViewportInteractionItem::PathAddition);
         auto info = GetMapCoordinatesFromPos(screenCoords, flag);
         switch (info.SpriteType)
         {
@@ -1595,7 +1595,7 @@ private:
                 }
                 break;
             }
-            case ViewportInteractionItem::FootpathItem:
+            case ViewportInteractionItem::PathAddition:
             {
                 auto entryIndex = info.Element->AsPath()->GetAdditionEntryIndex();
                 auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(entryIndex);
@@ -1897,7 +1897,7 @@ private:
         Sub6E1F34UpdateScreenCoordsAndButtonsPressed(false, screenPos);
 
         // Path bits
-        constexpr auto flag = EnumsToFlags(ViewportInteractionItem::Footpath, ViewportInteractionItem::FootpathItem);
+        constexpr auto flag = EnumsToFlags(ViewportInteractionItem::Footpath, ViewportInteractionItem::PathAddition);
         auto info = GetMapCoordinatesFromPos(screenPos, flag);
         gridPos = info.Loc;
 
@@ -2121,7 +2121,7 @@ private:
         Sub6E1F34UpdateScreenCoordsAndButtonsPressed(false, screenPos);
 
         // Banner
-        constexpr auto flag = EnumsToFlags(ViewportInteractionItem::Footpath, ViewportInteractionItem::FootpathItem);
+        constexpr auto flag = EnumsToFlags(ViewportInteractionItem::Footpath, ViewportInteractionItem::PathAddition);
         auto info = GetMapCoordinatesFromPos(screenPos, flag);
         gridPos = info.Loc;
 

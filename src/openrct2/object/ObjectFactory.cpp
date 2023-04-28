@@ -24,7 +24,6 @@
 #include "AudioObject.h"
 #include "BannerObject.h"
 #include "EntranceObject.h"
-#include "FootpathItemObject.h"
 #include "FootpathObject.h"
 #include "FootpathRailingsObject.h"
 #include "FootpathSurfaceObject.h"
@@ -33,6 +32,7 @@
 #include "Object.h"
 #include "ObjectLimits.h"
 #include "ObjectList.h"
+#include "PathAdditionObject.h"
 #include "RideObject.h"
 #include "SceneryGroupObject.h"
 #include "SmallSceneryObject.h"
@@ -346,7 +346,7 @@ namespace ObjectFactory
                 result = std::make_unique<FootpathObject>();
                 break;
             case ObjectType::PathAdditions:
-                result = std::make_unique<FootpathItemObject>();
+                result = std::make_unique<PathAdditionObject>();
                 break;
             case ObjectType::SceneryGroup:
                 result = std::make_unique<SceneryGroupObject>();

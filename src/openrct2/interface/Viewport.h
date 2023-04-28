@@ -81,7 +81,7 @@ enum class ViewportInteractionItem : uint8_t
     Water,
     Scenery,
     Footpath,
-    FootpathItem,
+    PathAddition,
     ParkEntrance,
     Wall,
     LargeScenery,

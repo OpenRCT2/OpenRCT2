@@ -20,12 +20,12 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
-#include <openrct2/object/FootpathItemEntry.h>
 #include <openrct2/object/FootpathObject.h>
 #include <openrct2/object/FootpathRailingsObject.h>
 #include <openrct2/object/FootpathSurfaceObject.h>
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
+#include <openrct2/object/PathAdditionEntry.h>
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
@@ -441,7 +441,7 @@ static constexpr TileInspectorGroupboxSettings PageGroupBoxSettings[] = {
 
 static constexpr int32_t ViewportInteractionFlags = EnumsToFlags(
     ViewportInteractionItem::Terrain, ViewportInteractionItem::Entity, ViewportInteractionItem::Ride,
-    ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::FootpathItem,
+    ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::PathAddition,
     ViewportInteractionItem::ParkEntrance, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
     ViewportInteractionItem::Banner);
 // clang-format off

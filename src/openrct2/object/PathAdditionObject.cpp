@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "FootpathItemObject.h"
+#include "PathAdditionObject.h"
 
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
@@ -20,7 +20,7 @@
 
 #include <unordered_map>
 
-void FootpathItemObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
+void PathAdditionObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
     stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.flags = stream->ReadValue<uint16_t>();
@@ -61,7 +61,7 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     }
 }
 
-void FootpathItemObject::Load()
+void PathAdditionObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.name = LanguageAllocateObjectString(GetName());
@@ -70,7 +70,7 @@ void FootpathItemObject::Load()
     _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
 }
 
-void FootpathItemObject::Unload()
+void PathAdditionObject::Unload()
 {
     LanguageFreeObjectString(_legacyType.name);
     UnloadImages();
@@ -79,7 +79,7 @@ void FootpathItemObject::Unload()
     _legacyType.image = 0;
 }
 
-void FootpathItemObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
+void PathAdditionObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
     GfxDrawSprite(dpi, ImageId(_legacyType.image), screenCoords - ScreenCoordsXY{ 22, 24 });
@@ -98,9 +98,9 @@ static PathAdditionDrawType ParseDrawType(const std::string& s)
     return PathAdditionDrawType::Light;
 }
 
-void FootpathItemObject::ReadJson(IReadObjectContext* context, json_t& root)
+void PathAdditionObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
-    Guard::Assert(root.is_object(), "FootpathItemObject::ReadJson expects parameter root to be object");
+    Guard::Assert(root.is_object(), "PathAdditionObject::ReadJson expects parameter root to be object");
 
     json_t properties = root["properties"];
 

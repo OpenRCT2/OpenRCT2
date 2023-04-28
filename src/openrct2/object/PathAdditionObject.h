@@ -9,10 +9,10 @@
 
 #pragma once
 
-#include "FootpathItemEntry.h"
+#include "PathAdditionEntry.h"
 #include "SceneryObject.h"
 
-class FootpathItemObject final : public SceneryObject
+class PathAdditionObject final : public SceneryObject
 {
 private:
     PathAdditionEntry _legacyType = {};
