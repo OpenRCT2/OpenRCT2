@@ -354,6 +354,7 @@
     <ClInclude Include="paint\Paint.SessionFlags.h" />
     <ClInclude Include="paint\Painter.h" />
     <ClInclude Include="paint\Supports.h" />
+    <ClInclude Include="paint\tile_element\Paint.PathAddition.h" />
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
     <ClInclude Include="paint\VirtualFloor.h" />
@@ -849,6 +850,7 @@
     <ClCompile Include="paint\tile_element\Paint.Entrance.cpp" />
     <ClCompile Include="paint\tile_element\Paint.LargeScenery.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Path.cpp" />
+    <ClCompile Include="paint\tile_element\Paint.PathAddition.cpp" />
     <ClCompile Include="paint\tile_element\Paint.SmallScenery.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Surface.cpp" />
     <ClCompile Include="paint\tile_element\Paint.TileElement.cpp" />
