@@ -38,8 +38,6 @@
 
 enum class ResearchCategory : uint8_t;
 
-using ride_ratings_calculation = void (*)(Ride& ride, RideRatingUpdateState& state);
-
 constexpr const uint8_t DefaultFoodStallHeight = 8 * COORDS_Z_STEP;
 constexpr const uint8_t DefaultDrinksStallHeight = 8 * COORDS_Z_STEP;
 constexpr const uint8_t DefaultShopHeight = 8 * COORDS_Z_STEP;
@@ -96,6 +94,71 @@ enum class TrackDesignCreateMode : uint_fast8_t
     Maze
 };
 
+enum class RatingsCalculationType : uint8_t
+{
+    Normal,
+    FlatRide,
+    Stall,
+};
+
+enum class RatingsModifierType : uint8_t
+{
+    NoModifier,
+    // General Rating Bonuses
+    BonusLength,
+    BonusSynchronisation,
+    BonusTrainLength,
+    BonusMaxSpeed,
+    BonusAverageSpeed,
+    BonusDuration,
+    BonusGForces,
+    BonusTurns,
+    BonusDrops,
+    BonusSheltered,
+    BonusProximity,
+    BonusScenery,
+    BonusRotations,
+    BonusOperationOption,
+    // Ride-specific Rating Bonuses
+    BonusGoKartRace,
+    BonusTowerRide,
+    BonusRotoDrop,
+    BonusMazeSize,
+    BonusBoatHireNoCircuit,
+    BonusSlideUnlimitedRides,
+    BonusMotionSimulatorMode,
+    Bonus3DCinemaMode,
+    BonusTopSpinMode,
+    // Number of reversals BONUS for reverser coaster
+    BonusReversals,
+    // Number of hole BONUS for mini golf
+    BonusHoles,
+    // Number of cars bonus for dodgems/flying saucers
+    BonusNumTrains,
+    // Bonus for launched freefall in downward launch mode
+    BonusDownwardLaunch,
+    // Bonus with further mode-dependent logic for LF
+    BonusLaunchedFreefallSpecial,
+    // General Rating Requirements
+    RequirementLength,
+    RequirementDropHeight,
+    RequirementNumDrops,
+    RequirementMaxSpeed,
+    RequirementNegativeGs,
+    RequirementLateralGs,
+    RequirementInversions,
+    RequirementUnsheltered,
+    // Number of reversals REQUIREMENT for reverser coaster
+    RequirementReversals,
+    // Number of hole REQUIREMENT for mini golf
+    RequirementHoles,
+    // 2 Station requirement for Chairlift
+    RequirementStations,
+    // Water section requirement for Water Coaster
+    RequirementSplashdown,
+    PenaltyLateralGs,
+};
+
 struct RideNameConvention
 {
     RideComponentType vehicle;
@@ -141,6 +204,26 @@ struct RideOperatingSettings
     int8_t BoosterSpeedFactor; // The factor to shift the raw booster speed with
     uint16_t AccelerationFactor = 12;
     uint8_t OperatingSettingMultiplier = 1; // Used for the Ride window, cosmetic only.
+};
+
+struct RatingsModifier
+{
+    RatingsModifierType Type;
+    int32_t Threshold;
+    int32_t Excitement;
+    int32_t Intensity;
+    int32_t Nausea;
+};
+
+struct RideRatingsDescriptor
+{
+    RatingsCalculationType Type;
+    RatingTuple BaseRatings;
+    uint8_t Unreliability;
+    // Used for rides with a set sheltered 8ths value (-1 = normal calculation)
+    int8_t RideShelter;
+    bool RelaxRequirementsIfInversions;
+    RatingsModifier Modifiers[32];
 };
 
 struct UpkeepCostsDescriptor
@@ -211,8 +294,6 @@ struct RideTypeDescriptor
     uint8_t MaxMass;
     /** rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
     RideLiftData LiftData;
-    // rct2: 0x0097E050
-    ride_ratings_calculation RatingsCalculationFunction;
     // rct2: 0x0097CD1E
     RatingTuple RatingsMultipliers;
     UpkeepCostsDescriptor UpkeepCosts;
@@ -230,6 +311,8 @@ struct RideTypeDescriptor
 
     // json name lookup
     std::string_view Name;
+
+    RideRatingsDescriptor RatingsData;
 
     UpdateRotatingFunction UpdateRotating = UpdateRotatingDefault;
 
@@ -440,7 +523,6 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(Heights, { 12, 64, 0, 0, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, nullptr),
     SET_FIELD(RatingsMultipliers, { 0, 0, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 0.00_GBP, 0.00_GBP, 1 }),
@@ -452,6 +534,17 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "invalid"),
+	SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(1, 00), RIDE_RATING(1, 00), RIDE_RATING(1, 00) },
+        1,
+        -1,
+        false,
+        {
+            { RatingsModifierType::NoModifier, 0, 0, 0, 0 },
+        },
+    }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),

@@ -38,7 +38,6 @@ constexpr const RideTypeDescriptor SpaceRingsRTD =
     SET_FIELD(Heights, { 16, 48, 3, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateSpaceRings),
     SET_FIELD(RatingsMultipliers, { 12, 4, 4 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 36.00_GBP, 1.00_GBP, 1, }),
@@ -50,5 +49,16 @@ constexpr const RideTypeDescriptor SpaceRingsRTD =
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "space_rings"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(1, 50), RIDE_RATING(2, 10), RIDE_RATING(6, 50) },
+        7,
+        0,
+        false,
+        {
+            { RatingsModifierType::BonusScenery,          0,                25098, 0, 0 },
+        },
+    }),
 };
 // clang-format on
