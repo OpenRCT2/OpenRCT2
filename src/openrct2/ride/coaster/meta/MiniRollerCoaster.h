@@ -71,6 +71,7 @@ constexpr const RideTypeDescriptor MiniRollerCoasterRTD =
             { RatingsModifierType::BonusTurns,            0,                26749, 34767, 45749 },
             { RatingsModifierType::BonusDrops,            0,                29127, 46811, 49152 },
             { RatingsModifierType::BonusSheltered,        0,                25700, 30583, 35108 },
+            { RatingsModifierType::BonusReversedTrains,   0,                2, 10, 12 },
             { RatingsModifierType::BonusProximity,        0,                20130, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                9760, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 12,               2, 2, 2 },

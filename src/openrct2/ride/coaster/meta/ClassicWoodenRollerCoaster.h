@@ -71,6 +71,7 @@ constexpr const RideTypeDescriptor ClassicWoodenRollerCoasterRTD =
             { RatingsModifierType::BonusTurns,            0,                26749, 43458, 45749 },
             { RatingsModifierType::BonusDrops,            0,                40777, 46811, 49152 },
             { RatingsModifierType::BonusSheltered,        0,                16705, 30583, 35108 },
+            { RatingsModifierType::BonusReversedTrains,   0,                2, 12, 22 },
             { RatingsModifierType::BonusProximity,        0,                22367, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 12,               2, 1, 2 },
