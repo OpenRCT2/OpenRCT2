@@ -36,6 +36,7 @@ struct IObjectManager
     virtual Object* LoadObject(std::string_view identifier) abstract;
     virtual Object* LoadObject(const RCTObjectEntry* entry) abstract;
     virtual Object* LoadObject(const ObjectEntryDescriptor& descriptor) abstract;
+    virtual Object* LoadObject(const ObjectEntryDescriptor& descriptor, ObjectEntryIndex slot) abstract;
     virtual void LoadObjects(const ObjectList& entries) abstract;
     virtual void UnloadObjects(const std::vector<ObjectEntryDescriptor>& entries) abstract;
     virtual void UnloadAllTransient() abstract;

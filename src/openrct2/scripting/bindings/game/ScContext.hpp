@@ -23,7 +23,7 @@
 #    include "../../ScriptEngine.h"
 #    include "../game/ScConfiguration.hpp"
 #    include "../game/ScDisposable.hpp"
-#    include "../object/ScObject.hpp"
+#    include "../object/ScObjectManager.h"
 #    include "../ride/ScTrackSegment.h"
 
 #    include <cstdio>
@@ -160,74 +160,18 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        static DukValue CreateScObject(duk_context* ctx, ObjectType type, int32_t index)
-        {
-            switch (type)
-            {
-                case ObjectType::Ride:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScRideObject>(type, index));
-                case ObjectType::SmallScenery:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScSmallSceneryObject>(type, index));
-                case ObjectType::LargeScenery:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScLargeSceneryObject>(type, index));
-                case ObjectType::Walls:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScWallObject>(type, index));
-                case ObjectType::PathBits:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScFootpathAdditionObject>(type, index));
-                case ObjectType::Banners:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScBannerObject>(type, index));
-                case ObjectType::SceneryGroup:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScSceneryGroupObject>(type, index));
-                default:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScObject>(type, index));
-            }
-        }
-
         DukValue getObject(const std::string& typez, int32_t index) const
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-            auto& objManager = GetContext()->GetObjectManager();
-
-            auto type = ScObject::StringToObjectType(typez);
-            if (type)
-            {
-                auto obj = objManager.GetLoadedObject(*type, index);
-                if (obj != nullptr)
-                {
-                    return CreateScObject(ctx, *type, index);
-                }
-            }
-            else
-            {
-                duk_error(ctx, DUK_ERR_ERROR, "Invalid object type.");
-            }
-            return ToDuk(ctx, nullptr);
+            // deprecated function, moved to ObjectManager.getObject.
+            ScObjectManager objectManager;
+            return objectManager.getObject(typez, index);
         }
 
         std::vector<DukValue> getAllObjects(const std::string& typez) const
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
-            auto& objManager = GetContext()->GetObjectManager();
-
-            std::vector<DukValue> result;
-            auto type = ScObject::StringToObjectType(typez);
-            if (type)
-            {
-                auto count = object_entry_group_counts[EnumValue(*type)];
-                for (int32_t i = 0; i < count; i++)
-                {
-                    auto obj = objManager.GetLoadedObject(*type, i);
-                    if (obj != nullptr)
-                    {
-                        result.push_back(CreateScObject(ctx, *type, i));
-                    }
-                }
-            }
-            else
-            {
-                duk_error(ctx, DUK_ERR_ERROR, "Invalid object type.");
-            }
-            return result;
+            // deprecated function, moved to ObjectManager.getAllObjects.
+            ScObjectManager objectManager;
+            return objectManager.getAllObjects(typez);
         }
 
         DukValue getTrackSegment(track_type_t type)

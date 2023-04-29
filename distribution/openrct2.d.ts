@@ -42,6 +42,10 @@ declare global {
     /** APIs for performance profiling. */
     var profiler: Profiler;
     /**
+     * APIs for getting, loading, and unloading objects.
+     */
+    var objectManager: ObjectManager;
+    /**
      * APIs for creating and editing title sequences.
      * These will only be available to clients that are not running headless mode.
      */
@@ -217,9 +221,7 @@ declare global {
         captureImage(options: CaptureOptions): void;
 
         /**
-         * Gets the loaded object at the given index.
-         * @param type The object type.
-         * @param index The index.
+         * @deprecated Use {@link ObjectManager.getObject} instead.
          */
         getObject(type: ObjectType, index: number): LoadedImageObject;
         getObject(type: "ride", index: number): RideObject;
@@ -231,6 +233,9 @@ declare global {
         getObject(type: "scenery_group", index: number): SceneryGroupObject;
         getObject(type: "music", index: number): LoadedObject;
 
+        /**
+         * @deprecated Use {@link ObjectManager.getAllObjects} instead.
+         */
         getAllObjects(type: ObjectType): LoadedImageObject[];
         getAllObjects(type: "ride"): RideObject[];
         getAllObjects(type: "small_scenery"): SmallSceneryObject[];
@@ -4706,7 +4711,17 @@ declare global {
     }
 
     interface ObjectManager {
+        /**
+         * Gets all the objects that are installed and can be loaded into the park.
+         */
         readonly installedObjects: InstalledObject[];
+
+        /**
+         * Gets the installed object with the given identifier, or null
+         * if the object was not found.
+         * @param identifier The object identifier.
+         */
+        getInstalledObject(identifier: string): InstalledObject | null;
 
         /**
          * Attempt to load the object into the current park at the given index for the object type.
@@ -4716,12 +4731,12 @@ declare global {
          * @param index The index to load the object to. If not provided, an empty slot will be used.
          * @returns The index of the loaded object.
          */
-        load(identifier: string, index?: number): number;
+        load(identifier: string, index?: number): LoadedObject;
 
         /**
          * Attempt to load the given objects into the current park, given they are not already loaded.
          */
-        load(identifiers: string[]): void;
+        load(identifiers: string[]): LoadedObject[];
 
         /**
          * Unloads the object, if loaded.
@@ -4741,5 +4756,34 @@ declare global {
          * @param index The index of the slot to unload for the given type.
          */
         unload(type: ObjectType, index: number): void;
+
+        /**
+         * Gets the loaded object at the given index.
+         * @param type The object type.
+         * @param index The index.
+         */
+        getObject(type: ObjectType, index: number): LoadedImageObject;
+        getObject(type: "ride", index: number): RideObject;
+        getObject(type: "small_scenery", index: number): SmallSceneryObject;
+        getObject(type: "large_scenery", index: number): LargeSceneryObject;
+        getObject(type: "wall", index: number): WallObject;
+        getObject(type: "footpath_addition", index: number): FootpathAdditionObject;
+        getObject(type: "banner", index: number): BannerObject;
+        getObject(type: "scenery_group", index: number): SceneryGroupObject;
+        getObject(type: "music", index: number): LoadedObject;
+
+        /**
+         * Gets all the currently loaded objects for a given object type.
+         * @param type The object type.
+         */
+        getAllObjects(type: ObjectType): LoadedImageObject[];
+        getAllObjects(type: "ride"): RideObject[];
+        getAllObjects(type: "small_scenery"): SmallSceneryObject[];
+        getAllObjects(type: "large_scenery"): LargeSceneryObject[];
+        getAllObjects(type: "wall"): WallObject[];
+        getAllObjects(type: "footpath_addition"): FootpathAdditionObject[];
+        getAllObjects(type: "banner"): BannerObject[];
+        getAllObjects(type: "scenery_group"): SceneryGroupObject[];
+        getAllObjects(type: "music"): LoadedObject[];
     }
 }

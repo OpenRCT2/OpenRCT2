@@ -41,6 +41,7 @@
 #    include "bindings/network/ScSocket.hpp"
 #    include "bindings/object/ScInstalledObject.hpp"
 #    include "bindings/object/ScObject.hpp"
+#    include "bindings/object/ScObjectManager.h"
 #    include "bindings/ride/ScRide.hpp"
 #    include "bindings/ride/ScRideStation.hpp"
 #    include "bindings/world/ScClimate.hpp"
@@ -404,6 +405,7 @@ void ScriptEngine::Initialise()
     ScDisposable::Register(ctx);
     ScMap::Register(ctx);
     ScNetwork::Register(ctx);
+    ScObjectManager::Register(ctx);
     ScInstalledObject::Register(ctx);
     ScObject::Register(ctx);
     ScSceneryObject::Register(ctx);
@@ -452,6 +454,7 @@ void ScriptEngine::Initialise()
     dukglue_register_global(ctx, std::make_shared<ScPark>(ctx), "park");
     dukglue_register_global(ctx, std::make_shared<ScProfiler>(ctx), "profiler");
     dukglue_register_global(ctx, std::make_shared<ScScenario>(), "scenario");
+    dukglue_register_global(ctx, std::make_shared<ScObjectManager>(), "objectManager");
 
     RegisterConstants();
 
