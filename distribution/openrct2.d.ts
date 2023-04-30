@@ -1658,7 +1658,7 @@ declare global {
          * This may have trailing spaces if the name is shorter than 8 characters.
          * Only .DAT objects or JSON objects based on .DAT objects will have legacy identifiers.
          */
-        readonly legacyIdentifier: string;
+        readonly legacyIdentifier: string | null;
 
         /**
          * The object version, e.g. "1.5.2-pre".

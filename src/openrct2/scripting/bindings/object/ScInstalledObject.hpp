@@ -145,17 +145,18 @@ namespace OpenRCT2::Scripting
             return {};
         }
 
-        std::string legacyIdentifier_get() const
+        DukValue legacyIdentifier_get() const
         {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
             auto installedObject = GetInstalledObject();
             if (installedObject != nullptr)
             {
                 if (!installedObject->ObjectEntry.IsEmpty())
                 {
-                    return std::string(installedObject->ObjectEntry.GetName());
+                    return ToDuk(ctx, installedObject->ObjectEntry.GetName());
                 }
             }
-            return {};
+            return ToDuk(ctx, nullptr);
         }
 
         std::vector<std::string> authors_get() const
