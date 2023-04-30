@@ -7,12 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "ScObjectManager.h"
+#ifdef ENABLE_SCRIPTING
 
-#include "../../../object/ObjectList.h"
-#include "../../../ride/RideData.h"
-#include "../../Duktape.hpp"
-#include "../../ScriptEngine.h"
+#    include "ScObjectManager.h"
+
+#    include "../../../object/ObjectList.h"
+#    include "../../../ride/RideData.h"
+#    include "../../Duktape.hpp"
+#    include "../../ScriptEngine.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
@@ -103,7 +105,7 @@ DukValue ScObjectManager::load(const DukValue& p1, const DukValue& p2)
                 if (p2.type() != DukValue::NUMBER)
                     throw DukException() << "Expected number for 'index'.";
 
-                auto index = p2.as_int();
+                auto index = static_cast<size_t>(p2.as_int());
                 auto limit = GetObjectTypeLimit(installedObject->Type);
                 if (index < limit)
                 {
@@ -112,7 +114,7 @@ DukValue ScObjectManager::load(const DukValue& p1, const DukValue& p2)
                     {
                         objectManager.UnloadObjects({ loadedObject->GetDescriptor() });
                     }
-                    auto obj = objectManager.LoadObject(descriptor, index);
+                    auto obj = objectManager.LoadObject(descriptor, static_cast<ObjectEntryIndex>(index));
                     if (obj != nullptr)
                     {
                         MarkAsResearched(obj);
@@ -277,3 +279,5 @@ DukValue ScObjectManager::CreateScObject(duk_context* ctx, ObjectType type, int3
             return GetObjectAsDukValue(ctx, std::make_shared<ScObject>(type, index));
     }
 }
+
+#endif
