@@ -224,26 +224,35 @@ declare global {
          * @deprecated Use {@link ObjectManager.getObject} instead.
          */
         getObject(type: ObjectType, index: number): LoadedImageObject;
+
+        /**
+         * @deprecated Use {@link ObjectManager.getObject} instead.
+         */
         getObject(type: "ride", index: number): RideObject;
+
+        /**
+         * @deprecated Use {@link ObjectManager.getObject} instead.
+         */
         getObject(type: "small_scenery", index: number): SmallSceneryObject;
-        getObject(type: "large_scenery", index: number): LargeSceneryObject;
-        getObject(type: "wall", index: number): WallObject;
-        getObject(type: "footpath_addition", index: number): FootpathAdditionObject;
-        getObject(type: "banner", index: number): BannerObject;
-        getObject(type: "scenery_group", index: number): SceneryGroupObject;
+
+        /**
+         * @deprecated Use {@link ObjectManager.getObject} instead.
+         */
         getObject(type: "music", index: number): LoadedObject;
 
         /**
          * @deprecated Use {@link ObjectManager.getAllObjects} instead.
          */
         getAllObjects(type: ObjectType): LoadedImageObject[];
+
+        /**
+         * @deprecated Use {@link ObjectManager.getAllObjects} instead.
+         */
         getAllObjects(type: "ride"): RideObject[];
-        getAllObjects(type: "small_scenery"): SmallSceneryObject[];
-        getAllObjects(type: "large_scenery"): LargeSceneryObject[];
-        getAllObjects(type: "wall"): WallObject[];
-        getAllObjects(type: "footpath_addition"): FootpathAdditionObject[];
-        getAllObjects(type: "banner"): BannerObject[];
-        getAllObjects(type: "scenery_group"): SceneryGroupObject[];
+
+        /**
+         * @deprecated Use {@link ObjectManager.getAllObjects} instead.
+         */
         getAllObjects(type: "music"): LoadedObject[];
 
         /**
@@ -1640,7 +1649,7 @@ declare global {
 
         /**
          * The unique identifier of the object, e.g. "rct2.burgb".
-         * Only JSON objects will have an identifier.
+         * For legacy DAT objects, the identifier will be in a format similar to "09F55405|DirtGras|B9B19A7F".
          */
         readonly identifier: string;
 
@@ -1688,7 +1697,7 @@ declare global {
 
         /**
          * The unique identifier of the object, e.g. "rct2.burgb".
-         * Only JSON objects will have an identifier.
+         * For legacy DAT objects, the identifier will be in a format similar to "09F55405|DirtGras|B9B19A7F".
          */
         readonly identifier: string;
 
