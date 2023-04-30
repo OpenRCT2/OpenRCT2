@@ -35,7 +35,7 @@ constexpr const RideTypeDescriptor InvertedRollerCoasterRTD =
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_INVERTED_ROLLER_COASTER)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
-    SET_FIELD(Heights, { 38, 40, 29, 8, }),
+    SET_FIELD(Heights, { 42, 40, 29, 8, }),
     SET_FIELD(MaxMass, 27),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftBM, 5, 7 }),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
