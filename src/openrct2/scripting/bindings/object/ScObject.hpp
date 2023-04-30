@@ -71,7 +71,7 @@ namespace OpenRCT2::Scripting
             if (obj != nullptr)
             {
                 auto& objectRepository = GetContext()->GetObjectRepository();
-                auto installedObject = objectRepository.FindObject(obj->GetIdentifier());
+                auto installedObject = objectRepository.FindObject(obj->GetDescriptor());
                 if (installedObject != nullptr)
                 {
                     return std::make_shared<ScInstalledObject>(installedObject->Id);

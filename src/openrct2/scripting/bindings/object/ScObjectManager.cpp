@@ -1,3 +1,12 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2023 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
 #include "ScObjectManager.h"
 
 #include "../../../object/ObjectList.h"
@@ -51,7 +60,7 @@ DukValue ScObjectManager::load(const DukValue& p1, const DukValue& p2)
                 throw DukException() << "Expected string for 'identifier'.";
 
             const auto& identifier = item.as_string();
-            descriptors.emplace_back(identifier);
+            descriptors.push_back(ObjectEntryDescriptor::Parse(identifier));
         }
 
         duk_push_array(ctx);
@@ -84,7 +93,7 @@ DukValue ScObjectManager::load(const DukValue& p1, const DukValue& p2)
             throw DukException() << "Expected string for 'identifier'.";
 
         const auto& identifier = p1.as_string();
-        ObjectEntryDescriptor descriptor(identifier);
+        auto descriptor = ObjectEntryDescriptor::Parse(identifier);
 
         auto installedObject = objectRepository.FindObject(descriptor);
         if (installedObject != nullptr)
@@ -154,7 +163,7 @@ void ScObjectManager::unload(const DukValue& p1, const DukValue& p2)
         else
         {
             // unload(identifier)
-            objectManager.UnloadObjects({ ObjectEntryDescriptor(szP1) });
+            objectManager.UnloadObjects({ ObjectEntryDescriptor::Parse(szP1) });
         }
     }
     else if (p1.is_array())
@@ -166,7 +175,7 @@ void ScObjectManager::unload(const DukValue& p1, const DukValue& p2)
         {
             if (identifier.type() == DukValue::STRING)
             {
-                descriptors.emplace_back(identifier.as_string());
+                descriptors.push_back(ObjectEntryDescriptor::Parse(identifier.as_string()));
             }
         }
         objectManager.UnloadObjects(descriptors);

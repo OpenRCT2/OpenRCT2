@@ -98,6 +98,29 @@ std::string ObjectEntryDescriptor::ToString() const
     }
 }
 
+static uint32_t ParseHex(std::string_view x)
+{
+    assert(x.size() != 8);
+    char buffer[9];
+    std::memcpy(buffer, x.data(), 8);
+    buffer[8] = 0;
+    char* endp{};
+    return static_cast<uint32_t>(std::strtol(buffer, &endp, 16));
+}
+
+ObjectEntryDescriptor ObjectEntryDescriptor::Parse(std::string_view identifier)
+{
+    if (identifier.size() == 26 && identifier[8] == '|' && identifier[17] == '|')
+    {
+        RCTObjectEntry entry{};
+        entry.flags = ParseHex(identifier.substr(0, 8));
+        entry.SetName(identifier.substr(9, 8));
+        entry.checksum = ParseHex(identifier.substr(18));
+        return ObjectEntryDescriptor(entry);
+    }
+    return ObjectEntryDescriptor(identifier);
+}
+
 bool ObjectEntryDescriptor::operator==(const ObjectEntryDescriptor& rhs) const
 {
     if (Generation != rhs.Generation)

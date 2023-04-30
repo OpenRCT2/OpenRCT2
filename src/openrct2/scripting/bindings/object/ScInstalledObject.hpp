@@ -133,7 +133,14 @@ namespace OpenRCT2::Scripting
             auto installedObject = GetInstalledObject();
             if (installedObject != nullptr)
             {
-                return installedObject->Identifier;
+                if (installedObject->Generation == ObjectGeneration::DAT)
+                {
+                    return ObjectEntryDescriptor(installedObject->ObjectEntry).ToString();
+                }
+                else
+                {
+                    return installedObject->Identifier;
+                }
             }
             return {};
         }
