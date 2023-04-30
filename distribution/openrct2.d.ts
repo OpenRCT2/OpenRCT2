@@ -4731,12 +4731,12 @@ declare global {
          * @param index The index to load the object to. If not provided, an empty slot will be used.
          * @returns The index of the loaded object.
          */
-        load(identifier: string, index?: number): LoadedObject;
+        load(identifier: string, index?: number): LoadedObject | null;
 
         /**
          * Attempt to load the given objects into the current park, given they are not already loaded.
          */
-        load(identifiers: string[]): LoadedObject[];
+        load(identifiers: string[]): (LoadedObject | null)[];
 
         /**
          * Unloads the object, if loaded.
@@ -4762,7 +4762,7 @@ declare global {
          * @param type The object type.
          * @param index The index.
          */
-        getObject(type: ObjectType, index: number): LoadedImageObject;
+        getObject(type: ObjectType, index: number): LoadedObject;
         getObject(type: "ride", index: number): RideObject;
         getObject(type: "small_scenery", index: number): SmallSceneryObject;
         getObject(type: "large_scenery", index: number): LargeSceneryObject;
@@ -4776,7 +4776,7 @@ declare global {
          * Gets all the currently loaded objects for a given object type.
          * @param type The object type.
          */
-        getAllObjects(type: ObjectType): LoadedImageObject[];
+        getAllObjects(type: ObjectType): LoadedObject[];
         getAllObjects(type: "ride"): RideObject[];
         getAllObjects(type: "small_scenery"): SmallSceneryObject[];
         getAllObjects(type: "large_scenery"): LargeSceneryObject[];
