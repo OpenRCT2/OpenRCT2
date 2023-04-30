@@ -21119,8 +21119,8 @@
     },
     {
         "path": "track/intamin/barrel_roll_left_2_3.png",
-        "x_offset": -16,
-        "y_offset": 2,
+        "x_offset": -28,
+        "y_offset": -5,
         "palette": "keep"
     },
     {
@@ -21167,7 +21167,7 @@
     },
     {
         "path": "track/intamin/barrel_roll_left_3_5.png",
-        "x_offset": -5,
+        "x_offset": -1,
         "y_offset": -16,
         "palette": "keep"
     },
@@ -21269,7 +21269,7 @@
     },
     {
         "path": "track/intamin/barrel_roll_right_2_4.png",
-        "x_offset": 13,
+        "x_offset": 14,
         "y_offset": -12,
         "palette": "keep"
     },
@@ -21294,7 +21294,7 @@
     {
         "path": "track/intamin/barrel_roll_right_3_2.png",
         "x_offset": -4,
-        "y_offset": 3,
+        "y_offset": 4,
         "palette": "keep"
     },
     {
@@ -21384,7 +21384,7 @@
     {
         "path": "track/intamin/half_loop_2_1.png",
         "x_offset": -16,
-        "y_offset": -10,
+        "y_offset": -18,
         "palette": "keep"
     },
     {
@@ -22847,7 +22847,7 @@
     },
     {
         "path": "track/intamin/zero_g_roll_left_3_3.png",
-        "x_offset": 2,
+        "x_offset": -11,
         "y_offset": -18,
         "palette": "keep"
     },
@@ -23057,7 +23057,7 @@
     },
     {
         "path": "track/intamin/large_zero_g_roll_left_3_5.png",
-        "x_offset": -4,
+        "x_offset": 1,
         "y_offset": -12,
         "palette": "keep"
     },
@@ -24323,7 +24323,7 @@
     },
     {
         "path": "track/intamin/large_turn_left_bank_to_orthogonal_gentle_up_2_1.png",
-        "x_offset": -7,
+        "x_offset": -8,
         "y_offset": 1,
         "palette": "keep"
     },
