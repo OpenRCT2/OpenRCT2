@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,56 +22,56 @@ enum
     WIDX_LOGO
 };
 
-static rct_widget window_title_logo_widgets[] = {
+static Widget window_title_logo_widgets[] = {
     MakeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };
 
-static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex);
-static void WindowTitleLogoPaint(rct_window* w, rct_drawpixelinfo* dpi);
-
-// clang-format off
-static rct_window_event_list window_title_logo_events([](auto& events)
+class TitleLogoWindow final : public Window
 {
-    events.mouse_up = &WindowTitleMenuMouseup;
-    events.paint = &WindowTitleLogoPaint;
-});
-// clang-format on
-
-/**
- * Creates the window containing the logo and the expansion packs on the title screen.
- *  rct2: 0x0066B679 (part of 0x0066B3E8)
- */
-rct_window* WindowTitleLogoOpen()
-{
-    rct_window* window = WindowCreate(
-        ScreenCoordsXY(0, 0), WW, WH, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
-    window->widgets = window_title_logo_widgets;
-    WindowInitScrollWidgets(window);
-    window->colours[0] = TRANSLUCENT(COLOUR_GREY);
-    window->colours[1] = TRANSLUCENT(COLOUR_GREY);
-    window->colours[2] = TRANSLUCENT(COLOUR_GREY);
-
-    return window;
-}
-
-static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    switch (widgetIndex)
+public:
+    /**
+     * Creates the window containing the logo and the expansion packs on the title screen.
+     *  rct2: 0x0066B679 (part of 0x0066B3E8)
+     */
+    void OnOpen() override
     {
-        case WIDX_LOGO:
-            WindowAboutOpen();
-            break;
+        widgets = window_title_logo_widgets;
+        WindowInitScrollWidgets(*this);
+        colours[0] = TRANSLUCENT(COLOUR_GREY);
+        colours[1] = TRANSLUCENT(COLOUR_GREY);
+        colours[2] = TRANSLUCENT(COLOUR_GREY);
     }
-}
 
-/**
- *
- *  rct2: 0x0066B872
- */
-static void WindowTitleLogoPaint(rct_window* w, rct_drawpixelinfo* dpi)
+    void OnMouseUp(WidgetIndex widgetIndex) override
+    {
+        switch (widgetIndex)
+        {
+            case WIDX_LOGO:
+                WindowAboutOpen();
+                break;
+        }
+    }
+
+    /**
+     *
+     *  rct2: 0x0066B872
+     */
+    void OnDraw(DrawPixelInfo& dpi) override
+    {
+        auto screenCoords = windowPos + ScreenCoordsXY{ 2, 2 };
+        GfxDrawSprite(dpi, ImageId(SPR_G2_LOGO), screenCoords);
+        GfxDrawSprite(dpi, ImageId(SPR_G2_TITLE), screenCoords + ScreenCoordsXY{ 104, 18 });
+    }
+};
+
+WindowBase* WindowTitleLogoOpen()
 {
-    auto screenCoords = w->windowPos + ScreenCoordsXY{ 2, 2 };
-    gfx_draw_sprite(dpi, ImageId(SPR_G2_LOGO), screenCoords);
-    gfx_draw_sprite(dpi, ImageId(SPR_G2_TITLE), screenCoords + ScreenCoordsXY{ 104, 18 });
+    auto* window = WindowBringToFrontByClass(WindowClass::TitleLogo);
+    if (window == nullptr)
+    {
+        window = WindowCreate<TitleLogoWindow>(
+            WindowClass::TitleLogo, ScreenCoordsXY(0, 0), WW, WH, WF_STICK_TO_BACK | WF_TRANSPARENT);
+    }
+    return window;
 }

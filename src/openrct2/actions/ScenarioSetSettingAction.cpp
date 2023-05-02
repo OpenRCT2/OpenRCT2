@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,11 +26,17 @@ void ScenarioSetSettingAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_setting) << DS_TAG(_value);
 }
 
+void ScenarioSetSettingAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("setting", _setting);
+    visitor.Visit("value", _value);
+}
+
 GameActions::Result ScenarioSetSettingAction::Query() const
 {
     if (_setting >= ScenarioSetSetting::Count)
     {
-        log_error("Invalid setting: %u", _setting);
+        LOG_ERROR("Invalid setting: %u", _setting);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -64,33 +70,33 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
                     gParkFlags &= ~PARK_FLAGS_NO_MONEY;
                 }
                 // Invalidate all windows that have anything to do with finance
-                window_invalidate_by_class(WC_RIDE);
-                window_invalidate_by_class(WC_PEEP);
-                window_invalidate_by_class(WC_PARK_INFORMATION);
-                window_invalidate_by_class(WC_FINANCES);
-                window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
-                window_invalidate_by_class(WC_TOP_TOOLBAR);
+                WindowInvalidateByClass(WindowClass::Ride);
+                WindowInvalidateByClass(WindowClass::Peep);
+                WindowInvalidateByClass(WindowClass::ParkInformation);
+                WindowInvalidateByClass(WindowClass::Finances);
+                WindowInvalidateByClass(WindowClass::BottomToolbar);
+                WindowInvalidateByClass(WindowClass::TopToolbar);
             }
             break;
         case ScenarioSetSetting::InitialCash:
             gInitialCash = std::clamp<money64>(_value, 0.00_GBP, 1000000.00_GBP);
             gCash = gInitialCash;
-            window_invalidate_by_class(WC_FINANCES);
-            window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+            WindowInvalidateByClass(WindowClass::Finances);
+            WindowInvalidateByClass(WindowClass::BottomToolbar);
             break;
         case ScenarioSetSetting::InitialLoan:
             gBankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
             gMaxBankLoan = std::max(gBankLoan, gMaxBankLoan);
-            window_invalidate_by_class(WC_FINANCES);
+            WindowInvalidateByClass(WindowClass::Finances);
             break;
         case ScenarioSetSetting::MaximumLoanSize:
             gMaxBankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
             gBankLoan = std::min(gBankLoan, gMaxBankLoan);
-            window_invalidate_by_class(WC_FINANCES);
+            WindowInvalidateByClass(WindowClass::Finances);
             break;
         case ScenarioSetSetting::AnnualInterestRate:
-            gBankLoanInterestRate = std::clamp<uint8_t>(_value, 0, 80);
-            window_invalidate_by_class(WC_FINANCES);
+            gBankLoanInterestRate = std::clamp<uint8_t>(_value, 0, MaxBankLoanInterestRate);
+            WindowInvalidateByClass(WindowClass::Finances);
             break;
         case ScenarioSetSetting::ForbidMarketingCampaigns:
             if (_value != 0)
@@ -135,10 +141,10 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             }
             break;
         case ScenarioSetSetting::CostToBuyLand:
-            gLandPrice = std::clamp<money32>(_value, 5.00_GBP, 200.00_GBP);
+            gLandPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
             break;
         case ScenarioSetSetting::CostToBuyConstructionRights:
-            gConstructionRightsPrice = std::clamp<money32>(_value, 5.00_GBP, 200.00_GBP);
+            gConstructionRightsPrice = std::clamp<money64>(_value, 5.00_GBP, 200.00_GBP);
             break;
         case ScenarioSetSetting::ParkChargeMethod:
             if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
@@ -179,13 +185,13 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
                     gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
                     gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
                 }
-                window_invalidate_by_class(WC_PARK_INFORMATION);
-                window_invalidate_by_class(WC_RIDE);
+                WindowInvalidateByClass(WindowClass::ParkInformation);
+                WindowInvalidateByClass(WindowClass::Ride);
             }
             break;
         case ScenarioSetSetting::ParkChargeEntryFee:
-            gParkEntranceFee = std::clamp<money32>(_value, 0.00_GBP, MAX_ENTRANCE_FEE);
-            window_invalidate_by_class(WC_PARK_INFORMATION);
+            gParkEntranceFee = std::clamp<money64>(_value, 0.00_GBP, MAX_ENTRANCE_FEE);
+            WindowInvalidateByClass(WindowClass::ParkInformation);
             break;
         case ScenarioSetSetting::ForbidTreeRemoval:
             if (_value != 0)
@@ -240,10 +246,22 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
         case ScenarioSetSetting::AllowEarlyCompletion:
             gAllowEarlyCompletionInNetworkPlay = _value;
             break;
+        case ScenarioSetSetting::UseRCT1Interest:
+        {
+            if (_value != 0)
+            {
+                gParkFlags |= PARK_FLAGS_RCT1_INTEREST;
+            }
+            else
+            {
+                gParkFlags &= ~PARK_FLAGS_RCT1_INTEREST;
+            }
+            break;
+        }
         default:
-            log_error("Invalid setting: %u", _setting);
+            LOG_ERROR("Invalid setting: %u", _setting);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
-    window_invalidate_by_class(WC_EDITOR_SCENARIO_OPTIONS);
+    WindowInvalidateByClass(WindowClass::EditorScenarioOptions);
     return GameActions::Result();
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,9 +12,13 @@
 #include "../Identifiers.h"
 #include "../common.h"
 #include "../ride/RideTypes.h"
+#include "AudioMixer.h"
 
+#include <memory>
+#include <string_view>
 #include <vector>
 
+class AudioObject;
 struct CoordsXYZ;
 
 namespace OpenRCT2::Audio
@@ -26,6 +30,9 @@ namespace OpenRCT2::Audio
 
 #define AUDIO_PLAY_AT_CENTRE 0x8000
 
+    struct IAudioChannel;
+    struct IAudioSource;
+    enum class MixerGroup : int32_t;
     enum class SoundId : uint8_t;
 
     struct Sound
@@ -34,7 +41,7 @@ namespace OpenRCT2::Audio
         int16_t Volume;
         int16_t Pan;
         uint16_t Frequency;
-        void* Channel;
+        std::shared_ptr<IAudioChannel> Channel;
     };
 
     struct VehicleSound
@@ -120,17 +127,27 @@ namespace OpenRCT2::Audio
         DoorOpen,
         DoorClose,
         Portcullis,
+        CrowdAmbience,
+        LiftRMC,
+        TrackFrictionRMC,
         NoScream = 254,
         Null = 255
     };
 
     constexpr uint8_t RCT2SoundCount = static_cast<uint32_t>(SoundId::Portcullis) + 1;
 
+    namespace AudioObjectIdentifiers
+    {
+        constexpr std::string_view RCT1Title = "rct1.audio.title";
+        constexpr std::string_view RCT2Base = "rct2.audio.base";
+        constexpr std::string_view RCTCBase = "rct2.audio.base.rctc";
+        constexpr std::string_view RCT2Title = "rct2.audio.title";
+        constexpr std::string_view RCT2Circus = "rct2.audio.circus";
+        constexpr std::string_view OpenRCT2Additional = "openrct2.audio.additional";
+    } // namespace AudioObjectIdentifiers
+
     extern bool gGameSoundsOff;
     extern int32_t gVolumeAdjustZoom;
-
-    extern void* gTitleMusicChannel;
-    extern void* gWeatherSoundChannel;
 
     extern VehicleSound gVehicleSoundList[MaxVehicleSounds];
 
@@ -164,6 +181,8 @@ namespace OpenRCT2::Audio
      * Initialises the audio subsystem.
      */
     void Init();
+
+    void LoadAudioObjects();
 
     /**
      * Loads the ride sounds and info.
@@ -213,11 +232,6 @@ namespace OpenRCT2::Audio
     void PlayTitleMusic();
 
     /**
-     * Stops the weather sound effect from playing.
-     */
-    void StopWeatherSound();
-
-    /**
      * Stops the title music from playing.
      * rct2: 0x006BD0BD
      */
@@ -242,5 +256,18 @@ namespace OpenRCT2::Audio
     void Resume();
 
     void StopAll();
+
+    AudioObject* GetBaseAudioObject();
+
+    std::shared_ptr<IAudioChannel> CreateAudioChannel(
+        SoundId soundId, bool loop = false, int32_t volume = MIXER_VOLUME_MAX, float pan = 0.5f, double rate = 1,
+        bool forget = false);
+    std::shared_ptr<IAudioChannel> CreateAudioChannel(
+        IAudioSource* source, MixerGroup group, bool loop = false, int32_t volume = MIXER_VOLUME_MAX, float pan = 0.5f,
+        double rate = 1, bool forget = false);
+
+    int32_t DStoMixerVolume(int32_t volume);
+    float DStoMixerPan(int32_t pan);
+    double DStoMixerRate(int32_t frequency);
 
 } // namespace OpenRCT2::Audio

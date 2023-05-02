@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -62,7 +62,7 @@ extern uint8_t gScreenFlags;
 extern uint32_t gScreenAge;
 extern PromptMode gSavePromptMode;
 
-void openrct2_write_full_version_info(utf8* buffer, size_t bufferSize);
-void openrct2_finish();
+void OpenRCT2WriteFullVersionInfo(utf8* buffer, size_t bufferSize);
+void OpenRCT2Finish();
 
-int32_t cmdline_run(const char** argv, int32_t argc);
+int32_t CommandLineRun(const char** argv, int32_t argc);

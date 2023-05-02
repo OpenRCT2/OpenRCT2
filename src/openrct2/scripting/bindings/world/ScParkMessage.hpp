@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@
 namespace OpenRCT2::Scripting
 {
     static constexpr const char* ParkMessageTypeStrings[] = {
-        "attraction", "peep_on_attraction", "peep", "money", "blank", "research", "guests", "award", "chart",
+        "attraction", "peep_on_attraction", "peep", "money", "blank", "research", "guests", "award", "chart", "campaign",
     };
 
     inline News::ItemType GetParkMessageType(const std::string& key)

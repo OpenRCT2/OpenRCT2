@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,9 +30,11 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
+static thread_local std::map<u8string, std::unique_ptr<Object>> _objDataCache = {};
+
 struct ImageTable::RequiredImage
 {
-    rct_g1_element g1{};
+    G1Element g1{};
     std::unique_ptr<RequiredImage> next_zoom;
 
     bool HasData() const
@@ -43,21 +45,21 @@ struct ImageTable::RequiredImage
     RequiredImage() = default;
     RequiredImage(const RequiredImage&) = delete;
 
-    RequiredImage(const rct_g1_element& orig)
+    RequiredImage(const G1Element& orig)
     {
-        auto length = g1_calculate_data_size(&orig);
+        auto length = G1CalculateDataSize(&orig);
         g1 = orig;
         g1.offset = new uint8_t[length];
         std::memcpy(g1.offset, orig.offset, length);
         g1.flags &= ~G1_FLAG_HAS_ZOOM_SPRITE;
     }
 
-    RequiredImage(uint32_t idx, std::function<const rct_g1_element*(uint32_t)> getter)
+    RequiredImage(uint32_t idx, std::function<const G1Element*(uint32_t)> getter)
     {
         auto orig = getter(idx);
         if (orig != nullptr)
         {
-            auto length = g1_calculate_data_size(orig);
+            auto length = G1CalculateDataSize(orig);
             g1 = *orig;
             g1.offset = new uint8_t[length];
             std::memcpy(g1.offset, orig->offset, length);
@@ -92,19 +94,19 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
         auto range = ParseRange(s.substr(4));
         if (!range.empty())
         {
-            if (is_csg_loaded())
+            if (IsCsgLoaded())
             {
                 for (auto i : range)
                 {
                     result.push_back(std::make_unique<RequiredImage>(
                         static_cast<uint32_t>(SPR_CSG_BEGIN + i),
-                        [](uint32_t idx) -> const rct_g1_element* { return gfx_get_g1_element(idx); }));
+                        [](uint32_t idx) -> const G1Element* { return GfxGetG1Element(idx); }));
                 }
             }
             else
             {
                 std::string id(context->GetObjectIdentifier());
-                log_warning("CSG not loaded inserting placeholder images for %s", id.c_str());
+                LOG_WARNING("CSG not loaded inserting placeholder images for %s", id.c_str());
                 result.resize(range.size());
                 for (auto& res : result)
                 {
@@ -121,7 +123,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             for (auto i : range)
             {
                 result.push_back(std::make_unique<RequiredImage>(
-                    static_cast<uint32_t>(i), [](uint32_t idx) -> const rct_g1_element* { return gfx_get_g1_element(idx); }));
+                    static_cast<uint32_t>(i), [](uint32_t idx) -> const G1Element* { return GfxGetG1Element(idx); }));
             }
         }
     }
@@ -240,7 +242,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadImageArc
 {
     std::vector<std::unique_ptr<RequiredImage>> result;
     auto gxRaw = context->GetData(path);
-    std::optional<rct_gx> gxData = GfxLoadGx(gxRaw);
+    std::optional<Gx> gxData = GfxLoadGx(gxRaw);
     if (gxData.has_value())
     {
         // Fix entry data offsets
@@ -280,7 +282,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadImageArc
     }
     else
     {
-        auto msg = String::StdFormat("Unable to load rct_gx '%s'", path.c_str());
+        auto msg = String::StdFormat("Unable to load Gx '%s'", path.c_str());
         context->LogWarning(ObjectError::BadImageTable, msg.c_str());
         for (size_t i = 0; i < range.size(); i++)
         {
@@ -294,12 +296,25 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadObjectIm
     IReadObjectContext* context, const std::string& name, const std::vector<int32_t>& range)
 {
     std::vector<std::unique_ptr<RequiredImage>> result;
-    auto objectPath = FindLegacyObject(name);
-    auto obj = ObjectFactory::CreateObjectFromLegacyFile(
-        context->GetObjectRepository(), objectPath.c_str(), !gOpenRCT2NoGraphics);
+    Object* obj;
+
+    auto cached = _objDataCache.find(name);
+    if (cached != _objDataCache.end())
+    {
+        obj = cached->second.get();
+    }
+    else
+    {
+        auto objectPath = FindLegacyObject(name);
+        auto tmp = ObjectFactory::CreateObjectFromLegacyFile(
+            context->GetObjectRepository(), objectPath.c_str(), !gOpenRCT2NoGraphics);
+        auto inserted = _objDataCache.insert({ name, std::move(tmp) });
+        obj = inserted.first->second.get();
+    }
+
     if (obj != nullptr)
     {
-        auto& imgTable = static_cast<const Object*>(obj.get())->GetImageTable();
+        auto& imgTable = static_cast<const Object*>(obj)->GetImageTable();
         auto numImages = static_cast<int32_t>(imgTable.GetCount());
         auto images = imgTable.GetImages();
         size_t placeHoldersAdded = 0;
@@ -308,7 +323,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadObjectIm
             if (i >= 0 && i < numImages)
             {
                 result.push_back(std::make_unique<RequiredImage>(
-                    static_cast<uint32_t>(i), [images](uint32_t idx) -> const rct_g1_element* { return &images[idx]; }));
+                    static_cast<uint32_t>(i), [images](uint32_t idx) -> const G1Element* { return &images[idx]; }));
             }
             else
             {
@@ -326,7 +341,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadObjectIm
     }
     else
     {
-        std::string msg = "Unable to open '" + objectPath + "'";
+        std::string msg = "Unable to open '" + name + "'";
         context->LogWarning(ObjectError::InvalidProperty, msg.c_str());
         for (size_t i = 0; i < range.size(); i++)
         {
@@ -452,10 +467,10 @@ void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
 
         // Read g1 element headers
         uintptr_t imageDataBase = reinterpret_cast<uintptr_t>(data.get());
-        std::vector<rct_g1_element> newEntries;
+        std::vector<G1Element> newEntries;
         for (uint32_t i = 0; i < numImages; i++)
         {
-            rct_g1_element g1Element{};
+            G1Element g1Element{};
 
             uintptr_t imageDataOffset = static_cast<uintptr_t>(stream->ReadValue<uint32_t>());
             g1Element.offset = reinterpret_cast<uint8_t*>(imageDataBase + imageDataOffset);
@@ -527,7 +542,7 @@ bool ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
         // First gather all the required images from inspecting the JSON
         std::vector<std::unique_ptr<RequiredImage>> allImages;
         auto jsonImages = root["images"];
-        if (!is_csg_loaded() && root.contains("noCsgImages"))
+        if (!IsCsgLoaded() && root.contains("noCsgImages"))
         {
             jsonImages = root["noCsgImages"];
             usesFallbackSprites = true;
@@ -571,7 +586,7 @@ bool ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
                 img = img->next_zoom.get();
 
                 // Set old image zoom offset to zoom image which we are about to add
-                auto g1a = const_cast<rct_g1_element*>(&GetImages()[tableIndex]);
+                auto g1a = const_cast<G1Element*>(&GetImages()[tableIndex]);
                 g1a->zoomed_offset = static_cast<int32_t>(tableIndex) - static_cast<int32_t>(GetCount());
 
                 while (img != nullptr)
@@ -588,13 +603,15 @@ bool ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
         }
     }
 
+    _objDataCache.clear();
+
     return usesFallbackSprites;
 }
 
-void ImageTable::AddImage(const rct_g1_element* g1)
+void ImageTable::AddImage(const G1Element* g1)
 {
-    rct_g1_element newg1 = *g1;
-    auto length = g1_calculate_data_size(g1);
+    G1Element newg1 = *g1;
+    auto length = G1CalculateDataSize(g1);
     if (length == 0)
     {
         newg1.offset = nullptr;

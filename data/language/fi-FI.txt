@@ -97,6 +97,7 @@ STR_0091    :Tuntematon laite (59)
 STR_0092    :Laukaisuvuoristorata
 STR_0093    :Hybridivuoristorata
 STR_0094    :Yksikiskoinen vuoristorata
+STR_0095    :Alppivuoristorata
 STR_0512    :Kompakti vuoristorata, jossa on spiraalimainen nostomäki, ja sulavat, kaartelevat pudotukset.
 STR_0513    :Silmukoiva vuoristorata, jossa matkustajat ovat seisoma-asennossa
 STR_0514    :Junat riippuvat vuoristoradan alla, ja heilahtavat sivuttain käänteissä
@@ -178,6 +179,7 @@ STR_0600    :Moottoroidut kaivosjunat kiitävät sulavasti kiemurtelevan radan h
 STR_0602    :Vuoristorata jonka junat laukaistaan asemalta induktiomoottorilla, ja kiitävät sitten kiermutelevien käännösten läpi
 STR_0603    :Puinen vuoristorata teräskiskoilla, jyrkillä pudotuksilla ja käännöksillä varustettuna
 STR_0604    :Matkustajat kulkevat peräjonossa kapealla yksittäiskiskolla, kiitäen tiukkojen käännösten ja suunnanvaihdoksien läpi
+STR_0605    :Matkustajat laskettelevat kelkalla teräsrataa pitkin alas, säätäen vauhtiansa jarrujen avulla
 STR_0767    :Kävijä {INT32}
 STR_0768    :Yleismies {INT32}
 STR_0769    :Mekaanikko {INT32}
@@ -339,7 +341,6 @@ STR_0950    :Lataa peli
 STR_0951    :Lopeta peli
 STR_0952    :Lopeta peli
 STR_0953    :Lataa maisema
-STR_0954    :
 STR_0955    :Valitse istuimen kiertokulma tälle rataosalle
 STR_0956    :-180°
 STR_0957    :-135°
@@ -387,10 +388,10 @@ STR_0998    :Tähän laitteeseen ei voi rakentaa lisää asemia
 STR_0999    :Vaatii aseman
 STR_1000    :Rata ei tee täyttä kierrosta
 STR_1001    :Rata ei sovellu tälle junatyypille
-STR_1002    :Laitetta {POP16}{POP16}{POP16}{STRINGID} ei voi avata…
-STR_1003    :Laitetta {POP16}{POP16}{POP16}{STRINGID} ei voi testata…
-STR_1004    :Laitetta {POP16}{POP16}{POP16}{STRINGID} ei voi sulkea…
-STR_1005    :Laitetta {POP16}{POP16}{POP16}{STRINGID} ei voi rakentaa…
+STR_1002    :Laitetta {STRINGID} ei voi avata…
+STR_1003    :Laitetta {STRINGID} ei voi testata…
+STR_1004    :Laitetta {STRINGID} ei voi sulkea…
+STR_1005    :Laitetta {STRINGID} ei voi rakentaa…
 STR_1006    :Laitteen täytyy olla suljettu
 STR_1007    :Kulkuneuvoja ei voida luoda tarpeeksi
 STR_1008    :Avaa, sulje tai testaa laitetta/kohdetta
@@ -1221,8 +1222,8 @@ STR_1838    :Tyytyväisyys: {COMMA16}%
 STR_1839    :Luotettavuus: {COMMA16}%
 STR_1840    :Seisokit: {COMMA16}%
 STR_1841    :Tuotto: {CURRENCY2DP} per tunti
-STR_1842    :{COMMA16} kävijän lempilaite
-STR_1843    :{COMMA16} kävijän lempilaite
+STR_1842    :{COMMA32} kävijän lempilaite
+STR_1843    :{COMMA32} kävijän lempilaite
 STR_1844    :valitse tietotyyppi laite-/kohdelistalle
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} kävijää
@@ -1246,7 +1247,7 @@ STR_1863    :yleismies
 STR_1864    :mekaanikko
 STR_1865    :vartija
 STR_1866    :viihdyttäjä
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Kierrosten määrää ei voi muuttaa…
 STR_1869    :{WINDOW_COLOUR_2}Kierrosten määrä:
 STR_1870    :Täysien kierrosten määrä
@@ -1678,7 +1679,7 @@ STR_2314    :{WINDOW_COLOUR_2}Radan pituus: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kustannus: {BLACK}noin {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Tilaa tarvitaan: {BLACK}{COMMA16} x {COMMA16} neliötä
 STR_2321    :{WINDOW_COLOUR_2}Laitteiden/kohteiden määrä: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Henkilöstö: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Henkilöstö: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Puiston koko: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Puiston koko: {BLACK}{COMMA32}ft²
 STR_2325    :Osta maata puiston laajennukseen
@@ -1958,8 +1959,6 @@ STR_2738    :Päävalikon musiikki:
 STR_2739    :Ei mitään
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :css50.dat ei löydy
-STR_2743    :Kopioi data/css17.dat RCT1-asennuksestasi tiedostoon data/css50.dat RCT2-asennuksessasi.
 STR_2749    :Uusi skenaario
 # New strings used in the cheats window previously these were ???
 STR_2750    :Siirrä kaikki esineet ylös
@@ -2195,8 +2194,8 @@ STR_3118    :{BLACK}{STRINGID} matkalla laitteelle
 STR_3119    :{BLACK}{STRINGID} korjaa laitetta
 STR_3120    :Paikanna lähin vapaana oleva mekaanikko, tai mekaanikko, joka korjaa tätä laitetta
 STR_3121    :Mekaanikkoa ei löydy, tai kaikki mekaanikot ovat kiireisiä
-STR_3122    :{WINDOW_COLOUR_2}Suosikkilaite: {BLACK}{COMMA16} kävijälle
-STR_3123    :{WINDOW_COLOUR_2}Suosikkilaite: {BLACK}{COMMA16} kävijälle
+STR_3122    :{WINDOW_COLOUR_2}Suosikkilaite: {BLACK}{COMMA32} kävijälle
+STR_3123    :{WINDOW_COLOUR_2}Suosikkilaite: {BLACK}{COMMA32} kävijälle
 STR_3124    :Hajonnut {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Huvituskerroin: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Jännityskerroin: {BLACK}+{COMMA16}%
@@ -2232,7 +2231,6 @@ STR_3174    :Tätä esinettä tarvitaan toisessa projektissa
 STR_3175    :Tätä esinettä tarvitaan aina
 STR_3176    :Tätä esinettä ei voi valita
 STR_3177    :Tämän esineen valintaa ei voi poistaa
-STR_3178    :Ainakin yksi polkuesine tulee olla valittuna
 STR_3179    :Ainakin yksi vaunutyyppi tai kohde-esine tulee olla valittuna
 STR_3180    :Virheellinen esineiden valinta
 STR_3181    :Esineiden valinta - {STRINGID}
@@ -2243,7 +2241,7 @@ STR_3185    :Pienet maisemoinnit
 STR_3186    :Suuret maisemoinnit
 STR_3187    :Seinät/Aidat
 STR_3188    :Polkukyltit
-STR_3189    :Polut
+STR_3189    :Vanhantyyliset polut
 STR_3190    :Polkulisäosat
 STR_3191    :Maisemointiryhmät
 STR_3192    :Puiston sisäänkäynti
@@ -2265,7 +2263,7 @@ STR_3208    :Ratamallien hallinta
 STR_3209    :Takaisin edelliseen vaiheeseen:
 STR_3210    :Siirry seuraavaan vaiheeseen:
 STR_3211    :Tason koko:
-STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Tasoa ei voi pienentää enempää
 STR_3214    :Tasoa ei voi suurentaa enempää
 STR_3215    :Liian lähellä tason reunaa
@@ -2560,8 +2558,6 @@ STR_5250    :Päävalikon lopetuspainike
 STR_5251    :Päävalikon asetukset-painike
 STR_5252    :Päävalikon skenaarionvalinta
 STR_5253    :Puiston tiedot
-STR_5254    :Luo
-STR_5255    :Luo uusi valikkotausta tyhjästä
 STR_5256    :Luo uusi teema muokattavaksi
 STR_5257    :Luo uusi teema nykyisestä
 STR_5258    :Poista nykyinen teema
@@ -2657,75 +2653,9 @@ STR_5373    :Nimi {STRINGID}
 STR_5374    :Päiväys {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :Tallenteet
-STR_5378    :Komentosarja
-STR_5379    :Siirry seuraavaan odotuskomentoon
-STR_5380    :Toista valikkotausta
-STR_5381    :Lopeta valikkotaustan toisto
-STR_5382    :Aloita valikkotausta alusta
-STR_5383    :Luo uusi valikkotausta nykyisestä
-STR_5384    :Poista nykyinen valikkotausta
-STR_5385    :Nimeä nykyinen valikkotausta uudelleen
-STR_5386    :Lisää uusi komento
-STR_5387    :Muokkaa uusi komento
-STR_5388    :Poista valittu komento
-STR_5389    :Siirry valittuun komentoon valikkotaustassa
-STR_5390    :Siirrä valittu komento alas
-STR_5391    :Siirrä valittu komento ylös
-STR_5392    :Lisää tallenne valikkotaustaan
-STR_5393    :Poista valittu tallenne valikkotaustasta
-STR_5394    :Uudelleennimeä valittu tallenne
-STR_5395    :Lataa valittu tallenne pelissä
-STR_5396    :Lataa valikkotausta uudestaan jos siihen on tehty muutoksia pelin ulkopuolella
-STR_5397    :Voidaan käyttää ainoastaan otsikkoruudussa
-STR_5398    :Valikkotaustaa ei voi muokata kun se on käytössä
-STR_5399    :Paina stop-painiketta jatkaaksesi muokkausta
-STR_5400    :Tätä valikkotaustaa ei voi muuttaa
-STR_5401    :Luo uusi valikkotausta johon tehdä muutoksia
-STR_5402    :Valikkotaustan lataus ei onnistunut
-STR_5403    :Lataus- tai odotuskomentoa ei ole olemassa, tai tallenne on epäkelpo
 STR_5404    :Nimi on jo olemassa
-STR_5405    :Anna nimi tallenteelle
-STR_5406    :Anna nimi valikkotaustalle
-STR_5407    :Lisää
-STR_5408    :Poista
-STR_5409    :Lisää
-STR_5410    :Muokkaa
-STR_5411    :Lataa uudelleen
-STR_5412    :Siirry
-STR_5413    :Lataa
-STR_5415    :Lataa{MOVE_X}{87}{STRING}
-STR_5416    :Lataa{MOVE_X}{87}Tallennetta ei ole valittu
-STR_5417    :Sijainti
-STR_5418    :Sijainti{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Käännä
-STR_5420    :Käännä{MOVE_X}{87}{COMMA16}
-STR_5421    :Zoomaa
-STR_5422    :Zoomaa{MOVE_X}{87}{COMMA16}
-STR_5423    :Odota
-STR_5424    :Odota{MOVE_X}{87}{UINT16}
-STR_5425    :Uudelleen käynnistä
-STR_5426    :Lopeta
-STR_5427    :Koordinaatit:
-STR_5428    :Vastapäivään käännökset:
-STR_5429    :Suurennus:
-STR_5430    :Sekuntia odottaa:
-STR_5431    :Tallenna lataakseen:
-STR_5432    :Komento:
-STR_5433    :Valikkotaustat
-STR_5434    :Komentojenmuokkain
-STR_5435    :Uudelleen nimeä tallenne
-STR_5436    :Muokkaa valikkotaustoja…
-STR_5437    :Tallennusta ei valittuna
-STR_5438    :Muutosten teko ei onnistu komentojenmuokkaimen ollessa päällä
-STR_5439    :Ainakin 4 sekunnin odotuskomento tarvitaan uudelleenkäynnistyskomennon kanssa
 STR_5440    :Pienennä kokonäyttötila kohdistuksen poistuessa
-STR_5441    :Tunnistaa laitteet ratatyypin perusteella, jotta vaunut voi vaihtaa jälkikäteen, kuten RCT1:ssä.
 STR_5442    :Pakota puiston taso:
-STR_5443    :Nopeus{MOVE_X}{87}{STRINGID}
-STR_5444    :Nopeus:
-STR_5445    :Nopeus
-STR_5446    :Hanki
 STR_5447    :Tyyppi {STRINGID}
 STR_5448    :Laite / Vaunu {STRINGID}
 STR_5449    :Vähennä pelin nopeutta
@@ -2784,8 +2714,6 @@ STR_5503    :Anna isäntänimi tai IP-osoite:
 STR_5504    :Näytä moninpelin tilanne
 STR_5505    :Yhdistäminen ei onnistunut.
 STR_5506    :Kävijät eivät piittaa intensiteetistä
-STR_5508    :Salli lataus väärästä tarkistussummasta huolimatta
-STR_5509    :Sallii skenaarioiden ja tallennustiedostojen latauksen vaikka tarkistussumma olisi väärä, kuten esim. demoskenaariot tai vaurioituneet tallennukset.
 STR_5510    :Oletusäänilaite
 STR_5511    :(TUNTEMATON)
 STR_5512    :Tallenna peli nimellä
@@ -2840,8 +2768,6 @@ STR_5560    :Asettaa tarkastusvälin ‘10 minuutin välein’ kaikkiin laitteis
 STR_5561    :Kielen lataus epäonnistui
 STR_5562    :VAROITUS!
 STR_5563    :Tämä ominaisuus on epävakaa, olethan varovainen
-STR_5564    :Lisää vioittunut elementti
-STR_5565    :Lisää ruudun pinnalle vioittuneen tasoelementin. Tämä piilottaa näkyvistä sen yläpuolella olevan elementin.
 STR_5566    :Salasana:
 STR_5567    :Mainosta
 STR_5568    :Salasana vaaditaan
@@ -3083,7 +3009,6 @@ STR_5844    :Pysy yhteydessä moninpelipalvelimeen myös epätahdistuksen tai vi
 STR_5845    :Lisää työkalupalkkiin painikkeen virheenkorjaustyökaluihin.{NEWLINE}Ottaa käyttöön pikanäppäimen kehittäjäkonsoliin
 STR_5846    :Valitse kuinka usein OpenRCT2 tallentaa pelin automaattisesti
 STR_5847    :Valitse puistotausta päävalikon taustalle.{NEWLINE}RCT1/2:n valikkotaustat tarvitsevat tuodut skenaariot toimiakseen
-STR_5848    :Luo ja hallitse mukautettuja valikkotaustoja
 STR_5849    :Sijoita juuri palkatut työntekijät polulle automaattisesti
 STR_5851    :Asettaa oletustarkastusvälin uusille laitteille
 STR_5853    :Kytke äänitehosteet päälle/pois
@@ -3283,7 +3208,6 @@ STR_6047    :Sileät ruudut
 STR_6048    :Korkeuskarttavirhe
 STR_6049    :Virhe lukiessa PNG:tä
 STR_6050    :Virhe lukiessa bittikarttakuvaa
-STR_6051    :Leveyden ja pituuden tulee olla samat
 STR_6052    :Korkeuskartta on liian iso, ja leikkautuu
 STR_6053    :Korkeuskarttaa ei voi normalisoida
 STR_6054    :Vain 24-bittisiä bittikarttakuvia tuetaan
@@ -3382,7 +3306,6 @@ STR_6154    :Turvasyistä ei ole suositeltavaa pelata OpenRCT2:a korotetuilla k�
 STR_6155    :Sekä KDialog että Zenity eivät ole asennettuina. Ole hyvä ja asenna yksi, tai määritä komentoriviltä.
 STR_6156    :Nimi on varattu
 STR_6157    :Konsoli
-STR_6158    :Tiedostoa ei voi ladata…{NEWLINE}Yhteensopimaton RCTC-versio: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Vaunutyypit saatavilla: {BLACK}{STRING}
 STR_6161    :Maastoruudukko -kytkin
 STR_6162    :Pyörivä villihiiri
@@ -3397,23 +3320,8 @@ STR_6170    :Käyttöliittymän asetukset
 STR_6171    :Haku
 STR_6172    :Haku
 STR_6173    :Anna haettava nimi:
-STR_6174    :Lataa tallennus
-STR_6175    :Lataa skenaario
-STR_6176    :Ladattava skenaario:
-STR_6177    :Lataa{MOVE_X}{87}Ei valittua skenaariota
-STR_6178    :Lataa{MOVE_X}{87}{RED}Puuttuva skenaario
-STR_6179    :Valitse
-STR_6180    :Ei valittua skenaariota
-STR_6181    :{RED}Puuttuva skenaario
-STR_6182    :Seuraa{MOVE_X}{87}{STRING}
-STR_6183    :Seuraa{MOVE_X}{87}Ei valittua spriteä
-STR_6184    :Seuraa spriteä
-STR_6185    :Valitse sprite
-STR_6186    :Ei valittua spriteä
-STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Oksennus
 STR_6189    :Ankka
-STR_6190    :Et voi valita spriteä kun päävalikko on käytössä.
 STR_6191    :Pinta
 STR_6192    :Seinä
 STR_6193    :{COMMA16} kävijä
@@ -3526,7 +3434,7 @@ STR_6322    :{WINDOW_COLOUR_2}Spritetunnus: {BLACK}{INT32}
 STR_6323    :Simuloidaan
 STR_6324    :Simuloi
 STR_6325    :Simuloi laitetta
-STR_6326    :Laitetta {POP16}{POP16}{POP16}{STRINGID} ei voi simuloida…
+STR_6326    :Laitetta {STRINGID} ei voi simuloida…
 STR_6327    :Läpinäkyvä tausta jättiruudunkaappauksissa
 STR_6328    :Kun päällä, jättiruudunkaappauksissa on läpinäkyvä tausta normaalin mustan taustan sijaan.
 STR_6329    :{STRING}{STRINGID}
@@ -3535,7 +3443,6 @@ STR_6331    :Luo ankkoja
 STR_6332    :Poista ankat
 STR_6333    :Nosta skaalauskerrointa
 STR_6334    :Laske skaalauskerrointa
-STR_6335    :Ruututyökalu: Lisää vioittunut elementti
 STR_6336    :Ruututyökalu: Kopioi elementti
 STR_6337    :Ruututyökalu: Liitä elementti
 STR_6338    :Ruututyökalu: Poista elementti
@@ -3571,7 +3478,7 @@ STR_6367    :Animaatiokehys:
 STR_6368    :Yhteensopivuussyistä emme suosittele että käytät OpenRCT2:ta Winen kautta. OpenRCT2 tukee natiivisti macOSia, Linuxia, FreeBSD:tä ja OpenBSD:tä.
 STR_6369    :Salli radan rakennus vääriin korkeuksiin
 STR_6370    :Sallii radan sijoituksen mihin tahansa korkeuteen
-STR_6371    :Valitussa hakemistossa on RollerCoaster Tycoon 1 -asennus, mutta “csg1i.dat” -tiedosto puuttuu. Sinun tulee kopioida tämä tiedosto RollerCoaster Tycoon 1 -CD:ltä kiintolevyllesi RollerCoaster Tycoon 1 -asennuksen “Data” -kansioon.
+STR_6371    :Valitussa hakemistossa on RollerCoaster Tycoon 1 -asennus, mutta “csg1i.dat” -tiedosto puuttuu. Sinun tulee kopioida tämä tiedosto joko Loopy Landscapes tai RCT Deluxe -CD:ltä kiintolevyllesi RollerCoaster Tycoon 1 -asennuksen “Data” -kansioon.
 STR_6372    :Valitussa hakemistossa on RollerCoaster Tycoon 1 -asennus, mutta tämä versio on väärä. OpenRCT2 tarvitsee joko Loopy Landscapes tai RCT Deluxe -asennuksen käyttääkseen RollerCoaster Tycoon 1 -tiedostoja.
 STR_6373    :Vapaan tilan tarkistus päälle/pois
 STR_6374    :C
@@ -3658,6 +3565,46 @@ STR_6454    :Banneria ei voi uudelleennimetä…
 STR_6455    :Kylttiä ei voi uudelleennimetä…
 STR_6456    :Jättiruudunkaappaus
 STR_6457    :Ilmoita viasta GitHubissa
+STR_6458    :Seuraa tätä päänäkymässä
+STR_6460    :S
+STR_6461    :Suunta
+STR_6462    :Huvitus
+STR_6463    :Huvitus: {COMMA2DP32}
+STR_6464    :Jännitys
+STR_6465    :Jännitys: {COMMA2DP32}
+STR_6466    :Pahoinvointi
+STR_6467    :Pahoinvointi: {COMMA2DP32}
+STR_6468    :Ei vielä tiedossa
+STR_6469    :Säädä pienempää partioaluetta
+STR_6470    :Säädä suurempaa partioaluetta
+STR_6471    :Läpinäkyvä kasvitus
+STR_6472    :Läpinäkyvät kulkuneuvot
+STR_6473    :Läpinäkyvät tukirakenteet
+STR_6474    :Läpinäkyvät kävijät
+STR_6475    :Läpinäkyvä henkilöstö
+STR_6476    :Näkymätön kasvitus
+STR_6477    :Näkymättömät maisemoinnit
+STR_6478    :Näkymättömät polut
+STR_6479    :Näkymättömät laitteet
+STR_6480    :Näkymättömät kulkuneuvot
+STR_6481    :Läpinäkyvyysasetukset
+STR_6482    :Läpinäkyvyysasetukset
+STR_6483    :Avaa läpinäkyvyyden asetukset
+STR_6484    :Läpinäkyvä kasvitus -kytkin
+STR_6485    :Läpinäkyvät kulkuneuvot -kytkin
+STR_6486    :Läpinäkyvät kävijät -kytkin
+STR_6487    :Läpinäkyvä henkilöstö -kytkin
+STR_6488    :{RED}Kävijät valittavat pitkistä jonoista puistosi laitteisiin.{NEWLINE}Lyhennä ongelmallisia jonotusalueita, tai korota laitteiden kapasiteettia.
+STR_6489    :Virhe: Yhteensopimaton puistoversio
+STR_6490    :Varoitus: Jokseenkin yhteensopiva puistoversio
+STR_6491    :Tämä puisto on tallennettu uudemmalla OpenRCT2-versiolla. Puisto on v{INT32} ja vaatii vähintään v{INT32}.
+STR_6492    :Tämä puisto on tallennettu vanhemmalla OpenRCT2-versiolla, eikä sitä voi avata tällä peliversiolla. Puisto on v{INT32}.
+STR_6493    :Tämä puisto on tallennettu uudemmalla OpenRCT2-versiolla, ja jotkin tiedot ovat saattaneet kadota. Puisto on v{INT32} ja vaatii vähintään v{INT32}.
+STR_6494    :Ryhmitä laitetyypittäin
+STR_6495    :Ryhmitä laitteet laitetyypin perusteella, yksittäisten kulkuneuvojen sijaan.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Klikkaa ruutua nähdäksesi sen elementit.{NEWLINE}Ctrl + klikkaa ruutuelementtiä valitaksesi sen suoraan.
+STR_6498    :Ota käyttöön pitääksesi kartan neliönä.
 
 #############
 # Scenarios #
@@ -4107,62 +4054,8 @@ STR_DTLS    :
 
 ## Start OpenRCT2 Official
 
-[TTPIRF02]
-STR_NAME    :Katto
-
-[TTPIRF03]
-STR_NAME    :Katto
-
-[TTPIRF04]
-STR_NAME    :Katto
-
 [TTPIRF05]
 STR_NAME    :Katto
-
-[TTPIRF07]
-STR_NAME    :Katto
-
-[TTPIRF08]
-STR_NAME    :Katto
-
-[TTRFWD01]
-STR_NAME    :Katto
-
-[TTRFWD02]
-STR_NAME    :Katto
-
-[TTRFWD03]
-STR_NAME    :Katto
-
-[TTRFWD04]
-STR_NAME    :Katto
-
-[TTRFWD05]
-STR_NAME    :Katto
-
-[TTRFWD06]
-STR_NAME    :Katto
-
-[TTRFWD07]
-STR_NAME    :Katto
-
-[TTRFWD08]
-STR_NAME    :Katto
-
-[TTRFGL01]
-STR_NAME    :Lasikatto
-
-[TTRFGL02]
-STR_NAME    :Lasikatto
-
-[TTRFGL03]
-STR_NAME    :Lasikatto
-
-[ACWW33]
-STR_NAME    :Puinen tolppaseinä
-
-[ACWWF32]
-STR_NAME    :Puinen tolppaseinä
 
 ## End OpenRCT2 Official
 

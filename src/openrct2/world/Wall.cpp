@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,15 +16,15 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/ObjectEntryManager.h"
+#include "../object/WallSceneryEntry.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "Banner.h"
-#include "LargeScenery.h"
 #include "Map.h"
 #include "MapAnimation.h"
 #include "Park.h"
 #include "Scenery.h"
-#include "SmallScenery.h"
 #include "Surface.h"
 #include "Wall.h"
 
@@ -32,14 +32,13 @@
  *
  *  rct2: 0x006E588E
  */
-void wall_remove_at(const CoordsXYRangedZ& wallPos)
+void WallRemoveAt(const CoordsXYRangedZ& wallPos)
 {
-    for (auto wallElement = map_get_wall_element_at(wallPos); wallElement != nullptr;
-         wallElement = map_get_wall_element_at(wallPos))
+    for (auto wallElement = MapGetWallElementAt(wallPos); wallElement != nullptr; wallElement = MapGetWallElementAt(wallPos))
     {
         reinterpret_cast<TileElement*>(wallElement)->RemoveBannerEntry();
-        map_invalidate_tile_zoom1({ wallPos, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
-        tile_element_remove(reinterpret_cast<TileElement*>(wallElement));
+        MapInvalidateTileZoom1({ wallPos, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
+        TileElementRemove(reinterpret_cast<TileElement*>(wallElement));
     }
 }
 
@@ -47,20 +46,20 @@ void wall_remove_at(const CoordsXYRangedZ& wallPos)
  *
  *  rct2: 0x006E57E6
  */
-void wall_remove_at_z(const CoordsXYZ& wallPos)
+void WallRemoveAtZ(const CoordsXYZ& wallPos)
 {
-    wall_remove_at({ wallPos, wallPos.z, wallPos.z + 48 });
+    WallRemoveAt({ wallPos, wallPos.z, wallPos.z + 48 });
 }
 
 /**
  *
  *  rct2: 0x006E5935
  */
-void wall_remove_intersecting_walls(const CoordsXYRangedZ& wallPos, Direction direction)
+void WallRemoveIntersectingWalls(const CoordsXYRangedZ& wallPos, Direction direction)
 {
     TileElement* tileElement;
 
-    tileElement = map_get_first_element_at(wallPos);
+    tileElement = MapGetFirstElementAt(wallPos);
     if (tileElement == nullptr)
         return;
     do
@@ -75,21 +74,21 @@ void wall_remove_intersecting_walls(const CoordsXYRangedZ& wallPos, Direction di
             continue;
 
         tileElement->RemoveBannerEntry();
-        map_invalidate_tile_zoom1({ wallPos, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 72 });
-        tile_element_remove(tileElement);
+        MapInvalidateTileZoom1({ wallPos, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 72 });
+        TileElementRemove(tileElement);
         tileElement--;
     } while (!(tileElement++)->IsLastForTile());
 }
 
 uint8_t WallElement::GetSlope() const
 {
-    return (type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+    return (Type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
 }
 
 void WallElement::SetSlope(uint8_t newSlope)
 {
-    type &= ~TILE_ELEMENT_QUADRANT_MASK;
-    type |= (newSlope << 6);
+    Type &= ~TILE_ELEMENT_QUADRANT_MASK;
+    Type |= (newSlope << 6);
 }
 
 colour_t WallElement::GetPrimaryColour() const
@@ -138,9 +137,9 @@ uint16_t WallElement::GetEntryIndex() const
     return entryIndex;
 }
 
-WallSceneryEntry* WallElement::GetEntry() const
+const WallSceneryEntry* WallElement::GetEntry() const
 {
-    return get_wall_entry(entryIndex);
+    return OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(entryIndex);
 }
 
 void WallElement::SetEntryIndex(uint16_t newIndex)

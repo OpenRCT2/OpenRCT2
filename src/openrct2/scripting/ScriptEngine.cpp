@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -47,12 +47,15 @@
 #    include "bindings/world/ScMap.hpp"
 #    include "bindings/world/ScPark.hpp"
 #    include "bindings/world/ScParkMessage.hpp"
+#    include "bindings/world/ScResearch.hpp"
 #    include "bindings/world/ScScenario.hpp"
 #    include "bindings/world/ScTile.hpp"
 #    include "bindings/world/ScTileElement.hpp"
 
 #    include <iostream>
+#    include <memory>
 #    include <stdexcept>
+#    include <string>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
@@ -407,17 +410,21 @@ void ScriptEngine::Initialise()
     ScPlayer::Register(ctx);
     ScPlayerGroup::Register(ctx);
     ScProfiler::Register(ctx);
+    ScResearch::Register(ctx);
     ScRide::Register(ctx);
     ScRideStation::Register(ctx);
     ScRideObject::Register(ctx);
     ScRideObjectVehicle::Register(ctx);
     ScTile::Register(ctx);
     ScTileElement::Register(ctx);
+    ScTrackIterator::Register(ctx);
+    ScTrackSegment::Register(ctx);
     ScEntity::Register(ctx);
     ScLitter::Register(ctx);
     ScVehicle::Register(ctx);
     ScPeep::Register(ctx);
     ScGuest::Register(ctx);
+    ScThought::Register(ctx);
 #    ifndef DISABLE_NETWORK
     ScSocket::Register(ctx);
     ScListener::Register(ctx);
@@ -434,9 +441,11 @@ void ScriptEngine::Initialise()
     dukglue_register_global(ctx, std::make_shared<ScDate>(), "date");
     dukglue_register_global(ctx, std::make_shared<ScMap>(ctx), "map");
     dukglue_register_global(ctx, std::make_shared<ScNetwork>(ctx), "network");
-    dukglue_register_global(ctx, std::make_shared<ScPark>(), "park");
+    dukglue_register_global(ctx, std::make_shared<ScPark>(ctx), "park");
     dukglue_register_global(ctx, std::make_shared<ScProfiler>(ctx), "profiler");
     dukglue_register_global(ctx, std::make_shared<ScScenario>(), "scenario");
+
+    RegisterConstants();
 
     _initialised = true;
     _transientPluginsEnabled = false;
@@ -444,6 +453,72 @@ void ScriptEngine::Initialise()
 
     LoadSharedStorage();
     ClearParkStorage();
+}
+
+class ConstantBuilder
+{
+private:
+    duk_context* _ctx;
+    DukValue _obj;
+
+public:
+    ConstantBuilder(duk_context* ctx)
+        : _ctx(ctx)
+    {
+        duk_push_global_object(_ctx);
+        _obj = DukValue::take_from_stack(_ctx);
+    }
+
+    ConstantBuilder& Namespace(std::string_view ns)
+    {
+        auto flags = DUK_DEFPROP_ENUMERABLE | DUK_DEFPROP_HAVE_WRITABLE | DUK_DEFPROP_HAVE_ENUMERABLE
+            | DUK_DEFPROP_HAVE_CONFIGURABLE | DUK_DEFPROP_HAVE_VALUE;
+
+        // Create a new object for namespace
+        duk_push_global_object(_ctx);
+        duk_push_lstring(_ctx, ns.data(), ns.size());
+        duk_push_object(_ctx);
+
+        // Keep a reference to the namespace object
+        duk_dup_top(_ctx);
+        _obj = DukValue::take_from_stack(_ctx);
+
+        // Place the namespace object into the global context
+        duk_def_prop(_ctx, -3, flags);
+        duk_pop(_ctx);
+
+        return *this;
+    }
+
+    ConstantBuilder& Constant(std::string_view name, int32_t value)
+    {
+        auto flags = DUK_DEFPROP_ENUMERABLE | DUK_DEFPROP_HAVE_WRITABLE | DUK_DEFPROP_HAVE_ENUMERABLE
+            | DUK_DEFPROP_HAVE_CONFIGURABLE | DUK_DEFPROP_HAVE_VALUE;
+        _obj.push();
+        duk_push_lstring(_ctx, name.data(), name.size());
+        duk_push_int(_ctx, value);
+        duk_def_prop(_ctx, -3, flags);
+        duk_pop(_ctx);
+        return *this;
+    }
+};
+
+void ScriptEngine::RegisterConstants()
+{
+    ConstantBuilder builder(_context);
+    builder.Namespace("TrackSlope")
+        .Constant("None", TRACK_SLOPE_NONE)
+        .Constant("Up25", TRACK_SLOPE_UP_25)
+        .Constant("Up60", TRACK_SLOPE_UP_60)
+        .Constant("Down25", TRACK_SLOPE_DOWN_25)
+        .Constant("Down60", TRACK_SLOPE_DOWN_60)
+        .Constant("Up90", TRACK_SLOPE_UP_90)
+        .Constant("Down90", TRACK_SLOPE_DOWN_90);
+    builder.Namespace("TrackBanking")
+        .Constant("None", TRACK_BANK_NONE)
+        .Constant("BankLeft", TRACK_BANK_LEFT)
+        .Constant("BankRight", TRACK_BANK_RIGHT)
+        .Constant("UpsideDown", TRACK_BANK_UPSIDE_DOWN);
 }
 
 void ScriptEngine::RefreshPlugins()
@@ -483,7 +558,7 @@ void ScriptEngine::RefreshPlugins()
     }
 
     // Turn on hot reload if not already enabled
-    if (!_hotReloadingInitialised && gConfigPlugin.enable_hot_reloading && network_get_mode() == NETWORK_MODE_NONE)
+    if (!_hotReloadingInitialised && gConfigPlugin.EnableHotReloading && NetworkGetMode() == NETWORK_MODE_NONE)
     {
         SetupHotReloading();
     }
@@ -699,8 +774,8 @@ void ScriptEngine::SetupHotReloading()
         if (Path::DirectoryExists(base))
         {
             _pluginFileWatcher = std::make_unique<FileWatcher>(base);
-            _pluginFileWatcher->OnFileChanged = [this](const std::string& path) {
-                std::lock_guard<std::mutex> guard(_changedPluginFilesMutex);
+            _pluginFileWatcher->OnFileChanged = [this](u8string_view path) {
+                std::lock_guard guard(_changedPluginFilesMutex);
                 _changedPluginFiles.emplace(path);
             };
             _hotReloadingInitialised = true;
@@ -727,10 +802,10 @@ void ScriptEngine::DoAutoReloadPluginCheck()
 
 void ScriptEngine::AutoReloadPlugins()
 {
-    if (_changedPluginFiles.size() > 0)
+    if (!_changedPluginFiles.empty())
     {
-        std::lock_guard<std::mutex> guard(_changedPluginFilesMutex);
-        for (auto& path : _changedPluginFiles)
+        std::lock_guard guard(_changedPluginFilesMutex);
+        for (const auto& path : _changedPluginFiles)
         {
             auto findResult = std::find_if(_plugins.begin(), _plugins.end(), [&path](const std::shared_ptr<Plugin>& plugin) {
                 return Path::Equals(path, plugin->GetPath());
@@ -803,7 +878,7 @@ void ScriptEngine::StartTransientPlugins()
 
 bool ScriptEngine::ShouldStartPlugin(const std::shared_ptr<Plugin>& plugin)
 {
-    auto networkMode = network_get_mode();
+    auto networkMode = NetworkGetMode();
     if (networkMode == NETWORK_MODE_CLIENT)
     {
         // Only client plugins and plugins downloaded from server should be started
@@ -946,8 +1021,13 @@ void ScriptEngine::RemoveNetworkPlugins()
     auto it = _plugins.begin();
     while (it != _plugins.end())
     {
-        if (!(*it)->HasPath())
+        auto plugin = (*it);
+        if (!plugin->HasPath())
         {
+            StopPlugin(plugin);
+            UnloadPlugin(plugin);
+            LogPluginInfo(plugin, "Unregistered network plugin");
+
             it = _plugins.erase(it);
         }
         else
@@ -957,16 +1037,16 @@ void ScriptEngine::RemoveNetworkPlugins()
     }
 }
 
-GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(std::string_view id, std::string_view args, bool isExecute)
+GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAction& customAction, bool isExecute)
 {
-    std::string actionz = std::string(id);
+    std::string actionz = customAction.GetId();
     auto kvp = _customActions.find(actionz);
     if (kvp != _customActions.end())
     {
-        const auto& customAction = kvp->second;
+        const auto& customActionInfo = kvp->second;
 
         // Deserialise the JSON args
-        std::string argsz(args);
+        std::string argsz = customAction.GetJson();
 
         auto dukArgs = DuktapeTryParseJson(_context, argsz);
         if (!dukArgs)
@@ -977,15 +1057,33 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(std::string_vie
             return action;
         }
 
+        std::vector<DukValue> pluginCallArgs;
+        if (GetTargetAPIVersion() <= API_VERSION_68_CUSTOM_ACTION_ARGS)
+        {
+            pluginCallArgs = { *dukArgs };
+        }
+        else
+        {
+            DukObject obj(_context);
+            obj.Set("action", actionz);
+            obj.Set("args", *dukArgs);
+            obj.Set("player", customAction.GetPlayer());
+            obj.Set("type", EnumValue(customAction.GetType()));
+
+            auto flags = customAction.GetActionFlags();
+            obj.Set("isClientOnly", (flags & GameActions::Flags::ClientOnly) != 0);
+            pluginCallArgs = { obj.Take() };
+        }
+
         // Ready to call plugin handler
         DukValue dukResult;
         if (!isExecute)
         {
-            dukResult = ExecutePluginCall(customAction.Owner, customAction.Query, { *dukArgs }, false);
+            dukResult = ExecutePluginCall(customActionInfo.Owner, customActionInfo.Query, pluginCallArgs, false);
         }
         else
         {
-            dukResult = ExecutePluginCall(customAction.Owner, customAction.Execute, { *dukArgs }, true);
+            dukResult = ExecutePluginCall(customActionInfo.Owner, customActionInfo.Execute, pluginCallArgs, true);
         }
         return DukToGameActionResult(dukResult);
     }
@@ -1058,12 +1156,14 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Gam
     DukStackFrame frame(_context);
     DukObject obj(_context);
 
-    auto player = action.GetPlayer();
-    if (player != -1)
+    obj.Set("error", static_cast<duk_int_t>(result.Error));
+    if (result.Error != GameActions::Status::Ok)
     {
-        obj.Set("player", action.GetPlayer());
+        obj.Set("errorTitle", result.GetErrorTitle());
+        obj.Set("errorMessage", result.GetErrorMessage());
     }
-    if (result.Cost != MONEY32_UNDEFINED)
+
+    if (result.Cost != MONEY64_UNDEFINED)
     {
         obj.Set("cost", result.Cost);
     }
@@ -1071,12 +1171,12 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Gam
     {
         obj.Set("position", ToDuk(_context, result.Position));
     }
-
     if (result.Expenditure != ExpenditureType::Count)
     {
         obj.Set("expenditureType", ExpenditureTypeToString(result.Expenditure));
     }
 
+    // RideCreateAction only
     if (action.GetType() == GameCommand::CreateRide)
     {
         if (result.Error == GameActions::Status::Ok)
@@ -1085,6 +1185,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Gam
             obj.Set("ride", rideIndex.ToUnderlying());
         }
     }
+    // StaffHireNewAction only
     else if (action.GetType() == GameCommand::HireNewStaffMember)
     {
         if (result.Error == GameActions::Status::Ok)
@@ -1198,11 +1299,10 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "bannersetcolour", GameCommand::SetBannerColour },
     { "bannersetname", GameCommand::SetBannerName },
     { "bannersetstyle", GameCommand::SetBannerStyle },
-    { "changemapsize", GameCommand::ChangeMapSize },
     { "clearscenery", GameCommand::ClearScenery },
     { "climateset", GameCommand::SetClimate },
     { "footpathplace", GameCommand::PlacePath },
-    { "footpathplacefromtrack", GameCommand::PlacePathFromTrack },
+    { "footpathlayoutplace", GameCommand::PlacePathLayout },
     { "footpathremove", GameCommand::RemovePath },
     { "footpathadditionplace", GameCommand::PlaceFootpathAddition },
     { "footpathadditionremove", GameCommand::RemoveFootpathAddition },
@@ -1213,45 +1313,48 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "landraise", GameCommand::RaiseLand },
     { "landsetheight", GameCommand::SetLandHeight },
     { "landsetrights", GameCommand::SetLandOwnership },
-    { "landsmoothaction", GameCommand::EditLandSmooth },
+    { "landsmooth", GameCommand::EditLandSmooth },
     { "largesceneryplace", GameCommand::PlaceLargeScenery },
     { "largesceneryremove", GameCommand::RemoveLargeScenery },
-    { "largescenerysetcolour", GameCommand::SetSceneryColour },
+    { "largescenerysetcolour", GameCommand::SetLargeSceneryColour },
     { "loadorquit", GameCommand::LoadOrQuit },
+    { "mapchangesize", GameCommand::ChangeMapSize },
     { "mazeplacetrack", GameCommand::PlaceMazeDesign },
     { "mazesettrack", GameCommand::SetMazeTrack },
     { "networkmodifygroup", GameCommand::ModifyGroups },
+    { "parkentranceplace", GameCommand::PlaceParkEntrance },
     { "parkentranceremove", GameCommand::RemoveParkEntrance },
     { "parkmarketing", GameCommand::StartMarketingCampaign },
     { "parksetdate", GameCommand::SetDate },
+    { "parksetentrancefee", GameCommand::SetParkEntranceFee },
     { "parksetloan", GameCommand::SetCurrentLoan },
     { "parksetname", GameCommand::SetParkName },
     { "parksetparameter", GameCommand::SetParkOpen },
     { "parksetresearchfunding", GameCommand::SetResearchFunding },
     { "pausetoggle", GameCommand::TogglePause },
     { "peeppickup", GameCommand::PickupGuest },
-    { "placeparkentrance", GameCommand::PlaceParkEntrance },
-    { "placepeepspawn", GameCommand::PlacePeepSpawn },
+    { "peepspawnplace", GameCommand::PlacePeepSpawn },
     { "playerkick", GameCommand::KickPlayer },
     { "playersetgroup", GameCommand::SetPlayerGroup },
     { "ridecreate", GameCommand::CreateRide },
     { "ridedemolish", GameCommand::DemolishRide },
     { "rideentranceexitplace", GameCommand::PlaceRideEntranceOrExit },
     { "rideentranceexitremove", GameCommand::RemoveRideEntranceOrExit },
+    { "ridefreezerating", GameCommand::FreezeRideRating },
     { "ridesetappearance", GameCommand::SetRideAppearance },
     { "ridesetcolourscheme", GameCommand::SetColourScheme },
     { "ridesetname", GameCommand::SetRideName },
     { "ridesetprice", GameCommand::SetRidePrice },
     { "ridesetsetting", GameCommand::SetRideSetting },
     { "ridesetstatus", GameCommand::SetRideStatus },
-    { "ridesetvehicles", GameCommand::SetRideVehicles },
+    { "ridesetvehicle", GameCommand::SetRideVehicles },
     { "scenariosetsetting", GameCommand::EditScenarioOptions },
-    { "setcheataction", GameCommand::Cheat },
-    { "setparkentrancefee", GameCommand::SetParkEntranceFee },
+    { "cheatset", GameCommand::Cheat },
     { "signsetname", GameCommand::SetSignName },
     { "signsetstyle", GameCommand::SetSignStyle },
     { "smallsceneryplace", GameCommand::PlaceScenery },
     { "smallsceneryremove", GameCommand::RemoveScenery },
+    { "smallscenerysetcolour", GameCommand::SetSceneryColour},
     { "stafffire", GameCommand::FireStaffMember },
     { "staffhire", GameCommand::HireNewStaffMember },
     { "staffsetcolour", GameCommand::SetStaffColour },
@@ -1391,7 +1494,13 @@ std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(const std::string& ac
     auto jsonz = duk_json_encode(ctx, -1);
     auto json = std::string(jsonz);
     duk_pop(ctx);
-    return std::make_unique<CustomAction>(actionid, json);
+    auto customAction = std::make_unique<CustomAction>(actionid, json);
+
+    if (customAction->GetPlayer() == -1 && NetworkGetMode() != NETWORK_MODE_NONE)
+    {
+        customAction->SetPlayer(NetworkGetCurrentPlayerId());
+    }
+    return customAction;
 }
 
 void ScriptEngine::InitSharedStorage()
@@ -1616,7 +1725,7 @@ std::string OpenRCT2::Scripting::ProcessString(const DukValue& value)
 bool OpenRCT2::Scripting::IsGameStateMutable()
 {
     // Allow single player to alter game state anywhere
-    if (network_get_mode() == NETWORK_MODE_NONE)
+    if (NetworkGetMode() == NETWORK_MODE_NONE)
     {
         return true;
     }
@@ -1629,7 +1738,7 @@ bool OpenRCT2::Scripting::IsGameStateMutable()
 void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()
 {
     // Allow single player to alter game state anywhere
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (NetworkGetMode() != NETWORK_MODE_NONE)
     {
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto& execInfo = scriptEngine.GetExecInfo();

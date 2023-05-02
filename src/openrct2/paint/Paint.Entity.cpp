@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,11 +34,11 @@
  * Paint Quadrant
  *  rct2: 0x0069E8B0
  */
-void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
+void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
 {
     PROFILED_FUNCTION();
 
-    if (!map_is_location_valid(pos))
+    if (!MapIsLocationValid(pos))
     {
         return;
     }
@@ -47,8 +47,7 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
         return;
     }
 
-    rct_drawpixelinfo* dpi = &session.DPI;
-    if (dpi->zoom_level > ZoomLevel{ 2 })
+    if (session.DPI.zoom_level > ZoomLevel{ 2 })
     {
         return;
     }
@@ -85,27 +84,27 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
             {
                 continue;
             }
-            if (entityPos.x < gClipSelectionA.x || entityPos.x > gClipSelectionB.x)
+            if (entityPos.x < gClipSelectionA.x || entityPos.x > (gClipSelectionB.x + COORDS_XY_STEP - 1))
             {
                 continue;
             }
-            if (entityPos.y < gClipSelectionA.y || entityPos.y > gClipSelectionB.y)
+            if (entityPos.y < gClipSelectionA.y || entityPos.y > (gClipSelectionB.y + COORDS_XY_STEP - 1))
             {
                 continue;
             }
         }
 
-        dpi = &session.DPI;
-
-        if (dpi->y + dpi->height <= spr->SpriteRect.GetTop() || spr->SpriteRect.GetBottom() <= dpi->y
-            || dpi->x + dpi->width <= spr->SpriteRect.GetLeft() || spr->SpriteRect.GetRight() <= dpi->x)
+        if (session.DPI.y + session.DPI.height <= spr->SpriteData.SpriteRect.GetTop()
+            || spr->SpriteData.SpriteRect.GetBottom() <= session.DPI.y
+            || session.DPI.x + session.DPI.width <= spr->SpriteData.SpriteRect.GetLeft()
+            || spr->SpriteData.SpriteRect.GetRight() <= session.DPI.x)
         {
             continue;
         }
 
         int32_t image_direction = session.CurrentRotation;
         image_direction <<= 3;
-        image_direction += spr->sprite_direction;
+        image_direction += spr->Orientation;
         image_direction &= 0x1F;
 
         session.CurrentlyDrawnEntity = spr;
@@ -117,12 +116,10 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
         {
             case EntityType::Vehicle:
                 spr->As<Vehicle>()->Paint(session, image_direction);
-#ifdef __ENABLE_LIGHTFX__
-                if (lightfx_for_vehicles_is_available())
+                if (LightFXForVehiclesIsAvailable())
                 {
-                    lightfx_add_lights_magic_vehicle(spr->As<Vehicle>());
+                    LightFXAddLightsMagicVehicle(spr->As<Vehicle>());
                 }
-#endif
                 break;
             case EntityType::Guest:
             case EntityType::Staff:

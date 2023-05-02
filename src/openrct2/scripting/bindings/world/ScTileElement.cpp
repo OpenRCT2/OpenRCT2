@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,6 +16,7 @@
 #    include "../../../core/Guard.hpp"
 #    include "../../../entity/EntityRegistry.h"
 #    include "../../../ride/Ride.h"
+#    include "../../../ride/RideData.h"
 #    include "../../../ride/Track.h"
 #    include "../../../world/Footpath.h"
 #    include "../../../world/Scenery.h"
@@ -90,12 +91,12 @@ namespace OpenRCT2::Scripting
 
     uint8_t ScTileElement::baseHeight_get() const
     {
-        return _element->base_height;
+        return _element->BaseHeight;
     }
     void ScTileElement::baseHeight_set(uint8_t newBaseHeight)
     {
         ThrowIfGameStateNotMutable();
-        _element->base_height = newBaseHeight;
+        _element->BaseHeight = newBaseHeight;
         Invalidate();
     }
 
@@ -112,12 +113,12 @@ namespace OpenRCT2::Scripting
 
     uint8_t ScTileElement::clearanceHeight_get() const
     {
-        return _element->clearance_height;
+        return _element->ClearanceHeight;
     }
     void ScTileElement::clearanceHeight_set(uint8_t newClearanceHeight)
     {
         ThrowIfGameStateNotMutable();
-        _element->clearance_height = newClearanceHeight;
+        _element->ClearanceHeight = newClearanceHeight;
         Invalidate();
     }
 
@@ -459,7 +460,7 @@ namespace OpenRCT2::Scripting
 
         try
         {
-            if (value < RIDE_TYPE_COUNT)
+            if (value >= RIDE_TYPE_COUNT)
                 throw DukException() << "'rideType' value is invalid.";
 
             auto* el = _element->AsTrack();
@@ -493,9 +494,14 @@ namespace OpenRCT2::Scripting
                 case TileElementType::Track:
                 {
                     auto* el = _element->AsTrack();
-                    auto* ride = get_ride(el->GetRideIndex());
-                    if (ride != nullptr && ride->type == RIDE_TYPE_MAZE)
-                        throw DukException() << "Cannot read 'sequence' property, TrackElement belongs to a maze.";
+                    auto* ride = GetRide(el->GetRideIndex());
+
+                    if (ride != nullptr)
+                    {
+                        const auto& rtd = ride->GetRideTypeDescriptor();
+                        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+                            throw DukException() << "Cannot read 'sequence' property, TrackElement belongs to a maze.";
+                    }
 
                     duk_push_int(ctx, el->GetSequenceIndex());
                     break;
@@ -539,9 +545,14 @@ namespace OpenRCT2::Scripting
                 case TileElementType::Track:
                 {
                     auto* el = _element->AsTrack();
-                    auto ride = get_ride(el->GetRideIndex());
-                    if (ride != nullptr && ride->type == RIDE_TYPE_MAZE)
-                        throw DukException() << "Cannot set 'sequence' property, TrackElement belongs to a maze.";
+                    auto ride = GetRide(el->GetRideIndex());
+
+                    if (ride != nullptr)
+                    {
+                        const auto& rtd = ride->GetRideTypeDescriptor();
+                        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
+                            throw DukException() << "Cannot set 'sequence' property, TrackElement belongs to a maze.";
+                    }
 
                     el->SetSequenceIndex(value.as_uint());
                     Invalidate();
@@ -807,11 +818,12 @@ namespace OpenRCT2::Scripting
             if (el == nullptr)
                 throw DukException() << "Cannot read 'mazeEntry' property, element is not a TrackElement.";
 
-            Ride* ride = get_ride(el->GetRideIndex());
+            Ride* ride = GetRide(el->GetRideIndex());
             if (ride == nullptr)
                 throw DukException() << "Cannot read 'mazeEntry' property, ride is invalid.";
 
-            if (ride->type != RIDE_TYPE_MAZE)
+            const auto& rtd = ride->GetRideTypeDescriptor();
+            if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
                 throw DukException() << "Cannot read 'mazeEntry' property, ride is not a maze.";
 
             duk_push_int(ctx, el->GetMazeEntry());
@@ -836,11 +848,12 @@ namespace OpenRCT2::Scripting
             if (el == nullptr)
                 throw DukException() << "Cannot set 'mazeEntry' property, tile element is not a TrackElement.";
 
-            auto* ride = get_ride(el->GetRideIndex());
+            auto* ride = GetRide(el->GetRideIndex());
             if (ride == nullptr)
                 throw DukException() << "Cannot set 'mazeEntry' property, ride is invalid.";
 
-            if (ride->type != RIDE_TYPE_MAZE)
+            const auto& rtd = ride->GetRideTypeDescriptor();
+            if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
                 throw DukException() << "Cannot set 'mazeEntry' property, ride is not a maze.";
 
             el->SetMazeEntry(value.as_uint());
@@ -863,11 +876,12 @@ namespace OpenRCT2::Scripting
             if (el == nullptr)
                 throw DukException() << "Cannot read 'colourScheme' property, tile element is not a TrackElement.";
 
-            auto* ride = get_ride(el->GetRideIndex());
+            auto* ride = GetRide(el->GetRideIndex());
             if (ride == nullptr)
                 throw DukException() << "Cannot read 'colourScheme' property, ride is invalid.";
 
-            if (ride->type == RIDE_TYPE_MAZE)
+            const auto& rtd = ride->GetRideTypeDescriptor();
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
                 throw DukException() << "Cannot read 'colourScheme' property, TrackElement belongs to a maze.";
 
             duk_push_int(ctx, el->GetColourScheme());
@@ -892,11 +906,12 @@ namespace OpenRCT2::Scripting
             if (el == nullptr)
                 throw DukException() << "Cannot set 'colourScheme' property, tile element is not a TrackElement.";
 
-            auto* ride = get_ride(el->GetRideIndex());
+            auto* ride = GetRide(el->GetRideIndex());
             if (ride == nullptr)
                 throw DukException() << "Cannot set 'colourScheme', ride is invalid.";
 
-            if (ride->type == RIDE_TYPE_MAZE)
+            const auto& rtd = ride->GetRideTypeDescriptor();
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
                 throw DukException() << "Cannot set 'colourScheme' property, TrackElement belongs to a maze.";
 
             el->SetColourScheme(value.as_uint());
@@ -919,11 +934,12 @@ namespace OpenRCT2::Scripting
             if (el == nullptr)
                 throw DukException() << "Cannot read 'seatRotation' property, tile element is not a TrackElement.";
 
-            auto* ride = get_ride(el->GetRideIndex());
+            auto* ride = GetRide(el->GetRideIndex());
             if (ride == nullptr)
                 throw DukException() << "Cannot read 'seatRotation' property, ride is invalid.";
 
-            if (ride->type == RIDE_TYPE_MAZE)
+            const auto& rtd = ride->GetRideTypeDescriptor();
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
                 throw DukException() << "Cannot read 'seatRotation' property, TrackElement belongs to a maze.";
 
             duk_push_int(ctx, el->GetSeatRotation());
@@ -948,11 +964,12 @@ namespace OpenRCT2::Scripting
             if (el == nullptr)
                 throw DukException() << "Cannot set 'seatRotation' property, tile element is not a TrackElement.";
 
-            auto* ride = get_ride(el->GetRideIndex());
+            auto* ride = GetRide(el->GetRideIndex());
             if (ride == nullptr)
                 throw DukException() << "Cannot set 'seatRotation' property, ride is invalid.";
 
-            if (ride->type != RIDE_TYPE_MAZE)
+            const auto& rtd = ride->GetRideTypeDescriptor();
+            if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
                 throw DukException() << "Cannot set 'seatRotation' property, TrackElement belongs to a maze.";
 
             el->SetSeatRotation(value.as_uint());
@@ -1073,6 +1090,27 @@ namespace OpenRCT2::Scripting
 
         el->SetHasCableLift(value);
         Invalidate();
+    }
+
+    DukValue ScTileElement::isHighlighted_get() const
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto el = _element->AsTrack();
+        if (el != nullptr)
+            duk_push_boolean(ctx, el->IsHighlighted());
+        else
+            duk_push_null(ctx);
+        return DukValue::take_from_stack(ctx);
+    }
+    void ScTileElement::isHighlighted_set(bool value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto el = _element->AsTrack();
+        if (el != nullptr)
+        {
+            el->SetHighlight(value);
+            Invalidate();
+        }
     }
 
     DukValue ScTileElement::object_get() const
@@ -1382,21 +1420,49 @@ namespace OpenRCT2::Scripting
     {
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsWall();
-        if (el != nullptr)
-            duk_push_int(ctx, el->GetTertiaryColour());
-        else
-            duk_push_null(ctx);
+        switch (_element->GetType())
+        {
+            case TileElementType::LargeScenery:
+            {
+                auto* el = _element->AsLargeScenery();
+                duk_push_int(ctx, el->GetTertiaryColour());
+                break;
+            }
+            case TileElementType::Wall:
+            {
+                auto* el = _element->AsWall();
+                duk_push_int(ctx, el->GetTertiaryColour());
+                break;
+            }
+            default:
+            {
+                duk_push_null(ctx);
+                break;
+            }
+        }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::tertiaryColour_set(uint8_t value)
     {
         ThrowIfGameStateNotMutable();
-        auto* el = _element->AsWall();
-        if (el != nullptr)
+        switch (_element->GetType())
         {
-            el->SetTertiaryColour(value);
-            Invalidate();
+            case TileElementType::LargeScenery:
+            {
+                auto* el = _element->AsLargeScenery();
+                el->SetTertiaryColour(value);
+                Invalidate();
+                break;
+            }
+            case TileElementType::Wall:
+            {
+                auto* el = _element->AsWall();
+                el->SetTertiaryColour(value);
+                Invalidate();
+                break;
+            }
+            default:
+                break;
         }
     }
 
@@ -1956,7 +2022,7 @@ namespace OpenRCT2::Scripting
 
     void ScTileElement::Invalidate()
     {
-        map_invalidate_tile_full(_coords);
+        MapInvalidateTileFull(_coords);
     }
 
     void ScTileElement::Register(duk_context* ctx)
@@ -2045,6 +2111,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScTileElement::hasChainLift_get, &ScTileElement::hasChainLift_set, "hasChainLift");
         dukglue_register_property(ctx, &ScTileElement::isInverted_get, &ScTileElement::isInverted_set, "isInverted");
         dukglue_register_property(ctx, &ScTileElement::hasCableLift_get, &ScTileElement::hasCableLift_set, "hasCableLift");
+        dukglue_register_property(ctx, &ScTileElement::isHighlighted_get, &ScTileElement::isHighlighted_set, "isHighlighted");
 
         // Small Scenery only
         dukglue_register_property(ctx, &ScTileElement::age_get, &ScTileElement::age_set, "age");

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -419,6 +419,14 @@ namespace OpenRCT2::Scripting
         return dukGForces.Take();
     }
 
+    template<> inline DukValue ToDuk(duk_context* ctx, const VehicleSpriteGroup& value)
+    {
+        DukObject dukSpriteGroup(ctx);
+        dukSpriteGroup.Set("imageId", value.imageId);
+        dukSpriteGroup.Set("spriteNumImages", OpenRCT2::Entity::Yaw::NumSpritesPrecision(value.spritePrecision));
+        return dukSpriteGroup.Take();
+    }
+
     template<> inline CoordsXYZD FromDuk(const DukValue& value)
     {
         CoordsXYZD result;
@@ -456,6 +464,8 @@ namespace OpenRCT2::Scripting
         }
         return OBJECT_ENTRY_INDEX_NULL;
     }
+
+    uint32_t ImageFromDuk(const DukValue& d);
 
 } // namespace OpenRCT2::Scripting
 

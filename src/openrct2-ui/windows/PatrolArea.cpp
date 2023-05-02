@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,7 +25,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_SET_PATROL_AREA;
+static constexpr const StringId WINDOW_TITLE = STR_SET_PATROL_AREA;
 static constexpr const int32_t WH = 54;
 static constexpr const int32_t WW = 104;
 
@@ -40,9 +40,9 @@ enum WindowPatrolAreaWidgetIdx
 };
 
 // clang-format off
-static rct_widget PatrolAreaWidgets[] = {
+static Widget PatrolAreaWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({27, 17}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary , SPR_LAND_TOOL_SIZE_0                                           ), // preview box
+    MakeWidget     ({27, 17}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary , ImageId(SPR_LAND_TOOL_SIZE_0)                                           ), // preview box
     MakeRemapWidget({28, 18}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_PATROL_AREA_TIP), // decrement size
     MakeRemapWidget({54, 32}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_PATROL_AREA_TIP ), // increment size
     WIDGETS_END,
@@ -55,9 +55,9 @@ public:
     void OnOpen() override
     {
         widgets = PatrolAreaWidgets;
-        hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
-        WindowInitScrollWidgets(this);
-        window_push_others_below(this);
+        hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
+        WindowInitScrollWidgets(*this);
+        WindowPushOthersBelow(*this);
         gLandToolSize = 4;
     }
 
@@ -65,10 +65,10 @@ public:
     {
         // If the tool wasn't changed, turn tool off
         if (PatrolAreaToolIsActive())
-            tool_cancel();
+            ToolCancel();
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -81,7 +81,7 @@ public:
         }
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -96,7 +96,7 @@ public:
         }
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (text.empty())
             return;
@@ -128,10 +128,10 @@ public:
     void OnPrepareDraw() override
     {
         SetWidgetPressed(WIDX_PREVIEW, true);
-        PatrolAreaWidgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
+        PatrolAreaWidgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -142,11 +142,11 @@ public:
                                                 windowPos.y + PatrolAreaWidgets[WIDX_PREVIEW].midY() };
             auto ft = Formatter();
             ft.Add<uint16_t>(gLandToolSize);
-            DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+            DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
         }
     }
 
-    void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolUpdate(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         auto mapTile = GetBestCoordsFromPos(screenCoords);
         if (!mapTile)
@@ -176,25 +176,25 @@ public:
         if (stateChanged)
         {
             // Invalidate previous area
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
 
             // Update and invalidate new area
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
             gMapSelectType = MAP_SELECT_TYPE_FULL;
             gMapSelectPositionA = posA;
             gMapSelectPositionB = posB;
-            map_invalidate_selection_rect();
+            MapInvalidateSelectionRect();
         }
     }
 
-    void OnToolAbort(rct_widgetindex widgetIndex) override
+    void OnToolAbort(WidgetIndex widgetIndex) override
     {
-        hide_gridlines();
+        HideGridlines();
         ClearPatrolAreaToRender();
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
     }
 
-    void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         auto mapTile = GetBestCoordsFromPos(screenCoords);
         if (mapTile)
@@ -209,7 +209,7 @@ public:
         OnToolDrag(widgetIndex, screenCoords);
     }
 
-    void OnToolDrag(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         auto staff = GetEntity<Staff>(_staffId);
         if (staff != nullptr)
@@ -240,17 +240,16 @@ private:
         if (PatrolAreaToolIsActive())
         {
             SetPatrolAreaToRender(_staffId);
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
         }
         else
         {
-            show_gridlines();
-            if (!tool_set(this, 0, Tool::WalkDown))
+            if (!ToolSet(*this, 0, Tool::WalkDown))
             {
-                input_set_flag(INPUT_FLAG_6, true);
-                show_gridlines();
+                ShowGridlines();
+                InputSetFlag(INPUT_FLAG_6, true);
                 SetPatrolAreaToRender(_staffId);
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
             }
         }
     }
@@ -265,9 +264,9 @@ private:
 
     bool PatrolAreaToolIsActive()
     {
-        if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+        if (!(InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)))
             return false;
-        if (gCurrentToolWidget.window_classification != WC_PATROL_AREA)
+        if (gCurrentToolWidget.window_classification != WindowClass::PatrolArea)
             return false;
         return true;
     }
@@ -275,20 +274,21 @@ private:
     bool IsStaffWindowOpen()
     {
         // If staff window for this patrol area was closed, tool is no longer active
-        auto staffWindow = window_find_by_number(WC_PEEP, _staffId);
+        auto staffWindow = WindowFindByNumber(WindowClass::Peep, _staffId);
         return staffWindow != nullptr;
     }
 
     std::optional<CoordsXY> GetBestCoordsFromPos(const ScreenCoordsXY& pos)
     {
-        auto coords = footpath_get_coordinates_from_pos(pos, nullptr, nullptr);
+        auto coords = FootpathGetCoordinatesFromPos(pos, nullptr, nullptr);
         return coords.IsNull() ? std::nullopt : std::make_optional(coords);
     }
 };
 
-rct_window* WindowPatrolAreaOpen(EntityId staffId)
+WindowBase* WindowPatrolAreaOpen(EntityId staffId)
 {
-    auto w = WindowFocusOrCreate<PatrolAreaWindow>(WC_PATROL_AREA, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
+    auto w = WindowFocusOrCreate<PatrolAreaWindow>(
+        WindowClass::PatrolArea, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
     if (w != nullptr)
     {
         w->SetStaffId(staffId);
@@ -298,6 +298,6 @@ rct_window* WindowPatrolAreaOpen(EntityId staffId)
 
 EntityId WindowPatrolAreaGetCurrentStaffId()
 {
-    auto current = reinterpret_cast<PatrolAreaWindow*>(window_find_by_class(WC_PATROL_AREA));
+    auto current = reinterpret_cast<PatrolAreaWindow*>(WindowFindByClass(WindowClass::PatrolArea));
     return current != nullptr ? current->GetStaffId() : EntityId::GetNull();
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,7 +27,7 @@ namespace OpenRCT2::Scripting
     std::string ScNetwork::mode_get() const
     {
 #    ifndef DISABLE_NETWORK
-        switch (network_get_mode())
+        switch (NetworkGetMode())
         {
             case NETWORK_MODE_SERVER:
                 return "server";
@@ -41,7 +41,7 @@ namespace OpenRCT2::Scripting
     int32_t ScNetwork::numPlayers_get() const
     {
 #    ifndef DISABLE_NETWORK
-        return network_get_num_players();
+        return NetworkGetNumPlayers();
 #    else
         return 0;
 #    endif
@@ -50,7 +50,7 @@ namespace OpenRCT2::Scripting
     int32_t ScNetwork::numGroups_get() const
     {
 #    ifndef DISABLE_NETWORK
-        return network_get_num_groups();
+        return NetworkGetNumGroups();
 #    else
         return 0;
 #    endif
@@ -59,7 +59,7 @@ namespace OpenRCT2::Scripting
     int32_t ScNetwork::defaultGroup_get() const
     {
 #    ifndef DISABLE_NETWORK
-        return network_get_default_group();
+        return NetworkGetDefaultGroup();
 #    else
         return 0;
 #    endif
@@ -77,10 +77,10 @@ namespace OpenRCT2::Scripting
     {
         std::vector<std::shared_ptr<ScPlayerGroup>> groups;
 #    ifndef DISABLE_NETWORK
-        auto numGroups = network_get_num_groups();
+        auto numGroups = NetworkGetNumGroups();
         for (int32_t i = 0; i < numGroups; i++)
         {
-            auto groupId = network_get_group_id(i);
+            auto groupId = NetworkGetGroupID(i);
             groups.push_back(std::make_shared<ScPlayerGroup>(groupId));
         }
 #    endif
@@ -91,10 +91,10 @@ namespace OpenRCT2::Scripting
     {
         std::vector<std::shared_ptr<ScPlayer>> players;
 #    ifndef DISABLE_NETWORK
-        auto numPlayers = network_get_num_players();
+        auto numPlayers = NetworkGetNumPlayers();
         for (int32_t i = 0; i < numPlayers; i++)
         {
-            auto playerId = network_get_player_id(i);
+            auto playerId = NetworkGetPlayerID(i);
             players.push_back(std::make_shared<ScPlayer>(playerId));
         }
 #    endif
@@ -105,7 +105,7 @@ namespace OpenRCT2::Scripting
     {
         std::shared_ptr<ScPlayer> player;
 #    ifndef DISABLE_NETWORK
-        auto playerId = network_get_current_player_id();
+        auto playerId = NetworkGetCurrentPlayerId();
         player = std::make_shared<ScPlayer>(playerId);
 #    endif
         return player;
@@ -114,10 +114,10 @@ namespace OpenRCT2::Scripting
     std::shared_ptr<ScPlayer> ScNetwork::getPlayer(int32_t index) const
     {
 #    ifndef DISABLE_NETWORK
-        auto numPlayers = network_get_num_players();
+        auto numPlayers = NetworkGetNumPlayers();
         if (index < numPlayers)
         {
-            auto playerId = network_get_player_id(index);
+            auto playerId = NetworkGetPlayerID(index);
             return std::make_shared<ScPlayer>(playerId);
         }
 #    endif
@@ -128,7 +128,7 @@ namespace OpenRCT2::Scripting
     {
 #    ifndef DISABLE_NETWORK
         auto obj = OpenRCT2::Scripting::DukObject(_context);
-        auto networkStats = network_get_stats();
+        auto networkStats = NetworkGetStats();
         {
             duk_push_array(_context);
             duk_uarridx_t index = 0;
@@ -160,10 +160,10 @@ namespace OpenRCT2::Scripting
     std::shared_ptr<ScPlayerGroup> ScNetwork::getGroup(int32_t index) const
     {
 #    ifndef DISABLE_NETWORK
-        auto numGroups = network_get_num_groups();
+        auto numGroups = NetworkGetNumGroups();
         if (index < numGroups)
         {
-            auto groupId = network_get_group_id(index);
+            auto groupId = NetworkGetGroupID(index);
             return std::make_shared<ScPlayerGroup>(groupId);
         }
 #    endif
@@ -181,10 +181,10 @@ namespace OpenRCT2::Scripting
     void ScNetwork::removeGroup(int32_t index)
     {
 #    ifndef DISABLE_NETWORK
-        auto numGroups = network_get_num_groups();
+        auto numGroups = NetworkGetNumGroups();
         if (index < numGroups)
         {
-            auto groupId = network_get_group_id(index);
+            auto groupId = NetworkGetGroupID(index);
             auto networkAction = NetworkModifyGroupAction(ModifyGroupType::RemoveGroup, groupId);
             GameActions::Execute(&networkAction);
         }
@@ -194,10 +194,10 @@ namespace OpenRCT2::Scripting
     void ScNetwork::kickPlayer(int32_t index)
     {
 #    ifndef DISABLE_NETWORK
-        auto numPlayers = network_get_num_players();
+        auto numPlayers = NetworkGetNumPlayers();
         if (index < numPlayers)
         {
-            auto playerId = network_get_player_id(index);
+            auto playerId = NetworkGetPlayerID(index);
             auto kickPlayerAction = PlayerKickAction(playerId);
             GameActions::Execute(&kickPlayerAction);
         }
@@ -209,7 +209,7 @@ namespace OpenRCT2::Scripting
 #    ifndef DISABLE_NETWORK
         if (players.is_array())
         {
-            if (network_get_mode() == NETWORK_MODE_SERVER)
+            if (NetworkGetMode() == NETWORK_MODE_SERVER)
             {
                 std::vector<uint8_t> playerIds;
                 auto playerArray = players.as_array();
@@ -222,7 +222,7 @@ namespace OpenRCT2::Scripting
                 }
                 if (!playerArray.empty())
                 {
-                    network_send_chat(message.c_str(), playerIds);
+                    NetworkSendChat(message.c_str(), playerIds);
                 }
             }
             else
@@ -232,7 +232,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            network_send_chat(message.c_str());
+            NetworkSendChat(message.c_str());
         }
 #    endif
     }

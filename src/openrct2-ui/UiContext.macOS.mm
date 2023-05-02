@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -175,7 +175,7 @@ namespace OpenRCT2::Ui
     private:
         static int32_t Execute(const std::string& command, std::string* output = nullptr)
         {
-            log_verbose("executing \"%s\"...", command.c_str());
+            LOG_VERBOSE("executing \"%s\"...", command.c_str());
             FILE* fpipe = popen(command.c_str(), "r");
             if (fpipe == nullptr)
             {
@@ -220,9 +220,9 @@ namespace OpenRCT2::Ui
         }
     };
 
-    IPlatformUiContext* CreatePlatformUiContext()
+    std::unique_ptr<IPlatformUiContext> CreatePlatformUiContext()
     {
-        return new macOSContext();
+        return std::make_unique<macOSContext>();
     }
 } // namespace OpenRCT2::Ui
 

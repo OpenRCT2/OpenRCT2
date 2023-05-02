@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,12 +15,12 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../object/SmallSceneryEntry.h"
 #include "../ride/RideData.h"
 #include "../windows/Intent.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/SmallScenery.h"
 #include "../world/Surface.h"
 #include "../world/TileElementsView.h"
 
@@ -31,6 +31,13 @@ LandSetHeightAction::LandSetHeightAction(const CoordsXY& coords, uint8_t height,
     , _height(height)
     , _style(style)
 {
+}
+
+void LandSetHeightAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_coords);
+    visitor.Visit("height", _height);
+    visitor.Visit("style", _style);
 }
 
 uint16_t LandSetHeightAction::GetActionFlags() const
@@ -52,21 +59,21 @@ GameActions::Result LandSetHeightAction::Query() const
         return GameActions::Result(GameActions::Status::Disallowed, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY, STR_NONE);
     }
 
-    rct_string_id errorTitle = CheckParameters();
-    if (errorTitle != STR_NONE)
+    StringId errorMessage = CheckParameters();
+    if (errorMessage != STR_NONE)
     {
-        return GameActions::Result(GameActions::Status::Disallowed, errorTitle, STR_NONE);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, errorMessage);
     }
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
     {
-        if (!map_is_location_in_park(_coords))
+        if (!MapIsLocationInPark(_coords))
         {
             return GameActions::Result(GameActions::Status::Disallowed, STR_LAND_NOT_OWNED_BY_PARK, STR_NONE);
         }
     }
 
-    money32 sceneryRemovalCost = 0;
+    money64 sceneryRemovalCost = 0;
     if (!gCheatsDisableClearanceChecks)
     {
         if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
@@ -76,7 +83,7 @@ GameActions::Result LandSetHeightAction::Query() const
             if (tileElement != nullptr)
             {
                 auto res = GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
-                map_obstruction_set_error_text(tileElement, res);
+                MapGetObstructionErrorText(tileElement, res);
                 return res;
             }
         }
@@ -86,21 +93,21 @@ GameActions::Result LandSetHeightAction::Query() const
     // Check for ride support limits
     if (!gCheatsDisableSupportLimits)
     {
-        errorTitle = CheckRideSupports();
-        if (errorTitle != STR_NONE)
+        errorMessage = CheckRideSupports();
+        if (errorMessage != STR_NONE)
         {
-            return GameActions::Result(GameActions::Status::Disallowed, errorTitle, STR_NONE);
+            return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, errorMessage);
         }
     }
 
-    auto* surfaceElement = map_get_surface_element_at(_coords);
+    auto* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
         return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
     // We need to check if there is _currently_ a level crossing on the tile.
     // For that, we need the old height, so we can't use the _height variable.
     auto oldCoords = CoordsXYZ{ _coords, surfaceElement->GetBaseZ() };
-    auto* pathElement = map_get_footpath_element(oldCoords);
+    auto* pathElement = MapGetFootpathElement(oldCoords);
     if (pathElement != nullptr && pathElement->AsPath()->IsLevelCrossing(oldCoords))
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_REMOVE_LEVEL_CROSSING_FIRST, STR_NONE);
@@ -110,7 +117,7 @@ GameActions::Result LandSetHeightAction::Query() const
     if (tileElement != nullptr)
     {
         auto res = GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
-        map_obstruction_set_error_text(tileElement, res);
+        MapGetObstructionErrorText(tileElement, res);
         return res;
     }
 
@@ -127,7 +134,7 @@ GameActions::Result LandSetHeightAction::Query() const
         }
 
         auto clearResult = MapCanConstructWithClearAt(
-            { _coords, _height * COORDS_Z_STEP, zCorner * COORDS_Z_STEP }, &map_set_land_height_clear_func, { 0b1111, 0 }, 0,
+            { _coords, _height * COORDS_Z_STEP, zCorner * COORDS_Z_STEP }, &MapSetLandHeightClearFunc, { 0b1111, 0 }, 0,
             CREATE_CROSSING_MODE_NONE);
         if (clearResult.Error != GameActions::Status::Ok)
         {
@@ -143,18 +150,18 @@ GameActions::Result LandSetHeightAction::Query() const
 
 GameActions::Result LandSetHeightAction::Execute() const
 {
-    money32 cost = 0.00_GBP;
-    auto surfaceHeight = tile_element_height(_coords);
-    footpath_remove_litter({ _coords, surfaceHeight });
+    money64 cost = 0.00_GBP;
+    auto surfaceHeight = TileElementHeight(_coords);
+    FootpathRemoveLitter({ _coords, surfaceHeight });
 
     if (!gCheatsDisableClearanceChecks)
     {
-        wall_remove_at({ _coords, _height * 8 - 16, _height * 8 + 32 });
+        WallRemoveAt({ _coords, _height * 8 - 16, _height * 8 + 32 });
         cost += GetSmallSceneryRemovalCost();
         SmallSceneryRemoval();
     }
 
-    auto* surfaceElement = map_get_surface_element_at(_coords);
+    auto* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
         return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
@@ -168,7 +175,7 @@ GameActions::Result LandSetHeightAction::Execute() const
     return res;
 }
 
-rct_string_id LandSetHeightAction::CheckParameters() const
+StringId LandSetHeightAction::CheckParameters() const
 {
     if (!LocationValid(_coords))
     {
@@ -209,9 +216,9 @@ TileElement* LandSetHeightAction::CheckTreeObstructions() const
 {
     for (auto* sceneryElement : TileElementsView<SmallSceneryElement>(_coords))
     {
-        if (_height > sceneryElement->clearance_height)
+        if (_height > sceneryElement->ClearanceHeight)
             continue;
-        if (_height + 4 < sceneryElement->base_height)
+        if (_height + 4 < sceneryElement->BaseHeight)
             continue;
 
         auto* sceneryEntry = sceneryElement->GetEntry();
@@ -223,15 +230,15 @@ TileElement* LandSetHeightAction::CheckTreeObstructions() const
     return nullptr;
 }
 
-money32 LandSetHeightAction::GetSmallSceneryRemovalCost() const
+money64 LandSetHeightAction::GetSmallSceneryRemovalCost() const
 {
-    money32 cost{ 0 };
+    money64 cost{ 0 };
 
     for (auto* sceneryElement : TileElementsView<SmallSceneryElement>(_coords))
     {
-        if (_height > sceneryElement->clearance_height)
+        if (_height > sceneryElement->ClearanceHeight)
             continue;
-        if (_height + 4 < sceneryElement->base_height)
+        if (_height + 4 < sceneryElement->BaseHeight)
             continue;
 
         auto* sceneryEntry = sceneryElement->GetEntry();
@@ -246,32 +253,32 @@ money32 LandSetHeightAction::GetSmallSceneryRemovalCost() const
 
 void LandSetHeightAction::SmallSceneryRemoval() const
 {
-    TileElement* tileElement = map_get_first_element_at(_coords);
+    TileElement* tileElement = MapGetFirstElementAt(_coords);
     do
     {
         if (tileElement == nullptr)
             break;
         if (tileElement->GetType() != TileElementType::SmallScenery)
             continue;
-        if (_height > tileElement->clearance_height)
+        if (_height > tileElement->ClearanceHeight)
             continue;
-        if (_height + 4 < tileElement->base_height)
+        if (_height + 4 < tileElement->BaseHeight)
             continue;
-        tile_element_remove(tileElement--);
+        TileElementRemove(tileElement--);
     } while (!(tileElement++)->IsLastForTile());
 }
 
-rct_string_id LandSetHeightAction::CheckRideSupports() const
+StringId LandSetHeightAction::CheckRideSupports() const
 {
     for (auto* trackElement : TileElementsView<TrackElement>(_coords))
     {
         RideId rideIndex = trackElement->GetRideIndex();
 
-        auto ride = get_ride(rideIndex);
+        auto ride = GetRide(rideIndex);
         if (ride == nullptr)
             continue;
 
-        rct_ride_entry* rideEntry = ride->GetRideEntry();
+        const auto* rideEntry = ride->GetRideEntry();
         if (rideEntry == nullptr)
             continue;
 
@@ -281,7 +288,7 @@ rct_string_id LandSetHeightAction::CheckRideSupports() const
             maxHeight = ride->GetRideTypeDescriptor().Heights.MaxHeight;
         }
 
-        int32_t zDelta = trackElement->clearance_height - _height;
+        int32_t zDelta = trackElement->ClearanceHeight - _height;
         if (zDelta >= 0 && zDelta / 2 > maxHeight)
         {
             return STR_SUPPORTS_CANT_BE_EXTENDED;
@@ -314,13 +321,13 @@ TileElement* LandSetHeightAction::CheckFloatingStructures(TileElement* surfaceEl
     return nullptr;
 }
 
-money32 LandSetHeightAction::GetSurfaceHeightChangeCost(SurfaceElement* surfaceElement) const
+money64 LandSetHeightAction::GetSurfaceHeightChangeCost(SurfaceElement* surfaceElement) const
 {
-    money32 cost{ 0 };
+    money64 cost{ 0 };
     for (Direction i : ALL_DIRECTIONS)
     {
-        int32_t cornerHeight = tile_element_get_corner_height(surfaceElement, i);
-        cornerHeight -= map_get_corner_height(_height, _style & TILE_ELEMENT_SURFACE_SLOPE_MASK, i);
+        int32_t cornerHeight = TileElementGetCornerHeight(surfaceElement, i);
+        cornerHeight -= MapGetCornerHeight(_height, _style & TILE_ELEMENT_SURFACE_SLOPE_MASK, i);
         cost += 2.50_GBP * abs(cornerHeight);
     }
     return cost;
@@ -328,8 +335,8 @@ money32 LandSetHeightAction::GetSurfaceHeightChangeCost(SurfaceElement* surfaceE
 
 void LandSetHeightAction::SetSurfaceHeight(TileElement* surfaceElement) const
 {
-    surfaceElement->base_height = _height;
-    surfaceElement->clearance_height = _height;
+    surfaceElement->BaseHeight = _height;
+    surfaceElement->ClearanceHeight = _height;
     surfaceElement->AsSurface()->SetSlope(_style);
     int32_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight() / COORDS_Z_STEP;
     if (waterHeight != 0 && waterHeight <= _height)
@@ -337,12 +344,12 @@ void LandSetHeightAction::SetSurfaceHeight(TileElement* surfaceElement) const
         surfaceElement->AsSurface()->SetWaterHeight(0);
     }
 
-    map_invalidate_tile_full(_coords);
+    MapInvalidateTileFull(_coords);
 }
 
-int32_t LandSetHeightAction::map_set_land_height_clear_func(
+int32_t LandSetHeightAction::MapSetLandHeightClearFunc(
     TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
-    [[maybe_unused]] money32* price)
+    [[maybe_unused]] money64* price)
 {
     if ((*tile_element)->GetType() == TileElementType::Surface)
         return 0;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
+static constexpr const StringId WINDOW_TITLE = STR_NONE;
 static constexpr const int32_t WH = 109;
 static constexpr const int32_t WW = 350;
 
@@ -44,7 +44,7 @@ enum WindowNewCampaignWidgetIdx {
     WIDX_START_BUTTON
 };
 
-static rct_widget window_new_campaign_widgets[] = {
+static Widget window_new_campaign_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget        ({ 14, 24}, {126, 12}, WindowWidgetType::Label,    WindowColour::Primary, STR_EMPTY                                  ), // ride label
     MakeWidget        ({100, 24}, {242, 12}, WindowWidgetType::DropdownMenu, WindowColour::Primary, STR_EMPTY                                  ), // ride dropdown
@@ -65,12 +65,12 @@ private:
     static bool RideValueCompare(const RideId& a, const RideId& b)
     {
         auto valueA = 0;
-        auto rideA = get_ride(a);
+        auto rideA = GetRide(a);
         if (rideA != nullptr)
             valueA = rideA->value;
 
         auto valueB = 0;
-        auto rideB = get_ride(b);
+        auto rideB = GetRide(b);
         if (rideB != nullptr)
             valueB = rideB->value;
 
@@ -80,16 +80,16 @@ private:
     static int32_t RideNameCompare(const RideId& a, const RideId& b)
     {
         std::string rideAName = "";
-        auto rideA = get_ride(a);
+        auto rideA = GetRide(a);
         if (rideA != nullptr)
             rideAName = rideA->GetName();
 
         std::string rideBName = "";
-        auto rideB = get_ride(b);
+        auto rideB = GetRide(b);
         if (rideB != nullptr)
             rideBName = rideB->GetName();
 
-        return strlogicalcmp(rideAName.c_str(), rideBName.c_str()) < 0;
+        return StrLogicalCmp(rideAName.c_str(), rideBName.c_str()) < 0;
     }
 
     /**
@@ -134,7 +134,7 @@ public:
             if (curRide.status == RideStatus::Open)
             {
                 if (!curRide.GetRideTypeDescriptor().HasFlag(
-                        RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_SELLS_DRINKS
+                        RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY | RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_SELLS_DRINKS
                         | RIDE_TYPE_FLAG_IS_TOILET))
                 {
                     RideList.push_back(curRide.id);
@@ -155,8 +155,8 @@ public:
     void OnOpen() override
     {
         widgets = window_new_campaign_widgets;
-        hold_down_widgets = (1ULL << WIDX_WEEKS_INCREASE_BUTTON) | (1ULL << WIDX_WEEKS_DECREASE_BUTTON);
-        WindowInitScrollWidgets(this);
+        hold_down_widgets = (1uLL << WIDX_WEEKS_INCREASE_BUTTON) | (1uLL << WIDX_WEEKS_DECREASE_BUTTON);
+        WindowInitScrollWidgets(*this);
     }
 
     void SetCampaign(int16_t campaignType)
@@ -175,10 +175,10 @@ public:
         RefreshRides();
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
-        rct_widget* widget = &widgets[widgetIndex];
-        rct_widget* dropdownWidget;
+        Widget* widget = &widgets[widgetIndex];
+        Widget* dropdownWidget;
 
         switch (widgetIndex)
         {
@@ -210,7 +210,7 @@ public:
                     int32_t numItems = 0;
                     for (auto rideIndex : RideList)
                     {
-                        auto curRide = get_ride(rideIndex);
+                        auto curRide = GetRide(rideIndex);
                         if (curRide != nullptr)
                         {
                             // HACK until dropdown items have longer argument buffers
@@ -246,7 +246,7 @@ public:
         }
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -260,7 +260,7 @@ public:
                 gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error == GameActions::Status::Ok)
                     {
-                        window_close_by_class(WC_NEW_CAMPAIGN);
+                        WindowCloseByClass(WindowClass::NewCampaign);
                     }
                 });
                 GameActions::Execute(&gameAction);
@@ -269,7 +269,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
         if (widgetIndex != WIDX_RIDE_DROPDOWN_BUTTON)
             return;
@@ -311,7 +311,7 @@ public:
                 widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_RIDE;
                 if (campaign.RideId != RideId::GetNull())
                 {
-                    auto curRide = get_ride(campaign.RideId);
+                    auto curRide = GetRide(campaign.RideId);
                     if (curRide != nullptr)
                     {
                         widgets[WIDX_RIDE_DROPDOWN].text = STR_STRINGID;
@@ -337,23 +337,23 @@ public:
         widgets[WIDX_WEEKS_SPINNER].text = STR_NONE;
 
         // Enable / disable start button based on ride dropdown
-        WidgetSetDisabled(this, WIDX_START_BUTTON, false);
+        WidgetSetDisabled(*this, WIDX_START_BUTTON, false);
         if (widgets[WIDX_RIDE_DROPDOWN].type == WindowWidgetType::DropdownMenu && campaign.RideId == RideId::GetNull())
-            WidgetSetDisabled(this, WIDX_START_BUTTON, true);
+            WidgetSetDisabled(*this, WIDX_START_BUTTON, true);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         ScreenCoordsXY screenCoords{};
 
         DrawWidgets(dpi);
 
         // Number of weeks
-        rct_widget* spinnerWidget = &widgets[WIDX_WEEKS_SPINNER];
+        Widget* spinnerWidget = &widgets[WIDX_WEEKS_SPINNER];
         auto ft = Formatter();
         ft.Add<int16_t>(campaign.no_weeks);
         DrawTextBasic(
-            &dpi, windowPos + ScreenCoordsXY{ spinnerWidget->left + 1, spinnerWidget->top },
+            dpi, windowPos + ScreenCoordsXY{ spinnerWidget->left + 1, spinnerWidget->top },
             campaign.no_weeks == 1 ? STR_MARKETING_1_WEEK : STR_X_WEEKS, ft, { colours[0] });
 
         screenCoords = windowPos + ScreenCoordsXY{ 14, 60 };
@@ -361,28 +361,28 @@ public:
         // Price per week
         ft = Formatter();
         ft.Add<money64>(AdvertisingCampaignPricePerWeek[campaign.campaign_type]);
-        DrawTextBasic(&dpi, screenCoords, STR_MARKETING_COST_PER_WEEK, ft);
+        DrawTextBasic(dpi, screenCoords, STR_MARKETING_COST_PER_WEEK, ft);
         screenCoords.y += 13;
 
         // Total price
         ft = Formatter();
         ft.Add<money64>(AdvertisingCampaignPricePerWeek[campaign.campaign_type] * campaign.no_weeks);
-        DrawTextBasic(&dpi, screenCoords, STR_MARKETING_TOTAL_COST, ft);
+        DrawTextBasic(dpi, screenCoords, STR_MARKETING_TOTAL_COST, ft);
     }
 };
 
-rct_window* WindowNewCampaignOpen(int16_t campaignType)
+WindowBase* WindowNewCampaignOpen(int16_t campaignType)
 {
-    auto w = static_cast<NewCampaignWindow*>(window_bring_to_front_by_class(WC_NEW_CAMPAIGN));
+    auto w = static_cast<NewCampaignWindow*>(WindowBringToFrontByClass(WindowClass::NewCampaign));
     if (w != nullptr)
     {
         if (w->campaign.campaign_type == campaignType)
             return w;
 
-        window_close(w);
+        WindowClose(*w);
     }
 
-    w = WindowCreate<NewCampaignWindow>(WC_NEW_CAMPAIGN, WW, WH, 0);
+    w = WindowCreate<NewCampaignWindow>(WindowClass::NewCampaign, WW, WH, 0);
     if (w != nullptr)
     {
         w->SetCampaign(campaignType);
@@ -392,7 +392,7 @@ rct_window* WindowNewCampaignOpen(int16_t campaignType)
 
 void WindowCampaignRefreshRides()
 {
-    auto w = static_cast<NewCampaignWindow*>(window_find_by_class(WC_NEW_CAMPAIGN));
+    auto w = static_cast<NewCampaignWindow*>(WindowFindByClass(WindowClass::NewCampaign));
     if (w != nullptr)
     {
         w->RefreshRides();

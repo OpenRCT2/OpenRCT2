@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -64,7 +64,7 @@ void TextureCache::InvalidateImage(ImageIndex image)
 }
 
 // Note: for performance reasons, this returns a BasicTextureInfo over an AtlasTextureInfo (also to not expose the cache)
-BasicTextureInfo TextureCache::GetOrLoadImageTexture(ImageId imageId)
+BasicTextureInfo TextureCache::GetOrLoadImageTexture(const ImageId imageId)
 {
     uint32_t index;
 
@@ -96,7 +96,7 @@ BasicTextureInfo TextureCache::GetOrLoadImageTexture(ImageId imageId)
     return info;
 }
 
-BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(ImageId imageId, const PaletteMap& paletteMap)
+BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(const ImageId imageId, const PaletteMap& paletteMap)
 {
     GlyphId glyphId{};
     glyphId.Image = imageId.GetIndex();
@@ -201,10 +201,10 @@ void TextureCache::CreateTextures()
 
 void TextureCache::GeneratePaletteTexture()
 {
-    static_assert(PALETTE_TO_G1_OFFSET_COUNT + 5 < 256, "Height of palette too large!");
+    static_assert(PALETTE_TOTAL_OFFSETS + 5 < 256, "Height of palette too large!");
     constexpr int32_t height = 256;
     constexpr int32_t width = height;
-    rct_drawpixelinfo dpi = CreateDPI(width, height);
+    DrawPixelInfo dpi = CreateDPI(width, height);
 
     // Init no-op palette
     for (int i = 0; i < width; ++i)
@@ -212,15 +212,18 @@ void TextureCache::GeneratePaletteTexture()
         dpi.bits[i] = i;
     }
 
-    for (int i = 0; i < PALETTE_TO_G1_OFFSET_COUNT; ++i)
+    for (int i = 0; i < PALETTE_TOTAL_OFFSETS; ++i)
     {
         GLint y = PaletteToY(static_cast<FilterPaletteID>(i));
 
         auto g1Index = GetPaletteG1Index(i);
         if (g1Index.has_value())
         {
-            auto element = gfx_get_g1_element(g1Index.value());
-            gfx_draw_sprite_software(&dpi, ImageId(g1Index.value()), { -element->x_offset, y - element->y_offset });
+            const auto* element = GfxGetG1Element(g1Index.value());
+            if (element != nullptr)
+            {
+                GfxDrawSpriteSoftware(dpi, ImageId(g1Index.value()), { -element->x_offset, y - element->y_offset });
+            }
         }
     }
 
@@ -247,7 +250,7 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
         }
 
         // Initial capacity will be 12 which covers most cases of a fully visible park.
-        _atlasesTextureCapacity = (_atlasesTextureCapacity + 6) << 1UL;
+        _atlasesTextureCapacity = (_atlasesTextureCapacity + 6) << 1uL;
 
         glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
         glTexImage3D(
@@ -266,9 +269,9 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
     _atlasesTextureIndices = newIndices;
 }
 
-AtlasTextureInfo TextureCache::LoadImageTexture(ImageId imageId)
+AtlasTextureInfo TextureCache::LoadImageTexture(const ImageId imageId)
 {
-    rct_drawpixelinfo dpi = GetImageAsDPI(ImageId(imageId.GetIndex()));
+    DrawPixelInfo dpi = GetImageAsDPI(ImageId(imageId.GetIndex()));
 
     auto cacheInfo = AllocateImage(dpi.width, dpi.height);
     cacheInfo.image = imageId.GetIndex();
@@ -283,9 +286,9 @@ AtlasTextureInfo TextureCache::LoadImageTexture(ImageId imageId)
     return cacheInfo;
 }
 
-AtlasTextureInfo TextureCache::LoadGlyphTexture(ImageId imageId, const PaletteMap& paletteMap)
+AtlasTextureInfo TextureCache::LoadGlyphTexture(const ImageId imageId, const PaletteMap& paletteMap)
 {
-    rct_drawpixelinfo dpi = GetGlyphAsDPI(imageId, paletteMap);
+    DrawPixelInfo dpi = GetGlyphAsDPI(imageId, paletteMap);
 
     auto cacheInfo = AllocateImage(dpi.width, dpi.height);
     cacheInfo.image = imageId.GetIndex();
@@ -334,7 +337,7 @@ AtlasTextureInfo TextureCache::AllocateImage(int32_t imageWidth, int32_t imageHe
     int32_t atlasSize = powf(2, static_cast<float>(Atlas::CalculateImageSizeOrder(imageWidth, imageHeight)));
 
 #    ifdef DEBUG
-    log_verbose("new texture atlas #%d (size %d) allocated", atlasIndex, atlasSize);
+    LOG_VERBOSE("new texture atlas #%d (size %d) allocated", atlasIndex, atlasSize);
 #    endif
 
     _atlases.emplace_back(atlasIndex, atlasSize);
@@ -347,27 +350,27 @@ AtlasTextureInfo TextureCache::AllocateImage(int32_t imageWidth, int32_t imageHe
     return _atlases.back().Allocate(imageWidth, imageHeight);
 }
 
-rct_drawpixelinfo TextureCache::GetImageAsDPI(ImageId imageId)
+DrawPixelInfo TextureCache::GetImageAsDPI(const ImageId imageId)
 {
-    auto g1Element = gfx_get_g1_element(imageId);
+    auto g1Element = GfxGetG1Element(imageId);
     int32_t width = g1Element->width;
     int32_t height = g1Element->height;
 
-    rct_drawpixelinfo dpi = CreateDPI(width, height);
-    gfx_draw_sprite_software(&dpi, imageId, { -g1Element->x_offset, -g1Element->y_offset });
+    DrawPixelInfo dpi = CreateDPI(width, height);
+    GfxDrawSpriteSoftware(dpi, imageId, { -g1Element->x_offset, -g1Element->y_offset });
     return dpi;
 }
 
-rct_drawpixelinfo TextureCache::GetGlyphAsDPI(ImageId imageId, const PaletteMap& palette)
+DrawPixelInfo TextureCache::GetGlyphAsDPI(const ImageId imageId, const PaletteMap& palette)
 {
-    auto g1Element = gfx_get_g1_element(imageId);
+    auto g1Element = GfxGetG1Element(imageId);
     int32_t width = g1Element->width;
     int32_t height = g1Element->height;
 
-    rct_drawpixelinfo dpi = CreateDPI(width, height);
+    DrawPixelInfo dpi = CreateDPI(width, height);
 
     const auto glyphCoords = ScreenCoordsXY{ -g1Element->x_offset, -g1Element->y_offset };
-    gfx_draw_sprite_palette_set_software(&dpi, imageId, glyphCoords, palette);
+    GfxDrawSpritePaletteSetSoftware(dpi, imageId, glyphCoords, palette);
     return dpi;
 }
 
@@ -379,13 +382,13 @@ void TextureCache::FreeTextures()
     std::fill(_indexMap.begin(), _indexMap.end(), UNUSED_INDEX);
 }
 
-rct_drawpixelinfo TextureCache::CreateDPI(int32_t width, int32_t height)
+DrawPixelInfo TextureCache::CreateDPI(int32_t width, int32_t height)
 {
     size_t numPixels = width * height;
     auto pixels8 = new uint8_t[numPixels];
     std::fill_n(pixels8, numPixels, 0);
 
-    rct_drawpixelinfo dpi;
+    DrawPixelInfo dpi;
     dpi.bits = pixels8;
     dpi.pitch = 0;
     dpi.x = 0;
@@ -396,7 +399,7 @@ rct_drawpixelinfo TextureCache::CreateDPI(int32_t width, int32_t height)
     return dpi;
 }
 
-void TextureCache::DeleteDPI(rct_drawpixelinfo dpi)
+void TextureCache::DeleteDPI(DrawPixelInfo dpi)
 {
     delete[] dpi.bits;
 }

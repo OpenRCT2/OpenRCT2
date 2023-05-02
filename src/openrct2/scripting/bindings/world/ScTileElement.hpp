@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -113,6 +113,9 @@ namespace OpenRCT2::Scripting
 
         DukValue hasCableLift_get() const;
         void hasCableLift_set(bool value);
+
+        DukValue isHighlighted_get() const;
+        void isHighlighted_set(bool value);
 
         DukValue object_get() const;
         void object_set(const DukValue& value);

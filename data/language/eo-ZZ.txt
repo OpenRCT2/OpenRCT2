@@ -96,6 +96,8 @@ STR_0091    :Nekonata Atrakcio (59)
 STR_0092    :Onda Fervojo Lanĉita per Linearaj Induktaj Motoroj
 STR_0093    :Hibrida Onda Fervojo
 STR_0094    :Onda Fervojo kun Unuopa Relo
+STR_0095    :Alpa Onda Fervojo
+STR_0096    :Klasika Ligna Onda Fervojo
 STR_0512    :Onda fervojo kompakta kun helikforma lifto kaj glataj kurboplenaj malleviĝoj.
 STR_0513    :Onda fervojo kun lopoj, sur kiun la rajdantoj rajdas starante
 STR_0514    :Trajnoj penditaj sub la trako de la onda fervojo svingiĝas flanken ĉe anguloj
@@ -177,6 +179,8 @@ STR_0600    :Ŝaltitaj mintrajnoj movas rapide laŭ glata kurboplena trakaranĝo
 STR_0602    :Linearaj induktaj motoroj plirapidigas la trajnojn de la onda fervojo, kiuj tiam trapasas kurboplenajn inversigojn
 STR_0603    :Ligna onda fervojo kun ŝtala trako, kiu permesas krutajn malleviĝojn kaj inversigojn.
 STR_0604    :Rajdantoj rajdas anservice sur mallarĝa monorela trako, dum ili vetkuras tra krutaj inversigoj kaj ŝanĝoj de direkto.
+STR_0605    :Rajdantoj toboganas malsupren serpentuman ŝtalan trakon, bremsante por regi ilian rapidecon.
+STR_0606    :Maljuna-stila ligna onda fervojo kun rapida kaj malglata rajdo, kun sufiĉe da ‘en-aeraj periodoj’, kelka flanka graviteco, kaj desegnita sentiĝi ‘nedirektebla’
 STR_0767    :Gasto {INT32}
 STR_0768    :Faktoto {INT32}
 STR_0769    :Mekanikisto {INT32}
@@ -338,7 +342,6 @@ STR_0950    :Ŝargi Ludon
 STR_0951    :Forlasi Ludon
 STR_0952    :Forlasi Ludon
 STR_0953    :Ŝargi Pejzaĝo
-STR_0954    :
 STR_0955    :Elekti direkton de seĝoj ĉe ĉi tiu parto de trako
 STR_0956    :-180°
 STR_0957    :-135°
@@ -386,10 +389,10 @@ STR_0998    :Ne eblas konstrui pli da stacioj por ĉi tiu atrakcio
 STR_0999    :Ĝi bezonas staciplatformon
 STR_1000    :Trako ne estas kompleta cirkvito
 STR_1001    :Trako ne taŭgas kun tia trajno
-STR_1002    :Ne eblas malfermi je {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :Ne eblas elprovi je {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :Ne eblas fermi je {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :Ne eblas ekkonstrui je {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :Ne eblas malfermi je {STRINGID}…
+STR_1003    :Ne eblas elprovi je {STRINGID}…
+STR_1004    :Ne eblas fermi je {STRINGID}…
+STR_1005    :Ne eblas ekkonstrui je {STRINGID}…
 STR_1006    :Tio unue devas esti fermita
 STR_1007    :Ne eblas krei sufiĉe da ĉaroj
 STR_1008    :Malfermi, fermi, aŭ elprovi atrakcion
@@ -751,7 +754,7 @@ STR_1363    :Tro alta por apogiloj!
 STR_1364    :Apogiloj de trako supera ne eblas esti etenditaj plu!
 STR_1365    :Ĉirkaŭtraka Ruliĝo (maldesktre)
 STR_1366    :Ĉirkaŭtraka Ruliĝo (dekstre)
-STR_1367    :Duona Lopo
+STR_1367    :Malgranda Duona Lopo
 STR_1368    :Duona Korktirilo (maldekstre)
 STR_1369    :Duona Korktirilo (dekstre)
 STR_1370    :Barelforma Ruliĝo (maldekstre)
@@ -1217,8 +1220,8 @@ STR_1838    :Kontento: {COMMA16}%
 STR_1839    :Fidindo: {COMMA16}%
 STR_1840    :Periodo de nefunkciado: {COMMA16}%
 STR_1841    :Profito: po {CURRENCY2DP} por horo
-STR_1842    :Plej ŝatata de: {COMMA16} gasto
-STR_1843    :Plej ŝatata de: {COMMA16} gastoj
+STR_1842    :Plej ŝatata de: {COMMA32} gasto
+STR_1843    :Plej ŝatata de: {COMMA32} gastoj
 STR_1844    :Elekti tipon de informoj por montri en listo de atrakcioj
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} gastoj
@@ -1242,7 +1245,7 @@ STR_1863    :Faktoto
 STR_1864    :Mekanikisto
 STR_1865    :Gardisto
 STR_1866    :Amuzisto
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Ne eblas ŝanĝi nombron de turnadoj…
 STR_1869    :{WINDOW_COLOUR_2}Nombro de turnadoj:
 STR_1870    :Nombro de plenaj turnadoj
@@ -1672,7 +1675,7 @@ STR_2314    :{WINDOW_COLOUR_2}Longeco de atrakcio: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kosto: {BLACK}almenaŭ {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Spaco bezonata: {BLACK}{COMMA16} x {COMMA16} blokoj
 STR_2321    :{WINDOW_COLOUR_2}Nombro de atrakcioj: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Dungitaro: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Dungitaro: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Areo de parko: {BLACK}{COMMA32} kvadrataj metroj
 STR_2324    :{WINDOW_COLOUR_2}Areo de parko: {BLACK}{COMMA32} kvadrataj futoj
 STR_2325    :Aĉeti bienon por etendi parkon
@@ -1703,7 +1706,7 @@ STR_2350    :{WINDOW_COLOUR_2}Dungita: {BLACK}{MONTHYEAR}
 STR_2351    :{WINDOW_COLOUR_2}Gazonoj falĉitaj: {BLACK}{COMMA32}
 STR_2352    :{WINDOW_COLOUR_2}Ĝardenoj akvumitaj: {BLACK}{COMMA32}
 STR_2353    :{WINDOW_COLOUR_2}Eroj de rubo balaitaj: {BLACK}{COMMA32}
-STR_2354    :{WINDOW_COLOUR_2}Rubujoj malplenitaj: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Rubujoj malplenigitaj: {BLACK}{COMMA32}
 STR_2355    :{WINDOW_COLOUR_2}Atrakcioj riparitaj: {BLACK}{COMMA32}
 STR_2356    :{WINDOW_COLOUR_2}Atrakcioj inspektitaj: {BLACK}{COMMA32}
 STR_2358    :Unuoj
@@ -1827,7 +1830,7 @@ STR_2487    :Montri ‘faktajn’ nomojn de gastoj
 STR_2488    :Baskuligi inter montrado de ‘faktaj’ nomoj de gastoj, kaj gastnumeroj
 STR_2489    :Klavarokomandojn…
 STR_2490    :Klavarokomandojn
-STR_2491    :Restartigi klavojn
+STR_2491    :Restarigi klavojn
 STR_2492    :Remeti ĉiujn klavarokomandojn al iliaj defaŭltaj agordoj
 STR_2493    :Fermi plej supran fenestron
 STR_2494    :Fermi ĉiujn glitajn fenestrojn
@@ -1952,8 +1955,6 @@ STR_2738    :Muziko de titola ekrano:
 STR_2739    :Neniu
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :css50.dat ne troviĝis
-STR_2743    :Kopiu ‘data/css17.dat’ de via RCT1 instalaĵo al ‘data/css50.dat’ en via RCT2 instalaĵo, aŭ kontrolu, ke la dosierindiko al RCT1 en la langeto Altnivela pravas.
 STR_2749    :Mia nova scenaro
 # New strings used in the cheats window previously these were ???
 STR_2750    :Movi ĉiujn aferojn supren
@@ -2189,8 +2190,8 @@ STR_3118    :{BLACK}{STRINGID} iras al la atrakcio
 STR_3119    :{BLACK}{STRINGID} riparas la atrakcion
 STR_3120    :Trovi plej proksiman disponeblan mekanikiston, aŭ mekanikiston, kiu riparas la atrakcion
 STR_3121    :Ne eblas trovi mekanikiston, aŭ ĉiuj proksimaj mekanikistoj okupiĝas
-STR_3122    :{WINDOW_COLOUR_2}Plej ŝatata atrakcio de: {BLACK}{COMMA16} gasto
-STR_3123    :{WINDOW_COLOUR_2}Plej ŝatata atrakcio de: {BLACK}{COMMA16} gastoj
+STR_3122    :{WINDOW_COLOUR_2}Plej ŝatata atrakcio de: {BLACK}{COMMA32} gasto
+STR_3123    :{WINDOW_COLOUR_2}Plej ŝatata atrakcio de: {BLACK}{COMMA32} gastoj
 STR_3124    :Rompita {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Faktoro de Eksciteco: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Faktoro de Intenseco: {BLACK}+{COMMA16}%
@@ -2226,7 +2227,6 @@ STR_3174    :Alia objekto bezonas ĉi tiun objekton
 STR_3175    :Ĉi tiu objekto ĉiam estas bezonata
 STR_3176    :Ne eblas elekti ĉi tiun objekton
 STR_3177    :Ne eblas malelekti ĉi tiun objekton
-STR_3178    :Almenaŭ unu objekto de trotuaro elektendas
 STR_3179    :Almenaŭ unu objekto de atrakcio aŭ atrakcioveturilo elektendas
 STR_3180    :Nevalida elektaĵo de objektoj
 STR_3181    :Elektaro de Objektoj - {STRINGID}
@@ -2259,7 +2259,7 @@ STR_3208    :Administrilo de Trakdesegnaĵoj
 STR_3209    :Reiri al Pasinta Etapo:
 STR_3210    :Iri al Sekva Etapo:
 STR_3211    :Dimensioj de mapo:
-STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Ne eblas malpliigi mapodimensiojn plu
 STR_3214    :Ne eblas pliigi mapodimensiojn plu
 STR_3215    :Tro proksime al mapbordo
@@ -2554,8 +2554,6 @@ STR_5250    :Eliri-Butono de Titolozono
 STR_5251    :Agordoj-Butono de Titolozono
 STR_5252    :Scenaro-Elektaro de Titolozono
 STR_5253    :Parkinformoj
-STR_5254    :Krei
-STR_5255    :Krei novan titolosekvencon de nulo
 STR_5256    :Krei novan temon por fari ŝanĝojn
 STR_5257    :Krei novan temon surbaze de la nuna
 STR_5258    :Forigi la nunan temon
@@ -2650,75 +2648,9 @@ STR_5373    :Nomo {STRINGID}
 STR_5374    :Dato {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :Konservaĵoj
-STR_5378    :Skripto
-STR_5379    :Preterpasi al sekva haltokomando
-STR_5380    :Komenci ludi titolosekvencon
-STR_5381    :Halti ludi titolosekvencon
-STR_5382    :Rekomenci titolosekvencon
-STR_5383    :Krei novan titolosekvencon surbaze de la nuna
-STR_5384    :Forigi la nunan titolosekvencon
-STR_5385    :Renomi la nunan titolosekvencon
-STR_5386    :Enmeti novan komandon
-STR_5387    :Redakti la elektitan komandon
-STR_5388    :Forigi la elektitan komandon
-STR_5389    :Preterpasi al la elektita komando en la titolosekvenco
-STR_5390    :Movi la elektitan komandon malsupren
-STR_5391    :Movi la elektitan komandon supren
-STR_5392    :Aldoni konservaĵon al la titolosekvenco
-STR_5393    :Forigi la elektitan konservaĵon de la titolosekvenco
-STR_5394    :Renomi la elektitan konservaĵon
-STR_5395    :Ŝargi la elektitan konservaĵon en-lude
-STR_5396    :Reŝargi la titolosekvencon se ĝi ŝanĝas ekster de la ludo
-STR_5397    :Eblas esti uzita nur sur la titolekrano
-STR_5398    :Ne eblas redakti la titolosekvencon dum ĝi ludas
-STR_5399    :Premu la haltobutonon por redakti pli
-STR_5400    :Ne eblas ŝanĝi ĉi tiun titolosekvencon
-STR_5401    :Krei novan titolosekvencon por fari ŝanĝojn
-STR_5402    :Malsukcesis ŝargi titolosekvencon
-STR_5403    :Aŭ ne estas Ŝargi aŭ Atendi komandoj, aŭ konservaĵo estas nevalida
 STR_5404    :Nomo jam ekzistas
-STR_5405    :Entajpu nomon de la konservaĵo
-STR_5406    :Entajpu nomon de la titolosekvenco
-STR_5407    :Aldoni
-STR_5408    :Forigi
-STR_5409    :Enmeti
-STR_5410    :Redakti
-STR_5411    :Reŝargi
-STR_5412    :Preterpasi al
-STR_5413    :Ŝargi
-STR_5415    :Ŝargi{MOVE_X}{87}{STRING}
-STR_5416    :Ŝargi{MOVE_X}{87}Neniu konservaĵo elektita
-STR_5417    :Loko
-STR_5418    :Loko{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Turni
-STR_5420    :Turni{MOVE_X}{87}{COMMA16}
-STR_5421    :Zomi
-STR_5422    :Zomi{MOVE_X}{87}{COMMA16}
-STR_5423    :Atendi
-STR_5424    :Atendi{MOVE_X}{87}{UINT16}
-STR_5425    :Rekomenci
-STR_5426    :Fini
-STR_5427    :Koordinatoj:
-STR_5428    :Maldekstrumaj turnoj:
-STR_5429    :Zomonivelo:
-STR_5430    :Atendi tiom da milisekundoj:
-STR_5431    :Konservi por ŝargi:
-STR_5432    :Komando:
-STR_5433    :Titolosekvencoj
-STR_5434    :Komandoredaktilo
-STR_5435    :Renomi konservaĵon
-STR_5436    :Redakti Titolosekvencojn…
-STR_5437    :Neniu konservaĵo elektita
-STR_5438    :Ne eblas fari ŝanĝojn dum komandoredaktilo estas malfermita
-STR_5439    :Atendi-komando de almenaŭ 4 sekundoj estas bezonata kun Rekomenci-komando
 STR_5440    :Minimumigi plenekranan reĝimon dum defokusigoj
-STR_5441    :Identigas atrakciojn per siaj traktipoj{NEWLINE}do veturiloj fariĝas ŝanĝeblaj{NEWLINE}poste (RCT1-konduto)
 STR_5442    :Devigi pritakson de parko:
-STR_5443    :Rapideco{MOVE_X}{87}{STRINGID}
-STR_5444    :Rapideco:
-STR_5445    :Rapideco
-STR_5446    :Atingi
 STR_5447    :Tipo {STRINGID}
 STR_5448    :Atrakcio / Veturilo {STRINGID}
 STR_5449    :Malpliigi rapidecon de ludo
@@ -2777,8 +2709,6 @@ STR_5503    :Entajpu servilonomon aŭ IP-adreson:
 STR_5504    :Montri staton plurludantan
 STR_5505    :Ne eblas aliĝi al servilo.
 STR_5506    :Gastoj malatentas intensecojn
-STR_5508    :Permesi ŝargadon de dosieroj kun nevalidaj kontrolsumoj
-STR_5509    :Permesas ŝargadon de scenaroj kaj konservaĵoj{NEWLINE}kiuj havas nevalidan kontrolsumon,{NEWLINE}kiel la scenaroj de la demonstrado{NEWLINE}aŭ difektitaj konservaĵoj.
 STR_5510    :Defaŭlta sonludilo
 STR_5511    :(NEKONATA)
 STR_5512    :Konservi Ludon Kiel
@@ -2833,8 +2763,6 @@ STR_5560    :Agordas la inspekton al ‘Post ĉiuj 10 minutoj’ por ĉiu atrakc
 STR_5561    :Malsukcesis ŝargi lingvon
 STR_5562    :AVERTO!
 STR_5563    :Ĉi tiu funkcio estas nune nestabila. Estu singarda.
-STR_5564    :Enmeti Difektitan Elementon
-STR_5565    :Enmetas difektitan mapelementon sur supro de bloko. Ĉi tio kaŝos iun ajn elementon super la difektita elemento.
 STR_5566    :Pasvorto:
 STR_5567    :Anonci
 STR_5568    :Pasvorto Bezonata
@@ -3064,7 +2992,7 @@ STR_5832    :Montri altecon per komunaj unuoj anstataŭ mezurformato agordita su
 STR_5833    :Ŝanĝas kiun datoformaton estas uzata
 STR_5834    :Elekti kiun sonludilon OpenRCT2 uzos
 STR_5835    :Silentigi la ludon se la fenestro perdas fokuson
-STR_5836    :Elekti muzikon por uzi je la ĉefa menuo.{NEWLINE}Elekti RCT1-temon postulas, ke vi kopiu ‘data/css17.dat’ de via RCT1-ludodosierujo al ‘data/css50.dat’ en via RCT2-dosierujo, aŭ agordu la dosierindikon al RCT1 en la Diversaĵo-langeto.
+STR_5836    :Elekti muzikon por uzi je la ĉefa menuo.{NEWLINE}Elekti la RCT1-temon postulas, ke vi agordu la dosierindikon al RCT1 en la Altnivela-langeto.
 STR_5837    :Krei kaj administri proprajn fasado-temojn
 STR_5838    :Montri apartan butonon por la fenestro de financoj en la ilobreto
 STR_5839    :Montri apartan butonon por la fenestro de esplorado kaj disvolvado en la ilobreto
@@ -3076,7 +3004,6 @@ STR_5844    :Resti konektita al plurludanta servilo{NEWLINE}eĉ se desinkronigo 
 STR_5845    :Aldonas butonon por{NEWLINE}sencimigiloj en la ilobreto.{NEWLINE}Ŝaltas klavarokomandon de programisto-konzolo
 STR_5846    :Agordi kiom ofte OpenRCT2 aŭtomate konserviĝas
 STR_5847    :Elekti parksinsekvon uzatan sur la titola ekrano.{NEWLINE}Titolosinsekvoj de RCT1/2 bezonas importitajn scenarojn por funkcii
-STR_5848    :Krei kaj administri proprajn titolosinsekvojn
 STR_5849    :Meti aŭtomate{NEWLINE}novdungitajn dungitojn
 STR_5851    :Agordas la defaŭltan inspekto-intervalon{NEWLINE}de novkonstruitaj atrakcioj
 STR_5853    :Baskuligi sonefektojn
@@ -3276,7 +3203,6 @@ STR_6047    :Glatigi blokojn
 STR_6048    :Eraro de altmapo
 STR_6049    :Eraro legante PNG
 STR_6050    :Eraro legante rastrumon
-STR_6051    :La larĝo kaj alto bezonas kongrui
 STR_6052    :La altmapo estas tro granda, kaj estos fortranĉita
 STR_6053    :La altmapo ne eblas esti normaligita
 STR_6054    :Nur 24-bitoj-rastrumoj estas subtenataj
@@ -3354,8 +3280,8 @@ STR_6133    :Atingi atrakciojn kaj pejzaĝon, kiuj ne estis jam inventitaj
 STR_6134    :Vakigi Pejzaĝon
 STR_6135    :Kliento sendis nevalidan peton
 STR_6136    :Servilo sendis nevalidan peton
-STR_6137    :OpenRCT2 estas libera kaj malfermitkoda klono de Roller Coaster Tycoon 2.
-STR_6138    :OpenRCT2 estas la verko de multaj aŭtoroj, kompleta listo troviĝas al “contributors.md”. Por pli da informaĵoj, vizitu http://github.com/OpenRCT2/OpenRCT2
+STR_6137    :OpenRCT2 estas libera kaj malfermitkoda aliformigo kaj kompletigo de Roller Coaster Tycoon 2.
+STR_6138    :OpenRCT2 estas la verko de multaj aŭtoroj, kompleta listo troviĝas ene de la “Kontribuantoj” butono. Por pli da informaĵoj, vizitu http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Ĉiuj produktonomoj kaj firmnomoj apartenas al siaj respektivaj posedantoj. Uzo de ili ne signifas iun ajn filion kun aŭ endosaĵon de ili.
 STR_6140    :Ŝanĝoprotokolo…
 STR_6141    :RCT1 Malsupra Ilobreto
@@ -3375,7 +3301,6 @@ STR_6154    :Pro kialoj sekurigaj, ne estas rekomendita por lanĉi OpenRCT2 kun 
 STR_6155    :Nek KDialog nek Zenity estas instalita. Bonvolu instali unu, aŭ agordu per la komanda linio.
 STR_6156    :Nomo estas reservita
 STR_6157    :Konzolo
-STR_6158    :Ne eblas ŝargi ĉi tiun dosieron…{NEWLINE}Malkongrua RCTC versio: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Veturiloj disponeblaj: {BLACK}{STRING}
 STR_6161    :Baskulilo por montri kradliniojn
 STR_6162    :Turniĝanta Sovaĝa Muso
@@ -3390,23 +3315,8 @@ STR_6170    :Optimumigoj de Interfacoj
 STR_6171    :Serĉi
 STR_6172    :Serĉi
 STR_6173    :Bonvolu entajpi la nomon por serĉi:
-STR_6174    :Ŝargi Konservaĵon
-STR_6175    :Ŝargi Scenaron
-STR_6176    :Scenaro por ŝargi:
-STR_6177    :Ŝargi{MOVE_X}{87}Neniu scenaro elektita
-STR_6178    :Ŝargi{MOVE_X}{87}{RED}Scenaro mankanta
-STR_6179    :Elekti
-STR_6180    :Neniu scenaro elektita
-STR_6181    :{RED}Mankanta scenaro
-STR_6182    :Sekvi{MOVE_X}{87}{STRING}
-STR_6183    :Sekvi{MOVE_X}{87}Neniu rastrumeto elektita
-STR_6184    :Sekvi Rastrumeton
-STR_6185    :Elekti Rastrumeton
-STR_6186    :Neniu rastrumeto elektita
-STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Vomaĵo
 STR_6189    :Anaso
-STR_6190    :Vi ne eblas elekti rastrumeton dum la ĉefa titolekrano estas aktiva.
 STR_6191    :Surfaco
 STR_6192    :Muro
 STR_6193    :{COMMA16} gasto
@@ -3515,11 +3425,11 @@ STR_6318    :Dissinkronigo de reto detektita.{NEWLINE}Protokolo-dosiero: {STRING
 STR_6319    :Bremso de Blokparto Fermita
 STR_6320    :Nemalkonstruebla
 STR_6321    :Aldonaĵo difektas
-STR_6322    :{WINDOW_COLOUR_2}Identigilo de rastrumeto: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Identigilo de ento: {BLACK}{INT32}
 STR_6323    :Simulas
 STR_6324    :Simuli
 STR_6325    :Simuli atrakcion
-STR_6326    :Ne eblas simuli je {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :Ne eblas simuli je {STRINGID}…
 STR_6327    :Transvidebla fono por gigantaj ekranokopioj
 STR_6328    :Kun ĉi tiu opcio ŝaltita, gigantaj ekranokopioj havos transvideblan fonon anstataŭ la defaŭlta nigra koloro.
 STR_6329    :{STRING}{STRINGID}
@@ -3528,7 +3438,6 @@ STR_6331    :Krei anasojn
 STR_6332    :Forigi anasojn
 STR_6333    :Pliigi skalfaktoron
 STR_6334    :Malpliigi skalfaktoron
-STR_6335    :Inspektilo de Bloko: Enmeti eron koruptitan
 STR_6336    :Inspektilo de Bloko: Kopii eron
 STR_6337    :Inspektilo de Bloko: Alglui eron
 STR_6338    :Inspektilo de Bloko: Forigi eron
@@ -3666,8 +3575,8 @@ STR_6470    :Agordi pli grandan areon da patrolzono
 STR_6471    :Travidebla Vegetaĵaro
 STR_6472    :Travideblaj Veturiloj
 STR_6473    :Travideblaj Apogiloj
-STR_6474    :Travideblaj Gastoj
-STR_6475    :Travidebla Dungitaro
+STR_6474    :Nevideblaj Gastoj
+STR_6475    :Nevidebla Dungitaro
 STR_6476    :Nevideba Vegetaĵaro
 STR_6477    :Nevideba Pejzaĝo
 STR_6478    :Nevidebaj Trotruaroj
@@ -3678,18 +3587,106 @@ STR_6482    :Agordoj de Travidebleco
 STR_6483    :Malfermi agordojn de travidebleco
 STR_6484    :Baskuligi travideblan vegetaĵaron
 STR_6485    :Baskuligi travideblajn veturilojn
-STR_6486    :Baskuligi travideblajn gastojn
-STR_6487    :Baskuligi travideblan dungitaron
+STR_6486    :Baskuligi nevideblajn gastojn
+STR_6487    :Baskuligi nevideblan dungitaron
 STR_6488    :{RED}Gastoj plendas pri la longeco de la atendovicoj en via parko.{NEWLINE}Konsideru mallongigi problemajn atendovicojn, aŭ pliigi la flukvanton de la atrakcioj.
 STR_6489    :Eraro: Malkongrua Versio de Parko
 STR_6490    :Averto: Parte Kongrua Versio de Parko
-STR_6491    :Ĉi tiu parko estis konservita en pli nova versio de OpenRCT2. Parko estas v{INT32} kaj bezonas almenaŭ v{INT32}.
+STR_6491    :Ĉi tiu parko estis konservita en pli nova versio de OpenRCT2. La parko estis konservita en v{INT32} kaj bezonas almenaŭ v{INT32}. Vi nune estas en v{INT32}.
 STR_6492    :Ĉi tiu parko estis konservita en malnova versio de OpenRCT2, kaj ne povas esti malfermita per ĉi tiu versio de OpenRCT2. Parko estas v{INT32}.
-STR_6493    :Ĉi tiu parko estis konservita en pli nova versio de OpenRCT2, kelkaj datumoj eble estas perditaj. Parko estas v{INT32} kaj bezonas almenaŭ v{INT32}.
+STR_6493    :Ĉi tiu parko estis konservita en pli nova versio de OpenRCT2, kelkaj datumoj eble estas perditaj. La parko estis konservita en v{INT32}. Vi nune estas en v{INT32}.
 STR_6494    :Grupigi laŭ atrakciotipo
 STR_6495    :Grupigi atrakciojn laŭ akrakciotipoj anstataŭ montri ĉiun veturilon aparte.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Alklaku blokon por montri ĝiajn blokelementojn.{NEWLINE}Ctrl + alklaku blokelementon por elekti ĝin rekte.
+STR_6498    :Ŝalti por konservi kvadratan formon de mapo.
+STR_6499    :Veturilo-tipo ne estas subtenata de trakdesegnaĵo-formo
+STR_6500    :Trakelementoj ne estas subtenataj de trakdesegnaĵo-formo
+STR_6501    :Hazarda koloro
+STR_6502    :Entajpu valoron inter {COMMA16} kaj {COMMA16}
+STR_6503    :Almenaŭ unu staciobjekto elektendas
+STR_6504    :Almenaŭ unu tereno-surfaco elektendas
+STR_6505    :Almenaŭ unu tereno-flanko elektendas
+STR_6506    :Granda Duona Korktirilo (maldekstre)
+STR_6507    :Granda Duona Korktirilo (dekstre)
+STR_6508    :Meza Duona Lopo (maldekstre)
+STR_6509    :Meza Duona Lopo (dekstre)
+STR_6510    :Sengravida Ruliĝo (maldekstre)
+STR_6511    :Sengravida Ruliĝo (dekstre)
+STR_6512    :Granda Sengravida Ruliĝo (maldekstre)
+STR_6513    :Granda Sengravida Ruliĝo (dekstre)
+STR_6514    :Nevalida alteco!
+STR_6515    :{BLACK}RollerCoaster Tycoon 1 ne estas ligita - retropaŝaj bildoj estos uzitaj.
+STR_6516    :Unu aŭ pli objektoj aldonitaj bezonas je RollerCoaster Tycoon 1 ligita por ĝusta montrado. Retropaŝaj bildoj estos uzitaj.
+STR_6517    :Unu aŭ pli objektoj en ĉi tiu parko bezonas je RollerCoaster Tycoon 1 ligita por ĝusta montrado. Retropaŝaj bildoj estos uzitaj.
+STR_6518    :{BLACK}Musumu super scenaro por vidi ĝian priskribon kaj celon. Alklaku ĝin por ekludi.
+STR_6519    :Ekstraĵoj
+STR_6520    :Havaĵo-Pakoj
+STR_6521    :Malalta Prioritato
+STR_6522    :Alta Prioritato
+STR_6523    :Malkreskigi la prioritaton de la elektita havaĵo-pako.
+STR_6524    :Kreskigi ka prioritaton de la elektita havaĵo-pako.
+STR_6525    :Reŝargi ĉiujn havaĵojn en la ludo kontraŭ la ŝaltitaj havaĵo-pakoj.
+STR_6526    :(bazaj grafikoj, muziko kaj sonefikoj)
+STR_6527    :Konkursoj
+STR_6528    :Nevalidaj parametroj de trako!
+STR_6529    :Nevalida parametro de kolorskemo!
+STR_6530    :Uzantkreita Kompletiga Aro
+STR_6531    :La Tempomaŝino
+STR_6532    :La Revomondo de Katia
+STR_6533    :{WINDOW_COLOUR_2}Faktoro de Eksciteco: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Faktoro de Intenseco: {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}Faktoro de Naŭzo: {BLACK}-{COMMA16}%
+STR_6536    :Ĉi tiu parko estis konservita en pli nova versio de OpenRCT2. La parko estis konservita en v{INT32}, vi nune estas en v{INT32}.
+STR_6537    :Permesi uzante regulajn trotuarojn kiel atendovico
+STR_6538    :Montras regulajn trotuarojn en la atendovicoj-fallisto de la Trotuaroj-fenestro.
+STR_6539    :Bremso Fermita
+STR_6540    :{WINDOW_COLOUR_2}Specialan dankon al la sekvantaj firmaoj por permesi ilian similecon:
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6542    :Kontribuantoj
+STR_6543    :Kontribuantoj…
+STR_6544    :Prunto ne povas esti negativa!
+STR_6545    :Uzi interezan kalkulon de RCT1
+STR_6546    :Uzi la interezan kalkulan algoritmon de RollerCoaster Tycoon 1, kiu uzis fiksitan procenton de proksimume 1.33%.
+STR_6547    :Ĉiuj Pejzaĝoj
+STR_6548    :Montri balustradojn ĉe kuniĝo
+STR_6549    :Kongruaj objektoj ne povas esti elektitaj!
+STR_6550    :Ĉi tiu elemento estas inkluzivita por retrokongruo kun malnovaj aŭ difektitaj objektoj. Ĝi ne povas esti elektita, nur malelektita.
+STR_6551    :Armea verdo
+STR_6552    :Mielroso-koloro
+STR_6553    :Flavecbruno
+STR_6554    :Grenata koloro
+STR_6555    :Korala rozkoloro
+STR_6556    :Arbara verdo
+STR_6557    :Kartuzio
+STR_6558    :Ĉasista verdo
+STR_6559    :Celadono
+STR_6560    :Limea verdo
+STR_6561    :Sepio
+STR_6562    :Persiko-koloro
+STR_6563    :Vinko
+STR_6564    :Viridiano
+STR_6565    :Marŝaŭma verdo
+STR_6566    :Violo
+STR_6567    :Lavendo
+STR_6568    :Paŝtela oranĝkoloro
+STR_6569    :Profunda akvo
+STR_6570    :Paŝtela rozkoloro
+STR_6571    :Umbro
+STR_6572    :Flavgrizo
+STR_6573    :Nevidebla
+STR_6574    :Vaka
+STR_6575    :Permesi specialajn kolorskemojn
+STR_6576    :Aldonas specialajn kolorojn al koloro-fallisto
+STR_6577    :Rapideco de blokparto-bremso
+STR_6578    :Agordi rapidlimon de blokparto-bremsoj. En blokpartoj-reĝimo, apudaj bremsoj kun pli malrapida rapideco estas ligitaj al la blokparto-bremso.
+STR_6579    :Blokparto-bremsoj estos agorditaj al defaŭlta rapideco, kiam konservite kiel trakdesegnaĵo
+STR_6580    :Restarigi
+STR_6581    :Ĉu vi certas, ke vi volas restarigi ĉiujn klavarokomandojn sur ĉi tiu langeto?
+STR_6582    :Malfermi klavarokomandoj-fenestron
+STR_6583    :{WINDOW_COLOUR_2}Inversaj Trajnoj
+STR_6584    :Elektu por funkciigi trajnojn inverse
+STR_6585    :Ne eblas ŝanĝi tion…
 
 #############
 # Scenarios #
@@ -4138,64 +4135,8 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-
-[TTPIRF02]
-STR_NAME    :Tegmento
-
-[TTPIRF03]
-STR_NAME    :Tegmento
-
-[TTPIRF04]
-STR_NAME    :Tegmento
-
 [TTPIRF05]
 STR_NAME    :Tegmento
-
-[TTPIRF07]
-STR_NAME    :Tegmento
-
-[TTPIRF08]
-STR_NAME    :Tegmento
-
-[TTRFWD01]
-STR_NAME    :Tegmento
-
-[TTRFWD02]
-STR_NAME    :Tegmento
-
-[TTRFWD03]
-STR_NAME    :Tegmento
-
-[TTRFWD04]
-STR_NAME    :Tegmento
-
-[TTRFWD05]
-STR_NAME    :Tegmento
-
-[TTRFWD06]
-STR_NAME    :Tegmento
-
-[TTRFWD07]
-STR_NAME    :Tegmento
-
-[TTRFWD08]
-STR_NAME    :Tegmento
-
-[TTRFGL01]
-STR_NAME    :Vitra Tegmento
-
-[TTRFGL02]
-STR_NAME    :Vitra Tegmento
-
-[TTRFGL03]
-STR_NAME    :Vitra Tegmento
-
-[ACWW33]
-STR_NAME    :Muro el Lignaj Fostoj
-
-[ACWWF32]
-STR_NAME    :Muro el Lignaj Fostoj
-
 ## End OpenRCT2 Official
 
 ###############################################################################
@@ -4499,3 +4440,106 @@ STR_DTLS    :Ĉi tiu maljuniĝa amuzparko vidis pli bonajn tagojn. Helpu la pose
 STR_SCNR    :Pando-Mondo
 STR_PARK    :Pando-Mondo
 STR_DTLS    :Aldonu pli da atrakcioj kaj allogu pli da homoj al ĉi tiu pando-temita amuzparko
+
+<Tycoon Park>
+STR_SCNR    :Magnata Parko
+STR_PARK    :Magnata Parko
+STR_DTLS    :
+
+###
+<UCES Halloween>
+STR_SCNR    :Tombeja Kresto
+STR_PARK    :Tombeja Kresto
+STR_DTLS    :Ĉi Tio estas Haloveno, UCES Haloveno, kukurboj kriegas en la plena nokto! Ĉi tiu tombejo havas problemon kaj ĝi dependas de vi por savi ĝin, dum lasinte la mortinton ripozi en paco! Ĉu vi povas teni la fantomojn en iliaj tomboj kaj alporti frostotremojn al viaj klientoj?{NEWLINE}Aŭtoro: Squid
+
+###############################################################################
+## UCES: The Time Machine (2003)
+###############################################################################
+<Lighthouse of Alexandria by Katatude for UCES>
+STR_SCNR    :La Lumturo de Aleksandrio
+STR_PARK    :La Lumturo de Aleksandrio
+STR_DTLS    :Aleksandrio konstruis la urbon; Grekoj, romianoj, kaj egiptoj lasis siajn markojn. Sed la plej granda honoro estis Mirindaĵo de la Antikva Mondo - la Lumturo. Vizitu kaj farigu parkon!{NEWLINE}Aŭtoro: Katatude
+
+<Cleveland's Luna Park>
+STR_SCNR    :Luna Parko, Klevlando
+STR_PARK    :Luna Parko
+STR_DTLS    :Kiel ĝi estis en ĝia inaŭgura tago - 18 Majo 1905.{NEWLINE}Aŭtoro: Aetherwave
+
+<Mount Vesuvius 1700 A.D. by Katatude for UCES>
+STR_SCNR    :Monto Vezuvio
+STR_PARK    :Monto Vezuvio
+STR_DTLS    :Pompejo kaj Herkulano estis enterigita de Monto Vezuvio en 79 p.K. Vizitu la elfosaĵojn kaj konstruu parkon!{NEWLINE}Aŭtoro: Katatude
+
+<The Sandbox by Katatude for UCES>
+STR_SCNR    :La Sablokesto
+STR_PARK    :La Sablokesto
+STR_DTLS    :Kion ĉiuj volas - sablokesto! Do prenu vian etan sitelon kaj fosilon kaj konstruu parkon!{NEWLINE}Aŭtoro: Katatude
+
+<Niagara Falls & Gorge by Katatude for UCES>
+STR_SCNR    :Niagara Akvofalaro & Valego
+STR_PARK    :Niagara Akvofalaro
+STR_DTLS    :Usona Akvofalo, Luna Akvofalo & Huffera Akvofalo sur la Niagara Limo, 1850.{NEWLINE}Aŭtoro: Katatude
+
+<Rocky Mountain Miners>
+STR_SCNR    :Ministoj de Roka Montaro
+STR_PARK    :Ministoj de Roka Montaro
+STR_DTLS    :Terŝoviĝo damaĝis vian fervojon. Viaj laboristoj foriris por esplori. Ĉu estas oro en onda-fervojojn?{NEWLINE}Aŭtoroj: Squid, Buckone, Fossil
+
+<The Time Machine by Katatude for UCES>
+STR_SCNR    :La Tempomaŝino
+STR_PARK    :La Tempomaŝino
+STR_DTLS    :La Tempomaŝino. Konstruu por iri - kiam vi volas, kien vi volas. Eterneco atendas. Ĉio estas relativa.{NEWLINE}Aŭtoro: Katatude
+
+<Tower of Babel>
+STR_SCNR    :Babela Turo
+STR_PARK    :Babela Turo
+STR_DTLS    :Ho! Rigardu kien la tempomaŝino kondukis nin nun! Kien ĉiuj iris?{NEWLINE}Aŭtoro: Fossil
+
+<Transformation>
+STR_SCNR    :Transformiĝo
+STR_PARK    :Transformiĝo
+STR_DTLS    :Ni atendis vin…{NEWLINE}Aŭtoro: Fossil
+
+<Urbis Incognitus>
+STR_SCNR    :Urbis Incognitus
+STR_PARK    :Urbis Incognitus
+STR_DTLS    :La romianoj lacas enuigajn gladiatorajn batalojn. Donu al ili pli bonajn ravojn, transformu roman urbon en la plej bonan amuzparkon de ĉiuj tempoj!{NEWLINE}Aŭtoro: Kaffe
+
+###############################################################################
+## UCES: Katy’s Dreamworld (2003)
+###############################################################################
+
+<Beneath the Christmas Tree by Katatude for UCES>
+STR_SCNR    :Sub la Kristnaska Arbo
+STR_PARK    :Vintra Mirlando
+STR_DTLS    :Panjo konstruis ĉi tiun scenon sub nia arbo. Nun ŝi volas parkon farigitan en ĝi! Ĉu vi povas helpi?{NEWLINE}Aŭtoro: Katatude
+
+<Bigrock Blast>
+STR_SCNR    :Rokega Eksplodo
+STR_PARK    :Rokega Eksplodo
+STR_DTLS    :Post eksplodo ĉe la Rokega Minada Kompanio, la homoj de Rokego devas konstrui amuzparkon por konservi ilian urbeton viva.{NEWLINE}Aŭtoroj: rbarclay & buckone
+
+<Camp Mockingbird for UCES by Katatude>
+STR_SCNR    :Mokbirdo-Kampejo
+STR_PARK    :Mokbirdo-Kampejo
+STR_DTLS    :Nur 500 dolaroj semajne por ĉi tiu somera kampejo! Disrompu vian ŝparmonujon kaj tiam amuziĝu kaj konstruu parkon.{NEWLINE}Aŭtoro: Katatude
+
+<Choo Choo Town>
+STR_SCNR    :Ĉu-Ĉu-Urbeto
+STR_PARK    :Ĉu-Ĉu-Urbeto
+STR_DTLS    :Panjo! Paĉjo! Mi volas iri al Ĉu-Ĉu-Urbeto!{NEWLINE}Aŭtoro: Fossil
+
+<Dragon Islands>
+STR_SCNR    :Drakaj Insuloj
+STR_PARK    :Drakaj Insuloj
+STR_DTLS    :Ĉu Drakaj Insuloj? Mi ne estas certa, ke mi volas iri tien…{NEWLINE}Aŭtoro: Fossil
+
+<Kiddy Karnival II>
+STR_SCNR    :Infana Karnavalo 2
+STR_PARK    :Infana Karnavalo
+STR_DTLS    :He infanoj! Ni amuziĝu!{NEWLINE}Aŭtoroj: Piehead & Fossil
+
+<Sand Dune>
+STR_SCNR    :Sabla Duno
+STR_PARK    :Sabla Duno
+STR_DTLS    :Kiel posedanto de malgranda parko, vi aĉetis grandan terpecon laŭ la marbordo por vastigi kaj allogi pli da gastoj viziti la belajn sablajn dunojn, sed singardu: vi ne povas perturbi tiujn ekologie delikatajn sablajn dunojn.{NEWLINE}Aŭtoro: rbarclay

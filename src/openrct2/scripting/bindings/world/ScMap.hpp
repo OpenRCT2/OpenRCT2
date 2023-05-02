@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #    include "../../../common.h"
 #    include "../../Duktape.hpp"
 #    include "../ride/ScRide.hpp"
+#    include "../ride/ScTrackIterator.h"
 #    include "../world/ScTile.hpp"
 
 namespace OpenRCT2::Scripting
@@ -45,6 +46,8 @@ namespace OpenRCT2::Scripting
         std::vector<DukValue> getAllEntitiesOnTile(const std::string& type, const DukValue& tilePos) const;
 
         DukValue createEntity(const std::string& type, const DukValue& initializer);
+
+        DukValue getTrackIterator(const DukValue& position, int32_t elementIndex) const;
 
         static void Register(duk_context* ctx);
 

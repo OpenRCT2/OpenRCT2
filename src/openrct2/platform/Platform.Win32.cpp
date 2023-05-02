@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,15 +21,7 @@
 #    include <shlobj.h>
 #    undef GetEnvironmentVariable
 
-#    if _WIN32_WINNT >= 0x0600
-#        define __USE_SHGETKNOWNFOLDERPATH__
-#        define __USE_GETDATEFORMATEX__
-#    else
-#        ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
-#            define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
-#        endif
-#    endif
-
+#    include "../Date.h"
 #    include "../OpenRCT2.h"
 #    include "../common.h"
 #    include "../core/Path.hpp"
@@ -41,10 +33,6 @@
 #    include <cstring>
 #    include <iterator>
 #    include <locale>
-
-#    if _WIN32_WINNT < 0x600
-#        define swprintf_s(a, b, c, d, ...) swprintf(a, b, c, ##__VA_ARGS__)
-#    endif
 
 // Native resource IDs
 #    include "../../../resources/resource.h"
@@ -58,7 +46,7 @@ static uint32_t _frequency = 0;
 static LARGE_INTEGER _entryTimestamp;
 
 // The name of the mutex used to prevent multiple instances of the game from running
-static constexpr char SINGLE_INSTANCE_MUTEX_NAME[] = "RollerCoaster Tycoon 2_GSKMUTEX";
+static constexpr wchar_t SINGLE_INSTANCE_MUTEX_NAME[] = L"RollerCoaster Tycoon 2_GSKMUTEX";
 
 #    define SOFTWARE_CLASSES L"Software\\Classes"
 #    define MUI_CACHE L"Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache"
@@ -80,11 +68,7 @@ char* strndup(const char* src, size_t size)
 
 namespace Platform
 {
-#    ifdef __USE_SHGETKNOWNFOLDERPATH__
     static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid);
-#    else
-    static std::string WIN32_GetFolderPath(int nFolder);
-#    endif
     static std::string WIN32_GetModuleFileNameW(HMODULE hModule);
 
     std::string GetEnvironmentVariable(std::string_view name)
@@ -128,11 +112,7 @@ namespace Platform
             case SPECIAL_FOLDER::USER_CONFIG:
             case SPECIAL_FOLDER::USER_DATA:
             {
-#    ifdef __USE_SHGETKNOWNFOLDERPATH__
                 auto path = WIN32_GetKnownFolderPath(FOLDERID_Documents);
-#    else
-                auto path = WIN32_GetFolderPath(CSIDL_PERSONAL);
-#    endif
                 if (path.empty())
                 {
                     path = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
@@ -141,11 +121,7 @@ namespace Platform
             }
             case SPECIAL_FOLDER::USER_HOME:
             {
-#    ifdef __USE_SHGETKNOWNFOLDERPATH__
                 auto path = WIN32_GetKnownFolderPath(FOLDERID_Profile);
-#    else
-                auto path = WIN32_GetFolderPath(CSIDL_PROFILE);
-#    endif
                 if (path.empty())
                 {
                     path = GetHomePathViaEnvironment();
@@ -158,11 +134,7 @@ namespace Platform
             }
             case SPECIAL_FOLDER::RCT2_DISCORD:
             {
-#    ifdef __USE_SHGETKNOWNFOLDERPATH__
                 auto path = WIN32_GetKnownFolderPath(FOLDERID_LocalAppData);
-#    else
-                auto path = WIN32_GetFolderPath(CSIDL_LOCAL_APPDATA);
-#    endif
                 if (!path.empty())
                 {
                     path = Path::Combine(path, u8"DiscordGames\\RollerCoaster Tycoon 2 Triple Thrill Pack\\content\\Game");
@@ -226,13 +198,8 @@ namespace Platform
         std::string result;
 
         wchar_t date[20];
-#    ifdef __USE_GETDATEFORMATEX__
         ptrdiff_t charsWritten = GetDateFormatEx(
             LOCALE_NAME_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, static_cast<int>(std::size(date)), nullptr);
-#    else
-        ptrdiff_t charsWritten = GetDateFormatW(
-            LOCALE_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, static_cast<int>(std::size(date)));
-#    endif
         if (charsWritten != 0)
         {
             result = String::ToUtf8(std::wstring_view(date, charsWritten - 1));
@@ -246,12 +213,8 @@ namespace Platform
         std::string result;
 
         wchar_t time[20];
-#    ifdef __USE_GETDATEFORMATEX__
         ptrdiff_t charsWritten = GetTimeFormatEx(
             LOCALE_NAME_USER_DEFAULT, 0, &st, nullptr, time, static_cast<int>(std::size(time)));
-#    else
-        ptrdiff_t charsWritten = GetTimeFormatW(LOCALE_USER_DEFAULT, 0, &st, nullptr, time, static_cast<int>(std::size(time)));
-#    endif
         if (charsWritten != 0)
         {
             result = String::ToUtf8(std::wstring_view(time, charsWritten - 1));
@@ -262,7 +225,7 @@ namespace Platform
     bool IsOSVersionAtLeast(uint32_t major, uint32_t minor, uint32_t build)
     {
         bool result = false;
-        auto hModule = GetModuleHandleA("ntdll.dll");
+        auto hModule = GetModuleHandleW(L"ntdll.dll");
         if (hModule != nullptr)
         {
             using RtlGetVersionPtr = long(WINAPI*)(PRTL_OSVERSIONINFOW);
@@ -347,7 +310,6 @@ namespace Platform
         return isSupported;
     }
 
-#    ifdef __USE_SHGETKNOWNFOLDERPATH__
     static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid)
     {
         std::string path;
@@ -359,18 +321,6 @@ namespace Platform
         CoTaskMemFree(wpath);
         return path;
     }
-#    else
-    static std::string WIN32_GetFolderPath(int nFolder)
-    {
-        std::string path;
-        wchar_t wpath[MAX_PATH];
-        if (SUCCEEDED(SHGetFolderPathW(nullptr, nFolder | CSIDL_FLAG_CREATE, nullptr, 0, wpath)))
-        {
-            path = String::ToUtf8(wpath);
-        }
-        return path;
-    }
-#    endif
 
     static std::string WIN32_GetModuleFileNameW(HMODULE hModule)
     {
@@ -408,7 +358,6 @@ namespace Platform
         SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nullptr, nullptr);
     }
 
-#    if _WIN32_WINNT >= 0x0600
     static HMODULE _dllModule = nullptr;
     static HMODULE GetDLLModule()
     {
@@ -419,19 +368,17 @@ namespace Platform
         return _dllModule;
     }
 
-    static std::wstring get_progIdName(std::string_view extension)
+    static std::wstring GetProdIDName(std::string_view extension)
     {
         auto progIdName = std::string(OPENRCT2_NAME) + std::string(extension);
         auto progIdNameW = String::ToWideChar(progIdName);
         return progIdNameW;
     }
-#    endif
 
     bool SetUpFileAssociation(
         std::string_view extension, std::string_view fileTypeText, std::string_view commandText, std::string_view commandArgs,
         const uint32_t iconIndex)
     {
-#    if _WIN32_WINNT >= 0x0600
         wchar_t exePathW[MAX_PATH];
         wchar_t dllPathW[MAX_PATH];
 
@@ -444,7 +391,7 @@ namespace Platform
         auto fileTypeTextW = String::ToWideChar(fileTypeText);
         auto commandTextW = String::ToWideChar(commandText);
         auto commandArgsW = String::ToWideChar(commandArgs);
-        auto progIdNameW = get_progIdName(extension);
+        auto progIdNameW = GetProdIDName(extension);
 
         HKEY hKey = nullptr;
         HKEY hRootKey = nullptr;
@@ -514,27 +461,24 @@ namespace Platform
             RegCloseKey(hRootKey);
             return false;
         }
-#    endif
         return true;
     }
 
     static void RemoveFileAssociation(const utf8* extension)
     {
-#    if _WIN32_WINNT >= 0x0600
         // [HKEY_CURRENT_USER\Software\Classes]
         HKEY hRootKey;
         if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) == ERROR_SUCCESS)
         {
             // [hRootKey\.ext]
-            RegDeleteTreeA(hRootKey, extension);
+            RegDeleteTreeW(hRootKey, String::ToWideChar(extension).c_str());
 
             // [hRootKey\OpenRCT2.ext]
-            auto progIdName = get_progIdName(extension);
+            auto progIdName = GetProdIDName(extension);
             RegDeleteTreeW(hRootKey, progIdName.c_str());
 
             RegCloseKey(hRootKey);
         }
-#    endif
     }
 
     void RemoveFileAssociations()
@@ -561,13 +505,13 @@ namespace Platform
 
     bool FindApp(std::string_view app, std::string* output)
     {
-        log_warning("FindApp() not implemented for Windows!");
+        LOG_WARNING("FindApp() not implemented for Windows!");
         return false;
     }
 
     int32_t Execute(std::string_view command, std::string* output)
     {
-        log_warning("Execute() not implemented for Windows!");
+        LOG_WARNING("Execute() not implemented for Windows!");
         return -1;
     }
 
@@ -581,7 +525,7 @@ namespace Platform
             FILETIME ftCreate, ftAccess, ftWrite;
             if (GetFileTime(hFile, &ftCreate, &ftAccess, &ftWrite))
             {
-                lastModified = (static_cast<uint64_t>(ftWrite.dwHighDateTime) << 32ULL)
+                lastModified = (static_cast<uint64_t>(ftWrite.dwHighDateTime) << 32uLL)
                     | static_cast<uint64_t>(ftWrite.dwLowDateTime);
             }
             CloseHandle(hFile);
@@ -647,110 +591,82 @@ namespace Platform
 
     uint16_t GetLocaleLanguage()
     {
-        CHAR langCode[4];
-
-        if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SABBREVLANGNAME, reinterpret_cast<LPSTR>(&langCode), sizeof(langCode))
-            == 0)
+        wchar_t langCode[LOCALE_NAME_MAX_LENGTH];
+        if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SNAME, langCode, static_cast<int>(std::size(langCode))) == 0)
         {
             return LANGUAGE_UNDEFINED;
         }
 
-        if (strcmp(langCode, "ENG") == 0)
+        const std::pair<std::wstring_view, int16_t> supportedLocales[] = {
+            { L"ar", /*LANGUAGE_ARABIC*/ LANGUAGE_UNDEFINED }, // Experimental, don't risk offering it by default yet
+            { L"ca", LANGUAGE_CATALAN },
+            { L"zh-Hans", LANGUAGE_CHINESE_SIMPLIFIED },  // May not be accurate enough
+            { L"zh-Hant", LANGUAGE_CHINESE_TRADITIONAL }, // May not be accurate enough
+            { L"cs", LANGUAGE_CZECH },
+            { L"da", LANGUAGE_DANISH },
+            { L"de", LANGUAGE_GERMAN },
+            { L"en-GB", LANGUAGE_ENGLISH_UK },
+            { L"en-US", LANGUAGE_ENGLISH_US },
+            { L"eo", LANGUAGE_ESPERANTO },
+            { L"es", LANGUAGE_SPANISH },
+            { L"fr", LANGUAGE_FRENCH },
+            { L"fr-CA", LANGUAGE_FRENCH_CA },
+            { L"it", LANGUAGE_ITALIAN },
+            { L"ja", LANGUAGE_JAPANESE },
+            { L"ko", LANGUAGE_KOREAN },
+            { L"hu", LANGUAGE_HUNGARIAN },
+            { L"nl", LANGUAGE_DUTCH },
+            { L"no", LANGUAGE_NORWEGIAN },
+            { L"pl", LANGUAGE_POLISH },
+            { L"pt-BR", LANGUAGE_PORTUGUESE_BR },
+            { L"ru", LANGUAGE_RUSSIAN },
+            { L"fi", LANGUAGE_FINNISH },
+            { L"sv", LANGUAGE_SWEDISH },
+            { L"tr", LANGUAGE_TURKISH },
+            { L"vi", LANGUAGE_VIETNAMESE },
+        };
+        static_assert(
+            std::size(supportedLocales) == LANGUAGE_COUNT - 1, "GetLocaleLanguage: List of languages does not match the enum!");
+
+        for (const auto& locale : supportedLocales)
         {
-            return LANGUAGE_ENGLISH_UK;
-        }
-        if (strcmp(langCode, "ENU") == 0)
-        {
-            return LANGUAGE_ENGLISH_US;
-        }
-        if (strcmp(langCode, "DEU") == 0)
-        {
-            return LANGUAGE_GERMAN;
-        }
-        if (strcmp(langCode, "NLD") == 0)
-        {
-            return LANGUAGE_DUTCH;
-        }
-        if (strcmp(langCode, "FRA") == 0)
-        {
-            return LANGUAGE_FRENCH;
-        }
-        if (strcmp(langCode, "HUN") == 0)
-        {
-            return LANGUAGE_HUNGARIAN;
-        }
-        if (strcmp(langCode, "PLK") == 0)
-        {
-            return LANGUAGE_POLISH;
-        }
-        if (strcmp(langCode, "ESP") == 0)
-        {
-            return LANGUAGE_SPANISH;
-        }
-        if (strcmp(langCode, "SVE") == 0)
-        {
-            return LANGUAGE_SWEDISH;
-        }
-        if (strcmp(langCode, "ITA") == 0)
-        {
-            return LANGUAGE_ITALIAN;
-        }
-        if (strcmp(langCode, "POR") == 0)
-        {
-            return LANGUAGE_PORTUGUESE_BR;
-        }
-        if (strcmp(langCode, "FIN") == 0)
-        {
-            return LANGUAGE_FINNISH;
-        }
-        if (strcmp(langCode, "NOR") == 0)
-        {
-            return LANGUAGE_NORWEGIAN;
-        }
-        if (strcmp(langCode, "DAN") == 0)
-        {
-            return LANGUAGE_DANISH;
+            if (wcsncmp(langCode, locale.first.data(), locale.first.length()) == 0)
+            {
+                return locale.second;
+            }
         }
         return LANGUAGE_UNDEFINED;
     }
 
     CurrencyType GetLocaleCurrency()
     {
-        CHAR currCode[4];
-        if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SINTLSYMBOL, reinterpret_cast<LPSTR>(&currCode), sizeof(currCode)) == 0)
+        wchar_t currCode[9];
+        if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SINTLSYMBOL, currCode, static_cast<int>(std::size(currCode))) == 0)
         {
             return Platform::GetCurrencyValue(nullptr);
         }
 
-        return Platform::GetCurrencyValue(currCode);
+        return Platform::GetCurrencyValue(String::ToUtf8(currCode).c_str());
     }
 
     MeasurementFormat GetLocaleMeasurementFormat()
     {
         UINT measurement_system;
-        if (GetLocaleInfo(
-                LOCALE_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, reinterpret_cast<LPSTR>(&measurement_system),
-                sizeof(measurement_system))
+        if (GetLocaleInfoEx(
+                LOCALE_NAME_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, reinterpret_cast<LPWSTR>(&measurement_system),
+                sizeof(measurement_system) / sizeof(wchar_t))
             == 0)
         {
             return MeasurementFormat::Metric;
         }
 
-        switch (measurement_system)
-        {
-            case 1:
-                return MeasurementFormat::Imperial;
-            case 0:
-            default:
-                return MeasurementFormat::Metric;
-        }
+        return measurement_system == 1 ? MeasurementFormat::Imperial : MeasurementFormat::Metric;
     }
 
     uint8_t GetLocaleDateFormat()
     {
-#    if _WIN32_WINNT >= 0x0600
         // Retrieve short date format, eg "MM/dd/yyyy"
-        wchar_t dateFormat[20];
+        wchar_t dateFormat[80];
         if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SSHORTDATE, dateFormat, static_cast<int>(std::size(dateFormat)))
             == 0)
         {
@@ -763,8 +679,8 @@ namespace Platform
         // in our date formats.
         // https://msdn.microsoft.com/en-us/library/windows/desktop/dd317787(v=vs.85).aspx
         //
-        wchar_t first[sizeof(dateFormat)];
-        wchar_t second[sizeof(dateFormat)];
+        wchar_t first[std::size(dateFormat)];
+        wchar_t second[std::size(dateFormat)];
         if (swscanf_s(
                 dateFormat, L"%l[dyM]%*l[^dyM]%l[dyM]%*l[^dyM]%*l[dyM]", first, static_cast<uint32_t>(std::size(first)), second,
                 static_cast<uint32_t>(std::size(second)))
@@ -773,17 +689,17 @@ namespace Platform
             return DATE_FORMAT_DAY_MONTH_YEAR;
         }
 
-        if (wcsncmp(L"d", first, 1) == 0)
+        if (first[0] == L'd')
         {
             return DATE_FORMAT_DAY_MONTH_YEAR;
         }
-        if (wcsncmp(L"M", first, 1) == 0)
+        if (first[0] == L'M')
         {
             return DATE_FORMAT_MONTH_DAY_YEAR;
         }
-        if (wcsncmp(L"y", first, 1) == 0)
+        if (first[0] == L'y')
         {
-            if (wcsncmp(L"d", second, 1) == 0)
+            if (second[0] == 'd')
             {
                 return DATE_FORMAT_YEAR_DAY_MONTH;
             }
@@ -791,7 +707,6 @@ namespace Platform
             // Closest possible option
             return DATE_FORMAT_YEAR_MONTH_DAY;
         }
-#    endif
 
         // Default fallback
         return DATE_FORMAT_DAY_MONTH_YEAR;
@@ -801,21 +716,18 @@ namespace Platform
     {
         UINT fahrenheit;
 
-        // GetLocaleInfo will set fahrenheit to 1 if the locale on this computer
+        // GetLocaleInfoEx will set fahrenheit to 1 if the locale on this computer
         // uses the United States measurement system or 0 otherwise.
-        if (GetLocaleInfo(
-                LOCALE_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, reinterpret_cast<LPSTR>(&fahrenheit),
-                sizeof(fahrenheit))
+        if (GetLocaleInfoEx(
+                LOCALE_NAME_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, reinterpret_cast<LPWSTR>(&fahrenheit),
+                sizeof(fahrenheit) / sizeof(wchar_t))
             == 0)
         {
             // Assume celsius by default if function call fails
             return TemperatureUnit::Celsius;
         }
 
-        if (fahrenheit)
-            return TemperatureUnit::Fahrenheit;
-
-        return TemperatureUnit::Celsius;
+        return fahrenheit == 1 ? TemperatureUnit::Fahrenheit : TemperatureUnit::Celsius;
     }
 
     bool ProcessIsElevated()
@@ -870,43 +782,33 @@ namespace Platform
 
     std::string GetFontPath(const TTFFontDescriptor& font)
     {
-#    if defined(__USE_SHGETKNOWNFOLDERPATH__)
         auto path = WIN32_GetKnownFolderPath(FOLDERID_Fonts);
-#    else
-        auto path = WIN32_GetFolderPath(CSIDL_FONTS);
-#    endif
         return !path.empty() ? Path::Combine(path, font.filename) : std::string();
     }
 
     bool EnsureDirectoryExists(u8string_view path)
     {
-        if (Path::DirectoryExists(path))
-            return 1;
-
         auto wPath = String::ToWideChar(path);
         auto success = CreateDirectoryW(wPath.c_str(), nullptr);
-        return success != FALSE;
+        return success != FALSE || GetLastError() == ERROR_ALREADY_EXISTS;
     }
 
     bool LockSingleInstance()
     {
-        HANDLE mutex, status;
-
         // Check if operating system mutex exists
-        mutex = OpenMutex(MUTEX_ALL_ACCESS, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
+        HANDLE mutex = CreateMutexW(nullptr, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
         if (mutex == nullptr)
         {
-            // Create new mutex
-            status = CreateMutex(nullptr, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
-            if (status == nullptr)
-                log_error("unable to create mutex");
-
+            LOG_ERROR("unable to create mutex");
             return true;
         }
-
-        // Already running
-        CloseHandle(mutex);
-        return false;
+        else if (GetLastError() == ERROR_ALREADY_EXISTS)
+        {
+            // Already running
+            CloseHandle(mutex);
+            return false;
+        }
+        return true;
     }
 
     int32_t GetDrives()
@@ -938,7 +840,7 @@ namespace Platform
                 ULARGE_INTEGER ull{};
                 ull.LowPart = localFileTime.dwLowDateTime;
                 ull.HighPart = localFileTime.dwHighDateTime;
-                return ull.QuadPart / 10000000ULL - 11644473600ULL;
+                return ull.QuadPart / 10000000uLL - 11644473600uLL;
             }
         }
         return 0;
@@ -949,19 +851,18 @@ namespace Platform
         // Get file time
         FILETIME fileTime;
         GetSystemTimeAsFileTime(&fileTime);
-        uint64_t fileTime64 = (static_cast<uint64_t>(fileTime.dwHighDateTime) << 32ULL)
+        uint64_t fileTime64 = (static_cast<uint64_t>(fileTime.dwHighDateTime) << 32uLL)
             | (static_cast<uint64_t>(fileTime.dwLowDateTime));
 
         // File time starts from: 1601-01-01T00:00:00Z
         // Convert to start from: 0001-01-01T00:00:00Z
-        datetime64 utcNow = fileTime64 - 504911232000000000ULL;
+        datetime64 utcNow = fileTime64 - 504911232000000000uLL;
         return utcNow;
     }
 
     bool SetupUriProtocol()
     {
-#    if _WIN32_WINNT >= 0x0600
-        log_verbose("Setting up URI protocol...");
+        LOG_VERBOSE("Setting up URI protocol...");
 
         // [HKEY_CURRENT_USER\Software\Classes]
         HKEY hRootKey;
@@ -969,11 +870,11 @@ namespace Platform
         {
             // [hRootKey\openrct2]
             HKEY hClassKey;
-            if (RegCreateKeyA(hRootKey, "openrct2", &hClassKey) == ERROR_SUCCESS)
+            if (RegCreateKeyW(hRootKey, L"openrct2", &hClassKey) == ERROR_SUCCESS)
             {
-                if (RegSetValueA(hClassKey, nullptr, REG_SZ, "URL:openrct2", 0) == ERROR_SUCCESS)
+                if (RegSetValueW(hClassKey, nullptr, REG_SZ, L"URL:openrct2", 0) == ERROR_SUCCESS)
                 {
-                    if (RegSetKeyValueA(hClassKey, nullptr, "URL Protocol", REG_SZ, "", 0) == ERROR_SUCCESS)
+                    if (RegSetKeyValueW(hClassKey, nullptr, L"URL Protocol", REG_SZ, "", 0) == ERROR_SUCCESS)
                     {
                         // [hRootKey\openrct2\shell\open\command]
                         wchar_t exePath[MAX_PATH];
@@ -995,16 +896,15 @@ namespace Platform
                                 RegSetKeyValueW(hMuiCacheKey, nullptr, buffer, REG_SZ, L"OpenRCT2", sizeof(L"OpenRCT2"));
                             }
 
-                            log_verbose("URI protocol setup successful");
+                            LOG_VERBOSE("URI protocol setup successful");
                             return true;
                         }
                     }
                 }
             }
         }
-#    endif
 
-        log_verbose("URI protocol setup failed");
+        LOG_VERBOSE("URI protocol setup failed");
         return false;
     }
 

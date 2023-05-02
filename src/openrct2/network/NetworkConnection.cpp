@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #    include "NetworkConnection.h"
 
 #    include "../core/String.hpp"
+#    include "../localisation/Formatting.h"
 #    include "../localisation/Localisation.h"
 #    include "../platform/Platform.h"
 #    include "Socket.h"
@@ -195,10 +196,10 @@ void NetworkConnection::SetLastDisconnectReason(std::string_view src)
     _lastDisconnectReason = src;
 }
 
-void NetworkConnection::SetLastDisconnectReason(const rct_string_id string_id, void* args)
+void NetworkConnection::SetLastDisconnectReason(const StringId string_id, void* args)
 {
     char buffer[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
-    format_string(buffer, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, string_id, args);
+    OpenRCT2::FormatStringLegacy(buffer, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, string_id, args);
     SetLastDisconnectReason(buffer);
 }
 

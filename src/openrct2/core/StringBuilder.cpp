@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -32,10 +32,10 @@ void StringBuilder::Append(codepoint_t codepoint)
     _buffer.insert(_buffer.end(), data.begin(), data.end());
 }
 
-void StringBuilder::Append(const utf8* text)
+void StringBuilder::Append(std::string_view text)
 {
-    size_t textLength = String::SizeOf(text);
-    Append(text, textLength);
+    size_t textLength = text.length();
+    Append(text.data(), textLength);
 }
 
 void StringBuilder::Append(const utf8* text, size_t textLength)

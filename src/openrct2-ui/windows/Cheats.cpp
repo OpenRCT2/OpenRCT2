@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,8 +15,8 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/CheatSetAction.h>
 #include <openrct2/actions/ParkSetDateAction.h>
-#include <openrct2/actions/SetCheatAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
@@ -31,6 +31,8 @@
 constexpr auto CHEATS_MONEY_DEFAULT = 10000.00_GBP;
 constexpr auto CHEATS_MONEY_INCREMENT_DIV = 5000.00_GBP;
 
+using OpenRCT2::Date;
+
 // clang-format off
 enum
 {
@@ -41,14 +43,14 @@ enum
     WINDOW_CHEATS_PAGE_COUNT,
 };
 
-static rct_string_id _staffSpeedNames[] =
+static StringId _staffSpeedNames[] =
 {
     STR_FROZEN,
     STR_NORMAL,
     STR_FAST,
 };
 
-static constexpr const rct_string_id WeatherTypes[] =
+static constexpr const StringId WeatherTypes[] =
 {
     STR_SUNNY,
     STR_PARTIALLY_CLOUDY,
@@ -149,10 +151,12 @@ enum WindowCheatsWidgetIdx
     WIDX_STAFF_GROUP,
     WIDX_STAFF_SPEED,
     WIDX_STAFF_SPEED_DROPDOWN_BUTTON,
+    WIDX_PARK_CONSTRUCTION_GROUP,
+    WIDX_ALLOW_REGULAR_PATH_AS_QUEUE,
+    WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES,
 
     WIDX_FIX_ALL = WIDX_TAB_CONTENT,
     WIDX_RENEW_RIDES,
-    WIDX_MAKE_DESTRUCTIBLE,
     WIDX_RESET_CRASH_STATUS,
     WIDX_10_MINUTE_INSPECTIONS,
     WIDX_CONSTRUCTION_GROUP,
@@ -160,6 +164,7 @@ enum WindowCheatsWidgetIdx
     WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES,
     WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,
     WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS,
+    WIDX_MAKE_DESTRUCTIBLE,
     WIDX_OPERATION_MODES_GROUP,
     WIDX_SHOW_ALL_OPERATING_MODES,
     WIDX_UNLOCK_OPERATING_LIMITS,
@@ -175,7 +180,7 @@ enum WindowCheatsWidgetIdx
 
 #pragma region MEASUREMENTS
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_CHEAT_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_CHEAT_TITLE;
 static constexpr const int32_t WW = 249;
 static constexpr const int32_t WH = 300;
 
@@ -198,7 +203,7 @@ static constexpr const int32_t TAB_START = 3;
     MakeTab   ({65, 17}, STR_PARK_CHEATS_TIP                           ), /* tab 3 */ \
     MakeTab   ({96, 17}, STR_RIDE_CHEATS_TIP                           )  /* tab 4 */
 
-static rct_widget window_cheats_money_widgets[] =
+static Widget window_cheats_money_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget        ({ 11,  48}, CHEAT_BUTTON,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY), // No money
@@ -216,7 +221,7 @@ static rct_widget window_cheats_money_widgets[] =
     WIDGETS_END,
 };
 
-static rct_widget window_cheats_guests_widgets[] =
+static Widget window_cheats_guests_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget({  5,  48}, {238, 279},    WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_SET_GUESTS_PARAMETERS                                 ), // Guests parameters group frame
@@ -250,7 +255,7 @@ static rct_widget window_cheats_guests_widgets[] =
 };
 
 //Strings for following moved to window_cheats_paint()
-static rct_widget window_cheats_misc_widgets[] =
+static Widget window_cheats_misc_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget        ({  5,  48}, {238,  60},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GENERAL_GROUP                                             ), // General group
@@ -282,28 +287,33 @@ static rct_widget window_cheats_misc_widgets[] =
     MakeWidget        ({  5, 347}, {238,  35},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_STAFF_GROUP                                               ), // Staff group
     MakeWidget        ({126, 361}, {111,  14},   WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                      ), // Staff speed
     MakeWidget        ({225, 362}, { 11,  12},   WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                  ), // Staff speed
+
+    MakeWidget        ({  5, 392}, {238,  56},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_CONSTRUCTION                                        ), // Construction group
+    MakeWidget        ({ 11, 407}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_PATH_AS_QUEUE,   STR_CHEAT_ALLOW_PATH_AS_QUEUE_TIP  ), // Allow regular footpaths as queue path
+    MakeWidget        ({ 11, 428}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES,   STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES_TIP  ), // Allow special colours in dropdown
+
     WIDGETS_END,
 };
-static rct_widget window_cheats_rides_widgets[] =
+static Widget window_cheats_rides_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget({ 11,  48}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_FIX_ALL_RIDES,                        STR_CHEAT_FIX_ALL_RIDES_TIP                    ), // Fix all rides
     MakeWidget({127,  48}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_RENEW_RIDES,                          STR_CHEAT_RENEW_RIDES_TIP                      ), // Renew rides
-    MakeWidget({ 11,  69}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_MAKE_DESTRUCTABLE,                    STR_CHEAT_MAKE_DESTRUCTABLE_TIP                ), // All destructible
     MakeWidget({127,  69}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_RESET_CRASH_STATUS,                   STR_CHEAT_RESET_CRASH_STATUS_TIP               ), // Reset crash status
-    MakeWidget({ 11,  90}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_10_MINUTE_INSPECTIONS,                STR_CHEAT_10_MINUTE_INSPECTIONS_TIP            ), // 10 minute inspections
-    MakeWidget({  5, 116}, {238, 101},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_CONSTRUCTION                                                                   ), // Construction group
-    MakeWidget({ 11, 132}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_BUILD_IN_PAUSE_MODE,                  STR_CHEAT_BUILD_IN_PAUSE_MODE_TIP              ), // Build in pause mode
-    MakeWidget({ 11, 153}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES,     STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES_TIP ), // Show all drawable track pieces
-    MakeWidget({ 11, 174}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,       STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP   ), // Enable chain lift on all track
-    MakeWidget({ 11, 195}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS,    STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS_TIP), // Allow track place at invalid heights
-    MakeWidget({  5, 221}, {238, 122},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_OPERATION                                                                      ), // Construction group
+    MakeWidget({ 11,  69}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_10_MINUTE_INSPECTIONS,                STR_CHEAT_10_MINUTE_INSPECTIONS_TIP            ), // 10 minute inspections
+    MakeWidget({  5, 95},  {238, 122},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_CONSTRUCTION                                                                   ), // Construction group
+    MakeWidget({ 11, 111}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_BUILD_IN_PAUSE_MODE,                  STR_CHEAT_BUILD_IN_PAUSE_MODE_TIP              ), // Build in pause mode
+    MakeWidget({ 11, 132}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES,     STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES_TIP ), // Show all drawable track pieces
+    MakeWidget({ 11, 153}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,       STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP   ), // Enable chain lift on all track
+    MakeWidget({ 11, 174}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS,    STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS_TIP), // Allow track place at invalid heights
+    MakeWidget({ 11, 195}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_MAKE_DESTRUCTABLE,                    STR_CHEAT_MAKE_DESTRUCTABLE_TIP                ), // All destructible
+    MakeWidget({  5, 221}, {238, 122},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_OPERATION                                                                      ), // Operation group
     MakeWidget({ 11, 237}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_SHOW_ALL_OPERATING_MODES                                                             ), // Show all operating modes
     MakeWidget({ 11, 258}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_UNLOCK_OPERATING_LIMITS,              STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP          ), // 410 km/h lift hill etc.
     MakeWidget({ 11, 279}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_BRAKES_FAILURE,               STR_CHEAT_DISABLE_BRAKES_FAILURE_TIP           ), // Disable brakes failure
     MakeWidget({ 11, 300}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_BREAKDOWNS,                   STR_CHEAT_DISABLE_BREAKDOWNS_TIP               ), // Disable all breakdowns
     MakeWidget({ 11, 321}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_RIDE_VALUE_AGING,             STR_CHEAT_DISABLE_RIDE_VALUE_AGING_TIP         ), // Disable ride ageing
-    MakeWidget({  5, 347}, {238, 101},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_AVAILABILITY                                                                   ), // Construction group
+    MakeWidget({  5, 347}, {238, 101},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_AVAILABILITY                                                                   ), // Availability group
     MakeWidget({ 11, 363}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,    STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP), // Allow arbitrary ride type changes
     MakeWidget({ 11, 384}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES                                                 ), // Show vehicles from other track types
     MakeWidget({ 11, 405}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,           STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP       ), // Disable train length limits
@@ -311,7 +321,7 @@ static rct_widget window_cheats_rides_widgets[] =
     WIDGETS_END,
 };
 
-static rct_widget *window_cheats_page_widgets[] =
+static Widget *window_cheats_page_widgets[] =
 {
     window_cheats_money_widgets,
     window_cheats_guests_widgets,
@@ -320,25 +330,25 @@ static rct_widget *window_cheats_page_widgets[] =
 };
 
 static uint64_t window_cheats_page_hold_down_widgets[] = {
-    (1ULL << WIDX_MONEY_SPINNER_INCREMENT) |
-    (1ULL << WIDX_MONEY_SPINNER_DECREMENT) |
-    (1ULL << WIDX_ADD_MONEY) |
-    (1ULL << WIDX_YEAR_UP) |
-    (1ULL << WIDX_YEAR_DOWN) |
-    (1ULL << WIDX_MONTH_UP) |
-    (1ULL << WIDX_MONTH_DOWN) |
-    (1ULL << WIDX_DAY_UP) |
-    (1ULL << WIDX_DAY_DOWN),
+    (1uLL << WIDX_MONEY_SPINNER_INCREMENT) |
+    (1uLL << WIDX_MONEY_SPINNER_DECREMENT) |
+    (1uLL << WIDX_ADD_MONEY) |
+    (1uLL << WIDX_YEAR_UP) |
+    (1uLL << WIDX_YEAR_DOWN) |
+    (1uLL << WIDX_MONTH_UP) |
+    (1uLL << WIDX_MONTH_DOWN) |
+    (1uLL << WIDX_DAY_UP) |
+    (1uLL << WIDX_DAY_DOWN),
 
     0,
 
-    (1ULL << WIDX_INCREASE_PARK_RATING) |
-    (1ULL << WIDX_DECREASE_PARK_RATING),
+    (1uLL << WIDX_INCREASE_PARK_RATING) |
+    (1uLL << WIDX_DECREASE_PARK_RATING),
 
     0,
 };
 
-static rct_string_id window_cheats_page_titles[] = {
+static StringId window_cheats_page_titles[] = {
     STR_CHEAT_TITLE_FINANCIAL,
     STR_CHEAT_TITLE_GUEST,
     STR_CHEAT_TITLE_PARK,
@@ -350,7 +360,7 @@ class CheatsWindow final : public Window
 {
 private:
     char _moneySpinnerText[MONEY_STRING_MAXLENGTH]{};
-    money32 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
+    money64 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
     int32_t _selectedStaffSpeed = 1;
     int32_t _parkRatingSpinnerValue{};
     int32_t _yearSpinnerValue = 1;
@@ -361,7 +371,7 @@ public:
     void OnOpen() override
     {
         SetPage(WINDOW_CHEATS_PAGE_MONEY);
-        _parkRatingSpinnerValue = get_forced_park_rating() >= 0 ? get_forced_park_rating() : 999;
+        _parkRatingSpinnerValue = ParkGetForcedRating() >= 0 ? ParkGetForcedRating() : 999;
     }
 
     void OnUpdate() override
@@ -370,7 +380,7 @@ public:
         InvalidateWidget(WIDX_TAB_1 + page);
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         switch (page)
         {
@@ -383,7 +393,7 @@ public:
         }
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -416,7 +426,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t selectedIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
     {
         if (page == WINDOW_CHEATS_PAGE_MISC)
         {
@@ -430,7 +440,7 @@ public:
         if (widgets != targetWidgets)
         {
             widgets = targetWidgets;
-            WindowInitScrollWidgets(this);
+            WindowInitScrollWidgets(*this);
         }
 
         pressed_widgets = 0;
@@ -471,10 +481,12 @@ public:
             case WINDOW_CHEATS_PAGE_MISC:
                 widgets[WIDX_OPEN_CLOSE_PARK].text = (gParkFlags & PARK_FLAGS_PARK_OPEN) ? STR_CHEAT_CLOSE_PARK
                                                                                          : STR_CHEAT_OPEN_PARK;
-                SetCheckboxValue(WIDX_FORCE_PARK_RATING, get_forced_park_rating() >= 0);
+                SetCheckboxValue(WIDX_FORCE_PARK_RATING, ParkGetForcedRating() >= 0);
                 SetCheckboxValue(WIDX_FREEZE_WEATHER, gCheatsFreezeWeather);
                 SetCheckboxValue(WIDX_NEVERENDING_MARKETING, gCheatsNeverendingMarketing);
                 SetCheckboxValue(WIDX_DISABLE_PLANT_AGING, gCheatsDisablePlantAging);
+                SetCheckboxValue(WIDX_ALLOW_REGULAR_PATH_AS_QUEUE, gCheatsAllowRegularPathAsQueue);
+                SetCheckboxValue(WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES, gCheatsAllowSpecialColourSchemes);
                 break;
             case WINDOW_CHEATS_PAGE_RIDES:
                 SetCheckboxValue(WIDX_UNLOCK_OPERATING_LIMITS, gCheatsUnlockOperatingLimits);
@@ -490,6 +502,7 @@ public:
                 SetCheckboxValue(WIDX_IGNORE_RESEARCH_STATUS, gCheatsIgnoreResearchStatus);
                 SetCheckboxValue(WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES, gCheatsEnableAllDrawableTrackPieces);
                 SetCheckboxValue(WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, gCheatsAllowTrackPlaceInvalidHeights);
+                SetCheckboxValue(WIDX_MAKE_DESTRUCTIBLE, gCheatsMakeAllDestructible);
                 break;
         }
 
@@ -506,7 +519,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         UpdateTabPositions();
         DrawWidgets(dpi);
@@ -525,28 +538,28 @@ public:
                 colour |= COLOUR_FLAG_INSET;
             }
             int32_t actual_month = _monthSpinnerValue - 1;
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 93 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 198 }, STR_YEAR);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 219 }, STR_MONTH);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 240 }, STR_DAY);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 93 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 198 }, STR_YEAR);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 219 }, STR_MONTH);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 240 }, STR_DAY);
             ft = Formatter();
             ft.Add<int32_t>(_yearSpinnerValue);
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ _xRcol, 198 }, STR_FORMAT_INTEGER, ft, { colours[1], TextAlignment::RIGHT });
+                dpi, windowPos + ScreenCoordsXY{ _xRcol, 198 }, STR_FORMAT_INTEGER, ft, { colours[1], TextAlignment::RIGHT });
             ft = Formatter();
             ft.Add<int32_t>(actual_month);
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ _xRcol, 219 }, STR_FORMAT_MONTH, ft, { colours[1], TextAlignment::RIGHT });
+                dpi, windowPos + ScreenCoordsXY{ _xRcol, 219 }, STR_FORMAT_MONTH, ft, { colours[1], TextAlignment::RIGHT });
             ft = Formatter();
             ft.Add<int32_t>(_daySpinnerValue);
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ _xRcol, 240 }, STR_FORMAT_INTEGER, ft, { colours[1], TextAlignment::RIGHT });
+                dpi, windowPos + ScreenCoordsXY{ _xRcol, 240 }, STR_FORMAT_INTEGER, ft, { colours[1], TextAlignment::RIGHT });
         }
         else if (page == WINDOW_CHEATS_PAGE_MISC)
         {
             {
                 auto& widget = widgets[WIDX_WEATHER];
-                DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHANGE_WEATHER);
+                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHANGE_WEATHER);
             }
 
             {
@@ -555,34 +568,33 @@ public:
 
                 auto& widget = widgets[WIDX_PARK_RATING_SPINNER];
                 DrawTextBasic(
-                    &dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 2 }, STR_FORMAT_INTEGER, ft,
-                    { colours[1] });
+                    dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 2 }, STR_FORMAT_INTEGER, ft, { colours[1] });
             }
 
             {
                 auto& widget = widgets[WIDX_STAFF_SPEED];
-                DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHEAT_STAFF_SPEED);
+                DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHEAT_STAFF_SPEED);
             }
         }
         else if (page == WINDOW_CHEATS_PAGE_GUESTS)
         {
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 72 }, STR_CHEAT_GUEST_HAPPINESS);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 93 }, STR_CHEAT_GUEST_ENERGY);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 114 }, STR_CHEAT_GUEST_HUNGER);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 135 }, STR_CHEAT_GUEST_THIRST);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 156 }, STR_CHEAT_GUEST_NAUSEA);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 177 }, STR_CHEAT_GUEST_NAUSEA_TOLERANCE);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 198 }, STR_CHEAT_GUEST_TOILET);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 219 }, STR_CHEAT_GUEST_PREFERRED_INTENSITY);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 72 }, STR_CHEAT_GUEST_HAPPINESS);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 93 }, STR_CHEAT_GUEST_ENERGY);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 114 }, STR_CHEAT_GUEST_HUNGER);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 135 }, STR_CHEAT_GUEST_THIRST);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 156 }, STR_CHEAT_GUEST_NAUSEA);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 177 }, STR_CHEAT_GUEST_NAUSEA_TOLERANCE);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 198 }, STR_CHEAT_GUEST_TOILET);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ _xLcol, 219 }, STR_CHEAT_GUEST_PREFERRED_INTENSITY);
         }
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (page == WINDOW_CHEATS_PAGE_MONEY && widgetIndex == WIDX_MONEY_SPINNER)
         {
-            auto val = string_to_money(std::string(text).c_str());
-            if (val != MONEY32_UNDEFINED)
+            auto val = StringToMoney(std::string(text).c_str());
+            if (val != MONEY64_UNDEFINED)
             {
                 _moneySpinnerValue = val;
             }
@@ -590,7 +602,7 @@ public:
         }
     }
 
-    OpenRCT2String OnTooltip(rct_widgetindex widgetIndex, rct_string_id fallback) override
+    OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback) override
     {
         if (page == WINDOW_CHEATS_PAGE_RIDES && widgetIndex == WIDX_UNLOCK_OPERATING_LIMITS)
         {
@@ -647,7 +659,7 @@ private:
         }
     }
 
-    void DrawTabImages(rct_drawpixelinfo& dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         // Money tab
         if (!IsWidgetDisabled(WIDX_TAB_1))
@@ -655,8 +667,8 @@ private:
             uint32_t sprite_idx = SPR_TAB_FINANCES_SUMMARY_0;
             if (page == WINDOW_CHEATS_PAGE_MONEY)
                 sprite_idx += (frame_no / 2) % 8;
-            gfx_draw_sprite(
-                &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
+            GfxDrawSprite(
+                dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
         }
 
         // Guests tab
@@ -665,15 +677,15 @@ private:
             uint32_t sprite_idx = SPR_TAB_GUESTS_0;
             if (page == WINDOW_CHEATS_PAGE_GUESTS)
                 sprite_idx += (frame_no / 3) % 8;
-            gfx_draw_sprite(
-                &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
+            GfxDrawSprite(
+                dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
         }
 
         // Misc tab
         if (!IsWidgetDisabled(WIDX_TAB_3))
         {
-            gfx_draw_sprite(
-                &dpi, ImageId(SPR_TAB_PARK), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
+            GfxDrawSprite(
+                dpi, ImageId(SPR_TAB_PARK), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
         }
 
         // Rides tab
@@ -682,22 +694,22 @@ private:
             uint32_t sprite_idx = SPR_TAB_RIDE_0;
             if (page == WINDOW_CHEATS_PAGE_RIDES)
                 sprite_idx += (frame_no / 4) % 16;
-            gfx_draw_sprite(
-                &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
+            GfxDrawSprite(
+                dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
         }
     }
 
-    void OnMouseDownMoney(rct_widgetindex widgetIndex)
+    void OnMouseDownMoney(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
             case WIDX_MONEY_SPINNER_INCREMENT:
-                _moneySpinnerValue = add_clamp_money32(
+                _moneySpinnerValue = AddClamp_money64(
                     CHEATS_MONEY_INCREMENT_DIV * (_moneySpinnerValue / CHEATS_MONEY_INCREMENT_DIV), CHEATS_MONEY_INCREMENT_DIV);
                 InvalidateWidget(WIDX_MONEY_SPINNER);
                 break;
             case WIDX_MONEY_SPINNER_DECREMENT:
-                _moneySpinnerValue = add_clamp_money32(
+                _moneySpinnerValue = AddClamp_money64(
                     CHEATS_MONEY_INCREMENT_DIV * (_moneySpinnerValue / CHEATS_MONEY_INCREMENT_DIV),
                     -CHEATS_MONEY_INCREMENT_DIV);
                 InvalidateWidget(WIDX_MONEY_SPINNER);
@@ -718,39 +730,43 @@ private:
             case WIDX_MONTH_UP:
                 _monthSpinnerValue++;
                 _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int32_t>(MONTH_COUNT));
-                _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
+                _daySpinnerValue = std::clamp(
+                    _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
                 InvalidateWidget(WIDX_MONTH_BOX);
                 InvalidateWidget(WIDX_DAY_BOX);
                 break;
             case WIDX_MONTH_DOWN:
                 _monthSpinnerValue--;
                 _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int32_t>(MONTH_COUNT));
-                _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
+                _daySpinnerValue = std::clamp(
+                    _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
                 InvalidateWidget(WIDX_MONTH_BOX);
                 InvalidateWidget(WIDX_DAY_BOX);
                 break;
             case WIDX_DAY_UP:
                 _daySpinnerValue++;
-                _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
+                _daySpinnerValue = std::clamp(
+                    _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
                 InvalidateWidget(WIDX_DAY_BOX);
                 break;
             case WIDX_DAY_DOWN:
                 _daySpinnerValue--;
-                _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
+                _daySpinnerValue = std::clamp(
+                    _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
                 InvalidateWidget(WIDX_DAY_BOX);
                 break;
             case WIDX_DATE_SET:
             {
-                auto setDateAction = ParkSetDateAction(_yearSpinnerValue, _monthSpinnerValue, _daySpinnerValue);
+                auto setDateAction = ParkSetDateAction(_yearSpinnerValue - 1, _monthSpinnerValue - 1, _daySpinnerValue - 1);
                 GameActions::Execute(&setDateAction);
-                window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+                WindowInvalidateByClass(WindowClass::BottomToolbar);
                 break;
             }
             case WIDX_DATE_RESET:
             {
-                auto setDateAction = ParkSetDateAction(1, 1, 1);
+                auto setDateAction = ParkSetDateAction(0, 0, 0);
                 GameActions::Execute(&setDateAction);
-                window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+                WindowInvalidateByClass(WindowClass::BottomToolbar);
                 InvalidateWidget(WIDX_YEAR_BOX);
                 InvalidateWidget(WIDX_MONTH_BOX);
                 InvalidateWidget(WIDX_DAY_BOX);
@@ -759,7 +775,7 @@ private:
         }
     }
 
-    void OnMouseUpMoney(rct_widgetindex widgetIndex)
+    void OnMouseUpMoney(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -767,7 +783,7 @@ private:
                 CheatsSet(CheatType::NoMoney, gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1);
                 break;
             case WIDX_MONEY_SPINNER:
-                money_to_string(_moneySpinnerValue, _moneySpinnerText, MONEY_STRING_MAXLENGTH, false);
+                MoneyToString(_moneySpinnerValue, _moneySpinnerText, MONEY_STRING_MAXLENGTH, false);
                 WindowTextInputRawOpen(
                     this, WIDX_MONEY_SPINNER, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneySpinnerText,
                     MONEY_STRING_MAXLENGTH);
@@ -781,7 +797,7 @@ private:
         }
     }
 
-    void OnMouseDownMisc(rct_widgetindex widgetIndex)
+    void OnMouseDownMisc(WidgetIndex widgetIndex)
     {
         auto* widget = &widgets[widgetIndex];
         switch (widgetIndex)
@@ -789,23 +805,23 @@ private:
             case WIDX_INCREASE_PARK_RATING:
                 _parkRatingSpinnerValue = std::min(999, 10 * (_parkRatingSpinnerValue / 10 + 1));
                 InvalidateWidget(WIDX_PARK_RATING_SPINNER);
-                if (get_forced_park_rating() >= 0)
+                if (ParkGetForcedRating() >= 0)
                 {
-                    auto setCheatAction = SetCheatAction(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
-                    GameActions::Execute(&setCheatAction);
+                    auto cheatSetAction = CheatSetAction(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
+                    GameActions::Execute(&cheatSetAction);
                 }
                 break;
             case WIDX_DECREASE_PARK_RATING:
                 _parkRatingSpinnerValue = std::max(0, 10 * (_parkRatingSpinnerValue / 10 - 1));
                 InvalidateWidget(WIDX_PARK_RATING_SPINNER);
-                if (get_forced_park_rating() >= 0)
+                if (ParkGetForcedRating() >= 0)
                 {
                     CheatsSet(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
                 }
                 break;
             case WIDX_WEATHER_DROPDOWN_BUTTON:
             {
-                rct_widget* dropdownWidget = widget - 1;
+                Widget* dropdownWidget = widget - 1;
 
                 for (size_t i = 0; i < std::size(WeatherTypes); i++)
                 {
@@ -822,7 +838,7 @@ private:
             break;
             case WIDX_STAFF_SPEED_DROPDOWN_BUTTON:
             {
-                rct_widget* dropdownWidget;
+                Widget* dropdownWidget;
 
                 dropdownWidget = widget - 1;
 
@@ -840,7 +856,7 @@ private:
         }
     }
 
-    void OnMouseUpMisc(rct_widgetindex widgetIndex)
+    void OnMouseUpMisc(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -887,7 +903,7 @@ private:
                 CheatsSet(CheatType::NeverEndingMarketing, !gCheatsNeverendingMarketing);
                 break;
             case WIDX_FORCE_PARK_RATING:
-                if (get_forced_park_rating() >= 0)
+                if (ParkGetForcedRating() >= 0)
                 {
                     CheatsSet(CheatType::SetForcedParkRating, -1);
                 }
@@ -896,10 +912,16 @@ private:
                     CheatsSet(CheatType::SetForcedParkRating, _parkRatingSpinnerValue);
                 }
                 break;
+            case WIDX_ALLOW_REGULAR_PATH_AS_QUEUE:
+                CheatsSet(CheatType::AllowRegularPathAsQueue, !gCheatsAllowRegularPathAsQueue);
+                break;
+            case WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES:
+                CheatsSet(CheatType::AllowSpecialColourSchemes, !gCheatsAllowSpecialColourSchemes);
+                break;
         }
     }
 
-    void OnDropdownMisc(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    void OnDropdownMisc(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         if (dropdownIndex == -1)
         {
@@ -927,7 +949,7 @@ private:
         }
     }
 
-    void OnMouseUpGuests(rct_widgetindex widgetIndex)
+    void OnMouseUpGuests(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -1009,7 +1031,7 @@ private:
         }
     }
 
-    void OnMouseUpRides(rct_widgetindex widgetIndex)
+    void OnMouseUpRides(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -1017,7 +1039,7 @@ private:
                 CheatsSet(CheatType::RenewRides);
                 break;
             case WIDX_MAKE_DESTRUCTIBLE:
-                CheatsSet(CheatType::MakeDestructible);
+                CheatsSet(CheatType::MakeDestructible, !gCheatsMakeAllDestructible);
                 break;
             case WIDX_FIX_ALL:
                 CheatsSet(CheatType::FixRides);
@@ -1044,7 +1066,7 @@ private:
             {
                 if (!gCheatsShowAllOperatingModes)
                 {
-                    context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
+                    ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                 }
                 CheatsSet(CheatType::ShowAllOperatingModes, !gCheatsShowAllOperatingModes);
             }
@@ -1053,7 +1075,7 @@ private:
             {
                 if (!gCheatsShowVehiclesFromOtherTrackTypes)
                 {
-                    context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
+                    ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                 }
                 CheatsSet(CheatType::ShowVehiclesFromOtherTrackTypes, !gCheatsShowVehiclesFromOtherTrackTypes);
             }
@@ -1062,7 +1084,7 @@ private:
             {
                 if (!gCheatsDisableTrainLengthLimit)
                 {
-                    context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
+                    ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                 }
                 CheatsSet(CheatType::DisableTrainLengthLimit, !gCheatsDisableTrainLengthLimit);
             }
@@ -1074,7 +1096,7 @@ private:
             {
                 if (!gCheatsAllowArbitraryRideTypeChanges)
                 {
-                    context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
+                    ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                 }
                 CheatsSet(CheatType::AllowArbitraryRideTypeChanges, !gCheatsAllowArbitraryRideTypeChanges);
             }
@@ -1092,7 +1114,7 @@ private:
             {
                 if (!gCheatsAllowTrackPlaceInvalidHeights)
                 {
-                    context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
+                    ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                 }
                 CheatsSet(CheatType::AllowTrackPlaceInvalidHeights, !gCheatsAllowTrackPlaceInvalidHeights);
             }
@@ -1101,12 +1123,12 @@ private:
     }
 };
 
-rct_window* WindowCheatsOpen()
+WindowBase* WindowCheatsOpen()
 {
-    auto* window = window_bring_to_front_by_class(WC_CHEATS);
+    auto* window = WindowBringToFrontByClass(WindowClass::Cheats);
     if (window == nullptr)
     {
-        window = WindowCreate<CheatsWindow>(WC_CHEATS, ScreenCoordsXY(32, 32), WW, WH);
+        window = WindowCreate<CheatsWindow>(WindowClass::Cheats, ScreenCoordsXY(32, 32), WW, WH);
     }
     return window;
 }

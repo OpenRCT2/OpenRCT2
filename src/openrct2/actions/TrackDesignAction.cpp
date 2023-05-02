@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -68,7 +68,7 @@ GameActions::Result TrackDesignAction::Query() const
     {
         // Force a fallback if the entry is not invented yet a td6 of it is selected,
         // which can happen in select-by-track-type mode
-        if (!ride_entry_is_invented(entryIndex) && !gCheatsIgnoreResearchStatus)
+        if (!RideEntryIsInvented(entryIndex) && !gCheatsIgnoreResearchStatus)
         {
             entryIndex = OBJECT_ENTRY_INDEX_NULL;
         }
@@ -84,10 +84,10 @@ GameActions::Result TrackDesignAction::Query() const
     }
 
     const auto rideIndex = r.GetData<RideId>();
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
+        LOG_WARNING("Invalid game command for track placement, ride id = %d", rideIndex);
         return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
@@ -99,11 +99,11 @@ GameActions::Result TrackDesignAction::Query() const
     if (GetFlags() & GAME_COMMAND_FLAG_REPLAY)
         flags |= GAME_COMMAND_FLAG_REPLAY;
 
-    auto queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, ride, _loc);
+    auto queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, *ride, _loc);
     if (_trackDesignPlaceStateSceneryUnavailable)
     {
         placeScenery = false;
-        queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, ride, _loc);
+        queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, *ride, _loc);
     }
 
     auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
@@ -140,7 +140,7 @@ GameActions::Result TrackDesignAction::Execute() const
     {
         // Force a fallback if the entry is not invented yet a track design using it is selected.
         // This can happen on rides with multiple vehicles where some have been invented and some haven’t.
-        if (!ride_entry_is_invented(entryIndex) && !gCheatsIgnoreResearchStatus)
+        if (!RideEntryIsInvented(entryIndex) && !gCheatsIgnoreResearchStatus)
         {
             entryIndex = OBJECT_ENTRY_INDEX_NULL;
         }
@@ -156,10 +156,10 @@ GameActions::Result TrackDesignAction::Execute() const
     }
 
     const auto rideIndex = r.GetData<RideId>();
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
+        LOG_WARNING("Invalid game command for track placement, ride id = %d", rideIndex);
         return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
@@ -172,11 +172,11 @@ GameActions::Result TrackDesignAction::Execute() const
     if (GetFlags() & GAME_COMMAND_FLAG_REPLAY)
         flags |= GAME_COMMAND_FLAG_REPLAY;
 
-    auto queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, ride, _loc);
+    auto queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, *ride, _loc);
     if (_trackDesignPlaceStateSceneryUnavailable)
     {
         placeScenery = false;
-        queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, ride, _loc);
+        queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, *ride, _loc);
     }
 
     if (queryRes.Error != GameActions::Status::Ok)
@@ -196,7 +196,7 @@ GameActions::Result TrackDesignAction::Execute() const
     // Execute.
     flags |= GAME_COMMAND_FLAG_APPLY;
 
-    auto execRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, ride, _loc);
+    auto execRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, *ride, _loc);
     if (execRes.Error != GameActions::Status::Ok)
     {
         auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
@@ -213,12 +213,12 @@ GameActions::Result TrackDesignAction::Execute() const
 
     if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
-        auto colour = ride_get_unused_preset_vehicle_colour(entryIndex);
+        auto colour = RideGetUnusedPresetVehicleColour(entryIndex);
         auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::RideEntry, entryIndex, colour);
         GameActions::ExecuteNested(&rideSetVehicleAction);
     }
 
-    set_operating_setting_nested(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(_td.ride_mode), GAME_COMMAND_FLAG_APPLY);
+    SetOperatingSettingNested(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(_td.ride_mode), GAME_COMMAND_FLAG_APPLY);
     auto rideSetVehicleAction2 = RideSetVehicleAction(ride->id, RideSetVehicleType::NumTrains, _td.number_of_trains);
     GameActions::ExecuteNested(&rideSetVehicleAction2);
 
@@ -226,18 +226,18 @@ GameActions::Result TrackDesignAction::Execute() const
         ride->id, RideSetVehicleType::NumCarsPerTrain, _td.number_of_cars_per_train);
     GameActions::ExecuteNested(&rideSetVehicleAction3);
 
-    set_operating_setting_nested(ride->id, RideSetSetting::Departure, _td.depart_flags, GAME_COMMAND_FLAG_APPLY);
-    set_operating_setting_nested(ride->id, RideSetSetting::MinWaitingTime, _td.min_waiting_time, GAME_COMMAND_FLAG_APPLY);
-    set_operating_setting_nested(ride->id, RideSetSetting::MaxWaitingTime, _td.max_waiting_time, GAME_COMMAND_FLAG_APPLY);
-    set_operating_setting_nested(ride->id, RideSetSetting::Operation, _td.operation_setting, GAME_COMMAND_FLAG_APPLY);
-    set_operating_setting_nested(ride->id, RideSetSetting::LiftHillSpeed, _td.lift_hill_speed & 0x1F, GAME_COMMAND_FLAG_APPLY);
+    SetOperatingSettingNested(ride->id, RideSetSetting::Departure, _td.depart_flags, GAME_COMMAND_FLAG_APPLY);
+    SetOperatingSettingNested(ride->id, RideSetSetting::MinWaitingTime, _td.min_waiting_time, GAME_COMMAND_FLAG_APPLY);
+    SetOperatingSettingNested(ride->id, RideSetSetting::MaxWaitingTime, _td.max_waiting_time, GAME_COMMAND_FLAG_APPLY);
+    SetOperatingSettingNested(ride->id, RideSetSetting::Operation, _td.operation_setting, GAME_COMMAND_FLAG_APPLY);
+    SetOperatingSettingNested(ride->id, RideSetSetting::LiftHillSpeed, _td.lift_hill_speed & 0x1F, GAME_COMMAND_FLAG_APPLY);
 
     uint8_t num_circuits = _td.num_circuits;
     if (num_circuits == 0)
     {
         num_circuits = 1;
     }
-    set_operating_setting_nested(ride->id, RideSetSetting::NumCircuits, num_circuits, GAME_COMMAND_FLAG_APPLY);
+    SetOperatingSettingNested(ride->id, RideSetSetting::NumCircuits, num_circuits, GAME_COMMAND_FLAG_APPLY);
     ride->SetToDefaultInspectionInterval();
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
     ride->colour_scheme_type = _td.colour_scheme;
@@ -259,9 +259,7 @@ GameActions::Result TrackDesignAction::Execute() const
     for (size_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
     {
         auto tdIndex = i % std::size(_td.vehicle_colours);
-        ride->vehicle_colours[i].Body = _td.vehicle_colours[tdIndex].body_colour;
-        ride->vehicle_colours[i].Trim = _td.vehicle_colours[tdIndex].trim_colour;
-        ride->vehicle_colours[i].Tertiary = _td.vehicle_additional_colour[tdIndex];
+        ride->vehicle_colours[i] = _td.vehicle_colours[tdIndex];
     }
 
     for (int32_t count = 1; count == 1 || r.Error != GameActions::Status::Ok; ++count)

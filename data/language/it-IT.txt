@@ -96,6 +96,8 @@ STR_0091    :Attrazione sconosciuta (59)
 STR_0092    :Ottovolante a lancio MIL
 STR_0093    :Ottovolante ibrido
 STR_0094    :Ottovolante a binario singolo
+STR_0095    :Ottovolante Alpino
+STR_0096    :Ottovolante di legno classico
 STR_0512    :Un ottovolante compatto con una salita a spirale e cadute fluide e tortuose.
 STR_0513    :Un ottovolante con giro della morte dove i passeggeri si trovano in una posizione eretta
 STR_0514    :I treni, sospesi sotto l’ottovolante, durante le curve oscillano lateralmente
@@ -177,6 +179,8 @@ STR_0600    :I treni della miniera motorizzati scorrono lungo un percorso fluido
 STR_0602    :I treni dell’ottovolante sono spinti fuori dalla stazione tramite motori a induzione lineare per correre lungo avvitamenti e inversioni
 STR_0603    :Un ottovolante in legno con i binari in acciaio, in grado di avere ripide discese e inversioni.
 STR_0604    :I visitatori viaggiano lungo un sottile tracciato da monorotaia, attraverso strette inversioni e cambi di direzione.
+STR_0605    :I visitatori scendono lungo una rotaia piena di curve, frenando per controllare la velocità del loro vagone
+STR_0606    :Un ottovolante di legno vecchio stile con un percorso veloce e turbolento, con molto air-time, G laterali, progettato per farti sentire “fuori controllo”
 STR_0767    :Visitatore {INT32}
 STR_0768    :Tuttofare {INT32}
 STR_0769    :Meccanico {INT32}
@@ -240,9 +244,8 @@ STR_0831    :Zoom indietro
 STR_0832    :Ruota di 90° in senso orario
 STR_0833    :Metti in pausa
 STR_0834    :Opzioni di gioco e del disco
-STR_0839    :{UINT16} x {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-# The following six strings were used for display resolutions, but have been replaced.
+STR_0839    :{UINT16} × {UINT16}
+STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 STR_0847    :Informazioni su “OpenRCT2”
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, tutti i diritti riservati
 STR_0851    :{WINDOW_COLOUR_2}Design e programmazione di Chris Sawyer
@@ -314,10 +317,10 @@ STR_0925    :Elica verso l’alto
 STR_0926    :Impossibile rimuoverlo…
 STR_0927    :Impossibile costruirlo qui…
 STR_0928    :Catena da traino, per spostare le carrozze lungo le salite
-STR_0929    :Curva a “S” (sinistra)
-STR_0930    :Curva a “S” (destra)
-STR_0931    :Giro verticale (sx)
-STR_0932    :Giro verticale (dx)
+STR_0929    :Curva a “S” (Sx)
+STR_0930    :Curva a “S” (Dx)
+STR_0931    :Giro verticale (Sx)
+STR_0932    :Giro verticale (Dx)
 STR_0933    :Prima occorre modificare l’altezza del terreno
 STR_0934    :L’entrata dell’attrazione è d’intralcio
 STR_0935    :L’uscita dell’attrazione è d’intralcio
@@ -339,7 +342,6 @@ STR_0950    :Carica una partita
 STR_0951    :Esci dal gioco
 STR_0952    :Esci dal gioco
 STR_0953    :Carica un paesaggio
-STR_0954    :
 STR_0955    :Seleziona l’angolo di rotazione dei sedili in questa sezione del tracciato
 STR_0956    :-180°
 STR_0957    :-135°
@@ -387,10 +389,10 @@ STR_0998    :Non è possibile collocare altre stazioni per questa attrazione
 STR_0999    :È necessaria una piattaforma stazione
 STR_1000    :Il tracciato non costituisce un circuito completo
 STR_1001    :Il tracciato non è adatto al tipo di treno
-STR_1002    :Impossibile aprire {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :Impossibile provare {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :Impossibile chiudere {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :Impossibile iniziare la costruzione su {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :Impossibile aprire {STRINGID}…
+STR_1003    :Impossibile provare {STRINGID}…
+STR_1004    :Impossibile chiudere {STRINGID}…
+STR_1005    :Impossibile iniziare la costruzione su {STRINGID}…
 STR_1006    :Prima dev’essere chiusa/o
 STR_1007    :Impossibile creare abbastanza veicoli
 STR_1008    :Apri, chiudi o prova un’attrazione
@@ -441,7 +443,7 @@ STR_1052    :Persone invisibili
 STR_1053    :Attrazioni nel parco
 STR_1054    :Rinomina attrazioni
 STR_1055    :Rinomina persone
-STR_1056    :Rinomina membri del personale
+STR_1056    :Rinomina dipendente
 STR_1057    :Nome dell’attrazione
 STR_1058    :Digitare il nuovo nome di quest’attrazione:
 STR_1059    :Impossibile rinominare l’attrazione…
@@ -743,7 +745,7 @@ STR_1353    :{WINDOW_COLOUR_2}Max. forza G laterale: {OUTLINE}{RED}{COMMA2DP32}G
 STR_1354    :{WINDOW_COLOUR_2}Picco più alto: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}Discese: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Inversioni: {BLACK}{COMMA16}
-STR_1357    :{WINDOW_COLOUR_2}Buchi: {BLACK}{COMMA16}
+STR_1357    :{WINDOW_COLOUR_2}Buche: {BLACK}{COMMA16}
 STR_1358    :{WINDOW_COLOUR_2}Assenza di peso in totale: {BLACK}{COMMA2DP32}secondi
 STR_1359    :{WINDOW_COLOUR_2}Tempo d’attesa: {BLACK}{COMMA16} minuti.
 STR_1360    :{WINDOW_COLOUR_2}Tempo d’attesa: {BLACK}{COMMA16} minuti.
@@ -751,24 +753,24 @@ STR_1361    :Impossibile cambiare la velocità…
 STR_1362    :Impossibile cambiare la velocità di lancio…
 STR_1363    :Troppo in alto per i supporti!
 STR_1364    :I supporti del tracciato non possono essere ulteriormente estesi!
-STR_1365    :Curva in-linea (sx)
-STR_1366    :Curva in-linea (dx)
-STR_1367    :Mezzo giro della morte
-STR_1368    :Mezzo avvitamento (sx)
-STR_1369    :Mezzo avvitamento (dx)
-STR_1370    :Avvitamento (sx)
-STR_1371    :Avvitamento (dx)
+STR_1365    :Curva in-linea (Sx)
+STR_1366    :Curva in-linea (Dx)
+STR_1367    :Mezzo giro della morte piccolo
+STR_1368    :Mezzo avvitamento (Sx)
+STR_1369    :Mezzo avvitamento (Dx)
+STR_1370    :Avvitamento (Sx)
+STR_1371    :Avvitamento (Dx)
 STR_1372    :Sal.  x traino a lancio
-STR_1373    :1/2 giro morte gr. (sx)
-STR_1374    :1/2 giro morte gr. (dx)
+STR_1373    :1/2 giro morte gr. (Sx)
+STR_1374    :1/2 giro morte gr. (Dx)
 STR_1375    :Trasferimento in alto
 STR_1376    :Trasferimento in basso
-STR_1377    :Avvitamento ond. (sx)
-STR_1378    :Avvitamento ond. (dx)
-STR_1379    :Invertitore (sinistra)
-STR_1380    :Invertitore (destra)
-STR_1381    :Salita trainata curva (sx)
-STR_1382    :Salita trainata curva (sx)
+STR_1377    :Avvitamento ond. (Sx)
+STR_1378    :Avvitamento ond. (Dx)
+STR_1379    :Invertitore (Sx)
+STR_1380    :Invertitore (Dx)
+STR_1381    :Salita trainata curva (Sx)
+STR_1382    :Salita trainata curva (Dx)
 STR_1383    :1/4 di giro della morte
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :Altre configurazioni del tracciato
@@ -1063,10 +1065,10 @@ STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Fissa un limite di velocità per i freni
 STR_1677    :{WINDOW_COLOUR_2}Popolarità: {BLACK}Ignota
 STR_1678    :{WINDOW_COLOUR_2}Popolarità: {BLACK}{COMMA16}%
-STR_1679    :Elica in su (sinistra)
-STR_1680    :Elica in su (destra)
-STR_1681    :Elica in giù (sinistra)
-STR_1682    :Elica in giù (destra)
+STR_1679    :Elica in su (Sx)
+STR_1680    :Elica in su (Dx)
+STR_1681    :Elica in giù (Sx)
+STR_1682    :Elica in giù (Dx)
 STR_1683    :Dimens. alla base 2 x 2
 STR_1684    :Dimens. alla base 4 x 4
 STR_1685    :Dimens. alla base 2 x 4
@@ -1092,8 +1094,8 @@ STR_1704    :Impossibile assumere dell’altro personale…
 STR_1705    :Licenzia questo dipendente
 STR_1706    :Sposta questa persona in un altro luogo
 STR_1707    :Troppi dipendenti nella partita
-STR_1708    :Fissa la zona che questo dipendente deve controllare
-STR_1709    :Licenzia il personale
+STR_1708    :Imposta zona di pattugliamento di questo dipendente
+STR_1709    :Licenzia il dipendente
 STR_1710    :Sì
 STR_1711    :{WINDOW_COLOUR_1}Sei sicuro di voler licenziare{NEWLINE}{STRINGID}?
 STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Spazza per terra
@@ -1115,7 +1117,7 @@ STR_1727    :I diritti di costruzione non sono in vendita!
 STR_1728    :Impossibile comprare i diritti di costruzione qui…
 STR_1729    :Questo terreno non è di proprietà del parco!
 STR_1730    :{RED}Chiuso
-STR_1731    :{WHITE}{STRINGID}
+STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Costruisci
 STR_1733    :Modalità
 STR_1734    :{WINDOW_COLOUR_2}Numero di giri:
@@ -1155,7 +1157,7 @@ STR_1770    :Numero di oscillazioni complete
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Può esserci soltanto una sezione di foto-in-corsa per attrazione
 STR_1774    :Può esserci soltanto una salita per il traino con cavo per attrazione
-STR_1777    :Musica attrazione
+STR_1777    :Musica attrazioni
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Costume da panda
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Costume da tigre
@@ -1219,8 +1221,8 @@ STR_1838    :Soddisfazione: {COMMA16}%
 STR_1839    :Affidabilità: {COMMA16}%
 STR_1840    :Tempi morti: {COMMA16}%
 STR_1841    :Profitto: {CURRENCY} all’ora
-STR_1842    :La preferita da: {COMMA16} visitatore
-STR_1843    :La preferita da: {COMMA16} visitatori
+STR_1842    :La preferita da: {COMMA32} visitatore
+STR_1843    :La preferita da: {COMMA32} visitatori
 STR_1844    :Scegli il tipo di informazione da mostrare nella lista delle attrazioni
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} visitatori
@@ -1244,7 +1246,7 @@ STR_1863    :Tuttofare
 STR_1864    :Meccanico
 STR_1865    :Vigilante
 STR_1866    :Intrattenitore
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Impossibile modificare il numero di rotazioni…
 STR_1869    :{WINDOW_COLOUR_2}Numero rotazioni:
 STR_1870    :Numero di rotazioni complete
@@ -1321,7 +1323,7 @@ STR_1943    :Mostra i pensieri più recenti di questo visitatore
 STR_1944    :Mostra l’oggetto che il visitatore sta trasportando
 STR_1945    :Mostra le opzioni e gli ordini relativi a questo dipendente
 STR_1946    :Scegli il costume di questo intrattenitore
-STR_1947    :Mostra le zone sotto il controllo del tipo di dipendente selezionato e individua il dipendente più vicino
+STR_1947    :Mostra le aree pattugliate dal tipo di dipendente selezionato e trova il dipendente più vicino
 STR_1948    :Assumi un altro dipendente del tipo selezionato
 STR_1949    :Resoconto finanziario
 STR_1950    :Grafico delle finanze
@@ -1676,7 +1678,7 @@ STR_2314    :{WINDOW_COLOUR_2}Lunghezza: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Costo: {BLACK}circa {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Spazio richiesto: {BLACK}{COMMA16} x {COMMA16} blocchi
 STR_2321    :{WINDOW_COLOUR_2}Numero di attrazioni: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Personale: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Personale: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Dimensioni del parco: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Dimensioni del parco: {BLACK}{COMMA32}sq.ft.
 STR_2325    :Compra del terreno per estendere il parco
@@ -1687,7 +1689,7 @@ STR_2329    :{WINDOW_COLOUR_2}Distanze e velocità:
 STR_2330    :{WINDOW_COLOUR_2}Temperatura:
 STR_2331    :{WINDOW_COLOUR_2}Indicazioni altezza:
 STR_2332    :Unità
-STR_2333    :Impostazioni audio
+STR_2333    :Effetti sonori
 STR_2334    :Sterline (£)
 STR_2335    :Dollari ($)
 STR_2336    :Franchi (F)
@@ -1952,12 +1954,10 @@ STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, anno {COMMA16}
 STR_2737    :{STRINGID} {MONTH}, anno {COMMA16}
-STR_2738    :Musica schermata del titolo:
+STR_2738    :Musica schermata iniziale:
 STR_2739    :Nessuno
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :css50.dat not found
-STR_2743    :Copiare “data/css17.dat” dalla cartella di installazione di RCT1 come “data/css50.dat” nella cartella di RCT2, oppure impostare il percorso di installazione di RCT1 nella scheda “Avanzate”.
 STR_2749    :Nuovo scenario
 # New strings used in the cheats window previously these were ???
 STR_2750    :Sposta tutti gli elementi sopra
@@ -2192,8 +2192,8 @@ STR_3118    :{BLACK}{STRINGID} si sta dirigendo verso l’attrazione
 STR_3119    :{BLACK}{STRINGID} sta riparando l’attrazione
 STR_3120    :Individua il meccanico disponibile più vicino o il meccanico che sta riparando l’attrazione
 STR_3121    :Impossibile individuare il meccanico o tutti i meccanici nei paraggi sono già impegnati
-STR_3122    :{WINDOW_COLOUR_2}Attrazione preferita di: {BLACK}{COMMA16} visitatore
-STR_3123    :{WINDOW_COLOUR_2}Attrazione preferita di: {BLACK}{COMMA16} visitatori
+STR_3122    :{WINDOW_COLOUR_2}Attrazione preferita di: {BLACK}{COMMA32} visitatore
+STR_3123    :{WINDOW_COLOUR_2}Attrazione preferita di: {BLACK}{COMMA32} visitatori
 STR_3124    :Guasto: {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Fattore di divertimento: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Fattore d’intensità: {BLACK}+{COMMA16}%
@@ -2229,7 +2229,6 @@ STR_3174    :Quest’oggetto è indispensabile per un altro oggetto
 STR_3175    :Quest’oggetto è sempre necessario
 STR_3176    :Impossibile selezionare quest’oggetto
 STR_3177    :Impossibile deselezionare quest’oggetto
-STR_3178    :Dev’essere selezionato almeno un oggetto-percorso
 STR_3179    :Dev’essere selezionato almeno un oggetto-attrazione
 STR_3180    :Selezione degli oggetti non valida
 STR_3181    :Selezione degli oggetti - {STRINGID}
@@ -2262,7 +2261,7 @@ STR_3208    :Gestione tracciati salvati
 STR_3209    :Indietro al passo precedente:
 STR_3210    :Avanti al passo successivo:
 STR_3211    :Dimens. mappa:
-STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Impossibile rimpicciolire ulteriormente la mappa
 STR_3214    :Impossibile ingrandire ulteriormente la mappa
 STR_3215    :Troppo vicino al bordo della mappa
@@ -2561,8 +2560,6 @@ STR_5250    :Pulsante Titolo Uscita
 STR_5251    :Pulsante Opzioni Titolo
 STR_5252    :Selezione Titolo Scenario
 STR_5253    :Informazioni Parco
-STR_5254    :Crea
-STR_5255    : Crea una nuova sequenza di titoli da zero
 STR_5256    :Crea un nuovo tema da modificare
 STR_5257    :Crea un nuovo tema basato sul tema corrente
 STR_5258    :Elimina il tema corrente
@@ -2588,17 +2585,17 @@ STR_5278    :Modalità sandbox
 STR_5279    :Disattiva modalità sandbox
 STR_5280    :Permetti la modifica delle impostazioni del terreno tramite la finestra Mappa e altre opzioni che sono solitamente non disponibili nella modifica Scenario
 STR_5281    :Feature
-STR_5282    :RCT1 Ride Open/Close Lights
-STR_5283    :RCT1 Park Open/Close Lights
-STR_5284    :RCT1 Selezione Font Scenario
-STR_5287    :L’attrazione è già partita
-STR_5288    :Corsa chiusa
-STR_5289    :Nessun guasto per questa attrazione
+STR_5282    :Semaforo apertura attrazione di RCT1
+STR_5283    :Semaforo apertura parco di RCT1
+STR_5284    :Font di RCT1 nella selezione scenario
+STR_5287    :L’attrazione è già guasta
+STR_5288    :Attrazione chiusa
+STR_5289    :Nessun guasto disponibile per questa attrazione
 STR_5290    :Ripara corsa
-STR_5291    :non puoi forzare un guasto
+STR_5291    :Non è possibile forzare un guasto
 STR_5292    :Forza un guasto
 STR_5293    :Chiudi attrazione
-STR_5294    :Testa attrazione
+STR_5294    :Prova attrazione
 STR_5295    :Apri attrazione
 STR_5296    :Chiudi parco
 STR_5297    :Apri parco
@@ -2657,75 +2654,9 @@ STR_5373    :Nome {STRINGID}
 STR_5374    :Data {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :Salva
-STR_5378    :Script
-STR_5379    :Salta al successivo comando di attesa
-STR_5380    :Avvia riproduzione sequenza del titolo
-STR_5381    :Ferma riproduzione sequenza del titolo
-STR_5382    :Riavvia sequenza del titolo
-STR_5383    :Crea nuova sequenza del titolo basata su quella attuale
-STR_5384    :Elimina l’attuale sequenza del titolo
-STR_5385    :Rinomina l’attuale sequenza del titolo
-STR_5386    :Inserisci un nuovo comando
-STR_5387    :Modifica il comando selezionato
-STR_5388    :Elimina il comando selezionato
-STR_5389    :Salta al comando selezionato nella sequenza del titolo
-STR_5390    :Sposta il comando selezionato in giù
-STR_5391    :Sposta il comando selezionato in su
-STR_5392    :Aggiungi un salvataggio alla sequenza del titolo
-STR_5393    :Rimuovi il salvataggio selezionato dalla sequenza del titolo
-STR_5394    :Rinomina il salvataggio selezionato
-STR_5395    :Carica il salvataggio selezionato nel gioco
-STR_5396    :Ricarica la sequenza del titolo se sono state effettuate modifiche al di fuori del gioco
-STR_5397    :Può essere utilizzato solo sulla sequenza del titolo
-STR_5398    :Non si può modificare la sequenza del titolo mentre è in riproduzione
-STR_5399    :Premere il pulsante di stop per modificare la sequenza
-STR_5400    :Impossibile modificare questa sequenza del titolo
-STR_5401    :Crea una nuova sequenza del titolo per modificarla
-STR_5402    :Impossibile caricare la sequenza del video
-STR_5403    :Potrebbe non esserci un comando di caricamento o attesa o il salvataggio potrebbe non essere valido
 STR_5404    :Il nome è già utilizzato
-STR_5405    :Inserisci un nome per il salvataggio
-STR_5406    :Inserisci un nome per la sequenza del titolo
-STR_5407    :Aggiungi
-STR_5408    :Rimuovi
-STR_5409    :Inserisci
-STR_5410    :Modifica
-STR_5411    :Ricarica
-STR_5412    :Salta a
-STR_5413    :Carica
-STR_5415    :Carica{MOVE_X}{87}{STRING}
-STR_5416    :Carica{MOVE_X}{87}Nessun salvataggio selezionato
-STR_5417    :Posizione
-STR_5418    :Posizione{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Ruota
-STR_5420    :Ruota{MOVE_X}{87}{COMMA16}
-STR_5421    :Zoom
-STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
-STR_5423    :Aspetta
-STR_5424    :Aspetta{MOVE_X}{87}{UINT16}
-STR_5425    :Riavvia
-STR_5426    :Fine
-STR_5427    :Coordinate:
-STR_5428    :Rotazione Antiorario:
-STR_5429    :Livello di Zoom:
-STR_5430    :Tempo in millisecondi:
-STR_5431    :Salvataggio da caricare:
-STR_5432    :Comando:
-STR_5433    :Sequenza Titoli
-STR_5434    :Editor Comandi
-STR_5435    :Rinomina salvataggio
-STR_5436    :Modifica sequenza titolo…
-STR_5437    :Nessun salvataggio selezionato
-STR_5438    :Non puoi fare modifiche mentre l’editor dei comandi è aperto
-STR_5439    :A wait command with at least 4 seconds is required with a restart command
 STR_5440    :Riduci schermo intero se il gioco perde il focus
-STR_5441    :Identifica le attrazioni in base al percorso{NEWLINE}in modo che si possano sostituirne successivamente{NEWLINE}i veicoli (come in RCT1)
-STR_5442    :Voto del parco:
-STR_5443    :Velocità{MOVE_X}{87}{STRINGID}
-STR_5444    :Velocità:
-STR_5445    :Velocità
-STR_5446    :Ottieni
+STR_5442    :Forza valutazione parco:
 STR_5447    :Tipo {STRINGID}
 STR_5448    :Corsa / Veicolo {STRINGID}
 STR_5449    :Rallenta il tempo di gioco
@@ -2768,7 +2699,7 @@ STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :Mostra i messaggi recenti
 STR_5489    :Mostra solo i visitatori seguiti
-STR_5490    :Disabilità audio quando si perde il focus
+STR_5490    :Disabilita audio quando si cambia finestra
 STR_5491    :Lista Invenzioni
 STR_5492    :Opzioni Scenario
 STR_5493    :Mostra Messaggio
@@ -2784,8 +2715,6 @@ STR_5503    :Inserisci hostname o indirizzo IP:
 STR_5504    :Show multiplayer status
 STR_5505    :Impossibile connettersi al server.
 STR_5506    :I visitatori ignorano l’intensità
-STR_5508    :Permetti caricamento file con checksum errato
-STR_5509    :Permetti il caricamento di scenari e salvataggi{NEWLINE}che hanno un codice di controllo errato,{NEWLINE}come ad esempio gli scenari della demo{NEWLINE}o i salvataggi danneggiati.
 STR_5510    :Scheda audio predefinita
 STR_5511    :(UNKNOWN)
 STR_5512    :Salva partita con nome…
@@ -2840,8 +2769,6 @@ STR_5560    :Imposta l’intervallo di ispezione a “Ogni 10 minuti” su tutte
 STR_5561    :Caricamento lingua fallito
 STR_5562    :ATTENZIONE!
 STR_5563    :Questa funzionalità è instabile, utilizzarla con attenzione.
-STR_5564    :Inserisci elemento corrotto
-STR_5565    :Inserisce un elemento della mappa corrotto, nascondendo ogni elemento sopra l’elemento corrotto.
 STR_5566    :Password:
 STR_5567    :Pubblicità
 STR_5568    :Password necessaria
@@ -3062,8 +2989,8 @@ STR_5824    :Disattiva l’effetto fulmine{NEWLINE}durante i temporali
 STR_5825    :Mantiene il cursorse del mouse all’interno della finestra
 STR_5826    :Inverte la direzione di scorrimento{NEWLINE}quando si mantiene premuto il tasto destro.
 STR_5827    :Imposta lo schema colore dell’interfaccia
-STR_5828    :Cambia quale formato di misurazione è usato per le distanze, la velocità…
-STR_5829    :Cambia la moneta in uso. Soltanto visuale, non effettua una vera conversione
+STR_5828    :Cambia l’unità di misura usata per le distanze, la velocità…
+STR_5829    :Cambia la moneta in uso. Ha soltanto un effetto visuale, non effettua una vera conversione
 STR_5830    :Cambia la lingua utilizzata
 STR_5831    :Cambia il formato della{NEWLINE}temperatura visualizzata
 STR_5832    :Mostra l’altezza in unità generiche invece del formato impostato in “Distanze e velocità”
@@ -3082,7 +3009,6 @@ STR_5844    :Connettiti al server multigiocatore{NEWLINE}anche in caso di asincr
 STR_5845    :Aggiungi un pulsante nella barra{NEWLINE}per effettuare il debug.{NEWLINE}Abilita le scorciatoie da tastiera per la console sviluppatori
 STR_5846    :Imposta i salvataggi automatici di OpenRCT2 spesso
 STR_5847    :Seleziona la sequenza del parco utilizzata nei titoli.{NEWLINE}La sequenza del titolo in RCT1/2 richiede l’importazione degli scenari per funzionare
-STR_5848    :Crea e gestisci sequenze di titoli personalizzate
 STR_5849    :Colloca sulla mappa{NEWLINE}i nuovi membri del personale automaticamente
 STR_5851    :Imposta l’intervallo predefinito di ispezione{NEWLINE}nelle nuove attrazioni
 STR_5853    :Abilita/Disabilita gli effetti sonori
@@ -3269,7 +3195,6 @@ STR_6033    :Cartella di RCT1:
 STR_6034    :{BLACK}{STRING}
 STR_6035    :Selezionare la cartella di installazione di RCT1
 STR_6036    :Pulisci
-STR_6037    :Selezionare una cartella di installazione di RCT1 valida
 STR_6037    :La cartella selezionata non contiene un’installazione valida di RollerCoaster Tycoon 1.
 STR_6038    :Se RCT1 è installato, selezionarne la cartella per caricarne gli scenari, la musica, ecc.
 STR_6039    :Demolizione veloce percorso
@@ -3284,7 +3209,6 @@ STR_6047    :Ammorbidisci celle
 STR_6048    :Errore nella heightmap
 STR_6049    :Errore nella lettura del PNG
 STR_6050    :Errore nella lettura della bitmap
-STR_6051    :Larghezza e altezza devono corrispondere
 STR_6052    :La heightmap è troppo grande e sarà tagliata
 STR_6053    :La heightmap non può essere normalizzata
 STR_6054    :Sono supportate solo le bitmap a 24 bit
@@ -3383,7 +3307,6 @@ STR_6154    :Per motivi di sicurezza si sconsiglia l’esecuzione di OpenRCT2 co
 STR_6155    :Né KDialog né Zenity sono installati. Installarne uno o configurare attraverso la linea di comando.
 STR_6156    :Il nome è riservato
 STR_6157    :Console
-STR_6158    :Impossibile caricare questo file…{NEWLINE}Versione di RCTC incompatibile: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Veicoli disponibili: {BLACK}{STRING}
 STR_6161    :Mostra/nascondi griglia
 STR_6162    :Topo tutto matto rotante
@@ -3398,23 +3321,8 @@ STR_6170    :Personalizzazione interfaccia
 STR_6171    :Cerca
 STR_6172    :Cerca
 STR_6173    :Digitare il nome da cercare:
-STR_6174    :Carica salvataggio
-STR_6175    :Carica scenario
-STR_6176    :Scenario da caricare:
-STR_6177    :Carica{MOVE_X}{87}Nessuno scenario selezionato
-STR_6178    :Carica{MOVE_X}{87}{RED}Scenario mancante
-STR_6179    :Seleziona
-STR_6180    :Nessuno scenario selezionato
-STR_6181    :{RED}Scenario mancante
-STR_6182    :Segui{MOVE_X}{87}{STRING}
-STR_6183    :Segui{MOVE_X}{87}Nessuno sprite selezionato
-STR_6184    :Segui sprite
-STR_6185    :Seleziona sprite
-STR_6186    :Nessuno sprite selezionato
-STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Vomito
 STR_6189    :Anatra
-STR_6190    :Non è possibile selezionare uno sprite mentre la schermata del titolo è attiva.
 STR_6191    :Superficie
 STR_6192    :Muro
 STR_6193    :{COMMA16} ospite
@@ -3527,7 +3435,7 @@ STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
 STR_6323    :Simulazione
 STR_6324    :Simula
 STR_6325    :Simula attrazione
-STR_6326    :Non è stato possibile simulare {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :Non è stato possibile simulare {STRINGID}…
 STR_6327    :Cattura schermate giganti con sfondo trasparente
 STR_6328    :Con questa opzione attivata, le schermate giganti (screenshot) saranno catturate con uno sfondo trasparente invece di quello nero
 STR_6329    :{STRING}{STRINGID}
@@ -3536,7 +3444,6 @@ STR_6331    :Crea anatre
 STR_6332    :Rimuovi anatre
 STR_6333    :Aumenta fattore di scala
 STR_6334    :Diminuisci fattore di scala
-STR_6335    :Analizzatore celle: Inserisci elemento corrotto
 STR_6336    :Analizzatore celle: Copia elemento
 STR_6337    :Analizzatore celle: Incolla elemento
 STR_6338    :Analizzatore celle: Elimina elemento
@@ -3572,7 +3479,7 @@ STR_6367    :Fotogramma animazione:
 STR_6368    :Per motivi di compatibilità, non è consigliato eseguire OpenRCT2 tramite Wine. OpenRCT2 offre supporto nativo per macOS, Linux, FreeBSD and OpenBSD.
 STR_6369    :Permetti costruzione percorsi ad altezze non valide
 STR_6370    :Permette di collocare pezzi di percorso a qualsiasi intervallo di altezza
-STR_6371    :La cartella specificata contiene un’installazione di RollerCoaster Tycoon 1, ma non contiene il file “csg1i.dat”. Questo file dev’essere copiato dal CD di RollerCoaster Tycoon 1 alla cartella “Data” dell’installazione su disco di RollerCoaster Tycoon 1. 
+STR_6371    :La cartella specificata contiene un’installazione di RollerCoaster Tycoon 1, ma non contiene il file “csg1i.dat”. Questo file dev’essere copiato dal CD di Loopy Landscapes o di RCT Deluxe alla cartella “Data” dell’installazione su disco rigido di RollerCoaster Tycoon 1. 
 STR_6372    :La cartella specificata contiene un’installazione di RollerCoaster Tycoon 1, ma la versione non è compatibile. OpenRCT2 necessita di un’installazione di Loopy Landscapes o di RCT Deluxe per poter utilizzare le risorse di RollerCoaster Tycoon 1.
 STR_6373    :Attiva controllo margini
 STR_6374    :M
@@ -3615,24 +3522,24 @@ STR_6410    :Zoom avanti/indietro
 STR_6411    :Mostra bottoni per zoomare avanti e indietro nella barra degli strumenti
 STR_6412    :Invio BlocNum
 STR_6413    :Maiusc
-STR_6414    :Maiusc sx
-STR_6415    :Maiusc dx
+STR_6414    :Maiusc Sx
+STR_6415    :Maiusc Dx
 STR_6416    :Ctrl
-STR_6417    :Ctrl sx
-STR_6418    :Ctrl dx
+STR_6417    :Ctrl Sx
+STR_6418    :Ctrl Dx
 STR_6419    :Alt
-STR_6420    :Alt sx
-STR_6421    :Alt dx
+STR_6420    :Alt Sx
+STR_6421    :Alt Dx
 STR_6422    :Cmd
-STR_6423    :Cmd sx
-STR_6424    :Cmd dx
+STR_6423    :Cmd Sx
+STR_6424    :Cmd Dx
 STR_6425    :Sinistra joy
 STR_6426    :Destra joy
 STR_6427    :Su joy
 STR_6428    :Giù joy
 STR_6429    :Joy {INT32}
-STR_6430    :Clic sx
-STR_6431    :Clic dx
+STR_6430    :Clic Sx
+STR_6431    :Clic Dx
 STR_6432    :Mouse {INT32}
 STR_6433    :Rimuovi
 STR_6434    :Rimuovi tutte le associazioni per questa scorciatoia.
@@ -3662,6 +3569,64 @@ STR_6457    :Segnala un bug su GitHub
 STR_6458    :Segui sulla visuale principale
 STR_6460    :D
 STR_6461    :Direzione
+STR_6462    :Divertimento
+STR_6463    :Divertimento: {COMMA2DP32}
+STR_6464    :Intensità
+STR_6465    :Intensità: {COMMA2DP32}
+STR_6466    :Nausea
+STR_6467    :Nausea: {COMMA2DP32}
+STR_6468    :Ancora sconosciuto
+STR_6469    :Regola aree di pattuglia più piccole
+STR_6470    :Regola aree di pattuglia più grandi
+STR_6471    :Vegetazione trasparente
+STR_6472    :Veicoli trasparenti
+STR_6473    :Supporti trasparenti
+STR_6474    :Visitatori trasparenti
+STR_6475    :Personale trasparente
+STR_6476    :Vegetazione invisibile
+STR_6477    :Arredi invisibili
+STR_6478    :Sentieri invisibili
+STR_6479    :Attrazioni invisibili
+STR_6480    :Veicoli invisibili
+STR_6481    :Opzioni trasparenza
+STR_6482    :Opzioni trasparenza
+STR_6483    :Apri le opzioni trasparenza
+STR_6484    :Mostra/nascondi vegetazione 
+STR_6485    :Mostra/nascondi veicoli 
+STR_6486    :Mostra/nascondi visitatori 
+STR_6487    :Mostra/nascondi personale 
+STR_6488    :{RED}I visitatori si lamentano per la lunghezza delle code nel tuo parco.{NEWLINE}Prendi in considerazione di accorciare quelle problematiche o di aumentare il flusso di visitatori delle attrazioni.
+STR_6489    :Errore: versione parco non compatibile
+STR_6490    :Avviso: versione parco semi-compatibile
+STR_6491    :Questo parco è stato salvato in una versione più recente di OpenRCT2. Il parco è v{INT32} e richiede almeno v{INT32}.
+STR_6492    :Questo parco è stato salvato in una versione più vecchia di OpenRCT2 e non può essere aperto con questa versione. Il parco è v{INT32}.
+STR_6493    :Questo parco è stato salvato in una versione più recente di OpenRCT2, alcuni dati potrebbero essere persi. Il parco è v{INT32} e richiede almeno v{INT32}.
+STR_6494    :Raggruppa per tipo attrazione
+STR_6495    :Raggruppa le attrazioni in base al loro tipo anziché mostrare ogni veicolo separatamente.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Fai clic su una cella per mostrare i suoi elementi.{NEWLINE}Fai Ctrl + clic su una cella per selezionarla direttamente.
+STR_6498    :Attivare per mantenere la mappa di forma quadrata.
+STR_6499    :Veicolo non supportato dal formato del tracciato
+STR_6500    :Tipo di rotaia non supportato dal formato del tracciato
+STR_6501    :Colore Casuale
+STR_6502    :Inserire valore compreso tra {COMMA16} e {COMMA16}
+STR_6503    :Dev’essere selezionato almeno un oggetto-stazione
+STR_6504    :Dev’essere selezionato almeno un tipo di suprefice del terreno
+STR_6505    :Dev’essere selezionato almeno un tipo di bordo del terreno
+STR_6506    :Mezzo Avvitamento Grande (Sx)
+STR_6507    :Mezzo Avvitamento Grande (Dx)
+STR_6508    :Mezzo Giro Medio (Sx)
+STR_6509    :Mezzo Giro Medio (Dx)
+STR_6510    :Zero G Roll (Sx)
+STR_6511    :Zero G Roll (Dx)
+STR_6512    :Zero G Roll Grande (Sx)
+STR_6513    :Zero G Roll Grande (Dx)
+STR_6514    :Altezza non valida!
+STR_6515    :{BLACK}RCT1 non collegato - saranno usate immagini di ripiego.
+STR_6516    :Uno o più oggetti aggiunti necessitano che RCT1 sia collegato per una corretta visualizzazione. Saranno usate immagini di ripiego.
+STR_6517    :Uno o più oggetti di questo parco necessitano che RCT1 sia collegato per una corretta visualizzazione. Saranno usate immagini di ripiego.
+STR_6518    :{BLACK}Passa il cursore sopra a uno scenario per visualizzare la sua descrizione e il suo obiettivo. Fai clic per iniziare a giocare.
+STR_6519    :Extra
 
 
 #############
@@ -4105,6 +4070,15 @@ STR_DTLS    :
 STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
+
+###########
+# Scenery #
+###########
+
+## Start OpenRCT2 Official
+[TTPIRF05]
+STR_NAME    :Tetto
+## End OpenRCT2 Official
 
 ###############################################################################
 ## RCT2 Scenarios

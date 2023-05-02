@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,6 +16,7 @@
 
 #    include <SDL.h>
 #    include <jni.h>
+#    include <string>
 
 using namespace OpenRCT2;
 
@@ -76,11 +77,7 @@ public:
         jstring jniString = (jstring)env->CallObjectMethod(_zip, fileNameMethod, (jint)index);
 
         const char* jniChars = env->GetStringUTFChars(jniString, nullptr);
-
-        utf8* string = (char*)malloc(strlen(jniChars) + 1);
-        std::memcpy((void*)string, jniChars, strlen(jniChars));
-        string[strlen(jniChars)] = 0x00;
-
+        std::string string = jniChars;
         env->ReleaseStringUTFChars(jniString, jniChars);
 
         return string;

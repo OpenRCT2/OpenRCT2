@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -58,11 +58,10 @@ namespace OpenRCT2::Audio
         virtual bool DeleteOnDone() const abstract;
         virtual void SetDeleteOnDone(bool value) abstract;
 
-        virtual void SetDeleteSourceOnDone(bool value) abstract;
-
         virtual bool IsPlaying() const abstract;
 
         virtual void Play(IAudioSource* source, int32_t loop = 0) abstract;
+        virtual void Stop() abstract;
         virtual void UpdateOldVolume() abstract;
 
         virtual size_t Read(void* dst, size_t len) abstract;

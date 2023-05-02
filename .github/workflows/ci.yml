@@ -23,7 +23,13 @@ env:
   OPENRCT2_BUILD_SERVER: GitHub
   OPENRCT2_ORG_TOKEN: ${{ secrets.OPENRCT2_ORG_TOKEN }}
   BACKTRACE_IO_TOKEN: ${{ secrets.BACKTRACE_IO_TOKEN }}
-  OPENRCT2_VERSION: 0.4.0
+  OPENRCT2_VERSION: 0.4.4
+
+# https://docs.github.com/en/actions/using-jobs/using-concurrency#example-using-a-fallback-value
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   lint-commit:
     name: Lint Commit Message
@@ -37,7 +43,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Lint Commit Messages
-        uses: wagoid/commitlint-github-action@v3
+        uses: wagoid/commitlint-github-action@v5
         with:
           configFile: .commitlint.json
   check-code-formatting:
@@ -59,11 +65,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [win32, x64]
+        platform: [win32, x64, arm64]
     env:
-      CONFIGURATION: Release
       PLATFORM: ${{ matrix.platform }}
     steps:
+      - name: Setup environment
+        run: |
+          BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)
+          if [[ $BRANCH == 'develop' || $BRANCH == 'master' ]]; then
+             echo "CONFIGURATION=ReleaseLTCG" >> "$GITHUB_ENV"
+          else
+             echo "CONFIGURATION=Release" >> "$GITHUB_ENV"
+          fi
       - name: Checkout
         uses: actions/checkout@v3
       - name: Git describe for shallow checkout
@@ -90,13 +103,18 @@ jobs:
       - name: Run Tests
         if: matrix.platform != 'arm64'
         run: . scripts/setenv -q && run-tests
+      - name: Test Summary
+        uses: test-summary/action@v2
+        with:
+          paths: "artifacts/test-**.xml"
+        if: matrix.platform != 'arm64'
       - name: Upload artifacts (openrct2.org)
         run: |
-          . scripts/setenv -q
+          . scripts/setenv
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-            upload-build artifacts/openrct2-portable-*.zip "windows-portable-$PLATFORM" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
-            upload-build artifacts/openrct2-installer-*.exe "windows-installer-$PLATFORM" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
-            upload-build artifacts/openrct2-symbols-*.zip "windows-symbols-$PLATFORM" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-build artifacts/openrct2-portable-*.zip "windows-portable-$PLATFORM.zip" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-build artifacts/openrct2-installer-*.exe "windows-installer-$PLATFORM.exe" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-build artifacts/openrct2-symbols-*.zip "windows-symbols-$PLATFORM.zip" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
             upload-backtrace-symbols artifacts/openrct2-symbols-*.zip
           else
               echo 'Not going to push build'
@@ -105,20 +123,16 @@ jobs:
     name: Windows (${{ matrix.platform_name }}) using mingw
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container: openrct2/openrct2-build:4-mingw
+    container: openrct2/openrct2-build:11-mingw
     strategy:
       fail-fast: false
       matrix:
-        platform: [win32, NT5.1]
+        platform: [win32]
         include:
           - platform: win32
             platform_name: win32
             cache_key: windows-mingw
-            build_flags: -DBUILD_SHARED_LIBS=ON -DENABLE_SCRIPTING=OFF
-          - platform: NT5.1
-            platform_name: win32, NT5.1
-            cache_key: windows-mingw-nt51
-            build_flags: -DDISABLE_HTTP=Off -DENABLE_SCRIPTING=ON -DCMAKE_CXX_FLAGS="-Wno-error=cast-function-type -Wno-error=unused-function" -DSTATIC=on -DMINGW_TARGET_NT5_1=ON
+            build_flags: -DBUILD_SHARED_LIBS=ON -DENABLE_SCRIPTING=ON
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -171,11 +185,16 @@ jobs:
         uses: ammaraskar/gcc-problem-matcher@master
       - name: Build OpenRCT2
         run: |
-          HOMEBREW_NO_ANALYTICS=1 brew install ninja
+          HOMEBREW_NO_ANALYTICS=1 brew install ninja pkg-config
           . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=on ${{ matrix.build_flags }}
       - name: Run Tests
         if: ${{matrix.run_tests}}
         run: . scripts/setenv -q && run-tests
+      - name: Test Summary
+        uses: test-summary/action@v2
+        with:
+          paths: "artifacts/test-**.xml"
+        if: ${{matrix.run_tests}}
       - name: Build artifacts
         run: |
           . scripts/setenv
@@ -232,7 +251,7 @@ jobs:
         run: |
           . scripts/setenv
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-            upload-build artifacts/openrct2-macos.zip macos $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-build artifacts/openrct2-macos.zip macos-universal.zip $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
           else
             echo 'Not going to push build'
           fi
@@ -245,22 +264,28 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # Use `-fno-var-tracking-assignments` to reduce amount of produced debug information. This is necessary due to 100MiB limit of GitHub / openrct2.org API.
+          # For focal the debug information still takes too much space, so reduce amount of debug info to minimum using `-g1` (`-g` means `-g2`), which is enough for backtraces only.
           - platform: x86_64
             distro: bionic
             image: openrct2/openrct2-build:4-bionic
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz" -DWITH_TESTS=off
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments" -DWITH_TESTS=off -DDISABLE_FLAC=ON -DDISABLE_VORBIS=ON
           - platform: x86_64
             distro: focal
-            image: openrct2/openrct2-build:5-focal
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz"
+            image: openrct2/openrct2-build:11-focal
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz" -DWITH_TESTS=off
+          - platform: x86_64
+            distro: jammy
+            image: openrct2/openrct2-build:11-jammy
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments"
           - platform: x86_64
             distro: bullseye
-            image: openrct2/openrct2-build:5-bullseye
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz"
+            image: openrct2/openrct2-build:11-bullseye
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments" -DWITH_TESTS=off
           - platform: i686
-            distro: bionic
-            image: openrct2/openrct2-build:4-bionic32
-            build_flags: -DFORCE32=ON -DENABLE_SCRIPTING=OFF -DCMAKE_CXX_FLAGS="-m32 -g -gz" -DWITH_TESTS=off
+            distro: focal
+            image: openrct2/openrct2-build:11-focal32
+            build_flags: -DFORCE32=ON -DENABLE_SCRIPTING=OFF -DCMAKE_CXX_FLAGS="-m32 -g1 -gz" -DWITH_TESTS=off
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -284,20 +309,21 @@ jobs:
           if-no-files-found: error
       - name: Run Tests
         run: . scripts/setenv -q && run-tests
+        
       - name: Upload artifacts (openrct2.org)
-        if: matrix.distro == 'bionic' # Need to get openrct2.org updated before other distros can be enabled
         run: |
+          # Build identification code: https://github.com/Limetric/OpenRCT2.org/blob/e5b738f3dadcc5a3b78e8dfd434756ff31eaa1d3/src/misc/releaseAsset.js#L94-L116
           . scripts/setenv -q
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-            upload-build artifacts/OpenRCT2-${{ runner.os }}-${{ matrix.distro }}-${{ matrix.platform }}.tar.gz linux-${{ matrix.platform }} $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-build artifacts/OpenRCT2-${{ runner.os }}-${{ matrix.distro }}-${{ matrix.platform }}.tar.gz linux-${{ matrix.platform }}-${{ matrix.distro }}.tar.gz $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
           else
             echo 'Not going to push build'
           fi
   linux-appimage:
-    name: Linux (x64, AppImage)
+    name: Linux (x86_64, AppImage)
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container: openrct2/openrct2-build:0.3.1-bionic
+    container: openrct2/openrct2-build:11-focal
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -317,18 +343,15 @@ jobs:
           name: OpenRCT2-AppImage
           path: artifacts
           if-no-files-found: error
-  linux-flathub-beta:
-    name: Linux (Flathub beta channel)
-    if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop' && github.event_name == 'push'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Send dispatch event to OpenRCT2 Flathub repository
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.OPENRCT2_FLATHUB_TOKEN }}
-          repository: flathub/io.openrct2.OpenRCT2
-          event-type: openrct2_develop_push
-          client-payload: '{ "commit": "${{ github.sha }}" }'
+      - name: Upload artifacts (openrct2.org)
+        run: |
+          # Build identification code: https://github.com/Limetric/OpenRCT2.org/blob/e5b738f3dadcc5a3b78e8dfd434756ff31eaa1d3/src/misc/releaseAsset.js#L94-L116
+          . scripts/setenv -q
+          if [[ "$OPENRCT2_PUSH" == "true" ]]; then
+            upload-build artifacts/OpenRCT2-x86_64.AppImage linux.AppImage $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+          else
+            echo 'Not going to push build'
+          fi
   linux-docker:
     name: Linux (docker)
     needs: check-code-formatting
@@ -355,10 +378,10 @@ jobs:
             echo 'Image not pushed'
           fi
   linux-clang:
-    name: Linux (Debug, [http, network, OpenGL] disabled) using clang
+    name: Linux (Debug, [http, network, flac, vorbis OpenGL] disabled) using clang
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container: openrct2/openrct2-build:0.3.1-bionic
+    container: openrct2/openrct2-build:11-jammy
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -369,12 +392,53 @@ jobs:
       - name: Install GCC problem matcher
         uses: ammaraskar/gcc-problem-matcher@master
       - name: Build OpenRCT2
-        run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DDISABLE_NETWORK=ON -DDISABLE_HTTP=ON -DDISABLE_OPENGL=ON
+        run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DDISABLE_NETWORK=ON -DDISABLE_HTTP=ON -DDISABLE_FLAC=ON -DDISABLE_VORBIS=ON -DDISABLE_OPENGL=ON
+  linux-clang-tests:
+    name: Linux (Debug) using clang, coverage enabled
+    runs-on: ubuntu-latest
+    needs: check-code-formatting
+    container: openrct2/openrct2-build:11-jammy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: linux-clang
+      - name: Install GCC problem matcher
+        uses: ammaraskar/gcc-problem-matcher@master
+      - name: Build OpenRCT2
+        run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-fprofile-instr-generate -fcoverage-mapping" -DWITH_TESTS=on
+      - name: Run Tests
+        run: . scripts/setenv -q && LLVM_PROFILE_FILE="openrct2-coverage-%p.profraw" run-tests
+      - name: Test Summary
+        uses: test-summary/action@v2
+        with:
+          paths: "artifacts/test-**.xml"
+        if: always()
+      - name: Process coverage information
+        run: |
+          cd bin
+          llvm-profdata merge -sparse openrct2-coverage*profraw -o openrct2.profdata
+          llvm-cov export -instr-profile=openrct2.profdata ./OpenRCT2Tests > coverage.json
+          llvm-cov report ./OpenRCT2Tests -instr-profile=openrct2.profdata
+          xz -1v openrct2.profdata
+          xz -1v coverage.json
+          xz -1v OpenRCT2Tests
+      - name: Upload artifacts (CI)
+        uses: actions/upload-artifact@v3
+        with:
+          name: OpenRCT2-${{ runner.os }}-coverage
+          path: |
+            bin/*profdata*
+            bin/coverage.json*
+            bin/OpenRCT2Tests.xz
+          if-no-files-found: error
   android:
     name: Android
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container: openrct2/openrct2-build:4-android
+    container: openrct2/openrct2-build:11-android
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -402,7 +466,7 @@ jobs:
         run: |
           . scripts/setenv -q
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-            upload-build artifacts/openrct2-arm.apk android-arm $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-build artifacts/openrct2-arm.apk android-arm.apk $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
           else
             echo 'Not going to push build'
           fi

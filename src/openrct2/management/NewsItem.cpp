@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,6 +19,7 @@
 #include "../interface/Window_internal.h"
 #include "../localisation/Date.h"
 #include "../localisation/Formatter.h"
+#include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../management/Research.h"
 #include "../profiling/Profiling.h"
@@ -44,7 +45,7 @@ bool News::IsValidIndex(int32_t index)
 {
     if (index >= News::MaxItems)
     {
-        log_error("Tried to get news item past MAX_NEWS.");
+        LOG_ERROR("Tried to get news item past MAX_NEWS.");
         return false;
     }
     return true;
@@ -115,7 +116,7 @@ void News::InitQueue()
     }
 
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 }
 
 uint16_t News::ItemQueues::IncrementTicks()
@@ -130,7 +131,7 @@ static void TickCurrent()
     if (ticks == 1 && (gScreenFlags == SCREEN_FLAGS_PLAYING))
     {
         // Play sound
-        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::NewsItem, 0, context_get_width() / 2);
+        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::NewsItem, 0, ContextGetWidth() / 2);
     }
 }
 
@@ -161,7 +162,7 @@ void News::UpdateCurrentItem()
         return;
 
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 
     // Update the current news item
     TickCurrent();
@@ -189,14 +190,14 @@ void News::ItemQueues::ArchiveCurrent()
     Archived.push_back(Current());
 
     // Invalidate the news window
-    window_invalidate_by_class(WC_RECENT_NEWS);
+    WindowInvalidateByClass(WindowClass::RecentNews);
 
     // Dequeue the current news item, shift news up
     Recent.pop_front();
 
     // Invalidate current news item bar
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
-    context_broadcast_intent(&intent);
+    ContextBroadcastIntent(&intent);
 }
 
 /**
@@ -213,13 +214,13 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
     {
         case News::ItemType::Ride:
         {
-            Ride* ride = get_ride(RideId::FromUnderlying(subject));
+            Ride* ride = GetRide(RideId::FromUnderlying(subject));
             if (ride == nullptr || ride->overall_view.IsNull())
             {
                 break;
             }
             auto rideViewCentre = ride->overall_view.ToTileCentre();
-            subjectLoc = CoordsXYZ{ rideViewCentre, tile_element_height(rideViewCentre) };
+            subjectLoc = CoordsXYZ{ rideViewCentre, TileElementHeight(rideViewCentre) };
             break;
         }
         case News::ItemType::PeepOnRide:
@@ -239,7 +240,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
             }
 
             // Find which ride peep is on
-            Ride* ride = get_ride(peep->CurrentRide);
+            Ride* ride = GetRide(peep->CurrentRide);
             if (ride == nullptr || !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
             {
                 subjectLoc = std::nullopt;
@@ -275,7 +276,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
                                        static_cast<int16_t>(subjectUnsigned >> 16) };
             if (!subjectXY.IsNull())
             {
-                subjectLoc = CoordsXYZ{ subjectXY, tile_element_height(subjectXY) };
+                subjectLoc = CoordsXYZ{ subjectXY, TileElementHeight(subjectXY) };
             }
             break;
         }
@@ -305,30 +306,31 @@ News::Item* News::ItemQueues::FirstOpenOrNewSlot()
  *
  *  rct2: 0x0066DF55
  */
-News::Item* News::AddItemToQueue(News::ItemType type, rct_string_id string_id, uint32_t assoc, const Formatter& formatter)
+News::Item* News::AddItemToQueue(News::ItemType type, StringId string_id, uint32_t assoc, const Formatter& formatter)
 {
     utf8 buffer[256];
 
     // overflows possible?
-    format_string(buffer, 256, string_id, formatter.Data());
+    OpenRCT2::FormatStringLegacy(buffer, 256, string_id, formatter.Data());
     return News::AddItemToQueue(type, buffer, assoc);
 }
 
 // TODO: Use variant for assoc, requires strong type for each possible input.
-News::Item* News::AddItemToQueue(ItemType type, rct_string_id string_id, EntityId assoc, const Formatter& formatter)
+News::Item* News::AddItemToQueue(ItemType type, StringId string_id, EntityId assoc, const Formatter& formatter)
 {
     return AddItemToQueue(type, string_id, assoc.ToUnderlying(), formatter);
 }
 
 News::Item* News::AddItemToQueue(News::ItemType type, const utf8* text, uint32_t assoc)
 {
+    auto& date = GetDate();
     News::Item* newsItem = gNewsItems.FirstOpenOrNewSlot();
     newsItem->Type = type;
     newsItem->Flags = 0;
     newsItem->Assoc = assoc; // Make optional for Award, Money, Graph and Null
     newsItem->Ticks = 0;
-    newsItem->MonthYear = static_cast<uint16_t>(gDateMonthsElapsed);
-    newsItem->Day = ((days_in_month[date_get_month(newsItem->MonthYear)] * gDateMonthTicks) >> 16) + 1;
+    newsItem->MonthYear = static_cast<uint16_t>(date.GetMonthsElapsed());
+    newsItem->Day = date.GetDay() + 1;
     newsItem->Text = text;
 
     return newsItem;
@@ -365,9 +367,9 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
     {
         case News::ItemType::Ride:
         {
-            auto intent = Intent(WC_RIDE);
-            intent.putExtra(INTENT_EXTRA_RIDE_ID, subject);
-            context_open_intent(&intent);
+            auto intent = Intent(WindowClass::Ride);
+            intent.PutExtra(INTENT_EXTRA_RIDE_ID, subject);
+            ContextOpenIntent(&intent);
             break;
         }
         case News::ItemType::PeepOnRide:
@@ -376,14 +378,17 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
             auto peep = TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
             if (peep != nullptr)
             {
-                auto intent = Intent(WC_PEEP);
-                intent.putExtra(INTENT_EXTRA_PEEP, peep);
-                context_open_intent(&intent);
+                auto intent = Intent(WindowClass::Peep);
+                intent.PutExtra(INTENT_EXTRA_PEEP, peep);
+                ContextOpenIntent(&intent);
             }
             break;
         }
         case News::ItemType::Money:
-            context_open_window(WC_FINANCES);
+            ContextOpenWindow(WindowClass::Finances);
+            break;
+        case News::ItemType::Campaign:
+            ContextOpenWindowView(WV_FINANCE_MARKETING);
             break;
         case News::ItemType::Research:
         {
@@ -391,30 +396,30 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
             if (item.type == Research::EntryType::Ride)
             {
                 auto intent = Intent(INTENT_ACTION_NEW_RIDE_OF_TYPE);
-                intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.baseRideType);
-                intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.entryIndex);
-                context_open_intent(&intent);
+                intent.PutExtra(INTENT_EXTRA_RIDE_TYPE, item.baseRideType);
+                intent.PutExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.entryIndex);
+                ContextOpenIntent(&intent);
                 break;
             }
 
             auto intent = Intent(INTENT_ACTION_NEW_SCENERY);
-            intent.putExtra(INTENT_EXTRA_SCENERY_GROUP_ENTRY_INDEX, item.entryIndex);
-            context_open_intent(&intent);
+            intent.PutExtra(INTENT_EXTRA_SCENERY_GROUP_ENTRY_INDEX, item.entryIndex);
+            ContextOpenIntent(&intent);
             break;
         }
         case News::ItemType::Peeps:
         {
-            auto intent = Intent(WC_GUEST_LIST);
-            intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsThinkingX));
-            intent.putExtra(INTENT_EXTRA_RIDE_ID, subject);
-            context_open_intent(&intent);
+            auto intent = Intent(WindowClass::GuestList);
+            intent.PutExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsThinkingX));
+            intent.PutExtra(INTENT_EXTRA_RIDE_ID, subject);
+            ContextOpenIntent(&intent);
             break;
         }
         case News::ItemType::Award:
-            context_open_window_view(WV_PARK_AWARDS);
+            ContextOpenWindowView(WV_PARK_AWARDS);
             break;
         case News::ItemType::Graph:
-            context_open_window_view(WV_PARK_RATING);
+            ContextOpenWindowView(WV_PARK_RATING);
             break;
         case News::ItemType::Null:
         case News::ItemType::Blank:
@@ -437,7 +442,7 @@ void News::DisableNewsItems(News::ItemType type, uint32_t assoc)
             if (&newsItem == &gNewsItems.Current())
             {
                 auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
-                context_broadcast_intent(&intent);
+                ContextBroadcastIntent(&intent);
             }
         }
     });
@@ -446,7 +451,7 @@ void News::DisableNewsItems(News::ItemType type, uint32_t assoc)
         if (type == newsItem.Type && assoc == newsItem.Assoc)
         {
             newsItem.SetFlags(News::ItemFlags::HasButton);
-            window_invalidate_by_class(WC_RECENT_NEWS);
+            WindowInvalidateByClass(WindowClass::RecentNews);
         }
     });
 }

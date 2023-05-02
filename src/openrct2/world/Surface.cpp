@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -51,12 +51,12 @@ void SurfaceElement::SetEdgeStyle(uint32_t newStyle)
 
 int32_t SurfaceElement::GetWaterHeight() const
 {
-    return WaterHeight * 16;
+    return WaterHeight * WATER_HEIGHT_STEP;
 }
 
 void SurfaceElement::SetWaterHeight(int32_t newWaterHeight)
 {
-    WaterHeight = newWaterHeight / 16;
+    WaterHeight = newWaterHeight / WATER_HEIGHT_STEP;
 }
 
 bool SurfaceElement::CanGrassGrow() const
@@ -106,7 +106,7 @@ void SurfaceElement::SetGrassLengthAndInvalidate(uint8_t length, const CoordsXY&
     }
 
     int32_t z = GetBaseZ();
-    map_invalidate_tile({ coords, z, z + 16 });
+    MapInvalidateTile({ coords, z, z + 16 });
 }
 
 /**
@@ -122,7 +122,7 @@ void SurfaceElement::UpdateGrassLength(const CoordsXY& coords)
     uint8_t grassLengthTmp = GrassLength & 7;
 
     // Check if grass is underwater or outside park
-    if (GetWaterHeight() > GetBaseZ() || !map_is_location_in_park(coords))
+    if (GetWaterHeight() > GetBaseZ() || !MapIsLocationInPark(coords))
     {
         if (grassLengthTmp != GRASS_LENGTH_CLEAR_0)
             SetGrassLengthAndInvalidate(GRASS_LENGTH_CLEAR_0, coords);
@@ -160,7 +160,7 @@ void SurfaceElement::UpdateGrassLength(const CoordsXY& coords)
                 if (GrassLength & 8)
                 {
                     // Random growth rate (length nibble)
-                    GrassLength |= scenario_rand() & 0x70;
+                    GrassLength |= ScenarioRand() & 0x70;
                 }
                 else
                 {
@@ -224,12 +224,12 @@ void SurfaceElement::SetSlope(uint8_t newSlope)
 
 bool SurfaceElement::HasTrackThatNeedsWater() const
 {
-    return (type & SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER) != 0;
+    return (Type & SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER) != 0;
 }
 
 void SurfaceElement::SetHasTrackThatNeedsWater(bool on)
 {
-    type &= ~SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER;
+    Type &= ~SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER;
     if (on)
-        type |= SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER;
+        Type |= SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER;
 }

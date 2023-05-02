@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -154,14 +154,14 @@ namespace OpenRCT2
         std::string _strOwned;
 
     public:
-        struct token
+        struct Token
         {
             FormatToken kind{};
             std::string_view text;
             uint32_t parameter{};
 
-            token() = default;
-            token(FormatToken k, std::string_view s, uint32_t p = 0);
+            Token() = default;
+            Token(FormatToken k, std::string_view s, uint32_t p = 0);
             bool IsLiteral() const;
             bool IsCodepoint() const;
             codepoint_t GetCodepoint() const;
@@ -172,7 +172,7 @@ namespace OpenRCT2
         private:
             std::string_view str;
             size_t index;
-            token current;
+            Token current;
 
             void update();
 
@@ -180,9 +180,9 @@ namespace OpenRCT2
             iterator(std::string_view s, size_t i);
             bool operator==(iterator& rhs);
             bool operator!=(iterator& rhs);
-            token CreateToken(size_t len);
-            const token* operator->() const;
-            const token& operator*();
+            Token CreateToken(size_t len);
+            const Token* operator->() const;
+            const Token& operator*();
             iterator& operator++();
             iterator operator++(int);
             bool eol() const;
@@ -200,9 +200,9 @@ namespace OpenRCT2
 
     template<typename T> void FormatArgument(FormatBuffer& ss, FormatToken token, T arg);
 
-    bool IsRealNameStringId(rct_string_id id);
-    void FormatRealName(FormatBuffer& ss, rct_string_id id);
-    FmtString GetFmtStringById(rct_string_id id);
+    bool IsRealNameStringId(StringId id);
+    void FormatRealName(FormatBuffer& ss, StringId id);
+    FmtString GetFmtStringById(StringId id);
     FormatBuffer& GetThreadFormatStream();
     size_t CopyStringStreamToBuffer(char* buffer, size_t bufferLen, FormatBuffer& ss);
 
@@ -233,11 +233,11 @@ namespace OpenRCT2
             while (!it.eol())
             {
                 auto token = *it++;
-                if (token.kind == FormatToken::StringId)
+                if (token.kind == FormatToken::StringById)
                 {
                     if constexpr (std::is_integral<TArg0>())
                     {
-                        auto stringId = static_cast<rct_string_id>(arg0);
+                        auto stringId = static_cast<StringId>(arg0);
                         if (IsRealNameStringId(stringId))
                         {
                             FormatRealName(ss, stringId);
@@ -284,26 +284,26 @@ namespace OpenRCT2
         return CopyStringStreamToBuffer(buffer, bufferLen, ss);
     }
 
-    template<typename... TArgs> static void FormatStringId(FormatBuffer& ss, rct_string_id id, TArgs&&... argN)
+    template<typename... TArgs> static void FormatStringID(FormatBuffer& ss, StringId id, TArgs&&... argN)
     {
         auto fmt = GetFmtStringById(id);
         FormatString(ss, fmt, argN...);
     }
 
-    template<typename... TArgs> std::string FormatStringId(rct_string_id id, TArgs&&... argN)
+    template<typename... TArgs> std::string FormatStringID(StringId id, TArgs&&... argN)
     {
         auto fmt = GetFmtStringById(id);
         return FormatString(fmt, argN...);
     }
 
-    template<typename... TArgs> size_t FormatStringId(char* buffer, size_t bufferLen, rct_string_id id, TArgs&&... argN)
+    template<typename... TArgs> size_t FormatStringID(char* buffer, size_t bufferLen, StringId id, TArgs&&... argN)
     {
         auto& ss = GetThreadFormatStream();
-        FormatStringId(ss, id, argN...);
+        FormatStringID(ss, id, argN...);
         return CopyStringStreamToBuffer(buffer, bufferLen, ss);
     }
 
     std::string FormatStringAny(const FmtString& fmt, const std::vector<FormatArg_t>& args);
     size_t FormatStringAny(char* buffer, size_t bufferLen, const FmtString& fmt, const std::vector<FormatArg_t>& args);
-    size_t FormatStringLegacy(char* buffer, size_t bufferLen, rct_string_id id, const void* args);
+    size_t FormatStringLegacy(char* buffer, size_t bufferLen, StringId id, const void* args);
 } // namespace OpenRCT2

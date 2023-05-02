@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,6 +17,7 @@
 #    include <numeric>
 #    include <openrct2/Context.h>
 #    include <openrct2/localisation/Formatter.h>
+#    include <openrct2/localisation/Formatting.h>
 #    include <openrct2/localisation/Localisation.h>
 #    include <openrct2/util/Util.h>
 
@@ -208,7 +209,7 @@ namespace OpenRCT2::Scripting
 
 } // namespace OpenRCT2::Scripting
 
-CustomListView::CustomListView(rct_window* parent, size_t scrollIndex)
+CustomListView::CustomListView(WindowBase* parent, size_t scrollIndex)
     : ParentWindow(parent)
     , ScrollIndex(scrollIndex)
 {
@@ -237,7 +238,7 @@ void CustomListView::SetScrollbars(ScrollbarType value, bool initialising)
             else
                 widget->content = 0;
         }
-        WindowInitScrollWidgets(ParentWindow);
+        WindowInitScrollWidgets(*ParentWindow);
         Invalidate();
     }
 }
@@ -255,7 +256,7 @@ void CustomListView::SetColumns(const std::vector<ListViewColumn>& columns, bool
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
-        window_update_scroll_widgets(ParentWindow);
+        WindowUpdateScrollWidgets(*ParentWindow);
         Invalidate();
     }
 }
@@ -272,7 +273,7 @@ void CustomListView::SetItems(const std::vector<ListViewItem>& items, bool initi
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
-        window_update_scroll_widgets(ParentWindow);
+        WindowUpdateScrollWidgets(*ParentWindow);
         Invalidate();
     }
 }
@@ -283,7 +284,7 @@ void CustomListView::SetItems(std::vector<ListViewItem>&& items, bool initialisi
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
-        window_update_scroll_widgets(ParentWindow);
+        WindowUpdateScrollWidgets(*ParentWindow);
         Invalidate();
     }
 }
@@ -292,7 +293,7 @@ bool CustomListView::SortItem(size_t indexA, size_t indexB, int32_t column)
 {
     const auto& cellA = Items[indexA].Cells[column];
     const auto& cellB = Items[indexB].Cells[column];
-    return strlogicalcmp(cellA.c_str(), cellB.c_str()) < 0;
+    return StrLogicalCmp(cellA.c_str(), cellB.c_str()) < 0;
 }
 
 void CustomListView::SortItems(int32_t column)
@@ -548,21 +549,21 @@ void CustomListView::MouseUp(const ScreenCoordsXY& pos)
     }
 }
 
-void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scroll* scroll) const
+void CustomListView::Paint(WindowBase* w, DrawPixelInfo& dpi, const ScrollBar* scroll) const
 {
     auto paletteIndex = ColourMapA[w->colours[1]].mid_light;
-    gfx_fill_rect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } }, paletteIndex);
+    GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } }, paletteIndex);
 
     int32_t y = ShowColumnHeaders ? COLUMN_HEADER_HEIGHT : 0;
     for (size_t i = 0; i < Items.size(); i++)
     {
-        if (y > dpi->y + dpi->height)
+        if (y > dpi.y + dpi.height)
         {
             // Past the scroll view area
             break;
         }
 
-        if (y + LIST_ROW_HEIGHT >= dpi->y)
+        if (y + LIST_ROW_HEIGHT >= dpi.y)
         {
             const auto& itemIndex = static_cast<int32_t>(SortedItems[i]);
             const auto& item = Items[itemIndex];
@@ -581,20 +582,20 @@ void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scro
                 auto isSelected = (SelectedCell && itemIndex == SelectedCell->Row);
                 if (isSelected)
                 {
-                    gfx_filter_rect(
-                        dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1) } },
+                    GfxFilterRect(
+                        dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + (LIST_ROW_HEIGHT - 1) } },
                         FilterPaletteID::PaletteDarken2);
                 }
                 else if (isHighlighted)
                 {
-                    gfx_filter_rect(
-                        dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1) } },
+                    GfxFilterRect(
+                        dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + (LIST_ROW_HEIGHT - 1) } },
                         FilterPaletteID::PaletteDarken2);
                 }
                 else if (isStriped)
                 {
-                    gfx_fill_rect(
-                        dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1) } },
+                    GfxFillRect(
+                        dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + (LIST_ROW_HEIGHT - 1) } },
                         ColourMapA[w->colours[1]].lighter | 0x1000000);
                 }
 
@@ -640,7 +641,7 @@ void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scro
         y = scroll->v_top;
 
         auto bgColour = ColourMapA[w->colours[1]].mid_light;
-        gfx_fill_rect(dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + 12 } }, bgColour);
+        GfxFillRect(dpi, { { dpi.x, y }, { dpi.x + dpi.width, y + 12 } }, bgColour);
 
         int32_t x = 0;
         for (int32_t j = 0; j < static_cast<int32_t>(Columns.size()); j++)
@@ -664,7 +665,7 @@ void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scro
 }
 
 void CustomListView::PaintHeading(
-    rct_window* w, rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
+    WindowBase* w, DrawPixelInfo& dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
     ColumnSortOrder sortOrder, bool isPressed) const
 {
     auto boxFlags = 0;
@@ -672,7 +673,7 @@ void CustomListView::PaintHeading(
     {
         boxFlags = INSET_RECT_FLAG_BORDER_INSET;
     }
-    gfx_fill_rect_inset(dpi, { pos, pos + ScreenCoordsXY{ size.width - 1, size.height - 1 } }, w->colours[1], boxFlags);
+    GfxFillRectInset(dpi, { pos, pos + ScreenCoordsXY{ size.width - 1, size.height - 1 } }, w->colours[1], boxFlags);
     if (!text.empty())
     {
         PaintCell(dpi, pos, size, text.c_str(), false);
@@ -681,19 +682,19 @@ void CustomListView::PaintHeading(
     if (sortOrder == ColumnSortOrder::Ascending)
     {
         auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_UP);
+        ft.Add<StringId>(STR_UP);
         DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::RIGHT });
     }
     else if (sortOrder == ColumnSortOrder::Descending)
     {
         auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_DOWN);
+        ft.Add<StringId>(STR_DOWN);
         DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::RIGHT });
     }
 }
 
 void CustomListView::PaintSeperator(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const
+    DrawPixelInfo& dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const
 {
     auto hasText = text != nullptr && text[0] != '\0';
     auto left = pos.x + 4;
@@ -714,50 +715,50 @@ void CustomListView::PaintSeperator(
         DrawTextBasic(dpi, { centreX, pos.y }, STR_STRING, ft, { baseColour, TextAlignment::CENTRE });
 
         // Get string dimensions
-        format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_STRING, ft.Data());
-        int32_t categoryStringHalfWidth = (gfx_get_string_width(gCommonStringFormatBuffer, FontSpriteBase::MEDIUM) / 2) + 4;
+        FormatStringLegacy(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_STRING, ft.Data());
+        int32_t categoryStringHalfWidth = (GfxGetStringWidth(gCommonStringFormatBuffer, FontStyle::Medium) / 2) + 4;
         int32_t strLeft = centreX - categoryStringHalfWidth;
         int32_t strRight = centreX + categoryStringHalfWidth;
 
         // Draw light horizontal rule
         auto lightLineLeftTop1 = ScreenCoordsXY{ left, lineY0 };
         auto lightLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY0 };
-        gfx_draw_line(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
+        GfxDrawLine(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
 
         auto lightLineLeftTop2 = ScreenCoordsXY{ strRight, lineY0 };
         auto lightLineRightBottom2 = ScreenCoordsXY{ right, lineY0 };
-        gfx_draw_line(dpi, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
+        GfxDrawLine(dpi, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
 
         // Draw dark horizontal rule
         auto darkLineLeftTop1 = ScreenCoordsXY{ left, lineY1 };
         auto darkLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY1 };
-        gfx_draw_line(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
+        GfxDrawLine(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
 
         auto darkLineLeftTop2 = ScreenCoordsXY{ strRight, lineY1 };
         auto darkLineRightBottom2 = ScreenCoordsXY{ right, lineY1 };
-        gfx_draw_line(dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
+        GfxDrawLine(dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
     }
     else
     {
         // Draw light horizontal rule
         auto lightLineLeftTop1 = ScreenCoordsXY{ left, lineY0 };
         auto lightLineRightBottom1 = ScreenCoordsXY{ right, lineY0 };
-        gfx_draw_line(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
+        GfxDrawLine(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
 
         // Draw dark horizontal rule
         auto darkLineLeftTop1 = ScreenCoordsXY{ left, lineY1 };
         auto darkLineRightBottom1 = ScreenCoordsXY{ right, lineY1 };
-        gfx_draw_line(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
+        GfxDrawLine(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
     }
 }
 
 void CustomListView::PaintCell(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text, bool isHighlighted) const
+    DrawPixelInfo& dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text, bool isHighlighted) const
 {
-    rct_string_id stringId = isHighlighted ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING;
+    StringId stringId = isHighlighted ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING;
 
     auto ft = Formatter();
-    ft.Add<rct_string_id>(STR_STRING);
+    ft.Add<StringId>(STR_STRING);
     ft.Add<const char*>(text);
     DrawTextEllipsised(dpi, pos, size.width, stringId, ft, {});
 }
@@ -768,7 +769,9 @@ std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& po
     if (pos.x >= 0)
     {
         // Check if we pressed the header
-        if (ShowColumnHeaders && pos.y >= 0 && pos.y < LIST_ROW_HEIGHT)
+        auto& scroll = ParentWindow->scrolls[ScrollIndex];
+        int32_t absoluteY = pos.y - scroll.v_top;
+        if (ShowColumnHeaders && absoluteY >= 0 && absoluteY < LIST_ROW_HEIGHT)
         {
             result = RowColumn();
             result->Row = HEADER_ROW;
@@ -814,7 +817,7 @@ std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& po
     return result;
 }
 
-rct_widget* CustomListView::GetWidget() const
+Widget* CustomListView::GetWidget() const
 {
     size_t scrollIndex = 0;
     for (auto widget = ParentWindow->widgets; widget->type != WindowWidgetType::Last; widget++)

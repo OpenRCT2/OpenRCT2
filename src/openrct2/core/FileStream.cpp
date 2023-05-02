@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -184,9 +184,11 @@ namespace OpenRCT2
         {
             return;
         }
-        if (fwrite(buffer, static_cast<size_t>(length), 1, _file) != 1)
+        if (auto count = fwrite(buffer, static_cast<size_t>(length), 1, _file); count != 1)
         {
-            throw IOException("Unable to write to file.");
+            std::string error = "Unable to write " + std::to_string(length) + " bytes to file. Count = " + std::to_string(count)
+                + ", errno = " + std::to_string(errno);
+            throw IOException(error);
         }
 
         uint64_t position = GetPosition();

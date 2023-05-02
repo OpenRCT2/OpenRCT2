@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,7 +13,6 @@
 // clang-format off
 #    include <windows.h>
 #    include <shellapi.h>
-#    include <commdlg.h>
 // clang-format on
 #    undef CreateWindow
 
@@ -27,35 +26,38 @@
 #    include <openrct2/core/Path.hpp>
 #    include <openrct2/core/String.hpp>
 #    include <openrct2/ui/UiContext.h>
-#    include <shlobj.h>
-#    include <sstream>
+#    include <shobjidl.h>
+#    include <wrl/client.h>
 
 // Native resource IDs
 #    include "../../resources/resource.h"
 
-static std::wstring SHGetPathFromIDListLongPath(LPCITEMIDLIST pidl)
+using namespace Microsoft::WRL;
+
+class CCoInitialize
 {
-#    if _WIN32_WINNT < 0x0600
-    std::wstring pszPath(MAX_PATH, 0);
-    auto result = SHGetPathFromIDListW(pidl, pszPath.data());
-#    else
-    // Limit path length to 32K
-    std::wstring pszPath(std::numeric_limits<int16_t>().max(), 0);
-    auto result = SHGetPathFromIDListEx(pidl, pszPath.data(), static_cast<DWORD>(pszPath.size()), GPFIDL_DEFAULT);
-#    endif
-    if (result)
+public:
+    CCoInitialize(DWORD dwCoInit)
+        : m_hr(CoInitializeEx(nullptr, dwCoInit))
     {
-        // Truncate at first null terminator
-        auto length = pszPath.find(L'\0');
-        if (length != std::wstring::npos)
-        {
-            pszPath.resize(length);
-            pszPath.shrink_to_fit();
-        }
-        return pszPath;
     }
-    return std::wstring();
-}
+
+    ~CCoInitialize()
+    {
+        if (SUCCEEDED(m_hr))
+        {
+            CoUninitialize();
+        }
+    }
+
+    operator bool() const
+    {
+        return SUCCEEDED(m_hr);
+    }
+
+private:
+    HRESULT m_hr;
+};
 
 namespace OpenRCT2::Ui
 {
@@ -67,20 +69,20 @@ namespace OpenRCT2::Ui
     public:
         Win32Context()
         {
-            _win32module = GetModuleHandleA(nullptr);
+            _win32module = GetModuleHandle(nullptr);
         }
 
         void SetWindowIcon(SDL_Window* window) override
         {
             if (_win32module != nullptr)
             {
-                HICON icon = LoadIconA(_win32module, MAKEINTRESOURCEA(IDI_ICON));
+                HICON icon = LoadIcon(_win32module, MAKEINTRESOURCE(IDI_ICON));
                 if (icon != nullptr)
                 {
                     HWND hwnd = GetHWND(window);
                     if (hwnd != nullptr)
                     {
-                        SendMessageA(hwnd, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(icon));
+                        SendMessage(hwnd, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(icon));
                     }
                 }
             }
@@ -88,7 +90,7 @@ namespace OpenRCT2::Ui
 
         bool IsSteamOverlayAttached() override
         {
-            return (GetModuleHandleA("GameOverlayRenderer.dll") != nullptr);
+            return (GetModuleHandleW(L"GameOverlayRenderer.dll") != nullptr);
         }
 
         void ShowMessageBox(SDL_Window* window, const std::string& message) override
@@ -121,94 +123,87 @@ namespace OpenRCT2::Ui
             ShellExecuteW(NULL, L"open", urlW.c_str(), NULL, NULL, SW_SHOWNORMAL);
         }
 
-        std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override
+        std::string ShowFileDialogInternal(SDL_Window* window, const FileDialogDesc& desc, bool isFolder)
         {
-            std::wstring wcFilename = String::ToWideChar(desc.DefaultFilename);
-            wcFilename.resize(std::max<size_t>(wcFilename.size(), MAX_PATH));
-
-            std::wstring wcTitle = String::ToWideChar(desc.Title);
-            std::wstring wcInitialDirectory = String::ToWideChar(desc.InitialDirectory);
-            std::wstring wcFilters = GetFilterString(desc.Filters);
-
-            // Set open file name options
-            OPENFILENAMEW openFileName = {};
-            openFileName.lStructSize = sizeof(OPENFILENAMEW);
-            openFileName.lpstrTitle = wcTitle.c_str();
-            openFileName.lpstrInitialDir = wcInitialDirectory.c_str();
-            openFileName.lpstrFilter = wcFilters.c_str();
-            openFileName.lpstrFile = &wcFilename[0];
-            openFileName.nMaxFile = static_cast<DWORD>(wcFilename.size());
-
-            // Open dialog
-            BOOL dialogResult = FALSE;
-            DWORD commonFlags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
-            if (desc.Type == FileDialogType::Open)
-            {
-                openFileName.Flags = commonFlags | OFN_NONETWORKBUTTON | OFN_FILEMUSTEXIST;
-                dialogResult = GetOpenFileNameW(&openFileName);
-            }
-            else if (desc.Type == FileDialogType::Save)
-            {
-                openFileName.Flags = commonFlags | OFN_CREATEPROMPT | OFN_OVERWRITEPROMPT;
-                dialogResult = GetSaveFileNameW(&openFileName);
-            }
-
             std::string resultFilename;
-            if (dialogResult)
+
+            CCoInitialize coInitialize(COINIT_APARTMENTTHREADED);
+            if (coInitialize)
             {
-                resultFilename = String::ToUtf8(openFileName.lpstrFile);
-
-                // If there is no extension, append the pattern
-                std::string resultExtension = Path::GetExtension(resultFilename);
-                if (resultExtension.empty())
+                CLSID dialogId = CLSID_FileOpenDialog;
+                DWORD flagsToSet = FOS_FORCEFILESYSTEM;
+                if (desc.Type == FileDialogType::Save)
                 {
-                    int32_t filterIndex = openFileName.nFilterIndex - 1;
+                    dialogId = CLSID_FileSaveDialog;
+                    flagsToSet |= FOS_OVERWRITEPROMPT | FOS_CREATEPROMPT | FOS_STRICTFILETYPES;
+                }
+                if (isFolder)
+                {
+                    flagsToSet |= FOS_PICKFOLDERS;
+                }
 
-                    assert(filterIndex >= 0);
-                    assert(filterIndex < static_cast<int32_t>(desc.Filters.size()));
-
-                    std::string pattern = desc.Filters[filterIndex].Pattern;
-                    std::string patternExtension = Path::GetExtension(pattern);
-                    if (!patternExtension.empty())
+                ComPtr<IFileDialog> fileDialog;
+                if (SUCCEEDED(
+                        CoCreateInstance(dialogId, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(fileDialog.GetAddressOf()))))
+                {
+                    DWORD flags;
+                    if (SUCCEEDED(fileDialog->GetOptions(&flags)) && SUCCEEDED(fileDialog->SetOptions(flags | flagsToSet)))
                     {
-                        resultFilename += patternExtension;
+                        fileDialog->SetTitle(String::ToWideChar(desc.Title).c_str());
+                        fileDialog->SetFileName(String::ToWideChar(Path::GetFileName(desc.DefaultFilename)).c_str());
+
+                        // Set default directory (optional, don't fail the operation if it fails to set)
+                        ComPtr<IShellItem> defaultDirectory;
+                        if (SUCCEEDED(SHCreateItemFromParsingName(
+                                String::ToWideChar(desc.InitialDirectory).c_str(), nullptr,
+                                IID_PPV_ARGS(defaultDirectory.GetAddressOf()))))
+                        {
+                            fileDialog->SetFolder(defaultDirectory.Get());
+                        }
+
+                        // Opt-in to automatic extensions, this will ensure extension of the selected file matches the filter
+                        // Setting it to an empty string so "All Files" does not get anything appended
+                        fileDialog->SetDefaultExtension(L"");
+
+                        // Filters need an "auxillary" storage for wide strings
+                        std::vector<std::wstring> filtersStorage;
+                        auto filters = GetFilters(desc.Filters, filtersStorage);
+
+                        bool filtersSet = true;
+                        if (!filters.empty())
+                        {
+                            filtersSet = SUCCEEDED(fileDialog->SetFileTypes(static_cast<UINT>(filters.size()), filters.data()));
+                        }
+
+                        if (filtersSet && SUCCEEDED(fileDialog->Show(nullptr)))
+                        {
+                            ComPtr<IShellItem> resultItem;
+                            if (SUCCEEDED(fileDialog->GetResult(resultItem.GetAddressOf())))
+                            {
+                                PWSTR filePath = nullptr;
+                                if (SUCCEEDED(resultItem->GetDisplayName(SIGDN_FILESYSPATH, &filePath)))
+                                {
+                                    resultFilename = String::ToUtf8(filePath);
+                                    CoTaskMemFree(filePath);
+                                }
+                            }
+                        }
                     }
                 }
             }
             return resultFilename;
         }
 
+        std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override
+        {
+            return ShowFileDialogInternal(window, desc, false);
+        }
+
         std::string ShowDirectoryDialog(SDL_Window* window, const std::string& title) override
         {
-            std::string result;
-
-            // Initialize COM
-            if (SUCCEEDED(CoInitializeEx(0, COINIT_APARTMENTTHREADED)))
-            {
-                std::wstring titleW = String::ToWideChar(title);
-                BROWSEINFOW bi = {};
-                bi.lpszTitle = titleW.c_str();
-                bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE | BIF_NONEWFOLDERBUTTON;
-
-                LPITEMIDLIST pidl = SHBrowseForFolderW(&bi);
-                if (pidl != nullptr)
-                {
-                    result = String::ToUtf8(SHGetPathFromIDListLongPath(pidl));
-                }
-                CoTaskMemFree(pidl);
-
-                CoUninitialize();
-            }
-            else
-            {
-                log_error("Error opening directory browse window");
-            }
-
-            // SHBrowseForFolderW might minimize the main window,
-            // so make sure that it's visible again.
-            ShowWindow(GetHWND(window), SW_RESTORE);
-
-            return result;
+            FileDialogDesc desc;
+            desc.Title = title;
+            return ShowFileDialogInternal(window, desc, true);
         }
 
         bool HasFilePicker() const override
@@ -226,7 +221,7 @@ namespace OpenRCT2::Ui
                 SDL_VERSION(&wmInfo.version);
                 if (SDL_GetWindowWMInfo(window, &wmInfo) != SDL_TRUE)
                 {
-                    log_error("SDL_GetWindowWMInfo failed %s", SDL_GetError());
+                    LOG_ERROR("SDL_GetWindowWMInfo failed %s", SDL_GetError());
                     exit(-1);
                 }
 
@@ -235,20 +230,30 @@ namespace OpenRCT2::Ui
             return result;
         }
 
-        static std::wstring GetFilterString(const std::vector<FileDialogDesc::Filter>& filters)
+        static std::vector<COMDLG_FILTERSPEC> GetFilters(
+            const std::vector<FileDialogDesc::Filter>& filters, std::vector<std::wstring>& outFiltersStorage)
         {
-            std::wstringstream filtersb;
+            std::vector<COMDLG_FILTERSPEC> result;
             for (const auto& filter : filters)
             {
-                filtersb << String::ToWideChar(filter.Name) << '\0' << String::ToWideChar(filter.Pattern) << '\0';
+                outFiltersStorage.emplace_back(String::ToWideChar(filter.Name));
+                outFiltersStorage.emplace_back(String::ToWideChar(filter.Pattern));
             }
-            return filtersb.str();
+
+            for (auto it = outFiltersStorage.begin(); it != outFiltersStorage.end();)
+            {
+                const wchar_t* Name = (*it++).c_str();
+                const wchar_t* Pattern = (*it++).c_str();
+                result.push_back({ Name, Pattern });
+            }
+
+            return result;
         }
     };
 
-    IPlatformUiContext* CreatePlatformUiContext()
+    std::unique_ptr<IPlatformUiContext> CreatePlatformUiContext()
     {
-        return new Win32Context();
+        return std::make_unique<Win32Context>();
     }
 } // namespace OpenRCT2::Ui
 

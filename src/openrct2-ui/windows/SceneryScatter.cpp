@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,12 +35,12 @@ uint16_t gWindowSceneryScatterSize;
 ScatterToolDensity gWindowSceneryScatterDensity;
 
 // clang-format off
-static rct_widget window_scenery_scatter_widgets[] = {
+static Widget window_scenery_scatter_widgets[] = {
     MakeWidget     ({ 0,  0}, {86, 100}, WindowWidgetType::Frame,    WindowColour::Secondary                                                                ), // panel / background
     MakeWidget     ({ 1,  1}, {84,  14}, WindowWidgetType::Caption,  WindowColour::Primary  , STR_SCENERY_SCATTER,           STR_WINDOW_TITLE_TIP           ), // title bar
     MakeWidget     ({73,  2}, {11,  12}, WindowWidgetType::CloseBox, WindowColour::Primary  , STR_CLOSE_X,                   STR_CLOSE_WINDOW_TIP           ), // close x button
 
-    MakeWidget     ({20, 17}, {44,  32}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_LAND_TOOL_SIZE_0                                          ), // preview box
+    MakeWidget     ({20, 17}, {44,  32}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, ImageId(SPR_LAND_TOOL_SIZE_0)                                          ), // preview box
     MakeRemapWidget({21, 18}, {16,  16}, WindowWidgetType::TrnBtn,   WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_TIP    ), // decrement size
     MakeRemapWidget({47, 32}, {16,  16}, WindowWidgetType::TrnBtn,   WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,        STR_ADJUST_LARGER_LAND_TIP     ), // increment size
 
@@ -52,15 +52,15 @@ static rct_widget window_scenery_scatter_widgets[] = {
 };
 // clang-format on
 
-class SceneryScatterWindow final : public rct_window
+class SceneryScatterWindow final : public WindowBase
 {
 public:
     void OnOpen() override
     {
         widgets = window_scenery_scatter_widgets;
-        hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
-        WindowInitScrollWidgets(this);
-        window_push_others_below(this);
+        hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
+        WindowInitScrollWidgets(*this);
+        WindowPushOthersBelow(*this);
 
         gWindowSceneryScatterEnabled = true;
         gWindowSceneryScatterSize = 16;
@@ -72,7 +72,7 @@ public:
         gWindowSceneryScatterEnabled = false;
     }
 
-    void InputSize(const rct_widgetindex widgetIndex)
+    void InputSize(const WidgetIndex widgetIndex)
     {
         uint8_t maxLength = 0;
         Formatter ft;
@@ -88,12 +88,12 @@ public:
         WindowTextInputOpen(this, widgetIndex, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, maxLength);
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(this);
+                WindowClose(*this);
                 break;
 
             case WIDX_PREVIEW:
@@ -114,7 +114,7 @@ public:
         }
     }
 
-    void OnMouseDown(const rct_widgetindex widgetIndex) override
+    void OnMouseDown(const WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -132,7 +132,7 @@ public:
         }
     }
 
-    void OnTextInput(const rct_widgetindex widgetIndex, const std::string_view text) override
+    void OnTextInput(const WidgetIndex widgetIndex, const std::string_view text) override
     {
         if (widgetIndex != WIDX_PREVIEW || text.empty())
             return;
@@ -154,31 +154,31 @@ public:
     void OnPrepareDraw() override
     {
         // Set the preview image button to be pressed down
-        pressed_widgets = (1ULL << WIDX_PREVIEW);
+        pressed_widgets = (1uLL << WIDX_PREVIEW);
 
         // Set density buttons' pressed state.
         switch (gWindowSceneryScatterDensity)
         {
             case ScatterToolDensity::LowDensity:
-                pressed_widgets |= (1ULL << WIDX_DENSITY_LOW);
+                pressed_widgets |= (1uLL << WIDX_DENSITY_LOW);
                 break;
 
             case ScatterToolDensity::MediumDensity:
-                pressed_widgets |= (1ULL << WIDX_DENSITY_MEDIUM);
+                pressed_widgets |= (1uLL << WIDX_DENSITY_MEDIUM);
                 break;
 
             case ScatterToolDensity::HighDensity:
-                pressed_widgets |= (1ULL << WIDX_DENSITY_HIGH);
+                pressed_widgets |= (1uLL << WIDX_DENSITY_HIGH);
                 break;
         }
 
         // Update the preview image (for tool sizes up to 7)
-        widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gWindowSceneryScatterSize);
+        widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gWindowSceneryScatterSize));
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
-        WindowDrawWidgets(this, &dpi);
+        WindowDrawWidgets(*this, dpi);
 
         // Draw area as a number for tool sizes bigger than 7
         if (gWindowSceneryScatterSize > MAX_TOOL_SIZE_WITH_SPRITE)
@@ -187,18 +187,18 @@ public:
             const auto screenCoords = ScreenCoordsXY{ windowPos.x + preview.midX(), windowPos.y + preview.midY() };
             auto ft = Formatter();
             ft.Add<uint16_t>(gWindowSceneryScatterSize);
-            DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+            DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
         }
     }
 };
 
-rct_window* WindowSceneryScatterOpen()
+WindowBase* WindowSceneryScatterOpen()
 {
     // Check if window is already open
-    auto* window = window_find_by_class(WC_SCENERY_SCATTER);
+    auto* window = WindowFindByClass(WindowClass::SceneryScatter);
     if (window == nullptr)
     {
-        window = WindowCreate<SceneryScatterWindow>(WC_SCENERY_SCATTER, 86, 100);
+        window = WindowCreate<SceneryScatterWindow>(WindowClass::SceneryScatter, 86, 100, 0);
     }
 
     return window;

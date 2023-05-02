@@ -8,6 +8,18 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseLTCG|arm64">
+      <Configuration>ReleaseLTCG</Configuration>
+      <Platform>arm64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseLTCG|Win32">
+      <Configuration>ReleaseLTCG</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseLTCG|x64">
+      <Configuration>ReleaseLTCG</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -50,7 +62,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>libopenrct2.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalDependencies Condition="'$(Configuration)'=='Debug'">gtestd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Configuration)'=='Debug'">gtest.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalDependencies Condition="'$(Configuration)'!='Debug'">gtest.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
@@ -84,7 +96,7 @@
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="RideRatings.cpp" />
     <ClCompile Include="S6ImportExportTests.cpp" />
-    <ClCompile Include="sawyercoding_test.cpp" />
+    <ClCompile Include="SawyerCodingTest.cpp" />
     <ClCompile Include="TestData.cpp" />
     <ClCompile Include="tests.cpp" />
     <ClCompile Include="StringTest.cpp" />

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -57,7 +57,7 @@ bool PatrolArea::Get(const TileCoordsXY& pos) const
     if (area == nullptr)
         return false;
 
-    auto it = binary_find(area->SortedTiles.begin(), area->SortedTiles.end(), pos, CompareTileCoordsXY);
+    auto it = BinaryFind(area->SortedTiles.begin(), area->SortedTiles.end(), pos, CompareTileCoordsXY);
     auto found = it != area->SortedTiles.end();
     return found;
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,7 +24,7 @@ namespace STATION_OBJECT_FLAGS
 class StationObject final : public Object
 {
 public:
-    rct_string_id NameStringId{};
+    StringId NameStringId{};
     ImageIndex BaseImageId = ImageIndexUndefined;
     ImageIndex ShelterImageId = ImageIndexUndefined;
     uint32_t Flags{};
@@ -35,5 +35,5 @@ public:
     void Load() override;
     void Unload() override;
 
-    void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
+    void DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const override;
 };

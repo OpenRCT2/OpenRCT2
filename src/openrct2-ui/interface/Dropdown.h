@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,14 +13,15 @@
 #include <openrct2/common.h>
 #include <openrct2/drawing/ImageId.hpp>
 #include <openrct2/localisation/StringIds.h>
+#include <openrct2/util/Util.h>
 
 namespace Dropdown
 {
     struct Item;
 
-    constexpr const rct_string_id SeparatorString = 0;
-    constexpr const rct_string_id FormatColourPicker = 0xFFFE;
-    constexpr const rct_string_id FormatLandPicker = 0xFFFF;
+    constexpr const StringId SeparatorString = 0;
+    constexpr const StringId FormatColourPicker = 0xFFFE;
+    constexpr const StringId FormatLandPicker = 0xFFFF;
     constexpr const int32_t ItemsMaxSize = 512;
 
     enum Flag
@@ -51,11 +52,14 @@ void WindowDropdownShowImage(
     int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t flags, int32_t numItems, int32_t itemWidth,
     int32_t itemHeight, int32_t numColumns);
 void WindowDropdownClose();
-int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, rct_window* w);
-void WindowDropdownShowColour(rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour);
+int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, WindowBase* w);
+void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour);
 void WindowDropdownShowColourAvailable(
-    rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);
+    WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);
 uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems);
+bool WindowDropDownHasMultipleColumns(size_t numItems);
+
+colour_t ColourDropDownIndexToColour(uint8_t ddidx);
 
 namespace Dropdown
 {
@@ -67,7 +71,7 @@ namespace Dropdown
 
     struct Item
     {
-        rct_string_id Format;
+        StringId Format;
         int64_t Args;
         uint8_t Flags;
 
@@ -89,7 +93,7 @@ namespace Dropdown
 
     struct ItemExt
     {
-        constexpr ItemExt(int32_t _expectedItemIndex, uint32_t _itemFormat, rct_string_id _stringId)
+        constexpr ItemExt(int32_t _expectedItemIndex, uint32_t _itemFormat, StringId _stringId)
             : expectedItemIndex(_expectedItemIndex)
             , itemFormat(_itemFormat)
             , stringId(_stringId)
@@ -98,10 +102,10 @@ namespace Dropdown
 
         int32_t expectedItemIndex;
         uint32_t itemFormat;
-        rct_string_id stringId;
+        StringId stringId;
     };
 
-    constexpr ItemExt ToggleOption(int32_t _expectedItemIndex, rct_string_id _stringId)
+    constexpr ItemExt ToggleOption(int32_t _expectedItemIndex, StringId _stringId)
     {
         return ItemExt(_expectedItemIndex, STR_TOGGLE_OPTION, _stringId);
     }
@@ -132,5 +136,4 @@ namespace Dropdown
 
         return true;
     }
-
 } // namespace Dropdown

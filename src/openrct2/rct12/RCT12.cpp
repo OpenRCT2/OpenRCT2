@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,6 @@
 #include "../scenario/Scenario.h"
 #include "../world/Banner.h"
 #include "../world/Footpath.h"
-#include "../world/LargeScenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
@@ -30,147 +29,165 @@ using namespace OpenRCT2;
 
 RCT12TileElementType RCT12TileElementBase::GetType() const
 {
-    return static_cast<RCT12TileElementType>((this->type & TILE_ELEMENT_TYPE_MASK) >> 2);
+    auto elem_type = static_cast<RCT12TileElementType>((this->Type & TILE_ELEMENT_TYPE_MASK) >> 2);
+    switch (elem_type)
+    {
+        case RCT12TileElementType::Surface:
+        case RCT12TileElementType::Path:
+        case RCT12TileElementType::Track:
+        case RCT12TileElementType::SmallScenery:
+        case RCT12TileElementType::Entrance:
+        case RCT12TileElementType::Wall:
+        case RCT12TileElementType::LargeScenery:
+        case RCT12TileElementType::Banner:
+        case RCT12TileElementType::Corrupt:
+        case RCT12TileElementType::EightCarsCorrupt14:
+        case RCT12TileElementType::EightCarsCorrupt15:
+            return elem_type;
+        default:
+            // Most corrupt elements were set to 0x255, but not all. Fallback to corrupt element if encountered unknown type.
+            return RCT12TileElementType::EightCarsCorrupt15;
+    }
 }
 
 uint8_t RCT12TileElementBase::GetDirection() const
 {
-    return this->type & TILE_ELEMENT_DIRECTION_MASK;
+    return this->Type & TILE_ELEMENT_DIRECTION_MASK;
 }
 
 uint8_t RCT12TileElementBase::GetOccupiedQuadrants() const
 {
-    return flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
+    return Flags & TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK;
 }
 
 bool RCT12TileElementBase::IsLastForTile() const
 {
-    return (this->flags & RCT12_TILE_ELEMENT_FLAG_LAST_TILE) != 0;
+    return (this->Flags & RCT12_TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
 bool RCT12TileElementBase::IsGhost() const
 {
-    return (this->flags & RCT12_TILE_ELEMENT_FLAG_GHOST) != 0;
+    return (this->Flags & RCT12_TILE_ELEMENT_FLAG_GHOST) != 0;
 }
 
 uint8_t RCT12SurfaceElement::GetSlope() const
 {
-    return (slope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
+    return (Slope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
 }
 
 uint32_t RCT12SurfaceElement::GetSurfaceStyle() const
 {
-    uint32_t retVal = (terrain >> 5) & 7;
-    retVal |= (type & RCT12_SURFACE_ELEMENT_TYPE_SURFACE_MASK) << 3;
+    uint32_t retVal = (Terrain >> 5) & 7;
+    retVal |= (Type & RCT12_SURFACE_ELEMENT_TYPE_SURFACE_MASK) << 3;
     return retVal;
 }
 
 uint32_t RCT12SurfaceElement::GetEdgeStyle() const
 {
-    uint32_t terrain_edge = (slope >> 5) & 7;
-    if (type & 128)
-        terrain_edge |= (1 << 3);
-    return terrain_edge;
+    uint32_t terrainEdge = (Slope >> 5) & 7;
+    if (Type & 128)
+        terrainEdge |= (1 << 3);
+    return terrainEdge;
 }
 
 uint8_t RCT12SurfaceElement::GetGrassLength() const
 {
-    return grass_length;
+    return GrassLength;
 }
 
 uint8_t RCT12SurfaceElement::GetOwnership() const
 {
-    return (ownership & TILE_ELEMENT_SURFACE_OWNERSHIP_MASK);
+    return (Ownership & TILE_ELEMENT_SURFACE_OWNERSHIP_MASK);
 }
 
 uint32_t RCT12SurfaceElement::GetWaterHeight() const
 {
-    return (terrain & RCT12_TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK) * 16;
+    return (Terrain & RCT12_TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK) * WATER_HEIGHT_STEP;
 }
 
 uint8_t RCT12SurfaceElement::GetParkFences() const
 {
-    return (ownership & TILE_ELEMENT_SURFACE_PARK_FENCE_MASK);
+    return (Ownership & TILE_ELEMENT_SURFACE_PARK_FENCE_MASK);
 }
 
 bool RCT12SurfaceElement::HasTrackThatNeedsWater() const
 {
-    return (type & SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER) != 0;
+    return (Type & SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER) != 0;
 }
 
 uint8_t RCT12PathElement::GetEntryIndex() const
 {
-    return (entryIndex & RCT12_FOOTPATH_PROPERTIES_TYPE_MASK) >> 4;
+    return (EntryIndex & RCT12_FOOTPATH_PROPERTIES_TYPE_MASK) >> 4;
 }
 
 uint8_t RCT12PathElement::GetQueueBannerDirection() const
 {
-    return ((type & FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK) >> 6);
+    return ((Type & FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK) >> 6);
 }
 
 bool RCT12PathElement::IsSloped() const
 {
-    return (entryIndex & RCT12_FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) != 0;
+    return (EntryIndex & RCT12_FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) != 0;
 }
 
 uint8_t RCT12PathElement::GetSlopeDirection() const
 {
-    return entryIndex & RCT12_FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+    return EntryIndex & RCT12_FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
 }
 
 uint8_t RCT12PathElement::GetRideIndex() const
 {
-    return rideIndex;
+    return RideIndex;
 }
 
 uint8_t RCT12PathElement::GetStationIndex() const
 {
-    return (additions & RCT12_FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK) >> 4;
+    return (Additions & RCT12_FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK) >> 4;
 }
 
 bool RCT12PathElement::IsWide() const
 {
-    return (type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE) != 0;
+    return (Type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE) != 0;
 }
 
 bool RCT12PathElement::IsQueue() const
 {
-    return (type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) != 0;
+    return (Type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) != 0;
 }
 
 bool RCT12PathElement::HasQueueBanner() const
 {
-    return (entryIndex & RCT12_FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER) != 0;
+    return (EntryIndex & RCT12_FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER) != 0;
 }
 uint8_t RCT12PathElement::GetEdges() const
 {
-    return edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
+    return Edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
 }
 
 uint8_t RCT12PathElement::GetCorners() const
 {
-    return edges >> 4;
+    return Edges >> 4;
 }
 
 uint8_t RCT12PathElement::GetAddition() const
 {
-    return additions & RCT12_FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK;
+    return Additions & RCT12_FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK;
 }
 
 bool RCT12PathElement::AdditionIsGhost() const
 {
-    return (additions & RCT12_FOOTPATH_PROPERTIES_ADDITIONS_FLAG_GHOST) != 0;
+    return (Additions & RCT12_FOOTPATH_PROPERTIES_ADDITIONS_FLAG_GHOST) != 0;
 }
 
 uint8_t RCT12PathElement::GetAdditionStatus() const
 {
-    return additionStatus;
+    return AdditionStatus;
 }
 
 uint8_t RCT12PathElement::GetRCT1PathType() const
 {
-    uint8_t pathColour = type & 3;
-    uint8_t pathType2 = (entryIndex & RCT12_FOOTPATH_PROPERTIES_TYPE_MASK) >> 2;
+    uint8_t pathColour = Type & 3;
+    uint8_t pathType2 = (EntryIndex & RCT12_FOOTPATH_PROPERTIES_TYPE_MASK) >> 2;
 
     pathType2 = pathType2 | pathColour;
     return pathType2;
@@ -178,210 +195,211 @@ uint8_t RCT12PathElement::GetRCT1PathType() const
 
 uint8_t RCT12PathElement::GetRCT1SupportType() const
 {
-    return (flags & 0b01100000) >> 5;
+    return (Flags & 0b01100000) >> 5;
 }
 
 uint8_t RCT12TrackElement::GetTrackType() const
 {
-    return trackType;
+    return TrackType;
 }
 
 uint8_t RCT12TrackElement::GetSequenceIndex() const
 {
-    return sequence & RCT12_TRACK_ELEMENT_SEQUENCE_SEQUENCE_MASK;
+    return Sequence & RCT12_TRACK_ELEMENT_SEQUENCE_SEQUENCE_MASK;
 }
 
 uint8_t RCT12TrackElement::GetRideIndex() const
 {
-    return rideIndex;
+    return RideIndex;
 }
 
 uint8_t RCT12TrackElement::GetColourScheme() const
 {
-    return colour & 0x3;
+    return Colour & 0x3;
 }
 
 uint8_t RCT12TrackElement::GetStationIndex() const
 {
-    if (track_type_is_station(trackType) || trackType == TrackElemType::TowerBase)
+    if (TrackTypeIsStation(TrackType) || TrackType == TrackElemType::TowerBase)
     {
-        return (sequence & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
+        return (Sequence & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
     }
     return 0;
 }
 
 bool RCT12TrackElement::HasChain() const
 {
-    return type & RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+    return Type & RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
 }
 
 bool RCT12TrackElement::HasCableLift() const
 {
-    return colour & RCT12_TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+    return Colour & RCT12_TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
 }
 
 bool RCT12TrackElement::IsInverted() const
 {
-    return colour & RCT12_TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    return Colour & RCT12_TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
 }
 
 uint8_t RCT12TrackElement::GetBrakeBoosterSpeed() const
 {
     if (TrackTypeHasSpeedSetting(GetTrackType()))
     {
-        return (sequence >> 4) << 1;
+        return (Sequence >> 4) << 1;
     }
     return 0;
 }
 
 bool RCT12TrackElement::HasGreenLight() const
 {
-    if (track_type_is_station(trackType))
+    if (TrackTypeIsStation(TrackType))
     {
-        return (sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
+        return (Sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
     }
     return false;
 }
 
 uint8_t RCT12TrackElement::GetSeatRotation() const
 {
-    return colour >> 4;
+    return Colour >> 4;
 }
 
 uint16_t RCT12TrackElement::GetMazeEntry() const
 {
-    return mazeEntry;
+    return MazeEntry;
 }
 
 uint8_t RCT12TrackElement::GetPhotoTimeout() const
 {
     if (GetTrackType() == TrackElemType::OnRidePhoto)
     {
-        return sequence >> 4;
+        return Sequence >> 4;
     }
     return 0;
 }
 
 uint8_t RCT12TrackElement::GetDoorAState() const
 {
-    return (colour & RCT12_TRACK_ELEMENT_DOOR_A_MASK) >> 2;
+    return (Colour & RCT12_TRACK_ELEMENT_DOOR_A_MASK) >> 2;
 }
 
 uint8_t RCT12TrackElement::GetDoorBState() const
 {
-    return (colour & RCT12_TRACK_ELEMENT_DOOR_B_MASK) >> 5;
+    return (Colour & RCT12_TRACK_ELEMENT_DOOR_B_MASK) >> 5;
 }
 
 bool RCT12TrackElement::IsIndestructible() const
 {
-    return (flags & RCT12_TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE) != 0;
+    return (Flags & RCT12_TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE) != 0;
 }
 
 uint8_t RCT12SmallSceneryElement::GetEntryIndex() const
 {
-    return this->entryIndex;
+    return this->EntryIndex;
 }
 
 uint8_t RCT12SmallSceneryElement::GetAge() const
 {
-    return this->age;
+    return this->Age;
 }
 
 uint8_t RCT12SmallSceneryElement::GetSceneryQuadrant() const
 {
-    return (this->type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+    return (this->Type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
 }
 
 colour_t RCT12SmallSceneryElement::GetPrimaryColour() const
 {
-    return colour_1 & TILE_ELEMENT_COLOUR_MASK;
+    return Colour1 & RCT12_TILE_ELEMENT_COLOUR_MASK;
 }
 
 colour_t RCT12SmallSceneryElement::GetSecondaryColour() const
 {
-    return colour_2 & TILE_ELEMENT_COLOUR_MASK;
+    return Colour2 & RCT12_TILE_ELEMENT_COLOUR_MASK;
 }
 
 bool RCT12SmallSceneryElement::NeedsSupports() const
 {
-    return colour_1 & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
+    return Colour1 & RCT12_SMALL_SCENERY_ELEMENT_NEEDS_SUPPORTS_FLAG;
 }
 
 uint32_t RCT12LargeSceneryElement::GetEntryIndex() const
 {
-    return entryIndex & RCT12_TILE_ELEMENT_LARGE_TYPE_MASK;
+    return EntryIndex & RCT12_TILE_ELEMENT_LARGE_TYPE_MASK;
 }
 
 uint16_t RCT12LargeSceneryElement::GetSequenceIndex() const
 {
-    return (entryIndex >> 10);
+    return (EntryIndex >> 10);
 }
 colour_t RCT12LargeSceneryElement::GetPrimaryColour() const
 {
-    return colour[0] & TILE_ELEMENT_COLOUR_MASK;
+    return Colour[0] & RCT12_TILE_ELEMENT_COLOUR_MASK;
 }
 
 colour_t RCT12LargeSceneryElement::GetSecondaryColour() const
 {
-    return colour[1] & TILE_ELEMENT_COLOUR_MASK;
+    return Colour[1] & RCT12_TILE_ELEMENT_COLOUR_MASK;
 }
 
 uint8_t RCT12LargeSceneryElement::GetBannerIndex() const
 {
-    return (type & 0xC0) | (((colour[0]) & ~TILE_ELEMENT_COLOUR_MASK) >> 2) | (((colour[1]) & ~TILE_ELEMENT_COLOUR_MASK) >> 5);
+    return (Type & 0xC0) | (((Colour[0]) & ~RCT12_TILE_ELEMENT_COLOUR_MASK) >> 2)
+        | (((Colour[1]) & ~RCT12_TILE_ELEMENT_COLOUR_MASK) >> 5);
 }
 
 uint8_t RCT12WallElement::GetEntryIndex() const
 {
-    return entryIndex;
+    return EntryIndex;
 }
 
 uint8_t RCT12WallElement::GetSlope() const
 {
-    return (type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+    return (Type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
 }
 
 colour_t RCT12WallElement::GetPrimaryColour() const
 {
-    return colour_1 & TILE_ELEMENT_COLOUR_MASK;
+    return Colour1 & RCT12_TILE_ELEMENT_COLOUR_MASK;
 }
 
 colour_t RCT12WallElement::GetSecondaryColour() const
 {
-    uint8_t secondaryColour = (colour_1 & ~TILE_ELEMENT_COLOUR_MASK) >> 5;
-    secondaryColour |= (flags & 0x60) >> 2;
+    uint8_t secondaryColour = (Colour1 & ~RCT12_TILE_ELEMENT_COLOUR_MASK) >> 5;
+    secondaryColour |= (Flags & 0x60) >> 2;
     return secondaryColour;
 }
 
 colour_t RCT12WallElement::GetTertiaryColour() const
 {
-    return colour_3 & TILE_ELEMENT_COLOUR_MASK;
+    return Colour3 & RCT12_TILE_ELEMENT_COLOUR_MASK;
 }
 
 uint8_t RCT12WallElement::GetAnimationFrame() const
 {
-    return (animation >> 3) & 0xF;
+    return (Animation >> 3) & 0xF;
 }
 
 uint8_t RCT12WallElement::GetBannerIndex() const
 {
-    return banner_index;
+    return BannerIndex;
 }
 
 bool RCT12WallElement::IsAcrossTrack() const
 {
-    return (animation & WALL_ANIMATION_FLAG_ACROSS_TRACK) != 0;
+    return (Animation & WALL_ANIMATION_FLAG_ACROSS_TRACK) != 0;
 }
 
 bool RCT12WallElement::AnimationIsBackwards() const
 {
-    return (animation & WALL_ANIMATION_FLAG_DIRECTION_BACKWARD) != 0;
+    return (Animation & WALL_ANIMATION_FLAG_DIRECTION_BACKWARD) != 0;
 }
 
 int32_t RCT12WallElement::GetRCT1WallType(int32_t edge) const
 {
-    uint8_t var_05 = colour_3;
-    uint16_t var_06 = colour_1 | (animation << 8);
+    uint8_t var_05 = Colour3;
+    uint16_t var_06 = Colour1 | (Animation << 8);
 
     int32_t typeA = (var_05 >> (edge * 2)) & 3;
     int32_t typeB = (var_06 >> (edge * 4)) & 0x0F;
@@ -396,47 +414,47 @@ int32_t RCT12WallElement::GetRCT1WallType(int32_t edge) const
 
 colour_t RCT12WallElement::GetRCT1WallColour() const
 {
-    return ((type & 0xC0) >> 3) | ((entryIndex & 0xE0) >> 5);
+    return ((Type & 0xC0) >> 3) | ((EntryIndex & 0xE0) >> 5);
 }
 
 uint8_t RCT12WallElement::GetRCT1Slope() const
 {
-    return entryIndex & 0b00011111;
+    return EntryIndex & 0b00011111;
 }
 
 uint8_t RCT12EntranceElement::GetEntranceType() const
 {
-    return entranceType;
+    return EntranceType;
 }
 
 uint8_t RCT12EntranceElement::GetRideIndex() const
 {
-    return rideIndex;
+    return RideIndex;
 }
 
 uint8_t RCT12EntranceElement::GetStationIndex() const
 {
-    return (index & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
+    return (Index & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
 }
 
 uint8_t RCT12EntranceElement::GetSequenceIndex() const
 {
-    return index & 0xF;
+    return Index & 0xF;
 }
 
 uint8_t RCT12EntranceElement::GetPathType() const
 {
-    return pathType;
+    return PathType;
 }
 
 uint8_t RCT12BannerElement::GetIndex() const
 {
-    return index;
+    return Index;
 }
 
 uint8_t RCT12BannerElement::GetPosition() const
 {
-    return position;
+    return Position;
 }
 
 uint8_t RCT12BannerElement::GetAllowedEdges() const
@@ -444,39 +462,39 @@ uint8_t RCT12BannerElement::GetAllowedEdges() const
     return AllowedEdges & 0b00001111;
 }
 
-bool is_user_string_id(rct_string_id stringId)
+bool IsUserStringID(StringId stringId)
 {
     return stringId >= 0x8000 && stringId < 0x9000;
 }
 
 bool RCT12PathElement::IsBroken() const
 {
-    return (flags & RCT12_TILE_ELEMENT_FLAG_BROKEN) != 0;
+    return (Flags & RCT12_TILE_ELEMENT_FLAG_BROKEN) != 0;
 }
 
 bool RCT12PathElement::IsBlockedByVehicle() const
 {
-    return (flags & RCT12_TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE) != 0;
+    return (Flags & RCT12_TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE) != 0;
 }
 
 bool RCT12TrackElement::BlockBrakeClosed() const
 {
-    return (flags & RCT12_TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED) != 0;
+    return (Flags & RCT12_TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED) != 0;
 }
 
 bool RCT12ResearchItem::IsInventedEndMarker() const
 {
-    return rawValue == RCT12_RESEARCHED_ITEMS_SEPARATOR;
+    return RawValue == RCT12_RESEARCHED_ITEMS_SEPARATOR;
 }
 
 bool RCT12ResearchItem::IsUninventedEndMarker() const
 {
-    return rawValue == RCT12_RESEARCHED_ITEMS_END;
+    return RawValue == RCT12_RESEARCHED_ITEMS_END;
 }
 
 bool RCT12ResearchItem::IsRandomEndMarker() const
 {
-    return rawValue == RCT12_RESEARCHED_ITEMS_END_2;
+    return RawValue == RCT12_RESEARCHED_ITEMS_END_2;
 }
 
 ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex index)
@@ -614,7 +632,7 @@ std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer)
     {
         buffer = buffer.substr(0, nullTerminator);
     }
-    auto asUtf8 = rct2_to_utf8(buffer, RCT2LanguageId::EnglishUK);
+    auto asUtf8 = RCT2StringToUTF8(buffer, RCT2LanguageId::EnglishUK);
 
     std::string result;
     CodepointView codepoints(asUtf8);
@@ -743,6 +761,23 @@ std::string_view GetStationIdentifierFromStyle(uint8_t style)
     return {};
 }
 
+uint8_t GetStationStyleFromIdentifier(u8string_view identifier)
+{
+    // Not supported in TD6, closest match.
+    if (identifier == "openrct2.station.noplatformnoentrance")
+        return RCT12_STATION_STYLE_INVISIBLE;
+
+    for (uint8_t i = RCT12_STATION_STYLE_PLAIN; i < std::size(_stationStyles); i++)
+    {
+        if (_stationStyles[i] == identifier)
+        {
+            return i;
+        }
+    }
+
+    return RCT12_STATION_STYLE_PLAIN;
+}
+
 std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier)
 {
     auto it = std::find(std::begin(_musicStyles), std::end(_musicStyles), identifier);
@@ -806,15 +841,15 @@ ResearchItem RCT12ResearchItem::ToResearchItem() const
     }
     else
     {
-        newResearchItem.type = Research::EntryType{ type };
-        newResearchItem.entryIndex = RCTEntryIndexToOpenRCT2EntryIndex(entryIndex);
-        newResearchItem.flags = flags;
-        newResearchItem.category = static_cast<ResearchCategory>(category);
+        newResearchItem.type = Research::EntryType{ Type };
+        newResearchItem.entryIndex = RCTEntryIndexToOpenRCT2EntryIndex(EntryIndex);
+        newResearchItem.flags = Flags;
+        newResearchItem.category = static_cast<ResearchCategory>(Category);
         if (newResearchItem.type == Research::EntryType::Ride)
         {
-            auto* rideEntry = get_ride_entry(newResearchItem.entryIndex);
-            newResearchItem.baseRideType = rideEntry != nullptr ? RCT2::RCT2RideTypeToOpenRCT2RideType(baseRideType, rideEntry)
-                                                                : baseRideType;
+            auto* rideEntry = GetRideEntryByIndex(newResearchItem.entryIndex);
+            newResearchItem.baseRideType = rideEntry != nullptr ? RCT2::RCT2RideTypeToOpenRCT2RideType(BaseRideType, *rideEntry)
+                                                                : BaseRideType;
         }
         else
         {

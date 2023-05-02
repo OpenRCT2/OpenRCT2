@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,7 +35,7 @@ TEST_F(IniReaderTest, create_empty)
     auto ir = CreateIniReader(&ms);
     ASSERT_NE(ir, nullptr);
     ASSERT_EQ(ir->GetBoolean("nobody", true), true);
-    ASSERT_EQ(ir->GetCString("expects", nullptr), nullptr);
+    ASSERT_EQ(ir->GetString("expects", ""), "");
     ASSERT_EQ(ir->GetEnum<int32_t>("spanish", 12345, Enum_Currency), 12345);
     ASSERT_EQ(ir->GetFloat("inquisition", 1.234f), 1.234f);
     ASSERT_EQ(ir->GetInt32("universal_answer", 42), 42);
@@ -64,9 +64,8 @@ TEST_F(IniReaderTest, read_prepared)
     // values from different sections
     ASSERT_EQ(ir->GetInt32("one", 42), 42);
     ASSERT_EQ(ir->GetBoolean("boolval", false), true);
-    const utf8* str = ir->GetCString("path", nullptr);
-    ASSERT_STREQ(str, u8"C:'\\some/dir\\here/神鷹暢遊");
-    Memory::Free(str);
+    const auto& str = ir->GetString("path", "");
+    ASSERT_STREQ(str.c_str(), u8"C:'\\some/dir\\here/神鷹暢遊");
     // go back a section
     ASSERT_EQ(ir->ReadSection("int"), true);
     ASSERT_EQ(ir->GetInt32("one", 42), 1);
@@ -107,9 +106,8 @@ TEST_F(IniReaderTest, read_untrimmed)
     // there should only be data from the last section
     ASSERT_EQ(ir->ReadSection("section"), true);
     ASSERT_EQ(ir->GetBoolean("one", false), true);
-    const utf8* str = ir->GetCString("str", nullptr);
-    ASSERT_STREQ(str, "  xxx ");
-    Memory::Free(str);
+    const auto& str = ir->GetString("str", "");
+    ASSERT_STREQ(str.c_str(), "  xxx ");
     ASSERT_EQ(ir->GetString("str", "yyy"), "  xxx ");
     ASSERT_EQ(ir->GetString("nosuchthing", "  yyy "), "  yyy ");
 }

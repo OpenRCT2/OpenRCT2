@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -89,7 +89,7 @@ public:
     {
         UpdateLAN();
 #    ifndef DISABLE_HTTP
-        if (gConfigNetwork.advertise)
+        if (gConfigNetwork.Advertise)
         {
             UpdateWAN();
         }
@@ -115,13 +115,13 @@ private:
                 if (p == NetworkReadPacket::Success)
                 {
                     std::string sender = endpoint->GetHostname();
-                    log_verbose("Received %zu bytes from %s on LAN broadcast port", recievedBytes, sender.c_str());
+                    LOG_VERBOSE("Received %zu bytes from %s on LAN broadcast port", recievedBytes, sender.c_str());
                     if (String::Equals(buffer, NETWORK_LAN_BROADCAST_MSG))
                     {
                         auto body = GetBroadcastJson();
                         auto bodyDump = body.dump();
                         size_t sendLen = bodyDump.size() + 1;
-                        log_verbose("Sending %zu bytes back to %s", sendLen, sender.c_str());
+                        LOG_VERBOSE("Sending %zu bytes back to %s", sendLen, sender.c_str());
                         _lanListener->SendData(*endpoint, bodyDump.c_str(), sendLen);
                     }
                 }
@@ -132,7 +132,7 @@ private:
 
     json_t GetBroadcastJson()
     {
-        json_t root = network_get_server_info_as_json();
+        json_t root = NetworkGetServerInfoAsJson();
         root["port"] = _port;
         return root;
     }
@@ -179,9 +179,9 @@ private:
             { "port", _port },
         };
 
-        if (!gConfigNetwork.advertise_address.empty())
+        if (!gConfigNetwork.AdvertiseAddress.empty())
         {
-            body["address"] = gConfigNetwork.advertise_address;
+            body["address"] = gConfigNetwork.AdvertiseAddress;
         }
 
         request.body = body.dump();
@@ -263,7 +263,7 @@ private:
             {
                 _forceIPv4 = true;
                 _lastAdvertiseTime = 0;
-                log_info("Forcing HTTP(S) over IPv4");
+                LOG_INFO("Forcing HTTP(S) over IPv4");
             }
         }
     }
@@ -290,16 +290,17 @@ private:
 
     json_t GetHeartbeatJson()
     {
-        uint32_t numPlayers = network_get_num_players();
+        uint32_t numPlayers = NetworkGetNumVisiblePlayers();
 
         json_t root = {
             { "token", _token },
             { "players", numPlayers },
         };
 
+        auto& date = GetDate();
         json_t mapSize = { { "x", gMapSize.x - 2 }, { "y", gMapSize.y - 2 } };
         json_t gameInfo = {
-            { "mapSize", mapSize },         { "day", gDateMonthTicks },  { "month", gDateMonthsElapsed },
+            { "mapSize", mapSize },         { "day", date.GetMonthTicks() }, { "month", date.GetMonthsElapsed() },
             { "guests", gNumGuestsInPark }, { "parkValue", gParkValue },
         };
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -335,9 +336,9 @@ private:
     static std::string GetMasterServerUrl()
     {
         std::string result = OPENRCT2_MASTER_SERVER_URL;
-        if (!gConfigNetwork.master_server_url.empty())
+        if (!gConfigNetwork.MasterServerUrl.empty())
         {
-            result = gConfigNetwork.master_server_url;
+            result = gConfigNetwork.MasterServerUrl;
         }
         return result;
     }

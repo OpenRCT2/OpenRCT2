@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@ constexpr const RideTypeDescriptor FerrisWheelRTD =
     SET_FIELD(ExtraTrackPieces, {}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::FlatTrack1x4C),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_ferris_wheel),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionFerrisWheel),
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
                      RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
                      RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
@@ -38,7 +38,6 @@ constexpr const RideTypeDescriptor FerrisWheelRTD =
     SET_FIELD(Heights, { 16, 176, 3, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_ferris_wheel),
     SET_FIELD(RatingsMultipliers, { 60, 20, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 112.50_GBP, 1.00_GBP, 1, }),
@@ -52,5 +51,18 @@ constexpr const RideTypeDescriptor FerrisWheelRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_FERRIS_WHEEL_TRACK, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "ferris_wheel"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(0, 60), RIDE_RATING(0, 25), RIDE_RATING(0, 30) },
+        16,
+        0,
+        false,
+        {
+            { RatingsModifierType::BonusRotations,        0,                25, 25, 25 },
+            { RatingsModifierType::BonusScenery,          0,                41831, 0, 0 },
+        },
+    }),
 };
 // clang-format on

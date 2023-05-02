@@ -30,13 +30,12 @@
             "name": "Linux",
             "includePath": [
                 "/usr/include",
+                "/usr/include/SDL2",
                 "/usr/local/include",
                 "${workspaceRoot}",
-                "${workspaceRoot}/src",
-                "${workspaceRoot}/bin/googletest-distribution-prefix/src/googletest-distribution/googletest/include/gtest"
+                "${workspaceRoot}/src"
             ],
             "defines": [
-                "__ENABLE_LIGHTFX__",
                 "ENABLE_SCRIPTING"
             ],
             "intelliSenseMode": "clang-x64",

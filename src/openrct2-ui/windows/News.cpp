@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,7 +21,7 @@
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/sprites.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_RECENT_MESSAGES;
+static constexpr const StringId WINDOW_TITLE = STR_RECENT_MESSAGES;
 static constexpr const int32_t WH = 300;
 static constexpr const int32_t WW = 400;
 
@@ -35,9 +35,9 @@ enum WindowNewsWidgetIdx {
 };
 
 
-static rct_widget window_news_widgets[] = {
+static Widget window_news_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({372, 18}, { 24,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, SPR_TAB_GEARS_0), // settings
+    MakeWidget({372, 18}, { 24,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_TAB_GEARS_0)), // settings
     MakeWidget({  4, 44}, {392, 252}, WindowWidgetType::Scroll,  WindowColour::Primary, SCROLL_VERTICAL), // scroll
     WIDGETS_END,
 };
@@ -50,24 +50,24 @@ private:
     int32_t _pressedNewsItemIndex{}, _pressedButtonIndex{}, _suspendUpdateTicks{};
     static int32_t CalculateItemHeight()
     {
-        return 4 * font_get_line_height(FontSpriteBase::SMALL) + 2;
+        return 4 * FontGetLineHeight(FontStyle::Small) + 2;
     }
 
 public:
     void OnOpen() override
     {
         widgets = window_news_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         _pressedNewsItemIndex = -1;
 
         int32_t w = 0, h = 0;
-        rct_widget* widget = &widgets[WIDX_SCROLL];
-        window_get_scroll_size(this, 0, &w, &h);
+        Widget* widget = &widgets[WIDX_SCROLL];
+        WindowGetScrollSize(this, 0, &w, &h);
         scrolls[0].v_top = std::max(0, h - (widget->height() - 1));
-        WidgetScrollUpdateThumbs(this, WIDX_SCROLL);
+        WidgetScrollUpdateThumbs(*this, WIDX_SCROLL);
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -75,7 +75,7 @@ public:
                 Close();
                 break;
             case WIDX_SETTINGS:
-                context_open_window(WC_NOTIFICATION_OPTIONS);
+                ContextOpenWindow(WindowClass::NotificationOptions);
                 break;
         }
     }
@@ -110,11 +110,11 @@ public:
         }
         else if (_pressedButtonIndex > 1)
         {
-            static rct_window* _mainWindow;
+            static WindowBase* _mainWindow;
             auto subjectLoc = News::GetSubjectLocation(newsItem.Type, newsItem.Assoc);
-            if (subjectLoc.has_value() && (_mainWindow = window_get_main()) != nullptr)
+            if (subjectLoc.has_value() && (_mainWindow = WindowGetMain()) != nullptr)
             {
-                window_scroll_to_location(_mainWindow, subjectLoc.value());
+                WindowScrollToLocation(*_mainWindow, subjectLoc.value());
             }
         }
     }
@@ -166,14 +166,14 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
-        int32_t lineHeight = font_get_line_height(FontSpriteBase::SMALL);
+        int32_t lineHeight = FontGetLineHeight(FontStyle::Small);
         int32_t itemHeight = CalculateItemHeight();
         int32_t y = 0;
         int32_t i = 0;
@@ -190,22 +190,22 @@ public:
             }
 
             // Background
-            gfx_fill_rect_inset(
-                &dpi, { -1, y, 383, y + itemHeight - 1 }, colours[1],
+            GfxFillRectInset(
+                dpi, { -1, y, 383, y + itemHeight - 1 }, colours[1],
                 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
 
             // Date text
             {
                 auto ft = Formatter();
-                ft.Add<rct_string_id>(DateDayNames[newsItem.Day - 1]);
-                ft.Add<rct_string_id>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
-                DrawTextBasic(&dpi, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE, FontSpriteBase::SMALL });
+                ft.Add<StringId>(DateDayNames[newsItem.Day - 1]);
+                ft.Add<StringId>(DateGameMonthNames[DateGetMonth(newsItem.MonthYear)]);
+                DrawTextBasic(dpi, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE, FontStyle::Small });
             }
             // Item text
             {
                 auto ft = Formatter();
                 ft.Add<const char*>(newsItem.Text.c_str());
-                DrawTextWrapped(&dpi, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft, { FontSpriteBase::SMALL });
+                DrawTextWrapped(dpi, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft, { FontStyle::Small });
             }
             // Subject button
             if ((newsItem.TypeHasSubject()) && !(newsItem.HasButton()))
@@ -221,18 +221,18 @@ public:
                         press = INSET_RECT_FLAG_BORDER_INSET;
                     }
                 }
-                gfx_fill_rect_inset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
+                GfxFillRectInset(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
 
                 switch (newsItem.Type)
                 {
                     case News::ItemType::Ride:
-                        gfx_draw_sprite(&dpi, ImageId(SPR_RIDE), screenCoords);
+                        GfxDrawSprite(dpi, ImageId(SPR_RIDE), screenCoords);
                         break;
                     case News::ItemType::Peep:
                     case News::ItemType::PeepOnRide:
                     {
-                        rct_drawpixelinfo cliped_dpi;
-                        if (!clip_drawpixelinfo(&cliped_dpi, &dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
+                        DrawPixelInfo cliped_dpi;
+                        if (!ClipDrawPixelInfo(cliped_dpi, dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
                         {
                             break;
                         }
@@ -258,27 +258,26 @@ public:
                             }
                         }
 
-                        uint32_t image_id = GetPeepAnimation(spriteType).base_image;
-                        image_id += 0xA0000001;
-                        image_id |= (peep->TshirtColour << 19) | (peep->TrousersColour << 24);
-
-                        gfx_draw_sprite(&cliped_dpi, ImageId::FromUInt32(image_id), clipCoords);
+                        ImageIndex imageId = GetPeepAnimation(spriteType).base_image + 1;
+                        auto image = ImageId(imageId, peep->TshirtColour, peep->TrousersColour);
+                        GfxDrawSprite(cliped_dpi, image, clipCoords);
                         break;
                     }
                     case News::ItemType::Money:
-                        gfx_draw_sprite(&dpi, ImageId(SPR_FINANCE), screenCoords);
+                    case News::ItemType::Campaign:
+                        GfxDrawSprite(dpi, ImageId(SPR_FINANCE), screenCoords);
                         break;
                     case News::ItemType::Research:
-                        gfx_draw_sprite(&dpi, ImageId(newsItem.Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
+                        GfxDrawSprite(dpi, ImageId(newsItem.Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
                         break;
                     case News::ItemType::Peeps:
-                        gfx_draw_sprite(&dpi, ImageId(SPR_GUESTS), screenCoords);
+                        GfxDrawSprite(dpi, ImageId(SPR_GUESTS), screenCoords);
                         break;
                     case News::ItemType::Award:
-                        gfx_draw_sprite(&dpi, ImageId(SPR_AWARD), screenCoords);
+                        GfxDrawSprite(dpi, ImageId(SPR_AWARD), screenCoords);
                         break;
                     case News::ItemType::Graph:
-                        gfx_draw_sprite(&dpi, ImageId(SPR_GRAPH), screenCoords);
+                        GfxDrawSprite(dpi, ImageId(SPR_GRAPH), screenCoords);
                         break;
                     case News::ItemType::Null:
                     case News::ItemType::Blank:
@@ -299,8 +298,8 @@ public:
                     if (i == _pressedNewsItemIndex && _pressedButtonIndex == 2)
                         press = 0x20;
                 }
-                gfx_fill_rect_inset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
-                gfx_draw_sprite(&dpi, ImageId(SPR_LOCATE), screenCoords);
+                GfxFillRectInset(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
+                GfxDrawSprite(dpi, ImageId(SPR_LOCATE), screenCoords);
             }
 
             y += itemHeight;
@@ -309,7 +308,7 @@ public:
     }
 };
 
-rct_window* WindowNewsOpen()
+WindowBase* WindowNewsOpen()
 {
-    return WindowFocusOrCreate<NewsWindow>(WC_RECENT_NEWS, WW, WH, 0);
+    return WindowFocusOrCreate<NewsWindow>(WindowClass::RecentNews, WW, WH, 0);
 }

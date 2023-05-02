@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,7 +15,7 @@
 class FootpathSurfaceObject final : public Object
 {
 public:
-    rct_string_id NameStringId{};
+    StringId NameStringId{};
     uint32_t PreviewImageId{};
     uint32_t BaseImageId{};
     uint8_t Flags{};
@@ -26,7 +26,7 @@ public:
     void Load() override;
     void Unload() override;
 
-    void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
+    void DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const override;
 
     void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 

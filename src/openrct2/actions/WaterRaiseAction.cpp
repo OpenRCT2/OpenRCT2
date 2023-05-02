@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,6 +17,11 @@
 WaterRaiseAction::WaterRaiseAction(MapRange range)
     : _range(range)
 {
+}
+
+void WaterRaiseAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_range);
 }
 
 uint16_t WaterRaiseAction::GetActionFlags() const
@@ -48,8 +53,8 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
     auto validRange = ClampRangeWithinMap(_range);
     res.Position.x = ((validRange.GetLeft() + validRange.GetRight()) / 2) + 16;
     res.Position.y = ((validRange.GetTop() + validRange.GetBottom()) / 2) + 16;
-    int32_t z = tile_element_height(res.Position);
-    int16_t waterHeight = tile_element_water_height(res.Position);
+    int32_t z = TileElementHeight(res.Position);
+    int16_t waterHeight = TileElementWaterHeight(res.Position);
     if (waterHeight != 0)
     {
         z = waterHeight;
@@ -67,13 +72,13 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
             if (!LocationValid({ x, y }))
                 continue;
 
-            auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+            auto surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
             if (surfaceElement == nullptr)
                 continue;
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
-                if (!map_is_location_in_park(CoordsXY{ x, y }))
+                if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {
                     continue;
                 }
@@ -82,7 +87,7 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
 
             uint8_t height = surfaceElement->GetWaterHeight() / COORDS_Z_STEP;
 
-            if (surfaceElement->base_height > maxHeight)
+            if (surfaceElement->BaseHeight > maxHeight)
                 continue;
 
             if (height != 0)
@@ -93,7 +98,7 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
             }
             else
             {
-                height = surfaceElement->base_height + 2;
+                height = surfaceElement->BaseHeight + 2;
             }
             auto waterSetHeightAction = WaterSetHeightAction({ x, y }, height);
             waterSetHeightAction.SetFlags(GetFlags());
@@ -138,13 +143,13 @@ uint16_t WaterRaiseAction::GetHighestHeight(const MapRange& validRange) const
         {
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
-                if (!map_is_location_in_park(CoordsXY{ x, y }))
+                if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {
                     continue;
                 }
             }
 
-            auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+            auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
             if (surfaceElement == nullptr)
                 continue;
 

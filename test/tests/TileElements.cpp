@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "TestData.h"
 
 #include <gtest/gtest.h>
+#include <memory>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
@@ -31,8 +32,8 @@ protected:
         bool initialised = _context->Initialise();
         ASSERT_TRUE(initialised);
 
-        load_from_sv6(parkPath.c_str());
-        game_load_init();
+        GetContext()->LoadParkFromFile(parkPath);
+        GameLoadInit();
 
         // Changed in some tests. Store to restore its value
         _gScreenFlags = gScreenFlags;
@@ -58,31 +59,31 @@ uint8_t TileElementWantsFootpathConnection::_gScreenFlags;
 TEST_F(TileElementWantsFootpathConnection, FlatPath)
 {
     // Flat paths want to connect to other paths in any direction
-    const TileElement* const pathElement = map_get_footpath_element(TileCoordsXYZ{ 19, 18, 14 }.ToCoordsXYZ());
+    const TileElement* const pathElement = MapGetFootpathElement(TileCoordsXYZ{ 19, 18, 14 }.ToCoordsXYZ());
     ASSERT_NE(pathElement, nullptr);
-    EXPECT_TRUE(tile_element_wants_path_connection_towards({ 19, 18, 14, 0 }, nullptr));
-    EXPECT_TRUE(tile_element_wants_path_connection_towards({ 19, 18, 14, 1 }, nullptr));
-    EXPECT_TRUE(tile_element_wants_path_connection_towards({ 19, 18, 14, 2 }, nullptr));
-    EXPECT_TRUE(tile_element_wants_path_connection_towards({ 19, 18, 14, 3 }, nullptr));
+    EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 19, 18, 14, 0 }, nullptr));
+    EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 19, 18, 14, 1 }, nullptr));
+    EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 19, 18, 14, 2 }, nullptr));
+    EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 19, 18, 14, 3 }, nullptr));
     SUCCEED();
 }
 
 TEST_F(TileElementWantsFootpathConnection, SlopedPath)
 {
     // Sloped paths only want to connect in two directions, of which is one at a higher offset
-    const TileElement* const slopedPathElement = map_get_footpath_element(TileCoordsXYZ{ 18, 18, 14 }.ToCoordsXYZ());
+    const TileElement* const slopedPathElement = MapGetFootpathElement(TileCoordsXYZ{ 18, 18, 14 }.ToCoordsXYZ());
     ASSERT_NE(slopedPathElement, nullptr);
     ASSERT_TRUE(slopedPathElement->AsPath()->IsSloped());
     // Bottom and top of sloped path want a path connection
-    EXPECT_TRUE(tile_element_wants_path_connection_towards({ 18, 18, 14, 2 }, nullptr));
-    EXPECT_TRUE(tile_element_wants_path_connection_towards({ 18, 18, 16, 0 }, nullptr));
+    EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 18, 18, 14, 2 }, nullptr));
+    EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 18, 18, 16, 0 }, nullptr));
     // Other directions at both heights do not want a connection
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 18, 14, 0 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 18, 14, 1 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 18, 14, 3 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 18, 16, 1 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 18, 16, 2 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 18, 16, 3 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 18, 14, 0 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 18, 14, 1 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 18, 14, 3 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 18, 16, 1 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 18, 16, 2 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 18, 16, 3 }, nullptr));
     SUCCEED();
 }
 
@@ -90,61 +91,60 @@ TEST_F(TileElementWantsFootpathConnection, Stall)
 {
     // Stalls usually have one path direction flag, but can have multiple (info kiosk for example)
     auto tileCoords = TileCoordsXYZ{ 19, 15, 14 };
-    const TrackElement* const stallElement = map_get_track_element_at(tileCoords.ToCoordsXYZ());
+    const TrackElement* const stallElement = MapGetTrackElementAt(tileCoords.ToCoordsXYZ());
     ASSERT_NE(stallElement, nullptr);
-    EXPECT_TRUE(tile_element_wants_path_connection_towards({ 19, 15, 14, 0 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 19, 15, 14, 1 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 19, 15, 14, 2 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 19, 15, 14, 3 }, nullptr));
+    EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 19, 15, 14, 0 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 19, 15, 14, 1 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 19, 15, 14, 2 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 19, 15, 14, 3 }, nullptr));
     SUCCEED();
 }
 
 TEST_F(TileElementWantsFootpathConnection, RideEntrance)
 {
     // Ride entrances and exits want a connection in one direction
-    const EntranceElement* const entranceElement = map_get_ride_entrance_element_at(
-        TileCoordsXYZ{ 18, 8, 14 }.ToCoordsXYZ(), false);
+    const EntranceElement* const entranceElement = MapGetRideEntranceElementAt(TileCoordsXYZ{ 18, 8, 14 }.ToCoordsXYZ(), false);
     ASSERT_NE(entranceElement, nullptr);
-    EXPECT_TRUE(tile_element_wants_path_connection_towards({ 18, 8, 14, 0 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 8, 14, 1 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 8, 14, 2 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 8, 14, 3 }, nullptr));
+    EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 18, 8, 14, 0 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 8, 14, 1 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 8, 14, 2 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 8, 14, 3 }, nullptr));
     SUCCEED();
 }
 
 TEST_F(TileElementWantsFootpathConnection, RideExit)
 {
     // The exit has been rotated; it wants a path connection in direction 1, but not 0 like the entrance
-    const EntranceElement* const exitElement = map_get_ride_exit_element_at(TileCoordsXYZ{ 18, 10, 14 }.ToCoordsXYZ(), false);
+    const EntranceElement* const exitElement = MapGetRideExitElementAt(TileCoordsXYZ{ 18, 10, 14 }.ToCoordsXYZ(), false);
     ASSERT_NE(exitElement, nullptr);
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 10, 14, 0 }, nullptr));
-    EXPECT_TRUE(tile_element_wants_path_connection_towards({ 18, 10, 14, 1 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 10, 14, 2 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 10, 14, 3 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 10, 14, 0 }, nullptr));
+    EXPECT_TRUE(TileElementWantsPathConnectionTowards({ 18, 10, 14, 1 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 10, 14, 2 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 10, 14, 3 }, nullptr));
     SUCCEED();
 }
 
 TEST_F(TileElementWantsFootpathConnection, DifferentHeight)
 {
     // Test at different heights, all of these should fail
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 19, 18, 4, 0 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 19, 18, 4, 1 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 19, 18, 4, 2 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 19, 18, 4, 3 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 18, 4, 2 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 18, 6, 0 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 19, 15, 4, 0 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 8, 4, 0 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 10, 4, 1 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 19, 18, 24, 0 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 19, 18, 24, 1 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 19, 18, 24, 2 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 19, 18, 24, 3 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 18, 24, 2 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 18, 26, 0 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 19, 15, 24, 0 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 8, 24, 0 }, nullptr));
-    EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 10, 24, 1 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 19, 18, 4, 0 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 19, 18, 4, 1 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 19, 18, 4, 2 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 19, 18, 4, 3 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 18, 4, 2 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 18, 6, 0 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 19, 15, 4, 0 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 8, 4, 0 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 10, 4, 1 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 19, 18, 24, 0 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 19, 18, 24, 1 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 19, 18, 24, 2 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 19, 18, 24, 3 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 18, 24, 2 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 18, 26, 0 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 19, 15, 24, 0 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 8, 24, 0 }, nullptr));
+    EXPECT_FALSE(TileElementWantsPathConnectionTowards({ 18, 10, 24, 1 }, nullptr));
     SUCCEED();
 }
 
@@ -152,13 +152,13 @@ TEST_F(TileElementWantsFootpathConnection, MapEdge)
 {
     // Paths at the map edge should have edge flags turned on when placed in scenario editor
     // This tile is a single, unconnected footpath on the map edge - on load, GetEdges() returns 0
-    TileElement* pathElement = map_get_footpath_element(TileCoordsXYZ{ 1, 4, 14 }.ToCoordsXYZ());
+    TileElement* pathElement = MapGetFootpathElement(TileCoordsXYZ{ 1, 4, 14 }.ToCoordsXYZ());
 
     // Enable flag to simulate enabling the scenario editor
     gScreenFlags |= SCREEN_FLAGS_SCENARIO_EDITOR;
 
     // Calculate the connected edges and set the appropriate edge flags
-    footpath_connect_edges({ 16, 64 }, pathElement, 0);
+    FootpathConnectEdges({ 16, 64 }, pathElement, 0);
     auto edges = pathElement->AsPath()->GetEdges();
 
     // The tiles alongside in the Y direction are both on the map edge so should be marked as an edge

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -52,7 +52,7 @@ GameActions::Result StaffSetPatrolAreaAction::Execute() const
 
 static void InvalidatePatrolTiles(const MapRange& range)
 {
-    map_invalidate_region(range.Point1, range.Point2);
+    MapInvalidateRegion(range.Point1, range.Point2);
 }
 
 GameActions::Result StaffSetPatrolAreaAction::QueryExecute(bool executing) const
@@ -60,7 +60,7 @@ GameActions::Result StaffSetPatrolAreaAction::QueryExecute(bool executing) const
     auto staff = TryGetEntity<Staff>(_spriteId);
     if (staff == nullptr)
     {
-        log_error("Invalid entity ID: %u", _spriteId.ToUnderlying());
+        LOG_ERROR("Invalid entity ID: %u", _spriteId.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -94,7 +94,7 @@ GameActions::Result StaffSetPatrolAreaAction::QueryExecute(bool executing) const
                 break;
             case StaffSetPatrolAreaMode::ClearAll:
                 staff->ClearPatrolArea();
-                gfx_invalidate_screen();
+                GfxInvalidateScreen();
                 break;
         }
         UpdateConsolidatedPatrolAreas();

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -45,8 +45,6 @@ struct IIniReader
 
         return configEnum.GetValue(szValue, defaultValue);
     }
-
-    utf8* GetCString(const std::string& name, const utf8* defaultValue) const;
 };
 
 [[nodiscard]] std::unique_ptr<IIniReader> CreateIniReader(OpenRCT2::IStream* stream);

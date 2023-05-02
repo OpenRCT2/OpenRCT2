@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,11 +15,7 @@ using namespace OpenRCT2;
 TEST(BitTest, test_index_construction)
 {
     BitSet<64u> bits({ 0u, 2u, 4u, 6u, 8u, 10u });
-#if defined(_M_X64) || defined(_M_ARM64)
-    static_assert(std::is_same_v<decltype(bits)::BlockType, uint64_t>);
-#else
-    static_assert(std::is_same_v<decltype(bits)::BlockType, uint32_t>);
-#endif
+    static_assert(sizeof(decltype(bits)::BlockType) == sizeof(uintptr_t));
     constexpr auto size = sizeof(bits);
     static_assert(size == 8u);
 
@@ -94,24 +90,24 @@ TEST(BitTest, test_big)
     static_assert(size == 32u);
 
     bits.flip();
-#if defined(_M_X64) || defined(_M_ARM64)
+#if defined(_M_X64) || defined(_M_ARM64) || defined(__x86_64__)
     static_assert(std::is_same_v<decltype(bits)::BlockType, uint64_t>);
     static_assert(bits.data().size() == 4);
-    ASSERT_EQ(bits.data()[0], ~0ULL);
-    ASSERT_EQ(bits.data()[1], ~0ULL);
-    ASSERT_EQ(bits.data()[2], ~0ULL);
-    ASSERT_EQ(bits.data()[3], ~0ULL);
+    ASSERT_EQ(bits.data()[0], ~0uLL);
+    ASSERT_EQ(bits.data()[1], ~0uLL);
+    ASSERT_EQ(bits.data()[2], ~0uLL);
+    ASSERT_EQ(bits.data()[3], ~0uLL);
 #else
     static_assert(std::is_same_v<decltype(bits)::BlockType, uint32_t>);
     static_assert(bits.data().size() == 8);
-    ASSERT_EQ(bits.data()[0], ~0UL);
-    ASSERT_EQ(bits.data()[1], ~0UL);
-    ASSERT_EQ(bits.data()[2], ~0UL);
-    ASSERT_EQ(bits.data()[3], ~0UL);
-    ASSERT_EQ(bits.data()[4], ~0UL);
-    ASSERT_EQ(bits.data()[5], ~0UL);
-    ASSERT_EQ(bits.data()[6], ~0UL);
-    ASSERT_EQ(bits.data()[7], ~0UL);
+    ASSERT_EQ(bits.data()[0], ~0uL);
+    ASSERT_EQ(bits.data()[1], ~0uL);
+    ASSERT_EQ(bits.data()[2], ~0uL);
+    ASSERT_EQ(bits.data()[3], ~0uL);
+    ASSERT_EQ(bits.data()[4], ~0uL);
+    ASSERT_EQ(bits.data()[5], ~0uL);
+    ASSERT_EQ(bits.data()[6], ~0uL);
+    ASSERT_EQ(bits.data()[7], ~0uL);
 #endif
 }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
@@ -38,11 +39,11 @@ enum {
 
 static constexpr const int32_t WW = 500;
 static constexpr const int32_t WH = 400;
-static constexpr const rct_string_id WINDOW_TITLE = STR_CHANGELOG_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_CHANGELOG_TITLE;
 constexpr int32_t MIN_WW = 300;
 constexpr int32_t MIN_WH = 250;
 
-static rct_widget _windowChangelogWidgets[] = {
+static Widget _windowChangelogWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({0,  14}, {500, 382}, WindowWidgetType::Resize,      WindowColour::Secondary                               ), // content panel
     MakeWidget({3,  16}, {495, 366}, WindowWidgetType::Scroll,      WindowColour::Secondary, SCROLL_BOTH                  ), // scroll area
@@ -63,9 +64,10 @@ public:
     /**
      * @brief Retrieves the changelog contents.
      */
-    const std::string GetChangelogText()
+    const std::string GetText(PATHID pathId)
     {
-        auto path = GetChangelogPath();
+        auto env = GetContext()->GetPlatformEnvironment();
+        auto path = env->GetFilePath(pathId);
         auto fs = std::ifstream(fs::u8path(path), std::ios::in);
         if (!fs.is_open())
         {
@@ -94,15 +96,25 @@ public:
                 return true;
 
             case WV_CHANGELOG:
-                if (!ReadChangelogFile())
+                if (!ReadFile(PATHID::CHANGELOG))
                 {
                     return false;
                 }
                 _personality = WV_CHANGELOG;
+                widgets[WIDX_TITLE].text = STR_CHANGELOG_TITLE;
+                return true;
+
+            case WV_CONTRIBUTORS:
+                if (!ReadFile(PATHID::CONTRIBUTORS))
+                {
+                    return false;
+                }
+                _personality = WV_CONTRIBUTORS;
+                widgets[WIDX_TITLE].text = STR_CONTRIBUTORS_WINDOW;
                 return true;
 
             default:
-                log_error("Invalid personality for changelog window: %d", personality);
+                LOG_ERROR("Invalid personality for changelog window: %d", personality);
                 return false;
         }
     }
@@ -111,7 +123,7 @@ public:
     {
         widgets = _windowChangelogWidgets;
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         min_width = MIN_WW;
         min_height = MIN_WH;
         max_width = MIN_WW;
@@ -120,8 +132,8 @@ public:
 
     void OnResize() override
     {
-        int32_t screenWidth = context_get_width();
-        int32_t screenHeight = context_get_height();
+        int32_t screenWidth = ContextGetWidth();
+        int32_t screenHeight = ContextGetHeight();
 
         max_width = (screenWidth * 4) / 5;
         max_height = (screenHeight * 4) / 5;
@@ -147,20 +159,14 @@ public:
 
     void OnPrepareDraw() override
     {
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_CLOSE].right = width - 3;
-        widgets[WIDX_CONTENT_PANEL].right = width - 1;
-        widgets[WIDX_CONTENT_PANEL].bottom = height - 1;
+        ResizeFrameWithPage();
         widgets[WIDX_SCROLL].right = width - 3;
         widgets[WIDX_SCROLL].bottom = height - 22;
         widgets[WIDX_OPEN_URL].bottom = height - 5;
         widgets[WIDX_OPEN_URL].top = height - 19;
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -174,15 +180,15 @@ public:
                 }
                 else
                 {
-                    log_error("Cannot open URL: NewVersionInfo for ChangelogWindow is undefined!");
+                    LOG_ERROR("Cannot open URL: NewVersionInfo for ChangelogWindow is undefined!");
                 }
                 break;
         }
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
-        const int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
+        const int32_t lineHeight = FontGetLineHeight(FontStyle::Medium);
 
         ScreenCoordsXY screenCoords(3, 3 - lineHeight);
         for (const auto& line : _changelogLines)
@@ -191,7 +197,7 @@ public:
             if (screenCoords.y + lineHeight < dpi.y || screenCoords.y >= dpi.y + dpi.height)
                 continue;
 
-            gfx_draw_string(&dpi, screenCoords, line.c_str(), { colours[0] });
+            GfxDrawString(dpi, screenCoords, line.c_str(), { colours[0] });
         }
     }
 
@@ -199,7 +205,7 @@ public:
     {
         return ScreenSize(
             _changelogLongestLineWidth + 4,
-            static_cast<int32_t>(_changelogLines.size()) * font_get_line_height(FontSpriteBase::MEDIUM));
+            static_cast<int32_t>(_changelogLines.size()) * FontGetLineHeight(FontStyle::Medium));
     }
 
     // TODO: This probably should be a utility function defined elsewhere for reusability
@@ -229,16 +235,16 @@ private:
             char version_info[256];
 
             const char* version_info_ptr = _newVersionInfo->name.c_str();
-            format_string(version_info, 256, STR_NEW_RELEASE_VERSION_INFO, &version_info_ptr);
+            FormatStringLegacy(version_info, 256, STR_NEW_RELEASE_VERSION_INFO, &version_info_ptr);
 
             _changelogLines.emplace_back(version_info);
             _changelogLines.emplace_back("");
 
-            ProcessChangelogText(_newVersionInfo->changelog);
+            ProcessText(_newVersionInfo->changelog);
         }
         else
         {
-            log_error("ChangelogWindow: Could not process NewVersionInfo, result was undefined");
+            LOG_ERROR("ChangelogWindow: Could not process NewVersionInfo, result was undefined");
         }
     }
 
@@ -257,25 +263,25 @@ private:
      * @brief Attempts to read the changelog file, returns true on success
      *
      */
-    bool ReadChangelogFile()
+    bool ReadFile(PATHID pathId)
     {
-        std::string _changelogText;
+        std::string _text;
         try
         {
-            _changelogText = GetChangelogText();
+            _text = GetText(pathId);
         }
         catch (const std::bad_alloc&)
         {
-            log_error("Unable to allocate memory for changelog.txt");
+            LOG_ERROR("Unable to allocate memory for text file");
             return false;
         }
         catch (const std::exception&)
         {
-            log_error("Unable to read changelog.txt");
+            LOG_ERROR("Unable to read text file");
             return false;
         }
 
-        ProcessChangelogText(_changelogText);
+        ProcessText(_text);
         return true;
     }
 
@@ -285,7 +291,7 @@ private:
      *
      * @param text
      */
-    void ProcessChangelogText(const std::string& text)
+    void ProcessText(const std::string& text)
     {
         std::string::size_type pos = 0;
         std::string::size_type prev = 0;
@@ -301,25 +307,25 @@ private:
         _changelogLongestLineWidth = 0;
         for (const auto& line : _changelogLines)
         {
-            int32_t linewidth = gfx_get_string_width(line.c_str(), FontSpriteBase::MEDIUM);
+            int32_t linewidth = GfxGetStringWidth(line.c_str(), FontStyle::Medium);
             _changelogLongestLineWidth = std::max(linewidth, _changelogLongestLineWidth);
         }
     }
 };
 
-rct_window* WindowChangelogOpen(int personality)
+WindowBase* WindowChangelogOpen(int personality)
 {
-    auto* window = window_bring_to_front_by_class(WC_CHANGELOG);
+    auto* window = WindowBringToFrontByClass(WindowClass::Changelog);
     if (window == nullptr)
     {
         // Create a new centred window
-        int32_t screenWidth = context_get_width();
-        int32_t screenHeight = context_get_height();
+        int32_t screenWidth = ContextGetWidth();
+        int32_t screenHeight = ContextGetHeight();
         int32_t width = (screenWidth * 4) / 5;
         int32_t height = (screenHeight * 4) / 5;
 
         auto pos = ChangelogWindow::GetCentrePositionForNewWindow(width, height);
-        auto* newWindow = WindowCreate<ChangelogWindow>(WC_CHANGELOG, pos, width, height, WF_RESIZABLE);
+        auto* newWindow = WindowCreate<ChangelogWindow>(WindowClass::Changelog, pos, width, height, WF_RESIZABLE);
         newWindow->SetPersonality(personality);
         return newWindow;
     }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -37,7 +37,7 @@ static const EnumMap<FormatToken> FormatTokenMap = {
     { "UINT16",               FormatToken::UInt16,              },
     { "CURRENCY2DP",          FormatToken::Currency2dp,         },
     { "CURRENCY",             FormatToken::Currency,            },
-    { "STRINGID",             FormatToken::StringId,            },
+    { "STRINGID",             FormatToken::StringById,          },
     { "STRING",               FormatToken::String,              },
     { "MONTHYEAR",            FormatToken::MonthYear,           },
     { "MONTH",                FormatToken::Month,               },
@@ -116,7 +116,7 @@ bool FormatTokenTakesArgument(FormatToken token)
         case FormatToken::UInt16:
         case FormatToken::Currency2dp:
         case FormatToken::Currency:
-        case FormatToken::StringId:
+        case FormatToken::StringById:
         case FormatToken::String:
         case FormatToken::MonthYear:
         case FormatToken::Month:
@@ -201,7 +201,7 @@ FormatToken FormatTokenFromTextColour(size_t textColour)
         FormatToken::ColourPaleLavender, FormatToken::ColourPaleGold,   FormatToken::ColourLightPink,
         FormatToken::ColourPearlAqua,    FormatToken::ColourPaleSilver,
     };
-    if (textColour > std::size(tokens))
+    if (textColour >= std::size(tokens))
         return FormatToken::ColourBlack;
     return tokens[textColour];
 }

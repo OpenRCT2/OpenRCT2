@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../../drawing/LightFX.h"
 #include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
@@ -23,7 +24,7 @@ constexpr const RideTypeDescriptor DodgemsRTD =
     SET_FIELD(ExtraTrackPieces, {}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::FlatTrack4x4),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_dodgems),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionDodgems),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
                      RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
                      RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT | RIDE_TYPE_FLAG_ALLOW_MUSIC |
@@ -38,7 +39,6 @@ constexpr const RideTypeDescriptor DodgemsRTD =
     SET_FIELD(Heights, { 9, 48, 2, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_dodgems),
     SET_FIELD(RatingsMultipliers, { 40, 20, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 5, 0, 0 }),
     SET_FIELD(BuildCosts, { 27.50_GBP, 1.00_GBP, 1, }),
@@ -50,8 +50,27 @@ constexpr const RideTypeDescriptor DodgemsRTD =
         { COLOUR_BRIGHT_RED, COLOUR_SATURATED_BROWN, COLOUR_SATURATED_BROWN },
         { COLOUR_LIGHT_BLUE, COLOUR_GREY, COLOUR_GREY },
         { COLOUR_DARK_GREEN, COLOUR_BLACK, COLOUR_DARK_GREEN },
+        { COLOUR_YELLOW, COLOUR_LIGHT_BROWN, COLOUR_DARK_YELLOW },
+        { COLOUR_SATURATED_GREEN, COLOUR_SATURATED_BROWN, COLOUR_SATURATED_BROWN },
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_DODGEMS_TRACK, SPR_RIDE_DESIGN_PREVIEW_DODGEMS_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "dodgems"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(1, 30), RIDE_RATING(0, 50), RIDE_RATING(0, 35) },
+        16,
+        7,
+        false,
+        {
+            // Special case, passing -2 to represent division by 2
+            { RatingsModifierType::BonusOperationOption, 0, 1, -2, 0 }, 
+            { RatingsModifierType::BonusNumTrains,       4, RIDE_RATING(0, 80), 0, 0 },
+            { RatingsModifierType::BonusScenery,         0, 5577, 0, 0 },
+        },
+    }),
+    SET_FIELD(UpdateRotating, UpdateRotatingDefault),
+    SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_BoatHire),
 };
 // clang-format on

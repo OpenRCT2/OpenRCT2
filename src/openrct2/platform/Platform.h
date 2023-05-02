@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,20 +40,8 @@ enum class SPECIAL_FOLDER
     RCT2_DISCORD,
 };
 
-struct rct2_date
-{
-    uint8_t day;
-    uint8_t month;
-    int16_t year;
-    uint8_t day_of_week;
-};
-
-struct rct2_time
-{
-    uint8_t hour;
-    uint8_t minute;
-    uint8_t second;
-};
+struct RealWorldDate;
+struct RealWorldTime;
 
 namespace Platform
 {
@@ -79,14 +67,16 @@ namespace Platform
     MeasurementFormat GetLocaleMeasurementFormat();
     uint8_t GetLocaleDateFormat();
     TemperatureUnit GetLocaleTemperatureFormat();
-    rct2_time GetTimeLocal();
-    rct2_date GetDateLocal();
+    RealWorldTime GetTimeLocal();
+    RealWorldDate GetDateLocal();
 
     bool FindApp(std::string_view app, std::string* output);
     int32_t Execute(std::string_view command, std::string* output = nullptr);
     bool ProcessIsElevated();
     float GetDefaultScale();
 
+    bool IsRCT2Path(std::string_view path);
+    bool IsRCTClassicPath(std::string_view path);
     bool OriginalGameDataExists(std::string_view path);
 
     std::string GetUsername();
@@ -165,5 +155,6 @@ public:
 
 // This function cannot be marked as 'static', even though it may seem to be,
 // as it requires external linkage, which 'static' prevents
-__declspec(dllexport) int32_t StartOpenRCT2(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int32_t nCmdShow);
+__declspec(dllexport) int32_t
+    StartOpenRCT2(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCommandLine, int32_t nCmdShow);
 #endif // _WIN32

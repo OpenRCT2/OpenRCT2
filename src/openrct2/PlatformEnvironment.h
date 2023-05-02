@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -51,6 +51,7 @@ namespace OpenRCT2
         REPLAY,      // Contains recorded replays.
         LOG_DESYNCS, // Contains desync reports.
         CRASH,       // Contains crash dumps.
+        ASSET_PACK,  // Contains asset packs.
     };
 
     enum class PATHID
@@ -61,7 +62,6 @@ namespace OpenRCT2
         CACHE_OBJECTS,           // Object repository cache (objects.idx).
         CACHE_TRACKS,            // Track repository cache (tracks.idx).
         CACHE_SCENARIOS,         // Scenario repository cache (scenarios.idx).
-        MP_DAT,                  // Mega Park data, Steam RCT1 only (\RCTdeluxe_install\Data\mp.dat)
         NETWORK_GROUPS,          // Server groups with permissions (groups.json).
         NETWORK_SERVERS,         // Saved servers (servers.cfg).
         NETWORK_USERS,           // Users and their groups (users.json).
@@ -70,6 +70,7 @@ namespace OpenRCT2
         SCORES_RCT2,             // Scenario scores, rct2 (\Saved Games\scores.dat).
         CHANGELOG,               // Notable changes to the game between versions, distributed with the game.
         PLUGIN_STORE,            // Shared storage for plugins.
+        CONTRIBUTORS,            // Who has provided work to the game (Contributors.md).
     };
 
     /**
@@ -82,7 +83,9 @@ namespace OpenRCT2
         virtual u8string GetDirectoryPath(DIRBASE base) const abstract;
         virtual u8string GetDirectoryPath(DIRBASE base, DIRID did) const abstract;
         virtual u8string GetFilePath(PATHID pathid) const abstract;
+        virtual u8string FindFile(DIRBASE base, DIRID did, u8string_view fileName) const abstract;
         virtual void SetBasePath(DIRBASE base, u8string_view path) abstract;
+        virtual bool IsUsingClassic() const abstract;
     };
 
     [[nodiscard]] std::unique_ptr<IPlatformEnvironment> CreatePlatformEnvironment(DIRBASE_VALUES basePaths);

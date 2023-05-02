@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,7 +17,7 @@
 #include "../Track.h"
 #include "../TrackPaint.h"
 
-static void PaintCircusTent(paint_session& session, const Ride& ride, uint8_t direction, int8_t al, int8_t cl, uint16_t height)
+static void PaintCircusTent(PaintSession& session, const Ride& ride, uint8_t direction, int8_t al, int8_t cl, uint16_t height)
 {
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -32,34 +32,35 @@ static void PaintCircusTent(paint_session& session, const Ride& ride, uint8_t di
 
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != IMAGE_TYPE_REMAP)
+    if (imageFlags != TrackGhost)
     {
-        imageTemplate = ImageId::FromUInt32(imageFlags);
+        imageTemplate = imageFlags;
     }
-    auto imageIndex = rideEntry->vehicles[0].base_image_id + direction;
+    auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
 
     PaintAddImageAsParent(
-        session, imageTemplate.WithIndex(imageIndex), { al, cl, height + 3 }, { 24, 24, 47 }, { al + 16, cl + 16, height + 3 });
+        session, imageTemplate.WithIndex(imageIndex), { al, cl, height + 3 },
+        { { al + 16, cl + 16, height + 3 }, { 24, 24, 47 } });
 
     session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::Ride;
 }
 
 static void PaintCircus(
-    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
-    track_paint_util_paint_fences(
+    TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_SUPPORTS], height,
         fenceSpritesRope, session.CurrentRotation);
 
@@ -106,12 +107,12 @@ static void PaintCircus(
             break;
     }
 
-    paint_util_set_segment_support_height(session, cornerSegments, height + 2, 0x20);
-    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 128, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, cornerSegments, height + 2, 0x20);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 128, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_circus(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionCircus(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
     {

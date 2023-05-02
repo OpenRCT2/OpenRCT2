@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,7 +26,7 @@ namespace OpenRCT2::Audio
         {
         }
 
-        IAudioSource* CreateStreamFromWAV(const std::string& /*path*/) override
+        IAudioSource* CreateStreamFromCSS(std::unique_ptr<IStream> /* stream */, uint32_t /* index */) override
         {
             return nullptr;
         }
@@ -38,20 +38,6 @@ namespace OpenRCT2::Audio
 
         void StartTitleMusic() override
         {
-        }
-
-        IAudioChannel* PlaySound(int32_t /*soundId*/, int32_t /*volume*/, int32_t /*pan*/) override
-        {
-            return nullptr;
-        }
-        IAudioChannel* PlaySoundAtLocation(int32_t /*soundId*/, int16_t /*x*/, int16_t /*y*/, int16_t /*z*/) override
-        {
-            return nullptr;
-        }
-        IAudioChannel* PlaySoundPanned(
-            int32_t /*soundId*/, int32_t /*pan*/, int16_t /*x*/, int16_t /*y*/, int16_t /*z*/) override
-        {
-            return nullptr;
         }
 
         void ToggleAllSounds() override
@@ -68,9 +54,6 @@ namespace OpenRCT2::Audio
         {
         }
         void StopCrowdSound() override
-        {
-        }
-        void StopWeatherSound() override
         {
         }
         void StopRideMusic() override

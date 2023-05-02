@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -44,6 +44,11 @@ namespace OpenRCT2::Scripting
         { "unlockAllPrices", PARK_FLAGS_UNLOCK_ALL_PRICES },
     });
 
+    ScPark::ScPark(duk_context* ctx)
+        : _context(ctx)
+    {
+    }
+
     money64 ScPark::cash_get() const
     {
         return gCash;
@@ -56,7 +61,7 @@ namespace OpenRCT2::Scripting
         {
             gCash = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
-            context_broadcast_intent(&intent);
+            ContextBroadcastIntent(&intent);
         }
     }
 
@@ -73,7 +78,7 @@ namespace OpenRCT2::Scripting
         {
             gParkRating = std::min(std::max(0, value), 999);
             auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
-            context_broadcast_intent(&intent);
+            ContextBroadcastIntent(&intent);
         }
     }
 
@@ -89,7 +94,7 @@ namespace OpenRCT2::Scripting
         {
             gBankLoan = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
-            context_broadcast_intent(&intent);
+            ContextBroadcastIntent(&intent);
         }
     }
 
@@ -105,22 +110,22 @@ namespace OpenRCT2::Scripting
         {
             gMaxBankLoan = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
-            context_broadcast_intent(&intent);
+            ContextBroadcastIntent(&intent);
         }
     }
 
-    money16 ScPark::entranceFee_get() const
+    money64 ScPark::entranceFee_get() const
     {
         return gParkEntranceFee;
     }
-    void ScPark::entranceFee_set(money16 value)
+    void ScPark::entranceFee_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
 
         if (gParkEntranceFee != value)
         {
             gParkEntranceFee = value;
-            window_invalidate_by_class(WC_PARK_INFORMATION);
+            WindowInvalidateByClass(WindowClass::ParkInformation);
         }
     }
 
@@ -139,7 +144,7 @@ namespace OpenRCT2::Scripting
         return _guestGenerationProbability;
     }
 
-    money16 ScPark::guestInitialCash_get() const
+    money64 ScPark::guestInitialCash_get() const
     {
         return gGuestInitialCash;
     }
@@ -171,7 +176,7 @@ namespace OpenRCT2::Scripting
         {
             gParkValue = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
-            context_broadcast_intent(&intent);
+            ContextBroadcastIntent(&intent);
         }
     }
 
@@ -187,11 +192,11 @@ namespace OpenRCT2::Scripting
         {
             gCompanyValue = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
-            context_broadcast_intent(&intent);
+            ContextBroadcastIntent(&intent);
         }
     }
 
-    money16 ScPark::totalRideValueForMoney_get() const
+    money64 ScPark::totalRideValueForMoney_get() const
     {
         return gTotalRideValueForMoney;
     }
@@ -207,7 +212,7 @@ namespace OpenRCT2::Scripting
         if (gTotalAdmissions != value)
         {
             gTotalAdmissions = value;
-            window_invalidate_by_class(WC_PARK_INFORMATION);
+            WindowInvalidateByClass(WindowClass::ParkInformation);
         }
     }
 
@@ -222,25 +227,25 @@ namespace OpenRCT2::Scripting
         if (gTotalIncomeFromAdmissions != value)
         {
             gTotalIncomeFromAdmissions = value;
-            window_invalidate_by_class(WC_PARK_INFORMATION);
+            WindowInvalidateByClass(WindowClass::ParkInformation);
         }
     }
 
-    money32 ScPark::landPrice_get() const
+    money64 ScPark::landPrice_get() const
     {
         return gLandPrice;
     }
-    void ScPark::landPrice_set(money32 value)
+    void ScPark::landPrice_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
         gLandPrice = value;
     }
 
-    money32 ScPark::constructionRightsPrice_get() const
+    money64 ScPark::constructionRightsPrice_get() const
     {
         return gConstructionRightsPrice;
     }
-    void ScPark::constructionRightsPrice_set(money32 value)
+    void ScPark::constructionRightsPrice_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
         gConstructionRightsPrice = value;
@@ -273,7 +278,7 @@ namespace OpenRCT2::Scripting
         if (park.Name != value)
         {
             park.Name = std::move(value);
-            gfx_invalidate_screen();
+            GfxInvalidateScreen();
         }
     }
 
@@ -291,7 +296,12 @@ namespace OpenRCT2::Scripting
             gParkFlags |= mask;
         else
             gParkFlags &= ~mask;
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
+    }
+
+    std::shared_ptr<ScResearch> ScPark::research_get() const
+    {
+        return std::make_shared<ScResearch>(_context);
     }
 
     std::vector<std::shared_ptr<ScParkMessage>> ScPark::messages_get() const
@@ -405,6 +415,7 @@ namespace OpenRCT2::Scripting
             ctx, &ScPark::constructionRightsPrice_get, &ScPark::constructionRightsPrice_set, "constructionRightsPrice");
         dukglue_register_property(ctx, &ScPark::parkSize_get, nullptr, "parkSize");
         dukglue_register_property(ctx, &ScPark::name_get, &ScPark::name_set, "name");
+        dukglue_register_property(ctx, &ScPark::research_get, nullptr, "research");
         dukglue_register_property(ctx, &ScPark::messages_get, &ScPark::messages_set, "messages");
         dukglue_register_property(ctx, &ScPark::casualtyPenalty_get, &ScPark::casualtyPenalty_set, "casualtyPenalty");
         dukglue_register_method(ctx, &ScPark::getFlag, "getFlag");

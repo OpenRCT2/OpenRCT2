@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,7 +17,7 @@
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 
-ParkSetLoanAction::ParkSetLoanAction(money32 value)
+ParkSetLoanAction::ParkSetLoanAction(money64 value)
     : _value(value)
 {
 }
@@ -40,23 +40,22 @@ void ParkSetLoanAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result ParkSetLoanAction::Query() const
 {
-    auto currentLoan = gBankLoan;
-    auto loanDifference = currentLoan - _value;
-    if (_value > currentLoan)
+    if (_value > gBankLoan && _value > gMaxBankLoan)
     {
-        if (_value > gMaxBankLoan)
-        {
-            return GameActions::Result(
-                GameActions::Status::Disallowed, STR_CANT_BORROW_ANY_MORE_MONEY, STR_BANK_REFUSES_TO_INCREASE_LOAN);
-        }
+        return GameActions::Result(
+            GameActions::Status::Disallowed, STR_CANT_BORROW_ANY_MORE_MONEY, STR_BANK_REFUSES_TO_INCREASE_LOAN);
     }
-    else
+    if (_value < gBankLoan && _value < 0.00_GBP)
     {
-        if (loanDifference > gCash)
-        {
-            return GameActions::Result(
-                GameActions::Status::InsufficientFunds, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
-        }
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_PAY_BACK_LOAN, STR_LOAN_CANT_BE_NEGATIVE);
+    }
+    // The “isPayingBack” check is needed to allow increasing the loan when the player is in debt.
+    const auto isPayingBack = gBankLoan > _value;
+    const auto amountToPayBack = gBankLoan - _value;
+    if (isPayingBack && amountToPayBack > gCash)
+    {
+        return GameActions::Result(
+            GameActions::Status::InsufficientFunds, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
     }
     return GameActions::Result();
 }

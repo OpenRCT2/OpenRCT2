@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,11 +26,11 @@ namespace OpenRCT2::Scripting
     class ScViewport
     {
     private:
-        rct_windowclass _class{};
+        WindowClass _class{};
         rct_windownumber _number{};
 
     public:
-        ScViewport(rct_windowclass c, rct_windownumber n = 0)
+        ScViewport(WindowClass c, rct_windownumber n = 0)
             : _class(c)
             , _number(n)
         {
@@ -111,7 +111,7 @@ namespace OpenRCT2::Scripting
 
         int32_t rotation_get() const
         {
-            return get_current_rotation();
+            return GetCurrentRotation();
         }
         void rotation_set(int32_t value)
         {
@@ -120,9 +120,9 @@ namespace OpenRCT2::Scripting
                 auto w = GetWindow();
                 if (w != nullptr)
                 {
-                    while (get_current_rotation() != value)
+                    while (GetCurrentRotation() != value)
                     {
-                        window_rotate_camera(w, 1);
+                        WindowRotateCamera(*w, 1);
                     }
                 }
             }
@@ -143,7 +143,7 @@ namespace OpenRCT2::Scripting
             if (w != nullptr)
             {
                 auto i8Value = static_cast<int8_t>(value);
-                window_zoom_set(w, ZoomLevel{ i8Value }, false);
+                WindowZoomSet(*w, ZoomLevel{ i8Value }, false);
             }
         }
 
@@ -179,7 +179,7 @@ namespace OpenRCT2::Scripting
             if (viewport != nullptr)
             {
                 auto centre = viewport->viewPos + ScreenCoordsXY{ viewport->view_width / 2, viewport->view_height / 2 };
-                auto coords = viewport_coord_to_map_coord(centre, 24);
+                auto coords = ViewportPosToMapPos(centre, 24);
 
                 auto ctx = GetContext()->GetScriptEngine().GetContext();
                 auto obj = duk_push_object(ctx);
@@ -203,7 +203,7 @@ namespace OpenRCT2::Scripting
                     auto coords = GetCoordsFromObject(position);
                     if (coords)
                     {
-                        auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), *coords);
+                        auto screenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), *coords);
                         auto left = screenCoords.x - (viewport->view_width / 2);
                         auto top = screenCoords.y - (viewport->view_height / 2);
                         SetViewLeftTop(left, top);
@@ -220,7 +220,7 @@ namespace OpenRCT2::Scripting
                 auto coords = GetCoordsFromObject(position);
                 if (coords)
                 {
-                    window_scroll_to_location(w, *coords);
+                    WindowScrollToLocation(*w, *coords);
                 }
             }
         }
@@ -242,15 +242,15 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        rct_window* GetWindow() const
+        WindowBase* GetWindow() const
         {
-            if (_class == WC_MAIN_WINDOW)
-                return window_get_main();
+            if (_class == WindowClass::MainWindow)
+                return WindowGetMain();
 
-            return window_find_by_number(_class, _number);
+            return WindowFindByNumber(_class, _number);
         }
 
-        rct_viewport* GetViewport() const
+        Viewport* GetViewport() const
         {
             auto w = GetWindow();
             if (w != nullptr)
@@ -294,7 +294,7 @@ namespace OpenRCT2::Scripting
                         return CoordsXYZ(x, y, dukZ.as_int());
                     }
 
-                    auto z = tile_element_height(CoordsXY(x, y));
+                    auto z = TileElementHeight(CoordsXY(x, y));
                     return CoordsXYZ(x, y, z);
                 }
             }

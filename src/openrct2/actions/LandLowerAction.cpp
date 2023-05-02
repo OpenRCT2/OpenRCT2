@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,6 +29,13 @@ LandLowerAction::LandLowerAction(const CoordsXY& coords, MapRange range, uint8_t
     , _range(range)
     , _selectionType(selectionType)
 {
+}
+
+void LandLowerAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_coords);
+    visitor.Visit(_range);
+    visitor.Visit("selectionType", _selectionType);
 }
 
 uint16_t LandLowerAction::GetActionFlags() const
@@ -64,15 +71,15 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
 
     auto validRange = ClampRangeWithinMap(_range);
 
-    res.Position = { _coords.x, _coords.y, tile_element_height(_coords) };
+    res.Position = { _coords.x, _coords.y, TileElementHeight(_coords) };
     res.Expenditure = ExpenditureType::Landscaping;
 
     if (isExecuting)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, { _coords.x, _coords.y, tile_element_height(_coords) });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, { _coords.x, _coords.y, TileElementHeight(_coords) });
     }
 
-    uint8_t maxHeight = map_get_highest_land_height(validRange);
+    uint8_t maxHeight = MapGetHighestLandHeight(validRange);
     bool withinOwnership = false;
 
     for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
@@ -81,20 +88,20 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
         {
             if (!LocationValid({ x, y }))
                 continue;
-            auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+            auto* surfaceElement = MapGetSurfaceElementAt(CoordsXY{ x, y });
             if (surfaceElement == nullptr)
                 continue;
 
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
-                if (!map_is_location_in_park(CoordsXY{ x, y }))
+                if (!MapIsLocationInPark(CoordsXY{ x, y }))
                 {
                     continue;
                 }
             }
             withinOwnership = true;
 
-            uint8_t height = surfaceElement->base_height;
+            uint8_t height = surfaceElement->BaseHeight;
             if (surfaceElement->GetSlope() & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK)
                 height += 2;
             if (surfaceElement->GetSlope() & TILE_ELEMENT_SURFACE_DIAGONAL_FLAG)
@@ -103,7 +110,7 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
             if (height < maxHeight)
                 continue;
 
-            height = surfaceElement->base_height;
+            height = surfaceElement->BaseHeight;
             uint8_t currentSlope = surfaceElement->GetSlope();
             uint8_t newSlope = tile_element_lower_styles[tableRow][currentSlope];
             if (newSlope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT)

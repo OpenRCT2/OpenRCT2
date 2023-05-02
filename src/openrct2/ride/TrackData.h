@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,13 +17,13 @@ constexpr const uint8_t MaxSequencesPerPiece = 16;
 
 // 0x009968BB, 0x009968BC, 0x009968BD, 0x009968BF, 0x009968C1, 0x009968C3
 
-struct track_curve_chain
+struct TrackCurveChain
 {
     int32_t next;
     int32_t previous;
 };
 
-struct track_descriptor
+struct TrackDescriptor
 {
     bool starts_diagonal;
     uint8_t slope_start;
@@ -31,7 +31,7 @@ struct track_descriptor
     uint8_t track_curve;
     uint8_t slope_end;
     uint8_t bank_end;
-    uint8_t track_element;
+    track_type_t track_element;
 };
 
 enum
@@ -51,9 +51,9 @@ enum
     R9_SPIN
 };
 
-extern const track_descriptor gTrackDescriptors[142];
+extern const TrackDescriptor gTrackDescriptors[186];
 
-struct dodgems_track_size
+struct DodgemsTrackSize
 {
     uint8_t left;
     uint8_t top;
@@ -61,7 +61,7 @@ struct dodgems_track_size
     uint8_t bottom;
 };
 
-constexpr const dodgems_track_size DodgemsTrackSize(track_type_t type)
+constexpr const DodgemsTrackSize GetDodgemsTrackSize(track_type_t type)
 {
     if (type == TrackElemType::FlatTrack2x2)
         return { 4, 4, 59, 59 };
@@ -75,12 +75,12 @@ constexpr const dodgems_track_size DodgemsTrackSize(track_type_t type)
 using TrackComputeFunction = int32_t (*)(const int16_t);
 struct TrackElementDescriptor
 {
-    rct_string_id Description;
-    rct_track_coordinates Coordinates;
+    StringId Description;
+    TrackCoordinates Coordinates;
 
-    rct_preview_track* Block;
+    PreviewTrack* Block;
     uint8_t PieceLength;
-    track_curve_chain CurveChain;
+    TrackCurveChain CurveChain;
     track_type_t AlternativeType;
     // Price Modifier should be used as in the following calculation:
     // (RideTrackPrice * TED::PriceModifier) / 65536
@@ -92,11 +92,20 @@ struct TrackElementDescriptor
     std::array<uint8_t, MaxSequencesPerPiece> SequenceElementAllowedWallEdges;
     std::array<uint8_t, MaxSequencesPerPiece> SequenceProperties;
 
-    rct_trackdefinition Definition;
+    TrackDefinition Definition;
     uint8_t SpinFunction;
 
     TrackComputeFunction VerticalFactor;
     TrackComputeFunction LateralFactor;
+
+    /**
+     * Retrieves the block for the given sequence. This method safely handles
+     * out-of-bounds sequence indices.
+     *
+     * @param sequenceIndex
+     * @return The track block, or nullptr if it doesn’t exist.
+     */
+    const PreviewTrack* GetBlockForSequence(uint8_t sequenceIndex) const;
 };
 
 namespace OpenRCT2

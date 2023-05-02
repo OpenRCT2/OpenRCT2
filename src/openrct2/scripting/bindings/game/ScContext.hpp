@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,10 +19,12 @@
 #    include "../../../scenario/Scenario.h"
 #    include "../../Duktape.hpp"
 #    include "../../HookEngine.h"
+#    include "../../IconNames.hpp"
 #    include "../../ScriptEngine.h"
 #    include "../game/ScConfiguration.hpp"
 #    include "../game/ScDisposable.hpp"
 #    include "../object/ScObject.hpp"
+#    include "../ride/ScTrackSegment.h"
 
 #    include <cstdio>
 #    include <memory>
@@ -218,13 +220,42 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
+        DukValue getTrackSegment(track_type_t type)
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            if (type >= TrackElemType::Count)
+            {
+                return ToDuk(ctx, nullptr);
+            }
+            else
+            {
+                return GetObjectAsDukValue(ctx, std::make_shared<ScTrackSegment>(type));
+            }
+        }
+
+        std::vector<DukValue> getAllTrackSegments()
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+
+            std::vector<DukValue> result;
+            for (track_type_t type = 0; type < TrackElemType::Count; type++)
+            {
+                auto obj = std::make_shared<ScTrackSegment>(type);
+                if (obj != nullptr)
+                {
+                    result.push_back(GetObjectAsDukValue(ctx, obj));
+                }
+            }
+            return result;
+        }
+
         int32_t getRandom(int32_t min, int32_t max)
         {
             ThrowIfGameStateNotMutable();
             if (min >= max)
                 return min;
             int32_t range = max - min;
-            return min + scenario_rand_max(range);
+            return min + ScenarioRandMax(range);
         }
 
         duk_ret_t formatString(duk_context* ctx)
@@ -324,15 +355,15 @@ namespace OpenRCT2::Scripting
                     if (isExecute)
                     {
                         action->SetCallback(
-                            [this, plugin, callback](const GameAction*, const GameActions::Result* res) -> void {
-                                HandleGameActionResult(plugin, *res, callback);
+                            [this, plugin, callback](const GameAction* act, const GameActions::Result* res) -> void {
+                                HandleGameActionResult(plugin, *act, *res, callback);
                             });
                         GameActions::Execute(action.get());
                     }
                     else
                     {
                         auto res = GameActions::Query(action.get());
-                        HandleGameActionResult(plugin, res, callback);
+                        HandleGameActionResult(plugin, *action, res, callback);
                     }
                 }
                 else
@@ -347,38 +378,15 @@ namespace OpenRCT2::Scripting
         }
 
         void HandleGameActionResult(
-            const std::shared_ptr<Plugin>& plugin, const GameActions::Result& res, const DukValue& callback)
+            const std::shared_ptr<Plugin>& plugin, const GameAction& action, const GameActions::Result& res,
+            const DukValue& callback)
         {
-            // Construct result object
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto ctx = scriptEngine.GetContext();
-            auto objIdx = duk_push_object(ctx);
-            duk_push_int(ctx, static_cast<duk_int_t>(res.Error));
-            duk_put_prop_string(ctx, objIdx, "error");
-
-            if (res.Error != GameActions::Status::Ok)
-            {
-                auto title = res.GetErrorTitle();
-                duk_push_string(ctx, title.c_str());
-                duk_put_prop_string(ctx, objIdx, "errorTitle");
-
-                auto message = res.GetErrorMessage();
-                duk_push_string(ctx, message.c_str());
-                duk_put_prop_string(ctx, objIdx, "errorMessage");
-            }
-
-            duk_push_int(ctx, static_cast<duk_int_t>(res.Cost));
-            duk_put_prop_string(ctx, objIdx, "cost");
-
-            duk_push_int(ctx, static_cast<duk_int_t>(res.Expenditure));
-            duk_put_prop_string(ctx, objIdx, "expenditureType");
-
-            auto args = DukValue::take_from_stack(ctx);
-
             if (callback.is_function())
             {
+                auto& scriptEngine = GetContext()->GetScriptEngine();
+                auto dukResult = scriptEngine.GameActionResultToDuk(action, res);
                 // Call the plugin callback and pass the result object
-                scriptEngine.ExecutePluginCall(plugin, callback, { args }, false);
+                scriptEngine.ExecutePluginCall(plugin, callback, { dukResult }, false);
             }
         }
 
@@ -446,6 +454,11 @@ namespace OpenRCT2::Scripting
             ClearIntervalOrTimeout(handle);
         }
 
+        int32_t getIcon(const std::string& iconName)
+        {
+            return GetIconByName(iconName);
+        }
+
     public:
         static void Register(duk_context* ctx)
         {
@@ -457,6 +470,8 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScContext::captureImage, "captureImage");
             dukglue_register_method(ctx, &ScContext::getObject, "getObject");
             dukglue_register_method(ctx, &ScContext::getAllObjects, "getAllObjects");
+            dukglue_register_method(ctx, &ScContext::getTrackSegment, "getTrackSegment");
+            dukglue_register_method(ctx, &ScContext::getAllTrackSegments, "getAllTrackSegments");
             dukglue_register_method(ctx, &ScContext::getRandom, "getRandom");
             dukglue_register_method_varargs(ctx, &ScContext::formatString, "formatString");
             dukglue_register_method(ctx, &ScContext::subscribe, "subscribe");
@@ -467,8 +482,27 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScContext::setTimeout, "setTimeout");
             dukglue_register_method(ctx, &ScContext::clearInterval, "clearInterval");
             dukglue_register_method(ctx, &ScContext::clearTimeout, "clearTimeout");
+            dukglue_register_method(ctx, &ScContext::getIcon, "getIcon");
         }
     };
+
+    uint32_t ImageFromDuk(const DukValue& d)
+    {
+        uint32_t img{};
+        if (d.type() == DukValue::Type::NUMBER)
+        {
+            img = d.as_uint();
+            if (GetTargetAPIVersion() <= API_VERSION_63_G2_REORDER)
+            {
+                img = NewIconIndex(d.as_uint());
+            }
+        }
+        else if (d.type() == DukValue::Type::STRING)
+        {
+            img = GetIconByName(d.as_c_string());
+        }
+        return img;
+    }
 } // namespace OpenRCT2::Scripting
 
 #endif

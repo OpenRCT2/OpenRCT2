@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -54,5 +54,5 @@ TEST_F(ImageImporterTests, Import_Logo)
     // Update expected hash if change is expected.
     ASSERT_NE(nullptr, result.Buffer.data());
     auto hash = GetHash(result.Buffer.data(), result.Buffer.size());
-    ASSERT_EQ(0xCEF27C7D, hash);
+    ASSERT_EQ(uint32_t(0x212A99BC), hash);
 }

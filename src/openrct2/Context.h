@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include "common.h"
 #include "core/String.hpp"
+#include "interface/WindowClasses.h"
 #include "world/Location.hpp"
 
 #include <memory>
@@ -30,8 +31,7 @@ struct ITrackDesignRepository;
 struct IGameStateSnapshots;
 
 class Intent;
-struct rct_window;
-using rct_windowclass = uint8_t;
+struct WindowBase;
 struct NewVersionInfo;
 
 struct TTFFontDescriptor;
@@ -52,10 +52,9 @@ struct CursorState
 
 struct TextInputSession
 {
-    utf8* Buffer;          // UTF-8 stream
-    size_t BufferSize;     // Maximum number of bytes (excluding null terminator)
-    size_t Size;           // Number of bytes (excluding null terminator)
+    u8string* Buffer;      // UTF-8 string buffer, non-owning.
     size_t Length;         // Number of codepoints
+    size_t MaxLength;      // Maximum length of text, Length can't be larger than this.
     size_t SelectionStart; // Selection start, in bytes
     size_t SelectionSize;  // Selection length in bytes
 
@@ -81,6 +80,7 @@ class NetworkBase;
 
 namespace OpenRCT2
 {
+    class AssetPackManager;
     class GameState;
 
     struct IPlatformEnvironment;
@@ -136,6 +136,7 @@ namespace OpenRCT2
         virtual ITrackDesignRepository* GetTrackDesignRepository() abstract;
         virtual IScenarioRepository* GetScenarioRepository() abstract;
         virtual IReplayManager* GetReplayManager() abstract;
+        virtual AssetPackManager* GetAssetPackManager() abstract;
         virtual IGameStateSnapshots* GetGameStateSnapshots() abstract;
         virtual DrawingEngine GetDrawingEngineType() abstract;
         virtual Drawing::IDrawingEngine* GetDrawingEngine() abstract;
@@ -149,7 +150,7 @@ namespace OpenRCT2
         virtual void InitialiseDrawingEngine() abstract;
         virtual void DisposeDrawingEngine() abstract;
         virtual bool LoadParkFromFile(
-            const std::string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) abstract;
+            const u8string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) abstract;
         virtual bool LoadParkFromStream(
             IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail = false,
             bool asScenario = false) abstract;
@@ -160,10 +161,6 @@ namespace OpenRCT2
 
         virtual bool HasNewVersionInfo() const abstract;
         virtual const NewVersionInfo* GetNewVersionInfo() const abstract;
-        /**
-         * This is deprecated, use IPlatformEnvironment.
-         */
-        virtual std::string GetPathLegacy(int32_t pathId) abstract;
 
         virtual void SetTimeScale(float newScale) abstract;
         virtual float GetTimeScale() const abstract;
@@ -191,100 +188,38 @@ namespace
 constexpr float GAME_MIN_TIME_SCALE = 0.1f;
 constexpr float GAME_MAX_TIME_SCALE = 5.0f;
 
-/**
- * Legacy get_file_path IDs.
- * Remove when context_get_path_legacy is removed.
- */
-enum
-{
-    PATH_ID_G1,
-    PATH_ID_PLUGIN,
-    PATH_ID_CSS1,
-    PATH_ID_CSS2,
-    PATH_ID_CSS4,
-    PATH_ID_CSS5,
-    PATH_ID_CSS6,
-    PATH_ID_CSS7,
-    PATH_ID_CSS8,
-    PATH_ID_CSS9,
-    PATH_ID_CSS11,
-    PATH_ID_CSS12,
-    PATH_ID_CSS13,
-    PATH_ID_CSS14,
-    PATH_ID_CSS15,
-    PATH_ID_CSS3,
-    PATH_ID_CSS17,
-    PATH_ID_CSS18,
-    PATH_ID_CSS19,
-    PATH_ID_CSS20,
-    PATH_ID_CSS21,
-    PATH_ID_CSS22,
-    PATH_ID_SCORES,
-    PATH_ID_CSS23,
-    PATH_ID_CSS24,
-    PATH_ID_CSS25,
-    PATH_ID_CSS26,
-    PATH_ID_CSS27,
-    PATH_ID_CSS28,
-    PATH_ID_CSS29,
-    PATH_ID_CSS30,
-    PATH_ID_CSS31,
-    PATH_ID_CSS32,
-    PATH_ID_CSS33,
-    PATH_ID_CSS34,
-    PATH_ID_CSS35,
-    PATH_ID_CSS36,
-    PATH_ID_CSS37,
-    PATH_ID_CSS38,
-    PATH_ID_CUSTOM1,
-    PATH_ID_CUSTOM2,
-    PATH_ID_CSS39,
-    PATH_ID_CSS40,
-    PATH_ID_CSS41,
-    PATH_ID_SIXFLAGS_MAGICMOUNTAIN,
-    PATH_ID_CSS42,
-    PATH_ID_CSS43,
-    PATH_ID_CSS44,
-    PATH_ID_CSS45,
-    PATH_ID_CSS46,
-    PATH_ID_CSS50,
-    PATH_ID_END,
-};
-
-void context_init();
-void context_setcurrentcursor(CursorID cursor);
-void context_update_cursor_scale();
-void context_hide_cursor();
-void context_show_cursor();
-ScreenCoordsXY context_get_cursor_position();
-ScreenCoordsXY context_get_cursor_position_scaled();
-void context_set_cursor_position(const ScreenCoordsXY& cursorPosition);
-const CursorState* context_get_cursor_state();
-const uint8_t* context_get_keys_state();
-const uint8_t* context_get_keys_pressed();
-TextInputSession* context_start_text_input(utf8* buffer, size_t maxLength);
-void context_stop_text_input();
-bool context_is_input_active();
-void context_trigger_resize();
-void context_set_fullscreen_mode(int32_t mode);
-void context_recreate_window();
-int32_t context_get_width();
-int32_t context_get_height();
-bool context_has_focus();
-void context_set_cursor_trap(bool value);
-rct_window* context_open_window(rct_windowclass wc);
-rct_window* context_open_detail_window(uint8_t type, int32_t id);
-rct_window* context_open_window_view(uint8_t view);
-rct_window* context_show_error(rct_string_id title, rct_string_id message, const class Formatter& args);
-rct_window* context_open_intent(Intent* intent);
-void context_broadcast_intent(Intent* intent);
-void context_force_close_window_by_class(rct_windowclass wc);
-void context_update_map_tooltip();
-void context_handle_input();
-void context_input_handle_keyboard(bool isTitle);
-void context_quit();
-const utf8* context_get_path_legacy(int32_t pathId);
-bool context_load_park_from_file(const utf8* path);
-bool context_load_park_from_stream(void* stream);
+void ContextInit();
+void ContextSetCurrentCursor(CursorID cursor);
+void ContextUpdateCursorScale();
+void ContextHideCursor();
+void ContextShowCursor();
+ScreenCoordsXY ContextGetCursorPosition();
+ScreenCoordsXY ContextGetCursorPositionScaled();
+void ContextSetCursorPosition(const ScreenCoordsXY& cursorPosition);
+const CursorState* ContextGetCursorState();
+const uint8_t* ContextGetKeysState();
+const uint8_t* ContextGetKeysPressed();
+TextInputSession* ContextStartTextInput(u8string& buffer, size_t maxLength);
+void ContextStopTextInput();
+bool ContextIsInputActive();
+void ContextTriggerResize();
+void ContextSetFullscreenMode(int32_t mode);
+void ContextRecreateWindow();
+int32_t ContextGetWidth();
+int32_t ContextGetHeight();
+bool ContextHasFocus();
+void ContextSetCursorTrap(bool value);
+WindowBase* ContextOpenWindow(WindowClass wc);
+WindowBase* ContextOpenDetailWindow(uint8_t type, int32_t id);
+WindowBase* ContextOpenWindowView(uint8_t view);
+WindowBase* ContextShowError(StringId title, StringId message, const class Formatter& args);
+WindowBase* ContextOpenIntent(Intent* intent);
+void ContextBroadcastIntent(Intent* intent);
+void ContextForceCloseWindowByClass(WindowClass wc);
+void ContextUpdateMapTooltip();
+void ContextHandleInput();
+void ContextInputHandleKeyboard(bool isTitle);
+void ContextQuit();
+bool ContextLoadParkFromStream(void* stream);
 bool ContextOpenCommonFileDialog(utf8* outFilename, OpenRCT2::Ui::FileDialogDesc& desc, size_t outSize);
 u8string ContextOpenCommonFileDialog(OpenRCT2::Ui::FileDialogDesc& desc);

@@ -1,5 +1,5 @@
 /*
- *  Duktape public API for Duktape 2.6.0.
+ *  Duktape public API for Duktape 2.7.0.
  *
  *  See the API reference for documentation on call semantics.  The exposed,
  *  supported API is between the "BEGIN PUBLIC API" and "END PUBLIC API"
@@ -21,7 +21,7 @@
  *  
  *  (http://opensource.org/licenses/MIT)
  *  
- *  Copyright (c) 2013-2019 by Duktape authors (see AUTHORS.rst)
+ *  Copyright (c) 2013-present by Duktape authors (see AUTHORS.rst)
  *  
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -110,6 +110,12 @@
  *  * Luis de Bethencourt (https://github.com/luisbg)
  *  * Ian Whyman (https://github.com/v00d00)
  *  * Rick Sayre (https://github.com/whorfin)
+ *  * Craig Leres (https://github.com/leres)
+ *  * Maurici Abad (https://github.com/mauriciabad)
+ *  * Nancy Li (https://github.com/NancyLi1013)
+ *  * William Parks (https://github.com/WilliamParks)
+ *  * Sam Hellawell (https://github.com/samhellawell)
+ *  * Vladislavs Sokurenko (https://github.com/sokurenko)
  *  
  *  Other contributions
  *  ===================
@@ -176,7 +182,7 @@
  * development snapshots have 99 for patch level (e.g. 0.10.99 would be a
  * development version after 0.10.0 but before the next official release).
  */
-#define DUK_VERSION                       20600L
+#define DUK_VERSION                       20700L
 
 /* Git commit, describe, and branch for Duktape build.  Useful for
  * non-official snapshot builds so that application code can easily log

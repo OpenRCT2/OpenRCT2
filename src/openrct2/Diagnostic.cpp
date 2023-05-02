@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -42,7 +42,7 @@ int _android_log_priority[static_cast<uint8_t>(DiagnosticLevel::Count)] = {
     ANDROID_LOG_FATAL, ANDROID_LOG_ERROR, ANDROID_LOG_WARN, ANDROID_LOG_VERBOSE, ANDROID_LOG_INFO,
 };
 
-void diagnostic_log(DiagnosticLevel diagnosticLevel, const char* format, ...)
+void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...)
 {
     va_list args;
 
@@ -54,7 +54,7 @@ void diagnostic_log(DiagnosticLevel diagnosticLevel, const char* format, ...)
     va_end(args);
 }
 
-void diagnostic_log_with_location(
+void DiagnosticLogWithLocation(
     DiagnosticLevel diagnosticLevel, const char* file, const char* function, int32_t line, const char* format, ...)
 {
     va_list args;
@@ -76,7 +76,7 @@ static constexpr const char* _level_strings[] = {
     "FATAL", "ERROR", "WARNING", "VERBOSE", "INFO",
 };
 
-static void diagnostic_print(DiagnosticLevel level, const std::string& prefix, const std::string& msg)
+static void DiagnosticPrint(DiagnosticLevel level, const std::string& prefix, const std::string& msg)
 {
     auto stream = diagnostic_get_stream(level);
     if (stream == stdout)
@@ -85,7 +85,7 @@ static void diagnostic_print(DiagnosticLevel level, const std::string& prefix, c
         Console::Error::WriteLine("%s%s", prefix.c_str(), msg.c_str());
 }
 
-void diagnostic_log(DiagnosticLevel diagnosticLevel, const char* format, ...)
+void DiagnosticLog(DiagnosticLevel diagnosticLevel, const char* format, ...)
 {
     va_list args;
     if (_log_levels[static_cast<uint8_t>(diagnosticLevel)])
@@ -95,14 +95,14 @@ void diagnostic_log(DiagnosticLevel diagnosticLevel, const char* format, ...)
 
         // Message
         va_start(args, format);
-        auto msg = String::StdFormat_VA(format, args);
+        auto msg = String::Format_VA(format, args);
         va_end(args);
 
-        diagnostic_print(diagnosticLevel, prefix, msg);
+        DiagnosticPrint(diagnosticLevel, prefix, msg);
     }
 }
 
-void diagnostic_log_with_location(
+void DiagnosticLogWithLocation(
     DiagnosticLevel diagnosticLevel, const char* file, const char* function, int32_t line, const char* format, ...)
 {
     va_list args;
@@ -122,10 +122,10 @@ void diagnostic_log_with_location(
 
         // Message
         va_start(args, format);
-        auto msg = String::StdFormat_VA(format, args);
+        auto msg = String::Format_VA(format, args);
         va_end(args);
 
-        diagnostic_print(diagnosticLevel, prefix, msg);
+        DiagnosticPrint(diagnosticLevel, prefix, msg);
     }
 }
 

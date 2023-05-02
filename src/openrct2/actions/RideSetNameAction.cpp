@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -47,10 +47,10 @@ void RideSetNameAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result RideSetNameAction::Query() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
     }
 
@@ -65,10 +65,10 @@ GameActions::Result RideSetNameAction::Query() const
 
 GameActions::Result RideSetNameAction::Execute() const
 {
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
     }
 
@@ -81,8 +81,8 @@ GameActions::Result RideSetNameAction::Execute() const
         ride->custom_name = _name;
     }
 
-    scrolling_text_invalidate();
-    gfx_invalidate_screen();
+    ScrollingTextInvalidate();
+    GfxInvalidateScreen();
 
     // Refresh windows that display ride name
     auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
@@ -92,7 +92,7 @@ GameActions::Result RideSetNameAction::Execute() const
 
     auto res = GameActions::Result();
     auto location = ride->overall_view.ToTileCentre();
-    res.Position = { location, tile_element_height(location) };
+    res.Position = { location, TileElementHeight(location) };
 
     return res;
 }

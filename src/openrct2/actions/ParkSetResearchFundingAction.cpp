@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,6 +21,12 @@ ParkSetResearchFundingAction::ParkSetResearchFundingAction(uint32_t priorities, 
     : _priorities(priorities)
     , _fundingAmount(fundingAmount)
 {
+}
+
+void ParkSetResearchFundingAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("priorities", _priorities);
+    visitor.Visit("fundingAmount", _fundingAmount);
 }
 
 uint16_t ParkSetResearchFundingAction::GetActionFlags() const

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,8 +30,10 @@
 #include "Track.h"
 #include "Vehicle.h"
 #include "coaster/meta/AirPoweredVerticalCoaster.h"
+#include "coaster/meta/AlpineCoaster.h"
 #include "coaster/meta/BobsleighCoaster.h"
 #include "coaster/meta/ClassicMiniRollerCoaster.h"
+#include "coaster/meta/ClassicWoodenRollerCoaster.h"
 #include "coaster/meta/CompactInvertedCoaster.h"
 #include "coaster/meta/CorkscrewRollerCoaster.h"
 #include "coaster/meta/FlyingRollerCoaster.h"
@@ -118,37 +120,60 @@
 
 #include <iterator>
 
+using namespace OpenRCT2::Entity::Yaw;
+
 // clang-format off
 
-const rct_ride_entry_vehicle CableLiftVehicle = {
+const CarEntry CableLiftVehicle = {
     /* .TabRotationMask = */ 31,
-    /* .SpriteYawPrecision = */ 3,
-    /* .pad_03 = */ 0,
     /* .spacing = */ 0,
     /* .car_mass = */ 0,
     /* .tab_height = */ 0,
     /* .num_seats = */ 0,
-    /* .sprite_flags = */ VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_STEEP_SLOPES,
     /* .sprite_width = */ 0,
     /* .sprite_height_negative = */ 0,
     /* .sprite_height_positive = */ 0,
-    /* .animation = */ 0,
+    /* .animation = */ CarEntryAnimation::None,
     /* .flags = */ 0,
     /* .base_num_frames = */ 1,
     /* .base_image_id = */ 29110,
-    /* .restraint_image_id = */ 0,
-    /* .gentle_slope_image_id = */ 29142,
-    /* .steep_slope_image_id = */ 29214,
-    /* .vertical_slope_image_id = */ 0,
-    /* .diagonal_slope_image_id = */ 0,
-    /* .banked_image_id = */ 0,
-    /* .inline_twist_image_id = */ 0,
-    /* .flat_to_gentle_bank_image_id = */ 0,
-    /* .diagonal_to_gentle_slope_bank_image_id = */ 0,
-    /* .gentle_slope_to_bank_image_id = */ 0,
-    /* .gentle_slope_bank_turn_image_id = */ 0,
-    /* .flat_bank_to_gentle_slope_image_id = */ 0,
-    /* .corkscrew_image_id = */ 0,
+    /* .SpriteGroups[SlopeFlat] = */ 29110, SpritePrecision::Sprites32,
+    /* .SpriteGroups[Slopes12] = */ 29142, SpritePrecision::Sprites4,
+    /* .SpriteGroups[Slopes25] = */ 29150, SpritePrecision::Sprites32,
+    /* .SpriteGroups[Slopes42] = */ 29214, SpritePrecision::Sprites8,
+    /* .SpriteGroups[Slopes60] = */ 29230, SpritePrecision::Sprites32,
+    /* .SpriteGroups[Slopes75] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes90] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[SlopesLoop] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[SlopeInverted] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes8] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes16] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes50] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[FlatBanked22] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[FlatBanked45] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[FlatBanked67] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[FlatBanked90] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[InlineTwists] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes12Banked22] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes8Banked22] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes25Banked22] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes8Banked22] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes16Banked22] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes16Banked45] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes25Banked45] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes12Banked45] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes25Banked67] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes25Banked90] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes25InlineTwists] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes42Banked22] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes42Banked45] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes42Banked67] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes42Banked90] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes60Banked22] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Corkscrews] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[RestraintAnimation] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[CurvedLiftHillUp] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[CurvedLiftHillDown] = */ 0, SpritePrecision::None,
     /* .no_vehicle_images = */ 0,
     /* .no_seating_rows = */ 0,
     /* .spinning_inertia = */ 0,
@@ -163,7 +188,11 @@ const rct_ride_entry_vehicle CableLiftVehicle = {
     /* .effect_visual = */ 1,
     /* .draw_order = */ 14,
     /* .num_vertical_frames_override = */ 0,
-    /* .peep_loading_positions = */ 0
+    /* .peep_loading_positions = */ 0,
+    /* .AnimationExponent = */ 0,
+    /* .AnimationFrames = */ 0,
+    /* .SteamEffectType.longitudinal = */ 0,
+    /* .SteamEffectType.vertical = */ 0
 };
 
 /* rct2: 0x009A0AA0 */
@@ -173,7 +202,7 @@ const uint16_t RideFilmLength[3] = {
     7000, // SPACE_RAIDERS
 };
 
-const rct_string_id RideModeNames[] = {
+const StringId RideModeNames[] = {
         STR_RIDE_MODE_NORMAL,
         STR_RIDE_MODE_CONTINUOUS_CIRCUIT,
         STR_RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE,
@@ -313,6 +342,8 @@ constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER,       */ ClassicMiniRollerCoasterRTD,
     /* RIDE_TYPE_HYBRID_COASTER                     */ HybridCoasterRTD,
     /* RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER         */ SingleRailRollerCoasterRTD,
+    /* RIDE_TYPE_ALPINE_COASTER                     */ AlpineCoasterRTD,
+    /* RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER      */ ClassicWoodenRollerCoasterRTD,
 };
 
 bool RideTypeDescriptor::HasFlag(uint64_t flag) const
@@ -351,11 +382,17 @@ ResearchCategory RideTypeDescriptor::GetResearchCategory() const
         case RIDE_CATEGORY_NONE:
             break;
     }
-    log_error("Cannot get Research Category of invalid RideCategory");
+    LOG_ERROR("Cannot get Research Category of invalid RideCategory");
     return ResearchCategory::Transport;
 }
 
+bool RideTypeDescriptor::SupportsRideMode(RideMode rideMode) const
+{
+    return RideModes & EnumToFlag(rideMode);
+}
+
 static RideTrackGroup _enabledRidePieces = {};
+static RideTrackGroup _disabledRidePieces = {};
 
 bool IsTrackEnabled(int32_t trackFlagIndex)
 {
@@ -365,4 +402,14 @@ bool IsTrackEnabled(int32_t trackFlagIndex)
 void UpdateEnabledRidePieces(ride_type_t rideType)
 {
     GetRideTypeDescriptor(rideType).GetAvailableTrackPieces(_enabledRidePieces);
+
+    if (!gCheatsEnableAllDrawableTrackPieces)
+    {
+        _enabledRidePieces &= ~_disabledRidePieces;
+    }
+}
+
+void UpdateDisabledRidePieces(const RideTrackGroup& res)
+{
+    _disabledRidePieces = res;
 }

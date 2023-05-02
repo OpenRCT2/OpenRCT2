@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,14 +30,17 @@ namespace OpenRCT2::Ui
         ScreenCoordsXY _consoleTopLeft;
         ScreenCoordsXY _consoleBottomRight;
         ScreenCoordsXY _lastMainViewport;
-        std::deque<std::string> _consoleLines;
-        utf8 _consoleCurrentLine[CONSOLE_INPUT_SIZE] = {};
+
+        std::vector<std::string> _consoleLines;
+        u8string _consoleCurrentLine;
+
         int32_t _consoleCaretTicks;
         int32_t _consoleScrollPos = 0;
         TextInputSession* _consoleTextInputSession;
-        utf8 _consoleHistory[CONSOLE_HISTORY_SIZE][CONSOLE_INPUT_SIZE];
-        int32_t _consoleHistoryIndex = 0;
-        int32_t _consoleHistoryCount = 0;
+
+        std::deque<u8string> _consoleHistory;
+        size_t _consoleHistoryIndex = 0;
+
         size_t _selectionStart = 0;
         int32_t _caretScreenPosX = 0;
 
@@ -62,12 +65,12 @@ namespace OpenRCT2::Ui
         void Scroll(int32_t linesToScroll);
 
         void Update();
-        void Draw(rct_drawpixelinfo* dpi) const;
+        void Draw(DrawPixelInfo& dpi) const;
 
     private:
         void ClearInput();
         void ClearLine();
-        void HistoryAdd(const utf8* src);
+        void HistoryAdd(const u8string& src);
         void WritePrompt();
         void ScrollToEnd();
         void Invalidate() const;

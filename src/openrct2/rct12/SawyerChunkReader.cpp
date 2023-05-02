@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,7 +38,7 @@ void SawyerChunkReader::SkipChunk()
     uint64_t originalPosition = _stream->GetPosition();
     try
     {
-        auto header = _stream->ReadValue<sawyercoding_chunk_header>();
+        auto header = _stream->ReadValue<SawyerCodingChunkHeader>();
         _stream->Seek(header.length, OpenRCT2::STREAM_SEEK_CURRENT);
     }
     catch (const std::exception&)
@@ -54,7 +54,7 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
     uint64_t originalPosition = _stream->GetPosition();
     try
     {
-        auto header = _stream->ReadValue<sawyercoding_chunk_header>();
+        auto header = _stream->ReadValue<SawyerCodingChunkHeader>();
         if (header.length >= MAX_UNCOMPRESSED_CHUNK_SIZE)
             throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_CHUNK_SIZE);
 
@@ -120,7 +120,7 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunkTrack()
         }
 
         auto buffer = static_cast<uint8_t*>(AllocateLargeTempBuffer());
-        sawyercoding_chunk_header header{ CHUNK_ENCODING_RLE, compressedDataLength };
+        SawyerCodingChunkHeader header{ CHUNK_ENCODING_RLE, compressedDataLength };
         size_t uncompressedLength = DecodeChunk(buffer, MAX_UNCOMPRESSED_CHUNK_SIZE, compressedData.get(), header);
         if (uncompressedLength == 0)
         {
@@ -162,7 +162,7 @@ void SawyerChunkReader::FreeChunk(void* data)
     FreeLargeTempBuffer(data);
 }
 
-size_t SawyerChunkReader::DecodeChunk(void* dst, size_t dstCapacity, const void* src, const sawyercoding_chunk_header& header)
+size_t SawyerChunkReader::DecodeChunk(void* dst, size_t dstCapacity, const void* src, const SawyerCodingChunkHeader& header)
 {
     size_t resultLength;
     switch (header.encoding)

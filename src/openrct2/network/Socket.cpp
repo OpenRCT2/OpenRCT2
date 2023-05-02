@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -87,11 +87,11 @@ public:
     {
         if (!_isInitialised)
         {
-            log_verbose("WSAStartup()");
+            LOG_VERBOSE("WSAStartup()");
             WSADATA wsa_data;
             if (WSAStartup(MAKEWORD(2, 2), &wsa_data) != 0)
             {
-                log_error("Unable to initialise winsock.");
+                LOG_ERROR("Unable to initialise winsock.");
                 return false;
             }
             _isInitialised = true;
@@ -103,7 +103,7 @@ public:
     {
         if (_isInitialised)
         {
-            log_verbose("WSACleanup()");
+            LOG_VERBOSE("WSACleanup()");
             WSACleanup();
             _isInitialised = false;
         }
@@ -225,8 +225,8 @@ private:
         int errorcode = getaddrinfo(address.empty() ? nullptr : address.c_str(), serviceName.c_str(), &hints, &result);
         if (errorcode != 0)
         {
-            log_error("Resolving address failed: Code %d.", errorcode);
-            log_error("Resolution error message: %s.", gai_strerror(errorcode));
+            LOG_ERROR("Resolving address failed: Code %d.", errorcode);
+            LOG_ERROR("Resolution error message: %s.", gai_strerror(errorcode));
             return false;
         }
 
@@ -321,12 +321,12 @@ public:
         // Turn off IPV6_V6ONLY so we can accept both v4 and v6 connections
         if (!SetOption(_socket, IPPROTO_IPV6, IPV6_V6ONLY, false))
         {
-            log_verbose("setsockopt(socket, IPV6_V6ONLY) failed: %d", LAST_SOCKET_ERROR());
+            LOG_VERBOSE("setsockopt(socket, IPV6_V6ONLY) failed: %d", LAST_SOCKET_ERROR());
         }
 
         if (!SetOption(_socket, SOL_SOCKET, SO_REUSEADDR, true))
         {
-            log_verbose("setsockopt(socket, SO_REUSEADDR) failed: %d", LAST_SOCKET_ERROR());
+            LOG_VERBOSE("setsockopt(socket, SO_REUSEADDR) failed: %d", LAST_SOCKET_ERROR());
         }
 
         try
@@ -374,7 +374,7 @@ public:
         {
             if (LAST_SOCKET_ERROR() != EWOULDBLOCK)
             {
-                log_error("Failed to accept client.");
+                LOG_ERROR("Failed to accept client.");
             }
         }
         else
@@ -382,7 +382,7 @@ public:
             if (!SetNonBlocking(socket, true))
             {
                 closesocket(socket);
-                log_error("Failed to set non-blocking mode.");
+                LOG_ERROR("Failed to set non-blocking mode.");
             }
             else
             {
@@ -643,12 +643,6 @@ private:
     std::string GetIpAddressFromSocket(const sockaddr_in* addr) const
     {
         std::string result;
-#    if defined(_WIN32_WINNT) && _WIN32_WINNT < 0x0600
-        if (addr->sin_family == AF_INET)
-        {
-            result = inet_ntoa(addr->sin_addr);
-        }
-#    else
         if (addr->sin_family == AF_INET)
         {
             char str[INET_ADDRSTRLEN]{};
@@ -662,7 +656,6 @@ private:
             inet_ntop(AF_INET6, &addrv6->sin6_addr, str, sizeof(str));
             result = str;
         }
-#    endif
         return result;
     }
 };
@@ -833,18 +826,18 @@ private:
         // Enable send and receiving of broadcast messages
         if (!SetOption(sock, SOL_SOCKET, SO_BROADCAST, true))
         {
-            log_verbose("setsockopt(socket, SO_BROADCAST) failed: %d", LAST_SOCKET_ERROR());
+            LOG_VERBOSE("setsockopt(socket, SO_BROADCAST) failed: %d", LAST_SOCKET_ERROR());
         }
 
         // Turn off IPV6_V6ONLY so we can accept both v4 and v6 connections
         if (!SetOption(sock, IPPROTO_IPV6, IPV6_V6ONLY, false))
         {
-            log_verbose("setsockopt(socket, IPV6_V6ONLY) failed: %d", LAST_SOCKET_ERROR());
+            LOG_VERBOSE("setsockopt(socket, IPV6_V6ONLY) failed: %d", LAST_SOCKET_ERROR());
         }
 
         if (!SetOption(sock, SOL_SOCKET, SO_REUSEADDR, true))
         {
-            log_verbose("setsockopt(socket, SO_REUSEADDR) failed: %d", LAST_SOCKET_ERROR());
+            LOG_VERBOSE("setsockopt(socket, SO_REUSEADDR) failed: %d", LAST_SOCKET_ERROR());
         }
 
         if (!SetNonBlocking(sock, true))

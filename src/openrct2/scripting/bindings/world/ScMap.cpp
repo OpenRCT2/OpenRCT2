@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,6 +31,7 @@
 #    include "../entity/ScStaff.hpp"
 #    include "../entity/ScVehicle.hpp"
 #    include "../ride/ScRide.hpp"
+#    include "../ride/ScTrackIterator.h"
 #    include "../world/ScTile.hpp"
 
 namespace OpenRCT2::Scripting
@@ -105,14 +106,14 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityList<Balloon>())
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->Id)));
             }
         }
         else if (type == "car")
         {
             for (auto trainHead : TrainManager::View())
             {
-                for (auto carId = trainHead->sprite_index; !carId.IsNull();)
+                for (auto carId = trainHead->Id; !carId.IsNull();)
                 {
                     auto car = GetEntity<Vehicle>(carId);
                     result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(carId)));
@@ -124,39 +125,39 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityList<Litter>())
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScLitter>(sprite->sprite_index)));
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScLitter>(sprite->Id)));
             }
         }
         else if (type == "duck")
         {
             for (auto sprite : EntityList<Duck>())
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->Id)));
             }
         }
         else if (type == "peep")
         {
             for (auto sprite : EntityList<Guest>())
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->sprite_index)));
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->Id)));
             }
             for (auto sprite : EntityList<Staff>())
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->Id)));
             }
         }
         else if (type == "guest")
         {
             for (auto sprite : EntityList<Guest>())
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->sprite_index)));
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->Id)));
             }
         }
         else if (type == "staff")
         {
             for (auto sprite : EntityList<Staff>())
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->Id)));
             }
         }
         else
@@ -181,42 +182,42 @@ namespace OpenRCT2::Scripting
         {
             for (auto sprite : EntityTileList<Balloon>(pos))
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->Id)));
             }
         }
         else if (type == "car")
         {
             for (auto sprite : EntityTileList<Vehicle>(pos))
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(sprite->sprite_index)));
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(sprite->Id)));
             }
         }
         else if (type == "litter")
         {
             for (auto sprite : EntityTileList<Litter>(pos))
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScLitter>(sprite->sprite_index)));
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScLitter>(sprite->Id)));
             }
         }
         else if (type == "duck")
         {
             for (auto sprite : EntityTileList<Duck>(pos))
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->Id)));
             }
         }
         else if (type == "guest")
         {
             for (auto sprite : EntityTileList<Guest>(pos))
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->sprite_index)));
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->Id)));
             }
         }
         else if (type == "staff")
         {
             for (auto sprite : EntityTileList<Staff>(pos))
             {
-                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->Id)));
             }
         }
         else
@@ -237,7 +238,7 @@ namespace OpenRCT2::Scripting
                                     AsOrDefault(initializer["z"], 0) };
         entity->MoveTo(entityPos);
 
-        return GetObjectAsDukValue(ctx, std::make_shared<TScriptType>(entity->sprite_index));
+        return GetObjectAsDukValue(ctx, std::make_shared<TScriptType>(entity->Id));
     }
 
     DukValue ScMap::createEntity(const std::string& type, const DukValue& initializer)
@@ -303,6 +304,16 @@ namespace OpenRCT2::Scripting
         return res;
     }
 
+    DukValue ScMap::getTrackIterator(const DukValue& dukPosition, int32_t elementIndex) const
+    {
+        auto position = FromDuk<CoordsXY>(dukPosition);
+        auto trackIterator = ScTrackIterator::FromElement(position, elementIndex);
+        if (trackIterator == nullptr)
+            return ToDuk(_context, undefined);
+
+        return GetObjectAsDukValue(_context, trackIterator);
+    }
+
     void ScMap::Register(duk_context* ctx)
     {
         dukglue_register_property(ctx, &ScMap::size_get, nullptr, "size");
@@ -315,11 +326,12 @@ namespace OpenRCT2::Scripting
         dukglue_register_method(ctx, &ScMap::getAllEntities, "getAllEntities");
         dukglue_register_method(ctx, &ScMap::getAllEntitiesOnTile, "getAllEntitiesOnTile");
         dukglue_register_method(ctx, &ScMap::createEntity, "createEntity");
+        dukglue_register_method(ctx, &ScMap::getTrackIterator, "getTrackIterator");
     }
 
     DukValue ScMap::GetEntityAsDukValue(const EntityBase* sprite) const
     {
-        auto spriteId = sprite->sprite_index;
+        auto spriteId = sprite->Id;
         switch (sprite->Type)
         {
             case EntityType::Vehicle:

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,7 +35,7 @@ namespace OpenRCT2::Scripting
 
 namespace OpenRCT2::Ui::Windows
 {
-    rct_window* window_custom_open(std::shared_ptr<OpenRCT2::Scripting::Plugin> owner, DukValue dukDesc);
+    WindowBase* WindowCustomOpen(std::shared_ptr<OpenRCT2::Scripting::Plugin> owner, DukValue dukDesc);
 }
 
 namespace OpenRCT2::Scripting
@@ -48,6 +48,7 @@ namespace OpenRCT2::Scripting
         { "other", SCENARIO_CATEGORY_OTHER },
         { "dlc", SCENARIO_CATEGORY_DLC },
         { "build_your_own", SCENARIO_CATEGORY_BUILD_YOUR_OWN },
+        { "competitions", SCENARIO_CATEGORY_COMPETITIONS },
     });
 
     static const DukEnumMap<ScenarioSource> ScenarioSourceMap({
@@ -58,17 +59,24 @@ namespace OpenRCT2::Scripting
         { "rct2_ww", ScenarioSource::RCT2_WW },
         { "rct2_tt", ScenarioSource::RCT2_TT },
         { "real", ScenarioSource::Real },
+        { "extras", ScenarioSource::Extras },
         { "other", ScenarioSource::Other },
     });
 
     template<> inline DukValue ToDuk(duk_context* ctx, const SCENARIO_CATEGORY& value)
     {
-        return ToDuk(ctx, ScenarioCategoryMap[value]);
+        const auto& entry = ScenarioCategoryMap.find(value);
+        if (entry != ScenarioCategoryMap.end())
+            return ToDuk(ctx, entry->first);
+        return ToDuk(ctx, ScenarioCategoryMap[SCENARIO_CATEGORY_OTHER]);
     }
 
     template<> inline DukValue ToDuk(duk_context* ctx, const ScenarioSource& value)
     {
-        return ToDuk(ctx, ScenarioSourceMap[value]);
+        const auto& entry = ScenarioSourceMap.find(value);
+        if (entry != ScenarioSourceMap.end())
+            return ToDuk(ctx, entry->first);
+        return ToDuk(ctx, ScenarioSourceMap[ScenarioSource::Other]);
     }
 
     class ScTool
@@ -102,7 +110,7 @@ namespace OpenRCT2::Scripting
 
         void cancel()
         {
-            tool_cancel();
+            ToolCancel();
         }
     };
 
@@ -120,11 +128,11 @@ namespace OpenRCT2::Scripting
     private:
         int32_t width_get() const
         {
-            return context_get_width();
+            return ContextGetWidth();
         }
         int32_t height_get() const
         {
-            return context_get_height();
+            return ContextGetHeight();
         }
         int32_t windows_get() const
         {
@@ -133,7 +141,7 @@ namespace OpenRCT2::Scripting
 
         std::shared_ptr<ScViewport> mainViewport_get() const
         {
-            return std::make_shared<ScViewport>(WC_MAIN_WINDOW);
+            return std::make_shared<ScViewport>(WindowClass::MainWindow);
         }
 
         std::shared_ptr<ScTileSelection> tileSelection_get() const
@@ -143,7 +151,7 @@ namespace OpenRCT2::Scripting
 
         std::shared_ptr<ScTool> tool_get() const
         {
-            if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+            if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
             {
                 return std::make_shared<ScTool>(_scriptEngine.GetContext());
             }
@@ -165,7 +173,7 @@ namespace OpenRCT2::Scripting
             owner->ThrowIfStopping();
 
             std::shared_ptr<ScWindow> scWindow = nullptr;
-            auto w = window_custom_open(owner, desc);
+            auto w = WindowCustomOpen(owner, desc);
             if (w != nullptr)
             {
                 scWindow = std::make_shared<ScWindow>(w);
@@ -176,22 +184,22 @@ namespace OpenRCT2::Scripting
         void closeWindows(std::string classification, DukValue id)
         {
             auto cls = GetClassification(classification);
-            if (cls != WC_NULL)
+            if (cls != WindowClass::Null)
             {
                 if (id.type() == DukValue::Type::NUMBER)
                 {
-                    window_close_by_number(cls, id.as_int());
+                    WindowCloseByNumber(cls, id.as_int());
                 }
                 else
                 {
-                    window_close_by_class(cls);
+                    WindowCloseByClass(cls);
                 }
             }
         }
 
         void closeAllWindows()
         {
-            window_close_all();
+            WindowCloseAll();
         }
 
         std::shared_ptr<ScWindow> getWindow(DukValue a) const
@@ -301,7 +309,7 @@ namespace OpenRCT2::Scripting
                     auto dukValue = GetScenarioFile(path);
                     _scriptEngine.ExecutePluginCall(plugin, callback, { dukValue }, false);
                 },
-                false, true);
+                false);
         }
 
         void activateTool(const DukValue& desc)
@@ -383,9 +391,9 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        rct_windowclass GetClassification(const std::string& key) const
+        WindowClass GetClassification(const std::string& key) const
         {
-            return WC_NULL;
+            return WindowClass::Null;
         }
 
         DukValue GetScenarioFile(std::string_view path)
@@ -398,14 +406,14 @@ namespace OpenRCT2::Scripting
             auto entry = scenarioRepo->GetByPath(std::string(path).c_str());
             if (entry != nullptr)
             {
-                obj.Set("id", entry->sc_id);
-                obj.Set("category", ToDuk(ctx, static_cast<SCENARIO_CATEGORY>(entry->category)));
-                obj.Set("sourceGame", ToDuk(ctx, entry->source_game));
-                obj.Set("internalName", entry->internal_name);
-                obj.Set("name", entry->name);
-                obj.Set("details", entry->details);
+                obj.Set("id", entry->ScenarioId);
+                obj.Set("category", ToDuk(ctx, static_cast<SCENARIO_CATEGORY>(entry->Category)));
+                obj.Set("sourceGame", ToDuk(ctx, entry->SourceGame));
+                obj.Set("internalName", entry->InternalName);
+                obj.Set("name", entry->Name);
+                obj.Set("details", entry->Details);
 
-                auto* highscore = entry->highscore;
+                auto* highscore = entry->Highscore;
                 if (highscore == nullptr)
                 {
                     obj.Set("highscore", nullptr);

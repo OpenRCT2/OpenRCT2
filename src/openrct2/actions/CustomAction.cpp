@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -43,13 +43,13 @@ void CustomAction::Serialise(DataSerialiser& stream)
 GameActions::Result CustomAction::Query() const
 {
     auto& scriptingEngine = OpenRCT2::GetContext()->GetScriptEngine();
-    return scriptingEngine.QueryOrExecuteCustomGameAction(_id, _json, false);
+    return scriptingEngine.QueryOrExecuteCustomGameAction(*this, false);
 }
 
 GameActions::Result CustomAction::Execute() const
 {
     auto& scriptingEngine = OpenRCT2::GetContext()->GetScriptEngine();
-    return scriptingEngine.QueryOrExecuteCustomGameAction(_id, _json, true);
+    return scriptingEngine.QueryOrExecuteCustomGameAction(*this, true);
 }
 
 #endif

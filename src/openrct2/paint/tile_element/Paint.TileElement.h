@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,7 +12,7 @@
 #include "../../common.h"
 #include "../../world/Map.h"
 
-struct paint_session;
+struct PaintSession;
 
 enum edge_t
 {
@@ -71,16 +71,6 @@ enum
     TUNNEL_TYPE_COUNT
 };
 
-namespace PaintSessionFlags
-{
-    constexpr uint8_t PassedSurface = 1u << 0;
-    constexpr uint8_t IsTrackPiecePreview = 1u << 1;
-} // namespace PaintSessionFlags
-
-#ifdef __TESTPAINT__
-extern uint16_t testPaintVerticalTunnelHeight;
-#endif
-
 extern const int32_t SEGMENTS_ALL;
 extern const uint16_t segment_offsets[9];
 
@@ -90,24 +80,24 @@ extern const CoordsXY BannerBoundBoxes[][2];
 
 extern const uint8_t PathSlopeToLandSlope[4];
 
-void paint_util_push_tunnel_left(paint_session& session, uint16_t height, uint8_t type);
-void paint_util_push_tunnel_right(paint_session& session, uint16_t height, uint8_t type);
-void paint_util_set_vertical_tunnel(paint_session& session, uint16_t height);
+void PaintUtilPushTunnelLeft(PaintSession& session, uint16_t height, uint8_t type);
+void PaintUtilPushTunnelRight(PaintSession& session, uint16_t height, uint8_t type);
+void PaintUtilSetVerticalTunnel(PaintSession& session, uint16_t height);
 
-void paint_util_set_general_support_height(paint_session& session, int16_t height, uint8_t slope);
-void paint_util_force_set_general_support_height(paint_session& session, int16_t height, uint8_t slope);
-void paint_util_set_segment_support_height(paint_session& session, int32_t segments, uint16_t height, uint8_t slope);
-uint16_t paint_util_rotate_segments(uint16_t segments, uint8_t rotation);
+void PaintUtilSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope);
+void PaintUtilForceSetGeneralSupportHeight(PaintSession& session, int16_t height, uint8_t slope);
+void PaintUtilSetSegmentSupportHeight(PaintSession& session, int32_t segments, uint16_t height, uint8_t slope);
+uint16_t PaintUtilRotateSegments(uint16_t segments, uint8_t rotation);
 
-void tile_element_paint_setup(paint_session& session, const CoordsXY& mapCoords, bool isTrackPiecePreview = false);
+void TileElementPaintSetup(PaintSession& session, const CoordsXY& mapCoords, bool isTrackPiecePreview = false);
 
-void PaintEntrance(paint_session& session, uint8_t direction, int32_t height, const EntranceElement& entranceElement);
-void PaintBanner(paint_session& session, uint8_t direction, int32_t height, const BannerElement& bannerElement);
-void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, const SurfaceElement& tileElement);
-void PaintPath(paint_session& session, uint16_t height, const PathElement& tileElement);
-void PaintSmallScenery(paint_session& session, uint8_t direction, int32_t height, const SmallSceneryElement& sceneryElement);
-void PaintWall(paint_session& session, uint8_t direction, int32_t height, const WallElement& tileElement);
-void PaintLargeScenery(paint_session& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement);
-void PaintTrack(paint_session& session, uint8_t direction, int32_t height, const TrackElement& tileElement);
+void PaintEntrance(PaintSession& session, uint8_t direction, int32_t height, const EntranceElement& entranceElement);
+void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const BannerElement& bannerElement);
+void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, const SurfaceElement& tileElement);
+void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileElement);
+void PaintSmallScenery(PaintSession& session, uint8_t direction, int32_t height, const SmallSceneryElement& sceneryElement);
+void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const WallElement& tileElement);
+void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement);
+void PaintTrack(PaintSession& session, uint8_t direction, int32_t height, const TrackElement& tileElement);
 
-bool PaintShouldShowHeightMarkers(const paint_session& session, const uint32_t viewportFlag);
+bool PaintShouldShowHeightMarkers(const PaintSession& session, const uint32_t viewportFlag);

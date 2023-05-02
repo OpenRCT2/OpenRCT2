@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,7 +21,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_LAND;
+static constexpr const StringId WINDOW_TITLE = STR_LAND;
 static constexpr const int32_t WH = 160;
 static constexpr const int32_t WW = 98;
 
@@ -39,11 +39,11 @@ enum WindowLandWidgetIdx {
     WIDX_WALL,
 };
 
-static rct_widget window_land_widgets[] = {
+static Widget window_land_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({19,  19}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_SLOPE_UP, STR_ENABLE_MOUNTAIN_TOOL_TIP), // mountain mode
-    MakeWidget     ({55,  19}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_PAINTBRUSH,                 STR_DISABLE_ELEVATION),        // paint mode
-    MakeWidget     ({27,  48}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary  , SPR_LAND_TOOL_SIZE_0,           STR_NONE),                     // preview box
+    MakeWidget     ({19,  19}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_RIDE_CONSTRUCTION_SLOPE_UP), STR_ENABLE_MOUNTAIN_TOOL_TIP), // mountain mode
+    MakeWidget     ({55,  19}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_PAINTBRUSH),                 STR_DISABLE_ELEVATION),        // paint mode
+    MakeWidget     ({27,  48}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary  , ImageId(SPR_LAND_TOOL_SIZE_0),           STR_NONE),                     // preview box
     MakeRemapWidget({28,  49}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,         STR_ADJUST_SMALLER_LAND_TIP),  // decrement size
     MakeRemapWidget({54,  63}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,         STR_ADJUST_LARGER_LAND_TIP),   // increment size
     MakeWidget     ({ 2, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                     STR_CHANGE_BASE_LAND_TIP),     // floor texture
@@ -70,9 +70,9 @@ public:
     void OnOpen() override
     {
         widgets = window_land_widgets;
-        hold_down_widgets = (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_INCREMENT);
-        WindowInitScrollWidgets(this);
-        window_push_others_below(this);
+        hold_down_widgets = (1uLL << WIDX_DECREMENT) | (1uLL << WIDX_INCREMENT);
+        WindowInitScrollWidgets(*this);
+        WindowPushOthersBelow(*this);
 
         gLandToolSize = 1;
         gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
@@ -89,10 +89,10 @@ public:
     {
         // If the tool wasn't changed, turn tool off
         if (LandToolIsActive())
-            tool_cancel();
+            ToolCancel();
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -115,9 +115,9 @@ public:
         }
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
-        rct_widget* widget = &widgets[widgetIndex];
+        Widget* widget = &widgets[widgetIndex];
         switch (widgetIndex)
         {
             case WIDX_FLOOR:
@@ -146,7 +146,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
         int32_t type;
 
@@ -156,7 +156,8 @@ public:
                 if (dropdownIndex == -1)
                     dropdownIndex = gDropdownHighlightedIndex;
 
-                type = (dropdownIndex == -1) ? _selectedFloorTexture : dropdownIndex;
+                type = (dropdownIndex == -1) ? _selectedFloorTexture
+                                             : LandTool::GetSurfaceStyleFromDropdownIndex(static_cast<size_t>(dropdownIndex));
 
                 if (gLandToolTerrainSurface == type)
                 {
@@ -173,7 +174,8 @@ public:
                 if (dropdownIndex == -1)
                     dropdownIndex = gDropdownHighlightedIndex;
 
-                type = (dropdownIndex == -1) ? _selectedWallTexture : dropdownIndex;
+                type = (dropdownIndex == -1) ? _selectedWallTexture
+                                             : LandTool::GetEdgeStyleFromDropdownIndex(static_cast<size_t>(dropdownIndex));
 
                 if (gLandToolTerrainEdge == type)
                 {
@@ -189,7 +191,7 @@ public:
         }
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (widgetIndex != WIDX_PREVIEW)
             return;
@@ -227,15 +229,15 @@ public:
             SetWidgetPressed(WIDX_PAINTMODE, true);
 
         // Update the preview image (for tool sizes up to 7)
-        widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
+        widgets[WIDX_PREVIEW].image = ImageId(LandTool::SizeToSpriteIndex(gLandToolSize));
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         ScreenCoordsXY screenCoords;
         int32_t numTiles;
         money64 price;
-        rct_widget* previewWidget = &widgets[WIDX_PREVIEW];
+        Widget* previewWidget = &widgets[WIDX_PREVIEW];
 
         DrawWidgets(dpi);
         DrawDropdownButtons(dpi);
@@ -246,15 +248,15 @@ public:
             auto ft = Formatter();
             ft.Add<uint16_t>(gLandToolSize);
             screenCoords = { windowPos.x + previewWidget->midX(), windowPos.y + previewWidget->midY() };
-            DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+            DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
         }
         else if (gLandMountainMode)
         {
             screenCoords = { windowPos.x + previewWidget->left, windowPos.y + previewWidget->top };
             auto sprite = ImageId(gLandToolSize % 2 == 0 ? SPR_G2_MOUNTAIN_TOOL_EVEN : SPR_G2_MOUNTAIN_TOOL_ODD);
-            gfx_draw_sprite(&dpi, sprite, screenCoords);
-            WidgetDraw(&dpi, this, WIDX_DECREMENT);
-            WidgetDraw(&dpi, this, WIDX_INCREMENT);
+            GfxDrawSprite(dpi, sprite, screenCoords);
+            WidgetDraw(dpi, *this, WIDX_DECREMENT);
+            WidgetDraw(dpi, *this, WIDX_INCREMENT);
         }
 
         screenCoords = { windowPos.x + previewWidget->midX(), windowPos.y + previewWidget->bottom + 5 };
@@ -266,7 +268,7 @@ public:
             {
                 auto ft = Formatter();
                 ft.Add<money64>(gLandToolRaiseCost);
-                DrawTextBasic(&dpi, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                DrawTextBasic(dpi, screenCoords, STR_RAISE_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
             screenCoords.y += 10;
 
@@ -275,7 +277,7 @@ public:
             {
                 auto ft = Formatter();
                 ft.Add<money64>(gLandToolLowerCost);
-                DrawTextBasic(&dpi, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                DrawTextBasic(dpi, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
             screenCoords.y += 50;
 
@@ -300,13 +302,13 @@ public:
             {
                 auto ft = Formatter();
                 ft.Add<money64>(price);
-                DrawTextBasic(&dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
+                DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
         }
     }
 
 private:
-    void DrawDropdownButtons(rct_drawpixelinfo& dpi)
+    void DrawDropdownButtons(DrawPixelInfo& dpi)
     {
         auto& objManager = GetContext()->GetObjectManager();
         const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
@@ -331,14 +333,14 @@ private:
         DrawDropdownButton(dpi, WIDX_WALL, edgeImage);
     }
 
-    void DrawDropdownButton(rct_drawpixelinfo& dpi, rct_widgetindex widgetIndex, ImageId image)
+    void DrawDropdownButton(DrawPixelInfo& dpi, WidgetIndex widgetIndex, ImageId image)
     {
         const auto& widget = widgets[widgetIndex];
-        gfx_draw_sprite(&dpi, image, { windowPos.x + widget.left, windowPos.y + widget.top });
+        GfxDrawSprite(dpi, image, { windowPos.x + widget.left, windowPos.y + widget.top });
     }
 };
 
-rct_window* WindowLandOpen()
+WindowBase* WindowLandOpen()
 {
-    return WindowFocusOrCreate<LandWindow>(WC_LAND, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
+    return WindowFocusOrCreate<LandWindow>(WindowClass::Land, ScreenCoordsXY(ContextGetWidth() - WW, 29), WW, WH, 0);
 }

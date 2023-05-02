@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,6 +17,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../object/StationObject.h"
+#include "../paint/Paint.SessionFlags.h"
 #include "../paint/Paint.h"
 #include "../paint/Supports.h"
 #include "../paint/tile_element/Paint.TileElement.h"
@@ -230,7 +231,7 @@ enum
     SPR_STATION_COVER_OFFSET_TALL
 };
 
-bool track_paint_util_has_fence(
+bool TrackPaintUtilHasFence(
     enum edge_t edge, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride, uint8_t rotation)
 {
     const auto* stationObject = ride.GetStationObject();
@@ -261,8 +262,8 @@ bool track_paint_util_has_fence(
     return (entranceLoc != station.Entrance && entranceLoc != station.Exit);
 }
 
-void track_paint_util_paint_floor(
-    paint_session& session, uint8_t edges, uint32_t colourFlags, uint16_t height, const uint32_t floorSprites[4],
+void TrackPaintUtilPaintFloor(
+    PaintSession& session, uint8_t edges, ImageId colourFlags, uint16_t height, const uint32_t floorSprites[4],
     const StationObject* stationStyle)
 {
     if (stationStyle != nullptr && stationStyle->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
@@ -287,39 +288,37 @@ void track_paint_util_paint_floor(
         imageId = floorSprites[3];
     }
 
-    PaintAddImageAsParent(session, imageId | colourFlags, { 0, 0, height }, { 32, 32, 1 }, { 0, 0, height });
+    PaintAddImageAsParent(session, colourFlags.WithIndex(imageId), { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 }
 
-void track_paint_util_paint_fences(
-    paint_session& session, uint8_t edges, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride,
-    uint32_t colourFlags, uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation)
+void TrackPaintUtilPaintFences(
+    PaintSession& session, uint8_t edges, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride,
+    const ImageId colourFlags, uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation)
 {
-    uint32_t imageId;
-
-    if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, position, trackElement, ride, rotation))
+    if (edges & EDGE_NW && TrackPaintUtilHasFence(EDGE_NW, position, trackElement, ride, rotation))
     {
-        imageId = fenceSprites[3] | colourFlags;
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 32, 1, 7 }, { 0, 2, height + 2 });
+        PaintAddImageAsChild(
+            session, colourFlags.WithIndex(fenceSprites[3]), { 0, 0, height }, { { 0, 2, height + 2 }, { 32, 1, 7 } });
     }
-    if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, position, trackElement, ride, rotation))
+    if (edges & EDGE_NE && TrackPaintUtilHasFence(EDGE_NE, position, trackElement, ride, rotation))
     {
-        imageId = fenceSprites[0] | colourFlags;
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 2, 0, height + 2 });
+        PaintAddImageAsChild(
+            session, colourFlags.WithIndex(fenceSprites[0]), { 0, 0, height }, { { 2, 0, height + 2 }, { 1, 32, 7 } });
     }
-    if (edges & EDGE_SE && track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, rotation))
+    if (edges & EDGE_SE && TrackPaintUtilHasFence(EDGE_SE, position, trackElement, ride, rotation))
     {
-        imageId = fenceSprites[1] | colourFlags;
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 7 }, { 0, 30, height + 2 });
+        PaintAddImageAsParent(
+            session, colourFlags.WithIndex(fenceSprites[1]), { 0, 0, height }, { { 0, 30, height + 2 }, { 32, 1, 7 } });
     }
-    if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, rotation))
+    if (edges & EDGE_SW && TrackPaintUtilHasFence(EDGE_SW, position, trackElement, ride, rotation))
     {
-        imageId = fenceSprites[2] | colourFlags;
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 30, 0, height + 2 });
+        PaintAddImageAsParent(
+            session, colourFlags.WithIndex(fenceSprites[2]), { 0, 0, height }, { { 30, 0, height + 2 }, { 1, 32, 7 } });
     }
 }
 
 /* Supports are only placed every 2 tiles for flat pieces*/
-bool track_paint_util_should_paint_supports(const CoordsXY& position)
+bool TrackPaintUtilShouldPaintSupports(const CoordsXY& position)
 {
     if ((position.x & (1 << 5)) == (position.y & (1 << 5)))
         return true;
@@ -330,32 +329,32 @@ bool track_paint_util_should_paint_supports(const CoordsXY& position)
     return false;
 }
 
-static void track_paint_util_draw_station_impl(
-    paint_session& session, const Ride& ride, Direction direction, uint16_t height, uint16_t coverHeight,
+static void TrackPaintUtilDrawStationImpl(
+    PaintSession& session, const Ride& ride, Direction direction, uint16_t height, uint16_t coverHeight,
     const TrackElement& trackElement, int32_t fenceOffsetA, int32_t fenceOffsetB);
 
-void track_paint_util_draw_station(
-    paint_session& session, const Ride& ride, Direction direction, uint16_t height, const TrackElement& trackElement)
+void TrackPaintUtilDrawStation(
+    PaintSession& session, const Ride& ride, Direction direction, uint16_t height, const TrackElement& trackElement)
 {
-    track_paint_util_draw_station_impl(session, ride, direction, height, height, trackElement, 5, 7);
+    TrackPaintUtilDrawStationImpl(session, ride, direction, height, height, trackElement, 5, 7);
 }
 
-void track_paint_util_draw_station_2(
-    paint_session& session, const Ride& ride, Direction direction, uint16_t height, const TrackElement& trackElement,
+void TrackPaintUtilDrawStation2(
+    PaintSession& session, const Ride& ride, Direction direction, uint16_t height, const TrackElement& trackElement,
     int32_t fenceOffsetA, int32_t fenceOffsetB)
 {
-    track_paint_util_draw_station_impl(session, ride, direction, height, height, trackElement, fenceOffsetA, fenceOffsetB);
+    TrackPaintUtilDrawStationImpl(session, ride, direction, height, height, trackElement, fenceOffsetA, fenceOffsetB);
 }
 
-void track_paint_util_draw_station_3(
-    paint_session& session, const Ride& ride, Direction direction, uint16_t height, uint16_t coverHeight,
+void TrackPaintUtilDrawStation3(
+    PaintSession& session, const Ride& ride, Direction direction, uint16_t height, uint16_t coverHeight,
     const TrackElement& trackElement)
 {
-    track_paint_util_draw_station_impl(session, ride, direction, height, coverHeight, trackElement, 5, 7);
+    TrackPaintUtilDrawStationImpl(session, ride, direction, height, coverHeight, trackElement, 5, 7);
 }
 
-static void track_paint_util_draw_station_impl(
-    paint_session& session, const Ride& ride, Direction direction, uint16_t height, uint16_t coverHeight,
+static void TrackPaintUtilDrawStationImpl(
+    PaintSession& session, const Ride& ride, Direction direction, uint16_t height, uint16_t coverHeight,
     const TrackElement& trackElement, int32_t fenceOffsetA, int32_t fenceOffsetB)
 {
     CoordsXY position = session.MapPosition;
@@ -366,203 +365,199 @@ static void track_paint_util_draw_station_impl(
         return;
 
     bool hasFence;
-    uint32_t imageId;
+    ImageId imageId;
 
     if (direction == 0 || direction == 2)
     {
         // height += 5 (height + 5);
-        hasFence = track_paint_util_has_fence(EDGE_NW, position, trackElement, ride, session.CurrentRotation);
+        hasFence = TrackPaintUtilHasFence(EDGE_NW, position, trackElement, ride, session.CurrentRotation);
 
         if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 0)
         {
             if (hasGreenLight)
             {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_GREEN_LIGHT_SW_NE
-                                    : SPR_STATION_PLATFORM_END_GREEN_LIGHT_SW_NE)
-                    | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                    hasFence ? SPR_STATION_PLATFORM_FENCED_END_GREEN_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_GREEN_LIGHT_SW_NE);
             }
             else
             {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_SW_NE
-                                    : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE)
-                    | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                    hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE);
             }
         }
         else if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 2)
         {
-            imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_SW_NE : SPR_STATION_PLATFORM_BEGIN_SW_NE)
-                | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_SW_NE : SPR_STATION_PLATFORM_BEGIN_SW_NE));
         }
         else
         {
-            imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_SW_NE : SPR_STATION_PLATFORM_SW_NE)
-                | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                (hasFence ? SPR_STATION_PLATFORM_FENCED_SW_NE : SPR_STATION_PLATFORM_SW_NE));
         }
         PaintAddImageAsParent(session, imageId, { 0, 0, height + fenceOffsetA }, { 32, 8, 1 });
         // height -= 5 (height)
-        track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, coverHeight);
+        TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, coverHeight);
         // height += 5 (height + 5)
 
         if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 0)
         {
-            imageId = (hasGreenLight ? SPR_STATION_PLATFORM_END_GREEN_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE)
-                | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                (hasGreenLight ? SPR_STATION_PLATFORM_END_GREEN_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE));
         }
         else if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 2)
         {
-            imageId = SPR_STATION_PLATFORM_BEGIN_SW_NE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_PLATFORM_BEGIN_SW_NE);
         }
         else
         {
-            imageId = SPR_STATION_PLATFORM_SW_NE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_PLATFORM_SW_NE);
         }
         PaintAddImageAsParent(session, imageId, { 0, 24, height + fenceOffsetA }, { 32, 8, 1 });
         // height += 2 (height + 7)
 
-        hasFence = track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, session.CurrentRotation);
+        hasFence = TrackPaintUtilHasFence(EDGE_SE, position, trackElement, ride, session.CurrentRotation);
         if (hasFence)
         {
             if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 0)
             {
-                imageId = SPR_STATION_BEGIN_ANGLE_FENCE_SW_NE | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_BEGIN_ANGLE_FENCE_SW_NE);
             }
             else if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 2)
             {
-                imageId = SPR_STATION_LIGHT_BACK_ANGLE_FENCED_NE_SW | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_LIGHT_BACK_ANGLE_FENCED_NE_SW);
             }
             else
             {
-                imageId = SPR_STATION_FENCE_SW_NE | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_FENCE_SW_NE);
             }
             PaintAddImageAsParent(session, imageId, { 0, 31, height + fenceOffsetB }, { 32, 1, 7 });
         }
         else if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 0)
         {
             // Addition: draw only small fence if there is an entrance/exit at the beginning
-            imageId = SPR_STATION_FENCE_SMALL_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_FENCE_SMALL_NW_SE);
             PaintAddImageAsParent(session, imageId, { 31, 23, height + fenceOffsetB }, { 1, 8, 7 });
         }
         else if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 2)
         {
             // Addition: draw only small fence if there is an entrance/exit at the end
-            imageId = SPR_STATION_LIGHT_BACK_NE_SW | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_LIGHT_BACK_NE_SW);
             PaintAddImageAsParent(session, imageId, { 31, 23, height + fenceOffsetB }, { 1, 8, 7 });
         }
         // height -= 7 (height)
-        track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, stationObj, coverHeight);
+        TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, coverHeight);
         // height += 7 (height + 7)
 
         if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 0)
         {
-            imageId = SPR_STATION_FENCE_SMALL_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_FENCE_SMALL_NW_SE);
             PaintAddImageAsParent(session, imageId, { 31, 0, height + fenceOffsetB }, { 1, 8, 7 });
         }
         else if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 2)
         {
-            imageId = SPR_STATION_LIGHT_BACK_NE_SW | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_LIGHT_BACK_NE_SW);
             PaintAddImageAsParent(session, imageId, { 31, 0, height + fenceOffsetB }, { 1, 8, 7 });
         }
     }
     else if (direction == 1 || direction == 3)
     {
         // height += 5 (height + 5);
-        hasFence = track_paint_util_has_fence(EDGE_NE, position, trackElement, ride, session.CurrentRotation);
+        hasFence = TrackPaintUtilHasFence(EDGE_NE, position, trackElement, ride, session.CurrentRotation);
 
         if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 3)
         {
             if (hasGreenLight)
             {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_GREEN_LIGHT_NW_SE
-                                    : SPR_STATION_PLATFORM_END_GREEN_LIGHT_NW_SE)
-                    | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                    hasFence ? SPR_STATION_PLATFORM_FENCED_END_GREEN_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_GREEN_LIGHT_NW_SE);
             }
             else
             {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_NW_SE
-                                    : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE)
-                    | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                    hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE);
             }
         }
         else if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 1)
         {
-            imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_NW_SE : SPR_STATION_PLATFORM_BEGIN_NW_SE)
-                | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_NW_SE : SPR_STATION_PLATFORM_BEGIN_NW_SE));
         }
         else
         {
-            imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_NW_SE : SPR_STATION_PLATFORM_NW_SE)
-                | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                (hasFence ? SPR_STATION_PLATFORM_FENCED_NW_SE : SPR_STATION_PLATFORM_NW_SE));
         }
         PaintAddImageAsParent(session, imageId, { 0, 0, height + fenceOffsetA }, { 8, 32, 1 });
         // height -= 5 (height)
-        track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, coverHeight);
+        TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, coverHeight);
         // height += 5 (height + 5)
 
         if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 3)
         {
-            imageId = (hasGreenLight ? SPR_STATION_PLATFORM_END_GREEN_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE)
-                | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                (hasGreenLight ? SPR_STATION_PLATFORM_END_GREEN_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE));
         }
         else if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 1)
         {
-            imageId = SPR_STATION_PLATFORM_BEGIN_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_PLATFORM_BEGIN_NW_SE);
         }
         else
         {
-            imageId = SPR_STATION_PLATFORM_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_PLATFORM_NW_SE);
         }
         PaintAddImageAsParent(session, imageId, { 24, 0, height + fenceOffsetA }, { 8, 32, 1 });
         // height += 2 (height + 7)
 
-        hasFence = track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, session.CurrentRotation);
+        hasFence = TrackPaintUtilHasFence(EDGE_SW, position, trackElement, ride, session.CurrentRotation);
         if (hasFence)
         {
             if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 3)
             {
-                imageId = SPR_STATION_BEGIN_ANGLE_FENCE_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_BEGIN_ANGLE_FENCE_NW_SE);
             }
             else if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 1)
             {
-                imageId = SPR_STATION_LIGHT_BACK_ANGLE_FENCED_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_LIGHT_BACK_ANGLE_FENCED_NW_SE);
             }
             else
             {
-                imageId = SPR_STATION_FENCE_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_FENCE_NW_SE);
             }
             PaintAddImageAsParent(session, imageId, { 31, 0, height + fenceOffsetB }, { 1, 32, 7 });
         }
         else if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 3)
         {
             // Addition: draw only small fence if there is an entrance/exit at the beginning
-            imageId = SPR_STATION_FENCE_SMALL_SW_NE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_FENCE_SMALL_SW_NE);
             PaintAddImageAsParent(session, imageId, { 23, 31, height + fenceOffsetB }, { 8, 1, 7 });
         }
         else if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 1)
         {
             // Addition: draw only small fence if there is an entrance/exit at the end
-            imageId = SPR_STATION_LIGHT_BACK_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_LIGHT_BACK_NW_SE);
             PaintAddImageAsParent(session, imageId, { 23, 31, height + fenceOffsetB }, { 8, 1, 7 });
         }
 
         // height -= 7 (height)
-        track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, coverHeight);
+        TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, coverHeight);
         // height += 7 (height + 7)
 
         if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 3)
         {
-            imageId = SPR_STATION_FENCE_SMALL_SW_NE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_FENCE_SMALL_SW_NE);
             PaintAddImageAsParent(session, imageId, { 0, 31, height + fenceOffsetB }, { 8, 1, 7 });
         }
         else if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 1)
         {
-            imageId = SPR_STATION_LIGHT_BACK_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_LIGHT_BACK_NW_SE);
             PaintAddImageAsParent(session, imageId, { 0, 31, height + fenceOffsetB }, { 8, 1, 7 });
         }
     }
 }
 
-void track_paint_util_draw_station_inverted(
-    paint_session& session, const Ride& ride, Direction direction, int32_t height, const TrackElement& trackElement,
+void TrackPaintUtilDrawStationInverted(
+    PaintSession& session, const Ride& ride, Direction direction, int32_t height, const TrackElement& trackElement,
     uint8_t stationVariant)
 {
     CoordsXY position = session.MapPosition;
@@ -573,209 +568,205 @@ void track_paint_util_draw_station_inverted(
         return;
 
     bool hasFence;
-    uint32_t imageId;
+    ImageId imageId;
 
     if (direction == 0 || direction == 2)
     {
         // height += 5 (height + 5);
-        hasFence = track_paint_util_has_fence(EDGE_NW, position, trackElement, ride, session.CurrentRotation);
+        hasFence = TrackPaintUtilHasFence(EDGE_NW, position, trackElement, ride, session.CurrentRotation);
 
         if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 0)
         {
             if (hasGreenLight)
             {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_GREEN_LIGHT_SW_NE
-                                    : SPR_STATION_PLATFORM_END_GREEN_LIGHT_SW_NE)
-                    | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                    hasFence ? SPR_STATION_PLATFORM_FENCED_END_GREEN_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_GREEN_LIGHT_SW_NE);
             }
             else
             {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_SW_NE
-                                    : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE)
-                    | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                    hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE);
             }
         }
         else if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 2)
         {
-            imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_SW_NE : SPR_STATION_PLATFORM_BEGIN_SW_NE)
-                | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_SW_NE : SPR_STATION_PLATFORM_BEGIN_SW_NE));
         }
         else
         {
-            imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_SW_NE : SPR_STATION_PLATFORM_SW_NE)
-                | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                (hasFence ? SPR_STATION_PLATFORM_FENCED_SW_NE : SPR_STATION_PLATFORM_SW_NE));
         }
         PaintAddImageAsParent(session, imageId, { 0, 0, height + 6 }, { 32, 8, 1 });
         // height -= 5 (height)
-        track_paint_util_draw_station_covers_2(session, EDGE_NW, hasFence, stationObj, height, stationVariant);
+        TrackPaintUtilDrawStationCovers2(session, EDGE_NW, hasFence, stationObj, height, stationVariant);
         // height += 5 (height + 5)
 
         if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 0)
         {
-            imageId = (hasGreenLight ? SPR_STATION_PLATFORM_END_GREEN_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE)
-                | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                (hasGreenLight ? SPR_STATION_PLATFORM_END_GREEN_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE));
         }
         else if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 2)
         {
-            imageId = SPR_STATION_PLATFORM_BEGIN_SW_NE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_PLATFORM_BEGIN_SW_NE);
         }
         else
         {
-            imageId = SPR_STATION_PLATFORM_SW_NE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_PLATFORM_SW_NE);
         }
         PaintAddImageAsParent(session, imageId, { 0, 24, height + 6 }, { 32, 8, 1 });
         // height += 2 (height + 7)
 
-        hasFence = track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, session.CurrentRotation);
+        hasFence = TrackPaintUtilHasFence(EDGE_SE, position, trackElement, ride, session.CurrentRotation);
         if (hasFence)
         {
             if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 0)
             {
-                imageId = SPR_STATION_INVERTED_BEGIN_ANGLE_FENCE_SW_NE | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_INVERTED_BEGIN_ANGLE_FENCE_SW_NE);
             }
             else if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 2)
             {
-                imageId = SPR_STATION_INVERTED_LIGHT_BACK_ANGLE_FENCED_NE_SW | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_INVERTED_LIGHT_BACK_ANGLE_FENCED_NE_SW);
             }
             else
             {
-                imageId = SPR_STATION_INVERTED_FENCE_SW_NE | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_INVERTED_FENCE_SW_NE);
             }
             PaintAddImageAsParent(session, imageId, { 0, 31, height + 8 }, { 32, 1, 7 });
         }
         else if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 0)
         {
             // Addition: draw only small fence if there is an entrance/exit at the beginning
-            imageId = SPR_STATION_FENCE_SMALL_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_FENCE_SMALL_NW_SE);
             PaintAddImageAsParent(session, imageId, { 31, 23, height + 8 }, { 1, 8, 7 });
         }
         else if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 2)
         {
             // Addition: draw only small fence if there is an entrance/exit at the end
-            imageId = SPR_STATION_LIGHT_BACK_NE_SW | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_LIGHT_BACK_NE_SW);
             PaintAddImageAsParent(session, imageId, { 31, 23, height + 8 }, { 1, 8, 7 });
         }
         // height -= 7 (height)
-        track_paint_util_draw_station_covers_2(session, EDGE_SE, hasFence, stationObj, height, stationVariant);
+        TrackPaintUtilDrawStationCovers2(session, EDGE_SE, hasFence, stationObj, height, stationVariant);
         // height += 7 (height + 7)
 
         if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 0)
         {
-            imageId = SPR_STATION_FENCE_SMALL_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_FENCE_SMALL_NW_SE);
             PaintAddImageAsParent(session, imageId, { 31, 0, height + 8 }, { 1, 8, 7 });
         }
         else if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 2)
         {
-            imageId = SPR_STATION_LIGHT_BACK_NE_SW | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_LIGHT_BACK_NE_SW);
             PaintAddImageAsParent(session, imageId, { 31, 0, height + 8 }, { 1, 8, 7 });
         }
     }
     else if (direction == 1 || direction == 3)
     {
         // height += 5 (height + 5);
-        hasFence = track_paint_util_has_fence(EDGE_NE, position, trackElement, ride, session.CurrentRotation);
+        hasFence = TrackPaintUtilHasFence(EDGE_NE, position, trackElement, ride, session.CurrentRotation);
 
         if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 3)
         {
             if (hasGreenLight)
             {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_GREEN_LIGHT_NW_SE
-                                    : SPR_STATION_PLATFORM_END_GREEN_LIGHT_NW_SE)
-                    | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                    hasFence ? SPR_STATION_PLATFORM_FENCED_END_GREEN_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_GREEN_LIGHT_NW_SE);
             }
             else
             {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_NW_SE
-                                    : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE)
-                    | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                    hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE);
             }
         }
         else if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 1)
         {
-            imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_NW_SE : SPR_STATION_PLATFORM_BEGIN_NW_SE)
-                | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_NW_SE : SPR_STATION_PLATFORM_BEGIN_NW_SE));
         }
         else
         {
-            imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_NW_SE : SPR_STATION_PLATFORM_NW_SE)
-                | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                (hasFence ? SPR_STATION_PLATFORM_FENCED_NW_SE : SPR_STATION_PLATFORM_NW_SE));
         }
         PaintAddImageAsParent(session, imageId, { 0, 0, height + 6 }, { 8, 32, 1 });
         // height -= 5 (height)
-        track_paint_util_draw_station_covers_2(session, EDGE_NE, hasFence, stationObj, height, stationVariant);
+        TrackPaintUtilDrawStationCovers2(session, EDGE_NE, hasFence, stationObj, height, stationVariant);
         // height += 5 (height + 5)
 
         if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 3)
         {
-            imageId = (hasGreenLight ? SPR_STATION_PLATFORM_END_GREEN_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE)
-                | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+                (hasGreenLight ? SPR_STATION_PLATFORM_END_GREEN_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE));
         }
         else if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 1)
         {
-            imageId = SPR_STATION_PLATFORM_BEGIN_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_PLATFORM_BEGIN_NW_SE);
         }
         else
         {
-            imageId = SPR_STATION_PLATFORM_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_PLATFORM_NW_SE);
         }
         PaintAddImageAsParent(session, imageId, { 24, 0, height + 6 }, { 8, 32, 1 });
         // height += 2 (height + 7)
 
-        hasFence = track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, session.CurrentRotation);
+        hasFence = TrackPaintUtilHasFence(EDGE_SW, position, trackElement, ride, session.CurrentRotation);
         if (hasFence)
         {
             if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 3)
             {
-                imageId = SPR_STATION_INVERTED_BEGIN_ANGLE_FENCE_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_INVERTED_BEGIN_ANGLE_FENCE_NW_SE);
             }
             else if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 1)
             {
-                imageId = SPR_STATION_INVERTED_LIGHT_BACK_ANGLE_FENCED_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_INVERTED_LIGHT_BACK_ANGLE_FENCED_NW_SE);
             }
             else
             {
-                imageId = SPR_STATION_INVERTED_FENCE_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+                imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_INVERTED_FENCE_NW_SE);
             }
             PaintAddImageAsParent(session, imageId, { 31, 0, height + 8 }, { 1, 32, 7 });
         }
         else if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 3)
         {
             // Addition: draw only small fence if there is an entrance/exit at the beginning
-            imageId = SPR_STATION_FENCE_SMALL_SW_NE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_FENCE_SMALL_SW_NE);
             PaintAddImageAsParent(session, imageId, { 23, 31, height + 8 }, { 8, 1, 7 });
         }
         else if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 1)
         {
             // Addition: draw only small fence if there is an entrance/exit at the end
-            imageId = SPR_STATION_LIGHT_BACK_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_LIGHT_BACK_NW_SE);
             PaintAddImageAsParent(session, imageId, { 23, 31, height + 8 }, { 8, 1, 7 });
         }
 
         // height -= 7 (height)
-        track_paint_util_draw_station_covers_2(session, EDGE_SW, hasFence, stationObj, height, stationVariant);
+        TrackPaintUtilDrawStationCovers2(session, EDGE_SW, hasFence, stationObj, height, stationVariant);
         // height += 7 (height + 7)
 
         if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 3)
         {
-            imageId = SPR_STATION_FENCE_SMALL_SW_NE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_FENCE_SMALL_SW_NE);
             PaintAddImageAsParent(session, imageId, { 0, 31, height + 8 }, { 8, 1, 7 });
         }
         else if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 1)
         {
-            imageId = SPR_STATION_LIGHT_BACK_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_LIGHT_BACK_NW_SE);
             PaintAddImageAsParent(session, imageId, { 0, 31, height + 8 }, { 8, 1, 7 });
         }
     }
 }
 
-bool track_paint_util_draw_station_covers(
-    paint_session& session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height)
+bool TrackPaintUtilDrawStationCovers(
+    PaintSession& session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height)
 {
-    return track_paint_util_draw_station_covers_2(session, edge, hasFence, stationObject, height, STATION_VARIANT_BASIC);
+    return TrackPaintUtilDrawStationCovers2(session, edge, hasFence, stationObject, height, STATION_VARIANT_BASIC);
 }
 
-bool track_paint_util_draw_station_covers_2(
-    paint_session& session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height,
+bool TrackPaintUtilDrawStationCovers2(
+    PaintSession& session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height,
     uint8_t stationVariant)
 {
     if (stationObject == nullptr)
@@ -799,28 +790,24 @@ bool track_paint_util_draw_station_covers_2(
     };
 
     int32_t imageOffset = 0;
-    CoordsXYZ bounds, boundsOffset;
+    BoundBoxXYZ boundBox;
     CoordsXYZ offset = CoordsXYZ(0, 0, height);
     switch (edge)
     {
         case EDGE_NE:
-            bounds = CoordsXYZ(1, 30, heights[stationVariant][0]);
-            boundsOffset = CoordsXYZ(0, 1, height + 1);
+            boundBox = { { 0, 1, height + 1 }, { 1, 30, heights[stationVariant][0] } };
             imageOffset = hasFence ? SPR_STATION_COVER_OFFSET_SE_NW_BACK_1 : SPR_STATION_COVER_OFFSET_SE_NW_BACK_0;
             break;
         case EDGE_SE:
-            bounds = CoordsXYZ(32, 32, 0);
-            boundsOffset = CoordsXYZ(0, 0, height + 1 + heights[stationVariant][0]);
+            boundBox = { { 0, 0, height + 1 + heights[stationVariant][0] }, { 32, 32, 0 } };
             imageOffset = SPR_STATION_COVER_OFFSET_NE_SW_FRONT;
             break;
         case EDGE_SW:
-            bounds = CoordsXYZ(32, 32, 0);
-            boundsOffset = CoordsXYZ(0, 0, height + 1 + heights[stationVariant][0]);
+            boundBox = { { 0, 0, height + 1 + heights[stationVariant][0] }, { 32, 32, 0 } };
             imageOffset = SPR_STATION_COVER_OFFSET_SE_NW_FRONT;
             break;
         case EDGE_NW:
-            bounds = CoordsXYZ(30, 1, heights[stationVariant][0]);
-            boundsOffset = CoordsXYZ(1, 0, height + 1);
+            boundBox = { { 1, 0, height + 1 }, { 30, 1, heights[stationVariant][0] } };
             imageOffset = hasFence ? SPR_STATION_COVER_OFFSET_NE_SW_BACK_1 : SPR_STATION_COVER_OFFSET_NE_SW_BACK_0;
             break;
     }
@@ -830,21 +817,21 @@ bool track_paint_util_draw_station_covers_2(
         imageOffset += SPR_STATION_COVER_OFFSET_TALL;
     }
 
-    auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_TRACK]);
+    auto imageTemplate = session.TrackColours[SCHEME_TRACK];
     auto imageId = imageTemplate.WithIndex(baseImageIndex + imageOffset);
-    PaintAddImageAsParent(session, imageId, offset, bounds, boundsOffset);
+    PaintAddImageAsParent(session, imageId, offset, boundBox);
 
     // Glass
-    if (session.TrackColours[SCHEME_MISC] == IMAGE_TYPE_REMAP && (stationObject->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT))
+    if (session.TrackColours[SCHEME_MISC] == TrackGhost && (stationObject->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT))
     {
-        imageId = ImageId(baseImageIndex + imageOffset + 12).WithTransparancy(imageTemplate.GetPrimary());
-        PaintAddImageAsChild(session, imageId, offset, bounds, boundsOffset);
+        imageId = ImageId(baseImageIndex + imageOffset + 12).WithTransparency(imageTemplate.GetPrimary());
+        PaintAddImageAsChild(session, imageId, offset, boundBox);
     }
     return true;
 }
 
-void track_paint_util_draw_narrow_station_platform(
-    paint_session& session, const Ride& ride, Direction direction, int32_t height, int32_t zOffset,
+void TrackPaintUtilDrawNarrowStationPlatform(
+    PaintSession& session, const Ride& ride, Direction direction, int32_t height, int32_t zOffset,
     const TrackElement& trackElement)
 {
     CoordsXY position = session.MapPosition;
@@ -854,111 +841,111 @@ void track_paint_util_draw_narrow_station_platform(
 
     if (direction & 1)
     {
-        bool hasFence = track_paint_util_has_fence(EDGE_NE, position, trackElement, ride, session.CurrentRotation);
-        uint32_t imageId = (hasFence ? SPR_STATION_NARROW_EDGE_FENCED_NE : SPR_STATION_NARROW_EDGE_NE)
-            | session.TrackColours[SCHEME_SUPPORTS];
+        bool hasFence = TrackPaintUtilHasFence(EDGE_NE, position, trackElement, ride, session.CurrentRotation);
+        ImageId imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+            (hasFence ? SPR_STATION_NARROW_EDGE_FENCED_NE : SPR_STATION_NARROW_EDGE_NE));
         PaintAddImageAsParent(session, imageId, { 0, 0, height + zOffset }, { 8, 32, 1 });
-        track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
+        TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, height);
 
-        imageId = SPR_STATION_NARROW_EDGE_SW | session.TrackColours[SCHEME_SUPPORTS];
+        imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_NARROW_EDGE_SW);
         PaintAddImageAsParent(session, imageId, { 24, 0, height + zOffset }, { 8, 32, 1 });
 
-        hasFence = track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, session.CurrentRotation);
+        hasFence = TrackPaintUtilHasFence(EDGE_SW, position, trackElement, ride, session.CurrentRotation);
         if (hasFence)
         {
-            imageId = SPR_STATION_FENCE_NW_SE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_FENCE_NW_SE);
             PaintAddImageAsParent(session, imageId, { 31, 0, height + zOffset + 2 }, { 1, 32, 7 });
         }
-        track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, height);
+        TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height);
     }
     else
     {
-        bool hasFence = track_paint_util_has_fence(EDGE_NW, position, trackElement, ride, session.CurrentRotation);
-        uint32_t imageId = (hasFence ? SPR_STATION_NARROW_EDGE_FENCED_NW : SPR_STATION_NARROW_EDGE_NW)
-            | session.TrackColours[SCHEME_SUPPORTS];
+        bool hasFence = TrackPaintUtilHasFence(EDGE_NW, position, trackElement, ride, session.CurrentRotation);
+        ImageId imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+            (hasFence ? SPR_STATION_NARROW_EDGE_FENCED_NW : SPR_STATION_NARROW_EDGE_NW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height + zOffset }, { 32, 8, 1 });
-        track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
+        TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height);
 
-        imageId = SPR_STATION_NARROW_EDGE_SE | session.TrackColours[SCHEME_SUPPORTS];
+        imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_NARROW_EDGE_SE);
         PaintAddImageAsParent(session, imageId, { 0, 24, height + zOffset }, { 32, 8, 1 });
 
-        hasFence = track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, session.CurrentRotation);
+        hasFence = TrackPaintUtilHasFence(EDGE_SE, position, trackElement, ride, session.CurrentRotation);
         if (hasFence)
         {
-            imageId = SPR_STATION_FENCE_SW_NE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_FENCE_SW_NE);
             PaintAddImageAsParent(session, imageId, { 0, 31, height + zOffset + 2 }, { 32, 1, 7 });
         }
-        track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, stationObj, height);
+        TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, height);
     }
 }
 
-void track_paint_util_draw_pier(
-    paint_session& session, const Ride& ride, const StationObject* stationObj, const CoordsXY& position, Direction direction,
+void TrackPaintUtilDrawPier(
+    PaintSession& session, const Ride& ride, const StationObject* stationObj, const CoordsXY& position, Direction direction,
     int32_t height, const TrackElement& trackElement, uint8_t rotation)
 {
     if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
         return;
 
     bool hasFence;
-    uint32_t imageId;
+    ImageId imageId;
 
     if (direction & 1)
     {
-        hasFence = track_paint_util_has_fence(EDGE_NE, position, trackElement, ride, session.CurrentRotation);
-        imageId = (hasFence ? SPR_STATION_PIER_EDGE_NE_FENCED : SPR_STATION_PIER_EDGE_NE)
-            | session.TrackColours[SCHEME_SUPPORTS];
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 6, 32, 1 }, { 2, 0, height });
-        track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
+        hasFence = TrackPaintUtilHasFence(EDGE_NE, position, trackElement, ride, session.CurrentRotation);
+        imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+            (hasFence ? SPR_STATION_PIER_EDGE_NE_FENCED : SPR_STATION_PIER_EDGE_NE));
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 6, 32, 1 } });
+        TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, height);
 
-        imageId = SPR_STATION_PIER_EDGE_SW | session.TrackColours[SCHEME_SUPPORTS];
+        imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_PIER_EDGE_SW);
         PaintAddImageAsParent(session, imageId, { 24, 0, height }, { 8, 32, 1 });
 
-        hasFence = track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, session.CurrentRotation);
+        hasFence = TrackPaintUtilHasFence(EDGE_SW, position, trackElement, ride, session.CurrentRotation);
         if (hasFence)
         {
-            imageId = SPR_STATION_PIER_FENCE_SW | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_PIER_FENCE_SW);
             PaintAddImageAsParent(session, imageId, { 31, 0, height + 2 }, { 1, 32, 7 });
         }
-        track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, height);
+        TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height);
     }
     else
     {
-        hasFence = track_paint_util_has_fence(EDGE_NW, position, trackElement, ride, rotation);
-        imageId = (hasFence ? SPR_STATION_PIER_EDGE_NW_FENCED : SPR_STATION_PIER_EDGE_NW)
-            | session.TrackColours[SCHEME_SUPPORTS];
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 6, 1 }, { 0, 2, height });
-        track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
+        hasFence = TrackPaintUtilHasFence(EDGE_NW, position, trackElement, ride, rotation);
+        imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+            (hasFence ? SPR_STATION_PIER_EDGE_NW_FENCED : SPR_STATION_PIER_EDGE_NW));
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 6, 1 } });
+        TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height);
 
-        imageId = SPR_STATION_PIER_EDGE_SE | session.TrackColours[SCHEME_SUPPORTS];
+        imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_PIER_EDGE_SE);
         PaintAddImageAsParent(session, imageId, { 0, 24, height }, { 32, 8, 1 });
 
-        hasFence = track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, rotation);
+        hasFence = TrackPaintUtilHasFence(EDGE_SE, position, trackElement, ride, rotation);
         if (hasFence)
         {
-            imageId = SPR_STATION_PIER_FENCE_SE | session.TrackColours[SCHEME_SUPPORTS];
+            imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_PIER_FENCE_SE);
             PaintAddImageAsParent(session, imageId, { 0, 31, height + 2 }, { 32, 1, 7 });
         }
-        track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, stationObj, height);
+        TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, height);
     }
 }
 
-void track_paint_util_draw_station_metal_supports(paint_session& session, Direction direction, uint16_t height, uint32_t colour)
+void TrackPaintUtilDrawStationMetalSupports(PaintSession& session, Direction direction, uint16_t height, ImageId colour)
 {
-    track_paint_util_draw_station_metal_supports_2(session, direction, height, colour, 3);
+    TrackPaintUtilDrawStationMetalSupports2(session, direction, height, colour, MetalSupportType::Boxed);
 }
 
-void track_paint_util_draw_station_metal_supports_2(
-    paint_session& session, Direction direction, uint16_t height, uint32_t colour, uint8_t type)
+void TrackPaintUtilDrawStationMetalSupports2(
+    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type)
 {
     if (direction & 1)
     {
-        metal_a_supports_paint_setup(session, type, 6, 0, height, colour);
-        metal_a_supports_paint_setup(session, type, 7, 0, height, colour);
+        MetalASupportsPaintSetup(session, type, 6, 0, height, colour);
+        MetalASupportsPaintSetup(session, type, 7, 0, height, colour);
     }
     else
     {
-        metal_a_supports_paint_setup(session, type, 5, 0, height, colour);
-        metal_a_supports_paint_setup(session, type, 8, 0, height, colour);
+        MetalASupportsPaintSetup(session, type, 5, 0, height, colour);
+        MetalASupportsPaintSetup(session, type, 8, 0, height, colour);
     }
 }
 
@@ -1015,9 +1002,9 @@ static constexpr const int8_t right_helix_up_small_quarter_tiles_sprite_map[] = 
     2,
 };
 
-void track_paint_util_right_helix_up_small_quarter_tiles_paint(
-    paint_session& session, const int8_t thickness[2], int16_t height, Direction direction, uint8_t trackSequence,
-    uint32_t colourFlags, const uint32_t sprites[4][3][2], const CoordsXY offsets[4][3][2],
+void TrackPaintUtilRightHelixUpSmallQuarterTilesPaint(
+    PaintSession& session, const int8_t thickness[2], int16_t height, Direction direction, uint8_t trackSequence,
+    const ImageId colourFlags, const uint32_t sprites[4][3][2], const CoordsXY offsets[4][3][2],
     const CoordsXY boundsLengths[4][3][2], const CoordsXYZ boundsOffsets[4][3][2])
 {
     int32_t index = right_helix_up_small_quarter_tiles_sprite_map[trackSequence];
@@ -1028,25 +1015,25 @@ void track_paint_util_right_helix_up_small_quarter_tiles_paint(
 
     if (sprites[direction][index][0] != 0)
     {
-        uint32_t imageId = sprites[direction][index][0] | colourFlags;
+        auto imageId = colourFlags.WithIndex(sprites[direction][index][0]);
         CoordsXY offset = (offsets == nullptr ? CoordsXY() : offsets[direction][index][0]);
         CoordsXY boundsLength = boundsLengths[direction][index][0];
         CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index][0]);
 
         PaintAddImageAsParent(
-            session, imageId, { offset, height }, { boundsLength, thickness[0] },
-            { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+            session, imageId, { offset, height },
+            { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength, thickness[0] } });
     }
     if (sprites[direction][index][1] != 0)
     {
-        uint32_t imageId = sprites[direction][index][1] | colourFlags;
+        auto imageId = colourFlags.WithIndex(sprites[direction][index][1]);
         CoordsXY offset = (offsets == nullptr ? CoordsXY() : offsets[direction][index][1]);
         CoordsXY boundsLength = boundsLengths[direction][index][1];
         CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index][1]);
 
         PaintAddImageAsParent(
-            session, imageId, { offset, height }, { boundsLength, thickness[1] },
-            { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+            session, imageId, { offset, height },
+            { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength, thickness[1] } });
     }
 }
 
@@ -1115,9 +1102,9 @@ constexpr CoordsXY defaultRightHelixUpLargeQuarterBoundLengths[4][5][2] = {
 static constexpr const int8_t right_helix_up_large_quarter_sprite_map[] = {
     0, -1, 1, 2, -1, 3, 4,
 };
-void track_paint_util_right_helix_up_large_quarter_tiles_paint(
-    paint_session& session, const int8_t thickness[2], int16_t height, Direction direction, uint8_t trackSequence,
-    uint32_t colourFlags, const uint32_t sprites[4][5][2], const CoordsXY offsets[4][5][2],
+void TrackPaintUtilRightHelixUpLargeQuarterTilesPaint(
+    PaintSession& session, const int8_t thickness[2], int16_t height, Direction direction, uint8_t trackSequence,
+    const ImageId colourFlags, const uint32_t sprites[4][5][2], const CoordsXY offsets[4][5][2],
     const CoordsXY boundsLengths[4][5][2], const CoordsXYZ boundsOffsets[4][5][2])
 {
     int32_t index = right_helix_up_large_quarter_sprite_map[trackSequence];
@@ -1128,25 +1115,25 @@ void track_paint_util_right_helix_up_large_quarter_tiles_paint(
 
     if (sprites[direction][index][0] != 0)
     {
-        uint32_t imageId = sprites[direction][index][0] | colourFlags;
+        auto imageId = colourFlags.WithIndex(sprites[direction][index][0]);
         CoordsXY offset = (offsets == nullptr ? CoordsXY() : offsets[direction][index][0]);
         CoordsXY boundsLength = boundsLengths[direction][index][0];
         CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index][0]);
 
         PaintAddImageAsParent(
-            session, imageId, { offset, height }, { boundsLength, thickness[0] },
-            { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+            session, imageId, { offset, height },
+            { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength, thickness[0] } });
     }
     if (sprites[direction][index][1] != 0)
     {
-        uint32_t imageId = sprites[direction][index][1] | colourFlags;
+        auto imageId = colourFlags.WithIndex(sprites[direction][index][1]);
         CoordsXY offset = (offsets == nullptr ? CoordsXY() : offsets[direction][index][1]);
         CoordsXY boundsLength = boundsLengths[direction][index][1];
         CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index][1]);
 
         PaintAddImageAsParent(
-            session, imageId, { offset, height }, { boundsLength, thickness[1] },
-            { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+            session, imageId, { offset, height },
+            { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength, thickness[1] } });
     }
 }
 
@@ -1292,9 +1279,9 @@ const uint8_t mapLeftEighthTurnToOrthogonal[] = {
 static constexpr const int8_t eighth_to_diag_sprite_map[] = {
     0, 1, 2, -1, 3,
 };
-void track_paint_util_eighth_to_diag_tiles_paint(
-    paint_session& session, const int8_t thickness[4][4], int16_t height, Direction direction, uint8_t trackSequence,
-    uint32_t colourFlags, const uint32_t sprites[4][4], const CoordsXY offsets[4][4], const CoordsXY boundsLengths[4][4],
+void TrackPaintUtilEighthToDiagTilesPaint(
+    PaintSession& session, const int8_t thickness[4][4], int16_t height, Direction direction, uint8_t trackSequence,
+    const ImageId colourFlags, const uint32_t sprites[4][4], const CoordsXY offsets[4][4], const CoordsXY boundsLengths[4][4],
     const CoordsXYZ boundsOffsets[4][4])
 {
     int32_t index = eighth_to_diag_sprite_map[trackSequence];
@@ -1303,14 +1290,15 @@ void track_paint_util_eighth_to_diag_tiles_paint(
         return;
     }
 
-    uint32_t imageId = sprites[direction][index] | colourFlags;
+    auto imageId = colourFlags.WithIndex(sprites[direction][index]);
     CoordsXY offset = (offsets == nullptr ? CoordsXY() : offsets[direction][index]);
     CoordsXY boundsLength = boundsLengths[direction][index];
     CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index]);
 
     PaintAddImageAsParent(
-        session, imageId, { offset.x, offset.y, height }, { boundsLength.x, boundsLength.y, thickness[direction][index] },
-        { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+        session, imageId, { offset.x, offset.y, height },
+        { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z },
+          { boundsLength.x, boundsLength.y, thickness[direction][index] } });
 }
 
 constexpr CoordsXY defaultDiagTileOffsets[4] = {
@@ -1334,9 +1322,10 @@ static constexpr const int8_t diag_sprite_map[4][4] = {
     { 0, -1, -1, -1 },
 };
 
-void track_paint_util_diag_tiles_paint(
-    paint_session& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence, uint32_t colourFlags,
-    const uint32_t sprites[4], const CoordsXY offsets[4], const CoordsXY boundsLengths[4], const CoordsXYZ boundsOffsets[4])
+void TrackPaintUtilDiagTilesPaint(
+    PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
+    const ImageId colourFlags, const uint32_t sprites[4], const CoordsXY offsets[4], const CoordsXY boundsLengths[4],
+    const CoordsXYZ boundsOffsets[4])
 {
     int32_t index = diag_sprite_map[direction][trackSequence];
     if (index < 0)
@@ -1344,14 +1333,14 @@ void track_paint_util_diag_tiles_paint(
         return;
     }
 
-    uint32_t imageId = sprites[direction] | colourFlags;
+    auto imageId = colourFlags.WithIndex(sprites[direction]);
     CoordsXY offset = (offsets == nullptr ? CoordsXY() : offsets[direction]);
     CoordsXY boundsLength = boundsLengths[direction];
     CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction]);
 
     PaintAddImageAsParent(
-        session, imageId, { offset, height }, { boundsLength, thickness },
-        { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+        session, imageId, { offset, height },
+        { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength, thickness } });
 }
 
 const uint8_t mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = {
@@ -1455,9 +1444,9 @@ static constexpr const int8_t right_quarter_turn_5_tiles_sprite_map[] = {
     0, -1, 1, 2, -1, 3, 4,
 };
 
-void track_paint_util_right_quarter_turn_5_tiles_paint(
-    paint_session& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence, uint32_t colourFlags,
-    const uint32_t sprites[4][5], const CoordsXY offsets[4][5], const CoordsXY boundsLengths[4][5],
+void TrackPaintUtilRightQuarterTurn5TilesPaint(
+    PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
+    const ImageId colourFlags, const uint32_t sprites[4][5], const CoordsXY offsets[4][5], const CoordsXY boundsLengths[4][5],
     const CoordsXYZ boundsOffsets[4][5])
 {
     int32_t index = right_quarter_turn_5_tiles_sprite_map[trackSequence];
@@ -1466,19 +1455,19 @@ void track_paint_util_right_quarter_turn_5_tiles_paint(
         return;
     }
 
-    uint32_t imageId = sprites[direction][index] | colourFlags;
+    auto imageId = colourFlags.WithIndex(sprites[direction][index]);
     CoordsXY offset = (offsets == nullptr ? CoordsXY() : offsets[direction][index]);
     CoordsXY boundsLength = boundsLengths[direction][index];
     CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index]);
 
     PaintAddImageAsParent(
         session, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), height },
-        { boundsLength.x, boundsLength.y, thickness }, { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+        { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength.x, boundsLength.y, thickness } });
 }
 
-void track_paint_util_right_quarter_turn_5_tiles_paint_2(
-    paint_session& session, int16_t height, Direction direction, uint8_t trackSequence, uint32_t colourFlags,
-    const sprite_bb sprites[][5])
+void TrackPaintUtilRightQuarterTurn5TilesPaint2(
+    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId colourFlags,
+    const SpriteBb sprites[][5])
 {
     int8_t sprite = right_quarter_turn_5_tiles_sprite_map[trackSequence];
     if (sprite < 0)
@@ -1486,18 +1475,18 @@ void track_paint_util_right_quarter_turn_5_tiles_paint_2(
         return;
     }
 
-    const sprite_bb* spriteBB = &sprites[direction][sprite];
-    const uint32_t imageId = spriteBB->sprite_id | colourFlags;
+    const SpriteBb* spriteBB = &sprites[direction][sprite];
+    const auto imageId = colourFlags.WithIndex(spriteBB->sprite_id);
     const auto& offset = spriteBB->offset;
     const auto& bbOffset = spriteBB->bb_offset;
     PaintAddImageAsParent(
-        session, imageId, { offset.x, offset.y, height + offset.z }, spriteBB->bb_size,
-        { bbOffset.x, bbOffset.y, height + bbOffset.z });
+        session, imageId, { offset.x, offset.y, height + offset.z },
+        { { bbOffset.x, bbOffset.y, height + bbOffset.z }, spriteBB->bb_size });
 }
 
-void track_paint_util_right_quarter_turn_5_tiles_paint_3(
-    paint_session& session, int16_t height, Direction direction, uint8_t trackSequence, uint32_t colourFlags,
-    const sprite_bb sprites[][5])
+void TrackPaintUtilRightQuarterTurn5TilesPaint3(
+    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId colourFlags,
+    const SpriteBb sprites[][5])
 {
     int8_t sprite = right_quarter_turn_5_tiles_sprite_map[trackSequence];
     if (sprite < 0)
@@ -1505,35 +1494,35 @@ void track_paint_util_right_quarter_turn_5_tiles_paint_3(
         return;
     }
 
-    const sprite_bb* spriteBB = &sprites[direction][sprite];
-    const uint32_t imageId = spriteBB->sprite_id | colourFlags;
+    const SpriteBb* spriteBB = &sprites[direction][sprite];
+    const auto imageId = colourFlags.WithIndex(spriteBB->sprite_id);
     const auto& offset = spriteBB->offset;
     PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height + offset.z }, spriteBB->bb_size);
 }
 
-void track_paint_util_right_quarter_turn_5_tiles_tunnel(
-    paint_session& session, int16_t height, Direction direction, uint8_t trackSequence, uint8_t tunnelType)
+void TrackPaintUtilRightQuarterTurn5TilesTunnel(
+    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, uint8_t tunnelType)
 {
     if (direction == 0 && trackSequence == 0)
     {
-        paint_util_push_tunnel_left(session, height, tunnelType);
+        PaintUtilPushTunnelLeft(session, height, tunnelType);
     }
     if (direction == 0 && trackSequence == 6)
     {
-        paint_util_push_tunnel_right(session, height, tunnelType);
+        PaintUtilPushTunnelRight(session, height, tunnelType);
     }
     if (direction == 1 && trackSequence == 6)
     {
-        paint_util_push_tunnel_left(session, height, tunnelType);
+        PaintUtilPushTunnelLeft(session, height, tunnelType);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        paint_util_push_tunnel_right(session, height, tunnelType);
+        PaintUtilPushTunnelRight(session, height, tunnelType);
     }
 }
 
-void track_paint_util_right_quarter_turn_5_tiles_wooden_supports(
-    paint_session& session, int16_t height, Direction direction, uint8_t trackSequence)
+void TrackPaintUtilRightQuarterTurn5TilesWoodenSupports(
+    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence)
 {
     if (trackSequence != 1 && trackSequence != 4)
     {
@@ -1544,7 +1533,7 @@ void track_paint_util_right_quarter_turn_5_tiles_wooden_supports(
             { 1, 0xFF, 3, 5, 0xFF, 3, 0 },
         };
         uint8_t supportType = supportTypes[direction][trackSequence];
-        wooden_a_supports_paint_setup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 }
 
@@ -1631,9 +1620,9 @@ static constexpr const int8_t right_quarter_turn_3_tiles_sprite_map[] = {
     2,
 };
 
-void track_paint_util_right_quarter_turn_3_tiles_paint(
-    paint_session& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence, uint32_t colourFlags,
-    const uint32_t sprites[4][3], const CoordsXY offsets[4][3], const CoordsXY boundsLengths[4][3],
+void TrackPaintUtilRightQuarterTurn3TilesPaint(
+    PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
+    const ImageId colourFlags, const uint32_t sprites[4][3], const CoordsXY offsets[4][3], const CoordsXY boundsLengths[4][3],
     const CoordsXYZ boundsOffsets[4][3])
 {
     int32_t index = right_quarter_turn_3_tiles_sprite_map[trackSequence];
@@ -1642,27 +1631,27 @@ void track_paint_util_right_quarter_turn_3_tiles_paint(
         return;
     }
 
-    uint32_t imageId = sprites[direction][index] | colourFlags;
+    auto imageId = colourFlags.WithIndex(sprites[direction][index]);
     CoordsXY offset = (offsets == nullptr ? CoordsXY() : offsets[direction][index]);
     CoordsXY boundsLength = boundsLengths[direction][index];
     CoordsXYZ boundsOffset = (boundsOffsets == nullptr ? CoordsXYZ(offset, 0) : boundsOffsets[direction][index]);
 
     PaintAddImageAsParent(
-        session, imageId, { offset, height }, { boundsLength.x, boundsLength.y, thickness },
-        { boundsOffset.x, boundsOffset.y, height + boundsOffset.z });
+        session, imageId, { offset, height },
+        { { boundsOffset.x, boundsOffset.y, height + boundsOffset.z }, { boundsLength.x, boundsLength.y, thickness } });
 }
 
-void track_paint_util_right_quarter_turn_3_tiles_paint_2(
-    paint_session& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence, uint32_t colourFlags,
-    const uint32_t sprites[4][3])
+void TrackPaintUtilRightQuarterTurn3TilesPaint2(
+    PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
+    const ImageId colourFlags, const uint32_t sprites[4][3])
 {
-    track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(
+    TrackPaintUtilRightQuarterTurn3TilesPaint2WithHeightOffset(
         session, thickness, height, direction, trackSequence, colourFlags, sprites, 0);
 }
 
-void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(
-    paint_session& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence, uint32_t colourFlags,
-    const uint32_t sprites[4][3], int32_t heightOffset)
+void TrackPaintUtilRightQuarterTurn3TilesPaint2WithHeightOffset(
+    PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
+    const ImageId colourFlags, const uint32_t sprites[4][3], int32_t heightOffset)
 {
     int8_t sprite = right_quarter_turn_3_tiles_sprite_map[trackSequence];
     if (sprite < 0)
@@ -1670,7 +1659,7 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(
         return;
     }
 
-    uint32_t imageId = sprites[(direction + 1) % 4][sprite] | colourFlags;
+    auto imageId = colourFlags.WithIndex(sprites[(direction + 1) % 4][sprite]);
 
     switch (direction)
     {
@@ -1679,15 +1668,15 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(
             {
                 case 0:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 32, 20, thickness }, { 0, 6, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 6, height + heightOffset }, { 32, 20, thickness } });
                     break;
                 case 2:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 16, 16, thickness }, { 16, 16, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 16, 16, height + heightOffset }, { 16, 16, thickness } });
                     break;
                 case 3:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 20, 32, thickness }, { 6, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 6, 0, height + heightOffset }, { 20, 32, thickness } });
                     break;
             }
             break;
@@ -1697,15 +1686,15 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(
             {
                 case 0:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 20, 32, thickness }, { 6, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 6, 0, height + heightOffset }, { 20, 32, thickness } });
                     break;
                 case 2:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 16, 16, thickness }, { 16, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 16, 0, height + heightOffset }, { 16, 16, thickness } });
                     break;
                 case 3:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 32, 20, thickness }, { 0, 6, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 6, height + heightOffset }, { 32, 20, thickness } });
                     break;
             }
             break;
@@ -1715,15 +1704,15 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(
             {
                 case 0:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 32, 20, thickness }, { 0, 6, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 6, height + heightOffset }, { 32, 20, thickness } });
                     break;
                 case 2:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 16, 16, thickness }, { 0, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 0, height + heightOffset }, { 16, 16, thickness } });
                     break;
                 case 3:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 20, 32, thickness }, { 6, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 6, 0, height + heightOffset }, { 20, 32, thickness } });
                     break;
             }
             break;
@@ -1733,41 +1722,41 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(
             {
                 case 0:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 20, 32, thickness }, { 6, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 6, 0, height + heightOffset }, { 20, 32, thickness } });
                     break;
                 case 2:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 16, 16, thickness }, { 0, 16, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 16, height + heightOffset }, { 16, 16, thickness } });
                     break;
                 case 3:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 32, 20, thickness }, { 0, 6, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 6, height + heightOffset }, { 32, 20, thickness } });
                     break;
             }
             break;
     }
 }
 
-void track_paint_util_right_quarter_turn_3_tiles_paint_3(
-    paint_session& session, int16_t height, Direction direction, uint8_t trackSequence, uint32_t colourFlags,
-    const sprite_bb sprites[4][3])
+void TrackPaintUtilRightQuarterTurn3TilesPaint3(
+    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId colourFlags,
+    const SpriteBb sprites[4][3])
 {
     int8_t sprite = right_quarter_turn_3_tiles_sprite_map[trackSequence];
     if (sprite < 0)
     {
         return;
     }
-    const sprite_bb* spriteBB = &sprites[direction][sprite];
+    const SpriteBb* spriteBB = &sprites[direction][sprite];
     const auto& offset = spriteBB->offset;
     const auto& bbOffset = spriteBB->bb_offset;
     PaintAddImageAsParent(
-        session, spriteBB->sprite_id | colourFlags, { offset.x, offset.y, offset.z + height }, spriteBB->bb_size,
-        { bbOffset.x, bbOffset.y, height + bbOffset.z });
+        session, colourFlags.WithIndex(spriteBB->sprite_id), { offset.x, offset.y, offset.z + height },
+        { { bbOffset.x, bbOffset.y, height + bbOffset.z }, spriteBB->bb_size });
 }
 
-void track_paint_util_right_quarter_turn_3_tiles_paint_4(
-    paint_session& session, int16_t height, Direction direction, uint8_t trackSequence, uint32_t colourFlags,
-    const sprite_bb sprites[4][3])
+void TrackPaintUtilRightQuarterTurn3TilesPaint4(
+    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, const ImageId colourFlags,
+    const SpriteBb sprites[4][3])
 {
     int8_t sprite = right_quarter_turn_3_tiles_sprite_map[trackSequence];
     if (sprite < 0)
@@ -1775,77 +1764,75 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_4(
         return;
     }
 
-    const sprite_bb* spriteBB = &sprites[direction][sprite];
-    const uint32_t imageId = spriteBB->sprite_id | colourFlags;
+    const SpriteBb* spriteBB = &sprites[direction][sprite];
+    const auto imageId = colourFlags.WithIndex(spriteBB->sprite_id);
     const auto& offset = spriteBB->offset;
     PaintAddImageAsParent(session, imageId, { offset.x, offset.y, height + offset.z }, spriteBB->bb_size);
 }
 
-void track_paint_util_right_quarter_turn_3_tiles_tunnel(
-    paint_session& session, int16_t height, Direction direction, uint8_t trackSequence, uint8_t tunnelType)
+void TrackPaintUtilRightQuarterTurn3TilesTunnel(
+    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, uint8_t tunnelType)
 {
     if (direction == 0 && trackSequence == 0)
     {
-        paint_util_push_tunnel_left(session, height, tunnelType);
+        PaintUtilPushTunnelLeft(session, height, tunnelType);
     }
 
     if (direction == 0 && trackSequence == 3)
     {
-        paint_util_push_tunnel_right(session, height, tunnelType);
+        PaintUtilPushTunnelRight(session, height, tunnelType);
     }
 
     if (direction == 1 && trackSequence == 3)
     {
-        paint_util_push_tunnel_left(session, height, tunnelType);
+        PaintUtilPushTunnelLeft(session, height, tunnelType);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        paint_util_push_tunnel_right(session, height, tunnelType);
+        PaintUtilPushTunnelRight(session, height, tunnelType);
     }
 }
 
-void track_paint_util_right_quarter_turn_3_tiles_25_deg_up_tunnel(
-    paint_session& session, int16_t height, Direction direction, uint8_t trackSequence, uint8_t tunnelType0,
-    uint8_t tunnelType3)
+void TrackPaintUtilRightQuarterTurn3Tiles25DegUpTunnel(
+    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, uint8_t tunnelType0, uint8_t tunnelType3)
 {
     if (direction == 0 && trackSequence == 0)
     {
-        paint_util_push_tunnel_left(session, height - 8, tunnelType0);
+        PaintUtilPushTunnelLeft(session, height - 8, tunnelType0);
     }
     if (direction == 0 && trackSequence == 3)
     {
-        paint_util_push_tunnel_right(session, height + 8, tunnelType3);
+        PaintUtilPushTunnelRight(session, height + 8, tunnelType3);
     }
     if (direction == 1 && trackSequence == 3)
     {
-        paint_util_push_tunnel_left(session, height + 8, tunnelType3);
+        PaintUtilPushTunnelLeft(session, height + 8, tunnelType3);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        paint_util_push_tunnel_right(session, height - 8, tunnelType0);
+        PaintUtilPushTunnelRight(session, height - 8, tunnelType0);
     }
 }
 
-void track_paint_util_right_quarter_turn_3_tiles_25_deg_down_tunnel(
-    paint_session& session, int16_t height, Direction direction, uint8_t trackSequence, uint8_t tunnelType0,
-    uint8_t tunnelType3)
+void TrackPaintUtilRightQuarterTurn3Tiles25DegDownTunnel(
+    PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence, uint8_t tunnelType0, uint8_t tunnelType3)
 {
     if (direction == 0 && trackSequence == 0)
     {
-        paint_util_push_tunnel_left(session, height + 8, tunnelType0);
+        PaintUtilPushTunnelLeft(session, height + 8, tunnelType0);
     }
     if (direction == 0 && trackSequence == 3)
     {
-        paint_util_push_tunnel_right(session, height - 8, tunnelType3);
+        PaintUtilPushTunnelRight(session, height - 8, tunnelType3);
     }
     if (direction == 1 && trackSequence == 3)
     {
-        paint_util_push_tunnel_left(session, height - 8, tunnelType3);
+        PaintUtilPushTunnelLeft(session, height - 8, tunnelType3);
     }
     if (direction == 3 && trackSequence == 0)
     {
-        paint_util_push_tunnel_right(session, height + 8, tunnelType0);
+        PaintUtilPushTunnelRight(session, height + 8, tunnelType0);
     }
 }
 
@@ -1856,17 +1843,17 @@ static constexpr const int8_t left_quarter_turn_3_tiles_sprite_map[] = {
     0,
 };
 
-void track_paint_util_left_quarter_turn_3_tiles_paint(
-    paint_session& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence, uint32_t colourFlags,
-    const uint32_t sprites[4][3])
+void TrackPaintUtilLeftQuarterTurn3TilesPaint(
+    PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
+    const ImageId colourFlags, const uint32_t sprites[4][3])
 {
-    track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
+    TrackPaintUtilLeftQuarterTurn3TilesPaintWithHeightOffset(
         session, thickness, height, direction, trackSequence, colourFlags, sprites, 0);
 }
 
-void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
-    paint_session& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence, uint32_t colourFlags,
-    const uint32_t sprites[4][3], int32_t heightOffset)
+void TrackPaintUtilLeftQuarterTurn3TilesPaintWithHeightOffset(
+    PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
+    const ImageId colourFlags, const uint32_t sprites[4][3], int32_t heightOffset)
 {
     int8_t sprite = left_quarter_turn_3_tiles_sprite_map[trackSequence];
     if (sprite < 0)
@@ -1874,7 +1861,7 @@ void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
         return;
     }
 
-    uint32_t imageId = sprites[(direction + 1) % 4][sprite] | colourFlags;
+    auto imageId = colourFlags.WithIndex(sprites[(direction + 1) % 4][sprite]);
 
     switch (direction)
     {
@@ -1883,15 +1870,15 @@ void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
             {
                 case 0:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 32, 20, thickness }, { 0, 6, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 6, height + heightOffset }, { 32, 20, thickness } });
                     break;
                 case 2:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 16, 16, thickness }, { 16, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 16, 0, height + heightOffset }, { 16, 16, thickness } });
                     break;
                 case 3:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 20, 32, thickness }, { 6, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 6, 0, height + heightOffset }, { 20, 32, thickness } });
                     break;
             }
             break;
@@ -1901,15 +1888,15 @@ void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
             {
                 case 0:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 20, 32, thickness }, { 6, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 6, 0, height + heightOffset }, { 20, 32, thickness } });
                     break;
                 case 2:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 16, 16, thickness }, { 0, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 0, height + heightOffset }, { 16, 16, thickness } });
                     break;
                 case 3:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 32, 20, thickness }, { 0, 6, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 6, height + heightOffset }, { 32, 20, thickness } });
                     break;
             }
             break;
@@ -1919,15 +1906,15 @@ void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
             {
                 case 0:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 32, 20, thickness }, { 0, 6, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 6, height + heightOffset }, { 32, 20, thickness } });
                     break;
                 case 2:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 16, 16, thickness }, { 0, 16, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 16, height + heightOffset }, { 16, 16, thickness } });
                     break;
                 case 3:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 20, 32, thickness }, { 6, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 6, 0, height + heightOffset }, { 20, 32, thickness } });
                     break;
             }
             break;
@@ -1937,133 +1924,133 @@ void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
             {
                 case 0:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 20, 32, thickness }, { 6, 0, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 6, 0, height + heightOffset }, { 20, 32, thickness } });
                     break;
                 case 2:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 16, 16, thickness }, { 16, 16, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 16, 16, height + heightOffset }, { 16, 16, thickness } });
                     break;
                 case 3:
                     PaintAddImageAsParent(
-                        session, imageId, { 0, 0, height }, { 32, 20, thickness }, { 0, 6, height + heightOffset });
+                        session, imageId, { 0, 0, height }, { { 0, 6, height + heightOffset }, { 32, 20, thickness } });
                     break;
             }
             break;
     }
 }
 
-void track_paint_util_left_quarter_turn_3_tiles_tunnel(
-    paint_session& session, int16_t height, uint8_t tunnelType, Direction direction, uint8_t trackSequence)
+void TrackPaintUtilLeftQuarterTurn3TilesTunnel(
+    PaintSession& session, int16_t height, uint8_t tunnelType, Direction direction, uint8_t trackSequence)
 {
     if (direction == 0 && trackSequence == 0)
     {
-        paint_util_push_tunnel_left(session, height, tunnelType);
+        PaintUtilPushTunnelLeft(session, height, tunnelType);
     }
 
     if (direction == 2 && trackSequence == 3)
     {
-        paint_util_push_tunnel_right(session, height, tunnelType);
+        PaintUtilPushTunnelRight(session, height, tunnelType);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        paint_util_push_tunnel_right(session, height, tunnelType);
+        PaintUtilPushTunnelRight(session, height, tunnelType);
     }
 
     if (direction == 3 && trackSequence == 3)
     {
-        paint_util_push_tunnel_left(session, height, tunnelType);
+        PaintUtilPushTunnelLeft(session, height, tunnelType);
     }
 }
 
-void track_paint_util_left_quarter_turn_1_tile_paint(
-    paint_session& session, int8_t thickness, int16_t height, int16_t boundBoxZOffset, Direction direction,
-    uint32_t colourFlags, const uint32_t* sprites)
+void TrackPaintUtilLeftQuarterTurn1TilePaint(
+    PaintSession& session, int8_t thickness, int16_t height, int16_t boundBoxZOffset, Direction direction,
+    const ImageId colourFlags, const uint32_t* sprites)
 {
-    uint32_t imageId = sprites[direction] | colourFlags;
+    auto imageId = colourFlags.WithIndex(sprites[direction]);
 
     switch (direction)
     {
         case 0:
             PaintAddImageAsParent(
-                session, imageId, { 0, 0, height }, { 26, 24, thickness }, { 6, 2, height + boundBoxZOffset });
+                session, imageId, { 0, 0, height }, { { 6, 2, height + boundBoxZOffset }, { 26, 24, thickness } });
             break;
         case 1:
             PaintAddImageAsParent(
-                session, imageId, { 0, 0, height }, { 26, 26, thickness }, { 0, 0, height + boundBoxZOffset });
+                session, imageId, { 0, 0, height }, { { 0, 0, height + boundBoxZOffset }, { 26, 26, thickness } });
             break;
         case 2:
             PaintAddImageAsParent(
-                session, imageId, { 0, 0, height }, { 24, 26, thickness }, { 2, 6, height + boundBoxZOffset });
+                session, imageId, { 0, 0, height }, { { 2, 6, height + boundBoxZOffset }, { 24, 26, thickness } });
             break;
         case 3:
             PaintAddImageAsParent(
-                session, imageId, { 0, 0, height }, { 24, 24, thickness }, { 6, 6, height + boundBoxZOffset });
+                session, imageId, { 0, 0, height }, { { 6, 6, height + boundBoxZOffset }, { 24, 24, thickness } });
             break;
     }
 }
 
-void track_paint_util_right_quarter_turn_1_tile_tunnel(
-    paint_session& session, Direction direction, uint16_t baseHeight, int8_t startOffset, uint8_t startTunnel, int8_t endOffset,
+void TrackPaintUtilRightQuarterTurn1TileTunnel(
+    PaintSession& session, Direction direction, uint16_t baseHeight, int8_t startOffset, uint8_t startTunnel, int8_t endOffset,
     uint8_t endTunnel)
 {
-    track_paint_util_left_quarter_turn_1_tile_tunnel(
+    TrackPaintUtilLeftQuarterTurn1TileTunnel(
         session, (direction + 3) % 4, baseHeight, endOffset, endTunnel, startOffset, startTunnel);
 }
 
-void track_paint_util_left_quarter_turn_1_tile_tunnel(
-    paint_session& session, Direction direction, uint16_t baseHeight, int8_t startOffset, uint8_t startTunnel, int8_t endOffset,
+void TrackPaintUtilLeftQuarterTurn1TileTunnel(
+    PaintSession& session, Direction direction, uint16_t baseHeight, int8_t startOffset, uint8_t startTunnel, int8_t endOffset,
     uint8_t endTunnel)
 {
     switch (direction)
     {
         case 0:
-            paint_util_push_tunnel_left(session, baseHeight + startOffset, startTunnel);
+            PaintUtilPushTunnelLeft(session, baseHeight + startOffset, startTunnel);
             break;
         case 2:
-            paint_util_push_tunnel_right(session, baseHeight + endOffset, endTunnel);
+            PaintUtilPushTunnelRight(session, baseHeight + endOffset, endTunnel);
             break;
         case 3:
-            paint_util_push_tunnel_right(session, baseHeight + startOffset, startTunnel);
-            paint_util_push_tunnel_left(session, baseHeight + endOffset, endTunnel);
+            PaintUtilPushTunnelRight(session, baseHeight + startOffset, startTunnel);
+            PaintUtilPushTunnelLeft(session, baseHeight + endOffset, endTunnel);
             break;
     }
 }
 
-void track_paint_util_spinning_tunnel_paint(paint_session& session, int8_t thickness, int16_t height, Direction direction)
+void TrackPaintUtilSpinningTunnelPaint(PaintSession& session, int8_t thickness, int16_t height, Direction direction)
 {
     int32_t frame = gCurrentTicks >> 2 & 3;
-    uint32_t colourFlags = session.TrackColours[SCHEME_SUPPORTS];
+    auto colourFlags = session.TrackColours[SCHEME_SUPPORTS];
 
-    uint32_t colourFlags2 = session.TrackColours[SCHEME_TRACK];
-    if (colourFlags2 & IMAGE_TYPE_REMAP_2_PLUS)
+    auto colourFlags2 = session.TrackColours[SCHEME_TRACK];
+    if (colourFlags2.HasSecondary())
     {
-        colourFlags |= colourFlags2 & (IMAGE_TYPE_REMAP_2_PLUS | (0x1F << 24));
+        colourFlags = colourFlags.WithSecondary(colourFlags2.GetSecondary());
     }
 
-    uint32_t imageId = trackSpritesGhostTrainSpinningTunnel[direction & 1][0][frame] | colourFlags;
+    auto imageId = colourFlags.WithIndex(trackSpritesGhostTrainSpinningTunnel[direction & 1][0][frame]);
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 28, 20, thickness }, { 2, 6, height });
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 6, height }, { 28, 20, thickness } });
     }
     else
     {
-        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 20, 28, thickness }, { 6, 2, height });
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 6, 2, height }, { 20, 28, thickness } });
     }
 
-    imageId = trackSpritesGhostTrainSpinningTunnel[direction & 1][1][frame] | colourFlags;
+    imageId = colourFlags.WithIndex(trackSpritesGhostTrainSpinningTunnel[direction & 1][1][frame]);
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 1, 23 }, { 4, 28, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 28, height }, { 26, 1, 23 } });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 26, 23 }, { 28, 4, height });
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 4, height }, { 1, 26, 23 } });
     }
 }
 
-void track_paint_util_onride_photo_small_paint(
-    paint_session& session, Direction direction, int32_t height, const TrackElement& trackElement)
+void TrackPaintUtilOnridePhotoSmallPaint(
+    PaintSession& session, Direction direction, int32_t height, const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][3] = {
         { SPR_ON_RIDE_PHOTO_SIGN_SMALL_SW_NE, SPR_ON_RIDE_PHOTO_CAMERA_SMALL_S, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_S },
@@ -2073,35 +2060,35 @@ void track_paint_util_onride_photo_small_paint(
     };
 
     bool takingPhoto = trackElement.IsTakingPhoto();
-    uint32_t imageId = imageIds[direction][0] | session.TrackColours[SCHEME_MISC];
-    uint32_t flashImageId = imageIds[direction][takingPhoto ? 2 : 1] | session.TrackColours[SCHEME_MISC];
+    ImageId imageId = session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][0]);
+    ImageId flashImageId = session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][takingPhoto ? 2 : 1]);
     switch (direction)
     {
         case 0:
             PaintAddImageAsParent(session, imageId, { 26, 0, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, imageId, { 26, 31, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 26, 28, height - 3 }, { 1, 1, 19 });
             PaintAddImageAsParent(session, flashImageId, { 6, 0, height }, { 1, 1, 19 });
             break;
         case 1:
             PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, imageId, { 31, 6, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 28, 6, height - 3 }, { 1, 1, 19 });
             PaintAddImageAsParent(session, flashImageId, { 0, 26, height }, { 1, 1, 19 });
             break;
         case 2:
             PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, imageId, { 6, 31, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, flashImageId, { 26, 31, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 6, 28, height - 3 }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, flashImageId, { 26, 28, height - 3 }, { 1, 1, 19 });
             break;
         case 3:
             PaintAddImageAsParent(session, imageId, { 0, 26, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, imageId, { 31, 26, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, flashImageId, { 31, 6, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 28, 26, height - 3 }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, flashImageId, { 28, 6, height - 3 }, { 1, 1, 19 });
             break;
     }
 }
 
-void track_paint_util_onride_photo_paint(
-    paint_session& session, Direction direction, int32_t height, const TrackElement& trackElement)
+void TrackPaintUtilOnridePhotoPaint(
+    PaintSession& session, Direction direction, int32_t height, const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4][3] = {
         { SPR_ON_RIDE_PHOTO_SIGN_SW_NE, SPR_ON_RIDE_PHOTO_CAMERA_S, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_S },
@@ -2111,29 +2098,29 @@ void track_paint_util_onride_photo_paint(
     };
 
     bool takingPhoto = trackElement.IsTakingPhoto();
-    uint32_t imageId = imageIds[direction][0] | session.TrackColours[SCHEME_MISC];
-    uint32_t flashImageId = imageIds[direction][takingPhoto ? 2 : 1] | session.TrackColours[SCHEME_MISC];
+    ImageId imageId = session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][0]);
+    ImageId flashImageId = session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][takingPhoto ? 2 : 1]);
     switch (direction)
     {
         case 0:
             PaintAddImageAsParent(session, imageId, { 26, 0, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, imageId, { 26, 31, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 26, 28, height - 3 }, { 1, 1, 19 });
             PaintAddImageAsParent(session, flashImageId, { 6, 0, height }, { 1, 1, 19 });
             break;
         case 1:
             PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, imageId, { 31, 6, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 28, 6, height - 3 }, { 1, 1, 19 });
             PaintAddImageAsParent(session, flashImageId, { 0, 26, height }, { 1, 1, 19 });
             break;
         case 2:
             PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, imageId, { 6, 31, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, flashImageId, { 26, 31, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 6, 28, height - 3 }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, flashImageId, { 26, 28, height - 3 }, { 1, 1, 19 });
             break;
         case 3:
             PaintAddImageAsParent(session, imageId, { 0, 26, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, imageId, { 31, 26, height }, { 1, 1, 19 });
-            PaintAddImageAsParent(session, flashImageId, { 31, 6, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 28, 26, height - 3 }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, flashImageId, { 28, 6, height - 3 }, { 1, 1, 19 });
             break;
     }
 }
@@ -2151,7 +2138,7 @@ static constexpr const uint16_t RightVerticalLoopSegments[] = {
     SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0,
 };
 
-void track_paint_util_right_vertical_loop_segments(paint_session& session, Direction direction, uint8_t trackSequence)
+void TrackPaintUtilRightVerticalLoopSegments(PaintSession& session, Direction direction, uint8_t trackSequence)
 {
     if (trackSequence > 9)
     {
@@ -2159,25 +2146,25 @@ void track_paint_util_right_vertical_loop_segments(paint_session& session, Direc
         return;
     }
 
-    paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(RightVerticalLoopSegments[trackSequence], direction), 0xFFFF, 0);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(RightVerticalLoopSegments[trackSequence], direction), 0xFFFF, 0);
 }
 
-void track_paint_util_left_corkscrew_up_supports(paint_session& session, Direction direction, uint16_t height)
+void TrackPaintUtilLeftCorkscrewUpSupports(PaintSession& session, Direction direction, uint16_t height)
 {
     // TODO: Figure out which of these looks best, and use one to keep a consistent world
     if (direction == 2)
     {
-        paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-            0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(
+            session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
+            0);
     }
-    metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     if (direction != 2)
     {
-        paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-            0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(
+            session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
+            0);
     }
 }
 
@@ -2185,13 +2172,13 @@ void track_paint_util_left_corkscrew_up_supports(paint_session& session, Directi
  *
  *  rct2: 0x006C4794
  */
-void PaintTrack(paint_session& session, Direction direction, int32_t height, const TrackElement& trackElement)
+void PaintTrack(PaintSession& session, Direction direction, int32_t height, const TrackElement& trackElement)
 {
     RideId rideIndex = trackElement.GetRideIndex();
-    auto ride = get_ride(rideIndex);
+    auto ride = GetRide(rideIndex);
     if (ride == nullptr)
     {
-        log_error("Attempted to paint invalid ride: %d", rideIndex);
+        LOG_ERROR("Attempted to paint invalid ride: %d", rideIndex);
         return;
     }
 
@@ -2210,50 +2197,48 @@ void PaintTrack(paint_session& session, Direction direction, int32_t height, con
             {
                 uint16_t ax = ride->GetRideTypeDescriptor().Heights.VehicleZOffset;
                 // 0x1689 represents 0 height there are -127 to 128 heights above and below it
-                // There are 3 arrays of 256 heights (units, m, ft) chosen with the get_height_marker_offset()
-                uint32_t imageId = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_LIGHT_BLUE) | (0x1689 + get_height_marker_offset());
+                // There are 3 arrays of 256 heights (units, m, ft) chosen with the GetHeightMarkerOffset()
                 auto heightNum = (height + 8) / 16 - gMapBaseZ;
+                auto imageId = ImageId(SPR_HEIGHT_MARKER_BASE + GetHeightMarkerOffset() + heightNum, COLOUR_LIGHT_BLUE);
 
-                PaintAddImageAsParent(
-                    session, imageId + heightNum, { 16, 16, height + ax + 3 }, { 1, 1, 0 }, { 1000, 1000, 2047 });
+                PaintAddImageAsParent(session, imageId, { 16, 16, height + ax + 3 }, { { 1000, 1000, 2047 }, { 1, 1, 0 } });
             }
         }
 
-#ifdef __ENABLE_LIGHTFX__
-        if (lightfx_is_available())
+        if (LightFXIsAvailable())
         {
             uint8_t zOffset = 16;
-            if (ride->type == RIDE_TYPE_TOILETS || ride->type == RIDE_TYPE_FIRST_AID || ride->type == RIDE_TYPE_CASH_MACHINE)
+            const auto& rtd = ride->GetRideTypeDescriptor();
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_FIRST_AID)
+                || rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE))
                 zOffset = 23;
 
             if (ride->type == RIDE_TYPE_INFORMATION_KIOSK)
                 LightFxAddKioskLights(session.MapPosition, height, zOffset);
-            else if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
+            else if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
                 LightFxAddShopLights(session.MapPosition, trackElement.GetDirection(), height, zOffset);
         }
-#endif
 
         session.InteractionType = ViewportInteractionItem::Ride;
-        session.TrackColours[SCHEME_TRACK] = SPRITE_ID_PALETTE_COLOUR_2(
-            ride->track_colour[trackColourScheme].main, ride->track_colour[trackColourScheme].additional);
-        session.TrackColours[SCHEME_SUPPORTS] = SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour[trackColourScheme].supports);
-        session.TrackColours[SCHEME_MISC] = IMAGE_TYPE_REMAP;
-        session.TrackColours[SCHEME_3] = 0x20C00000;
+        session.TrackColours[SCHEME_TRACK] = ImageId(
+            0, ride->track_colour[trackColourScheme].main, ride->track_colour[trackColourScheme].additional);
+        session.TrackColours[SCHEME_SUPPORTS] = ImageId(0, ride->track_colour[trackColourScheme].supports);
+        session.TrackColours[SCHEME_MISC] = ImageId(0, COLOUR_BLACK);
+        session.TrackColours[SCHEME_3] = ImageId(0, COLOUR_DARK_BROWN);
         if (trackElement.IsHighlighted())
         {
-            session.TrackColours[SCHEME_TRACK] = 0x21600000;
-            session.TrackColours[SCHEME_SUPPORTS] = 0x21600000;
-            session.TrackColours[SCHEME_MISC] = 0x21600000;
-            session.TrackColours[SCHEME_3] = 0x21600000;
+            session.TrackColours[SCHEME_TRACK] = HighlightMarker;
+            session.TrackColours[SCHEME_SUPPORTS] = HighlightMarker;
+            session.TrackColours[SCHEME_MISC] = HighlightMarker;
+            session.TrackColours[SCHEME_3] = HighlightMarker;
         }
         if (trackElement.IsGhost())
         {
-            uint32_t ghost_id = CONSTRUCTION_MARKER;
             session.InteractionType = ViewportInteractionItem::None;
-            session.TrackColours[SCHEME_TRACK] = ghost_id;
-            session.TrackColours[SCHEME_SUPPORTS] = ghost_id;
-            session.TrackColours[SCHEME_MISC] = ghost_id;
-            session.TrackColours[SCHEME_3] = ghost_id;
+            session.TrackColours[SCHEME_TRACK] = ConstructionMarker;
+            session.TrackColours[SCHEME_SUPPORTS] = ConstructionMarker;
+            session.TrackColours[SCHEME_MISC] = ConstructionMarker;
+            session.TrackColours[SCHEME_3] = ConstructionMarker;
         }
 
         if (ride->type >= RIDE_TYPE_COUNT)

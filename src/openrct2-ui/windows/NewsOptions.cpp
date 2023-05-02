@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,7 +14,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/sprites.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_NOTIFICATION_SETTINGS;
+static constexpr const StringId WINDOW_TITLE = STR_NOTIFICATION_SETTINGS;
 static constexpr const int32_t WH = 300;
 static constexpr const int32_t WW = 400;
 
@@ -30,29 +30,29 @@ enum
 struct NotificationDef
 {
     uint8_t category;
-    rct_string_id caption;
+    StringId caption;
     size_t config_offset;
 };
 
 static constexpr const NotificationDef NewsItemOptionDefinitions[] = {
-    { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_AWARD,                        offsetof(NotificationConfiguration, park_award)                         },
-    { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_MARKETING_CAMPAIGN_FINISHED,  offsetof(NotificationConfiguration, park_marketing_campaign_finished)   },
-    { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_WARNINGS,                     offsetof(NotificationConfiguration, park_warnings)                      },
-    { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_RATING_WARNINGS,              offsetof(NotificationConfiguration, park_rating_warnings)               },
-    { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_BROKEN_DOWN,                  offsetof(NotificationConfiguration, ride_broken_down)                   },
-    { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_CRASHED,                      offsetof(NotificationConfiguration, ride_crashed)                       },
-    { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_CASUALTIES,                   offsetof(NotificationConfiguration, ride_casualties)                    },
-    { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_WARNINGS,                     offsetof(NotificationConfiguration, ride_warnings)                      },
-    { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_RESEARCHED,                   offsetof(NotificationConfiguration, ride_researched)                    },
-    { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_VEHICLE_STALLED,              offsetof(NotificationConfiguration, ride_stalled_vehicles)              },
-    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_WARNINGS,                    offsetof(NotificationConfiguration, guest_warnings)                     },
-    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_LEFT_PARK,                   offsetof(NotificationConfiguration, guest_left_park)                    },
-    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_QUEUING_FOR_RIDE,            offsetof(NotificationConfiguration, guest_queuing_for_ride)             },
-    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_ON_RIDE,                     offsetof(NotificationConfiguration, guest_on_ride)                      },
-    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_LEFT_RIDE,                   offsetof(NotificationConfiguration, guest_left_ride)                    },
-    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_BOUGHT_ITEM,                 offsetof(NotificationConfiguration, guest_bought_item)                  },
-    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_USED_FACILITY,               offsetof(NotificationConfiguration, guest_used_facility)                },
-    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_DIED,                        offsetof(NotificationConfiguration, guest_died)                         },
+    { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_AWARD,                        offsetof(NotificationConfiguration, ParkAward)                          },
+    { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_MARKETING_CAMPAIGN_FINISHED,  offsetof(NotificationConfiguration, ParkMarketingCampaignFinished)      },
+    { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_WARNINGS,                     offsetof(NotificationConfiguration, ParkWarnings)                       },
+    { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_RATING_WARNINGS,              offsetof(NotificationConfiguration, ParkRatingWarnings)                 },
+    { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_BROKEN_DOWN,                  offsetof(NotificationConfiguration, RideBrokenDown)                     },
+    { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_CRASHED,                      offsetof(NotificationConfiguration, RideCrashed)                        },
+    { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_CASUALTIES,                   offsetof(NotificationConfiguration, RideCasualties)                     },
+    { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_WARNINGS,                     offsetof(NotificationConfiguration, RideWarnings)                       },
+    { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_RESEARCHED,                   offsetof(NotificationConfiguration, RideResearched)                     },
+    { NOTIFICATION_CATEGORY_RIDE,   STR_NOTIFICATION_RIDE_VEHICLE_STALLED,              offsetof(NotificationConfiguration, RideStalledVehicles)                },
+    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_WARNINGS,                    offsetof(NotificationConfiguration, GuestWarnings)                      },
+    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_LEFT_PARK,                   offsetof(NotificationConfiguration, GuestLeftPark)                      },
+    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_QUEUING_FOR_RIDE,            offsetof(NotificationConfiguration, GuestQueuingForRide)                },
+    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_ON_RIDE,                     offsetof(NotificationConfiguration, GuestOnRide)                        },
+    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_LEFT_RIDE,                   offsetof(NotificationConfiguration, GuestLeftRide)                      },
+    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_BOUGHT_ITEM,                 offsetof(NotificationConfiguration, GuestBoughtItem)                    },
+    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_USED_FACILITY,               offsetof(NotificationConfiguration, GuestUsedFacility)                  },
+    { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_DIED,                        offsetof(NotificationConfiguration, GuestDied)                          },
 };
 
 enum WindowNewsOptionsWidgetIdx
@@ -68,7 +68,7 @@ enum WindowNewsOptionsWidgetIdx
     WIDX_CHECKBOX_0
 };
 
-static rct_widget WindowNewsOptionsWidgets[] = {
+static Widget WindowNewsOptionsWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({ 0, 43}, {400, 257}, WindowWidgetType::Resize,   WindowColour::Secondary), // Tab content panel
     MakeTab   ({ 3, 17}                                                                 ), // Park tab
@@ -99,7 +99,7 @@ public:
         colours[2] = COLOUR_LIGHT_BLUE;
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -129,7 +129,7 @@ public:
                             bool* configValue = GetNotificationValuePtr(ndef);
                             *configValue = !(*configValue);
 
-                            config_save_default();
+                            ConfigSaveDefault();
 
                             InvalidateWidget(widgetIndex);
                             break;
@@ -158,7 +158,7 @@ public:
         int32_t y = baseCheckBox.top;
 
         int32_t checkboxWidgetIndex = WIDX_CHECKBOX_0;
-        rct_widget* checkboxWidget = &widgets[checkboxWidgetIndex];
+        Widget* checkboxWidget = &widgets[checkboxWidgetIndex];
         for (size_t i = 0; i < std::size(NewsItemOptionDefinitions); i++)
         {
             const NotificationDef* ndef = &NewsItemOptionDefinitions[i];
@@ -201,10 +201,10 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
-        DrawTabImages(&dpi);
+        DrawTabImages(dpi);
     }
 
 private:
@@ -218,18 +218,18 @@ private:
         }
     }
 
-    void DrawTabImages(rct_drawpixelinfo* dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         DrawTabImage(dpi, NOTIFICATION_CATEGORY_PARK, SPR_TAB_PARK);
         DrawTabImage(dpi, NOTIFICATION_CATEGORY_RIDE, SPR_TAB_RIDE_0);
         DrawTabImage(dpi, NOTIFICATION_CATEGORY_GUEST, SPR_TAB_GUESTS_0);
     }
 
-    void DrawTabImage(rct_drawpixelinfo* dpi, int32_t p, int32_t spriteIndex)
+    void DrawTabImage(DrawPixelInfo& dpi, int32_t p, int32_t spriteIndex)
     {
-        rct_widgetindex widgetIndex = WIDX_FIRST_TAB + p;
+        WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
 
-        if (!WidgetIsDisabled(this, widgetIndex))
+        if (!WidgetIsDisabled(*this, widgetIndex))
         {
             if (page == p)
             {
@@ -242,7 +242,7 @@ private:
             }
 
             const auto& widget = widgets[widgetIndex];
-            gfx_draw_sprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget.left, widget.top });
+            GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget.left, widget.top });
         }
     }
 
@@ -271,7 +271,7 @@ private:
     };
 };
 
-rct_window* WindowNewsOptionsOpen()
+WindowBase* WindowNewsOptionsOpen()
 {
-    return WindowFocusOrCreate<NewsOptionsWindow>(WC_NOTIFICATION_OPTIONS, WW, WH, WF_CENTRE_SCREEN);
+    return WindowFocusOrCreate<NewsOptionsWindow>(WindowClass::NotificationOptions, WW, WH, WF_CENTRE_SCREEN);
 }

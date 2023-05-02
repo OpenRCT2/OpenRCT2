@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,6 +17,7 @@
 #include "../object/ObjectList.h"
 #include "../rct12/SawyerChunkWriter.h"
 #include "../ride/Ride.h"
+#include "../ride/RideData.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
@@ -42,7 +43,7 @@ namespace RCT2
         }
         catch (const std::exception& e)
         {
-            log_error("Unable to save track design: %s", e.what());
+            LOG_ERROR("Unable to save track design: %s", e.what());
             return false;
         }
     }
@@ -55,7 +56,11 @@ namespace RCT2
         tempStream.WriteValue<uint32_t>(_trackDesign->flags);
         tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign->ride_mode));
         tempStream.WriteValue<uint8_t>((_trackDesign->colour_scheme & 0x3) | (2 << 2));
-        tempStream.WriteArray(_trackDesign->vehicle_colours.data(), Limits::MaxVehicleColours);
+        for (auto& colour : _trackDesign->vehicle_colours)
+        {
+            tempStream.WriteValue<uint8_t>(colour.Body);
+            tempStream.WriteValue<uint8_t>(colour.Trim);
+        }
         tempStream.WriteValue<uint8_t>(0);
         tempStream.WriteValue<uint8_t>(_trackDesign->entrance_style);
         tempStream.WriteValue<uint8_t>(_trackDesign->total_air_time);
@@ -78,18 +83,22 @@ namespace RCT2
         tempStream.WriteValue<uint8_t>(_trackDesign->excitement);
         tempStream.WriteValue<uint8_t>(_trackDesign->intensity);
         tempStream.WriteValue<uint8_t>(_trackDesign->nausea);
-        tempStream.WriteValue<money16>(_trackDesign->upkeep_cost);
+        tempStream.WriteValue<money16>(ToMoney16(_trackDesign->upkeep_cost));
         tempStream.WriteArray(_trackDesign->track_spine_colour, Limits::NumColourSchemes);
         tempStream.WriteArray(_trackDesign->track_rail_colour, Limits::NumColourSchemes);
         tempStream.WriteArray(_trackDesign->track_support_colour, Limits::NumColourSchemes);
         tempStream.WriteValue<uint32_t>(_trackDesign->flags2);
-        tempStream.Write(&_trackDesign->vehicle_object.Entry, sizeof(rct_object_entry));
+        tempStream.Write(&_trackDesign->vehicle_object.Entry, sizeof(RCTObjectEntry));
         tempStream.WriteValue<uint8_t>(_trackDesign->space_required_x);
         tempStream.WriteValue<uint8_t>(_trackDesign->space_required_y);
-        tempStream.WriteArray(_trackDesign->vehicle_additional_colour, Limits::MaxTrainsPerRide);
+        for (auto& colour : _trackDesign->vehicle_colours)
+        {
+            tempStream.WriteValue<uint8_t>(colour.Tertiary);
+        }
         tempStream.WriteValue<uint8_t>(_trackDesign->lift_hill_speed | (_trackDesign->num_circuits << 5));
 
-        if (_trackDesign->type == RIDE_TYPE_MAZE)
+        const auto& rtd = GetRideTypeDescriptor(_trackDesign->type);
+        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
         {
             for (const auto& mazeElement : _trackDesign->maze_elements)
             {
@@ -126,7 +135,7 @@ namespace RCT2
 
         for (const auto& sceneryElement : _trackDesign->scenery_elements)
         {
-            tempStream.Write(&sceneryElement.scenery_object.Entry, sizeof(rct_object_entry));
+            tempStream.Write(&sceneryElement.scenery_object.Entry, sizeof(RCTObjectEntry));
             tempStream.WriteValue<int8_t>(sceneryElement.loc.x / COORDS_XY_STEP);
             tempStream.WriteValue<int8_t>(sceneryElement.loc.y / COORDS_XY_STEP);
             tempStream.WriteValue<int8_t>(sceneryElement.loc.z / COORDS_Z_STEP);

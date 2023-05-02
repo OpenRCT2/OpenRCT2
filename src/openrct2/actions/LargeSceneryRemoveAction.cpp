@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,9 +17,9 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../object/LargeSceneryEntry.h"
 #include "../ride/Ride.h"
 #include "../world/Park.h"
-#include "../world/SmallScenery.h"
 #include "../world/TileElementsView.h"
 
 using namespace OpenRCT2;
@@ -54,7 +54,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
 
     const uint32_t flags = GetFlags();
 
-    int32_t z = tile_element_height(_loc);
+    int32_t z = TileElementHeight(_loc);
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
     res.Position.z = z;
@@ -64,7 +64,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
     TileElement* tileElement = FindLargeSceneryElement(_loc, _tileIndex);
     if (tileElement == nullptr)
     {
-        log_warning("Invalid game command for scenery removal, x = %d, y = %d", _loc.x, _loc.y);
+        LOG_WARNING("Invalid game command for scenery removal, x = %d, y = %d", _loc.x, _loc.y);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
@@ -93,7 +93,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
         {
-            if (!map_is_location_owned({ currentTile.x, currentTile.y, currentTile.z }))
+            if (!MapIsLocationOwned({ currentTile.x, currentTile.y, currentTile.z }))
             {
                 return GameActions::Result(GameActions::Status::NoClearance, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
             }
@@ -125,7 +125,7 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
 {
     auto res = GameActions::Result();
 
-    int32_t z = tile_element_height(_loc);
+    int32_t z = TileElementHeight(_loc);
     res.Position.x = _loc.x + 16;
     res.Position.y = _loc.y + 16;
     res.Position.z = z;
@@ -135,7 +135,7 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
     TileElement* tileElement = FindLargeSceneryElement(_loc, _tileIndex);
     if (tileElement == nullptr)
     {
-        log_warning("Invalid game command for scenery removal, x = %d, y = %d", _loc.x, _loc.y);
+        LOG_WARNING("Invalid game command for scenery removal, x = %d, y = %d", _loc.x, _loc.y);
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
@@ -165,7 +165,7 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
         {
-            if (!map_is_location_owned({ currentTile.x, currentTile.y, currentTile.z }))
+            if (!MapIsLocationOwned({ currentTile.x, currentTile.y, currentTile.z }))
             {
                 return GameActions::Result(GameActions::Status::NoClearance, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
             }
@@ -174,12 +174,12 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
         auto* sceneryElement = FindLargeSceneryElement(currentTile, i);
         if (sceneryElement != nullptr)
         {
-            map_invalidate_tile_full(currentTile);
-            tile_element_remove(sceneryElement);
+            MapInvalidateTileFull(currentTile);
+            TileElementRemove(sceneryElement);
         }
         else
         {
-            log_error("Tile not found when trying to remove element!");
+            LOG_ERROR("Tile not found when trying to remove element!");
         }
     }
 

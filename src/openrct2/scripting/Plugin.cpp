@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -123,7 +123,15 @@ void Plugin::ThrowIfStopping() const
 
 void Plugin::Unload()
 {
+// https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105937, fixed in GCC13
+#    if defined(__GNUC__) && !defined(__clang__)
+#        pragma GCC diagnostic push
+#        pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#    endif
     _metadata.Main = {};
+#    if defined(__GNUC__) && !defined(__clang__)
+#        pragma GCC diagnostic pop
+#    endif
     _hasLoaded = false;
 }
 
@@ -161,6 +169,12 @@ PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
         {
             metadata.TargetApiVersion = dukTargetApiVersion.as_int();
         }
+        else
+        {
+            LOG_ERROR(
+                u8"Plug-in “%s” does not specify a target API version or specifies it incorrectly. Emulating deprecated APIs.",
+                metadata.Name.c_str());
+        }
 
         auto dukAuthors = dukMetadata["authors"];
         dukAuthors.push();
@@ -194,7 +208,7 @@ PluginType Plugin::ParsePluginType(std::string_view type)
 void Plugin::CheckForLicence(const DukValue& dukLicence, std::string_view pluginName)
 {
     if (dukLicence.type() != DukValue::Type::STRING || dukLicence.as_string().empty())
-        log_error("Plugin %s does not specify a licence", std::string(pluginName).c_str());
+        LOG_ERROR("Plugin %s does not specify a licence", std::string(pluginName).c_str());
 }
 
 int32_t Plugin::GetTargetAPIVersion() const

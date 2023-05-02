@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,8 @@
 #include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../object/FootpathItemEntry.h"
+#include "../object/ObjectEntryManager.h"
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Park.h"
@@ -55,7 +57,7 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
+    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -70,10 +72,10 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_HIGH);
     }
 
-    auto tileElement = map_get_footpath_element(_loc);
+    auto tileElement = MapGetFootpathElement(_loc);
     if (tileElement == nullptr)
     {
-        log_error("Could not find path element.");
+        LOG_ERROR("Could not find path element.");
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
@@ -93,7 +95,7 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
 
     if (_pathItemType != 0)
     {
-        auto* pathBitEntry = get_footpath_item_entry(_pathItemType - 1);
+        auto* pathBitEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(_pathItemType - 1);
         if (pathBitEntry == nullptr)
         {
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
@@ -145,12 +147,12 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
     res.Position = _loc;
     res.Expenditure = ExpenditureType::Landscaping;
 
-    auto tileElement = map_get_footpath_element(_loc);
+    auto tileElement = MapGetFootpathElement(_loc);
     auto pathElement = tileElement->AsPath();
 
     if (pathElement == nullptr)
     {
-        log_error("Could not find path element.");
+        LOG_ERROR("Could not find path element.");
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
@@ -163,7 +165,7 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
 
     if (_pathItemType != 0)
     {
-        auto* pathBitEntry = get_footpath_item_entry(_pathItemType - 1);
+        auto* pathBitEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(_pathItemType - 1);
         if (pathBitEntry == nullptr)
         {
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
@@ -178,7 +180,7 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
     }
     else
     {
-        footpath_interrupt_peeps(_loc);
+        FootpathInterruptPeeps(_loc);
     }
 
     if ((_pathItemType != 0 && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
@@ -191,12 +193,12 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
     pathElement->SetIsBroken(false);
     if (_pathItemType != 0)
     {
-        auto* pathBitEntry = get_footpath_item_entry(_pathItemType - 1);
+        auto* pathBitEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(_pathItemType - 1);
         if (pathBitEntry != nullptr && pathBitEntry->flags & PATH_BIT_FLAG_IS_BIN)
         {
             pathElement->SetAdditionStatus(255);
         }
     }
-    map_invalidate_tile_full(_loc);
+    MapInvalidateTileFull(_loc);
     return res;
 }

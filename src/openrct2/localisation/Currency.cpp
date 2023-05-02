@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,7 +14,7 @@
 #include "StringIds.h"
 
 // clang-format off
-currency_descriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)] = {
+CurrencyDescriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)] = {
     {   "GBP",  10,     CurrencyAffix::Prefix,    "\xC2\xA3",     CurrencyAffix::Suffix,    "GBP",  STR_POUNDS          },  // British Pound
     {   "USD",  10,     CurrencyAffix::Prefix,    "$",            CurrencyAffix::Prefix,    "$",    STR_DOLLARS         },  // US Dollar
     {   "FRF",  10,     CurrencyAffix::Suffix,    "F",            CurrencyAffix::Suffix,    "F",    STR_FRANC           },  // French Franc
@@ -36,14 +36,14 @@ currency_descriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)] = {
 };
 // clang-format on
 
-void currency_load_custom_currency_config()
+void CurrencyLoadCustomCurrencyConfig()
 {
-    CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = gConfigGeneral.custom_currency_rate;
-    CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = gConfigGeneral.custom_currency_affix;
-    if (gConfigGeneral.custom_currency_symbol != nullptr)
+    CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = gConfigGeneral.CustomCurrencyRate;
+    CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode = gConfigGeneral.CustomCurrencyAffix;
+    if (!gConfigGeneral.CustomCurrencySymbol.empty())
     {
-        safe_strcpy(
-            CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, gConfigGeneral.custom_currency_symbol,
+        SafeStrCpy(
+            CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, gConfigGeneral.CustomCurrencySymbol.c_str(),
             CURRENCY_SYMBOL_MAX_SIZE);
     }
 }

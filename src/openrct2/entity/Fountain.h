@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,7 +35,7 @@ struct JumpingFountain : EntityBase
     void Update();
     static void StartAnimation(JumpingFountainType newType, const CoordsXY& newLoc, const TileElement* tileElement);
     void Serialise(DataSerialiser& stream);
-    void Paint(paint_session& session, int32_t imageDirection) const;
+    void Paint(PaintSession& session, int32_t imageDirection) const;
 
 private:
     JumpingFountainType GetType() const;

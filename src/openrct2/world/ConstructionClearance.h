@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,10 +20,10 @@ struct CoordsXY;
 struct CoordsXYRangedZ;
 class QuarterTile;
 
-using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
+using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price);
 
-int32_t map_place_non_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
-int32_t map_place_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
+int32_t MapPlaceNonSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price);
+int32_t MapPlaceSceneryClearFunc(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price);
 
 struct ConstructClearResult
 {
@@ -36,4 +36,4 @@ struct ConstructClearResult
 
 [[nodiscard]] GameActions::Result MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
 
-void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Result& res);
+void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& res);

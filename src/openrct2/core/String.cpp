@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -41,25 +41,6 @@ namespace String
             return std::string();
 
         return std::string(str);
-    }
-
-    std::string StdFormat_VA(const utf8* format, va_list args)
-    {
-        auto buffer = Format_VA(format, args);
-        auto returnValue = ToStd(buffer);
-        Memory::Free(buffer);
-        return returnValue;
-    }
-
-    std::string StdFormat(const utf8* format, ...)
-    {
-        va_list args;
-        va_start(args, format);
-        const utf8* buffer = Format_VA(format, args);
-        va_end(args);
-        std::string returnValue = ToStd(buffer);
-        Memory::Free(buffer);
-        return returnValue;
     }
 
     std::string ToUtf8(std::wstring_view src)
@@ -261,6 +242,26 @@ namespace String
         return false;
     }
 
+    bool Contains(std::string_view haystack, std::string_view needle, bool ignoreCase)
+    {
+        if (needle.size() > haystack.size())
+            return false;
+
+        if (!ignoreCase)
+            return haystack.find(needle) != std::string_view::npos;
+
+        auto end = haystack.size() - needle.size();
+        for (size_t start = 0; start <= end; start++)
+        {
+            auto sub = haystack.substr(start, needle.size());
+            if (Equals(sub, needle, ignoreCase))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     size_t IndexOf(const utf8* str, utf8 match, size_t startIndex)
     {
         const utf8* ch = str + startIndex;
@@ -296,7 +297,7 @@ namespace String
 
     size_t LengthOf(const utf8* str)
     {
-        return utf8_length(str);
+        return UTF8Length(str);
     }
 
     size_t SizeOf(const utf8* str)
@@ -306,7 +307,7 @@ namespace String
 
     utf8* Set(utf8* buffer, size_t bufferSize, const utf8* src)
     {
-        return safe_strcpy(buffer, src, bufferSize);
+        return SafeStrCpy(buffer, src, bufferSize);
     }
 
     utf8* Set(utf8* buffer, size_t bufferSize, const utf8* src, size_t srcSize)
@@ -326,7 +327,7 @@ namespace String
 
     utf8* Append(utf8* buffer, size_t bufferSize, const utf8* src)
     {
-        return safe_strcat(buffer, src, bufferSize);
+        return SafeStrCat(buffer, src, bufferSize);
     }
 
     utf8* Format(utf8* buffer, size_t bufferSize, const utf8* format, ...)
@@ -343,66 +344,38 @@ namespace String
         return buffer;
     }
 
-    utf8* Format(const utf8* format, ...)
+    u8string StdFormat(const utf8* format, ...)
     {
         va_list args;
         va_start(args, format);
-        utf8* result = Format_VA(format, args);
+        auto result = Format_VA(format, args);
         va_end(args);
         return result;
     }
 
-    utf8* Format_VA(const utf8* format, va_list args)
+    u8string Format_VA(const utf8* format, va_list args)
     {
-        va_list args1, args2;
-        va_copy(args1, args);
-        va_copy(args2, args);
+        // When passing no buffer and a size of 0, vsnprintf returns the numbers of chars it would have writte, excluding the
+        // null terminator.
+        va_list copy;
+        va_copy(copy, args);
+        auto len = vsnprintf(nullptr, 0, format, copy);
+        va_end(copy);
 
-        // Try to format to a initial buffer, enlarge if not big enough
-        size_t bufferSize = 4096;
-        utf8* buffer = Memory::Allocate<utf8>(bufferSize);
-
-        // Start with initial buffer
-        int32_t len = vsnprintf(buffer, bufferSize, format, args);
-        if (len < 0)
+        if (len >= 0)
         {
-            Memory::Free(buffer);
-            va_end(args1);
-            va_end(args2);
+            // The length returned by vsnprintf does not include the null terminator, but this byte is accounted for when
+            // writing to a buffer, so we need to allocate one additional byte to fit the entire string in.
+            len++;
+            auto buffer = static_cast<utf8*>(alloca(len));
 
-            // An error occurred...
-            return nullptr;
+            len = vsnprintf(buffer, len, format, args);
+
+            return u8string(buffer, buffer + len);
         }
 
-        size_t requiredSize = static_cast<size_t>(len) + 1;
-        if (requiredSize > bufferSize)
-        {
-            // Try again with bigger buffer
-            buffer = Memory::Reallocate<utf8>(buffer, bufferSize);
-            len = vsnprintf(buffer, bufferSize, format, args);
-            if (len < 0)
-            {
-                Memory::Free(buffer);
-                va_end(args1);
-                va_end(args2);
-
-                // An error occurred...
-                return nullptr;
-            }
-        }
-        else
-        {
-            // Reduce buffer size to only what was required
-            bufferSize = requiredSize;
-            buffer = Memory::Reallocate<utf8>(buffer, bufferSize);
-        }
-
-        // Ensure buffer is terminated
-        buffer[bufferSize - 1] = '\0';
-
-        va_end(args1);
-        va_end(args2);
-        return buffer;
+        LOG_WARNING("Encoding error occured");
+        return u8string{};
     }
 
     utf8* AppendFormat(utf8* buffer, size_t bufferSize, const utf8* format, ...)
@@ -428,35 +401,6 @@ namespace String
         }
 
         return buffer;
-    }
-
-    utf8* Duplicate(const std::string& src)
-    {
-        return String::Duplicate(src.c_str());
-    }
-
-    utf8* Duplicate(const utf8* src)
-    {
-        utf8* result = nullptr;
-        if (src != nullptr)
-        {
-            size_t srcSize = SizeOf(src) + 1;
-            result = Memory::Allocate<utf8>(srcSize);
-            std::memcpy(result, src, srcSize);
-        }
-        return result;
-    }
-
-    utf8* DiscardUse(utf8** ptr, utf8* replacement)
-    {
-        Memory::Free(*ptr);
-        *ptr = replacement;
-        return replacement;
-    }
-
-    utf8* DiscardDuplicate(utf8** ptr, const utf8* replacement)
-    {
-        return DiscardUse(ptr, String::Duplicate(replacement));
     }
 
     std::vector<std::string> Split(std::string_view s, std::string_view delimiter)
@@ -505,7 +449,7 @@ namespace String
 
     size_t GetCodepointLength(codepoint_t codepoint)
     {
-        return utf8_get_codepoint_length(codepoint);
+        return UTF8GetCodepointLength(codepoint);
     }
 
     codepoint_t GetNextCodepoint(utf8* ptr, utf8** nextPtr)
@@ -515,18 +459,18 @@ namespace String
 
     codepoint_t GetNextCodepoint(const utf8* ptr, const utf8** nextPtr)
     {
-        return utf8_get_next(ptr, nextPtr);
+        return UTF8GetNext(ptr, nextPtr);
     }
 
     utf8* WriteCodepoint(utf8* dst, codepoint_t codepoint)
     {
-        return utf8_write_codepoint(dst, codepoint);
+        return UTF8WriteCodepoint(dst, codepoint);
     }
 
     void AppendCodepoint(std::string& str, codepoint_t codepoint)
     {
         char buffer[8]{};
-        utf8_write_codepoint(buffer, codepoint);
+        UTF8WriteCodepoint(buffer, codepoint);
         str.append(buffer);
     }
 
@@ -704,7 +648,6 @@ namespace String
     std::string ToUpper(std::string_view src)
     {
 #ifdef _WIN32
-#    if _WIN32_WINNT >= 0x0600
         auto srcW = ToWideChar(src);
 
         // Measure how long the destination needs to be
@@ -723,16 +666,11 @@ namespace String
         {
             // Check the error
             auto error = GetLastError();
-            log_warning("LCMapStringEx failed with %d", error);
+            LOG_WARNING("LCMapStringEx failed with %d", error);
             return std::string(src);
         }
 
         return String::ToUtf8(dstW);
-#    else
-        std::string dst = std::string(src);
-        std::transform(dst.begin(), dst.end(), dst.begin(), [](unsigned char c) { return std::toupper(c); });
-        return dst;
-#    endif
 #else
         icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
         str.toUpper();
@@ -788,5 +726,5 @@ namespace String
 
 char32_t CodepointView::iterator::GetNextCodepoint(const char* ch, const char** next)
 {
-    return utf8_get_next(ch, next);
+    return UTF8GetNext(ch, next);
 }

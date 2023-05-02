@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,8 +18,12 @@
 #    include <sys/inotify.h>
 #    include <sys/types.h>
 #    include <unistd.h>
+#elif defined(__APPLE__)
+#    include <CoreServices/CoreServices.h>
 #endif
 
+#include "../core/Guard.hpp"
+#include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "FileSystem.hpp"
 #include "FileWatcher.h"
@@ -40,11 +44,11 @@ void FileWatcher::FileDescriptor::Initialise()
         fcntl(fd, F_SETFL, flags | O_NONBLOCK);
 
         Fd = fd;
-        log_verbose("FileWatcher: inotify_init succeeded");
+        LOG_VERBOSE("FileWatcher: inotify_init succeeded");
     }
     else
     {
-        log_verbose("FileWatcher: inotify_init failed");
+        LOG_VERBOSE("FileWatcher: inotify_init failed");
         throw std::runtime_error("inotify_init failed");
     }
 }
@@ -65,11 +69,11 @@ FileWatcher::WatchDescriptor::WatchDescriptor(int fd, const std::string& path)
 {
     if (Wd >= 0)
     {
-        log_verbose("FileWatcher: inotify watch added for %s", path.c_str());
+        LOG_VERBOSE("FileWatcher: inotify watch added for %s", path.c_str());
     }
     else
     {
-        log_verbose("FileWatcher: inotify_add_watch failed for %s", path.c_str());
+        LOG_VERBOSE("FileWatcher: inotify_add_watch failed for %s", path.c_str());
         throw std::runtime_error("inotify_add_watch failed for '" + path + "'");
     }
 }
@@ -77,24 +81,57 @@ FileWatcher::WatchDescriptor::WatchDescriptor(int fd, const std::string& path)
 FileWatcher::WatchDescriptor::~WatchDescriptor()
 {
     inotify_rm_watch(Fd, Wd);
-    log_verbose("FileWatcher: inotify watch removed");
+    LOG_VERBOSE("FileWatcher: inotify watch removed");
 }
 #endif
 
-FileWatcher::FileWatcher(const std::string& directoryPath)
+#if defined(__APPLE__)
+
+static int eventModified = kFSEventStreamEventFlagItemFinderInfoMod | kFSEventStreamEventFlagItemModified
+    | kFSEventStreamEventFlagItemInodeMetaMod | kFSEventStreamEventFlagItemChangeOwner | kFSEventStreamEventFlagItemXattrMod;
+
+static int eventRenamed = kFSEventStreamEventFlagItemCreated | kFSEventStreamEventFlagItemRemoved
+    | kFSEventStreamEventFlagItemRenamed;
+
+void FileWatcher::FSEventsCallback(
+    ConstFSEventStreamRef streamRef, void* clientCallBackInfo, size_t numEvents, void* eventPaths,
+    const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[])
+{
+    FileWatcher* fileWatcher = static_cast<FileWatcher*>(clientCallBackInfo);
+
+    Guard::Assert(fileWatcher != nullptr, "FileWatcher is null");
+    Guard::Assert(fileWatcher->OnFileChanged != nullptr, "OnFileChanged is null");
+
+    char** paths = static_cast<char**>(eventPaths);
+    for (size_t i = 0; i < numEvents; i++)
+    {
+        if (eventFlags[i] & eventModified)
+            LOG_VERBOSE("Modified: %s\n", paths[i]);
+        if (eventFlags[i] & eventRenamed)
+            LOG_VERBOSE("Renamed: %s\n", paths[i]);
+
+        if (eventFlags[i] & eventModified || eventFlags[i] & eventRenamed)
+        {
+            fileWatcher->OnFileChanged(paths[i]);
+        }
+    }
+}
+#endif
+
+FileWatcher::FileWatcher(u8string_view directoryPath)
 {
 #ifdef _WIN32
-    _path = directoryPath;
-    _directoryHandle = CreateFileA(
-        directoryPath.c_str(), FILE_LIST_DIRECTORY, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS,
-        nullptr);
+    _path = fs::u8path(directoryPath);
+    _directoryHandle = CreateFileW(
+        String::ToWideChar(directoryPath).c_str(), FILE_LIST_DIRECTORY, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+        nullptr, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, nullptr);
     if (_directoryHandle == INVALID_HANDLE_VALUE)
     {
-        throw std::runtime_error("Unable to open directory '" + directoryPath + "'");
+        throw std::runtime_error("Unable to open directory '" + u8string(directoryPath) + "'");
     }
 #elif defined(__linux__)
     _fileDesc.Initialise();
-    _watchDescs.emplace_back(_fileDesc.Fd, directoryPath);
+    _watchDescs.emplace_back(_fileDesc.Fd, u8string(directoryPath));
     for (auto& p : fs::recursive_directory_iterator(directoryPath))
     {
         if (p.status().type() == fs::file_type::directory)
@@ -102,30 +139,51 @@ FileWatcher::FileWatcher(const std::string& directoryPath)
             _watchDescs.emplace_back(_fileDesc.Fd, p.path().string());
         }
     }
+#elif defined(__APPLE__)
+    CFStringRef path = CFStringCreateWithCString(kCFAllocatorDefault, directoryPath.data(), kCFStringEncodingUTF8);
+    CFArrayRef pathsToWatch = CFArrayCreate(kCFAllocatorDefault, reinterpret_cast<const void**>(&path), 1, nullptr);
+    CFAbsoluteTime latencyInSeconds = 0.5;
+    FSEventStreamContext context = { 0, this, nullptr, nullptr, nullptr };
+
+    _stream = FSEventStreamCreate(
+        NULL, &FSEventsCallback, &context, pathsToWatch, kFSEventStreamEventIdSinceNow, latencyInSeconds,
+        kFSEventStreamCreateFlagFileEvents);
+
+    if (!_stream)
+    {
+        throw std::runtime_error("Unable to create FSEventStream");
+    }
+
+    _runLoop = CFRunLoopGetCurrent();
 #else
     throw std::runtime_error("FileWatcher not supported on this platform.");
 #endif
-    _watchThread = std::thread(std::bind(&FileWatcher::WatchDirectory, this));
+    _watchThread = std::thread(&FileWatcher::WatchDirectory, this);
 }
 
 FileWatcher::~FileWatcher()
 {
 #ifdef _WIN32
-#    if _WIN32_WINNT < 0x0600
-    // TODO CancelIo is documented as not working across a different thread but
-    //      CancelIoEx is not available.
-    CancelIo(_directoryHandle);
-#    else
     CancelIoEx(_directoryHandle, nullptr);
-#    endif
+    _watchThread.join();
     CloseHandle(_directoryHandle);
 #elif defined(__linux__)
     _finished = true;
+    _watchThread.join();
     _fileDesc.Close();
+#elif defined(__APPLE__)
+    if (_stream)
+    {
+        FSEventStreamStop(_stream);
+        FSEventStreamUnscheduleFromRunLoop(_stream, _runLoop, kCFRunLoopDefaultMode);
+        FSEventStreamInvalidate(_stream);
+        FSEventStreamRelease(_stream);
+    }
+    _watchThread.join();
+    _stream = nullptr;
 #else
     return;
 #endif
-    _watchThread.join();
 }
 
 void FileWatcher::WatchDirectory()
@@ -137,8 +195,7 @@ void FileWatcher::WatchDirectory()
         _directoryHandle, eventData.data(), static_cast<DWORD>(eventData.size()), TRUE, FILE_NOTIFY_CHANGE_LAST_WRITE,
         &bytesReturned, nullptr, nullptr))
     {
-        auto onFileChanged = OnFileChanged;
-        if (onFileChanged)
+        if (bytesReturned != 0 && OnFileChanged)
         {
             FILE_NOTIFY_INFORMATION* notifyInfo;
             size_t offset = 0;
@@ -147,22 +204,21 @@ void FileWatcher::WatchDirectory()
                 notifyInfo = reinterpret_cast<FILE_NOTIFY_INFORMATION*>(eventData.data() + offset);
                 offset += notifyInfo->NextEntryOffset;
 
-                std::wstring fileNameW(notifyInfo->FileName, notifyInfo->FileNameLength / sizeof(wchar_t));
-                auto fileName = String::ToUtf8(fileNameW);
-                auto path = fs::path(_path) / fs::path(fileName);
-                onFileChanged(path.u8string());
+                std::wstring_view fileNameW(notifyInfo->FileName, notifyInfo->FileNameLength / sizeof(wchar_t));
+                auto path = _path / fs::path(fileNameW);
+                OnFileChanged(path.u8string());
             } while (notifyInfo->NextEntryOffset != 0);
         }
     }
 #elif defined(__linux__)
-    log_verbose("FileWatcher: reading event data...");
+    LOG_VERBOSE("FileWatcher: reading event data...");
     std::array<char, 1024> eventData;
     while (!_finished)
     {
         int length = read(_fileDesc.Fd, eventData.data(), eventData.size());
         if (length >= 0)
         {
-            log_verbose("FileWatcher: inotify event data received");
+            LOG_VERBOSE("FileWatcher: inotify event data received");
             auto onFileChanged = OnFileChanged;
             if (onFileChanged)
             {
@@ -172,7 +228,7 @@ void FileWatcher::WatchDirectory()
                     auto e = reinterpret_cast<inotify_event*>(eventData.data() + offset);
                     if ((e->mask & IN_CLOSE_WRITE) && !(e->mask & IN_ISDIR))
                     {
-                        log_verbose("FileWatcher: inotify event received for %s", e->name);
+                        LOG_VERBOSE("FileWatcher: inotify event received for %s", e->name);
 
                         // Find watch descriptor
                         int wd = e->wd;
@@ -181,9 +237,7 @@ void FileWatcher::WatchDirectory()
                             [wd](const WatchDescriptor& watchDesc) { return wd == watchDesc.Wd; });
                         if (findResult != _watchDescs.end())
                         {
-                            auto directory = findResult->Path;
-                            auto path = fs::path(directory) / fs::path(e->name);
-                            onFileChanged(path);
+                            onFileChanged(Path::Combine(findResult->Path, e->name));
                         }
                     }
                     offset += sizeof(inotify_event) + e->len;
@@ -193,6 +247,13 @@ void FileWatcher::WatchDirectory()
 
         // Sleep for 1/2 second
         usleep(500000);
+    }
+#elif defined(__APPLE__)
+    if (_stream)
+    {
+        FSEventStreamScheduleWithRunLoop(_stream, _runLoop, kCFRunLoopDefaultMode);
+        FSEventStreamStart(_stream);
+        CFRunLoopRun();
     }
 #endif
 }

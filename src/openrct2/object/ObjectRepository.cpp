@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -53,7 +53,7 @@ using namespace OpenRCT2;
 
 struct ObjectEntryHash
 {
-    size_t operator()(const rct_object_entry& entry) const
+    size_t operator()(const RCTObjectEntry& entry) const
     {
         uint32_t hash = 5381;
         for (auto i : entry.name)
@@ -66,20 +66,20 @@ struct ObjectEntryHash
 
 struct ObjectEntryEqual
 {
-    bool operator()(const rct_object_entry& lhs, const rct_object_entry& rhs) const
+    bool operator()(const RCTObjectEntry& lhs, const RCTObjectEntry& rhs) const
     {
         return memcmp(&lhs.name, &rhs.name, 8) == 0;
     }
 };
 
 using ObjectIdentifierMap = std::unordered_map<std::string, size_t>;
-using ObjectEntryMap = std::unordered_map<rct_object_entry, size_t, ObjectEntryHash, ObjectEntryEqual>;
+using ObjectEntryMap = std::unordered_map<RCTObjectEntry, size_t, ObjectEntryHash, ObjectEntryEqual>;
 
 class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 28;
+    static constexpr uint16_t VERSION = 29;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
@@ -97,7 +97,7 @@ public:
     }
 
 public:
-    std::tuple<bool, ObjectRepositoryItem> Create([[maybe_unused]] int32_t language, const std::string& path) const override
+    std::optional<ObjectRepositoryItem> Create([[maybe_unused]] int32_t language, const std::string& path) const override
     {
         std::unique_ptr<Object> object;
         auto extension = Path::GetExtension(path);
@@ -113,6 +113,7 @@ public:
         {
             object = ObjectFactory::CreateObjectFromLegacyFile(_objectRepository, path.c_str(), false);
         }
+
         if (object != nullptr)
         {
             ObjectRepositoryItem item = {};
@@ -120,18 +121,21 @@ public:
             item.Generation = object->GetGeneration();
             item.Identifier = object->GetIdentifier();
             item.ObjectEntry = object->GetObjectEntry();
+            item.Version = object->GetVersion();
             item.Path = path;
             item.Name = object->GetName();
             item.Authors = object->GetAuthors();
             item.Sources = object->GetSourceGames();
+            if (object->IsCompatibilityObject())
+                item.Flags |= ObjectItemFlags::IsCompatibilityObject;
             object->SetRepositoryItem(&item);
-            return std::make_tuple(true, item);
+            return item;
         }
-        return std::make_tuple(false, ObjectRepositoryItem());
+        return std::nullopt;
     }
 
 protected:
-    void Serialise(DataSerialiser& ds, ObjectRepositoryItem& item) const override
+    void Serialise(DataSerialiser& ds, const ObjectRepositoryItem& item) const override
     {
         ds << item.Type;
         ds << item.Generation;
@@ -142,6 +146,7 @@ protected:
 
         ds << item.Sources;
         ds << item.Authors;
+        ds << item.Flags;
 
         switch (item.Type)
         {
@@ -218,7 +223,7 @@ public:
 
     const ObjectRepositoryItem* FindObjectLegacy(std::string_view legacyIdentifier) const override
     {
-        rct_object_entry entry = {};
+        RCTObjectEntry entry = {};
         entry.SetName(legacyIdentifier);
 
         auto kvp = _itemMap.find(entry);
@@ -239,7 +244,7 @@ public:
         return nullptr;
     }
 
-    const ObjectRepositoryItem* FindObject(const rct_object_entry* objectEntry) const override final
+    const ObjectRepositoryItem* FindObject(const RCTObjectEntry* objectEntry) const override final
     {
         auto kvp = _itemMap.find(*objectEntry);
         if (kvp != _itemMap.end())
@@ -291,10 +296,10 @@ public:
         }
     }
 
-    void AddObject(const rct_object_entry* objectEntry, const void* data, size_t dataSize) override
+    void AddObject(const RCTObjectEntry* objectEntry, const void* data, size_t dataSize) override
     {
         utf8 objectName[9];
-        object_entry_get_name_fixed(objectName, sizeof(objectName), objectEntry);
+        ObjectEntryGetNameFixed(objectName, sizeof(objectName), objectEntry);
 
         // Check that the object is loadable before writing it
         auto object = ObjectFactory::CreateObjectFromLegacyData(*this, objectEntry, data, dataSize);
@@ -304,7 +309,7 @@ public:
         }
         else
         {
-            log_verbose("Adding object: [%s]", objectName);
+            LOG_VERBOSE("Adding object: [%s]", objectName);
             auto path = GetPathForNewObject(ObjectGeneration::DAT, objectName);
             try
             {
@@ -320,7 +325,7 @@ public:
 
     void AddObjectFromFile(ObjectGeneration generation, std::string_view objectName, const void* data, size_t dataSize) override
     {
-        log_verbose("Adding object: [%s]", std::string(objectName).c_str());
+        LOG_VERBOSE("Adding object: [%s]", std::string(objectName).c_str());
         auto path = GetPathForNewObject(generation, objectName);
         try
         {
@@ -338,7 +343,7 @@ public:
         auto chunkReader = SawyerChunkReader(stream);
 
         // Check if we already have this object
-        rct_object_entry entry = stream->ReadValue<rct_object_entry>();
+        RCTObjectEntry entry = stream->ReadValue<RCTObjectEntry>();
         if (FindObject(&entry) != nullptr)
         {
             chunkReader.SkipChunk();
@@ -376,7 +381,7 @@ private:
         _newItemMap.clear();
         for (size_t i = 0; i < _items.size(); i++)
         {
-            rct_object_entry entry = _items[i].ObjectEntry;
+            RCTObjectEntry entry = _items[i].ObjectEntry;
             _itemMap[entry] = i;
             if (!_items[i].Identifier.empty())
             {
@@ -418,6 +423,7 @@ private:
         {
             conflict = FindObject(item.Identifier);
         }
+
         if (conflict == nullptr)
         {
             size_t index = _items.size();
@@ -434,6 +440,21 @@ private:
             }
             return true;
         }
+        // When there is a conflict between a DAT file and a JSON file, the JSON should take precedence.
+        else if (item.Generation == ObjectGeneration::JSON && conflict->Generation == ObjectGeneration::DAT)
+        {
+            const auto id = conflict->Id;
+            const auto oldPath = conflict->Path;
+            _items[id] = item;
+            _items[id].Id = id;
+            if (!item.Identifier.empty())
+            {
+                _newItemMap[item.Identifier] = id;
+            }
+
+            Console::Error::WriteLine("Object conflict: '%s' was overridden by '%s'", oldPath.c_str(), item.Path.c_str());
+            return true;
+        }
 
         Console::Error::WriteLine("Object conflict: '%s'", conflict->Path.c_str());
         Console::Error::WriteLine("               : '%s'", item.Path.c_str());
@@ -443,25 +464,23 @@ private:
     void ScanObject(const std::string& path)
     {
         auto language = LocalisationService_GetCurrentLanguage();
-        auto result = _fileIndex.Create(language, path);
-        if (std::get<0>(result))
+        if (auto result = _fileIndex.Create(language, path); result.has_value())
         {
-            auto ori = std::get<1>(result);
-            AddItem(ori);
+            AddItem(result.value());
         }
     }
 
     static void SaveObject(
-        std::string_view path, const rct_object_entry* entry, const void* data, size_t dataSize, bool fixChecksum = true)
+        std::string_view path, const RCTObjectEntry* entry, const void* data, size_t dataSize, bool fixChecksum = true)
     {
         if (fixChecksum)
         {
-            uint32_t realChecksum = object_calculate_checksum(entry, data, dataSize);
+            uint32_t realChecksum = ObjectCalculateChecksum(entry, data, dataSize);
             if (realChecksum != entry->checksum)
             {
                 char objectName[9];
-                object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
-                log_verbose("[%s] Incorrect checksum, adding salt bytes...", objectName);
+                ObjectEntryGetNameFixed(objectName, sizeof(objectName), entry);
+                LOG_VERBOSE("[%s] Incorrect checksum, adding salt bytes...", objectName);
 
                 // Calculate the value of extra bytes that can be appended to the data so that the
                 // data is then valid for the object's checksum
@@ -477,7 +496,7 @@ private:
 
                 try
                 {
-                    uint32_t newRealChecksum = object_calculate_checksum(entry, newData, newDataSize);
+                    uint32_t newRealChecksum = ObjectCalculateChecksum(entry, newData, newDataSize);
                     if (newRealChecksum != entry->checksum)
                     {
                         Console::Error::WriteLine("CalculateExtraBytesToFixChecksum failed to fix checksum.");
@@ -505,18 +524,18 @@ private:
 
         // Encode data
         ObjectType objectType = entry->GetType();
-        sawyercoding_chunk_header chunkHeader;
+        SawyerCodingChunkHeader chunkHeader;
         chunkHeader.encoding = object_entry_group_encoding[EnumValue(objectType)];
         chunkHeader.length = static_cast<uint32_t>(dataSize);
         uint8_t* encodedDataBuffer = Memory::Allocate<uint8_t>(0x600000);
-        size_t encodedDataSize = sawyercoding_write_chunk_buffer(
+        size_t encodedDataSize = SawyerCodingWriteChunkBuffer(
             encodedDataBuffer, reinterpret_cast<const uint8_t*>(data), chunkHeader);
 
         // Save to file
         try
         {
             auto fs = FileStream(std::string(path), FILE_MODE_WRITE);
-            fs.Write(entry, sizeof(rct_object_entry));
+            fs.Write(entry, sizeof(RCTObjectEntry));
             fs.Write(encodedDataBuffer, encodedDataSize);
 
             Memory::Free(encodedDataBuffer);
@@ -568,7 +587,7 @@ private:
         auto fileName = GetFileNameForNewObject(generation, name);
         auto extension = (generation == ObjectGeneration::DAT ? u8".DAT" : u8".parkobj");
         auto fullPath = Path::Combine(userObjPath, fileName + extension);
-        auto counter = 1U;
+        auto counter = 1u;
         while (File::Exists(fullPath))
         {
             counter++;
@@ -607,7 +626,7 @@ private:
         }
     }
 
-    void WritePackedObject(OpenRCT2::IStream* stream, const rct_object_entry* entry)
+    void WritePackedObject(OpenRCT2::IStream* stream, const RCTObjectEntry* entry)
     {
         const ObjectRepositoryItem* item = FindObject(entry);
         if (item == nullptr)
@@ -617,7 +636,7 @@ private:
 
         // Read object data from file
         auto fs = OpenRCT2::FileStream(item->Path, OpenRCT2::FILE_MODE_OPEN);
-        auto fileEntry = fs.ReadValue<rct_object_entry>();
+        auto fileEntry = fs.ReadValue<RCTObjectEntry>();
         if (*entry != fileEntry)
         {
             throw std::runtime_error("Header found in object file does not match object to pack.");
@@ -640,14 +659,6 @@ std::unique_ptr<IObjectRepository> CreateObjectRepository(const std::shared_ptr<
 bool IsObjectCustom(const ObjectRepositoryItem* object)
 {
     Guard::ArgumentNotNull(object);
-
-    // Do not count our new object types as custom yet, otherwise the game
-    // will try to pack them into saved games.
-    if (object->Type > ObjectType::ScenarioText)
-    {
-        return false;
-    }
-
     switch (object->GetFirstSourceGame())
     {
         case ObjectSourceGame::RCT1:
@@ -663,19 +674,7 @@ bool IsObjectCustom(const ObjectRepositoryItem* object)
     }
 }
 
-const rct_object_entry* object_list_find(rct_object_entry* entry)
-{
-    const rct_object_entry* result = nullptr;
-    auto& objRepo = GetContext()->GetObjectRepository();
-    auto item = objRepo.FindObject(entry);
-    if (item != nullptr)
-    {
-        result = &item->ObjectEntry;
-    }
-    return result;
-}
-
-std::unique_ptr<Object> object_repository_load_object(const rct_object_entry* objectEntry)
+std::unique_ptr<Object> ObjectRepositoryLoadObject(const RCTObjectEntry* objectEntry)
 {
     std::unique_ptr<Object> object;
     auto& objRepository = GetContext()->GetObjectRepository();
@@ -691,47 +690,47 @@ std::unique_ptr<Object> object_repository_load_object(const rct_object_entry* ob
     return object;
 }
 
-void scenario_translate(scenario_index_entry* scenarioEntry)
+void ScenarioTranslate(ScenarioIndexEntry* scenarioEntry)
 {
-    rct_string_id localisedStringIds[3];
-    if (language_get_localised_scenario_strings(scenarioEntry->name, localisedStringIds))
+    StringId localisedStringIds[3];
+    if (LanguageGetLocalisedScenarioStrings(scenarioEntry->Name, localisedStringIds))
     {
         if (localisedStringIds[0] != STR_NONE)
         {
-            String::Set(scenarioEntry->name, sizeof(scenarioEntry->name), language_get_string(localisedStringIds[0]));
+            String::Set(scenarioEntry->Name, sizeof(scenarioEntry->Name), LanguageGetString(localisedStringIds[0]));
         }
         if (localisedStringIds[2] != STR_NONE)
         {
-            String::Set(scenarioEntry->details, sizeof(scenarioEntry->details), language_get_string(localisedStringIds[2]));
+            String::Set(scenarioEntry->Details, sizeof(scenarioEntry->Details), LanguageGetString(localisedStringIds[2]));
         }
     }
 }
 
-size_t object_repository_get_items_count()
+size_t ObjectRepositoryGetItemsCount()
 {
     auto& objectRepository = GetContext()->GetObjectRepository();
     return objectRepository.GetNumObjects();
 }
 
-const ObjectRepositoryItem* object_repository_get_items()
+const ObjectRepositoryItem* ObjectRepositoryGetItems()
 {
     auto& objectRepository = GetContext()->GetObjectRepository();
     return objectRepository.GetObjects();
 }
 
-const ObjectRepositoryItem* object_repository_find_object_by_entry(const rct_object_entry* entry)
+const ObjectRepositoryItem* ObjectRepositoryFindObjectByEntry(const RCTObjectEntry* entry)
 {
     auto& objectRepository = GetContext()->GetObjectRepository();
     return objectRepository.FindObject(entry);
 }
 
-const ObjectRepositoryItem* object_repository_find_object_by_name(const char* name)
+const ObjectRepositoryItem* ObjectRepositoryFindObjectByName(const char* name)
 {
     auto& objectRepository = GetContext()->GetObjectRepository();
     return objectRepository.FindObjectLegacy(name);
 }
 
-int32_t object_calculate_checksum(const rct_object_entry* entry, const void* data, size_t dataLength)
+int32_t ObjectCalculateChecksum(const RCTObjectEntry* entry, const void* data, size_t dataLength)
 {
     const uint8_t* entryBytePtr = reinterpret_cast<const uint8_t*>(entry);
 

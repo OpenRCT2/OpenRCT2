@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,7 +21,7 @@
 
 #include <algorithm>
 
-Vehicle* cable_lift_segment_create(
+Vehicle* CableLiftSegmentCreate(
     Ride& ride, int32_t x, int32_t y, int32_t z, int32_t direction, uint16_t var_44, int32_t remaining_distance, bool head)
 {
     Vehicle* current = CreateEntity<Vehicle>();
@@ -29,14 +29,14 @@ Vehicle* cable_lift_segment_create(
     current->ride_subtype = OBJECT_ENTRY_INDEX_NULL;
     if (head)
     {
-        ride.cable_lift = current->sprite_index;
+        ride.cable_lift = current->Id;
     }
     current->SubType = head ? Vehicle::Type::Head : Vehicle::Type::Tail;
     current->var_44 = var_44;
     current->remaining_distance = remaining_distance;
-    current->sprite_width = 10;
-    current->sprite_height_negative = 10;
-    current->sprite_height_positive = 10;
+    current->SpriteData.Width = 10;
+    current->SpriteData.HeightMin = 10;
+    current->SpriteData.HeightMax = 10;
     current->mass = 100;
     current->num_seats = 0;
     current->speed = 20;
@@ -63,7 +63,7 @@ Vehicle* cable_lift_segment_create(
         peep = EntityId::GetNull();
     }
     current->TrackSubposition = VehicleTrackSubposition::Default;
-    current->sprite_direction = direction << 3;
+    current->Orientation = direction << 3;
 
     z = z * COORDS_Z_STEP;
     current->TrackLocation = { x, y, z };
@@ -71,14 +71,13 @@ Vehicle* cable_lift_segment_create(
 
     current->MoveTo({ 16, 16, z });
     current->SetTrackType(TrackElemType::CableLiftHill);
-    current->SetTrackDirection(current->sprite_direction >> 3);
+    current->SetTrackDirection(current->Orientation >> 3);
     current->track_progress = 164;
-    current->update_flags = VEHICLE_UPDATE_FLAG_COLLISION_DISABLED;
+    current->Flags = VehicleFlags::CollisionDisabled;
     current->SetState(Vehicle::Status::MovingToEndOfStation, 0);
     current->num_peeps = 0;
     current->next_free_seat = 0;
     current->BoatLocation.SetNull();
-    current->IsCrashedVehicle = false;
     return current;
 }
 
@@ -116,7 +115,9 @@ void Vehicle::CableLiftUpdate()
 void Vehicle::CableLiftUpdateMovingToEndOfStation()
 {
     if (velocity >= -439800)
+    {
         acceleration = -2932;
+    }
 
     if (velocity < -439800)
     {
@@ -139,7 +140,9 @@ void Vehicle::CableLiftUpdateMovingToEndOfStation()
 void Vehicle::CableLiftUpdateWaitingToDepart()
 {
     if (velocity >= -58640)
+    {
         acceleration = -14660;
+    }
 
     if (velocity < -58640)
     {
@@ -203,7 +206,7 @@ void Vehicle::CableLiftUpdateTravelling()
 
     velocity = std::min(passengerVehicle->velocity, 439800);
     acceleration = 0;
-    if (passengerVehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN))
+    if (passengerVehicle->HasFlag(VehicleFlags::TrainIsBroken))
         return;
 
     if (!(CableLiftUpdateTrackMotion() & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1))
@@ -244,7 +247,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
         uint16_t trackTotalProgress = GetTrackProgress();
         if (trackProgress >= trackTotalProgress)
         {
-            TileElement* trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
+            TileElement* trackElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, trackType, 0);
 
             CoordsXYE output;
             int32_t outputZ;
@@ -252,7 +255,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
 
             auto input = CoordsXYE{ TrackLocation, trackElement };
 
-            if (!track_block_get_next(&input, &output, &outputZ, &outputDirection))
+            if (!TrackBlockGetNext(&input, &output, &outputZ, &outputDirection))
                 return false;
 
             if (TrackPitchAndRollEnd(trackType) != TrackPitchAndRollStart(output.element->AsTrack()->GetTrackType()))
@@ -282,7 +285,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
         _vehicleCurPosition.y = nextVehiclePosition.y;
         _vehicleCurPosition.z = nextVehiclePosition.z;
 
-        sprite_direction = moveInfo->direction;
+        Orientation = moveInfo->direction;
         bank_rotation = moveInfo->bank_rotation;
         Pitch = moveInfo->Pitch;
 
@@ -307,12 +310,12 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
         if (static_cast<int16_t>(trackProgress) == -1)
         {
             auto trackType = GetTrackType();
-            TileElement* trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
+            TileElement* trackElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, trackType, 0);
 
             auto input = CoordsXYE{ TrackLocation, trackElement };
-            track_begin_end output;
+            TrackBeginEnd output;
 
-            if (!track_block_get_previous(input, &output))
+            if (!TrackBlockGetPrevious(input, &output))
                 return false;
 
             if (TrackPitchAndRollStart(trackType) != TrackPitchAndRollEnd(output.begin_element->AsTrack()->GetTrackType()))
@@ -348,7 +351,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
         _vehicleCurPosition.y = unk.y;
         _vehicleCurPosition.z = unk.z;
 
-        sprite_direction = moveInfo->direction;
+        Orientation = moveInfo->direction;
         bank_rotation = moveInfo->bank_rotation;
         Pitch = moveInfo->Pitch;
 
@@ -441,13 +444,13 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
     uint16_t massTotal = 0;
     int32_t accelerationTotal = 0;
 
-    for (Vehicle* vehicle = GetEntity<Vehicle>(sprite_index); vehicle != nullptr;
+    for (Vehicle* vehicle = GetEntity<Vehicle>(Id); vehicle != nullptr;
          vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         vehicleCount++;
 
         massTotal += vehicle->mass;
-        accelerationTotal = add_clamp_int32_t(accelerationTotal, vehicle->acceleration);
+        accelerationTotal = AddClamp_int32_t(accelerationTotal, vehicle->acceleration);
     }
 
     int32_t newAcceleration = (accelerationTotal / vehicleCount) >> 9;
