@@ -2886,25 +2886,100 @@ declare global {
      * Use `network.mode` to determine whether the current game is a client, server or in single player mode.
      */
     interface Network {
+        /**
+         * The current network mode. This can be used to determine whether the current
+         * session is single player, a multiplayer server, or a multiplayer client.
+         */
         readonly mode: NetworkMode;
+
+        /**
+         * The number of multiplayer groups there are in the server.
+         */
         readonly numGroups: number;
+
+        /**
+         * The number of players there are in the server.
+         */
         readonly numPlayers: number;
+
+        /**
+         * Gets all the multiplayer groups within the server. Groups are used to give individual
+         * players roles and permissions.
+         */
         readonly groups: PlayerGroup[];
+
+        /**
+         * Gets all the players that are currently in the server.
+         */
         readonly players: Player[];
+
+        /**
+         * The player this instance of the game is controlling.
+         */
         readonly currentPlayer: Player;
+
+        /**
+         * Gets or sets the default group ID that new players joining the server should be assigned to.
+         */
         defaultGroup: number;
+
+        /**
+         * Various statistics related to networking.
+         */
         readonly stats: NetworkStats;
 
-        getServerInfo(): ServerInfo;
+        /**
+         * Creates a new multiplayer group for managing player permissions.
+         */
         addGroup(): void;
-        getGroup(index: number): PlayerGroup;
-        removeGroup(index: number): void;
-        getPlayer(index: number): Player;
-        kickPlayer(index: number): void;
+
+        /**
+         * Gets the player group with the specified ID.
+         * @param id The group ID. Prior to API version 77, this is the group index.
+         */
+        getGroup(id: number): PlayerGroup;
+
+        /**
+         * Removes the player group with the specified ID.
+         * @param id The group ID. Prior to API version 77, this is the group index.
+         */
+        removeGroup(id: number): void;
+
+        /*
+         * Gets the player with the specified ID.
+         * @param id The player ID. Prior to API version 77, this is the player index.
+         */
+        getPlayer(id: number): Player;
+
+        /*
+         * Kicks the player with the specified ID from the server.
+         * @param id The player ID. Prior to API version 77, this is the player index.
+         */
+        kickPlayer(id: number): void;
+
+        /**
+         * Sends a chat message to all players.
+         * @param message The message text.
+         */
         sendMessage(message: string): void;
+
+        /**
+         * Sends a chat message to only the specified players.
+         * @param message The message text.
+         * @param players A list of player IDs that should receive the chat message.
+         *                Note: the message will be internally transmitted to players via
+         *                      the server, even if the server is not a recipient.
+         */
         sendMessage(message: string, players: number[]): void;
 
+        /**
+         * Creates a new listener that can accept TCP connections on a given port.
+         */
         createListener(): Listener;
+
+        /**
+         * Creates a new TCP client that can connect to a server.
+         */
         createSocket(): Socket;
     }
 
@@ -2914,34 +2989,81 @@ declare global {
      * Represents a player within a network game.
      */
     interface Player {
+        /**
+         * The unique ID for the player.
+         */
         readonly id: number;
+
+        /**
+         * The name of the player.
+         */
         readonly name: string;
+
+        /**
+         * The group ID the player is a member of.
+         */
         group: number;
+
+        /**
+         * The latest measured ping in milliseconds for the player.
+         */
         readonly ping: number;
+
+        /**
+         * The number of actions the player has successfully executed.
+         */
         readonly commandsRan: number;
+
+        /**
+         * The total amount of cash spent from actions performed by the player.
+         */
         readonly moneySpent: number;
+
+        /**
+         * The player's IP address.
+         */
         readonly ipAddress: string;
+
+        /**
+         * A hash of the player's public key used to authenticate with the server.
+         */
         readonly publicKeyHash: string;
     }
 
+    /**
+     * Represents a group in a network game for assigning roles and permissions
+     * to one or more players.
+     */
     interface PlayerGroup {
+        /**
+         * The unique ID for the group.
+         */
         readonly id: number;
+
+        /**
+         * The name of the group.
+         */
         name: string;
+
+        /**
+         * The permissions granted to each player belonging to the group.
+         */
         permissions: PermissionType[];
     }
 
-    interface ServerInfo {
-        readonly name: string;
-        readonly description: string;
-        readonly greeting: string;
-        readonly providerName: string;
-        readonly providerEmail: string;
-        readonly providerWebsite: string;
-    }
-
+    /**
+     * Represents various network statistics.
+     */
     interface NetworkStats {
-        bytesReceived: number[];
-        bytesSent: number[];
+        /**
+         * The number of bytes received for each category.
+         */
+        readonly bytesReceived: number[];
+
+        /**
+         * The number of bytes sent for each category.
+         */
+        readonly bytesSent: number[];
     }
 
     type PermissionType =

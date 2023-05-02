@@ -43,17 +43,17 @@ namespace OpenRCT2::Scripting
 
         std::shared_ptr<ScPlayer> currentPlayer_get() const;
 
-        std::shared_ptr<ScPlayer> getPlayer(int32_t index) const;
+        std::shared_ptr<ScPlayer> getPlayer(int32_t id) const;
 
         DukValue stats_get() const;
 
-        std::shared_ptr<ScPlayerGroup> getGroup(int32_t index) const;
+        std::shared_ptr<ScPlayerGroup> getGroup(int32_t id) const;
 
         void addGroup();
 
-        void removeGroup(int32_t index);
+        void removeGroup(int32_t id);
 
-        void kickPlayer(int32_t index);
+        void kickPlayer(int32_t id);
 
         void sendMessage(std::string message, DukValue players);
 
