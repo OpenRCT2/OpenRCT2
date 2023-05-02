@@ -851,8 +851,9 @@ static void PeepPathfindHeuristicSearch(
                 else
                 { // numEdges == 2
 
-                    bool rideQueueCheck = path->IsQueue() && peep.Is<Guest>()
-                        && path->GetRideIndex() != peep.As<Guest>()->GuestHeadingToRideId && !path->GetRideIndex().IsNull();
+                    auto guest = peep.As<Guest>();
+                    bool rideQueueCheck = path->IsQueue() && (guest != nullptr)
+                        && path->GetRideIndex() != guest->GuestHeadingToRideId && !path->GetRideIndex().IsNull();
                     if (rideQueueCheck)
                     {
                         // Path is a queue we aren't interested in
