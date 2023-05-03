@@ -1220,8 +1220,8 @@ STR_1838    :Satisfação: {COMMA16}%
 STR_1839    :Confiança: {COMMA16}%
 STR_1840    :Tempo ocioso: {COMMA16}%
 STR_1841    :Lucro: {CURRENCY2DP} por hora
-STR_1842    :Favorito de: {COMMA16} visitante
-STR_1843    :Favorito de: {COMMA16} visitantes
+STR_1842    :Favorito de: {COMMA32} visitante
+STR_1843    :Favorito de: {COMMA32} visitantes
 STR_1844    :Selecione o tipo de informação para ser exibida na lista de atrações
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} Visitantes
@@ -2190,8 +2190,8 @@ STR_3118    :{BLACK}{STRINGID} indo até a atração
 STR_3119    :{BLACK}{STRINGID} consertando atração
 STR_3120    :Localizar o mecânico mais perto disponível, ou mecânico consertando atração
 STR_3121    :Não foi possível localizar mecânicos, ou todos os mecânicos próximos estão ocupados
-STR_3122    :{WINDOW_COLOUR_2}Atração favorita de: {BLACK}{COMMA16} visitante
-STR_3123    :{WINDOW_COLOUR_2}Atração favorita de: {BLACK}{COMMA16} visitantes
+STR_3122    :{WINDOW_COLOUR_2}Atração favorita de: {BLACK}{COMMA32} visitante
+STR_3123    :{WINDOW_COLOUR_2}Atração favorita de: {BLACK}{COMMA32} visitantes
 STR_3124    :{STRINGID} Quebrado
 STR_3125    :{WINDOW_COLOUR_2}Fator de emoção: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Fator de intensidade: {BLACK}+{COMMA16}%
@@ -3326,7 +3326,7 @@ STR_6196    :{BLACK}Ano:
 STR_6197    :{BLACK}Mês:
 STR_6198    :{BLACK}Dia:
 STR_6199    :Definir data
-STR_6200    :Resetar data
+STR_6200    :Redefinir data
 STR_6201    :{MONTH}
 STR_6202    :Estilo de chão virtual:
 STR_6203    :Quando habilitado, um chão virtual será renderizado quando segurar a tecla Ctrl ou Shift para facilitar o posicionamento vertical dos elementos.
@@ -3650,6 +3650,43 @@ STR_6545    :Usar cálculo de juros do RCT1
 STR_6546    :Usar algoritmo de cálculo de juros do RollerCoaster Tycoon 1, que utilizava uma porcentagem fixa de aproximadamente 1,33%.
 STR_6547    :Todos os Cenários
 STR_6548    :Mostrar corrimões no cruzamento
+STR_6549    :Objetos de compatibilidade não podem ser selecionados!
+STR_6550    :Esse item está incluído para compatibilidade com objetos antigos ou danificados de versões anteriores. Ele não pode ser selecionado, apenas desselecionado.
+STR_6551    :Verde militar
+STR_6552    :Maná
+STR_6553    :Castanho claro
+STR_6554    :Bordô
+STR_6555    :Coral
+STR_6556    :Verde floresta
+STR_6557    :Chartreuse
+STR_6558    :Verde caçador
+STR_6559    :Verde claro
+STR_6560    :Verde lima
+STR_6561    :Sépia
+STR_6562    :Pêssego
+STR_6563    :Pervinca
+STR_6564    :Viridiano
+STR_6565    :Verde mar
+STR_6566    :Violeta
+STR_6567    :Lavanda
+STR_6568    :Laranja pastel
+STR_6569    :Azul marinho
+STR_6570    :Rosa pastel
+STR_6571    :Café
+STR_6572    :Bege
+STR_6573    :Invisível
+STR_6574    :Vazia
+STR_6575    :Permitir esquema de cores especial
+STR_6576    :Adiciona cores especiais à lista de cores
+STR_6577    :Velocidade dos freios bloqueadores
+STR_6578    :Configure o limite de velocidade dos freios bloqueadores. No modo de seções de bloco, freios adjacentes com uma velocidade mais baixa são conectados ao freio bloqueador.
+STR_6579    :Freios bloqueadores serão configurados para a velocidade padrão quando salvos como um projeto de pista
+STR_6580    :Redefinir
+STR_6581    :Tem certeza que quer redefinir todas as teclas de atalho nessa aba?
+STR_6582    :Abrir janela de atalhos do teclado
+STR_6583    :{WINDOW_COLOUR_2}Trens Invertidos
+STR_6584    :Selecione para que os trens operem de costas
+STR_6585    :Não é possível fazer alterações…
 
 #############
 # Scenarios #

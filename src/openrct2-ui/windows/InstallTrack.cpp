@@ -154,7 +154,7 @@ public:
         Widget* widget = &window_install_track_widgets[WIDX_TRACK_PREVIEW];
         auto screenPos = windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
         int32_t colour = ColourMapA[colours[0]].darkest;
-        GfxFillRect(&dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
+        GfxFillRect(dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
 
         G1Element g1temp = {};
         g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
@@ -163,7 +163,7 @@ public:
         g1temp.flags = G1_FLAG_HAS_TRANSPARENCY;
         GfxSetG1Element(SPR_TEMP, &g1temp);
         DrawingEngineInvalidateImage(SPR_TEMP);
-        GfxDrawSprite(&dpi, ImageId(SPR_TEMP), screenPos);
+        GfxDrawSprite(dpi, ImageId(SPR_TEMP), screenPos);
 
         screenPos = windowPos + ScreenCoordsXY{ widget->midX(), widget->bottom - 12 };
 

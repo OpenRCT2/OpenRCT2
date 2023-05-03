@@ -715,17 +715,17 @@ public:
         g1temp.y_offset = -8;
         GfxSetG1Element(SPR_TEMP, &g1temp);
         DrawingEngineInvalidateImage(SPR_TEMP);
-        GfxDrawSprite(&dpi, ImageId(SPR_TEMP), { 0, 0 });
+        GfxDrawSprite(dpi, ImageId(SPR_TEMP), { 0, 0 });
 
         if (selected_tab == PAGE_PEEPS)
         {
-            PaintPeepOverlay(&dpi);
+            PaintPeepOverlay(dpi);
         }
         else
         {
-            PaintTrainOverlay(&dpi);
+            PaintTrainOverlay(dpi);
         }
-        PaintHudRectangle(&dpi);
+        PaintHudRectangle(dpi);
     }
 
     void OnPrepareDraw() override
@@ -855,7 +855,7 @@ public:
     void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
-        DrawTabImages(&dpi);
+        DrawTabImages(dpi);
 
         auto screenCoords = windowPos
             + ScreenCoordsXY{ window_map_widgets[WIDX_LAND_TOOL].midX(), window_map_widgets[WIDX_LAND_TOOL].midY() };
@@ -875,7 +875,7 @@ public:
             screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
                                   widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18 };
-            GfxDrawSprite(&dpi, ImageId(SPR_6410, COLOUR_BRIGHT_RED, COLOUR_LIGHT_BROWN), screenCoords);
+            GfxDrawSprite(dpi, ImageId(SPR_6410, COLOUR_BRIGHT_RED, COLOUR_LIGHT_BROWN), screenCoords);
         }
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
@@ -894,7 +894,7 @@ public:
                 for (uint32_t i = 0; i < std::size(RideKeyColours); i++)
                 {
                     GfxFillRect(
-                        &dpi, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } },
+                        dpi, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } },
                         RideKeyColours[i]);
                     DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 }, _mapLabels[i], {});
                     screenCoords.y += LIST_ROW_HEIGHT;
@@ -1161,7 +1161,7 @@ private:
         return colourB;
     }
 
-    void PaintPeepOverlay(DrawPixelInfo* dpi)
+    void PaintPeepOverlay(DrawPixelInfo& dpi)
     {
         auto flashColour = GetGuestFlashColour();
         for (auto guest : EntityList<Guest>())
@@ -1175,7 +1175,7 @@ private:
         }
     }
 
-    void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, DrawPixelInfo* dpi)
+    void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, DrawPixelInfo& dpi)
     {
         if (peep->x == LOCATION_NULL)
             return;
@@ -1221,7 +1221,7 @@ private:
         return colour;
     }
 
-    void PaintTrainOverlay(DrawPixelInfo* dpi)
+    void PaintTrainOverlay(DrawPixelInfo& dpi)
     {
         for (auto train : TrainManager::View())
         {
@@ -1241,7 +1241,7 @@ private:
      * The call to GfxFillRect was originally wrapped in Sub68DABD which made sure that arguments were ordered correctly,
      * but it doesn't look like it's ever necessary here so the call was removed.
      */
-    void PaintHudRectangle(DrawPixelInfo* dpi)
+    void PaintHudRectangle(DrawPixelInfo& dpi)
     {
         WindowBase* mainWindow = WindowGetMain();
         if (mainWindow == nullptr)
@@ -1275,7 +1275,7 @@ private:
         GfxFillRect(dpi, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PALETTE_INDEX_56);
     }
 
-    void DrawTabImages(DrawPixelInfo* dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         // Guest tab image (animated)
         uint32_t guestTabImage = SPR_TAB_GUESTS_0;

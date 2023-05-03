@@ -172,9 +172,9 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->SpriteType = spriteType;
 
         const SpriteBounds* spriteBounds = &GetSpriteBounds(spriteType);
-        newPeep->sprite_width = spriteBounds->sprite_width;
-        newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
-        newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;
+        newPeep->SpriteData.Width = spriteBounds->sprite_width;
+        newPeep->SpriteData.HeightMin = spriteBounds->sprite_height_negative;
+        newPeep->SpriteData.HeightMax = spriteBounds->sprite_height_positive;
 
         if (_autoPosition)
         {
@@ -190,7 +190,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         }
 
         // Staff uses this
-        newPeep->As<Staff>()->SetHireDate(gDateMonthsElapsed);
+        newPeep->As<Staff>()->SetHireDate(GetDate().GetMonthsElapsed());
         newPeep->PathfindGoal.x = 0xFF;
         newPeep->PathfindGoal.y = 0xFF;
         newPeep->PathfindGoal.z = 0xFF;

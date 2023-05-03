@@ -249,8 +249,7 @@ namespace RCT2
                 gScenarioDetails = loadMaybeUTF8(_s6.ScenarioDescription);
             }
 
-            gDateMonthsElapsed = static_cast<int32_t>(_s6.ElapsedMonths);
-            gDateMonthTicks = _s6.CurrentDay;
+            OpenRCT2::GetContext()->GetGameState()->SetDate(OpenRCT2::Date(_s6.ElapsedMonths, _s6.CurrentDay));
             gCurrentTicks = _s6.GameTicks1;
 
             ScenarioRandSeed(_s6.ScenarioSrand0, _s6.ScenarioSrand1);
@@ -692,7 +691,6 @@ namespace RCT2
             else if (
                 String::Equals(_s6.ScenarioFilename, "Botany Breakers.SC6", true)
                 || String::Equals(_s6.ScenarioFilename, "botany breakers.sea", true))
-
             {
                 RemoveTileElementsAt({
                     { 39, 51 },
@@ -1540,11 +1538,17 @@ namespace RCT2
                     dst2->SetInverted(src2->IsInverted());
                     dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
                     dst2->SetHasGreenLight(src2->HasGreenLight());
-                    dst2->SetBrakeClosed(src2->BlockBrakeClosed());
+                    // Brakes import as closed to preserve legacy behaviour
+                    dst2->SetBrakeClosed(src2->BlockBrakeClosed() || (trackType == TrackElemType::Brakes));
                     dst2->SetIsIndestructible(src2->IsIndestructible());
                     // Skipping IsHighlighted()
 
-                    if (TrackTypeHasSpeedSetting(trackType))
+                    // Import block brakes to keep legacy behaviour
+                    if (trackType == TrackElemType::BlockBrakes)
+                    {
+                        dst2->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
+                    }
+                    else if (TrackTypeHasSpeedSetting(trackType))
                     {
                         dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                     }
@@ -1942,15 +1946,15 @@ namespace RCT2
         void ImportEntityCommonProperties(EntityBase* dst, const RCT12EntityBase* src)
         {
             dst->Type = GetEntityTypeFromRCT2Sprite(src);
-            dst->sprite_height_negative = src->SpriteHeightNegative;
+            dst->SpriteData.HeightMin = src->SpriteHeightNegative;
             dst->Id = EntityId::FromUnderlying(src->EntityIndex);
             dst->x = src->x;
             dst->y = src->y;
             dst->z = src->z;
-            dst->sprite_width = src->SpriteWidth;
-            dst->sprite_height_positive = src->SpriteHeightPositive;
-            dst->SpriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
-            dst->sprite_direction = src->EntityDirection;
+            dst->SpriteData.Width = src->SpriteWidth;
+            dst->SpriteData.HeightMax = src->SpriteHeightPositive;
+            dst->SpriteData.SpriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
+            dst->Orientation = src->EntityDirection;
         }
 
         void ImportEntity(const RCT12EntityBase& src);
@@ -2109,6 +2113,10 @@ namespace RCT2
                 if (tileElement2 != nullptr)
                     dst->SetTrackType(TrackElemType::RotationControlToggle);
             }
+            else if (src->GetTrackType() == TrackElemType::BlockBrakes)
+            {
+                dst->brake_speed = kRCT2DefaultBlockBrakeSpeed;
+            }
         }
         else
         {
@@ -2175,6 +2183,7 @@ namespace RCT2
         {
             dst->SetFlag(VehicleFlags::Crashed);
         }
+        dst->BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
     }
 
     static uint32_t AdjustScenarioToCurrentTicks(const S6Data& s6, uint32_t tick)

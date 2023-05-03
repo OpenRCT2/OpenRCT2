@@ -323,10 +323,10 @@ static void PrepareNewEntity(EntityBase* base, const EntityType type)
     base->x = LOCATION_NULL;
     base->y = LOCATION_NULL;
     base->z = 0;
-    base->sprite_width = 0x10;
-    base->sprite_height_negative = 0x14;
-    base->sprite_height_positive = 0x8;
-    base->SpriteRect = {};
+    base->SpriteData.Width = 0x10;
+    base->SpriteData.HeightMin = 0x14;
+    base->SpriteData.HeightMax = 0x8;
+    base->SpriteData.SpriteRect = {};
 
     EntitySpatialInsert(base, { LOCATION_NULL, 0 });
 }
@@ -478,9 +478,9 @@ void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity)
 {
     auto screenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), entityPos);
 
-    entity->SpriteRect = ScreenRect(
-        screenCoords - ScreenCoordsXY{ entity->sprite_width, entity->sprite_height_negative },
-        screenCoords + ScreenCoordsXY{ entity->sprite_width, entity->sprite_height_positive });
+    entity->SpriteData.SpriteRect = ScreenRect(
+        screenCoords - ScreenCoordsXY{ entity->SpriteData.Width, entity->SpriteData.HeightMin },
+        screenCoords + ScreenCoordsXY{ entity->SpriteData.Width, entity->SpriteData.HeightMax });
     entity->SetLocation(entityPos);
 }
 

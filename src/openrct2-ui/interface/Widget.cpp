@@ -22,32 +22,32 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 
-static void WidgetFrameDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
-static void WidgetResizeDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
-static void WidgetButtonDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
-static void WidgetTabDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
-static void WidgetFlatButtonDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
-static void WidgetTextButton(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
-static void WidgetTextCentred(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
-static void WidgetText(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
-static void WidgetTextInset(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
-static void WidgetTextBoxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
-static void WidgetGroupboxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
-static void WidgetCaptionDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
-static void WidgetCheckboxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
-static void WidgetCloseboxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
-static void WidgetScrollDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetFrameDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetResizeDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetButtonDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetTabDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetFlatButtonDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetTextButton(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetTextCentred(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetText(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetTextInset(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetTextBoxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetGroupboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetCaptionDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetCheckboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetCloseboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
+static void WidgetScrollDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
 static void WidgetHScrollbarDraw(
-    DrawPixelInfo* dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour);
+    DrawPixelInfo& dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour);
 static void WidgetVScrollbarDraw(
-    DrawPixelInfo* dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour);
-static void WidgetDrawImage(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex);
+    DrawPixelInfo& dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour);
+static void WidgetDrawImage(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex);
 
 /**
  *
  *  rct2: 0x006EB2A8
  */
-void WidgetDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
+void WidgetDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     const auto* widget = GetWidgetByIndex(w, widgetIndex);
     if (widget == nullptr)
@@ -117,7 +117,7 @@ void WidgetDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
  *
  *  rct2: 0x006EB6CE
  */
-static void WidgetFrameDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
+static void WidgetFrameDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -151,7 +151,7 @@ static void WidgetFrameDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widge
  *
  *  rct2: 0x006EB765
  */
-static void WidgetResizeDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
+static void WidgetResizeDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -182,7 +182,7 @@ static void WidgetResizeDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widg
  *
  *  rct2: 0x006EB8E5
  */
-static void WidgetButtonDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
+static void WidgetButtonDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -214,7 +214,7 @@ static void WidgetButtonDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widg
  *
  *  rct2: 0x006EB806
  */
-static void WidgetTabDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
+static void WidgetTabDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     auto& widget = w.widgets[widgetIndex];
@@ -263,7 +263,7 @@ static void WidgetTabDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetI
  *
  *  rct2: 0x006EB861
  */
-static void WidgetFlatButtonDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
+static void WidgetFlatButtonDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     if (!WidgetIsDisabled(w, widgetIndex) && WidgetIsHighlighted(w, widgetIndex))
     {
@@ -303,7 +303,7 @@ static void WidgetFlatButtonDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex 
  *
  *  rct2: 0x006EBBEB
  */
-static void WidgetTextButton(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
+static void WidgetTextButton(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -334,7 +334,7 @@ static void WidgetTextButton(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widg
  *
  *  rct2: 0x006EBC41
  */
-static void WidgetTextCentred(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
+static void WidgetTextCentred(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -368,11 +368,11 @@ static void WidgetTextCentred(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex wid
     ScreenCoordsXY coords = { (topLeft.x + r + 1) / 2 - 1, topLeft.y };
     if (widget.type == WindowWidgetType::LabelCentred)
     {
-        DrawTextWrapped(*dpi, coords, widget.width() - 2, stringId, ft, { colour, TextAlignment::CENTRE });
+        DrawTextWrapped(dpi, coords, widget.width() - 2, stringId, ft, { colour, TextAlignment::CENTRE });
     }
     else
     {
-        DrawTextEllipsised(*dpi, coords, widget.width() - 2, stringId, ft, { colour, TextAlignment::CENTRE });
+        DrawTextEllipsised(dpi, coords, widget.width() - 2, stringId, ft, { colour, TextAlignment::CENTRE });
     }
 }
 
@@ -380,7 +380,7 @@ static void WidgetTextCentred(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex wid
  *
  *  rct2: 0x006EBD52
  */
-static void WidgetText(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
+static void WidgetText(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -417,11 +417,11 @@ static void WidgetText(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetInde
     ScreenCoordsXY coords = { l + 1, t };
     if (widget.type == WindowWidgetType::LabelCentred)
     {
-        DrawTextWrapped(*dpi, coords, r - l, stringId, ft, { colour, TextAlignment::CENTRE });
+        DrawTextWrapped(dpi, coords, r - l, stringId, ft, { colour, TextAlignment::CENTRE });
     }
     else
     {
-        DrawTextEllipsised(*dpi, coords, r - l, stringId, ft, colour);
+        DrawTextEllipsised(dpi, coords, r - l, stringId, ft, colour);
     }
 }
 
@@ -429,7 +429,7 @@ static void WidgetText(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetInde
  *
  *  rct2: 0x006EBD1F
  */
-static void WidgetTextInset(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
+static void WidgetTextInset(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -469,7 +469,7 @@ static std::pair<StringId, void*> WidgetGetStringidAndArgs(const Widget& widget)
  *
  *  rct2: 0x006EB535
  */
-static void WidgetGroupboxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
+static void WidgetGroupboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -491,7 +491,7 @@ static void WidgetGroupboxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex wi
         OpenRCT2::FormatStringLegacy(buffer, sizeof(buffer), stringId, formatArgs);
         auto ft = Formatter();
         ft.Add<utf8*>(buffer);
-        DrawTextBasic(*dpi, { l, t }, STR_STRING, ft, { colour });
+        DrawTextBasic(dpi, { l, t }, STR_STRING, ft, { colour });
         textRight = l + GfxGetStringWidth(buffer, FontStyle::Medium) + 1;
     }
 
@@ -530,7 +530,7 @@ static void WidgetGroupboxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex wi
  *
  *  rct2: 0x006EB2F9
  */
-static void WidgetCaptionDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
+static void WidgetCaptionDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto* widget = &w.widgets[widgetIndex];
@@ -571,7 +571,7 @@ static void WidgetCaptionDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex wid
     }
     topLeft.x += width / 2;
     DrawTextEllipsised(
-        *dpi, topLeft, width, widget->text, Formatter::Common(),
+        dpi, topLeft, width, widget->text, Formatter::Common(),
         { COLOUR_WHITE | static_cast<uint8_t>(COLOUR_FLAG_OUTLINE), TextAlignment::CENTRE });
 }
 
@@ -579,7 +579,7 @@ static void WidgetCaptionDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex wid
  *
  *  rct2: 0x006EBB85
  */
-static void WidgetCloseboxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
+static void WidgetCloseboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -609,14 +609,14 @@ static void WidgetCloseboxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex wi
     if (WidgetIsDisabled(w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
 
-    DrawTextEllipsised(*dpi, topLeft, widget.width() - 2, widget.text, Formatter::Common(), { colour, TextAlignment::CENTRE });
+    DrawTextEllipsised(dpi, topLeft, widget.width() - 2, widget.text, Formatter::Common(), { colour, TextAlignment::CENTRE });
 }
 
 /**
  *
  *  rct2: 0x006EBAD9
  */
-static void WidgetCheckboxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
+static void WidgetCheckboxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -641,7 +641,7 @@ static void WidgetCheckboxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex wi
     if (WidgetIsPressed(w, widgetIndex))
     {
         GfxDrawString(
-            *dpi, { midLeft - ScreenCoordsXY{ 0, 5 } }, static_cast<const char*>(CheckBoxMarkString),
+            dpi, { midLeft - ScreenCoordsXY{ 0, 5 } }, static_cast<const char*>(CheckBoxMarkString),
             { static_cast<colour_t>(NOT_TRANSLUCENT(colour)) });
     }
 
@@ -650,14 +650,14 @@ static void WidgetCheckboxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex wi
         return;
 
     auto [stringId, formatArgs] = WidgetGetStringidAndArgs(widget);
-    GfxDrawStringLeftCentred(*dpi, stringId, formatArgs, colour, { midLeft + ScreenCoordsXY{ 14, 0 } });
+    GfxDrawStringLeftCentred(dpi, stringId, formatArgs, colour, { midLeft + ScreenCoordsXY{ 14, 0 } });
 }
 
 /**
  *
  *  rct2: 0x006EBD96
  */
-static void WidgetScrollDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
+static void WidgetScrollDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     int32_t scrollIndex = WindowGetScrollDataIndex(w, widgetIndex);
@@ -703,30 +703,30 @@ static void WidgetScrollDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widg
     bottomRight.x++;
 
     // Create a new inner scroll dpi
-    DrawPixelInfo scroll_dpi = *dpi;
+    DrawPixelInfo scroll_dpi = dpi;
 
     // Clip the scroll dpi against the outer dpi
-    int32_t cl = std::max<int32_t>(dpi->x, topLeft.x);
-    int32_t ct = std::max<int32_t>(dpi->y, topLeft.y);
-    int32_t cr = std::min<int32_t>(dpi->x + dpi->width, bottomRight.x);
-    int32_t cb = std::min<int32_t>(dpi->y + dpi->height, bottomRight.y);
+    int32_t cl = std::max<int32_t>(dpi.x, topLeft.x);
+    int32_t ct = std::max<int32_t>(dpi.y, topLeft.y);
+    int32_t cr = std::min<int32_t>(dpi.x + dpi.width, bottomRight.x);
+    int32_t cb = std::min<int32_t>(dpi.y + dpi.height, bottomRight.y);
 
     // Set the respective dpi attributes
     scroll_dpi.x = cl - topLeft.x + scroll.h_left;
     scroll_dpi.y = ct - topLeft.y + scroll.v_top;
     scroll_dpi.width = cr - cl;
     scroll_dpi.height = cb - ct;
-    scroll_dpi.bits += cl - dpi->x;
-    scroll_dpi.bits += (ct - dpi->y) * (dpi->width + dpi->pitch);
-    scroll_dpi.pitch = (dpi->width + dpi->pitch) - scroll_dpi.width;
+    scroll_dpi.bits += cl - dpi.x;
+    scroll_dpi.bits += (ct - dpi.y) * (dpi.width + dpi.pitch);
+    scroll_dpi.pitch = (dpi.width + dpi.pitch) - scroll_dpi.width;
 
     // Draw the scroll contents
     if (scroll_dpi.width > 0 && scroll_dpi.height > 0)
-        WindowEventScrollPaintCall(&w, &scroll_dpi, scrollIndex);
+        WindowEventScrollPaintCall(&w, scroll_dpi, scrollIndex);
 }
 
 static void WidgetHScrollbarDraw(
-    DrawPixelInfo* dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour)
+    DrawPixelInfo& dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour)
 {
     colour &= 0x7F;
     // Trough
@@ -742,7 +742,7 @@ static void WidgetHScrollbarDraw(
         uint8_t flags = (scroll.flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         GfxFillRectInset(dpi, { { l, t }, { l + (SCROLLBAR_WIDTH - 1), b } }, colour, flags);
-        GfxDrawString(*dpi, { l + 1, t }, static_cast<const char*>(BlackLeftArrowString), {});
+        GfxDrawString(dpi, { l + 1, t }, static_cast<const char*>(BlackLeftArrowString), {});
     }
 
     // Thumb
@@ -759,12 +759,12 @@ static void WidgetHScrollbarDraw(
         uint8_t flags = (scroll.flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         GfxFillRectInset(dpi, { { r - (SCROLLBAR_WIDTH - 1), t }, { r, b } }, colour, flags);
-        GfxDrawString(*dpi, { r - 6, t }, static_cast<const char*>(BlackRightArrowString), {});
+        GfxDrawString(dpi, { r - 6, t }, static_cast<const char*>(BlackRightArrowString), {});
     }
 }
 
 static void WidgetVScrollbarDraw(
-    DrawPixelInfo* dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour)
+    DrawPixelInfo& dpi, const ScrollBar& scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour)
 {
     colour &= 0x7F;
     // Trough
@@ -779,7 +779,7 @@ static void WidgetVScrollbarDraw(
     GfxFillRectInset(
         dpi, { { l, t }, { r, t + (SCROLLBAR_WIDTH - 1) } }, colour,
         ((scroll.flags & VSCROLLBAR_UP_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    GfxDrawString(*dpi, { l + 1, t - 1 }, static_cast<const char*>(BlackUpArrowString), {});
+    GfxDrawString(dpi, { l + 1, t - 1 }, static_cast<const char*>(BlackUpArrowString), {});
 
     // Thumb
     GfxFillRectInset(
@@ -792,14 +792,14 @@ static void WidgetVScrollbarDraw(
     GfxFillRectInset(
         dpi, { { l, b - (SCROLLBAR_WIDTH - 1) }, { r, b } }, colour,
         ((scroll.flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    GfxDrawString(*dpi, { l + 1, b - (SCROLLBAR_WIDTH - 1) }, static_cast<const char*>(BlackDownArrowString), {});
+    GfxDrawString(dpi, { l + 1, b - (SCROLLBAR_WIDTH - 1) }, static_cast<const char*>(BlackDownArrowString), {});
 }
 
 /**
  *
  *  rct2: 0x006EB951
  */
-static void WidgetDrawImage(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
+static void WidgetDrawImage(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -825,12 +825,12 @@ static void WidgetDrawImage(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widge
         // Draw greyed out (light border bottom right shadow)
         colour = w.colours[widget.colour];
         colour = ColourMapA[NOT_TRANSLUCENT(colour)].lighter;
-        GfxDrawSpriteSolid(dpi, image, screenCoords + ScreenCoordsXY{ 1, 1 }, colour);
+        GfxDrawSpriteSolid(&dpi, image, screenCoords + ScreenCoordsXY{ 1, 1 }, colour);
 
         // Draw greyed out (dark)
         colour = w.colours[widget.colour];
         colour = ColourMapA[NOT_TRANSLUCENT(colour)].mid_light;
-        GfxDrawSpriteSolid(dpi, image, screenCoords, colour);
+        GfxDrawSpriteSolid(&dpi, image, screenCoords, colour);
     }
     else
     {
@@ -1121,7 +1121,7 @@ void WidgetSetCheckboxValue(WindowBase& w, WidgetIndex widgetIndex, bool value)
     WidgetSetPressed(w, widgetIndex, value);
 }
 
-static void WidgetTextBoxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex widgetIndex)
+static void WidgetTextBoxDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex widgetIndex)
 {
     // Get the widget
     const auto& widget = w.widgets[widgetIndex];
@@ -1148,7 +1148,7 @@ static void WidgetTextBoxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex wid
         {
             u8string wrappedString;
             GfxWrapString(widget.string, bottomRight.x - topLeft.x - 5, FontStyle::Medium, &wrappedString, nullptr);
-            DrawText(*dpi, { topLeft.x + 2, topLeft.y }, { w.colours[1] }, wrappedString.c_str(), true);
+            DrawText(dpi, { topLeft.x + 2, topLeft.y }, { w.colours[1] }, wrappedString.c_str(), true);
         }
         return;
     }
@@ -1158,7 +1158,7 @@ static void WidgetTextBoxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex wid
     u8string wrappedString;
     GfxWrapString(gTextBoxInput, bottomRight.x - topLeft.x - 5 - 6, FontStyle::Medium, &wrappedString, nullptr);
 
-    DrawText(*dpi, { topLeft.x + 2, topLeft.y }, { w.colours[1] }, wrappedString.c_str(), true);
+    DrawText(dpi, { topLeft.x + 2, topLeft.y }, { w.colours[1] }, wrappedString.c_str(), true);
 
     // Make a trimmed view of the string for measuring the width.
     int32_t curX = topLeft.x
@@ -1186,5 +1186,12 @@ static void WidgetTextBoxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex wid
 
 ImageId GetColourButtonImage(colour_t colour)
 {
-    return ImageId(SPR_PALETTE_BTN, colour).WithBlended(true);
+    if (colour == COLOUR_INVISIBLE)
+    {
+        return ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, colour).WithBlended(false);
+    }
+    else
+    {
+        return ImageId(SPR_PALETTE_BTN, colour).WithBlended(true);
+    }
 }

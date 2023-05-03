@@ -76,7 +76,7 @@ public:
 
     void OnDraw(DrawPixelInfo& dpi) override
     {
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
 
         auto currentRide = GetRide(rideId);
         if (currentRide != nullptr)

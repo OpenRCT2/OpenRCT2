@@ -296,7 +296,7 @@ void Ride::RemovePeeps()
             else
             {
                 peep->MoveTo(exitPosition);
-                peep->sprite_direction = exitPosition.direction;
+                peep->Orientation = exitPosition.direction;
             }
 
             peep->State = PeepState::Falling;
@@ -326,7 +326,7 @@ void Ride::RemovePeeps()
             else
             {
                 peep->MoveTo(exitPosition);
-                peep->sprite_direction = exitPosition.direction;
+                peep->Orientation = exitPosition.direction;
             }
 
             peep->State = PeepState::Falling;

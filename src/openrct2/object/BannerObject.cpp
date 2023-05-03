@@ -12,7 +12,6 @@
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../localisation/Language.h"
 #include "../object/Object.h"
 #include "../object/ObjectRepository.h"
@@ -62,13 +61,13 @@ void BannerObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.name = LanguageAllocateObjectString(GetName());
-    _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.image = LoadImages();
 }
 
 void BannerObject::Unload()
 {
     LanguageFreeObjectString(_legacyType.name);
-    GfxObjectFreeImages(_legacyType.image, GetImageTable().GetCount());
+    UnloadImages();
 
     _legacyType.name = 0;
     _legacyType.image = 0;
@@ -81,8 +80,8 @@ void BannerObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height
     auto image0 = ImageId(_legacyType.image, COLOUR_BORDEAUX_RED);
     auto image1 = ImageId(_legacyType.image + 1, COLOUR_BORDEAUX_RED);
 
-    GfxDrawSprite(&dpi, image0, screenCoords + ScreenCoordsXY{ -12, 8 });
-    GfxDrawSprite(&dpi, image1, screenCoords + ScreenCoordsXY{ -12, 8 });
+    GfxDrawSprite(dpi, image0, screenCoords + ScreenCoordsXY{ -12, 8 });
+    GfxDrawSprite(dpi, image1, screenCoords + ScreenCoordsXY{ -12, 8 });
 }
 
 void BannerObject::ReadJson(IReadObjectContext* context, json_t& root)

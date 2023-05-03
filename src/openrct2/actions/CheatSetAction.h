@@ -40,7 +40,6 @@ private:
     void RemoveLitter() const;
     void FixBrokenRides() const;
     void RenewRides() const;
-    void MakeDestructible() const;
     void ResetRideCrashStatus() const;
     void Set10MinuteInspection() const;
     void SetScenarioNoMoney(bool enabled) const;

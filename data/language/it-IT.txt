@@ -1221,8 +1221,8 @@ STR_1838    :Soddisfazione: {COMMA16}%
 STR_1839    :Affidabilità: {COMMA16}%
 STR_1840    :Tempi morti: {COMMA16}%
 STR_1841    :Profitto: {CURRENCY} all’ora
-STR_1842    :La preferita da: {COMMA16} visitatore
-STR_1843    :La preferita da: {COMMA16} visitatori
+STR_1842    :La preferita da: {COMMA32} visitatore
+STR_1843    :La preferita da: {COMMA32} visitatori
 STR_1844    :Scegli il tipo di informazione da mostrare nella lista delle attrazioni
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} visitatori
@@ -2192,8 +2192,8 @@ STR_3118    :{BLACK}{STRINGID} si sta dirigendo verso l’attrazione
 STR_3119    :{BLACK}{STRINGID} sta riparando l’attrazione
 STR_3120    :Individua il meccanico disponibile più vicino o il meccanico che sta riparando l’attrazione
 STR_3121    :Impossibile individuare il meccanico o tutti i meccanici nei paraggi sono già impegnati
-STR_3122    :{WINDOW_COLOUR_2}Attrazione preferita di: {BLACK}{COMMA16} visitatore
-STR_3123    :{WINDOW_COLOUR_2}Attrazione preferita di: {BLACK}{COMMA16} visitatori
+STR_3122    :{WINDOW_COLOUR_2}Attrazione preferita di: {BLACK}{COMMA32} visitatore
+STR_3123    :{WINDOW_COLOUR_2}Attrazione preferita di: {BLACK}{COMMA32} visitatori
 STR_3124    :Guasto: {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Fattore di divertimento: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Fattore d’intensità: {BLACK}+{COMMA16}%
@@ -3195,7 +3195,6 @@ STR_6033    :Cartella di RCT1:
 STR_6034    :{BLACK}{STRING}
 STR_6035    :Selezionare la cartella di installazione di RCT1
 STR_6036    :Pulisci
-STR_6037    :Selezionare una cartella di installazione di RCT1 valida
 STR_6037    :La cartella selezionata non contiene un’installazione valida di RollerCoaster Tycoon 1.
 STR_6038    :Se RCT1 è installato, selezionarne la cartella per caricarne gli scenari, la musica, ecc.
 STR_6039    :Demolizione veloce percorso

@@ -311,17 +311,17 @@ uint8_t RCT12SmallSceneryElement::GetSceneryQuadrant() const
 
 colour_t RCT12SmallSceneryElement::GetPrimaryColour() const
 {
-    return Colour1 & TILE_ELEMENT_COLOUR_MASK;
+    return Colour1 & RCT12_TILE_ELEMENT_COLOUR_MASK;
 }
 
 colour_t RCT12SmallSceneryElement::GetSecondaryColour() const
 {
-    return Colour2 & TILE_ELEMENT_COLOUR_MASK;
+    return Colour2 & RCT12_TILE_ELEMENT_COLOUR_MASK;
 }
 
 bool RCT12SmallSceneryElement::NeedsSupports() const
 {
-    return Colour1 & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
+    return Colour1 & RCT12_SMALL_SCENERY_ELEMENT_NEEDS_SUPPORTS_FLAG;
 }
 
 uint32_t RCT12LargeSceneryElement::GetEntryIndex() const
@@ -335,17 +335,18 @@ uint16_t RCT12LargeSceneryElement::GetSequenceIndex() const
 }
 colour_t RCT12LargeSceneryElement::GetPrimaryColour() const
 {
-    return Colour[0] & TILE_ELEMENT_COLOUR_MASK;
+    return Colour[0] & RCT12_TILE_ELEMENT_COLOUR_MASK;
 }
 
 colour_t RCT12LargeSceneryElement::GetSecondaryColour() const
 {
-    return Colour[1] & TILE_ELEMENT_COLOUR_MASK;
+    return Colour[1] & RCT12_TILE_ELEMENT_COLOUR_MASK;
 }
 
 uint8_t RCT12LargeSceneryElement::GetBannerIndex() const
 {
-    return (Type & 0xC0) | (((Colour[0]) & ~TILE_ELEMENT_COLOUR_MASK) >> 2) | (((Colour[1]) & ~TILE_ELEMENT_COLOUR_MASK) >> 5);
+    return (Type & 0xC0) | (((Colour[0]) & ~RCT12_TILE_ELEMENT_COLOUR_MASK) >> 2)
+        | (((Colour[1]) & ~RCT12_TILE_ELEMENT_COLOUR_MASK) >> 5);
 }
 
 uint8_t RCT12WallElement::GetEntryIndex() const
@@ -360,19 +361,19 @@ uint8_t RCT12WallElement::GetSlope() const
 
 colour_t RCT12WallElement::GetPrimaryColour() const
 {
-    return Colour1 & TILE_ELEMENT_COLOUR_MASK;
+    return Colour1 & RCT12_TILE_ELEMENT_COLOUR_MASK;
 }
 
 colour_t RCT12WallElement::GetSecondaryColour() const
 {
-    uint8_t secondaryColour = (Colour1 & ~TILE_ELEMENT_COLOUR_MASK) >> 5;
+    uint8_t secondaryColour = (Colour1 & ~RCT12_TILE_ELEMENT_COLOUR_MASK) >> 5;
     secondaryColour |= (Flags & 0x60) >> 2;
     return secondaryColour;
 }
 
 colour_t RCT12WallElement::GetTertiaryColour() const
 {
-    return Colour3 & TILE_ELEMENT_COLOUR_MASK;
+    return Colour3 & RCT12_TILE_ELEMENT_COLOUR_MASK;
 }
 
 uint8_t RCT12WallElement::GetAnimationFrame() const

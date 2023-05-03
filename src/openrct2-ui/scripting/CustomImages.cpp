@@ -439,7 +439,7 @@ namespace OpenRCT2::Scripting
             std::memset(dpi.bits, 0, bufferSize);
 
             // Draw the original image if we are creating a new one
-            GfxDrawSprite(&dpi, ImageId(id), { 0, 0 });
+            GfxDrawSprite(dpi, ImageId(id), { 0, 0 });
         }
         else
         {

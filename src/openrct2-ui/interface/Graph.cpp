@@ -9,16 +9,18 @@
 
 #include <openrct2-ui/interface/Graph.h>
 #include <openrct2/Context.h>
+#include <openrct2/Date.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 
 namespace Graph
 {
-    static void DrawMonths(DrawPixelInfo* dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
+    static void DrawMonths(DrawPixelInfo& dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
-        int32_t currentMonth = DateGetMonth(gDateMonthsElapsed);
-        int32_t currentDay = gDateMonthTicks;
+        auto& date = GetDate();
+        int32_t currentMonth = date.GetMonth();
+        int32_t currentDay = date.GetMonthTicks();
         int32_t yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
         auto screenCoords = origCoords;
         for (int32_t i = count - 1; i >= 0; i--)
@@ -29,7 +31,7 @@ namespace Graph
                 auto ft = Formatter();
                 ft.Add<uint32_t>(DateGameShortMonthNames[DateGetMonth((yearOver32 / 4) + MONTH_COUNT)]);
                 DrawTextBasic(
-                    *dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, ft,
+                    dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, ft,
                     { FontStyle::Small, TextAlignment::CENTRE });
 
                 // Draw month mark
@@ -41,7 +43,7 @@ namespace Graph
         }
     }
 
-    static void DrawLineA(DrawPixelInfo* dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
+    static void DrawLineA(DrawPixelInfo& dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
         auto lastCoords = ScreenCoordsXY{ -1, -1 };
         auto coords = origCoords;
@@ -69,7 +71,7 @@ namespace Graph
         }
     }
 
-    static void DrawLineB(DrawPixelInfo* dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
+    static void DrawLineB(DrawPixelInfo& dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
         auto lastCoords = ScreenCoordsXY{ -1, -1 };
         auto coords = origCoords;
@@ -94,7 +96,7 @@ namespace Graph
         }
     }
 
-    void Draw(DrawPixelInfo* dpi, uint8_t* history, int32_t count, const ScreenCoordsXY& screenPos)
+    void Draw(DrawPixelInfo& dpi, uint8_t* history, int32_t count, const ScreenCoordsXY& screenPos)
     {
         DrawMonths(dpi, history, count, screenPos);
         DrawLineA(dpi, history, count, screenPos);
@@ -150,15 +152,14 @@ static const FinancialTooltipInfo FinanceTooltipInfoFromMoney(
 
 namespace Graph
 {
-    static void DrawMonths(DrawPixelInfo* dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords)
+    static void DrawMonths(DrawPixelInfo& dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
-        int32_t i, yearOver32, currentMonth, currentDay;
-
-        currentMonth = DateGetMonth(gDateMonthsElapsed);
-        currentDay = gDateMonthTicks;
-        yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
+        auto& date = GetDate();
+        int32_t currentMonth = date.GetMonth();
+        int32_t currentDay = date.GetMonthTicks();
+        int32_t yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
         auto screenCoords = origCoords;
-        for (i = count - 1; i >= 0; i--)
+        for (int32_t i = count - 1; i >= 0; i--)
         {
             if (history[i] != MONEY64_UNDEFINED && yearOver32 % 4 == 0)
             {
@@ -166,7 +167,7 @@ namespace Graph
                 auto ft = Formatter();
                 ft.Add<StringId>(DateGameShortMonthNames[DateGetMonth((yearOver32 / 4) + MONTH_COUNT)]);
                 DrawTextBasic(
-                    *dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, ft,
+                    dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, ft,
                     { FontStyle::Small, TextAlignment::CENTRE });
 
                 // Draw month mark
@@ -179,7 +180,7 @@ namespace Graph
     }
 
     static void DrawLineA(
-        DrawPixelInfo* dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
+        DrawPixelInfo& dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
         int32_t offset)
     {
         auto lastCoords = ScreenCoordsXY{ -1, -1 };
@@ -209,7 +210,7 @@ namespace Graph
     }
 
     static void DrawLineB(
-        DrawPixelInfo* dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
+        DrawPixelInfo& dpi, const money64* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
         int32_t offset)
     {
         auto lastCoords = ScreenCoordsXY{ -1, -1 };
@@ -236,7 +237,7 @@ namespace Graph
     }
 
     static void DrawHoveredValue(
-        DrawPixelInfo* dpi, const money64* history, const int32_t historyCount, const ScreenCoordsXY& screenCoords,
+        DrawPixelInfo& dpi, const money64* history, const int32_t historyCount, const ScreenCoordsXY& screenCoords,
         const int32_t modifier, const int32_t offset)
     {
         const auto cursorPosition = ContextGetCursorPositionScaled();
@@ -264,7 +265,7 @@ namespace Graph
         auto ft = Formatter();
         ft.Add<money64>(info.money);
         DrawTextBasic(
-            *dpi, info.coords - ScreenCoordsXY{ 0, 16 }, STR_FINANCES_SUMMARY_EXPENDITURE_VALUE, ft, { TextAlignment::CENTRE });
+            dpi, info.coords - ScreenCoordsXY{ 0, 16 }, STR_FINANCES_SUMMARY_EXPENDITURE_VALUE, ft, { TextAlignment::CENTRE });
 
         GfxFillRect(dpi, { { info.coords - ScreenCoordsXY{ 2, 2 } }, info.coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
         GfxFillRect(
@@ -272,7 +273,7 @@ namespace Graph
     }
 
     void Draw(
-        DrawPixelInfo* dpi, const money64* history, const int32_t count, const ScreenCoordsXY& screenCoords,
+        DrawPixelInfo& dpi, const money64* history, const int32_t count, const ScreenCoordsXY& screenCoords,
         const int32_t modifier, const int32_t offset)
     {
         DrawMonths(dpi, history, count, screenCoords);

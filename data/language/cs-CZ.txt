@@ -1223,8 +1223,8 @@ STR_1838    :Spokojenost: {COMMA16}%
 STR_1839    :Spolehlivost: {COMMA16}%
 STR_1840    :Mimo provoz: {COMMA16}%
 STR_1841    :Výdělečnost: {CURRENCY2DP} za hodinu
-STR_1842    :Nejoblíbenější: {COMMA16} návštěvníka
-STR_1843    :Nejoblíbenější: {COMMA16} návštěvníků
+STR_1842    :Nejoblíbenější: {COMMA32} návštěvníka
+STR_1843    :Nejoblíbenější: {COMMA32} návštěvníků
 STR_1844    :Vyberte informaci k zobrazení v seznamu atrakcí
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} návštěvníků
@@ -2195,8 +2195,8 @@ STR_3118    :{BLACK}{STRINGID} jde k atrakci
 STR_3119    :{BLACK}{STRINGID} opravuje atrakci
 STR_3120    :Najít nejbližšího dostupného mechanika, nebo mechanika, který tuto atrakci právě opravuje
 STR_3121    :Nepodařilo se najít dostupného mechanika
-STR_3122    :{WINDOW_COLOUR_2}Oblíbená atrakce {BLACK}{COMMA16} návštěvníka
-STR_3123    :{WINDOW_COLOUR_2}Oblíbená atrakce {BLACK}{COMMA16} návštěvníků
+STR_3122    :{WINDOW_COLOUR_2}Oblíbená atrakce {BLACK}{COMMA32} návštěvníka
+STR_3123    :{WINDOW_COLOUR_2}Oblíbená atrakce {BLACK}{COMMA32} návštěvníků
 STR_3124    :Porucha na {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Faktor nadšení: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Faktor intenzity: {BLACK}+{COMMA16}%

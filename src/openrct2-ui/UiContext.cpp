@@ -142,7 +142,7 @@ public:
         _inGameConsole.Update();
     }
 
-    void Draw(DrawPixelInfo* dpi) override
+    void Draw(DrawPixelInfo& dpi) override
     {
         auto bgColour = ThemeGetColour(WindowClass::Chat, 0);
         ChatDraw(dpi, bgColour);
@@ -291,12 +291,12 @@ public:
         return std::make_shared<DrawingEngineFactory>();
     }
 
-    void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, DrawPixelInfo* dpi, DrawWeatherFunc drawFunc) override
+    void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, DrawPixelInfo& dpi, DrawWeatherFunc drawFunc) override
     {
-        int32_t left = dpi->x;
-        int32_t right = left + dpi->width;
-        int32_t top = dpi->y;
-        int32_t bottom = top + dpi->height;
+        int32_t left = dpi.x;
+        int32_t right = left + dpi.width;
+        int32_t top = dpi.y;
+        int32_t bottom = top + dpi.height;
 
         for (auto& w : g_window_list)
         {
@@ -337,14 +337,15 @@ public:
                     ContextQuit();
                     break;
                 case SDL_WINDOWEVENT:
-                    if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+                    if (e.window.event == SDL_WINDOWEVENT_RESIZED)
                     {
+                        LOG_VERBOSE("New Window size: %ux%u\n", e.window.data1, e.window.data2);
                         OnResize(e.window.data1, e.window.data2);
                     }
 
                     switch (e.window.event)
                     {
-                        case SDL_WINDOWEVENT_SIZE_CHANGED:
+                        case SDL_WINDOWEVENT_RESIZED:
                         case SDL_WINDOWEVENT_MOVED:
                         case SDL_WINDOWEVENT_MAXIMIZED:
                         case SDL_WINDOWEVENT_RESTORED:
@@ -887,7 +888,7 @@ private:
     }
 
     static void DrawWeatherWindow(
-        DrawPixelInfo* dpi, IWeatherDrawer* weatherDrawer, WindowBase* original_w, int16_t left, int16_t right, int16_t top,
+        DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, WindowBase* original_w, int16_t left, int16_t right, int16_t top,
         int16_t bottom, DrawWeatherFunc drawFunc)
     {
         WindowBase* w{};

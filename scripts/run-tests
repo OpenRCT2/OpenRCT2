@@ -20,5 +20,5 @@ if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
     ./tests --gtest_output=xml:../artifacts/test-results.xml "$@"
 else
     echo -e "\033[0;36mRunning OpenRCT2 tests...\033[0m"
-    ctest --output-on-failure "$@"
+    ctest --output-on-failure --output-junit ../artifacts/test-results.xml "$@"
 fi

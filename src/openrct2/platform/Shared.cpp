@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../Date.h"
 #include "../common.h"
 
 #ifdef _WIN32

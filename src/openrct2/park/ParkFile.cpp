@@ -64,6 +64,8 @@
 #include <string_view>
 #include <vector>
 
+constexpr const uint32_t BlockBrakeImprovementsVersion = 27;
+
 using namespace OpenRCT2;
 
 namespace OpenRCT2
@@ -479,8 +481,20 @@ namespace OpenRCT2
                     cs.Write(isPaused);
                 }
                 cs.ReadWrite(gCurrentTicks);
-                cs.ReadWrite(gDateMonthTicks);
-                cs.ReadWrite(gDateMonthsElapsed);
+                if (cs.GetMode() == OrcaStream::Mode::READING)
+                {
+                    uint16_t monthTicks;
+                    uint32_t monthsElapsed;
+                    cs.ReadWrite(monthTicks);
+                    cs.ReadWrite(monthsElapsed);
+                    GetContext()->GetGameState()->SetDate(Date(monthsElapsed, monthTicks));
+                }
+                else
+                {
+                    auto& date = GetDate();
+                    cs.Write(date.GetMonthTicks());
+                    cs.Write(date.GetMonthsElapsed());
+                }
 
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
@@ -1080,11 +1094,34 @@ namespace OpenRCT2
                                 else if (it.element->GetType() == TileElementType::Track)
                                 {
                                     auto* trackElement = it.element->AsTrack();
+                                    auto trackType = trackElement->GetTrackType();
                                     if (TrackTypeMustBeMadeInvisible(
-                                            trackElement->GetRideType(), trackElement->GetTrackType(),
-                                            os.GetHeader().TargetVersion))
+                                            trackElement->GetRideType(), trackType, os.GetHeader().TargetVersion))
                                     {
                                         it.element->SetInvisible(true);
+                                    }
+                                    if (os.GetHeader().TargetVersion < BlockBrakeImprovementsVersion)
+                                    {
+                                        if (trackType == TrackElemType::Brakes)
+                                            trackElement->SetBrakeClosed(true);
+                                        if (trackType == TrackElemType::BlockBrakes)
+                                            trackElement->SetBrakeBoosterSpeed(kRCT2DefaultBlockBrakeSpeed);
+                                    }
+                                }
+                                else if (
+                                    it.element->GetType() == TileElementType::SmallScenery && os.GetHeader().TargetVersion < 23)
+                                {
+                                    auto* sceneryElement = it.element->AsSmallScenery();
+                                    // Previous formats stored the needs supports flag in the primary colour
+                                    // We have moved it into a flags field to support extended colour sets
+                                    bool needsSupports = sceneryElement->GetPrimaryColour()
+                                        & RCT12_SMALL_SCENERY_ELEMENT_NEEDS_SUPPORTS_FLAG;
+                                    if (needsSupports)
+                                    {
+                                        sceneryElement->SetPrimaryColour(
+                                            sceneryElement->GetPrimaryColour()
+                                            & ~RCT12_SMALL_SCENERY_ELEMENT_NEEDS_SUPPORTS_FLAG);
+                                        sceneryElement->SetNeedsSupports();
                                     }
                                 }
                             }
@@ -1553,13 +1590,13 @@ namespace OpenRCT2
         static void ReadWriteEntityCommon(OrcaStream::ChunkStream& cs, EntityBase& entity)
         {
             cs.ReadWrite(entity.Id);
-            cs.ReadWrite(entity.sprite_height_negative);
+            cs.ReadWrite(entity.SpriteData.HeightMin);
             cs.ReadWrite(entity.x);
             cs.ReadWrite(entity.y);
             cs.ReadWrite(entity.z);
-            cs.ReadWrite(entity.sprite_width);
-            cs.ReadWrite(entity.sprite_height_positive);
-            cs.ReadWrite(entity.sprite_direction);
+            cs.ReadWrite(entity.SpriteData.Width);
+            cs.ReadWrite(entity.SpriteData.HeightMax);
+            cs.ReadWrite(entity.Orientation);
         }
 
         static std::vector<ObjectEntryIndex> LegacyGetRideTypesBeenOn(const std::array<uint8_t, 16>& srcArray)
@@ -2060,7 +2097,18 @@ namespace OpenRCT2
         cs.ReadWrite(entity.scream_sound_id);
         cs.ReadWrite(entity.TrackSubposition);
         cs.ReadWrite(entity.NumLaps);
-        cs.ReadWrite(entity.brake_speed);
+        if (cs.GetMode() == OrcaStream::Mode::READING && os.GetHeader().TargetVersion < BlockBrakeImprovementsVersion)
+        {
+            uint8_t brakeSpeed;
+            cs.ReadWrite(brakeSpeed);
+            if (entity.GetTrackType() == TrackElemType::BlockBrakes)
+                brakeSpeed = kRCT2DefaultBlockBrakeSpeed;
+            entity.brake_speed = brakeSpeed;
+        }
+        else
+        {
+            cs.ReadWrite(entity.brake_speed);
+        }
         cs.ReadWrite(entity.lost_time_out);
         cs.ReadWrite(entity.vertical_drop_countdown);
         cs.ReadWrite(entity.var_D3);
@@ -2078,6 +2126,14 @@ namespace OpenRCT2
             {
                 entity.SetFlag(VehicleFlags::Crashed);
             }
+        }
+        if (cs.GetMode() == OrcaStream::Mode::READING && os.GetHeader().TargetVersion < BlockBrakeImprovementsVersion)
+        {
+            entity.BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
+        }
+        else
+        {
+            cs.ReadWrite(entity.BlockBrakeSpeed);
         }
     }
 

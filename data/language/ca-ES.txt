@@ -1221,8 +1221,8 @@ STR_1838    :Satisfacció: {COMMA16} %
 STR_1839    :Fiabilitat: {COMMA16} %
 STR_1840    :Temps avariada: {COMMA16} %
 STR_1841    :Benefici: {CURRENCY2DP} per hora
-STR_1842    :Preferida de: {COMMA16} visitant
-STR_1843    :Preferida de: {COMMA16} visitants
+STR_1842    :Preferida de: {COMMA32} visitant
+STR_1843    :Preferida de: {COMMA32} visitants
 STR_1844    :Seleccioneu el tipus d’informació que voleu veure a la llista d’atraccions
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} visitants
@@ -1299,7 +1299,7 @@ STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :No podeu demanar més diners!
 STR_1919    :No teniu prou diners!
 STR_1920    :No podeu tornar el préstec!
-STR_1921    :Comença una nova partida
+STR_1921    :Comença una partida nova
 STR_1922    :Continua una partida desada
 STR_1924    :Surt
 STR_1925    :Aquesta persona aquí no es pot col·locar…
@@ -2193,8 +2193,8 @@ STR_3118    :{BLACK}{STRINGID} va cap a l’atracció
 STR_3119    :{BLACK}{STRINGID} arregla l’atracció
 STR_3120    :Localitza el mecànic disponible més proper o el mecànic assignat per a reparar-ho.
 STR_3121    :No es pot trobar cap mecànic lliure.
-STR_3122    :{WINDOW_COLOUR_2}Preferida de: {BLACK}{COMMA16} visitant
-STR_3123    :{WINDOW_COLOUR_2}Preferida de: {BLACK}{COMMA16} visitants
+STR_3122    :{WINDOW_COLOUR_2}Preferida de: {BLACK}{COMMA32} visitant
+STR_3123    :{WINDOW_COLOUR_2}Preferida de: {BLACK}{COMMA32} visitants
 STR_3124    :{STRINGID} avariada
 STR_3125    :{WINDOW_COLOUR_2}Factor d’emoció: {BLACK}+{COMMA16} %
 STR_3126    :{WINDOW_COLOUR_2}Factor d’intensitat: {BLACK}+{COMMA16} %
@@ -3285,8 +3285,8 @@ STR_6133    :Permet l’accés a atraccions i decoracions que encara no s’han 
 STR_6134    :Neteja les decoracions
 STR_6135    :El client ha enviat una sol·licitud no vàlida.
 STR_6136    :El servidor ha enviat una sol·licitud no vàlida.
-STR_6137    :OpenRCT2, un clon de codi obert del Roller Coaster Tycoon 2.
-STR_6138    :L’OpenRCT2 és obra de molts autors. En trobareu una llista completa en «contributors.md». Per a més informació, visiteu http://github.com/OpenRCT2/OpenRCT2
+STR_6137    :OpenRCT2, una recreació lliure i de codi obert d’una expansió del Roller Coaster Tycoon 2.
+STR_6138    :L’OpenRCT2 és obra de molts autors. En trobareu una llista completa amb el botó «Col·laboradors». Per a més informació, visiteu http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Tots els noms de productes i de noms de companyies pertanyen als seus propietaris. L’ús d’aquests noms no n’implica cap tipus d’afiliació o promoció.
 STR_6140    :Registre de canvis…
 STR_6141    :Barra d’eines inferior del RCT1
@@ -3580,8 +3580,8 @@ STR_6470    :Ajusta una àrea de treball més gran.
 STR_6471    :Veu a través de la vegetació
 STR_6472    :Veu a través dels vehicles
 STR_6473    :Veu a través dels suports
-STR_6474    :Veu a través dels visitants
-STR_6475    :Veu a través dels treballadors
+STR_6474    :Visitants invisibles
+STR_6475    :Empleats invisibles
 STR_6476    :Vegetació invisible
 STR_6477    :Paisatge invisible
 STR_6478    :Camins invisibles
@@ -3592,8 +3592,8 @@ STR_6482    :Opcions de transparència
 STR_6483    :Obre les opcions de transparència
 STR_6484    :Alterna veure a través de la vegetació
 STR_6485    :Alterna veure a través dels vehicles
-STR_6486    :Alterna veure a través dels visitants
-STR_6487    :Alterna veure a través dels treballadors
+STR_6486    :Mostra o amaga els visitants
+STR_6487    :Mostra o amaga els empleats
 STR_6488    :{RED}Els visitants es queixen de les llargues cues del parc.{NEWLINE}Considereu escurçar les més problemàtiques o augmentar el rendiment de les atraccions.
 STR_6489    :Error: Versió de parc no compatible
 STR_6490    :Avís: Versió de parc parcialment compatible
@@ -3605,10 +3605,6 @@ STR_6495    :Agrupa les atraccions per tipus en lloc de mostrar els vehicles per
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Feu clic en una casella per a mostrar els seus elements.{NEWLINE}Amb Ctrl + clic en una casella, seleccioneu l’element directament.
 STR_6498    :Si s’activa, el mapa tindrà forma quadrada.
-STR_6474    :Visitants invisibles
-STR_6475    :Empleats invisibles
-STR_6486    :Mostra o amaga els visitants
-STR_6487    :Mostra o amaga els empleats
 STR_6499    :Tipus de vehicle no suportat pel format de disseny de vies
 STR_6500    :Elements de via no suportats pel format de disseny de vies
 STR_6501    :Color aleatori
@@ -3652,6 +3648,50 @@ STR_6538    :Mostra els camins normals al menú desplegable de les cues de la fi
 STR_6539    :Fre tancat
 STR_6540    :{WINDOW_COLOUR_2}Donem les gràcies a les companyies següents per permetre fer servir les seves imatges:
 STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6542    :Col·laboradors
+STR_6543    :Col·laboradors…
+STR_6544    :El préstec no pot ser negatiu!
+STR_6545    :Aplica el càlcul d’interessos del RCT1
+STR_6546    :Fes servir l’algoritme de càlcul d’interessos del RollerCoaster Tycoon 1, que feia servir un percentatge fix d’aproximadament un 1,33 %.
+STR_6547    :Tots els decorats
+STR_6548    :Mostra les baranes a les cruïlles
+STR_6549    :Els objectes de compatibilitat no es poden seleccionar!
+STR_6550    :Aquesta entrada s’inclou per a facilitar la compatibilitat amb versions antigues o danyades d’alguns objectes. No es pot seleccionar. L’únic que es pot fer és desseleccionar-la.
+STR_6551    :Verd militar
+STR_6552    :Mel
+STR_6553    :Bronzejat
+STR_6554    :Granat
+STR_6555    :Rosa coral
+STR_6556    :Verd bosc
+STR_6557    :Verd Chartreuse
+STR_6558    :Verd caçador
+STR_6559    :Verd clar
+STR_6560    :Verd llima
+STR_6561    :Sèpia
+STR_6562    :Préssec
+STR_6563    :Blau lavanda
+STR_6564    :Verd maragda
+STR_6565    :Aiguamarina
+STR_6566    :Violeta
+STR_6567    :Lavanda
+STR_6568    :Taronja pastel
+STR_6569    :Blau fosc
+STR_6570    :Rosa pastel
+STR_6571    :Cafè
+STR_6572    :Beige
+STR_6573    :Invisible
+STR_6574    :Buit
+STR_6575    :Permet esquemes de color especials
+STR_6576    :Afegeix més colors al desplegable de colors
+STR_6577    :Velocitat del fre de bloc
+STR_6578    :Estableix el límit de velocitat per als frens de bloc. En mode de secció de bloc, els frens adjacents amb una velocitat inferior es vinculen amb el fre de bloc.
+STR_6579    :Els frens de bloc s’establiran a la velocitat per defecte quan es desi el disseny de les vies
+STR_6580    :Restableix
+STR_6581    :Esteu segur que voleu restablir totes les dreceres de teclat d’aquesta pestanya?
+STR_6582    :Obre la finestra de dreceres de teclat
+STR_6583    :{WINDOW_COLOUR_2}Inverteix el sentit
+STR_6584    :Trieu-ho per a invertir el sentit de moviment dels cotxes
+STR_6585    :Els canvis no es poden fer…
 
 #############
 # Scenarios #
@@ -4405,6 +4445,11 @@ STR_DTLS    :Aquest parc temàtic ha vist millors dies. Ajudeu al propietari a d
 STR_SCNR    :Món Panda
 STR_PARK    :Món Panda
 STR_DTLS    :Afegiu més atraccions i atraieu més visitants a aquest parc temàtic inspirat en els pandes.
+
+<Tycoon Park>
+STR_SCNR    :Parc Tycoon
+STR_PARK    :Parc Tycoon
+STR_DTLS    :
 
 <UCES Halloween>
 STR_SCNR    :La cresta del cementiri

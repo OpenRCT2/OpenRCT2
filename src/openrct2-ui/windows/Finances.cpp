@@ -224,13 +224,18 @@ static_assert(std::size(_windowFinancesPageHoldDownWidgets) == WINDOW_FINANCES_P
 class FinancesWindow final : public Window
 {
 private:
-    int32_t _lastPaintedMonth;
+    uint32_t _lastPaintedMonth;
+
+    void SetDisabledTabs()
+    {
+        disabled_widgets = (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
+    }
 
 public:
     void OnOpen() override
     {
         SetPage(WINDOW_FINANCES_PAGE_SUMMARY);
-        _lastPaintedMonth = std::numeric_limits<int32_t>::max();
+        _lastPaintedMonth = std::numeric_limits<uint32_t>::max();
         ResearchUpdateUncompletedTypes();
     }
 
@@ -248,7 +253,7 @@ public:
                 OnMouseDownSummary(widgetIndex);
                 break;
             case WINDOW_FINANCES_PAGE_RESEARCH:
-                OnMouseDownResearch(widgetIndex);
+                WindowResearchFundingMouseDown(this, widgetIndex, WIDX_RESEARCH_FUNDING);
                 break;
         }
     }
@@ -275,7 +280,7 @@ public:
                         OnMouseUpMarketing(widgetIndex);
                         break;
                     case WINDOW_FINANCES_PAGE_RESEARCH:
-                        OnMouseUpResearch(widgetIndex);
+                        WindowResearchFundingMouseUp(widgetIndex, WIDX_RESEARCH_FUNDING);
                 }
                 break;
         }
@@ -285,7 +290,7 @@ public:
     {
         if (page == WINDOW_FINANCES_PAGE_RESEARCH)
         {
-            OnDropdownResearch(widgetIndex, selectedIndex);
+            WindowResearchFundingDropdown(widgetIndex, selectedIndex, WIDX_RESEARCH_FUNDING);
         }
     }
 
@@ -299,7 +304,7 @@ public:
             WindowInitScrollWidgets(*this);
         }
 
-        disabled_widgets = 0;
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_6);
 
         for (auto i = 0; i < WINDOW_FINANCES_PAGE_COUNT; i++)
             SetWidgetPressed(WIDX_TAB_1 + i, false);
@@ -313,7 +318,7 @@ public:
                 OnPrepareDrawMarketing();
                 break;
             case WINDOW_FINANCES_PAGE_RESEARCH:
-                OnPrepareDrawResearch();
+                WindowResearchFundingPrepareDraw(this, WIDX_RESEARCH_FUNDING);
                 break;
         }
     }
@@ -341,7 +346,7 @@ public:
                 OnDrawMarketing(dpi);
                 break;
             case WINDOW_FINANCES_PAGE_RESEARCH:
-                OnDrawResearch(dpi);
+                WindowResearchFundingDraw(this, dpi);
                 break;
         }
     }
@@ -372,7 +377,7 @@ public:
             // Darken every even row
             if (i % 2 == 0)
                 GfxFillRect(
-                    &dpi,
+                    dpi,
                     { screenCoords - ScreenCoordsXY{ 0, 1 },
                       screenCoords + ScreenCoordsXY{ row_width, (TABLE_CELL_HEIGHT - 2) } },
                     ColourMapA[colours[1]].lighter | 0x1000000);
@@ -381,7 +386,7 @@ public:
         }
 
         // Expenditure / Income values for each month
-        uint16_t currentMonthYear = static_cast<uint16_t>(gDateMonthsElapsed);
+        auto currentMonthYear = GetDate().GetMonthsElapsed();
         for (int32_t i = SummaryMaxAvailableMonth(); i >= 0; i--)
         {
             screenCoords.y = 0;
@@ -426,8 +431,7 @@ public:
                 dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, { TextAlignment::RIGHT });
 
             GfxFillRect(
-                &dpi,
-                { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, -2 } },
+                dpi, { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, -2 } },
                 PALETTE_INDEX_10);
 
             screenCoords.x += EXPENDITURE_COLUMN_WIDTH;
@@ -444,8 +448,9 @@ public:
         hold_down_widgets = _windowFinancesPageHoldDownWidgets[p];
         pressed_widgets = 0;
         widgets = _windowFinancesPageWidgets[p];
-
+        SetDisabledTabs();
         Invalidate();
+
         if (p == WINDOW_FINANCES_PAGE_RESEARCH)
         {
             width = WW_RESEARCH;
@@ -522,7 +527,7 @@ public:
         ft.Add<money64>(gBankLoan);
 
         // Keep up with new months being added in the first two years.
-        if (gDateMonthsElapsed != _lastPaintedMonth)
+        if (GetDate().GetMonthsElapsed() != _lastPaintedMonth)
             InitialiseScrollPosition(WIDX_SUMMARY_SCROLL, 0);
     }
 
@@ -542,7 +547,7 @@ public:
             // Darken every even row
             if (i % 2 == 0)
                 GfxFillRect(
-                    &dpi,
+                    dpi,
                     { screenCoords - ScreenCoordsXY{ 0, 1 }, screenCoords + ScreenCoordsXY{ 121, (TABLE_CELL_HEIGHT - 2) } },
                     ColourMapA[colours[1]].lighter | 0x1000000);
 
@@ -552,7 +557,7 @@ public:
 
         // Horizontal rule below expenditure / income table
         GfxFillRectInset(
-            &dpi, { windowPos + ScreenCoordsXY{ 8, 272 }, windowPos + ScreenCoordsXY{ 8 + 513, 272 + 1 } }, colours[1],
+            dpi, { windowPos + ScreenCoordsXY{ 8, 272 }, windowPos + ScreenCoordsXY{ 8 + 513, 272 + 1 } }, colours[1],
             INSET_RECT_FLAG_BORDER_INSET);
 
         // Loan and interest rate
@@ -593,7 +598,7 @@ public:
 
     uint16_t SummaryMaxAvailableMonth()
     {
-        return std::min<uint16_t>(gDateMonthsElapsed, EXPENDITURE_TABLE_MONTH_COUNT - 1);
+        return std::min<uint16_t>(GetDate().GetMonthsElapsed(), EXPENDITURE_TABLE_MONTH_COUNT - 1);
     }
 
 #pragma endregion
@@ -618,7 +623,7 @@ public:
             ft);
 
         // Graph
-        GfxFillRectInset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
 
         // Calculate the Y axis scale (log2 of highest [+/-]balance)
         int32_t yAxisScale = 0;
@@ -649,14 +654,14 @@ public:
                 dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
             GfxFillRectInset(
-                &dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
+                dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             coords.y += 39;
         }
 
         // X axis labels and values
         coords = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-        Graph::Draw(&dpi, gCashHistory, 64, coords, yAxisScale, 128);
+        Graph::Draw(dpi, gCashHistory, 64, coords, yAxisScale, 128);
     }
 
 #pragma endregion
@@ -675,7 +680,7 @@ public:
         DrawTextBasic(dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 }, STR_FINANCES_PARK_VALUE, ft);
 
         // Graph
-        GfxFillRectInset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
 
         // Calculate the Y axis scale (log2 of highest [+/-]balance)
         int32_t yAxisScale = 0;
@@ -706,14 +711,14 @@ public:
                 dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
             GfxFillRectInset(
-                &dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
+                dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             coords.y += 39;
         }
 
         // X axis labels and values
         coords = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-        Graph::Draw(&dpi, gParkValueHistory, 64, coords, yAxisScale, 0);
+        Graph::Draw(dpi, gParkValueHistory, 64, coords, yAxisScale, 0);
     }
 
 #pragma endregion
@@ -734,7 +739,7 @@ public:
             gCurrentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS, ft);
 
         // Graph
-        GfxFillRectInset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
 
         // Calculate the Y axis scale (log2 of highest [+/-]balance)
         int32_t yAxisScale = 0;
@@ -765,14 +770,14 @@ public:
                 dpi, screenPos + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
                 { FontStyle::Small, TextAlignment::RIGHT });
             GfxFillRectInset(
-                &dpi, { screenPos + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, screenPos.y + 5 } }, colours[2],
+                dpi, { screenPos + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, screenPos.y + 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             screenPos.y += 39;
         }
 
         // X axis labels and values
         screenPos = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-        Graph::Draw(&dpi, gWeeklyProfitHistory, 64, screenPos, yAxisScale, 128);
+        Graph::Draw(dpi, gWeeklyProfitHistory, 64, screenPos, yAxisScale, 128);
     }
 
 #pragma endregion
@@ -898,101 +903,6 @@ public:
 
 #pragma endregion
 
-#pragma region Research Events
-
-    void OnMouseUpResearch(WidgetIndex widgetIndex)
-    {
-        if (widgetIndex >= WIDX_TRANSPORT_RIDES && widgetIndex <= WIDX_SCENERY_AND_THEMING)
-        {
-            auto activeResearchTypes = gResearchPriorities;
-            activeResearchTypes ^= 1uLL << (widgetIndex - WIDX_TRANSPORT_RIDES);
-
-            auto gameAction = ParkSetResearchFundingAction(activeResearchTypes, gResearchFundingLevel);
-            GameActions::Execute(&gameAction);
-        }
-    }
-
-    void OnMouseDownResearch(WidgetIndex widgetIndex)
-    {
-        if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON)
-            return;
-
-        Widget* dropdownWidget = &widgets[widgetIndex - 1];
-
-        for (std::size_t i = 0; i < std::size(ResearchFundingLevelNames); i++)
-        {
-            gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItems[i].Args = ResearchFundingLevelNames[i];
-        }
-
-        WindowDropdownShowTextCustomWidth(
-            { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1, colours[1],
-            0, Dropdown::Flag::StayOpen, 4, dropdownWidget->width() - 3);
-
-        int32_t currentResearchLevel = gResearchFundingLevel;
-        Dropdown::SetChecked(currentResearchLevel, true);
-    }
-
-    void OnDropdownResearch(WidgetIndex widgetIndex, int32_t selectedIndex)
-    {
-        if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON || selectedIndex == -1)
-            return;
-
-        auto gameAction = ParkSetResearchFundingAction(gResearchPriorities, selectedIndex);
-        GameActions::Execute(&gameAction);
-    }
-
-    void OnPrepareDrawResearch()
-    {
-        if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
-        {
-            _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING].type = WindowWidgetType::Empty;
-            _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
-        }
-        else
-        {
-            _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING].type = WindowWidgetType::DropdownMenu;
-            _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
-        }
-        int32_t currentResearchLevel = gResearchFundingLevel;
-
-        // Current funding
-        _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING].text = ResearchFundingLevelNames[currentResearchLevel];
-
-        // Checkboxes
-        uint8_t activeResearchTypes = gResearchPriorities;
-        int32_t uncompletedResearchTypes = gResearchUncompletedCategories;
-        for (int32_t i = 0; i < 7; i++)
-        {
-            int32_t mask = 1 << i;
-            int32_t widgetMask = 1uLL << (i + WIDX_TRANSPORT_RIDES);
-
-            // Set checkbox disabled if research type is complete
-            if (uncompletedResearchTypes & mask)
-            {
-                disabled_widgets &= ~widgetMask;
-
-                // Set checkbox ticked if research type is active
-                if (activeResearchTypes & mask)
-                    pressed_widgets |= widgetMask;
-                else
-                    pressed_widgets &= ~widgetMask;
-            }
-            else
-            {
-                disabled_widgets |= widgetMask;
-                pressed_widgets &= ~widgetMask;
-            }
-        }
-    }
-
-    void OnDrawResearch(DrawPixelInfo& dpi)
-    {
-        WindowResearchFundingPagePaint(this, &dpi, WIDX_RESEARCH_FUNDING);
-    }
-
-#pragma endregion
-
     void InitialiseScrollPosition(WidgetIndex widgetIndex, int32_t scrollId)
     {
         const auto& widget = this->widgets[widgetIndex];
@@ -1014,7 +924,7 @@ public:
             }
 
             GfxDrawSprite(
-                &dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
+                dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
         }
     }
 

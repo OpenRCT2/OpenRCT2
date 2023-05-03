@@ -126,7 +126,7 @@ void MapGenGenerateBlank(MapGenSettings* settings)
     {
         for (x = 1; x < settings->mapSize.x - 1; x++)
         {
-            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement != nullptr)
             {
                 surfaceElement->SetSurfaceStyle(settings->floor);
@@ -190,7 +190,7 @@ void MapGenGenerate(MapGenSettings* settings)
     {
         for (auto x = 1; x < mapSize.x - 1; x++)
         {
-            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement != nullptr)
             {
                 surfaceElement->SetSurfaceStyle(floorTextureId);
@@ -240,7 +240,7 @@ void MapGenGenerate(MapGenSettings* settings)
     {
         for (auto x = 1; x < mapSize.x - 1; x++)
         {
-            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
 
             if (surfaceElement != nullptr && surfaceElement->BaseHeight < waterLevel + 6)
                 surfaceElement->SetSurfaceStyle(beachTextureId);
@@ -419,7 +419,7 @@ static void MapGenSetWaterLevel(int32_t waterLevel)
     {
         for (int32_t x = 1; x < gMapSize.x - 1; x++)
         {
-            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement != nullptr && surfaceElement->BaseHeight < waterLevel)
                 surfaceElement->SetWaterHeight(waterLevel * COORDS_Z_STEP);
         }
@@ -480,7 +480,7 @@ static void MapGenSetHeight(MapGenSettings* settings)
 
             uint8_t baseHeight = (q00 + q01 + q10 + q11) / 4;
 
-            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement == nullptr)
                 continue;
             surfaceElement->BaseHeight = std::max(2, baseHeight * 2);
@@ -847,7 +847,7 @@ void MapGenGenerateFromHeightmap(MapGenSettings* settings)
         {
             // The x and y axis are flipped in the world, so this uses y for x and x for y.
             auto tileCoords = MapgenHeightmapCoordToTileCoordsXY(x, y);
-            auto* const surfaceElement = MapGetSurfaceElementAt(tileCoords.ToCoordsXY());
+            auto* const surfaceElement = MapGetSurfaceElementAt(tileCoords);
             if (surfaceElement == nullptr)
                 continue;
 

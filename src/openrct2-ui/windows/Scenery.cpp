@@ -48,7 +48,7 @@ constexpr int32_t TabWidth = 31;
 constexpr int32_t TabHeight = 28;
 constexpr int32_t ReservedTabCount = 2;
 constexpr int32_t MaxTabs = 257; // 255 selected tabs + misc + all
-constexpr int32_t MaxTabsPerRow = 19;
+constexpr int32_t MaxTabsPerRow = 20;
 
 constexpr uint8_t SceneryContentScrollIndex = 0;
 
@@ -351,15 +351,15 @@ public:
 
         if (widgetIndex == WIDX_SCENERY_PRIMARY_COLOUR_BUTTON)
         {
-            gWindowSceneryPrimaryColour = static_cast<colour_t>(dropdownIndex);
+            gWindowSceneryPrimaryColour = ColourDropDownIndexToColour(dropdownIndex);
         }
         else if (widgetIndex == WIDX_SCENERY_SECONDARY_COLOUR_BUTTON)
         {
-            gWindowScenerySecondaryColour = static_cast<colour_t>(dropdownIndex);
+            gWindowScenerySecondaryColour = ColourDropDownIndexToColour(dropdownIndex);
         }
         else if (widgetIndex == WIDX_SCENERY_TERTIARY_COLOUR_BUTTON)
         {
-            gWindowSceneryTertiaryColour = static_cast<colour_t>(dropdownIndex);
+            gWindowSceneryTertiaryColour = ColourDropDownIndexToColour(dropdownIndex);
         }
 
         Invalidate();
@@ -719,6 +719,15 @@ public:
             const auto lastTabIndex = GetMaxTabCountInARow() == MaxTabsPerRow ? MaxTabsPerRow - 1 : _tabEntries.size() - 1;
             const auto lastTabWidget = &widgets[WIDX_SCENERY_TAB_1 + lastTabIndex];
             windowWidth = std::max<int32_t>(windowWidth, lastTabWidget->right + 3);
+
+            if (GetSceneryTabInfoForMisc() != nullptr)
+            {
+                auto miscTabWidget = &widgets[WIDX_SCENERY_TAB_1 + _tabEntries.size() - 2];
+                miscTabWidget->left = windowWidth - 2 * TabWidth - 6;
+                miscTabWidget->right = windowWidth - TabWidth - 7;
+                miscTabWidget->top = InitTabPosY;
+                miscTabWidget->bottom = InitTabPosY + TabHeight;
+            }
 
             if (_tabEntries.back().IsAll())
             {
@@ -1223,8 +1232,7 @@ private:
 
     int32_t GetTabRowCount()
     {
-        int32_t tabEntries = static_cast<int32_t>(_tabEntries.size() - 1);
-        return std::max<int32_t>((tabEntries + MaxTabsPerRow - 1) / MaxTabsPerRow, 0);
+        return std::max<int32_t>((static_cast<int32_t>(_tabEntries.size()) + MaxTabsPerRow - 1) / MaxTabsPerRow, 0);
     }
 
     int32_t GetMaxTabCountInARow()
@@ -1250,6 +1258,9 @@ private:
         _actualMinHeight = WINDOW_SCENERY_MIN_HEIGHT;
         int32_t xInit = InitTabPosX;
         int32_t tabsInThisRow = 0;
+
+        auto hasMisc = GetSceneryTabInfoForMisc() != nullptr;
+        auto maxTabsInThisRow = MaxTabsPerRow - 1 - (hasMisc ? 1 : 0);
 
         ScreenCoordsXY pos = { xInit, InitTabPosY };
         for (const auto& tabInfo : _tabEntries)
@@ -1281,12 +1292,13 @@ private:
             _widgets.push_back(widget);
 
             tabsInThisRow++;
-            if (tabsInThisRow >= MaxTabsPerRow)
+            if (tabsInThisRow >= maxTabsInThisRow)
             {
                 pos.x = xInit;
                 pos.y += TabHeight;
                 tabsInThisRow = 0;
                 _actualMinHeight += TabHeight;
+                maxTabsInThisRow = MaxTabsPerRow;
             }
         }
 
@@ -1454,7 +1466,7 @@ private:
             if (_tabEntries[tabIndex].IsAll())
             {
                 auto imageId = ImageId(SPR_G2_INFINITY, FilterPaletteID::PaletteNull);
-                GfxDrawSprite(&dpi, imageId, offset + widgetCoordsXY + ScreenCoordsXY(2, 6));
+                GfxDrawSprite(dpi, imageId, offset + widgetCoordsXY + ScreenCoordsXY(2, 6));
             }
         }
     }
@@ -1465,8 +1477,8 @@ private:
         {
             auto bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(scenerySelection.EntryIndex);
             auto imageId = ImageId(bannerEntry->image + gWindowSceneryRotation * 2, gWindowSceneryPrimaryColour);
-            GfxDrawSprite(&dpi, imageId, { 33, 40 });
-            GfxDrawSprite(&dpi, imageId.WithIndexOffset(1), { 33, 40 });
+            GfxDrawSprite(dpi, imageId, { 33, 40 });
+            GfxDrawSprite(dpi, imageId.WithIndexOffset(1), { 33, 40 });
         }
         else if (scenerySelection.SceneryType == SCENERY_TYPE_LARGE)
         {
@@ -1478,7 +1490,7 @@ private:
                 imageId = imageId.WithSecondary(gWindowScenerySecondaryColour);
             if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
                 imageId = imageId.WithTertiary(gWindowSceneryTertiaryColour);
-            GfxDrawSprite(&dpi, imageId, { 33, 0 });
+            GfxDrawSprite(dpi, imageId, { 33, 0 });
         }
         else if (scenerySelection.SceneryType == SCENERY_TYPE_WALL)
         {
@@ -1492,10 +1504,10 @@ private:
                 {
                     imageId = imageId.WithSecondary(gWindowScenerySecondaryColour);
                 }
-                GfxDrawSprite(&dpi, imageId, { 47, spriteTop });
+                GfxDrawSprite(dpi, imageId, { 47, spriteTop });
 
                 auto glassImageId = ImageId(wallEntry->image + 6).WithTransparency(gWindowSceneryPrimaryColour);
-                GfxDrawSprite(&dpi, glassImageId, { 47, spriteTop });
+                GfxDrawSprite(dpi, glassImageId, { 47, spriteTop });
             }
             else
             {
@@ -1508,11 +1520,11 @@ private:
                         imageId = imageId.WithTertiary(gWindowSceneryTertiaryColour);
                     }
                 }
-                GfxDrawSprite(&dpi, imageId, { 47, spriteTop });
+                GfxDrawSprite(dpi, imageId, { 47, spriteTop });
 
                 if (wallEntry->flags & WALL_SCENERY_IS_DOOR)
                 {
-                    GfxDrawSprite(&dpi, imageId.WithIndexOffset(1), { 47, spriteTop });
+                    GfxDrawSprite(dpi, imageId.WithIndexOffset(1), { 47, spriteTop });
                 }
             }
         }
@@ -1520,7 +1532,7 @@ private:
         {
             auto* pathBitEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(scenerySelection.EntryIndex);
             auto imageId = ImageId(pathBitEntry->image);
-            GfxDrawSprite(&dpi, imageId, { 11, 16 });
+            GfxDrawSprite(dpi, imageId, { 11, 16 });
         }
         else
         {
@@ -1545,19 +1557,19 @@ private:
                 spriteTop -= 12;
             }
 
-            GfxDrawSprite(&dpi, imageId, { 32, spriteTop });
+            GfxDrawSprite(dpi, imageId, { 32, spriteTop });
 
             if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
             {
                 imageId = ImageId(sceneryEntry->image + 4 + gWindowSceneryRotation)
                               .WithTransparency(gWindowSceneryPrimaryColour);
-                GfxDrawSprite(&dpi, imageId, { 32, spriteTop });
+                GfxDrawSprite(dpi, imageId, { 32, spriteTop });
             }
 
             if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED_FG))
             {
                 imageId = ImageId(sceneryEntry->image + 4 + gWindowSceneryRotation);
-                GfxDrawSprite(&dpi, imageId, { 32, spriteTop });
+                GfxDrawSprite(dpi, imageId, { 32, spriteTop });
             }
         }
     }
@@ -1584,7 +1596,7 @@ private:
                 if (_selectedScenery == currentSceneryGlobal)
                 {
                     GfxFillRectInset(
-                        &dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                        dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
                         colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
                 }
             }
@@ -1593,20 +1605,20 @@ private:
                 if (tabSelectedScenery == currentSceneryGlobal)
                 {
                     GfxFillRectInset(
-                        &dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                        dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
                         colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_MID_LIGHT));
                 }
                 else if (_selectedScenery == currentSceneryGlobal)
                 {
                     GfxFillRectInset(
-                        &dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                        dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
                         colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
                 }
             }
 
             DrawPixelInfo clipdpi;
             if (ClipDrawPixelInfo(
-                    &clipdpi, &dpi, topLeft + ScreenCoordsXY{ 1, 1 }, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2))
+                    clipdpi, dpi, topLeft + ScreenCoordsXY{ 1, 1 }, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2))
             {
                 DrawSceneryItem(clipdpi, currentSceneryGlobal);
             }

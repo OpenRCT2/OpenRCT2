@@ -38,7 +38,6 @@ constexpr const RideTypeDescriptor SwingingInverterShipRTD =
     SET_FIELD(Heights, { 15, 176, 7, 11, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateInverterShip),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 106.00_GBP, 1.00_GBP, 1, }),
@@ -53,5 +52,17 @@ constexpr const RideTypeDescriptor SwingingInverterShipRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_SWINGING_INVERTER_SHIP_TRACK, SPR_RIDE_DESIGN_PREVIEW_SWINGING_INVERTER_SHIP_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "swinging_inverter_ship"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(2, 50), RIDE_RATING(2, 70), RIDE_RATING(2, 74) },
+        16,
+        0,
+        false,
+        {
+            { RatingsModifierType::BonusOperationOption, 0, 11, 22, 22 }, 
+            { RatingsModifierType::BonusScenery,         0, 11155, 0, 0 },
+        },
+    }),
 };
 // clang-format on

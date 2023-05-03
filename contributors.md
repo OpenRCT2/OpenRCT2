@@ -104,6 +104,10 @@ The following people are not part of the development team, but have been contrib
 * Umar Ahmed (umar-ahmed) - MacOS file watcher
 * Andrew Arnold (fidwell) - Added window support for more scenery groups.
 * Josh Trzebiatowski (trzejos) - Ride and scenery filtering
+* (kyphii) - Extended color selection, reversed ride vehicles, misc.
+* Phumdol Lookthipnapha (beam41) - Misc.
+* Nikolas Parshook (nparshook) - Misc.
+* Wenzhao Qiu (qwzhaox) - Misc.
 
 ## Bug fixes
 * (KirilAngelov)
@@ -214,6 +218,8 @@ The following people are not part of the development team, but have been contrib
 * Ernest Wong (ErnWong)
 * Joel H. (HtotheTML)
 * John Mulcahy (jayjay300)
+* Chase Percy (Chase-Percy)
+* Wenzhao Qiu (qwzhaox)
 
 ## Toolchain
 * (Balletie) - macOS
@@ -270,6 +276,7 @@ The following people are not part of the development team, but have been contrib
 
 ## Music
 * Karst "Jalmaan" van Galen Last (AuraSpecs)
+* (Flyxxpy)
 
 ## RollerCoaster Tycoon 2 credits
 Design and programming by Chris Sawyer

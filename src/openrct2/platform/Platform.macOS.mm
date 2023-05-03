@@ -9,11 +9,13 @@
 
 #if defined(__APPLE__) && defined(__MACH__)
 
+#    include "Platform.h"
+
+#    include "../Date.h"
 #    include "../OpenRCT2.h"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
 #    include "../localisation/Language.h"
-#    include "Platform.h"
 
 // undefine `interface` and `abstract`, because it's causing conflicts with Objective-C's keywords
 #    undef interface

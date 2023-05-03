@@ -28,11 +28,13 @@ constexpr int32_t DROPDOWN_TEXT_MAX_ROWS = 32;
 
 constexpr int32_t DROPDOWN_ITEM_HEIGHT = 12;
 
-static constexpr const uint8_t _appropriateImageDropdownItemsPerRow[34] = {
+static constexpr const std::array<uint8_t, 57> _appropriateImageDropdownItemsPerRow = {
     1, 1, 1, 1, 2, 2, 3, 3, 4, 3, // 10
     5, 4, 4, 5, 5, 5, 4, 5, 6, 5, // 20
     5, 7, 4, 5, 6, 5, 6, 6, 6, 6, // 30
-    6, 8, 8, 8,                   // 34
+    6, 8, 8, 8, 9, 9, 9, 9, 9, 9, // 40
+    9, 9, 9, 9, 9, 9, 9, 9, 9, 9, // 50
+    9, 9, 9, 9, 9, 9, 9,          // 56
 };
 
 enum
@@ -161,13 +163,13 @@ public:
                 if (colours[0] & COLOUR_FLAG_TRANSLUCENT)
                 {
                     TranslucentWindowPalette palette = TranslucentWindowPalettes[BASE_COLOUR(colours[0])];
-                    GfxFilterRect(&dpi, { leftTop, rightBottom }, palette.highlight);
-                    GfxFilterRect(&dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
+                    GfxFilterRect(dpi, { leftTop, rightBottom }, palette.highlight);
+                    GfxFilterRect(dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
                 }
                 else
                 {
-                    GfxFillRect(&dpi, { leftTop, rightBottom }, ColourMapA[colours[0]].mid_dark);
-                    GfxFillRect(&dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, ColourMapA[colours[0]].lightest);
+                    GfxFillRect(dpi, { leftTop, rightBottom }, ColourMapA[colours[0]].mid_dark);
+                    GfxFillRect(dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, ColourMapA[colours[0]].lightest);
                 }
             }
             else
@@ -176,7 +178,7 @@ public:
                 {
                     // Darken the cell's background slightly when highlighted
                     const ScreenCoordsXY rightBottom = screenCoords + ScreenCoordsXY{ ItemWidth - 1, ItemHeight - 1 };
-                    GfxFilterRect(&dpi, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
+                    GfxFilterRect(dpi, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
                 }
 
                 StringId item = gDropdownItems[i].Format;
@@ -187,7 +189,7 @@ public:
                                            : ImageId::FromUInt32(static_cast<uint32_t>(gDropdownItems[i].Args));
                     if (item == Dropdown::FormatColourPicker && highlightedIndex == i)
                         image = image.WithIndexOffset(1);
-                    GfxDrawSprite(&dpi, image, screenCoords);
+                    GfxDrawSprite(dpi, image, screenCoords);
                 }
                 else
                 {
@@ -443,26 +445,107 @@ int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, WindowBase* w)
     return -1;
 }
 
+// clang-format off
+// colour_t ordered for use in color dropdown
+static constexpr colour_t kColoursDropdownOrder[] = {
+    COLOUR_BLACK,
+    COLOUR_SATURATED_RED,
+    COLOUR_DARK_ORANGE,
+    COLOUR_DARK_YELLOW,
+    COLOUR_GRASS_GREEN_DARK,
+    COLOUR_SATURATED_GREEN,
+    COLOUR_AQUA_DARK,
+    COLOUR_DARK_BLUE,
+    COLOUR_SATURATED_PURPLE_DARK,
+
+    COLOUR_GREY,
+    COLOUR_BRIGHT_RED,
+    COLOUR_LIGHT_ORANGE,
+    COLOUR_YELLOW,
+    COLOUR_MOSS_GREEN,
+    COLOUR_BRIGHT_GREEN,
+    COLOUR_TEAL,
+    COLOUR_LIGHT_BLUE,
+    COLOUR_BRIGHT_PURPLE,
+
+    COLOUR_WHITE,
+    COLOUR_LIGHT_PINK,
+    COLOUR_ORANGE_LIGHT,
+    COLOUR_BRIGHT_YELLOW,
+    COLOUR_GRASS_GREEN_LIGHT,
+    COLOUR_SATURATED_GREEN_LIGHT,
+    COLOUR_AQUAMARINE,
+    COLOUR_ICY_BLUE,
+    COLOUR_SATURATED_PURPLE_LIGHT,
+
+    COLOUR_DULL_BROWN_DARK,
+    COLOUR_BORDEAUX_RED_DARK,
+    COLOUR_TAN_DARK,
+    COLOUR_SATURATED_BROWN,
+    COLOUR_DARK_OLIVE_DARK,
+    COLOUR_OLIVE_DARK,
+    COLOUR_DULL_GREEN_DARK,
+    COLOUR_DARK_PURPLE,
+    COLOUR_DARK_PINK,
+
+    COLOUR_DARK_BROWN,
+    COLOUR_BORDEAUX_RED,
+    COLOUR_SALMON_PINK,
+    COLOUR_LIGHT_BROWN,
+    COLOUR_DARK_OLIVE_GREEN,
+    COLOUR_OLIVE_GREEN,
+    COLOUR_DARK_GREEN,
+    COLOUR_LIGHT_PURPLE,
+    COLOUR_BRIGHT_PINK,
+
+    COLOUR_DULL_BROWN_LIGHT,
+    COLOUR_BORDEAUX_RED_LIGHT,
+    COLOUR_TAN_LIGHT,
+    COLOUR_SATURATED_BROWN_LIGHT,
+    COLOUR_DARK_OLIVE_LIGHT,
+    COLOUR_OLIVE_LIGHT,
+    COLOUR_DULL_GREEN_LIGHT,
+    COLOUR_DULL_PURPLE_LIGHT,
+    COLOUR_MAGENTA_LIGHT,
+
+    COLOUR_INVISIBLE,
+    COLOUR_VOID
+};
+// clang-format on
+
+colour_t ColourDropDownIndexToColour(uint8_t ddidx)
+{
+    return kColoursDropdownOrder[ddidx];
+}
+
 /**
  *  rct2: 0x006ED43D
  */
 void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour)
 {
     int32_t defaultIndex = -1;
+
+    auto numColours = (gCheatsAllowSpecialColourSchemes) ? static_cast<uint8_t>(COLOUR_COUNT) : COLOUR_NUM_NORMAL;
     // Set items
-    for (uint64_t i = 0; i < COLOUR_COUNT; i++)
+    for (uint64_t i = 0; i < numColours; i++)
     {
-        if (selectedColour == i)
+        auto orderedColour = ColourDropDownIndexToColour(i);
+        if (selectedColour == orderedColour)
             defaultIndex = i;
 
+        // Use special graphic for Invisible colour
+        auto imageId = (orderedColour == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_WHITE)
+                                                           : ImageId(SPR_PALETTE_BTN, orderedColour);
+
         gDropdownItems[i].Format = Dropdown::FormatColourPicker;
-        gDropdownItems[i].Args = (i << 32) | ImageId(SPR_PALETTE_BTN, i).ToUInt32();
+        gDropdownItems[i].Args = (i << 32) | imageId.ToUInt32();
     }
 
     // Show dropdown
     WindowDropdownShowImage(
         w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, dropdownColour,
-        Dropdown::Flag::StayOpen, COLOUR_COUNT, 12, 12, _appropriateImageDropdownItemsPerRow[COLOUR_COUNT]);
+        Dropdown::Flag::StayOpen, numColours, 12, 12,
+        DropdownGetAppropriateImageDropdownItemsPerRow(static_cast<uint32_t>(numColours)));
 
     gDropdownIsColour = true;
     gDropdownLastColourHover = -1;
@@ -471,7 +554,9 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
 
 uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems)
 {
-    return numItems < std::size(_appropriateImageDropdownItemsPerRow) ? _appropriateImageDropdownItemsPerRow[numItems] : 8;
+    // If above the table size return the last element
+    return _appropriateImageDropdownItemsPerRow[std::min<uint32_t>(
+        numItems, static_cast<uint32_t>(std::size(_appropriateImageDropdownItemsPerRow) - 1))];
 }
 
 bool WindowDropDownHasMultipleColumns(size_t numItems)

@@ -563,6 +563,7 @@ namespace ObjectFactory
                 }
             }
             result->SetAuthors(std::move(authorVector));
+            result->SetIsCompatibilityObject(Json::GetBoolean(jRoot["isCompatibilityObject"]));
 
             ExtractSourceGames(id, jRoot, *result);
         }

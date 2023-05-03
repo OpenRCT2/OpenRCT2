@@ -195,6 +195,8 @@ private:
     std::vector<std::string> _authors;
     ObjectGeneration _generation{};
     bool _usesFallbackImages{};
+    bool _isCompatibilityObject{};
+    ImageIndex _baseImageId{ ImageIndexUndefined };
 
 protected:
     StringTable& GetStringTable()
@@ -310,6 +312,9 @@ public:
         _version = version;
     }
 
+    bool IsCompatibilityObject() const;
+    void SetIsCompatibilityObject(const bool on);
+
     const ImageTable& GetImageTable() const
     {
         return _imageTable;
@@ -322,6 +327,14 @@ public:
     {
         return GetImageTable().GetCount();
     }
+
+    ImageIndex GetBaseImageId() const
+    {
+        return _baseImageId;
+    }
+
+    uint32_t LoadImages();
+    void UnloadImages();
 };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
 #    pragma GCC diagnostic pop

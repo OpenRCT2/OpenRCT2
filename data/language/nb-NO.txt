@@ -1223,8 +1223,8 @@ STR_1838    :Satisfaction: {COMMA16}%
 STR_1839    :Reliability: {COMMA16}%
 STR_1840    :Down-time: {COMMA16}%
 STR_1841    :Profit: {CURRENCY2DP} per hour
-STR_1842    :Favourite of: {COMMA16} guest
-STR_1843    :Favourite of: {COMMA16} guests
+STR_1842    :Favourite of: {COMMA32} guest
+STR_1843    :Favourite of: {COMMA32} guests
 STR_1844    :Select information type to show in ride/attraction list
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} guests
@@ -2195,8 +2195,8 @@ STR_3118    :{BLACK}{STRINGID} is heading for the ride
 STR_3119    :{BLACK}{STRINGID} is fixing the ride
 STR_3120    :Locate nearest available mechanic, or mechanic fixing ride
 STR_3121    :Unable to locate mechanic, or all nearby mechanics are busy
-STR_3122    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA16} guest
-STR_3123    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA16} guests
+STR_3122    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA32} guest
+STR_3123    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA32} guests
 STR_3124    :Broken {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Excitement Factor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}+{COMMA16}%
@@ -2382,8 +2382,6 @@ STR_3329    :Park entrance not yet built
 STR_3330    :Park must own some land
 STR_3331    :Path from park entrance to map edge either not complete or too complex - Path must be single-width with as few junctions and corners as possible
 STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
-STR_3333    :Export plug-in objects with saved games
-STR_3334    :Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn’t have the additional object data
 STR_3333    :Eksporter egendefinerte objekter sammen med lagret spill
 STR_3334    :Velg hvorvidt data for egendefinerte objekter (objektdata som ikke følger med spillet) skal lagres sammen med lagret spill eller scenario slik at det kan lastes inn selv om en mangler de samme egendefinerte objektene
 STR_3335    :Spordesigner - Velg attraksjonstyper og vogner
@@ -3217,12 +3215,10 @@ STR_6053    :Høydekartet kunne ikke normaliseres
 STR_6054    :Kun 24-bit bitmaps er støttet
 STR_6055    :OpenRCT2 høydekartfil
 STR_6056    :Demp lyd
-STR_6057    :Show a separate button for the Mute Option in the toolbar
 STR_6057    :Vis en separat knapp for lyddemping i verktøylinjen
 STR_6058    :Demp lyd
 STR_6059    :»
 STR_6060    :Vis gjestenes innkjøp som en animasjon
-STR_6061    :Show animated money effect{NEWLINE}when guests make purchases.
 STR_6061    :Vis animert penge-effekt{NEWLINE}når gjester kjøper noe.
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
 STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
@@ -3406,7 +3402,6 @@ STR_6279    :Antall automatiske lagringer som blir beholdt
 STR_6280    :Chat
 STR_6281    :Vis en separat knapp for chattevinduet i verktøyjinjen
 STR_6282    :Chat
-STR_6283    :Chat not available at this time. Are you connected to a server?
 STR_6283    :Chatten er for øyeblikket ikke tilgjengelig. Er du koblet til en server?
 STR_6293    :B
 STR_6294    :KiB
@@ -3452,7 +3447,7 @@ STR_6333    :Øk skjermskalering
 STR_6334    :Reduser skjermskalering
 STR_6336    :Ruteinspektør: Kopier element
 STR_6337    :Ruteinspektør: Lim inn element
-STR_6336    :Ruteinspektør: Slett element
+STR_6338    :Ruteinspektør: Slett element
 STR_6339    :Ruteinspektør: Flytt element opp
 STR_6340    :Ruteinspektør: Flytt element ned
 STR_6341    :Ruteinspektør: Øk X-koordinat

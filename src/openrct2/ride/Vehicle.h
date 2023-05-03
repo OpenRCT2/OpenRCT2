@@ -210,6 +210,7 @@ struct Vehicle : EntityBase
     uint8_t seat_rotation;
     uint8_t target_seat_rotation;
     CoordsXY BoatLocation;
+    uint8_t BlockBrakeSpeed;
 
     constexpr bool IsHead() const
     {
@@ -377,6 +378,8 @@ private:
     void UpdateLandscapeDoor() const;
     void UpdateLandscapeDoorBackwards() const;
     int32_t CalculateRiderBraking() const;
+    uint8_t ChooseBrakeSpeed() const;
+    void PopulateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, TrackElement& brake);
 
     void Loc6DCE02(const Ride& curRide);
 };
@@ -447,6 +450,7 @@ namespace VehicleFlags
     constexpr uint32_t MoveSingleCar = (1 << 14); // OpenRCT2 Flag: Used to override UpdateMotion to move the position of
                                                   // an individual car on a train
     constexpr uint32_t Crashed = (1 << 15);       // Car displays as smoke plume
+    constexpr uint32_t CarIsReversed = (1 << 16); // Car is displayed running backwards
 } // namespace VehicleFlags
 
 enum

@@ -473,7 +473,7 @@ public:
         }
 
         auto screenPos = windowPos + ScreenCoordsXY{ tdWidget.left + 1, tdWidget.top + 1 };
-        GfxFillRect(&dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour); // TODO Check dpi
+        GfxFillRect(dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour); // TODO Check dpi
 
         if (_loadedTrackDesignIndex != trackIndex)
         {
@@ -502,7 +502,7 @@ public:
         g1temp.flags = G1_FLAG_HAS_TRANSPARENCY;
         GfxSetG1Element(SPR_TEMP, &g1temp);
         DrawingEngineInvalidateImage(SPR_TEMP);
-        GfxDrawSprite(&dpi, ImageId(SPR_TEMP), trackPreview);
+        GfxDrawSprite(dpi, ImageId(SPR_TEMP), trackPreview);
 
         screenPos.y = windowPos.y + tdWidget.bottom - 12;
 
@@ -689,7 +689,7 @@ public:
             {
                 // Highlight
                 GfxFilterRect(
-                    &dpi, { screenCoords, { width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } },
+                    dpi, { screenCoords, { width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } },
                     FilterPaletteID::PaletteDarken1);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
             }
@@ -714,7 +714,7 @@ public:
                 {
                     // Highlight
                     GfxFilterRect(
-                        &dpi, { screenCoords, { width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } },
+                        dpi, { screenCoords, { width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } },
                         FilterPaletteID::PaletteDarken1);
                     stringId = STR_WINDOW_COLOUR_2_STRINGID;
                 }

@@ -45,14 +45,14 @@
     <LibsSha1 Condition="'$(Platform)'=='ARM64'">bd338aa3da9a357fb996dcaa6cea02c4f906718c</LibsSha1>
     <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.0/title-sequences.zip</TitleSequencesUrl>
     <TitleSequencesSha1>4ab0065e5a4d9f9c77d94718bbdfcfcd5a389da0</TitleSequencesSha1>
-    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.3.9/objects.zip</ObjectsUrl>
-    <ObjectsSha1>5e73e90ee2c43a93e855fa3cc27448e719bb1089</ObjectsSha1>
-    <OpenSFXUrl>https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.2/opensound.zip</OpenSFXUrl>
-    <OpenSFXSha1>64EF7E0B7785602C91AEC66F005C035B05A2133B</OpenSFXSha1>
-    <OpenMSXUrl>https://github.com/OpenRCT2/OpenMusic/releases/download/v1.1.0/openmusic.zip</OpenMSXUrl>
-    <OpenMSXSha1>8f0cf6b2fd4727e91b0d4062e7f199a43d15e777</OpenMSXSha1>
-    <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.77/replays.zip</ReplaysUrl>
-    <ReplaysSha1>65CA6D830789C074F575F15E3F9E2C28691C24F8</ReplaysSha1>
+    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.3.10/objects.zip</ObjectsUrl>
+    <ObjectsSha1>622434a2fd968d063d2a35c16f07b7cc77ebca6b</ObjectsSha1>
+    <OpenSFXUrl>https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.3/opensound.zip</OpenSFXUrl>
+    <OpenSFXSha1>ffec5a97bd5035860c4c9a43fe32cf51886478e3</OpenSFXSha1>
+    <OpenMSXUrl>https://github.com/OpenRCT2/OpenMusic/releases/download/v1.2.0/openmusic.zip</OpenMSXUrl>
+    <OpenMSXSha1>c1c9b030c83c12ff628e8ec72fcfe748291a5344</OpenMSXSha1>
+    <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.78/replays.zip</ReplaysUrl>
+    <ReplaysSha1>31C5D07EED8481D5C6D57F9E4FE9443AAEDE7739</ReplaysSha1>
   </PropertyGroup>
 
   <ItemGroup>

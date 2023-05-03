@@ -325,10 +325,15 @@ public:
                 | (1uLL << WIDX_BANK_RIGHT);
         }
 
-        // Disable large curves if the start or end of the track is sloped.
-        if (_previousTrackSlopeEnd != TRACK_SLOPE_NONE || _currentTrackSlopeEnd != TRACK_SLOPE_NONE)
+        // Disable large curves if the start or end of the track is sloped and large sloped curves are not available
+        if ((_previousTrackSlopeEnd != TRACK_SLOPE_NONE || _currentTrackSlopeEnd != TRACK_SLOPE_NONE))
         {
-            disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE);
+            if (!IsTrackEnabled(TRACK_SLOPE_CURVE_LARGE)
+                || !(_previousTrackSlopeEnd == TRACK_SLOPE_UP_25 || _previousTrackSlopeEnd == TRACK_SLOPE_DOWN_25)
+                || !(_currentTrackSlopeEnd == TRACK_SLOPE_UP_25 || _currentTrackSlopeEnd == TRACK_SLOPE_DOWN_25))
+            {
+                disabledWidgets |= (1uLL << WIDX_LEFT_CURVE_LARGE) | (1uLL << WIDX_RIGHT_CURVE_LARGE);
+            }
         }
         if (IsTrackEnabled(TRACK_SLOPE_CURVE) && IsTrackEnabled(TRACK_CURVE_VERY_SMALL))
         {
@@ -1400,6 +1405,8 @@ public:
                 _currentTrackBankEnd = TRACK_BANK_NONE;
                 _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
                 break;
+            case TrackElemType::BlockBrakes:
+                _currentBrakeSpeed2 = kRCT2DefaultBlockBrakeSpeed;
         }
         _currentTrackCurve = trackPiece | RideConstructionSpecialPieceSelected;
         WindowRideConstructionUpdateActiveElements();
@@ -1512,9 +1519,9 @@ public:
         auto screenCoords = ScreenCoordsXY{ windowPos.x + widget->left + 1, windowPos.y + widget->top + 1 };
         widgetWidth = widget->width() - 1;
         widgetHeight = widget->height() - 1;
-        if (ClipDrawPixelInfo(&clipdpi, &dpi, screenCoords, widgetWidth, widgetHeight))
+        if (ClipDrawPixelInfo(clipdpi, dpi, screenCoords, widgetWidth, widgetHeight))
         {
-            DrawTrackPiece(&clipdpi, rideIndex, trackType, trackDirection, liftHillAndInvertedState, widgetWidth, widgetHeight);
+            DrawTrackPiece(clipdpi, rideIndex, trackType, trackDirection, liftHillAndInvertedState, widgetWidth, widgetHeight);
         }
 
         // Draw cost
@@ -1572,7 +1579,7 @@ public:
             widgets[WIDX_STRAIGHT].type = WindowWidgetType::Empty;
         }
 
-        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_LARGE_CURVES))
+        if (IsTrackEnabled(TRACK_CURVE_LARGE))
         {
             widgets[WIDX_LEFT_CURVE_LARGE].type = WindowWidgetType::FlatBtn;
             widgets[WIDX_RIGHT_CURVE_LARGE].type = WindowWidgetType::FlatBtn;
@@ -2103,7 +2110,7 @@ public:
             const auto& ted = GetTrackElementDescriptor(trackType);
             int32_t trackTypeCategory = ted.Definition.type;
 
-            if (trackTypeCategory == TRACK_NONE)
+            if (ted.Description == STR_EMPTY)
                 continue;
 
             if (!IsTrackEnabled(trackTypeCategory))
@@ -2619,7 +2626,7 @@ private:
     }
 
     void DrawTrackPiece(
-        DrawPixelInfo* dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
+        DrawPixelInfo& dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
         int32_t widgetWidth, int32_t widgetHeight)
     {
         auto currentRide = GetRide(rideIndex);
@@ -2651,14 +2658,14 @@ private:
 
         const ScreenCoordsXY rotatedScreenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), mapCoords);
 
-        dpi->x += rotatedScreenCoords.x - widgetWidth / 2;
-        dpi->y += rotatedScreenCoords.y - widgetHeight / 2 - 16;
+        dpi.x += rotatedScreenCoords.x - widgetWidth / 2;
+        dpi.y += rotatedScreenCoords.y - widgetHeight / 2 - 16;
 
         DrawTrackPieceHelper(dpi, rideIndex, trackType, trackDirection, liftHillAndInvertedState, { 4096, 4096 }, 1024);
     }
 
     void DrawTrackPieceHelper(
-        DrawPixelInfo* dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
+        DrawPixelInfo& dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
         const CoordsXY& originCoords, int32_t originZ)
     {
         TileElement tempSideTrackTileElement{ 0x80, 0x8F, 128, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };

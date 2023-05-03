@@ -16,7 +16,6 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "../world/Scenery.h"
@@ -74,13 +73,15 @@ void SmallSceneryObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.name = LanguageAllocateObjectString(GetName());
-    _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.image = LoadImages();
 
     _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
+    _legacyType.FrameOffsetCount = 0;
 
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
     {
         _legacyType.frame_offsets = _frameOffsets.data();
+        _legacyType.FrameOffsetCount = static_cast<uint16_t>(_frameOffsets.size());
     }
 
     PerformFixes();
@@ -89,7 +90,7 @@ void SmallSceneryObject::Load()
 void SmallSceneryObject::Unload()
 {
     LanguageFreeObjectString(_legacyType.name);
-    GfxObjectFreeImages(_legacyType.image, GetImageTable().GetCount());
+    UnloadImages();
 
     _legacyType.name = 0;
     _legacyType.image = 0;
@@ -119,12 +120,12 @@ void SmallSceneryObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t 
         screenCoords.y -= 12;
     }
 
-    GfxDrawSprite(&dpi, imageId, screenCoords);
+    GfxDrawSprite(dpi, imageId, screenCoords);
 
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
     {
         imageId = ImageId(_legacyType.image + 4).WithTransparency(COLOUR_BORDEAUX_RED);
-        GfxDrawSprite(&dpi, imageId, screenCoords);
+        GfxDrawSprite(dpi, imageId, screenCoords);
     }
 
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_ANIMATED_FG))
@@ -134,7 +135,7 @@ void SmallSceneryObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t 
         {
             imageId = imageId.WithSecondary(COLOUR_YELLOW);
         }
-        GfxDrawSprite(&dpi, imageId, screenCoords);
+        GfxDrawSprite(dpi, imageId, screenCoords);
     }
 }
 

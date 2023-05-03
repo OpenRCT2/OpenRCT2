@@ -387,9 +387,9 @@ void Peep::UpdateCurrentActionSpriteType()
     ActionSpriteType = newActionSpriteType;
 
     const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, ActionSpriteType);
-    sprite_width = spriteBounds->sprite_width;
-    sprite_height_negative = spriteBounds->sprite_height_negative;
-    sprite_height_positive = spriteBounds->sprite_height_positive;
+    SpriteData.Width = spriteBounds->sprite_width;
+    SpriteData.HeightMin = spriteBounds->sprite_height_negative;
+    SpriteData.HeightMax = spriteBounds->sprite_height_positive;
 
     Invalidate();
 }
@@ -478,7 +478,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
                 nextDirection = 0;
             }
         }
-        sprite_direction = nextDirection;
+        Orientation = nextDirection;
         CoordsXY loc = { x, y };
         loc += word_981D7C[nextDirection / 8];
         WalkingFrameNum++;
@@ -524,7 +524,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
 
     const auto curLoc = GetLocation();
-    Litter::Create({ curLoc, sprite_direction }, (Id.ToUnderlying() & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
+    Litter::Create({ curLoc, Orientation }, (Id.ToUnderlying() & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
 
     static constexpr OpenRCT2::Audio::SoundId coughs[4] = {
         OpenRCT2::Audio::SoundId::Cough1,
@@ -628,7 +628,7 @@ GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
     TileElement* tileElement = reinterpret_cast<TileElement*>(pathElement);
     if (pathElement == nullptr)
     {
-        tileElement = reinterpret_cast<TileElement*>(MapGetSurfaceElementAt(location.ToCoordsXYZ()));
+        tileElement = reinterpret_cast<TileElement*>(MapGetSurfaceElementAt(location));
     }
     if (tileElement == nullptr)
     {
@@ -872,7 +872,7 @@ void Peep::Update1()
     }
 
     SetDestination(GetLocation(), 10);
-    PeepDirection = sprite_direction >> 3;
+    PeepDirection = Orientation >> 3;
 }
 
 void Peep::SetState(PeepState new_state)
@@ -1274,13 +1274,13 @@ void PeepUpdateCrowdNoise()
     {
         if (peep->x == LOCATION_NULL)
             continue;
-        if (viewport->viewPos.x > peep->SpriteRect.GetRight())
+        if (viewport->viewPos.x > peep->SpriteData.SpriteRect.GetRight())
             continue;
-        if (viewport->viewPos.x + viewport->view_width < peep->SpriteRect.GetLeft())
+        if (viewport->viewPos.x + viewport->view_width < peep->SpriteData.SpriteRect.GetLeft())
             continue;
-        if (viewport->viewPos.y > peep->SpriteRect.GetBottom())
+        if (viewport->viewPos.y > peep->SpriteData.SpriteRect.GetBottom())
             continue;
-        if (viewport->viewPos.y + viewport->view_height < peep->SpriteRect.GetTop())
+        if (viewport->viewPos.y + viewport->view_height < peep->SpriteData.SpriteRect.GetTop())
             continue;
 
         visiblePeeps += peep->State == PeepState::Queuing ? 1 : 2;
@@ -1667,9 +1667,9 @@ void Peep::SwitchNextActionSpriteType()
         Invalidate();
         ActionSpriteType = NextActionSpriteType;
         const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, NextActionSpriteType);
-        sprite_width = spriteBounds->sprite_width;
-        sprite_height_negative = spriteBounds->sprite_height_negative;
-        sprite_height_positive = spriteBounds->sprite_height_positive;
+        SpriteData.Width = spriteBounds->sprite_width;
+        SpriteData.HeightMin = spriteBounds->sprite_height_negative;
+        SpriteData.HeightMax = spriteBounds->sprite_height_positive;
         Invalidate();
     }
 }
@@ -2779,7 +2779,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         if (Is<Staff>())
         {
             auto loc = GetLocation();
-            switch (sprite_direction)
+            switch (Orientation)
             {
                 case 0:
                     loc.x -= 10;
@@ -2801,8 +2801,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         }
     }
 
-    DrawPixelInfo* dpi = &session.DPI;
-    if (dpi->zoom_level > ZoomLevel{ 2 })
+    if (session.DPI.zoom_level > ZoomLevel{ 2 })
     {
         return;
     }
