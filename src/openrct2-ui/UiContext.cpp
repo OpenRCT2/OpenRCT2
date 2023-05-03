@@ -142,7 +142,7 @@ public:
         _inGameConsole.Update();
     }
 
-    void Draw(DrawPixelInfo* dpi) override
+    void Draw(DrawPixelInfo& dpi) override
     {
         auto bgColour = ThemeGetColour(WindowClass::Chat, 0);
         ChatDraw(dpi, bgColour);
@@ -291,12 +291,12 @@ public:
         return std::make_shared<DrawingEngineFactory>();
     }
 
-    void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, DrawPixelInfo* dpi, DrawWeatherFunc drawFunc) override
+    void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, DrawPixelInfo& dpi, DrawWeatherFunc drawFunc) override
     {
-        int32_t left = dpi->x;
-        int32_t right = left + dpi->width;
-        int32_t top = dpi->y;
-        int32_t bottom = top + dpi->height;
+        int32_t left = dpi.x;
+        int32_t right = left + dpi.width;
+        int32_t top = dpi.y;
+        int32_t bottom = top + dpi.height;
 
         for (auto& w : g_window_list)
         {
@@ -888,7 +888,7 @@ private:
     }
 
     static void DrawWeatherWindow(
-        DrawPixelInfo* dpi, IWeatherDrawer* weatherDrawer, WindowBase* original_w, int16_t left, int16_t right, int16_t top,
+        DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, WindowBase* original_w, int16_t left, int16_t right, int16_t top,
         int16_t bottom, DrawWeatherFunc drawFunc)
     {
         WindowBase* w{};

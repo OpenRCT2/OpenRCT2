@@ -17,7 +17,6 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../entity/Staff.h"
 #include "../localisation/Language.h"
 #include "../world/Scenery.h"
@@ -58,14 +57,14 @@ void SceneryGroupObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.name = LanguageAllocateObjectString(GetName());
-    _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.image = LoadImages();
     _legacyType.SceneryEntries.clear();
 }
 
 void SceneryGroupObject::Unload()
 {
     LanguageFreeObjectString(_legacyType.name);
-    GfxObjectFreeImages(_legacyType.image, GetImageTable().GetCount());
+    UnloadImages();
 
     _legacyType.name = 0;
     _legacyType.image = 0;
@@ -76,7 +75,7 @@ void SceneryGroupObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t 
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
     const auto imageId = ImageId(_legacyType.image + 1, COLOUR_DARK_GREEN);
-    GfxDrawSprite(&dpi, imageId, screenCoords - ScreenCoordsXY{ 15, 14 });
+    GfxDrawSprite(dpi, imageId, screenCoords - ScreenCoordsXY{ 15, 14 });
 }
 
 static std::optional<uint8_t> GetSceneryType(const ObjectType type)

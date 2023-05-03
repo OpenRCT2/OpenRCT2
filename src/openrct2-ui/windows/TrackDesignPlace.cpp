@@ -288,11 +288,11 @@ public:
     {
         auto ft = Formatter::Common();
         ft.Add<char*>(_trackDesign->name.c_str());
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
 
         // Draw mini tile preview
         DrawPixelInfo clippedDpi;
-        if (ClipDrawPixelInfo(&clippedDpi, &dpi, this->windowPos + ScreenCoordsXY{ 4, 18 }, 168, 78))
+        if (ClipDrawPixelInfo(clippedDpi, dpi, this->windowPos + ScreenCoordsXY{ 4, 18 }, 168, 78))
         {
             G1Element g1temp = {};
             g1temp.offset = _miniPreview.data();
@@ -300,7 +300,7 @@ public:
             g1temp.height = TRACK_MINI_PREVIEW_HEIGHT;
             GfxSetG1Element(SPR_TEMP, &g1temp);
             DrawingEngineInvalidateImage(SPR_TEMP);
-            GfxDrawSprite(&clippedDpi, ImageId(SPR_TEMP, NOT_TRANSLUCENT(this->colours[0])), { 0, 0 });
+            GfxDrawSprite(clippedDpi, ImageId(SPR_TEMP, NOT_TRANSLUCENT(this->colours[0])), { 0, 0 });
         }
 
         // Price

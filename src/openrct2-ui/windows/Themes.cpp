@@ -447,8 +447,8 @@ public:
     void OnDraw(DrawPixelInfo& dpi) override
     {
         // Widgets
-        WindowDrawWidgets(*this, &dpi);
-        WindowThemesDrawTabImages(&dpi);
+        WindowDrawWidgets(*this, dpi);
+        WindowThemesDrawTabImages(dpi);
 
         if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
         {
@@ -615,7 +615,7 @@ public:
             case WIDX_THEMES_LIST:
                 if (selectedIndex != -1)
                 {
-                    const auto newColour = ThemeOverrideExtendedColour(selectedIndex);
+                    const auto newColour = ThemeOverrideExtendedColour(ColourDropDownIndexToColour(selectedIndex));
                     WindowClass wc = GetWindowClassTabIndex(_colour_index_1);
                     uint8_t colour = ThemeGetColour(wc, _colour_index_2);
                     colour = (colour & COLOUR_FLAG_TRANSLUCENT) | newColour;
@@ -792,16 +792,16 @@ public:
                     {
                         TranslucentWindowPalette windowPalette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
 
-                        GfxFilterRect(&dpi, { leftTop, rightBottom }, windowPalette.highlight);
-                        GfxFilterRect(&dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);
+                        GfxFilterRect(dpi, { leftTop, rightBottom }, windowPalette.highlight);
+                        GfxFilterRect(dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);
                     }
                     else
                     {
                         colour = ColourMapA[colours[1]].mid_dark;
-                        GfxFillRect(&dpi, { leftTop, rightBottom }, colour);
+                        GfxFillRect(dpi, { leftTop, rightBottom }, colour);
 
                         colour = ColourMapA[colours[1]].lightest;
-                        GfxFillRect(&dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour);
+                        GfxFillRect(dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour);
                     }
                 }
 
@@ -815,11 +815,11 @@ public:
                     const bool isPressed = (i == _colour_index_1 && j == _colour_index_2);
                     auto image = ImageId(
                         isPressed ? SPR_PALETTE_BTN_PRESSED : SPR_PALETTE_BTN, colour & ~COLOUR_FLAG_TRANSLUCENT);
-                    GfxDrawSprite(&dpi, image, { _button_offset_x + 12 * j, screenCoords.y + _button_offset_y });
+                    GfxDrawSprite(dpi, image, { _button_offset_x + 12 * j, screenCoords.y + _button_offset_y });
 
                     ScreenCoordsXY topLeft{ _button_offset_x + 12 * j, screenCoords.y + _check_offset_y };
                     ScreenCoordsXY bottomRight{ _button_offset_x + 12 * j + 9, screenCoords.y + _check_offset_y + 10 };
-                    GfxFillRectInset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
+                    GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
                     if (colour & COLOUR_FLAG_TRANSLUCENT)
                     {
                         GfxDrawString(
@@ -868,7 +868,7 @@ public:
         return 0;
     }
 
-    void WindowThemesDrawTabImages(DrawPixelInfo* dpi)
+    void WindowThemesDrawTabImages(DrawPixelInfo& dpi)
     {
         for (int32_t i = 0; i < WINDOW_THEMES_TAB_COUNT; i++)
         {

@@ -58,7 +58,7 @@ static void ScrollingTextInitialiseCharacterBitmaps(uint32_t glyphStart, uint16_
     for (int32_t i = 0; i < count; i++)
     {
         std::fill_n(drawingSurface, sizeof(drawingSurface), 0x00);
-        GfxDrawSpriteSoftware(&dpi, ImageId(glyphStart + (EnumValue(FontStyle::Tiny) * count) + i), { -1, 0 });
+        GfxDrawSpriteSoftware(dpi, ImageId(glyphStart + (EnumValue(FontStyle::Tiny) * count) + i), { -1, 0 });
 
         for (int32_t x = 0; x < 8; x++)
         {
@@ -1440,9 +1440,7 @@ ImageId ScrollingTextSetup(
 
     assert(scrollingMode < MAX_SCROLLING_TEXT_MODES);
 
-    DrawPixelInfo* dpi = &session.DPI;
-
-    if (dpi->zoom_level > ZoomLevel{ 0 })
+    if (session.DPI.zoom_level > ZoomLevel{ 0 })
         return ImageId(SPR_SCROLLING_TEXT_DEFAULT);
 
     _drawSCrollNextIndex++;

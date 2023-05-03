@@ -35,6 +35,7 @@ extern bool gCheatsEnableAllDrawableTrackPieces;
 extern bool gCheatsAllowTrackPlaceInvalidHeights;
 extern bool gCheatsAllowRegularPathAsQueue;
 extern bool gCheatsAllowSpecialColourSchemes;
+extern bool gCheatsMakeAllDestructible;
 
 enum class CheatType : int32_t
 {

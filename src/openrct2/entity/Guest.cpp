@@ -500,8 +500,8 @@ void Guest::GivePassingPeepsPizza(Guest* passingPeep)
 
     passingPeep->GiveItem(ShopItem::Pizza);
 
-    int32_t peepDirection = (sprite_direction >> 3) ^ 2;
-    int32_t otherPeepOppositeDirection = passingPeep->sprite_direction >> 3;
+    int32_t peepDirection = (Orientation >> 3) ^ 2;
+    int32_t otherPeepOppositeDirection = passingPeep->Orientation >> 3;
     if (peepDirection == otherPeepOppositeDirection)
     {
         if (passingPeep->IsActionInterruptable())
@@ -1258,7 +1258,7 @@ void Guest::UpdateSitting()
 
         MoveTo(loc);
 
-        sprite_direction = ((Var37 + 2) & 3) * 8;
+        Orientation = ((Var37 + 2) & 3) * 8;
         Action = PeepActionType::Idle;
         NextActionSpriteType = PeepActionSpriteType::SittingIdle;
         SwitchNextActionSpriteType();
@@ -1619,20 +1619,16 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
     const auto hasRandomShopColour = ride.HasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS);
 
     if (shopItem == ShopItem::TShirt)
-        TshirtColour = hasRandomShopColour ? ColourToPaletteIndex(ScenarioRandMax(COLOUR_NUM_NORMAL - 1))
-                                           : ride.track_colour[0].main;
+        TshirtColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Hat)
-        HatColour = hasRandomShopColour ? ColourToPaletteIndex(ScenarioRandMax(COLOUR_NUM_NORMAL - 1))
-                                        : ride.track_colour[0].main;
+        HatColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Balloon)
-        BalloonColour = hasRandomShopColour ? ColourToPaletteIndex(ScenarioRandMax(COLOUR_NUM_NORMAL - 1))
-                                            : ride.track_colour[0].main;
+        BalloonColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Umbrella)
-        UmbrellaColour = hasRandomShopColour ? ColourToPaletteIndex(ScenarioRandMax(COLOUR_NUM_NORMAL - 1))
-                                             : ride.track_colour[0].main;
+        UmbrellaColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Map)
         ResetPathfindGoal();
@@ -2911,6 +2907,7 @@ static PeepThoughtType PeepAssessSurroundings(int16_t centre_x, int16_t centre_y
     uint16_t nearby_music = 0;
     uint16_t num_rubbish = 0;
 
+    // TODO: Refactor this to step as tiles, 160 units is 5 tiles.
     int16_t initial_x = std::max(centre_x - 160, 0);
     int16_t initial_y = std::max(centre_y - 160, 0);
     int16_t final_x = std::min(centre_x + 160, MAXIMUM_MAP_SIZE_BIG);
@@ -2920,7 +2917,7 @@ static PeepThoughtType PeepAssessSurroundings(int16_t centre_x, int16_t centre_y
     {
         for (int16_t y = initial_y; y < final_y; y += COORDS_XY_STEP)
         {
-            for (auto* tileElement : TileElementsView({ x, y }))
+            for (auto* tileElement : TileElementsView(CoordsXY{ x, y }))
             {
                 if (tileElement->IsGhost())
                 {
@@ -3345,7 +3342,7 @@ void Guest::UpdateBuying()
             }
             WindowInvalidateByNumber(WindowClass::Peep, Id);
         }
-        sprite_direction ^= 0x10;
+        Orientation ^= 0x10;
 
         auto destination = CoordsXY{ 16, 16 } + NextLoc;
         SetDestination(destination);
@@ -3456,7 +3453,7 @@ void Guest::UpdateRideAtEntrance()
         else
         {
             DestinationTolerance = 0;
-            sprite_direction ^= (1 << 4);
+            Orientation ^= (1 << 4);
             Invalidate();
         }
     }
@@ -3748,19 +3745,20 @@ void Guest::UpdateRideAdvanceThroughEntrance()
     }
 
     auto destination = GetDestination();
-    switch (vehicle->sprite_direction / 8)
+    auto loadPositionWithReversal = (vehicle->HasFlag(VehicleFlags::CarIsReversed)) ? -load_position : load_position;
+    switch (vehicle->Orientation / 8)
     {
         case 0:
-            destination.x = vehicle->x - load_position;
+            destination.x = vehicle->x - loadPositionWithReversal;
             break;
         case 1:
-            destination.y = vehicle->y + load_position;
+            destination.y = vehicle->y + loadPositionWithReversal;
             break;
         case 2:
-            destination.x = vehicle->x + load_position;
+            destination.x = vehicle->x + loadPositionWithReversal;
             break;
         case 3:
-            destination.y = vehicle->y - load_position;
+            destination.y = vehicle->y - loadPositionWithReversal;
             break;
     }
     SetDestination(destination);
@@ -3818,7 +3816,7 @@ static void PeepGoToRideExit(Peep* peep, const Ride& ride, int16_t x, int16_t y,
 
     peep->SetDestination({ x, y }, 2);
 
-    peep->sprite_direction = exit_direction * 8;
+    peep->Orientation = exit_direction * 8;
     peep->RideSubState = PeepRideSubState::ApproachExit;
 }
 
@@ -4200,7 +4198,7 @@ void Guest::UpdateRideLeaveVehicle()
 
                 if (carEntry->flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
                 {
-                    specialDirection = ((vehicle->sprite_direction + 3) / 8) + 1;
+                    specialDirection = ((vehicle->Orientation + 3) / 8) + 1;
                     specialDirection &= 3;
 
                     if (vehicle->TrackSubposition == VehicleTrackSubposition::GoKartsRightLane)
@@ -4235,7 +4233,7 @@ void Guest::UpdateRideLeaveVehicle()
         {
             int8_t loadPosition = carEntry->peep_loading_positions[CurrentSeat];
 
-            switch (vehicle->sprite_direction / 8)
+            switch (vehicle->Orientation / 8)
             {
                 case 0:
                     platformLocation.x -= loadPosition;
@@ -4758,7 +4756,7 @@ void Guest::UpdateRideOnSpiralSlide()
 
                 MoveTo({ newLocation, z });
 
-                sprite_direction = (Var37 & 0xC) * 2;
+                Orientation = (Var37 & 0xC) * 2;
 
                 Var37++;
                 return;
@@ -5665,7 +5663,7 @@ void Guest::UpdateQueuing()
     if (Happiness <= 65 && (0xFFFF & ScenarioRand()) < 2184)
     {
         // Give up queueing for the ride
-        sprite_direction ^= (1 << 4);
+        Orientation ^= (1 << 4);
         Invalidate();
         RemoveFromQueue();
         SetState(PeepState::One);
@@ -5757,7 +5755,7 @@ void Guest::UpdateWatching()
 
         SetDestination(GetLocation());
 
-        sprite_direction = (Var37 & 3) * 8;
+        Orientation = (Var37 & 3) * 8;
 
         Action = PeepActionType::Idle;
         NextActionSpriteType = PeepActionSpriteType::WatchRide;
@@ -6384,7 +6382,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
 
     uint16_t x = peep->NextLoc.x + CoordsDirectionDelta[edge].x;
     uint16_t y = peep->NextLoc.y + CoordsDirectionDelta[edge].y;
-    if (!MapIsLocationValid({ x, y }))
+    if (!MapIsLocationValid(CoordsXY{ x, y }))
     {
         return false;
     }
@@ -6501,7 +6499,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
 
     x += CoordsDirectionDelta[edge].x;
     y += CoordsDirectionDelta[edge].y;
-    if (!MapIsLocationValid({ x, y }))
+    if (!MapIsLocationValid(CoordsXY{ x, y }))
     {
         return false;
     }
@@ -6618,7 +6616,7 @@ static bool PeepFindRideToLookAt(Peep* peep, uint8_t edge, RideId* rideToView, u
 
     x += CoordsDirectionDelta[edge].x;
     y += CoordsDirectionDelta[edge].y;
-    if (!MapIsLocationValid({ x, y }))
+    if (!MapIsLocationValid(CoordsXY{ x, y }))
     {
         return false;
     }
@@ -7076,12 +7074,12 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->FavouriteRideRating = 0;
 
     const SpriteBounds* spriteBounds = &GetSpriteBounds(peep->SpriteType, peep->ActionSpriteType);
-    peep->sprite_width = spriteBounds->sprite_width;
-    peep->sprite_height_negative = spriteBounds->sprite_height_negative;
-    peep->sprite_height_positive = spriteBounds->sprite_height_positive;
+    peep->SpriteData.Width = spriteBounds->sprite_width;
+    peep->SpriteData.HeightMin = spriteBounds->sprite_height_negative;
+    peep->SpriteData.HeightMax = spriteBounds->sprite_height_positive;
+    peep->Orientation = 0;
 
     peep->MoveTo(coords);
-    peep->sprite_direction = 0;
     peep->Mass = (ScenarioRand() & 0x1F) + 45;
     peep->PathCheckOptimisation = 0;
     peep->InteractionRideIndex = RideId::GetNull();

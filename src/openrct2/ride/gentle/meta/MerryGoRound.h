@@ -38,7 +38,6 @@ constexpr const RideTypeDescriptor MerryGoRoundRTD =
     SET_FIELD(Heights, { 12, 64, 3, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateMerryGoRound),
     SET_FIELD(RatingsMultipliers, { 50, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 57.50_GBP, 1.00_GBP, 1, }),
@@ -50,5 +49,17 @@ constexpr const RideTypeDescriptor MerryGoRoundRTD =
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "merry_go_round"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(0, 60), RIDE_RATING(0, 15), RIDE_RATING(0, 30) },
+        16,
+        7,
+        false,
+        {
+            { RatingsModifierType::BonusRotations,        0,                5, 5, 5 },
+            { RatingsModifierType::BonusScenery,          0,                19521, 0, 0 },
+        },
+    }),
 };
 // clang-format on

@@ -68,17 +68,17 @@ set(OBJECTS_VERSION "1.3.10")
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
 set(OBJECTS_SHA1 "622434a2fd968d063d2a35c16f07b7cc77ebca6b")
 
-set(OPENSFX_VERSION "1.0.2")
+set(OPENSFX_VERSION "1.0.3")
 set(OPENSFX_URL  "https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v${OPENSFX_VERSION}/opensound.zip")
-set(OPENSFX_SHA1 "64EF7E0B7785602C91AEC66F005C035B05A2133B")
+set(OPENSFX_SHA1 "ffec5a97bd5035860c4c9a43fe32cf51886478e3")
 
 set(OPENMSX_VERSION "1.2.0")
 set(OPENMSX_URL  "https://github.com/OpenRCT2/OpenMusic/releases/download/v${OPENMSX_VERSION}/openmusic.zip")
 set(OPENMSX_SHA1 "c1c9b030c83c12ff628e8ec72fcfe748291a5344")
 
-set(REPLAYS_VERSION "0.0.77")
+set(REPLAYS_VERSION "0.0.78")
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
-set(REPLAYS_SHA1 "65CA6D830789C074F575F15E3F9E2C28691C24F8")
+set(REPLAYS_SHA1 "31C5D07EED8481D5C6D57F9E4FE9443AAEDE7739")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")

@@ -44,7 +44,7 @@ body:
       - This bug is specific to multiplayer
       - This bug is a graphical glitch or error
       - This issue has to do with park objects and/or asset packs
-      - Issues building the game
+      - This is a development issue
   validations:
     required: false
 

@@ -2722,10 +2722,11 @@ public:
                         break;
                     case DDIDX_FILE_BUG_ON_GITHUB:
                     {
-                        std::string url = "https://github.com/OpenRCT2/OpenRCT2/issues/"
-                                          "new?assignees=&labels=bug&template=bug_report.yaml";
+                        std::string url = "https://github.com/OpenRCT2/OpenRCT2/issues/new?"
+                                          "assignees=&labels=bug&template=bug_report.yaml";
+                        // Automatically fill the "OpenRCT2 build" input
                         auto versionStr = String::URLEncode(gVersionInfoFull);
-                        url.append("&openrct2_build=" + versionStr);
+                        url.append("&f299dd2a20432827d99b648f73eb4649b23f8ec98d158d6f82b81e43196ee36b=" + versionStr);
                         OpenRCT2::GetContext()->GetUiContext()->OpenURL(url);
                     }
                     break;
@@ -3180,7 +3181,7 @@ public:
     {
         int32_t imgId;
 
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
 
         ScreenCoordsXY screenPos{};
         // Draw staff button image (setting masks to the staff colours)
@@ -3190,7 +3191,7 @@ public:
             imgId = SPR_TOOLBAR_STAFF;
             if (WidgetIsPressed(*this, WIDX_STAFF))
                 imgId++;
-            GfxDrawSprite(&dpi, ImageId(imgId, gStaffHandymanColour, gStaffMechanicColour), screenPos);
+            GfxDrawSprite(dpi, ImageId(imgId, gStaffHandymanColour, gStaffMechanicColour), screenPos);
         }
 
         // Draw fast forward button
@@ -3199,15 +3200,15 @@ public:
             screenPos = { windowPos.x + widgets[WIDX_FASTFORWARD].left + 0, windowPos.y + widgets[WIDX_FASTFORWARD].top + 0 };
             if (WidgetIsPressed(*this, WIDX_FASTFORWARD))
                 screenPos.y++;
-            GfxDrawSprite(&dpi, ImageId(SPR_G2_FASTFORWARD), screenPos + ScreenCoordsXY{ 6, 3 });
+            GfxDrawSprite(dpi, ImageId(SPR_G2_FASTFORWARD), screenPos + ScreenCoordsXY{ 6, 3 });
 
             for (int32_t i = 0; i < gGameSpeed && gGameSpeed <= 4; i++)
             {
-                GfxDrawSprite(&dpi, ImageId(SPR_G2_SPEED_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 5, 15 });
+                GfxDrawSprite(dpi, ImageId(SPR_G2_SPEED_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 5, 15 });
             }
             for (int32_t i = 0; i < 3 && i < gGameSpeed - 4 && gGameSpeed >= 5; i++)
             {
-                GfxDrawSprite(&dpi, ImageId(SPR_G2_HYPER_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 6, 15 });
+                GfxDrawSprite(dpi, ImageId(SPR_G2_HYPER_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 6, 15 });
             }
         }
 
@@ -3217,7 +3218,7 @@ public:
             screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_CHEATS].left - 1, widgets[WIDX_CHEATS].top - 1 };
             if (WidgetIsPressed(*this, WIDX_CHEATS))
                 screenPos.y++;
-            GfxDrawSprite(&dpi, ImageId(SPR_G2_SANDBOX), screenPos);
+            GfxDrawSprite(dpi, ImageId(SPR_G2_SANDBOX), screenPos);
 
             // Draw an overlay if clearance checks are disabled
             if (gCheatsDisableClearanceChecks)
@@ -3234,7 +3235,7 @@ public:
             screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_CHAT].left, widgets[WIDX_CHAT].top - 2 };
             if (WidgetIsPressed(*this, WIDX_CHAT))
                 screenPos.y++;
-            GfxDrawSprite(&dpi, ImageId(SPR_G2_CHAT), screenPos);
+            GfxDrawSprite(dpi, ImageId(SPR_G2_CHAT), screenPos);
         }
 
         // Draw debug button
@@ -3243,7 +3244,7 @@ public:
             screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_DEBUG].left, widgets[WIDX_DEBUG].top - 1 };
             if (WidgetIsPressed(*this, WIDX_DEBUG))
                 screenPos.y++;
-            GfxDrawSprite(&dpi, ImageId(SPR_TAB_GEARS_0), screenPos);
+            GfxDrawSprite(dpi, ImageId(SPR_TAB_GEARS_0), screenPos);
         }
 
         // Draw research button
@@ -3252,7 +3253,7 @@ public:
             screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_RESEARCH].left - 1, widgets[WIDX_RESEARCH].top };
             if (WidgetIsPressed(*this, WIDX_RESEARCH))
                 screenPos.y++;
-            GfxDrawSprite(&dpi, ImageId(SPR_TAB_FINANCES_RESEARCH_0), screenPos);
+            GfxDrawSprite(dpi, ImageId(SPR_TAB_FINANCES_RESEARCH_0), screenPos);
         }
 
         // Draw finances button
@@ -3261,7 +3262,7 @@ public:
             screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_FINANCES].left + 3, widgets[WIDX_FINANCES].top + 1 };
             if (WidgetIsPressed(*this, WIDX_FINANCES))
                 screenPos.y++;
-            GfxDrawSprite(&dpi, ImageId(SPR_FINANCE), screenPos);
+            GfxDrawSprite(dpi, ImageId(SPR_FINANCE), screenPos);
         }
 
         // Draw news button
@@ -3270,7 +3271,7 @@ public:
             screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_NEWS].left + 3, widgets[WIDX_NEWS].top + 0 };
             if (WidgetIsPressed(*this, WIDX_NEWS))
                 screenPos.y++;
-            GfxDrawSprite(&dpi, ImageId(SPR_G2_TAB_NEWS), screenPos);
+            GfxDrawSprite(dpi, ImageId(SPR_G2_TAB_NEWS), screenPos);
         }
 
         // Draw network button
@@ -3282,7 +3283,7 @@ public:
 
             // Draw (de)sync icon.
             imgId = (NetworkIsDesynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
-            GfxDrawSprite(&dpi, ImageId(imgId), screenPos + ScreenCoordsXY{ 3, 11 });
+            GfxDrawSprite(dpi, ImageId(imgId), screenPos + ScreenCoordsXY{ 3, 11 });
 
             // Draw number of players.
             auto ft = Formatter();

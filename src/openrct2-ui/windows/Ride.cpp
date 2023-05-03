@@ -126,6 +126,7 @@ enum {
 
     WIDX_VEHICLE_TYPE = 14,
     WIDX_VEHICLE_TYPE_DROPDOWN,
+    WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX,
     WIDX_VEHICLE_TRAINS_PREVIEW,
     WIDX_VEHICLE_TRAINS,
     WIDX_VEHICLE_TRAINS_INCREASE,
@@ -264,9 +265,10 @@ static Widget window_ride_vehicle_widgets[] = {
     MAIN_RIDE_WIDGETS,
     MakeWidget        ({  7,  50}, {302, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                    ),
     MakeWidget        ({297,  51}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                                ),
-    MakeWidget        ({  7, 147}, {302, 43}, WindowWidgetType::Scroll,   WindowColour::Secondary, STR_EMPTY                                         ),
-    MakeSpinnerWidgets({  7, 196}, {145, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_RIDE_VEHICLE_COUNT, STR_MAX_VEHICLES_TIP      ),
-    MakeSpinnerWidgets({164, 196}, {145, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_1_CAR_PER_TRAIN,    STR_MAX_CARS_PER_TRAIN_TIP),
+    MakeWidget        ({  7, 137}, {302, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_OPTION_REVERSE_TRAINS, STR_OPTION_REVERSE_TRAINS_TIP  ),
+    MakeWidget        ({  7, 154}, {302, 43}, WindowWidgetType::Scroll,   WindowColour::Secondary, STR_EMPTY                                         ),
+    MakeSpinnerWidgets({  7, 203}, {145, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_RIDE_VEHICLE_COUNT, STR_MAX_VEHICLES_TIP      ),
+    MakeSpinnerWidgets({164, 203}, {145, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_1_CAR_PER_TRAIN,    STR_MAX_CARS_PER_TRAIN_TIP),
     WIDGETS_END,
 };
 
@@ -439,7 +441,7 @@ static void WindowRideMainUpdate(WindowBase* w);
 static void WindowRideMainTextinput(WindowBase* w, WidgetIndex widgetIndex, const char* text);
 static void WindowRideMainViewportRotate(WindowBase* w);
 static void WindowRideMainInvalidate(WindowBase* w);
-static void WindowRideMainPaint(WindowBase* w, DrawPixelInfo* dpi);
+static void WindowRideMainPaint(WindowBase* w, DrawPixelInfo& dpi);
 static void WindowRideMainFollowRide(WindowBase* w);
 
 static void WindowRideVehicleMouseup(WindowBase* w, WidgetIndex widgetIndex);
@@ -449,8 +451,8 @@ static void WindowRideVehicleDropdown(WindowBase* w, WidgetIndex widgetIndex, in
 static void WindowRideVehicleUpdate(WindowBase* w);
 static OpenRCT2String WindowRideVehicleTooltip(WindowBase* const w, const WidgetIndex widgetIndex, StringId fallback);
 static void WindowRideVehicleInvalidate(WindowBase* w);
-static void WindowRideVehiclePaint(WindowBase* w, DrawPixelInfo* dpi);
-static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex);
+static void WindowRideVehiclePaint(WindowBase* w, DrawPixelInfo& dpi);
+static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo& dpi, int32_t scrollIndex);
 
 static void WindowRideOperatingMouseup(WindowBase* w, WidgetIndex widgetIndex);
 static void WindowRideOperatingResize(WindowBase* w);
@@ -461,7 +463,7 @@ static void WindowRideOperatingDropdown(WindowBase* w, WidgetIndex widgetIndex, 
 static void WindowRideOperatingUpdate(WindowBase* w);
 static void WindowRideOperatingTextinput(WindowBase* w, WidgetIndex widgetIndex, const char* text);
 static void WindowRideOperatingInvalidate(WindowBase* w);
-static void WindowRideOperatingPaint(WindowBase* w, DrawPixelInfo* dpi);
+static void WindowRideOperatingPaint(WindowBase* w, DrawPixelInfo& dpi);
 
 static void WindowRideMaintenanceMouseup(WindowBase* w, WidgetIndex widgetIndex);
 static void WindowRideMaintenanceResize(WindowBase* w);
@@ -469,7 +471,7 @@ static void WindowRideMaintenanceMousedown(WindowBase* w, WidgetIndex widgetInde
 static void WindowRideMaintenanceDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowRideMaintenanceUpdate(WindowBase* w);
 static void WindowRideMaintenanceInvalidate(WindowBase* w);
-static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo* dpi);
+static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo& dpi);
 
 static void WindowRideColourClose(WindowBase* w);
 static void WindowRideColourMouseup(WindowBase* w, WidgetIndex widgetIndex);
@@ -480,8 +482,8 @@ static void WindowRideColourUpdate(WindowBase* w);
 static void WindowRideColourTooldown(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void WindowRideColourTooldrag(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void WindowRideColourInvalidate(WindowBase* w);
-static void WindowRideColourPaint(WindowBase* w, DrawPixelInfo* dpi);
-static void WindowRideColourScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex);
+static void WindowRideColourPaint(WindowBase* w, DrawPixelInfo& dpi);
+static void WindowRideColourScrollpaint(WindowBase* w, DrawPixelInfo& dpi, int32_t scrollIndex);
 
 static void WindowRideMusicMouseup(WindowBase* w, WidgetIndex widgetIndex);
 static void WindowRideMusicResize(WindowBase* w);
@@ -489,7 +491,7 @@ static void WindowRideMusicMousedown(WindowBase* w, WidgetIndex widgetIndex, Wid
 static void WindowRideMusicDropdown(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex);
 static void WindowRideMusicUpdate(WindowBase* w);
 static void WindowRideMusicInvalidate(WindowBase* w);
-static void WindowRideMusicPaint(WindowBase* w, DrawPixelInfo* dpi);
+static void WindowRideMusicPaint(WindowBase* w, DrawPixelInfo& dpi);
 
 static void WindowRideMeasurementsClose(WindowBase* w);
 static void WindowRideMeasurementsMouseup(WindowBase* w, WidgetIndex widgetIndex);
@@ -501,7 +503,7 @@ static void WindowRideMeasurementsTooldown(WindowBase* w, WidgetIndex widgetInde
 static void WindowRideMeasurementsTooldrag(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void WindowRideMeasurementsToolabort(WindowBase* w, WidgetIndex widgetIndex);
 static void WindowRideMeasurementsInvalidate(WindowBase* w);
-static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi);
+static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo& dpi);
 
 static void WindowRideGraphsMouseup(WindowBase* w, WidgetIndex widgetIndex);
 static void WindowRideGraphsResize(WindowBase* w);
@@ -511,8 +513,8 @@ static void WindowRideGraphsScrollgetheight(WindowBase* w, int32_t scrollIndex, 
 static void WindowRideGraphs15(WindowBase* w, int32_t scrollIndex, int32_t scrollAreaType);
 static OpenRCT2String WindowRideGraphsTooltip(WindowBase* w, const WidgetIndex widgetIndex, const StringId fallback);
 static void WindowRideGraphsInvalidate(WindowBase* w);
-static void WindowRideGraphsPaint(WindowBase* w, DrawPixelInfo* dpi);
-static void WindowRideGraphsScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex);
+static void WindowRideGraphsPaint(WindowBase* w, DrawPixelInfo& dpi);
+static void WindowRideGraphsScrollpaint(WindowBase* w, DrawPixelInfo& dpi, int32_t scrollIndex);
 
 static void WindowRideIncomeMouseup(WindowBase* w, WidgetIndex widgetIndex);
 static void WindowRideIncomeResize(WindowBase* w);
@@ -520,14 +522,14 @@ static void WindowRideIncomeMousedown(WindowBase* w, WidgetIndex widgetIndex, Wi
 static void WindowRideIncomeUpdate(WindowBase* w);
 static void WindowRideIncomeTextinput(WindowBase* w, WidgetIndex widgetIndex, const char* text);
 static void WindowRideIncomeInvalidate(WindowBase* w);
-static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo* dpi);
+static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo& dpi);
 static bool WindowRideIncomeCanModifyPrimaryPrice(WindowBase* w);
 
 static void WindowRideCustomerMouseup(WindowBase* w, WidgetIndex widgetIndex);
 static void WindowRideCustomerResize(WindowBase* w);
 static void WindowRideCustomerUpdate(WindowBase* w);
 static void WindowRideCustomerInvalidate(WindowBase* w);
-static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi);
+static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo& dpi);
 
 static void WindowRideSetPage(WindowBase* w, int32_t page);
 
@@ -862,7 +864,7 @@ static const RideObjectEntry* VehicleDropdownRideType = nullptr;
 static bool VehicleDropdownExpanded = false;
 static std::vector<VehicleTypeLabel> VehicleDropdownData;
 
-static void WindowRideDrawTabImage(DrawPixelInfo* dpi, WindowBase* w, int32_t page, int32_t spriteIndex)
+static void WindowRideDrawTabImage(DrawPixelInfo& dpi, WindowBase* w, int32_t page, int32_t spriteIndex)
 {
     WidgetIndex widgetIndex = WIDX_TAB_1 + page;
 
@@ -883,7 +885,7 @@ static void WindowRideDrawTabImage(DrawPixelInfo* dpi, WindowBase* w, int32_t pa
  *
  *  rct2: 0x006B2E88
  */
-static void WindowRideDrawTabMain(DrawPixelInfo* dpi, WindowBase* w)
+static void WindowRideDrawTabMain(DrawPixelInfo& dpi, WindowBase* w)
 {
     WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_MAIN);
     if (!WidgetIsDisabled(*w, widgetIndex))
@@ -921,7 +923,7 @@ static void WindowRideDrawTabMain(DrawPixelInfo* dpi, WindowBase* w)
  *
  *  rct2: 0x006B2B68
  */
-static void WindowRideDrawTabVehicle(DrawPixelInfo* dpi, WindowBase* w)
+static void WindowRideDrawTabVehicle(DrawPixelInfo& dpi, WindowBase* w)
 {
     WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_VEHICLE);
     const auto& widget = w->widgets[widgetIndex];
@@ -937,7 +939,7 @@ static void WindowRideDrawTabVehicle(DrawPixelInfo* dpi, WindowBase* w)
         screenCoords += w->windowPos;
 
         DrawPixelInfo clipDPI;
-        if (!ClipDrawPixelInfo(&clipDPI, dpi, screenCoords, width, height))
+        if (!ClipDrawPixelInfo(clipDPI, dpi, screenCoords, width, height))
         {
             return;
         }
@@ -984,7 +986,7 @@ static void WindowRideDrawTabVehicle(DrawPixelInfo* dpi, WindowBase* w)
         imageIndex *= carEntry.base_num_frames;
         imageIndex += carEntry.base_image_id;
         auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
-        GfxDrawSprite(&clipDPI, imageId, screenCoords);
+        GfxDrawSprite(clipDPI, imageId, screenCoords);
     }
 }
 
@@ -992,7 +994,7 @@ static void WindowRideDrawTabVehicle(DrawPixelInfo* dpi, WindowBase* w)
  *
  *  rct2: 0x006B2F42
  */
-static void WindowRideDrawTabCustomer(DrawPixelInfo* dpi, WindowBase* w)
+static void WindowRideDrawTabCustomer(DrawPixelInfo& dpi, WindowBase* w)
 {
     WidgetIndex widgetIndex = WIDX_TAB_1 + static_cast<int32_t>(WINDOW_RIDE_PAGE_CUSTOMER);
 
@@ -1015,7 +1017,7 @@ static void WindowRideDrawTabCustomer(DrawPixelInfo* dpi, WindowBase* w)
  *
  *  rct2: 0x006B2B35
  */
-static void WindowRideDrawTabImages(DrawPixelInfo* dpi, WindowBase* w)
+static void WindowRideDrawTabImages(DrawPixelInfo& dpi, WindowBase* w)
 {
     WindowRideDrawTabVehicle(dpi, w);
     WindowRideDrawTabImage(dpi, w, WINDOW_RIDE_PAGE_OPERATING, SPR_TAB_GEARS_0);
@@ -2318,7 +2320,8 @@ static void WindowRideMainInvalidate(WindowBase* w)
         return;
 
     w->disabled_widgets &= ~((1uLL << WIDX_DEMOLISH) | (1uLL << WIDX_CONSTRUCTION));
-    if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK))
+    if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+        && !gCheatsMakeAllDestructible)
         w->disabled_widgets |= (1uLL << WIDX_DEMOLISH);
 
     auto ft = Formatter::Common();
@@ -2580,7 +2583,7 @@ static StringId WindowRideGetStatus(WindowBase* w, Formatter& ft)
  *
  *  rct2: 0x006AEE73
  */
-static void WindowRideMainPaint(WindowBase* w, DrawPixelInfo* dpi)
+static void WindowRideMainPaint(WindowBase* w, DrawPixelInfo& dpi)
 {
     Widget* widget;
 
@@ -2621,7 +2624,7 @@ static void WindowRideMainPaint(WindowBase* w, DrawPixelInfo* dpi)
 
     widget = &window_ride_main_widgets[WIDX_VIEW];
     DrawTextBasic(
-        *dpi, { w->windowPos.x + (widget->left + widget->right - 11) / 2, w->windowPos.y + widget->top },
+        dpi, { w->windowPos.x + (widget->left + widget->right - 11) / 2, w->windowPos.y + widget->top },
         STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
 
     // Status
@@ -2629,7 +2632,7 @@ static void WindowRideMainPaint(WindowBase* w, DrawPixelInfo* dpi)
     widget = &window_ride_main_widgets[WIDX_STATUS];
     StringId rideStatus = WindowRideGetStatus(w, ft);
     DrawTextEllipsised(
-        *dpi, w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top }, widget->width(), rideStatus, ft,
+        dpi, w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top }, widget->width(), rideStatus, ft,
         { TextAlignment::CENTRE });
 }
 
@@ -2669,7 +2672,7 @@ static void WindowRideVehicleMouseup(WindowBase* w, WidgetIndex widgetIndex)
  */
 static void WindowRideVehicleResize(WindowBase* w)
 {
-    WindowSetResize(*w, 316, 214, 316, 214);
+    WindowSetResize(*w, 316, 221, 316, 221);
 }
 
 /**
@@ -2686,6 +2689,9 @@ static void WindowRideVehicleMousedown(WindowBase* w, WidgetIndex widgetIndex, W
     {
         case WIDX_VEHICLE_TYPE_DROPDOWN:
             WindowRideShowVehicleTypeDropdown(w, &w->widgets[widgetIndex]);
+            break;
+        case WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX:
+            ride->SetReversedTrains(!ride->HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS));
             break;
         case WIDX_VEHICLE_TRAINS_INCREASE:
             if (ride->NumTrains < OpenRCT2::Limits::MaxTrainsPerRide)
@@ -2852,6 +2858,24 @@ static void WindowRideVehicleInvalidate(WindowBase* w)
         window_ride_vehicle_widgets[WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE].type = WindowWidgetType::Empty;
     }
 
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS)
+        || (gCheatsDisableTrainLengthLimit && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE)))
+    {
+        window_ride_vehicle_widgets[WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX].type = WindowWidgetType::Checkbox;
+        if (ride->HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS))
+        {
+            w->pressed_widgets |= (1uLL << WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX);
+        }
+        else
+        {
+            w->pressed_widgets &= ~(1uLL << WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX);
+        }
+    }
+    else
+    {
+        window_ride_vehicle_widgets[WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX].type = WindowWidgetType::Empty;
+    }
+
     auto ft = Formatter::Common();
     ft.Increment(6);
     ft.Add<uint16_t>(carsPerTrain);
@@ -2885,7 +2909,7 @@ static void WindowRideVehicleInvalidate(WindowBase* w)
  *
  *  rct2: 0x006B23DC
  */
-static void WindowRideVehiclePaint(WindowBase* w, DrawPixelInfo* dpi)
+static void WindowRideVehiclePaint(WindowBase* w, DrawPixelInfo& dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
@@ -2903,13 +2927,13 @@ static void WindowRideVehiclePaint(WindowBase* w, DrawPixelInfo* dpi)
     // Description
     auto ft = Formatter();
     ft.Add<StringId>(rideEntry->naming.Description);
-    screenCoords.y += DrawTextWrapped(*dpi, screenCoords, 300, STR_BLACK_STRING, ft, { TextAlignment::LEFT });
+    screenCoords.y += DrawTextWrapped(dpi, screenCoords, 300, STR_BLACK_STRING, ft, { TextAlignment::LEFT });
     screenCoords.y += 2;
 
     // Capacity
     ft = Formatter();
     ft.Add<StringId>(rideEntry->capacity);
-    DrawTextBasic(*dpi, screenCoords, STR_CAPACITY, ft);
+    DrawTextBasic(dpi, screenCoords, STR_CAPACITY, ft);
 
     // Excitement Factor
     if (rideEntry->excitement_multiplier != 0)
@@ -2919,7 +2943,7 @@ static void WindowRideVehiclePaint(WindowBase* w, DrawPixelInfo* dpi)
         ft = Formatter();
         ft.Add<int16_t>(abs(rideEntry->excitement_multiplier));
         StringId stringId = rideEntry->excitement_multiplier > 0 ? STR_EXCITEMENT_FACTOR : STR_EXCITEMENT_FACTOR_NEGATIVE;
-        DrawTextBasic(*dpi, screenCoords, stringId, ft);
+        DrawTextBasic(dpi, screenCoords, stringId, ft);
     }
 
     // Intensity Factor
@@ -2934,7 +2958,7 @@ static void WindowRideVehiclePaint(WindowBase* w, DrawPixelInfo* dpi)
         ft = Formatter();
         ft.Add<int16_t>(abs(rideEntry->intensity_multiplier));
         StringId stringId = rideEntry->intensity_multiplier > 0 ? STR_INTENSITY_FACTOR : STR_INTENSITY_FACTOR_NEGATIVE;
-        DrawTextBasic(*dpi, screenCoords, stringId, ft);
+        DrawTextBasic(dpi, screenCoords, stringId, ft);
 
         if (lineHeight != 10)
             screenCoords.x -= 150;
@@ -2948,7 +2972,7 @@ static void WindowRideVehiclePaint(WindowBase* w, DrawPixelInfo* dpi)
         ft = Formatter();
         ft.Add<int16_t>(abs(rideEntry->nausea_multiplier));
         StringId stringId = rideEntry->nausea_multiplier > 0 ? STR_NAUSEA_FACTOR : STR_NAUSEA_FACTOR_NEGATIVE;
-        DrawTextBasic(*dpi, screenCoords, stringId, ft);
+        DrawTextBasic(dpi, screenCoords, stringId, ft);
     }
 }
 
@@ -2963,7 +2987,7 @@ struct VehicleDrawInfo
  *
  *  rct2: 0x006B2502
  */
-static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex)
+static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo& dpi, int32_t scrollIndex)
 {
     auto ride = GetRide(w->rideId);
     if (ride == nullptr)
@@ -2972,13 +2996,17 @@ static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int3
     const auto* rideEntry = ride->GetRideEntry();
 
     // Background
-    GfxFillRect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } }, PALETTE_INDEX_12);
+    GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } }, PALETTE_INDEX_12);
 
     Widget* widget = &window_ride_vehicle_widgets[WIDX_VEHICLE_TRAINS_PREVIEW];
     int32_t startX = std::max(2, (widget->width() - ((ride->NumTrains - 1) * 36)) / 2 - 25);
     int32_t startY = widget->height() - 4;
 
-    const auto& firstCarEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, 0)];
+    bool isReversed = ride->HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS);
+    int32_t carIndex = (isReversed) ? ride->num_cars_per_train - 1 : 0;
+
+    const auto& firstCarEntry = rideEntry
+                                    ->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, carIndex)];
     startY += firstCarEntry.tab_height;
 
     // For each train
@@ -2993,7 +3021,10 @@ static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int3
         static_assert(std::numeric_limits<decltype(ride->num_cars_per_train)>::max() <= std::size(trainCarImages));
         for (int32_t j = 0; j < ride->num_cars_per_train; j++)
         {
-            const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, j)];
+            carIndex = (isReversed) ? (ride->num_cars_per_train - 1) - j : j;
+
+            const auto& carEntry = rideEntry
+                                       ->Cars[RideEntryGetVehicleAtPosition(ride->subtype, ride->num_cars_per_train, carIndex)];
             x += carEntry.spacing / 17432;
             y -= (carEntry.spacing / 2) / 17432;
 
@@ -3008,12 +3039,19 @@ static void WindowRideVehicleScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int3
                     vehicleColourIndex = i;
                     break;
                 case VEHICLE_COLOUR_SCHEME_PER_VEHICLE:
-                    vehicleColourIndex = j;
+                    vehicleColourIndex = carIndex;
                     break;
             }
             VehicleColour vehicleColour = RideGetVehicleColour(*ride, vehicleColourIndex);
 
             ImageIndex imageIndex = carEntry.SpriteByYaw(OpenRCT2::Entity::Yaw::BaseRotation / 2, SpriteGroupType::SlopeFlat);
+            if (isReversed)
+            {
+                auto baseRotation = carEntry.NumRotationSprites(SpriteGroupType::SlopeFlat);
+                imageIndex = carEntry.SpriteByYaw(
+                    (imageIndex + (baseRotation / 2)) & (baseRotation - 1), SpriteGroupType::SlopeFlat);
+            }
+
             imageIndex &= carEntry.TabRotationMask;
             imageIndex *= carEntry.base_num_frames;
             imageIndex += carEntry.base_image_id;
@@ -3721,7 +3759,7 @@ static void WindowRideOperatingInvalidate(WindowBase* w)
  *
  *  rct2: 0x006B1001
  */
-static void WindowRideOperatingPaint(WindowBase* w, DrawPixelInfo* dpi)
+static void WindowRideOperatingPaint(WindowBase* w, DrawPixelInfo& dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
@@ -3743,7 +3781,7 @@ static void WindowRideOperatingPaint(WindowBase* w, DrawPixelInfo* dpi)
         auto ft = Formatter();
         ft.Add<uint16_t>(ride->num_block_brakes + ride->num_stations);
         DrawTextBasic(
-            *dpi, w->windowPos + ScreenCoordsXY{ 21, ride->mode == RideMode::PoweredLaunchBlockSectioned ? 89 : 61 },
+            dpi, w->windowPos + ScreenCoordsXY{ 21, ride->mode == RideMode::PoweredLaunchBlockSectioned ? 89 : 61 },
             STR_BLOCK_SECTIONS, ft, COLOUR_BLACK);
     }
 }
@@ -3784,7 +3822,7 @@ static void WindowRideLocateMechanic(WindowBase* w)
  *  rct2: 0x006B7D08
  */
 static void WindowRideMaintenanceDrawBar(
-    WindowBase* w, DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t value, int32_t colour)
+    WindowBase* w, DrawPixelInfo& dpi, const ScreenCoordsXY& coords, int32_t value, int32_t colour)
 {
     GfxFillRectInset(dpi, { coords, coords + ScreenCoordsXY{ 149, 8 } }, w->colours[1], INSET_RECT_F_30);
     if (colour & BAR_BLINK)
@@ -4117,7 +4155,7 @@ static void WindowRideMaintenanceInvalidate(WindowBase* w)
  *
  *  rct2: 0x006B1877
  */
-static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo* dpi)
+static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo& dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
@@ -4135,7 +4173,7 @@ static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo* dpi)
     // Inspection label
     widget = &window_ride_maintenance_widgets[WIDX_INSPECTION_INTERVAL];
     screenCoords = w->windowPos + ScreenCoordsXY{ 4, widget->top + 1 };
-    DrawTextBasic(*dpi, screenCoords, STR_INSPECTION);
+    DrawTextBasic(dpi, screenCoords, STR_INSPECTION);
 
     // Reliability
     widget = &window_ride_maintenance_widgets[WIDX_PAGE_BACKGROUND];
@@ -4144,7 +4182,7 @@ static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo* dpi)
     uint16_t reliability = ride->reliability_percentage;
     auto ft = Formatter();
     ft.Add<uint16_t>(reliability);
-    DrawTextBasic(*dpi, screenCoords, STR_RELIABILITY_LABEL_1757, ft);
+    DrawTextBasic(dpi, screenCoords, STR_RELIABILITY_LABEL_1757, ft);
     WindowRideMaintenanceDrawBar(
         w, dpi, screenCoords + ScreenCoordsXY{ 103, 0 }, std::max<int32_t>(10, reliability), COLOUR_BRIGHT_GREEN);
     screenCoords.y += 11;
@@ -4152,7 +4190,7 @@ static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo* dpi)
     uint16_t downTime = ride->downtime;
     ft = Formatter();
     ft.Add<uint16_t>(downTime);
-    DrawTextBasic(*dpi, screenCoords, STR_DOWN_TIME_LABEL_1889, ft);
+    DrawTextBasic(dpi, screenCoords, STR_DOWN_TIME_LABEL_1889, ft);
     WindowRideMaintenanceDrawBar(w, dpi, screenCoords + ScreenCoordsXY{ 103, 0 }, downTime, COLOUR_BRIGHT_RED);
     screenCoords.y += 26;
 
@@ -4167,7 +4205,7 @@ static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo* dpi)
 
     ft = Formatter();
     ft.Add<uint16_t>(ride->last_inspection);
-    DrawTextBasic(*dpi, screenCoords, stringId, ft);
+    DrawTextBasic(dpi, screenCoords, stringId, ft);
     screenCoords.y += 12;
 
     // Last / current breakdown
@@ -4177,7 +4215,7 @@ static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo* dpi)
     stringId = (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) ? STR_CURRENT_BREAKDOWN : STR_LAST_BREAKDOWN;
     ft = Formatter();
     ft.Add<StringId>(RideBreakdownReasonNames[ride->breakdown_reason]);
-    DrawTextBasic(*dpi, screenCoords, stringId, ft);
+    DrawTextBasic(dpi, screenCoords, stringId, ft);
     screenCoords.y += 12;
 
     // Mechanic status
@@ -4215,7 +4253,7 @@ static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo* dpi)
         {
             if (stringId == STR_CALLING_MECHANIC || stringId == STR_NO_MECHANICS_ARE_HIRED_MESSAGE)
             {
-                DrawTextWrapped(*dpi, screenCoords, 280, stringId, {}, { TextAlignment::LEFT });
+                DrawTextWrapped(dpi, screenCoords, 280, stringId, {}, { TextAlignment::LEFT });
             }
             else
             {
@@ -4224,7 +4262,7 @@ static void WindowRideMaintenancePaint(WindowBase* w, DrawPixelInfo* dpi)
                 {
                     ft = Formatter();
                     staff->FormatNameTo(ft);
-                    DrawTextWrapped(*dpi, screenCoords, 280, stringId, ft, { TextAlignment::LEFT });
+                    DrawTextWrapped(dpi, screenCoords, 280, stringId, ft, { TextAlignment::LEFT });
                 }
             }
         }
@@ -4503,21 +4541,22 @@ static void WindowRideColourDropdown(WindowBase* w, WidgetIndex widgetIndex, int
         case WIDX_TRACK_MAIN_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
-                rideId, RideSetAppearanceType::TrackColourMain, dropdownIndex, w->ride_colour);
+                rideId, RideSetAppearanceType::TrackColourMain, ColourDropDownIndexToColour(dropdownIndex), w->ride_colour);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
         case WIDX_TRACK_ADDITIONAL_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
-                rideId, RideSetAppearanceType::TrackColourAdditional, dropdownIndex, w->ride_colour);
+                rideId, RideSetAppearanceType::TrackColourAdditional, ColourDropDownIndexToColour(dropdownIndex),
+                w->ride_colour);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
         case WIDX_TRACK_SUPPORT_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
-                rideId, RideSetAppearanceType::TrackColourSupports, dropdownIndex, w->ride_colour);
+                rideId, RideSetAppearanceType::TrackColourSupports, ColourDropDownIndexToColour(dropdownIndex), w->ride_colour);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
@@ -4569,21 +4608,22 @@ static void WindowRideColourDropdown(WindowBase* w, WidgetIndex widgetIndex, int
         case WIDX_VEHICLE_BODY_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
-                rideId, RideSetAppearanceType::VehicleColourBody, dropdownIndex, w->vehicleIndex);
+                rideId, RideSetAppearanceType::VehicleColourBody, ColourDropDownIndexToColour(dropdownIndex), w->vehicleIndex);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
         case WIDX_VEHICLE_TRIM_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
-                rideId, RideSetAppearanceType::VehicleColourTrim, dropdownIndex, w->vehicleIndex);
+                rideId, RideSetAppearanceType::VehicleColourTrim, ColourDropDownIndexToColour(dropdownIndex), w->vehicleIndex);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
         case WIDX_VEHICLE_TERNARY_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
-                rideId, RideSetAppearanceType::VehicleColourTernary, dropdownIndex, w->vehicleIndex);
+                rideId, RideSetAppearanceType::VehicleColourTernary, ColourDropDownIndexToColour(dropdownIndex),
+                w->vehicleIndex);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
@@ -4876,7 +4916,7 @@ static void WindowRideColourInvalidate(WindowBase* w)
  *
  *  rct2: 0x006AFF3E
  */
-static void WindowRideColourPaint(WindowBase* w, DrawPixelInfo* dpi)
+static void WindowRideColourPaint(WindowBase* w, DrawPixelInfo& dpi)
 {
     // TODO: This should use lists and identified sprites
     DrawPixelInfo clippedDpi;
@@ -4962,8 +5002,7 @@ static void WindowRideColourPaint(WindowBase* w, DrawPixelInfo* dpi)
     if (entrancePreviewWidget.type != WindowWidgetType::Empty)
     {
         if (ClipDrawPixelInfo(
-                &clippedDpi, dpi,
-                w->windowPos + ScreenCoordsXY{ entrancePreviewWidget.left + 1, entrancePreviewWidget.top + 1 },
+                clippedDpi, dpi, w->windowPos + ScreenCoordsXY{ entrancePreviewWidget.left + 1, entrancePreviewWidget.top + 1 },
                 entrancePreviewWidget.width(), entrancePreviewWidget.height()))
         {
             GfxClear(&clippedDpi, PALETTE_INDEX_12);
@@ -4974,21 +5013,21 @@ static void WindowRideColourPaint(WindowBase* w, DrawPixelInfo* dpi)
                 auto imageId = ImageId(stationObj->BaseImageId, trackColour.main, trackColour.additional);
 
                 // Back
-                GfxDrawSprite(&clippedDpi, imageId, { 34, 20 });
+                GfxDrawSprite(clippedDpi, imageId, { 34, 20 });
 
                 // Front
-                GfxDrawSprite(&clippedDpi, imageId.WithIndexOffset(4), { 34, 20 });
+                GfxDrawSprite(clippedDpi, imageId.WithIndexOffset(4), { 34, 20 });
 
                 // Glass
                 if (stationObj->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
                 {
                     auto glassImageId = ImageId(stationObj->BaseImageId + 20).WithTransparency(trackColour.main);
-                    GfxDrawSprite(&clippedDpi, glassImageId, { 34, 20 });
+                    GfxDrawSprite(clippedDpi, glassImageId, { 34, 20 });
                 }
             }
         }
 
-        DrawTextEllipsised(*dpi, { w->windowPos.x + 3, w->windowPos.y + 103 }, 97, STR_STATION_STYLE, {});
+        DrawTextEllipsised(dpi, { w->windowPos.x + 3, w->windowPos.y + 103 }, 97, STR_STATION_STYLE, {});
     }
 }
 
@@ -4996,7 +5035,7 @@ static void WindowRideColourPaint(WindowBase* w, DrawPixelInfo* dpi)
  *
  *  rct2: 0x006B0192
  */
-static void WindowRideColourScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex)
+static void WindowRideColourScrollpaint(WindowBase* w, DrawPixelInfo& dpi, int32_t scrollIndex)
 {
     auto ride = GetRide(w->rideId);
     if (ride == nullptr)
@@ -5010,7 +5049,7 @@ static void WindowRideColourScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32
     auto vehicleColour = RideGetVehicleColour(*ride, w->vehicleIndex);
 
     // Background colour
-    GfxFillRect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } }, PALETTE_INDEX_12);
+    GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, PALETTE_INDEX_12);
 
     // ?
     auto screenCoords = ScreenCoordsXY{ vehiclePreviewWidget->width() / 2, vehiclePreviewWidget->height() - 15 };
@@ -5259,7 +5298,7 @@ static void WindowRideMusicInvalidate(WindowBase* w)
  *
  *  rct2: 0x006B1ECC
  */
-static void WindowRideMusicPaint(WindowBase* w, DrawPixelInfo* dpi)
+static void WindowRideMusicPaint(WindowBase* w, DrawPixelInfo& dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
@@ -5639,7 +5678,7 @@ static void WindowRideMeasurementsInvalidate(WindowBase* w)
  *
  *  rct2: 0x006ACF07
  */
-static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
+static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo& dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
@@ -5649,7 +5688,7 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
         Widget* widget = &window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND];
 
         ScreenCoordsXY widgetCoords(w->windowPos.x + widget->width() / 2, w->windowPos.y + widget->top + 40);
-        DrawTextWrapped(*dpi, widgetCoords, w->width - 8, STR_CLICK_ITEMS_OF_SCENERY_TO_SELECT, {}, { TextAlignment::CENTRE });
+        DrawTextWrapped(dpi, widgetCoords, w->width - 8, STR_CLICK_ITEMS_OF_SCENERY_TO_SELECT, {}, { TextAlignment::CENTRE });
 
         widgetCoords.x = w->windowPos.x + 4;
         widgetCoords.y = w->windowPos.y + window_ride_measurements_widgets[WIDX_SELECT_NEARBY_SCENERY].bottom + 17;
@@ -5674,7 +5713,7 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
             ft.Add<uint32_t>(ride->excitement);
             ft.Add<StringId>(ratingName);
             StringId stringId = !RideHasRatings(*ride) ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE : STR_EXCITEMENT_RATING;
-            DrawTextBasic(*dpi, screenCoords, stringId, ft);
+            DrawTextBasic(dpi, screenCoords, stringId, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             // Intensity
@@ -5689,7 +5728,7 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
             else if (ride->intensity >= RIDE_RATING(10, 00))
                 stringId = STR_INTENSITY_RATING_RED;
 
-            DrawTextBasic(*dpi, screenCoords, stringId, ft);
+            DrawTextBasic(dpi, screenCoords, stringId, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             // Nausea
@@ -5698,7 +5737,7 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
             ft.Add<uint32_t>(ride->nausea);
             ft.Add<StringId>(ratingName);
             stringId = !RideHasRatings(*ride) ? STR_NAUSEA_RATING_NOT_YET_AVAILABLE : STR_NAUSEA_RATING;
-            DrawTextBasic(*dpi, screenCoords, stringId, ft);
+            DrawTextBasic(dpi, screenCoords, stringId, ft);
             screenCoords.y += 2 * LIST_ROW_HEIGHT;
 
             // Horizontal rule
@@ -5713,7 +5752,7 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
                     // Holes
                     ft = Formatter();
                     ft.Add<uint16_t>(ride->holes);
-                    DrawTextBasic(*dpi, screenCoords, STR_HOLES, ft);
+                    DrawTextBasic(dpi, screenCoords, STR_HOLES, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
                 }
                 else
@@ -5721,19 +5760,22 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
                     // Max speed
                     ft = Formatter();
                     ft.Add<int32_t>((ride->max_speed * 9) >> 18);
-                    DrawTextBasic(*dpi, screenCoords, STR_MAX_SPEED, ft);
+                    DrawTextBasic(dpi, screenCoords, STR_MAX_SPEED, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
 
                     // Average speed
                     ft = Formatter();
                     ft.Add<int32_t>((ride->average_speed * 9) >> 18);
-                    DrawTextBasic(*dpi, screenCoords, STR_AVERAGE_SPEED, ft);
+                    DrawTextBasic(dpi, screenCoords, STR_AVERAGE_SPEED, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
 
                     // Ride time
                     ft = Formatter();
                     int32_t numTimes = 0;
-                    for (int32_t i = 0; i < ride->num_stations; i++)
+                    // TODO: STR_RIDE_TIME only takes up to 4 stations modify to take more
+                    // also if modified may need to be split into multiple format strings
+                    // as formatter cannot take more than 256 bytes
+                    for (int32_t i = 0; i < std::min<int32_t>(ride->num_stations, 4); i++)
                     {
                         StationIndex stationIndex = StationIndex::FromUnderlying(numTimes);
                         auto time = ride->GetStation(stationIndex).SegmentTime;
@@ -5764,14 +5806,15 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
                     ft.Add<uint16_t>(0);
                     ft.Add<uint16_t>(0);
                     ft.Add<uint16_t>(0);
-                    DrawTextEllipsised(*dpi, screenCoords, 308, STR_RIDE_TIME, ft);
+                    DrawTextEllipsised(dpi, screenCoords, 308, STR_RIDE_TIME, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
                 }
 
                 // Ride length
                 ft = Formatter();
                 int32_t numLengths = 0;
-                for (int32_t i = 0; i < ride->num_stations; i++)
+                // TODO: see above STR_RIDE_LENGTH is also only able to display max 4
+                for (int32_t i = 0; i < std::min<int32_t>(ride->num_stations, 4); i++)
                 {
                     StationIndex stationIndex = StationIndex::FromUnderlying(i);
                     auto length = ride->GetStation(stationIndex).SegmentLength;
@@ -5803,7 +5846,7 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
                 ft.Add<uint16_t>(0);
                 ft.Add<uint16_t>(0);
                 ft.Add<uint16_t>(0);
-                DrawTextEllipsised(*dpi, screenCoords, 308, STR_RIDE_LENGTH, ft);
+                DrawTextEllipsised(dpi, screenCoords, 308, STR_RIDE_LENGTH, ft);
 
                 screenCoords.y += LIST_ROW_HEIGHT;
 
@@ -5814,7 +5857,7 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
 
                     ft = Formatter();
                     ft.Add<fixed16_2dp>(ride->max_positive_vertical_g);
-                    DrawTextBasic(*dpi, screenCoords, stringId, ft);
+                    DrawTextBasic(dpi, screenCoords, stringId, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
 
                     // Max. negative vertical G's
@@ -5822,20 +5865,20 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
                                                                                                : STR_MAX_NEGATIVE_VERTICAL_G;
                     ft = Formatter();
                     ft.Add<int32_t>(ride->max_negative_vertical_g);
-                    DrawTextBasic(*dpi, screenCoords, stringId, ft);
+                    DrawTextBasic(dpi, screenCoords, stringId, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
 
                     // Max lateral G's
                     stringId = ride->max_lateral_g > RIDE_G_FORCES_RED_LATERAL ? STR_MAX_LATERAL_G_RED : STR_MAX_LATERAL_G;
                     ft = Formatter();
                     ft.Add<fixed16_2dp>(ride->max_lateral_g);
-                    DrawTextBasic(*dpi, screenCoords, stringId, ft);
+                    DrawTextBasic(dpi, screenCoords, stringId, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
 
                     // Total 'air' time
                     ft = Formatter();
                     ft.Add<fixed32_2dp>(ride->total_air_time * 3);
-                    DrawTextBasic(*dpi, screenCoords, STR_TOTAL_AIR_TIME, ft);
+                    DrawTextBasic(dpi, screenCoords, STR_TOTAL_AIR_TIME, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
                 }
 
@@ -5845,14 +5888,14 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
                     auto drops = ride->drops & 0x3F;
                     ft = Formatter();
                     ft.Add<uint16_t>(drops);
-                    DrawTextBasic(*dpi, screenCoords, STR_DROPS, ft);
+                    DrawTextBasic(dpi, screenCoords, STR_DROPS, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
 
                     // Highest drop height
                     auto highestDropHeight = (ride->highest_drop_height * 3) / 4;
                     ft = Formatter();
                     ft.Add<int32_t>(highestDropHeight);
-                    DrawTextBasic(*dpi, screenCoords, STR_HIGHEST_DROP_HEIGHT, ft);
+                    DrawTextBasic(dpi, screenCoords, STR_HIGHEST_DROP_HEIGHT, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
                 }
 
@@ -5863,7 +5906,7 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
                     {
                         ft = Formatter();
                         ft.Add<uint16_t>(ride->inversions);
-                        DrawTextBasic(*dpi, screenCoords, STR_INVERSIONS, ft);
+                        DrawTextBasic(dpi, screenCoords, STR_INVERSIONS, ft);
                         screenCoords.y += LIST_ROW_HEIGHT;
                     }
                 }
@@ -5871,7 +5914,7 @@ static void WindowRideMeasurementsPaint(WindowBase* w, DrawPixelInfo* dpi)
         }
         else
         {
-            DrawTextBasic(*dpi, screenCoords, STR_NO_TEST_RESULTS_YET);
+            DrawTextBasic(dpi, screenCoords, STR_NO_TEST_RESULTS_YET);
         }
     }
 }
@@ -6126,7 +6169,7 @@ static void WindowRideGraphsInvalidate(WindowBase* w)
  *
  *  rct2: 0x006AE4BC
  */
-static void WindowRideGraphsPaint(WindowBase* w, DrawPixelInfo* dpi)
+static void WindowRideGraphsPaint(WindowBase* w, DrawPixelInfo& dpi)
 {
     WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
@@ -6136,9 +6179,9 @@ static void WindowRideGraphsPaint(WindowBase* w, DrawPixelInfo* dpi)
  *
  *  rct2: 0x006AE4C7
  */
-static void WindowRideGraphsScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex)
+static void WindowRideGraphsScrollpaint(WindowBase* w, DrawPixelInfo& dpi, int32_t scrollIndex)
 {
-    GfxClear(dpi, ColourMapA[COLOUR_SATURATED_GREEN].darker);
+    GfxClear(&dpi, ColourMapA[COLOUR_SATURATED_GREEN].darker);
 
     auto widget = &window_ride_graphs_widgets[WIDX_GRAPH];
     auto ride = GetRide(w->rideId);
@@ -6154,7 +6197,7 @@ static void WindowRideGraphsScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32
         // No measurement message
         ScreenCoordsXY stringCoords(widget->width() / 2, widget->height() / 2 - 5);
         int32_t width = widget->width() - 2;
-        DrawTextWrapped(*dpi, stringCoords, width, message.str, message.args, { TextAlignment::CENTRE });
+        DrawTextWrapped(dpi, stringCoords, width, message.str, message.args, { TextAlignment::CENTRE });
         return;
     }
 
@@ -6163,12 +6206,12 @@ static void WindowRideGraphsScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32
     const uint8_t darkColour = ColourMapA[COLOUR_SATURATED_GREEN].mid_dark;
 
     int32_t time = 0;
-    for (int32_t x = 0; x < dpi->x + dpi->width; x += 80)
+    for (int32_t x = 0; x < dpi.x + dpi.width; x += 80)
     {
-        if (x + 80 >= dpi->x)
+        if (x + 80 >= dpi.x)
         {
-            auto coord1 = ScreenCoordsXY{ x, dpi->y };
-            auto coord2 = ScreenCoordsXY{ x, dpi->y + dpi->height - 1 };
+            auto coord1 = ScreenCoordsXY{ x, dpi.y };
+            auto coord2 = ScreenCoordsXY{ x, dpi.y + dpi.height - 1 };
             GfxFillRect(dpi, { coord1, coord2 }, lightColour);
             GfxFillRect(dpi, { coord1 + ScreenCoordsXY{ 16, 0 }, coord2 + ScreenCoordsXY{ 16, 0 } }, darkColour);
             GfxFillRect(dpi, { coord1 + ScreenCoordsXY{ 32, 0 }, coord2 + ScreenCoordsXY{ 32, 0 } }, darkColour);
@@ -6195,7 +6238,7 @@ static void WindowRideGraphsScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32
     {
         // Minor / major line
         int32_t colour = yUnit == 0 ? lightColour : darkColour;
-        GfxFillRect(dpi, { { dpi->x, y }, { dpi->x + dpi->width - 1, y } }, colour);
+        GfxFillRect(dpi, { { dpi.x, y }, { dpi.x + dpi.width - 1, y } }, colour);
 
         int16_t scaled_yUnit = yUnit;
         // Scale modifier
@@ -6205,27 +6248,27 @@ static void WindowRideGraphsScrollpaint(WindowBase* w, DrawPixelInfo* dpi, int32
         auto ft = Formatter();
         ft.Add<int16_t>(scaled_yUnit);
 
-        DrawTextBasic(*dpi, { w->scrolls[0].h_left + 1, y - 4 }, stringID, ft, { FontStyle::Small });
+        DrawTextBasic(dpi, { w->scrolls[0].h_left + 1, y - 4 }, stringID, ft, { FontStyle::Small });
     }
 
     // Time marks
     time = 0;
-    for (int32_t x = 0; x < dpi->x + dpi->width; x += 80)
+    for (int32_t x = 0; x < dpi.x + dpi.width; x += 80)
     {
         auto ft = Formatter();
         ft.Add<int32_t>(time);
-        if (x + 80 >= dpi->x)
-            DrawTextBasic(*dpi, { x + 2, 1 }, STR_RIDE_STATS_TIME, ft, { FontStyle::Small });
+        if (x + 80 >= dpi.x)
+            DrawTextBasic(dpi, { x + 2, 1 }, STR_RIDE_STATS_TIME, ft, { FontStyle::Small });
         time += 5;
     }
 
     // Plot
-    int32_t x = dpi->x;
+    int32_t x = dpi.x;
     int32_t firstPoint, secondPoint;
     // Uses the force limits (used to draw extreme G's in red on measurement tab) to determine if line should be drawn red.
     int32_t intensityThresholdPositive = 0;
     int32_t intensityThresholdNegative = 0;
-    for (int32_t width = 0; width < dpi->width; width++, x++)
+    for (int32_t width = 0; width < dpi.width; width++, x++)
     {
         if (x < 0 || x >= measurement->num_items - 1)
             continue;
@@ -6742,7 +6785,7 @@ static void WindowRideIncomeInvalidate(WindowBase* w)
  *
  *  rct2: 0x006ADCE5
  */
-static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo* dpi)
+static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo& dpi)
 {
     StringId stringId;
     money64 profit;
@@ -6780,7 +6823,7 @@ static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo* dpi)
         auto ft = Formatter();
         ft.Add<money64>(profit);
 
-        DrawTextBasic(*dpi, screenCoords, stringId, ft);
+        DrawTextBasic(dpi, screenCoords, stringId, ft);
     }
     screenCoords.y += 44;
 
@@ -6804,7 +6847,7 @@ static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo* dpi)
         auto ft = Formatter();
         ft.Add<money64>(profit);
 
-        DrawTextBasic(*dpi, screenCoords, stringId, ft);
+        DrawTextBasic(dpi, screenCoords, stringId, ft);
     }
     screenCoords.y += 18;
 
@@ -6814,7 +6857,7 @@ static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo* dpi)
         auto ft = Formatter();
         ft.Add<money64>(ride->income_per_hour);
 
-        DrawTextBasic(*dpi, screenCoords, STR_INCOME_PER_HOUR, ft);
+        DrawTextBasic(dpi, screenCoords, STR_INCOME_PER_HOUR, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
 
@@ -6823,7 +6866,7 @@ static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo* dpi)
     stringId = ride->upkeep_cost == MONEY64_UNDEFINED ? STR_RUNNING_COST_UNKNOWN : STR_RUNNING_COST_PER_HOUR;
     auto ft = Formatter();
     ft.Add<money64>(costPerHour);
-    DrawTextBasic(*dpi, screenCoords, stringId, ft);
+    DrawTextBasic(dpi, screenCoords, stringId, ft);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Profit per hour
@@ -6831,7 +6874,7 @@ static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo* dpi)
     {
         ft = Formatter();
         ft.Add<money64>(ride->profit);
-        DrawTextBasic(*dpi, screenCoords, STR_PROFIT_PER_HOUR, ft);
+        DrawTextBasic(dpi, screenCoords, STR_PROFIT_PER_HOUR, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
     screenCoords.y += 5;
@@ -6839,7 +6882,7 @@ static void WindowRideIncomePaint(WindowBase* w, DrawPixelInfo* dpi)
     // Total profit
     ft = Formatter();
     ft.Add<money64>(ride->total_profit);
-    DrawTextBasic(*dpi, screenCoords, STR_TOTAL_PROFIT, ft);
+    DrawTextBasic(dpi, screenCoords, STR_TOTAL_PROFIT, ft);
 }
 
 #pragma endregion
@@ -6969,7 +7012,7 @@ static void WindowRideCustomerInvalidate(WindowBase* w)
  *
  *  rct2: 0x006AD6CD
  */
-static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi)
+static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo& dpi)
 {
     ShopItem shopItem;
     int16_t popularity, satisfaction, queueTime;
@@ -6991,14 +7034,14 @@ static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi)
     {
         auto ft = Formatter();
         ft.Add<int16_t>(ride->num_riders);
-        DrawTextBasic(*dpi, screenCoords, STR_CUSTOMERS_ON_RIDE, ft);
+        DrawTextBasic(dpi, screenCoords, STR_CUSTOMERS_ON_RIDE, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
 
     // Customers per hour
     auto ft = Formatter();
     ft.Add<int32_t>(RideCustomersPerHour(*ride));
-    DrawTextBasic(*dpi, screenCoords, STR_CUSTOMERS_PER_HOUR, ft);
+    DrawTextBasic(dpi, screenCoords, STR_CUSTOMERS_PER_HOUR, ft);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Popularity
@@ -7014,7 +7057,7 @@ static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi)
     }
     ft = Formatter();
     ft.Add<int16_t>(popularity);
-    DrawTextBasic(*dpi, screenCoords, stringId, ft);
+    DrawTextBasic(dpi, screenCoords, stringId, ft);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Satisfaction
@@ -7030,7 +7073,7 @@ static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi)
     }
     ft = Formatter();
     ft.Add<int16_t>(satisfaction);
-    DrawTextBasic(*dpi, screenCoords, stringId, ft);
+    DrawTextBasic(dpi, screenCoords, stringId, ft);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Queue time
@@ -7040,7 +7083,7 @@ static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi)
         stringId = queueTime == 1 ? STR_QUEUE_TIME_MINUTE : STR_QUEUE_TIME_MINUTES;
         ft = Formatter();
         ft.Add<int32_t>(queueTime);
-        screenCoords.y += DrawTextWrapped(*dpi, screenCoords, 308, stringId, ft, { TextAlignment::LEFT });
+        screenCoords.y += DrawTextWrapped(dpi, screenCoords, 308, stringId, ft, { TextAlignment::LEFT });
         screenCoords.y += 5;
     }
 
@@ -7051,7 +7094,7 @@ static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi)
         ft = Formatter();
         ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Plural);
         ft.Add<uint32_t>(ride->no_primary_items_sold);
-        DrawTextBasic(*dpi, screenCoords, STR_ITEMS_SOLD, ft);
+        DrawTextBasic(dpi, screenCoords, STR_ITEMS_SOLD, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
 
@@ -7063,23 +7106,23 @@ static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi)
         ft = Formatter();
         ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Plural);
         ft.Add<uint32_t>(ride->no_secondary_items_sold);
-        DrawTextBasic(*dpi, screenCoords, STR_ITEMS_SOLD, ft);
+        DrawTextBasic(dpi, screenCoords, STR_ITEMS_SOLD, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
 
     // Total customers
     ft = Formatter();
     ft.Add<uint32_t>(ride->total_customers);
-    DrawTextBasic(*dpi, screenCoords, STR_TOTAL_CUSTOMERS, ft);
+    DrawTextBasic(dpi, screenCoords, STR_TOTAL_CUSTOMERS, ft);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Guests favourite
     if (ride->IsRide())
     {
         ft = Formatter();
-        ft.Add<uint16_t>(ride->guests_favourite);
+        ft.Add<uint32_t>(ride->guests_favourite);
         stringId = ride->guests_favourite == 1 ? STR_FAVOURITE_RIDE_OF_GUEST : STR_FAVOURITE_RIDE_OF_GUESTS;
-        DrawTextBasic(*dpi, screenCoords, stringId, ft);
+        DrawTextBasic(dpi, screenCoords, stringId, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
     screenCoords.y += 2;
@@ -7090,7 +7133,7 @@ static void WindowRideCustomerPaint(WindowBase* w, DrawPixelInfo* dpi)
     stringId = age == 0 ? STR_BUILT_THIS_YEAR : age == 1 ? STR_BUILT_LAST_YEAR : STR_BUILT_YEARS_AGO;
     ft = Formatter();
     ft.Add<int16_t>(age);
-    DrawTextBasic(*dpi, screenCoords, stringId, ft);
+    DrawTextBasic(dpi, screenCoords, stringId, ft);
 }
 
 #pragma endregion

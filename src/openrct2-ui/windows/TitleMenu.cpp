@@ -269,7 +269,7 @@ public:
 
     void OnDraw(DrawPixelInfo& dpi) override
     {
-        GfxFilterRect(&dpi, _filterRect, FilterPaletteID::Palette51);
+        GfxFilterRect(dpi, _filterRect, FilterPaletteID::Palette51);
         DrawWidgets(dpi);
     }
 };

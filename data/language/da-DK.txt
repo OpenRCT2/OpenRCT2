@@ -1218,8 +1218,8 @@ STR_1838    :Tilfredshed: {COMMA16}%
 STR_1839    :Pålidelighed: {COMMA16}%
 STR_1840    :Nede-tid: {COMMA16}%
 STR_1841    :Profit: {CURRENCY2DP} per time
-STR_1842    :Favorit hos: {COMMA16} gæst
-STR_1843    :Favorit hos: {COMMA16} gæster
+STR_1842    :Favorit hos: {COMMA32} gæst
+STR_1843    :Favorit hos: {COMMA32} gæster
 STR_1844    :Vælg hvilken informationstype der skal vises i listen over forlystelser
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} gæster
@@ -2188,8 +2188,8 @@ STR_3118    :{BLACK}{STRINGID} er på vej til forlystelsen
 STR_3119    :{BLACK}{STRINGID} er i gang med at reparere forlystelsen
 STR_3120    :Find nærmeste ledige mekaniker, eller mekaniker der er i gang med at reparere en forlystelse
 STR_3121    :Kan ikke finde en mekaniker, eller alle mekanikere er optaget
-STR_3122    :{WINDOW_COLOUR_2}Ynglings forlystelse for: {BLACK}{COMMA16} gæst
-STR_3123    :{WINDOW_COLOUR_2}Ynglings forlystelse for: {BLACK}{COMMA16} gæster
+STR_3122    :{WINDOW_COLOUR_2}Ynglings forlystelse for: {BLACK}{COMMA32} gæst
+STR_3123    :{WINDOW_COLOUR_2}Ynglings forlystelse for: {BLACK}{COMMA32} gæster
 STR_3124    :I stykker {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Spændings Faktor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensitets Faktor: {BLACK}+{COMMA16}%

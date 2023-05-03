@@ -513,6 +513,7 @@
     <ClInclude Include="scripting\bindings\ride\ScTrackIterator.h" />
     <ClInclude Include="scripting\bindings\ride\ScTrackSegment.h" />
     <ClInclude Include="scripting\bindings\world\ScParkMessage.hpp" />
+    <ClInclude Include="scripting\bindings\world\ScResearch.hpp" />
     <ClInclude Include="scripting\bindings\world\ScTileElement.hpp" />
     <ClInclude Include="scripting\Duktape.hpp" />
     <ClInclude Include="scripting\IconNames.hpp" />
@@ -992,6 +993,7 @@
     <ClCompile Include="scripting\bindings\world\ScMap.cpp" />
     <ClCompile Include="scripting\bindings\world\ScPark.cpp" />
     <ClCompile Include="scripting\bindings\world\ScParkMessage.cpp" />
+    <ClCompile Include="scripting\bindings\world\ScResearch.cpp" />
     <ClCompile Include="scripting\bindings\world\ScTile.cpp" />
     <ClCompile Include="scripting\bindings\world\ScTileElement.cpp" />
     <ClCompile Include="scripting\HookEngine.cpp" />

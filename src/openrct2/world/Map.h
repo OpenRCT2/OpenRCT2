@@ -16,10 +16,10 @@
 #include <initializer_list>
 #include <vector>
 
-#define MINIMUM_LAND_HEIGHT 2
-#define MAXIMUM_LAND_HEIGHT 142
-#define MINIMUM_WATER_HEIGHT 2
-#define MAXIMUM_WATER_HEIGHT 142
+constexpr uint8_t MINIMUM_LAND_HEIGHT = 2;
+constexpr uint8_t MAXIMUM_LAND_HEIGHT = 254;
+constexpr uint8_t MINIMUM_WATER_HEIGHT = 2;
+constexpr uint8_t MAXIMUM_WATER_HEIGHT = 254;
 
 #define MINIMUM_MAP_SIZE_TECHNICAL 5
 #define MAXIMUM_MAP_SIZE_TECHNICAL 1001
@@ -168,6 +168,7 @@ TileElement* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRange
 void MapSetTileElement(const TileCoordsXY& tilePos, TileElement* elements);
 int32_t MapHeightFromSlope(const CoordsXY& coords, int32_t slopeDirection, bool isSloped);
 BannerElement* MapGetBannerElementAt(const CoordsXYZ& bannerPos, uint8_t direction);
+SurfaceElement* MapGetSurfaceElementAt(const TileCoordsXY& coords);
 SurfaceElement* MapGetSurfaceElementAt(const CoordsXY& coords);
 PathElement* MapGetPathElementAt(const TileCoordsXYZ& loc);
 WallElement* MapGetWallElementAt(const CoordsXYZD& wallCoords);

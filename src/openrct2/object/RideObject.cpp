@@ -19,7 +19,6 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../entity/Yaw.hpp"
 #include "../localisation/Language.h"
 #include "../rct2/DATLimits.h"
@@ -39,9 +38,25 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Entity::Yaw;
 
+/*
+ * The number of sprites in the sprite group is the specified precision multiplied by this number. General rule is any slope or
+ * bank has its mirror included in the group:
+ * - flat unbanked is 1
+ * - flat banked is 2 (left/right)
+ * - sloped unbanked is 2 (up/down)
+ * - sloped & banked is 4 (left/right * up/down)
+ * Exceptions:
+ * - slopesLoop is 10 (5 slope angles * up/down)
+ * - inlineTwists is 6 (3 bank angles * left/right)
+ * - slopes25InlineTwists is 12 (3 bank angles * left/right * up/down)
+ * - corkscrews is 20 (10 sprites for an entire corkscrew * left/right)
+ * - restraints is 3
+ * - curvedLiftHillUp and curvedLiftHillDown are 1 (normally would be combined, but aren't due to RCT2)
+ */
 static const uint8_t SpriteGroupMultiplier[EnumValue(SpriteGroupType::Count)] = {
-    1, 2, 2, 2, 2, 2, 2, 10, 1, 2, 2, 2, 2, 2, 2, 2, 6, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 12, 4, 4, 4, 4, 4, 20, 3, 1,
+    1, 2, 2, 2, 2, 2, 2, 10, 1, 2, 2, 2, 2, 2, 2, 2, 6, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 12, 4, 4, 4, 4, 4, 20, 3, 1, 1,
 };
+static_assert(std::size(SpriteGroupMultiplier) == EnumValue(SpriteGroupType::Count));
 
 constexpr const uint8_t DefaultSteamSpawnPosition[] = { 11, 22 };
 
@@ -257,7 +272,7 @@ void RideObject::Load()
     _legacyType.naming.Name = LanguageAllocateObjectString(GetName());
     _legacyType.naming.Description = LanguageAllocateObjectString(GetDescription());
     _legacyType.capacity = LanguageAllocateObjectString(GetCapacity());
-    _legacyType.images_offset = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.images_offset = LoadImages();
     _legacyType.vehicle_preset_list = &_presetColours;
 
     int32_t currentCarImagesOffset = _legacyType.images_offset + RCT2::ObjectLimits::MaxRideTypesPerRideEntry;
@@ -326,7 +341,7 @@ void RideObject::Unload()
     LanguageFreeObjectString(_legacyType.naming.Name);
     LanguageFreeObjectString(_legacyType.naming.Description);
     LanguageFreeObjectString(_legacyType.capacity);
-    GfxObjectFreeImages(_legacyType.images_offset, GetImageTable().GetCount());
+    UnloadImages();
 
     _legacyType.naming.Name = 0;
     _legacyType.naming.Description = 0;
@@ -346,7 +361,7 @@ void RideObject::DrawPreview(DrawPixelInfo& dpi, [[maybe_unused]] int32_t width,
         imageId++;
     }
 
-    GfxDrawSprite(&dpi, ImageId(imageId), { 0, 0 });
+    GfxDrawSprite(dpi, ImageId(imageId), { 0, 0 });
 }
 
 std::string RideObject::GetDescription() const
@@ -1104,7 +1119,7 @@ void RideObject::ReadLegacySpriteGroups(CarEntry* vehicle, uint16_t spriteGroups
     }
     if (spriteGroups & CAR_SPRITE_FLAG_CURVED_LIFT_HILL)
     {
-        vehicle->SpriteGroups[EnumValue(SpriteGroupType::CurvedLiftHill)].spritePrecision = baseSpritePrecision;
+        vehicle->SpriteGroups[EnumValue(SpriteGroupType::CurvedLiftHillUp)].spritePrecision = baseSpritePrecision;
     }
 }
 

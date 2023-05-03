@@ -39,7 +39,6 @@ constexpr const RideTypeDescriptor DodgemsRTD =
     SET_FIELD(Heights, { 9, 48, 2, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateDodgems),
     SET_FIELD(RatingsMultipliers, { 40, 20, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 5, 0, 0 }),
     SET_FIELD(BuildCosts, { 27.50_GBP, 1.00_GBP, 1, }),
@@ -57,6 +56,20 @@ constexpr const RideTypeDescriptor DodgemsRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_DODGEMS_TRACK, SPR_RIDE_DESIGN_PREVIEW_DODGEMS_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "dodgems"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(1, 30), RIDE_RATING(0, 50), RIDE_RATING(0, 35) },
+        16,
+        7,
+        false,
+        {
+            // Special case, passing -2 to represent division by 2
+            { RatingsModifierType::BonusOperationOption, 0, 1, -2, 0 }, 
+            { RatingsModifierType::BonusNumTrains,       4, RIDE_RATING(0, 80), 0, 0 },
+            { RatingsModifierType::BonusScenery,         0, 5577, 0, 0 },
+        },
+    }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_BoatHire),
 };

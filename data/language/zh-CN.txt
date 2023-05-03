@@ -1,4 +1,4 @@
-# STR_XXXX part is read and XXXX becomes the string id number.
+﻿# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -1220,8 +1220,8 @@ STR_1838    :满意度：{COMMA16}%
 STR_1839    :可靠度：{COMMA16}%
 STR_1840    :故障度：{COMMA16}%
 STR_1841    :利润：每小时{CURRENCY2DP}
-STR_1842    :{COMMA16}游客最喜爱的游乐设施
-STR_1843    :{COMMA16}游客最喜爱的游乐设施
+STR_1842    :{COMMA32}游客最喜爱的游乐设施
+STR_1843    :{COMMA32}游客最喜爱的游乐设施
 STR_1844    :选择要在游乐设施/店面列表中显示的信息类别
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32}游客
@@ -2190,8 +2190,8 @@ STR_3118    :{BLACK}{STRINGID}正在前往到这个游乐设施
 STR_3119    :{BLACK}{STRINGID}正在修复这个游乐设施
 STR_3120    :将最邻近，或在维修此游乐设施的维修人员定位
 STR_3121    :无法定位维修人员，或者附近的维修人员都在工作中
-STR_3122    :{WINDOW_COLOUR_2}游客的最爱：{BLACK}{COMMA16}位游客
-STR_3123    :{WINDOW_COLOUR_2}游客的最爱：{BLACK}{COMMA16}位游客
+STR_3122    :{WINDOW_COLOUR_2}游客的最爱：{BLACK}{COMMA32}位游客
+STR_3123    :{WINDOW_COLOUR_2}游客的最爱：{BLACK}{COMMA32}位游客
 STR_3124    :故障的{STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}兴奋度加成：{BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}刺激度加成：{BLACK}+{COMMA16}%

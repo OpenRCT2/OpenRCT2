@@ -18,7 +18,9 @@
 
 constexpr const uint32_t RideConstructionSpecialPieceSelected = 0x10000;
 
-constexpr const int32_t BLOCK_BRAKE_BASE_SPEED = 0x20364;
+constexpr const uint8_t kRCT2DefaultBlockBrakeSpeed = 2;
+constexpr const int32_t kBlockBrakeBaseSpeed = 0x20364;
+constexpr const int32_t kBlockBrakeSpeedOffset = kBlockBrakeBaseSpeed - (kRCT2DefaultBlockBrakeSpeed << 16);
 
 using track_type_t = uint16_t;
 using roll_type_t = uint8_t;
@@ -133,6 +135,7 @@ enum
     TRACK_CURVE_VERY_SMALL,
     TRACK_CURVE_SMALL,
     TRACK_CURVE,
+    TRACK_CURVE_LARGE,
     TRACK_TWIST,
     TRACK_HALF_LOOP,
     TRACK_CORKSCREW,
@@ -141,7 +144,6 @@ enum
     TRACK_HELIX_LARGE,
     TRACK_HELIX_LARGE_UNBANKED,
     TRACK_BRAKES,
-    TRACK_25,
     TRACK_ON_RIDE_PHOTO,
     TRACK_WATER_SPLASH,
     TRACK_SLOPE_VERTICAL,
@@ -158,7 +160,6 @@ enum
     TRACK_SLOPE_ROLL_BANKING,
     TRACK_SLOPE_STEEP_LONG,
     TRACK_CURVE_VERTICAL,
-    TRACK_42,
     TRACK_LIFT_HILL_CABLE,
     TRACK_LIFT_HILL_CURVED,
     TRACK_QUARTER_LOOP,
@@ -173,6 +174,8 @@ enum
     TRACK_RAPIDS,
     TRACK_FLYING_HALF_LOOP_UNINVERTED_UP,
     TRACK_FLYING_HALF_LOOP_INVERTED_DOWN,
+
+    TRACK_FLAT_RIDE_BASE,
 
     TRACK_WATERFALL,
     TRACK_WHIRLPOOL,

@@ -36,7 +36,6 @@ constexpr const RideTypeDescriptor DrinkStallRTD =
     SET_FIELD(Heights, { 12, DefaultDrinksStallHeight, 0, 0, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateDrinkStall),
     SET_FIELD(RatingsMultipliers, { 0, 0, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 250.00_GBP, 0.00_GBP, 1, }),
@@ -48,6 +47,15 @@ constexpr const RideTypeDescriptor DrinkStallRTD =
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Drink),
     SET_FIELD(Name, "drink_stall"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::Stall,
+        { 1, 1, 1 },
+        1,
+        -1,
+        false,
+        { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
+    }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),

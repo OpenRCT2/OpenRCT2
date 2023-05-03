@@ -39,7 +39,6 @@ constexpr const RideTypeDescriptor MagicCarpetRTD =
     SET_FIELD(Heights, { 15, 176, 7, 11, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateMagicCarpet),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 99.00_GBP, 1.00_GBP, 1, }),
@@ -55,5 +54,17 @@ constexpr const RideTypeDescriptor MagicCarpetRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MAGIC_CARPET_TRACK, SPR_RIDE_DESIGN_PREVIEW_MAGIC_CARPET_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "magic_carpet"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(2, 45), RIDE_RATING(1, 60), RIDE_RATING(2, 60) },
+        16,
+        0,
+        false,
+        {
+            { RatingsModifierType::BonusOperationOption, 0, 10, 20, 20 }, 
+            { RatingsModifierType::BonusScenery,         0, 11155, 0, 0 },
+        },
+    }),
 };
 // clang-format on

@@ -72,13 +72,13 @@ uint8_t gCurrentRotation;
 
 static uint32_t _currentImageType;
 InteractionInfo::InteractionInfo(const PaintStruct* ps)
-    : Loc(ps->map_x, ps->map_y)
-    , Element(ps->tileElement)
-    , Entity(ps->entity)
-    , SpriteType(ps->sprite_type)
+    : Loc(ps->MapPos)
+    , Element(ps->Element)
+    , Entity(ps->Entity)
+    , SpriteType(ps->InteractionItem)
 {
 }
-static void ViewportPaintWeatherGloom(DrawPixelInfo* dpi);
+static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi);
 
 /**
  * This is not a viewport function. It is used to setup many variables for
@@ -280,7 +280,7 @@ CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords)
 /*
  *  rct2: 0x006E7FF3
  */
-static void ViewportRedrawAfterShift(DrawPixelInfo* dpi, WindowBase* window, Viewport* viewport, const ScreenCoordsXY& coords)
+static void ViewportRedrawAfterShift(DrawPixelInfo& dpi, WindowBase* window, Viewport* viewport, const ScreenCoordsXY& coords)
 {
     // sub-divide by intersecting windows
     if (window != nullptr)
@@ -402,7 +402,7 @@ static void ViewportRedrawAfterShift(DrawPixelInfo* dpi, WindowBase* window, Vie
     }
 }
 
-static void ViewportShiftPixels(DrawPixelInfo* dpi, WindowBase* window, Viewport* viewport, int32_t x_diff, int32_t y_diff)
+static void ViewportShiftPixels(DrawPixelInfo& dpi, WindowBase* window, Viewport* viewport, int32_t x_diff, int32_t y_diff)
 {
     auto it = WindowGetIterator(window);
     for (; it != g_window_list.end(); it++)
@@ -479,7 +479,7 @@ static void ViewportMove(const ScreenCoordsXY& coords, WindowBase* w, Viewport* 
 
         if (DrawingEngineHasDirtyOptimisations())
         {
-            DrawPixelInfo* dpi = DrawingEngineGetDpi();
+            DrawPixelInfo& dpi = DrawingEngineGetDpi();
             WindowDrawAll(dpi, left, top, right, bottom);
             return;
         }
@@ -531,7 +531,7 @@ static void ViewportMove(const ScreenCoordsXY& coords, WindowBase* w, Viewport* 
 
     if (DrawingEngineHasDirtyOptimisations())
     {
-        DrawPixelInfo* dpi = DrawingEngineGetDpi();
+        DrawPixelInfo& dpi = DrawingEngineGetDpi();
         ViewportShiftPixels(dpi, w, viewport, x_diff, y_diff);
     }
 
@@ -807,7 +807,7 @@ void ViewportUpdateSmartFollowVehicle(WindowBase* window)
  *  ebp: bottom
  */
 void ViewportRender(
-    DrawPixelInfo* dpi, const Viewport* viewport, const ScreenRect& screenRect, std::vector<RecordedPaintSession>* sessions)
+    DrawPixelInfo& dpi, const Viewport* viewport, const ScreenRect& screenRect, std::vector<RecordedPaintSession>* sessions)
 {
     auto [topLeft, bottomRight] = screenRect;
 
@@ -879,7 +879,7 @@ static void RecordSession(
     // Remap all entries
     for (auto& ps : recordedSession.Entries)
     {
-        auto& ptr = ps.AsBasic()->next_quadrant_ps;
+        auto& ptr = ps.AsBasic()->NextQuadrantEntry;
         auto it = entryRemap.find(ptr);
         if (it == entryRemap.end())
         {
@@ -940,12 +940,12 @@ static void ViewportPaintColumn(PaintSession& session)
     if (gConfigGeneral.RenderWeatherGloom && !gTrackDesignSaveMode && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
         && !(session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
-        ViewportPaintWeatherGloom(&session.DPI);
+        ViewportPaintWeatherGloom(session.DPI);
     }
 
     if (session.PSStringHead != nullptr)
     {
-        PaintDrawMoneyStructs(&session.DPI, session.PSStringHead);
+        PaintDrawMoneyStructs(session.DPI, session.PSStringHead);
     }
 }
 
@@ -960,7 +960,7 @@ static void ViewportPaintColumn(PaintSession& session)
  *  ebp: bottom
  */
 void ViewportPaint(
-    const Viewport* viewport, DrawPixelInfo* dpi, const ScreenRect& screenRect,
+    const Viewport* viewport, DrawPixelInfo& dpi, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* recorded_sessions)
 {
     PROFILED_FUNCTION();
@@ -985,16 +985,16 @@ void ViewportPaint(
     y += viewport->pos.y;
 
     DrawPixelInfo dpi1;
-    dpi1.DrawingEngine = dpi->DrawingEngine;
-    dpi1.bits = dpi->bits + (x - dpi->x) + ((y - dpi->y) * (dpi->width + dpi->pitch));
+    dpi1.DrawingEngine = dpi.DrawingEngine;
+    dpi1.bits = dpi.bits + (x - dpi.x) + ((y - dpi.y) * (dpi.width + dpi.pitch));
     dpi1.x = topLeft.x;
     dpi1.y = topLeft.y;
     dpi1.width = width;
     dpi1.height = height;
-    dpi1.pitch = (dpi->width + dpi->pitch) - viewport->zoom.ApplyInversedTo(width);
+    dpi1.pitch = (dpi.width + dpi.pitch) - viewport->zoom.ApplyInversedTo(width);
     dpi1.zoom_level = viewport->zoom;
-    dpi1.remX = std::max(0, dpi->x - x);
-    dpi1.remY = std::max(0, dpi->y - y);
+    dpi1.remX = std::max(0, dpi.x - x);
+    dpi1.remY = std::max(0, dpi.y - y);
 
     // make sure, the compare operation is done in int32_t to avoid the loop becoming an infinite loop.
     // this as well as the [x += 32] in the loop causes signed integer overflow -> undefined behaviour.
@@ -1014,7 +1014,7 @@ void ViewportPaint(
     }
 
     bool useParallelDrawing = false;
-    if (useMultithreading && (dpi->DrawingEngine->GetFlags() & DEF_PARALLEL_DRAWING))
+    if (useMultithreading && (dpi.DrawingEngine->GetFlags() & DEF_PARALLEL_DRAWING))
     {
         useParallelDrawing = true;
     }
@@ -1031,7 +1031,7 @@ void ViewportPaint(
     // Generate and sort columns.
     for (x = alignedX; x < rightBorder; x += 32, index++)
     {
-        PaintSession* session = PaintSessionAlloc(&dpi1, viewFlags);
+        PaintSession* session = PaintSessionAlloc(dpi1, viewFlags);
         _paintColumns.push_back(session);
 
         DrawPixelInfo& dpi2 = session->DPI;
@@ -1093,17 +1093,17 @@ void ViewportPaint(
     }
 }
 
-static void ViewportPaintWeatherGloom(DrawPixelInfo* dpi)
+static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi)
 {
     auto paletteId = ClimateGetWeatherGloomPaletteId(gClimateCurrent);
     if (paletteId != FilterPaletteID::PaletteNull)
     {
         // Only scale width if zoomed in more than 1:1
-        auto zoomLevel = dpi->zoom_level < ZoomLevel{ 0 } ? dpi->zoom_level : ZoomLevel{ 0 };
-        auto x = dpi->x;
-        auto y = dpi->y;
-        auto w = zoomLevel.ApplyInversedTo(dpi->width) - 1;
-        auto h = zoomLevel.ApplyInversedTo(dpi->height) - 1;
+        auto zoomLevel = dpi.zoom_level < ZoomLevel{ 0 } ? dpi.zoom_level : ZoomLevel{ 0 };
+        auto x = dpi.x;
+        auto y = dpi.y;
+        auto w = zoomLevel.ApplyInversedTo(dpi.width) - 1;
+        auto h = zoomLevel.ApplyInversedTo(dpi.height) - 1;
         GfxFilterRect(dpi, ScreenRect(x, y, x + w, y + h), paletteId);
     }
 }
@@ -1416,12 +1416,12 @@ static bool IsTileElementVegetation(const TileElement* tileElement)
 
 VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlags)
 {
-    switch (ps->sprite_type)
+    switch (ps->InteractionItem)
     {
         case ViewportInteractionItem::Entity:
-            if (ps->entity != nullptr)
+            if (ps->Entity != nullptr)
             {
-                switch (ps->entity->Type)
+                switch (ps->Entity->Type)
                 {
                     case EntityType::Vehicle:
                     {
@@ -1434,7 +1434,7 @@ VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlag
                         // these should be hidden if 'hide rides' is enabled
                         if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES)
                         {
-                            auto vehicle = ps->entity->As<Vehicle>();
+                            auto vehicle = ps->Entity->As<Vehicle>();
                             if (vehicle == nullptr)
                                 break;
 
@@ -1481,9 +1481,9 @@ VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlag
         case ViewportInteractionItem::Scenery:
         case ViewportInteractionItem::LargeScenery:
         case ViewportInteractionItem::Wall:
-            if (ps->tileElement != nullptr)
+            if (ps->Element != nullptr)
             {
-                if (IsTileElementVegetation(ps->tileElement))
+                if (IsTileElementVegetation(ps->Element))
                 {
                     if (viewFlags & VIEWPORT_FLAG_HIDE_VEGETATION)
                     {
@@ -1499,7 +1499,7 @@ VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlag
                     }
                 }
             }
-            if (ps->sprite_type == ViewportInteractionItem::Wall && (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
+            if (ps->InteractionItem == ViewportInteractionItem::Wall && (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
             {
                 return VisibilityKind::Partial;
             }
@@ -1515,10 +1515,10 @@ VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlag
  */
 static bool PSSpriteTypeIsInFilter(PaintStruct* ps, uint16_t filter)
 {
-    if (ps->sprite_type != ViewportInteractionItem::None && ps->sprite_type != ViewportInteractionItem::Label
-        && ps->sprite_type <= ViewportInteractionItem::Banner)
+    if (ps->InteractionItem != ViewportInteractionItem::None && ps->InteractionItem != ViewportInteractionItem::Label
+        && ps->InteractionItem <= ViewportInteractionItem::Banner)
     {
-        auto mask = EnumToFlag(ps->sprite_type);
+        auto mask = EnumToFlag(ps->InteractionItem);
         if (filter & mask)
         {
             return true;
@@ -1651,7 +1651,7 @@ static bool IsPixelPresentRLE(const uint8_t* esi, int32_t x_start_point, int32_t
  * @return value originally stored in 0x00141F569
  */
 static bool IsSpriteInteractedWithPaletteSet(
-    DrawPixelInfo* dpi, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
+    DrawPixelInfo& dpi, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
     PROFILED_FUNCTION();
 
@@ -1661,7 +1661,7 @@ static bool IsSpriteInteractedWithPaletteSet(
         return false;
     }
 
-    if (dpi->zoom_level > ZoomLevel{ 0 })
+    if (dpi.zoom_level > ZoomLevel{ 0 })
     {
         if (g1->flags & G1_FLAG_NO_ZOOM_DRAW)
         {
@@ -1672,21 +1672,21 @@ static bool IsSpriteInteractedWithPaletteSet(
         {
             // TODO: SAR in dpi done with `>> 1`, in coordinates with `/ 2`
             DrawPixelInfo zoomed_dpi = {
-                /* .bits = */ dpi->bits,
-                /* .x = */ dpi->x >> 1,
-                /* .y = */ dpi->y >> 1,
-                /* .height = */ dpi->height,
-                /* .width = */ dpi->width,
-                /* .pitch = */ dpi->pitch,
-                /* .zoom_level = */ dpi->zoom_level - 1,
+                /* .bits = */ dpi.bits,
+                /* .x = */ dpi.x >> 1,
+                /* .y = */ dpi.y >> 1,
+                /* .height = */ dpi.height,
+                /* .width = */ dpi.width,
+                /* .pitch = */ dpi.pitch,
+                /* .zoom_level = */ dpi.zoom_level - 1,
             };
 
             auto zoomImageId = imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset);
-            return IsSpriteInteractedWithPaletteSet(&zoomed_dpi, zoomImageId, { coords.x / 2, coords.y / 2 }, paletteMap);
+            return IsSpriteInteractedWithPaletteSet(zoomed_dpi, zoomImageId, { coords.x / 2, coords.y / 2 }, paletteMap);
         }
     }
 
-    int32_t round = std::max(1, dpi->zoom_level.ApplyTo(1));
+    int32_t round = std::max(1, dpi.zoom_level.ApplyTo(1));
 
     auto origin = coords;
     if (g1->flags & G1_FLAG_RLE_COMPRESSION)
@@ -1697,7 +1697,7 @@ static bool IsSpriteInteractedWithPaletteSet(
     origin.y += g1->y_offset;
     int32_t yStartPoint = 0;
     int32_t height = g1->height;
-    if (dpi->zoom_level != ZoomLevel{ 0 })
+    if (dpi.zoom_level != ZoomLevel{ 0 })
     {
         if (height % 2)
         {
@@ -1705,7 +1705,7 @@ static bool IsSpriteInteractedWithPaletteSet(
             yStartPoint++;
         }
 
-        if (dpi->zoom_level == ZoomLevel{ 2 })
+        if (dpi.zoom_level == ZoomLevel{ 2 })
         {
             if (height % 4)
             {
@@ -1722,7 +1722,7 @@ static bool IsSpriteInteractedWithPaletteSet(
 
     origin.y = Floor2(origin.y, round);
     int32_t yEndPoint = height;
-    origin.y -= dpi->y;
+    origin.y -= dpi.y;
     if (origin.y < 0)
     {
         yEndPoint += origin.y;
@@ -1751,7 +1751,7 @@ static bool IsSpriteInteractedWithPaletteSet(
 
     origin.x += g1->x_offset;
     origin.x = Floor2(origin.x, round);
-    origin.x -= dpi->x;
+    origin.x -= dpi.x;
     if (origin.x < 0)
     {
         xEndPoint += origin.x;
@@ -1797,7 +1797,7 @@ static bool IsSpriteInteractedWithPaletteSet(
  *  rct2: 0x00679023
  */
 
-static bool IsSpriteInteractedWith(DrawPixelInfo* dpi, ImageId imageId, const ScreenCoordsXY& coords)
+static bool IsSpriteInteractedWith(DrawPixelInfo& dpi, ImageId imageId, const ScreenCoordsXY& coords)
 {
     PROFILED_FUNCTION();
 
@@ -1834,32 +1834,31 @@ InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32
 {
     PROFILED_FUNCTION();
 
-    PaintStruct* ps = &session->PaintHead;
-    DrawPixelInfo* dpi = &session->DPI;
     InteractionInfo info{};
 
-    while ((ps = ps->next_quadrant_ps) != nullptr)
+    PaintStruct* ps = session->PaintHead;
+    while (ps != nullptr)
     {
         PaintStruct* old_ps = ps;
         PaintStruct* next_ps = ps;
         while (next_ps != nullptr)
         {
             ps = next_ps;
-            if (IsSpriteInteractedWith(dpi, ps->image_id, { ps->x, ps->y }))
+            if (IsSpriteInteractedWith(session->DPI, ps->image_id, ps->ScreenPos))
             {
                 if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) != VisibilityKind::Hidden)
                 {
                     info = { ps };
                 }
             }
-            next_ps = ps->children;
+            next_ps = ps->Children;
         }
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wnull-dereference"
-        for (AttachedPaintStruct* attached_ps = ps->attached_ps; attached_ps != nullptr; attached_ps = attached_ps->next)
+        for (AttachedPaintStruct* attached_ps = ps->Attached; attached_ps != nullptr; attached_ps = attached_ps->NextEntry)
         {
-            if (IsSpriteInteractedWith(dpi, attached_ps->image_id, { (attached_ps->x + ps->x), (attached_ps->y + ps->y) }))
+            if (IsSpriteInteractedWith(session->DPI, attached_ps->image_id, ps->ScreenPos + attached_ps->RelativePos))
             {
                 if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) != VisibilityKind::Hidden)
                 {
@@ -1869,7 +1868,7 @@ InteractionInfo SetInteractionInfoFromPaintSession(PaintSession* session, uint32
         }
 #pragma GCC diagnostic pop
 
-        ps = old_ps;
+        ps = old_ps->NextQuadrantEntry;
     }
     return info;
 }
@@ -1921,7 +1920,7 @@ InteractionInfo GetMapCoordinatesFromPosWindow(WindowBase* window, const ScreenC
         dpi.zoom_level = myviewport->zoom;
         dpi.width = 1;
 
-        PaintSession* session = PaintSessionAlloc(&dpi, myviewport->flags);
+        PaintSession* session = PaintSessionAlloc(dpi, myviewport->flags);
         PaintSessionGenerate(*session);
         PaintSessionArrange(*session);
         info = SetInteractionInfoFromPaintSession(session, myviewport->flags, flags & 0xFFFF);

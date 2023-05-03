@@ -1220,8 +1220,8 @@ STR_1838    :Удовлетв.: {COMMA16}%
 STR_1839    :Надёжность: {COMMA16}%
 STR_1840    :Простой: {COMMA16}%
 STR_1841    :Прибыль: {CURRENCY} в час
-STR_1842    :Любимый у: {COMMA16} гос.
-STR_1843    :Любимый у: {COMMA16} гос.
+STR_1842    :Любимый у: {COMMA32} гос.
+STR_1843    :Любимый у: {COMMA32} гос.
 STR_1844    :Выберите тип информации для показа
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} гостей
@@ -2190,8 +2190,8 @@ STR_3118    :{BLACK}{STRINGID} направляется к аттр.
 STR_3119    :{BLACK}{STRINGID} чинит аттракцион
 STR_3120    :Найдите ближайшего свободного механика
 STR_3121    :Невозможно найти механика, или все механики заняты
-STR_3122    :{WINDOW_COLOUR_2}Любимый аттр.: {BLACK}{COMMA16} гост.
-STR_3123    :{WINDOW_COLOUR_2}Любимый аттр.: {BLACK}{COMMA16} гост.
+STR_3122    :{WINDOW_COLOUR_2}Любимый аттр.: {BLACK}{COMMA32} гост.
+STR_3123    :{WINDOW_COLOUR_2}Любимый аттр.: {BLACK}{COMMA32} гост.
 STR_3124    :Сломан {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Фактор волнения: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Фактор интенсивности: {BLACK}+{COMMA16}%

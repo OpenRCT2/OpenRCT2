@@ -1274,13 +1274,13 @@ namespace RCT1
             dst->ActionFrame = src->ActionFrame;
 
             const SpriteBounds* spriteBounds = &GetSpriteBounds(dst->SpriteType, dst->ActionSpriteType);
-            dst->sprite_width = spriteBounds->sprite_width;
-            dst->sprite_height_negative = spriteBounds->sprite_height_negative;
-            dst->sprite_height_positive = spriteBounds->sprite_height_positive;
+            dst->SpriteData.Width = spriteBounds->sprite_width;
+            dst->SpriteData.HeightMax = spriteBounds->sprite_height_negative;
+            dst->SpriteData.HeightMin = spriteBounds->sprite_height_positive;
 
             dst->MoveTo({ src->x, src->y, src->z });
 
-            dst->sprite_direction = src->EntityDirection;
+            dst->Orientation = src->EntityDirection;
 
             // Peep name
             if (IsUserStringID(src->NameStringID))
@@ -1366,10 +1366,10 @@ namespace RCT1
 
         void ImportEntityCommonProperties(EntityBase* dst, const RCT12EntityBase* src)
         {
-            dst->sprite_direction = src->EntityDirection;
-            dst->sprite_width = src->SpriteWidth;
-            dst->sprite_height_negative = src->SpriteHeightNegative;
-            dst->sprite_height_positive = src->SpriteHeightPositive;
+            dst->Orientation = src->EntityDirection;
+            dst->SpriteData.Width = src->SpriteWidth;
+            dst->SpriteData.HeightMin = src->SpriteHeightNegative;
+            dst->SpriteData.HeightMax = src->SpriteHeightPositive;
             dst->x = src->x;
             dst->y = src->y;
             dst->z = src->z;
@@ -1674,6 +1674,8 @@ namespace RCT1
                     // Skipping IsHighlighted()
 
                     auto trackType = dst2->GetTrackType();
+                    // Brakes import as closed to preserve legacy behaviour
+                    dst2->SetBrakeClosed(trackType == TrackElemType::Brakes);
                     if (TrackTypeHasSpeedSetting(trackType))
                     {
                         dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
@@ -2766,12 +2768,12 @@ namespace RCT1
         dst->remaining_distance = src->RemainingDistance;
 
         // Properties from vehicle entry
-        dst->sprite_width = src->SpriteWidth;
-        dst->sprite_height_negative = src->SpriteHeightNegative;
-        dst->sprite_height_positive = src->SpriteHeightPositive;
-        dst->sprite_direction = src->EntityDirection;
+        dst->SpriteData.Width = src->SpriteWidth;
+        dst->SpriteData.HeightMin = src->SpriteHeightNegative;
+        dst->SpriteData.HeightMax = src->SpriteHeightPositive;
+        dst->Orientation = src->EntityDirection;
 
-        dst->SpriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
+        dst->SpriteData.SpriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
 
         dst->mass = src->Mass;
         dst->num_seats = src->NumSeats;
@@ -2860,6 +2862,7 @@ namespace RCT1
         {
             dst->SetFlag(VehicleFlags::Crashed);
         }
+        dst->BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
     }
 
     template<> void S4Importer::ImportEntity<Guest>(const RCT12EntityBase& srcBase)

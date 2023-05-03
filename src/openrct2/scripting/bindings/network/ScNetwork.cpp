@@ -111,15 +111,28 @@ namespace OpenRCT2::Scripting
         return player;
     }
 
-    std::shared_ptr<ScPlayer> ScNetwork::getPlayer(int32_t index) const
+    std::shared_ptr<ScPlayer> ScNetwork::getPlayer(int32_t id) const
     {
 #    ifndef DISABLE_NETWORK
-        auto numPlayers = NetworkGetNumPlayers();
-        if (index < numPlayers)
+        if (GetTargetAPIVersion() < API_VERSION_77_NETWORK_IDS)
         {
-            auto playerId = NetworkGetPlayerID(index);
-            return std::make_shared<ScPlayer>(playerId);
+            auto index = id;
+            auto numPlayers = NetworkGetNumPlayers();
+            if (index < numPlayers)
+            {
+                auto playerId = NetworkGetPlayerID(index);
+                return std::make_shared<ScPlayer>(playerId);
+            }
         }
+        else
+        {
+            auto index = NetworkGetPlayerIndex(id);
+            if (index != -1)
+            {
+                return std::make_shared<ScPlayer>(id);
+            }
+        }
+
 #    endif
         return nullptr;
     }
@@ -157,14 +170,26 @@ namespace OpenRCT2::Scripting
 #    endif
     }
 
-    std::shared_ptr<ScPlayerGroup> ScNetwork::getGroup(int32_t index) const
+    std::shared_ptr<ScPlayerGroup> ScNetwork::getGroup(int32_t id) const
     {
 #    ifndef DISABLE_NETWORK
-        auto numGroups = NetworkGetNumGroups();
-        if (index < numGroups)
+        if (GetTargetAPIVersion() < API_VERSION_77_NETWORK_IDS)
         {
-            auto groupId = NetworkGetGroupID(index);
-            return std::make_shared<ScPlayerGroup>(groupId);
+            auto index = id;
+            auto numGroups = NetworkGetNumGroups();
+            if (index < numGroups)
+            {
+                auto groupId = NetworkGetGroupID(index);
+                return std::make_shared<ScPlayerGroup>(groupId);
+            }
+        }
+        else
+        {
+            auto index = NetworkGetGroupIndex(id);
+            if (index != -1)
+            {
+                return std::make_shared<ScPlayerGroup>(id);
+            }
         }
 #    endif
         return nullptr;
@@ -178,28 +203,54 @@ namespace OpenRCT2::Scripting
 #    endif
     }
 
-    void ScNetwork::removeGroup(int32_t index)
+    void ScNetwork::removeGroup(int32_t id)
     {
 #    ifndef DISABLE_NETWORK
-        auto numGroups = NetworkGetNumGroups();
-        if (index < numGroups)
+        if (GetTargetAPIVersion() < API_VERSION_77_NETWORK_IDS)
         {
-            auto groupId = NetworkGetGroupID(index);
-            auto networkAction = NetworkModifyGroupAction(ModifyGroupType::RemoveGroup, groupId);
-            GameActions::Execute(&networkAction);
+            auto index = id;
+            auto numGroups = NetworkGetNumGroups();
+            if (index < numGroups)
+            {
+                auto groupId = NetworkGetGroupID(index);
+                auto networkAction = NetworkModifyGroupAction(ModifyGroupType::RemoveGroup, groupId);
+                GameActions::Execute(&networkAction);
+            }
+        }
+        else
+        {
+            auto index = NetworkGetGroupIndex(id);
+            if (index != -1)
+            {
+                auto networkAction = NetworkModifyGroupAction(ModifyGroupType::RemoveGroup, id);
+                GameActions::Execute(&networkAction);
+            }
         }
 #    endif
     }
 
-    void ScNetwork::kickPlayer(int32_t index)
+    void ScNetwork::kickPlayer(int32_t id)
     {
 #    ifndef DISABLE_NETWORK
-        auto numPlayers = NetworkGetNumPlayers();
-        if (index < numPlayers)
+        if (GetTargetAPIVersion() < API_VERSION_77_NETWORK_IDS)
         {
-            auto playerId = NetworkGetPlayerID(index);
-            auto kickPlayerAction = PlayerKickAction(playerId);
-            GameActions::Execute(&kickPlayerAction);
+            auto index = id;
+            auto numPlayers = NetworkGetNumPlayers();
+            if (index < numPlayers)
+            {
+                auto playerId = NetworkGetPlayerID(index);
+                auto kickPlayerAction = PlayerKickAction(playerId);
+                GameActions::Execute(&kickPlayerAction);
+            }
+        }
+        else
+        {
+            auto index = NetworkGetPlayerIndex(id);
+            if (index != -1)
+            {
+                auto kickPlayerAction = PlayerKickAction(id);
+                GameActions::Execute(&kickPlayerAction);
+            }
         }
 #    endif
     }

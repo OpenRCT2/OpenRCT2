@@ -17,7 +17,7 @@
 #include <iterator>
 
 // clang-format off
-static constexpr TrackCoordinates _trackCoordinates[TrackElemType::Count] = {
+static constexpr TrackCoordinates _trackCoordinates[] = {
         { 0, 0, 0, 0, 0, 0 },       // ELEM_FLAT
         { 0, 0, 0, 0, 0, 0 },       // ELEM_END_STATION
         { 0, 0, 0, 0, 0, 0 },       // ELEM_BEGIN_STATION
@@ -356,6 +356,7 @@ static constexpr TrackCoordinates _trackCoordinates[TrackElemType::Count] = {
         { 4, 0, 0,-48, -64, 32 },  // TrackElemType::LeftEighthBankToOrthogonalDown25
         { 4, 1, 0,-48, -32, 64 },  // TrackElemType::RightEighthBankToOrthogonalDown25     
 };
+static_assert(std::size(_trackCoordinates) == TrackElemType::Count);
 
 /** rct2: 0x0099BA64 */
 static constexpr uint8_t TrackSequenceProperties[][MaxSequencesPerPiece] = {
@@ -698,6 +699,7 @@ static constexpr uint8_t TrackSequenceProperties[][MaxSequencesPerPiece] = {
     { 0 }, // TrackElemType::LeftEighthBankToOrthogonalDown25
     { 0 }, // TrackElemType::RightEighthBankToOrthogonalDown25
 };
+static_assert(std::size(TrackSequenceProperties) == TrackElemType::Count);
 
 #define TRACK_BLOCK_END { 255, 255, 255, 255, 255, {255, 255}, 255 }
 
@@ -3345,7 +3347,7 @@ static constexpr std::array<const PreviewTrack*, TrackElemType::Count> TrackBloc
     TrackBlocksRightEighthToOrthogonalDown25, // TrackElemType::RightEighthBankToOrthogonalDown25     
 };
 
-static constexpr uint8_t TrackPieceLengths[TrackElemType::Count] = {
+static constexpr uint8_t TrackPieceLengths[] = {
     32,     // TrackElemType::Flat
     32,     // TrackElemType::EndStation
     32,     // TrackElemType::BeginStation
@@ -3683,10 +3685,11 @@ static constexpr uint8_t TrackPieceLengths[TrackElemType::Count] = {
     64, // TrackElemType::RightEighthBankToOrthogonalUp25 
     64, // TrackElemType::LeftEighthBankToOrthogonalDown25
     64, // TrackElemType::RightEighthBankToOrthogonalDown25     
-};//TODO
+};
+static_assert(std::size(TrackPieceLengths) == TrackElemType::Count);
 
 // rct2: 0x00998C95
-static constexpr TrackCurveChain gTrackCurveChain[TrackElemType::Count] = {
+static constexpr TrackCurveChain gTrackCurveChain[] = {
     { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
     { RideConstructionSpecialPieceSelected | TrackElemType::EndStation, RideConstructionSpecialPieceSelected | TrackElemType::EndStation },
     { RideConstructionSpecialPieceSelected | TrackElemType::EndStation, RideConstructionSpecialPieceSelected | TrackElemType::EndStation },
@@ -4025,6 +4028,7 @@ static constexpr TrackCurveChain gTrackCurveChain[TrackElemType::Count] = {
     { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::LeftEighthBankToOrthogonalDown25
     { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::RightEighthBankToOrthogonalDown25     
 };
+static_assert(std::size(gTrackCurveChain) == TrackElemType::Count);
 
 const TrackDescriptor gTrackDescriptors[186] = {
     {   true,   TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TrackElemType::DiagDown60                                     },
@@ -4216,7 +4220,7 @@ const TrackDescriptor gTrackDescriptors[186] = {
 };
 
 /** rct2: 0x00993D1C */
-static constexpr track_type_t AlternativeTrackTypes[TrackElemType::Count] = {
+static constexpr track_type_t AlternativeTrackTypes[] = {
     TrackElemType::FlatCovered,                        // TrackElemType::Flat
     TrackElemType::None,
     TrackElemType::None,
@@ -4261,6 +4265,10 @@ static constexpr track_type_t AlternativeTrackTypes[TrackElemType::Count] = {
     TrackElemType::None,
     TrackElemType::LeftQuarterTurn3TilesCovered,   // TrackElemType::LeftQuarterTurn3Tiles
     TrackElemType::RightQuarterTurn3TilesCovered,  // TrackElemType::RightQuarterTurn3Tiles
+    TrackElemType::None,
+    TrackElemType::None,
+    TrackElemType::None,
+    TrackElemType::None,
     TrackElemType::None,
     TrackElemType::None,
     TrackElemType::None,
@@ -4549,11 +4557,12 @@ static constexpr track_type_t AlternativeTrackTypes[TrackElemType::Count] = {
     TrackElemType::None, // TrackElemType::LeftEighthBankToOrthogonalUp25
     TrackElemType::None, // TrackElemType::RightEighthBankToOrthogonalUp25 
     TrackElemType::None, // TrackElemType::LeftEighthBankToOrthogonalDown25
-    TrackElemType::None, // TrackElemType::RightEighthBankToOrthogonalDown25     
+    TrackElemType::None, // TrackElemType::RightEighthBankToOrthogonalDown25
 };
+static_assert(std::size(AlternativeTrackTypes) == TrackElemType::Count);
 
 /** rct2: 0x0099DA34 */
-static constexpr money64 TrackPricing[TrackElemType::Count] = {
+static constexpr money64 TrackPricing[] = {
     65536,  // TrackElemType::Flat
     98304,  // TrackElemType::EndStation
     98304,  // TrackElemType::BeginStation
@@ -4847,13 +4856,14 @@ static constexpr money64 TrackPricing[TrackElemType::Count] = {
     884736, // TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown
     294912, // TrackElemType::FlyerHalfLoopInvertedUp
     294912, // TrackElemType::FlyerHalfLoopUninvertedDown
-    294912, // TrackElemType::LeftEighthToDiagUp25           
-    294912, // TrackElemType::RightEighthToDiagUp25        
-    294912, // TrackElemType::LeftEighthToDiagDown25       
-    294912, // TrackElemType::RightEighthToDiagDown25      
-    294912, // TrackElemType::LeftEighthToOrthogonalUp25   
-    294912, // TrackElemType::RightEighthToOrthogonalUp25  
-    294912, // TrackElemType::LeftEighthToOrthogonalDown25 
+    294912, // TrackElemType::LeftEighthToDiagUp25
+    294912, // TrackElemType::RightEighthToDiagUp25
+    294912, // TrackElemType::LeftEighthToDiagDown25
+    294912, // TrackElemType::RightEighthToDiagDown25
+    294912, // TrackElemType::LeftEighthToOrthogonalUp25
+    294912, // TrackElemType::RightEighthToOrthogonalUp25
+    294912, // TrackElemType::LeftEighthToOrthogonalDown25
+    294912, // TrackElemType::RightEighthToOrthogonalDown25
     294912, // TrackElemType::DiagUp25ToLeftBankedUp25
     294912, // TrackElemType::DiagUp25ToRightBankedUp25
     294912, // TrackElemType::DiagLeftBankedUp25ToUp25
@@ -4889,11 +4899,12 @@ static constexpr money64 TrackPricing[TrackElemType::Count] = {
     294912, // TrackElemType::LeftEighthBankToOrthogonalUp25
     294912, // TrackElemType::RightEighthBankToOrthogonalUp25 
     294912, // TrackElemType::LeftEighthBankToOrthogonalDown25
-    294912, // TrackElemType::RightEighthBankToOrthogonalDown25     
-};//TODO
+    294912, // TrackElemType::RightEighthBankToOrthogonalDown25
+};
+static_assert(std::size(TrackPricing) == TrackElemType::Count);
 
 /** rct2: 0x0099EA1C */
-static constexpr track_type_t TrackElementMirrorMap[TrackElemType::Count] = {
+static constexpr track_type_t TrackElementMirrorMap[] = {
     TrackElemType::Flat,
     TrackElemType::EndStation,
     TrackElemType::BeginStation,
@@ -5193,7 +5204,8 @@ static constexpr track_type_t TrackElementMirrorMap[TrackElemType::Count] = {
     TrackElemType::LeftEighthToDiagDown25,         // TrackElemType::RightEighthToDiagDown25      
     TrackElemType::RightEighthToOrthogonalUp25,    // TrackElemType::LeftEighthToOrthogonalUp25   
     TrackElemType::LeftEighthToOrthogonalUp25,     // TrackElemType::RightEighthToOrthogonalUp25  
-    TrackElemType::RightEighthToOrthogonalDown25,  // TrackElemType::LeftEighthToOrthogonalDown25 
+    TrackElemType::RightEighthToOrthogonalDown25,  // TrackElemType::LeftEighthToOrthogonalDown25
+    TrackElemType::LeftEighthToOrthogonalDown25,   // TrackElemType::RightEighthToOrthogonalDown25
     TrackElemType::DiagUp25ToRightBankedUp25,             // TrackElemType::DiagUp25ToRightBankedUp25
     TrackElemType::DiagUp25ToLeftBankedUp25,              // TrackElemType::DiagUp25ToLeftBankedUp25
     TrackElemType::DiagRightBankedUp25ToUp25,             // TrackElemType::DiagRightBankedUp25ToUp25
@@ -5229,12 +5241,12 @@ static constexpr track_type_t TrackElementMirrorMap[TrackElemType::Count] = {
     TrackElemType::RightEighthBankToOrthogonalUp25,       // TrackElemType::RightEighthBankToOrthogonalUp25
     TrackElemType::LeftEighthBankToOrthogonalUp25,        // TrackElemType::LeftEighthBankToOrthogonalUp25 
     TrackElemType::RightEighthBankToOrthogonalDown25,     // TrackElemType::RightEighthBankToOrthogonalDown25
-    TrackElemType::LeftEighthBankToOrthogonalDown25,      // TrackElemType::LeftEighthBankToOrthogonalDown25     
-
+    TrackElemType::LeftEighthBankToOrthogonalDown25,      // TrackElemType::LeftEighthBankToOrthogonalDown25
 };
+static_assert(std::size(TrackElementMirrorMap) == TrackElemType::Count);
 
 /** rct2: 0x00999694 */
-static constexpr uint32_t TrackHeightMarkerPositions[TrackElemType::Count] = {
+static constexpr uint32_t TrackHeightMarkerPositions[] = {
     (1 << 0), // TrackElemType::Flat
     (1 << 0), // TrackElemType::EndStation
     (1 << 0), // TrackElemType::BeginStation
@@ -5572,10 +5584,11 @@ static constexpr uint32_t TrackHeightMarkerPositions[TrackElemType::Count] = {
     (1 << 0), // TrackElemType::LeftEighthBankToOrthogonalUp25 
     (1 << 0), // TrackElemType::RightEighthBankToOrthogonalDown25
     (1 << 0), // TrackElemType::LeftEighthBankToOrthogonalDown25     
-};//TODO
+};
+static_assert(std::size(TrackHeightMarkerPositions) == TrackElemType::Count);
 
 /** rct2: 0x00999A94 */
-static constexpr uint8_t TrackSequenceElementAllowedWallEdges[TrackElemType::Count][MaxSequencesPerPiece] = {
+static constexpr uint8_t TrackSequenceElementAllowedWallEdges[][MaxSequencesPerPiece] = {
     { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Flat
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::EndStation
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::BeginStation
@@ -5914,10 +5927,11 @@ static constexpr uint8_t TrackSequenceElementAllowedWallEdges[TrackElemType::Cou
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftEighthBankToOrthogonalUp25         
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightEighthBankToOrthogonalDown25      
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftEighthBankToOrthogonalDown25       
-};//TODO
+};
+static_assert(std::size(TrackSequenceElementAllowedWallEdges) == TrackElemType::Count);
 
 /** rct2: 0x0099423C */
-static constexpr uint16_t TrackFlags[TrackElemType::Count] = {
+static constexpr uint16_t TrackFlags[] = {
     /* TrackElemType::Flat                                          */   TRACK_ELEM_FLAG_ALLOW_LIFT_HILL,
     /* TrackElemType::EndStation                                    */   0,
     /* TrackElemType::BeginStation                                  */   0,
@@ -6256,11 +6270,12 @@ static constexpr uint16_t TrackFlags[TrackElemType::Count] = {
     /* TrackElemType::LeftEighthBankToOrthogonalDown25       */   TRACK_ELEM_FLAG_TURN_LEFT  | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,  
     /* TrackElemType::RightEighthBankToOrthogonalDown25      */   TRACK_ELEM_FLAG_TURN_RIGHT | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,  
 };
+static_assert(std::size(TrackFlags) == TrackElemType::Count);
 // clang-format on
 
 /**  rct2: 0x00997C9D */
 // clang-format off
-static constexpr TrackDefinition TrackDefinitions[TrackElemType::Count] =
+static constexpr TrackDefinition TrackDefinitions[] =
 {
     // TYPE                         VANGLE END                  VANGLE START                BANK END                BANK START              PREVIEW Z OFFSET
     { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_FLAT
@@ -6520,16 +6535,16 @@ static constexpr TrackDefinition TrackDefinitions[TrackElemType::Count] =
     { TRACK_QUARTER_LOOP_UNINVERTED_DOWN, TRACK_SLOPE_DOWN_90,  TRACK_SLOPE_NONE,           TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // ELEM_MULTIDIM_FLAT_TO_90_DEG_DOWN_QUARTER_LOOP
     { TRACK_QUARTER_LOOP_INVERTED_UP,     TRACK_SLOPE_NONE,     TRACK_SLOPE_UP_90,          TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  }, // ELEM_MULTIDIM_INVERTED_FLAT_TO_90_DEG_UP_QUARTER_LOOP
     { TRACK_ROTATION_CONTROL_TOGGLE,TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_ROTATION_CONTROL_TOGGLE
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack1x4A
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack2x2
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack4x4
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack2x4
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack1x5
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack1x1A
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack1x4B
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack1x1B
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        -40                },  // TrackElemType::FlatTrack1x4C
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack3x3
+    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack1x4A
+    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack2x2
+    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack4x4
+    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack2x4
+    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack1x5
+    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack1x1A
+    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack1x4B
+    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack1x1B
+    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        -40                },  // TrackElemType::FlatTrack1x4C
+    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack3x3
     { TRACK_CORKSCREW_LARGE,        TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // TrackElemType::LeftLargeCorkscrewUp
     { TRACK_CORKSCREW_LARGE,        TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // TrackElemType::RightLargeCorkscrewUp
     { TRACK_CORKSCREW_LARGE,        TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, -32                },  // TrackElemType::LeftLargeCorkscrewDown
@@ -6600,12 +6615,12 @@ static constexpr TrackDefinition TrackDefinitions[TrackElemType::Count] =
     { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_UP_25,   TRACK_SLOPE_UP_25,   TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,      0 }, // TrackElemType::RightEighthBankToOrthogonalUp25 
     { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_DOWN_25, TRACK_SLOPE_DOWN_25, TRACK_BANK_LEFT,        TRACK_BANK_LEFT,       0 }, // TrackElemType::LeftEighthBankToOrthogonalDown25
     { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_DOWN_25, TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,      0 }, // TrackElemType::RightEighthBankToOrthogonalDown25     
-//TODO last column - preview z offset
 };
+static_assert(std::size(TrackDefinitions) == TrackElemType::Count);
 
 // clang-format on
 
-constexpr static uint8_t TrackTypeToSpinFunction[TrackElemType::Count] = {
+constexpr static uint8_t TrackTypeToSpinFunction[] = {
     NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
     NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, NO_SPIN, NO_SPIN,
     NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, LR_SPIN,
@@ -6631,8 +6646,9 @@ constexpr static uint8_t TrackTypeToSpinFunction[TrackElemType::Count] = {
     NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
     NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
     NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-}; // TODO
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+};
+static_assert(std::size(TrackTypeToSpinFunction) == TrackElemType::Count);
 
 template<int32_t TConstant> static int32_t EvaluatorConst(const int16_t)
 {
@@ -7694,13 +7710,13 @@ static constexpr const StringId RideConfigurationStringIds[] = {
     STR_HELIX_UP_RIGHT,                // 107
     STR_HELIX_DOWN_LEFT,               // 108
     STR_HELIX_DOWN_RIGHT,              // 109
-    STR_BASE_SIZE_2_X_2,               // 110
-    STR_BASE_SIZE_4_X_4,               // 111
+    STR_EMPTY,                         // TrackElemType::Up25LeftBanked
+    STR_EMPTY,                         // TrackElemType::Up25RighBanked
     STR_WATERFALLS,                    // 112
     STR_RAPIDS,                        // 113
     STR_ON_RIDE_PHOTO_SECTION,         // 114
-    STR_BASE_SIZE_2_X_4,               // 115
-    STR_BASE_SIZE_5_X_1,               // 116
+    STR_EMPTY,                         // TrackElemType::Down25LeftBanked
+    STR_EMPTY,                         // TrackElemType::Down25RightBanked
     STR_WATER_SPLASH,                  // 117
     STR_EMPTY,                         // 118
     STR_EMPTY,                         // 119
@@ -7841,16 +7857,16 @@ static constexpr const StringId RideConfigurationStringIds[] = {
     STR_QUARTER_LOOP,                  // 254
     STR_QUARTER_LOOP,                  // 255
     STR_SPINNING_CONTROL_TOGGLE_TRACK, // 256
-    STR_EMPTY,                         // 257
-    STR_EMPTY,                         // 258
-    STR_EMPTY,                         // 259
-    STR_EMPTY,                         // 260
-    STR_EMPTY,                         // 261
-    STR_EMPTY,                         // 262
-    STR_EMPTY,                         // 263
-    STR_EMPTY,                         // 264
-    STR_EMPTY,                         // 265
-    STR_EMPTY,                         // 266
+    STR_EMPTY,                         // TrackElemType::FlatTrack1x4A
+    STR_BASE_SIZE_2_X_2,               // TrackElemType::FlatTrack2x2
+    STR_BASE_SIZE_4_X_4,               // TrackElemType::FlatTrack4x4
+    STR_BASE_SIZE_2_X_4,               // TrackElemType::FlatTrack2x4
+    STR_BASE_SIZE_5_X_1,               // TrackElemType::FlatTrack1x5
+    STR_EMPTY,                         // TrackElemType::FlatTrack1x1A
+    STR_EMPTY,                         // TrackElemType::FlatTrack1x4B
+    STR_EMPTY,                         // TrackElemType::FlatTrack1x1B
+    STR_EMPTY,                         // TrackElemType::FlatTrack1x4C
+    STR_EMPTY,                         // TrackElemType::FlatTrack3x3
     STR_LARGE_HALF_CORKSCREW_LEFT,     // TrackElemType::LeftCorkscrewUp
     STR_LARGE_HALF_CORKSCREW_RIGHT,    // TrackElemType::RightCorkscrewUp
     STR_LARGE_HALF_CORKSCREW_LEFT,     // TrackElemType::LeftCorkscrewDown
@@ -7922,6 +7938,7 @@ static constexpr const StringId RideConfigurationStringIds[] = {
     STR_EMPTY,                         // TrackElemType::LeftEighthBankToOrthogonalDown25
     STR_EMPTY,                         // TrackElemType::RightEighthBankToOrthogonalDown25
 };
+static_assert(std::size(RideConfigurationStringIds) == TrackElemType::Count);
 
 namespace OpenRCT2
 {

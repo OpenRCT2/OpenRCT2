@@ -573,12 +573,16 @@ GameActions::Result TrackPlaceAction::Execute() const
             case TrackElemType::SpinningTunnel:
                 MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
                 break;
+            case TrackElemType::Brakes:
+                trackElement->SetBrakeClosed(true);
+                break;
         }
         if (TrackTypeHasSpeedSetting(_trackType))
         {
             trackElement->SetBrakeBoosterSpeed(_brakeSpeed);
         }
-        else if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
+
+        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
         {
             trackElement->SetDoorAState(LANDSCAPE_DOOR_CLOSED);
             trackElement->SetDoorBState(LANDSCAPE_DOOR_CLOSED);
@@ -618,9 +622,9 @@ GameActions::Result TrackPlaceAction::Execute() const
         }
 
         // If the placed tile is a station modify station properties.
-        // Don't do this if the ride is simulating and the tile is a ghost to prevent desyncs.
-        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN
-            && !(ride->status == RideStatus::Simulating && GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        // Don't do this if the tile is a ghost to prevent desyncs
+        // However, ghost tiles from track designs need to modify station data to display properly
+        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) || _fromTrackDesign))
         {
             if (trackBlock->index == 0)
             {

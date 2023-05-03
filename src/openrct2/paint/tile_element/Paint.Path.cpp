@@ -274,9 +274,9 @@ static void PathBitBenchesPaint(
 
 /* rct2: 0x006A6008 */
 static void PathBitJumpingFountainsPaint(
-    PaintSession& session, const PathBitEntry& pathBitEntry, int32_t height, ImageId imageTemplate, DrawPixelInfo* dpi)
+    PaintSession& session, const PathBitEntry& pathBitEntry, int32_t height, ImageId imageTemplate, DrawPixelInfo& dpi)
 {
-    if (dpi->zoom_level > ZoomLevel{ 0 })
+    if (dpi.zoom_level > ZoomLevel{ 0 })
         return;
 
     auto imageId = imageTemplate.WithIndex(pathBitEntry.image);
@@ -781,9 +781,7 @@ static void Sub6A3F61(
     // Probably drawing benches etc.
     PROFILED_FUNCTION();
 
-    DrawPixelInfo* dpi = &session.DPI;
-
-    if (dpi->zoom_level <= ZoomLevel{ 1 })
+    if (session.DPI.zoom_level <= ZoomLevel{ 1 })
     {
         if (!gTrackDesignSaveMode)
         {
@@ -826,7 +824,7 @@ static void Sub6A3F61(
                                 sceneryImageTemplate);
                             break;
                         case PathBitDrawType::JumpingFountain:
-                            PathBitJumpingFountainsPaint(session, *pathAddEntry, height, sceneryImageTemplate, dpi);
+                            PathBitJumpingFountainsPaint(session, *pathAddEntry, height, sceneryImageTemplate, session.DPI);
                             break;
                     }
 
@@ -1049,18 +1047,18 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
 
     if (tileElement.AdditionIsGhost())
     {
-        sceneryImageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        sceneryImageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
 
     if (tileElement.IsGhost())
     {
         session.InteractionType = ViewportInteractionItem::None;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
     else if (TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&tileElement)))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
-        sceneryImageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
+        sceneryImageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
 
     // For debugging purpose, show blocked tiles with a colour
@@ -1072,7 +1070,7 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
     // Draw wide flags as ghosts, leaving only the "walkable" paths to be drawn normally
     if (gPaintWidePathsAsGhost && tileElement.IsWide())
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
 
     PaintPatrolAreas(session, tileElement);

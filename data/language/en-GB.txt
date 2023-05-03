@@ -1220,8 +1220,8 @@ STR_1838    :Satisfaction: {COMMA16}%
 STR_1839    :Reliability: {COMMA16}%
 STR_1840    :Down-time: {COMMA16}%
 STR_1841    :Profit: {CURRENCY2DP} per hour
-STR_1842    :Favourite of: {COMMA16} guest
-STR_1843    :Favourite of: {COMMA16} guests
+STR_1842    :Favourite of: {COMMA32} guest
+STR_1843    :Favourite of: {COMMA32} guests
 STR_1844    :Select information type to show in ride/attraction list
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} guests
@@ -2190,8 +2190,8 @@ STR_3118    :{BLACK}{STRINGID} is heading for the ride
 STR_3119    :{BLACK}{STRINGID} is fixing the ride
 STR_3120    :Locate nearest available mechanic, or mechanic fixing ride
 STR_3121    :Unable to locate mechanic, or all nearby mechanics are busy
-STR_3122    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA16} guest
-STR_3123    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA16} guests
+STR_3122    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA32} guest
+STR_3123    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA32} guests
 STR_3124    :Broken {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Excitement Factor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}+{COMMA16}%
@@ -3679,6 +3679,17 @@ STR_6573    :Invisible
 STR_6574    :Void
 STR_6575    :Allow special colour schemes
 STR_6576    :Adds special colours to colour dropdown
+STR_6577    :Block brake speed
+STR_6578    :Set speed limit for block brakes. In block section mode, adjacent brakes with a slower speed are linked to the block brake.
+STR_6579    :Block brakes will be set to default speed when saved as track design
+
+STR_6580    :Reset
+STR_6581    :Are you sure you want to reset all shortcut keys on this tab?
+STR_6582    :Open keyboard shortcuts window
+
+STR_6583    :{WINDOW_COLOUR_2}Reversed Trains
+STR_6584    :Select to run trains backwards
+STR_6585    :Can’t make changes…
 
 #############
 # Scenarios #
