@@ -1348,7 +1348,6 @@ void MapUpdateTiles()
         }
 
         gGrassSceneryTileLoopPosition++;
-        gGrassSceneryTileLoopPosition &= 0xFFFF;
     }
 }
 
