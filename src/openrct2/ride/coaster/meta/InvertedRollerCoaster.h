@@ -74,6 +74,7 @@ constexpr const RideTypeDescriptor InvertedRollerCoasterRTD =
             { RatingsModifierType::BonusTurns,            0,                26749, 29552, 57186 },
             { RatingsModifierType::BonusDrops,            0,                29127, 39009, 49152 },
             { RatingsModifierType::BonusSheltered,        0,                15420, 15291, 35108 },
+            { RatingsModifierType::BonusReversedTrains,   0,                2, 12, 20 },
             { RatingsModifierType::BonusProximity,        0,                15657, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                8366, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 12,               2, 2, 2 },

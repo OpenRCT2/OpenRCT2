@@ -74,6 +74,7 @@ constexpr const RideTypeDescriptor StandUpRollerCoasterRTD =
             { RatingsModifierType::BonusTurns,            0,                26749, 34767, 45749 },
             { RatingsModifierType::BonusDrops,            0,                34952, 46811, 49152 },
             { RatingsModifierType::BonusSheltered,        0,                12850, 28398, 30427 },
+            { RatingsModifierType::BonusReversedTrains,   0,                2, 20, 30 },
             { RatingsModifierType::BonusProximity,        0,                17893, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                5577, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 12,               2, 2, 2 },

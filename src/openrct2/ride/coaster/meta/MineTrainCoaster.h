@@ -71,6 +71,7 @@ constexpr const RideTypeDescriptor MineTrainCoasterRTD =
             { RatingsModifierType::BonusTurns,            0,                29721, 34767, 45749 },
             { RatingsModifierType::BonusDrops,            0,                29127, 46811, 49152 },
             { RatingsModifierType::BonusSheltered,        0,                19275, 32768, 35108 },
+            { RatingsModifierType::BonusReversedTrains,   0,                2, 10, 12 },
             { RatingsModifierType::BonusProximity,        0,                21472, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                16732, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 8,                2, 2, 2 },
