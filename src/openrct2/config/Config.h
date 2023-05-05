@@ -253,6 +253,7 @@ enum class TitleMusicKind : int32_t
     None,
     RCT1,
     RCT2,
+    OpenRCT2,
     Random
 };
 

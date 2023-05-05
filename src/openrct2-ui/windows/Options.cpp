@@ -1357,6 +1357,8 @@ private:
                     gDropdownItems[numItems++].Args = TitleMusicNames[0];
                     gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
                     gDropdownItems[numItems++].Args = TitleMusicNames[2];
+                    gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[numItems++].Args = TitleMusicNames[3];
                     ShowDropdown(widget, numItems);
                     if (gConfigSound.TitleMusic == TitleMusicKind::None)
                         Dropdown::SetChecked(0, true);
@@ -1408,9 +1410,9 @@ private:
             case WIDX_TITLE_MUSIC_DROPDOWN:
             {
                 auto titleMusic = static_cast<TitleMusicKind>(dropdownIndex);
-                if (!IsRCT1TitleMusicAvailable() && dropdownIndex != 0)
+                if (!IsRCT1TitleMusicAvailable() && dropdownIndex >= EnumValue(TitleMusicKind::RCT1))
                 {
-                    titleMusic = TitleMusicKind::RCT2;
+                    titleMusic = static_cast<TitleMusicKind>(EnumValue(titleMusic) + 1);
                 }
 
                 gConfigSound.TitleMusic = titleMusic;
@@ -2147,10 +2149,8 @@ private:
     };
 
     static constexpr StringId TitleMusicNames[] = {
-        STR_OPTIONS_MUSIC_VALUE_NONE,
-        STR_ROLLERCOASTER_TYCOON_1_DROPDOWN,
-        STR_ROLLERCOASTER_TYCOON_2_DROPDOWN,
-        STR_OPTIONS_MUSIC_VALUE_RANDOM,
+        STR_OPTIONS_MUSIC_VALUE_NONE, STR_ROLLERCOASTER_TYCOON_1_DROPDOWN, STR_ROLLERCOASTER_TYCOON_2_DROPDOWN,
+        STR_OPENRCT2_DROPDOWN,        STR_OPTIONS_MUSIC_VALUE_RANDOM,
     };
 
     static constexpr StringId FullscreenModeNames[] = {

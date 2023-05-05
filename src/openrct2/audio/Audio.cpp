@@ -269,9 +269,9 @@ namespace OpenRCT2::Audio
         }
     }
 
-    static ObjectEntryDescriptor GetTitleMusicDescriptor()
+    static ObjectEntryDescriptor GetTitleMusicDescriptor(TitleMusicKind kind)
     {
-        switch (gConfigSound.TitleMusic)
+        switch (kind)
         {
             default:
                 return {};
@@ -279,11 +279,25 @@ namespace OpenRCT2::Audio
                 return ObjectEntryDescriptor(ObjectType::Audio, AudioObjectIdentifiers::RCT1Title);
             case TitleMusicKind::RCT2:
                 return ObjectEntryDescriptor(ObjectType::Audio, AudioObjectIdentifiers::RCT2Title);
+            case TitleMusicKind::OpenRCT2:
+                return ObjectEntryDescriptor(ObjectType::Audio, AudioObjectIdentifiers::OpenRCT2Title);
             case TitleMusicKind::Random:
-                return ObjectEntryDescriptor(
-                    ObjectType::Audio,
-                    (UtilRand() & 1) ? AudioObjectIdentifiers::RCT1Title : AudioObjectIdentifiers::RCT2Title);
+                switch (UtilRand() % 3)
+                {
+                    case 0:
+                        return GetTitleMusicDescriptor(TitleMusicKind::RCT1);
+                    case 1:
+                        return GetTitleMusicDescriptor(TitleMusicKind::RCT2);
+                    case 2:
+                    default:
+                        return GetTitleMusicDescriptor(TitleMusicKind::OpenRCT2);
+                }
         }
+    }
+
+    static ObjectEntryDescriptor GetTitleMusicDescriptor()
+    {
+        return GetTitleMusicDescriptor(gConfigSound.TitleMusic);
     }
 
     void PlayTitleMusic()

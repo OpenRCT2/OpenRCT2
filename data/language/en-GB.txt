@@ -3691,6 +3691,8 @@ STR_6583    :{WINDOW_COLOUR_2}Reversed Trains
 STR_6584    :Select to run trains backwards
 STR_6585    :Can’t make changes…
 
+STR_6586    :OpenRCT2
+
 #############
 # Scenarios #
 ################
