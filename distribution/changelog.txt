@@ -2,7 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#18713] Block brakes have speed control and brakes slower than adjacent block brakes copy block brake speed when block brake open.
 - Feature: [#19276] Add Powered Lifthill to Giga Coaster.
-- Feature: [#19305] Add new Reversed Trains ride setting to run trains backwards.
+- Feature: [#19305] Add new Reversed Trains ride setting to run trains backwards, granting a bonus to ride ratings.
 - Feature: [#19305] [Plugin] Add “Car.isReversed” to allow individual ride vehicles to run backwards.
 - Feature: [#19446] Add new color options to color dropdown.
 - Feature: [#19547] Add large sloped turns to hybrid coaster and single rail coaster.

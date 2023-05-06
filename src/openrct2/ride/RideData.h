@@ -119,6 +119,7 @@ enum class RatingsModifierType : uint8_t
     BonusScenery,
     BonusRotations,
     BonusOperationOption,
+    BonusReversedTrains,
     // Ride-specific Rating Bonuses
     BonusGoKartRace,
     BonusTowerRide,

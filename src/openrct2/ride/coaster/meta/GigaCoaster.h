@@ -72,6 +72,7 @@ constexpr const RideTypeDescriptor GigaCoasterRTD =
             { RatingsModifierType::BonusTurns,            0,                28235, 34767, 45749 },
             { RatingsModifierType::BonusDrops,            0,                43690, 46811, 49152 },
             { RatingsModifierType::BonusSheltered,        0,                15420, 32768, 35108 },
+            { RatingsModifierType::BonusReversedTrains,   0,                2, 20, 20 },
             { RatingsModifierType::BonusProximity,        0,                20130, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                6693, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 16,               2, 2, 2 },
