@@ -181,6 +181,10 @@ jobs:
         uses: hendrikmuhs/ccache-action@v1
         with:
           key: ${{ matrix.cache_key }}
+      - name: Configure ccache
+        run: |
+          # See https://github.com/hendrikmuhs/ccache-action/issues/146
+          ccache --set-config=compiler_check=content
       - name: Install GCC problem matcher
         uses: ammaraskar/gcc-problem-matcher@master
       - name: Build OpenRCT2
