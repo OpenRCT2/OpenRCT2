@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,7 +14,6 @@
 #include "../drawing/Drawing.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
-#include "../world/LargeScenery.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "FootpathRemoveAction.h"
@@ -28,6 +27,17 @@ ClearAction::ClearAction(MapRange range, ClearableItems itemsToClear)
     : _range(range)
     , _itemsToClear(itemsToClear)
 {
+}
+
+void ClearAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_range);
+    visitor.Visit("itemsToClear", _itemsToClear);
+}
+
+uint16_t ClearAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
 }
 
 void ClearAction::Serialise(DataSerialiser& stream)
@@ -55,7 +65,7 @@ GameActions::Result ClearAction::CreateResult() const
 
     auto x = (_range.GetLeft() + _range.GetRight()) / 2 + 16;
     auto y = (_range.GetTop() + _range.GetBottom()) / 2 + 16;
-    auto z = tile_element_height({ x, y });
+    auto z = TileElementHeight({ x, y });
     result.Position = CoordsXYZ(x, y, z);
 
     return result;
@@ -67,8 +77,8 @@ GameActions::Result ClearAction::QueryExecute(bool executing) const
 
     auto noValidTiles = true;
     auto error = GameActions::Status::Ok;
-    rct_string_id errorMessage = STR_NONE;
-    money32 totalCost = 0;
+    StringId errorMessage = STR_NONE;
+    money64 totalCost = 0;
 
     auto validRange = ClampRangeWithinMap(_range);
     for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
@@ -78,7 +88,7 @@ GameActions::Result ClearAction::QueryExecute(bool executing) const
             if (LocationValid({ x, y }) && MapCanClearAt({ x, y }))
             {
                 auto cost = ClearSceneryFromTile({ x, y }, executing);
-                if (cost != MONEY32_UNDEFINED)
+                if (cost != MONEY64_UNDEFINED)
                 {
                     noValidTiles = false;
                     totalCost += cost;
@@ -107,16 +117,16 @@ GameActions::Result ClearAction::QueryExecute(bool executing) const
     return result;
 }
 
-money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executing) const
+money64 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executing) const
 {
     // Pass down all flags.
     TileElement* tileElement = nullptr;
-    money32 totalCost = 0;
+    money64 totalCost = 0;
     bool tileEdited;
     do
     {
         tileEdited = false;
-        tileElement = map_get_first_element_at(tilePos);
+        tileElement = MapGetFirstElementAt(tilePos);
         if (tileElement == nullptr)
             return totalCost;
         do
@@ -207,11 +217,11 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
 void ClearAction::ResetClearLargeSceneryFlag()
 {
     // TODO: Improve efficiency of this
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    for (int32_t y = 0; y < gMapSize.y; y++)
     {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        for (int32_t x = 0; x < gMapSize.x; x++)
         {
-            auto tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
+            auto tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
             do
             {
                 if (tileElement == nullptr)
@@ -227,5 +237,5 @@ void ClearAction::ResetClearLargeSceneryFlag()
 
 bool ClearAction::MapCanClearAt(const CoordsXY& location)
 {
-    return (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode || map_is_location_owned_or_has_rights(location);
+    return (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode || MapIsLocationOwnedOrHasRights(location);
 }

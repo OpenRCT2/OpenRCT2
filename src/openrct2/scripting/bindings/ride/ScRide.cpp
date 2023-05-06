@@ -192,7 +192,7 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide();
         if (ride != nullptr)
         {
-            std::for_each(std::begin(ride->vehicles), std::begin(ride->vehicles) + ride->num_vehicles, [&](auto& veh) {
+            std::for_each(std::begin(ride->vehicles), std::begin(ride->vehicles) + ride->NumTrains, [&](auto& veh) {
                 result.push_back(veh.ToUnderlying());
             });
         }
@@ -325,7 +325,7 @@ namespace OpenRCT2::Scripting
             auto numPrices = std::min(value.size(), ride->GetNumPrices());
             for (size_t i = 0; i < numPrices; i++)
             {
-                ride->price[i] = static_cast<money16>(value[i]);
+                ride->price[i] = static_cast<money64>(value[i]);
             }
         }
     }
@@ -411,12 +411,12 @@ namespace OpenRCT2::Scripting
         return ride != nullptr ? ride->GetAge() : 0;
     }
 
-    int16_t ScRide::runningCost_get() const
+    money64 ScRide::runningCost_get() const
     {
         auto ride = GetRide();
         return ride != nullptr ? ride->upkeep_cost : 0;
     }
-    void ScRide::runningCost_set(int16_t value)
+    void ScRide::runningCost_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
         auto ride = GetRide();
@@ -486,7 +486,7 @@ namespace OpenRCT2::Scripting
 
     Ride* ScRide::GetRide() const
     {
-        return get_ride(_rideId);
+        return ::GetRide(_rideId);
     }
 
     uint8_t ScRide::downtime_get() const

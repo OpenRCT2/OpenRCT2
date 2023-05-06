@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,5 +20,5 @@ enum
     SLOPE_E_THRESHOLD_FLAGS = (1 << 3)
 };
 
-int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b);
-int32_t tile_smooth(const TileCoordsXY& tileCoords);
+int32_t MapSmooth(int32_t l, int32_t t, int32_t r, int32_t b);
+int32_t TileSmooth(const TileCoordsXY& tileCoords);

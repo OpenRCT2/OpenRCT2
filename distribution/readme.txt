@@ -1,5 +1,5 @@
-Last updated:    2022-07-04
-Release version: 0.4.1
+Last updated:    2023-03-28
+Release version: 0.4.4
 ------------------------------------------------------------------------
 
 
@@ -66,7 +66,7 @@ following information in your bug report:
 
 3.0) Supported platforms
 ---- -------------------
-OpenRCT2 is currently supported on Windows Vista and above, many distributions of
+OpenRCT2 is currently supported on Windows 7 and above, many distributions of
 Linux, macOS 10.13 or higher, Android, FreeBSD and OpenBSD. OpenRCT2 will only work on
 little-endian architectures.
 Further instructions can be found on GitHub.

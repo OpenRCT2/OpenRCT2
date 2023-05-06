@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,10 +34,10 @@ namespace OpenRCT2::Scripting
     std::string ScPlayerGroup::name_get() const
     {
 #    ifndef DISABLE_NETWORK
-        auto index = network_get_group_index(_id);
+        auto index = NetworkGetGroupIndex(_id);
         if (index == -1)
             return {};
-        return network_get_group_name(index);
+        return NetworkGetGroupName(index);
 #    else
         return {};
 #    endif
@@ -71,7 +71,7 @@ namespace OpenRCT2::Scripting
     std::vector<std::string> ScPlayerGroup::permissions_get() const
     {
 #    ifndef DISABLE_NETWORK
-        auto index = network_get_group_index(_id);
+        auto index = NetworkGetGroupIndex(_id);
         if (index == -1)
             return {};
 
@@ -80,7 +80,7 @@ namespace OpenRCT2::Scripting
         auto permissionIndex = 0;
         for (const auto& action : NetworkActions::Actions)
         {
-            if (network_can_perform_action(index, static_cast<NetworkPermission>(permissionIndex)))
+            if (NetworkCanPerformAction(index, static_cast<NetworkPermission>(permissionIndex)))
             {
                 result.push_back(TransformPermissionKeyToJS(action.PermissionName));
             }
@@ -95,7 +95,7 @@ namespace OpenRCT2::Scripting
     void ScPlayerGroup::permissions_set(std::vector<std::string> value)
     {
 #    ifndef DISABLE_NETWORK
-        auto groupIndex = network_get_group_index(_id);
+        auto groupIndex = NetworkGetGroupIndex(_id);
         if (groupIndex == -1)
             return;
 
@@ -123,7 +123,7 @@ namespace OpenRCT2::Scripting
         for (size_t i = 0; i < enabledPermissions.size(); i++)
         {
             auto toggle
-                = (enabledPermissions[i] != (network_can_perform_action(groupIndex, static_cast<NetworkPermission>(i)) != 0));
+                = (enabledPermissions[i] != (NetworkCanPerformAction(groupIndex, static_cast<NetworkPermission>(i)) != 0));
             if (toggle)
             {
                 auto networkAction2 = NetworkModifyGroupAction(

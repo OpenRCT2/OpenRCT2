@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -33,8 +33,8 @@ protected:
         bool initialised = _context->Initialise();
         ASSERT_TRUE(initialised);
 
-        load_from_sv6(parkPath.c_str());
-        game_load_init();
+        GetContext()->LoadParkFromFile(parkPath);
+        GameLoadInit();
 
         // Changed in some tests. Store to restore its value
         _gScreenFlags = gScreenFlags;
@@ -59,9 +59,9 @@ uint8_t TileElementsViewTests::_gScreenFlags;
 
 template<typename T> std::vector<T*> BuildListManual(const CoordsXY& pos)
 {
-    std::vector<TileElement*> res;
+    std::vector<T*> res;
 
-    TileElement* element = map_get_first_element_at(pos);
+    TileElement* element = MapGetFirstElementAt(pos);
     if (element == nullptr)
         return res;
 
@@ -69,9 +69,9 @@ template<typename T> std::vector<T*> BuildListManual(const CoordsXY& pos)
     {
         if constexpr (!std::is_same_v<T, TileElement>)
         {
-            auto* res = element->as<T>();
-            if (res)
-                res.push_back(res);
+            auto* el = element->as<T>();
+            if (el)
+                res.push_back(el);
         }
         else
         {
@@ -85,7 +85,7 @@ template<typename T> std::vector<T*> BuildListManual(const CoordsXY& pos)
 
 template<typename T> std::vector<T*> BuildListByView(const CoordsXY& pos)
 {
-    std::vector<TileElement*> res;
+    std::vector<T*> res;
 
     for (auto* element : TileElementsView<T>(pos))
     {
@@ -97,8 +97,8 @@ template<typename T> std::vector<T*> BuildListByView(const CoordsXY& pos)
 
 template<typename T> bool CompareLists(const CoordsXY& pos)
 {
-    auto listManual = BuildListManual<TileElement>(pos);
-    auto listView = BuildListByView<TileElement>(pos);
+    auto listManual = BuildListManual<T>(pos);
+    auto listView = BuildListByView<T>(pos);
 
     EXPECT_EQ(listManual.size(), listView.size());
     if (listManual.size() != listView.size())

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../Intro.h"
 #include "../OpenRCT2.h"
+#include "../PlatformEnvironment.h"
 #include "../config/Config.h"
 #include "../core/File.h"
 #include "../core/FileStream.h"
@@ -49,6 +50,7 @@ namespace OpenRCT2::Audio
     static std::vector<std::string> _audioDevices;
     static int32_t _currentAudioDevice = -1;
     static ObjectEntryIndex _soundsAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
+    static ObjectEntryIndex _soundsAdditionalAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
     static ObjectEntryIndex _titleAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
 
     bool gGameSoundsOff = false;
@@ -64,7 +66,7 @@ namespace OpenRCT2::Audio
             return false;
         if (gGameSoundsOff)
             return false;
-        if (!gConfigSound.sound_enabled)
+        if (!gConfigSound.SoundEnabled)
             return false;
         if (gOpenRCT2Headless)
             return false;
@@ -74,19 +76,19 @@ namespace OpenRCT2::Audio
     void Init()
     {
         auto audioContext = GetContext()->GetAudioContext();
-        if (gConfigSound.device.empty())
+        if (gConfigSound.Device.empty())
         {
             audioContext->SetOutputDevice("");
             _currentAudioDevice = 0;
         }
         else
         {
-            audioContext->SetOutputDevice(gConfigSound.device);
+            audioContext->SetOutputDevice(gConfigSound.Device);
 
             PopulateDevices();
             for (int32_t i = 0; i < GetDeviceCount(); i++)
             {
-                if (_audioDevices[i] == gConfigSound.device)
+                if (_audioDevices[i] == gConfigSound.Device)
                 {
                     _currentAudioDevice = i;
                 }
@@ -98,12 +100,34 @@ namespace OpenRCT2::Audio
     void LoadAudioObjects()
     {
         auto& objManager = GetContext()->GetObjectManager();
-        auto* baseAudio = objManager.LoadObject(AudioObjectIdentifiers::Rct2Base);
-        if (baseAudio != nullptr)
+
+        Object* baseAudio{};
+
+        // We have a different audio object for RCT Classic
+        auto env = GetContext()->GetPlatformEnvironment();
+        if (env->IsUsingClassic())
         {
-            _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
+            baseAudio = objManager.LoadObject(AudioObjectIdentifiers::RCTCBase);
+            if (baseAudio != nullptr)
+            {
+                _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
+            }
         }
-        objManager.LoadObject(AudioObjectIdentifiers::Rct2Circus);
+
+        if (baseAudio == nullptr)
+        {
+            // Fallback to vanilla RCT2 audio object
+            baseAudio = objManager.LoadObject(AudioObjectIdentifiers::RCT2Base);
+            if (baseAudio != nullptr)
+            {
+                _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
+            }
+        }
+
+        objManager.LoadObject(AudioObjectIdentifiers::OpenRCT2Additional);
+        _soundsAdditionalAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(
+            AudioObjectIdentifiers::OpenRCT2Additional);
+        objManager.LoadObject(AudioObjectIdentifiers::RCT2Circus);
     }
 
     void PopulateDevices()
@@ -116,13 +140,13 @@ namespace OpenRCT2::Audio
         {
             if (device.empty())
             {
-                device = language_get_string(STR_OPTIONS_SOUND_VALUE_DEFAULT);
+                device = LanguageGetString(STR_OPTIONS_SOUND_VALUE_DEFAULT);
             }
         }
 
 #ifndef __linux__
         // The first device is always system default on Windows and macOS
-        std::string defaultDevice = language_get_string(STR_OPTIONS_SOUND_VALUE_DEFAULT);
+        std::string defaultDevice = LanguageGetString(STR_OPTIONS_SOUND_VALUE_DEFAULT);
         devices.insert(devices.begin(), defaultDevice);
 #endif
 
@@ -143,17 +167,17 @@ namespace OpenRCT2::Audio
         params.volume = 0;
         params.pan = 0;
 
-        auto element = map_get_surface_element_at(location);
+        auto element = MapGetSurfaceElementAt(location);
         if (element != nullptr && (element->GetBaseZ()) - 5 > location.z)
         {
             volumeDown = 10;
         }
 
-        uint8_t rotation = get_current_rotation();
-        auto pos2 = translate_3d_to_2d_with_z(rotation, location);
+        uint8_t rotation = GetCurrentRotation();
+        auto pos2 = Translate3DTo2DWithZ(rotation, location);
 
-        rct_viewport* viewport = nullptr;
-        while ((viewport = window_get_previous_viewport(viewport)) != nullptr)
+        Viewport* viewport = nullptr;
+        while ((viewport = WindowGetPreviousViewport(viewport)) != nullptr)
         {
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
@@ -175,12 +199,23 @@ namespace OpenRCT2::Audio
         return params;
     }
 
-    AudioObject* GetBaseAudioObject()
+    static std::tuple<AudioObject*, uint32_t> GetAudioObjectAndSampleIndex(SoundId id)
     {
         auto& objManager = GetContext()->GetObjectManager();
-        auto* baseAudioObject = static_cast<AudioObject*>(
-            objManager.GetLoadedObject(ObjectType::Audio, _soundsAudioObjectEntryIndex));
-        return baseAudioObject;
+        AudioObject* audioObject{};
+        uint32_t sampleIndex = EnumValue(id);
+        if (id >= SoundId::LiftRMC)
+        {
+            audioObject = static_cast<AudioObject*>(
+                objManager.GetLoadedObject(ObjectType::Audio, _soundsAdditionalAudioObjectEntryIndex));
+            sampleIndex -= EnumValue(SoundId::LiftRMC);
+        }
+        else
+        {
+            audioObject = static_cast<AudioObject*>(
+                objManager.GetLoadedObject(ObjectType::Audio, _soundsAudioObjectEntryIndex));
+        }
+        return std::make_tuple(audioObject, sampleIndex);
     }
 
     static void Play(IAudioSource* audioSource, int32_t volume, int32_t pan)
@@ -202,13 +237,13 @@ namespace OpenRCT2::Audio
             return;
 
         // Get sound from base object
-        auto* baseAudioObject = GetBaseAudioObject();
+        auto [baseAudioObject, sampleIndex] = GetAudioObjectAndSampleIndex(soundId);
         if (baseAudioObject != nullptr)
         {
-            auto params = GetParametersFromLocation(baseAudioObject, EnumValue(soundId), loc);
+            auto params = GetParametersFromLocation(baseAudioObject, sampleIndex, loc);
             if (params.in_range)
             {
-                auto source = baseAudioObject->GetSample(EnumValue(soundId));
+                auto source = baseAudioObject->GetSample(sampleIndex);
                 if (source != nullptr)
                 {
                     Play(source, params.volume, params.pan);
@@ -223,10 +258,10 @@ namespace OpenRCT2::Audio
             return;
 
         // Get sound from base object
-        auto* baseAudioObject = GetBaseAudioObject();
+        auto [baseAudioObject, sampleIndex] = GetAudioObjectAndSampleIndex(soundId);
         if (baseAudioObject != nullptr)
         {
-            auto source = baseAudioObject->GetSample(EnumValue(soundId));
+            auto source = baseAudioObject->GetSample(sampleIndex);
             if (source != nullptr)
             {
                 Play(source, volume, pan);
@@ -236,18 +271,18 @@ namespace OpenRCT2::Audio
 
     static ObjectEntryDescriptor GetTitleMusicDescriptor()
     {
-        switch (gConfigSound.title_music)
+        switch (gConfigSound.TitleMusic)
         {
             default:
                 return {};
-            case TitleMusicKind::Rct1:
-                return ObjectEntryDescriptor(ObjectType::Audio, AudioObjectIdentifiers::Rct1Title);
-            case TitleMusicKind::Rct2:
-                return ObjectEntryDescriptor(ObjectType::Audio, AudioObjectIdentifiers::Rct2Title);
+            case TitleMusicKind::RCT1:
+                return ObjectEntryDescriptor(ObjectType::Audio, AudioObjectIdentifiers::RCT1Title);
+            case TitleMusicKind::RCT2:
+                return ObjectEntryDescriptor(ObjectType::Audio, AudioObjectIdentifiers::RCT2Title);
             case TitleMusicKind::Random:
                 return ObjectEntryDescriptor(
                     ObjectType::Audio,
-                    (util_rand() & 1) ? AudioObjectIdentifiers::Rct1Title : AudioObjectIdentifiers::Rct2Title);
+                    (UtilRand() & 1) ? AudioObjectIdentifiers::RCT1Title : AudioObjectIdentifiers::RCT2Title);
         }
     }
 
@@ -286,7 +321,7 @@ namespace OpenRCT2::Audio
         StopTitleMusic();
         StopVehicleSounds();
         RideAudio::StopAllChannels();
-        peep_stop_crowd_noise();
+        PeepStopCrowdNoise();
         ClimateStopWeatherSound();
     }
 
@@ -345,12 +380,12 @@ namespace OpenRCT2::Audio
         }
 
         _currentAudioDevice = device;
-        config_save_default();
+        ConfigSaveDefault();
     }
 
     void Close()
     {
-        peep_stop_crowd_noise();
+        PeepStopCrowdNoise();
         StopTitleMusic();
         RideAudio::StopAllChannels();
         ClimateStopWeatherSound();
@@ -359,19 +394,17 @@ namespace OpenRCT2::Audio
 
     void ToggleAllSounds()
     {
-        gConfigSound.master_sound_enabled = !gConfigSound.master_sound_enabled;
-        if (gConfigSound.master_sound_enabled)
+        gConfigSound.MasterSoundEnabled = !gConfigSound.MasterSoundEnabled;
+        if (gConfigSound.MasterSoundEnabled)
         {
             Resume();
-            PlayTitleMusic();
         }
         else
         {
-            StopTitleMusic();
             Pause();
         }
 
-        window_invalidate_by_class(WC_OPTIONS);
+        WindowInvalidateByClass(WindowClass::Options);
     }
 
     void Pause()
@@ -379,13 +412,15 @@ namespace OpenRCT2::Audio
         gGameSoundsOff = true;
         StopVehicleSounds();
         RideAudio::StopAllChannels();
-        peep_stop_crowd_noise();
+        PeepStopCrowdNoise();
         ClimateStopWeatherSound();
+        StopTitleMusic();
     }
 
     void Resume()
     {
         gGameSoundsOff = false;
+        PlayTitleMusic();
     }
 
     void StopVehicleSounds()
@@ -420,10 +455,10 @@ namespace OpenRCT2::Audio
         SoundId id, bool loop, int32_t volume, float pan, double rate, bool forget)
     {
         // Get sound from base object
-        auto baseAudioObject = GetBaseAudioObject();
+        auto [baseAudioObject, sampleIndex] = GetAudioObjectAndSampleIndex(id);
         if (baseAudioObject != nullptr)
         {
-            auto source = baseAudioObject->GetSample(EnumValue(id));
+            auto source = baseAudioObject->GetSample(sampleIndex);
             if (source != nullptr)
             {
                 return CreateAudioChannel(source, MixerGroup::Sound, loop, volume, pan, rate, forget);

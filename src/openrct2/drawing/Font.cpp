@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 #include "../localisation/Language.h"
 #include "../localisation/LocalisationService.h"
 #include "../sprites.h"
+#include "../util/Util.h"
 #include "Drawing.h"
 #include "TTF.h"
 
@@ -20,14 +21,14 @@
 #include <limits>
 #include <unordered_map>
 
-static constexpr const int32_t SpriteFontLineHeight[FONT_SIZE_COUNT] = {
+static constexpr const int32_t SpriteFontLineHeight[FontStyleCount] = {
+    10,
+    10,
     6,
-    10,
-    10,
 };
 
-static uint8_t _spriteFontCharacterWidths[FONT_SIZE_COUNT][FONT_SPRITE_GLYPH_COUNT];
-static uint8_t _additionalSpriteFontCharacterWidth[FONT_SIZE_COUNT][SPR_G2_GLYPH_COUNT] = {};
+static uint8_t _spriteFontCharacterWidths[FontStyleCount][FONT_SPRITE_GLYPH_COUNT];
+static uint8_t _additionalSpriteFontCharacterWidth[FontStyleCount][SPR_G2_GLYPH_COUNT] = {};
 
 #ifndef NO_TTF
 TTFFontSetDescriptor* gCurrentTTFFontSet;
@@ -85,6 +86,10 @@ static const std::unordered_map<char32_t, int32_t> codepointOffsetMap = {
     { UnicodeChar::u_ring, SPR_G2_U_RING_LOWER - SPR_CHAR_START },
     { UnicodeChar::u_double_acute_uc, SPR_G2_U_DOUBLE_ACUTE_UPPER - SPR_CHAR_START },
     { UnicodeChar::u_double_acute, SPR_G2_U_DOUBLE_ACUTE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::w_circumflex_uc, SPR_G2_W_CIRCUMFLEX_UPPER - SPR_CHAR_START },
+    { UnicodeChar::w_circumflex, SPR_G2_W_CIRCUMFLEX_LOWER - SPR_CHAR_START },
+    { UnicodeChar::y_circumflex_uc, SPR_G2_Y_CIRCUMFLEX_UPPER - SPR_CHAR_START },
+    { UnicodeChar::y_circumflex, SPR_G2_Y_CIRCUMFLEX_LOWER - SPR_CHAR_START },
     { UnicodeChar::z_acute_uc, CSChar::z_acute_uc - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::z_acute, CSChar::z_acute - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::z_dot_uc, CSChar::z_dot_uc - CS_SPRITE_FONT_OFFSET },
@@ -234,7 +239,7 @@ static char32_t _biggestCodepointValue = 0;
  *
  *  rct2: 0x006C19AC
  */
-void font_sprite_initialise_characters()
+void FontSpriteInitialiseCharacters()
 {
     // Compute min and max that helps avoiding lookups for no reason.
     _smallestCodepointValue = std::numeric_limits<char32_t>::max();
@@ -244,42 +249,42 @@ void font_sprite_initialise_characters()
         _biggestCodepointValue = std::max(_biggestCodepointValue, entry.first);
     }
 
-    for (int32_t fontSize = 0; fontSize < FONT_SIZE_COUNT; fontSize++)
+    for (const auto& fontStyle : FontStyles)
     {
-        int32_t glyphOffset = fontSize * FONT_SPRITE_GLYPH_COUNT;
+        int32_t glyphOffset = EnumValue(fontStyle) * FONT_SPRITE_GLYPH_COUNT;
         for (uint8_t glyphIndex = 0; glyphIndex < FONT_SPRITE_GLYPH_COUNT; glyphIndex++)
         {
-            const rct_g1_element* g1 = gfx_get_g1_element(glyphIndex + SPR_CHAR_START + glyphOffset);
+            const G1Element* g1 = GfxGetG1Element(glyphIndex + SPR_CHAR_START + glyphOffset);
             int32_t width = 0;
             if (g1 != nullptr)
             {
                 width = g1->width + (2 * g1->x_offset) - 1;
             }
 
-            _spriteFontCharacterWidths[fontSize][glyphIndex] = static_cast<uint8_t>(width);
+            _spriteFontCharacterWidths[EnumValue(fontStyle)][glyphIndex] = static_cast<uint8_t>(width);
         }
     }
 
-    for (uint8_t fontSize : { FONT_SIZE_SMALL, FONT_SIZE_MEDIUM, FONT_SIZE_TINY })
+    for (const auto& fontStyle : FontStyles)
     {
-        int32_t glyphOffset = fontSize * SPR_G2_GLYPH_COUNT;
+        int32_t glyphOffset = EnumValue(fontStyle) * SPR_G2_GLYPH_COUNT;
         for (int32_t glyphIndex = 0; glyphIndex < SPR_G2_GLYPH_COUNT; glyphIndex++)
         {
-            const rct_g1_element* g1 = gfx_get_g1_element(glyphIndex + SPR_G2_CHAR_BEGIN + glyphOffset);
+            const G1Element* g1 = GfxGetG1Element(glyphIndex + SPR_G2_CHAR_BEGIN + glyphOffset);
             int32_t width = 0;
             if (g1 != nullptr)
             {
                 width = g1->width + (2 * g1->x_offset) - 1;
             }
 
-            _additionalSpriteFontCharacterWidth[fontSize][glyphIndex] = static_cast<uint8_t>(width);
+            _additionalSpriteFontCharacterWidth[EnumValue(fontStyle)][glyphIndex] = static_cast<uint8_t>(width);
         }
     }
 
-    scrolling_text_initialise_bitmaps();
+    ScrollingTextInitialiseBitmaps();
 }
 
-int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
+int32_t FontSpriteGetCodepointOffset(int32_t codepoint)
 {
     // Only search the table when its in range of the map.
     if (static_cast<char32_t>(codepoint) >= _smallestCodepointValue
@@ -296,22 +301,17 @@ int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
     return codepoint - 32;
 }
 
-int32_t font_sprite_get_codepoint_width(FontSpriteBase fontSpriteBase, int32_t codepoint)
+int32_t FontSpriteGetCodepointWidth(FontStyle fontStyle, int32_t codepoint)
 {
-    if (fontSpriteBase == FontSpriteBase::MEDIUM_DARK || fontSpriteBase == FontSpriteBase::MEDIUM_EXTRA_DARK)
-    {
-        fontSpriteBase = FontSpriteBase::MEDIUM;
-    }
-
-    int32_t glyphIndex = font_sprite_get_codepoint_offset(codepoint);
-    int32_t baseFontIndex = font_get_font_index_from_sprite_base(fontSpriteBase);
+    int32_t glyphIndex = FontSpriteGetCodepointOffset(codepoint);
+    auto baseFontIndex = EnumValue(fontStyle);
     if (glyphIndex >= FONT_SPRITE_GLYPH_COUNT)
     {
         glyphIndex = (SPR_CHAR_START + glyphIndex) - SPR_G2_CHAR_BEGIN;
 
         if (glyphIndex >= static_cast<int32_t>(std::size(_additionalSpriteFontCharacterWidth[baseFontIndex])))
         {
-            log_warning("Invalid glyph index %u", glyphIndex);
+            LOG_WARNING("Invalid glyph index %u", glyphIndex);
             glyphIndex = 0;
         }
         return _additionalSpriteFontCharacterWidth[baseFontIndex][glyphIndex];
@@ -319,55 +319,27 @@ int32_t font_sprite_get_codepoint_width(FontSpriteBase fontSpriteBase, int32_t c
 
     if (glyphIndex < 0 || glyphIndex >= static_cast<int32_t>(FONT_SPRITE_GLYPH_COUNT))
     {
-        log_warning("Invalid glyph index %u", glyphIndex);
+        LOG_WARNING("Invalid glyph index %u", glyphIndex);
         glyphIndex = 0;
     }
     return _spriteFontCharacterWidths[baseFontIndex][glyphIndex];
 }
 
-int32_t font_sprite_get_codepoint_sprite(FontSpriteBase fontSpriteBase, int32_t codepoint)
+ImageId FontSpriteGetCodepointSprite(FontStyle fontStyle, int32_t codepoint)
 {
-    int32_t offset = static_cast<int32_t>(fontSpriteBase);
-    auto codePointOffset = font_sprite_get_codepoint_offset(codepoint);
+    int32_t offset = EnumValue(fontStyle) * FONT_SPRITE_GLYPH_COUNT;
+    auto codePointOffset = FontSpriteGetCodepointOffset(codepoint);
     if (codePointOffset > FONT_SPRITE_GLYPH_COUNT)
     {
-        offset = font_get_font_index_from_sprite_base(fontSpriteBase) * SPR_G2_GLYPH_COUNT;
+        offset = EnumValue(fontStyle) * SPR_G2_GLYPH_COUNT;
     }
 
-    return SPR_CHAR_START + (IMAGE_TYPE_REMAP | (offset + codePointOffset));
+    return ImageId(SPR_CHAR_START + offset + codePointOffset, COLOUR_BLACK);
 }
 
-int32_t font_get_font_index_from_sprite_base(FontSpriteBase spriteBase)
+int32_t FontGetLineHeight(FontStyle fontStyle)
 {
-    switch (spriteBase)
-    {
-        case FontSpriteBase::TINY:
-            return FONT_SIZE_TINY;
-        case FontSpriteBase::SMALL:
-            return FONT_SIZE_SMALL;
-        default:
-        case FontSpriteBase::MEDIUM:
-            return FONT_SIZE_MEDIUM;
-    }
-}
-
-int32_t font_get_size_from_sprite_base(FontSpriteBase spriteBase)
-{
-    switch (spriteBase)
-    {
-        case FontSpriteBase::TINY:
-            return 0;
-        case FontSpriteBase::SMALL:
-            return 1;
-        default:
-        case FontSpriteBase::MEDIUM:
-            return 2;
-    }
-}
-
-int32_t font_get_line_height(FontSpriteBase fontSpriteBase)
-{
-    int32_t fontSize = font_get_size_from_sprite_base(fontSpriteBase);
+    auto fontSize = EnumValue(fontStyle);
 #ifndef NO_TTF
     if (LocalisationService_UseTrueTypeFont())
     {
@@ -377,17 +349,17 @@ int32_t font_get_line_height(FontSpriteBase fontSpriteBase)
     return SpriteFontLineHeight[fontSize];
 }
 
-int32_t font_get_line_height_small(FontSpriteBase fontSpriteBase)
+int32_t FontGetLineHeightSmall(FontStyle fontStyle)
 {
-    return font_get_line_height(fontSpriteBase) / 2;
+    return FontGetLineHeight(fontStyle) / 2;
 }
 
-bool font_supports_string_sprite(const utf8* text)
+bool FontSupportsStringSprite(const utf8* text)
 {
     const utf8* src = text;
 
     uint32_t codepoint;
-    while ((codepoint = utf8_get_next(src, &src)) != 0)
+    while ((codepoint = UTF8GetNext(src, &src)) != 0)
     {
         bool supported = false;
 
@@ -409,20 +381,20 @@ bool font_supports_string_sprite(const utf8* text)
     return true;
 }
 
-bool font_supports_string_ttf(const utf8* text, int32_t fontSize)
+bool FontSupportsStringTTF(const utf8* text, FontStyle fontStyle)
 {
 #ifndef NO_TTF
     const utf8* src = text;
-    const TTF_Font* font = gCurrentTTFFontSet->size[fontSize].font;
+    const TTF_Font* font = gCurrentTTFFontSet->size[EnumValue(fontStyle)].font;
     if (font == nullptr)
     {
         return false;
     }
 
     uint32_t codepoint;
-    while ((codepoint = utf8_get_next(src, &src)) != 0)
+    while ((codepoint = UTF8GetNext(src, &src)) != 0)
     {
-        bool supported = ttf_provides_glyph(font, codepoint);
+        bool supported = TTFProvidesGlyph(font, codepoint);
         if (!supported)
         {
             return false;
@@ -434,12 +406,12 @@ bool font_supports_string_ttf(const utf8* text, int32_t fontSize)
 #endif // NO_TTF
 }
 
-bool font_supports_string(const utf8* text, int32_t fontSize)
+bool FontSupportsString(const utf8* text, FontStyle fontStyle)
 {
     if (LocalisationService_UseTrueTypeFont())
     {
-        return font_supports_string_ttf(text, fontSize);
+        return FontSupportsStringTTF(text, fontStyle);
     }
 
-    return font_supports_string_sprite(text);
+    return FontSupportsStringSprite(text);
 }

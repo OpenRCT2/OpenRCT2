@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,7 +9,10 @@
 
 #include "localisation/Date.h"
 
+#include "Context.h"
 #include "Date.h"
+#include "Game.h"
+#include "GameState.h"
 #include "core/Guard.hpp"
 
 #include <algorithm>
@@ -21,6 +24,13 @@ constexpr int32_t MASK_WEEK_TICKS = 0x3FFF;
 constexpr int32_t MASK_FORTNIGHT_TICKS = 0x7FFF;
 constexpr int32_t MASK_MONTH_TICKS = 0xFFFF;
 
+// rct2: 0x00993988
+static const int16_t days_in_month[MONTH_COUNT] = {
+    31, 30, 31, 30, 31, 31, 30, 31,
+};
+
+RealWorldTime gRealTimeOfDay;
+
 Date::Date(uint32_t monthsElapsed, uint16_t monthTicks)
     : _monthTicks(monthTicks)
     , _monthsElapsed(monthsElapsed)
@@ -29,17 +39,17 @@ Date::Date(uint32_t monthsElapsed, uint16_t monthTicks)
 
 Date Date::FromYMD(int32_t year, int32_t month, int32_t day)
 {
-    // Year, months
-    Guard::ArgumentInRange(month, 0, MONTH_COUNT - 1);
-    int32_t monthsElapsed = (year * MONTH_COUNT) + month;
+    year = std::clamp(year, 0, MAX_YEAR - 1);
+    month = std::clamp(month, 0, static_cast<int>(MONTH_COUNT) - 1);
+    auto daysInMonth = days_in_month[month];
+    day = std::clamp(day, 0, daysInMonth - 1);
 
+    int32_t monthsElapsed = (year * MONTH_COUNT) + month;
     // Day
     int32_t monthTicks = 0;
     if (day != 0)
     {
-        auto daysInMonth = GetDaysInMonth(month);
-        day = std::clamp(day, 0, daysInMonth - 1);
-        monthTicks = (day << 16) / daysInMonth;
+        monthTicks = ((day << 16) / daysInMonth) + MONTH_TICKS_INCREMENT;
     }
 
     return Date(monthsElapsed, monthTicks);
@@ -118,4 +128,34 @@ int32_t Date::GetDaysInMonth(int32_t month)
     Guard::ArgumentInRange(month, 0, MONTH_COUNT - 1);
 
     return days_in_month[month];
+}
+
+int32_t DateGetMonth(int32_t months)
+{
+    return months % MONTH_COUNT;
+}
+
+int32_t DateGetYear(int32_t months)
+{
+    return months / MONTH_COUNT;
+}
+
+int32_t DateGetTotalMonths(int32_t month, int32_t year)
+{
+    return (year - 1) * MONTH_COUNT + month;
+}
+
+void DateUpdateRealTimeOfDay()
+{
+    time_t timestamp = time(nullptr);
+    struct tm* now = localtime(&timestamp);
+
+    gRealTimeOfDay.second = now->tm_sec;
+    gRealTimeOfDay.minute = now->tm_min;
+    gRealTimeOfDay.hour = now->tm_hour;
+}
+
+Date& GetDate()
+{
+    return OpenRCT2::GetContext()->GetGameState()->GetDate();
 }

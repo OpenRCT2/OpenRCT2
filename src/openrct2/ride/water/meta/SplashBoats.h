@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,7 +24,7 @@ constexpr const RideTypeDescriptor SplashBoatsRTD =
     SET_FIELD(ExtraTrackPieces, {}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_splash_boats),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionSplashBoats),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS |
                      RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
@@ -41,7 +41,6 @@ constexpr const RideTypeDescriptor SplashBoatsRTD =
     SET_FIELD(Heights, { 16, 24, 7, 11, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_splash_boats),
     SET_FIELD(RatingsMultipliers, { 80, 34, 6 }),
     SET_FIELD(UpkeepCosts, { 70, 20, 0, 9, 0, 10 }),
     SET_FIELD(BuildCosts, { 28.50_GBP, 2.50_GBP, 30, }),
@@ -56,6 +55,27 @@ constexpr const RideTypeDescriptor SplashBoatsRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_SPLASH_BOATS_TRACK, SPR_RIDE_DESIGN_PREVIEW_SPLASH_BOATS_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "splash_boats"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(1, 46), RIDE_RATING(0, 35), RIDE_RATING(0, 30) },
+        15,
+        -1,
+        false,
+        {
+            { RatingsModifierType::BonusLength,           2000,             7208, 0, 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusMaxSpeed,         0,                797059, 655360, 301111 },
+            { RatingsModifierType::BonusDuration,         500,              13107, 0, 0 },
+            { RatingsModifierType::BonusTurns,            0,                22291, 20860, 4574 },
+            { RatingsModifierType::BonusDrops,            0,                87381, 93622, 62259 },
+            { RatingsModifierType::BonusSheltered,        0,                16705, 30583, 35108 },
+            { RatingsModifierType::BonusProximity,        0,                22367, 0, 0 },
+            { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
+            { RatingsModifierType::RequirementDropHeight, 6,                2, 2, 2 },
+        },
+    }),
+    SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_BoatHire),
 };
 // clang-format on

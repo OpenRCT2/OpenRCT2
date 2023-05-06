@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -100,7 +100,7 @@ public:
         int32_t result = SDL_GetRendererInfo(_sdlRenderer, &rendererInfo);
         if (result < 0)
         {
-            log_warning("HWDisplayDrawingEngine::Resize error: %s", SDL_GetError());
+            LOG_WARNING("HWDisplayDrawingEngine::Resize error: %s", SDL_GetError());
             return;
         }
         uint32_t pixelFormat = SDL_PIXELFORMAT_UNKNOWN;
@@ -135,16 +135,22 @@ public:
             char scaleQualityBuffer[4];
             snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%d", static_cast<int32_t>(scaleQuality));
             SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+
             _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
+            Guard::Assert(_screenTexture != nullptr, "Failed to create screen texture: %s", SDL_GetError());
+
             SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
 
-            uint32_t scale = std::ceil(gConfigGeneral.window_scale);
+            uint32_t scale = std::ceil(gConfigGeneral.WindowScale);
             _scaledScreenTexture = SDL_CreateTexture(
                 _sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_TARGET, width * scale, height * scale);
+
+            Guard::Assert(_scaledScreenTexture != nullptr, "Failed to create scaled screen texture: %s", SDL_GetError());
         }
         else
         {
             _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
+            Guard::Assert(_screenTexture != nullptr, "Failed to create screen texture: %s", SDL_GetError());
         }
 
         uint32_t format;
@@ -163,9 +169,9 @@ public:
                 _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].Red, palette[i].Green, palette[i].Blue);
             }
 
-            if (gConfigGeneral.enable_light_fx)
+            if (gConfigGeneral.EnableLightFx)
             {
-                auto& lightPalette = lightfx_get_palette();
+                auto& lightPalette = LightFXGetPalette();
                 for (int32_t i = 0; i < 256; i++)
                 {
                     const auto& src = lightPalette[i];
@@ -204,13 +210,13 @@ protected:
 private:
     void Display()
     {
-        if (gConfigGeneral.enable_light_fx)
+        if (gConfigGeneral.EnableLightFx)
         {
             void* pixels;
             int32_t pitch;
             if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
             {
-                lightfx_render_to_texture(pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
+                LightFXRenderToTexture(pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
                 SDL_UnlockTexture(_screenTexture);
             }
         }
@@ -238,14 +244,14 @@ private:
         }
 
         bool isSteamOverlayActive = GetContext()->GetUiContext()->IsSteamOverlayActive();
-        if (isSteamOverlayActive && gConfigGeneral.steam_overlay_pause)
+        if (isSteamOverlayActive && gConfigGeneral.SteamOverlayPause)
         {
             OverlayPreRenderCheck();
         }
 
         SDL_RenderPresent(_sdlRenderer);
 
-        if (isSteamOverlayActive && gConfigGeneral.steam_overlay_pause)
+        if (isSteamOverlayActive && gConfigGeneral.SteamOverlayPause)
         {
             OverlayPostRenderCheck();
         }
@@ -337,8 +343,8 @@ private:
 
     void RenderDirtyVisuals()
     {
-        float scaleX = gConfigGeneral.window_scale;
-        float scaleY = gConfigGeneral.window_scale;
+        float scaleX = gConfigGeneral.WindowScale;
+        float scaleY = gConfigGeneral.WindowScale;
 
         SDL_SetRenderDrawBlendMode(_sdlRenderer, SDL_BLENDMODE_BLEND);
         for (uint32_t y = 0; y < _dirtyGrid.BlockRows; y++)
@@ -390,12 +396,12 @@ private:
             _pausedBeforeOverlay = gGamePaused & GAME_PAUSED_NORMAL;
             if (!_pausedBeforeOverlay)
             {
-                pause_toggle();
+                PauseToggle();
             }
         }
         else if (_overlayActive && !newOverlayActive && !_pausedBeforeOverlay)
         {
-            pause_toggle();
+            PauseToggle();
         }
 
         _overlayActive = newOverlayActive;

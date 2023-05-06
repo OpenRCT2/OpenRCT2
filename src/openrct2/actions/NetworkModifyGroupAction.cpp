@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,6 +22,15 @@ NetworkModifyGroupAction::NetworkModifyGroupAction(
 {
 }
 
+void NetworkModifyGroupAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("type", _type);
+    visitor.Visit("groupId", _groupId);
+    visitor.Visit("name", _name);
+    visitor.Visit("permissionIndex", _permissionIndex);
+    visitor.Visit("permissionState", _permissionState);
+}
+
 uint16_t NetworkModifyGroupAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
@@ -36,10 +45,10 @@ void NetworkModifyGroupAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result NetworkModifyGroupAction::Query() const
 {
-    return network_modify_groups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, false);
+    return NetworkModifyGroups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, false);
 }
 
 GameActions::Result NetworkModifyGroupAction::Execute() const
 {
-    return network_modify_groups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, true);
+    return NetworkModifyGroups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, true);
 }

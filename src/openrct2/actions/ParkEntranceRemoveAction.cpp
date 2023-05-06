@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,6 +17,11 @@
 ParkEntranceRemoveAction::ParkEntranceRemoveAction(const CoordsXYZ& loc)
     : _loc(loc)
 {
+}
+
+void ParkEntranceRemoveAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_loc);
 }
 
 uint16_t ParkEntranceRemoveAction::GetActionFlags() const
@@ -43,10 +48,10 @@ GameActions::Result ParkEntranceRemoveAction::Query() const
     res.Position = _loc;
     res.ErrorTitle = STR_CANT_REMOVE_THIS;
 
-    auto entranceIndex = park_entrance_get_index(_loc);
+    auto entranceIndex = ParkEntranceGetIndex(_loc);
     if (!LocationValid(_loc) || entranceIndex == -1)
     {
-        log_error("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
+        LOG_ERROR("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
     return res;
@@ -59,10 +64,10 @@ GameActions::Result ParkEntranceRemoveAction::Execute() const
     res.Position = _loc;
     res.ErrorTitle = STR_CANT_REMOVE_THIS;
 
-    auto entranceIndex = park_entrance_get_index(_loc);
+    auto entranceIndex = ParkEntranceGetIndex(_loc);
     if (entranceIndex == -1)
     {
-        log_error("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
+        LOG_ERROR("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
@@ -85,13 +90,13 @@ GameActions::Result ParkEntranceRemoveAction::Execute() const
 
 void ParkEntranceRemoveAction::ParkEntranceRemoveSegment(const CoordsXYZ& loc) const
 {
-    auto entranceElement = map_get_park_entrance_element_at(loc, true);
+    auto entranceElement = MapGetParkEntranceElementAt(loc, true);
     if (entranceElement == nullptr)
     {
         return;
     }
 
-    map_invalidate_tile({ loc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
+    MapInvalidateTile({ loc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
     entranceElement->Remove();
-    update_park_fences({ loc.x, loc.y });
+    ParkUpdateFences({ loc.x, loc.y });
 }

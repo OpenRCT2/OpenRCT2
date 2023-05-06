@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,6 +17,7 @@
 #include <openrct2/core/BitSet.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
@@ -27,11 +28,13 @@ constexpr int32_t DROPDOWN_TEXT_MAX_ROWS = 32;
 
 constexpr int32_t DROPDOWN_ITEM_HEIGHT = 12;
 
-static constexpr const uint8_t _appropriateImageDropdownItemsPerRow[34] = {
+static constexpr const std::array<uint8_t, 57> _appropriateImageDropdownItemsPerRow = {
     1, 1, 1, 1, 2, 2, 3, 3, 4, 3, // 10
     5, 4, 4, 5, 5, 5, 4, 5, 6, 5, // 20
     5, 7, 4, 5, 6, 5, 6, 6, 6, 6, // 30
-    6, 8, 8, 8,                   // 34
+    6, 8, 8, 8, 9, 9, 9, 9, 9, 9, // 40
+    9, 9, 9, 9, 9, 9, 9, 9, 9, 9, // 50
+    9, 9, 9, 9, 9, 9, 9,          // 56
 };
 
 enum
@@ -39,7 +42,7 @@ enum
     WIDX_BACKGROUND,
 };
 
-static rct_widget window_dropdown_widgets[] = {
+static Widget window_dropdown_widgets[] = {
     MakeWidget({ 0, 0 }, { 1, 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };
@@ -132,10 +135,10 @@ public:
         ResetDropdownFlags();
         gDropdownIsColour = false;
         gDropdownDefaultIndex = -1;
-        input_set_state(InputState::DropdownActive);
+        InputSetState(InputState::DropdownActive);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -159,15 +162,14 @@ public:
 
                 if (colours[0] & COLOUR_FLAG_TRANSLUCENT)
                 {
-                    translucent_window_palette palette = TranslucentWindowPalettes[BASE_COLOUR(colours[0])];
-                    gfx_filter_rect(&dpi, { leftTop, rightBottom }, palette.highlight);
-                    gfx_filter_rect(&dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
+                    TranslucentWindowPalette palette = TranslucentWindowPalettes[BASE_COLOUR(colours[0])];
+                    GfxFilterRect(dpi, { leftTop, rightBottom }, palette.highlight);
+                    GfxFilterRect(dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, palette.shadow);
                 }
                 else
                 {
-                    gfx_fill_rect(&dpi, { leftTop, rightBottom }, ColourMapA[colours[0]].mid_dark);
-                    gfx_fill_rect(
-                        &dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, ColourMapA[colours[0]].lightest);
+                    GfxFillRect(dpi, { leftTop, rightBottom }, ColourMapA[colours[0]].mid_dark);
+                    GfxFillRect(dpi, { leftTop + shadowOffset, rightBottom + shadowOffset }, ColourMapA[colours[0]].lightest);
                 }
             }
             else
@@ -176,10 +178,10 @@ public:
                 {
                     // Darken the cell's background slightly when highlighted
                     const ScreenCoordsXY rightBottom = screenCoords + ScreenCoordsXY{ ItemWidth - 1, ItemHeight - 1 };
-                    gfx_filter_rect(&dpi, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
+                    GfxFilterRect(dpi, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
                 }
 
-                rct_string_id item = gDropdownItems[i].Format;
+                StringId item = gDropdownItems[i].Format;
                 if (item == Dropdown::FormatLandPicker || item == Dropdown::FormatColourPicker)
                 {
                     // Image item
@@ -187,7 +189,7 @@ public:
                                            : ImageId::FromUInt32(static_cast<uint32_t>(gDropdownItems[i].Args));
                     if (item == Dropdown::FormatColourPicker && highlightedIndex == i)
                         image = image.WithIndexOffset(1);
-                    gfx_draw_sprite(&dpi, image, screenCoords);
+                    GfxDrawSprite(dpi, image, screenCoords);
                 }
                 else
                 {
@@ -204,7 +206,7 @@ public:
 
                     // Draw item string
                     Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItems[i].Args));
-                    DrawTextEllipsised(&dpi, screenCoords, width - 5, item, ft, { colour });
+                    DrawTextEllipsised(dpi, screenCoords, width - 5, item, ft, { colour });
                 }
             }
         }
@@ -315,8 +317,8 @@ private:
         const auto ddWidth = ItemWidth * NumColumns + 3;
         const auto ddHeight = ItemHeight * NumRows + 3;
 
-        int32_t screenWidth = context_get_width();
-        int32_t screenHeight = context_get_height();
+        int32_t screenWidth = ContextGetWidth();
+        int32_t screenHeight = ContextGetHeight();
         auto boundedScreenPos = screenPos;
         if (screenPos.x + ddWidth > screenWidth)
             boundedScreenPos.x = std::max(0, screenWidth - ddWidth);
@@ -353,8 +355,8 @@ void WindowDropdownShowText(const ScreenCoordsXY& screenPos, int32_t extray, uin
     max_string_width = 0;
     for (size_t i = 0; i < num_items; i++)
     {
-        format_string(buffer, 256, gDropdownItems[i].Format, static_cast<void*>(&gDropdownItems[i].Args));
-        string_width = gfx_get_string_width(buffer, FontSpriteBase::MEDIUM);
+        FormatStringLegacy(buffer, 256, gDropdownItems[i].Format, static_cast<void*>(&gDropdownItems[i].Args));
+        string_width = GfxGetStringWidth(buffer, FontStyle::Medium);
         max_string_width = std::max(string_width, max_string_width);
     }
 
@@ -377,14 +379,14 @@ void WindowDropdownShowTextCustomWidth(
     const ScreenCoordsXY& screenPos, int32_t extray, uint8_t colour, uint8_t custom_height, uint8_t flags, size_t num_items,
     int32_t width)
 {
-    input_set_flag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
+    InputSetFlag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
     if (flags & Dropdown::Flag::StayOpen)
-        input_set_flag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
+        InputSetFlag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
     WindowDropdownClose();
 
     // Create the window (width/height position are set later)
-    auto* w = WindowCreate<DropdownWindow>(WC_DROPDOWN, width, custom_height, WF_STICK_TO_FRONT);
+    auto* w = WindowCreate<DropdownWindow>(WindowClass::Dropdown, width, custom_height, WF_STICK_TO_FRONT);
     if (w != nullptr)
     {
         w->SetTextItems(screenPos, extray, colour, custom_height, flags, num_items, width);
@@ -409,15 +411,15 @@ void WindowDropdownShowImage(
     int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t flags, int32_t numItems, int32_t itemWidth,
     int32_t itemHeight, int32_t numColumns)
 {
-    input_set_flag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
+    InputSetFlag(static_cast<INPUT_FLAGS>(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
     if (flags & Dropdown::Flag::StayOpen)
-        input_set_flag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
+        InputSetFlag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
     // Close existing dropdown
     WindowDropdownClose();
 
     // Create the window (width/height position are set later)
-    auto* w = WindowCreate<DropdownWindow>(WC_DROPDOWN, itemWidth, itemHeight, WF_STICK_TO_FRONT);
+    auto* w = WindowCreate<DropdownWindow>(WindowClass::Dropdown, itemWidth, itemHeight, WF_STICK_TO_FRONT);
     if (w != nullptr)
     {
         w->SetImageItems({ x, y }, extray, colour, numItems, itemWidth, itemHeight, numColumns);
@@ -426,16 +428,16 @@ void WindowDropdownShowImage(
 
 void WindowDropdownClose()
 {
-    window_close_by_class(WC_DROPDOWN);
+    WindowCloseByClass(WindowClass::Dropdown);
 }
 
 /**
  * New function based on 6e914e
  * returns -1 if index is invalid
  */
-int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, rct_window* w)
+int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, WindowBase* w)
 {
-    if (w->classification == WC_DROPDOWN)
+    if (w->classification == WindowClass::Dropdown)
     {
         auto* ddWnd = static_cast<DropdownWindow*>(w);
         return ddWnd->GetIndexFromPoint(loc);
@@ -443,26 +445,107 @@ int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, rct_window* w)
     return -1;
 }
 
+// clang-format off
+// colour_t ordered for use in color dropdown
+static constexpr colour_t kColoursDropdownOrder[] = {
+    COLOUR_BLACK,
+    COLOUR_SATURATED_RED,
+    COLOUR_DARK_ORANGE,
+    COLOUR_DARK_YELLOW,
+    COLOUR_GRASS_GREEN_DARK,
+    COLOUR_SATURATED_GREEN,
+    COLOUR_AQUA_DARK,
+    COLOUR_DARK_BLUE,
+    COLOUR_SATURATED_PURPLE_DARK,
+
+    COLOUR_GREY,
+    COLOUR_BRIGHT_RED,
+    COLOUR_LIGHT_ORANGE,
+    COLOUR_YELLOW,
+    COLOUR_MOSS_GREEN,
+    COLOUR_BRIGHT_GREEN,
+    COLOUR_TEAL,
+    COLOUR_LIGHT_BLUE,
+    COLOUR_BRIGHT_PURPLE,
+
+    COLOUR_WHITE,
+    COLOUR_LIGHT_PINK,
+    COLOUR_ORANGE_LIGHT,
+    COLOUR_BRIGHT_YELLOW,
+    COLOUR_GRASS_GREEN_LIGHT,
+    COLOUR_SATURATED_GREEN_LIGHT,
+    COLOUR_AQUAMARINE,
+    COLOUR_ICY_BLUE,
+    COLOUR_SATURATED_PURPLE_LIGHT,
+
+    COLOUR_DULL_BROWN_DARK,
+    COLOUR_BORDEAUX_RED_DARK,
+    COLOUR_TAN_DARK,
+    COLOUR_SATURATED_BROWN,
+    COLOUR_DARK_OLIVE_DARK,
+    COLOUR_OLIVE_DARK,
+    COLOUR_DULL_GREEN_DARK,
+    COLOUR_DARK_PURPLE,
+    COLOUR_DARK_PINK,
+
+    COLOUR_DARK_BROWN,
+    COLOUR_BORDEAUX_RED,
+    COLOUR_SALMON_PINK,
+    COLOUR_LIGHT_BROWN,
+    COLOUR_DARK_OLIVE_GREEN,
+    COLOUR_OLIVE_GREEN,
+    COLOUR_DARK_GREEN,
+    COLOUR_LIGHT_PURPLE,
+    COLOUR_BRIGHT_PINK,
+
+    COLOUR_DULL_BROWN_LIGHT,
+    COLOUR_BORDEAUX_RED_LIGHT,
+    COLOUR_TAN_LIGHT,
+    COLOUR_SATURATED_BROWN_LIGHT,
+    COLOUR_DARK_OLIVE_LIGHT,
+    COLOUR_OLIVE_LIGHT,
+    COLOUR_DULL_GREEN_LIGHT,
+    COLOUR_DULL_PURPLE_LIGHT,
+    COLOUR_MAGENTA_LIGHT,
+
+    COLOUR_INVISIBLE,
+    COLOUR_VOID
+};
+// clang-format on
+
+colour_t ColourDropDownIndexToColour(uint8_t ddidx)
+{
+    return kColoursDropdownOrder[ddidx];
+}
+
 /**
  *  rct2: 0x006ED43D
  */
-void WindowDropdownShowColour(rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour)
+void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour)
 {
     int32_t defaultIndex = -1;
+
+    auto numColours = (gCheatsAllowSpecialColourSchemes) ? static_cast<uint8_t>(COLOUR_COUNT) : COLOUR_NUM_NORMAL;
     // Set items
-    for (uint64_t i = 0; i < COLOUR_COUNT; i++)
+    for (uint64_t i = 0; i < numColours; i++)
     {
-        if (selectedColour == i)
+        auto orderedColour = ColourDropDownIndexToColour(i);
+        if (selectedColour == orderedColour)
             defaultIndex = i;
 
+        // Use special graphic for Invisible colour
+        auto imageId = (orderedColour == COLOUR_INVISIBLE) ? ImageId(SPR_G2_ICON_PALETTE_INVISIBLE, COLOUR_WHITE)
+                                                           : ImageId(SPR_PALETTE_BTN, orderedColour);
+
         gDropdownItems[i].Format = Dropdown::FormatColourPicker;
-        gDropdownItems[i].Args = (i << 32) | (SPRITE_ID_PALETTE_COLOUR_1(i) | SPR_PALETTE_BTN);
+        gDropdownItems[i].Args = (i << 32) | imageId.ToUInt32();
     }
 
     // Show dropdown
     WindowDropdownShowImage(
         w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, dropdownColour,
-        Dropdown::Flag::StayOpen, COLOUR_COUNT, 12, 12, _appropriateImageDropdownItemsPerRow[COLOUR_COUNT]);
+        Dropdown::Flag::StayOpen, numColours, 12, 12,
+        DropdownGetAppropriateImageDropdownItemsPerRow(static_cast<uint32_t>(numColours)));
 
     gDropdownIsColour = true;
     gDropdownLastColourHover = -1;
@@ -471,5 +554,12 @@ void WindowDropdownShowColour(rct_window* w, rct_widget* widget, uint8_t dropdow
 
 uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems)
 {
-    return numItems < std::size(_appropriateImageDropdownItemsPerRow) ? _appropriateImageDropdownItemsPerRow[numItems] : 8;
+    // If above the table size return the last element
+    return _appropriateImageDropdownItemsPerRow[std::min<uint32_t>(
+        numItems, static_cast<uint32_t>(std::size(_appropriateImageDropdownItemsPerRow) - 1))];
+}
+
+bool WindowDropDownHasMultipleColumns(size_t numItems)
+{
+    return numItems > DROPDOWN_TEXT_MAX_ROWS;
 }

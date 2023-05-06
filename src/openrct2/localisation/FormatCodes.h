@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,7 +35,7 @@ enum class FormatToken
     UInt16,
     Currency2dp,
     Currency,
-    StringId,
+    StringById,
     String,
     MonthYear,
     Month,
@@ -194,6 +194,10 @@ namespace UnicodeChar
     constexpr char32_t u_ring = 0x16F;
     constexpr char32_t u_double_acute_uc = 0x170;
     constexpr char32_t u_double_acute = 0x171;
+    constexpr char32_t w_circumflex_uc = 0x174;
+    constexpr char32_t w_circumflex = 0x175;
+    constexpr char32_t y_circumflex_uc = 0x176;
+    constexpr char32_t y_circumflex = 0x177;
     constexpr char32_t z_acute_uc = 0x179;
     constexpr char32_t z_acute = 0x17A;
     constexpr char32_t z_dot_uc = 0x17B;

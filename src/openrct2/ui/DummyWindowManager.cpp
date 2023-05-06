@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,34 +15,34 @@ namespace OpenRCT2::Ui
     class DummyWindowManager final : public IWindowManager
     {
         void Init() override{};
-        rct_window* OpenWindow(rct_windowclass /*wc*/) override
+        WindowBase* OpenWindow(WindowClass /*wc*/) override
         {
             return nullptr;
         }
-        rct_window* OpenView(uint8_t /*view*/) override
+        WindowBase* OpenView(uint8_t /*view*/) override
         {
             return nullptr;
         }
-        rct_window* OpenDetails(uint8_t /*type*/, int32_t /*id*/) override
+        WindowBase* OpenDetails(uint8_t /*type*/, int32_t /*id*/) override
         {
             return nullptr;
         }
-        rct_window* ShowError(rct_string_id /*title*/, rct_string_id /*message*/, const Formatter& /*formatter*/) override
+        WindowBase* ShowError(StringId /*title*/, StringId /*message*/, const Formatter& /*formatter*/) override
         {
             return nullptr;
         }
-        rct_window* ShowError(std::string_view /*title*/, std::string_view /*message*/) override
+        WindowBase* ShowError(std::string_view /*title*/, std::string_view /*message*/) override
         {
             return nullptr;
         }
-        rct_window* OpenIntent(Intent* /*intent*/) override
+        WindowBase* OpenIntent(Intent* /*intent*/) override
         {
             return nullptr;
         };
         void BroadcastIntent(const Intent& /*intent*/) override
         {
         }
-        void ForceClose(rct_windowclass /*windowClass*/) override
+        void ForceClose(WindowClass /*windowClass*/) override
         {
         }
         void UpdateMapTooltip() override
@@ -64,7 +64,7 @@ namespace OpenRCT2::Ui
         void UpdateMouseWheel() override
         {
         }
-        rct_window* GetOwner(const rct_viewport* viewport) override
+        WindowBase* GetOwner(const Viewport* viewport) override
         {
             return nullptr;
         }

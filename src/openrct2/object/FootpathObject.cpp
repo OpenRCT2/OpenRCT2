@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,7 +12,6 @@
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../localisation/Language.h"
 #include "../world/Footpath.h"
 
@@ -37,8 +36,8 @@ void FootpathObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* 
 void FootpathObject::Load()
 {
     GetStringTable().Sort();
-    _legacyType.string_idx = language_allocate_object_string(GetName());
-    _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.string_idx = LanguageAllocateObjectString(GetName());
+    _legacyType.image = LoadImages();
     _legacyType.bridge_image = _legacyType.image + 109;
 
     _pathSurfaceDescriptor.Name = _legacyType.string_idx;
@@ -62,18 +61,18 @@ void FootpathObject::Load()
 
 void FootpathObject::Unload()
 {
-    language_free_object_string(_legacyType.string_idx);
-    gfx_object_free_images(_legacyType.image, GetImageTable().GetCount());
+    LanguageFreeObjectString(_legacyType.string_idx);
+    UnloadImages();
 
     _legacyType.string_idx = 0;
     _legacyType.image = 0;
 }
 
-void FootpathObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
+void FootpathObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
-    gfx_draw_sprite(dpi, ImageId(_pathSurfaceDescriptor.PreviewImage), screenCoords - ScreenCoordsXY{ 49, 17 });
-    gfx_draw_sprite(dpi, ImageId(_queueSurfaceDescriptor.PreviewImage), screenCoords + ScreenCoordsXY{ 4, -17 });
+    GfxDrawSprite(dpi, ImageId(_pathSurfaceDescriptor.PreviewImage), screenCoords - ScreenCoordsXY{ 49, 17 });
+    GfxDrawSprite(dpi, ImageId(_queueSurfaceDescriptor.PreviewImage), screenCoords + ScreenCoordsXY{ 4, -17 });
 }
 
 void FootpathObject::ReadJson(IReadObjectContext* context, json_t& root)

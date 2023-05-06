@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,7 +16,9 @@
 #include "../core/Memory.hpp"
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
+#include "../ride/RideAudio.h"
 #include "../util/Util.h"
+#include "BannerSceneryEntry.h"
 #include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
@@ -82,7 +84,7 @@ public:
 #ifdef DEBUG
             if (index != OBJECT_ENTRY_INDEX_NULL)
             {
-                log_warning("Object index %u exceeds maximum for type %d.", index, objectType);
+                LOG_WARNING("Object index %u exceeds maximum for type %d.", index, objectType);
             }
 #endif
             return nullptr;
@@ -132,7 +134,7 @@ public:
         size_t index = GetLoadedObjectIndex(object);
         if (index != SIZE_MAX)
         {
-            get_type_entry_index(index, nullptr, &result);
+            ObjectGetTypeEntryIndex(index, nullptr, &result);
         }
         return result;
     }
@@ -161,7 +163,7 @@ public:
         return RepositoryItemToObject(ori);
     }
 
-    Object* LoadObject(const rct_object_entry* entry) override
+    Object* LoadObject(const RCTObjectEntry* entry) override
     {
         const ObjectRepositoryItem* ori = _objectRepository.FindObject(entry);
         return RepositoryItemToObject(ori);
@@ -243,6 +245,7 @@ public:
         // We will need to replay the title music if the title music object got reloaded
         OpenRCT2::Audio::StopTitleMusic();
         OpenRCT2::Audio::PlayTitleMusic();
+        OpenRCT2::RideAudio::StopAllChannels();
     }
 
     std::vector<const ObjectRepositoryItem*> GetPackableObjects() override
@@ -260,7 +263,7 @@ public:
         return objects;
     }
 
-    static rct_string_id GetObjectSourceGameString(const ObjectSourceGame sourceGame)
+    static StringId GetObjectSourceGameString(const ObjectSourceGame sourceGame)
     {
         switch (sourceGame)
         {
@@ -283,7 +286,7 @@ public:
         }
     }
 
-    const std::vector<ObjectEntryIndex>& GetAllRideEntries(uint8_t rideType) override
+    const std::vector<ObjectEntryIndex>& GetAllRideEntries(ride_type_t rideType) override
     {
         if (rideType >= RIDE_TYPE_COUNT)
         {
@@ -454,7 +457,7 @@ private:
             }
         }
 
-        log_verbose("%u / %u objects unloaded", numObjectsUnloaded, totalObjectsLoaded);
+        LOG_VERBOSE("%u / %u objects unloaded", numObjectsUnloaded, totalObjectsLoaded);
     }
 
     template<typename T> void UpdateSceneryGroupIndexes(ObjectType type)
@@ -490,7 +493,7 @@ private:
 
         // HACK Scenery window will lose its tabs after changing the scenery group indexing
         //      for now just close it, but it will be better to later tell it to invalidate the tabs
-        window_close_by_class(WC_SCENERY);
+        WindowCloseByClass(WindowClass::Scenery);
     }
 
     ObjectEntryIndex GetPrimarySceneryGroupEntryIndex(Object* loadedObject)
@@ -575,43 +578,66 @@ private:
         std::vector<Object*> newLoadedObjects;
         std::vector<ObjectEntryDescriptor> badObjects;
 
-        // Read objects
-        std::mutex commonMutex;
-        ParallelFor(requiredObjects, [&](size_t i) {
-            auto& otl = requiredObjects[i];
-            auto* requiredObject = otl.RepositoryItem;
-            if (requiredObject != nullptr)
+        // Create a list of objects that are currently not loaded but required.
+        std::vector<const ObjectRepositoryItem*> objectsToLoad;
+        for (auto& requiredObject : requiredObjects)
+        {
+            auto* repositoryItem = requiredObject.RepositoryItem;
+            if (repositoryItem == nullptr)
             {
-                auto* loadedObject = requiredObject->LoadedObject.get();
-                if (loadedObject == nullptr)
-                {
-                    // Object requires to be loaded, if the object successfully loads it will register it
-                    // as a loaded object otherwise placed into the badObjects list.
-                    auto newObject = _objectRepository.LoadObject(requiredObject);
-                    std::lock_guard<std::mutex> guard(commonMutex);
-                    if (newObject == nullptr)
-                    {
-                        badObjects.push_back(ObjectEntryDescriptor(requiredObject->ObjectEntry));
-                        ReportObjectLoadProblem(&requiredObject->ObjectEntry);
-                    }
-                    else
-                    {
-                        otl.LoadedObject = newObject.get();
-                        newLoadedObjects.push_back(otl.LoadedObject);
-                        // Connect the ori to the registered object
-                        _objectRepository.RegisterLoadedObject(requiredObject, std::move(newObject));
-                    }
-                }
-                else
-                {
-                    otl.LoadedObject = loadedObject;
-                }
-                {
-                    std::lock_guard<std::mutex> guard(commonMutex);
-                    objects.push_back(loadedObject);
-                }
+                continue;
+            }
+
+            auto* loadedObject = repositoryItem->LoadedObject.get();
+            if (loadedObject == nullptr)
+            {
+                objectsToLoad.push_back(repositoryItem);
+            }
+        }
+
+        // De-duplicate the list, since loading happens in parallel we can't have it race the repository item.
+        std::sort(objectsToLoad.begin(), objectsToLoad.end());
+        objectsToLoad.erase(std::unique(objectsToLoad.begin(), objectsToLoad.end()), objectsToLoad.end());
+
+        // Load the objects.
+        std::mutex commonMutex;
+        ParallelFor(objectsToLoad, [&](size_t i) {
+            const auto* requiredObject = objectsToLoad[i];
+
+            // Object requires to be loaded, if the object successfully loads it will register it
+            // as a loaded object otherwise placed into the badObjects list.
+            auto newObject = _objectRepository.LoadObject(requiredObject);
+
+            std::lock_guard<std::mutex> guard(commonMutex);
+            if (newObject == nullptr)
+            {
+                badObjects.push_back(ObjectEntryDescriptor(requiredObject->ObjectEntry));
+                ReportObjectLoadProblem(&requiredObject->ObjectEntry);
+            }
+            else
+            {
+                newLoadedObjects.push_back(newObject.get());
+                // Connect the ori to the registered object
+                _objectRepository.RegisterLoadedObject(requiredObject, std::move(newObject));
             }
         });
+
+        // Assign the loaded objects to the required objects
+        for (auto& requiredObject : requiredObjects)
+        {
+            auto* repositoryItem = requiredObject.RepositoryItem;
+            if (repositoryItem == nullptr)
+            {
+                continue;
+            }
+            auto* loadedObject = repositoryItem->LoadedObject.get();
+            if (loadedObject == nullptr)
+            {
+                continue;
+            }
+            requiredObject.LoadedObject = loadedObject;
+            objects.push_back(loadedObject);
+        }
 
         // Load objects
         for (auto* obj : newLoadedObjects)
@@ -659,7 +685,7 @@ private:
             list[otl.Index] = otl.LoadedObject;
         }
 
-        log_verbose("%u / %u new objects loaded", newLoadedObjects.size(), requiredObjects.size());
+        LOG_VERBOSE("%u / %u new objects loaded", newLoadedObjects.size(), requiredObjects.size());
     }
 
     Object* GetOrLoadObject(const ObjectRepositoryItem* ori)
@@ -699,7 +725,7 @@ private:
             if (rideObject == nullptr)
                 continue;
 
-            const auto* entry = static_cast<rct_ride_entry*>(rideObject->GetLegacyData());
+            const auto* entry = static_cast<RideObjectEntry*>(rideObject->GetLegacyData());
             if (entry == nullptr)
                 continue;
 
@@ -720,7 +746,7 @@ private:
         Console::Error::WriteLine("[%s] Object not found.", name.c_str());
     }
 
-    void ReportObjectLoadProblem(const rct_object_entry* entry)
+    void ReportObjectLoadProblem(const RCTObjectEntry* entry)
     {
         utf8 objName[DAT_NAME_LENGTH + 1] = { 0 };
         std::copy_n(entry->name, DAT_NAME_LENGTH, objName);
@@ -733,45 +759,45 @@ std::unique_ptr<IObjectManager> CreateObjectManager(IObjectRepository& objectRep
     return std::make_unique<ObjectManager>(objectRepository);
 }
 
-Object* object_manager_get_loaded_object(const ObjectEntryDescriptor& entry)
+Object* ObjectManagerGetLoadedObject(const ObjectEntryDescriptor& entry)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object* loadedObject = objectManager.GetLoadedObject(entry);
     return loadedObject;
 }
 
-ObjectEntryIndex object_manager_get_loaded_object_entry_index(const Object* loadedObject)
+ObjectEntryIndex ObjectManagerGetLoadedObjectEntryIndex(const Object* loadedObject)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     auto entryIndex = objectManager.GetLoadedObjectEntryIndex(loadedObject);
     return entryIndex;
 }
 
-ObjectEntryIndex object_manager_get_loaded_object_entry_index(const ObjectEntryDescriptor& entry)
+ObjectEntryIndex ObjectManagerGetLoadedObjectEntryIndex(const ObjectEntryDescriptor& entry)
 {
-    return object_manager_get_loaded_object_entry_index(object_manager_get_loaded_object(entry));
+    return ObjectManagerGetLoadedObjectEntryIndex(ObjectManagerGetLoadedObject(entry));
 }
 
-Object* object_manager_load_object(const rct_object_entry* entry)
+Object* ObjectManagerLoadObject(const RCTObjectEntry* entry)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object* loadedObject = objectManager.LoadObject(entry);
     return loadedObject;
 }
 
-void object_manager_unload_objects(const std::vector<ObjectEntryDescriptor>& entries)
+void ObjectManagerUnloadObjects(const std::vector<ObjectEntryDescriptor>& entries)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     objectManager.UnloadObjects(entries);
 }
 
-void object_manager_unload_all_objects()
+void ObjectManagerUnloadAllObjects()
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     objectManager.UnloadAllTransient();
 }
 
-rct_string_id object_manager_get_source_game_string(const ObjectSourceGame sourceGame)
+StringId ObjectManagerGetSourceGameString(const ObjectSourceGame sourceGame)
 {
     return ObjectManager::GetObjectSourceGameString(sourceGame);
 }

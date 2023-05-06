@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -28,24 +28,33 @@
 #include "../util/Util.h"
 #include "Ride.h"
 #include "RideAudio.h"
+#include "RideConstruction.h"
 #include "RideEntry.h"
+#include "RideRatings.h"
 #include "ShopItem.h"
 #include "Track.h"
 #include "TrackPaint.h"
+#include "Vehicle.h"
 
 enum class ResearchCategory : uint8_t;
 
-using ride_ratings_calculation = void (*)(Ride* ride, RideRatingUpdateState& state);
+constexpr const uint8_t DefaultFoodStallHeight = 8 * COORDS_Z_STEP;
+constexpr const uint8_t DefaultDrinksStallHeight = 8 * COORDS_Z_STEP;
+constexpr const uint8_t DefaultShopHeight = 8 * COORDS_Z_STEP;
+constexpr const uint8_t DefaultToiletHeight = 4 * COORDS_Z_STEP;
+constexpr const uint8_t DefaultInformationKioskHeight = 6 * COORDS_Z_STEP;
+constexpr const uint8_t DefaultFirstAidHeight = 6 * COORDS_Z_STEP;
+constexpr const uint8_t DefaultCashMachineHeight = 8 * COORDS_Z_STEP;
 
 struct RideComponentName
 {
-    rct_string_id singular;
-    rct_string_id plural;
-    rct_string_id capitalised;
-    rct_string_id capitalised_plural;
-    rct_string_id count;
-    rct_string_id count_plural;
-    rct_string_id number;
+    StringId singular;
+    StringId plural;
+    StringId capitalised;
+    StringId capitalised_plural;
+    StringId count;
+    StringId count_plural;
+    StringId number;
 };
 
 enum class RideComponentType
@@ -85,6 +94,72 @@ enum class TrackDesignCreateMode : uint_fast8_t
     Maze
 };
 
+enum class RatingsCalculationType : uint8_t
+{
+    Normal,
+    FlatRide,
+    Stall,
+};
+
+enum class RatingsModifierType : uint8_t
+{
+    NoModifier,
+    // General Rating Bonuses
+    BonusLength,
+    BonusSynchronisation,
+    BonusTrainLength,
+    BonusMaxSpeed,
+    BonusAverageSpeed,
+    BonusDuration,
+    BonusGForces,
+    BonusTurns,
+    BonusDrops,
+    BonusSheltered,
+    BonusProximity,
+    BonusScenery,
+    BonusRotations,
+    BonusOperationOption,
+    BonusReversedTrains,
+    // Ride-specific Rating Bonuses
+    BonusGoKartRace,
+    BonusTowerRide,
+    BonusRotoDrop,
+    BonusMazeSize,
+    BonusBoatHireNoCircuit,
+    BonusSlideUnlimitedRides,
+    BonusMotionSimulatorMode,
+    Bonus3DCinemaMode,
+    BonusTopSpinMode,
+    // Number of reversals BONUS for reverser coaster
+    BonusReversals,
+    // Number of hole BONUS for mini golf
+    BonusHoles,
+    // Number of cars bonus for dodgems/flying saucers
+    BonusNumTrains,
+    // Bonus for launched freefall in downward launch mode
+    BonusDownwardLaunch,
+    // Bonus with further mode-dependent logic for LF
+    BonusLaunchedFreefallSpecial,
+    // General Rating Requirements
+    RequirementLength,
+    RequirementDropHeight,
+    RequirementNumDrops,
+    RequirementMaxSpeed,
+    RequirementNegativeGs,
+    RequirementLateralGs,
+    RequirementInversions,
+    RequirementUnsheltered,
+    // Number of reversals REQUIREMENT for reverser coaster
+    RequirementReversals,
+    // Number of hole REQUIREMENT for mini golf
+    RequirementHoles,
+    // 2 Station requirement for Chairlift
+    RequirementStations,
+    // Water section requirement for Water Coaster
+    RequirementSplashdown,
+    PenaltyLateralGs,
+};
+
 struct RideNameConvention
 {
     RideComponentType vehicle;
@@ -107,7 +182,7 @@ struct RideHeights
     uint8_t PlatformHeight;
 };
 
-struct rct_ride_lift_data
+struct RideLiftData
 {
     OpenRCT2::Audio::SoundId sound_id;
     uint8_t minimum_speed;
@@ -127,8 +202,29 @@ struct RideOperatingSettings
     uint8_t MaxBrakesSpeed;
     uint8_t PoweredLiftAcceleration;
     uint8_t BoosterAcceleration;
-    int8_t BoosterSpeedFactor;              // The factor to shift the raw booster speed with
+    int8_t BoosterSpeedFactor; // The factor to shift the raw booster speed with
+    uint16_t AccelerationFactor = 12;
     uint8_t OperatingSettingMultiplier = 1; // Used for the Ride window, cosmetic only.
+};
+
+struct RatingsModifier
+{
+    RatingsModifierType Type;
+    int32_t Threshold;
+    int32_t Excitement;
+    int32_t Intensity;
+    int32_t Nausea;
+};
+
+struct RideRatingsDescriptor
+{
+    RatingsCalculationType Type;
+    RatingTuple BaseRatings;
+    uint8_t Unreliability;
+    // Used for rides with a set sheltered 8ths value (-1 = normal calculation)
+    int8_t RideShelter;
+    bool RelaxRequirementsIfInversions;
+    RatingsModifier Modifiers[32];
 };
 
 struct UpkeepCostsDescriptor
@@ -140,23 +236,36 @@ struct UpkeepCostsDescriptor
      *
      * Data generation script: https://gist.github.com/kevinburke/6bcf4a8fcc95faad7bac
      */
-    uint8_t BaseCost;
+    money64 BaseCost;
     /** rct2: 0x0097E3AC */
     uint8_t TrackLengthMultiplier;
-    uint8_t CostPerTrackPiece;
+    money64 CostPerTrackPiece;
     /** rct2: 0x0097E3B4 */
-    uint8_t CostPerTrain;
+    money64 CostPerTrain;
     /** rct2: 0x0097E3B6 */
-    uint8_t CostPerCar;
+    money64 CostPerCar;
     /** rct2: 0x0097E3B8 */
-    uint8_t CostPerStation;
+    money64 CostPerStation;
 };
 
 using RideTrackGroup = OpenRCT2::BitSet<TRACK_GROUP_COUNT>;
-using RideMusicUpdateFunction = void (*)(Ride*);
-using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest*, Ride*, CoordsXYZD&);
+using UpdateRideApproachVehicleWaypointsFunction = void (*)(Guest&, const CoordsXY&, int16_t&);
+using RideMusicUpdateFunction = void (*)(Ride&);
+using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest*, Ride&, CoordsXYZD&);
 using StartRideMusicFunction = void (*)(const OpenRCT2::RideAudio::ViewportRideMusicInstance&);
 using LightFXAddLightsMagicVehicleFunction = void (*)(const Vehicle* vehicle);
+using RideLocationFunction = CoordsXY (*)(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
+using RideUpdateFunction = void (*)(Ride& ride);
+using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride& ride, const track_type_t trackType);
+using MusicTrackOffsetLengthFunc = std::pair<size_t, size_t> (*)(const Ride& ride);
+using SpecialElementRatingAdjustmentFunc = void (*)(const Ride& ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
+
+using UpdateRotatingFunction = void (*)(Vehicle& vehicle);
+enum class RideConstructionWindowContext : uint8_t
+{
+    Default,
+    Maze,
+};
 
 struct RideTypeDescriptor
 {
@@ -169,7 +278,7 @@ struct RideTypeDescriptor
     RideTrackGroup ExtraTrackPieces;
     RideTrackGroup CoveredTrackPieces;
     /** rct2: 0x0097CC68 */
-    uint64_t StartTrackPiece;
+    track_type_t StartTrackPiece;
     TRACK_PAINT_FUNCTION_GETTER TrackPaintFunction;
     uint64_t Flags;
     /** rct2: 0x0097C8AC */
@@ -185,26 +294,28 @@ struct RideTypeDescriptor
     RideHeights Heights;
     uint8_t MaxMass;
     /** rct2: 0x0097D7C8, 0x0097D7C9, 0x0097D7CA */
-    rct_ride_lift_data LiftData;
-    // rct2: 0x0097E050
-    ride_ratings_calculation RatingsCalculationFunction;
+    RideLiftData LiftData;
     // rct2: 0x0097CD1E
     RatingTuple RatingsMultipliers;
     UpkeepCostsDescriptor UpkeepCosts;
     // rct2: 0x0097DD78
     RideBuildCost BuildCosts;
-    money16 DefaultPrices[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
+    money64 DefaultPrices[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
     std::string_view DefaultMusic;
     /** rct2: 0x0097D7CB */
     ShopItemIndex PhotoItem;
     /** rct2: 0x0097D21E */
     uint8_t BonusValue;
-    track_colour_preset_list ColourPresets;
+    TrackColourPresetList ColourPresets;
     RideColourPreview ColourPreview;
     RideColourKey ColourKey;
 
     // json name lookup
     std::string_view Name;
+
+    RideRatingsDescriptor RatingsData;
+
+    UpdateRotatingFunction UpdateRotating = UpdateRotatingDefault;
 
     LightFXAddLightsMagicVehicleFunction LightFXAddLightsMagicVehicle = nullptr;
     StartRideMusicFunction StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel;
@@ -215,11 +326,24 @@ struct RideTypeDescriptor
     RideClassification Classification = RideClassification::Ride;
 
     PeepUpdateRideLeaveEntranceFunc UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault;
+    SpecialElementRatingAdjustmentFunc SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default;
+
+    RideLocationFunction GetGuestWaypointLocation = GetGuestWaypointLocationDefault;
+
+    RideConstructionWindowContext ConstructionWindowContext = RideConstructionWindowContext::Default;
+    RideUpdateFunction RideUpdate = nullptr;
+
+    RideUpdateMeasurementsSpecialElementsFunc UpdateMeasurementsSpecialElements = RideUpdateMeasurementsSpecialElements_Default;
+
+    MusicTrackOffsetLengthFunc MusicTrackOffsetLength = OpenRCT2::RideAudio::RideMusicGetTrackOffsetLength_Default;
+
+    UpdateRideApproachVehicleWaypointsFunction UpdateRideApproachVehicleWaypoints = UpdateRideApproachVehicleWaypointsDefault;
 
     bool HasFlag(uint64_t flag) const;
     void GetAvailableTrackPieces(RideTrackGroup& res) const;
     bool SupportsTrackPiece(const uint64_t trackPiece) const;
     ResearchCategory GetResearchCategory() const;
+    bool SupportsRideMode(RideMode rideMode) const;
 };
 
 #ifdef _WIN32
@@ -239,72 +363,75 @@ enum
 
 enum ride_type_flags : uint64_t
 {
-    RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN = (1ULL << 0),
-    RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL = (1ULL << 1),
-    RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS = (1ULL << 2),
-    RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION = (1ULL << 3), // Set by flat rides, tower rides and shops/stalls.
-    RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION = (1ULL << 4),
-    RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS = (1ULL << 5),
-    RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER = (1ULL << 6), // used only by boat Hire and submarine ride
-    RIDE_TYPE_FLAG_HAS_G_FORCES = (1ULL << 7),
-    RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS = (1ULL << 8), // used by rides that can't have gaps, like those with a vertical tower, such
+    RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN = (1uLL << 0),
+    RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL = (1uLL << 1),
+    RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS = (1uLL << 2),
+    RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION = (1uLL << 3), // Set by flat rides, tower rides and shops/stalls.
+    RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION = (1uLL << 4),
+    RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS = (1uLL << 5),
+    RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER = (1uLL << 6), // used only by boat Hire and submarine ride
+    RIDE_TYPE_FLAG_HAS_G_FORCES = (1uLL << 7),
+    RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS = (1uLL << 8), // used by rides that can't have gaps, like those with a vertical tower, such
                                                    // as the observation tower
-    RIDE_TYPE_FLAG_HAS_DATA_LOGGING = (1ULL << 9),
-    RIDE_TYPE_FLAG_HAS_DROPS = (1ULL << 10),
-    RIDE_TYPE_FLAG_NO_TEST_MODE = (1ULL << 11),
-    RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES = (1ULL << 12), // used by rides with two varieties, like the u and o
+    RIDE_TYPE_FLAG_HAS_DATA_LOGGING = (1uLL << 9),
+    RIDE_TYPE_FLAG_HAS_DROPS = (1uLL << 10),
+    RIDE_TYPE_FLAG_NO_TEST_MODE = (1uLL << 11),
+    RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES = (1uLL << 12), // used by rides with two varieties, like the u and o
                                                                      // shapes of the dinghy slide and the dry and submerged
                                                                      // track of the water coaster
-    RIDE_TYPE_FLAG_NO_VEHICLES = (1ULL << 13),                       // used only by maze, spiral slide and shops
-    RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS = (1ULL << 14),
-    RIDE_TYPE_FLAG_HAS_NO_TRACK = (1ULL << 15),
-    RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL = (1ULL << 16), // Set by flat rides where the vehicle is integral to the structure, like
+    RIDE_TYPE_FLAG_NO_VEHICLES = (1uLL << 13),                       // used only by maze, spiral slide and shops
+    RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS = (1uLL << 14),
+    RIDE_TYPE_FLAG_HAS_NO_TRACK = (1uLL << 15),
+    RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL = (1uLL << 16), // Set by flat rides where the vehicle is integral to the structure, like
     // Merry-go-round and swinging ships. (Contrast with rides like dodgems.)
-    RIDE_TYPE_FLAG_IS_SHOP = (1ULL << 17),
-    RIDE_TYPE_FLAG_TRACK_NO_WALLS = (1ULL << 18), // if set, wall scenery can not share a tile with the ride's track
-    RIDE_TYPE_FLAG_FLAT_RIDE = (1ULL << 19),
-    RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN = (1ULL << 20), // whether or not guests will go on the ride again if they liked it
+    RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY = (1uLL << 17),
+    RIDE_TYPE_FLAG_TRACK_NO_WALLS = (1uLL << 18), // if set, wall scenery can not share a tile with the ride's track
+    RIDE_TYPE_FLAG_FLAT_RIDE = (1uLL << 19),
+    RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN = (1uLL << 20), // whether or not guests will go on the ride again if they liked it
                                                         // (this is
     // usually applied to everything apart from transport rides)
-    RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY = (1ULL << 21), // used by toilets and first aid to mark that peep should go
+    RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY = (1uLL << 21), // used by toilets and first aid to mark that peep should go
                                                                   // inside the building (rather than 'buying' at the counter)
-    RIDE_TYPE_FLAG_IN_RIDE = (1ULL << 22),                        // peeps are "IN" (ride) rather than "ON" (ride)
-    RIDE_TYPE_FLAG_SELLS_FOOD = (1ULL << 23),
-    RIDE_TYPE_FLAG_SELLS_DRINKS = (1ULL << 24),
-    RIDE_TYPE_FLAG_IS_TOILET = (1ULL << 25),
-    RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS = (1ULL << 26), // whether or not vehicle colours can be set
-    RIDE_TYPE_FLAG_CHECK_FOR_STALLING = (1ULL << 27),
-    RIDE_TYPE_FLAG_HAS_TRACK = (1ULL << 28),
-    RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES = (1ULL << 29), // Only set by lift
-    RIDE_TYPE_FLAG_HAS_LARGE_CURVES = (1ULL << 30),        // whether the ride supports large (45 degree turn) curves
-    RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = (1ULL << 31),
+    RIDE_TYPE_FLAG_IN_RIDE = (1uLL << 22),                        // peeps are "IN" (ride) rather than "ON" (ride)
+    RIDE_TYPE_FLAG_SELLS_FOOD = (1uLL << 23),
+    RIDE_TYPE_FLAG_SELLS_DRINKS = (1uLL << 24),
+    RIDE_TYPE_FLAG_IS_TOILET = (1uLL << 25),
+    RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS = (1uLL << 26), // whether or not vehicle colours can be set
+    RIDE_TYPE_FLAG_CHECK_FOR_STALLING = (1uLL << 27),
+    RIDE_TYPE_FLAG_HAS_TRACK = (1uLL << 28),
+    RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES = (1uLL << 29), // Only set by lift
+    RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR = (1uLL << 31),
 
-    RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK = (1ULL << 32),
-    RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT = (1ULL << 33),
-    RIDE_TYPE_FLAG_ALLOW_MUSIC = (1ULL << 34),
-    RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE = (1ULL << 35), // Used by the Flying RC, Lay-down RC, Multi-dimension RC
-    RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES = (1ULL << 36),
-    RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT = (1ULL << 37),
-    RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS = (1ULL << 38),
-    RIDE_TYPE_FLAG_HAS_AIR_TIME = (1ULL << 39),
-    RIDE_TYPE_FLAG_SINGLE_SESSION = (1ULL << 40),
-    RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS = (1ULL << 41),
-    RIDE_TYPE_FLAG_ALLOW_CABLE_LIFT_HILL = (1ULL << 42),
-    RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER = (1ULL << 43),
-    RIDE_TYPE_FLAG_TRANSPORT_RIDE = (1ULL << 44),
-    RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT = (1ULL << 45),
-    RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT = (1ULL << 46),
-    RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED = (1ULL << 47), // This is only set on the Flying RC and its alternative type.
+    RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK = (1uLL << 32),
+    RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT = (1uLL << 33),
+    RIDE_TYPE_FLAG_ALLOW_MUSIC = (1uLL << 34),
+    RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE = (1uLL << 35), // Used by the Flying RC, Lay-down RC, Multi-dimension RC
+    RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES = (1uLL << 36),
+    RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT = (1uLL << 37),
+    RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS = (1uLL << 38),
+    RIDE_TYPE_FLAG_HAS_AIR_TIME = (1uLL << 39),
+    RIDE_TYPE_FLAG_SINGLE_SESSION = (1uLL << 40),
+    RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS = (1uLL << 41),
+    RIDE_TYPE_FLAG_ALLOW_CABLE_LIFT_HILL = (1uLL << 42),
+    RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER = (1uLL << 43),
+    RIDE_TYPE_FLAG_TRANSPORT_RIDE = (1uLL << 44),
+    RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT = (1uLL << 45),
+    RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT = (1uLL << 46),
+    RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED = (1uLL << 47), // This is only set on the Flying RC and its alternative type.
 
-    RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY = (1ULL << 48),
-    RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS = (1ULL << 49),
-    RIDE_TYPE_FLAG_IS_SUSPENDED = (1ULL << 50),
-    RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS = (1ULL << 51),
-    RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT = (1ULL << 52),
-    RIDE_TYPE_FLAG_PEEP_CAN_USE_UMBRELLA = (1ULL << 53),
-    RIDE_TYPE_FLAG_IS_CASH_MACHINE = (1ULL << 54),
-    RIDE_TYPE_FLAG_HAS_ONE_STATION = (1ULL << 55),
-    RIDE_TYPE_FLAG_HAS_SEAT_ROTATION = (1ULL << 56),
+    RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY = (1uLL << 48),
+    RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS = (1uLL << 49),
+    RIDE_TYPE_FLAG_IS_SUSPENDED = (1uLL << 50),
+    RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS = (1uLL << 51),
+    RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT = (1uLL << 52),
+    RIDE_TYPE_FLAG_PEEP_CAN_USE_UMBRELLA = (1uLL << 53),
+    RIDE_TYPE_FLAG_IS_CASH_MACHINE = (1uLL << 54),
+    RIDE_TYPE_FLAG_HAS_ONE_STATION = (1uLL << 55),
+    RIDE_TYPE_FLAG_HAS_SEAT_ROTATION = (1uLL << 56),
+    RIDE_TYPE_FLAG_IS_FIRST_AID = (1uLL << 57),
+    RIDE_TYPE_FLAG_IS_MAZE = (1uLL << 58),
+    RIDE_TYPE_FLAG_IS_SPIRAL_SLIDE = (1uLL << 59),
+    RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS = (1uLL << 60),
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.
@@ -374,7 +501,7 @@ extern const CarEntry CableLiftVehicle;
 
 extern const uint16_t RideFilmLength[3];
 
-extern const rct_string_id RideModeNames[static_cast<uint8_t>(RideMode::Count)];
+extern const StringId RideModeNames[static_cast<uint8_t>(RideMode::Count)];
 
 // clang-format off
 constexpr const RideTypeDescriptor DummyRTD =
@@ -397,7 +524,6 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(Heights, { 12, 64, 0, 0, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, nullptr),
     SET_FIELD(RatingsMultipliers, { 0, 0, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 0.00_GBP, 0.00_GBP, 1 }),
@@ -409,6 +535,18 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "invalid"),
+	SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(1, 00), RIDE_RATING(1, 00), RIDE_RATING(1, 00) },
+        1,
+        -1,
+        false,
+        {
+            { RatingsModifierType::NoModifier, 0, 0, 0, 0 },
+        },
+    }),
+    SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
@@ -433,3 +571,4 @@ constexpr bool RideTypeIsValid(ObjectEntryIndex rideType)
 
 bool IsTrackEnabled(int32_t trackFlagIndex);
 void UpdateEnabledRidePieces(ride_type_t rideType);
+void UpdateDisabledRidePieces(const RideTrackGroup& res);

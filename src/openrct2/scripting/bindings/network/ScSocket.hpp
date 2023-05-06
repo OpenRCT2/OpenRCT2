@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -90,15 +90,15 @@ namespace OpenRCT2::Scripting
             constexpr char delimiter = ',';
             size_t start_pos = 0;
             size_t end_pos = 0;
-            while ((end_pos = gConfigPlugin.allowed_hosts.find(delimiter, start_pos)) != std::string::npos)
+            while ((end_pos = gConfigPlugin.AllowedHosts.find(delimiter, start_pos)) != std::string::npos)
             {
-                if (host == gConfigPlugin.allowed_hosts.substr(start_pos, end_pos - start_pos))
+                if (host == gConfigPlugin.AllowedHosts.substr(start_pos, end_pos - start_pos))
                 {
                     return true;
                 }
                 start_pos = end_pos + 1;
             }
-            return host == gConfigPlugin.allowed_hosts.substr(start_pos, gConfigPlugin.allowed_hosts.length() - start_pos);
+            return host == gConfigPlugin.AllowedHosts.substr(start_pos, gConfigPlugin.AllowedHosts.length() - start_pos);
         }
 
     public:

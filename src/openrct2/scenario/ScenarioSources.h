@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,7 +12,7 @@
 #include "../common.h"
 #include "../core/String.hpp"
 
-struct source_desc
+struct SourceDescriptor
 {
     const utf8* title;
     uint8_t id;
@@ -23,8 +23,8 @@ struct source_desc
 
 namespace ScenarioSources
 {
-    bool TryGetByName(const utf8* name, source_desc* outDesc);
-    bool TryGetById(uint8_t id, source_desc* outDesc);
+    bool TryGetByName(const utf8* name, SourceDescriptor* outDesc);
+    bool TryGetById(uint8_t id, SourceDescriptor* outDesc);
     void NormaliseName(utf8* buffer, size_t bufferSize, const utf8* name);
 } // namespace ScenarioSources
 

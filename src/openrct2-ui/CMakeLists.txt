@@ -182,6 +182,7 @@ if(MACOS_BUNDLE)
     target_sources(${PROJECT_NAME}
         PUBLIC ${ROOT_DIR}/distribution/readme.txt
         PUBLIC ${ROOT_DIR}/distribution/changelog.txt
+        PUBLIC ${ROOT_DIR}/contributors.md
         PUBLIC ${ROOT_DIR}/resources/mac/openrct2.icns
         )
 
@@ -189,6 +190,7 @@ if(MACOS_BUNDLE)
     set(BUNDLE_RESOURCES
         ${ROOT_DIR}/distribution/readme.txt
         ${ROOT_DIR}/distribution/changelog.txt
+        ${ROOT_DIR}/contributors.md
         ${ROOT_DIR}/resources/mac/openrct2.icns
         )
 
@@ -232,7 +234,21 @@ if(MACOS_BUNDLE)
         ZIP_URL ${TITLE_SEQUENCE_URL}
         SHA1 ${TITLE_SEQUENCE_SHA1}
     )
-    
+
+    # download opensfx and openmsx
+    download_openrct2_zip(
+        ZIP_VERSION ${OPENSFX_VERSION}
+        DOWNLOAD_DIR ${CMAKE_BINARY_DIR}
+        ZIP_URL ${OPENSFX_URL}
+        SHA1 ${OPENSFX_SHA1}
+    )
+    download_openrct2_zip(
+        ZIP_VERSION ${OPENMSX_VERSION}
+        DOWNLOAD_DIR ${CMAKE_BINARY_DIR}
+        ZIP_URL ${OPENMSX_URL}
+        SHA1 ${OPENMSX_SHA1}
+    )
+
     file(COPY ${OBJECTS_DIR} DESTINATION "${BUNDLE_RESOURCE_DIR}")
     file(COPY ${TITLE_SEQUENCE_DIR} DESTINATION "${BUNDLE_RESOURCE_DIR}")
 

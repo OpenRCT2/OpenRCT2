@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,11 +19,11 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../entity/Yaw.hpp"
 #include "../localisation/Language.h"
 #include "../rct2/DATLimits.h"
 #include "../rct2/RCT2.h"
+#include "../ride/CarEntry.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
@@ -38,31 +38,92 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Entity::Yaw;
 
+/*
+ * The number of sprites in the sprite group is the specified precision multiplied by this number. General rule is any slope or
+ * bank has its mirror included in the group:
+ * - flat unbanked is 1
+ * - flat banked is 2 (left/right)
+ * - sloped unbanked is 2 (up/down)
+ * - sloped & banked is 4 (left/right * up/down)
+ * Exceptions:
+ * - slopesLoop is 10 (5 slope angles * up/down)
+ * - inlineTwists is 6 (3 bank angles * left/right)
+ * - slopes25InlineTwists is 12 (3 bank angles * left/right * up/down)
+ * - corkscrews is 20 (10 sprites for an entire corkscrew * left/right)
+ * - restraints is 3
+ * - curvedLiftHillUp and curvedLiftHillDown are 1 (normally would be combined, but aren't due to RCT2)
+ */
 static const uint8_t SpriteGroupMultiplier[EnumValue(SpriteGroupType::Count)] = {
-    1, 2, 2, 2, 2, 2, 2, 10, 1, 2, 2, 2, 2, 2, 2, 2, 6, 4, 4, 4, 4, 4, 4, 4, 12, 4, 4, 4, 4, 4, 20, 3, 1,
+    1, 2, 2, 2, 2, 2, 2, 10, 1, 2, 2, 2, 2, 2, 2, 2, 6, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 12, 4, 4, 4, 4, 4, 20, 3, 1, 1,
 };
+static_assert(std::size(SpriteGroupMultiplier) == EnumValue(SpriteGroupType::Count));
+
+constexpr const uint8_t DefaultSteamSpawnPosition[] = { 11, 22 };
+
+static const EnumMap<CarEntryAnimation> AnimationNameLookup{
+    { "none", CarEntryAnimation::None },
+    { "simpleVehicle", CarEntryAnimation::SimpleVehicle },
+    { "steamLocomotive", CarEntryAnimation::SteamLocomotive },
+    { "swanBoat", CarEntryAnimation::SwanBoat },
+    { "monorailCycle", CarEntryAnimation::MonorailCycle },
+    { "MultiDimension", CarEntryAnimation::MultiDimension },
+    { "observationTower", CarEntryAnimation::ObservationTower },
+    { "animalFlying", CarEntryAnimation::AnimalFlying },
+};
+
+constexpr const auto NumLegacyAnimationTypes = 11;
+
+struct LegacyAnimationParameters
+{
+    uint16_t Speed;
+    uint8_t NumFrames;
+    CarEntryAnimation Alias;
+};
+
+constexpr const LegacyAnimationParameters VehicleEntryDefaultAnimation[] = {
+    { 0, 1, CarEntryAnimation::None },                  // None
+    { 1 << 12, 4, CarEntryAnimation::SteamLocomotive }, // Miniature Railway Locomotive
+    { 1 << 10, 2, CarEntryAnimation::SwanBoat },        // Swan Boat
+    { 1 << 11, 6, CarEntryAnimation::SimpleVehicle },   // Canoe
+    { 1 << 11, 7, CarEntryAnimation::SimpleVehicle },   // Rowboat
+    { 1 << 10, 2, CarEntryAnimation::SimpleVehicle },   // Water Tricycle
+    { 0x3333, 8, CarEntryAnimation::ObservationTower }, // Observation Tower
+    { 1 << 10, 4, CarEntryAnimation::SimpleVehicle },   // Mini Helicopter
+    { 1 << 11, 4, CarEntryAnimation::MonorailCycle },   // Monorail Cycle
+    { 0x3333, 8, CarEntryAnimation::MultiDimension },   // Multi Dimension Coaster
+    { 24, 4, CarEntryAnimation::AnimalFlying },         // Animal Flying
+};
+static_assert(std::size(VehicleEntryDefaultAnimation) == NumLegacyAnimationTypes);
+
+static CarEntryAnimation GetAnimationTypeFromString(const std::string& s)
+{
+    auto result = AnimationNameLookup.find(s);
+    return (result != AnimationNameLookup.end()) ? result->second : CarEntryAnimation::None;
+}
+
+static LegacyAnimationParameters GetDefaultAnimationParameters(uint8_t legacyAnimationType)
+{
+    if (legacyAnimationType >= NumLegacyAnimationTypes)
+        return VehicleEntryDefaultAnimation[0];
+    return VehicleEntryDefaultAnimation[legacyAnimationType];
+}
 
 static constexpr SpritePrecision PrecisionFromNumFrames(uint8_t numRotationFrames)
 {
     if (numRotationFrames == 0)
         return SpritePrecision::None;
     else
-        return static_cast<SpritePrecision>(bitscanforward(numRotationFrames) + 1);
+        return static_cast<SpritePrecision>(UtilBitScanForward(numRotationFrames) + 1);
 }
 
-static void RideObjectUpdateRideType(rct_ride_entry* rideEntry)
+static void RideObjectUpdateRideType(RideObjectEntry& rideEntry)
 {
-    if (rideEntry == nullptr)
-    {
-        return;
-    }
-
     for (auto i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
     {
-        auto oldRideType = rideEntry->ride_type[i];
+        auto oldRideType = rideEntry.ride_type[i];
         if (oldRideType != RIDE_TYPE_NULL)
         {
-            rideEntry->ride_type[i] = RCT2::RCT2RideTypeToOpenRCT2RideType(oldRideType, rideEntry);
+            rideEntry.ride_type[i] = RCT2::RCT2RideTypeToOpenRCT2RideType(oldRideType, rideEntry);
         }
     }
 }
@@ -89,7 +150,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     _legacyType.ThirdCar = stream->ReadValue<uint8_t>();
 
     _legacyType.BuildMenuPriority = 0;
-    // Skip pad_019
+    // Skip Pad019
     stream->Seek(1, STREAM_SEEK_CURRENT);
 
     for (auto& carEntry : _legacyType.Cars)
@@ -199,7 +260,8 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
         context->LogError(ObjectError::InvalidProperty, "Nausea multiplier too high.");
     }
-    RideObjectUpdateRideType(&_legacyType);
+    RideObjectUpdateRideType(_legacyType);
+    _legacyType.Clearance = GetDefaultClearance();
 }
 
 void RideObject::Load()
@@ -207,68 +269,68 @@ void RideObject::Load()
     _legacyType.obj = this;
 
     GetStringTable().Sort();
-    _legacyType.naming.Name = language_allocate_object_string(GetName());
-    _legacyType.naming.Description = language_allocate_object_string(GetDescription());
-    _legacyType.capacity = language_allocate_object_string(GetCapacity());
-    _legacyType.images_offset = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.naming.Name = LanguageAllocateObjectString(GetName());
+    _legacyType.naming.Description = LanguageAllocateObjectString(GetDescription());
+    _legacyType.capacity = LanguageAllocateObjectString(GetCapacity());
+    _legacyType.images_offset = LoadImages();
     _legacyType.vehicle_preset_list = &_presetColours;
 
     int32_t currentCarImagesOffset = _legacyType.images_offset + RCT2::ObjectLimits::MaxRideTypesPerRideEntry;
     for (int32_t i = 0; i < RCT2::ObjectLimits::MaxCarTypesPerRideEntry; i++)
     {
-        CarEntry* carEntry = &_legacyType.Cars[i];
-        if (carEntry->GroupEnabled(SpriteGroupType::SlopeFlat))
+        CarEntry& carEntry = _legacyType.Cars[i];
+        if (carEntry.GroupEnabled(SpriteGroupType::SlopeFlat))
         {
             // RCT2 calculates num_vertical_frames and num_horizontal_frames and overwrites these properties on the car
             // entry. Immediately afterwards, the two were multiplied in order to calculate base_num_frames and were never used
             // again. This has been changed to use the calculation results directly - num_vertical_frames and
             // num_horizontal_frames are no longer set on the car entry.
             // 0x6DE946
-            carEntry->base_num_frames = CalculateNumVerticalFrames(carEntry) * CalculateNumHorizontalFrames(carEntry);
+            carEntry.base_num_frames = CalculateNumVerticalFrames(carEntry) * CalculateNumHorizontalFrames(carEntry);
             uint32_t baseImageId = currentCarImagesOffset;
             uint32_t imageIndex = baseImageId;
-            carEntry->base_image_id = baseImageId;
+            carEntry.base_image_id = baseImageId;
 
             for (uint8_t spriteGroup = 0; spriteGroup < EnumValue(SpriteGroupType::Count); spriteGroup++)
             {
-                if (carEntry->SpriteGroups[spriteGroup].Enabled())
+                if (carEntry.SpriteGroups[spriteGroup].Enabled())
                 {
-                    carEntry->SpriteGroups[spriteGroup].imageId = imageIndex;
-                    const auto spriteCount = carEntry->base_num_frames
-                        * carEntry->NumRotationSprites(static_cast<SpriteGroupType>(spriteGroup))
+                    carEntry.SpriteGroups[spriteGroup].imageId = imageIndex;
+                    const auto spriteCount = carEntry.base_num_frames
+                        * carEntry.NumRotationSprites(static_cast<SpriteGroupType>(spriteGroup))
                         * SpriteGroupMultiplier[spriteGroup];
                     imageIndex += spriteCount;
                 }
             }
 
-            carEntry->NumCarImages = imageIndex - currentCarImagesOffset;
+            carEntry.NumCarImages = imageIndex - currentCarImagesOffset;
 
-            // Move the offset over this car’s images. Including peeps
-            currentCarImagesOffset = imageIndex + carEntry->no_seating_rows * carEntry->NumCarImages;
+            // Move the offset over this car's images. Including peeps
+            currentCarImagesOffset = imageIndex + carEntry.no_seating_rows * carEntry.NumCarImages;
             // 0x6DEB0D
 
-            if (!(carEntry->flags & CAR_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS))
+            if (!(carEntry.flags & CAR_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS))
             {
                 int32_t num_images = currentCarImagesOffset - baseImageId;
-                if (carEntry->flags & CAR_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET)
+                if (carEntry.flags & CAR_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET)
                 {
                     num_images *= 2;
                 }
 
                 if (!gOpenRCT2NoGraphics)
                 {
-                    set_vehicle_type_image_max_sizes(carEntry, num_images);
+                    CarEntrySetImageMaxSizes(carEntry, num_images);
                 }
             }
 
             if (!_peepLoadingPositions[i].empty())
             {
-                carEntry->peep_loading_positions = std::move(_peepLoadingPositions[i]);
+                carEntry.peep_loading_positions = std::move(_peepLoadingPositions[i]);
             }
 
             if (!_peepLoadingWaypoints[i].empty())
             {
-                carEntry->peep_loading_waypoints = std::move(_peepLoadingWaypoints[i]);
+                carEntry.peep_loading_waypoints = std::move(_peepLoadingWaypoints[i]);
             }
         }
     }
@@ -276,10 +338,10 @@ void RideObject::Load()
 
 void RideObject::Unload()
 {
-    language_free_object_string(_legacyType.naming.Name);
-    language_free_object_string(_legacyType.naming.Description);
-    language_free_object_string(_legacyType.capacity);
-    gfx_object_free_images(_legacyType.images_offset, GetImageTable().GetCount());
+    LanguageFreeObjectString(_legacyType.naming.Name);
+    LanguageFreeObjectString(_legacyType.naming.Description);
+    LanguageFreeObjectString(_legacyType.capacity);
+    UnloadImages();
 
     _legacyType.naming.Name = 0;
     _legacyType.naming.Description = 0;
@@ -287,7 +349,7 @@ void RideObject::Unload()
     _legacyType.images_offset = 0;
 }
 
-void RideObject::DrawPreview(rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t width, [[maybe_unused]] int32_t height) const
+void RideObject::DrawPreview(DrawPixelInfo& dpi, [[maybe_unused]] int32_t width, [[maybe_unused]] int32_t height) const
 {
     uint32_t imageId = _legacyType.images_offset;
 
@@ -299,7 +361,7 @@ void RideObject::DrawPreview(rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t wi
         imageId++;
     }
 
-    gfx_draw_sprite(dpi, ImageId(imageId), { 0, 0 });
+    GfxDrawSprite(dpi, ImageId(imageId), { 0, 0 });
 }
 
 std::string RideObject::GetDescription() const
@@ -326,7 +388,7 @@ ImageIndex RideObject::GetPreviewImage(ride_type_t type)
 void RideObject::SetRepositoryItem(ObjectRepositoryItem* item) const
 {
     // Find the first non-null ride type, to be used when checking the ride group and determining the category.
-    uint8_t firstRideType = ride_entry_get_first_non_null_ride_type(&_legacyType);
+    auto firstRideType = _legacyType.GetFirstNonNullRideType();
     uint8_t category = GetRideTypeDescriptor(firstRideType).Category;
 
     for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
@@ -353,7 +415,7 @@ void RideObject::ReadLegacyCar([[maybe_unused]] IReadObjectContext* context, ISt
     car->sprite_width = stream->ReadValue<uint8_t>();
     car->sprite_height_negative = stream->ReadValue<uint8_t>();
     car->sprite_height_positive = stream->ReadValue<uint8_t>();
-    car->animation = stream->ReadValue<uint8_t>();
+    auto legacyAnimation = stream->ReadValue<uint8_t>();
     car->flags = stream->ReadValue<uint32_t>();
     car->base_num_frames = stream->ReadValue<uint16_t>();
     stream->Seek(15 * 4, STREAM_SEEK_CURRENT);
@@ -371,25 +433,33 @@ void RideObject::ReadLegacyCar([[maybe_unused]] IReadObjectContext* context, ISt
     car->draw_order = stream->ReadValue<uint8_t>();
     car->num_vertical_frames_override = stream->ReadValue<uint8_t>();
     stream->Seek(4, STREAM_SEEK_CURRENT);
+
+    // OpenRCT2-specific features below
+    auto animationProperties = GetDefaultAnimationParameters(legacyAnimation);
+    car->animation = animationProperties.Alias;
+    car->AnimationSpeed = animationProperties.Speed;
+    car->AnimationFrames = animationProperties.NumFrames;
+    car->SteamEffect.Longitudinal = DefaultSteamSpawnPosition[0];
+    car->SteamEffect.Vertical = DefaultSteamSpawnPosition[1];
     ReadLegacySpriteGroups(car, spriteGroups);
 }
 
-uint8_t RideObject::CalculateNumVerticalFrames(const CarEntry* carEntry)
+uint8_t RideObject::CalculateNumVerticalFrames(const CarEntry& carEntry)
 {
     // 0x6DE90B
     uint8_t numVerticalFrames;
-    if (carEntry->flags & CAR_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES)
+    if (carEntry.flags & CAR_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES)
     {
-        numVerticalFrames = carEntry->num_vertical_frames_override;
+        numVerticalFrames = carEntry.num_vertical_frames_override;
     }
     else
     {
-        if (!(carEntry->flags & CAR_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES))
+        if (!(carEntry.flags & CAR_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES))
         {
-            if (carEntry->flags & CAR_ENTRY_FLAG_VEHICLE_ANIMATION
-                && carEntry->animation != CAR_ENTRY_ANIMATION_OBSERVATION_TOWER)
+            if ((carEntry.flags & CAR_ENTRY_FLAG_VEHICLE_ANIMATION)
+                && carEntry.animation != CarEntryAnimation::ObservationTower)
             {
-                if (!(carEntry->flags & CAR_ENTRY_FLAG_DODGEM_INUSE_LIGHTS))
+                if (!(carEntry.flags & CAR_ENTRY_FLAG_DODGEM_INUSE_LIGHTS))
                 {
                     numVerticalFrames = 4;
                 }
@@ -412,14 +482,14 @@ uint8_t RideObject::CalculateNumVerticalFrames(const CarEntry* carEntry)
     return numVerticalFrames;
 }
 
-uint8_t RideObject::CalculateNumHorizontalFrames(const CarEntry* carEntry)
+uint8_t RideObject::CalculateNumHorizontalFrames(const CarEntry& carEntry)
 {
     uint8_t numHorizontalFrames;
-    if (carEntry->flags & CAR_ENTRY_FLAG_SWINGING)
+    if (carEntry.flags & CAR_ENTRY_FLAG_SWINGING)
     {
-        if (!(carEntry->flags & CAR_ENTRY_FLAG_SUSPENDED_SWING) && !(carEntry->flags & CAR_ENTRY_FLAG_SLIDE_SWING))
+        if (!(carEntry.flags & CAR_ENTRY_FLAG_SUSPENDED_SWING) && !(carEntry.flags & CAR_ENTRY_FLAG_SLIDE_SWING))
         {
-            if (carEntry->flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING)
+            if (carEntry.flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING)
             {
                 numHorizontalFrames = 3;
             }
@@ -428,7 +498,7 @@ uint8_t RideObject::CalculateNumHorizontalFrames(const CarEntry* carEntry)
                 numHorizontalFrames = 5;
             }
         }
-        else if (!(carEntry->flags & CAR_ENTRY_FLAG_SUSPENDED_SWING) || !(carEntry->flags & CAR_ENTRY_FLAG_SLIDE_SWING))
+        else if (!(carEntry.flags & CAR_ENTRY_FLAG_SUSPENDED_SWING) || !(carEntry.flags & CAR_ENTRY_FLAG_SLIDE_SWING))
         {
             numHorizontalFrames = 7;
         }
@@ -475,6 +545,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
         }
 
         _legacyType.max_height = Json::GetNumber<uint8_t>(properties["maxHeight"]);
+        _legacyType.Clearance = Json::GetNumber<uint8_t>(properties["clearance"], GetDefaultClearance());
 
         // This needs to be set for both shops/facilities _and_ regular rides.
         for (auto& item : _legacyType.shop_item)
@@ -565,10 +636,11 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
                 { "noCollisionCrashes", RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES },
                 { "disablePainting", RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB },
                 { "riderControlsSpeed", RIDE_ENTRY_FLAG_RIDER_CONTROLS_SPEED },
+                { "hideEmptyTrains", RIDE_ENTRY_FLAG_HIDE_EMPTY_TRAINS },
             });
     }
 
-    RideObjectUpdateRideType(&_legacyType);
+    RideObjectUpdateRideType(_legacyType);
     PopulateTablesFromJson(context, root);
 }
 
@@ -648,7 +720,6 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
     car.sprite_width = Json::GetNumber<uint8_t>(jCar["spriteWidth"]);
     car.sprite_height_negative = Json::GetNumber<uint8_t>(jCar["spriteHeightNegative"]);
     car.sprite_height_positive = Json::GetNumber<uint8_t>(jCar["spriteHeightPositive"]);
-    car.animation = Json::GetNumber<uint8_t>(jCar["animation"]);
     car.base_num_frames = Json::GetNumber<uint16_t>(jCar["baseNumFrames"]);
     car.NumCarImages = Json::GetNumber<uint32_t>(jCar["numImages"]);
     car.no_seating_rows = Json::GetNumber<uint8_t>(jCar["numSeatRows"]);
@@ -664,6 +735,38 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
     car.effect_visual = Json::GetNumber<uint8_t>(jCar["effectVisual"], 1);
     car.draw_order = Json::GetNumber<uint8_t>(jCar["drawOrder"]);
     car.num_vertical_frames_override = Json::GetNumber<uint8_t>(jCar["numVerticalFramesOverride"]);
+
+    auto jAnimation = jCar["animation"];
+    if (jAnimation.is_object())
+    {
+        car.animation = GetAnimationTypeFromString(Json::GetString(jAnimation["animationType"]));
+        car.AnimationSpeed = Json::GetNumber<uint16_t>(jAnimation["animationSpeed"]);
+        car.AnimationFrames = Json::GetNumber<uint16_t>(jAnimation["animationFrames"]);
+    }
+    else
+    {
+        auto animationProperties = GetDefaultAnimationParameters(Json::GetNumber<uint8_t>(jAnimation));
+        car.animation = animationProperties.Alias;
+        car.AnimationSpeed = animationProperties.Speed;
+        car.AnimationFrames = animationProperties.NumFrames;
+
+        if (!jCar["animationSpeed"].is_null())
+            car.AnimationSpeed = Json::GetNumber<uint16_t>(jCar["animationSpeed"]);
+        if (!jCar["animationFrames"].is_null())
+            car.AnimationFrames = Json::GetNumber<uint16_t>(jCar["animationFrames"]);
+    }
+
+    auto jSteamTranslation = jCar["steamPosition"];
+    if (jSteamTranslation.is_object())
+    {
+        car.SteamEffect.Longitudinal = Json::GetNumber<int8_t>(jSteamTranslation["longitudinal"], DefaultSteamSpawnPosition[0]);
+        car.SteamEffect.Vertical = Json::GetNumber<int8_t>(jSteamTranslation["vertical"], DefaultSteamSpawnPosition[1]);
+    }
+    else
+    {
+        car.SteamEffect.Longitudinal = DefaultSteamSpawnPosition[0];
+        car.SteamEffect.Vertical = DefaultSteamSpawnPosition[1];
+    }
 
     auto jLoadingPositions = jCar["loadingPositions"];
     if (jLoadingPositions.is_array())
@@ -778,7 +881,7 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
             auto numRotationFrames = Json::GetNumber<uint8_t>(jRotationCount[SpriteGroupNames[i]], 0);
             if (numRotationFrames != 0)
             {
-                if (!is_power_of_2(numRotationFrames))
+                if (!IsPowerOf2(numRotationFrames))
                 {
                     context->LogError(ObjectError::InvalidProperty, "spriteGroups values must be powers of 2");
                     continue;
@@ -791,7 +894,7 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
     return car;
 }
 
-vehicle_colour_preset_list RideObject::ReadJsonCarColours(json_t& jCarColours)
+VehicleColourPresetList RideObject::ReadJsonCarColours(json_t& jCarColours)
 {
     Guard::Assert(jCarColours.is_array(), "RideObject::ReadJsonCarColours expects parameter jCarColours to be array");
 
@@ -806,7 +909,7 @@ vehicle_colour_preset_list RideObject::ReadJsonCarColours(json_t& jCarColours)
         {
             // Read all colours from first config
             auto config = ReadJsonColourConfiguration(firstElement);
-            vehicle_colour_preset_list list = {};
+            VehicleColourPresetList list = {};
             list.count = 255;
             std::copy_n(config.data(), std::min<size_t>(numColours, 32), list.list);
             return list;
@@ -814,7 +917,7 @@ vehicle_colour_preset_list RideObject::ReadJsonCarColours(json_t& jCarColours)
     }
 
     // Read first colour for each config
-    vehicle_colour_preset_list list = {};
+    VehicleColourPresetList list = {};
     for (size_t index = 0; index < jCarColours.size(); index++)
     {
         auto config = ReadJsonColourConfiguration(jCarColours[index]);
@@ -861,24 +964,12 @@ std::vector<VehicleColour> RideObject::ReadJsonColourConfiguration(json_t& jColo
     return config;
 }
 
-bool RideObject::IsRideTypeShopOrFacility(uint8_t rideType)
+bool RideObject::IsRideTypeShopOrFacility(ride_type_t rideType)
 {
-    switch (rideType)
-    {
-        case RIDE_TYPE_TOILETS:
-        case RIDE_TYPE_SHOP:
-        case RIDE_TYPE_DRINK_STALL:
-        case RIDE_TYPE_FOOD_STALL:
-        case RIDE_TYPE_INFORMATION_KIOSK:
-        case RIDE_TYPE_CASH_MACHINE:
-        case RIDE_TYPE_FIRST_AID:
-            return true;
-        default:
-            return false;
-    }
+    return GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY);
 }
 
-uint8_t RideObject::ParseRideType(const std::string& s)
+ride_type_t RideObject::ParseRideType(const std::string& s)
 {
     auto result = std::find_if(
         std::begin(RideTypeDescriptors), std::end(RideTypeDescriptors), [s](const auto& rtd) { return rtd.Name == s; });
@@ -1028,6 +1119,13 @@ void RideObject::ReadLegacySpriteGroups(CarEntry* vehicle, uint16_t spriteGroups
     }
     if (spriteGroups & CAR_SPRITE_FLAG_CURVED_LIFT_HILL)
     {
-        vehicle->SpriteGroups[EnumValue(SpriteGroupType::CurvedLiftHill)].spritePrecision = baseSpritePrecision;
+        vehicle->SpriteGroups[EnumValue(SpriteGroupType::CurvedLiftHillUp)].spritePrecision = baseSpritePrecision;
     }
+}
+
+uint8_t RideObject::GetDefaultClearance() const
+{
+    auto rideType = _legacyType.GetFirstNonNullRideType();
+    const auto& rtd = GetRideTypeDescriptor(rideType);
+    return rtd.Heights.ClearanceHeight;
 }

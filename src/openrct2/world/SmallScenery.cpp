@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,7 +15,9 @@
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/ObjectEntryManager.h"
 #include "../object/ObjectManager.h"
+#include "../object/SmallSceneryEntry.h"
 #include "../ride/TrackDesign.h"
 #include "Footpath.h"
 #include "Map.h"
@@ -26,13 +28,13 @@
 
 uint8_t SmallSceneryElement::GetSceneryQuadrant() const
 {
-    return (this->type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+    return (this->Type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
 }
 
 void SmallSceneryElement::SetSceneryQuadrant(uint8_t newQuadrant)
 {
-    type &= ~TILE_ELEMENT_QUADRANT_MASK;
-    type |= (newQuadrant << 6);
+    Type &= ~TILE_ELEMENT_QUADRANT_MASK;
+    Type |= (newQuadrant << 6);
 }
 
 uint16_t SmallSceneryElement::GetEntryIndex() const
@@ -71,7 +73,7 @@ void SmallSceneryElement::IncreaseAge(const CoordsXY& sceneryPos)
 
             if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_WITHER))
             {
-                map_invalidate_tile_zoom1({ sceneryPos, GetBaseZ(), GetClearanceZ() });
+                MapInvalidateTileZoom1({ sceneryPos, GetBaseZ(), GetClearanceZ() });
             }
         }
     }
@@ -79,63 +81,48 @@ void SmallSceneryElement::IncreaseAge(const CoordsXY& sceneryPos)
 
 colour_t SmallSceneryElement::GetPrimaryColour() const
 {
-    return Colour[0] & TILE_ELEMENT_COLOUR_MASK;
+    return Colour[0];
 }
 
 colour_t SmallSceneryElement::GetSecondaryColour() const
 {
-    return Colour[1] & TILE_ELEMENT_COLOUR_MASK;
+    return Colour[1];
 }
 
 colour_t SmallSceneryElement::GetTertiaryColour() const
 {
-    return Colour[2] & TILE_ELEMENT_COLOUR_MASK;
+    return Colour[2];
 }
 
 void SmallSceneryElement::SetPrimaryColour(colour_t newColour)
 {
-    assert(newColour <= 31);
-    Colour[0] &= ~TILE_ELEMENT_COLOUR_MASK;
-    Colour[0] |= newColour;
+    assert(newColour < COLOUR_COUNT);
+    Colour[0] = newColour;
 }
 
 void SmallSceneryElement::SetSecondaryColour(colour_t newColour)
 {
-    assert(newColour <= 31);
-    Colour[1] &= ~TILE_ELEMENT_COLOUR_MASK;
-    Colour[1] |= newColour;
+    assert(newColour < COLOUR_COUNT);
+    Colour[1] = newColour;
 }
 
 void SmallSceneryElement::SetTertiaryColour(colour_t newColour)
 {
-    assert(newColour <= 31);
-    Colour[2] &= ~TILE_ELEMENT_COLOUR_MASK;
-    Colour[2] |= newColour;
+    assert(newColour < COLOUR_COUNT);
+    Colour[2] = newColour;
 }
 
 bool SmallSceneryElement::NeedsSupports() const
 {
-    return static_cast<bool>(Colour[0] & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS);
+    return static_cast<bool>(Flags2 & MAP_ELEM_SMALL_SCENERY_FLAGS2_NEEDS_SUPPORTS);
 }
 
 void SmallSceneryElement::SetNeedsSupports()
 {
-    Colour[0] |= MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
+    Flags2 |= MAP_ELEM_SMALL_SCENERY_FLAGS2_NEEDS_SUPPORTS;
 }
 
-SmallSceneryEntry* SmallSceneryElement::GetEntry() const
+const SmallSceneryEntry* SmallSceneryElement::GetEntry() const
 {
-    return get_small_scenery_entry(entryIndex);
-}
-
-SmallSceneryEntry* get_small_scenery_entry(ObjectEntryIndex entryIndex)
-{
-    SmallSceneryEntry* result = nullptr;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::SmallScenery, entryIndex);
-    if (obj != nullptr)
-    {
-        result = static_cast<SmallSceneryEntry*>(obj->GetLegacyData());
-    }
-    return result;
+    return OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(entryIndex);
 }

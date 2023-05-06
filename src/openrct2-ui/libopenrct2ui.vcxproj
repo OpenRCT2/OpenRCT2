@@ -16,6 +16,18 @@
       <Configuration>Debug</Configuration>
       <Platform>arm64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseLTCG|arm64">
+      <Configuration>ReleaseLTCG</Configuration>
+      <Platform>arm64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseLTCG|Win32">
+      <Configuration>ReleaseLTCG</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseLTCG|x64">
+      <Configuration>ReleaseLTCG</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -61,6 +73,7 @@
     <ClInclude Include="interface\Viewport.h" />
     <ClInclude Include="interface\Widget.h" />
     <ClInclude Include="interface\Window.h" />
+    <ClInclude Include="ride\Construction.h" />
     <ClInclude Include="scripting\CustomImages.h" />
     <ClInclude Include="scripting\CustomListView.h" />
     <ClInclude Include="scripting\CustomMenu.h" />
@@ -119,6 +132,7 @@
     <ClCompile Include="interface\ViewportInteraction.cpp" />
     <ClCompile Include="interface\Widget.cpp" />
     <ClCompile Include="interface\Window.cpp" />
+    <ClCompile Include="ride\Construction.cpp" />
     <ClCompile Include="scripting\CustomImages.cpp" />
     <ClCompile Include="scripting\CustomListView.cpp" />
     <ClCompile Include="scripting\CustomMenu.cpp" />
@@ -134,6 +148,7 @@
     <ClCompile Include="UiContext.Win32.cpp" />
     <ClCompile Include="WindowManager.cpp" />
     <ClCompile Include="windows\About.cpp" />
+    <ClCompile Include="windows\AssetPacks.cpp" />
     <ClCompile Include="windows\Banner.cpp" />
     <ClCompile Include="windows\Changelog.cpp" />
     <ClCompile Include="windows\Cheats.cpp" />
@@ -217,7 +232,6 @@
   <Import Project="..\..\openrct2.common.props" />
   <ItemDefinitionGroup>
     <ClCompile>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Breakpad)'=='true' and ('$(Platform)'=='Win32' or '$(Platform)'=='x64')">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>

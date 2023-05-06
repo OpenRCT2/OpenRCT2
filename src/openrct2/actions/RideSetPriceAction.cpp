@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,7 +21,7 @@
 #include "../ride/ShopItem.h"
 #include "../world/Park.h"
 
-RideSetPriceAction::RideSetPriceAction(RideId rideIndex, money16 price, bool primaryPrice)
+RideSetPriceAction::RideSetPriceAction(RideId rideIndex, money64 price, bool primaryPrice)
     : _rideIndex(rideIndex)
     , _price(price)
     , _primaryPrice(primaryPrice)
@@ -51,17 +51,17 @@ GameActions::Result RideSetPriceAction::Query() const
 {
     GameActions::Result res = GameActions::Result();
 
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
+    const auto* rideEntry = GetRideEntryByIndex(ride->subtype);
     if (rideEntry == nullptr)
     {
-        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -73,45 +73,47 @@ GameActions::Result RideSetPriceAction::Execute() const
     GameActions::Result res = GameActions::Result();
     res.Expenditure = ExpenditureType::ParkRideTickets;
 
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
+    const auto* rideEntry = GetRideEntryByIndex(ride->subtype);
     if (rideEntry == nullptr)
     {
-        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
+        LOG_WARNING("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     if (!ride->overall_view.IsNull())
     {
         auto location = ride->overall_view.ToTileCentre();
-        res.Position = { location, tile_element_height(location) };
+        res.Position = { location, TileElementHeight(location) };
     }
 
     ShopItem shopItem;
     if (_primaryPrice)
     {
         shopItem = ShopItem::Admission;
-        if (ride->type != RIDE_TYPE_TOILETS)
+
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
         {
             shopItem = rideEntry->shop_item[0];
             if (shopItem == ShopItem::None)
             {
                 ride->price[0] = _price;
-                window_invalidate_by_class(WC_RIDE);
+                WindowInvalidateByClass(WindowClass::Ride);
                 return res;
             }
         }
         // Check same price in park flags
-        if (!shop_item_has_common_price(shopItem))
+        if (!ShopItemHasCommonPrice(shopItem))
         {
             ride->price[0] = _price;
-            window_invalidate_by_class(WC_RIDE);
+            WindowInvalidateByClass(WindowClass::Ride);
             return res;
         }
     }
@@ -124,15 +126,15 @@ GameActions::Result RideSetPriceAction::Execute() const
             if ((ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0)
             {
                 ride->price[1] = _price;
-                window_invalidate_by_class(WC_RIDE);
+                WindowInvalidateByClass(WindowClass::Ride);
                 return res;
             }
         }
         // Check same price in park flags
-        if (!shop_item_has_common_price(shopItem))
+        if (!ShopItemHasCommonPrice(shopItem))
         {
             ride->price[1] = _price;
-            window_invalidate_by_class(WC_RIDE);
+            WindowInvalidateByClass(WindowClass::Ride);
             return res;
         }
     }
@@ -148,8 +150,9 @@ void RideSetPriceAction::RideSetCommonPrice(ShopItem shopItem) const
     for (auto& ride : GetRideManager())
     {
         auto invalidate = false;
-        auto rideEntry = get_ride_entry(ride.subtype);
-        if (ride.type == RIDE_TYPE_TOILETS && shopItem == ShopItem::Admission)
+        auto rideEntry = GetRideEntryByIndex(ride.subtype);
+        const auto& rtd = ride.GetRideTypeDescriptor();
+        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET) && shopItem == ShopItem::Admission)
         {
             if (ride.price[0] != _price)
             {
@@ -180,7 +183,7 @@ void RideSetPriceAction::RideSetCommonPrice(ShopItem shopItem) const
         }
         if (invalidate)
         {
-            window_invalidate_by_number(WC_RIDE, ride.id.ToUnderlying());
+            WindowInvalidateByNumber(WindowClass::Ride, ride.id.ToUnderlying());
         }
     }
 }

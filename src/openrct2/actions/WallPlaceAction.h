@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -51,16 +51,16 @@ private:
      *  rct2: 0x006E5CBA
      */
     bool WallCheckObstructionWithTrack(
-        WallSceneryEntry* wall, int32_t z0, TrackElement* trackElement, bool* wallAcrossTrack) const;
+        const WallSceneryEntry* wall, int32_t z0, TrackElement* trackElement, bool* wallAcrossTrack) const;
     /**
      *
      *  rct2: 0x006E5C1A
      */
-    GameActions::Result WallCheckObstruction(WallSceneryEntry* wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const;
+    GameActions::Result WallCheckObstruction(const WallSceneryEntry* wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const;
 
     /**
      * Gets whether the given track type can have a wall placed on the edge of the given direction.
      * Some thin tracks for example are allowed to have walls either side of the track, but wider tracks can not.
      */
-    static bool TrackIsAllowedWallEdges(uint8_t rideType, track_type_t trackType, uint8_t trackSequence, uint8_t direction);
+    static bool TrackIsAllowedWallEdges(ride_type_t rideType, track_type_t trackType, uint8_t trackSequence, uint8_t direction);
 };

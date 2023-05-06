@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -60,13 +60,13 @@ namespace MarketingCampaignFlags
     constexpr uint8_t FIRST_WEEK = 1 << 0;
 }
 
-extern const money16 AdvertisingCampaignPricePerWeek[ADVERTISING_CAMPAIGN_COUNT];
+extern const money64 AdvertisingCampaignPricePerWeek[ADVERTISING_CAMPAIGN_COUNT];
 extern std::vector<MarketingCampaign> gMarketingCampaigns;
 
-uint16_t marketing_get_campaign_guest_generation_probability(int32_t campaign);
-void marketing_update();
-void marketing_set_guest_campaign(Guest* peep, int32_t campaign);
-bool marketing_is_campaign_type_applicable(int32_t campaignType);
-MarketingCampaign* marketing_get_campaign(int32_t campaignType);
-void marketing_new_campaign(const MarketingCampaign& campaign);
+uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaign);
+void MarketingUpdate();
+void MarketingSetGuestCampaign(Guest* peep, int32_t campaign);
+bool MarketingIsCampaignTypeApplicable(int32_t campaignType);
+MarketingCampaign* MarketingGetCampaign(int32_t campaignType);
+void MarketingNewCampaign(const MarketingCampaign& campaign);
 void MarketingCancelCampaignsForRide(const RideId rideId);

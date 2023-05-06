@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -55,6 +55,10 @@ namespace OpenRCT2::Entity::Yaw
     [[nodiscard]] constexpr int32_t YawTo32(int32_t yaw)
     {
         return yaw;
+    }
+    [[nodiscard]] constexpr int32_t YawTo64(int32_t yaw)
+    {
+        return yaw << 1;
     }
 
     [[nodiscard]] constexpr int32_t YawToPrecision(int32_t yaw, SpritePrecision precision)

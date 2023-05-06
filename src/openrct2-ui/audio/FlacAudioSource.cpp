@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -60,7 +60,7 @@ namespace OpenRCT2::Audio
             _decoder = FLAC__stream_decoder_new();
             if (_decoder == nullptr)
             {
-                log_verbose("Could not create FLAC stream decoder");
+                LOG_VERBOSE("Could not create FLAC stream decoder");
                 return false;
             }
 
@@ -69,13 +69,13 @@ namespace OpenRCT2::Audio
                 FlacCallbackWrite, FlacCallbackMetadata, FlacCallbackError, this);
             if (status != FLAC__STREAM_DECODER_INIT_STATUS_OK)
             {
-                log_verbose("Could not initialise FLAC stream");
+                LOG_VERBOSE("Could not initialise FLAC stream");
                 return false;
             }
 
             if (!FLAC__stream_decoder_process_until_end_of_metadata(_decoder))
             {
-                log_verbose("Could not read FLAC metadata");
+                LOG_VERBOSE("Could not read FLAC metadata");
                 return false;
             }
 

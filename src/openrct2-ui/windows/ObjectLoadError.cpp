@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,6 +16,7 @@
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
@@ -110,7 +111,7 @@ private:
 
             if (_downloadStatusInfo == DownloadStatusInfo())
             {
-                context_force_close_window_by_class(WC_NETWORK_STATUS);
+                ContextForceCloseWindowByClass(WindowClass::NetworkStatus);
             }
             else
             {
@@ -121,7 +122,8 @@ private:
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Count));
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Total));
                     ft.Add<char*>(_downloadStatusInfo.Name.c_str());
-                    format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, ft.Data());
+                    OpenRCT2::FormatStringLegacy(
+                        str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, ft.Data());
                 }
                 else
                 {
@@ -129,14 +131,14 @@ private:
                     ft.Add<char*>(_downloadStatusInfo.Source.c_str());
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Count));
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Total));
-                    format_string(
+                    OpenRCT2::FormatStringLegacy(
                         str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS_FROM, ft.Data());
                 }
 
-                auto intent = Intent(WC_NETWORK_STATUS);
-                intent.putExtra(INTENT_EXTRA_MESSAGE, std::string(str_downloading_objects));
-                intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { _downloadingObjects = false; });
-                context_open_intent(&intent);
+                auto intent = Intent(WindowClass::NetworkStatus);
+                intent.PutExtra(INTENT_EXTRA_MESSAGE, std::string(str_downloading_objects));
+                intent.PutExtra(INTENT_EXTRA_CALLBACK, []() -> void { _downloadingObjects = false; });
+                ContextOpenIntent(&intent);
             }
         }
     }
@@ -203,7 +205,7 @@ private:
 
         auto& entry = _entries[_currentDownloadIndex];
         auto name = String::Trim(std::string(entry.GetName()));
-        log_verbose("Downloading object: [%s]:", name.c_str());
+        LOG_VERBOSE("Downloading object: [%s]:", name.c_str());
         _currentDownloadIndex++;
         UpdateProgress({ name, _lastDownloadSource, _currentDownloadIndex, _entries.size() });
         try
@@ -264,7 +266,7 @@ enum WindowObjectLoadErrorWidgetIdx {
     WIDX_DOWNLOAD_ALL
 };
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_OBJECT_LOAD_ERROR_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_OBJECT_LOAD_ERROR_TITLE;
 static constexpr const int32_t WW = 450;
 static constexpr const int32_t WH = 400;
 static constexpr const int32_t WW_LESS_PADDING = WW - 5;
@@ -272,7 +274,7 @@ constexpr int32_t NAME_COL_LEFT = 4;
 constexpr int32_t SOURCE_COL_LEFT = (WW_LESS_PADDING / 4) + 1;
 constexpr int32_t TYPE_COL_LEFT = 5 * WW_LESS_PADDING / 8 + 1;
 
-static rct_widget window_object_load_error_widgets[] = {
+static Widget window_object_load_error_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_NAME                                   ), // 'Object name' header
     MakeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_SOURCE                                 ), // 'Object source' header
@@ -288,12 +290,12 @@ static rct_widget window_object_load_error_widgets[] = {
 // clang-format on
 
 /**
- *  Returns an rct_string_id that represents an rct_object_entry's type.
+ *  Returns an StringId that represents an RCTObjectEntry's type.
  *
  *  Could possibly be moved out of the window file if other
  *  uses exist and a suitable location is found.
  */
-static constexpr rct_string_id GetStringFromObjectType(const ObjectType type)
+static constexpr StringId GetStringFromObjectType(const ObjectType type)
 {
     switch (type)
     {
@@ -322,7 +324,7 @@ static constexpr rct_string_id GetStringFromObjectType(const ObjectType type)
     }
 }
 
-class ObjectLoadErrorWindow final : public rct_window
+class ObjectLoadErrorWindow final : public WindowBase
 {
 private:
     std::vector<ObjectEntryDescriptor> _invalidEntries;
@@ -384,7 +386,7 @@ private:
         {
             selected_list_item = index;
         }
-        widget_invalidate(this, WIDX_SCROLL);
+        WidgetInvalidate(*this, WIDX_SCROLL);
     }
 
 public:
@@ -392,7 +394,7 @@ public:
     {
         widgets = window_object_load_error_widgets;
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         colours[0] = COLOUR_LIGHT_BLUE;
         colours[1] = COLOUR_LIGHT_BLUE;
         colours[2] = COLOUR_LIGHT_BLUE;
@@ -404,12 +406,12 @@ public:
         _invalidEntries.shrink_to_fit();
     }
 
-    void OnMouseUp(const rct_widgetindex widgetIndex) override
+    void OnMouseUp(const WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(this);
+                WindowClose(*this);
                 return;
             case WIDX_COPY_CURRENT:
                 if (selected_list_item > -1 && selected_list_item < no_list_items)
@@ -434,10 +436,10 @@ public:
         frame_no++;
 
         // Check if the mouse is hovering over the list
-        if (!WidgetIsHighlighted(this, WIDX_SCROLL))
+        if (!WidgetIsHighlighted(*this, WIDX_SCROLL))
         {
             _highlightedIndex = -1;
-            widget_invalidate(this, WIDX_SCROLL);
+            WidgetInvalidate(*this, WIDX_SCROLL);
         }
 
 #ifndef DISABLE_HTTP
@@ -480,30 +482,30 @@ public:
         else
             _highlightedIndex = selectedItem;
 
-        widget_invalidate(this, WIDX_SCROLL);
+        WidgetInvalidate(*this, WIDX_SCROLL);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
-        WindowDrawWidgets(this, &dpi);
+        WindowDrawWidgets(*this, dpi);
 
         // Draw explanatory message
         auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_OBJECT_ERROR_WINDOW_EXPLANATION);
-        DrawTextWrapped(&dpi, windowPos + ScreenCoordsXY{ 5, 18 }, WW - 10, STR_BLACK_STRING, ft);
+        ft.Add<StringId>(STR_OBJECT_ERROR_WINDOW_EXPLANATION);
+        DrawTextWrapped(dpi, windowPos + ScreenCoordsXY{ 5, 18 }, WW - 10, STR_BLACK_STRING, ft);
 
         // Draw file name
         ft = Formatter();
-        ft.Add<rct_string_id>(STR_OBJECT_ERROR_WINDOW_FILE);
+        ft.Add<StringId>(STR_OBJECT_ERROR_WINDOW_FILE);
         ft.Add<utf8*>(_filePath.c_str());
-        DrawTextEllipsised(&dpi, { windowPos.x + 5, windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft);
+        DrawTextEllipsised(dpi, { windowPos.x + 5, windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft);
     }
 
-    void OnScrollDraw(const int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(const int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
-        gfx_fill_rect(
-            &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
+        GfxFillRect(
+            dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
         const int32_t listWidth = widgets[WIDX_SCROLL].width();
 
         for (int32_t i = 0; i < no_list_items; i++)
@@ -520,11 +522,11 @@ public:
                                                 { listWidth, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } };
             // If hovering over item, change the color and fill the backdrop.
             if (i == selected_list_item)
-                gfx_fill_rect(&dpi, screenRect, ColourMapA[colours[1]].darker);
+                GfxFillRect(dpi, screenRect, ColourMapA[colours[1]].darker);
             else if (i == _highlightedIndex)
-                gfx_fill_rect(&dpi, screenRect, ColourMapA[colours[1]].mid_dark);
+                GfxFillRect(dpi, screenRect, ColourMapA[colours[1]].mid_dark);
             else if ((i & 1) != 0) // odd / even check
-                gfx_fill_rect(&dpi, screenRect, ColourMapA[colours[1]].light);
+                GfxFillRect(dpi, screenRect, ColourMapA[colours[1]].light);
 
             // Draw the actual object entry's name...
             screenCoords.x = NAME_COL_LEFT - 3;
@@ -534,18 +536,18 @@ public:
             auto name = entry.GetName();
             char buffer[256];
             String::Set(buffer, sizeof(buffer), name.data(), name.size());
-            gfx_draw_string(&dpi, screenCoords, buffer, { COLOUR_DARK_GREEN });
+            GfxDrawString(dpi, screenCoords, buffer, { COLOUR_DARK_GREEN });
 
             if (entry.Generation == ObjectGeneration::DAT)
             {
                 // ... source game ...
-                const auto sourceStringId = object_manager_get_source_game_string(entry.Entry.GetSourceGame());
-                DrawTextBasic(&dpi, { SOURCE_COL_LEFT - 3, screenCoords.y }, sourceStringId, {}, { COLOUR_DARK_GREEN });
+                const auto sourceStringId = ObjectManagerGetSourceGameString(entry.Entry.GetSourceGame());
+                DrawTextBasic(dpi, { SOURCE_COL_LEFT - 3, screenCoords.y }, sourceStringId, {}, { COLOUR_DARK_GREEN });
             }
 
             // ... and type
             const auto type = GetStringFromObjectType(entry.GetType());
-            DrawTextBasic(&dpi, { TYPE_COL_LEFT - 3, screenCoords.y }, type, {}, { COLOUR_DARK_GREEN });
+            DrawTextBasic(dpi, { TYPE_COL_LEFT - 3, screenCoords.y }, type, {}, { COLOUR_DARK_GREEN });
         }
     }
 
@@ -561,13 +563,13 @@ public:
     }
 };
 
-rct_window* WindowObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
+WindowBase* WindowObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
 {
     // Check if window is already open
-    auto* window = window_bring_to_front_by_class(WC_OBJECT_LOAD_ERROR);
+    auto* window = WindowBringToFrontByClass(WindowClass::ObjectLoadError);
     if (window == nullptr)
     {
-        window = WindowCreate<ObjectLoadErrorWindow>(WC_OBJECT_LOAD_ERROR, WW, WH, 0);
+        window = WindowCreate<ObjectLoadErrorWindow>(WindowClass::ObjectLoadError, WW, WH, 0);
     }
 
     static_cast<ObjectLoadErrorWindow*>(window)->Initialise(path, numMissingObjects, missingObjects);

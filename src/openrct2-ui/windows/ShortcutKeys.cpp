@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,9 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_SHORTCUTS_TITLE;
+WindowBase* ResetShortcutKeysPromptOpen();
+
+static constexpr const StringId WINDOW_TITLE = STR_SHORTCUTS_TITLE;
 static constexpr const int32_t WW = 420;
 static constexpr const int32_t WH = 280;
 
@@ -38,7 +40,7 @@ enum WindowShortcutWidgetIdx
 };
 
 // clang-format off
-static rct_widget window_shortcut_widgets[] = {
+static Widget window_shortcut_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({0,    43}, {350, 287}, WindowWidgetType::Resize, WindowColour::Secondary),
     MakeWidget({4,    47}, {412, 245}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
@@ -47,7 +49,7 @@ static rct_widget window_shortcut_widgets[] = {
 };
 // clang-format on
 
-static constexpr const rct_string_id CHANGE_WINDOW_TITLE = STR_SHORTCUT_CHANGE_TITLE;
+static constexpr const StringId CHANGE_WINDOW_TITLE = STR_SHORTCUT_CHANGE_TITLE;
 static constexpr const int32_t CHANGE_WW = 250;
 static constexpr const int32_t CHANGE_WH = 80;
 
@@ -57,7 +59,7 @@ enum
 };
 
 // clang-format off
-static rct_widget window_shortcut_change_widgets[] = {
+static Widget window_shortcut_change_widgets[] = {
     WINDOW_SHIM(CHANGE_WINDOW_TITLE, CHANGE_WW, CHANGE_WH),
     MakeWidget({ 75, 56 }, { 100, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_REMOVE, STR_SHORTCUT_REMOVE_TIP),
     WIDGETS_END,
@@ -68,7 +70,7 @@ class ChangeShortcutWindow final : public Window
 {
 private:
     std::string _shortcutId;
-    rct_string_id _shortcutLocalisedName{};
+    StringId _shortcutLocalisedName{};
     std::string _shortcutCustomName;
 
 public:
@@ -78,8 +80,9 @@ public:
         auto registeredShortcut = shortcutManager.GetShortcut(shortcutId);
         if (registeredShortcut != nullptr)
         {
-            window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
-            auto w = WindowCreate<ChangeShortcutWindow>(WC_CHANGE_KEYBOARD_SHORTCUT, CHANGE_WW, CHANGE_WH, WF_CENTRE_SCREEN);
+            WindowCloseByClass(WindowClass::ChangeKeyboardShortcut);
+            auto w = WindowCreate<ChangeShortcutWindow>(
+                WindowClass::ChangeKeyboardShortcut, CHANGE_WW, CHANGE_WH, WF_CENTRE_SCREEN);
             if (w != nullptr)
             {
                 w->_shortcutId = shortcutId;
@@ -95,7 +98,7 @@ public:
     void OnOpen() override
     {
         widgets = window_shortcut_change_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
     }
 
     void OnClose() override
@@ -105,7 +108,7 @@ public:
         NotifyShortcutKeysWindow();
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -118,7 +121,7 @@ public:
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
@@ -127,14 +130,14 @@ public:
         auto ft = Formatter();
         if (_shortcutCustomName.empty())
         {
-            ft.Add<rct_string_id>(_shortcutLocalisedName);
+            ft.Add<StringId>(_shortcutLocalisedName);
         }
         else
         {
-            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(_shortcutCustomName.c_str());
         }
-        DrawTextWrapped(&dpi, stringCoords, 242, STR_SHORTCUT_CHANGE_PROMPT, ft, { TextAlignment::CENTRE });
+        DrawTextWrapped(dpi, stringCoords, 242, STR_SHORTCUT_CHANGE_PROMPT, ft, { TextAlignment::CENTRE });
     }
 
 private:
@@ -159,7 +162,7 @@ private:
     struct ShortcutStringPair
     {
         std::string ShortcutId;
-        rct_string_id StringId = STR_NONE;
+        ::StringId StringId = STR_NONE;
         std::string CustomString;
         std::string Binding;
     };
@@ -173,7 +176,7 @@ private:
     };
 
     std::vector<ShortcutTabDesc> _tabs;
-    std::vector<rct_widget> _widgets;
+    std::vector<Widget> _widgets;
     std::vector<ShortcutStringPair> _list;
     int_fast16_t _highlightedItem;
     size_t _currentTabIndex{};
@@ -192,25 +195,30 @@ public:
         max_height = WH_SC_MAX;
     }
 
+    void OnClose() override
+    {
+        WindowCloseByClass(WindowClass::ResetShortcutKeysPrompt);
+    }
+
     void OnResize() override
     {
-        window_set_resize(this, min_width, min_height, max_width, max_height);
+        WindowSetResize(*this, min_width, min_height, max_width, max_height);
     }
 
     void OnUpdate() override
     {
         // Remove highlight when the mouse is not hovering over the list
-        if (_highlightedItem != -1 && !WidgetIsHighlighted(this, WIDX_SCROLL))
+        if (_highlightedItem != -1 && !WidgetIsHighlighted(*this, WIDX_SCROLL))
         {
             _highlightedItem = -1;
             InvalidateWidget(WIDX_SCROLL);
         }
 
         _tabAnimationIndex++;
-        InvalidateWidget(static_cast<rct_widgetindex>(WIDX_TAB_0 + _currentTabIndex));
+        InvalidateWidget(static_cast<WidgetIndex>(WIDX_TAB_0 + _currentTabIndex));
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -218,7 +226,7 @@ public:
                 Close();
                 break;
             case WIDX_RESET:
-                ResetAll();
+                ResetShortcutKeysPromptOpen();
                 break;
             default:
             {
@@ -233,28 +241,22 @@ public:
 
     void OnPrepareDraw() override
     {
-        widgets[WIDX_BACKGROUND].right = width - 1;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_TITLE].right = width - 2;
-        widgets[WIDX_CLOSE].right = width - 3;
-        widgets[WIDX_CLOSE].left = width - 13;
-        widgets[WIDX_TAB_CONTENT_PANEL].right = width - 1;
-        widgets[WIDX_TAB_CONTENT_PANEL].bottom = height - 1;
+        ResizeFrameWithPage();
         widgets[WIDX_SCROLL].right = width - 5;
         widgets[WIDX_SCROLL].bottom = height - 19;
         widgets[WIDX_RESET].top = height - 16;
         widgets[WIDX_RESET].bottom = height - 5;
-        window_align_tabs(this, WIDX_TAB_0, static_cast<rct_widgetindex>(WIDX_TAB_0 + _tabs.size()));
+        WindowAlignTabs(this, WIDX_TAB_0, static_cast<WidgetIndex>(WIDX_TAB_0 + _tabs.size()));
 
         // Set selected tab
         for (size_t i = 0; i < _tabs.size(); i++)
         {
-            SetWidgetPressed(static_cast<rct_widgetindex>(WIDX_TAB_0 + i), false);
+            SetWidgetPressed(static_cast<WidgetIndex>(WIDX_TAB_0 + i), false);
         }
-        SetWidgetPressed(static_cast<rct_widgetindex>(WIDX_TAB_0 + _currentTabIndex), true);
+        SetWidgetPressed(static_cast<WidgetIndex>(WIDX_TAB_0 + _currentTabIndex), true);
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -300,11 +302,11 @@ public:
         }
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
-        gfx_fill_rect(
-            &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
+        GfxFillRect(
+            dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
 
         // TODO: the line below is a workaround for what is presumably a bug with dpi->width
         //       see https://github.com/OpenRCT2/OpenRCT2/issues/11238 for details
@@ -341,6 +343,21 @@ public:
         InitialiseList();
     }
 
+    void ResetAllOnActiveTab()
+    {
+        auto& shortcutManager = GetShortcutManager();
+        for (const auto& item : _list)
+        {
+            auto shortcut = shortcutManager.GetShortcut(item.ShortcutId);
+            if (shortcut != nullptr)
+            {
+                shortcut->Current = shortcut->Default;
+            }
+        }
+        shortcutManager.SaveUserBindings();
+        RefreshBindings();
+    }
+
 private:
     bool IsInCurrentTab(const RegisteredShortcut& shortcut)
     {
@@ -370,12 +387,11 @@ private:
         // Get shortcuts and sort by group
         auto shortcuts = GetShortcutsForCurrentTab();
         std::stable_sort(shortcuts.begin(), shortcuts.end(), [](const RegisteredShortcut* a, const RegisteredShortcut* b) {
-            return a->GetGroup().compare(b->GetGroup()) < 0;
+            return a->OrderIndex < b->OrderIndex;
         });
 
         // Create list items with a separator between each group
         _list.clear();
-        size_t index = 0;
         std::string group;
         for (const auto* shortcut : shortcuts)
         {
@@ -400,7 +416,6 @@ private:
             ssp.CustomString = shortcut->CustomName;
             ssp.Binding = shortcut->GetDisplayString();
             _list.push_back(std::move(ssp));
-            index++;
         }
 
         Invalidate();
@@ -445,7 +460,7 @@ private:
         _widgets.push_back(WIDGETS_END);
         widgets = _widgets.data();
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
     }
 
     void SetTab(size_t index)
@@ -458,22 +473,7 @@ private:
         }
     }
 
-    void ResetAll()
-    {
-        auto& shortcutManager = GetShortcutManager();
-        for (const auto& item : _list)
-        {
-            auto shortcut = shortcutManager.GetShortcut(item.ShortcutId);
-            if (shortcut != nullptr)
-            {
-                shortcut->Current = shortcut->Default;
-            }
-        }
-        shortcutManager.SaveUserBindings();
-        RefreshBindings();
-    }
-
-    void DrawTabImages(rct_drawpixelinfo& dpi) const
+    void DrawTabImages(DrawPixelInfo& dpi) const
     {
         for (size_t i = 0; i < _tabs.size(); i++)
         {
@@ -481,10 +481,10 @@ private:
         }
     }
 
-    void DrawTabImage(rct_drawpixelinfo& dpi, size_t tabIndex) const
+    void DrawTabImage(DrawPixelInfo& dpi, size_t tabIndex) const
     {
         const auto& tabDesc = _tabs[tabIndex];
-        auto widgetIndex = static_cast<rct_widgetindex>(WIDX_TAB_0 + tabIndex);
+        auto widgetIndex = static_cast<WidgetIndex>(WIDX_TAB_0 + tabIndex);
         if (!IsWidgetDisabled(widgetIndex))
         {
             auto imageId = tabDesc.ImageId;
@@ -497,67 +497,128 @@ private:
                 }
 
                 const auto& widget = widgets[widgetIndex];
-                gfx_draw_sprite(&dpi, ImageId(imageId), windowPos + ScreenCoordsXY{ widget.left, widget.top });
+                GfxDrawSprite(dpi, ImageId(imageId), windowPos + ScreenCoordsXY{ widget.left, widget.top });
             }
         }
     }
 
-    void DrawSeparator(rct_drawpixelinfo& dpi, int32_t y, int32_t scrollWidth)
+    void DrawSeparator(DrawPixelInfo& dpi, int32_t y, int32_t scrollWidth)
     {
         const int32_t top = y + (SCROLLABLE_ROW_HEIGHT / 2) - 1;
-        gfx_fill_rect(&dpi, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[0]].mid_dark);
-        gfx_fill_rect(&dpi, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[0]].lightest);
+        GfxFillRect(dpi, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[0]].mid_dark);
+        GfxFillRect(dpi, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[0]].lightest);
     }
 
-    void DrawItem(
-        rct_drawpixelinfo& dpi, int32_t y, int32_t scrollWidth, const ShortcutStringPair& shortcut, bool isHighlighted)
+    void DrawItem(DrawPixelInfo& dpi, int32_t y, int32_t scrollWidth, const ShortcutStringPair& shortcut, bool isHighlighted)
     {
         auto format = STR_BLACK_STRING;
         if (isHighlighted)
         {
             format = STR_WINDOW_COLOUR_2_STRINGID;
-            gfx_filter_rect(&dpi, { 0, y - 1, scrollWidth, y + (SCROLLABLE_ROW_HEIGHT - 2) }, FilterPaletteID::PaletteDarken1);
+            GfxFilterRect(dpi, { 0, y - 1, scrollWidth, y + (SCROLLABLE_ROW_HEIGHT - 2) }, FilterPaletteID::PaletteDarken1);
         }
 
         auto bindingOffset = (scrollWidth * 2) / 3;
         auto ft = Formatter();
-        ft.Add<rct_string_id>(STR_SHORTCUT_ENTRY_FORMAT);
+        ft.Add<StringId>(STR_SHORTCUT_ENTRY_FORMAT);
         if (shortcut.CustomString.empty())
         {
-            ft.Add<rct_string_id>(shortcut.StringId);
+            ft.Add<StringId>(shortcut.StringId);
         }
         else
         {
-            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(shortcut.CustomString.c_str());
         }
-        DrawTextEllipsised(&dpi, { 0, y - 1 }, bindingOffset, format, ft);
+        DrawTextEllipsised(dpi, { 0, y - 1 }, bindingOffset, format, ft);
 
         if (!shortcut.Binding.empty())
         {
             ft = Formatter();
-            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(shortcut.Binding.c_str());
-            DrawTextEllipsised(&dpi, { bindingOffset, y - 1 }, 150, format, ft);
+            DrawTextEllipsised(dpi, { bindingOffset, y - 1 }, 150, format, ft);
         }
     }
 };
 
 void ChangeShortcutWindow::NotifyShortcutKeysWindow()
 {
-    auto w = window_find_by_class(WC_KEYBOARD_SHORTCUT_LIST);
+    auto w = WindowFindByClass(WindowClass::KeyboardShortcutList);
     if (w != nullptr)
     {
         static_cast<ShortcutKeysWindow*>(w)->RefreshBindings();
     }
 }
 
-rct_window* WindowShortcutKeysOpen()
+WindowBase* WindowShortcutKeysOpen()
 {
-    auto w = window_bring_to_front_by_class(WC_KEYBOARD_SHORTCUT_LIST);
+    auto w = WindowBringToFrontByClass(WindowClass::KeyboardShortcutList);
     if (w == nullptr)
     {
-        w = WindowCreate<ShortcutKeysWindow>(WC_KEYBOARD_SHORTCUT_LIST, WW, WH, WF_RESIZABLE);
+        w = WindowCreate<ShortcutKeysWindow>(WindowClass::KeyboardShortcutList, WW, WH, WF_RESIZABLE);
     }
     return w;
 }
+
+#pragma region Reset prompt
+static constexpr const int32_t RESET_PROMPT_WW = 200;
+static constexpr const int32_t RESET_PROMPT_WH = 80;
+
+enum
+{
+    WIDX_RESET_PROMPT_BACKGROUND,
+    WIDX_RESET_PROMPT_TITLE,
+    WIDX_RESET_PROMPT_CLOSE,
+    WIDX_RESET_PROMPT_LABEL,
+    WIDX_RESET_PROMPT_RESET,
+    WIDX_RESET_PROMPT_CANCEL
+};
+
+static Widget WindowResetShortcutKeysPromptWidgets[] = {
+    WINDOW_SHIM_WHITE(STR_SHORTCUT_ACTION_RESET, RESET_PROMPT_WW, RESET_PROMPT_WH),
+    MakeWidget(
+        { 2, 30 }, { RESET_PROMPT_WW - 4, 12 }, WindowWidgetType::LabelCentred, WindowColour::Primary,
+        STR_RESET_SHORTCUT_KEYS_PROMPT),
+    MakeWidget({ 8, RESET_PROMPT_WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_RESET),
+    MakeWidget(
+        { RESET_PROMPT_WW - 95, RESET_PROMPT_WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary,
+        STR_SAVE_PROMPT_CANCEL),
+    WIDGETS_END,
+};
+
+class ResetShortcutKeysPrompt final : public Window
+{
+    void OnOpen() override
+    {
+        widgets = WindowResetShortcutKeysPromptWidgets;
+    }
+
+    void OnMouseUp(WidgetIndex widgetIndex) override
+    {
+        switch (widgetIndex)
+        {
+            case WIDX_RESET_PROMPT_RESET:
+            {
+                auto w = WindowFindByClass(WindowClass::KeyboardShortcutList);
+                if (w != nullptr)
+                {
+                    static_cast<ShortcutKeysWindow*>(w)->ResetAllOnActiveTab();
+                }
+                Close();
+                break;
+            }
+            case WIDX_RESET_PROMPT_CANCEL:
+            case WIDX_RESET_PROMPT_CLOSE:
+                Close();
+                break;
+        }
+    }
+};
+
+WindowBase* ResetShortcutKeysPromptOpen()
+{
+    return WindowFocusOrCreate<ResetShortcutKeysPrompt>(
+        WindowClass::ResetShortcutKeysPrompt, RESET_PROMPT_WW, RESET_PROMPT_WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+}
+#pragma endregion

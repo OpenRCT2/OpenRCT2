@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2018 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,7 +31,7 @@ protected:
     {
         for (const auto& ride : GetRideManager())
         {
-            ride_ratings_update_ride(ride);
+            RideRatingsUpdateRide(ride);
         }
     }
 
@@ -52,39 +52,50 @@ protected:
             static_cast<int>(ratings.Intensity), static_cast<int>(ratings.Nausea));
         return line;
     }
+
+    void TestRatings(const u8string& parkFile, uint16_t expectedRideCount)
+    {
+        const auto parkFilePath = TestData::GetParkPath(parkFile);
+        const auto ratingsDataPath = Path::Combine(TestData::GetBasePath(), u8"ratings", parkFile + u8".txt");
+
+        // Load expected ratings
+        auto expectedRatings = File::ReadAllLines(ratingsDataPath);
+        ASSERT_FALSE(expectedRatings.empty());
+
+        gOpenRCT2Headless = true;
+        gOpenRCT2NoGraphics = true;
+
+        Platform::CoreInit();
+        auto context = CreateContext();
+        bool initialised = context->Initialise();
+        ASSERT_TRUE(initialised);
+
+        GetContext()->LoadParkFromFile(parkFilePath);
+
+        // Check ride count to check load was successful
+        ASSERT_EQ(RideGetCount(), expectedRideCount);
+
+        CalculateRatingsForAllRides();
+
+        // Check ride ratings
+        int expI = 0;
+        for (const auto& ride : GetRideManager())
+        {
+            auto actual = FormatRatings(ride);
+            auto expected = expectedRatings[expI];
+            ASSERT_STREQ(actual.c_str(), expected.c_str());
+
+            expI++;
+        }
+    }
 };
 
-TEST_F(RideRatings, all)
+TEST_F(RideRatings, bpb)
 {
-    std::string path = TestData::GetParkPath("bpb.sv6");
+    TestRatings("bpb.sv6", 134);
+}
 
-    gOpenRCT2Headless = true;
-    gOpenRCT2NoGraphics = true;
-
-    Platform::CoreInit();
-    auto context = CreateContext();
-    bool initialised = context->Initialise();
-    ASSERT_TRUE(initialised);
-
-    load_from_sv6(path.c_str());
-
-    // Check ride count to check load was successful
-    ASSERT_EQ(ride_get_count(), 134);
-
-    CalculateRatingsForAllRides();
-
-    // Load expected ratings
-    auto expectedDataPath = Path::Combine(TestData::GetBasePath(), u8"ratings", u8"bpb.sv6.txt");
-    auto expectedRatings = File::ReadAllLines(expectedDataPath);
-
-    // Check ride ratings
-    int expI = 0;
-    for (const auto& ride : GetRideManager())
-    {
-        auto actual = FormatRatings(ride);
-        auto expected = expectedRatings[expI];
-        ASSERT_STREQ(actual.c_str(), expected.c_str());
-
-        expI++;
-    }
+TEST_F(RideRatings, BigMap)
+{
+    TestRatings("BigMapTest.sv6", 100);
 }

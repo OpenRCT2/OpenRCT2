@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,13 +19,13 @@ constexpr const RideTypeDescriptor SpiralRollerCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
-    SET_FIELD(EnabledTrackPieces, {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_SLOPE_CURVE_STEEP, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_HELIX_SMALL, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_BLOCK_BRAKES, TRACK_SLOPE_ROLL_BANKING, TRACK_LIFT_HILL_CURVED}),
+    SET_FIELD(EnabledTrackPieces, {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_SLOPE_CURVE_STEEP, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_SMALL, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_BLOCK_BRAKES, TRACK_SLOPE_ROLL_BANKING, TRACK_LIFT_HILL_CURVED}),
     SET_FIELD(ExtraTrackPieces, {TRACK_BOOSTER, TRACK_LIFT_HILL}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_mini_rc),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionMiniRC),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
-                     RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
+                     RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
@@ -37,7 +37,6 @@ constexpr const RideTypeDescriptor SpiralRollerCoasterRTD =
     SET_FIELD(Heights, { 19, 24, 9, 11, }),
     SET_FIELD(MaxMass, 31),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftFrictionWheels, 7, 7 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_spiral_roller_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 41, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 35.00_GBP, 2.50_GBP, 50, }),
@@ -52,5 +51,32 @@ constexpr const RideTypeDescriptor SpiralRollerCoasterRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_SPIRAL_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_SPIRAL_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "spiral_rc"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(3, 30), RIDE_RATING(0, 30), RIDE_RATING(0, 30) },
+        14,
+        -1,
+        false,
+        {
+            { RatingsModifierType::BonusLength,           6000,             819, 0, 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusTrainLength,      0,                140434, 0, 0 },
+            { RatingsModifierType::BonusMaxSpeed,         0,                51366, 85019, 35424 },
+            { RatingsModifierType::BonusAverageSpeed,     0,                364088, 400497, 0 },
+            { RatingsModifierType::BonusDuration,         150,              26214, 0, 0 },
+            { RatingsModifierType::BonusGForces,          0,                36864, 30384, 49648 },
+            { RatingsModifierType::BonusTurns,            0,                28235, 34767, 45749 },
+            { RatingsModifierType::BonusDrops,            0,                43690, 46811, 49152 },
+            { RatingsModifierType::BonusSheltered,        0,                15420, 32768, 35108 },
+            { RatingsModifierType::BonusProximity,        0,                20130, 0, 0 },
+            { RatingsModifierType::BonusScenery,          0,                6693, 0, 0 },
+            { RatingsModifierType::RequirementDropHeight, 12,               2, 2, 2 },
+            { RatingsModifierType::RequirementMaxSpeed,   0xA0000,          2, 2, 2 },
+            { RatingsModifierType::RequirementNegativeGs, FIXED_2DP(0, 40), 2, 2, 2 },
+            { RatingsModifierType::RequirementNumDrops,   2,                2, 2, 2 },
+            { RatingsModifierType::PenaltyLateralGs,      0,                36864, 30384, 49648 },
+        },
+    }),
 };
 // clang-format on

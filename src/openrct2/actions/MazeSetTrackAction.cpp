@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,11 +18,39 @@
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
+#include "../ride/gentle/Maze.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"
 #include "../world/Park.h"
 
 using namespace OpenRCT2::TrackMetaData;
+
+// clang-format off
+/** rct2: 0x00993CE9 */
+static constexpr const uint8_t Byte993CE9[] = {
+    0xFF, 0xE0, 0xFF,
+    14, 0, 1, 2,
+    6, 2, 4, 5,
+    9, 10, 6, 8,
+    12, 13, 14, 10,
+};
+
+/** rct2: 0x00993CFC */
+static constexpr const uint8_t Byte993CFC[] = {
+    5, 12, 0xFF, 0xFF,
+    9, 0, 0xFF, 0xFF,
+    13, 4, 0xFF, 0xFF,
+    1, 8, 0xFF, 0xFF,
+};
+
+/** rct2: 0x00993D0C */
+static constexpr const uint8_t Byte993D0C[] = {
+    3, 0, 0xFF, 0xFF,
+    0, 1, 0xFF, 0xFF,
+    1, 2, 0xFF, 0xFF,
+    2, 3, 0xFF, 0xFF,
+};
+// clang-format on
 
 MazeSetTrackAction::MazeSetTrackAction(const CoordsXYZD& location, bool initialPlacement, RideId rideIndex, uint8_t mode)
     : _loc(location)
@@ -56,11 +84,11 @@ GameActions::Result MazeSetTrackAction::Query() const
     if ((_loc.z & 0xF) != 0 && _mode == GC_SET_MAZE_TRACK_BUILD)
     {
         res.Error = GameActions::Status::Unknown;
-        res.ErrorMessage = STR_CONSTRUCTION_ERR_UNKNOWN;
+        res.ErrorMessage = STR_INVALID_HEIGHT;
         return res;
     }
 
-    if (!LocationValid(_loc) || (!map_is_location_owned(_loc) && !gCheatsSandboxMode))
+    if (!LocationValid(_loc) || (!MapIsLocationOwned(_loc) && !gCheatsSandboxMode))
     {
         res.Error = GameActions::Status::NotOwned;
         res.ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
@@ -73,7 +101,7 @@ GameActions::Result MazeSetTrackAction::Query() const
         res.ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
         return res;
     }
-    auto surfaceElement = map_get_surface_element_at(_loc);
+    auto surfaceElement = MapGetSurfaceElementAt(_loc);
     if (surfaceElement == nullptr)
     {
         res.Error = GameActions::Status::Unknown;
@@ -89,7 +117,7 @@ GameActions::Result MazeSetTrackAction::Query() const
     {
         heightDifference /= COORDS_Z_PER_TINY_Z;
 
-        auto* ride = get_ride(_rideIndex);
+        auto* ride = GetRide(_rideIndex);
         const auto& rtd = ride->GetRideTypeDescriptor();
         if (heightDifference > rtd.Heights.MaxHeight)
         {
@@ -99,7 +127,7 @@ GameActions::Result MazeSetTrackAction::Query() const
         }
     }
 
-    TileElement* tileElement = map_get_track_element_at_of_type_from_ride(_loc, TrackElemType::Maze, _rideIndex);
+    TileElement* tileElement = MapGetTrackElementAtOfTypeFromRide(_loc, TrackElemType::Maze, _rideIndex);
     if (tileElement == nullptr)
     {
         if (_mode != GC_SET_MAZE_TRACK_BUILD)
@@ -130,7 +158,7 @@ GameActions::Result MazeSetTrackAction::Query() const
             return res;
         }
 
-        auto ride = get_ride(_rideIndex);
+        auto ride = GetRide(_rideIndex);
         if (ride == nullptr || ride->type == RIDE_CRASH_TYPE_NONE)
         {
             res.Error = GameActions::Status::NoClearance;
@@ -138,9 +166,7 @@ GameActions::Result MazeSetTrackAction::Query() const
             return res;
         }
 
-        const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
-        money64 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16));
-        res.Cost = price;
+        res.Cost = MazeCalculateCost(constructResult.Cost, *ride, _loc);
 
         return res;
     }
@@ -156,7 +182,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
     res.Expenditure = ExpenditureType::RideConstruction;
     res.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
-    auto ride = get_ride(_rideIndex);
+    auto ride = GetRide(_rideIndex);
     if (ride == nullptr)
     {
         res.Error = GameActions::Status::InvalidParameters;
@@ -167,16 +193,14 @@ GameActions::Result MazeSetTrackAction::Execute() const
     uint32_t flags = GetFlags();
     if (!(flags & GAME_COMMAND_FLAG_GHOST))
     {
-        footpath_remove_litter(_loc);
-        wall_remove_at({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
+        FootpathRemoveLitter(_loc);
+        WallRemoveAt({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
     }
 
-    auto tileElement = map_get_track_element_at_of_type_from_ride(_loc, TrackElemType::Maze, _rideIndex);
+    auto tileElement = MapGetTrackElementAtOfTypeFromRide(_loc, TrackElemType::Maze, _rideIndex);
     if (tileElement == nullptr)
     {
-        const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
-        money64 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16));
-        res.Cost = price;
+        res.Cost = MazeCalculateCost(0, *ride, _loc);
 
         auto startLoc = _loc.ToTileStart();
 
@@ -192,7 +216,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
 
         tileElement = trackElement->as<TileElement>();
 
-        map_invalidate_tile_full(startLoc);
+        MapInvalidateTileFull(startLoc);
 
         ride->maze_tiles++;
         ride->GetStation().SetBaseZ(tileElement->GetBaseZ());
@@ -214,15 +238,15 @@ GameActions::Result MazeSetTrackAction::Execute() const
 
             if (!_initialPlacement)
             {
-                segmentOffset = byte_993CE9[(_loc.direction + segmentOffset)];
+                segmentOffset = Byte993CE9[(_loc.direction + segmentOffset)];
                 tileElement->AsTrack()->MazeEntrySubtract(1 << segmentOffset);
 
-                uint8_t temp_edx = byte_993CFC[segmentOffset];
+                uint8_t temp_edx = Byte993CFC[segmentOffset];
                 if (temp_edx != 0xFF)
                 {
                     auto previousElementLoc = CoordsXY{ _loc }.ToTileStart() - CoordsDirectionDelta[_loc.direction];
 
-                    TileElement* previousTileElement = map_get_track_element_at_of_type_from_ride(
+                    TileElement* previousTileElement = MapGetTrackElementAtOfTypeFromRide(
                         { previousElementLoc, _loc.z }, TrackElemType::Maze, _rideIndex);
 
                     if (previousTileElement != nullptr)
@@ -248,13 +272,12 @@ GameActions::Result MazeSetTrackAction::Execute() const
                 auto previousSegment = CoordsXY{ _loc.x - CoordsDirectionDelta[_loc.direction].x / 2,
                                                  _loc.y - CoordsDirectionDelta[_loc.direction].y / 2 };
 
-                tileElement = map_get_track_element_at_of_type_from_ride(
-                    { previousSegment, _loc.z }, TrackElemType::Maze, _rideIndex);
+                tileElement = MapGetTrackElementAtOfTypeFromRide({ previousSegment, _loc.z }, TrackElemType::Maze, _rideIndex);
 
-                map_invalidate_tile_full(previousSegment.ToTileStart());
+                MapInvalidateTileFull(previousSegment.ToTileStart());
                 if (tileElement == nullptr)
                 {
-                    log_error("No surface found");
+                    LOG_ERROR("No surface found");
                     res.Error = GameActions::Status::Unknown;
                     res.ErrorMessage = STR_NONE;
                     return res;
@@ -273,15 +296,15 @@ GameActions::Result MazeSetTrackAction::Execute() const
                 {
                     tileElement->AsTrack()->MazeEntryAdd(1 << segmentBit);
 
-                    uint32_t direction1 = byte_993D0C[segmentBit];
+                    uint32_t direction1 = Byte993D0C[segmentBit];
                     auto nextElementLoc = previousSegment.ToTileStart() + CoordsDirectionDelta[direction1];
 
-                    TileElement* tmp_tileElement = map_get_track_element_at_of_type_from_ride(
+                    TileElement* tmp_tileElement = MapGetTrackElementAtOfTypeFromRide(
                         { nextElementLoc, _loc.z }, TrackElemType::Maze, _rideIndex);
 
                     if (tmp_tileElement != nullptr)
                     {
-                        uint8_t edx11 = byte_993CFC[segmentBit];
+                        uint8_t edx11 = Byte993CFC[segmentBit];
                         tmp_tileElement->AsTrack()->MazeEntryAdd(1 << (edx11));
                     }
 
@@ -291,11 +314,11 @@ GameActions::Result MazeSetTrackAction::Execute() const
             break;
     }
 
-    map_invalidate_tile({ _loc.ToTileStart(), tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+    MapInvalidateTile({ _loc.ToTileStart(), tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
 
     if ((tileElement->AsTrack()->GetMazeEntry() & 0x8888) == 0x8888)
     {
-        tile_element_remove(tileElement);
+        TileElementRemove(tileElement);
         ride->ValidateStations();
         ride->maze_tiles--;
     }

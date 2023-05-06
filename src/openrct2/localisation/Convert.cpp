@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -111,13 +111,13 @@ template<typename TConvertFunc> static std::string DecodeConvertWithTable(std::s
     return String::ToUtf8(u16);
 }
 
-std::string rct2_to_utf8(std::string_view src, RCT2LanguageId languageId)
+std::string RCT2StringToUTF8(std::string_view src, RCT2LanguageId languageId)
 {
     auto codePage = GetCodePageForRCT2Language(languageId);
     if (codePage == OpenRCT2::CodePage::CP_1252)
     {
         // The code page used by RCT2 was not quite 1252 as some codes were used for Polish characters.
-        return DecodeConvertWithTable(src, encoding_convert_rct2_to_unicode);
+        return DecodeConvertWithTable(src, EncodingConvertRCT2ToUnicode);
     }
 
     auto decoded = DecodeToMultiByte(src);

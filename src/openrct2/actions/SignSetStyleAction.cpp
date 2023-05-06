@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,6 +26,14 @@ SignSetStyleAction::SignSetStyleAction(BannerIndex bannerIndex, uint8_t mainColo
 {
 }
 
+void SignSetStyleAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("id", _bannerIndex);
+    visitor.Visit("mainColour", _mainColour);
+    visitor.Visit("textColour", _textColour);
+    visitor.Visit("isLarge", _isLarge);
+}
+
 uint16_t SignSetStyleAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
@@ -42,31 +50,31 @@ GameActions::Result SignSetStyleAction::Query() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        log_error("Invalid banner id. id = ", _bannerIndex);
+        LOG_ERROR("Invalid banner id. id = ", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (_isLarge)
     {
-        TileElement* tileElement = banner_get_tile_element(_bannerIndex);
+        TileElement* tileElement = BannerGetTileElement(_bannerIndex);
         if (tileElement == nullptr)
         {
-            log_warning("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
+            LOG_WARNING("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
         }
         if (tileElement->GetType() != TileElementType::LargeScenery)
         {
-            log_warning("Invalid game command for setting sign style, banner id '%d' is not large", _bannerIndex);
+            LOG_WARNING("Invalid game command for setting sign style, banner id '%d' is not large", _bannerIndex);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
         }
     }
     else
     {
-        WallElement* wallElement = banner_get_scrolling_wall_tile_element(_bannerIndex);
+        WallElement* wallElement = BannerGetScrollingWallTileElement(_bannerIndex);
 
         if (wallElement == nullptr)
         {
-            log_warning("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
+            LOG_WARNING("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
         }
     }
@@ -79,7 +87,7 @@ GameActions::Result SignSetStyleAction::Execute() const
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
-        log_error("Invalid banner id. id = ", _bannerIndex);
+        LOG_ERROR("Invalid banner id. id = ", _bannerIndex);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
@@ -87,8 +95,8 @@ GameActions::Result SignSetStyleAction::Execute() const
 
     if (_isLarge)
     {
-        TileElement* tileElement = banner_get_tile_element(_bannerIndex);
-        if (!map_large_scenery_sign_set_colour(
+        TileElement* tileElement = BannerGetTileElement(_bannerIndex);
+        if (!MapLargeScenerySignSetColour(
                 { coords, tileElement->GetBaseZ(), tileElement->GetDirection() },
                 tileElement->AsLargeScenery()->GetSequenceIndex(), _mainColour, _textColour))
         {
@@ -97,16 +105,16 @@ GameActions::Result SignSetStyleAction::Execute() const
     }
     else
     {
-        WallElement* wallElement = banner_get_scrolling_wall_tile_element(_bannerIndex);
+        WallElement* wallElement = BannerGetScrollingWallTileElement(_bannerIndex);
 
         wallElement->SetPrimaryColour(_mainColour);
         wallElement->SetSecondaryColour(_textColour);
-        map_invalidate_tile({ coords, wallElement->GetBaseZ(), wallElement->GetClearanceZ() });
+        MapInvalidateTile({ coords, wallElement->GetBaseZ(), wallElement->GetClearanceZ() });
     }
 
     auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
-    intent.putExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
-    context_broadcast_intent(&intent);
+    intent.PutExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
+    ContextBroadcastIntent(&intent);
 
     return GameActions::Result();
 }

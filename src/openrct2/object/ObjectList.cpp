@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -195,12 +195,12 @@ ObjectEntryIndex ObjectList::Find(ObjectType type, std::string_view identifier)
  *
  *  rct2: 0x006AB344
  */
-void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object)
+void ObjectCreateIdentifierName(char* string_buffer, size_t size, const RCTObjectEntry* object)
 {
     snprintf(string_buffer, size, "%.8s/%4X%4X", object->name, object->flags, object->checksum);
 }
 
-void get_type_entry_index(size_t index, ObjectType* outObjectType, ObjectEntryIndex* outEntryIndex)
+void ObjectGetTypeEntryIndex(size_t index, ObjectType* outObjectType, ObjectEntryIndex* outEntryIndex)
 {
     uint8_t objectType = EnumValue(ObjectType::Ride);
     for (size_t groupCount : object_entry_group_counts)
@@ -222,14 +222,14 @@ void get_type_entry_index(size_t index, ObjectType* outObjectType, ObjectEntryIn
         *outEntryIndex = static_cast<ObjectEntryIndex>(index);
 }
 
-void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_object_entry* entry)
+void ObjectEntryGetNameFixed(utf8* buffer, size_t bufferSize, const RCTObjectEntry* entry)
 {
     bufferSize = std::min(static_cast<size_t>(DAT_NAME_LENGTH) + 1, bufferSize);
     std::memcpy(buffer, entry->name, bufferSize - 1);
     buffer[bufferSize - 1] = 0;
 }
 
-void* object_entry_get_chunk(ObjectType objectType, ObjectEntryIndex index)
+void* ObjectEntryGetChunk(ObjectType objectType, ObjectEntryIndex index)
 {
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto* object = objectMgr.GetLoadedObject(objectType, index);
@@ -240,7 +240,7 @@ void* object_entry_get_chunk(ObjectType objectType, ObjectEntryIndex index)
     return nullptr;
 }
 
-const Object* object_entry_get_object(ObjectType objectType, ObjectEntryIndex index)
+const Object* ObjectEntryGetObject(ObjectType objectType, ObjectEntryIndex index)
 {
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
     return objectMgr.GetLoadedObject(objectType, index);

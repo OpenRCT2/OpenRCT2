@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "../Identifiers.h"
 
 #include <cstdint>
+#include <utility>
 
 struct CoordsXYZ;
 struct Ride;
@@ -40,4 +41,7 @@ namespace OpenRCT2::RideAudio
 
     void DefaultStartRideMusicChannel(const ViewportRideMusicInstance& instance);
     void CircusStartRideMusicChannel(const ViewportRideMusicInstance& instance);
+
+    std::pair<size_t, size_t> RideMusicGetTrackOffsetLength_Circus(const Ride& ride);
+    std::pair<size_t, size_t> RideMusicGetTrackOffsetLength_Default(const Ride& ride);
 } // namespace OpenRCT2::RideAudio

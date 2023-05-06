@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,7 +15,7 @@
 #include "../Intro.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
-#include "../actions/SetCheatAction.h"
+#include "../actions/CheatSetAction.h"
 #include "../audio/audio.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"
@@ -51,17 +51,17 @@ extern uint8_t gClipHeight;
 
 uint8_t gScreenshotCountdown = 0;
 
-static bool WriteDpiToFile(std::string_view path, const rct_drawpixelinfo* dpi, const GamePalette& palette)
+static bool WriteDpiToFile(std::string_view path, const DrawPixelInfo& dpi, const GamePalette& palette)
 {
-    auto const pixels8 = dpi->bits;
-    auto const pixelsLen = (dpi->width + dpi->pitch) * dpi->height;
+    auto const pixels8 = dpi.bits;
+    auto const pixelsLen = (dpi.width + dpi.pitch) * dpi.height;
     try
     {
         Image image;
-        image.Width = dpi->width;
-        image.Height = dpi->height;
+        image.Width = dpi.width;
+        image.Height = dpi.height;
         image.Depth = 8;
-        image.Stride = dpi->width + dpi->pitch;
+        image.Stride = dpi.width + dpi.pitch;
         image.Palette = std::make_unique<GamePalette>(palette);
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
         Imaging::WriteToFile(path, image, IMAGE_FORMAT::PNG);
@@ -69,7 +69,7 @@ static bool WriteDpiToFile(std::string_view path, const rct_drawpixelinfo* dpi, 
     }
     catch (const std::exception& e)
     {
-        log_error("Unable to write png: %s", e.what());
+        LOG_ERROR("Unable to write png: %s", e.what());
         return false;
     }
 }
@@ -78,7 +78,7 @@ static bool WriteDpiToFile(std::string_view path, const rct_drawpixelinfo* dpi, 
  *
  *  rct2: 0x006E3AEC
  */
-void screenshot_check()
+void ScreenshotCheck()
 {
     if (gScreenshotCountdown != 0)
     {
@@ -86,15 +86,15 @@ void screenshot_check()
         if (gScreenshotCountdown == 0)
         {
             // update_weather_animation();
-            std::string screenshotPath = screenshot_dump();
+            std::string screenshotPath = ScreenshotDump();
 
             if (!screenshotPath.empty())
             {
-                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 100, context_get_width() / 2);
+                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 100, ContextGetWidth() / 2);
             }
             else
             {
-                context_show_error(STR_SCREENSHOT_FAILED, STR_NONE, {});
+                ContextShowError(STR_SCREENSHOT_FAILED, STR_NONE, {});
             }
 
             // redraw_weather();
@@ -102,18 +102,18 @@ void screenshot_check()
     }
 }
 
-static std::string screenshot_get_park_name()
+static std::string ScreenshotGetParkName()
 {
     return GetContext()->GetGameState()->GetPark().Name;
 }
 
-static std::string screenshot_get_directory()
+static std::string ScreenshotGetDirectory()
 {
     auto env = GetContext()->GetPlatformEnvironment();
     return env->GetDirectoryPath(DIRBASE::USER, DIRID::SCREENSHOT);
 }
 
-static std::pair<rct2_date, rct2_time> screenshot_get_date_time()
+static std::pair<RealWorldDate, RealWorldTime> ScreenshotGetDateTime()
 {
     auto date = Platform::GetDateLocal();
     auto time = Platform::GetTimeLocal();
@@ -121,9 +121,9 @@ static std::pair<rct2_date, rct2_time> screenshot_get_date_time()
     return { date, time };
 }
 
-static std::string screenshot_get_formatted_date_time()
+static std::string ScreenshotGetFormattedDateTime()
 {
-    auto [date, time] = screenshot_get_date_time();
+    auto [date, time] = ScreenshotGetDateTime();
     char formatted[64];
     snprintf(
         formatted, sizeof(formatted), "%4d-%02d-%02d %02d-%02d-%02d", date.year, date.month, date.day, time.hour, time.minute,
@@ -131,17 +131,17 @@ static std::string screenshot_get_formatted_date_time()
     return formatted;
 }
 
-static std::optional<std::string> screenshot_get_next_path()
+static std::optional<std::string> ScreenshotGetNextPath()
 {
-    auto screenshotDirectory = screenshot_get_directory();
+    auto screenshotDirectory = ScreenshotGetDirectory();
     if (!Platform::EnsureDirectoryExists(screenshotDirectory.c_str()))
     {
-        log_error("Unable to save screenshots in OpenRCT2 screenshot directory.");
+        LOG_ERROR("Unable to save screenshots in OpenRCT2 screenshot directory.");
         return std::nullopt;
     }
 
-    auto parkName = screenshot_get_park_name();
-    auto dateTime = screenshot_get_formatted_date_time();
+    auto parkName = ScreenshotGetParkName();
+    auto dateTime = ScreenshotGetFormattedDateTime();
     auto name = parkName + " " + dateTime;
 
     // Generate a path with a `tries` number
@@ -160,14 +160,14 @@ static std::optional<std::string> screenshot_get_next_path()
         }
     }
 
-    log_error("You have too many saved screenshots saved at exactly the same date and time.");
+    LOG_ERROR("You have too many saved screenshots saved at exactly the same date and time.");
     return std::nullopt;
 };
 
-std::string screenshot_dump_png(rct_drawpixelinfo* dpi)
+std::string ScreenshotDumpPNG(DrawPixelInfo& dpi)
 {
     // Get a free screenshot path
-    auto path = screenshot_get_next_path();
+    auto path = ScreenshotGetNextPath();
 
     if (!path.has_value())
     {
@@ -182,9 +182,9 @@ std::string screenshot_dump_png(rct_drawpixelinfo* dpi)
     return "";
 }
 
-std::string screenshot_dump_png_32bpp(int32_t width, int32_t height, const void* pixels)
+std::string ScreenshotDumpPNG32bpp(int32_t width, int32_t height, const void* pixels)
 {
-    auto path = screenshot_get_next_path();
+    auto path = ScreenshotGetNextPath();
 
     if (!path.has_value())
     {
@@ -207,7 +207,7 @@ std::string screenshot_dump_png_32bpp(int32_t width, int32_t height, const void*
     }
     catch (const std::exception& e)
     {
-        log_error("Unable to save screenshot: %s", e.what());
+        LOG_ERROR("Unable to save screenshot: %s", e.what());
         return "";
     }
 }
@@ -215,7 +215,7 @@ std::string screenshot_dump_png_32bpp(int32_t width, int32_t height, const void*
 static int32_t GetHighestBaseClearanceZ(const CoordsXY& location, const bool useViewClipping)
 {
     int32_t z = 0;
-    auto element = map_get_first_element_at(location);
+    auto element = MapGetFirstElementAt(location);
     if (element != nullptr)
     {
         do
@@ -241,7 +241,7 @@ static int32_t GetTallestVisibleTileTop(
         {
             auto location = TileCoordsXY(x, y).ToCoordsXY();
             int32_t z = GetHighestBaseClearanceZ(location, useViewClipping);
-            int32_t viewY = translate_3d_to_2d_with_z(rotation, CoordsXYZ(location.ToTileCentre(), z)).y;
+            int32_t viewY = Translate3DTo2DWithZ(rotation, CoordsXYZ(location.ToTileCentre(), z)).y;
             minViewY = std::min(minViewY, viewY);
         }
     }
@@ -249,9 +249,9 @@ static int32_t GetTallestVisibleTileTop(
     return minViewY - 64;
 }
 
-static rct_drawpixelinfo CreateDPI(const rct_viewport& viewport)
+static DrawPixelInfo CreateDPI(const Viewport& viewport)
 {
-    rct_drawpixelinfo dpi;
+    DrawPixelInfo dpi;
     dpi.width = viewport.width;
     dpi.height = viewport.height;
     dpi.bits = new (std::nothrow) uint8_t[dpi.width * dpi.height];
@@ -268,7 +268,7 @@ static rct_drawpixelinfo CreateDPI(const rct_viewport& viewport)
     return dpi;
 }
 
-static void ReleaseDPI(rct_drawpixelinfo& dpi)
+static void ReleaseDPI(DrawPixelInfo& dpi)
 {
     if (dpi.bits != nullptr)
         delete[] dpi.bits;
@@ -277,7 +277,7 @@ static void ReleaseDPI(rct_drawpixelinfo& dpi)
     dpi.height = 0;
 }
 
-static rct_viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
+static Viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
 {
     // Get the tile coordinates of each corner
     const TileCoordsXY cornerCoords[2][4] = {
@@ -298,23 +298,23 @@ static rct_viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
         },
     };
 
-    auto* const mainWindow = window_get_main();
-    const auto* const mainViewport = window_get_viewport(mainWindow);
+    auto* const mainWindow = WindowGetMain();
+    const auto* const mainViewport = WindowGetViewport(mainWindow);
     const bool useViewClipping = (mainViewport != nullptr && mainViewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
 
     // Calculate the viewport bounds
     auto corners = cornerCoords[useViewClipping ? 1 : 0];
-    auto screenCoords1 = translate_3d_to_2d_with_z(rotation, { corners[0].ToCoordsXY().ToTileCentre(), 0 });
-    auto screenCoords2 = translate_3d_to_2d_with_z(rotation, { corners[1].ToCoordsXY().ToTileCentre(), 0 });
-    auto screenCoords3 = translate_3d_to_2d_with_z(rotation, { corners[2].ToCoordsXY().ToTileCentre(), 0 });
-    auto screenCoords4 = translate_3d_to_2d_with_z(rotation, { corners[3].ToCoordsXY().ToTileCentre(), 0 });
+    auto screenCoords1 = Translate3DTo2DWithZ(rotation, { corners[0].ToCoordsXY().ToTileCentre(), 0 });
+    auto screenCoords2 = Translate3DTo2DWithZ(rotation, { corners[1].ToCoordsXY().ToTileCentre(), 0 });
+    auto screenCoords3 = Translate3DTo2DWithZ(rotation, { corners[2].ToCoordsXY().ToTileCentre(), 0 });
+    auto screenCoords4 = Translate3DTo2DWithZ(rotation, { corners[3].ToCoordsXY().ToTileCentre(), 0 });
 
     auto left = std::min({ screenCoords1.x, screenCoords2.x, screenCoords3.x, screenCoords4.x }) - 32;
     auto top = GetTallestVisibleTileTop(rotation, corners[0], corners[1], useViewClipping);
     auto bottom = std::max({ screenCoords1.y, screenCoords2.y, screenCoords3.y, screenCoords4.y });
     auto right = std::max({ screenCoords1.x, screenCoords2.x, screenCoords3.x, screenCoords4.x }) + 32;
 
-    rct_viewport viewport{};
+    Viewport viewport{};
     viewport.viewPos = { left, top };
     viewport.view_width = right - left;
     viewport.view_height = bottom - top;
@@ -324,10 +324,10 @@ static rct_viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
     return viewport;
 }
 
-static void RenderViewport(IDrawingEngine* drawingEngine, const rct_viewport& viewport, rct_drawpixelinfo& dpi)
+static void RenderViewport(IDrawingEngine* drawingEngine, const Viewport& viewport, DrawPixelInfo& dpi)
 {
     // Ensure sprites appear regardless of rotation
-    reset_all_sprite_quadrant_placements();
+    ResetAllSpriteQuadrantPlacements();
 
     std::unique_ptr<X8DrawingEngine> tempDrawingEngine;
     if (drawingEngine == nullptr)
@@ -336,24 +336,24 @@ static void RenderViewport(IDrawingEngine* drawingEngine, const rct_viewport& vi
         drawingEngine = tempDrawingEngine.get();
     }
     dpi.DrawingEngine = drawingEngine;
-    viewport_render(&dpi, &viewport, { { 0, 0 }, { viewport.width, viewport.height } });
+    ViewportRender(dpi, &viewport, { { 0, 0 }, { viewport.width, viewport.height } });
 }
 
-void screenshot_giant()
+void ScreenshotGiant()
 {
-    rct_drawpixelinfo dpi{};
+    DrawPixelInfo dpi{};
     try
     {
-        auto path = screenshot_get_next_path();
+        auto path = ScreenshotGetNextPath();
         if (!path.has_value())
         {
             throw std::runtime_error("Giant screenshot failed, unable to find a suitable destination path.");
         }
 
-        const auto rotation = get_current_rotation();
+        const auto rotation = GetCurrentRotation();
         auto zoom = ZoomLevel{ 0 };
-        auto* mainWindow = window_get_main();
-        const auto* vp = window_get_viewport(mainWindow);
+        auto* mainWindow = WindowGetMain();
+        const auto* vp = WindowGetViewport(mainWindow);
         if (mainWindow != nullptr && vp != nullptr)
         {
             zoom = vp->zoom;
@@ -364,7 +364,7 @@ void screenshot_giant()
         {
             viewport.flags = vp->flags;
         }
-        if (gConfigGeneral.transparent_screenshot)
+        if (gConfigGeneral.TransparentScreenshot)
         {
             viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
         }
@@ -372,19 +372,19 @@ void screenshot_giant()
         dpi = CreateDPI(viewport);
 
         RenderViewport(nullptr, viewport, dpi);
-        WriteDpiToFile(path.value(), &dpi, gPalette);
+        WriteDpiToFile(path.value(), dpi, gPalette);
 
         // Show user that screenshot saved successfully
         const auto filename = Path::GetFileName(path.value());
         Formatter ft;
-        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<StringId>(STR_STRING);
         ft.Add<const utf8*>(filename.c_str());
-        context_show_error(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft);
+        ContextShowError(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft);
     }
     catch (const std::exception& e)
     {
-        log_error("%s", e.what());
-        context_show_error(STR_SCREENSHOT_FAILED, STR_NONE, {});
+        LOG_ERROR("%s", e.what());
+        ContextShowError(STR_SCREENSHOT_FAILED, STR_NONE, {});
     }
 
     ReleaseDPI(dpi);
@@ -399,7 +399,7 @@ template<typename FN> static inline double MeasureFunctionTime(const FN& fn)
     return std::chrono::duration<double>(endTime - startTime).count();
 }
 
-static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<IContext>& context, uint32_t iterationCount)
+static void BenchgfxRenderScreenshots(const char* inputPath, std::unique_ptr<IContext>& context, uint32_t iterationCount)
 {
     if (!context->LoadParkFromFile(inputPath))
     {
@@ -414,8 +414,8 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
     // rotation.
     constexpr int32_t NUM_ROTATIONS = 4;
     constexpr auto NUM_ZOOM_LEVELS = static_cast<int8_t>(ZoomLevel::max());
-    std::array<rct_drawpixelinfo, NUM_ROTATIONS * NUM_ZOOM_LEVELS> dpis;
-    std::array<rct_viewport, NUM_ROTATIONS * NUM_ZOOM_LEVELS> viewports;
+    std::array<DrawPixelInfo, NUM_ROTATIONS * NUM_ZOOM_LEVELS> dpis;
+    std::array<Viewport, NUM_ROTATIONS * NUM_ZOOM_LEVELS> viewports;
 
     for (ZoomLevel zoom{ 0 }; zoom < ZoomLevel::max(); zoom++)
     {
@@ -461,7 +461,7 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
 
         const double average = totalTime / static_cast<double>(totalRenderCount);
         const auto engineStringId = DrawingEngineStringIds[EnumValue(DrawingEngine::Software)];
-        const auto engineName = format_string(engineStringId, nullptr);
+        const auto engineName = FormatStringID(engineStringId, nullptr);
         std::printf("Engine: %s\n", engineName.c_str());
         std::printf("Render Count: %u\n", totalRenderCount);
         for (ZoomLevel zoom{ 0 }; zoom < ZoomLevel::max(); zoom++)
@@ -482,7 +482,7 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
         ReleaseDPI(dpi);
 }
 
-int32_t cmdline_for_gfxbench(const char** argv, int32_t argc)
+int32_t CommandLineForGfxbench(const char** argv, int32_t argc)
 {
     if (argc != 1 && argc != 2)
     {
@@ -504,21 +504,21 @@ int32_t cmdline_for_gfxbench(const char** argv, int32_t argc)
     std::unique_ptr<IContext> context(CreateContext());
     if (context->Initialise())
     {
-        drawing_engine_init();
+        DrawingEngineInit();
 
-        benchgfx_render_screenshots(inputPath, context, iterationCount);
+        BenchgfxRenderScreenshots(inputPath, context, iterationCount);
 
-        drawing_engine_dispose();
+        DrawingEngineDispose();
     }
 
     return 1;
 }
 
-static void ApplyOptions(const ScreenshotOptions* options, rct_viewport& viewport)
+static void ApplyOptions(const ScreenshotOptions* options, Viewport& viewport)
 {
     if (options->weather != WeatherType::Sunny && options->weather != WeatherType::Count)
     {
-        climate_force_weather(WeatherType{ static_cast<uint8_t>(EnumValue(options->weather) - 1) });
+        ClimateForceWeather(WeatherType{ static_cast<uint8_t>(EnumValue(options->weather) - 1) });
     }
 
     if (options->hide_guests)
@@ -556,13 +556,13 @@ static void ApplyOptions(const ScreenshotOptions* options, rct_viewport& viewpor
         CheatsSet(CheatType::RemoveLitter);
     }
 
-    if (options->transparent || gConfigGeneral.transparent_screenshot)
+    if (options->transparent || gConfigGeneral.TransparentScreenshot)
     {
         viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
     }
 }
 
-int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOptions* options)
+int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOptions* options)
 {
     // Don't include options in the count (they have been handled by CommandLine::ParseOptions already)
     for (int32_t i = 0; i < argc; i++)
@@ -584,7 +584,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
     }
 
     int32_t exitCode = 1;
-    rct_drawpixelinfo dpi;
+    DrawPixelInfo dpi;
     try
     {
         Platform::CoreInit();
@@ -602,7 +602,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
             throw std::runtime_error("Failed to initialize context.");
         }
 
-        drawing_engine_init();
+        DrawingEngineInit();
 
         if (!context->LoadParkFromFile(inputPath))
         {
@@ -612,7 +612,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
         gIntroState = IntroState::None;
         gScreenFlags = SCREEN_FLAGS_PLAYING;
 
-        rct_viewport viewport{};
+        Viewport viewport{};
         if (giantScreenshot)
         {
             auto customZoom = static_cast<int8_t>(std::atoi(argv[3]));
@@ -667,10 +667,10 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
                 if (centreMapY)
                     customY = (mapSize.y / 2) * 32 + 16;
 
-                int32_t z = tile_element_height({ customX, customY });
+                int32_t z = TileElementHeight({ customX, customY });
                 CoordsXYZ coords3d = { customX, customY, z };
 
-                auto coords2d = translate_3d_to_2d_with_z(customRotation, coords3d);
+                auto coords2d = Translate3DTo2DWithZ(customRotation, coords3d);
 
                 viewport.viewPos = { coords2d.x - ((viewport.view_width << customZoom) / 2),
                                      coords2d.y - ((viewport.view_height << customZoom) / 2) };
@@ -690,7 +690,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
         dpi = CreateDPI(viewport);
 
         RenderViewport(nullptr, viewport, dpi);
-        WriteDpiToFile(outputPath, &dpi, gPalette);
+        WriteDpiToFile(outputPath, dpi, gPalette);
     }
     catch (const std::exception& e)
     {
@@ -699,7 +699,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
     }
     ReleaseDPI(dpi);
 
-    drawing_engine_dispose();
+    DrawingEngineDispose();
 
     return exitCode;
 }
@@ -724,7 +724,7 @@ static std::string ResolveFilenameForCapture(const fs::path& filename)
     if (filename.empty())
     {
         // Automatic filename
-        auto path = screenshot_get_next_path();
+        auto path = ScreenshotGetNextPath();
         if (!path)
         {
             throw std::runtime_error("Unable to generate a filename for capture.");
@@ -732,7 +732,7 @@ static std::string ResolveFilenameForCapture(const fs::path& filename)
         return *path;
     }
 
-    auto screenshotDirectory = fs::u8path(screenshot_get_directory());
+    auto screenshotDirectory = fs::u8path(ScreenshotGetDirectory());
     auto screenshotPath = fs::absolute(screenshotDirectory / filename);
 
     // Check the filename isn't attempting to leave the screenshot directory for security
@@ -755,7 +755,7 @@ static std::string ResolveFilenameForCapture(const fs::path& filename)
 
 void CaptureImage(const CaptureOptions& options)
 {
-    rct_viewport viewport{};
+    Viewport viewport{};
     if (options.View.has_value())
     {
         viewport.width = options.View->Width;
@@ -763,9 +763,9 @@ void CaptureImage(const CaptureOptions& options)
         viewport.view_width = viewport.width;
         viewport.view_height = viewport.height;
 
-        auto z = tile_element_height(options.View->Position);
+        auto z = TileElementHeight(options.View->Position);
         CoordsXYZ coords3d(options.View->Position, z);
-        auto coords2d = translate_3d_to_2d_with_z(options.Rotation, coords3d);
+        auto coords2d = Translate3DTo2DWithZ(options.Rotation, coords3d);
         viewport.viewPos = { coords2d.x - ((options.Zoom.ApplyTo(viewport.view_width)) / 2),
                              coords2d.y - ((options.Zoom.ApplyTo(viewport.view_height)) / 2) };
         viewport.zoom = options.Zoom;
@@ -786,7 +786,7 @@ void CaptureImage(const CaptureOptions& options)
     auto outputPath = ResolveFilenameForCapture(options.Filename);
     auto dpi = CreateDPI(viewport);
     RenderViewport(nullptr, viewport, dpi);
-    WriteDpiToFile(outputPath, &dpi, gPalette);
+    WriteDpiToFile(outputPath, dpi, gPalette);
     ReleaseDPI(dpi);
 
     gCurrentRotation = backupRotation;

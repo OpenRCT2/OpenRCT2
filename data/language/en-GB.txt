@@ -97,6 +97,7 @@ STR_0092    :LIM Launched Roller Coaster
 STR_0093    :Hybrid Coaster
 STR_0094    :Single Rail Roller Coaster
 STR_0095    :Alpine Coaster
+STR_0096    :Classic Wooden Roller Coaster
 STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
 STR_0513    :A looping roller coaster where the riders ride in a standing position
 STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
@@ -179,6 +180,7 @@ STR_0602    :Roller coaster trains are accelerated out of the station by linear 
 STR_0603    :A wooden style roller coaster with a steel track, allowing for steep drops and inversions
 STR_0604    :Riders ride single file on a narrow monorail track, as they race through tight inversions and direction changes
 STR_0605    :Riders toboggan down a meandering steel track, braking to control their speed
+STR_0606    :An older-style wooden roller coaster with a fast and rough ride, with plenty of air-time, some lateral G’s, and designed to feel ‘out-of-control’
 STR_0767    :Guest {INT32}
 STR_0768    :Handyman {INT32}
 STR_0769    :Mechanic {INT32}
@@ -340,7 +342,6 @@ STR_0950    :Load Game
 STR_0951    :Quit Game
 STR_0952    :Quit Game
 STR_0953    :Load Landscape
-STR_0954    :
 STR_0955    :Select seat rotation angle for this track section
 STR_0956    :-180°
 STR_0957    :-135°
@@ -388,10 +389,10 @@ STR_0998    :No more stations allowed on this ride
 STR_0999    :Requires a station platform
 STR_1000    :Track is not a complete circuit
 STR_1001    :Track unsuitable for type of train
-STR_1002    :Can’t open {POP16}{POP16}{POP16}{STRINGID}…
-STR_1003    :Can’t test {POP16}{POP16}{POP16}{STRINGID}…
-STR_1004    :Can’t close {POP16}{POP16}{POP16}{STRINGID}…
-STR_1005    :Can’t start construction on {POP16}{POP16}{POP16}{STRINGID}…
+STR_1002    :Can’t open {STRINGID}…
+STR_1003    :Can’t test {STRINGID}…
+STR_1004    :Can’t close {STRINGID}…
+STR_1005    :Can’t start construction on {STRINGID}…
 STR_1006    :Must be closed first
 STR_1007    :Unable to create enough vehicles
 STR_1008    :Open, close, or test ride/attraction
@@ -753,7 +754,7 @@ STR_1363    :Too high for supports!
 STR_1364    :Supports for track above can’t be extended any further!
 STR_1365    :In-line Twist (left)
 STR_1366    :In-line Twist (right)
-STR_1367    :Half Loop
+STR_1367    :Small Half Loop
 STR_1368    :Half Corkscrew (left)
 STR_1369    :Half Corkscrew (right)
 STR_1370    :Barrel Roll (left)
@@ -1219,8 +1220,8 @@ STR_1838    :Satisfaction: {COMMA16}%
 STR_1839    :Reliability: {COMMA16}%
 STR_1840    :Down-time: {COMMA16}%
 STR_1841    :Profit: {CURRENCY2DP} per hour
-STR_1842    :Favourite of: {COMMA16} guest
-STR_1843    :Favourite of: {COMMA16} guests
+STR_1842    :Favourite of: {COMMA32} guest
+STR_1843    :Favourite of: {COMMA32} guests
 STR_1844    :Select information type to show in ride/attraction list
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} guests
@@ -1244,7 +1245,7 @@ STR_1863    :Handyman
 STR_1864    :Mechanic
 STR_1865    :Security Guard
 STR_1866    :Entertainer
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Can’t change number of rotations…
 STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
 STR_1870    :Number of complete rotations
@@ -1674,7 +1675,7 @@ STR_2314    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Cost: {BLACK}around {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Space required: {BLACK}{COMMA16} × {COMMA16} blocks
 STR_2321    :{WINDOW_COLOUR_2}Number of rides/attractions: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Staff: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Staff: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}sq.ft.
 STR_2325    :Buy land to extend park
@@ -2189,8 +2190,8 @@ STR_3118    :{BLACK}{STRINGID} is heading for the ride
 STR_3119    :{BLACK}{STRINGID} is fixing the ride
 STR_3120    :Locate nearest available mechanic, or mechanic fixing ride
 STR_3121    :Unable to locate mechanic, or all nearby mechanics are busy
-STR_3122    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA16} guest
-STR_3123    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA16} guests
+STR_3122    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA32} guest
+STR_3123    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA32} guests
 STR_3124    :Broken {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Excitement Factor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}+{COMMA16}%
@@ -2649,7 +2650,6 @@ STR_5375    :▲
 STR_5376    :▼
 STR_5404    :Name already exists
 STR_5440    :Minimise fullscreen on focus loss
-STR_5441    :Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behaviour)
 STR_5442    :Force park rating:
 STR_5447    :Type {STRINGID}
 STR_5448    :Ride / Vehicle {STRINGID}
@@ -2709,8 +2709,6 @@ STR_5503    :Enter hostname or IP address:
 STR_5504    :Show multiplayer status
 STR_5505    :Unable to connect to server.
 STR_5506    :Guests ignore intensities
-STR_5508    :Allow loading files with incorrect checksums
-STR_5509    :Allows loading scenarios and saves{NEWLINE}that have an incorrect checksum,{NEWLINE}like the scenarios from the demo{NEWLINE}or damaged saves.
 STR_5510    :Default sound device
 STR_5511    :(UNKNOWN)
 STR_5512    :Save Game As
@@ -2994,7 +2992,7 @@ STR_5832    :Show height as generic units instead of measurement format set unde
 STR_5833    :Changes what date format is used
 STR_5834    :Select which audio device OpenRCT2 will use
 STR_5835    :Mute the game if the window loses focus
-STR_5836    :Select music to use on the main menu.{NEWLINE}Selecting the RCT1 theme requires that you set the path to RCT1 in the Miscellaneous tab.
+STR_5836    :Select music to use on the main menu.{NEWLINE}Selecting the RCT1 theme requires that you set the path to RCT1 in the Advanced tab.
 STR_5837    :Create and manage custom UI themes
 STR_5838    :Show a separate button for the finance window in the toolbar
 STR_5839    :Show a separate button for the research and development window in the toolbar
@@ -3282,8 +3280,8 @@ STR_6133    :Access rides and scenery that have not yet been invented
 STR_6134    :Clear Scenery
 STR_6135    :Client sent invalid request
 STR_6136    :Server sent invalid request
-STR_6137    :OpenRCT2, a free and open source clone of Roller Coaster Tycoon 2.
-STR_6138    :OpenRCT2 is the work of many authors, a full list can be found in “contributors.md”. For more information, visit http://github.com/OpenRCT2/OpenRCT2
+STR_6137    :OpenRCT2, a free and open source recreation of and expansion to Roller Coaster Tycoon 2.
+STR_6138    :OpenRCT2 is the work of many authors, a full list can be found under the “Contributors” button. For more information, visit http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :All product and company names belong to their respective holders. Use of them does not imply any affiliation with or endorsement by them.
 STR_6140    :Changelog…
 STR_6141    :RCT1 Bottom Toolbar
@@ -3303,7 +3301,6 @@ STR_6154    :For security reasons, it is not recommended to run OpenRCT2 with el
 STR_6155    :Neither KDialog nor Zenity are installed. Please install one, or configure from the command line.
 STR_6156    :Name is reserved
 STR_6157    :Console
-STR_6158    :Failed to load this file…{NEWLINE}Incompatible RCTC version: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Available vehicles: {BLACK}{STRING}
 STR_6161    :Gridlines display toggle
 STR_6162    :Spinning Wild Mouse
@@ -3428,11 +3425,11 @@ STR_6318    :Network desync detected.{NEWLINE}Log file: {STRING}
 STR_6319    :Block Brake Closed
 STR_6320    :Indestructible
 STR_6321    :Addition is broken
-STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Entity ID: {BLACK}{INT32}
 STR_6323    :Simulating
 STR_6324    :Simulate
 STR_6325    :Simulate ride/attraction
-STR_6326    :Can’t simulate {POP16}{POP16}{POP16}{STRINGID}…
+STR_6326    :Can’t simulate {STRINGID}…
 STR_6327    :Transparent background for giant screenshots
 STR_6328    :With this option enabled, giant screenshots will have a transparent background instead of the default black colour.
 STR_6329    :{STRING}{STRINGID}
@@ -3495,8 +3492,8 @@ STR_6386    :Blizzard
 STR_6387    :Can’t lower element here…
 STR_6388    :Can’t raise element here…
 STR_6389    :Invalid clearance
-STR_6390    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please select the directory where you installed RollerCoaster Tycoon 2.
-STR_6391    :Please select your RCT2 directory
+STR_6390    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic in order to work. Please select the directory where you installed RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic.
+STR_6391    :Please select your RCT2 or RCTC directory
 STR_6392    :Could not find {STRING} at this path.
 STR_6393    :Objective Selection
 STR_6394    :Objective
@@ -3504,9 +3501,9 @@ STR_6395    :Maintenance
 STR_6396    :Disable screensaver and monitor power saving
 STR_6397    :If checked, screensaver and other monitor power saving features will be inhibited while OpenRCT2 is running.
 STR_6398    :File contains unsupported ride types. Please update to a newer version of OpenRCT2.
-STR_6399    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please set the “game_path” variable in config.ini to the directory where you installed RollerCoaster Tycoon 2, then restart OpenRCT2.
+STR_6399    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic in order to work. Please set the “game_path” variable in config.ini to the directory where you installed RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic, then restart OpenRCT2.
 STR_6400    :I have the GOG offline installer for RollerCoaster Tycoon 2 downloaded, but it is not installed
-STR_6401    :I have RollerCoaster Tycoon 2 installed already
+STR_6401    :I have RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic installed already
 STR_6402    :OpenRCT2 Data Setup
 STR_6403    :Select which applies best to you
 STR_6404    :Please select the GOG RollerCoaster Tycoon 2 installer.
@@ -3595,9 +3592,9 @@ STR_6487    :Hide staff toggle
 STR_6488    :{RED}Guests are complaining about the length of the queues in your park.{NEWLINE}Consider shortening problematic queues, or increasing the rides’ throughput.
 STR_6489    :Error: Incompatible Park Version
 STR_6490    :Warning: Semi-compatible Park Version
-STR_6491    :This park was saved in a later version of OpenRCT2. Park is v{INT32} and requires at least v{INT32}.
+STR_6491    :This park was saved in a later version of OpenRCT2. The park was saved in v{INT32} and requires at least v{INT32}. You are currently on v{INT32}.
 STR_6492    :This park was saved in an old version of OpenRCT2, and can not be opened with this version of OpenRCT2. Park is v{INT32}.
-STR_6493    :This park was saved in a later version of OpenRCT2, some data may be lost. Park is v{INT32} and requires at least v{INT32}.
+STR_6493    :This park was saved in a later version of OpenRCT2, some data may be lost. The park was saved in v{INT32}. You are currently on v{INT32}.
 STR_6494    :Group by ride type
 STR_6495    :Group rides by ride types instead of showing each vehicle separately.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3610,6 +3607,89 @@ STR_6502    :Enter value between {COMMA16} and {COMMA16}
 STR_6503    :At least one station object must be selected
 STR_6504    :At least one terrain surface must be selected
 STR_6505    :At least one terrain edge must be selected
+STR_6506    :Large Half Corkscrew (left)
+STR_6507    :Large Half Corkscrew (right)
+STR_6508    :Medium Half Loop (left)
+STR_6509    :Medium Half Loop (right)
+STR_6510    :Zero G Roll (left)
+STR_6511    :Zero G Roll (right)
+STR_6512    :Large Zero G Roll (left)
+STR_6513    :Large Zero G Roll (right)
+STR_6514    :Invalid height!
+STR_6515    :{BLACK}RollerCoaster Tycoon 1 not linked - fallback images will be used.
+STR_6516    :One or more objects added require RollerCoaster Tycoon 1 linked for proper display. Fallback images will be used.
+STR_6517    :One or more objects in this park require RollerCoaster Tycoon 1 linked for proper display. Fallback images will be used.
+STR_6518    :{BLACK}Hover over a scenario to view its description and objective. Click it to start playing.
+STR_6519    :Extras
+STR_6520    :Asset Packs
+STR_6521    :Low Priority
+STR_6522    :High Priority
+STR_6523    :Decrease the priority of the selected asset pack.
+STR_6524    :Increase the priority of the selected asset pack.
+STR_6525    :Reload all assets in the game with the enabled asset packs.
+STR_6526    :(base graphics, music and sound effects)
+STR_6527    :Competitions
+STR_6528    :Invalid track parameters!
+STR_6529    :Invalid colour scheme parameter!
+STR_6530    :User Created Expansion Set
+STR_6531    :The Time Machine
+STR_6532    :Katy’s Dreamworld
+STR_6533    :{WINDOW_COLOUR_2}Excitement Factor: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}Nausea Factor: {BLACK}-{COMMA16}%
+STR_6536    :This park was saved in a later version of OpenRCT2. The park was saved in v{INT32}, you are currently on v{INT32}.
+STR_6537    :Allow using regular paths as queue
+STR_6538    :Shows regular paths in the queues dropdown of the Footpaths window.
+STR_6539    :Brake Closed
+STR_6540    :{WINDOW_COLOUR_2}Special thanks to the following companies for allowing their likeness:
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6542    :Contributors
+STR_6543    :Contributors…
+STR_6544    :Loan cannot be negative!
+STR_6545    :Use RCT1 interest calculation
+STR_6546    :Use the interest calculation algorithm of RollerCoaster Tycoon 1, which used a fixed percentage of approximately 1.33%.
+STR_6547    :All Scenery
+STR_6548    :Show railings at junction
+STR_6549    :Compatibility objects cannot be selected!
+STR_6550    :This entry is included for backwards compatibility with old or damaged objects. It cannot be selected, only deselected.  
+
+STR_6551    :Army green
+STR_6552    :Honeydew
+STR_6553    :Tan
+STR_6554    :Maroon
+STR_6555    :Coral pink
+STR_6556    :Forest green
+STR_6557    :Chartreuse
+STR_6558    :Hunter green
+STR_6559    :Celadon
+STR_6560    :Lime green
+STR_6561    :Sepia
+STR_6562    :Peach
+STR_6563    :Periwinkle
+STR_6564    :Viridian
+STR_6565    :Seafoam green
+STR_6566    :Violet
+STR_6567    :Lavender
+STR_6568    :Pastel orange
+STR_6569    :Deep water
+STR_6570    :Pastel pink
+STR_6571    :Umber
+STR_6572    :Beige
+STR_6573    :Invisible
+STR_6574    :Void
+STR_6575    :Allow special colour schemes
+STR_6576    :Adds special colours to colour dropdown
+STR_6577    :Block brake speed
+STR_6578    :Set speed limit for block brakes. In block section mode, adjacent brakes with a slower speed are linked to the block brake.
+STR_6579    :Block brakes will be set to default speed when saved as track design
+
+STR_6580    :Reset
+STR_6581    :Are you sure you want to reset all shortcut keys on this tab?
+STR_6582    :Open keyboard shortcuts window
+
+STR_6583    :{WINDOW_COLOUR_2}Reversed Trains
+STR_6584    :Select to run trains backwards
+STR_6585    :Can’t make changes…
 
 #############
 # Scenarios #
@@ -4059,62 +4139,8 @@ STR_DTLS    :
 
 ## Start OpenRCT2 Official
 
-[TTPIRF02]
-STR_NAME    :Roof
-
-[TTPIRF03]
-STR_NAME    :Roof
-
-[TTPIRF04]
-STR_NAME    :Roof
-
 [TTPIRF05]
 STR_NAME    :Roof
-
-[TTPIRF07]
-STR_NAME    :Roof
-
-[TTPIRF08]
-STR_NAME    :Roof
-
-[TTRFWD01]
-STR_NAME    :Roof
-
-[TTRFWD02]
-STR_NAME    :Roof
-
-[TTRFWD03]
-STR_NAME    :Roof
-
-[TTRFWD04]
-STR_NAME    :Roof
-
-[TTRFWD05]
-STR_NAME    :Roof
-
-[TTRFWD06]
-STR_NAME    :Roof
-
-[TTRFWD07]
-STR_NAME    :Roof
-
-[TTRFWD08]
-STR_NAME    :Roof
-
-[TTRFGL01]
-STR_NAME    :Glass Roof
-
-[TTRFGL02]
-STR_NAME    :Glass Roof
-
-[TTRFGL03]
-STR_NAME    :Glass Roof
-
-[ACWW33]
-STR_NAME    :Wooden Post Wall
-
-[ACWWF32]
-STR_NAME    :Wooden Post Wall
 
 ## End OpenRCT2 Official
 
@@ -4419,3 +4445,106 @@ STR_DTLS    :This aging theme park has seen better days. Help the owner give it 
 STR_SCNR    :Panda World
 STR_PARK    :Panda World
 STR_DTLS    :Add more rides and attract more people to this panda-themed park
+
+<Tycoon Park>
+STR_SCNR    :Tycoon Park
+STR_PARK    :Tycoon Park
+STR_DTLS    :
+
+###
+<UCES Halloween>
+STR_SCNR    :Cemetery Ridge
+STR_PARK    :Cemetery Ridge
+STR_DTLS    :This is Halloween, UCES Halloween, pumpkins scream in the dead of night! This graveyard is in trouble and it’s up to you to save it, while letting the dead rest in peace! Can you keep the ghosts in their graves and bring chills to your customers?{NEWLINE}Author: Squid
+
+###############################################################################
+## UCES: The Time Machine (2003)
+###############################################################################
+<Lighthouse of Alexandria by Katatude for UCES>
+STR_SCNR    :The Lighthouse of Alexandria
+STR_PARK    :The Lighthouse of Alexandria
+STR_DTLS    :Alexander built the city; Greeks, Romans, Egyptians left their mark. But the biggest honor was a Wonder of the Ancient World - the Lighthouse. Visit and make a park!{NEWLINE}Author: Katatude
+
+<Cleveland's Luna Park>
+STR_SCNR    :Luna Park, Cleveland
+STR_PARK    :Luna Park
+STR_DTLS    :As it was on its opening day - 18 May 1905.{NEWLINE}Author: Aetherwave
+
+<Mount Vesuvius 1700 A.D. by Katatude for UCES>
+STR_SCNR    :Mount Vesuvius
+STR_PARK    :Mount Vesuvius
+STR_DTLS    :Pompeii and Herculaneum were buried by Mt. Vesuvius in 79 A.D. Visit the excavations and build a park!{NEWLINE}Author: Katatude
+
+<The Sandbox by Katatude for UCES>
+STR_SCNR    :The Sandbox
+STR_PARK    :The Sandbox
+STR_DTLS    :What everyone wants - a sandbox! So grab your l’il pail and shovel and build a park!{NEWLINE}Author: Katatude
+
+<Niagara Falls & Gorge by Katatude for UCES>
+STR_SCNR    :Niagara Falls & Gorge
+STR_PARK    :Niagara Falls
+STR_DTLS    :American Falls, Bridal Falls & Canadian Horseshoe Falls on the Niagara Frontier, 1850.{NEWLINE}Author: Katatude
+
+<Rocky Mountain Miners>
+STR_SCNR    :Rocky Mountain Miners
+STR_PARK    :Rocky Mountain Miners
+STR_DTLS    :A rockslide damaged your railway. Your workers have gone prospecting. Is there gold in roller coasters?{NEWLINE}Authors: Squid, Buckone, Fossil
+
+<The Time Machine by Katatude for UCES>
+STR_SCNR    :The Time Machine
+STR_PARK    :The Time Machine
+STR_DTLS    :The Time Machine. Build to go - when you want, where you want. Eternity awaits. It’s all relative.{NEWLINE}Author: Katatude
+
+<Tower of Babel>
+STR_SCNR    :Tower of Babel
+STR_PARK    :Tower of Babel
+STR_DTLS    :Whoaa! Look where the time machine took us now! Where did everybody go?{NEWLINE}Author: Fossil
+
+<Transformation>
+STR_SCNR    :Transformation
+STR_PARK    :Transformation
+STR_DTLS    :We were expecting you…{NEWLINE}Author: Fossil
+
+<Urbis Incognitus>
+STR_SCNR    :Urbis Incognitus
+STR_PARK    :Urbis Incognitus
+STR_DTLS    :The Romans are tired of boring gladiator fights. Give them a better thrill, turn a Roman city into the greatest amusement park of all time!{NEWLINE}Author: Kaffe
+
+###############################################################################
+## UCES: Katy’s Dreamworld (2003)
+###############################################################################
+
+<Beneath the Christmas Tree by Katatude for UCES>
+STR_SCNR    :Beneath the Christmas Tree
+STR_PARK    :Winter Wonderland
+STR_DTLS    :Mum built this scene under our tree. Now she wants a park made in it! Can you help?{NEWLINE}Author: Katatude
+
+<Bigrock Blast>
+STR_SCNR    :Bigrock Blast
+STR_PARK    :Bigrock Blast
+STR_DTLS    :After an explosion at the Bigrock Mining Co., the people of Bigrock have to build an amusement park to keep their town alive.{NEWLINE}Authors: rbarclay & buckone
+
+<Camp Mockingbird for UCES by Katatude>
+STR_SCNR    :Camp Mockingbird
+STR_PARK    :Camp Mockingbird
+STR_DTLS    :Only $500/week to this summer camp! Break open your bank and then have fun and build a park.{NEWLINE}Author: Katatude
+
+<Choo Choo Town>
+STR_SCNR    :Choo-Choo Town
+STR_PARK    :Choo-Choo Town
+STR_DTLS    :Mommy! Daddy! I want to go to Choo-Choo Town!{NEWLINE}Author: Fossil
+
+<Dragon Islands>
+STR_SCNR    :Dragon Islands
+STR_PARK    :Dragon Islands
+STR_DTLS    :Dragon Islands? I’m not sure I want to go there…{NEWLINE}Author: Fossil
+
+<Kiddy Karnival II>
+STR_SCNR    :Kiddie Karnival II
+STR_PARK    :Kiddie Karnival
+STR_DTLS    :Hey kids! Let’s have fun!{NEWLINE}Authors: Piehead & Fossil
+
+<Sand Dune>
+STR_SCNR    :Sand Dune
+STR_PARK    :Sand Dune
+STR_DTLS    :As the owner of a small park, you bought a large piece of land along the beach to expand and attract more guests to visit the beautiful sand dunes, but beware: you cannot disturb those ecologically fragile sand dunes.{NEWLINE}Author: rbarclay

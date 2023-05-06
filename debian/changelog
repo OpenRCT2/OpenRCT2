@@ -1,150 +1,381 @@
-openrct2 (0.4.1-develop-1) unstable; urgency=medium
+openrct2 (0.4.4-develop-1) unstable; urgency=medium
 
  * Nightly develop build.
+
+openrct2 (0.4.4) stable; urgency=medium
+
+ * Feature: [#11269] Add properties for speed and length of vehicle animations.
+ * Feature: [#15849] Objectives can now be set for up to 50000 guests.
+ * Feature: [#18537] Add shift/control modifiers to window close buttons, closing all but the given window or all windows of the same type, respectively.
+ * Feature: [#18732] [Plugin] API to get the guests thoughts.
+ * Feature: [#18744] Cheat to allow using a regular path as a queue path.
+ * Feature: [#19023] Add Canadian French translation.
+ * Feature: [#19341] Add “All Scenery” tab to scenery window.
+ * Feature: [#19378] Add command to combine CSG1i.DAT and CSG1.DAT.
+ * Feature: [objects#226] Port RCT1 Corkscrew Coaster train.
+ * Feature: [objects#229] Port RCT1 go karts with helmets.
+ * Feature: [OpenMusic#20, OpenMusic#21] Added Blizzard and Extraterresterial ride music styles.
+ * Improved: [#11473] Hot reload for plug-ins now works on macOS.
+ * Improved: [#12466] RCT1 parks now use RCT1’s interest calculation algorithm.
+ * Improved: [#14635] Scenery window now shows up to 255 scenery groups.
+ * Improved: [#17288] Reorganise the order of shortcut keys in the Shortcut Keys window.
+ * Improved: [#18706] Ability to view the list of contributors in-game.
+ * Improved: [#18749] Ability to have 4 active awards for more than one month in a row.
+ * Improved: [#18826] [Plugin] Added all actions and their documentation to plugin API.
+ * Improved: [#18945] Languages can now fall back to other languages than English.
+ * Improved: [#18970] Trying to load a non-park save will now display a context error.
+ * Improved: [#18975] Add lift sprites for steep hills on the wooden roller coaster.
+ * Improved: [#19044] Added special thanks to RMC and Wiegand to the About page.
+ * Improved: [#19131] Track missing objects when selecting scenery groups in console.
+ * Improved: [#19253] Queue junctions drawn properly when using regular paths as queue. Note: Requires using tile inspector to indicate railings can be used at T or X junctions.
+ * Improved: [#19067] New Ride window now allows filtering similarly to Object Selection.
+ * Improved: [#19272] Scenery window now allows filtering similarly to Object Selection.
+ * Improved: [#19447] The control key now enables word jumping in text input fields.
+ * Improved: [#19463] Added ‘W’ and ‘Y’ with circumflex to sprite font (for Welsh).
+ * Improved: [#19549] Enable large address awareness for 32 bit Windows builds allowing to use 4 GiB of virtual memory.
+ * Improved: [#19668] Decreased the minimum map size from 13 to 3.
+ * Improved: [#19683] The delays for ride ratings to appear has been reduced drastically.
+ * Improved: [#19697] “Show guest purchases” will now work in multiplayer.
+ * Change: [#19018] Renamed actions to fit the naming scheme.
+ * Change: [#19091] [Plugin] Add game action information to callback arguments of custom actions.
+ * Change: [#19233] Reduce lift speed minimum and maximum values for “Classic Wooden Coaster”.
+ * Removed: [#19520] Support for Windows Vista systems.
+ * Fix: [#474] Mini golf window shows more players than there actually are (original bug).
+ * Fix: [#592] Window scrollbar not able to navigate to the end of large lists.
+ * Fix: [#7210] Land tile smoothing occurs with edge tiles (original bug).
+ * Fix: [#17996] Finances window not cleared when starting some .park scenarios.
+ * Fix: [#18260] Crash opening parks that have multiple tiles referencing the same banner entry.
+ * Fix: [#18467] “Selected only” Object Selection filter is active in Track Designs Manager, and cannot be toggled.
+ * Fix: [#18904] OpenRCT2 audio object accidentally exported in saves.
+ * Fix: [#18905] Ride Construction window theme is not applied correctly.
+ * Fix: [#18911] Mini Golf station does not draw correctly from all angles.
+ * Fix: [#18971] New Game does not prompt for save before quitting.
+ * Fix: [#18986] [Plugin] Sending remote scripts larger than 63KiB crashing all clients.
+ * Fix: [#18994] Title music doesn’t start after enabling master volume.
+ * Fix: [#19025] Park loan behaves inconsistently with non-round and out-of-bounds values.
+ * Fix: [#19026] Park loan is clamped to a 32-bit integer.
+ * Fix: [#19068] Guests may not join queues correctly.
+ * Fix: [#19091] [Plugin] Remote plugins in multiplayer servers do not unload properly.
+ * Fix: [#19112] Clearing the last character in the Object Selection filter does not properly reset it.
+ * Fix: [#19112] Text boxes not updated with empty strings in Track List, Server List, and Start Server windows.
+ * Fix: [#19114] [Plugin] ‘GameActionResult’ does not comply to API specification.
+ * Fix: [#19136] SV6 saves with experimental RCT1 paths not imported correctly.
+ * Fix: [#19243] .park scenarios don’t complete properly.
+ * Fix: [#19250] MusicObjects do not free their preview images.
+ * Fix: [#19292] Overflow in ‘totalRideValue’.
+ * Fix: [#19339] Incorrect import of crashed particles from SV4.
+ * Fix: [#19379] “No platforms” station style shows platforms on the Junior Roller Coaster.
+ * Fix: [#19380] Startup crash when no sequences are installed and random sequences are enabled.
+ * Fix: [#19391] String corruption caused by an improper buffer handling in ‘GfxWrapString’.
+ * Fix: [#19434, #19509] Object types added by OpenRCT2 do not get removed when executing ‘remove_unused_objects’.
+ * Fix: [#19475] Cannot increase loan when more than £1000 in debt.
+ * Fix: [#19493] SV4 saves not importing the correct vehicle colours.
+ * Fix: [#19517] Crash when peeps try to exit or enter hacked rides that have no waypoints specified.
+ * Fix: [#19524] Staff counter shows incorrect values if there are more than 32767 staff members.
+ * Fix: [#19574] Handle exits in null locations.
+ * Fix: [#19641, #19643] Missing water tile in Infernal Views’ and Six Flags Holland’s river.
+ 
+openrct2 (0.4.3) stable; urgency=medium
+
+ * Feature: [#17782] The Flying Coaster now has access to boosters and can draw outside loops.
+ * Feature: [#17997] The Log Flume can now draw steep pieces down (if vehicle allows it).
+ * Feature: [#18312, objects#220, OpenSFX#13] New sound effects for the Hybrid and Single Rail roller coasters.
+ * Feature: [#18675] [Plugin] Plugins can refer to g2 image icons by name.
+ * Feature: [objects#173] Add alpine coaster vehicle.
+ * Feature: [objects#221] Add two extra jungle walls.
+ * Feature: [objects#225] Add log cabin roofs.
+ * Feature: [OpenMusic#14, OpenMusic#15, OpenMusic#18] Added Galaxy, Acid and Dodgems ride music styles.
+ * Improved: [#18013, #18016, #18018, #18019, #18514, objects#224] Added colour presets to Spiral Slide, Dodgems, Boat Hire, Flying Saucers, and Car Ride.
+ * Improved: [#18024] Clearer error messages when loading incompatible .park files.
+ * Improved: [#18192] Tycoon Park has been added to the Extras tab.
+ * Improved: [#18214] Competition scenarios have received their own section.
+ * Improved: [#18250] Added modern style file and folder pickers on Windows.
+ * Improved: [#18332] Allow Inverted Roller Coaster to draw boosters.
+ * Improved: [#18350] Changed ride vehicle list to have less padding.
+ * Improved: [#18422] Allow adding images to music objects.
+ * Improved: [#18428] [Plugin] Add widget description interfaces to documentation.
+ * Improved: [#18487] Mini Helicopters track can now draw spinning tunnels.
+ * Improved: [#18591] Order RollerCoaster Tycoon 2 scenarios by difficulty.
+ * Improved: [#18607] A new tab for all UCES Scenarios, if it’s installed.
+ * Improved: [#18621] OpenGL performance.
+ * Change: [#17677] Open campaign window from finished campaign news.
+ * Change: [#17998] Show cursor when using inverted mouse dragging.
+ * Change: [#18230] Make the large flat to steep pieces available on the corkscrew roller coaster without cheats.
+ * Change: [#18381] Convert custom invisible paths to the built-in ones.
+ * Change: [OpenSFX#11, OpenMusic#19] First implementation of official replacement asset packs for sound effects & music.
+ * Fix: [#1491] Clearance of the Cash Machine is too low (original bug).
+ * Fix: [#1519] “See-through rides” doesn't affect all rides (original bug).
+ * Fix: [#6341] “Unlock vehicle limits” does not allow setting fewer vehicles than the vehicle type requires.
+ * Fix: [#14312] Research ride type message incorrect.
+ * Fix: [#14425] Ride ratings do not skip unallocated ride ids.
+ * Fix: [#15969] Guests heading for ride use vanilla behaviour
+ * Fix: [#17067] Random Staff Patrol Area clicks.
+ * Fix: [#17316] Sides of River Rapids’ corners overlay other parts of the track.
+ * Fix: [#17657] When switching from buying land rights to buying construction rights, grid disables and won't re-enable afterwards.
+ * Fix: [#17763] Missing validation on invalid characters in file name.
+ * Fix: [#17853] Invention name tears while being dragged.
+ * Fix: [#18064] Unable to dismiss notification messages.
+ * Fix: [#18070] Underground entrance/exit shows through terrain walls (original bug).
+ * Fix: [#18094] Underground shops & facilities don't show when adjacent to non-underground path (original bug).
+ * Fix: [#18122] Ghosts count towards “Great scenery!” guest thought.
+ * Fix: [#18134] Underground on-ride photo section partially clips through adjacent terrain edge.
+ * Fix: [#18244] Invention DragWindow's starting position is inconsistent.
+ * Fix: [#18245] Guests stopping dead in their tracks at railway crossings.
+ * Fix: [#18257] Guests ‘waiting’ on extended railway crossings.
+ * Fix: [#18354] Overwrite alert does not show when save name has different casing on Windows.
+ * Fix: [#18379] Tunnel entrances for underground Mini Golf Hole E are not rendered correctly.
+ * Fix: [#18442] About window background is clickable.
+ * Fix: [#18449] [Plugin] Change type of listview widgets from 'scroll_view' to 'listview'.
+ * Fix: [#18453] Slow walking guests don't get across level crossings in time.
+ * Fix: [#18469] Land rights window buttons incorrectly disabled and markers remain visible indefinitely.
+ * Fix: [#18459] ‘Highlight path issues’ hides fences for paths with additions.
+ * Fix: [#18552] Trains clipping through helixes.
+ * Fix: [#18576] Cannot open parks with certain types of corrupt tile elements.
+ * Fix: [#18606] JSON objects do not take priority over the DAT files they supersede.
+ * Fix: [#18620] [Plugin] Crash when reading widget properties from windows that have both static and tab widgets.
+ * Fix: [#18653] Negative ratings multipliers do not appear in Vehicle tab.
+ * Fix: [#18696] Construction rights cannot be viewed after all are purchased.
+ * Fix: [#18720] Upwards helix is enabled for the Alpine Coaster, even when cheats are off.
+ * Fix: [#18755] Ferris Wheel and Circus ghosts not coloured correctly.
+ * Fix: [#18802] Game could crash when determining if a mechanic is heading to fix the ride blocking the path.
+ 
+openrct2 (0.4.2) stable; urgency=medium
+
+ * Feature: [#6326] Ability to load .SV6 files from RCT Classic that have more than 9601 guests.
+ * Feature: [#6570, #10860, #17929] Fully support RollerCoaster Tycoon Classic as a RCT2 base install path.
+ * Feature: [#13634] Add ability to sell merchandise in random colours.
+ * Feature: [#16164] Add new track elements for Flying Coaster and Lay-Down Coaster and add paint code for more elements.
+ * Feature: [#16283] Added parkinfo command line tool to list objects in a save file.
+ * Feature: [#16662] Show a warning message when g2.dat is mismatched.
+ * Feature: [#17107] Ride operating settings can be set via text input.
+ * Feature: [#17638] Added Zero G rolls, medium loops and large corkscrews to the Hybrid and Single-Rail coasters.
+ * Feature: [#17821] [Plugin] Add API for track subpositions and vehicle subposition.
+ * Feature: [#17877] Add three real-life flying roller coaster colour schemes.
+ * Feature: [#17900] Add “Classic Wooden Coaster” with shallow banked turns.
+ * Feature: [#18057] Staff members now wait for passing or stalled vehicles before crossing railway tracks.
+ * Feature: [#18168] Add additional track pieces to the LIM Launched Coaster and the Looping Coaster.
+ * Feature: [objects#198] Add additional pirate roofs.
+ * Feature: [objects#205] Add additional glass roofs.
+ * Feature: [objects#209] Add the Steel Roller Coaster train and 2-across Inverted Train from RollerCoaster Tycoon 1.
+ * Feature: [#18050] Add asset pack manager and asset packs.
+ * Improved: [#15358] Park and scenario names can now contain up to 128 characters.
+ * Improved: [#15589] Numpad Enter can now be used to close text input.
+ * Improved: [#16819] Don’t prompt to “Save game as” when saving a loaded saved game (excepting autosaves).
+ * Improved: [#16840] Add support for rectangular heightmaps.
+ * Improved: [#17575] You can now search for Authors in Object Selection.
+ * Improved: [#17806] Added warning when using RCT1 objects without RCT1 linked.
+ * Improved: [#17868] [Plugin] You can now change active tab of a custom window programmatically.
+ * Improved: [#17909] Track elements that are not supported by any train are now hidden by default.
+ * Improved: [#17924] Improved performance when loading JSON object images from a .DAT file.
+ * Improved: [#17955] Modifying ratings via in-game console is now multiplayer-safe and also freezes the ratings.
+ * Improved: [#18177] [Plugin] Widget tooltips can now be read and changed.
+ * Change: [#9104] Calculate maze support costs.
+ * Change: [#17319] Giant screenshots are now cropped to the horizontal view-clipping selection.
+ * Change: [#17499] Update error text when using vehicle incompatible with TD6 and add error when using incompatible track elements.
+ * Change: [#17655] Lower default price for the Crooked House.
+ * Change: [#17745] Make maintenance cost of Mini-Golf more balanced.
+ * Change: [#17762] Use vertical tabs in the New Game dialog.
+ * Change: [#18113] Increased limit of Loan Interest in Scenario Editor to 255%.
+ * Fix: [#5141] Headless server is counted as a player.
+ * Fix: [#7466] Coaster track not drawn at tunnel exit.
+ * Fix: [#10535] Guests getting stuck at specific level crossings.
+ * Fix: [#14337] Guest blocking ride entrance after ride price changed to be unaffordable.
+ * Fix: [#15328] Wooden Roller Coaster incorrectly draws a railing on the first station piece (original bug).
+ * Fix: [#16392] Scenery on sloped surface is placed at wrong height.
+ * Fix: [#16476] The game sometimes crashes when demolishing a maze.
+ * Fix: [#17053] Crash when trying to open files under 4 bytes in length.
+ * Fix: [#17312] (Flying) Inline Twist appearing under the surface when placed on ground level.
+ * Fix: [#17339] Distorted visuals when changing scaling factor between integer numbers in OpenGL rendering mode.
+ * Fix: [#17394] Six-seater Hyper-Twister Trains focuses ride window camera on Car 2 rather than Car 1 (original bug).
+ * Fix: [#17430] Possible crash when toggling tile element visibility in multiplayer.
+ * Fix: [#17444] “Manta Ray” boats slowed down too much in “Ayers Rock” scenario (original bug).
+ * Fix: [#17503] Parks with staff with an ID of 0 have all staff windows focus on that staff.
+ * Fix: [#17508] Grid doesn’t disable after setting patrol area.
+ * Fix: [#17532] Object Selection window allows unselecting all station types.
+ * Fix: [#17533] Missing audio when specifying ‘--rct2-data-path’.
+ * Fix: [#17535] Multiplayer desync when placing rides with scenery.
+ * Fix: [#17541] Station style not correctly saved to TD6.
+ * Fix: [#17542] Stalls will autorotate towards paths outside the park.
+ * Fix: [#17544, #17754] Visual glitches in Invention List window.
+ * Fix: [#17553] Crash when moving invention list items to empty list.
+ * Fix: [#17571] All researched tracked rides show up as new vehicles in .park scenarios.
+ * Fix: [#17600] Notifications are not properly cleared when loading a park.
+ * Fix: [#17605] Crash when opening parks which have had objects removed externally.
+ * Fix: [#17639, 17735] When building upside down, the special elements list contains many items twice (original bug).
+ * Fix: [#17664] Unable to save after an extended period of time due to inactive ride music data leaking.
+ * Fix: [#17703] (undefined string) when building on invalid height.
+ * Fix: [#17776] “Other Parks” tab uses separate lists for SC4/SC6 and .park scenarios.
+ * Fix: [#17784] Colour preset RNG is biased (original bug).
+ * Fix: [#17788] Guests could leave queue if another guest rejoins it from the entrance building.
+ * Fix: [#17834] Finance window becomes blank after 4096 years.
+ * Fix: [#17816] Option to pause game when Steam Overlay is active is not greyed out when using the OpenGL renderer.
+ * Fix: [#17897] Guest can get stuck on tiles with construction rights outside the park.
+ * Fix: [#17904] Trees are removed at no cost to make way for ride entrance/exits.
+ * Fix: [#17905] The chain button in the map window is enabled for rectangular maps when (re)opened.
+ * Fix: [#17931] The in-game command ‘count_objects’ crashes the game.
+ * Fix: [#17865] With difficult guest generation, tested but unopened rides still contribute to the guest cap.
+ * Fix: [#17866] [Plugin] Wrong Soft Guest Cap at start of new game.
+ * Fix: [#17889] Peeps don’t stop at level railway crossings if approached from downhill.
+ * Fix: [#17980] Queue lines of track designs mess up existing queue lines if dragged through them.
+ * Fix: [#17959] Areas marked for dirty drawing are too large.
+ * Fix: [#17963] Some marketing campaigns can’t be started after Finances window tab has been on Research.
+ * Fix: [#17964] Sprites don’t show up on two sides of the view-clip selection.
+ * Fix: [#17966] Reversed steel trains do not properly import from S4.
+ * Fix: [#17973] Bins and lamps overlay parts of the land (original bug).
+ * Fix: [#18008] Steeplechase S-bends has multiple gaps visible in the tracks (original bug).
+ * Fix: [#18009] Visual glitch with litter at edge of sloped path.
+ * Fix: [#18025] Fix land ownership in Six Holland, Six Flags Magic Mountain, North America - Grand Canyon and Asia - Great Wall of China Tourism Enhancement scenarios.
+ * Fix: [#18026] Park rating drops to 0 with more than 32k guests, total ride excitement or intensity.
+ * Fix: [#18032] All non-interactive widgets (labels, groupboxes) produce sound when clicked.
+ * Fix: [#18035] Favourited servers don’t get their online status updated.
+ * Fix: [#18051] Visual glitch with Mine Ride’s large unbanked turn (original bug).
+ * Fix: [#18059] [Plugin] Width and height of custom window not changeable via script.
+ * Fix: [#18063] Guests can stop for all kinds of actions at railway crossing.
+ * Fix: [#18087] Bank balance is clamped to a 32-bit integer every transaction. 
  
 openrct2 (0.4.1) stable; urgency=medium
 
-* Feature: [#16825] Add Alpine Coaster track type.
-* Feature: [#17011] Option to show ride vehicles as separate entries when selecting a ride to construct.
-* Feature: [#17217] Add FLAC and OGG/vorbis as supported audio formats for ride music objects.
-* Feature: [#12328, #17418] Add vehicles for the Hybrid Coaster, Single-Rail Roller Coaster and Classic Mini Roller Coaster.
-* Improved: [#7983] The red colour in the ride stat screen and the ride graphs now corresponds better to negative effects on a ride’s stats.
-* Improved: [#13966] Music Style dropdown is now sorted by name.
-* Improved: [#16978] Tree placement is more natural during map generation.
-* Improved: [#16992] The checkbox in the visibility column of the Tile Inspector has been replaced with an eye symbol.
-* Improved: [#16999] The maximum price for the park entry has been raised to £999.
-* Improved: [#17050] Transparency can be enabled directly without needing see-through enabled first.
-* Improved: [#17059] Show Tile Inspector usage hint when nothing is selected.
-* Improved: [#17199] Allow creation of Spiral Slide reskins.
-* Improved: [#17242] More natural looking shorelines in map generator.
-* Improved: [#17328] Parks can now be resized into rectangular shapes from the map and map generation windows.
-* Change: [#16952] Make “Object Selection” order more coherent.
-* Change: [#17002] Weather no longer resets when converting a save to scenario.
-* Change: [#17294] New ride window remembers scroll position per tab instead of highlighted ride.
-* Removed: [#16864] Title sequence editor (replaced by plug-in).
-* Removed: [#16911, #17411] Residual support for pre-Vista Windows systems.
-* Fix: [#13997] Placing a track design interferes with other players building a ride.
-* Fix: [#15787] When deselecting "Show banner text in upper case", the banners remain upper case for 10 seconds.
-* Fix: [#16539] CustomListView header not clickable when listview is scrolled.
-* Fix: [#16799] Browsing “Up” in the Load Save window shows no files, only folders.
-* Fix: [#16934] Park size displayed incorrectly in Park window.
-* Fix: [#16974] Small scenery ghosts can be deleted.
-* Fix: [#16989] Re-focusing maximised window triggers a restore and maximise.
-* Fix: [#17005] Unable to set patrol area for first staff member in park.
-* Fix: [#17017] [Plugin] Crash when using tile element properties that require a valid ride to be linked.
-* Fix: [#17073] Corrupt ride window and random crashes when trains have more than 144 cars.
-* Fix: [#17080] “Remove litter” cheat does not empty litter bins.
-* Fix: [#17099] Object selection thumbnail box is one pixel too tall.
-* Fix: [#17104] Changing map size does not invalidate park size.
-* Fix: [#17157] Crash when browsing “Up” to folder with CJK characters in its name.
-* Fix: [#17187] Text input window does not resize correctly.
-* Fix: [#17197] Segfault when extracting files from the GOG installer.
-* Fix: [#17205] Map generator sometimes crashes when not all standard terrain objects are available.
-* Fix: [#17221] Object ghosts and tooltips follow invisible cursor when moving the viewport by right-click dragging.
-* Fix: [#17255] Cursor position is incorrect when adjusting terrain and water height.
-* Fix: [#17257] [Plugin] Add tertiary colour to large scenery scripting API.
-* Fix: [#17261] Hand cursor position is incorrect when dragging items in the Inventions List window.
-* Fix: [#17292] Rows in shortcut key list stay highlighted when cursor leaves list.
-* Fix: [#17295] Pause status not cleared when loading a scenario made from a converted paused save.
-* Fix: [#17310] Reversed reversible vehicles not imported properly when loading RCT1 parks.
-* Fix: [#17335] [Plugin] Documentation has an incorrect type for PixelData ‘data’ attribute.
-* Fix: [#17337] Air Powered Vertical Coaster trains not imported properly when loading RCT1 parks.
-* Fix: [#17346] Surface height markers are concealed by sprites of same surface.
-* Fix: [#17369] [Plugin] ‘Car.travelBy()’ moves other cars as well.
-* Fix: [#17377] When building the park entrance before opening the Footpaths window, the path will be invisible.
-* Fix: [#17381] Air Powered Vertical Coaster stat penalty is wrong.
-* Fix: [#17399] Guests never generate the being watched thought.
-* Fix: [#17433] Wrong T-shirt colours for guests on a Twist ride.
-* Fix: [#17450] Ducks can swim on three-corners-up land tile.
-* Fix: [#17461] Footpath Railing tooltip showing incorrect tooltip.
-* Fix: [#17464] Green Tarmac footpath is not available in the Track Designer.
-* Fix: [#17466] New object types not packed in save files.
-* Fix: [#17481] Roto-drop cars try going up to top pieces that are ghosts or belong to other rides.
+ * Feature: [#16825] Add Alpine Coaster track type.
+ * Feature: [#17011] Option to show ride vehicles as separate entries when selecting a ride to construct.
+ * Feature: [#17217] Add FLAC and OGG/vorbis as supported audio formats for ride music objects.
+ * Feature: [#12328, #17418] Add vehicles for the Hybrid Coaster, Single-Rail Roller Coaster and Classic Mini Roller Coaster.
+ * Improved: [#7983] The red colour in the ride stat screen and the ride graphs now corresponds better to negative effects on a ride’s stats.
+ * Improved: [#13966] Music Style dropdown is now sorted by name.
+ * Improved: [#16978] Tree placement is more natural during map generation.
+ * Improved: [#16992] The checkbox in the visibility column of the Tile Inspector has been replaced with an eye symbol.
+ * Improved: [#16999] The maximum price for the park entry has been raised to £999.
+ * Improved: [#17050] Transparency can be enabled directly without needing see-through enabled first.
+ * Improved: [#17059] Show Tile Inspector usage hint when nothing is selected.
+ * Improved: [#17199] Allow creation of Spiral Slide reskins.
+ * Improved: [#17242] More natural looking shorelines in map generator.
+ * Improved: [#17328] Parks can now be resized into rectangular shapes from the map and map generation windows.
+ * Change: [#16952] Make “Object Selection” order more coherent.
+ * Change: [#17002] Weather no longer resets when converting a save to scenario.
+ * Change: [#17294] New ride window remembers scroll position per tab instead of highlighted ride.
+ * Removed: [#16864] Title sequence editor (replaced by plug-in).
+ * Removed: [#16911, #17411] Residual support for pre-Vista Windows systems.
+ * Fix: [#13997] Placing a track design interferes with other players building a ride.
+ * Fix: [#15787] When deselecting "Show banner text in upper case", the banners remain upper case for 10 seconds.
+ * Fix: [#16539] CustomListView header not clickable when listview is scrolled.
+ * Fix: [#16799] Browsing “Up” in the Load Save window shows no files, only folders.
+ * Fix: [#16934] Park size displayed incorrectly in Park window.
+ * Fix: [#16974] Small scenery ghosts can be deleted.
+ * Fix: [#16989] Re-focusing maximised window triggers a restore and maximise.
+ * Fix: [#17005] Unable to set patrol area for first staff member in park.
+ * Fix: [#17017] [Plugin] Crash when using tile element properties that require a valid ride to be linked.
+ * Fix: [#17073] Corrupt ride window and random crashes when trains have more than 144 cars.
+ * Fix: [#17080] “Remove litter” cheat does not empty litter bins.
+ * Fix: [#17099] Object selection thumbnail box is one pixel too tall.
+ * Fix: [#17104] Changing map size does not invalidate park size.
+ * Fix: [#17157] Crash when browsing “Up” to folder with CJK characters in its name.
+ * Fix: [#17187] Text input window does not resize correctly.
+ * Fix: [#17197] Segfault when extracting files from the GOG installer.
+ * Fix: [#17205] Map generator sometimes crashes when not all standard terrain objects are available.
+ * Fix: [#17221] Object ghosts and tooltips follow invisible cursor when moving the viewport by right-click dragging.
+ * Fix: [#17255] Cursor position is incorrect when adjusting terrain and water height.
+ * Fix: [#17257] [Plugin] Add tertiary colour to large scenery scripting API.
+ * Fix: [#17261] Hand cursor position is incorrect when dragging items in the Inventions List window.
+ * Fix: [#17292] Rows in shortcut key list stay highlighted when cursor leaves list.
+ * Fix: [#17295] Pause status not cleared when loading a scenario made from a converted paused save.
+ * Fix: [#17310] Reversed reversible vehicles not imported properly when loading RCT1 parks.
+ * Fix: [#17335] [Plugin] Documentation has an incorrect type for PixelData ‘data’ attribute.
+ * Fix: [#17337] Air Powered Vertical Coaster trains not imported properly when loading RCT1 parks.
+ * Fix: [#17346] Surface height markers are concealed by sprites of same surface.
+ * Fix: [#17369] [Plugin] ‘Car.travelBy()’ moves other cars as well.
+ * Fix: [#17377] When building the park entrance before opening the Footpaths window, the path will be invisible.
+ * Fix: [#17381] Air Powered Vertical Coaster stat penalty is wrong.
+ * Fix: [#17399] Guests never generate the being watched thought.
+ * Fix: [#17433] Wrong T-shirt colours for guests on a Twist ride.
+ * Fix: [#17450] Ducks can swim on three-corners-up land tile.
+ * Fix: [#17461] Footpath Railing tooltip showing incorrect tooltip.
+ * Fix: [#17464] Green Tarmac footpath is not available in the Track Designer.
+ * Fix: [#17466] New object types not packed in save files.
+ * Fix: [#17481] Roto-drop cars try going up to top pieces that are ghosts or belong to other rides.
  
 openrct2 (0.4.0) stable; urgency=medium
 
-* Headline feature: [#10664] New save format with increased limits.
-* Feature: [#714] Allow up to 255 trains per ride.
-* Feature: [#2253] Path surfaces and railings can be mixed and matched, like in RCT1.
-* Feature: [#2766] The Fruity Ices Stall can now be recoloured, like in RCT1.
-* Feature: [#4933] Allow map sizes of 999 × 999 (up from 254 × 254).
-* Feature: [#7660] Custom music objects that are distributed with the save.
-* Feature: [#8407] Ride platforms can be made invisible.
-* Feature: [#12793] Add Excitement/Intensity/Nausea ratings to Ride List view with sorting.
-* Feature: [#13858] Flatride bases can be made invisible.
-* Feature: [#14676] [Plugin] Allow plugins to store data in .park files.
-* Feature: [#15367] Individual track elements can now be drawn as another ride type.
-* Feature: [#15901] [Plugin] Add ‘map.getAllEntitiesOnTile’ to API.
-* Feature: [#16029] [Plugin] Add ‘TrackElement.rideType’ to API.
-* Feature: [#16097] The Looping Roller Coaster can now draw all elements from the LIM Launched Roller Coaster.
-* Feature: [#16132, #16389] The Corkscrew, Twister and Vertical Drop Roller Coasters can now draw inline twists.
-* Feature: [#16144] [Plugin] Add ‘ImageManager’ to API.
-* Feature: [#16707] [Plugin] Implement intransient plugins.
-* Feature: [#16707] [Plugin] New API for current mode, ‘map.change’ hook and toolbox menu items on title screen.
-* Feature: [#16731] [Plugin] New API for fetching and manipulating a staff member’s patrol area.
-* Feature: [#16800] [Plugin] Add lift hill speed properties to API.
-* Feature: [#16806] Parkobj can load sprites from RCT image archives.
-* Feature: [#16831] Allow tertiary colours for small and large scenery objects.
-* Feature: [#16872] [Plugin] Add support for custom images.
-* Improved: [#3517] Cheats are now saved with the park.
-* Improved: [#10150] Ride stations are now properly checked if they’re sheltered.
-* Improved: [#10664, #16072] Visibility status can be modified directly in the Tile Inspector’s list.
-* Improved: [#16251] Plugin API handles null values better.
-* Improved: [#16251] openrct2.d.ts: mark ‘callback’ argument of queryAction and executeAction as optional.
-* Improved: [#16251] openrct2.d.ts: change ‘network.status’ to ‘network.mode’ in network API docs.
-* Improved: [#16251] openrct2.d.ts: added previously undocumented ‘GroupBoxWidget.text’ property.
-* Improved: [#16251] openrct2.d.ts: removed unused ‘LabelWidget.onChange’ property.
-* Improved: [#16258] Increased image limit in the engine.
-* Improved: [#16408] Improve ‘--version’ cli option to report more compatibility information.
-* Improved: [#16740] Allow staff patrol areas to be defined with individual tiles rather than groups of 4x4.
-* Improved: [#16764] [Plugin] Add hook ‘map.save’, called before the map is saved.
-* Improved: [#16925] The queue length of 1000 guests is lifted, and a warning for too long queues is added instead.
-* Change: [#14484] Make the Heartline Twister coaster ratings a little bit less hateful.
-* Change: [#16077] When importing SV6 files, the RCT1 land types are only added when they were actually used.
-* Change: [#16424] Following an entity in the title sequence no longer toggles underground view when it’s underground.
-* Change: [#16493] Boat Hire and Submarine Ride support costs now match their visual appearance.
-* Change: [#16710] Changed default view of Guest List to ‘Thoughts’ and selected tab will default to ‘Summarised’ (when opened from the menu).
-* Change: [#16859] Guests with umbrellas no longer always avoid going into a Maze.
-* Change: [#16912] Tired or nauseated guests will no longer jump in a Maze.
-* Fix: [#6767] Black screen after Alt-Tabbing back into the game.
-* Fix: [#11752] Track pieces with fractional cost are too cheap to build.
-* Fix: [#12556] Allow game to run without audio devices.
-* Fix: [#12774] [Plugin] Scripts will not be re-initialised when a new scenario is loaded from within a running scenario.
-* Fix: [#13336] Can no longer place Bumble Bee track design (reverts #12707).
-* Fix: [#14155] Map Generator sometimes places non-tree objects as trees.
-* Fix: [#14674] Recent Messages only shows first few notifications.
-* Fix: [#14920] Ghosts for rides and shops do not auto-elevate when obscured.
-* Fix: [#15413] Modifying park rating with plugins desyncs park rating history from actual park rating.
-* Fix: [#15571] Non-ASCII characters in scenario description get distorted while saving.
-* Fix: [#15830] Objects with RCT1 images are very glitchy if OpenRCT2 is not linked to an RCT1 install.
-* Fix: [#15909] Text can overflow in ‘Select ride design’ windows.
-* Fix: [#15947, #15960] Removing a flat ride results in an error message and duplicate structures.
-* Fix: [#15998] Cannot set map size to the actual maximum.
-* Fix: [#16007] Scenario Editor “Entry Price” appears to the right of the value field.
-* Fix: [#16008] Tile Inspector can select elements from last tile without reselecting it.
-* Fix: [#16024] Go-Karts with more than 32 vehicles do not colour themselves correctly.
-* Fix: [#16026] Newly created rides with “Disable vehicle limits” cheat always get 32 trains with 12 cars each.
-* Fix: [#16063] Object Selection preview for objects with glass is broken.
-* Fix: [#16075] Exporting track designs saves scenery in incorrect locations.
-* Fix: [#16087] The Looping Roller Coaster booster is now always drawn correctly.
-* Fix: [#16140] The ‘Follow this’ option is now disabled when the ride view is set to ‘overall’ or a station.
-* Fix: [#16162] Go Karts speeds are not correctly randomised, they only go very fast or very slow.
-* Fix: [#16188] Medium-size banked turns on the Twister and Vertical Roller Coaster have incorrect support placement (partly original bug).
-* Fix: [#16264, #16572] Placing saved track design crashes game.
-* Fix  [#16308] Crash when trying to place down a ride on Android.
-* Fix: [#16327] Crash on malformed network packet.
-* Fix: [#16449] [Plugin] Viewport doesn't hide when switching tabs.
-* Fix: [#16450] Banner style not copied when using tile inspector.
-* Fix: [#16535] Entering construction mode unblocks all paths.
-* Fix: [#16542] “Same price throughout park” status not correctly imported for RCT1 saves.
-* Fix: [#16572] Crash when trying to place track designs.
-* Fix: [#16591] [Plugin] ‘setInterval’ and ‘setTimeout’ is not disposed when map unloads.
-* Fix: [#16711] [Plugin] ‘Car.rideObject’ overflowing with more than 256 ride types.
-* Fix: [#16779] Fix case where title music doesn't unmute properly.
-* Fix: [#16808] Incorrect track design serialisation causing vehicle object replacement.
-* Fix: [#16869] Soft Toy Stall cannot be recoloured, but shows a recolouring option anyway (original bug).
-* Fix: [#16995] Native Linux dialog windows do not open if the path contains single quotes.
-* Fix: [objects#165] Glitch when Bengal Tiger Cars go through a corner.
+ * Headline feature: [#10664] New save format with increased limits.
+ * Feature: [#714] Allow up to 255 trains per ride.
+ * Feature: [#2253] Path surfaces and railings can be mixed and matched, like in RCT1.
+ * Feature: [#2766] The Fruity Ices Stall can now be recoloured, like in RCT1.
+ * Feature: [#4933] Allow map sizes of 999 × 999 (up from 254 × 254).
+ * Feature: [#7660] Custom music objects that are distributed with the save.
+ * Feature: [#8407] Ride platforms can be made invisible.
+ * Feature: [#12793] Add Excitement/Intensity/Nausea ratings to Ride List view with sorting.
+ * Feature: [#13858] Flatride bases can be made invisible.
+ * Feature: [#14676] [Plugin] Allow plugins to store data in .park files.
+ * Feature: [#15367] Individual track elements can now be drawn as another ride type.
+ * Feature: [#15901] [Plugin] Add ‘map.getAllEntitiesOnTile’ to API.
+ * Feature: [#16029] [Plugin] Add ‘TrackElement.rideType’ to API.
+ * Feature: [#16097] The Looping Roller Coaster can now draw all elements from the LIM Launched Roller Coaster.
+ * Feature: [#16132, #16389] The Corkscrew, Twister and Vertical Drop Roller Coasters can now draw inline twists.
+ * Feature: [#16144] [Plugin] Add ‘ImageManager’ to API.
+ * Feature: [#16707] [Plugin] Implement intransient plugins.
+ * Feature: [#16707] [Plugin] New API for current mode, ‘map.change’ hook and toolbox menu items on title screen.
+ * Feature: [#16731] [Plugin] New API for fetching and manipulating a staff member’s patrol area.
+ * Feature: [#16800] [Plugin] Add lift hill speed properties to API.
+ * Feature: [#16806] Parkobj can load sprites from RCT image archives.
+ * Feature: [#16831] Allow tertiary colours for small and large scenery objects.
+ * Feature: [#16872] [Plugin] Add support for custom images.
+ * Improved: [#3517] Cheats are now saved with the park.
+ * Improved: [#10150] Ride stations are now properly checked if they’re sheltered.
+ * Improved: [#10664, #16072] Visibility status can be modified directly in the Tile Inspector’s list.
+ * Improved: [#16251] Plugin API handles null values better.
+ * Improved: [#16251] openrct2.d.ts: mark ‘callback’ argument of queryAction and executeAction as optional.
+ * Improved: [#16251] openrct2.d.ts: change ‘network.status’ to ‘network.mode’ in network API docs.
+ * Improved: [#16251] openrct2.d.ts: added previously undocumented ‘GroupBoxWidget.text’ property.
+ * Improved: [#16251] openrct2.d.ts: removed unused ‘LabelWidget.onChange’ property.
+ * Improved: [#16258] Increased image limit in the engine.
+ * Improved: [#16408] Improve ‘--version’ cli option to report more compatibility information.
+ * Improved: [#16740] Allow staff patrol areas to be defined with individual tiles rather than groups of 4x4.
+ * Improved: [#16764] [Plugin] Add hook ‘map.save’, called before the map is saved.
+ * Improved: [#16925] The queue length of 1000 guests is lifted, and a warning for too long queues is added instead.
+ * Change: [#14484] Make the Heartline Twister coaster ratings a little bit less hateful.
+ * Change: [#16077] When importing SV6 files, the RCT1 land types are only added when they were actually used.
+ * Change: [#16424] Following an entity in the title sequence no longer toggles underground view when it’s underground.
+ * Change: [#16493] Boat Hire and Submarine Ride support costs now match their visual appearance.
+ * Change: [#16710] Changed default view of Guest List to ‘Thoughts’ and selected tab will default to ‘Summarised’ (when opened from the menu).
+ * Change: [#16859] Guests with umbrellas no longer always avoid going into a Maze.
+ * Change: [#16912] Tired or nauseated guests will no longer jump in a Maze.
+ * Fix: [#6767] Black screen after Alt-Tabbing back into the game.
+ * Fix: [#11752] Track pieces with fractional cost are too cheap to build.
+ * Fix: [#12556] Allow game to run without audio devices.
+ * Fix: [#12774] [Plugin] Scripts will not be re-initialised when a new scenario is loaded from within a running scenario.
+ * Fix: [#13336] Can no longer place Bumble Bee track design (reverts #12707).
+ * Fix: [#14155] Map Generator sometimes places non-tree objects as trees.
+ * Fix: [#14674] Recent Messages only shows first few notifications.
+ * Fix: [#14920] Ghosts for rides and shops do not auto-elevate when obscured.
+ * Fix: [#15413] Modifying park rating with plugins desyncs park rating history from actual park rating.
+ * Fix: [#15571] Non-ASCII characters in scenario description get distorted while saving.
+ * Fix: [#15830] Objects with RCT1 images are very glitchy if OpenRCT2 is not linked to an RCT1 install.
+ * Fix: [#15909] Text can overflow in ‘Select ride design’ windows.
+ * Fix: [#15947, #15960] Removing a flat ride results in an error message and duplicate structures.
+ * Fix: [#15998] Cannot set map size to the actual maximum.
+ * Fix: [#16007] Scenario Editor “Entry Price” appears to the right of the value field.
+ * Fix: [#16008] Tile Inspector can select elements from last tile without reselecting it.
+ * Fix: [#16024] Go-Karts with more than 32 vehicles do not colour themselves correctly.
+ * Fix: [#16026] Newly created rides with “Disable vehicle limits” cheat always get 32 trains with 12 cars each.
+ * Fix: [#16063] Object Selection preview for objects with glass is broken.
+ * Fix: [#16075] Exporting track designs saves scenery in incorrect locations.
+ * Fix: [#16087] The Looping Roller Coaster booster is now always drawn correctly.
+ * Fix: [#16140] The ‘Follow this’ option is now disabled when the ride view is set to ‘overall’ or a station.
+ * Fix: [#16162] Go Karts speeds are not correctly randomised, they only go very fast or very slow.
+ * Fix: [#16188] Medium-size banked turns on the Twister and Vertical Roller Coaster have incorrect support placement (partly original bug).
+ * Fix: [#16264, #16572] Placing saved track design crashes game.
+ * Fix  [#16308] Crash when trying to place down a ride on Android.
+ * Fix: [#16327] Crash on malformed network packet.
+ * Fix: [#16449] [Plugin] Viewport doesn't hide when switching tabs.
+ * Fix: [#16450] Banner style not copied when using tile inspector.
+ * Fix: [#16535] Entering construction mode unblocks all paths.
+ * Fix: [#16542] “Same price throughout park” status not correctly imported for RCT1 saves.
+ * Fix: [#16572] Crash when trying to place track designs.
+ * Fix: [#16591] [Plugin] ‘setInterval’ and ‘setTimeout’ is not disposed when map unloads.
+ * Fix: [#16711] [Plugin] ‘Car.rideObject’ overflowing with more than 256 ride types.
+ * Fix: [#16779] Fix case where title music doesn't unmute properly.
+ * Fix: [#16808] Incorrect track design serialisation causing vehicle object replacement.
+ * Fix: [#16869] Soft Toy Stall cannot be recoloured, but shows a recolouring option anyway (original bug).
+ * Fix: [#16995] Native Linux dialog windows do not open if the path contains single quotes.
+ * Fix: [objects#165] Glitch when Bengal Tiger Cars go through a corner.
 
 openrct2 (0.3.5.1) stable; urgency=medium
 

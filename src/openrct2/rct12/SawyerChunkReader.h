@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -91,7 +91,7 @@ public:
     static void FreeChunk(void* data);
 
 private:
-    static size_t DecodeChunk(void* dst, size_t dstCapacity, const void* src, const sawyercoding_chunk_header& header);
+    static size_t DecodeChunk(void* dst, size_t dstCapacity, const void* src, const SawyerCodingChunkHeader& header);
     static size_t DecodeChunkRLERepeat(void* dst, size_t dstCapacity, const void* src, size_t srcLength);
     static size_t DecodeChunkRLE(void* dst, size_t dstCapacity, const void* src, size_t srcLength);
     static size_t DecodeChunkRepeat(void* dst, size_t dstCapacity, const void* src, size_t srcLength);

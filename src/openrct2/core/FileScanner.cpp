@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -73,7 +73,7 @@ private:
     std::stack<DirectoryState> _directoryStack;
 
     // Current
-    FileInfo* _currentFileInfo;
+    FileScanner::FileInfo* _currentFileInfo;
     utf8* _currentPath;
 
 public:
@@ -84,7 +84,7 @@ public:
         _patterns = GetPatterns(Path::GetFileName(pattern));
 
         _currentPath = Memory::Allocate<utf8>(MAX_PATH);
-        _currentFileInfo = Memory::Allocate<FileInfo>();
+        _currentFileInfo = Memory::Allocate<FileScanner::FileInfo>();
 
         Reset();
     }
@@ -95,7 +95,7 @@ public:
         Memory::Free(_currentFileInfo);
     }
 
-    const FileInfo* GetFileInfo() const override
+    const FileScanner::FileInfo* GetFileInfo() const override
     {
         return _currentFileInfo;
     }
@@ -254,8 +254,8 @@ private:
         else
         {
             result.Type = DIRECTORY_CHILD_TYPE::DC_FILE;
-            result.Size = (static_cast<uint64_t>(child->nFileSizeHigh) << 32ULL) | static_cast<uint64_t>(child->nFileSizeLow);
-            result.LastModified = (static_cast<uint64_t>(child->ftLastWriteTime.dwHighDateTime) << 32ULL)
+            result.Size = (static_cast<uint64_t>(child->nFileSizeHigh) << 32uLL) | static_cast<uint64_t>(child->nFileSizeLow);
+            result.LastModified = (static_cast<uint64_t>(child->ftLastWriteTime.dwHighDateTime) << 32uLL)
                 | static_cast<uint64_t>(child->ftLastWriteTime.dwLowDateTime);
         }
         return result;
@@ -349,7 +349,7 @@ void Path::QueryDirectory(QueryDirectoryResult* result, const std::string& patte
     auto scanner = Path::ScanDirectory(pattern, true);
     while (scanner->Next())
     {
-        const FileInfo* fileInfo = scanner->GetFileInfo();
+        const FileScanner::FileInfo* fileInfo = scanner->GetFileInfo();
         const utf8* path = scanner->GetPath();
 
         result->TotalFiles++;

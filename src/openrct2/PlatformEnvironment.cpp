@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,6 +22,7 @@ class PlatformEnvironment final : public IPlatformEnvironment
 {
 private:
     u8string _basePath[DIRBASE_COUNT];
+    bool _usingRCTClassic{};
 
 public:
     explicit PlatformEnvironment(DIRBASE_VALUES basePaths)
@@ -45,8 +46,10 @@ public:
         {
             default:
             case DIRBASE::RCT1:
-            case DIRBASE::RCT2:
                 directoryName = DirectoryNamesRCT2[static_cast<size_t>(did)];
+                break;
+            case DIRBASE::RCT2:
+                directoryName = _usingRCTClassic ? "Assets" : DirectoryNamesRCT2[static_cast<size_t>(did)];
                 break;
             case DIRBASE::OPENRCT2:
             case DIRBASE::USER:
@@ -69,6 +72,19 @@ public:
     u8string FindFile(DIRBASE base, DIRID did, u8string_view fileName) const override
     {
         auto dataPath = GetDirectoryPath(base, did);
+
+        std::string alternativeFilename;
+        if (_usingRCTClassic && base == DIRBASE::RCT2 && did == DIRID::DATA)
+        {
+            // Special case, handle RCT Classic css ogg files
+            if (String::StartsWith(fileName, "css", true) && String::EndsWith(fileName, ".dat", true))
+            {
+                alternativeFilename = fileName.substr(0, fileName.size() - 3);
+                alternativeFilename.append("ogg");
+                fileName = alternativeFilename;
+            }
+        }
+
         auto path = Path::ResolveCasing(Path::Combine(dataPath, fileName));
         if (base == DIRBASE::RCT1 && did == DIRID::DATA && !File::Exists(path))
         {
@@ -80,12 +96,23 @@ public:
                 path = alternativePath;
             }
         }
+
         return path;
     }
 
     void SetBasePath(DIRBASE base, u8string_view path) override
     {
         _basePath[static_cast<size_t>(base)] = path;
+
+        if (base == DIRBASE::RCT2)
+        {
+            _usingRCTClassic = Platform::IsRCTClassicPath(path);
+        }
+    }
+
+    bool IsUsingClassic() const override
+    {
+        return _usingRCTClassic;
     }
 
 private:
@@ -108,6 +135,7 @@ private:
             case PATHID::SCORES_RCT2:
                 return DIRBASE::RCT2;
             case PATHID::CHANGELOG:
+            case PATHID::CONTRIBUTORS:
                 return DIRBASE::DOCUMENTATION;
             case PATHID::NETWORK_GROUPS:
             case PATHID::NETWORK_SERVERS:
@@ -178,27 +206,27 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
 
     // Now load the config so we can get the RCT1 and RCT2 paths
     auto configPath = env->GetFilePath(PATHID::CONFIG);
-    config_set_defaults();
-    if (!config_open(configPath))
+    ConfigSetDefaults();
+    if (!ConfigOpen(configPath))
     {
-        config_save(configPath);
+        ConfigSave(configPath);
     }
     if (gCustomRCT1DataPath.empty())
     {
-        env->SetBasePath(DIRBASE::RCT1, gConfigGeneral.rct1_path);
+        env->SetBasePath(DIRBASE::RCT1, gConfigGeneral.RCT1Path);
     }
     if (gCustomRCT2DataPath.empty())
     {
-        env->SetBasePath(DIRBASE::RCT2, gConfigGeneral.rct2_path);
+        env->SetBasePath(DIRBASE::RCT2, gConfigGeneral.RCT2Path);
     }
 
     // Log base paths
-    log_verbose("DIRBASE::RCT1    : %s", env->GetDirectoryPath(DIRBASE::RCT1).c_str());
-    log_verbose("DIRBASE::RCT2    : %s", env->GetDirectoryPath(DIRBASE::RCT2).c_str());
-    log_verbose("DIRBASE::OPENRCT2: %s", env->GetDirectoryPath(DIRBASE::OPENRCT2).c_str());
-    log_verbose("DIRBASE::USER    : %s", env->GetDirectoryPath(DIRBASE::USER).c_str());
-    log_verbose("DIRBASE::CONFIG  : %s", env->GetDirectoryPath(DIRBASE::CONFIG).c_str());
-    log_verbose("DIRBASE::CACHE   : %s", env->GetDirectoryPath(DIRBASE::CACHE).c_str());
+    LOG_VERBOSE("DIRBASE::RCT1    : %s", env->GetDirectoryPath(DIRBASE::RCT1).c_str());
+    LOG_VERBOSE("DIRBASE::RCT2    : %s", env->GetDirectoryPath(DIRBASE::RCT2).c_str());
+    LOG_VERBOSE("DIRBASE::OPENRCT2: %s", env->GetDirectoryPath(DIRBASE::OPENRCT2).c_str());
+    LOG_VERBOSE("DIRBASE::USER    : %s", env->GetDirectoryPath(DIRBASE::USER).c_str());
+    LOG_VERBOSE("DIRBASE::CONFIG  : %s", env->GetDirectoryPath(DIRBASE::CONFIG).c_str());
+    LOG_VERBOSE("DIRBASE::CACHE   : %s", env->GetDirectoryPath(DIRBASE::CACHE).c_str());
 
     return env;
 }
@@ -241,6 +269,7 @@ const u8string PlatformEnvironment::DirectoryNamesOpenRCT2[] = {
     u8"replay",     // REPLAY
     u8"desyncs",    // DESYNCS
     u8"crash",      // CRASH
+    u8"assetpack",  // ASSET_PACK
 };
 
 const u8string PlatformEnvironment::FileNames[] = {
@@ -257,5 +286,6 @@ const u8string PlatformEnvironment::FileNames[] = {
     u8"scores.dat",                              // SCORES (LEGACY)
     u8"Saved Games" PATH_SEPARATOR "scores.dat", // SCORES (RCT2)
     u8"changelog.txt",                           // CHANGELOG
-    u8"plugin.store.json"                        // PLUGIN_STORE
+    u8"plugin.store.json",                       // PLUGIN_STORE
+    u8"contributors.md",                         // CONTRIBUTORS
 };

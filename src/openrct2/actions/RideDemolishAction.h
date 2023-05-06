@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,10 +30,10 @@ public:
     GameActions::Result Execute() const override;
 
 private:
-    GameActions::Result DemolishRide(Ride* ride) const;
-    money32 MazeRemoveTrack(const CoordsXYZD& coords) const;
-    money32 DemolishTracks() const;
-    GameActions::Result RefurbishRide(Ride* ride) const;
-    money32 GetRefurbishPrice(const Ride* ride) const;
-    money32 GetRefundPrice(const Ride* ride) const;
+    GameActions::Result DemolishRide(Ride& ride) const;
+    money64 MazeRemoveTrack(const CoordsXYZD& coords) const;
+    money64 DemolishTracks() const;
+    GameActions::Result RefurbishRide(Ride& ride) const;
+    money64 GetRefurbishPrice(const Ride& ride) const;
+    money64 GetRefundPrice(const Ride& ride) const;
 };

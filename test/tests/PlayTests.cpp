@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,8 +16,10 @@
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/actions/ParkSetEntranceFeeAction.h>
 #include <openrct2/actions/ParkSetParameterAction.h>
 #include <openrct2/actions/RideSetPriceAction.h>
+#include <openrct2/actions/RideSetStatusAction.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/EntityTweener.h>
 #include <openrct2/entity/Peep.h>
@@ -52,12 +54,12 @@ static std::unique_ptr<IContext> localStartGame(const std::string& parkPath)
 
     ResetEntitySpatialIndices();
 
-    reset_all_sprite_quadrant_placements();
-    scenery_set_default_placement_configuration();
-    load_palette();
+    ResetAllSpriteQuadrantPlacements();
+    ScenerySetDefaultPlacementConfiguration();
+    LoadPalette();
     EntityTweener::Get().Reset();
-    AutoCreateMapAnimations();
-    fix_invalid_vehicle_sprite_sizes();
+    MapAnimationAutoCreate();
+    FixInvalidVehicleSpriteSizes();
 
     gGameSpeed = 1;
 
@@ -97,7 +99,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
 
     // Open park for free but charging for rides
     execute<ParkSetParameterAction>(ParkParameter::Open);
-    park_set_entrance_fee(0);
+    execute<ParkSetEntranceFeeAction>(0);
     gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find ferris wheel
@@ -108,7 +110,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     Ride& ferrisWheel = *it;
 
     // Open it for free
-    ride_set_status(&ferrisWheel, RideStatus::Open);
+    execute<RideSetStatusAction>(ferrisWheel.id, RideStatus::Open);
     execute<RideSetPriceAction>(ferrisWheel.id, 0, true);
 
     // Ignore intensity to stimulate peeps to queue into ferris wheel
@@ -158,7 +160,7 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
 
     // Open park for free but charging for rides
     execute<ParkSetParameterAction>(ParkParameter::Open);
-    park_set_entrance_fee(0);
+    execute<ParkSetEntranceFeeAction>(0);
     gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find car ride
@@ -168,7 +170,7 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     Ride& carRide = *it;
 
     // Open it for free
-    ride_set_status(&carRide, RideStatus::Open);
+    execute<RideSetStatusAction>(carRide.id, RideStatus::Open);
     execute<RideSetPriceAction>(carRide.id, 0, true);
 
     // Ignore intensity to stimulate peeps to queue into the ride

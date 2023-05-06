@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -90,7 +90,7 @@ namespace OpenRCT2::Ui
 
         void ShowMessageBox(SDL_Window* window, const std::string& message) override
         {
-            log_verbose(message.c_str());
+            LOG_VERBOSE(message.c_str());
 
             std::string executablePath;
             DIALOG_TYPE dtype = GetDialogApp(&executablePath);
@@ -402,7 +402,7 @@ namespace OpenRCT2::Ui
         static void ThrowMissingDialogApp()
         {
             auto uiContext = GetContext()->GetUiContext();
-            std::string dialogMissingWarning = language_get_string(STR_MISSING_DIALOG_APPLICATION_ERROR);
+            std::string dialogMissingWarning = LanguageGetString(STR_MISSING_DIALOG_APPLICATION_ERROR);
             uiContext->ShowMessageBox(dialogMissingWarning);
             throw std::runtime_error(dialogMissingWarning);
         }

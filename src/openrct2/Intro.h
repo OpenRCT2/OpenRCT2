@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,7 +11,7 @@
 
 #include "common.h"
 
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
 
 enum class IntroState : uint8_t
 {
@@ -31,5 +31,5 @@ enum class IntroState : uint8_t
 
 extern IntroState gIntroState;
 
-void intro_update();
-void intro_draw(rct_drawpixelinfo* dpi);
+void IntroUpdate();
+void IntroDraw(DrawPixelInfo& dpi);

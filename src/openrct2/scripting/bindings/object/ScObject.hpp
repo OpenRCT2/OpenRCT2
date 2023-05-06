@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -44,6 +44,8 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScObject::identifier_get, nullptr, "identifier");
             dukglue_register_property(ctx, &ScObject::legacyIdentifier_get, nullptr, "legacyIdentifier");
             dukglue_register_property(ctx, &ScObject::name_get, nullptr, "name");
+            dukglue_register_property(ctx, &ScObject::baseImageId_get, nullptr, "baseImageId");
+            dukglue_register_property(ctx, &ScObject::numImages_get, nullptr, "numImages");
         }
 
         static std::optional<ObjectType> StringToObjectType(std::string_view type)
@@ -124,6 +126,26 @@ namespace OpenRCT2::Scripting
                 return obj->GetName();
             }
             return {};
+        }
+
+        uint32_t baseImageId_get() const
+        {
+            auto obj = GetObject();
+            if (obj != nullptr)
+            {
+                return obj->GetBaseImageId();
+            }
+            return 0;
+        }
+
+        uint32_t numImages_get() const
+        {
+            auto obj = GetObject();
+            if (obj != nullptr)
+            {
+                return obj->GetNumImages();
+            }
+            return 0;
         }
 
     protected:
@@ -274,7 +296,7 @@ namespace OpenRCT2::Scripting
             auto entry = GetEntry();
             if (entry != nullptr)
             {
-                return entry->animation;
+                return EnumValue(entry->animation);
             }
             return 0;
         }
@@ -478,7 +500,7 @@ namespace OpenRCT2::Scripting
             auto obj = GetObject();
             if (obj != nullptr)
             {
-                auto rideEntry = static_cast<rct_ride_entry*>(obj->GetLegacyData());
+                auto rideEntry = static_cast<RideObjectEntry*>(obj->GetLegacyData());
                 if (rideEntry != nullptr && _vehicleIndex < std::size(rideEntry->Cars))
                 {
                     return rideEntry->GetCar(_vehicleIndex);
@@ -758,12 +780,12 @@ namespace OpenRCT2::Scripting
             return static_cast<RideObject*>(ScObject::GetObject());
         }
 
-        const rct_ride_entry* GetLegacyData() const
+        const RideObjectEntry* GetLegacyData() const
         {
             auto obj = GetObject();
             if (obj != nullptr)
             {
-                return static_cast<rct_ride_entry*>(obj->GetLegacyData());
+                return static_cast<RideObjectEntry*>(obj->GetLegacyData());
             }
             return nullptr;
         }

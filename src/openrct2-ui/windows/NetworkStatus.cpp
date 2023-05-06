@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,8 +15,6 @@
 #include <openrct2/util/Util.h>
 
 // clang-format off
-static char _password[33];
-
 enum WindowNetworkStatusWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -24,142 +22,142 @@ enum WindowNetworkStatusWidgetIdx {
     WIDX_PASSWORD
 };
 
-static rct_widget window_network_status_widgets[] = {
+static Widget window_network_status_widgets[] = {
     MakeWidget({  0, 0}, {441, 91}, WindowWidgetType::Frame,    WindowColour::Primary                                   ), // panel / background
     MakeWidget({  1, 1}, {438, 14}, WindowWidgetType::Caption,  WindowColour::Primary, STR_NONE,    STR_WINDOW_TITLE_TIP), // title bar
     MakeWidget({427, 2}, { 11, 12}, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP), // close x button
     WIDGETS_END,
 };
 
-static char window_network_status_text[1024];
-
-static void WindowNetworkStatusOnclose(rct_window *w);
-static void WindowNetworkStatusMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void WindowNetworkStatusUpdate(rct_window *w);
-static void WindowNetworkStatusTextinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void WindowNetworkStatusInvalidate(rct_window *w);
-static void WindowNetworkStatusPaint(rct_window *w, rct_drawpixelinfo *dpi);
-
-static rct_window_event_list window_network_status_events([](auto& events)
-{
-    events.close = &WindowNetworkStatusOnclose;
-    events.mouse_up = &WindowNetworkStatusMouseup;
-    events.update = &WindowNetworkStatusUpdate;
-    events.text_input = &WindowNetworkStatusTextinput;
-    events.invalidate = &WindowNetworkStatusInvalidate;
-    events.paint = &WindowNetworkStatusPaint;
-});
 // clang-format on
-
-static close_callback _onClose = nullptr;
-
-rct_window* WindowNetworkStatusOpen(const char* text, close_callback onClose)
+class NetworkStatusWindow final : public Window
 {
-    _onClose = onClose;
-    safe_strcpy(window_network_status_text, text, sizeof(window_network_status_text));
+public:
+    void OnOpen() override
+    {
+        widgets = window_network_status_widgets;
+        WindowInitScrollWidgets(*this);
 
-    // Check if window is already open
-    rct_window* window = window_bring_to_front_by_class_with_flags(WC_NETWORK_STATUS, 0);
-    if (window != nullptr)
-        return window;
+        no_list_items = 0;
+        selected_list_item = -1;
+        frame_no = 0;
+        min_width = 320;
+        min_height = 90;
+        max_width = min_width;
+        max_height = min_height;
 
-    window = WindowCreateCentred(420, 90, &window_network_status_events, WC_NETWORK_STATUS, WF_10 | WF_TRANSPARENT);
+        page = 0;
+        list_information_type = 0;
+    }
 
-    window->widgets = window_network_status_widgets;
-    WindowInitScrollWidgets(window);
-    window->no_list_items = 0;
-    window->selected_list_item = -1;
-    window->frame_no = 0;
-    window->min_width = 320;
-    window->min_height = 90;
-    window->max_width = window->min_width;
-    window->max_height = window->min_height;
+    void OnClose() override
+    {
+        if (_onClose != nullptr)
+        {
+            _onClose();
+        }
+    }
 
-    window->page = 0;
-    window->list_information_type = 0;
+    void OnMouseUp(WidgetIndex widgetIndex) override
+    {
+        switch (widgetIndex)
+        {
+            case WIDX_CLOSE:
+                Close();
+                break;
+        }
+    }
 
+    void OnUpdate() override
+    {
+        InvalidateWidget(WIDX_BACKGROUND);
+    }
+
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+    {
+        _password.clear();
+        switch (widgetIndex)
+        {
+            case WIDX_PASSWORD:
+                _password = text;
+                break;
+        }
+        if (text.empty())
+        {
+            NetworkShutdownClient();
+        }
+        else
+        {
+            NetworkSendPassword(_password);
+        }
+    }
+
+    void OnPrepareDraw() override
+    {
+        ResizeFrame();
+    }
+
+    void OnDraw(DrawPixelInfo& dpi) override
+    {
+        WindowDrawWidgets(*this, dpi);
+        thread_local std::string _buffer;
+        _buffer.assign("{BLACK}");
+        _buffer += _windowNetworkStatusText;
+        GfxClipString(_buffer.data(), widgets[WIDX_BACKGROUND].right - 50, FontStyle::Medium);
+        ScreenCoordsXY screenCoords(windowPos.x + (width / 2), windowPos.y + (height / 2));
+        screenCoords.x -= GfxGetStringWidth(_buffer, FontStyle::Medium) / 2;
+        GfxDrawString(dpi, screenCoords, _buffer.c_str());
+    }
+
+    void SetCloseCallBack(close_callback onClose)
+    {
+        _onClose = onClose;
+    }
+
+    void SetWindowNetworkStatusText(const std::string& text)
+    {
+        _windowNetworkStatusText = text;
+    }
+
+    void SetPassword(char* password)
+    {
+        _password = password;
+    }
+
+private:
+    close_callback _onClose = nullptr;
+    std::string _windowNetworkStatusText;
+    std::string _password;
+};
+
+WindowBase* WindowNetworkStatusOpen(const std::string& text, close_callback onClose)
+{
+    auto window = WindowFocusOrCreate<NetworkStatusWindow>(
+        WindowClass::NetworkStatus, 420, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);
+    window->SetCloseCallBack(onClose);
+    window->SetWindowNetworkStatusText(text);
     return window;
 }
 
+// force close
 void WindowNetworkStatusClose()
 {
-    _onClose = nullptr;
-    window_close_by_class(WC_NETWORK_STATUS);
-}
-
-rct_window* WindowNetworkStatusOpenPassword()
-{
-    rct_window* window;
-    window = window_bring_to_front_by_class(WC_NETWORK_STATUS);
+    auto window = WindowFindByClass(WindowClass::NetworkStatus);
     if (window == nullptr)
-        return nullptr;
+    {
+        return;
+    }
+    auto networkWindow = static_cast<NetworkStatusWindow*>(window);
+    networkWindow->SetCloseCallBack(nullptr);
+    networkWindow->Close();
+}
 
-    WindowTextInputRawOpen(window, WIDX_PASSWORD, STR_PASSWORD_REQUIRED, STR_PASSWORD_REQUIRED_DESC, {}, _password, 32);
-
+WindowBase* WindowNetworkStatusOpenPassword()
+{
+    auto window = WindowFocusOrCreate<NetworkStatusWindow>(
+        WindowClass::NetworkStatus, 420, 90, WF_10 | WF_TRANSPARENT | WF_CENTRE_SCREEN);
+    char password[33]{};
+    WindowTextInputRawOpen(window, WIDX_PASSWORD, STR_PASSWORD_REQUIRED, STR_PASSWORD_REQUIRED_DESC, {}, password, 32);
+    window->SetPassword(password);
     return window;
-}
-
-static void WindowNetworkStatusOnclose(rct_window* w)
-{
-    if (_onClose != nullptr)
-    {
-        _onClose();
-    }
-}
-
-static void WindowNetworkStatusMouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    switch (widgetIndex)
-    {
-        case WIDX_CLOSE:
-            window_close(w);
-            break;
-    }
-}
-
-static void WindowNetworkStatusUpdate(rct_window* w)
-{
-    widget_invalidate(w, WIDX_BACKGROUND);
-}
-
-static void WindowNetworkStatusTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
-{
-    _password[0] = '\0';
-    switch (widgetIndex)
-    {
-        case WIDX_PASSWORD:
-            if (text != nullptr)
-                safe_strcpy(_password, text, sizeof(_password));
-            break;
-    }
-    if (text == nullptr)
-    {
-        network_shutdown_client();
-    }
-    else
-    {
-        network_send_password(_password);
-    }
-}
-
-static void WindowNetworkStatusInvalidate(rct_window* w)
-{
-    window_network_status_widgets[WIDX_BACKGROUND].right = w->width - 1;
-    window_network_status_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-    window_network_status_widgets[WIDX_TITLE].right = w->width - 2;
-    window_network_status_widgets[WIDX_CLOSE].left = w->width - 2 - 0x0B;
-    window_network_status_widgets[WIDX_CLOSE].right = w->width - 2 - 0x0B + 0x0A;
-}
-
-static void WindowNetworkStatusPaint(rct_window* w, rct_drawpixelinfo* dpi)
-{
-    WindowDrawWidgets(w, dpi);
-
-    thread_local std::string _buffer;
-    _buffer.assign("{BLACK}");
-    _buffer += window_network_status_text;
-    gfx_clip_string(_buffer.data(), w->widgets[WIDX_BACKGROUND].right - 50, FontSpriteBase::MEDIUM);
-    ScreenCoordsXY screenCoords(w->windowPos.x + (w->width / 2), w->windowPos.y + (w->height / 2));
-    screenCoords.x -= gfx_get_string_width(_buffer, FontSpriteBase::MEDIUM) / 2;
-    gfx_draw_string(dpi, screenCoords, _buffer.c_str());
 }

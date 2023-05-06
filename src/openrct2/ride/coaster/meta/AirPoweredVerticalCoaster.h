@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,11 +23,11 @@ constexpr const RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {TRACK_BOOSTER}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_air_powered_vertical_rc),
+    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionAirPoweredVerticalRC),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::PoweredLaunchPasstrough, RideMode::PoweredLaunch)),
     SET_FIELD(DefaultMode, RideMode::PoweredLaunchPasstrough),
-    SET_FIELD(OperatingSettings, { 30, 50, 30, 40, 40, 0 }),
+    SET_FIELD(OperatingSettings, { 30, 50, 30, 40, 40, 0, 13 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_AIR_POWERED_VERTICAL_COASTER, STR_RIDE_DESCRIPTION_AIR_POWERED_VERTICAL_COASTER }),
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER)),
@@ -35,7 +35,6 @@ constexpr const RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     SET_FIELD(Heights, { 255, 32, 4, 7, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_air_powered_vertical_coaster),
     SET_FIELD(RatingsMultipliers, { 44, 66, 10 }),
     SET_FIELD(UpkeepCosts, { 90, 20, 0, 0, 0, 10 }),
     SET_FIELD(BuildCosts, { 100.00_GBP, 0.00_GBP, 45, }),
@@ -51,5 +50,24 @@ constexpr const RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_AIR_POWERED_VERTICAL_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_AIR_POWERED_VERTICAL_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "air_powered_vertical_rc"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(4, 13), RIDE_RATING(2, 50), RIDE_RATING(2, 80) },
+        28,
+        -1,
+        false,
+        {
+            { RatingsModifierType::BonusLength,           6000,             327, 0, 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 60), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusMaxSpeed,         0,                509724, 364088, 320398 },
+            { RatingsModifierType::BonusGForces,          0,                24576, 35746, 59578 },
+            { RatingsModifierType::BonusSheltered,        0,                15420, 21845, 11702 },
+            { RatingsModifierType::BonusProximity,        0,                17893, 0, 0 },
+            { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
+            { RatingsModifierType::RequirementDropHeight, 34,               4, 1, 1 },
+            { RatingsModifierType::PenaltyLateralGs,      0,                24576, 35746, 59578 },
+        },
+    }),
 };
 // clang-format on

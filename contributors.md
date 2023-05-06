@@ -4,11 +4,11 @@ Includes all git commit authors. Aliases are GitHub user names.
 ## Development team
 * Ted John (IntelOrca) - Owner
 * Duncan Frost (duncanspumpkin)
-* Michael Steenbeek (Gymnasiast) - translation management
 * Michał Janiszewski (janisozaur)
 * Hielke Morsink (Broxzier)
 * Tulio Paschoalin Leao (tupaschoal)
 * Olivier Wervers (Oli414)
+* Rik Smeets (rik-smeets)
 
 ## Former development team members
 * Lewis Fox (LRFLEW)
@@ -17,9 +17,12 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Richard Jenkins (rwjuk)
 * Aaron van Geffen (AaronVanGeffen)
 * Matthias Moninger (ZehMatt)
+* Michael Steenbeek (Gymnasiast)
 
 ## Long term contributors
 The following people are not part of the development team, but have been contributing for a long time.
+* Edward Calver (X7123M3-256)
+* Karst van Galen Last (AuraSpecs)
 * Matte Andersson (Nubbie)
 * Kenton Boadway (Krutonium)
 * Joe Minor Jr (wolfreak99)
@@ -56,7 +59,7 @@ The following people are not part of the development team, but have been contrib
 * Inseok Lee (dlunch) - Load save files from command line
 * Jørn Lomax (jvlomax) - Configuration parser
 * Alexander Overvoorde (Overv) - OpenGL improvements, Steam overlay detection, various bugfixes.
-* (eezstreet) - Add finances button to toolbar
+* (eezstreet) - Add finances button to toolbar, various bugfixes.
 * Hielke Morsink (Broxzier) - Tile inspector, heightmap loader, misc.
 * Joe Minor Jr (wolfreak99) - Various cheats, bugfixes, new About and Changelog windows.
 * Thomas den Hollander (ThomasdenH) - Dithering in sprite importer, invert viewport dragging, park rating cheats misc.
@@ -96,8 +99,15 @@ The following people are not part of the development team, but have been contrib
 * Bas Cantrijn (Basssiiie) - Various plugin additions, misc.
 * Adrian Zdanowicz (CookiePLMonster) - Misc.
 * Andrew Pratt (andrewpratt64) - Added api hook for vehicle crashes, api function to get entities on a tile
-* Karst van Galen Last (AuraSpecs) - Misc.
+* Karst van Galen Last (AuraSpecs) - Ride paint (bounding boxes, extra track pieces), soundtrack, sound effects, misc.
 * (8street) - Misc.
+* Umar Ahmed (umar-ahmed) - MacOS file watcher
+* Andrew Arnold (fidwell) - Added window support for more scenery groups.
+* Josh Trzebiatowski (trzejos) - Ride and scenery filtering
+* (kyphii) - Extended color selection, reversed ride vehicles, misc.
+* Phumdol Lookthipnapha (beam41) - Misc.
+* Nikolas Parshook (nparshook) - Misc.
+* Wenzhao Qiu (qwzhaox) - Misc.
 
 ## Bug fixes
 * (KirilAngelov)
@@ -195,6 +205,21 @@ The following people are not part of the development team, but have been contrib
 * Hoby R. (hobyr)
 * Huu Kim Nguyen (CoderUndefined)
 * Henry Cheng (jazzysoggy)
+* Dan Stevens (MajeureX)
+* 73 (733737)
+* Raymond Zhao (rzhao271)
+* Xixiang Chen (jacknull1991)
+* (ReticulatingSplines)
+* Conrad Cash (HouseholdVTuber)
+* Michael Bickerton (mdbckrtn)
+* Nehemiah Negussie (nehemiah-negussie)
+* (zzril)
+* Ernest Elgin (eaeiv)
+* Ernest Wong (ErnWong)
+* Joel H. (HtotheTML)
+* John Mulcahy (jayjay300)
+* Chase Percy (Chase-Percy)
+* Wenzhao Qiu (qwzhaox)
 
 ## Toolchain
 * (Balletie) - macOS
@@ -215,6 +240,7 @@ The following people are not part of the development team, but have been contrib
 * (MaxBareiss)
 * Mithun Hunsur (Philpax)
 * (RollingStar)
+* (That Human Being)
 
 ## Translation
 * Extracting from original files: Ted John (IntelOrca)
@@ -230,6 +256,7 @@ The following people are not part of the development team, but have been contrib
 * Czech - Martin Černáč (octaroot), (Clonewayx), Tomáš Pazdiora (Aroidzap)
 * Danish - Lars P. Sørensen (LPSGizmo)
 * Dutch - Michael Steenbeek (Gymnasiast), Yannic Geurts (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute),  Marijn van der Werf (marijnvdwerf), Tom Kroes (ThePsionic); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (SijmenSchoon).
+* Esperanto - (tellovishous), Raymond Zhao (rzhao271)
 * Finnish - (DJHasis), (Zode), (TheWing)
 * French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rmnvgr), (AziasYur), Hugo Courtial (s0r00t), David Delobel (incyclum), Nicolas Hawrysh (xp4xbox)
 * German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie)
@@ -240,7 +267,7 @@ The following people are not part of the development team, but have been contrib
 * Polish - Adrian Wielgosik (adrian17), (lopezloo), Michał Janiszewski (janisozaur)
 * Portuguese (BR) - (kaudy), (renansimoes), Tulio Paschoalin Leao (tupaschoal)
 * Russian - (Soosisya)
-* Spanish - (mdtrooper), Josué Acevedo (Wirlie), Daniel Trujillo Viedma (gDanix); small fixes: (teapartycthulu)
+* Spanish - Josué Acevedo (Wirlie), Diego Mateos (dimateos), (frenchiveruti), (mdtrooper), Daniel Trujillo Viedma (gDanix); small fixes: (teapartycthulu)
 * Swedish - (Jinxit), (mharrys), (Slimeyo), Matte Andersson (Nubbie)
 
 ## Graphics
@@ -249,6 +276,7 @@ The following people are not part of the development team, but have been contrib
 
 ## Music
 * Karst "Jalmaan" van Galen Last (AuraSpecs)
+* (Flyxxpy)
 
 ## RollerCoaster Tycoon 2 credits
 Design and programming by Chris Sawyer

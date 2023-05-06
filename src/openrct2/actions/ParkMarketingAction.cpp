@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -76,7 +76,7 @@ GameActions::Result ParkMarketingAction::Execute() const
     {
         campaign.ShopItemType = ShopItem(_item);
     }
-    marketing_new_campaign(campaign);
+    MarketingNewCampaign(campaign);
 
     // We are only interested in invalidating the finances (marketing) window
     auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
@@ -94,7 +94,7 @@ GameActions::Result ParkMarketingAction::CreateResult() const
     return result;
 }
 
-money32 ParkMarketingAction::CalculatePrice() const
+money64 ParkMarketingAction::CalculatePrice() const
 {
     return _numWeeks * AdvertisingCampaignPricePerWeek[_type];
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -45,7 +45,7 @@ enum {
 static constexpr const int32_t WW = 300;
 static constexpr const int32_t WH = 154;
 
-static rct_widget _windowServerStartWidgets[] = {
+static Widget _windowServerStartWidgets[] = {
     MakeWidget({ 0, 0 }, { WW, WH }, WindowWidgetType::Frame, WindowColour::Primary), // panel / background
     MakeWidget({ 1, 1 }, { 298, 14 }, WindowWidgetType::Caption, WindowColour::Primary, STR_START_SERVER,STR_WINDOW_TITLE_TIP), // title bar
     MakeWidget({ WW - 13, 2 }, { 11, 12 }, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X,STR_CLOSE_WINDOW_TIP), // close x button
@@ -84,12 +84,12 @@ public:
         page = 0;
         list_information_type = 0;
 
-        snprintf(_port, 7, "%u", gConfigNetwork.default_port);
-        safe_strcpy(_name, gConfigNetwork.server_name.c_str(), sizeof(_name));
-        safe_strcpy(_description, gConfigNetwork.server_description.c_str(), sizeof(_description));
-        safe_strcpy(_greeting, gConfigNetwork.server_greeting.c_str(), sizeof(_greeting));
+        snprintf(_port, 7, "%u", gConfigNetwork.DefaultPort);
+        SafeStrCpy(_name, gConfigNetwork.ServerName.c_str(), sizeof(_name));
+        SafeStrCpy(_description, gConfigNetwork.ServerDescription.c_str(), sizeof(_description));
+        SafeStrCpy(_greeting, gConfigNetwork.ServerGreeting.c_str(), sizeof(_greeting));
     }
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -97,80 +97,78 @@ public:
                 Close();
                 break;
             case WIDX_PORT_INPUT:
-                window_start_textbox(this, widgetIndex, STR_STRING, _port, 6);
+                WindowStartTextbox(*this, widgetIndex, STR_STRING, _port, 6);
                 break;
             case WIDX_NAME_INPUT:
-                window_start_textbox(this, widgetIndex, STR_STRING, _name, 64);
+                WindowStartTextbox(*this, widgetIndex, STR_STRING, _name, 64);
                 break;
             case WIDX_DESCRIPTION_INPUT:
-                window_start_textbox(this, widgetIndex, STR_STRING, _description, MAX_SERVER_DESCRIPTION_LENGTH);
+                WindowStartTextbox(*this, widgetIndex, STR_STRING, _description, MAX_SERVER_DESCRIPTION_LENGTH);
                 break;
             case WIDX_GREETING_INPUT:
-                window_start_textbox(this, widgetIndex, STR_STRING, _greeting, CHAT_INPUT_SIZE);
+                WindowStartTextbox(*this, widgetIndex, STR_STRING, _greeting, CHAT_INPUT_SIZE);
                 break;
             case WIDX_PASSWORD_INPUT:
-                window_start_textbox(this, widgetIndex, STR_STRING, _password, 32);
+                WindowStartTextbox(*this, widgetIndex, STR_STRING, _password, 32);
                 break;
             case WIDX_MAXPLAYERS_INCREASE:
-                if (gConfigNetwork.maxplayers < 255)
+                if (gConfigNetwork.Maxplayers < 255)
                 {
-                    gConfigNetwork.maxplayers++;
+                    gConfigNetwork.Maxplayers++;
                 }
-                config_save_default();
+                ConfigSaveDefault();
                 Invalidate();
                 break;
             case WIDX_MAXPLAYERS_DECREASE:
-                if (gConfigNetwork.maxplayers > 1)
+                if (gConfigNetwork.Maxplayers > 1)
                 {
-                    gConfigNetwork.maxplayers--;
+                    gConfigNetwork.Maxplayers--;
                 }
-                config_save_default();
+                ConfigSaveDefault();
                 Invalidate();
                 break;
             case WIDX_ADVERTISE_CHECKBOX:
-                gConfigNetwork.advertise = !gConfigNetwork.advertise;
-                config_save_default();
+                gConfigNetwork.Advertise = !gConfigNetwork.Advertise;
+                ConfigSaveDefault();
                 Invalidate();
                 break;
             case WIDX_START_SERVER:
-                network_set_password(_password);
+                NetworkSetPassword(_password);
                 WindowScenarioselectOpen(ScenarioSelectCallback, false);
                 break;
             case WIDX_LOAD_SERVER:
-                network_set_password(_password);
-                auto intent = Intent(WC_LOADSAVE);
-                intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-                intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(LoadSaveCallback));
-                context_open_intent(&intent);
+                NetworkSetPassword(_password);
+                auto intent = Intent(WindowClass::Loadsave);
+                intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
+                intent.PutExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(LoadSaveCallback));
+                ContextOpenIntent(&intent);
                 break;
         }
     }
     void OnPrepareDraw() override
     {
-        ColourSchemeUpdateByClass(this, WC_SERVER_LIST);
+        ColourSchemeUpdateByClass(this, WindowClass::ServerList);
 
-        WidgetSetCheckboxValue(this, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
+        WidgetSetCheckboxValue(*this, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.Advertise);
         auto ft = Formatter::Common();
         ft.Increment(18);
-        ft.Add<uint16_t>(gConfigNetwork.maxplayers);
+        ft.Add<uint16_t>(gConfigNetwork.Maxplayers);
     }
     void OnUpdate() override
     {
         if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
         {
-            window_update_textbox_caret();
-            widget_invalidate(this, WIDX_NAME_INPUT);
-            widget_invalidate(this, WIDX_DESCRIPTION_INPUT);
-            widget_invalidate(this, WIDX_GREETING_INPUT);
-            widget_invalidate(this, WIDX_PASSWORD_INPUT);
+            WindowUpdateTextboxCaret();
+            WidgetInvalidate(*this, WIDX_NAME_INPUT);
+            WidgetInvalidate(*this, WIDX_DESCRIPTION_INPUT);
+            WidgetInvalidate(*this, WIDX_GREETING_INPUT);
+            WidgetInvalidate(*this, WIDX_PASSWORD_INPUT);
         }
     }
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
-        if (text.empty())
-            return;
-
         std::string temp = static_cast<std::string>(text);
+        int tempPort = 0;
 
         switch (widgetIndex)
         {
@@ -178,99 +176,76 @@ public:
                 if (strcmp(_port, temp.c_str()) == 0)
                     return;
 
-                std::fill_n(_port, sizeof(_port), 0x00);
-                if (text[0] != '\0')
+                SafeStrCpy(_port, temp.c_str(), sizeof(_port));
+
+                // Don't allow negative/zero for port number
+                tempPort = atoi(_port);
+                if (tempPort > 0)
                 {
-                    safe_strcpy(_port, temp.c_str(), sizeof(_port));
+                    gConfigNetwork.DefaultPort = tempPort;
+                    ConfigSaveDefault();
                 }
 
-                gConfigNetwork.default_port = atoi(_port);
-                config_save_default();
-
-                widget_invalidate(this, WIDX_NAME_INPUT);
+                WidgetInvalidate(*this, WIDX_PORT_INPUT);
                 break;
             case WIDX_NAME_INPUT:
                 if (strcmp(_name, temp.c_str()) == 0)
                     return;
 
-                std::fill_n(_name, sizeof(_name), 0x00);
-                if (text[0] != '\0')
-                {
-                    safe_strcpy(_name, temp.c_str(), sizeof(_name));
-                }
+                SafeStrCpy(_name, temp.c_str(), sizeof(_name));
 
+                // Don't allow empty server names
                 if (_name[0] != '\0')
                 {
-                    gConfigNetwork.server_name = _name;
-                    config_save_default();
+                    gConfigNetwork.ServerName = _name;
+                    ConfigSaveDefault();
                 }
 
-                widget_invalidate(this, WIDX_NAME_INPUT);
+                WidgetInvalidate(*this, WIDX_NAME_INPUT);
                 break;
             case WIDX_DESCRIPTION_INPUT:
                 if (strcmp(_description, temp.c_str()) == 0)
                     return;
 
-                std::fill_n(_description, sizeof(_description), 0x00);
-                if (text[0] != '\0')
-                {
-                    safe_strcpy(_description, temp.c_str(), sizeof(_description));
-                }
+                SafeStrCpy(_description, temp.c_str(), sizeof(_description));
+                gConfigNetwork.ServerDescription = _description;
+                ConfigSaveDefault();
 
-                if (_description[0] != '\0')
-                {
-                    gConfigNetwork.server_description = _description;
-                    config_save_default();
-                }
-
-                widget_invalidate(this, WIDX_DESCRIPTION_INPUT);
+                WidgetInvalidate(*this, WIDX_DESCRIPTION_INPUT);
                 break;
             case WIDX_GREETING_INPUT:
                 if (strcmp(_greeting, temp.c_str()) == 0)
                     return;
 
-                std::fill_n(_greeting, sizeof(_greeting), 0x00);
-                if (text[0] != '\0')
-                {
-                    safe_strcpy(_greeting, temp.c_str(), sizeof(_greeting));
-                }
+                SafeStrCpy(_greeting, temp.c_str(), sizeof(_greeting));
+                gConfigNetwork.ServerGreeting = _greeting;
+                ConfigSaveDefault();
 
-                if (_greeting[0] != '\0')
-                {
-                    gConfigNetwork.server_greeting = _greeting;
-                    config_save_default();
-                }
-
-                widget_invalidate(this, WIDX_GREETING_INPUT);
+                WidgetInvalidate(*this, WIDX_GREETING_INPUT);
                 break;
             case WIDX_PASSWORD_INPUT:
                 if (strcmp(_password, temp.c_str()) == 0)
                     return;
 
-                std::fill_n(_password, sizeof(_password), 0x00);
-                if (text[0] != '\0')
-                {
-                    safe_strcpy(_password, temp.c_str(), sizeof(_password));
-                }
+                SafeStrCpy(_password, temp.c_str(), sizeof(_password));
 
-                widget_invalidate(this, WIDX_PASSWORD_INPUT);
+                WidgetInvalidate(*this, WIDX_PASSWORD_INPUT);
                 break;
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
-        DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PORT_INPUT].top }, STR_PORT, {}, { colours[1] });
-        DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_NAME_INPUT].top }, STR_SERVER_NAME, {}, { colours[1] });
+        DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PORT_INPUT].top }, STR_PORT, {}, { colours[1] });
+        DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_NAME_INPUT].top }, STR_SERVER_NAME, {}, { colours[1] });
         DrawTextBasic(
-            &dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_DESCRIPTION_INPUT].top }, STR_SERVER_DESCRIPTION, {},
+            dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_DESCRIPTION_INPUT].top }, STR_SERVER_DESCRIPTION, {},
             { colours[1] });
         DrawTextBasic(
-            &dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_GREETING_INPUT].top }, STR_SERVER_GREETING, {}, { colours[1] });
-        DrawTextBasic(
-            &dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PASSWORD_INPUT].top }, STR_PASSWORD, {}, { colours[1] });
-        DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_MAXPLAYERS].top }, STR_MAX_PLAYERS, {}, { colours[1] });
+            dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_GREETING_INPUT].top }, STR_SERVER_GREETING, {}, { colours[1] });
+        DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PASSWORD_INPUT].top }, STR_PASSWORD, {}, { colours[1] });
+        DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_MAXPLAYERS].top }, STR_MAX_PLAYERS, {}, { colours[1] });
     }
 
 private:
@@ -281,10 +256,10 @@ private:
     char _password[33];
     static void ScenarioSelectCallback(const utf8* path)
     {
-        game_notify_map_change();
+        GameNotifyMapChange();
         if (GetContext()->LoadParkFromFile(path, false, true))
         {
-            network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
+            NetworkBeginServer(gConfigNetwork.DefaultPort, gConfigNetwork.ListenAddress);
         }
     }
 
@@ -292,16 +267,16 @@ private:
     {
         if (result == MODAL_RESULT_OK)
         {
-            game_notify_map_change();
-            context_load_park_from_file(path);
-            network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
+            GameNotifyMapChange();
+            GetContext()->LoadParkFromFile(path);
+            NetworkBeginServer(gConfigNetwork.DefaultPort, gConfigNetwork.ListenAddress);
         }
     }
 };
 
-rct_window* WindowServerStartOpen()
+WindowBase* WindowServerStartOpen()
 {
-    return WindowFocusOrCreate<ServerStartWindow>(WC_SERVER_START, WW, WH, WF_CENTRE_SCREEN);
+    return WindowFocusOrCreate<ServerStartWindow>(WindowClass::ServerStart, WW, WH, WF_CENTRE_SCREEN);
 }
 
 #endif

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,12 +16,13 @@
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../object/Object.h"
+#include "../object/ObjectEntryManager.h"
+#include "../object/WaterEntry.h"
 #include "../platform/Platform.h"
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/Location.hpp"
-#include "../world/Water.h"
 #include "LightFX.h"
 
 #include <cstring>
@@ -292,6 +293,56 @@ enum
     SPR_PALETTE_GLASS_DARK_PINK = 5045,
     SPR_PALETTE_GLASS_BRIGHT_PINK = 5046,
     SPR_PALETTE_GLASS_LIGHT_PINK = 5047,
+
+    SPR_PALETTE_DARK_OLIVE_DARK = SPR_G2_PALETTE_BEGIN,
+    SPR_PALETTE_DARK_OLIVE_LIGHT,
+    SPR_PALETTE_SATURATED_BROWN_LIGHT,
+    SPR_PALETTE_BORDEAUX_RED_DARK,
+    SPR_PALETTE_BORDEAUX_RED_LIGHT,
+    SPR_PALETTE_GRASS_GREEN_DARK,
+    SPR_PALETTE_GRASS_GREEN_LIGHT,
+    SPR_PALETTE_OLIVE_DARK,
+    SPR_PALETTE_OLIVE_LIGHT,
+    SPR_PALETTE_SATURATED_GREEN_LIGHT,
+    SPR_PALETTE_TAN_DARK,
+    SPR_PALETTE_TAN_LIGHT,
+    SPR_PALETTE_DULL_PURPLE_LIGHT,
+    SPR_PALETTE_DULL_GREEN_DARK,
+    SPR_PALETTE_DULL_GREEN_LIGHT,
+    SPR_PALETTE_SATURATED_PURPLE_DARK,
+    SPR_PALETTE_SATURATED_PURPLE_LIGHT,
+    SPR_PALETTE_ORANGE_LIGHT,
+    SPR_PALETTE_AQUA_DARK,
+    SPR_PALETTE_MAGENTA_LIGHT,
+    SPR_PALETTE_DULL_BROWN_DARK,
+    SPR_PALETTE_DULL_BROWN_LIGHT,
+    SPR_PALETTE_INVISIBLE,
+    SPR_PALETTE_VOID,
+
+    SPR_PALETTE_GLASS_DARK_OLIVE_DARK,
+    SPR_PALETTE_GLASS_DARK_OLIVE_LIGHT,
+    SPR_PALETTE_GLASS_SATURATED_BROWN_LIGHT,
+    SPR_PALETTE_GLASS_BORDEAUX_RED_DARK,
+    SPR_PALETTE_GLASS_BORDEAUX_RED_LIGHT,
+    SPR_PALETTE_GLASS_GRASS_GREEN_DARK,
+    SPR_PALETTE_GLASS_GRASS_GREEN_LIGHT,
+    SPR_PALETTE_GLASS_OLIVE_DARK,
+    SPR_PALETTE_GLASS_OLIVE_LIGHT,
+    SPR_PALETTE_GLASS_SATURATED_GREEN_LIGHT,
+    SPR_PALETTE_GLASS_TAN_DARK,
+    SPR_PALETTE_GLASS_TAN_LIGHT,
+    SPR_PALETTE_GLASS_DULL_PURPLE_LIGHT,
+    SPR_PALETTE_GLASS_DULL_GREEN_DARK,
+    SPR_PALETTE_GLASS_DULL_GREEN_LIGHT,
+    SPR_PALETTE_GLASS_SATURATED_PURPLE_DARK,
+    SPR_PALETTE_GLASS_SATURATED_PURPLE_LIGHT,
+    SPR_PALETTE_GLASS_ORANGE_LIGHT,
+    SPR_PALETTE_GLASS_AQUA_DARK,
+    SPR_PALETTE_GLASS_MAGENTA_LIGHT,
+    SPR_PALETTE_GLASS_DULL_BROWN_DARK,
+    SPR_PALETTE_GLASS_DULL_BROWN_LIGHT,
+    SPR_PALETTE_GLASS_INVISIBLE,
+    SPR_PALETTE_GLASS_VOID,
 };
 
 const FilterPaletteID GlassPaletteIds[COLOUR_COUNT] = {
@@ -327,10 +378,34 @@ const FilterPaletteID GlassPaletteIds[COLOUR_COUNT] = {
     FilterPaletteID::PaletteGlassDarkPink,
     FilterPaletteID::PaletteGlassBrightPink,
     FilterPaletteID::PaletteGlassLightPink,
+    FilterPaletteID::PaletteGlassDarkOliveDark,
+    FilterPaletteID::PaletteGlassDarkOliveLight,
+    FilterPaletteID::PaletteGlassSaturatedBrownLight,
+    FilterPaletteID::PaletteGlassBordeauxRedDark,
+    FilterPaletteID::PaletteGlassBordeauxRedLight,
+    FilterPaletteID::PaletteGlassGrassGreenDark,
+    FilterPaletteID::PaletteGlassGrassGreenLight,
+    FilterPaletteID::PaletteGlassOliveDark,
+    FilterPaletteID::PaletteGlassOliveLight,
+    FilterPaletteID::PaletteGlassSaturatedGreenLight,
+    FilterPaletteID::PaletteGlassTanDark,
+    FilterPaletteID::PaletteGlassTanLight,
+    FilterPaletteID::PaletteGlassDullPurpleLight,
+    FilterPaletteID::PaletteGlassDullGreenDark,
+    FilterPaletteID::PaletteGlassDullGreenLight,
+    FilterPaletteID::PaletteGlassSaturatedPurpleDark,
+    FilterPaletteID::PaletteGlassSaturatedPurpleLight,
+    FilterPaletteID::PaletteGlassOrangeLight,
+    FilterPaletteID::PaletteGlassAquaDark,
+    FilterPaletteID::PaletteGlassMagentaLight,
+    FilterPaletteID::PaletteGlassDullBrownDark,
+    FilterPaletteID::PaletteGlassDullBrownLight,
+    FilterPaletteID::PaletteGlassInvisible,
+    FilterPaletteID::PaletteGlassVoid,
 };
 
 // Previously 0x97FCBC use it to get the correct palette from g1_elements
-static const uint16_t palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
+static constexpr uint16_t palette_to_g1_offset[PALETTE_TOTAL_OFFSETS] = {
     SPR_PALETTE_BLACK,
     SPR_PALETTE_GREY,
     SPR_PALETTE_WHITE,
@@ -363,6 +438,30 @@ static const uint16_t palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
     SPR_PALETTE_DARK_PINK,
     SPR_PALETTE_BRIGHT_PINK,
     SPR_PALETTE_LIGHT_PINK,
+    SPR_PALETTE_DARK_OLIVE_DARK,
+    SPR_PALETTE_DARK_OLIVE_LIGHT,
+    SPR_PALETTE_SATURATED_BROWN_LIGHT,
+    SPR_PALETTE_BORDEAUX_RED_DARK,
+    SPR_PALETTE_BORDEAUX_RED_LIGHT,
+    SPR_PALETTE_GRASS_GREEN_DARK,
+    SPR_PALETTE_GRASS_GREEN_LIGHT,
+    SPR_PALETTE_OLIVE_DARK,
+    SPR_PALETTE_OLIVE_LIGHT,
+    SPR_PALETTE_SATURATED_GREEN_LIGHT,
+    SPR_PALETTE_TAN_DARK,
+    SPR_PALETTE_TAN_LIGHT,
+    SPR_PALETTE_DULL_PURPLE_LIGHT,
+    SPR_PALETTE_DULL_GREEN_DARK,
+    SPR_PALETTE_DULL_GREEN_LIGHT,
+    SPR_PALETTE_SATURATED_PURPLE_DARK,
+    SPR_PALETTE_SATURATED_PURPLE_LIGHT,
+    SPR_PALETTE_ORANGE_LIGHT,
+    SPR_PALETTE_AQUA_DARK,
+    SPR_PALETTE_MAGENTA_LIGHT,
+    SPR_PALETTE_DULL_BROWN_DARK,
+    SPR_PALETTE_DULL_BROWN_LIGHT,
+    SPR_PALETTE_INVISIBLE,
+    SPR_PALETTE_VOID,
 
 
     SPR_PALETTE_WATER,      // PaletteWater (water)
@@ -479,37 +578,69 @@ static const uint16_t palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
     SPR_PALETTE_GLASS_DARK_PINK,
     SPR_PALETTE_GLASS_BRIGHT_PINK,
     SPR_PALETTE_GLASS_LIGHT_PINK,
+    SPR_PALETTE_GLASS_DARK_OLIVE_DARK,
+    SPR_PALETTE_GLASS_DARK_OLIVE_LIGHT,
+    SPR_PALETTE_GLASS_SATURATED_BROWN_LIGHT,
+    SPR_PALETTE_GLASS_BORDEAUX_RED_DARK,
+    SPR_PALETTE_GLASS_BORDEAUX_RED_LIGHT,
+    SPR_PALETTE_GLASS_GRASS_GREEN_DARK,
+    SPR_PALETTE_GLASS_GRASS_GREEN_LIGHT,
+    SPR_PALETTE_GLASS_OLIVE_DARK,
+    SPR_PALETTE_GLASS_OLIVE_LIGHT,
+    SPR_PALETTE_GLASS_SATURATED_GREEN_LIGHT,
+    SPR_PALETTE_GLASS_TAN_DARK,
+    SPR_PALETTE_GLASS_TAN_LIGHT,
+    SPR_PALETTE_GLASS_DULL_PURPLE_LIGHT,
+    SPR_PALETTE_GLASS_DULL_GREEN_DARK,
+    SPR_PALETTE_GLASS_DULL_GREEN_LIGHT,
+    SPR_PALETTE_GLASS_SATURATED_PURPLE_DARK,
+    SPR_PALETTE_GLASS_SATURATED_PURPLE_LIGHT,
+    SPR_PALETTE_GLASS_ORANGE_LIGHT,
+    SPR_PALETTE_GLASS_AQUA_DARK,
+    SPR_PALETTE_GLASS_MAGENTA_LIGHT,
+    SPR_PALETTE_GLASS_DULL_BROWN_DARK,
+    SPR_PALETTE_GLASS_DULL_BROWN_LIGHT,
+    SPR_PALETTE_GLASS_INVISIBLE,
+    SPR_PALETTE_GLASS_VOID,
 };
 
 #define WINDOW_PALETTE_GREY                 {FilterPaletteID::PaletteTranslucentGrey,                  FilterPaletteID::PaletteTranslucentGreyHighlight,             FilterPaletteID::PaletteTranslucentGreyShadow}
 #define WINDOW_PALETTE_LIGHT_PURPLE         {FilterPaletteID::PaletteTranslucentLightPurple,          FilterPaletteID::PaletteTranslucentLightPurpleHighlight,     FilterPaletteID::PaletteTranslucentLightPurpleShadow}
+#define WINDOW_PALETTE_BRIGHT_PURPLE        {FilterPaletteID::PaletteTranslucentBrightPurple,     FilterPaletteID::PaletteTranslucentBrightPurpleHighlight,    FilterPaletteID::PaletteTranslucentBrightPurpleShadow}
 #define WINDOW_PALETTE_LIGHT_BLUE           {FilterPaletteID::PaletteTranslucentLightBlue,            FilterPaletteID::PaletteTranslucentLightBlueHighlight,       FilterPaletteID::PaletteTranslucentLightBlueShadow}
 #define WINDOW_PALETTE_TEAL                 {FilterPaletteID::PaletteTranslucentTeal,                  FilterPaletteID::PaletteTranslucentTealHighlight,             FilterPaletteID::PaletteTranslucentTealShadow}
 #define WINDOW_PALETTE_BRIGHT_GREEN         {FilterPaletteID::PaletteTranslucentBrightGreen,          FilterPaletteID::PaletteTranslucentBrightGreenHighlight,     FilterPaletteID::PaletteTranslucentBrightGreenShadow}
+#define WINDOW_PALETTE_DARK_GREEN           {FilterPaletteID::PaletteTranslucentDarkGreen,        FilterPaletteID::PaletteTranslucentDarkGreenHighlight,       FilterPaletteID::PaletteTranslucentDarkGreenShadow}
+#define WINDOW_PALETTE_MOSS_GREEN           {FilterPaletteID::PaletteTranslucentMossGreen,        FilterPaletteID::PaletteTranslucentMossGreenHighlight,       FilterPaletteID::PaletteTranslucentMossGreenShadow}
+#define WINDOW_PALETTE_OLIVE_GREEN          {FilterPaletteID::PaletteTranslucentOliveGreen,       FilterPaletteID::PaletteTranslucentOliveGreenHighlight,      FilterPaletteID::PaletteTranslucentOliveGreenShadow}
+#define WINDOW_PALETTE_DARK_OLIVE_GREEN     {FilterPaletteID::PaletteTranslucentDarkOliveGreen,  FilterPaletteID::PaletteTranslucentDarkOliveGreenHighlight, FilterPaletteID::PaletteTranslucentDarkOliveGreenShadow}
 #define WINDOW_PALETTE_YELLOW               {FilterPaletteID::PaletteTranslucentYellow,                FilterPaletteID::PaletteTranslucentYellowHighlight,           FilterPaletteID::PaletteTranslucentYellowShadow}
 #define WINDOW_PALETTE_LIGHT_ORANGE         {FilterPaletteID::PaletteTranslucentLightOrange,          FilterPaletteID::PaletteTranslucentLightOrangeHighlight,     FilterPaletteID::PaletteTranslucentLightOrangeShadow}
 #define WINDOW_PALETTE_LIGHT_BROWN          {FilterPaletteID::PaletteTranslucentLightBrown,           FilterPaletteID::PaletteTranslucentLightBrownHighlight,      FilterPaletteID::PaletteTranslucentLightBrownShadow}
+#define WINDOW_PALETTE_DARK_BROWN           {FilterPaletteID::PaletteTranslucentDarkBrown,        FilterPaletteID::PaletteTranslucentDarkBrownHighlight,       FilterPaletteID::PaletteTranslucentDarkBrownShadow}
+#define WINDOW_PALETTE_SALMON_PINK          {FilterPaletteID::PaletteTranslucentSalmonPink,       FilterPaletteID::PaletteTranslucentSalmonPinkHighlight,      FilterPaletteID::PaletteTranslucentSalmonPinkShadow}
+#define WINDOW_PALETTE_BORDEAUX_RED         {FilterPaletteID::PaletteTranslucentBordeauxRed,      FilterPaletteID::PaletteTranslucentBordeauxRedHighlight,     FilterPaletteID::PaletteTranslucentBordeauxRedShadow}
 #define WINDOW_PALETTE_BRIGHT_RED           {FilterPaletteID::PaletteTranslucentBrightRed,            FilterPaletteID::PaletteTranslucentBrightRedHighlight,       FilterPaletteID::PaletteTranslucentBrightRedShadow}
 #define WINDOW_PALETTE_BRIGHT_PINK          {FilterPaletteID::PaletteTranslucentBrightPink,           FilterPaletteID::PaletteTranslucentBrightPinkHighlight,      FilterPaletteID::PaletteTranslucentBrightPinkShadow}
 
-const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT] = {
+const TranslucentWindowPalette TranslucentWindowPalettes[COLOUR_COUNT] = {
     WINDOW_PALETTE_GREY,                    // COLOUR_BLACK
     WINDOW_PALETTE_GREY,                    // COLOUR_GREY
     {FilterPaletteID::PaletteTranslucentWhite,             FilterPaletteID::PaletteTranslucentWhiteHighlight,            FilterPaletteID::PaletteTranslucentWhiteShadow},
     WINDOW_PALETTE_LIGHT_PURPLE,            // COLOUR_DARK_PURPLE
     WINDOW_PALETTE_LIGHT_PURPLE,            // COLOUR_LIGHT_PURPLE
-    {FilterPaletteID::PaletteTranslucentBrightPurple,     FilterPaletteID::PaletteTranslucentBrightPurpleHighlight,    FilterPaletteID::PaletteTranslucentBrightPurpleShadow},
+    WINDOW_PALETTE_BRIGHT_PURPLE,           // COLOUR_BRIGHT_PURPLE
     WINDOW_PALETTE_LIGHT_BLUE,              // COLOUR_DARK_BLUE
     WINDOW_PALETTE_LIGHT_BLUE,              // COLOUR_LIGHT_BLUE
     WINDOW_PALETTE_LIGHT_BLUE,              // COLOUR_ICY_BLUE
     WINDOW_PALETTE_TEAL,                    // COLOUR_TEAL
     WINDOW_PALETTE_TEAL,                    // COLOUR_AQUAMARINE
     WINDOW_PALETTE_BRIGHT_GREEN,            // COLOUR_SATURATED_GREEN
-    {FilterPaletteID::PaletteTranslucentDarkGreen,        FilterPaletteID::PaletteTranslucentDarkGreenHighlight,       FilterPaletteID::PaletteTranslucentDarkGreenShadow},
-    {FilterPaletteID::PaletteTranslucentMossGreen,        FilterPaletteID::PaletteTranslucentMossGreenHighlight,       FilterPaletteID::PaletteTranslucentMossGreenShadow},
+    WINDOW_PALETTE_DARK_GREEN,              // COLOUR_DARK_GREEN
+    WINDOW_PALETTE_MOSS_GREEN,              // COLOUR_MOSS_GREEN
     WINDOW_PALETTE_BRIGHT_GREEN,            // COLOUR_BRIGHT_GREEN
-    {FilterPaletteID::PaletteTranslucentOliveGreen,       FilterPaletteID::PaletteTranslucentOliveGreenHighlight,      FilterPaletteID::PaletteTranslucentOliveGreenShadow},
-    {FilterPaletteID::PaletteTranslucentDarkOliveGreen,  FilterPaletteID::PaletteTranslucentDarkOliveGreenHighlight, FilterPaletteID::PaletteTranslucentDarkOliveGreenShadow},
+    WINDOW_PALETTE_OLIVE_GREEN,             // COLOUR_OLIVE_GREEN
+    WINDOW_PALETTE_DARK_OLIVE_GREEN,        // COLOUR_DARK_OLIVE_GREEN
     WINDOW_PALETTE_YELLOW,                  // COLOUR_BRIGHT_YELLOW
     WINDOW_PALETTE_YELLOW,                  // COLOUR_YELLOW
     WINDOW_PALETTE_YELLOW,                  // COLOUR_DARK_YELLOW
@@ -517,14 +648,38 @@ const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT] = {
     WINDOW_PALETTE_LIGHT_ORANGE,            // COLOUR_DARK_ORANGE
     WINDOW_PALETTE_LIGHT_BROWN,             // COLOUR_LIGHT_BROWN
     WINDOW_PALETTE_LIGHT_BROWN,             // COLOUR_SATURATED_BROWN
-    {FilterPaletteID::PaletteTranslucentDarkBrown,        FilterPaletteID::PaletteTranslucentDarkBrownHighlight,       FilterPaletteID::PaletteTranslucentDarkBrownShadow},
-    {FilterPaletteID::PaletteTranslucentSalmonPink,       FilterPaletteID::PaletteTranslucentSalmonPinkHighlight,      FilterPaletteID::PaletteTranslucentSalmonPinkShadow},
-    {FilterPaletteID::PaletteTranslucentBordeauxRed,      FilterPaletteID::PaletteTranslucentBordeauxRedHighlight,     FilterPaletteID::PaletteTranslucentBordeauxRedShadow},
+    WINDOW_PALETTE_DARK_BROWN,              // COLOUR_DARK_BROWN
+    WINDOW_PALETTE_SALMON_PINK,             // COLOUR_SALMON_PINK
+    WINDOW_PALETTE_BORDEAUX_RED,            // COLOUR_BORDEAUX_RED
     WINDOW_PALETTE_BRIGHT_RED,              // COLOUR_SATURATED_RED
     WINDOW_PALETTE_BRIGHT_RED,              // COLOUR_BRIGHT_RED
     WINDOW_PALETTE_BRIGHT_PINK,             // COLOUR_DARK_PINK
     WINDOW_PALETTE_BRIGHT_PINK,             // COLOUR_BRIGHT_PINK
     {FilterPaletteID::PaletteTranslucentLightPink,        FilterPaletteID::PaletteTranslucentLightPinkHighlight,       FilterPaletteID::PaletteTranslucentLightPinkShadow},
+    WINDOW_PALETTE_DARK_OLIVE_GREEN,        // COLOUR_DARK_OLIVE_DARK
+    WINDOW_PALETTE_DARK_OLIVE_GREEN,        // COLOUR_DARK_OLIVE_LIGHT
+    WINDOW_PALETTE_LIGHT_BROWN,             // COLOUR_SATURATED_BROWN_LIGHT
+    WINDOW_PALETTE_BORDEAUX_RED,            // COLOUR_BORDEAUX_RED_DARK
+    WINDOW_PALETTE_BORDEAUX_RED,            // COLOUR_BORDEAUX_RED_LIGHT
+    WINDOW_PALETTE_MOSS_GREEN,              // COLOUR_GRASS_GREEN_DARK
+    WINDOW_PALETTE_MOSS_GREEN,              // COLOUR_GRASS_GREEN_LIGHT
+    WINDOW_PALETTE_OLIVE_GREEN,             // COLOUR_OLIVE_DARK
+    WINDOW_PALETTE_OLIVE_GREEN,             // COLOUR_OLIVE_LIGHT
+    WINDOW_PALETTE_BRIGHT_GREEN,            // COLOUR_SATURATED_GREEN_LIGHT
+    WINDOW_PALETTE_SALMON_PINK,             // COLOUR_TAN_DARK
+    WINDOW_PALETTE_SALMON_PINK,             // COLOUR_TAN_LIGHT
+    WINDOW_PALETTE_LIGHT_PURPLE,            // COLOUR_DULL_PURPLE_LIGHT
+    WINDOW_PALETTE_DARK_GREEN,              // COLOUR_DULL_GREEN_DARK
+    WINDOW_PALETTE_DARK_GREEN,              // COLOUR_DULL_GREEN_LIGHT
+    WINDOW_PALETTE_BRIGHT_PURPLE,           // COLOUR_SATURATED_PURPLE_DARK
+    WINDOW_PALETTE_BRIGHT_PURPLE,           // COLOUR_SATURATED_PURPLE_LIGHT
+    WINDOW_PALETTE_LIGHT_ORANGE,            // COLOUR_ORANGE_LIGHT
+    WINDOW_PALETTE_TEAL,                    // COLOUR_AQUA_DARK
+    WINDOW_PALETTE_BRIGHT_PINK,             // COLOUR_MAGENTA_LIGHT
+    WINDOW_PALETTE_DARK_BROWN,              // COLOUR_DULL_BROWN_DARK
+    WINDOW_PALETTE_DARK_BROWN,              // COLOUR_DULL_BROWN_LIGHT
+    {FilterPaletteID::PaletteDarken1,           FilterPaletteID::PaletteDarken1,      FilterPaletteID::PaletteDarken1},
+    {FilterPaletteID::PaletteDarken2,           FilterPaletteID::PaletteDarken2,      FilterPaletteID::PaletteDarken2},
 };
 // clang-format on
 
@@ -554,33 +709,33 @@ ImageCatalogue ImageId::GetCatalogue() const
     return ImageCatalogue::UNKNOWN;
 }
 
-void (*mask_fn)(
+void (*MaskFn)(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
     = nullptr;
 
-void mask_init()
+void MaskInit()
 {
-    if (avx2_available())
+    if (AVX2Available())
     {
-        log_verbose("registering AVX2 mask function");
-        mask_fn = mask_avx2;
+        LOG_VERBOSE("registering AVX2 mask function");
+        MaskFn = MaskAvx2;
     }
-    else if (sse41_available())
+    else if (SSE41Available())
     {
-        log_verbose("registering SSE4.1 mask function");
-        mask_fn = mask_sse4_1;
+        LOG_VERBOSE("registering SSE4.1 mask function");
+        MaskFn = MaskSse4_1;
     }
     else
     {
-        log_verbose("registering scalar mask function");
-        mask_fn = mask_scalar;
+        LOG_VERBOSE("registering scalar mask function");
+        MaskFn = MaskScalar;
     }
 }
 
-void gfx_filter_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette)
+void GfxFilterPixel(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, FilterPaletteID palette)
 {
-    gfx_filter_rect(dpi, { coords, coords }, palette);
+    GfxFilterRect(dpi, { coords, coords }, palette);
 }
 
 /**
@@ -589,9 +744,9 @@ void gfx_filter_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, Filt
  * a1 (ebx)
  * product (cl)
  */
-void gfx_transpose_palette(int32_t pal, uint8_t product)
+void GfxTransposePalette(int32_t pal, uint8_t product)
 {
-    const rct_g1_element* g1 = gfx_get_g1_element(pal);
+    const G1Element* g1 = GfxGetG1Element(pal);
     if (g1 != nullptr)
     {
         int32_t width = g1->width;
@@ -615,14 +770,14 @@ void gfx_transpose_palette(int32_t pal, uint8_t product)
  *
  *  rct2: 0x006837E3
  */
-void load_palette()
+void LoadPalette()
 {
     if (gOpenRCT2NoGraphics)
     {
         return;
     }
 
-    auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(ObjectType::Water, 0));
+    auto water_type = OpenRCT2::ObjectManager::GetObjectEntry<WaterObjectEntry>(0);
 
     uint32_t palette = 0x5FC;
 
@@ -632,7 +787,7 @@ void load_palette()
         palette = water_type->image_id;
     }
 
-    const rct_g1_element* g1 = gfx_get_g1_element(palette);
+    const G1Element* g1 = GfxGetG1Element(palette);
     if (g1 != nullptr)
     {
         int32_t width = g1->width;
@@ -649,16 +804,16 @@ void load_palette()
         }
     }
     UpdatePalette(gGamePalette, 10, 236);
-    gfx_invalidate_screen();
+    GfxInvalidateScreen();
 }
 
 /**
  *
  *  rct2: 0x006ED7E5
  */
-void gfx_invalidate_screen()
+void GfxInvalidateScreen()
 {
-    gfx_set_dirty_blocks({ { 0, 0 }, { context_get_width(), context_get_height() } });
+    GfxSetDirtyBlocks({ { 0, 0 }, { ContextGetWidth(), ContextGetHeight() } });
 }
 
 /*
@@ -670,84 +825,83 @@ void gfx_invalidate_screen()
  * height (dx)
  * drawpixelinfo (edi)
  */
-bool clip_drawpixelinfo(
-    rct_drawpixelinfo* dst, rct_drawpixelinfo* src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
+bool ClipDrawPixelInfo(DrawPixelInfo& dst, DrawPixelInfo& src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
 {
     int32_t right = coords.x + width;
     int32_t bottom = coords.y + height;
 
-    *dst = *src;
-    dst->zoom_level = ZoomLevel{ 0 };
+    dst = src;
+    dst.zoom_level = ZoomLevel{ 0 };
 
-    if (coords.x > dst->x)
+    if (coords.x > dst.x)
     {
-        uint16_t clippedFromLeft = coords.x - dst->x;
-        dst->width -= clippedFromLeft;
-        dst->x = coords.x;
-        dst->pitch += clippedFromLeft;
-        dst->bits += clippedFromLeft;
+        uint16_t clippedFromLeft = coords.x - dst.x;
+        dst.width -= clippedFromLeft;
+        dst.x = coords.x;
+        dst.pitch += clippedFromLeft;
+        dst.bits += clippedFromLeft;
     }
 
-    int32_t stickOutWidth = dst->x + dst->width - right;
+    int32_t stickOutWidth = dst.x + dst.width - right;
     if (stickOutWidth > 0)
     {
-        dst->width -= stickOutWidth;
-        dst->pitch += stickOutWidth;
+        dst.width -= stickOutWidth;
+        dst.pitch += stickOutWidth;
     }
 
-    if (coords.y > dst->y)
+    if (coords.y > dst.y)
     {
-        uint16_t clippedFromTop = coords.y - dst->y;
-        dst->height -= clippedFromTop;
-        dst->y = coords.y;
-        uint32_t bitsPlus = (dst->pitch + dst->width) * clippedFromTop;
-        dst->bits += bitsPlus;
+        uint16_t clippedFromTop = coords.y - dst.y;
+        dst.height -= clippedFromTop;
+        dst.y = coords.y;
+        uint32_t bitsPlus = (dst.pitch + dst.width) * clippedFromTop;
+        dst.bits += bitsPlus;
     }
 
-    int32_t bp = dst->y + dst->height - bottom;
+    int32_t bp = dst.y + dst.height - bottom;
     if (bp > 0)
     {
-        dst->height -= bp;
+        dst.height -= bp;
     }
 
-    if (dst->width > 0 && dst->height > 0)
+    if (dst.width > 0 && dst.height > 0)
     {
-        dst->x -= coords.x;
-        dst->y -= coords.y;
+        dst.x -= coords.x;
+        dst.y -= coords.y;
         return true;
     }
 
     return false;
 }
 
-void gfx_invalidate_pickedup_peep()
+void GfxInvalidatePickedUpPeep()
 {
     auto imageId = gPickupPeepImage;
     if (imageId.HasValue())
     {
-        auto* g1 = gfx_get_g1_element(imageId);
+        auto* g1 = GfxGetG1Element(imageId);
         if (g1 != nullptr)
         {
             int32_t left = gPickupPeepX + g1->x_offset;
             int32_t top = gPickupPeepY + g1->y_offset;
             int32_t right = left + g1->width;
             int32_t bottom = top + g1->height;
-            gfx_set_dirty_blocks({ { left, top }, { right, bottom } });
+            GfxSetDirtyBlocks({ { left, top }, { right, bottom } });
         }
     }
 }
 
-void gfx_draw_pickedup_peep(rct_drawpixelinfo* dpi)
+void GfxDrawPickedUpPeep(DrawPixelInfo& dpi)
 {
     if (gPickupPeepImage.HasValue())
     {
-        gfx_draw_sprite(dpi, gPickupPeepImage, { gPickupPeepX, gPickupPeepY });
+        GfxDrawSprite(dpi, gPickupPeepImage, { gPickupPeepX, gPickupPeepY });
     }
 }
 
 std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId)
 {
-    if (paletteId < std::size(palette_to_g1_offset))
+    if (paletteId < PALETTE_TOTAL_OFFSETS)
     {
         return palette_to_g1_offset[paletteId];
     }
@@ -759,7 +913,7 @@ std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
     auto g1Index = GetPaletteG1Index(paletteId);
     if (g1Index.has_value())
     {
-        auto g1 = gfx_get_g1_element(g1Index.value());
+        auto g1 = GfxGetG1Element(g1Index.value());
         if (g1 != nullptr)
         {
             return PaletteMap(g1->offset, g1->height, g1->width);
@@ -768,19 +922,19 @@ std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
     return std::nullopt;
 }
 
-size_t rct_drawpixelinfo::GetBytesPerRow() const
+size_t DrawPixelInfo::GetBytesPerRow() const
 {
     return static_cast<size_t>(width) + pitch;
 }
 
-uint8_t* rct_drawpixelinfo::GetBitsOffset(const ScreenCoordsXY& pos) const
+uint8_t* DrawPixelInfo::GetBitsOffset(const ScreenCoordsXY& pos) const
 {
     return bits + pos.x + (pos.y * GetBytesPerRow());
 }
 
-rct_drawpixelinfo rct_drawpixelinfo::Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const
+DrawPixelInfo DrawPixelInfo::Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const
 {
-    rct_drawpixelinfo result = *this;
+    DrawPixelInfo result = *this;
     result.bits = GetBitsOffset(pos);
     result.x = static_cast<int16_t>(pos.x);
     result.y = static_cast<int16_t>(pos.y);
@@ -805,18 +959,18 @@ void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colo
         uint8_t g = colours[1];
         uint8_t b = colours[0];
 
-        if (lightfx_is_available())
+        if (LightFXIsAvailable())
         {
-            lightfx_apply_palette_filter(i, &r, &g, &b);
+            LightFXApplyPaletteFilter(i, &r, &g, &b);
         }
         else
         {
             float night = gDayNightCycle;
             if (night >= 0 && gClimateLightningFlash == 0)
             {
-                r = lerp(r, soft_light(r, 8), night);
-                g = lerp(g, soft_light(g, 8), night);
-                b = lerp(b, soft_light(b, 128), night);
+                r = Lerp(r, SoftLight(r, 8), night);
+                g = Lerp(g, SoftLight(g, 8), night);
+                b = Lerp(b, SoftLight(b, 128), night);
             }
         }
 
@@ -835,7 +989,7 @@ void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colo
 
     if (!gOpenRCT2Headless)
     {
-        drawing_engine_set_palette(gPalette);
+        DrawingEngineSetPalette(gPalette);
     }
 }
 
@@ -843,23 +997,23 @@ void RefreshVideo(bool recreateWindow)
 {
     if (recreateWindow)
     {
-        context_recreate_window();
+        ContextRecreateWindow();
     }
     else
     {
-        drawing_engine_dispose();
-        drawing_engine_init();
-        drawing_engine_resize();
+        DrawingEngineDispose();
+        DrawingEngineInit();
+        DrawingEngineResize();
     }
 
-    drawing_engine_set_palette(gPalette);
-    gfx_invalidate_screen();
+    DrawingEngineSetPalette(gPalette);
+    GfxInvalidateScreen();
 }
 
 void ToggleWindowedMode()
 {
-    int32_t targetMode = gConfigGeneral.fullscreen_mode == 0 ? 2 : 0;
-    context_set_fullscreen_mode(targetMode);
-    gConfigGeneral.fullscreen_mode = targetMode;
-    config_save_default();
+    int32_t targetMode = gConfigGeneral.FullscreenMode == 0 ? 2 : 0;
+    ContextSetFullscreenMode(targetMode);
+    gConfigGeneral.FullscreenMode = targetMode;
+    ConfigSaveDefault();
 }

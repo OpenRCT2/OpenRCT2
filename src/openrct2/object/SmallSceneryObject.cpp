@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,11 +16,9 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "../world/Scenery.h"
-#include "../world/SmallScenery.h"
 
 #include <algorithm>
 
@@ -40,7 +38,7 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
 
     GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
-    rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
+    RCTObjectEntry sgEntry = stream->ReadValue<RCTObjectEntry>();
     SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
 
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
@@ -56,11 +54,11 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     GetImageTable().Read(context, stream);
 
     // Validate properties
-    if (_legacyType.price <= 0)
+    if (_legacyType.price <= 0.00_GBP)
     {
         context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
     }
-    if (_legacyType.removal_price <= 0)
+    if (_legacyType.removal_price <= 0.00_GBP)
     {
         // Make sure you don't make a profit when placing then removing.
         const auto reimbursement = _legacyType.removal_price;
@@ -74,14 +72,16 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
 void SmallSceneryObject::Load()
 {
     GetStringTable().Sort();
-    _legacyType.name = language_allocate_object_string(GetName());
-    _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.name = LanguageAllocateObjectString(GetName());
+    _legacyType.image = LoadImages();
 
     _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
+    _legacyType.FrameOffsetCount = 0;
 
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
     {
         _legacyType.frame_offsets = _frameOffsets.data();
+        _legacyType.FrameOffsetCount = static_cast<uint16_t>(_frameOffsets.size());
     }
 
     PerformFixes();
@@ -89,14 +89,14 @@ void SmallSceneryObject::Load()
 
 void SmallSceneryObject::Unload()
 {
-    language_free_object_string(_legacyType.name);
-    gfx_object_free_images(_legacyType.image, GetImageTable().GetCount());
+    LanguageFreeObjectString(_legacyType.name);
+    UnloadImages();
 
     _legacyType.name = 0;
     _legacyType.image = 0;
 }
 
-void SmallSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
+void SmallSceneryObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
 {
     auto imageId = ImageId(_legacyType.image);
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
@@ -120,12 +120,12 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
         screenCoords.y -= 12;
     }
 
-    gfx_draw_sprite(dpi, imageId, screenCoords);
+    GfxDrawSprite(dpi, imageId, screenCoords);
 
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
     {
-        imageId = ImageId(_legacyType.image + 4).WithTransparancy(COLOUR_BORDEAUX_RED);
-        gfx_draw_sprite(dpi, imageId, screenCoords);
+        imageId = ImageId(_legacyType.image + 4).WithTransparency(COLOUR_BORDEAUX_RED);
+        GfxDrawSprite(dpi, imageId, screenCoords);
     }
 
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_ANIMATED_FG))
@@ -135,7 +135,7 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
         {
             imageId = imageId.WithSecondary(COLOUR_YELLOW);
         }
-        gfx_draw_sprite(dpi, imageId, screenCoords);
+        GfxDrawSprite(dpi, imageId, screenCoords);
     }
 }
 
@@ -156,70 +156,25 @@ std::vector<uint8_t> SmallSceneryObject::ReadFrameOffsets(OpenRCT2::IStream* str
 void SmallSceneryObject::PerformFixes()
 {
     auto identifier = GetLegacyIdentifier();
-    static const auto& scgWalls = Object::GetScgWallsHeader();
 
     // ToonTowner's base blocks. Put them in the Walls and Roofs group.
     if (identifier == "XXBBCL01" ||
         identifier == "XXBBMD01" ||
         identifier == "ARBASE2 ")
     {
-        SetPrimarySceneryGroup(scgWalls);
+        SetPrimarySceneryGroup(ObjectEntryDescriptor("rct2.scenery_group.scgwalls"));
     }
 
     // ToonTowner's Pirate roofs. Make them show up in the Pirate Theming.
-    if (identifier == "TTPIRF02" ||
-        identifier == "TTPIRF03" ||
-        identifier == "TTPIRF04" ||
-        identifier == "TTPIRF05" ||
-        identifier == "TTPIRF07" ||
-        identifier == "TTPIRF08" ||
+    if (identifier == "TTPIRF05" ||
         identifier == "TTPRF09 " ||
         identifier == "TTPRF10 " ||
         identifier == "TTPRF11 ")
     {
-        static const auto& scgPirat = GetScgPiratHeader();
-        SetPrimarySceneryGroup(scgPirat);
-    }
-
-    // ToonTowner's wooden roofs. Make them show up in the Mine Theming.
-    if (identifier == "TTRFWD01" ||
-        identifier == "TTRFWD02" ||
-        identifier == "TTRFWD03" ||
-        identifier == "TTRFWD04" ||
-        identifier == "TTRFWD05" ||
-        identifier == "TTRFWD06" ||
-        identifier == "TTRFWD07" ||
-        identifier == "TTRFWD08")
-    {
-        static const auto& scgMine = GetScgMineHeader();
-        SetPrimarySceneryGroup(scgMine);
-    }
-
-    // ToonTowner's glass roofs. Make them show up in the Abstract Theming.
-    if (identifier == "TTRFGL01" ||
-        identifier == "TTRFGL02" ||
-        identifier == "TTRFGL03")
-    {
-        static const auto& scgAbstr = GetScgAbstrHeader();
-        SetPrimarySceneryGroup(scgAbstr);
+        SetPrimarySceneryGroup(ObjectEntryDescriptor("rct2.scenery_group.scgpirat"));
     }
 }
 // clang-format on
-
-ObjectEntryDescriptor SmallSceneryObject::GetScgPiratHeader() const
-{
-    return ObjectEntryDescriptor("rct2.scenery_group.scgpirat");
-}
-
-ObjectEntryDescriptor SmallSceneryObject::GetScgMineHeader() const
-{
-    return ObjectEntryDescriptor("rct2.scgmine");
-}
-
-ObjectEntryDescriptor SmallSceneryObject::GetScgAbstrHeader() const
-{
-    return ObjectEntryDescriptor("rct2.scenery_group.scgabstr");
-}
 
 void SmallSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
 {

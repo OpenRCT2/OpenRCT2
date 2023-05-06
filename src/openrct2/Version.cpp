@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -53,7 +53,7 @@ const char gVersionInfoFull[] = OPENRCT2_NAME ", "
 #endif
     ;
 
-NewVersionInfo get_latest_version()
+NewVersionInfo GetLatestVersion()
 {
     // If the check doesn't succeed, provide current version so we don't bother user
     // with invalid data.
@@ -61,7 +61,7 @@ NewVersionInfo get_latest_version()
     NewVersionInfo verinfo{ tag, "", "", "" };
 #ifndef DISABLE_HTTP
     auto now = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-    auto then = gConfigGeneral.last_version_check_time;
+    auto then = gConfigGeneral.LastVersionCheckTime;
     if (then < now - 24 * 60 * 60)
     {
         Http::Request request;
@@ -88,8 +88,8 @@ NewVersionInfo get_latest_version()
         verinfo.changelog = Json::GetString(root["body"]);
         verinfo.url = Json::GetString(root["html_url"]);
 
-        gConfigGeneral.last_version_check_time = now;
-        config_save_default();
+        gConfigGeneral.LastVersionCheckTime = now;
+        ConfigSaveDefault();
     }
 #endif
     return verinfo;

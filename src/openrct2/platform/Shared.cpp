@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../Date.h"
 #include "../common.h"
 
 #ifdef _WIN32
@@ -46,8 +47,8 @@ namespace Platform
 #endif // __ANDROID__
 
             InitTicks();
-            bitcount_init();
-            mask_init();
+            BitCountInit();
+            MaskInit();
         }
     }
 
@@ -69,12 +70,12 @@ namespace Platform
         return CurrencyType::Pounds;
     }
 
-    rct2_date GetDateLocal()
+    RealWorldDate GetDateLocal()
     {
         auto time = std::time(nullptr);
         auto localTime = std::localtime(&time);
 
-        rct2_date outDate;
+        RealWorldDate outDate;
         outDate.day = localTime->tm_mday;
         outDate.day_of_week = localTime->tm_wday;
         outDate.month = localTime->tm_mon + 1;
@@ -82,22 +83,33 @@ namespace Platform
         return outDate;
     }
 
-    rct2_time GetTimeLocal()
+    RealWorldTime GetTimeLocal()
     {
         auto time = std::time(nullptr);
         auto localTime = std::localtime(&time);
 
-        rct2_time outTime;
+        RealWorldTime outTime;
         outTime.hour = localTime->tm_hour;
         outTime.minute = localTime->tm_min;
         outTime.second = localTime->tm_sec;
         return outTime;
     }
 
+    bool IsRCT2Path(std::string_view path)
+    {
+        auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"g1.dat"));
+        return File::Exists(combinedPath);
+    }
+
+    bool IsRCTClassicPath(std::string_view path)
+    {
+        auto combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Assets", u8"g1.dat"));
+        return File::Exists(combinedPath);
+    }
+
     bool OriginalGameDataExists(std::string_view path)
     {
-        std::string combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"g1.dat"));
-        return File::Exists(combinedPath);
+        return IsRCT2Path(path) || IsRCTClassicPath(path);
     }
 
     std::string SanitiseFilename(std::string_view originalName)

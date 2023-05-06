@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,7 +13,10 @@
 #include "../../config/Config.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatter.h"
+#include "../../localisation/Formatting.h"
 #include "../../localisation/Localisation.h"
+#include "../../object/BannerObject.h"
+#include "../../object/ObjectEntryManager.h"
 #include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
 #include "../../sprites.h"
@@ -32,13 +35,13 @@ constexpr CoordsXY BannerBoundBoxes[][2] = {
 };
 
 static void PaintBannerScrollingText(
-    paint_session& session, const BannerSceneryEntry& bannerEntry, Banner& banner, const BannerElement& bannerElement,
+    PaintSession& session, const BannerSceneryEntry& bannerEntry, Banner& banner, const BannerElement& bannerElement,
     Direction direction, int32_t height, const CoordsXYZ& bbOffset)
 {
     PROFILED_FUNCTION();
 
     // If text on hidden direction or ghost
-    direction = direction_reverse(direction) - 1;
+    direction = DirectionReverse(direction) - 1;
     if (direction >= 2 || (bannerElement.IsGhost()))
         return;
 
@@ -52,22 +55,22 @@ static void PaintBannerScrollingText(
     banner.FormatTextTo(ft, true);
 
     char text[256];
-    if (gConfigGeneral.upper_case_banners)
+    if (gConfigGeneral.UpperCaseBanners)
     {
-        format_string_to_upper(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
+        FormatStringToUpper(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
     else
     {
-        format_string(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
+        OpenRCT2::FormatStringLegacy(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
 
-    auto stringWidth = gfx_get_string_width(text, FontSpriteBase::TINY);
+    auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
     auto scroll = (gCurrentTicks / 2) % stringWidth;
-    auto imageId = scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK);
-    PaintAddImageAsChild(session, imageId, { 0, 0, height + 22 }, { 1, 1, 21 }, bbOffset);
+    auto imageId = ScrollingTextSetup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK);
+    PaintAddImageAsChild(session, imageId, { 0, 0, height + 22 }, { bbOffset, { 1, 1, 21 } });
 }
 
-void PaintBanner(paint_session& session, uint8_t direction, int32_t height, const BannerElement& bannerElement)
+void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const BannerElement& bannerElement)
 {
     PROFILED_FUNCTION();
 
@@ -81,7 +84,7 @@ void PaintBanner(paint_session& session, uint8_t direction, int32_t height, cons
         return;
     }
 
-    auto* bannerEntry = get_banner_entry(banner->type);
+    auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
     if (bannerEntry == nullptr)
     {
         return;
@@ -98,11 +101,11 @@ void PaintBanner(paint_session& session, uint8_t direction, int32_t height, cons
     if (bannerElement.IsGhost())
     {
         session.InteractionType = ViewportInteractionItem::None;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
     else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&bannerElement)))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
     else
     {
@@ -112,10 +115,10 @@ void PaintBanner(paint_session& session, uint8_t direction, int32_t height, cons
     auto imageIndex = (direction << 1) + bannerEntry->image;
     auto imageId = imageTemplate.WithIndex(imageIndex);
     auto bbOffset = CoordsXYZ(BannerBoundBoxes[direction][0], height + 2);
-    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 1, 21 }, bbOffset);
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { bbOffset, { 1, 1, 21 } });
 
     bbOffset = CoordsXYZ(BannerBoundBoxes[direction][1], height + 2);
-    PaintAddImageAsParent(session, imageId.WithIndexOffset(1), { 0, 0, height }, { 1, 1, 21 }, bbOffset);
+    PaintAddImageAsParent(session, imageId.WithIndexOffset(1), { 0, 0, height }, { bbOffset, { 1, 1, 21 } });
 
     PaintBannerScrollingText(session, *bannerEntry, *banner, bannerElement, direction, height, bbOffset);
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -28,6 +28,7 @@
 #        include <fontconfig/fontconfig.h>
 #    endif // NO_TTF
 
+#    include "../Date.h"
 #    include "../OpenRCT2.h"
 #    include "../core/Path.hpp"
 #    include "../localisation/Language.h"
@@ -67,7 +68,7 @@ namespace Platform
         };
         for (auto searchLocation : searchLocations)
         {
-            log_verbose("Looking for OpenRCT2 doc path at %s", searchLocation);
+            LOG_VERBOSE("Looking for OpenRCT2 doc path at %s", searchLocation);
             if (Path::DirectoryExists(searchLocation))
             {
                 return searchLocation;
@@ -116,7 +117,7 @@ namespace Platform
             for (auto searchLocation : SearchLocations)
             {
                 auto prefixedPath = Path::Combine(prefix, searchLocation);
-                log_verbose("Looking for OpenRCT2 data in %s", prefixedPath.c_str());
+                LOG_VERBOSE("Looking for OpenRCT2 data in %s", prefixedPath.c_str());
                 if (Path::DirectoryExists(prefixedPath))
                 {
                     return prefixedPath;
@@ -133,7 +134,7 @@ namespace Platform
         auto bytesRead = readlink("/proc/self/exe", exePath, sizeof(exePath));
         if (bytesRead == -1)
         {
-            log_fatal("failed to read /proc/self/exe");
+            LOG_FATAL("failed to read /proc/self/exe");
         }
 #    elif defined(__FreeBSD__) || defined(__NetBSD__)
 #        if defined(__FreeBSD__)
@@ -154,7 +155,7 @@ namespace Platform
         auto exeLen = sizeof(exePath);
         if (sysctl(mib, 4, exePath, &exeLen, nullptr, 0) == -1)
         {
-            log_fatal("failed to get process path");
+            LOG_FATAL("failed to get process path");
         }
 #    elif defined(__OpenBSD__)
         // There is no way to get the path name of a running executable.
@@ -317,11 +318,11 @@ namespace Platform
 #    ifndef NO_TTF
     std::string GetFontPath(const TTFFontDescriptor& font)
     {
-        log_verbose("Looking for font %s with FontConfig.", font.font_name);
+        LOG_VERBOSE("Looking for font %s with FontConfig.", font.font_name);
         FcConfig* config = FcInitLoadConfigAndFonts();
         if (!config)
         {
-            log_error("Failed to initialize FontConfig library");
+            LOG_ERROR("Failed to initialize FontConfig library");
             FcFini();
             return {};
         }
@@ -348,7 +349,7 @@ namespace Platform
             if (FcPatternGetString(match, FC_FULLNAME, 0, &matched_font_face) == FcResultMatch
                 && strcmp(font.font_name, reinterpret_cast<const char*>(matched_font_face)) != 0)
             {
-                log_verbose("FontConfig provided substitute font %s -- disregarding.", matched_font_face);
+                LOG_VERBOSE("FontConfig provided substitute font %s -- disregarding.", matched_font_face);
                 is_substitute = true;
             }
 
@@ -356,14 +357,14 @@ namespace Platform
             if (!is_substitute && FcPatternGetString(match, FC_FILE, 0, &filename) == FcResultMatch)
             {
                 path = reinterpret_cast<utf8*>(filename);
-                log_verbose("FontConfig provided font %s", filename);
+                LOG_VERBOSE("FontConfig provided font %s", filename);
             }
 
             FcPatternDestroy(match);
         }
         else
         {
-            log_warning("Failed to find required font.");
+            LOG_WARNING("Failed to find required font.");
         }
 
         FcPatternDestroy(pat);

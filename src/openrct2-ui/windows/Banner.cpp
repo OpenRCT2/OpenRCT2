@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,13 +17,15 @@
 #include <openrct2/actions/BannerSetStyleAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/object/BannerSceneryEntry.h>
+#include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>
 
 static constexpr const int32_t WW = 113;
 static constexpr const int32_t WH = 96;
-static constexpr const rct_string_id WINDOW_TITLE = STR_BANNER_WINDOW_TITLE;
+static constexpr const StringId WINDOW_TITLE = STR_BANNER_WINDOW_TITLE;
 
 // clang-format off
 enum WindowBannerWidgetIdx {
@@ -39,29 +41,29 @@ enum WindowBannerWidgetIdx {
     WIDX_TEXT_COLOUR_DROPDOWN_BUTTON
 };
 
-static constexpr const rct_string_id BannerColouredTextFormats[] = {
-    STR_TEXT_COLOR_BLACK,
-    STR_TEXT_COLOR_GREY,
-    STR_TEXT_COLOR_WHITE,
-    STR_TEXT_COLOR_RED,
-    STR_TEXT_COLOR_GREEN,
-    STR_TEXT_COLOR_YELLOW,
-    STR_TEXT_COLOR_TOPAZ,
-    STR_TEXT_COLOR_CELADON,
-    STR_TEXT_COLOR_BABYBLUE,
-    STR_TEXT_COLOR_PALELAVENDER,
-    STR_TEXT_COLOR_PALEGOLD,
-    STR_TEXT_COLOR_LIGHTPINK,
-    STR_TEXT_COLOR_PEARLAQUA,
-    STR_TEXT_COLOR_PALESILVER,
+static constexpr const StringId BannerColouredTextFormats[] = {
+    STR_TEXT_COLOUR_BLACK,
+    STR_TEXT_COLOUR_GREY,
+    STR_TEXT_COLOUR_WHITE,
+    STR_TEXT_COLOUR_RED,
+    STR_TEXT_COLOUR_GREEN,
+    STR_TEXT_COLOUR_YELLOW,
+    STR_TEXT_COLOUR_TOPAZ,
+    STR_TEXT_COLOUR_CELADON,
+    STR_TEXT_COLOUR_BABYBLUE,
+    STR_TEXT_COLOUR_PALELAVENDER,
+    STR_TEXT_COLOUR_PALEGOLD,
+    STR_TEXT_COLOUR_LIGHTPINK,
+    STR_TEXT_COLOUR_PEARLAQUA,
+    STR_TEXT_COLOUR_PALESILVER,
 };
 
-static rct_widget window_banner_widgets[] = {
+static Widget window_banner_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary, 0x0FFFFFFFE                                        ), // tab content panel
-    MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_RENAME,         STR_CHANGE_BANNER_TEXT_TIP     ), // change banner button
-    MakeWidget({WW - 25,      43}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_NO_ENTRY,       STR_SET_AS_NO_ENTRY_BANNER_TIP ), // no entry button
-    MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_DEMOLISH,       STR_DEMOLISH_BANNER_TIP        ), // demolish button
+    MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_RENAME),         STR_CHANGE_BANNER_TEXT_TIP     ), // change banner button
+    MakeWidget({WW - 25,      43}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_NO_ENTRY),       STR_SET_AS_NO_ENTRY_BANNER_TIP ), // no entry button
+    MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_DEMOLISH),       STR_DEMOLISH_BANNER_TIP        ), // demolish button
     MakeWidget({      5, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,         STR_SELECT_MAIN_SIGN_COLOUR_TIP), // high money
     MakeWidget({     43, WH - 16}, {39, 12}, WindowWidgetType::DropdownMenu,  WindowColour::Secondary                                                     ), // high money
     MakeWidget({     70, WH - 15}, {11, 10}, WindowWidgetType::Button,    WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_TEXT_COLOUR_TIP     ), // high money
@@ -77,13 +79,13 @@ private:
 
     void CreateViewport()
     {
-        rct_widget* viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
-        viewport_create(
+        Widget* viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
+        ViewportCreate(
             this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
             (viewportWidget->width()) - 1, (viewportWidget->height()) - 1, Focus(_bannerViewPos));
 
         if (viewport != nullptr)
-            viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
+            viewport->flags = gConfigGeneral.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
         Invalidate();
     }
 
@@ -100,7 +102,7 @@ private:
             return nullptr;
         }
 
-        TileElement* tileElement = map_get_first_element_at(banner->position);
+        TileElement* tileElement = MapGetFirstElementAt(banner->position);
         if (tileElement == nullptr)
         {
             return nullptr;
@@ -126,7 +128,7 @@ public:
     void OnOpen() override
     {
         widgets = window_banner_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
     }
 
     void Initialise(rct_windownumber _number)
@@ -142,9 +144,9 @@ public:
         CreateViewport();
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
-        rct_widget* widget = &widgets[widgetIndex];
+        Widget* widget = &widgets[widgetIndex];
         auto* banner = GetBanner(GetBannerIndex());
         if (banner == nullptr)
         {
@@ -176,7 +178,7 @@ public:
         }
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         auto* banner = GetBanner(GetBannerIndex());
         if (banner == nullptr)
@@ -206,7 +208,7 @@ public:
                 break;
             case WIDX_BANNER_NO_ENTRY:
             {
-                textinput_cancel();
+                TextinputCancel();
                 auto bannerSetStyle = BannerSetStyleAction(
                     BannerSetStyleType::NoEntry, GetBannerIndex(), banner->flags ^ BANNER_FLAG_NO_ENTRY);
                 GameActions::Execute(&bannerSetStyle);
@@ -215,7 +217,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
         switch (widgetIndex)
         {
@@ -224,7 +226,8 @@ public:
                 if (dropdownIndex == -1)
                     break;
 
-                auto bannerSetStyle = BannerSetStyleAction(BannerSetStyleType::PrimaryColour, GetBannerIndex(), dropdownIndex);
+                auto bannerSetStyle = BannerSetStyleAction(
+                    BannerSetStyleType::PrimaryColour, GetBannerIndex(), ColourDropDownIndexToColour(dropdownIndex));
                 GameActions::Execute(&bannerSetStyle);
                 break;
             }
@@ -239,7 +242,7 @@ public:
         }
     }
 
-    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
     {
         if (widgetIndex == WIDX_BANNER_TEXT)
         {
@@ -254,13 +257,13 @@ public:
         CreateViewport();
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
 
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, this);
+            WindowDrawViewport(dpi, *this);
         }
     }
 
@@ -271,25 +274,25 @@ public:
         {
             return;
         }
-        rct_widget* colourBtn = &window_banner_widgets[WIDX_MAIN_COLOUR];
+        Widget* colourBtn = &window_banner_widgets[WIDX_MAIN_COLOUR];
         colourBtn->type = WindowWidgetType::Empty;
 
-        auto* bannerEntry = get_banner_entry(banner->type);
+        auto* bannerEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(banner->type);
         if (bannerEntry != nullptr && (bannerEntry->flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR))
         {
             colourBtn->type = WindowWidgetType::ColourBtn;
         }
-        pressed_widgets &= ~(1ULL << WIDX_BANNER_NO_ENTRY);
+        pressed_widgets &= ~(1uLL << WIDX_BANNER_NO_ENTRY);
         disabled_widgets &= ~(
-            (1ULL << WIDX_BANNER_TEXT) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON));
+            (1uLL << WIDX_BANNER_TEXT) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON));
         if (banner->flags & BANNER_FLAG_NO_ENTRY)
         {
-            pressed_widgets |= (1ULL << WIDX_BANNER_NO_ENTRY);
-            disabled_widgets |= (1ULL << WIDX_BANNER_TEXT) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN)
-                | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
+            pressed_widgets |= (1uLL << WIDX_BANNER_NO_ENTRY);
+            disabled_widgets |= (1uLL << WIDX_BANNER_TEXT) | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN)
+                | (1uLL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
         }
-        colourBtn->image = SPRITE_ID_PALETTE_COLOUR_1(banner->colour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
-        rct_widget* dropDownWidget = &window_banner_widgets[WIDX_TEXT_COLOUR_DROPDOWN];
+        colourBtn->image = GetColourButtonImage(banner->colour);
+        Widget* dropDownWidget = &window_banner_widgets[WIDX_TEXT_COLOUR_DROPDOWN];
         dropDownWidget->text = BannerColouredTextFormats[banner->text_colour];
     }
 };
@@ -298,14 +301,14 @@ public:
  *
  *  rct2: 0x006BA305
  */
-rct_window* WindowBannerOpen(rct_windownumber number)
+WindowBase* WindowBannerOpen(rct_windownumber number)
 {
-    auto w = static_cast<BannerWindow*>(window_bring_to_front_by_number(WC_BANNER, number));
+    auto w = static_cast<BannerWindow*>(WindowBringToFrontByNumber(WindowClass::Banner, number));
 
     if (w != nullptr)
         return w;
 
-    w = WindowCreate<BannerWindow>(WC_BANNER, WW, WH, 0);
+    w = WindowCreate<BannerWindow>(WindowClass::Banner, WW, WH, 0);
 
     if (w != nullptr)
         w->Initialise(number);

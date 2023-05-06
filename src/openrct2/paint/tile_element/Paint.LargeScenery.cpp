@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include "../../core/String.hpp"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatter.h"
+#include "../../localisation/Formatting.h"
 #include "../../localisation/Localisation.h"
 #include "../../object/LargeSceneryObject.h"
 #include "../../profiling/Profiling.h"
@@ -22,21 +23,15 @@
 #include "../../ride/TrackDesign.h"
 #include "../../util/Util.h"
 #include "../../world/Banner.h"
-#include "../../world/LargeScenery.h"
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/TileInspector.h"
+#include "../Boundbox.h"
 #include "../Supports.h"
 #include "Paint.TileElement.h"
 
-struct boundbox
-{
-    CoordsXY offset;
-    CoordsXY length;
-};
-
 // clang-format off
-static constexpr const boundbox LargeSceneryBoundBoxes[] = {
+static constexpr const BoundBoxXY LargeSceneryBoundBoxes[] = {
     { { 3, 3 }, { 26, 26 } },
     { { 17, 17 }, { 12, 12 } },
     { { 17, 3 }, { 12, 12 } },
@@ -58,8 +53,8 @@ static constexpr const boundbox LargeSceneryBoundBoxes[] = {
 // clang-format on
 
 static void PaintLargeScenerySupports(
-    paint_session& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement, ImageId imageTemplate,
-    const rct_large_scenery_tile& tile)
+    PaintSession& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement, ImageId imageTemplate,
+    const LargeSceneryTile& tile)
 {
     PROFILED_FUNCTION();
 
@@ -74,18 +69,18 @@ static void PaintLargeScenerySupports(
         special = 49;
     }
 
-    wooden_b_supports_paint_setup(session, (direction & 1), special, supportHeight, imageTemplate);
+    WoodenBSupportsPaintSetup(session, (direction & 1), special, supportHeight, imageTemplate);
 
-    int32_t clearanceHeight = ceil2(tileElement.GetClearanceZ() + 15, 16);
+    int32_t clearanceHeight = Ceil2(tileElement.GetClearanceZ() + 15, 16);
     if (tile.flags & LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE)
     {
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, clearanceHeight, 0x20);
+        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, clearanceHeight, 0x20);
     }
     else
     {
-        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     }
-    paint_util_set_general_support_height(session, clearanceHeight, 0x20);
+    PaintUtilSetGeneralSupportHeight(session, clearanceHeight, 0x20);
 }
 
 static std::string_view LargeSceneryCalculateDisplayText(const LargeSceneryText& text, std::string_view s, bool height)
@@ -110,7 +105,7 @@ static int32_t DivToMinusInfinity(int32_t a, int32_t b)
 }
 
 static void PaintLargeScenery3DTextLine(
-    paint_session& session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryText& text, std::string_view line,
+    PaintSession& session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryText& text, std::string_view line,
     ImageId imageTemplate, Direction direction, int32_t offsetY)
 {
     PROFILED_FUNCTION();
@@ -186,7 +181,7 @@ static bool Is3DTextSingleLine(const LargeSceneryText& text, std::string_view s)
 }
 
 static void PaintLargeScenery3DText(
-    paint_session& session, const LargeSceneryEntry& sceneryEntry, const rct_large_scenery_tile& tile,
+    PaintSession& session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryTile& tile,
     const LargeSceneryElement& tileElement, uint8_t direction, uint16_t height, bool isGhost)
 {
     PROFILED_FUNCTION();
@@ -217,7 +212,7 @@ static void PaintLargeScenery3DText(
     char signString[256];
     auto ft = Formatter();
     banner->FormatTextTo(ft);
-    format_string(signString, sizeof(signString), STR_STRINGID, ft.Data());
+    OpenRCT2::FormatStringLegacy(signString, sizeof(signString), STR_STRINGID, ft.Data());
 
     auto offsetY = text->offset[(direction & 1)].y * 2;
     if (text->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
@@ -229,7 +224,7 @@ static void PaintLargeScenery3DText(
         for (auto codepoint : CodepointView(displayText))
         {
             char line[8]{};
-            utf8_write_codepoint(line, codepoint);
+            UTF8WriteCodepoint(line, codepoint);
             PaintLargeScenery3DTextLine(
                 session, sceneryEntry, *text, line, imageTemplate, direction, offsetY - displayTextHeight);
 
@@ -300,7 +295,7 @@ static void PaintLargeScenery3DText(
 }
 
 static void PaintLargeSceneryScrollingText(
-    paint_session& session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryElement& tileElement, uint8_t direction,
+    PaintSession& session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryElement& tileElement, uint8_t direction,
     uint16_t height, const CoordsXYZ& bbOffset, bool isGhost)
 {
     PROFILED_FUNCTION();
@@ -316,23 +311,23 @@ static void PaintLargeSceneryScrollingText(
     banner->FormatTextTo(ft);
 
     char text[256];
-    if (gConfigGeneral.upper_case_banners)
+    if (gConfigGeneral.UpperCaseBanners)
     {
-        format_string_to_upper(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
+        FormatStringToUpper(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
     }
     else
     {
-        format_string(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
+        OpenRCT2::FormatStringLegacy(text, sizeof(text), STR_SCROLLING_SIGN_TEXT, ft.Data());
     }
 
     auto scrollMode = sceneryEntry.scrolling_mode + ((direction + 1) & 3);
-    auto stringWidth = gfx_get_string_width(text, FontSpriteBase::TINY);
+    auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
     auto scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
-    auto imageId = scrolling_text_setup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollMode, textPaletteIndex);
-    PaintAddImageAsChild(session, imageId, { 0, 0, height + 25 }, { 1, 1, 21 }, bbOffset);
+    auto imageId = ScrollingTextSetup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollMode, textPaletteIndex);
+    PaintAddImageAsChild(session, imageId, { 0, 0, height + 25 }, { bbOffset, { 1, 1, 21 } });
 }
 
-void PaintLargeScenery(paint_session& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement)
+void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement)
 {
     PROFILED_FUNCTION();
 
@@ -356,7 +351,7 @@ void PaintLargeScenery(paint_session& session, uint8_t direction, uint16_t heigh
 
     auto isGhost = false;
     ImageId imageTemplate;
-    if (gTrackDesignSaveMode && !track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&tileElement)))
+    if (gTrackDesignSaveMode && !TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&tileElement)))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
         isGhost = true;
@@ -364,12 +359,12 @@ void PaintLargeScenery(paint_session& session, uint8_t direction, uint16_t heigh
     else if (tileElement.IsGhost())
     {
         session.InteractionType = ViewportInteractionItem::None;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
         isGhost = true;
     }
     else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&tileElement)))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
         isGhost = true;
     }
     else
@@ -397,11 +392,11 @@ void PaintLargeScenery(paint_session& session, uint8_t direction, uint16_t heigh
         flags = Numerics::rol16(flags, direction);
         bbIndex = (flags & 0xF) | (flags >> 12);
     }
-    const CoordsXYZ bbOffset = { LargeSceneryBoundBoxes[bbIndex].offset, height };
-    const CoordsXYZ bbLength = { LargeSceneryBoundBoxes[bbIndex].length, boxlengthZ };
+    const CoordsXYZ& bbOffset = { LargeSceneryBoundBoxes[bbIndex].offset, height };
+    const CoordsXYZ& bbLength = { LargeSceneryBoundBoxes[bbIndex].length, boxlengthZ };
 
     auto imageIndex = sceneryEntry->image + 4 + (sequenceNum << 2) + direction;
-    PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, bbLength, bbOffset);
+    PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), { 0, 0, height }, { bbOffset, bbLength });
 
     if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE && direction != 1 && direction != 2)
     {

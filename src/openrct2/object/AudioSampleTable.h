@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,12 +12,14 @@
 #include "../audio/AudioSource.h"
 #include "../core/JsonFwd.hpp"
 #include "Object.h"
+#include "ObjectAsset.h"
+#include "ResourceTable.h"
 
 #include <optional>
 
 struct IReadObjectContext;
 
-class AudioSampleTable
+class AudioSampleTable : public ResourceTable
 {
 private:
     struct Entry
@@ -31,6 +33,8 @@ private:
     std::vector<Entry> _entries;
 
 public:
+    std::vector<Entry>& GetEntries();
+
     /**
      * Read the entries from the given JSON into the table, but do not load anything.
      */
@@ -39,7 +43,7 @@ public:
     /**
      * Load all available entries from the given table.
      */
-    void LoadFrom(const AudioSampleTable& table, size_t index, size_t length);
+    void LoadFrom(const AudioSampleTable& table, size_t sourceIndex, size_t length);
 
     /**
      * Load all available entries.
@@ -53,5 +57,6 @@ public:
 
     size_t GetCount() const;
     OpenRCT2::Audio::IAudioSource* GetSample(uint32_t index) const;
+    OpenRCT2::Audio::IAudioSource* LoadSample(uint32_t index) const;
     int32_t GetSampleModifier(uint32_t index) const;
 };

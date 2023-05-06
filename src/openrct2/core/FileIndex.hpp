@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -41,9 +41,9 @@ private:
         DirectoryStats const Stats;
         std::vector<std::string> const Files;
 
-        ScanResult(DirectoryStats stats, std::vector<std::string> files)
+        ScanResult(DirectoryStats stats, std::vector<std::string>&& files) noexcept
             : Stats(stats)
-            , Files(files)
+            , Files(std::move(files))
         {
         }
     };
@@ -82,14 +82,14 @@ public:
      * @param paths A list of search directories.
      */
     FileIndex(
-        std::string name, uint32_t magicNumber, uint8_t version, std::string indexPath, std::string pattern,
-        std::vector<std::string> paths)
-        : _name(name)
+        std::string&& name, uint32_t magicNumber, uint8_t version, std::string&& indexPath, std::string&& pattern,
+        std::vector<std::string>&& paths) noexcept
+        : _name(std::move(name))
         , _magicNumber(magicNumber)
         , _version(version)
-        , _indexPath(indexPath)
-        , _pattern(pattern)
-        , SearchPaths(paths)
+        , _indexPath(std::move(indexPath))
+        , _pattern(std::move(pattern))
+        , SearchPaths(std::move(paths))
     {
     }
 
@@ -127,14 +127,13 @@ public:
 protected:
     /**
      * Loads the given file and creates the item representing the data to store in the index.
-     * TODO Use std::optional when C++17 is available.
      */
-    virtual std::tuple<bool, TItem> Create(int32_t language, const std::string& path) const abstract;
+    virtual std::optional<TItem> Create(int32_t language, const std::string& path) const abstract;
 
     /**
      * Serialises/DeSerialises an index item to/from the given stream.
      */
-    virtual void Serialise(DataSerialiser& ds, TItem& item) const abstract;
+    virtual void Serialise(DataSerialiser& ds, const TItem& item) const abstract;
 
 private:
     ScanResult Scan() const
@@ -144,7 +143,7 @@ private:
         for (const auto& directory : SearchPaths)
         {
             auto absoluteDirectory = Path::GetAbsolute(directory);
-            log_verbose("FileIndex:Scanning for %s in '%s'", _pattern.c_str(), absoluteDirectory.c_str());
+            LOG_VERBOSE("FileIndex:Scanning for %s in '%s'", _pattern.c_str(), absoluteDirectory.c_str());
 
             auto pattern = Path::Combine(absoluteDirectory, _pattern);
             auto scanner = Path::ScanDirectory(pattern, true);
@@ -163,7 +162,7 @@ private:
                 files.push_back(std::move(path));
             }
         }
-        return ScanResult(stats, files);
+        return ScanResult(stats, std::move(files));
     }
 
     void BuildRange(
@@ -178,16 +177,15 @@ private:
             if (_log_levels[static_cast<uint8_t>(DiagnosticLevel::Verbose)])
             {
                 std::lock_guard<std::mutex> lock(printLock);
-                log_verbose("FileIndex:Indexing '%s'", filePath.c_str());
+                LOG_VERBOSE("FileIndex:Indexing '%s'", filePath.c_str());
             }
 
-            auto item = Create(language, filePath);
-            if (std::get<0>(item))
+            if (auto item = Create(language, filePath); item.has_value())
             {
-                items.push_back(std::get<1>(item));
+                items.push_back(std::move(item.value()));
             }
 
-            processed++;
+            ++processed;
         }
     }
 
@@ -224,9 +222,9 @@ private:
 
                 auto& items = containers.emplace_back();
 
-                jobPool.AddTask(std::bind(
-                    &FileIndex<TItem>::BuildRange, this, language, std::cref(scanResult), rangeStart, rangeStart + stepSize,
-                    std::ref(items), std::ref(processed), std::ref(printLock)));
+                jobPool.AddTask([&, rangeStart, stepSize]() {
+                    BuildRange(language, scanResult, rangeStart, rangeStart + stepSize, items, processed, printLock);
+                });
 
                 reportProgress();
             }
@@ -256,7 +254,7 @@ private:
         {
             try
             {
-                log_verbose("FileIndex:Loading index: '%s'", _indexPath.c_str());
+                LOG_VERBOSE("FileIndex:Loading index: '%s'", _indexPath.c_str());
                 auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FILE_MODE_OPEN);
 
                 // Read header, check if we need to re-scan
@@ -292,11 +290,11 @@ private:
         return std::make_tuple(loadedItems, std::move(items));
     }
 
-    void WriteIndexFile(int32_t language, const DirectoryStats& stats, std::vector<TItem>& items) const
+    void WriteIndexFile(int32_t language, const DirectoryStats& stats, const std::vector<TItem>& items) const
     {
         try
         {
-            log_verbose("FileIndex:Writing index: '%s'", _indexPath.c_str());
+            LOG_VERBOSE("FileIndex:Writing index: '%s'", _indexPath.c_str());
             Path::CreateDirectory(Path::GetDirectory(_indexPath));
             auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FILE_MODE_WRITE);
 
@@ -312,7 +310,7 @@ private:
 
             DataSerialiser ds(true, fs);
             // Write items
-            for (auto& item : items)
+            for (const auto& item : items)
             {
                 Serialise(ds, item);
             }

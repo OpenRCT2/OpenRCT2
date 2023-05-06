@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,6 +40,11 @@ namespace OpenRCT2::Scripting
                 ctx, &ScCheats::disableLittering_get, &ScCheats::disableLittering_set, "disableLittering");
             dukglue_register_property(
                 ctx, &ScCheats::disablePlantAging_get, &ScCheats::disablePlantAging_set, "disablePlantAging");
+            dukglue_register_property(
+                ctx, &ScCheats::allowRegularPathAsQueue_get, &ScCheats::allowRegularPathAsQueue_set, "allowRegularPathAsQueue");
+            dukglue_register_property(
+                ctx, &ScCheats::allowSpecialColourSchemes_get, &ScCheats::allowSpecialColourSchemes_set,
+                "allowSpecialColourSchemes");
             dukglue_register_property(
                 ctx, &ScCheats::disableRideValueAging_get, &ScCheats::disableRideValueAging_set, "disableRideValueAging");
             dukglue_register_property(
@@ -157,6 +162,28 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             gCheatsDisablePlantAging = value;
+        }
+
+        bool allowRegularPathAsQueue_get()
+        {
+            return gCheatsAllowRegularPathAsQueue;
+        }
+
+        void allowRegularPathAsQueue_set(bool value)
+        {
+            ThrowIfGameStateNotMutable();
+            gCheatsAllowRegularPathAsQueue = value;
+        }
+
+        bool allowSpecialColourSchemes_get()
+        {
+            return gCheatsAllowSpecialColourSchemes;
+        }
+
+        void allowSpecialColourSchemes_set(bool value)
+        {
+            ThrowIfGameStateNotMutable();
+            gCheatsAllowSpecialColourSchemes = value;
         }
 
         bool disableRideValueAging_get()

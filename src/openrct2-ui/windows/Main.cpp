@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,7 +16,7 @@
 #include <openrct2/world/Footpath.h>
 
 // clang-format off
-static rct_widget _mainWidgets[] = {
+static Widget _mainWidgets[] = {
     MakeWidget({0, 0}, {0, 0}, WindowWidgetType::Viewport, WindowColour::Primary, STR_VIEWPORT),
     WIDGETS_END,
 };
@@ -31,7 +31,7 @@ public:
         _mainWidgets[0].bottom = height;
         widgets = _mainWidgets;
 
-        viewport_create(this, windowPos, width, height, Focus(CoordsXYZ(0x0FFF, 0x0FFF, 0)));
+        ViewportCreate(this, windowPos, width, height, Focus(CoordsXYZ(0x0FFF, 0x0FFF, 0)));
         if (viewport != nullptr)
         {
             SetViewportFlags();
@@ -39,30 +39,30 @@ public:
         gCurrentRotation = 0;
         gShowGridLinesRefCount = 0;
         gShowLandRightsRefCount = 0;
-        gShowConstuctionRightsRefCount = 0;
+        gShowConstructionRightsRefCount = 0;
         WindowFootpathResetSelectedPath();
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
-        viewport_render(&dpi, viewport, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } });
+        ViewportRender(dpi, viewport, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } });
     }
 
 private:
     void SetViewportFlags()
     {
         viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
-        if (gConfigGeneral.invisible_rides)
+        if (gConfigGeneral.InvisibleRides)
             viewport->flags |= VIEWPORT_FLAG_INVISIBLE_RIDES;
-        if (gConfigGeneral.invisible_vehicles)
+        if (gConfigGeneral.InvisibleVehicles)
             viewport->flags |= VIEWPORT_FLAG_INVISIBLE_VEHICLES;
-        if (gConfigGeneral.invisible_trees)
+        if (gConfigGeneral.InvisibleTrees)
             viewport->flags |= VIEWPORT_FLAG_INVISIBLE_VEGETATION;
-        if (gConfigGeneral.invisible_scenery)
+        if (gConfigGeneral.InvisibleScenery)
             viewport->flags |= VIEWPORT_FLAG_INVISIBLE_SCENERY;
-        if (gConfigGeneral.invisible_paths)
+        if (gConfigGeneral.InvisiblePaths)
             viewport->flags |= VIEWPORT_FLAG_INVISIBLE_PATHS;
-        if (gConfigGeneral.invisible_supports)
+        if (gConfigGeneral.InvisibleSupports)
             viewport->flags |= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
     }
 };
@@ -71,7 +71,7 @@ private:
  * Creates the main window that holds the main viewport.
  *  rct2: 0x0066B3E8
  */
-rct_window* WindowMainOpen()
+WindowBase* WindowMainOpen()
 {
-    return WindowCreate<MainWindow>(WC_MAIN_WINDOW, { 0, 0 }, context_get_width(), context_get_height(), WF_STICK_TO_BACK);
+    return WindowCreate<MainWindow>(WindowClass::MainWindow, { 0, 0 }, ContextGetWidth(), ContextGetHeight(), WF_STICK_TO_BACK);
 }

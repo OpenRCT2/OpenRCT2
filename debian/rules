@@ -2,5 +2,19 @@
 
 BUILDDIR=build_dir
 
+# Ignore false warnings with GCC:
+#
+# stringop-overflow false positive in GCC < 11.3
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99578
+#
+# maybe-uninitialized false positive in GCC < 12.3 (note 12.3 is currently unreleased)
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105937
+#
+# Reference OpenRCT2 bug reports: 
+# https://github.com/OpenRCT2/OpenRCT2/issues/16691 (-Wno-stringop-overflow)
+# https://github.com/OpenRCT2/OpenRCT2/issues/17371 (-Wno-maybe-uninitialized -Wno-error=null-dereference)
+export DEB_CFLAGS_MAINT_APPEND   = -Wno-stringop-overflow -Wno-maybe-uninitialized -Wno-error=null-dereference
+export DEB_CXXFLAGS_MAINT_APPEND = -Wno-stringop-overflow -Wno-maybe-uninitialized -Wno-error=null-dereference
+
 %:
 	dh $@

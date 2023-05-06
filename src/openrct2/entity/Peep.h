@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,7 +29,7 @@ constexpr auto PEEP_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 
 class Formatter;
 struct TileElement;
-struct paint_session;
+struct PaintSession;
 
 namespace GameActions
 {
@@ -362,10 +362,10 @@ struct Peep : EntityBase
     union
     {
         uint8_t MazeLastEdge;
-        Direction PeepDirection; // Direction ?
+        ::Direction PeepDirection; // Direction ?
     };
     RideId InteractionRideIndex;
-    uint32_t Id;
+    uint32_t PeepId;
     uint8_t PathCheckOptimisation; // see peep.checkForPath
     TileCoordsXYZD PathfindGoal;
     std::array<TileCoordsXYZD, 4> PathfindHistory;
@@ -407,11 +407,14 @@ public: // Peep
     [[nodiscard]] CoordsXY GetDestination() const;
 
     void Serialise(class DataSerialiser& stream);
-    void Paint(paint_session& session, int32_t imageDirection) const;
+    void Paint(PaintSession& session, int32_t imageDirection) const;
 
     // TODO: Make these private again when done refactoring
 public: // Peep
     [[nodiscard]] bool CheckForPath();
+    bool ShouldWaitForLevelCrossing();
+    bool IsOnLevelCrossing();
+    bool IsOnPathBlockedByVehicle();
     void PerformNextAction(uint8_t& pathing_result);
     void PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result);
     [[nodiscard]] int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
@@ -424,24 +427,24 @@ private:
     void UpdatePicked();
 };
 
-struct rct_sprite_bounds
+struct SpriteBounds
 {
     uint8_t sprite_width;           // 0x00
     uint8_t sprite_height_negative; // 0x01
     uint8_t sprite_height_positive; // 0x02
 };
 
-struct rct_peep_animation
+struct PeepAnimation
 {
     uint32_t base_image; // 0x00
     size_t num_frames;
     const uint8_t* frame_offsets;
 };
 
-struct rct_peep_animation_entry
+struct PeepAnimationEntry
 {
-    const rct_peep_animation* sprite_animation; // 0x00
-    const rct_sprite_bounds* sprite_bounds;     // 0x04
+    const PeepAnimation* sprite_animation; // 0x00
+    const SpriteBounds* sprite_bounds;     // 0x04
 };
 
 enum
@@ -453,39 +456,39 @@ enum
 };
 
 // rct2: 0x00982708
-extern const rct_peep_animation_entry g_peep_animation_entries[EnumValue(PeepSpriteType::Count)];
+extern const PeepAnimationEntry g_peep_animation_entries[EnumValue(PeepSpriteType::Count)];
 extern const bool gSpriteTypeToSlowWalkMap[48];
 
 extern uint8_t gPeepWarningThrottle[16];
 
-int32_t peep_get_staff_count();
-void peep_update_all();
-void peep_problem_warnings_update();
-void peep_stop_crowd_noise();
-void peep_update_crowd_noise();
-void peep_update_days_in_queue();
-void peep_applause();
-int32_t get_peep_face_sprite_small(Guest* peep);
-int32_t get_peep_face_sprite_large(Guest* peep);
-void peep_sprite_remove(Peep* peep);
+int32_t PeepGetStaffCount();
+void PeepUpdateAll();
+void PeepProblemWarningsUpdate();
+void PeepStopCrowdNoise();
+void PeepUpdateCrowdNoise();
+void PeepUpdateDaysInQueue();
+void PeepApplause();
+int32_t GetPeepFaceSpriteSmall(Guest* peep);
+int32_t GetPeepFaceSpriteLarge(Guest* peep);
+void PeepEntityRemove(Peep* peep);
 
-void peep_window_state_update(Peep* peep);
-void peep_decrement_num_riders(Peep* peep);
+void PeepWindowStateUpdate(Peep* peep);
+void PeepDecrementNumRiders(Peep* peep);
 
-void peep_set_map_tooltip(Peep* peep);
-int32_t peep_compare(const EntityId sprite_index_a, const EntityId sprite_index_b);
+void PeepSetMapTooltip(Peep* peep);
+int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b);
 
-void peep_update_names(bool realNames);
+void PeepUpdateNames(bool realNames);
 
-rct_string_id get_real_name_string_id_from_id(uint32_t id);
+StringId GetRealNameStringIDFromPeepID(uint32_t id);
 
-inline const rct_peep_animation& GetPeepAnimation(
+inline const PeepAnimation& GetPeepAnimation(
     PeepSpriteType spriteType, PeepActionSpriteType actionSpriteType = PeepActionSpriteType::None)
 {
     return g_peep_animation_entries[EnumValue(spriteType)].sprite_animation[EnumValue(actionSpriteType)];
 };
 
-inline const rct_sprite_bounds& GetSpriteBounds(
+inline const SpriteBounds& GetSpriteBounds(
     PeepSpriteType spriteType, PeepActionSpriteType actionSpriteType = PeepActionSpriteType::None)
 {
     return g_peep_animation_entries[EnumValue(spriteType)].sprite_bounds[EnumValue(actionSpriteType)];

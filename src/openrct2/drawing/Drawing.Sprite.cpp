@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -70,10 +70,10 @@ static inline uint32_t rctc_to_rct2_index(uint32_t image)
 }
 // clang-format on
 
-static void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, rct_g1_element* elements)
+static void ReadAndConvertGxDat(IStream* stream, size_t count, bool is_rctc, G1Element* elements)
 {
-    auto g1Elements32 = std::make_unique<rct_g1_element_32bit[]>(count);
-    stream->Read(g1Elements32.get(), count * sizeof(rct_g1_element_32bit));
+    auto g1Elements32 = std::make_unique<RCTG1Element[]>(count);
+    stream->Read(g1Elements32.get(), count * sizeof(RCTG1Element));
     if (is_rctc)
     {
         // Process RCTC's g1.dat file
@@ -102,7 +102,7 @@ static void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, 
                     break;
             }
 
-            const rct_g1_element_32bit& src = g1Elements32[rctc];
+            const RCTG1Element& src = g1Elements32[rctc];
 
             // Double cast to silence compiler warning about casting to
             // pointer from integer of mismatched length.
@@ -141,7 +141,7 @@ static void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, 
     {
         for (size_t i = 0; i < count; i++)
         {
-            const rct_g1_element_32bit& src = g1Elements32[i];
+            const RCTG1Element& src = g1Elements32[i];
 
             // Double cast to silence compiler warning about casting to
             // pointer from integer of mismatched length.
@@ -156,7 +156,7 @@ static void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, 
     }
 }
 
-void mask_scalar(
+void MaskScalar(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
 {
@@ -180,30 +180,30 @@ void mask_scalar(
     }
 }
 
-static rct_gx _g1 = {};
-static rct_gx _g2 = {};
-static rct_gx _csg = {};
-static rct_g1_element _scrollingText[MaxScrollingTextEntries]{};
+static Gx _g1 = {};
+static Gx _g2 = {};
+static Gx _csg = {};
+static G1Element _scrollingText[MaxScrollingTextEntries]{};
 static bool _csgLoaded = false;
 
-static rct_g1_element _g1Temp = {};
-static std::vector<rct_g1_element> _imageListElements;
+static G1Element _g1Temp = {};
+static std::vector<G1Element> _imageListElements;
 bool gTinyFontAntiAliased = false;
 
 /**
  *
  *  rct2: 0x00678998
  */
-bool gfx_load_g1(const IPlatformEnvironment& env)
+bool GfxLoadG1(const IPlatformEnvironment& env)
 {
-    log_verbose("gfx_load_g1(...)");
+    LOG_VERBOSE("GfxLoadG1(...)");
     try
     {
-        auto path = Path::Combine(env.GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA), u8"g1.dat");
+        auto path = env.FindFile(DIRBASE::RCT2, DIRID::DATA, u8"g1.dat");
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        _g1.header = fs.ReadValue<rct_g1_header>();
+        _g1.header = fs.ReadValue<RCTG1Header>();
 
-        log_verbose("g1.dat, number of entries: %u", _g1.header.num_entries);
+        LOG_VERBOSE("g1.dat, number of entries: %u", _g1.header.num_entries);
 
         if (_g1.header.num_entries < SPR_G1_END)
         {
@@ -213,7 +213,7 @@ bool gfx_load_g1(const IPlatformEnvironment& env)
         // Read element headers
         bool is_rctc = _g1.header.num_entries == SPR_RCTC_G1_END;
         _g1.elements.resize(_g1.header.num_entries);
-        read_and_convert_gxdat(&fs, _g1.header.num_entries, is_rctc, _g1.elements.data());
+        ReadAndConvertGxDat(&fs, _g1.header.num_entries, is_rctc, _g1.elements.data());
         gTinyFontAntiAliased = is_rctc;
 
         // Read element data
@@ -231,7 +231,7 @@ bool gfx_load_g1(const IPlatformEnvironment& env)
         _g1.elements.clear();
         _g1.elements.shrink_to_fit();
 
-        log_fatal("Unable to load g1 graphics");
+        LOG_FATAL("Unable to load g1 graphics");
         if (!gOpenRCT2Headless)
         {
             auto uiContext = GetContext()->GetUiContext();
@@ -241,30 +241,30 @@ bool gfx_load_g1(const IPlatformEnvironment& env)
     }
 }
 
-void gfx_unload_g1()
+void GfxUnloadG1()
 {
     _g1.data.reset();
     _g1.elements.clear();
     _g1.elements.shrink_to_fit();
 }
 
-void gfx_unload_g2()
+void GfxUnloadG2()
 {
     _g2.data.reset();
     _g2.elements.clear();
     _g2.elements.shrink_to_fit();
 }
 
-void gfx_unload_csg()
+void GfxUnloadCsg()
 {
     _csg.data.reset();
     _csg.elements.clear();
     _csg.elements.shrink_to_fit();
 }
 
-bool gfx_load_g2()
+bool GfxLoadG2()
 {
-    log_verbose("gfx_load_g2()");
+    LOG_VERBOSE("GfxLoadG2()");
 
     auto env = GetContext()->GetPlatformEnvironment();
 
@@ -273,11 +273,11 @@ bool gfx_load_g2()
     try
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        _g2.header = fs.ReadValue<rct_g1_header>();
+        _g2.header = fs.ReadValue<RCTG1Header>();
 
         // Read element headers
         _g2.elements.resize(_g2.header.num_entries);
-        read_and_convert_gxdat(&fs, _g2.header.num_entries, false, _g2.elements.data());
+        ReadAndConvertGxDat(&fs, _g2.header.num_entries, false, _g2.elements.data());
 
         // Read element data
         _g2.data = fs.ReadArray<uint8_t>(_g2.header.total_size);
@@ -287,7 +287,7 @@ bool gfx_load_g2()
             std::string errorMessage = "Mismatched g2.dat size.\nExpected: " + std::to_string(G2_SPRITE_COUNT) + "\nActual: "
                 + std::to_string(_g2.header.num_entries) + "\ng2.dat may be installed improperly.\nPath to g2.dat: " + path;
 
-            log_error(errorMessage.c_str());
+            LOG_ERROR(errorMessage.c_str());
 
             if (!gOpenRCT2Headless)
             {
@@ -310,7 +310,7 @@ bool gfx_load_g2()
         _g2.elements.clear();
         _g2.elements.shrink_to_fit();
 
-        log_fatal("Unable to load g2 graphics");
+        LOG_FATAL("Unable to load g2 graphics");
         if (!gOpenRCT2Headless)
         {
             auto uiContext = GetContext()->GetUiContext();
@@ -320,18 +320,18 @@ bool gfx_load_g2()
     return false;
 }
 
-bool gfx_load_csg()
+bool GfxLoadCsg()
 {
-    log_verbose("gfx_load_csg()");
+    LOG_VERBOSE("GfxLoadCsg()");
 
-    if (gConfigGeneral.rct1_path.empty())
+    if (gConfigGeneral.RCT1Path.empty())
     {
-        log_verbose("  unable to load CSG, RCT1 path not set");
+        LOG_VERBOSE("  unable to load CSG, RCT1 path not set");
         return false;
     }
 
-    auto pathHeaderPath = FindCsg1idatAtLocation(gConfigGeneral.rct1_path);
-    auto pathDataPath = FindCsg1datAtLocation(gConfigGeneral.rct1_path);
+    auto pathHeaderPath = FindCsg1idatAtLocation(gConfigGeneral.RCT1Path);
+    auto pathDataPath = FindCsg1datAtLocation(gConfigGeneral.RCT1Path);
     try
     {
         auto fileHeader = FileStream(pathHeaderPath, FILE_MODE_OPEN);
@@ -339,18 +339,18 @@ bool gfx_load_csg()
         size_t fileHeaderSize = fileHeader.GetLength();
         size_t fileDataSize = fileData.GetLength();
 
-        _csg.header.num_entries = static_cast<uint32_t>(fileHeaderSize / sizeof(rct_g1_element_32bit));
+        _csg.header.num_entries = static_cast<uint32_t>(fileHeaderSize / sizeof(RCTG1Element));
         _csg.header.total_size = static_cast<uint32_t>(fileDataSize);
 
         if (!CsgIsUsable(_csg))
         {
-            log_warning("Cannot load CSG1.DAT, it has too few entries. Only CSG1.DAT from Loopy Landscapes will work.");
+            LOG_WARNING("Cannot load CSG1.DAT, it has too few entries. Only CSG1.DAT from Loopy Landscapes will work.");
             return false;
         }
 
         // Read element headers
         _csg.elements.resize(_csg.header.num_entries);
-        read_and_convert_gxdat(&fileHeader, _csg.header.num_entries, false, _csg.elements.data());
+        ReadAndConvertGxDat(&fileHeader, _csg.header.num_entries, false, _csg.elements.data());
 
         // Read element data
         _csg.data = fileData.ReadArray<uint8_t>(_csg.header.total_size);
@@ -373,23 +373,23 @@ bool gfx_load_csg()
         _csg.elements.clear();
         _csg.elements.shrink_to_fit();
 
-        log_error("Unable to load csg graphics");
+        LOG_ERROR("Unable to load csg graphics");
         return false;
     }
 }
 
-std::optional<rct_gx> GfxLoadGx(const std::vector<uint8_t>& buffer)
+std::optional<Gx> GfxLoadGx(const std::vector<uint8_t>& buffer)
 {
     try
     {
         OpenRCT2::MemoryStream istream(buffer.data(), buffer.size());
-        rct_gx gx;
+        Gx gx;
 
-        gx.header = istream.ReadValue<rct_g1_header>();
+        gx.header = istream.ReadValue<RCTG1Header>();
 
         // Read element headers
         gx.elements.resize(gx.header.num_entries);
-        read_and_convert_gxdat(&istream, gx.header.num_entries, false, gx.elements.data());
+        ReadAndConvertGxDat(&istream, gx.header.num_entries, false, gx.elements.data());
 
         // Read element data
         gx.data = istream.ReadArray<uint8_t>(gx.header.total_size);
@@ -398,12 +398,12 @@ std::optional<rct_gx> GfxLoadGx(const std::vector<uint8_t>& buffer)
     }
     catch (const std::exception&)
     {
-        log_verbose("Unable to load rct_gx graphics");
+        LOG_VERBOSE("Unable to load Gx graphics");
     }
     return std::nullopt;
 }
 
-static std::optional<PaletteMap> FASTCALL gfx_draw_sprite_get_palette(ImageId imageId)
+static std::optional<PaletteMap> FASTCALL GfxDrawSpriteGetPalette(ImageId imageId)
 {
     if (!imageId.HasSecondary())
     {
@@ -444,16 +444,16 @@ static std::optional<PaletteMap> FASTCALL gfx_draw_sprite_get_palette(ImageId im
     return paletteMap;
 }
 
-void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& spriteCoords)
+void FASTCALL GfxDrawSpriteSoftware(DrawPixelInfo& dpi, const ImageId imageId, const ScreenCoordsXY& spriteCoords)
 {
     if (imageId.HasValue())
     {
-        auto palette = gfx_draw_sprite_get_palette(imageId);
+        auto palette = GfxDrawSpriteGetPalette(imageId);
         if (!palette)
         {
             palette = PaletteMap::GetDefault();
         }
-        gfx_draw_sprite_palette_set_software(dpi, imageId, spriteCoords, *palette);
+        GfxDrawSpritePaletteSetSoftware(dpi, imageId, spriteCoords, *palette);
     }
 }
 
@@ -466,42 +466,42 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, 
  * x (cx)
  * y (dx)
  */
-void FASTCALL gfx_draw_sprite_palette_set_software(
-    rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
+void FASTCALL GfxDrawSpritePaletteSetSoftware(
+    DrawPixelInfo& dpi, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
     int32_t x = coords.x;
     int32_t y = coords.y;
 
-    const auto* g1 = gfx_get_g1_element(imageId);
+    const auto* g1 = GfxGetG1Element(imageId);
     if (g1 == nullptr)
     {
         return;
     }
 
-    if (dpi->zoom_level > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE))
+    if (dpi.zoom_level > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE))
     {
-        rct_drawpixelinfo zoomed_dpi = *dpi;
-        zoomed_dpi.bits = dpi->bits;
-        zoomed_dpi.x = dpi->x >> 1;
-        zoomed_dpi.y = dpi->y >> 1;
-        zoomed_dpi.height = dpi->height >> 1;
-        zoomed_dpi.width = dpi->width >> 1;
-        zoomed_dpi.pitch = dpi->pitch;
-        zoomed_dpi.zoom_level = dpi->zoom_level - 1;
+        DrawPixelInfo zoomed_dpi = dpi;
+        zoomed_dpi.bits = dpi.bits;
+        zoomed_dpi.x = dpi.x >> 1;
+        zoomed_dpi.y = dpi.y >> 1;
+        zoomed_dpi.height = dpi.height >> 1;
+        zoomed_dpi.width = dpi.width >> 1;
+        zoomed_dpi.pitch = dpi.pitch;
+        zoomed_dpi.zoom_level = dpi.zoom_level - 1;
 
         const auto spriteCoords = ScreenCoordsXY{ x >> 1, y >> 1 };
-        gfx_draw_sprite_palette_set_software(
-            &zoomed_dpi, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), spriteCoords, paletteMap);
+        GfxDrawSpritePaletteSetSoftware(
+            zoomed_dpi, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), spriteCoords, paletteMap);
         return;
     }
 
-    if (dpi->zoom_level > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_NO_ZOOM_DRAW))
+    if (dpi.zoom_level > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_NO_ZOOM_DRAW))
     {
         return;
     }
 
     // Its used super often so we will define it to a separate variable.
-    const auto zoom_level = dpi->zoom_level;
+    const auto zoom_level = dpi.zoom_level;
     const int32_t zoom_mask = zoom_level > ZoomLevel{ 0 } ? zoom_level.ApplyTo(0xFFFFFFFF) : 0xFFFFFFFF;
 
     if (zoom_level > ZoomLevel{ 0 } && g1->flags & G1_FLAG_RLE_COMPRESSION)
@@ -520,11 +520,11 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
     // the zoom mask on the y coordinate but does on x.
     if (g1->flags & G1_FLAG_RLE_COMPRESSION)
     {
-        dest_start_y -= dpi->y;
+        dest_start_y -= dpi.y;
     }
     else
     {
-        dest_start_y = (dest_start_y & zoom_mask) - dpi->y;
+        dest_start_y = (dest_start_y & zoom_mask) - dpi.y;
     }
     // This is the start y coordinate on the source
     int32_t source_start_y = 0;
@@ -555,11 +555,11 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
 
     int32_t dest_end_y = dest_start_y + height;
 
-    if (dest_end_y > dpi->height)
+    if (dest_end_y > dpi.height)
     {
         // If the destination y is outside of the drawing
         // image reduce the height of the image
-        height -= dest_end_y - dpi->height;
+        height -= dest_end_y - dpi.height;
     }
     // If the image no longer has anything to draw
     if (height <= 0)
@@ -573,7 +573,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
     // This is the source start x coordinate
     int32_t source_start_x = 0;
     // This is the destination start x coordinate
-    int16_t dest_start_x = ((x + g1->x_offset + ~zoom_mask) & zoom_mask) - dpi->x;
+    int16_t dest_start_x = ((x + g1->x_offset + ~zoom_mask) & zoom_mask) - dpi.x;
 
     if (dest_start_x < 0)
     {
@@ -600,11 +600,11 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
 
     int32_t dest_end_x = dest_start_x + width;
 
-    if (dest_end_x > dpi->width)
+    if (dest_end_x > dpi.width)
     {
         // If the destination x is outside of the drawing area
         // reduce the image width.
-        width -= dest_end_x - dpi->width;
+        width -= dest_end_x - dpi.width;
         // If there is no image to draw.
         if (width <= 0)
             return;
@@ -612,23 +612,23 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
 
     dest_start_x = zoom_level.ApplyInversedTo(dest_start_x);
 
-    uint8_t* dest_pointer = dpi->bits;
+    uint8_t* dest_pointer = dpi.bits;
     // Move the pointer to the start point of the destination
-    dest_pointer += (zoom_level.ApplyInversedTo(dpi->width) + dpi->pitch) * dest_start_y + dest_start_x;
+    dest_pointer += (zoom_level.ApplyInversedTo(dpi.width) + dpi.pitch) * dest_start_y + dest_start_x;
 
     DrawSpriteArgs args(imageId, paletteMap, *g1, source_start_x, source_start_y, width, height, dest_pointer);
-    gfx_sprite_to_buffer(*dpi, args);
+    GfxSpriteToBuffer(dpi, args);
 }
 
-void FASTCALL gfx_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
+void FASTCALL GfxSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
 {
     if (args.SourceImage.flags & G1_FLAG_RLE_COMPRESSION)
     {
-        gfx_rle_sprite_to_buffer(dpi, args);
+        GfxRleSpriteToBuffer(dpi, args);
     }
     else if (!(args.SourceImage.flags & G1_FLAG_1))
     {
-        gfx_bmp_sprite_to_buffer(dpi, args);
+        GfxBmpSpriteToBuffer(dpi, args);
     }
 }
 
@@ -638,12 +638,12 @@ void FASTCALL gfx_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs&
  *
  *  rct2: 0x00681DE2
  */
-void FASTCALL gfx_draw_sprite_raw_masked_software(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& scrCoords, ImageId maskImage, ImageId colourImage)
+void FASTCALL GfxDrawSpriteRawMaskedSoftware(
+    DrawPixelInfo& dpi, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage)
 {
     int32_t left, top, right, bottom, width, height;
-    auto imgMask = gfx_get_g1_element(maskImage);
-    auto imgColour = gfx_get_g1_element(colourImage);
+    auto imgMask = GfxGetG1Element(maskImage);
+    auto imgColour = GfxGetG1Element(colourImage);
     if (imgMask == nullptr || imgColour == nullptr)
     {
         return;
@@ -652,11 +652,11 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(
     // Must have transparency in order to pass check
     if (!(imgMask->flags & G1_FLAG_HAS_TRANSPARENCY) || !(imgColour->flags & G1_FLAG_HAS_TRANSPARENCY))
     {
-        gfx_draw_sprite_software(dpi, colourImage, scrCoords);
+        GfxDrawSpriteSoftware(dpi, colourImage, scrCoords);
         return;
     }
 
-    if (dpi->zoom_level != ZoomLevel{ 0 })
+    if (dpi.zoom_level != ZoomLevel{ 0 })
     {
         // TODO: Implement other zoom levels (probably not used though)
         assert(false);
@@ -668,10 +668,10 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(
 
     auto offsetCoords = scrCoords + ScreenCoordsXY{ imgMask->x_offset, imgMask->y_offset };
 
-    left = std::max<int32_t>(dpi->x, offsetCoords.x);
-    top = std::max<int32_t>(dpi->y, offsetCoords.y);
-    right = std::min(dpi->x + dpi->width, offsetCoords.x + width);
-    bottom = std::min(dpi->y + dpi->height, offsetCoords.y + height);
+    left = std::max<int32_t>(dpi.x, offsetCoords.x);
+    top = std::max<int32_t>(dpi.y, offsetCoords.y);
+    right = std::min(dpi.x + dpi.width, offsetCoords.x + width);
+    bottom = std::min(dpi.y + dpi.height, offsetCoords.y + height);
 
     width = right - left;
     height = bottom - top;
@@ -683,23 +683,23 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(
 
     uint8_t const* maskSrc = imgMask->offset + (skipY * imgMask->width) + skipX;
     uint8_t const* colourSrc = imgColour->offset + (skipY * imgColour->width) + skipX;
-    uint8_t* dst = dpi->bits + (left - dpi->x) + ((top - dpi->y) * (dpi->width + dpi->pitch));
+    uint8_t* dst = dpi.bits + (left - dpi.x) + ((top - dpi.y) * (dpi.width + dpi.pitch));
 
     int32_t maskWrap = imgMask->width - width;
     int32_t colourWrap = imgColour->width - width;
-    int32_t dstWrap = ((dpi->width + dpi->pitch) - width);
+    int32_t dstWrap = ((dpi.width + dpi.pitch) - width);
 
-    mask_fn(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
+    MaskFn(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
 }
 
-const rct_g1_element* gfx_get_g1_element(ImageId imageId)
+const G1Element* GfxGetG1Element(const ImageId imageId)
 {
-    return gfx_get_g1_element(imageId.GetIndex());
+    return GfxGetG1Element(imageId.GetIndex());
 }
 
-const rct_g1_element* gfx_get_g1_element(ImageIndex image_id)
+const G1Element* GfxGetG1Element(ImageIndex image_id)
 {
-    openrct2_assert(!gOpenRCT2NoGraphics, "gfx_get_g1_element called on headless instance");
+    openrct2_assert(!gOpenRCT2NoGraphics, "GfxGetG1Element called on headless instance");
 
     auto offset = static_cast<size_t>(image_id);
     if (offset == 0x7FFFF || offset == ImageIndexUndefined)
@@ -727,11 +727,11 @@ const rct_g1_element* gfx_get_g1_element(ImageIndex image_id)
             return &_g2.elements[idx];
         }
 
-        log_warning("Invalid entry in g2.dat requested, idx = %u. You may have to update your g2.dat.", idx);
+        LOG_WARNING("Invalid entry in g2.dat requested, idx = %u. You may have to update your g2.dat.", idx);
     }
     else if (offset < SPR_CSG_END)
     {
-        if (is_csg_loaded())
+        if (IsCsgLoaded())
         {
             size_t idx = offset - SPR_CSG_BEGIN;
             if (idx < _csg.header.num_entries)
@@ -739,7 +739,7 @@ const rct_g1_element* gfx_get_g1_element(ImageIndex image_id)
                 return &_csg.elements[idx];
             }
 
-            log_warning("Invalid entry in csg.dat requested, idx = %u.", idx);
+            LOG_WARNING("Invalid entry in csg.dat requested, idx = %u.", idx);
         }
     }
     else if (offset < SPR_SCROLLING_TEXT_END)
@@ -761,15 +761,15 @@ const rct_g1_element* gfx_get_g1_element(ImageIndex image_id)
     return nullptr;
 }
 
-void gfx_set_g1_element(ImageIndex imageId, const rct_g1_element* g1)
+void GfxSetG1Element(ImageIndex imageId, const G1Element* g1)
 {
     bool isTemp = imageId == SPR_TEMP;
     bool isValid = (imageId >= SPR_IMAGE_LIST_BEGIN && imageId < SPR_IMAGE_LIST_END)
         || (imageId >= SPR_SCROLLING_TEXT_START && imageId < SPR_SCROLLING_TEXT_END);
 
 #ifdef DEBUG
-    openrct2_assert(!gOpenRCT2NoGraphics, "gfx_set_g1_element called on headless instance");
-    openrct2_assert(isValid || isTemp, "gfx_set_g1_element called with unexpected image id");
+    openrct2_assert(!gOpenRCT2NoGraphics, "GfxSetG1Element called on headless instance");
+    openrct2_assert(isValid || isTemp, "GfxSetG1Element called with unexpected image id");
     openrct2_assert(g1 != nullptr, "g1 was nullptr");
 #endif
 
@@ -810,24 +810,12 @@ void gfx_set_g1_element(ImageIndex imageId, const rct_g1_element* g1)
     }
 }
 
-bool is_csg_loaded()
+bool IsCsgLoaded()
 {
     return _csgLoaded;
 }
 
-rct_size16 FASTCALL gfx_get_sprite_size(uint32_t image_id)
-{
-    const rct_g1_element* g1 = gfx_get_g1_element(image_id & 0X7FFFF);
-    rct_size16 size = {};
-    if (g1 != nullptr)
-    {
-        size.width = g1->width;
-        size.height = g1->height;
-    }
-    return size;
-}
-
-size_t g1_calculate_data_size(const rct_g1_element* g1)
+size_t G1CalculateDataSize(const G1Element* g1)
 {
     if (g1->flags & G1_FLAG_PALETTE)
     {

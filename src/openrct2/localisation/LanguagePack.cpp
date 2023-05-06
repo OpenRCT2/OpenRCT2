@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #include "LanguagePack.h"
 
+#include "../Context.h"
 #include "../common.h"
 #include "../core/FileStream.h"
 #include "../core/Memory.hpp"
@@ -18,6 +19,7 @@
 #include "../core/StringReader.h"
 #include "Language.h"
 #include "Localisation.h"
+#include "LocalisationService.h"
 
 #include <algorithm>
 #include <memory>
@@ -29,10 +31,10 @@ constexpr uint64_t MAX_LANGUAGE_SIZE = 64 * 1024 * 1024;
 constexpr uint64_t MAX_OBJECT_OVERRIDES = 4096;
 constexpr uint64_t MAX_SCENARIO_OVERRIDES = 4096;
 
-constexpr rct_string_id ObjectOverrideBase = 0x6000;
+constexpr StringId ObjectOverrideBase = 0x6000;
 constexpr int32_t ObjectOverrideMaxStringCount = 3;
 
-constexpr rct_string_id ScenarioOverrideBase = 0x7000;
+constexpr StringId ScenarioOverrideBase = 0x7000;
 constexpr int32_t ScenarioOverrideMaxStringCount = 3;
 
 struct ObjectOverride
@@ -68,7 +70,8 @@ public:
         Guard::ArgumentNotNull(path);
 
         // Load file directly into memory
-        utf8* fileData = nullptr;
+        u8string fileData;
+
         try
         {
             OpenRCT2::FileStream fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
@@ -79,22 +82,16 @@ public:
                 throw IOException("Language file too large.");
             }
 
-            fileData = Memory::Allocate<utf8>(fileLength + 1);
-            fs.Read(fileData, fileLength);
-            fileData[fileLength] = '\0';
+            fileData.resize(fileLength);
+            fs.Read(fileData.data(), fileLength);
         }
         catch (const std::exception& ex)
         {
-            Memory::Free(fileData);
-            log_error("Unable to open %s: %s", path, ex.what());
+            LOG_ERROR("Unable to open %s: %s", path, ex.what());
             return nullptr;
         }
 
-        // Parse the memory as text
-        auto result = FromText(id, fileData);
-
-        Memory::Free(fileData);
-        return result;
+        return FromText(id, fileData.data());
     }
 
     static std::unique_ptr<LanguagePack> FromText(uint16_t id, const utf8* text)
@@ -129,7 +126,7 @@ public:
         return static_cast<uint32_t>(_strings.size());
     }
 
-    void RemoveString(rct_string_id stringId) override
+    void RemoveString(StringId stringId) override
     {
         if (_strings.size() > static_cast<size_t>(stringId))
         {
@@ -137,7 +134,7 @@ public:
         }
     }
 
-    void SetString(rct_string_id stringId, const std::string& str) override
+    void SetString(StringId stringId, const std::string& str) override
     {
         if (_strings.size() > static_cast<size_t>(stringId))
         {
@@ -145,7 +142,7 @@ public:
         }
     }
 
-    const utf8* GetString(rct_string_id stringId) const override
+    const utf8* GetString(StringId stringId) const override
     {
         if (stringId >= ScenarioOverrideBase)
         {
@@ -185,7 +182,7 @@ public:
         return nullptr;
     }
 
-    rct_string_id GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) override
+    StringId GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) override
     {
         Guard::Assert(index < ObjectOverrideMaxStringCount);
 
@@ -206,7 +203,7 @@ public:
         return STR_NONE;
     }
 
-    rct_string_id GetScenarioOverrideStringId(const utf8* scenarioFilename, uint8_t index) override
+    StringId GetScenarioOverrideStringId(const utf8* scenarioFilename, uint8_t index) override
     {
         Guard::ArgumentNotNull(scenarioFilename);
         Guard::Assert(index < ScenarioOverrideMaxStringCount);
@@ -395,7 +392,7 @@ private:
                 {
                     if (_objectOverrides.size() == MAX_OBJECT_OVERRIDES)
                     {
-                        log_warning("Maximum number of localised object strings exceeded.");
+                        LOG_WARNING("Maximum number of localised object strings exceeded.");
                     }
 
                     _objectOverrides.emplace_back();
@@ -439,7 +436,7 @@ private:
             {
                 if (_scenarioOverrides.size() == MAX_SCENARIO_OVERRIDES)
                 {
-                    log_warning("Maximum number of scenario strings exceeded.");
+                    LOG_WARNING("Maximum number of scenario strings exceeded.");
                 }
 
                 _scenarioOverrides.emplace_back();
@@ -578,6 +575,12 @@ namespace LanguagePackFactory
     {
         auto languagePack = LanguagePack::FromFile(id, path);
         return languagePack;
+    }
+
+    std::unique_ptr<ILanguagePack> FromLanguageId(uint16_t id)
+    {
+        auto path = OpenRCT2::GetContext()->GetLocalisationService().GetLanguagePath(id);
+        return LanguagePack::FromFile(id, path.c_str());
     }
 
     std::unique_ptr<ILanguagePack> FromText(uint16_t id, const utf8* text)

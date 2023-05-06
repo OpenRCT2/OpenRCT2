@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -64,17 +64,17 @@ void EntityBase::Invalidate()
             break;
     }
 
-    viewports_invalidate(SpriteRect, maxZoom);
+    ViewportsInvalidate(SpriteData.SpriteRect, maxZoom);
 }
 
 void EntityBase::Serialise(DataSerialiser& stream)
 {
     stream << Type;
-    stream << sprite_index;
+    stream << Id;
     stream << x;
     stream << y;
     stream << z;
-    stream << sprite_direction;
+    stream << Orientation;
 }
 
 // Exists only for signature

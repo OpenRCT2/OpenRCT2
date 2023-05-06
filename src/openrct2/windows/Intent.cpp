@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,12 +13,22 @@
 
 #include <utility>
 
-Intent::Intent(rct_windowclass windowclass)
+Intent::Intent(WindowClass windowClass)
+    : _Class(windowClass)
 {
-    this->_Class = windowclass;
 }
 
-Intent* Intent::putExtra(uint32_t key, uint32_t value)
+Intent::Intent(WindowDetail windowDetail)
+    : _WindowDetail(windowDetail)
+{
+}
+
+Intent::Intent(IntentAction intentAction)
+    : _Action(intentAction)
+{
+}
+
+Intent* Intent::PutExtra(uint32_t key, uint32_t value)
 {
     IntentData data = {};
     data.intVal.unsignedInt = value;
@@ -29,7 +39,7 @@ Intent* Intent::putExtra(uint32_t key, uint32_t value)
     return this;
 }
 
-Intent* Intent::putExtra(uint32_t key, void* value)
+Intent* Intent::PutExtra(uint32_t key, void* value)
 {
     IntentData data = {};
     data.pointerVal = value;
@@ -40,7 +50,7 @@ Intent* Intent::putExtra(uint32_t key, void* value)
     return this;
 }
 
-Intent* Intent::putExtra(uint32_t key, int32_t value)
+Intent* Intent::PutExtra(uint32_t key, int32_t value)
 {
     IntentData data = {};
     data.intVal.signedInt = value;
@@ -51,7 +61,7 @@ Intent* Intent::putExtra(uint32_t key, int32_t value)
     return this;
 }
 
-Intent* Intent::putExtra(uint32_t key, std::string value)
+Intent* Intent::PutExtra(uint32_t key, std::string value)
 {
     IntentData data = {};
     data.stringVal = std::move(value);
@@ -62,7 +72,7 @@ Intent* Intent::putExtra(uint32_t key, std::string value)
     return this;
 }
 
-Intent* Intent::putExtra(uint32_t key, close_callback value)
+Intent* Intent::PutExtra(uint32_t key, close_callback value)
 {
     IntentData data = {};
     data.closeCallbackVal = value;
@@ -73,9 +83,19 @@ Intent* Intent::putExtra(uint32_t key, close_callback value)
     return this;
 }
 
-rct_windowclass Intent::GetWindowClass() const
+WindowClass Intent::GetWindowClass() const
 {
     return this->_Class;
+}
+
+WindowDetail Intent::GetWindowDetail() const
+{
+    return this->_WindowDetail;
+}
+
+IntentAction Intent::GetAction() const
+{
+    return this->_Action;
 }
 
 void* Intent::GetPointerExtra(uint32_t key) const

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -86,6 +86,8 @@ namespace OpenRCT2
         void InitAll(const TileCoordsXY& mapSize);
         void Tick();
         void UpdateLogic(LogicTimings* timings = nullptr);
+        void SetDate(Date newDate);
+        void ResetDate();
 
     private:
         void CreateStateSnapshot();

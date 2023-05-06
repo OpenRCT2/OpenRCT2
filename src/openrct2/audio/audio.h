@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include "AudioMixer.h"
 
 #include <memory>
+#include <string_view>
 #include <vector>
 
 class AudioObject;
@@ -127,6 +128,8 @@ namespace OpenRCT2::Audio
         DoorClose,
         Portcullis,
         CrowdAmbience,
+        LiftRMC,
+        TrackFrictionRMC,
         NoScream = 254,
         Null = 255
     };
@@ -135,10 +138,12 @@ namespace OpenRCT2::Audio
 
     namespace AudioObjectIdentifiers
     {
-        constexpr std::string_view Rct1Title = "rct1.audio.title";
-        constexpr std::string_view Rct2Base = "rct2.audio.base";
-        constexpr std::string_view Rct2Title = "rct2.audio.title";
-        constexpr std::string_view Rct2Circus = "rct2.audio.circus";
+        constexpr std::string_view RCT1Title = "rct1.audio.title";
+        constexpr std::string_view RCT2Base = "rct2.audio.base";
+        constexpr std::string_view RCTCBase = "rct2.audio.base.rctc";
+        constexpr std::string_view RCT2Title = "rct2.audio.title";
+        constexpr std::string_view RCT2Circus = "rct2.audio.circus";
+        constexpr std::string_view OpenRCT2Additional = "openrct2.audio.additional";
     } // namespace AudioObjectIdentifiers
 
     extern bool gGameSoundsOff;

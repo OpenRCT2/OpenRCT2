@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -37,65 +37,17 @@ enum class RailingEntrySupportType : uint8_t
     Count
 };
 
-enum
-{
-    FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR = (1 << 2),
-    FOOTPATH_ENTRY_FLAG_IS_QUEUE = (1 << 3),
-    FOOTPATH_ENTRY_FLAG_NO_SLOPE_RAILINGS = (1 << 4),
-};
-
-#pragma pack(push, 1)
-struct rct_footpath_entry
-{
-    rct_string_id string_idx;             // 0x00
-    uint32_t image;                       // 0x02
-    uint32_t bridge_image;                // 0x06
-    RailingEntrySupportType support_type; // 0x0A
-    uint8_t flags;                        // 0x0B
-    uint8_t scrolling_mode;               // 0x0C
-
-    constexpr uint32_t GetQueueImage() const
-    {
-        return image + 51;
-    }
-    constexpr uint32_t GetPreviewImage() const
-    {
-        return image + 71;
-    }
-    constexpr uint32_t GetQueuePreviewImage() const
-    {
-        // Editor-only paths usually lack queue images. In this case, use the main path image.
-        if (flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
-        {
-            return GetPreviewImage();
-        }
-
-        return image + 72;
-    }
-    constexpr uint32_t GetRailingsImage() const
-    {
-        return image + 73;
-    }
-};
-assert_struct_size(rct_footpath_entry, 13);
-#pragma pack(pop)
-
 struct PathSurfaceDescriptor
 {
-    rct_string_id Name;
+    StringId Name;
     uint32_t Image;
     uint32_t PreviewImage;
     uint8_t Flags;
-
-    inline constexpr bool IsEditorOnly() const
-    {
-        return Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR;
-    }
 };
 
 struct PathRailingsDescriptor
 {
-    rct_string_id Name;
+    StringId Name;
     uint32_t PreviewImage;
     uint32_t BridgeImage;
     uint32_t RailingsImage;
@@ -169,6 +121,7 @@ enum
     FOOTPATH_ELEMENT_FLAGS2_BLOCKED_BY_VEHICLE = (1 << 3),
     FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_BROKEN = (1 << 4),
     FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY = (1 << 5),
+    FOOTPATH_ELEMENT_FLAGS2_HAS_JUNCTION_RAILINGS = (1 << 6),
 };
 
 enum
@@ -227,36 +180,35 @@ extern uint8_t gFootpathConstructSlope;
 extern uint8_t gFootpathGroundFlags;
 
 // Given a direction, this will return how to increase/decrease the x and y coordinates.
-extern const CoordsXY DirectionOffsets[NumOrthogonalDirections];
-extern const CoordsXY BinUseOffsets[NumOrthogonalDirections];
-extern const CoordsXY BenchUseOffsets[NumOrthogonalDirections * 2];
+extern const std::array<CoordsXY, NumOrthogonalDirections> DirectionOffsets;
+extern const std::array<CoordsXY, NumOrthogonalDirections> BinUseOffsets;
+extern const std::array<CoordsXY, NumOrthogonalDirections * 2> BenchUseOffsets;
 
-TileElement* map_get_footpath_element(const CoordsXYZ& coords);
-void footpath_interrupt_peeps(const CoordsXYZ& footpathPos);
-money32 footpath_remove(const CoordsXYZ& footpathLoc, int32_t flags);
-money32 footpath_provisional_set(
+TileElement* MapGetFootpathElement(const CoordsXYZ& coords);
+void FootpathInterruptPeeps(const CoordsXYZ& footpathPos);
+money64 FootpathProvisionalSet(
     ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
     PathConstructFlags constructFlags);
-void footpath_provisional_remove();
-void footpath_provisional_update();
-CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement);
-CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement);
-void footpath_remove_litter(const CoordsXYZ& footpathPos);
-void footpath_connect_edges(const CoordsXY& footpathPos, TileElement* tileElement, int32_t flags);
-void footpath_update_queue_chains();
-bool fence_in_the_way(const CoordsXYRangedZ& fencePos, int32_t direction);
-void footpath_chain_ride_queue(
+void FootpathProvisionalRemove();
+void FootpathProvisionalUpdate();
+CoordsXY FootpathGetCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement);
+CoordsXY FootpathBridgeGetInfoFromPos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement);
+void FootpathRemoveLitter(const CoordsXYZ& footpathPos);
+void FootpathConnectEdges(const CoordsXY& footpathPos, TileElement* tileElement, int32_t flags);
+void FootpathUpdateQueueChains();
+bool WallInTheWay(const CoordsXYRangedZ& fencePos, int32_t direction);
+void FootpathChainRideQueue(
     RideId rideIndex, StationIndex entranceIndex, const CoordsXY& footpathPos, TileElement* tileElement, int32_t direction);
-void footpath_update_path_wide_flags(const CoordsXY& footpathPos);
-bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position);
+void FootpathUpdatePathWideFlags(const CoordsXY& footpathPos);
+bool FootpathIsBlockedByVehicle(const TileCoordsXYZ& position);
 
-int32_t footpath_is_connected_to_map_edge(const CoordsXYZ& footpathPos, int32_t direction, int32_t flags);
-void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElement);
+int32_t FootpathIsConnectedToMapEdge(const CoordsXYZ& footpathPos, int32_t direction, int32_t flags);
+void FootpathRemoveEdgesAt(const CoordsXY& footpathPos, TileElement* tileElement);
 
 bool FootpathSelectDefault();
 const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex);
 const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex);
 const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex);
 
-void footpath_queue_chain_reset();
-void footpath_queue_chain_push(RideId rideIndex);
+void FootpathQueueChainReset();
+void FootpathQueueChainPush(RideId rideIndex);

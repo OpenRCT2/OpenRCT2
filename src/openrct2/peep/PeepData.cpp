@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1837,7 +1837,7 @@ static constexpr const uint8_t PeepSpriteImage_Sandwich_35_sequence[] = { 0, 1, 
 static constexpr const uint8_t PeepSpriteImage_Sandwich_36_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11, 12, 11, 12, 11, 12, 11, 12, 11, 11, 11, 11, 11, 13, 14, 15 };
 
 
-static constexpr const rct_peep_animation PeepSpriteImage_Normal[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Normal[] = {
     { 6409,  std::size(PeepSpriteImage_Normal_00_sequence), PeepSpriteImage_Normal_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Normal_01_sequence), PeepSpriteImage_Normal_01_sequence },
     { 6621,  std::size(PeepSpriteImage_Normal_02_sequence), PeepSpriteImage_Normal_02_sequence },
@@ -1877,7 +1877,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Normal[] = {
     { 7181,  std::size(PeepSpriteImage_Normal_36_sequence), PeepSpriteImage_Normal_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Handyman[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Handyman[] = {
     { 11261, std::size(PeepSpriteImage_Handyman_00_sequence), PeepSpriteImage_Handyman_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Handyman_01_sequence), PeepSpriteImage_Handyman_01_sequence },
     { 11285, std::size(PeepSpriteImage_Handyman_02_sequence), PeepSpriteImage_Handyman_02_sequence },
@@ -1917,7 +1917,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Handyman[] = {
     { 7181,  std::size(PeepSpriteImage_Handyman_36_sequence), PeepSpriteImage_Handyman_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Mechanic[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Mechanic[] = {
     { 11441, std::size(PeepSpriteImage_Mechanic_00_sequence), PeepSpriteImage_Mechanic_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Mechanic_01_sequence), PeepSpriteImage_Mechanic_01_sequence },
     { 11465, std::size(PeepSpriteImage_Mechanic_02_sequence), PeepSpriteImage_Mechanic_02_sequence },
@@ -1957,7 +1957,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Mechanic[] = {
     { 7181,  std::size(PeepSpriteImage_Mechanic_36_sequence), PeepSpriteImage_Mechanic_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Security[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Security[] = {
     { 11881, std::size(PeepSpriteImage_Security_00_sequence), PeepSpriteImage_Security_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Security_01_sequence), PeepSpriteImage_Security_01_sequence },
     { 11905, std::size(PeepSpriteImage_Security_02_sequence), PeepSpriteImage_Security_02_sequence },
@@ -1997,7 +1997,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Security[] = {
     { 7181,  std::size(PeepSpriteImage_Security_36_sequence), PeepSpriteImage_Security_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_EntertainerPanda[] = {
+static constexpr const PeepAnimation PeepSpriteImage_EntertainerPanda[] = {
     { 11973, std::size(PeepSpriteImage_EntertainerPanda_00_sequence), PeepSpriteImage_EntertainerPanda_00_sequence },
     { 6585,  std::size(PeepSpriteImage_EntertainerPanda_01_sequence), PeepSpriteImage_EntertainerPanda_01_sequence },
     { 11997, std::size(PeepSpriteImage_EntertainerPanda_02_sequence), PeepSpriteImage_EntertainerPanda_02_sequence },
@@ -2037,7 +2037,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_EntertainerPanda[] = {
     { 7181,  std::size(PeepSpriteImage_EntertainerPanda_36_sequence), PeepSpriteImage_EntertainerPanda_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_EntertainerTiger[] = {
+static constexpr const PeepAnimation PeepSpriteImage_EntertainerTiger[] = {
     { 12129, std::size(PeepSpriteImage_EntertainerTiger_00_sequence), PeepSpriteImage_EntertainerTiger_00_sequence },
     { 6585,  std::size(PeepSpriteImage_EntertainerTiger_01_sequence), PeepSpriteImage_EntertainerTiger_01_sequence },
     { 12153, std::size(PeepSpriteImage_EntertainerTiger_02_sequence), PeepSpriteImage_EntertainerTiger_02_sequence },
@@ -2077,7 +2077,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_EntertainerTiger[] = {
     { 7181,  std::size(PeepSpriteImage_EntertainerTiger_36_sequence), PeepSpriteImage_EntertainerTiger_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_EntertainerElephant[] = {
+static constexpr const PeepAnimation PeepSpriteImage_EntertainerElephant[] = {
     { 12325, std::size(PeepSpriteImage_EntertainerElephant_00_sequence), PeepSpriteImage_EntertainerElephant_00_sequence },
     { 6585,  std::size(PeepSpriteImage_EntertainerElephant_01_sequence), PeepSpriteImage_EntertainerElephant_01_sequence },
     { 12349, std::size(PeepSpriteImage_EntertainerElephant_02_sequence), PeepSpriteImage_EntertainerElephant_02_sequence },
@@ -2117,7 +2117,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_EntertainerElephant[] 
     { 7181,  std::size(PeepSpriteImage_EntertainerElephant_36_sequence), PeepSpriteImage_EntertainerElephant_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_EntertainerRoman[] = {
+static constexpr const PeepAnimation PeepSpriteImage_EntertainerRoman[] = {
     { 13897, std::size(PeepSpriteImage_EntertainerRoman_00_sequence), PeepSpriteImage_EntertainerRoman_00_sequence },
     { 6585,  std::size(PeepSpriteImage_EntertainerRoman_01_sequence), PeepSpriteImage_EntertainerRoman_01_sequence },
     { 13921, std::size(PeepSpriteImage_EntertainerRoman_02_sequence), PeepSpriteImage_EntertainerRoman_02_sequence },
@@ -2157,7 +2157,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_EntertainerRoman[] = {
     { 7181,  std::size(PeepSpriteImage_EntertainerRoman_36_sequence), PeepSpriteImage_EntertainerRoman_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_EntertainerGorilla[] = {
+static constexpr const PeepAnimation PeepSpriteImage_EntertainerGorilla[] = {
     { 12549, std::size(PeepSpriteImage_EntertainerGorilla_00_sequence), PeepSpriteImage_EntertainerGorilla_00_sequence },
     { 6585,  std::size(PeepSpriteImage_EntertainerGorilla_01_sequence), PeepSpriteImage_EntertainerGorilla_01_sequence },
     { 12545, std::size(PeepSpriteImage_EntertainerGorilla_02_sequence), PeepSpriteImage_EntertainerGorilla_02_sequence },
@@ -2197,7 +2197,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_EntertainerGorilla[] =
     { 7181,  std::size(PeepSpriteImage_EntertainerGorilla_36_sequence), PeepSpriteImage_EntertainerGorilla_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_EntertainerSnowman[] = {
+static constexpr const PeepAnimation PeepSpriteImage_EntertainerSnowman[] = {
     { 12681, std::size(PeepSpriteImage_EntertainerSnowman_00_sequence), PeepSpriteImage_EntertainerSnowman_00_sequence },
     { 6585,  std::size(PeepSpriteImage_EntertainerSnowman_01_sequence), PeepSpriteImage_EntertainerSnowman_01_sequence },
     { 12677, std::size(PeepSpriteImage_EntertainerSnowman_02_sequence), PeepSpriteImage_EntertainerSnowman_02_sequence },
@@ -2237,7 +2237,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_EntertainerSnowman[] =
     { 7181,  std::size(PeepSpriteImage_EntertainerSnowman_36_sequence), PeepSpriteImage_EntertainerSnowman_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_EntertainerKnight[] = {
+static constexpr const PeepAnimation PeepSpriteImage_EntertainerKnight[] = {
     { 12897, std::size(PeepSpriteImage_EntertainerKnight_00_sequence), PeepSpriteImage_EntertainerKnight_00_sequence },
     { 6585,  std::size(PeepSpriteImage_EntertainerKnight_01_sequence), PeepSpriteImage_EntertainerKnight_01_sequence },
     { 12893, std::size(PeepSpriteImage_EntertainerKnight_02_sequence), PeepSpriteImage_EntertainerKnight_02_sequence },
@@ -2277,7 +2277,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_EntertainerKnight[] = 
     { 7181,  std::size(PeepSpriteImage_EntertainerKnight_36_sequence), PeepSpriteImage_EntertainerKnight_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_EntertainerAstronaut[] = {
+static constexpr const PeepAnimation PeepSpriteImage_EntertainerAstronaut[] = {
     { 13769, std::size(PeepSpriteImage_EntertainerAstronaut_00_sequence), PeepSpriteImage_EntertainerAstronaut_00_sequence },
     { 6585,  std::size(PeepSpriteImage_EntertainerAstronaut_01_sequence), PeepSpriteImage_EntertainerAstronaut_01_sequence },
     { 13765, std::size(PeepSpriteImage_EntertainerAstronaut_02_sequence), PeepSpriteImage_EntertainerAstronaut_02_sequence },
@@ -2317,7 +2317,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_EntertainerAstronaut[]
     { 7181,  std::size(PeepSpriteImage_EntertainerAstronaut_36_sequence), PeepSpriteImage_EntertainerAstronaut_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_EntertainerBandit[] = {
+static constexpr const PeepAnimation PeepSpriteImage_EntertainerBandit[] = {
     { 13109, std::size(PeepSpriteImage_EntertainerBandit_00_sequence), PeepSpriteImage_EntertainerBandit_00_sequence },
     { 6585,  std::size(PeepSpriteImage_EntertainerBandit_01_sequence), PeepSpriteImage_EntertainerBandit_01_sequence },
     { 13105, std::size(PeepSpriteImage_EntertainerBandit_02_sequence), PeepSpriteImage_EntertainerBandit_02_sequence },
@@ -2357,7 +2357,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_EntertainerBandit[] = 
     { 7181,  std::size(PeepSpriteImage_EntertainerBandit_36_sequence), PeepSpriteImage_EntertainerBandit_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_EntertainerSheriff[] = {
+static constexpr const PeepAnimation PeepSpriteImage_EntertainerSheriff[] = {
     { 13613, std::size(PeepSpriteImage_EntertainerSheriff_00_sequence), PeepSpriteImage_EntertainerSheriff_00_sequence },
     { 6585,  std::size(PeepSpriteImage_EntertainerSheriff_01_sequence), PeepSpriteImage_EntertainerSheriff_01_sequence },
     { 13609, std::size(PeepSpriteImage_EntertainerSheriff_02_sequence), PeepSpriteImage_EntertainerSheriff_02_sequence },
@@ -2397,7 +2397,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_EntertainerSheriff[] =
     { 7181,  std::size(PeepSpriteImage_EntertainerSheriff_36_sequence), PeepSpriteImage_EntertainerSheriff_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_EntertainerPirate[] = {
+static constexpr const PeepAnimation PeepSpriteImage_EntertainerPirate[] = {
     { 13381, std::size(PeepSpriteImage_EntertainerPirate_00_sequence), PeepSpriteImage_EntertainerPirate_00_sequence },
     { 6585,  std::size(PeepSpriteImage_EntertainerPirate_01_sequence), PeepSpriteImage_EntertainerPirate_01_sequence },
     { 13377, std::size(PeepSpriteImage_EntertainerPirate_02_sequence), PeepSpriteImage_EntertainerPirate_02_sequence },
@@ -2437,7 +2437,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_EntertainerPirate[] = 
     { 7181,  std::size(PeepSpriteImage_EntertainerPirate_36_sequence), PeepSpriteImage_EntertainerPirate_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_IceCream[] = {
+static constexpr const PeepAnimation PeepSpriteImage_IceCream[] = {
     { 7505,  std::size(PeepSpriteImage_IceCream_00_sequence), PeepSpriteImage_IceCream_00_sequence },
     { 6585,  std::size(PeepSpriteImage_IceCream_01_sequence), PeepSpriteImage_IceCream_01_sequence },
     { 7501,  std::size(PeepSpriteImage_IceCream_02_sequence), PeepSpriteImage_IceCream_02_sequence },
@@ -2477,7 +2477,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_IceCream[] = {
     { 7181,  std::size(PeepSpriteImage_IceCream_36_sequence), PeepSpriteImage_IceCream_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Chips[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Chips[] = {
     { 7609,  std::size(PeepSpriteImage_Chips_00_sequence), PeepSpriteImage_Chips_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Chips_01_sequence), PeepSpriteImage_Chips_01_sequence },
     { 7605,  std::size(PeepSpriteImage_Chips_02_sequence), PeepSpriteImage_Chips_02_sequence },
@@ -2517,7 +2517,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Chips[] = {
     { 7181,  std::size(PeepSpriteImage_Chips_36_sequence), PeepSpriteImage_Chips_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Burger[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Burger[] = {
     { 8385,  std::size(PeepSpriteImage_Burger_00_sequence), PeepSpriteImage_Burger_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Burger_01_sequence), PeepSpriteImage_Burger_01_sequence },
     { 8381,  std::size(PeepSpriteImage_Burger_02_sequence), PeepSpriteImage_Burger_02_sequence },
@@ -2557,7 +2557,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Burger[] = {
     { 7181,  std::size(PeepSpriteImage_Burger_36_sequence), PeepSpriteImage_Burger_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Drink[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Drink[] = {
     { 8713,  std::size(PeepSpriteImage_Drink_00_sequence), PeepSpriteImage_Drink_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Drink_01_sequence), PeepSpriteImage_Drink_01_sequence },
     { 8709,  std::size(PeepSpriteImage_Drink_02_sequence), PeepSpriteImage_Drink_02_sequence },
@@ -2597,7 +2597,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Drink[] = {
     { 7181,  std::size(PeepSpriteImage_Drink_36_sequence), PeepSpriteImage_Drink_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Balloon[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Balloon[] = {
     { 10785, std::size(PeepSpriteImage_Balloon_00_sequence), PeepSpriteImage_Balloon_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Balloon_01_sequence), PeepSpriteImage_Balloon_01_sequence },
     { 10781, std::size(PeepSpriteImage_Balloon_02_sequence), PeepSpriteImage_Balloon_02_sequence },
@@ -2637,7 +2637,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Balloon[] = {
     { 7181,  std::size(PeepSpriteImage_Balloon_36_sequence), PeepSpriteImage_Balloon_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Candyfloss[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Candyfloss[] = {
     { 10849, std::size(PeepSpriteImage_Candyfloss_00_sequence), PeepSpriteImage_Candyfloss_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Candyfloss_01_sequence), PeepSpriteImage_Candyfloss_01_sequence },
     { 10845, std::size(PeepSpriteImage_Candyfloss_02_sequence), PeepSpriteImage_Candyfloss_02_sequence },
@@ -2677,7 +2677,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Candyfloss[] = {
     { 7181,  std::size(PeepSpriteImage_Candyfloss_36_sequence), PeepSpriteImage_Candyfloss_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Umbrella[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Umbrella[] = {
     { 11197, std::size(PeepSpriteImage_Umbrella_00_sequence), PeepSpriteImage_Umbrella_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Umbrella_01_sequence), PeepSpriteImage_Umbrella_01_sequence },
     { 11221, std::size(PeepSpriteImage_Umbrella_02_sequence), PeepSpriteImage_Umbrella_02_sequence },
@@ -2717,7 +2717,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Umbrella[] = {
     { 7181,  std::size(PeepSpriteImage_Umbrella_36_sequence), PeepSpriteImage_Umbrella_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Pizza[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Pizza[] = {
     { 7785,  std::size(PeepSpriteImage_Pizza_00_sequence), PeepSpriteImage_Pizza_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Pizza_01_sequence), PeepSpriteImage_Pizza_01_sequence },
     { 7781,  std::size(PeepSpriteImage_Pizza_02_sequence), PeepSpriteImage_Pizza_02_sequence },
@@ -2757,7 +2757,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Pizza[] = {
     { 7181,  std::size(PeepSpriteImage_Pizza_36_sequence), PeepSpriteImage_Pizza_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_SecurityAlt[] = {
+static constexpr const PeepAnimation PeepSpriteImage_SecurityAlt[] = {
     { 11949, std::size(PeepSpriteImage_SecurityAlt_00_sequence),PeepSpriteImage_SecurityAlt_00_sequence },
     { 6585,  std::size(PeepSpriteImage_SecurityAlt_01_sequence),PeepSpriteImage_SecurityAlt_01_sequence },
     { 11905, std::size(PeepSpriteImage_SecurityAlt_02_sequence),PeepSpriteImage_SecurityAlt_02_sequence },
@@ -2797,7 +2797,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_SecurityAlt[] = {
     { 7181,  std::size(PeepSpriteImage_SecurityAlt_36_sequence),PeepSpriteImage_SecurityAlt_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Popcorn[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Popcorn[] = {
     { 11025, std::size(PeepSpriteImage_Popcorn_00_sequence), PeepSpriteImage_Popcorn_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Popcorn_01_sequence), PeepSpriteImage_Popcorn_01_sequence },
     { 11021, std::size(PeepSpriteImage_Popcorn_02_sequence), PeepSpriteImage_Popcorn_02_sequence },
@@ -2837,7 +2837,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Popcorn[] = {
     { 7181,  std::size(PeepSpriteImage_Popcorn_36_sequence), PeepSpriteImage_Popcorn_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_ArmsCrossed[] = {
+static constexpr const PeepAnimation PeepSpriteImage_ArmsCrossed[] = {
     { 6433,  std::size(PeepSpriteImage_ArmsCrossed_00_sequence), PeepSpriteImage_ArmsCrossed_00_sequence },
     { 6585,  std::size(PeepSpriteImage_ArmsCrossed_01_sequence), PeepSpriteImage_ArmsCrossed_01_sequence },
     { 6621,  std::size(PeepSpriteImage_ArmsCrossed_02_sequence), PeepSpriteImage_ArmsCrossed_02_sequence },
@@ -2877,7 +2877,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_ArmsCrossed[] = {
     { 7181,  std::size(PeepSpriteImage_ArmsCrossed_36_sequence), PeepSpriteImage_ArmsCrossed_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_HeadDown[] = {
+static constexpr const PeepAnimation PeepSpriteImage_HeadDown[] = {
     { 6457,  std::size(PeepSpriteImage_HeadDown_00_sequence), PeepSpriteImage_HeadDown_00_sequence },
     { 6585,  std::size(PeepSpriteImage_HeadDown_01_sequence), PeepSpriteImage_HeadDown_01_sequence },
     { 6621,  std::size(PeepSpriteImage_HeadDown_02_sequence), PeepSpriteImage_HeadDown_02_sequence },
@@ -2917,7 +2917,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_HeadDown[] = {
     { 7181,  std::size(PeepSpriteImage_HeadDown_36_sequence), PeepSpriteImage_HeadDown_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Nauseous[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Nauseous[] = {
     { 6481,  std::size(PeepSpriteImage_Nauseous_00_sequence), PeepSpriteImage_Nauseous_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Nauseous_01_sequence), PeepSpriteImage_Nauseous_01_sequence },
     { 6621,  std::size(PeepSpriteImage_Nauseous_02_sequence), PeepSpriteImage_Nauseous_02_sequence },
@@ -2957,7 +2957,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Nauseous[] = {
     { 7181,  std::size(PeepSpriteImage_Nauseous_36_sequence), PeepSpriteImage_Nauseous_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_VeryNauseous[] = {
+static constexpr const PeepAnimation PeepSpriteImage_VeryNauseous[] = {
     { 6505,  std::size(PeepSpriteImage_VeryNauseous_00_sequence), PeepSpriteImage_VeryNauseous_00_sequence },
     { 6585,  std::size(PeepSpriteImage_VeryNauseous_01_sequence), PeepSpriteImage_VeryNauseous_01_sequence },
     { 6529,  std::size(PeepSpriteImage_VeryNauseous_02_sequence), PeepSpriteImage_VeryNauseous_02_sequence },
@@ -2997,7 +2997,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_VeryNauseous[] = {
     { 7181,  std::size(PeepSpriteImage_VeryNauseous_36_sequence), PeepSpriteImage_VeryNauseous_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_RequireToilet[] = {
+static constexpr const PeepAnimation PeepSpriteImage_RequireToilet[] = {
     { 6537,  std::size(PeepSpriteImage_RequireToilet_00_sequence), PeepSpriteImage_RequireToilet_00_sequence },
     { 6585,  std::size(PeepSpriteImage_RequireToilet_01_sequence), PeepSpriteImage_RequireToilet_01_sequence },
     { 6621,  std::size(PeepSpriteImage_RequireToilet_02_sequence), PeepSpriteImage_RequireToilet_02_sequence },
@@ -3037,7 +3037,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_RequireToilet[] = {
     { 7181,  std::size(PeepSpriteImage_RequireToilet_36_sequence), PeepSpriteImage_RequireToilet_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Hat[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Hat[] = {
     { 10721, std::size(PeepSpriteImage_Hat_00_sequence), PeepSpriteImage_Hat_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Hat_01_sequence), PeepSpriteImage_Hat_01_sequence },
     { 10717, std::size(PeepSpriteImage_Hat_02_sequence), PeepSpriteImage_Hat_02_sequence },
@@ -3077,7 +3077,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Hat[] = {
     { 7181,  std::size(PeepSpriteImage_Hat_36_sequence), PeepSpriteImage_Hat_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_HotDog[] = {
+static constexpr const PeepAnimation PeepSpriteImage_HotDog[] = {
     { 7889,  std::size(PeepSpriteImage_HotDog_00_sequence), PeepSpriteImage_HotDog_00_sequence },
     { 6585,  std::size(PeepSpriteImage_HotDog_01_sequence), PeepSpriteImage_HotDog_01_sequence },
     { 7885,  std::size(PeepSpriteImage_HotDog_02_sequence), PeepSpriteImage_HotDog_02_sequence },
@@ -3117,7 +3117,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_HotDog[] = {
     { 7181,  std::size(PeepSpriteImage_HotDog_36_sequence), PeepSpriteImage_HotDog_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Tentacle[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Tentacle[] = {
     { 8065,  std::size(PeepSpriteImage_Tentacle_00_sequence), PeepSpriteImage_Tentacle_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Tentacle_01_sequence), PeepSpriteImage_Tentacle_01_sequence },
     { 8061,  std::size(PeepSpriteImage_Tentacle_02_sequence), PeepSpriteImage_Tentacle_02_sequence },
@@ -3157,7 +3157,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Tentacle[] = {
     { 7181,  std::size(PeepSpriteImage_Tentacle_36_sequence), PeepSpriteImage_Tentacle_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_ToffeeApple[] = {
+static constexpr const PeepAnimation PeepSpriteImage_ToffeeApple[] = {
     { 7401,  std::size(PeepSpriteImage_ToffeeApple_00_sequence), PeepSpriteImage_ToffeeApple_00_sequence },
     { 6585,  std::size(PeepSpriteImage_ToffeeApple_01_sequence), PeepSpriteImage_ToffeeApple_01_sequence },
     { 7397,  std::size(PeepSpriteImage_ToffeeApple_02_sequence), PeepSpriteImage_ToffeeApple_02_sequence },
@@ -3197,7 +3197,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_ToffeeApple[] = {
     { 7181,  std::size(PeepSpriteImage_ToffeeApple_36_sequence), PeepSpriteImage_ToffeeApple_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Donut[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Donut[] = {
     { 8561,  std::size(PeepSpriteImage_Donut_00_sequence), PeepSpriteImage_Donut_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Donut_01_sequence), PeepSpriteImage_Donut_01_sequence },
     { 8557,  std::size(PeepSpriteImage_Donut_02_sequence), PeepSpriteImage_Donut_02_sequence },
@@ -3237,7 +3237,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Donut[] = {
     { 7181,  std::size(PeepSpriteImage_Donut_36_sequence), PeepSpriteImage_Donut_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Coffee[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Coffee[] = {
     { 8885,  std::size(PeepSpriteImage_Coffee_00_sequence), PeepSpriteImage_Coffee_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Coffee_01_sequence), PeepSpriteImage_Coffee_01_sequence },
     { 8981,  std::size(PeepSpriteImage_Coffee_02_sequence), PeepSpriteImage_Coffee_02_sequence },
@@ -3277,7 +3277,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Coffee[] = {
     { 7181,  std::size(PeepSpriteImage_Coffee_36_sequence), PeepSpriteImage_Coffee_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Chicken[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Chicken[] = {
     { 9005,  std::size(PeepSpriteImage_Chicken_00_sequence), PeepSpriteImage_Chicken_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Chicken_01_sequence), PeepSpriteImage_Chicken_01_sequence },
     { 9125,  std::size(PeepSpriteImage_Chicken_02_sequence), PeepSpriteImage_Chicken_02_sequence },
@@ -3317,7 +3317,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Chicken[] = {
     { 7181,  std::size(PeepSpriteImage_Chicken_36_sequence), PeepSpriteImage_Chicken_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Lemonade[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Lemonade[] = {
     { 9173,  std::size(PeepSpriteImage_Lemonade_00_sequence), PeepSpriteImage_Lemonade_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Lemonade_01_sequence), PeepSpriteImage_Lemonade_01_sequence },
     { 9293,  std::size(PeepSpriteImage_Lemonade_02_sequence), PeepSpriteImage_Lemonade_02_sequence },
@@ -3357,7 +3357,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Lemonade[] = {
     { 7181,  std::size(PeepSpriteImage_Lemonade_36_sequence), PeepSpriteImage_Lemonade_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Watching[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Watching[] = {
     { 6409,  std::size(PeepSpriteImage_Watching_00_sequence), PeepSpriteImage_Watching_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Watching_01_sequence), PeepSpriteImage_Watching_01_sequence },
     { 7245,  std::size(PeepSpriteImage_Watching_02_sequence), PeepSpriteImage_Watching_02_sequence },
@@ -3397,7 +3397,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Watching[] = {
     { 7181,  std::size(PeepSpriteImage_Watching_36_sequence), PeepSpriteImage_Watching_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Pretzel[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Pretzel[] = {
     { 9341,  std::size(PeepSpriteImage_Pretzel_00_sequence), PeepSpriteImage_Pretzel_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Pretzel_01_sequence), PeepSpriteImage_Pretzel_01_sequence },
     { 9461,  std::size(PeepSpriteImage_Pretzel_02_sequence), PeepSpriteImage_Pretzel_02_sequence },
@@ -3437,7 +3437,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Pretzel[] = {
     { 7181,  std::size(PeepSpriteImage_Pretzel_36_sequence), PeepSpriteImage_Pretzel_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Sunglasses[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Sunglasses[] = {
     { 10685, std::size(PeepSpriteImage_Sunglasses_00_sequence), PeepSpriteImage_Sunglasses_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Sunglasses_01_sequence), PeepSpriteImage_Sunglasses_01_sequence },
     { 10713, std::size(PeepSpriteImage_Sunglasses_02_sequence), PeepSpriteImage_Sunglasses_02_sequence },
@@ -3477,7 +3477,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Sunglasses[] = {
     { 7181,  std::size(PeepSpriteImage_Sunglasses_36_sequence), PeepSpriteImage_Sunglasses_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_SuJongkwa[] = {
+static constexpr const PeepAnimation PeepSpriteImage_SuJongkwa[] = {
     { 9509,  std::size(PeepSpriteImage_SuJongkwa_00_sequence), PeepSpriteImage_SuJongkwa_00_sequence },
     { 6585,  std::size(PeepSpriteImage_SuJongkwa_01_sequence), PeepSpriteImage_SuJongkwa_01_sequence },
     { 9629,  std::size(PeepSpriteImage_SuJongkwa_02_sequence), PeepSpriteImage_SuJongkwa_02_sequence },
@@ -3517,7 +3517,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_SuJongkwa[] = {
     { 7181,  std::size(PeepSpriteImage_SuJongkwa_36_sequence), PeepSpriteImage_SuJongkwa_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Juice[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Juice[] = {
     { 9677,  std::size(PeepSpriteImage_Juice_00_sequence), PeepSpriteImage_Juice_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Juice_01_sequence), PeepSpriteImage_Juice_01_sequence },
     { 9797,  std::size(PeepSpriteImage_Juice_02_sequence), PeepSpriteImage_Juice_02_sequence },
@@ -3557,7 +3557,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Juice[] = {
     { 7181,  std::size(PeepSpriteImage_Juice_36_sequence), PeepSpriteImage_Juice_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_FunnelCake[] = {
+static constexpr const PeepAnimation PeepSpriteImage_FunnelCake[] = {
     { 9845,  std::size(PeepSpriteImage_FunnelCake_00_sequence), PeepSpriteImage_FunnelCake_00_sequence },
     { 6585,  std::size(PeepSpriteImage_FunnelCake_01_sequence), PeepSpriteImage_FunnelCake_01_sequence },
     { 9965,  std::size(PeepSpriteImage_FunnelCake_02_sequence), PeepSpriteImage_FunnelCake_02_sequence },
@@ -3597,7 +3597,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_FunnelCake[] = {
     { 7181,  std::size(PeepSpriteImage_FunnelCake_36_sequence), PeepSpriteImage_FunnelCake_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Noodles[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Noodles[] = {
     { 10013, std::size(PeepSpriteImage_Noodles_00_sequence), PeepSpriteImage_Noodles_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Noodles_01_sequence), PeepSpriteImage_Noodles_01_sequence },
     { 10133, std::size(PeepSpriteImage_Noodles_02_sequence), PeepSpriteImage_Noodles_02_sequence },
@@ -3637,7 +3637,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Noodles[] = {
     { 7181,  std::size(PeepSpriteImage_Noodles_36_sequence), PeepSpriteImage_Noodles_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Sausage[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Sausage[] = {
     { 10181, std::size(PeepSpriteImage_Sausage_00_sequence), PeepSpriteImage_Sausage_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Sausage_01_sequence), PeepSpriteImage_Sausage_01_sequence },
     { 10301, std::size(PeepSpriteImage_Sausage_02_sequence), PeepSpriteImage_Sausage_02_sequence },
@@ -3677,7 +3677,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Sausage[] = {
     { 7181,  std::size(PeepSpriteImage_Sausage_36_sequence), PeepSpriteImage_Sausage_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Soup[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Soup[] = {
     { 10349, std::size(PeepSpriteImage_Soup_00_sequence), PeepSpriteImage_Soup_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Soup_01_sequence), PeepSpriteImage_Soup_01_sequence },
     { 10469, std::size(PeepSpriteImage_Soup_02_sequence), PeepSpriteImage_Soup_02_sequence },
@@ -3717,7 +3717,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Soup[] = {
     { 7181,  std::size(PeepSpriteImage_Soup_36_sequence), PeepSpriteImage_Soup_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_Sandwich[] = {
+static constexpr const PeepAnimation PeepSpriteImage_Sandwich[] = {
     { 10517, std::size(PeepSpriteImage_Sandwich_00_sequence), PeepSpriteImage_Sandwich_00_sequence },
     { 6585,  std::size(PeepSpriteImage_Sandwich_01_sequence), PeepSpriteImage_Sandwich_01_sequence },
     { 10637, std::size(PeepSpriteImage_Sandwich_02_sequence), PeepSpriteImage_Sandwich_02_sequence },
@@ -3758,7 +3758,7 @@ static constexpr const rct_peep_animation PeepSpriteImage_Sandwich[] = {
 };
 
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Normal[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Normal[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -3798,7 +3798,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Normal[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Handyman[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Handyman[] = {
     { 12, 16, 6 },
     { 8, 16, 5 },
     { 9, 16, 6 },
@@ -3838,7 +3838,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Handyman[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Mechanic[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Mechanic[] = {
     { 10, 16, 5 },
     { 8, 16, 5 },
     { 10, 16, 5 },
@@ -3878,7 +3878,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Mechanic[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Security[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Security[] = {
     { 8, 18, 5 },
     { 8, 16, 5 },
     { 8, 17, 5 },
@@ -3918,7 +3918,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Security[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerPanda[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_EntertainerPanda[] = {
     { 13, 24, 8 },
     { 8, 16, 5 },
     { 10, 23, 7 },
@@ -3958,7 +3958,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerPanda[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerTiger[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_EntertainerTiger[] = {
     { 13, 24, 8 },
     { 8, 16, 5 },
     { 10, 23, 7 },
@@ -3998,7 +3998,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerTiger[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerElephant[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_EntertainerElephant[] = {
     { 13, 24, 8 },
     { 8, 16, 5 },
     { 10, 23, 7 },
@@ -4038,7 +4038,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerElephant[] 
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerRoman[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_EntertainerRoman[] = {
     { 13, 24, 8 },
     { 8, 16, 5 },
     { 10, 23, 7 },
@@ -4078,7 +4078,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerRoman[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerGorilla[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_EntertainerGorilla[] = {
     { 13, 24, 8 },
     { 8, 16, 5 },
     { 10, 23, 7 },
@@ -4118,7 +4118,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerGorilla[] =
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerSnowman[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_EntertainerSnowman[] = {
     { 13, 24, 8 },
     { 8, 16, 5 },
     { 10, 23, 7 },
@@ -4158,7 +4158,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerSnowman[] =
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerKnight[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_EntertainerKnight[] = {
     { 16, 32, 8 },
     { 8, 16, 5 },
     { 10, 23, 7 },
@@ -4198,7 +4198,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerKnight[] = 
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerAstronaut[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_EntertainerAstronaut[] = {
     { 16, 32, 8 },
     { 8, 16, 5 },
     { 10, 23, 7 },
@@ -4238,7 +4238,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerAstronaut[]
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerBandit[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_EntertainerBandit[] = {
     { 16, 32, 8 },
     { 8, 16, 5 },
     { 10, 23, 7 },
@@ -4278,7 +4278,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerBandit[] = 
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerSheriff[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_EntertainerSheriff[] = {
     { 16, 32, 8 },
     { 8, 16, 5 },
     { 10, 23, 7 },
@@ -4318,7 +4318,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerSheriff[] =
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerPirate[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_EntertainerPirate[] = {
     { 16, 32, 8 },
     { 8, 16, 5 },
     { 10, 23, 7 },
@@ -4358,7 +4358,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_EntertainerPirate[] = 
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_IceCream[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_IceCream[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -4398,7 +4398,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_IceCream[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Chips[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Chips[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -4438,7 +4438,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Chips[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Burger[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Burger[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -4478,7 +4478,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Burger[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Drink[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Drink[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -4518,7 +4518,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Drink[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Balloon[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Balloon[] = {
     { 11, 28, 5 },
     { 8, 16, 5 },
     { 11, 28, 5 },
@@ -4558,7 +4558,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Balloon[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Candyfloss[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Candyfloss[] = {
     { 11, 19, 5 },
     { 8, 16, 5 },
     { 11, 19, 5 },
@@ -4598,7 +4598,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Candyfloss[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Umbrella[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Umbrella[] = {
     { 14, 21, 5 },
     { 8, 16, 5 },
     { 14, 21, 5 },
@@ -4638,7 +4638,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Umbrella[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Pizza[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Pizza[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -4678,7 +4678,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Pizza[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_SecurityAlt[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_SecurityAlt[] = {
     { 8, 18, 5 },
     { 8, 16, 5 },
     { 8, 17, 5 },
@@ -4718,7 +4718,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_SecurityAlt[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Popcorn[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Popcorn[] = {
     { 11, 19, 5 },
     { 8, 16, 5 },
     { 11, 19, 5 },
@@ -4758,7 +4758,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Popcorn[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Hat[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Hat[] = {
     { 12, 32, 5 },
     { 8, 16, 5 },
     { 12, 32, 5 },
@@ -4798,7 +4798,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Hat[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_HotDog[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_HotDog[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -4838,7 +4838,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_HotDog[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Tentacle[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Tentacle[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -4878,7 +4878,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Tentacle[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_ToffeeApple[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_ToffeeApple[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -4918,7 +4918,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_ToffeeApple[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Donut[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Donut[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -4958,7 +4958,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Donut[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Coffee[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Coffee[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -4998,7 +4998,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Coffee[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Chicken[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Chicken[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -5038,7 +5038,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Chicken[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Lemonade[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Lemonade[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -5078,7 +5078,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Lemonade[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Pretzel[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Pretzel[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -5118,7 +5118,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Pretzel[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_SuJongkwa[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_SuJongkwa[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -5158,7 +5158,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_SuJongkwa[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Juice[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Juice[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -5198,7 +5198,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Juice[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_FunnelCake[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_FunnelCake[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -5238,7 +5238,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_FunnelCake[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Noodles[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Noodles[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -5278,7 +5278,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Noodles[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Sausage[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Sausage[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -5318,7 +5318,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Sausage[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Soup[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Soup[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -5358,7 +5358,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Soup[] = {
     { 9, 22, 7 },
 };
 
-static constexpr const rct_sprite_bounds PeepSpriteBounds_Sandwich[] = {
+static constexpr const SpriteBounds PeepSpriteBounds_Sandwich[] = {
     { 8, 16, 5 },
     { 8, 16, 5 },
     { 8, 16, 5 },
@@ -5399,7 +5399,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Sandwich[] = {
 };
 
 
-constexpr rct_peep_animation_entry g_peep_animation_entries[] =
+constexpr PeepAnimationEntry g_peep_animation_entries[] =
 {
     { PeepSpriteImage_Normal, PeepSpriteBounds_Normal },
     { PeepSpriteImage_Handyman, PeepSpriteBounds_Handyman },

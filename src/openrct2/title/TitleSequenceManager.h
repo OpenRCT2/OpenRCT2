@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,15 +35,15 @@ namespace TitleSequenceManager
 
 constexpr const size_t PREDEFINED_INDEX_CUSTOM = std::numeric_limits<size_t>::max();
 
-size_t title_sequence_manager_get_count();
-const utf8* title_sequence_manager_get_name(size_t index);
-const utf8* title_sequence_manager_get_path(size_t index);
-const utf8* title_sequence_manager_get_config_id(size_t index);
-size_t title_sequence_manager_get_predefined_index(size_t index);
-size_t title_sequence_manager_get_index_for_config_id(const utf8* configId);
-size_t title_sequence_manager_get_index_for_name(const utf8* name);
-void title_sequence_manager_scan();
-void title_sequence_manager_delete(size_t i);
-size_t title_sequence_manager_rename(size_t i, const utf8* name);
-size_t title_sequence_manager_duplicate(size_t i, const utf8* name);
-size_t title_sequence_manager_create(const utf8* name);
+size_t TitleSequenceManagerGetCount();
+const utf8* TitleSequenceManagerGetName(size_t index);
+const utf8* TitleSequenceManagerGetPath(size_t index);
+const utf8* TitleSequenceManagerGetConfigID(size_t index);
+size_t TitleSequenceManagerGetPredefinedIndex(size_t index);
+size_t TitleSequenceManagerGetIndexForConfigID(const utf8* configId);
+size_t TitleSequenceManagerGetIndexForName(const utf8* name);
+void TitleSequenceManagerScan();
+void TitleSequenceManagerDelete(size_t i);
+size_t TitleSequenceManagerRename(size_t i, const utf8* name);
+size_t TitleSequenceManagerDuplicate(size_t i, const utf8* name);
+size_t TitleSequenceManagerCreate(const utf8* name);

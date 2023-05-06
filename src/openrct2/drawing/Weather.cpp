@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,13 +23,13 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
 static void DrawLightRain(
-    rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+    DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
 static void DrawHeavyRain(
-    rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+    DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
 static void DrawLightSnow(
-    rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+    DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
 static void DrawHeavySnow(
-    rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+    DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
 
 /**
  *
@@ -51,13 +51,13 @@ const DrawWeatherFunc DrawSnowFunctions[] = {
  *
  *  rct2: 0x00684218
  */
-void DrawWeather(rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer)
+void DrawWeather(DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer)
 {
-    if (gConfigGeneral.render_weather_effects)
+    if (gConfigGeneral.RenderWeatherEffects)
     {
         uint32_t viewFlags = 0;
 
-        const auto* viewport = window_get_viewport(window_get_main());
+        const auto* viewport = WindowGetViewport(WindowGetMain());
         if (viewport != nullptr)
             viewFlags = viewport->flags;
 
@@ -66,7 +66,7 @@ void DrawWeather(rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer)
         if (weatherLevel != WeatherLevel::None && !gTrackDesignSaveMode && !(viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         {
             auto drawFunc = DrawRainFunctions[static_cast<int8_t>(weatherLevel)];
-            if (climate_is_snowing())
+            if (ClimateIsSnowing())
             {
                 drawFunc = DrawSnowFunctions[static_cast<int8_t>(weatherLevel)];
             }
@@ -81,7 +81,7 @@ void DrawWeather(rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer)
  *  rct2: 0x00684114
  */
 static void DrawLightRain(
-    rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
+    DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
     int32_t x_start = -static_cast<int32_t>(gCurrentTicks) + 8;
     int32_t y_start = (gCurrentTicks * 3) + 7;
@@ -103,7 +103,7 @@ static void DrawLightRain(
  *  rct2: 0x0068416D
  */
 static void DrawHeavyRain(
-    rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
+    DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
     int32_t x_start = -static_cast<int32_t>(gCurrentTicks);
     int32_t y_start = gCurrentTicks * 5;
@@ -135,7 +135,7 @@ static void DrawHeavyRain(
 }
 
 static void DrawLightSnow(
-    rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
+    DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
     const uint32_t t = gCurrentTicks / 2;
     const int32_t negT = -static_cast<int32_t>(t);
@@ -157,7 +157,7 @@ static void DrawLightSnow(
 }
 
 static void DrawHeavySnow(
-    rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
+    DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
     int32_t x_start = -static_cast<int32_t>(gCurrentTicks * 3) + 1;
     int32_t y_start = gCurrentTicks + 23;

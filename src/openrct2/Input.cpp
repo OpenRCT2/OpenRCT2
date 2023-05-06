@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,33 +15,33 @@ InputState _inputState;
 uint8_t _inputFlags;
 uint8_t gInputPlaceObjectModifier;
 
-widget_ref gHoverWidget;
-widget_ref gPressedWidget;
+WidgetRef gHoverWidget;
+WidgetRef gPressedWidget;
 
 uint16_t _tooltipNotShownTicks;
 
 Tool gCurrentToolId;
-widget_ref gCurrentToolWidget;
+WidgetRef gCurrentToolWidget;
 
 /**
  *
  *  rct2: 0x006E3B43
  */
-void title_handle_keyboard_input()
+void TitleHandleKeyboardInput()
 {
-    context_input_handle_keyboard(true);
+    ContextInputHandleKeyboard(true);
 }
 
 /**
  *
  *  rct2: 0x006E3B43
  */
-void game_handle_keyboard_input()
+void GameHandleKeyboardInput()
 {
-    context_input_handle_keyboard(false);
+    ContextInputHandleKeyboard(false);
 }
 
-void input_set_flag(INPUT_FLAGS flag, bool on)
+void InputSetFlag(INPUT_FLAGS flag, bool on)
 {
     if (on)
     {
@@ -53,32 +53,32 @@ void input_set_flag(INPUT_FLAGS flag, bool on)
     }
 }
 
-bool input_test_flag(INPUT_FLAGS flag)
+bool InputTestFlag(INPUT_FLAGS flag)
 {
     return _inputFlags & flag;
 }
 
-void input_reset_flags()
+void InputResetFlags()
 {
     _inputFlags = 0;
 }
 
-void input_set_state(InputState state)
+void InputSetState(InputState state)
 {
     _inputState = state;
 }
 
-InputState input_get_state()
+InputState InputGetState()
 {
     return _inputState;
 }
 
-void reset_tooltip_not_shown()
+void ResetTooltipNotShown()
 {
     _tooltipNotShownTicks = 0;
 }
 
-void input_reset_place_obj_modifier()
+void InputResetPlaceObjModifier()
 {
     gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
 }

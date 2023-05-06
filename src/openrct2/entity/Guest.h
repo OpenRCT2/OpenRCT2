@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -267,11 +267,11 @@ public:
     RideId GuestHeadingToRideId;
     uint8_t GuestIsLostCountdown;
     uint8_t GuestTimeOnRide;
-    money16 PaidToEnter;
-    money16 PaidOnRides;
-    money16 PaidOnFood;
-    money16 PaidOnDrink;
-    money16 PaidOnSouvenirs;
+    money64 PaidToEnter;
+    money64 PaidOnRides;
+    money64 PaidOnFood;
+    money64 PaidOnDrink;
+    money64 PaidOnSouvenirs;
     bool OutsideOfPark;
     uint8_t Happiness;
     uint8_t HappinessTarget;
@@ -284,8 +284,8 @@ public:
     IntensityRange Intensity{ 0 };
     PeepNauseaTolerance NauseaTolerance;
     uint16_t TimeInQueue;
-    money32 CashInPocket;
-    money32 CashSpent;
+    money64 CashInPocket;
+    money64 CashSpent;
     RideId Photo1RideRef;
     RideId Photo2RideRef;
     RideId Photo3RideRef;
@@ -327,25 +327,25 @@ public:
     bool HasDrink() const;
     bool HasFoodOrDrink() const;
     bool HasEmptyContainer() const;
-    void OnEnterRide(Ride* ride);
-    void OnExitRide(Ride* ride);
+    void OnEnterRide(Ride& ride);
+    void OnExitRide(Ride& ride);
     void UpdateSpriteType();
     bool HeadingForRideOrParkExit() const;
-    void StopPurchaseThought(uint8_t ride_type);
+    void StopPurchaseThought(ride_type_t rideType);
     void TryGetUpFromSitting();
     bool ShouldRideWhileRaining(const Ride& ride);
-    void ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide);
+    void ChoseNotToGoOnRide(const Ride& ride, bool peepAtRide, bool updateLastRide);
     void PickRideToGoOn();
     void ReadMap();
-    bool ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, bool thinking);
-    bool ShouldGoToShop(Ride* ride, bool peepAtShop);
+    bool ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, bool thinking);
+    bool ShouldGoToShop(Ride& ride, bool peepAtShop);
     bool ShouldFindBench();
     bool UpdateWalkingFindBench();
     bool UpdateWalkingFindBin();
-    void SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureType type);
-    void SpendMoney(money32 amount, ExpenditureType type);
-    void SetHasRidden(const Ride* ride);
-    bool HasRidden(const Ride* ride) const;
+    void SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureType type);
+    void SpendMoney(money64 amount, ExpenditureType type);
+    void SetHasRidden(const Ride& ride);
+    bool HasRidden(const Ride& ride) const;
     void SetHasRiddenRideType(int32_t rideType);
     bool HasRiddenRideType(int32_t rideType) const;
     void SetParkEntryTime(int32_t entryTime);
@@ -353,7 +353,7 @@ public:
     void CheckIfLost();
     void CheckCantFindRide();
     void CheckCantFindExit();
-    bool DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price);
+    bool DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price);
     void SetSpriteType(PeepSpriteType new_sprite_type);
     void HandleEasterEggName();
     int32_t GetEasterEggNameId() const;
@@ -382,6 +382,7 @@ private:
     void UpdateRide();
     void UpdateOnRide(){}; // TODO
     void UpdateWalking();
+    void UpdateWaitingAtCrossing();
     void UpdateQueuing();
     void UpdateSitting();
     void UpdateEnteringPark();
@@ -392,15 +393,17 @@ private:
     void UpdateRideAtEntrance();
     void UpdateRideAdvanceThroughEntrance();
     void UpdateRideLeaveEntranceWaypoints(const Ride& ride);
-    uint8_t GetWaypointedSeatLocation(const Ride& ride, CarEntry* vehicle_type, uint8_t track_direction) const;
+    uint8_t GetWaypointedSeatLocation(const Ride& ride, const CarEntry* vehicle_type, uint8_t track_direction) const;
     void UpdateRideFreeVehicleCheck();
-    void UpdateRideFreeVehicleEnterRide(Ride* ride);
+    void UpdateRideFreeVehicleEnterRide(Ride& ride);
     void UpdateRideApproachVehicle();
     void UpdateRideEnterVehicle();
     void UpdateRideLeaveVehicle();
     void UpdateRideApproachExit();
     void UpdateRideInExit();
+
     void UpdateRideApproachVehicleWaypoints();
+
     void UpdateRideApproachExitWaypoints();
     void UpdateRideApproachSpiralSlide();
     void UpdateRideOnSpiralSlide();
@@ -411,19 +414,21 @@ private:
     void UpdateRideShopInteract();
     void UpdateRideShopLeave();
     void UpdateRidePrepareForExit();
-    void loc_68F9F3();
-    void loc_68FA89();
+    void Loc68F9F3();
+    void Loc68FA89();
     int32_t CheckEasterEggName(int32_t index) const;
-    bool GuestHasValidXY() const;
     void GivePassingPeepsPurpleClothes(Guest* passingPeep);
     void GivePassingPeepsPizza(Guest* passingPeep);
     void MakePassingPeepsSick(Guest* passingPeep);
     void GivePassingPeepsIceCream(Guest* passingPeep);
     Ride* FindBestRideToGoOn();
     OpenRCT2::BitSet<OpenRCT2::Limits::MaxRidesInPark> FindRidesToGoOn();
-    bool FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array);
-    void GoToRideEntrance(Ride* ride);
+    bool FindVehicleToEnter(const Ride& ride, std::vector<uint8_t>& car_array);
+    void GoToRideEntrance(const Ride& ride);
 };
+
+void UpdateRideApproachVehicleWaypointsMotionSimulator(Guest&, const CoordsXY&, int16_t&);
+void UpdateRideApproachVehicleWaypointsDefault(Guest&, const CoordsXY&, int16_t&);
 
 static_assert(sizeof(Guest) <= 512);
 
@@ -460,22 +465,23 @@ extern uint32_t gNumGuestsInPark;
 extern uint32_t gNumGuestsInParkLastWeek;
 extern uint32_t gNumGuestsHeadingForPark;
 
-extern money16 gGuestInitialCash;
+extern money64 gGuestInitialCash;
 extern uint8_t gGuestInitialHappiness;
 extern uint8_t gGuestInitialHunger;
 extern uint8_t gGuestInitialThirst;
 
 extern uint32_t gNextGuestNumber;
 
-void guest_set_name(EntityId spriteIndex, const char* name);
+void PeepThoughtSetFormatArgs(const PeepThought* thought, Formatter& ft);
 
-void peep_thought_set_format_args(const PeepThought* thought, Formatter& ft);
+void IncrementGuestsInPark();
+void IncrementGuestsHeadingForPark();
+void DecrementGuestsInPark();
+void DecrementGuestsHeadingForPark();
 
-void increment_guests_in_park();
-void increment_guests_heading_for_park();
-void decrement_guests_in_park();
-void decrement_guests_heading_for_park();
+void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc);
+void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc);
+void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc);
 
-void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc);
-void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc);
-void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc);
+CoordsXY GetGuestWaypointLocationDefault(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);
+CoordsXY GetGuestWaypointLocationEnterprise(const Vehicle& vehicle, const Ride& ride, const StationIndex& CurrentRideStation);

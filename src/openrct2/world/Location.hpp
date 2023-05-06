@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -228,7 +228,7 @@ struct CoordsXY
 
     constexpr CoordsXY ToTileStart() const
     {
-        return { floor2(x, COORDS_XY_STEP), floor2(y, COORDS_XY_STEP) };
+        return { Floor2(x, COORDS_XY_STEP), Floor2(y, COORDS_XY_STEP) };
     }
 
     constexpr bool IsNull() const
@@ -277,7 +277,7 @@ struct CoordsXYZ : public CoordsXY
 
     constexpr CoordsXYZ ToTileStart() const
     {
-        return { floor2(x, COORDS_XY_STEP), floor2(y, COORDS_XY_STEP), z };
+        return { Floor2(x, COORDS_XY_STEP), Floor2(y, COORDS_XY_STEP), z };
     }
 
     constexpr CoordsXYZ ToTileCentre() const
@@ -489,6 +489,34 @@ struct TileCoordsXYZ : public TileCoordsXY
     }
 };
 
+struct TileCoordsXYRangedZ : public TileCoordsXY
+{
+    int32_t baseZ{};
+    int32_t clearanceZ{};
+
+    constexpr TileCoordsXYRangedZ() = default;
+    constexpr TileCoordsXYRangedZ(int32_t _x, int32_t _y, int32_t _baseZ, int32_t _clearanceZ)
+        : TileCoordsXY(_x, _y)
+        , baseZ(_baseZ)
+        , clearanceZ(_clearanceZ)
+    {
+    }
+
+    constexpr TileCoordsXYRangedZ(const TileCoordsXY& _c, int32_t _baseZ, int32_t _clearanceZ)
+        : TileCoordsXY(_c)
+        , baseZ(_baseZ)
+        , clearanceZ(_clearanceZ)
+    {
+    }
+
+    constexpr TileCoordsXYRangedZ(const TileCoordsXYZ& _c, int32_t _clearanceZ)
+        : TileCoordsXY(_c)
+        , baseZ(_c.z)
+        , clearanceZ(_clearanceZ)
+    {
+    }
+};
+
 /**
  * Cardinal directions are represented by the Direction type. It has four
  * possible values:
@@ -517,12 +545,12 @@ constexpr Direction ALL_DIRECTIONS[] = {
  * Given a direction, return the direction that points the other way,
  * on the same axis.
  */
-inline constexpr Direction direction_reverse(Direction dir)
+inline constexpr Direction DirectionReverse(Direction dir)
 {
     return dir ^ 2;
 }
 
-inline constexpr bool direction_valid(Direction dir)
+inline constexpr bool DirectionValid(Direction dir)
 {
     return dir < NumOrthogonalDirections;
 }
@@ -531,7 +559,7 @@ inline constexpr bool direction_valid(Direction dir)
  * Given a direction, return the next cardinal direction, wrapping around if necessary.
  * (TODO: Figure out if this is CW or CCW)
  */
-inline constexpr Direction direction_next(Direction dir)
+inline constexpr Direction DirectionNext(Direction dir)
 {
     return (dir + 1) & 0x03;
 }
@@ -540,7 +568,7 @@ inline constexpr Direction direction_next(Direction dir)
  * Given a direction, return the previous cardinal direction, wrapping around if necessary.
  * (TODO: Figure out if this is CW or CCW)
  */
-inline constexpr Direction direction_prev(Direction dir)
+inline constexpr Direction DirectionPrev(Direction dir)
 {
     return (dir - 1) & 0x03;
 }
@@ -634,7 +662,7 @@ struct CoordsXYZD : public CoordsXYZ
 
     constexpr CoordsXYZD ToTileStart() const
     {
-        return { floor2(x, COORDS_XY_STEP), floor2(y, COORDS_XY_STEP), z, direction };
+        return { Floor2(x, COORDS_XY_STEP), Floor2(y, COORDS_XY_STEP), z, direction };
     }
 
     constexpr CoordsXYZD ToTileCentre() const

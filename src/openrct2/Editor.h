@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@ namespace Editor
     bool LoadLandscape(const utf8* path);
 
     ResultWithMessage CheckPark();
-    std::pair<ObjectType, rct_string_id> CheckObjectSelection();
+    std::pair<ObjectType, StringId> CheckObjectSelection();
 
     void OpenWindowsForCurrentStep();
 
@@ -47,4 +47,4 @@ enum class EditorStep : uint8_t
 
 extern EditorStep gEditorStep;
 
-void editor_open_windows_for_current_step();
+void EditorOpenWindowsForCurrentStep();

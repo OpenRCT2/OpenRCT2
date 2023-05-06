@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,6 +20,7 @@ using PaletteIndex = uint8_t;
  */
 enum : colour_t
 {
+    // Original Colours
     COLOUR_BLACK,
     COLOUR_GREY,
     COLOUR_WHITE,
@@ -53,6 +54,32 @@ enum : colour_t
     COLOUR_BRIGHT_PINK,
     COLOUR_LIGHT_PINK,
 
+    // Extended Colour Set
+    COLOUR_DARK_OLIVE_DARK,
+    COLOUR_DARK_OLIVE_LIGHT,
+    COLOUR_SATURATED_BROWN_LIGHT,
+    COLOUR_BORDEAUX_RED_DARK,
+    COLOUR_BORDEAUX_RED_LIGHT,
+    COLOUR_GRASS_GREEN_DARK,
+    COLOUR_GRASS_GREEN_LIGHT,
+    COLOUR_OLIVE_DARK,
+    COLOUR_OLIVE_LIGHT,
+    COLOUR_SATURATED_GREEN_LIGHT,
+    COLOUR_TAN_DARK,
+    COLOUR_TAN_LIGHT,
+    COLOUR_DULL_PURPLE_LIGHT,
+    COLOUR_DULL_GREEN_DARK,
+    COLOUR_DULL_GREEN_LIGHT,
+    COLOUR_SATURATED_PURPLE_DARK,
+    COLOUR_SATURATED_PURPLE_LIGHT,
+    COLOUR_ORANGE_LIGHT,
+    COLOUR_AQUA_DARK,
+    COLOUR_MAGENTA_LIGHT,
+    COLOUR_DULL_BROWN_DARK,
+    COLOUR_DULL_BROWN_LIGHT,
+    COLOUR_INVISIBLE,
+    COLOUR_VOID,
+
     COLOUR_COUNT,
 
     COLOUR_NULL = 255,
@@ -64,7 +91,8 @@ enum : colour_t
 enum
 {
     COLOUR_DARK_WATER = 9,
-    COLOUR_LIGHT_WATER = 10
+    COLOUR_LIGHT_WATER = 10,
+    COLOUR_DEEP_WATER = 50
 };
 
 enum : PaletteIndex
@@ -178,6 +206,9 @@ constexpr uint8_t PALETTE_LENGTH_REMAP = 12;
 constexpr uint8_t PALETTE_OFFSET_ANIMATED = PALETTE_INDEX_230;
 constexpr uint8_t PALETTE_LENGTH_ANIMATED = 16;
 
+constexpr uint8_t COLOUR_NUM_ORIGINAL = 32;
+constexpr uint8_t COLOUR_NUM_NORMAL = 54;
+
 #define TEXT_COLOUR_254 (254)
 #define TEXT_COLOUR_255 (255)
 
@@ -189,11 +220,11 @@ enum
     COLOUR_FLAG_8 = (1 << 8)
 };
 
-#define TRANSLUCENT(x) ((x) | COLOUR_FLAG_TRANSLUCENT)
-#define NOT_TRANSLUCENT(x) ((x) & ~COLOUR_FLAG_TRANSLUCENT)
+#define TRANSLUCENT(x) ((x) | static_cast<uint8_t>(COLOUR_FLAG_TRANSLUCENT))
+#define NOT_TRANSLUCENT(x) ((x) & ~static_cast<uint8_t>(COLOUR_FLAG_TRANSLUCENT))
 #define BASE_COLOUR(x) ((x)&0x1F)
 
-struct rct_colour_map
+struct ColourShadeMap
 {
     uint8_t colour_0;
     uint8_t colour_1;
@@ -209,9 +240,9 @@ struct rct_colour_map
     uint8_t colour_11;
 };
 
-extern rct_colour_map ColourMapA[COLOUR_COUNT];
+extern ColourShadeMap ColourMapA[COLOUR_COUNT];
 
-void colours_init_maps();
+void ColoursInitMaps();
 
 namespace Colour
 {
@@ -219,5 +250,5 @@ namespace Colour
 }
 
 #ifndef NO_TTF
-uint8_t blendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2);
+uint8_t BlendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2);
 #endif

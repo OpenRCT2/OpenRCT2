@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../common.h"
 #include "../object/LargeSceneryObject.h"
+#include "../object/ObjectEntryManager.h"
 #include "../object/ObjectManager.h"
 #include "../world/Banner.h"
 #include "TileElement.h"
@@ -33,19 +34,19 @@ colour_t LargeSceneryElement::GetTertiaryColour() const
 
 void LargeSceneryElement::SetPrimaryColour(colour_t newColour)
 {
-    assert(newColour <= 31);
+    assert(newColour < COLOUR_COUNT);
     Colour[0] = newColour;
 }
 
 void LargeSceneryElement::SetSecondaryColour(colour_t newColour)
 {
-    assert(newColour <= 31);
+    assert(newColour < COLOUR_COUNT);
     Colour[1] = newColour;
 }
 
 void LargeSceneryElement::SetTertiaryColour(colour_t newColour)
 {
-    assert(newColour <= 31);
+    assert(newColour < COLOUR_COUNT);
     Colour[2] = newColour;
 }
 
@@ -86,14 +87,14 @@ ObjectEntryIndex LargeSceneryElement::GetEntryIndex() const
     return EntryIndex;
 }
 
-LargeSceneryEntry* LargeSceneryElement::GetEntry() const
+const LargeSceneryEntry* LargeSceneryElement::GetEntry() const
 {
-    return get_large_scenery_entry(GetEntryIndex());
+    return OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(GetEntryIndex());
 }
 
 const LargeSceneryObject* LargeSceneryElement::GetObject() const
 {
-    return static_cast<const LargeSceneryObject*>(object_entry_get_object(ObjectType::LargeScenery, GetEntryIndex()));
+    return static_cast<const LargeSceneryObject*>(ObjectEntryGetObject(ObjectType::LargeScenery, GetEntryIndex()));
 }
 
 uint8_t LargeSceneryElement::GetSequenceIndex() const
@@ -109,16 +110,4 @@ void LargeSceneryElement::SetEntryIndex(ObjectEntryIndex newIndex)
 void LargeSceneryElement::SetSequenceIndex(uint8_t sequence)
 {
     SequenceIndex = sequence;
-}
-
-LargeSceneryEntry* get_large_scenery_entry(ObjectEntryIndex entryIndex)
-{
-    LargeSceneryEntry* result = nullptr;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::LargeScenery, entryIndex);
-    if (obj != nullptr)
-    {
-        result = static_cast<LargeSceneryEntry*>(obj->GetLegacyData());
-    }
-    return result;
 }

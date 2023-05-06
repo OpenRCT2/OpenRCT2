@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -142,10 +142,10 @@ public:
         _inGameConsole.Update();
     }
 
-    void Draw(rct_drawpixelinfo* dpi) override
+    void Draw(DrawPixelInfo& dpi) override
     {
-        auto bgColour = ThemeGetColour(WC_CHAT, 0);
-        chat_draw(dpi, bgColour);
+        auto bgColour = ThemeGetColour(WindowClass::Chat, 0);
+        ChatDraw(dpi, bgColour);
         _inGameConsole.Draw(dpi);
     }
 
@@ -186,17 +186,17 @@ public:
 
             // Set window size
             UpdateFullscreenResolutions();
-            Resolution resolution = GetClosestResolution(gConfigGeneral.fullscreen_width, gConfigGeneral.fullscreen_height);
+            Resolution resolution = GetClosestResolution(gConfigGeneral.FullscreenWidth, gConfigGeneral.FullscreenHeight);
             SDL_SetWindowSize(_window, resolution.Width, resolution.Height);
         }
         else if (mode == FULLSCREEN_MODE::WINDOWED)
         {
-            SDL_SetWindowSize(_window, gConfigGeneral.window_width, gConfigGeneral.window_height);
+            SDL_SetWindowSize(_window, gConfigGeneral.WindowWidth, gConfigGeneral.WindowHeight);
         }
 
         if (SDL_SetWindowFullscreen(_window, windowFlags))
         {
-            log_fatal("SDL_SetWindowFullscreen %s", SDL_GetError());
+            LOG_FATAL("SDL_SetWindowFullscreen %s", SDL_GetError());
             exit(1);
 
             // TODO try another display mode rather than just exiting the game
@@ -291,12 +291,12 @@ public:
         return std::make_shared<DrawingEngineFactory>();
     }
 
-    void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, rct_drawpixelinfo* dpi, DrawWeatherFunc drawFunc) override
+    void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, DrawPixelInfo& dpi, DrawWeatherFunc drawFunc) override
     {
-        int32_t left = dpi->x;
-        int32_t right = left + dpi->width;
-        int32_t top = dpi->y;
-        int32_t bottom = top + dpi->height;
+        int32_t left = dpi.x;
+        int32_t right = left + dpi.width;
+        int32_t top = dpi.y;
+        int32_t bottom = top + dpi.height;
 
         for (auto& w : g_window_list)
         {
@@ -310,9 +310,9 @@ public:
         return _textComposition.IsActive();
     }
 
-    TextInputSession* StartTextInput(utf8* buffer, size_t bufferSize) override
+    TextInputSession* StartTextInput(u8string& buffer, size_t maxLength) override
     {
-        return _textComposition.Start(buffer, bufferSize);
+        return _textComposition.Start(buffer, maxLength);
     }
 
     void StopTextInput() override
@@ -334,27 +334,28 @@ public:
             switch (e.type)
             {
                 case SDL_QUIT:
-                    context_quit();
+                    ContextQuit();
                     break;
                 case SDL_WINDOWEVENT:
-                    if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+                    if (e.window.event == SDL_WINDOWEVENT_RESIZED)
                     {
+                        LOG_VERBOSE("New Window size: %ux%u\n", e.window.data1, e.window.data2);
                         OnResize(e.window.data1, e.window.data2);
                     }
 
                     switch (e.window.event)
                     {
-                        case SDL_WINDOWEVENT_SIZE_CHANGED:
+                        case SDL_WINDOWEVENT_RESIZED:
                         case SDL_WINDOWEVENT_MOVED:
                         case SDL_WINDOWEVENT_MAXIMIZED:
                         case SDL_WINDOWEVENT_RESTORED:
                         {
                             // Update default display index
                             int32_t displayIndex = SDL_GetWindowDisplayIndex(_window);
-                            if (displayIndex != gConfigGeneral.default_display)
+                            if (displayIndex != gConfigGeneral.DefaultDisplay)
                             {
-                                gConfigGeneral.default_display = displayIndex;
-                                config_save_default();
+                                gConfigGeneral.DefaultDisplay = displayIndex;
+                                ConfigSaveDefault();
                             }
                             break;
                         }
@@ -373,8 +374,8 @@ public:
                     }
                     break;
                 case SDL_MOUSEMOTION:
-                    _cursorState.position = { static_cast<int32_t>(e.motion.x / gConfigGeneral.window_scale),
-                                              static_cast<int32_t>(e.motion.y / gConfigGeneral.window_scale) };
+                    _cursorState.position = { static_cast<int32_t>(e.motion.x / gConfigGeneral.WindowScale),
+                                              static_cast<int32_t>(e.motion.y / gConfigGeneral.WindowScale) };
                     break;
                 case SDL_MOUSEWHEEL:
                     if (_inGameConsole.IsOpen())
@@ -390,8 +391,8 @@ public:
                     {
                         break;
                     }
-                    ScreenCoordsXY mousePos = { static_cast<int32_t>(e.button.x / gConfigGeneral.window_scale),
-                                                static_cast<int32_t>(e.button.y / gConfigGeneral.window_scale) };
+                    ScreenCoordsXY mousePos = { static_cast<int32_t>(e.button.x / gConfigGeneral.WindowScale),
+                                                static_cast<int32_t>(e.button.y / gConfigGeneral.WindowScale) };
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
@@ -426,8 +427,8 @@ public:
                     {
                         break;
                     }
-                    ScreenCoordsXY mousePos = { static_cast<int32_t>(e.button.x / gConfigGeneral.window_scale),
-                                                static_cast<int32_t>(e.button.y / gConfigGeneral.window_scale) };
+                    ScreenCoordsXY mousePos = { static_cast<int32_t>(e.button.x / gConfigGeneral.WindowScale),
+                                                static_cast<int32_t>(e.button.y / gConfigGeneral.WindowScale) };
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
@@ -548,7 +549,7 @@ public:
                         if (abs(gesturePixels) > tolerance)
                         {
                             _gestureRadius = 0;
-                            main_window_zoom(gesturePixels > 0, true);
+                            MainWindowZoom(gesturePixels > 0, true);
                         }
                     }
                     break;
@@ -581,7 +582,7 @@ public:
     {
         char scaleQualityBuffer[4];
         _scaleQuality = ScaleQuality::SmoothNearestNeighbour;
-        if (gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
+        if (gConfigGeneral.WindowScale == std::floor(gConfigGeneral.WindowScale))
         {
             _scaleQuality = ScaleQuality::NearestNeighbour;
         }
@@ -601,10 +602,10 @@ public:
 
     void CreateWindow() override
     {
-        SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss ? "1" : "0");
+        SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.MinimizeFullscreenFocusLoss ? "1" : "0");
 
         // Set window position to default display
-        int32_t defaultDisplay = std::clamp(gConfigGeneral.default_display, 0, 0xFFFF);
+        int32_t defaultDisplay = std::clamp(gConfigGeneral.DefaultDisplay, 0, 0xFFFF);
         auto windowPos = ScreenCoordsXY{ static_cast<int32_t>(SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay)),
                                          static_cast<int32_t>(SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay)) };
 
@@ -616,7 +617,7 @@ public:
 
     void CloseWindow() override
     {
-        drawing_engine_dispose();
+        DrawingEngineDispose();
         if (_window != nullptr)
         {
             SDL_DestroyWindow(_window);
@@ -638,6 +639,30 @@ public:
     void ShowMessageBox(const std::string& message) override
     {
         _platformUiContext->ShowMessageBox(_window, message);
+    }
+
+    int32_t ShowMessageBox(
+        const std::string& title, const std::string& message, const std::vector<std::string>& options) override
+    {
+        auto message_box_button_data = std::make_unique<SDL_MessageBoxButtonData[]>(options.size());
+        for (size_t i = 0; i < options.size(); i++)
+        {
+            message_box_button_data[i].buttonid = static_cast<int>(i);
+            message_box_button_data[i].text = options[i].c_str();
+        }
+
+        SDL_MessageBoxData message_box_data{};
+        message_box_data.window = _window;
+        message_box_data.title = title.c_str();
+        message_box_data.message = message.c_str();
+        message_box_data.numbuttons = static_cast<int>(options.size());
+        message_box_data.buttons = message_box_button_data.get();
+
+        int buttonid{};
+
+        SDL_ShowMessageBox(&message_box_data, &buttonid);
+
+        return buttonid;
     }
 
     bool HasMenuSupport() override
@@ -701,14 +726,14 @@ private:
     {
         SDL_version version{};
         SDL_GetVersion(&version);
-        log_verbose("SDL2 version: %d.%d.%d", version.major, version.minor, version.patch);
+        LOG_VERBOSE("SDL2 version: %d.%d.%d", version.major, version.minor, version.patch);
     }
 
     void CreateWindow(const ScreenCoordsXY& windowPos)
     {
         // Get saved window size
-        int32_t width = gConfigGeneral.window_width;
-        int32_t height = gConfigGeneral.window_height;
+        int32_t width = gConfigGeneral.WindowWidth;
+        int32_t height = gConfigGeneral.WindowHeight;
         if (width <= 0)
             width = 640;
         if (height <= 0)
@@ -716,7 +741,7 @@ private:
 
         // Create window in window first rather than fullscreen so we have the display the window is on first
         uint32_t flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
-        if (gConfigGeneral.drawing_engine == DrawingEngine::OpenGL)
+        if (gConfigGeneral.DrawingEngine == DrawingEngine::OpenGL)
         {
             flags |= SDL_WINDOW_OPENGL;
         }
@@ -730,20 +755,20 @@ private:
         ApplyScreenSaverLockSetting();
 
         SDL_SetWindowMinimumSize(_window, 720, 480);
-        SetCursorTrap(gConfigGeneral.trap_cursor);
+        SetCursorTrap(gConfigGeneral.TrapCursor);
         _platformUiContext->SetWindowIcon(_window);
 
         // Initialise the surface, palette and draw buffer
-        drawing_engine_init();
+        DrawingEngineInit();
         OnResize(width, height);
 
         UpdateFullscreenResolutions();
 
         // Fix #4022: Force Mac to windowed to avoid cursor offset on launch issue
 #ifdef __MACOSX__
-        gConfigGeneral.fullscreen_mode = static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::WINDOWED);
+        gConfigGeneral.FullscreenMode = static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::WINDOWED);
 #else
-        SetFullscreenMode(static_cast<FULLSCREEN_MODE>(gConfigGeneral.fullscreen_mode));
+        SetFullscreenMode(static_cast<FULLSCREEN_MODE>(gConfigGeneral.FullscreenMode));
 #endif
         TriggerResize();
     }
@@ -751,19 +776,19 @@ private:
     void OnResize(int32_t width, int32_t height)
     {
         // Scale the native window size to the game's canvas size
-        _width = static_cast<int32_t>(width / gConfigGeneral.window_scale);
-        _height = static_cast<int32_t>(height / gConfigGeneral.window_scale);
+        _width = static_cast<int32_t>(width / gConfigGeneral.WindowScale);
+        _height = static_cast<int32_t>(height / gConfigGeneral.WindowScale);
 
-        drawing_engine_resize();
+        DrawingEngineResize();
 
         uint32_t flags = SDL_GetWindowFlags(_window);
         if ((flags & SDL_WINDOW_MINIMIZED) == 0)
         {
-            window_resize_gui(_width, _height);
-            window_relocate_windows(_width, _height);
+            WindowResizeGui(_width, _height);
+            WindowRelocateWindows(_width, _height);
         }
 
-        gfx_invalidate_screen();
+        GfxInvalidateScreen();
 
         // Check if the window has been resized in windowed mode and update the config file accordingly
         int32_t nonWindowFlags =
@@ -774,11 +799,11 @@ private:
 
         if (!(flags & nonWindowFlags))
         {
-            if (width != gConfigGeneral.window_width || height != gConfigGeneral.window_height)
+            if (width != gConfigGeneral.WindowWidth || height != gConfigGeneral.WindowHeight)
             {
-                gConfigGeneral.window_width = width;
-                gConfigGeneral.window_height = height;
-                config_save_default();
+                gConfigGeneral.WindowWidth = width;
+                gConfigGeneral.WindowHeight = height;
+                ConfigSaveDefault();
             }
         }
     }
@@ -823,10 +848,10 @@ private:
         resolutions.erase(last, resolutions.end());
 
         // Update config fullscreen resolution if not set
-        if (!resolutions.empty() && (gConfigGeneral.fullscreen_width == -1 || gConfigGeneral.fullscreen_height == -1))
+        if (!resolutions.empty() && (gConfigGeneral.FullscreenWidth == -1 || gConfigGeneral.FullscreenHeight == -1))
         {
-            gConfigGeneral.fullscreen_width = resolutions.back().Width;
-            gConfigGeneral.fullscreen_height = resolutions.back().Height;
+            gConfigGeneral.FullscreenWidth = resolutions.back().Width;
+            gConfigGeneral.FullscreenHeight = resolutions.back().Height;
         }
 
         _fsResolutions = resolutions;
@@ -863,11 +888,11 @@ private:
     }
 
     static void DrawWeatherWindow(
-        rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer, rct_window* original_w, int16_t left, int16_t right, int16_t top,
+        DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer, WindowBase* original_w, int16_t left, int16_t right, int16_t top,
         int16_t bottom, DrawWeatherFunc drawFunc)
     {
-        rct_window* w{};
-        auto itStart = window_get_iterator(original_w);
+        WindowBase* w{};
+        auto itStart = WindowGetIterator(original_w);
         for (auto it = std::next(itStart);; it++)
         {
             if (it == g_window_list.end())

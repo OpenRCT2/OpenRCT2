@@ -22,7 +22,7 @@ using namespace OpenRCT2::TrackMetaData;
 
 std::shared_ptr<ScTrackIterator> ScTrackIterator::FromElement(const CoordsXY& position, int32_t elementIndex)
 {
-    auto el = map_get_nth_element_at(position, elementIndex);
+    auto el = MapGetNthElementAt(position, elementIndex);
     auto origin = GetTrackSegmentOrigin(CoordsXYE(position, el));
     if (!origin)
         return nullptr;
@@ -75,13 +75,13 @@ DukValue ScTrackIterator::previousPosition_get() const
     auto& seq0 = ted.Block;
     auto pos = _position + CoordsXYZ(seq0->x, seq0->y, seq0->z);
 
-    auto el = map_get_track_element_at_of_type_seq(pos, _type, 0);
+    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
     if (el == nullptr)
         return ToDuk(ctx, nullptr);
 
     auto posEl = CoordsXYE(pos.x, pos.y, reinterpret_cast<TileElement*>(el));
-    track_begin_end tbe{};
-    track_block_get_previous(posEl, &tbe);
+    TrackBeginEnd tbe{};
+    TrackBlockGetPrevious(posEl, &tbe);
     CoordsXYZD result(tbe.end_x, tbe.end_y, tbe.begin_z, tbe.begin_direction);
     return ToDuk(ctx, result);
 }
@@ -95,7 +95,7 @@ DukValue ScTrackIterator::nextPosition_get() const
     auto& seq0 = ted.Block;
     auto pos = _position + CoordsXYZ(seq0->x, seq0->y, seq0->z);
 
-    auto el = map_get_track_element_at_of_type_seq(pos, _type, 0);
+    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
     if (el == nullptr)
         return ToDuk(ctx, nullptr);
 
@@ -103,7 +103,7 @@ DukValue ScTrackIterator::nextPosition_get() const
     CoordsXYE next;
     int32_t z{};
     int32_t direction{};
-    track_block_get_next(&posEl, &next, &z, &direction);
+    TrackBlockGetNext(&posEl, &next, &z, &direction);
     CoordsXYZD result(next.x, next.y, z, direction);
     return ToDuk(ctx, result);
 }
@@ -114,13 +114,13 @@ bool ScTrackIterator::previous()
     auto& seq0 = ted.Block;
     auto pos = _position + CoordsXYZ(seq0->x, seq0->y, seq0->z);
 
-    auto el = map_get_track_element_at_of_type_seq(pos, _type, 0);
+    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
     if (el == nullptr)
         return false;
 
     auto posEl = CoordsXYE(pos.x, pos.y, reinterpret_cast<TileElement*>(el));
-    track_begin_end tbe{};
-    if (track_block_get_previous(posEl, &tbe))
+    TrackBeginEnd tbe{};
+    if (TrackBlockGetPrevious(posEl, &tbe))
     {
         auto prev = CoordsXYE(tbe.end_x, tbe.end_y, tbe.begin_element);
         auto origin = GetTrackSegmentOrigin(prev);
@@ -140,7 +140,7 @@ bool ScTrackIterator::next()
     auto& seq0 = ted.Block;
     auto pos = _position + CoordsXYZ(seq0->x, seq0->y, seq0->z);
 
-    auto el = map_get_track_element_at_of_type_seq(pos, _type, 0);
+    auto el = MapGetTrackElementAtOfTypeSeq(pos, _type, 0);
     if (el == nullptr)
         return false;
 
@@ -148,7 +148,7 @@ bool ScTrackIterator::next()
     CoordsXYE next;
     int32_t z{};
     int32_t direction{};
-    if (track_block_get_next(&posEl, &next, &z, &direction))
+    if (TrackBlockGetNext(&posEl, &next, &z, &direction))
     {
         auto origin = GetTrackSegmentOrigin(next);
         if (origin)

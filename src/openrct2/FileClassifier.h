@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -52,4 +52,4 @@ struct ClassifiedFileInfo
 bool TryClassifyFile(const std::string& path, ClassifiedFileInfo* result);
 bool TryClassifyFile(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 
-FileExtension get_file_extension_type(u8string_view path);
+FileExtension GetFileExtensionType(u8string_view path);

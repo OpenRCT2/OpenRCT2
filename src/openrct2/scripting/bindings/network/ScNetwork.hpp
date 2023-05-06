@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -43,17 +43,17 @@ namespace OpenRCT2::Scripting
 
         std::shared_ptr<ScPlayer> currentPlayer_get() const;
 
-        std::shared_ptr<ScPlayer> getPlayer(int32_t index) const;
+        std::shared_ptr<ScPlayer> getPlayer(int32_t id) const;
 
         DukValue stats_get() const;
 
-        std::shared_ptr<ScPlayerGroup> getGroup(int32_t index) const;
+        std::shared_ptr<ScPlayerGroup> getGroup(int32_t id) const;
 
         void addGroup();
 
-        void removeGroup(int32_t index);
+        void removeGroup(int32_t id);
 
-        void kickPlayer(int32_t index);
+        void kickPlayer(int32_t id);
 
         void sendMessage(std::string message, DukValue players);
 

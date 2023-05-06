@@ -8,7 +8,7 @@
 
   Contains files for mixing and playing music and sound.
 
-- **cmdline**
+- **command_line**
 
   Code specific to command line (arguments).
 

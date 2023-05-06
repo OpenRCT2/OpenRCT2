@@ -30,7 +30,7 @@
       <li>Auto-saving and giant screenshots.</li>
     </ul>
     <p>
-      Original RollerCoaster Tycoon 2 game files are required in order to play OpenRCT2.
+      Original RollerCoaster Tycoon 2 or RollerCoaster Tycoon Classic game files are required in order to play OpenRCT2.
     </p>
   </description>
   <screenshots>
@@ -66,6 +66,15 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+      <release version="0.4.4" date="2023-03-28">
+          <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.4.4</url>
+      </release>
+      <release version="0.4.3" date="2022-12-14">
+          <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.4.3</url>
+      </release>
+      <release version="0.4.2" date="2022-10-05">
+          <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.4.2</url>
+      </release>
       <release version="0.4.1" date="2022-07-04">
           <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.4.1</url>
       </release>

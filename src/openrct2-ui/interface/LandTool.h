@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,6 +29,8 @@ extern money64 gWaterToolLowerCost;
 namespace LandTool
 {
     uint32_t SizeToSpriteIndex(uint16_t size);
-    void ShowSurfaceStyleDropdown(rct_window* w, rct_widget* widget, ObjectEntryIndex currentSurfaceType);
-    void ShowEdgeStyleDropdown(rct_window* w, rct_widget* widget, ObjectEntryIndex currentEdgeType);
+    void ShowSurfaceStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryIndex currentSurfaceType);
+    ObjectEntryIndex GetSurfaceStyleFromDropdownIndex(size_t index);
+    void ShowEdgeStyleDropdown(WindowBase* w, Widget* widget, ObjectEntryIndex currentEdgeType);
+    ObjectEntryIndex GetEdgeStyleFromDropdownIndex(size_t index);
 } // namespace LandTool

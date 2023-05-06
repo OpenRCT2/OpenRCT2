@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../core/ZipStream.hpp"
+#include "../drawing/Image.h"
 #include "../localisation/Language.h"
 #include "../localisation/LocalisationService.h"
 #include "../localisation/StringIds.h"
@@ -28,7 +29,7 @@
 
 using namespace OpenRCT2;
 
-ObjectEntryDescriptor::ObjectEntryDescriptor(const rct_object_entry& newEntry)
+ObjectEntryDescriptor::ObjectEntryDescriptor(const RCTObjectEntry& newEntry)
 {
     if (!newEntry.IsEmpty())
     {
@@ -114,15 +115,6 @@ void Object::PopulateTablesFromJson(IReadObjectContext* context, json_t& root)
     _usesFallbackImages = _imageTable.ReadJson(context, root);
 }
 
-rct_object_entry Object::ParseObjectEntry(const std::string& s)
-{
-    rct_object_entry entry = {};
-    std::fill_n(entry.name, sizeof(entry.name), ' ');
-    auto copyLen = std::min<size_t>(8, s.size());
-    std::copy_n(s.c_str(), copyLen, entry.name);
-    return entry;
-}
-
 std::string Object::GetOverrideString(uint8_t index) const
 {
     auto legacyIdentifier = GetLegacyIdentifier();
@@ -132,7 +124,7 @@ std::string Object::GetOverrideString(uint8_t index) const
     const utf8* result = nullptr;
     if (stringId != STR_NONE)
     {
-        result = language_get_string(stringId);
+        result = LanguageGetString(stringId);
     }
     return String::ToStd(result);
 }
@@ -152,19 +144,14 @@ std::string Object::GetString(int32_t language, ObjectStringID index) const
     return GetStringTable().GetString(language, index);
 }
 
-ObjectEntryDescriptor Object::GetScgWallsHeader() const
-{
-    return ObjectEntryDescriptor("rct2.scenery_group.scgwalls");
-}
-
 ObjectEntryDescriptor Object::GetScgPathXHeader() const
 {
     return ObjectEntryDescriptor("rct2.scenery_group.scgpathx");
 }
 
-rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint32_t flags, uint32_t checksum)
+RCTObjectEntry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint32_t flags, uint32_t checksum)
 {
-    rct_object_entry header = {};
+    RCTObjectEntry header = {};
     header.flags = flags;
     std::copy_n(name, DAT_NAME_LENGTH, header.name);
     header.checksum = checksum;
@@ -196,7 +183,25 @@ std::string Object::GetName(int32_t language) const
     return GetString(language, ObjectStringID::NAME);
 }
 
-void rct_object_entry::SetName(std::string_view value)
+ImageIndex Object::LoadImages()
+{
+    if (_baseImageId == ImageIndexUndefined)
+    {
+        _baseImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+    }
+    return _baseImageId;
+}
+
+void Object::UnloadImages()
+{
+    if (_baseImageId != ImageIndexUndefined)
+    {
+        GfxObjectFreeImages(_baseImageId, GetImageTable().GetCount());
+        _baseImageId = ImageIndexUndefined;
+    }
+}
+
+void RCTObjectEntry::SetName(std::string_view value)
 {
     std::memset(name, ' ', sizeof(name));
     std::memcpy(name, value.data(), std::min(sizeof(name), value.size()));
@@ -212,7 +217,16 @@ void Object::SetAuthors(std::vector<std::string>&& authors)
     _authors = std::move(authors);
 }
 
-bool rct_object_entry::IsEmpty() const
+bool Object::IsCompatibilityObject() const
+{
+    return _isCompatibilityObject;
+}
+void Object::SetIsCompatibilityObject(const bool on)
+{
+    _isCompatibilityObject = on;
+}
+
+bool RCTObjectEntry::IsEmpty() const
 {
     uint64_t a, b;
     std::memcpy(&a, reinterpret_cast<const uint8_t*>(this), 8);
@@ -225,7 +239,7 @@ bool rct_object_entry::IsEmpty() const
     return false;
 }
 
-bool rct_object_entry::operator==(const rct_object_entry& rhs) const
+bool RCTObjectEntry::operator==(const RCTObjectEntry& rhs) const
 {
     const auto a = this;
     const auto b = &rhs;
@@ -262,7 +276,7 @@ bool rct_object_entry::operator==(const rct_object_entry& rhs) const
     return true;
 }
 
-bool rct_object_entry::operator!=(const rct_object_entry& rhs) const
+bool RCTObjectEntry::operator!=(const RCTObjectEntry& rhs) const
 {
     return !(*this == rhs);
 }
@@ -336,6 +350,54 @@ std::unique_ptr<IStream> ObjectAsset::GetStream() const
     {
     }
     return {};
+}
+
+u8string VersionString(const ObjectVersion& version)
+{
+    return std::to_string(std::get<0>(version)) + "." + std::to_string(std::get<1>(version)) + "."
+        + std::to_string(std::get<2>(version));
+}
+
+ObjectVersion VersionTuple(std::string_view version)
+{
+    if (version.empty())
+    {
+        return std::make_tuple(0, 0, 0);
+    }
+
+    auto nums = String::Split(version, ".");
+    uint16_t versions[VersionNumFields] = {};
+    if (nums.size() > VersionNumFields)
+    {
+        LOG_WARNING("%i fields found in version string '%s', expected X.Y.Z", nums.size(), version);
+    }
+    if (nums.size() == 0)
+    {
+        LOG_WARNING("No fields found in version string '%s', expected X.Y.Z", version);
+        return std::make_tuple(0, 0, 0);
+    }
+    try
+    {
+        size_t highestIndex = std::min(nums.size(), VersionNumFields);
+        for (size_t i = 0; i < highestIndex; i++)
+        {
+            auto value = stoi(nums.at(i));
+            constexpr auto maxValue = std::numeric_limits<uint16_t>().max();
+            if (value > maxValue)
+            {
+                LOG_WARNING(
+                    "Version value too high in version string '%s', version value will be capped to %i.", version, maxValue);
+                value = maxValue;
+            }
+            versions[i] = value;
+        }
+    }
+    catch (const std::exception&)
+    {
+        LOG_WARNING("Malformed version string '%s', expected X.Y.Z", version);
+    }
+
+    return std::make_tuple(versions[0], versions[1], versions[2]);
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

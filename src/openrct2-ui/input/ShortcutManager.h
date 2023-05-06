@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -57,11 +57,12 @@ namespace OpenRCT2::Ui
     {
     public:
         std::string Id;
-        rct_string_id LocalisedName = STR_NONE;
+        StringId LocalisedName = STR_NONE;
         std::string CustomName;
         std::vector<ShortcutInput> Default;
         std::vector<ShortcutInput> Current;
         std::function<void()> Action;
+        size_t OrderIndex = static_cast<size_t>(-1);
 
         RegisteredShortcut() = default;
         RegisteredShortcut(std::string_view id, std::string_view name, const std::function<void()>& action)
@@ -71,7 +72,7 @@ namespace OpenRCT2::Ui
         {
         }
 
-        RegisteredShortcut(std::string_view id, rct_string_id localisedName, const std::function<void()>& action)
+        RegisteredShortcut(std::string_view id, StringId localisedName, const std::function<void()>& action)
             : Id(id)
             , LocalisedName(localisedName)
             , Action(action)
@@ -79,8 +80,7 @@ namespace OpenRCT2::Ui
         }
 
         RegisteredShortcut(
-            std::string_view id, rct_string_id localisedName, std::string_view defaultChord,
-            const std::function<void()>& action)
+            std::string_view id, StringId localisedName, std::string_view defaultChord, const std::function<void()>& action)
             : Id(id)
             , LocalisedName(localisedName)
             , Default({ defaultChord })
@@ -90,7 +90,7 @@ namespace OpenRCT2::Ui
         }
 
         RegisteredShortcut(
-            std::string_view id, rct_string_id localisedName, std::string_view defaultChordA, std::string_view defaultChordB,
+            std::string_view id, StringId localisedName, std::string_view defaultChordA, std::string_view defaultChordB,
             const std::function<void()>& action)
             : Id(id)
             , LocalisedName(localisedName)

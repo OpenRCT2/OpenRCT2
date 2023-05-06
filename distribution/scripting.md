@@ -56,8 +56,10 @@ The hot reload feature can be enabled by editing your `config.ini` file and sett
 ## Breaking changes
 As of version 34 there are breaking Api changes.
 
-> Version 34
-```Entity.type will now return "guest" or "staff" instead of "peep"```
+- **Version 34:** `Entity.type` will now return `"guest"` or `"staff"` instead of `"peep"`.
+- **Version 63:** Accessing G2 sprites by id directly is now deprecated in favor of a future-proof implementation using `IconName` and/or `context.getIcon()`.
+- **Version 68:** Custom game actions registered through `context.registerAction()` now wrap the callback arguments in a `GameActionEventArgs`, similar to `context.subscribe()` callbacks.
+- **Version 77:** Network APIs that take player index and group index now take player ID and group ID instead.
 
 ## Frequently Asked Questions
 

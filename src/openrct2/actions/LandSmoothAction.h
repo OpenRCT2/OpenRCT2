@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,7 @@ private:
     uint8_t _selectionType{};
     bool _isLowering{};
 
-    constexpr static rct_string_id _ErrorTitles[] = {
+    constexpr static StringId _ErrorTitles[] = {
         STR_CANT_LOWER_LAND_HERE,
         STR_CANT_RAISE_LAND_HERE,
     };
@@ -27,6 +27,8 @@ private:
 public:
     LandSmoothAction() = default;
     LandSmoothAction(const CoordsXY& coords, MapRange range, uint8_t selectionType, bool isLowering);
+
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
@@ -37,10 +39,10 @@ public:
 private:
     GameActions::Result SmoothLandTile(
         int32_t direction, bool isExecuting, const CoordsXY& loc, SurfaceElement* surfaceElement) const;
-    money32 SmoothLandRowByEdge(
+    money64 SmoothLandRowByEdge(
         bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight1, int32_t expectedLandHeight2, int32_t stepX,
         int32_t stepY, int32_t direction1, int32_t direction2, int32_t checkDirection1, int32_t checkDirection2) const;
-    money32 SmoothLandRowByCorner(
+    money64 SmoothLandRowByCorner(
         bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight, int32_t stepX, int32_t stepY, int32_t direction,
         int32_t checkDirection) const;
     GameActions::Result SmoothLand(bool isExecuting) const;

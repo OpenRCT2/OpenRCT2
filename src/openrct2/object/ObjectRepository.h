@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -32,7 +32,12 @@ namespace OpenRCT2::Localisation
     class LocalisationService;
 }
 
-struct rct_drawpixelinfo;
+struct DrawPixelInfo;
+
+enum ObjectItemFlags : uint8_t
+{
+    IsCompatibilityObject = 1,
+};
 
 struct ObjectRepositoryItem
 {
@@ -40,17 +45,19 @@ struct ObjectRepositoryItem
     ObjectType Type;
     ObjectGeneration Generation;
     std::string Identifier; // e.g. rct2.c3d
-    rct_object_entry ObjectEntry;
+    RCTObjectEntry ObjectEntry;
     std::string Path;
     std::string Name;
+    ObjectVersion Version;
     std::vector<std::string> Authors;
     std::vector<ObjectSourceGame> Sources;
+    uint8_t Flags{};
     std::shared_ptr<Object> LoadedObject{};
     struct
     {
         uint8_t RideFlags;
         uint8_t RideCategory[RCT2::ObjectLimits::MaxCategoriesPerRide];
-        uint8_t RideType[RCT2::ObjectLimits::MaxRideTypesPerRideEntry];
+        ride_type_t RideType[RCT2::ObjectLimits::MaxRideTypesPerRideEntry];
     } RideInfo;
     struct
     {
@@ -80,14 +87,14 @@ struct IObjectRepository
     [[nodiscard]] virtual const ObjectRepositoryItem* GetObjects() const abstract;
     [[nodiscard]] virtual const ObjectRepositoryItem* FindObjectLegacy(std::string_view legacyIdentifier) const abstract;
     [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(std::string_view identifier) const abstract;
-    [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(const rct_object_entry* objectEntry) const abstract;
+    [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(const RCTObjectEntry* objectEntry) const abstract;
     [[nodiscard]] virtual const ObjectRepositoryItem* FindObject(const ObjectEntryDescriptor& oed) const abstract;
 
     [[nodiscard]] virtual std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) abstract;
     virtual void RegisterLoadedObject(const ObjectRepositoryItem* ori, std::unique_ptr<Object>&& object) abstract;
     virtual void UnregisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) abstract;
 
-    virtual void AddObject(const rct_object_entry* objectEntry, const void* data, size_t dataSize) abstract;
+    virtual void AddObject(const RCTObjectEntry* objectEntry, const void* data, size_t dataSize) abstract;
     virtual void AddObjectFromFile(
         ObjectGeneration generation, std::string_view objectName, const void* data, size_t dataSize) abstract;
 
@@ -99,8 +106,8 @@ struct IObjectRepository
 
 [[nodiscard]] bool IsObjectCustom(const ObjectRepositoryItem* object);
 
-[[nodiscard]] size_t object_repository_get_items_count();
-[[nodiscard]] const ObjectRepositoryItem* object_repository_get_items();
-[[nodiscard]] const ObjectRepositoryItem* object_repository_find_object_by_entry(const rct_object_entry* entry);
-[[nodiscard]] const ObjectRepositoryItem* object_repository_find_object_by_name(const char* name);
-[[nodiscard]] std::unique_ptr<Object> object_repository_load_object(const rct_object_entry* objectEntry);
+[[nodiscard]] size_t ObjectRepositoryGetItemsCount();
+[[nodiscard]] const ObjectRepositoryItem* ObjectRepositoryGetItems();
+[[nodiscard]] const ObjectRepositoryItem* ObjectRepositoryFindObjectByEntry(const RCTObjectEntry* entry);
+[[nodiscard]] const ObjectRepositoryItem* ObjectRepositoryFindObjectByName(const char* name);
+[[nodiscard]] std::unique_ptr<Object> ObjectRepositoryLoadObject(const RCTObjectEntry* objectEntry);

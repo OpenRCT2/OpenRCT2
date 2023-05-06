@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -173,8 +173,8 @@ namespace OpenRCT2::Scripting
                     DukObject obj(ctx);
                     if (ns == "general")
                     {
-                        obj.Set("general.language", gConfigGeneral.language);
-                        obj.Set("general.showFps", gConfigGeneral.show_fps);
+                        obj.Set("general.language", gConfigGeneral.Language);
+                        obj.Set("general.showFps", gConfigGeneral.ShowFPS);
                     }
                     result = obj.Take();
                 }
@@ -199,18 +199,13 @@ namespace OpenRCT2::Scripting
                 if (key == "general.language")
                 {
                     auto& localisationService = GetContext()->GetLocalisationService();
-                    auto language = localisationService.GetCurrentLanguage();
-                    auto locale = "";
-                    if (language >= 0 && static_cast<size_t>(language) < std::size(LanguagesDescriptors))
-                    {
-                        locale = LanguagesDescriptors[language].locale;
-                    }
-                    duk_push_string(ctx, locale);
+                    auto locale = localisationService.GetCurrentLanguageLocale();
+                    duk_push_lstring(ctx, locale.data(), locale.size());
                     return DukValue::take_from_stack(ctx);
                 }
                 if (key == "general.showFps")
                 {
-                    duk_push_boolean(ctx, gConfigGeneral.show_fps);
+                    duk_push_boolean(ctx, gConfigGeneral.ShowFPS);
                     return DukValue::take_from_stack(ctx);
                 }
             }
@@ -251,7 +246,7 @@ namespace OpenRCT2::Scripting
                 {
                     if (key == "general.showFps")
                     {
-                        gConfigGeneral.show_fps = value.as_bool();
+                        gConfigGeneral.ShowFPS = value.as_bool();
                     }
                     else
                     {

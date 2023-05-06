@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,7 +18,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_SACK_STAFF;
+static constexpr const StringId WINDOW_TITLE = STR_SACK_STAFF;
 static constexpr const int32_t WW = 200;
 static constexpr const int32_t WH = 100;
 
@@ -32,78 +32,64 @@ enum WindowStaffFireWidgetIdx {
 };
 
 // 0x9AFB4C
-static rct_widget window_staff_fire_widgets[] = {
+static Widget window_staff_fire_widgets[] = {
     WINDOW_SHIM_WHITE(WINDOW_TITLE, WW, WH),
     MakeWidget({     10, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_YES               ),
     MakeWidget({WW - 95, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
     WIDGETS_END,
 };
 
-static void WindowStaffFireMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void WindowStaffFirePaint(rct_window *w, rct_drawpixelinfo *dpi);
-
-//0x9A3F7C
-static rct_window_event_list window_staff_fire_events([](auto& events)
-{
-    events.mouse_up = &WindowStaffFireMouseup;
-    events.paint = &WindowStaffFirePaint;
-});
 // clang-format on
 
-/** Based off of rct2: 0x6C0A77 */
-rct_window* WindowStaffFirePromptOpen(Peep* peep)
+class StaffFirePromptWindow final : public Window
 {
-    rct_window* w;
-
-    // Check if the confirm window already exists.
-    w = window_bring_to_front_by_number(WC_FIRE_PROMPT, peep->sprite_index.ToUnderlying());
-    if (w != nullptr)
+public:
+    void SetWindowNumber(rct_windownumber windownumber)
     {
-        return w;
+        number = windownumber;
     }
 
-    w = WindowCreateCentred(WW, WH, &window_staff_fire_events, WC_FIRE_PROMPT, WF_TRANSPARENT);
-    w->widgets = window_staff_fire_widgets;
-
-    WindowInitScrollWidgets(w);
-
-    w->number = peep->sprite_index.ToUnderlying();
-
-    return w;
-}
-
-/**
- *
- *  rct2: 0x006C0B40
- */
-static void WindowStaffFireMouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    switch (widgetIndex)
+    void OnOpen() override
     {
-        case WIDX_YES:
+        widgets = window_staff_fire_widgets;
+        WindowInitScrollWidgets(*this);
+    }
+
+    void OnMouseUp(WidgetIndex widgetIndex) override
+    {
+        switch (widgetIndex)
         {
-            auto staffFireAction = StaffFireAction(EntityId::FromUnderlying(w->number));
-            GameActions::Execute(&staffFireAction);
-            break;
+            case WIDX_YES:
+            {
+                auto staffFireAction = StaffFireAction(EntityId::FromUnderlying(number));
+                GameActions::Execute(&staffFireAction);
+                break;
+            }
+            case WIDX_CLOSE:
+            case WIDX_CANCEL:
+                Close();
+                break;
         }
-        case WIDX_CANCEL:
-        case WIDX_CLOSE:
-            window_close(w);
     }
-}
 
-/**
- *
- *  rct2: 0x006C0AF2
- */
-static void WindowStaffFirePaint(rct_window* w, rct_drawpixelinfo* dpi)
+    void OnDraw(DrawPixelInfo& dpi) override
+    {
+        DrawWidgets(dpi);
+
+        Peep* peep = GetEntity<Staff>(EntityId::FromUnderlying(number));
+        auto ft = Formatter();
+        peep->FormatNameTo(ft);
+
+        ScreenCoordsXY textCoords(windowPos + ScreenCoordsXY{ WW / 2, (WH / 2) - 3 });
+        DrawTextWrapped(dpi, textCoords, WW - 4, STR_FIRE_STAFF_ID, ft, { TextAlignment::CENTRE });
+    }
+};
+
+WindowBase* WindowStaffFirePromptOpen(Peep* peep)
 {
-    WindowDrawWidgets(w, dpi);
-
-    Peep* peep = GetEntity<Staff>(EntityId::FromUnderlying(w->number));
-    auto ft = Formatter();
-    peep->FormatNameTo(ft);
-
-    ScreenCoordsXY stringCoords(w->windowPos.x + WW / 2, w->windowPos.y + (WH / 2) - 3);
-    DrawTextWrapped(dpi, stringCoords, WW - 4, STR_FIRE_STAFF_ID, ft, { TextAlignment::CENTRE });
+    // Check if the confirm window already exists
+    auto* window = WindowFocusOrCreate<StaffFirePromptWindow>(
+        WindowClass::FirePrompt, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+    window->SetWindowNumber(peep->Id.ToUnderlying());
+    return window;
 }

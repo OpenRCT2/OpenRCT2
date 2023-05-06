@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -109,7 +109,7 @@ static constexpr const int32_t RSW_OTHER_TABS = WW_OTHER_TABS;
     MakeTab({127, 17}, STR_FINANCES_SHOW_MARKETING_TAB_TIP    ), \
     MakeTab({158, 17}, STR_FINANCES_RESEARCH_TIP              )
 
-static rct_widget _windowFinancesSummaryWidgets[] =
+static Widget _windowFinancesSummaryWidgets[] =
 {
     MAIN_FINANCES_WIDGETS(STR_FINANCIAL_SUMMARY, RSW_OTHER_TABS, RSH_SUMMARY, WW_OTHER_TABS, WH_SUMMARY),
     MakeWidget        ({130,  50}, {391, 211}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_HORIZONTAL              ),
@@ -117,25 +117,25 @@ static rct_widget _windowFinancesSummaryWidgets[] =
     WIDGETS_END,
 };
 
-static rct_widget _windowFinancesCashWidgets[] =
+static Widget _windowFinancesCashWidgets[] =
 {
     MAIN_FINANCES_WIDGETS(STR_FINANCIAL_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
     WIDGETS_END,
 };
 
-static rct_widget _windowFinancesParkValueWidgets[] =
+static Widget _windowFinancesParkValueWidgets[] =
 {
     MAIN_FINANCES_WIDGETS(STR_PARK_VALUE_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
     WIDGETS_END,
 };
 
-static rct_widget _windowFinancesProfitWidgets[] =
+static Widget _windowFinancesProfitWidgets[] =
 {
     MAIN_FINANCES_WIDGETS(STR_PROFIT_GRAPH, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
     WIDGETS_END,
 };
 
-static rct_widget _windowFinancesMarketingWidgets[] =
+static Widget _windowFinancesMarketingWidgets[] =
 {
     MAIN_FINANCES_WIDGETS(STR_MARKETING, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
     MakeWidget({3, 47}, { WW_OTHER_TABS - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_IN_OPERATION                                   ),
@@ -149,7 +149,7 @@ static rct_widget _windowFinancesMarketingWidgets[] =
     WIDGETS_END,
 };
 
-static rct_widget _windowFinancesResearchWidgets[] =
+static Widget _windowFinancesResearchWidgets[] =
 {
     MAIN_FINANCES_WIDGETS(STR_RESEARCH_FUNDING, RSW_RESEARCH, RSH_RESEARCH, WW_RESEARCH, WH_RESEARCH),
     MakeWidget({  3,  47}, { WW_RESEARCH - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary, STR_RESEARCH_FUNDING_                                                             ),
@@ -167,7 +167,7 @@ static rct_widget _windowFinancesResearchWidgets[] =
 };
 // clang-format on
 
-static rct_widget* _windowFinancesPageWidgets[] = {
+static Widget* _windowFinancesPageWidgets[] = {
     _windowFinancesSummaryWidgets,   // WINDOW_FINANCES_PAGE_SUMMARY
     _windowFinancesCashWidgets,      // WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH
     _windowFinancesParkValueWidgets, // WINDOW_FINANCES_PAGE_VALUE_GRAPH
@@ -179,7 +179,7 @@ static_assert(std::size(_windowFinancesPageWidgets) == WINDOW_FINANCES_PAGE_COUN
 
 #pragma endregion
 
-static constexpr const rct_string_id _windowFinancesSummaryRowLabels[static_cast<int32_t>(ExpenditureType::Count)] = {
+static constexpr const StringId _windowFinancesSummaryRowLabels[static_cast<int32_t>(ExpenditureType::Count)] = {
     STR_FINANCES_SUMMARY_RIDE_CONSTRUCTION,
     STR_FINANCES_SUMMARY_RIDE_RUNNING_COSTS,
     STR_FINANCES_SUMMARY_LAND_PURCHASE,
@@ -209,7 +209,7 @@ static_assert(std::size(_windowFinancesTabAnimationFrames) == WINDOW_FINANCES_PA
 static constexpr const int32_t EXPENDITURE_COLUMN_WIDTH = 80;
 
 static constexpr const uint32_t _windowFinancesPageHoldDownWidgets[] = {
-    (1ULL << WIDX_LOAN_INCREASE) | (1ULL << WIDX_LOAN_DECREASE), // WINDOW_FINANCES_PAGE_SUMMARY
+    (1uLL << WIDX_LOAN_INCREASE) | (1uLL << WIDX_LOAN_DECREASE), // WINDOW_FINANCES_PAGE_SUMMARY
 
     0, // WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH
     0, // WINDOW_FINANCES_PAGE_VALUE_GRAPH
@@ -224,13 +224,18 @@ static_assert(std::size(_windowFinancesPageHoldDownWidgets) == WINDOW_FINANCES_P
 class FinancesWindow final : public Window
 {
 private:
-    int32_t _lastPaintedMonth;
+    uint32_t _lastPaintedMonth;
+
+    void SetDisabledTabs()
+    {
+        disabled_widgets = (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
+    }
 
 public:
     void OnOpen() override
     {
         SetPage(WINDOW_FINANCES_PAGE_SUMMARY);
-        _lastPaintedMonth = std::numeric_limits<int32_t>::max();
+        _lastPaintedMonth = std::numeric_limits<uint32_t>::max();
         ResearchUpdateUncompletedTypes();
     }
 
@@ -240,7 +245,7 @@ public:
         InvalidateWidget(WIDX_TAB_1 + page);
     }
 
-    void OnMouseDown(rct_widgetindex widgetIndex) override
+    void OnMouseDown(WidgetIndex widgetIndex) override
     {
         switch (page)
         {
@@ -248,12 +253,12 @@ public:
                 OnMouseDownSummary(widgetIndex);
                 break;
             case WINDOW_FINANCES_PAGE_RESEARCH:
-                OnMouseDownResearch(widgetIndex);
+                WindowResearchFundingMouseDown(this, widgetIndex, WIDX_RESEARCH_FUNDING);
                 break;
         }
     }
 
-    void OnMouseUp(rct_widgetindex widgetIndex) override
+    void OnMouseUp(WidgetIndex widgetIndex) override
     {
         switch (widgetIndex)
         {
@@ -275,17 +280,17 @@ public:
                         OnMouseUpMarketing(widgetIndex);
                         break;
                     case WINDOW_FINANCES_PAGE_RESEARCH:
-                        OnMouseUpResearch(widgetIndex);
+                        WindowResearchFundingMouseUp(widgetIndex, WIDX_RESEARCH_FUNDING);
                 }
                 break;
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t selectedIndex) override
+    void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
     {
         if (page == WINDOW_FINANCES_PAGE_RESEARCH)
         {
-            OnDropdownResearch(widgetIndex, selectedIndex);
+            WindowResearchFundingDropdown(widgetIndex, selectedIndex, WIDX_RESEARCH_FUNDING);
         }
     }
 
@@ -296,8 +301,10 @@ public:
         if (widgets != targetWidgets)
         {
             widgets = targetWidgets;
-            WindowInitScrollWidgets(this);
+            WindowInitScrollWidgets(*this);
         }
+
+        WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_6);
 
         for (auto i = 0; i < WINDOW_FINANCES_PAGE_COUNT; i++)
             SetWidgetPressed(WIDX_TAB_1 + i, false);
@@ -311,12 +318,12 @@ public:
                 OnPrepareDrawMarketing();
                 break;
             case WINDOW_FINANCES_PAGE_RESEARCH:
-                OnPrepareDrawResearch();
+                WindowResearchFundingPrepareDraw(this, WIDX_RESEARCH_FUNDING);
                 break;
         }
     }
 
-    void OnDraw(rct_drawpixelinfo& dpi) override
+    void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -339,7 +346,7 @@ public:
                 OnDrawMarketing(dpi);
                 break;
             case WINDOW_FINANCES_PAGE_RESEARCH:
-                OnDrawResearch(dpi);
+                WindowResearchFundingDraw(this, dpi);
                 break;
         }
     }
@@ -354,14 +361,14 @@ public:
         return {};
     }
 
-    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
         if (page != WINDOW_FINANCES_PAGE_SUMMARY)
             return;
 
         auto screenCoords = ScreenCoordsXY{ 0, TABLE_CELL_HEIGHT + 2 };
 
-        rct_widget self = widgets[WIDX_SUMMARY_SCROLL];
+        Widget self = widgets[WIDX_SUMMARY_SCROLL];
         int32_t row_width = std::max<uint16_t>(scrolls[0].h_right, self.width());
 
         // Expenditure / Income row labels
@@ -369,8 +376,8 @@ public:
         {
             // Darken every even row
             if (i % 2 == 0)
-                gfx_fill_rect(
-                    &dpi,
+                GfxFillRect(
+                    dpi,
                     { screenCoords - ScreenCoordsXY{ 0, 1 },
                       screenCoords + ScreenCoordsXY{ row_width, (TABLE_CELL_HEIGHT - 2) } },
                     ColourMapA[colours[1]].lighter | 0x1000000);
@@ -379,21 +386,19 @@ public:
         }
 
         // Expenditure / Income values for each month
-        int16_t currentMonthYear = static_cast<int16_t>(gDateMonthsElapsed);
+        auto currentMonthYear = GetDate().GetMonthsElapsed();
         for (int32_t i = SummaryMaxAvailableMonth(); i >= 0; i--)
         {
             screenCoords.y = 0;
 
-            int16_t monthyear = currentMonthYear - i;
-            if (monthyear < 0)
-                continue;
+            uint16_t monthyear = currentMonthYear - i;
 
             // Month heading
             auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_FINANCES_SUMMARY_MONTH_HEADING);
+            ft.Add<StringId>(STR_FINANCES_SUMMARY_MONTH_HEADING);
             ft.Add<uint16_t>(monthyear);
             DrawTextBasic(
-                &dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 },
+                dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 },
                 monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, ft,
                 { TextUnderline::On, TextAlignment::RIGHT });
             screenCoords.y += 14;
@@ -406,12 +411,12 @@ public:
                 if (expenditure != 0)
                 {
                     profit += expenditure;
-                    const rct_string_id format = expenditure >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE
-                                                                  : STR_FINANCES_SUMMARY_EXPENDITURE_VALUE;
+                    const StringId format = expenditure >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE
+                                                             : STR_FINANCES_SUMMARY_EXPENDITURE_VALUE;
                     ft = Formatter();
                     ft.Add<money64>(expenditure);
                     DrawTextBasic(
-                        &dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft,
+                        dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft,
                         { TextAlignment::RIGHT });
                 }
                 screenCoords.y += TABLE_CELL_HEIGHT;
@@ -419,15 +424,14 @@ public:
             screenCoords.y += 4;
 
             // Month profit
-            const rct_string_id format = profit >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_LOSS_VALUE;
+            const StringId format = profit >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_LOSS_VALUE;
             ft = Formatter();
             ft.Add<money64>(profit);
             DrawTextBasic(
-                &dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, { TextAlignment::RIGHT });
+                dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, { TextAlignment::RIGHT });
 
-            gfx_fill_rect(
-                &dpi,
-                { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, -2 } },
+            GfxFillRect(
+                dpi, { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, -2 } },
                 PALETTE_INDEX_10);
 
             screenCoords.x += EXPENDITURE_COLUMN_WIDTH;
@@ -444,8 +448,9 @@ public:
         hold_down_widgets = _windowFinancesPageHoldDownWidgets[p];
         pressed_widgets = 0;
         widgets = _windowFinancesPageWidgets[p];
-
+        SetDisabledTabs();
         Invalidate();
+
         if (p == WINDOW_FINANCES_PAGE_RESEARCH)
         {
             width = WW_RESEARCH;
@@ -461,10 +466,10 @@ public:
             width = WW_OTHER_TABS;
             height = WH_OTHER_TABS;
         }
-        window_event_resize_call(this);
-        window_event_invalidate_call(this);
+        WindowEventResizeCall(this);
+        WindowEventInvalidateCall(this);
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
 
         // Scroll summary all the way to the right, initially.
         if (p == WINDOW_FINANCES_PAGE_SUMMARY)
@@ -475,22 +480,35 @@ public:
 
 #pragma region Summary Events
 
-    void OnMouseDownSummary(rct_widgetindex widgetIndex)
+    void OnMouseDownSummary(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
             case WIDX_LOAN_INCREASE:
             {
+                // If loan can be increased, do so.
+                // If not, action shows error message.
                 auto newLoan = gBankLoan + 1000.00_GBP;
+                if (gBankLoan < gMaxBankLoan)
+                {
+                    newLoan = std::min(gMaxBankLoan, newLoan);
+                }
                 auto gameAction = ParkSetLoanAction(newLoan);
                 GameActions::Execute(&gameAction);
                 break;
             }
             case WIDX_LOAN_DECREASE:
             {
-                if (gBankLoan > 0)
+                // If loan is positive, decrease it.
+                // If loan is negative, action shows error message.
+                // If loan is exactly 0, prevent error message.
+                if (gBankLoan != 0)
                 {
                     auto newLoan = gBankLoan - 1000.00_GBP;
+                    if (gBankLoan > 0)
+                    {
+                        newLoan = std::max(static_cast<money64>(0LL), newLoan);
+                    }
                     auto gameAction = ParkSetLoanAction(newLoan);
                     GameActions::Execute(&gameAction);
                 }
@@ -509,17 +527,17 @@ public:
         ft.Add<money64>(gBankLoan);
 
         // Keep up with new months being added in the first two years.
-        if (gDateMonthsElapsed != _lastPaintedMonth)
+        if (GetDate().GetMonthsElapsed() != _lastPaintedMonth)
             InitialiseScrollPosition(WIDX_SUMMARY_SCROLL, 0);
     }
 
-    void OnDrawSummary(rct_drawpixelinfo& dpi)
+    void OnDrawSummary(DrawPixelInfo& dpi)
     {
         auto screenCoords = windowPos + ScreenCoordsXY{ 8, 51 };
 
         // Expenditure / Income heading
         DrawTextBasic(
-            &dpi, screenCoords, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, {},
+            dpi, screenCoords, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, {},
             { COLOUR_BLACK, TextUnderline::On, TextAlignment::LEFT });
         screenCoords.y += 14;
 
@@ -528,66 +546,68 @@ public:
         {
             // Darken every even row
             if (i % 2 == 0)
-                gfx_fill_rect(
-                    &dpi,
+                GfxFillRect(
+                    dpi,
                     { screenCoords - ScreenCoordsXY{ 0, 1 }, screenCoords + ScreenCoordsXY{ 121, (TABLE_CELL_HEIGHT - 2) } },
                     ColourMapA[colours[1]].lighter | 0x1000000);
 
-            DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, _windowFinancesSummaryRowLabels[i]);
+            DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, _windowFinancesSummaryRowLabels[i]);
             screenCoords.y += TABLE_CELL_HEIGHT;
         }
 
         // Horizontal rule below expenditure / income table
-        gfx_fill_rect_inset(
-            &dpi, { windowPos + ScreenCoordsXY{ 8, 272 }, windowPos + ScreenCoordsXY{ 8 + 513, 272 + 1 } }, colours[1],
+        GfxFillRectInset(
+            dpi, { windowPos + ScreenCoordsXY{ 8, 272 }, windowPos + ScreenCoordsXY{ 8 + 513, 272 + 1 } }, colours[1],
             INSET_RECT_FLAG_BORDER_INSET);
 
         // Loan and interest rate
-        DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ 8, 279 }, STR_FINANCES_SUMMARY_LOAN);
-        auto ft = Formatter();
-        ft.Add<uint16_t>(gBankLoanInterestRate);
-        DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ 167, 279 }, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, ft);
+        DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, 279 }, STR_FINANCES_SUMMARY_LOAN);
+        if (!(gParkFlags & PARK_FLAGS_RCT1_INTEREST))
+        {
+            auto ft = Formatter();
+            ft.Add<uint16_t>(gBankLoanInterestRate);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 167, 279 }, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, ft);
+        }
 
         // Current cash
-        ft = Formatter();
+        auto ft = Formatter();
         ft.Add<money64>(gCash);
-        rct_string_id stringId = gCash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
-        DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ 8, 294 }, stringId, ft);
+        StringId stringId = gCash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
+        DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, 294 }, stringId, ft);
 
         // Objective related financial information
         if (gScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
         {
-            auto lastMonthProfit = finance_get_last_month_shop_profit();
+            auto lastMonthProfit = FinanceGetLastMonthShopProfit();
             ft = Formatter();
             ft.Add<money64>(lastMonthProfit);
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ 280, 279 }, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL,
-                ft);
+                dpi, windowPos + ScreenCoordsXY{ 280, 279 }, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, ft);
         }
         else
         {
             // Park value and company value
             ft = Formatter();
             ft.Add<money64>(gParkValue);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ 280, 279 }, STR_PARK_VALUE_LABEL, ft);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, 279 }, STR_PARK_VALUE_LABEL, ft);
             ft = Formatter();
             ft.Add<money64>(gCompanyValue);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ 280, 294 }, STR_COMPANY_VALUE_LABEL, ft);
+            DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, 294 }, STR_COMPANY_VALUE_LABEL, ft);
         }
     }
 
     uint16_t SummaryMaxAvailableMonth()
     {
-        return std::min<uint16_t>(gDateMonthsElapsed, EXPENDITURE_TABLE_MONTH_COUNT - 1);
+        return std::min<uint16_t>(GetDate().GetMonthsElapsed(), EXPENDITURE_TABLE_MONTH_COUNT - 1);
     }
 
 #pragma endregion
 
 #pragma region Financial Graph Events
 
-    void OnDrawFinancialGraph(rct_drawpixelinfo& dpi)
+    void OnDrawFinancialGraph(DrawPixelInfo& dpi)
     {
-        rct_widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
+        Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
         auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
         auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
 
@@ -597,13 +617,13 @@ public:
         ft.Add<money64>(cashLessLoan);
 
         DrawTextBasic(
-            &dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 },
+            dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 },
             cashLessLoan >= 0 ? STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE
                               : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE,
             ft);
 
         // Graph
-        gfx_fill_rect_inset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
 
         // Calculate the Y axis scale (log2 of highest [+/-]balance)
         int32_t yAxisScale = 0;
@@ -631,36 +651,36 @@ public:
             ft = Formatter();
             ft.Add<money64>(axisValue);
             DrawTextBasic(
-                &dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
-                { FontSpriteBase::SMALL, TextAlignment::RIGHT });
-            gfx_fill_rect_inset(
-                &dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
+                dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
+                { FontStyle::Small, TextAlignment::RIGHT });
+            GfxFillRectInset(
+                dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             coords.y += 39;
         }
 
         // X axis labels and values
         coords = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-        Graph::Draw(&dpi, gCashHistory, 64, coords, yAxisScale, 128);
+        Graph::Draw(dpi, gCashHistory, 64, coords, yAxisScale, 128);
     }
 
 #pragma endregion
 
 #pragma region Park Value Graph Events
 
-    void OnDrawParkValueGraph(rct_drawpixelinfo& dpi)
+    void OnDrawParkValueGraph(DrawPixelInfo& dpi)
     {
-        rct_widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
+        Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
         auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
         auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
 
         // Park value
         auto ft = Formatter();
         ft.Add<money64>(gParkValue);
-        DrawTextBasic(&dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 }, STR_FINANCES_PARK_VALUE, ft);
+        DrawTextBasic(dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 }, STR_FINANCES_PARK_VALUE, ft);
 
         // Graph
-        gfx_fill_rect_inset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
 
         // Calculate the Y axis scale (log2 of highest [+/-]balance)
         int32_t yAxisScale = 0;
@@ -688,26 +708,26 @@ public:
             ft = Formatter();
             ft.Add<money64>(axisValue);
             DrawTextBasic(
-                &dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
-                { FontSpriteBase::SMALL, TextAlignment::RIGHT });
-            gfx_fill_rect_inset(
-                &dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
+                dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
+                { FontStyle::Small, TextAlignment::RIGHT });
+            GfxFillRectInset(
+                dpi, { coords + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, coords.y + 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             coords.y += 39;
         }
 
         // X axis labels and values
         coords = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-        Graph::Draw(&dpi, gParkValueHistory, 64, coords, yAxisScale, 0);
+        Graph::Draw(dpi, gParkValueHistory, 64, coords, yAxisScale, 0);
     }
 
 #pragma endregion
 
 #pragma region Profit Graph Events
 
-    void OnDrawProfitGraph(rct_drawpixelinfo& dpi)
+    void OnDrawProfitGraph(DrawPixelInfo& dpi)
     {
-        rct_widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
+        Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
         auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
         auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
 
@@ -715,11 +735,11 @@ public:
         auto ft = Formatter();
         ft.Add<money64>(gCurrentProfit);
         DrawTextBasic(
-            &dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 },
+            dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 },
             gCurrentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS, ft);
 
         // Graph
-        gfx_fill_rect_inset(&dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
 
         // Calculate the Y axis scale (log2 of highest [+/-]balance)
         int32_t yAxisScale = 0;
@@ -747,28 +767,28 @@ public:
             ft = Formatter();
             ft.Add<money64>(axisValue);
             DrawTextBasic(
-                &dpi, screenPos + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
-                { FontSpriteBase::SMALL, TextAlignment::RIGHT });
-            gfx_fill_rect_inset(
-                &dpi, { screenPos + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, screenPos.y + 5 } }, colours[2],
+                dpi, screenPos + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
+                { FontStyle::Small, TextAlignment::RIGHT });
+            GfxFillRectInset(
+                dpi, { screenPos + ScreenCoordsXY{ 70, 5 }, { graphTopLeft.x + 482, screenPos.y + 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             screenPos.y += 39;
         }
 
         // X axis labels and values
         screenPos = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-        Graph::Draw(&dpi, gWeeklyProfitHistory, 64, screenPos, yAxisScale, 128);
+        Graph::Draw(dpi, gWeeklyProfitHistory, 64, screenPos, yAxisScale, 128);
     }
 
 #pragma endregion
 
 #pragma region Marketing Events
 
-    void OnMouseUpMarketing(rct_widgetindex widgetIndex)
+    void OnMouseUpMarketing(WidgetIndex widgetIndex)
     {
         if (widgetIndex >= WIDX_CAMPAIGN_1 && widgetIndex <= WIDX_CAMPAIGN_6)
         {
-            context_open_detail_window(WD_NEW_CAMPAIGN, widgetIndex - WIDX_CAMPAIGN_1);
+            ContextOpenDetailWindow(WD_NEW_CAMPAIGN, widgetIndex - WIDX_CAMPAIGN_1);
         }
     }
 
@@ -787,8 +807,8 @@ public:
         for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
         {
             auto campaignButton = &_windowFinancesMarketingWidgets[WIDX_CAMPAIGN_1 + i];
-            auto marketingCampaign = marketing_get_campaign(i);
-            if (marketingCampaign == nullptr && marketing_is_campaign_type_applicable(i))
+            auto marketingCampaign = MarketingGetCampaign(i);
+            if (marketingCampaign == nullptr && MarketingIsCampaignTypeApplicable(i))
             {
                 campaignButton->type = WindowWidgetType::Button;
                 campaignButton->top = y;
@@ -802,13 +822,13 @@ public:
         }
     }
 
-    void OnDrawMarketing(rct_drawpixelinfo& dpi)
+    void OnDrawMarketing(DrawPixelInfo& dpi)
     {
         auto screenCoords = windowPos + ScreenCoordsXY{ 8, 62 };
         int32_t noCampaignsActive = 1;
         for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
         {
-            auto marketingCampaign = marketing_get_campaign(i);
+            auto marketingCampaign = MarketingGetCampaign(i);
             if (marketingCampaign == nullptr)
                 continue;
 
@@ -821,37 +841,37 @@ public:
                 case ADVERTISING_CAMPAIGN_RIDE_FREE:
                 case ADVERTISING_CAMPAIGN_RIDE:
                 {
-                    auto campaignRide = get_ride(marketingCampaign->RideId);
+                    auto campaignRide = GetRide(marketingCampaign->RideId);
                     if (campaignRide != nullptr)
                     {
                         campaignRide->FormatNameTo(ft);
                     }
                     else
                     {
-                        ft.Add<rct_string_id>(STR_NONE);
+                        ft.Add<StringId>(STR_NONE);
                     }
                     break;
                 }
                 case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-                    ft.Add<rct_string_id>(GetShopItemDescriptor(marketingCampaign->ShopItemType).Naming.Plural);
+                    ft.Add<StringId>(GetShopItemDescriptor(marketingCampaign->ShopItemType).Naming.Plural);
                     break;
                 default:
                 {
                     auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
                     auto parkName = park.Name.c_str();
-                    ft.Add<rct_string_id>(STR_STRING);
+                    ft.Add<StringId>(STR_STRING);
                     ft.Add<const char*>(parkName);
                 }
             }
             // Advertisement
-            DrawTextEllipsised(&dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 296, MarketingCampaignNames[i][1], ft);
+            DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 296, MarketingCampaignNames[i][1], ft);
 
             // Duration
             uint16_t weeksRemaining = marketingCampaign->WeeksLeft;
             ft = Formatter();
             ft.Add<uint16_t>(weeksRemaining);
             DrawTextBasic(
-                &dpi, screenCoords + ScreenCoordsXY{ 304, 0 },
+                dpi, screenCoords + ScreenCoordsXY{ 304, 0 },
                 weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, ft);
 
             screenCoords.y += LIST_ROW_HEIGHT;
@@ -859,7 +879,7 @@ public:
 
         if (noCampaignsActive)
         {
-            DrawTextBasic(&dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, STR_MARKETING_CAMPAIGNS_NONE);
+            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, STR_MARKETING_CAMPAIGNS_NONE);
             screenCoords.y += LIST_ROW_HEIGHT;
         }
         screenCoords.y += 34;
@@ -871,10 +891,10 @@ public:
             if (campaignButton->type != WindowWidgetType::Empty)
             {
                 // Draw button text
-                DrawTextBasic(&dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, MarketingCampaignNames[i][0]);
+                DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, MarketingCampaignNames[i][0]);
                 auto ft = Formatter();
                 ft.Add<money64>(AdvertisingCampaignPricePerWeek[i]);
-                DrawTextBasic(&dpi, screenCoords + ScreenCoordsXY{ WH_SUMMARY, 0 }, STR_MARKETING_PER_WEEK, ft);
+                DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ WH_SUMMARY, 0 }, STR_MARKETING_PER_WEEK, ft);
 
                 screenCoords.y += BUTTON_FACE_HEIGHT + 2;
             }
@@ -883,112 +903,17 @@ public:
 
 #pragma endregion
 
-#pragma region Research Events
-
-    void OnMouseUpResearch(rct_widgetindex widgetIndex)
-    {
-        if (widgetIndex >= WIDX_TRANSPORT_RIDES && widgetIndex <= WIDX_SCENERY_AND_THEMING)
-        {
-            auto activeResearchTypes = gResearchPriorities;
-            activeResearchTypes ^= 1ULL << (widgetIndex - WIDX_TRANSPORT_RIDES);
-
-            auto gameAction = ParkSetResearchFundingAction(activeResearchTypes, gResearchFundingLevel);
-            GameActions::Execute(&gameAction);
-        }
-    }
-
-    void OnMouseDownResearch(rct_widgetindex widgetIndex)
-    {
-        if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON)
-            return;
-
-        rct_widget* dropdownWidget = &widgets[widgetIndex - 1];
-
-        for (int32_t i = 0; i < 4; i++)
-        {
-            gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItems[i].Args = ResearchFundingLevelNames[i];
-        }
-
-        WindowDropdownShowTextCustomWidth(
-            { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1, colours[1],
-            0, Dropdown::Flag::StayOpen, 4, dropdownWidget->width() - 3);
-
-        int32_t currentResearchLevel = gResearchFundingLevel;
-        Dropdown::SetChecked(currentResearchLevel, true);
-    }
-
-    void OnDropdownResearch(rct_widgetindex widgetIndex, int32_t selectedIndex)
-    {
-        if (widgetIndex != WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON || selectedIndex == -1)
-            return;
-
-        auto gameAction = ParkSetResearchFundingAction(gResearchPriorities, selectedIndex);
-        GameActions::Execute(&gameAction);
-    }
-
-    void OnPrepareDrawResearch()
-    {
-        if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
-        {
-            _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING].type = WindowWidgetType::Empty;
-            _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
-        }
-        else
-        {
-            _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING].type = WindowWidgetType::DropdownMenu;
-            _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
-        }
-        int32_t currentResearchLevel = gResearchFundingLevel;
-
-        // Current funding
-        _windowFinancesResearchWidgets[WIDX_RESEARCH_FUNDING].text = ResearchFundingLevelNames[currentResearchLevel];
-
-        // Checkboxes
-        uint8_t activeResearchTypes = gResearchPriorities;
-        int32_t uncompletedResearchTypes = gResearchUncompletedCategories;
-        for (int32_t i = 0; i < 7; i++)
-        {
-            int32_t mask = 1 << i;
-            int32_t widgetMask = 1ULL << (i + WIDX_TRANSPORT_RIDES);
-
-            // Set checkbox disabled if research type is complete
-            if (uncompletedResearchTypes & mask)
-            {
-                disabled_widgets &= ~widgetMask;
-
-                // Set checkbox ticked if research type is active
-                if (activeResearchTypes & mask)
-                    pressed_widgets |= widgetMask;
-                else
-                    pressed_widgets &= ~widgetMask;
-            }
-            else
-            {
-                disabled_widgets |= widgetMask;
-                pressed_widgets &= ~widgetMask;
-            }
-        }
-    }
-
-    void OnDrawResearch(rct_drawpixelinfo& dpi)
-    {
-        WindowResearchFundingPagePaint(this, &dpi, WIDX_RESEARCH_FUNDING);
-    }
-
-#pragma endregion
-
-    void InitialiseScrollPosition(rct_widgetindex widgetIndex, int32_t scrollId)
+    void InitialiseScrollPosition(WidgetIndex widgetIndex, int32_t scrollId)
     {
         const auto& widget = this->widgets[widgetIndex];
         scrolls[scrollId].h_left = std::max(0, scrolls[scrollId].h_right - (widget.width() - 2));
 
-        WidgetScrollUpdateThumbs(this, widgetIndex);
+        WidgetScrollUpdateThumbs(*this, widgetIndex);
     }
 
-    void DrawTabImage(rct_drawpixelinfo& dpi, int32_t tabPage, int32_t spriteIndex)
+    void DrawTabImage(DrawPixelInfo& dpi, int32_t tabPage, int32_t spriteIndex)
     {
-        rct_widgetindex widgetIndex = WIDX_TAB_1 + tabPage;
+        WidgetIndex widgetIndex = WIDX_TAB_1 + tabPage;
 
         if (!IsWidgetDisabled(widgetIndex))
         {
@@ -998,12 +923,12 @@ public:
                 spriteIndex += (frame % _windowFinancesTabAnimationFrames[this->page]);
             }
 
-            gfx_draw_sprite(
-                &dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
+            GfxDrawSprite(
+                dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
         }
     }
 
-    void DrawTabImages(rct_drawpixelinfo& dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         DrawTabImage(dpi, WINDOW_FINANCES_PAGE_SUMMARY, SPR_TAB_FINANCES_SUMMARY_0);
         DrawTabImage(dpi, WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH, SPR_TAB_FINANCES_FINANCIAL_GRAPH_0);
@@ -1014,17 +939,27 @@ public:
     }
 };
 
-rct_window* WindowFinancesOpen()
+static FinancesWindow* FinancesWindowOpen(uint8_t page)
 {
-    return WindowFocusOrCreate<FinancesWindow>(WC_FINANCES, WW_OTHER_TABS, WH_SUMMARY, WF_10);
-}
+    auto* window = WindowFocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
 
-rct_window* WindowFinancesResearchOpen()
-{
-    auto* window = WindowFocusOrCreate<FinancesWindow>(WC_FINANCES, WW_OTHER_TABS, WH_SUMMARY, WF_10);
-
-    if (window != nullptr)
-        window->SetPage(WINDOW_FINANCES_PAGE_RESEARCH);
+    if (window != nullptr && page != WINDOW_FINANCES_PAGE_SUMMARY)
+        window->SetPage(page);
 
     return window;
+}
+
+WindowBase* WindowFinancesOpen()
+{
+    return WindowFocusOrCreate<FinancesWindow>(WindowClass::Finances, WW_OTHER_TABS, WH_SUMMARY, WF_10);
+}
+
+WindowBase* WindowFinancesResearchOpen()
+{
+    return FinancesWindowOpen(WINDOW_FINANCES_PAGE_RESEARCH);
+}
+
+WindowBase* WindowFinancesMarketingOpen()
+{
+    return FinancesWindowOpen(WINDOW_FINANCES_PAGE_MARKETING);
 }

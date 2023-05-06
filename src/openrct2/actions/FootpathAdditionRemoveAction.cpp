@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -49,7 +49,7 @@ GameActions::Result FootpathAdditionRemoveAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
     }
 
-    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
+    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !MapIsLocationOwned(_loc))
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -64,23 +64,23 @@ GameActions::Result FootpathAdditionRemoveAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_TOO_HIGH);
     }
 
-    auto tileElement = map_get_footpath_element(_loc);
+    auto tileElement = MapGetFootpathElement(_loc);
     if (tileElement == nullptr)
     {
-        log_warning("Could not find path element.");
+        LOG_WARNING("Could not find path element.");
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
     auto pathElement = tileElement->AsPath();
     if (pathElement == nullptr)
     {
-        log_warning("Could not find path element.");
+        LOG_WARNING("Could not find path element.");
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
     if (!pathElement->AdditionIsGhost() && (GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
-        log_warning("Tried to remove non ghost during ghost removal.");
+        LOG_WARNING("Tried to remove non ghost during ghost removal.");
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REMOVE_THIS, STR_NONE);
     }
     auto res = GameActions::Result();
@@ -91,22 +91,22 @@ GameActions::Result FootpathAdditionRemoveAction::Query() const
 
 GameActions::Result FootpathAdditionRemoveAction::Execute() const
 {
-    auto tileElement = map_get_footpath_element(_loc);
+    auto tileElement = MapGetFootpathElement(_loc);
     auto pathElement = tileElement->AsPath();
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
-        footpath_interrupt_peeps(_loc);
+        FootpathInterruptPeeps(_loc);
     }
 
     if (pathElement == nullptr)
     {
-        log_error("Could not find path element.");
+        LOG_ERROR("Could not find path element.");
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
     pathElement->SetAddition(0);
-    map_invalidate_tile_full(_loc);
+    MapInvalidateTileFull(_loc);
 
     auto res = GameActions::Result();
     res.Position = _loc;

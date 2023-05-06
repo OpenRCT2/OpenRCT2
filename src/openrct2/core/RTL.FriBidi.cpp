@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -59,7 +59,7 @@ std::string FixRTL(std::string& input)
 {
     if (!hasWarned)
     {
-        log_warning("This build of OpenRCT2 cannot properly handle right-to-left text!");
+        LOG_WARNING("This build of OpenRCT2 cannot properly handle right-to-left text!");
         hasWarned = true;
     }
 

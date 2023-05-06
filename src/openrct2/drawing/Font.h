@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,26 +11,21 @@
 
 #include "../common.h"
 #include "../core/String.hpp"
+#include "../drawing/ImageId.hpp"
+
+#include <array>
 
 constexpr const uint16_t FONT_SPRITE_GLYPH_COUNT = 224;
 
-enum
+enum class FontStyle : uint8_t
 {
-    FONT_SIZE_TINY = 2,
-    FONT_SIZE_SMALL = 0,
-    FONT_SIZE_MEDIUM = 1,
-    FONT_SIZE_COUNT = 3
+    Small = 0,
+    Medium = 1,
+    Tiny = 2,
 };
 
-enum class FontSpriteBase : int16_t
-{
-    MEDIUM_EXTRA_DARK = -2,
-    MEDIUM_DARK = -1,
-
-    TINY = FONT_SIZE_TINY * FONT_SPRITE_GLYPH_COUNT,
-    SMALL = FONT_SIZE_SMALL * FONT_SPRITE_GLYPH_COUNT,
-    MEDIUM = FONT_SIZE_MEDIUM * FONT_SPRITE_GLYPH_COUNT,
-};
+constexpr const uint8_t FontStyleCount = 3;
+constexpr const std::array<FontStyle, FontStyleCount> FontStyles = { FontStyle::Small, FontStyle::Medium, FontStyle::Tiny };
 
 #ifndef NO_TTF
 
@@ -50,21 +45,19 @@ struct TTFFontDescriptor
 
 struct TTFFontSetDescriptor
 {
-    TTFFontDescriptor size[FONT_SIZE_COUNT];
+    TTFFontDescriptor size[FontStyleCount];
 };
 
 extern TTFFontSetDescriptor* gCurrentTTFFontSet;
 
 #endif // NO_TTF
 
-void font_sprite_initialise_characters();
-int32_t font_sprite_get_codepoint_offset(int32_t codepoint);
-int32_t font_sprite_get_codepoint_width(FontSpriteBase fontSpriteBase, int32_t codepoint);
-int32_t font_sprite_get_codepoint_sprite(FontSpriteBase fontSpriteBase, int32_t codepoint);
-int32_t font_get_font_index_from_sprite_base(FontSpriteBase spriteBase);
-int32_t font_get_size_from_sprite_base(FontSpriteBase spriteBase);
-int32_t font_get_line_height(FontSpriteBase fontSpriteBase);
-int32_t font_get_line_height_small(FontSpriteBase fontSpriteBase);
-bool font_supports_string_sprite(const utf8* text);
-bool font_supports_string_ttf(const utf8* text, int32_t fontSize);
-bool font_supports_string(const utf8* text, int32_t fontSize);
+void FontSpriteInitialiseCharacters();
+int32_t FontSpriteGetCodepointOffset(int32_t codepoint);
+int32_t FontSpriteGetCodepointWidth(FontStyle fontStyle, int32_t codepoint);
+ImageId FontSpriteGetCodepointSprite(FontStyle fontStyle, int32_t codepoint);
+int32_t FontGetLineHeight(FontStyle fontStyle);
+int32_t FontGetLineHeightSmall(FontStyle fontStyle);
+bool FontSupportsStringSprite(const utf8* text);
+bool FontSupportsStringTTF(const utf8* text, FontStyle fontStyle);
+bool FontSupportsString(const utf8* text, FontStyle fontStyle);

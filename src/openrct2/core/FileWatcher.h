@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,13 +9,19 @@
 
 #pragma once
 
+#include "String.hpp"
+
 #include <functional>
 #include <string>
 #include <thread>
 #include <vector>
 
 #ifdef _WIN32
+#    include "FileSystem.hpp"
+
 typedef void* HANDLE;
+#elif defined(__APPLE__)
+#    include <CoreServices/CoreServices.h>
 #endif
 
 /**
@@ -26,7 +32,7 @@ class FileWatcher
 private:
     std::thread _watchThread;
 #if defined(_WIN32)
-    std::string _path;
+    fs::path _path;
     HANDLE _directoryHandle{};
 #elif defined(__linux__)
     struct FileDescriptor
@@ -50,17 +56,24 @@ private:
 
     FileDescriptor _fileDesc;
     std::vector<WatchDescriptor> _watchDescs;
+#elif defined(__APPLE__)
+    FSEventStreamRef _stream{};
+    CFRunLoopRef _runLoop{};
 #endif
 
 public:
-    std::function<void(const std::string& path)> OnFileChanged;
+    std::function<void(u8string_view path)> OnFileChanged;
 
-    FileWatcher(const std::string& directoryPath);
+    FileWatcher(u8string_view directoryPath);
     ~FileWatcher();
 
 private:
 #if defined(_WIN32) || defined(__linux__)
     bool _finished{};
+#elif defined(__APPLE__)
+    static void FSEventsCallback(
+        ConstFSEventStreamRef streamRef, void* clientCallBackInfo, size_t numEvents, void* eventPaths,
+        const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]);
 #endif
 
     void WatchDirectory();

@@ -23,56 +23,6 @@ version=$3
 sha1=$4
 branch=$5
 
-case "$flavour" in
-    windows-portable-win32)
-        flavour=windows-win32.zip
-        flavourid=1
-        ;;
-    windows-portable-x64)
-        flavour=windows-x64.zip
-        flavourid=6
-        ;;
-    windows-installer-win32)
-        flavour=windows-win32.exe
-        flavourid=2
-        ;;
-    windows-installer-x64)
-        flavour=windows-x64.exe
-        flavourid=7
-        ;;
-    windows-symbols-win32)
-        flavour=windows-win32-symbols.zip
-        flavourid=5
-        ;;
-    windows-symbols-x64)
-        flavour=windows-x64-symbols.zip
-        flavourid=10
-        ;;
-    macos)
-        flavour=macos.zip
-        flavourid=3
-        ;;
-    linux-i686)
-        flavour=linux-i686.tar.gz
-        flavourid=4
-        ;;
-    linux-x86_64)
-        flavour=linux-x86_64.tar.gz
-        flavourid=9
-        ;;
-    android-arm)
-        flavour=android-arm.apk
-        flavourid=11
-        ;;
-    android-x86)
-        flavour=android-x86.apk
-        flavourid=12
-        ;;
-    *)
-        echo -e $"\033[0;31mUnknown flavour: $flavour"
-        exit 1
-esac
-
 if [ -n "$branch" ]; then
     versionextra=-$branch-${sha1::7}
 fi
@@ -83,12 +33,15 @@ if [ -z "$OPENRCT2_ORG_TOKEN" ]; then
     echo -e "\033[0;31mOPENRCT2_ORG_TOKEN not set"
     exit 1
 fi
-curl -m 300 --connect-timeout 5 -o - \
+# Use HTTP1.1 as a workaround for curl bug:
+# https://github.com/actions/runner-images/issues/7329
+# https://github.com/curl/curl/issues/10591
+curl --include -m 300 --connect-timeout 5 -o - \
+    --http1.1 \
     --form "key=$OPENRCT2_ORG_TOKEN" \
     --form "fileName=$filename" \
     --form "version=$version" \
     --form "gitHash=$sha1" \
     --form "gitBranch=$branch" \
-    --form "flavourId=$flavourid" \
     --form "file=@$path" \
     "https://openrct2.org/altapi/?command=push-build"

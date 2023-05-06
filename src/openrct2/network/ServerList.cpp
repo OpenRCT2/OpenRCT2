@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -47,8 +47,8 @@ int32_t ServerListEntry::CompareTo(const ServerListEntry& other) const
         return a.Local ? -1 : 1;
     }
 
-    bool serverACompatible = a.Version == network_get_version();
-    bool serverBCompatible = b.Version == network_get_version();
+    bool serverACompatible = a.Version == NetworkGetVersion();
+    bool serverBCompatible = b.Version == NetworkGetVersion();
     if (serverACompatible != serverBCompatible)
     {
         return serverACompatible ? -1 : 1;
@@ -69,7 +69,7 @@ int32_t ServerListEntry::CompareTo(const ServerListEntry& other) const
 
 bool ServerListEntry::IsVersionValid() const noexcept
 {
-    return Version.empty() || Version == network_get_version();
+    return Version.empty() || Version == NetworkGetVersion();
 }
 
 std::optional<ServerListEntry> ServerListEntry::FromJson(json_t& server)
@@ -92,7 +92,7 @@ std::optional<ServerListEntry> ServerListEntry::FromJson(json_t& server)
 
     if (name.empty() || version.empty())
     {
-        log_verbose("Cowardly refusing to add server without name or version specified.");
+        LOG_VERBOSE("Cowardly refusing to add server without name or version specified.");
 
         return std::nullopt;
     }
@@ -150,6 +150,33 @@ void ServerList::AddRange(const std::vector<ServerListEntry>& entries)
     Sort();
 }
 
+void ServerList::AddOrUpdateRange(const std::vector<ServerListEntry>& entries)
+{
+    for (auto& existsEntry : _serverEntries)
+    {
+        auto match = std::find_if(
+            entries.begin(), entries.end(), [&](const ServerListEntry& entry) { return existsEntry.Address == entry.Address; });
+        if (match != entries.end())
+        {
+            // Keep favourites
+            auto fav = existsEntry.Favourite;
+
+            existsEntry = *match;
+            existsEntry.Favourite = fav;
+        }
+    }
+
+    std::vector<ServerListEntry> newServers;
+    std::copy_if(entries.begin(), entries.end(), std::back_inserter(newServers), [this](const ServerListEntry& entry) {
+        return std::find_if(
+                   _serverEntries.begin(), _serverEntries.end(),
+                   [&](const ServerListEntry& existsEntry) { return existsEntry.Address == entry.Address; })
+            == _serverEntries.end();
+    });
+
+    AddRange(newServers);
+}
+
 void ServerList::Clear() noexcept
 {
     _serverEntries.clear();
@@ -157,7 +184,7 @@ void ServerList::Clear() noexcept
 
 std::vector<ServerListEntry> ServerList::ReadFavourites() const
 {
-    log_verbose("server_list_read(...)");
+    LOG_VERBOSE("server_list_read(...)");
     std::vector<ServerListEntry> entries;
     try
     {
@@ -184,7 +211,7 @@ std::vector<ServerListEntry> ServerList::ReadFavourites() const
     }
     catch (const std::exception& e)
     {
-        log_error("Unable to read server list: %s", e.what());
+        LOG_ERROR("Unable to read server list: %s", e.what());
         entries = std::vector<ServerListEntry>();
     }
     return entries;
@@ -212,7 +239,7 @@ void ServerList::WriteFavourites() const
 
 bool ServerList::WriteFavourites(const std::vector<ServerListEntry>& entries) const
 {
-    log_verbose("server_list_write(%d, 0x%p)", entries.size(), entries.data());
+    LOG_VERBOSE("server_list_write(%d, 0x%p)", entries.size(), entries.data());
 
     auto env = GetContext()->GetPlatformEnvironment();
     auto path = Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"servers.cfg");
@@ -231,7 +258,7 @@ bool ServerList::WriteFavourites(const std::vector<ServerListEntry>& entries) co
     }
     catch (const std::exception& e)
     {
-        log_error("Unable to write server list: %s", e.what());
+        LOG_ERROR("Unable to write server list: %s", e.what());
         return false;
     }
 }
@@ -246,7 +273,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
         std::string_view msg = NETWORK_LAN_BROADCAST_MSG;
         auto udpSocket = CreateUdpSocket();
 
-        log_verbose("Broadcasting %zu bytes to the LAN (%s)", msg.size(), broadcastAddress.c_str());
+        LOG_VERBOSE("Broadcasting %zu bytes to the LAN (%s)", msg.size(), broadcastAddress.c_str());
         auto len = udpSocket->SendData(broadcastAddress, NETWORK_LAN_BROADCAST_PORT, msg.data(), msg.size());
         if (len != msg.size())
         {
@@ -266,7 +293,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
                 if (p == NetworkReadPacket::Success)
                 {
                     auto sender = endpoint->GetHostname();
-                    log_verbose("Received %zu bytes back from %s", recievedLen, sender.c_str());
+                    LOG_VERBOSE("Received %zu bytes back from %s", recievedLen, sender.c_str());
                     auto jinfo = Json::FromString(std::string_view(buffer));
 
                     if (jinfo.is_object())
@@ -284,7 +311,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
             }
             catch (const std::exception& e)
             {
-                log_warning("Error receiving data: %s", e.what());
+                LOG_WARNING("Error receiving data: %s", e.what());
             }
             Platform::Sleep(RECV_DELAY_MS);
         }
@@ -334,9 +361,9 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync
     auto f = p->get_future();
 
     std::string masterServerUrl = OPENRCT2_MASTER_SERVER_URL;
-    if (!gConfigNetwork.master_server_url.empty())
+    if (!gConfigNetwork.MasterServerUrl.empty())
     {
-        masterServerUrl = gConfigNetwork.master_server_url;
+        masterServerUrl = gConfigNetwork.MasterServerUrl;
     }
 
     Http::Request request;

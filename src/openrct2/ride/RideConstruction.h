@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,9 +35,7 @@ enum class RideConstructionState : uint8_t
     MazeFill
 };
 
-extern bool gGotoStartPlacementMode;
-
-extern money32 _currentTrackPrice;
+extern money64 _currentTrackPrice;
 
 extern uint32_t _currentTrackCurve;
 extern RideConstructionState _rideConstructionState;
@@ -74,23 +72,25 @@ extern uint8_t gRideEntranceExitPlaceDirection;
 std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
     const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);
 
-void ride_entrance_exit_place_provisional_ghost();
-void ride_entrance_exit_remove_ghost();
-void ride_restore_provisional_track_piece();
-void ride_remove_provisional_track_piece();
+void RideEntranceExitPlaceProvisionalGhost();
+void RideEntranceExitRemoveGhost();
+void RideRestoreProvisionalTrackPiece();
+void RideRemoveProvisionalTrackPiece();
 
-void ride_construction_remove_ghosts();
+void RideConstructionRemoveGhosts();
 
-void ride_construction_invalidate_current_track();
+void RideConstructionInvalidateCurrentTrack();
 
-void ride_construction_set_default_next_piece();
+void RideConstructionSetDefaultNextPiece();
 
-void ride_select_next_section();
-void ride_select_previous_section();
+void RideSelectNextSection();
+void RideSelectPreviousSection();
 
-bool ride_modify(CoordsXYE* input);
+bool RideModify(const CoordsXYE& input);
 
-CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenCoordsXY& screenCoords);
+CoordsXYZD RideGetEntranceOrExitPositionFromScreenPosition(const ScreenCoordsXY& screenCoords);
 
-bool ride_select_backwards_from_front();
-bool ride_select_forwards_from_back();
+bool RideSelectBackwardsFromFront();
+bool RideSelectForwardsFromBack();
+
+void RideConstructionStart(Ride& ride);

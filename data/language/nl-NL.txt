@@ -18,7 +18,7 @@ STR_0016    :Observatietoren
 STR_0017    :Stalen achtbaan
 STR_0018    :Waterglijbaan
 STR_0019    :Mijntreinachtbaan
-STR_0020    :Kabelbaan
+STR_0020    :Stoeltjeslift
 STR_0021    :Stalen schroefachtbaan
 STR_0022    :Doolhof
 STR_0023    :Spiraalglijbaan
@@ -94,6 +94,7 @@ STR_0092    :LIM-lanceringsachtbaan
 STR_0093    :Hybride achtbaan
 STR_0094    :Achtbaan met enkele rail
 STR_0095    :Rodelachtbaan
+STR_0096    :Klassieke houten achtbaan
 STR_0512    :Een compacte achtbaan met een spiraalvormige kettingheuvel en soepele, kronkelende afdalingen.
 STR_0513    :Een achtbaan met loopings waar de passagiers in de karretjes staan.
 STR_0514    :Treinen hangen onder de baan en zwaaien naar buiten in de bochten.
@@ -176,6 +177,7 @@ STR_0602    :Achtbaantreinen worden door lineaire inductiemotoren het station ui
 STR_0603    :Een achtbaan met houten ondersteuningen en stalen rails, waardoor steile afdalingen en omkeringen mogelijk worden.
 STR_0604    :Passagiers zitten achter elkaar op een smalle baan met één rail, waar ze met hoge snelheid door krappe bochten en over de kop gaan.
 STR_0605    :Passagiers rodelen over een kronkelende stalen baan, waarbij ze zelf kunnen beslissen hoe snel ze gaan.
+STR_0606    :Een ouder type houten achtbaan met een snelle en ruwe loop, veel airtime, enige zijwaartse G-krachten en het gevoel van controleverlies.
 STR_0767    :Bezoeker {INT32}
 STR_0768    :Klusjesman {INT32}
 STR_0769    :Monteur {INT32}
@@ -280,7 +282,7 @@ STR_0892    :Screenshot opgeslagen als ‘{STRINGID}’
 STR_0893    :Screenshot maken mislukt!
 STR_0894    :‘Landscape data area’ zit vol!
 STR_0895    :Kan niet gedeeltelijk onder en boven de grond bouwen
-STR_0896    :{POP16}{POP16}Constructie {STRINGID}
+STR_0896    :Constructie {POP16}{POP16}{STRINGID}
 STR_0897    :Richting
 STR_0898    :Bocht naar links
 STR_0899    :Bocht naar rechts
@@ -338,7 +340,6 @@ STR_0950    :Spel laden
 STR_0951    :Spel afsluiten
 STR_0952    :Spel afsluiten
 STR_0953    :Landschap laden
-STR_0954    :
 STR_0955    :Selecteer de draaiing van de stoelen voor dit gedeelte
 STR_0956    :-180°
 STR_0957    :-135°
@@ -386,10 +387,10 @@ STR_0998    :Voor deze attractie zijn meer stations niet mogelijk
 STR_0999    :Vereist een station
 STR_1000    :Baan vormt geen volledig circuit
 STR_1001    :Baan is ongeschikt voor dit type trein
-STR_1002    :Kan {POP16}{POP16}{POP16}{STRINGID} niet openen…
-STR_1003    :Kan {POP16}{POP16}{POP16}{STRINGID} niet testen…
-STR_1004    :Kan {POP16}{POP16}{POP16}{STRINGID} niet sluiten…
-STR_1005    :Kan de verbouwing van {POP16}{POP16}{POP16}{STRINGID} niet starten…
+STR_1002    :Kan {STRINGID} niet openen…
+STR_1003    :Kan {STRINGID} niet testen…
+STR_1004    :Kan {STRINGID} niet sluiten…
+STR_1005    :Kan de verbouwing van {STRINGID} niet starten…
 STR_1006    :Moet eerst worden gesloten
 STR_1007    :Kan niet voldoende voertuigen aanmaken
 STR_1008    :Attractie openen, sluiten of testen
@@ -751,7 +752,7 @@ STR_1363    :Te hoog voor ondersteuningen!
 STR_1364    :Ondersteuningen voor de baan kunnen niet verder verlengd worden!
 STR_1365    :Inlinetwist (links)
 STR_1366    :Inlinetwist (rechts)
-STR_1367    :Halve looping
+STR_1367    :Kleine halve looping
 STR_1368    :Halve schroef (links)
 STR_1369    :Halve schroef (rechts)
 STR_1370    :Barrel roll (links)
@@ -1218,8 +1219,8 @@ STR_1838    :Voldoening: {COMMA16}%
 STR_1839    :Betrouwbaarheid: {COMMA16}%
 STR_1840    :Stilstandtijd: {COMMA16}%
 STR_1841    :Winst: {CURRENCY2DP} per uur
-STR_1842    :Favoriete attractie van: {COMMA16} bezoeker
-STR_1843    :Favoriete attractie van: {COMMA16} bezoekers
+STR_1842    :Favoriete attractie van: {COMMA32} bezoeker
+STR_1843    :Favoriete attractie van: {COMMA32} bezoekers
 STR_1844    :Selecteer het type informatie dat je in de attractielijst wilt zien
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} bezoekers
@@ -1243,7 +1244,7 @@ STR_1863    :klusjesman
 STR_1864    :monteur
 STR_1865    :bewaker
 STR_1866    :entertainer
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Kan het aantal rotaties niet aanpassen…
 STR_1869    :{WINDOW_COLOUR_2}Aantal rotaties:
 STR_1870    :Aantal complete rotaties
@@ -1675,7 +1676,7 @@ STR_2314    :{WINDOW_COLOUR_2}Lengte: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kosten: {BLACK}ongeveer {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Vereiste ruimte: {BLACK}{COMMA16} × {COMMA16} blokken
 STR_2321    :{WINDOW_COLOUR_2}Aantal attracties: {BLACK}{COMMA16}
-STR_2322    :{WINDOW_COLOUR_2}Werknemers: {BLACK}{COMMA16}
+STR_2322    :{WINDOW_COLOUR_2}Werknemers: {BLACK}{COMMA32}
 STR_2323    :{WINDOW_COLOUR_2}Parkgrootte: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Parkgrootte: {BLACK}{COMMA32}sq.ft.
 STR_2325    :Land kopen om het park uit te breiden
@@ -1955,8 +1956,6 @@ STR_2738    :Titelschermmuziek:
 STR_2739    :Geen
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :css50.dat niet gevonden
-STR_2743    :Kopieer ‘data/css17.dat’ van je RCT1-installatie naar ‘data/css50.dat’ in je RCT2-installatie, of stel een pad in naar je RCT1-bestanden onder het tabblad ‘Geavanceerd’.
 STR_2749    :Mijn nieuwe scenario
 STR_2750    :Alles naar boven verplaatsen
 STR_2751    :Alles naar beneden verplaatsen
@@ -2190,8 +2189,8 @@ STR_3118    :{BLACK}{STRINGID} gaat naar deze attractie
 STR_3119    :{BLACK}{STRINGID} is bezig deze attractie te repareren
 STR_3120    :Vind de dichtstbijzijnde monteur of de monteur die de attractie aan het repareren is
 STR_3121    :Kan geen monteur vinden of alle monteurs in de buurt zijn bezig
-STR_3122    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA16} bezoeker
-STR_3123    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA16} bezoekers
+STR_3122    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA32} bezoeker
+STR_3123    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA32} bezoekers
 STR_3124    :{STRINGID} (vernield)
 STR_3125    :{WINDOW_COLOUR_2}Plezierfactor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensiteitsfactor: {BLACK}+{COMMA16}%
@@ -2227,7 +2226,6 @@ STR_3174    :een ander object is afhankelijk van dit object.
 STR_3175    :dit object is altijd benodigd.
 STR_3176    :Kan object niet selecteren:
 STR_3177    :Kan object niet deselecteren:
-STR_3178    :er moet minstens één voetpad worden geselecteerd.
 STR_3179    :er moet minstens één attractie worden geselecteerd.
 STR_3180    :Ongeldige selectie van objecten:
 STR_3181    :Objectselectie - {STRINGID}
@@ -2260,7 +2258,7 @@ STR_3208    :Baanontwerpbeheer
 STR_3209    :Terug naar de vorige stap:
 STR_3210    :Verder naar de volgende stap:
 STR_3211    :Kaartgrootte:
-STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Kan de kaart niet verder verkleinen
 STR_3214    :Kan de kaart niet verder vergroten
 STR_3215    :Te dicht bij de rand van de kaart
@@ -2557,8 +2555,6 @@ STR_5250    :Afsluitknop titelscherm
 STR_5251    :Optiesknop titelscherm
 STR_5252    :Scenarioselectie titelscherm
 STR_5253    :Parkinformatie
-STR_5254    :Aanmaken
-STR_5255    :Begint een nieuwe, lege titelpresentatie
 STR_5256    :Maak een nieuw thema aan om wijzigingen aan te brengen.
 STR_5257    :Een nieuw thema aanmaken dat is gebaseerd op het huidige
 STR_5258    :Het huidige thema verwijderen
@@ -2653,75 +2649,9 @@ STR_5373    :Naam {STRINGID}
 STR_5374    :Datum {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :Opgeslagen spellen
-STR_5378    :Script
-STR_5379    :Ga naar volgend Wacht-commando
-STR_5380    :Start het afspelen van de titelpresentatie
-STR_5381    :Stopt het afspelen van de titelpresentatie
-STR_5382    :Titelpresentatie herstarten
-STR_5383    :Een nieuwe titelpresentatie aanmaken die is gebaseerd op de huidige
-STR_5384    :Huidige titelpresentatie verwijderen
-STR_5385    :Huidige titelpresentatie hernoemen
-STR_5386    :Nieuw commando invoegen
-STR_5387    :Geselecteerd commando bewerken
-STR_5388    :Geselecteerd commando verwijderen
-STR_5389    :Naar geselecteerd commando titelpresentatie springen
-STR_5390    :Geselecteerd commando naar beneden verplaatsen
-STR_5391    :Geselecteerd commando naar boven verplaatsen
-STR_5392    :Opgeslagen spel aan titelpresentatie toevoegen
-STR_5393    :Geselecteerd opgeslagen spel uit titelpresentatie verwijderen
-STR_5394    :Opgeslagen spel hernoemen
-STR_5395    :Opgeslagen spel laden
-STR_5396    :Titelpresentatie herladen als ze buiten het spel om is aangepast
-STR_5397    :Kan enkel in het titelscherm worden gebruikt
-STR_5398    :Kan de titelpresentatie niet aanpassen wanneer deze wordt afgespeeld
-STR_5399    :Klik op Stop om verder te gaan met aanpassen
-STR_5400    :Kan deze titelpresentatie niet aanpassen
-STR_5401    :Een nieuwe titelpresentatie aanmaken om wijzigingen aan te brengen
-STR_5402    :Kan titelpresentatie niet laden
-STR_5403    :Er is mogelijk geen Laad- or Wacht-commando of één van de opgeslagen spellen is mogelijk beschadigd
 STR_5404    :Naam bestaat al
-STR_5405    :Voer een naam in voor het opgeslagen spel
-STR_5406    :Voer een naam in voor de titelpresentatie
-STR_5407    :Toevoegen
-STR_5408    :Verwijderen
-STR_5409    :Invoegen
-STR_5410    :Bewerken
-STR_5411    :Herladen
-STR_5412    :Spring naar
-STR_5413    :Laad
-STR_5415    :Laad{MOVE_X}{87}{STRING}
-STR_5416    :Laad{MOVE_X}{87}Geen opgeslagen spel geselecteerd
-STR_5417    :Locatie
-STR_5418    :Locatie{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Draai
-STR_5420    :Draai{MOVE_X}{87}{COMMA16}
-STR_5421    :Zoom
-STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
-STR_5423    :Wacht
-STR_5424    :Wacht{MOVE_X}{87}{UINT16}
-STR_5425    :Herstarten
-STR_5426    :Einde
-STR_5427    :Coördinaten:
-STR_5428    :Aant. draaiingen tegen de klok:
-STR_5429    :Zoomniveau:
-STR_5430    :Te wachten milliseconden:
-STR_5431    :Te laden opgeslagen spel:
-STR_5432    :Commando:
-STR_5433    :Titelpresentaties
-STR_5434    :Commandobewerker
-STR_5435    :Opgeslagen spel hernoemen
-STR_5436    :Titelpresentaties bewerken…
-STR_5437    :Geen opgeslagen spel geselecteerd
-STR_5438    :Kan geen wijzigingen aanbrengen wanneer de commandobewerker open is
-STR_5439    :Een Herstart-commando moet worden voorafgegaan door een Wacht-commando van minstens vier seconden.
 STR_5440    :Volledig scherm minimaliseren bij focusverlies
-STR_5441    :Sorteert attracties per baantype,{NEWLINE}zodat achteraf wisselen van treintypes mogelijk{NEWLINE}wordt, zoals in RCT1.
 STR_5442    :Parkwaardering forc.:
-STR_5443    :Snelheid{MOVE_X}{87}{STRINGID}
-STR_5444    :Snelheid:
-STR_5445    :Snelheid
-STR_5446    :Ophalen
 STR_5447    :Type {STRINGID}
 STR_5448    :Attractie/voertuig {STRINGID}
 STR_5449    :Spelsnelheid verlagen
@@ -2780,8 +2710,6 @@ STR_5503    :Hostnaam of IP-adres invoeren:
 STR_5504    :Status multiplayer tonen
 STR_5505    :Kan niet met de server verbinden.
 STR_5506    :Bezoekers negeren intensiteit
-STR_5508    :Bestanden met incorrecte checksum toch laden
-STR_5509    :Maakt het mogelijk om scenario’s en opgeslagen spellen met een incorrecte checksum te laden, zoals scenario’s uit de demo of beschadigde opgeslagen parken.
 STR_5510    :Standaard geluidsapparaat
 STR_5511    :(ONBEKEND)
 STR_5512    :Spel opslaan als…
@@ -2836,8 +2764,6 @@ STR_5560    :Stelt het inspectieinterval van alle attracties in op ‘Elke 10 mi
 STR_5561    :Kon taal niet laden
 STR_5562    :WAARSCHUWING:
 STR_5563    :Deze functie is momenteel niet helemaal stabiel, wees voorzichtig.
-STR_5564    :Ongeldig element invoegen
-STR_5565    :Plaatst een ongeldig element boven de andere elementen van dit vakje. Alle elementen die boven dit ongeldige element worden geplaatst worden onzichtbaar.
 STR_5566    :Wachtwoord:
 STR_5567    :Bekendmaken
 STR_5568    :Wachtwoord vereist
@@ -3065,7 +2991,7 @@ STR_5832    :Toon hoogtes in eenheden in plaats van echte maten.
 STR_5833    :Stelt de datumindeling in.
 STR_5834    :Stelt in welk audioapparaat OpenRCT2 zal gebruiken.
 STR_5835    :Dempt het geluid als het venster de focus kwijtraakt.
-STR_5836    :Selecteert welke muziek er wordt gebruikt tijdens de titelpresentatie.{NEWLINE}Om de muziek van RCT1 te gebruiken moet je het bestand ‘data/css17.dat’ uit je RCT1-map kopiëren naar ‘data/css50.dat’ in je RCT2-map, of een pad naar je RCT1-bestanden instellen onder het tabblad ‘Overige instellingen’.
+STR_5836    :Selecteert welke muziek er wordt gebruikt tijdens de titelpresentatie.{NEWLINE}Om de muziek van RCT1 te gebruiken moet je een pad naar je RCT1-bestanden instellen onder het tabblad ‘Geavanceerd’.
 STR_5837    :Eigen thema’s voor de GUI aanmaken en beheren.
 STR_5838    :Toont een knop voor financiën in de werkbalk.
 STR_5839    :Toont een knop voor onderzoek en ontwikkeling in de werkbalk.
@@ -3077,7 +3003,6 @@ STR_5844    :Blijf altijd verbonden met een multiplayerserver,{NEWLINE}zelfs als
 STR_5845    :Toont knoppen om het spel te debuggen en geeft toegang tot de console.
 STR_5846    :Stelt in hoe vaak OpenRCT2 automatisch een back-up maakt van je park.
 STR_5847    :Stelt in welke titelpresentatie er wordt gebruikt. {NEWLINE}Titelpresentaties uit RCT1 en RCT2 vereisen dat je de gebruikte scenario’s hebt geïmporteerd.
-STR_5848    :Eigen titelpresentaties maken en beheren.
 STR_5849    :Nieuwe werknemers automatisch plaatsen.
 STR_5851    :Stelt het standaardinspectie-interval voor nieuwe attracties in.
 STR_5853    :Geluidseffecten in-/uitschakelen.
@@ -3277,7 +3202,6 @@ STR_6047    :Landschap verzachten
 STR_6048    :Fout bij het verwerken van hoogtekaart
 STR_6049    :Kon PNG niet inlezen
 STR_6050    :Kon bitmap niet inlezen
-STR_6051    :De breedte en hoogte moeten overeenkomen
 STR_6052    :De hoogtekaart is te groot en zal worden bijgesneden
 STR_6053    :De hoogtekaart kan niet worden genormaliseerd
 STR_6054    :Alleen 24-bit bitmaps worden ondersteund
@@ -3356,7 +3280,7 @@ STR_6134    :Decor verwijderen
 STR_6135    :Ongeldig verzoek van de client
 STR_6136    :Ongeldig verzoek van de server
 STR_6137    :OpenRCT2, een gratis en open source remake van Roller Coaster Tycoon 2.
-STR_6138    :OpenRCT2 is het werk van velen, een volledige lijst is te vinden in ‘contributors.md’. Ga naar http://github.com/OpenRCT2/OpenRCT2 voor meer informatie.
+STR_6138    :OpenRCT2 is het werk van velen, een volledige lijst door op de knop ‘Deelnemers’ te klikken. Ga naar http://github.com/OpenRCT2/OpenRCT2 voor meer informatie.
 STR_6139    :Alle product- en bedrijfsnamen zijn eigendom van hun respectieve eigenaren. Het gebruik ervan impliceert geen overeenkomst of goedkeuring.
 STR_6140    :Wijzigingsoverzicht…
 STR_6141    :Onderste werkbalk in RCT1-stijl
@@ -3376,7 +3300,6 @@ STR_6154    :Om veiligheidsredenen wordt het afgeraden om OpenRCT2 te gebruiken 
 STR_6155    :KDialog en Zenity zijn geen beide geïnstalleerd. Je moet minstens één van de twee installeren, of het pad naar de RCT2-bestanden handmatig toevoegen in config.ini.
 STR_6156    :Deze naam is gereserveerd
 STR_6157    :Console
-STR_6158    :Kan dit bestand niet laden…{NEWLINE}Incompatibele RCTC-versie: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Beschikbare voertuigen: {BLACK}{STRING}
 STR_6161    :Rasterlijnen tonen
 STR_6162    :Draaiende wilde muis
@@ -3391,23 +3314,8 @@ STR_6170    :Overig
 STR_6171    :Zoeken
 STR_6172    :Zoeken
 STR_6173    :Geef een naam op om te zoeken:
-STR_6174    :Opgeslagen park laden
-STR_6175    :Scenario laden
-STR_6176    :Te laden scenario:
-STR_6177    :Load{MOVE_X}{87}Geen scenario geselecteerd
-STR_6178    :Load{MOVE_X}{87}{RED}Ontbrekend scenario
-STR_6179    :Selecteren
-STR_6180    :Geen scenario geselecteerd
-STR_6181    :{RED}Ontbrekend scenario
-STR_6182    :Volg{MOVE_X}{87}{STRING}
-STR_6183    :Volg{MOVE_X}{87}Geen sprite geselecteerd
-STR_6184    :Sprite volgen
-STR_6185    :Sprite selecteren
-STR_6186    :Geen sprite geselecteerd
-STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Braaksel
 STR_6189    :Eend
-STR_6190    :Je kunt geen sprite selecteren als het spel nog op het titelscherm staat. Laad eerst het opgeslagen spel waarvan je een sprite wilt selecteren.
 STR_6191    :Land
 STR_6192    :Muur
 STR_6193    :{COMMA16} bezoeker
@@ -3516,11 +3424,11 @@ STR_6318    :Netwerkdesynchronisatie gedetecteerd.{NEWLINE}Logbestand: {STRING}
 STR_6319    :Blokrem is gesloten
 STR_6320    :Mag niet worden verwijderd
 STR_6321    :Straatmeubel is kapot
-STR_6322    :{WINDOW_COLOUR_2}Sprite-id: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Entiteit-ID: {BLACK}{INT32}
 STR_6323    :Simulatie
 STR_6324    :Simuleren
 STR_6325    :Testrit simuleren
-STR_6326    :Kan {POP16}{POP16}{POP16}{STRINGID} niet in simulatiemodus zetten…
+STR_6326    :Kan {STRINGID} niet in simulatiemodus zetten…
 STR_6327    :Reuzenscreenshots hebben transparante achtergrond
 STR_6328    :Als deze optie is ingeschakeld, worden reuzenscreenshots met een transparante achtergrond genomen, in plaats van de zwarte standaardachtergrond.
 STR_6329    :{STRING}{STRINGID}
@@ -3529,7 +3437,6 @@ STR_6331    :Eenden aanmaken
 STR_6332    :Eenden verw.
 STR_6333    :Vergrotingsfactor verhogen
 STR_6334    :Vergrotingsfactor verlagen
-STR_6335    :Vakinspecteur: Ongeldig element invoegen
 STR_6336    :Vakinspecteur: Element kopiëren
 STR_6337    :Vakinspecteur: Element plakken
 STR_6338    :Vakinspecteur: Element verwijderen
@@ -3684,9 +3591,9 @@ STR_6487    :Zichtbaarheid werknemers wisselen
 STR_6488    :{RED}De bezoekers klagen over de lange wachttijden in je park.{NEWLINE}Overweeg het verkorten van wachtgebieden of het verlagen van doorlooptijden.
 STR_6489    :Fout: parkversie niet compatibel
 STR_6490    :Waarschuwing: Park-versie is deels compatibel
-STR_6491    :Dit park is opgeslagen in een latere versie van OpenRCT2. Parkversie is v{INT32} en vereist minimaal v{INT32}.
+STR_6491    :Dit park is opgeslagen in een latere versie van OpenRCT2. Het park is opgeslagen in v{INT32} en vereist minimaal v{INT32}. Je huidige versie is v{INT32}.
 STR_6492    :Dit park is opgeslagen in een vorige versie van OpenRCT2 en kan niet worden geopend met deze versie van OpenRCT2. Parkversie is v{INT32}.
-STR_6493    :Dit park is opgeslagen in een latere versie van OpenRCT2, sommige gegevens kunnen verloren gaan. Parkversie is v{INT32} en vereist minimaal v{INT32}.
+STR_6493    :Dit park is opgeslagen in een latere versie van OpenRCT2, sommige gegevens kunnen verloren gaan. Parkversie is v{INT32}, je huidige versie is v{INT32}.
 STR_6494    :Groeperen op baantype
 STR_6495    :Groepeert attracties per baantype. Schakel dit uit om elk voertuig apart te tonen.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3694,6 +3601,91 @@ STR_6497    :Klik op een vakje om de elementen erop te tonen.{NEWLINE}Om direct 
 STR_6498    :Schakel dit in om de kaart vierkant te houden.
 STR_6499    :Voertuigtype niet ondersteund door bestandsindeling voor baanontwerpen.
 STR_6500    :Baanelementen niet ondersteund door bestandsindeling voor baanontwerpen.
+STR_6501    :Willekeurig
+STR_6502    :Voer een waarde in tussen {COMMA16} en {COMMA16}
+STR_6503    :Er moet minstens één stationstype geselecteerd zijn.
+STR_6504    :Er moet minstens één terreinoppervlak geselecteerd zijn.
+STR_6505    :Er moet minstens één terreinzijkant geselecteerd zijn.
+STR_6506    :Grote halve schroef (links)
+STR_6507    :Grote halve schroef (rechts)
+STR_6508    :Middelgrote halve looping (links)
+STR_6509    :Middelgrote halve looping (rechts)
+STR_6510    :0 g-rol (links)
+STR_6511    :0 g-rol (rechts)
+STR_6512    :Grote 0 g-rol (links)
+STR_6513    :Grote 0 g-rol (rechts)
+STR_6514    :Ongeldige hoogte!
+STR_6515    :{BLACK}RollerCoaster Tycoon 1 is niet gekoppeld, OpenRCT2 zal terugvallen op alternatieve afbeeldingen.
+STR_6516    :Eén of meer toegevoegde objecten vereist een koppeling met RollerCoaster Tycoon 1 voor een juiste weergave. OpenRCT2 zal terugvallen op alternatieve afbeeldingen.
+STR_6517    :Eén of meer objecten in dit park vereist een koppeling met RollerCoaster Tycoon 1 voor een juiste weergave. OpenRCT2 zal terugvallen op alternatieve afbeeldingen.
+STR_6518    :{BLACK}Beweeg de aanwijzer over een scenario om de beschrijving en doelstelling weer te geven. Klik erop om een spel te starten.
+STR_6519    :Extra’s
+STR_6520    :Assetpacks
+STR_6521    :Lage prioriteit
+STR_6522    :Hoge prioriteit
+STR_6523    :Prioriteit van het geselecteerde assetpack verlagen.
+STR_6524    :Prioriteit van het geselecteerde assetpack verhogen.
+STR_6525    :Assets in het spel opnieuw laden, op basis van de geselecteerde assetpacks.
+STR_6526    :(basisgraphics, -muziek en -geluidseffecten)
+STR_6527    :Wedstrijden
+STR_6528    :Ongeldige baanparameters!
+STR_6529    :Ongeldige parameter voor kleurenschema!
+STR_6530    :User Created Expansion Set
+STR_6531    :The Time Machine
+STR_6532    :Katy’s Dreamworld
+STR_6533    :{WINDOW_COLOUR_2}Plezierfactor: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Intensiteitsfactor: {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}Misselijkheidsfactor: {BLACK}-{COMMA16}%
+STR_6536    :Dit park is opgeslagen in een latere versie van OpenRCT2. Het park is opgeslagen in v{INT32}, je huidige versie is v{INT32}.
+STR_6537    :Gewone paden als wachtrij bruikbaar maken
+STR_6538    :Zorgt ervoor dat je wachtrijen kunt bouwen met paden die daar niet voor bedoeld zijn.
+STR_6539    :Rem is gesloten
+STR_6540    :{WINDOW_COLOUR_2}Onze dank gaat uit naar de volgende bedrijven voor hun toestemming om voertuigen op hun ontwerpen te baseren:
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6542    :Deelnemers
+STR_6543    :Deelnemers…
+STR_6544    :Lening kan niet negatief zijn!
+STR_6545    :Renteberekening van RCT1 gebruiken
+STR_6546    :Gebruik de renteberekening van RollerCoaster Tycoon 1, dat een vast rentepercentage van ongeveer 1,33% hanteerde.
+STR_6547    :Alle decorobjecten
+STR_6548    :Leuningen tonen op splitsingen/kruisingen
+STR_6549    :Compatibility-objecten kunnen niet worden geselecteerd!
+STR_6550    :Dit onderdeel is aanwezig voor backwards compatibility met verouderde of beschadigde objecten. Het kan enkel worden gedeselecteerd. 
+STR_6551    :Legergroen
+STR_6552    :Meloengroen
+STR_6553    :Eiken
+STR_6554    :Roodbruin
+STR_6555    :Koraalroze
+STR_6556    :Bosgroen
+STR_6557    :Chartreuse
+STR_6558    :Jachtgroen
+STR_6559    :Celadon
+STR_6560    :Limoengroen
+STR_6561    :Sepia
+STR_6562    :Perzik
+STR_6563    :Pastelpaars
+STR_6564    :Vert émeraude
+STR_6565    :Zeegroen
+STR_6566    :Violet
+STR_6567    :Lavendel
+STR_6568    :Pasteloranje
+STR_6569    :Diep water
+STR_6570    :Pastelroze
+STR_6571    :Omber
+STR_6572    :Beige
+STR_6573    :Doorzichtig
+STR_6574    :Leegte
+STR_6575    :Speciale kleuren tonen
+STR_6576    :Toont speciale kleuren (zoals doorzichtig en leegte) in de kleurenkiezer.
+STR_6577    :Snelh. blokremmen
+STR_6578    :Stelt de doorlaatsnelheid van de blokrem in. Deze snelheid geldt ook voor de remmen die voor deze blokrem geplaatst zijn (als de blokrem open staat).
+STR_6579    :De snelheden van de blokremmen zullen niet worden opgeslagen in het baanontwerp.
+STR_6580    :Toetsen herstellen
+STR_6581    :Weet je zeker dat je alle sneltoetsen op dit tabblad weer wilt terugzetten op de standaardwaarden?
+STR_6582    :Sneltoetsen openen
+STR_6583    :{WINDOW_COLOUR_2}Achterstevoren
+STR_6584    :Keert de trein om, zodat hij achterstevoren over de baan rijdt.
+STR_6585    :Kan dit niet wijzigen…
 
 #############
 # Scenarios #
@@ -4431,6 +4423,109 @@ STR_SCNR    :Panda World
 STR_PARK    :Panda World
 STR_DTLS    :Voeg meer attracties toe aan dit park met pandathema, en trek meer bezoekers aan.
 
+<Tycoon Park>
+STR_SCNR    :Tycoon Park
+STR_PARK    :Tycoon Park
+STR_DTLS    :
+
+###
+<UCES Halloween>
+STR_SCNR    :Cemetery Ridge
+STR_PARK    :Cemetery Ridge
+STR_DTLS    :Het is Allerheiligenavond bij UCES en de pompoenen komen tot leven! Deze begraafplaats is in de problemen gekomen en het is jouw taak om deze op te lossen, zonder de doden te storen! Gaat het je lukken om de geesten in de graven te houden en je bezoekers koude rillingen te bezorgen?{NEWLINE}Gemaakt door: Squid
+
+###############################################################################
+## UCES: The Time Machine (2003)
+###############################################################################
+<Lighthouse of Alexandria by Katatude for UCES>
+STR_SCNR    :De vuurtoren van Alexandrië
+STR_PARK    :De vuurtoren van Alexandrië
+STR_DTLS    :Alexander bouwde deze stad. De Grieken, Romeinen en Egyptenaren drukten er hun stempel op. Maar het pronkstuk was dit wereldwonder: de vuurtoren. Kom langs en bouw een park!{NEWLINE}Gemaakt door: Katatude
+
+<Cleveland's Luna Park>
+STR_SCNR    :Luna Park, Cleveland
+STR_PARK    :Luna Park
+STR_DTLS    :Zoals het eruitzag op de openingsdag, 18 mei 1905.{NEWLINE}Gemaakt door: Aetherwave
+
+<Mount Vesuvius 1700 A.D. by Katatude for UCES>
+STR_SCNR    :Vesuvius
+STR_PARK    :Vesuvius
+STR_DTLS    :Pompeii en Herculaneum werden in 79 n.Chr. door de Vesuvius bedolven onder de as. Bezoek de opgravingen en bouw een park!{NEWLINE}Gemaakt door: Katatude
+
+<The Sandbox by Katatude for UCES>
+STR_SCNR    :De zandbak
+STR_PARK    :De zandbak
+STR_DTLS    :Iedereen wil toch wel eens in de zandbak spelen? Pak je emmertje en je schepje en bouw een park!{NEWLINE}Gemaakt door: Katatude
+
+<Niagara Falls & Gorge by Katatude for UCES>
+STR_SCNR    :Niagara Falls
+STR_PARK    :Niagara Falls
+STR_DTLS    :American Falls, Bridal Falls en Canadian Horseshoe Falls op de grens bij de Niagara, 1850.{NEWLINE}Gemaakt door: Katatude
+
+<Rocky Mountain Miners>
+STR_SCNR    :Rocky Mountain Miners
+STR_PARK    :Rocky Mountain Miners
+STR_DTLS    :Door een aardverschuiving is je spoorweg bedolven onder het puin. Je werknemers zijn het gebied gaan verkennen. Zijn achtbanen misschien de gouden bergen waar je naar op zoek was?{NEWLINE}Gemaakt door: Squid, Buckone, Fossil
+
+<The Time Machine by Katatude for UCES>
+STR_SCNR    :De tijdmachine
+STR_PARK    :The Time Machine
+STR_DTLS    :De tijdmachine, die je overal heen brengt waar en wanneer je maar wilt. De eeuwigheid wacht op je. Maar alles is relatief.{NEWLINE}Gemaakt door: Katatude
+
+<Tower of Babel>
+STR_SCNR    :De toren van Babel
+STR_PARK    :Babel
+STR_DTLS    :Waar zijn we nu weer beland? Waar is iedereen?{NEWLINE}Gemaakt door: Fossil
+
+<Transformation>
+STR_SCNR    :Transformation
+STR_PARK    :Transformation
+STR_DTLS    :We hadden je al verwacht…{NEWLINE}Gemaakt door: Fossil
+
+<Urbis Incognitus>
+STR_SCNR    :Urbis Incognitus
+STR_PARK    :Urbis Incognitus
+STR_DTLS    :De Romeinen hebben zo onderhand wel genoeg van al die gladiatorengevechten. Zorg voor nieuwe vormen van vermaak door een Romeins stadje om te toveren in het beste attractiepark aller tijden!{NEWLINE}Gemaakt door: Kaffe
+
+###############################################################################
+## UCES: Katy’s Dreamworld (2003)
+###############################################################################
+
+<Beneath the Christmas Tree by Katatude for UCES>
+STR_SCNR    :Beneath the Christmas Tree
+STR_PARK    :Winter Wonderland
+STR_DTLS    :Je moeder heeft dit tafereel onder de kerstboom gebouwd. Nu is het jouw beurt om er een park van te maken!{NEWLINE}Gemaakt door: Katatude
+
+<Bigrock Blast>
+STR_SCNR    :Bigrock Blast
+STR_PARK    :Bigrock Blast
+STR_DTLS    :Na een explosie bij de Bigrock Mining Co. moeten de inwoners van Bigrock hun stad in leven zien te houden. Ze hebben jou ingehuurd om deze klus te klaren.{NEWLINE}Gemaakt door: rbarclay & buckone
+
+<Camp Mockingbird for UCES by Katatude>
+STR_SCNR    :Camp Mockingbird
+STR_PARK    :Camp Mockingbird
+STR_DTLS    :Dit zomerkamp kost maar 500 euro per week! Plunder je spaarrekening en kom bouwen!{NEWLINE}Gemaakt door: Katatude
+
+<Choo Choo Town>
+STR_SCNR    :Choo-Choo Town
+STR_PARK    :Choo-Choo Town
+STR_DTLS    :Mam! Pap! Ik wil naarChoo-Choo Town!{NEWLINE}Gemaakt door: Fossil
+
+<Dragon Islands>
+STR_SCNR    :Dragon Islands
+STR_PARK    :Dragon Islands
+STR_DTLS    :Dragon Islands? Dat klinkt niet erg veilig…{NEWLINE}Gemaakt door: Fossil
+
+<Kiddy Karnival II>
+STR_SCNR    :Kiddie Karnival II
+STR_PARK    :Kiddie Karnival
+STR_DTLS    :Tijd om de kleintjes te vermaken!{NEWLINE}Gemaakt door: Piehead & Fossil
+
+<Sand Dune>
+STR_SCNR    :Sand Dune
+STR_PARK    :Sand Dune
+STR_DTLS    :Je bezit al een klein park en hebt besloten om een groot stuk land bij het strand erbij te kopen, om meer bezoekers naar deze prachtige duinen te trekken. Maar let op: de duinen zijn een gevoelig ecosysteem dat je niet mag verstoren.{NEWLINE}Gemaakt door: rbarclay
+
 ##################################
 # Rides/attractions / Attracties #
 ##################################
@@ -4498,33 +4593,8 @@ STR_DESC    :Een kiosk waar bezoekers kaarten van het park en paraplu’s kunnen
 #################
 
 ## Start CC
-# TT Glass Roofs
-[TTRFGL01]
-STR_NAME    :Glazen dak
-
-[TTRFGL02]
-STR_NAME    :Glazen dak
-
-[TTRFGL03]
-STR_NAME    :Glazen dak
-
 ## TT Pirate roofs and eaves
-[TTPIRF02]
-STR_NAME    :Dak
-
-[TTPIRF03]
-STR_NAME    :Dak
-
-[TTPIRF04]
-STR_NAME    :Dak
-
 [TTPIRF05]
-STR_NAME    :Dak
-
-[TTPIRF07]
-STR_NAME    :Dak
-
-[TTPIRF08]
 STR_NAME    :Dak
 
 [TTPRF09]
@@ -4535,38 +4605,6 @@ STR_NAME    :Dak
 
 [TTPRF11]
 STR_NAME    :Dak
-
-# TT wooden (Mine) roofs
-[TTRFWD01]
-STR_NAME    :Dak
-
-[TTRFWD02]
-STR_NAME    :Dak
-
-[TTRFWD03]
-STR_NAME    :Dak
-
-[TTRFWD04]
-STR_NAME    :Dak
-
-[TTRFWD05]
-STR_NAME    :Dak
-
-[TTRFWD06]
-STR_NAME    :Dak
-
-[TTRFWD07]
-STR_NAME    :Dak
-
-[TTRFWD08]
-STR_NAME    :Dak
-
-[ACWW33]
-STR_NAME    :Muur van houten palen
-
-[ACWWF32]
-STR_NAME    :Hek van houten palen
-
 ## End CC
 
 

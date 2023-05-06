@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2023 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,7 +40,9 @@ enum : uint32_t
     PARK_FLAGS_NO_MONEY_SCENARIO = (1 << 17),                 // Deprecated, originally used in scenario editor
     PARK_FLAGS_SPRITES_INITIALISED = (1 << 18),  // After a scenario is loaded this prevents edits in the scenario editor
     PARK_FLAGS_SIX_FLAGS_DEPRECATED = (1 << 19), // Not used anymore
-    PARK_FLAGS_UNLOCK_ALL_PRICES = (1u << 31),   // OpenRCT2 only!
+
+    PARK_FLAGS_RCT1_INTEREST = (1u << 30),     // OpenRCT2 only
+    PARK_FLAGS_UNLOCK_ALL_PRICES = (1u << 31), // OpenRCT2 only
 };
 
 struct Guest;
@@ -80,8 +82,8 @@ namespace OpenRCT2
         void UpdateHistories();
 
     private:
-        money64 CalculateRideValue(const Ride* ride) const;
-        money16 CalculateTotalRideValueForMoney() const;
+        money64 CalculateRideValue(const Ride& ride) const;
+        money64 CalculateTotalRideValueForMoney() const;
         uint32_t CalculateSuggestedMaxGuests() const;
         uint32_t CalculateGuestGenerationProbability() const;
 
@@ -92,10 +94,10 @@ namespace OpenRCT2
 
 extern uint64_t gParkFlags;
 extern uint16_t gParkRating;
-extern money16 gParkEntranceFee;
+extern money64 gParkEntranceFee;
 extern uint32_t gParkSize;
-extern money16 gLandPrice;
-extern money16 gConstructionRightsPrice;
+extern money64 gLandPrice;
+extern money64 gConstructionRightsPrice;
 
 extern uint64_t gTotalAdmissions;
 extern money64 gTotalIncomeFromAdmissions;
@@ -109,21 +111,20 @@ extern uint32_t gGuestsInParkHistory[32];
 extern int32_t _guestGenerationProbability;
 extern uint32_t _suggestedGuestMaximum;
 
-void set_forced_park_rating(int32_t rating);
-int32_t get_forced_park_rating();
+void ParkSetForcedRating(int32_t rating);
+int32_t ParkGetForcedRating();
 
-int32_t park_is_open();
-uint32_t park_calculate_size();
+int32_t ParkIsOpen();
+uint32_t ParkCalculateSize();
 
-void update_park_fences(const CoordsXY& coords);
-void update_park_fences_around_tile(const CoordsXY& coords);
+void ParkUpdateFences(const CoordsXY& coords);
+void ParkUpdateFencesAroundTile(const CoordsXY& coords);
 
-uint8_t calculate_guest_initial_happiness(uint8_t percentage);
+uint8_t CalculateGuestInitialHappiness(uint8_t percentage);
 
-void park_set_open(bool open);
-int32_t park_entrance_get_index(const CoordsXYZ& entrancePos);
-void park_set_entrance_fee(money32 value);
-money16 park_get_entrance_fee();
+void ParkSetOpen(bool open);
+int32_t ParkEntranceGetIndex(const CoordsXYZ& entrancePos);
+money64 ParkGetEntranceFee();
 
-bool park_ride_prices_unlocked();
-bool park_entry_price_unlocked();
+bool ParkRidePricesUnlocked();
+bool ParkEntranceFeeUnlocked();
