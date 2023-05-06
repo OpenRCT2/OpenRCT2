@@ -43,6 +43,7 @@
 - Fix: [#20018] Shops not calculating up-keep cost.
 - Fix: [#20033] Asset packs cannot reference game data.
 - Fix: [#20104] [Plugin] Some network APIs use player index and group index.
+- Fix: [#20099] Some scrollbar is glitched or have incorrect size when open window for the first time
 
 0.4.4 (2023-03-28)
 ------------------------------------------------------------------------
