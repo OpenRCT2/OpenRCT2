@@ -73,7 +73,12 @@ public:
         {
             throw std::runtime_error("Unable to open " + path);
         }
-        return std::string((std::istreambuf_iterator<char>(fs)), std::istreambuf_iterator<char>());
+        auto length = fs.tellg();
+        char* buffer = new char[length];
+        fs.read(buffer, length);
+        auto result = std::string(buffer, buffer + length);
+        delete[] buffer;
+        return result;
     }
 
     /**
