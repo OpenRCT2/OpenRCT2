@@ -76,8 +76,7 @@ SpecialElementsDropdownState BuildSpecialElementsList(
             entryIsDisabled = true;
 
         // Check if a previous element exists, to collate entries if possible
-        if (!list.Elements.empty()
-            && GetTrackElementDescriptor(list.Elements.back().TrackType).Description == ted.Description)
+        if (!list.Elements.empty() && GetTrackElementDescriptor(list.Elements.back().TrackType).Description == ted.Description)
         {
             // If the current element is disabled, do not add current element.
             if (entryIsDisabled)
