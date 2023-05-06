@@ -1335,6 +1335,9 @@ void MapUpdateTiles()
             for (int32_t blockX = 0; blockX < gMapSize.x; blockX += 256)
             {
                 auto mapPos = TileCoordsXY{ blockX + x, blockY + y }.ToCoordsXY();
+                if (MapIsEdge(mapPos))
+                    continue;
+
                 auto* surfaceElement = MapGetSurfaceElementAt(mapPos);
                 if (surfaceElement != nullptr)
                 {
@@ -1345,7 +1348,6 @@ void MapUpdateTiles()
         }
 
         gGrassSceneryTileLoopPosition++;
-        gGrassSceneryTileLoopPosition &= 0xFFFF;
     }
 }
 
