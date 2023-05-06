@@ -2219,8 +2219,8 @@ void WidgetScrollUpdateThumbs(WindowBase& w, WidgetIndex widget_index)
         {
             double barPosition = (scroll.h_thumb_right * 1.0) / view_size;
 
-            scroll.h_thumb_left = static_cast<uint16_t>(std::lround(scroll.h_thumb_left - (20 * barPosition)));
-            scroll.h_thumb_right = static_cast<uint16_t>(std::lround(scroll.h_thumb_right + (20 * (1 - barPosition))));
+            scroll.h_thumb_left = static_cast<int32_t>(std::lround(scroll.h_thumb_left - (20 * barPosition)));
+            scroll.h_thumb_right = static_cast<int32_t>(std::lround(scroll.h_thumb_right + (20 * (1 - barPosition))));
         }
     }
 
@@ -2248,8 +2248,8 @@ void WidgetScrollUpdateThumbs(WindowBase& w, WidgetIndex widget_index)
         {
             double barPosition = (scroll.v_thumb_bottom * 1.0) / view_size;
 
-            scroll.v_thumb_top = static_cast<uint16_t>(std::lround(scroll.v_thumb_top - (20 * barPosition)));
-            scroll.v_thumb_bottom = static_cast<uint16_t>(std::lround(scroll.v_thumb_bottom + (20 * (1 - barPosition))));
+            scroll.v_thumb_top = static_cast<int32_t>(std::lround(scroll.v_thumb_top - (20 * barPosition)));
+            scroll.v_thumb_bottom = static_cast<int32_t>(std::lround(scroll.v_thumb_bottom + (20 * (1 - barPosition))));
         }
     }
 }
