@@ -464,8 +464,7 @@ namespace OpenRCT2::Ui::Windows
             // Since the plugin may alter widget positions and sizes during an update event,
             // we need to force an update for all list view scrollbars
             WidgetIndex widgetIndex = 0;
-            for (auto widget = widgets; (widget->type != WindowWidgetType::Empty) && (widget->type != WindowWidgetType::Last);
-                 widget++)
+            for (auto widget = widgets; widget->type != WindowWidgetType::Last; widget++)
             {
                 if (widget->type == WindowWidgetType::Scroll)
                 {
