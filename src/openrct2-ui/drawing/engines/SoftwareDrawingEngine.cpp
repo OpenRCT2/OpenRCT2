@@ -213,6 +213,13 @@ public:
         SDL_FreeSurface(_surface);
         SDL_FreeSurface(_RGBASurface);
         SDL_FreePalette(_palette);
+
+        vpx_img_free(&raw);
+        if (vpx_codec_destroy(&codec))
+        {
+            die_codec(&codec, "Failed to destroy codec.");
+        }
+        vpx_video_writer_close(writer);
     }
 
     void Initialise() override
@@ -286,12 +293,6 @@ public:
         {
             die_codec(&codec, "Failed to use lossless mode");
         }
-        vpx_img_free(&raw);
-        if (vpx_codec_destroy(&codec))
-        {
-            die_codec(&codec, "Failed to destroy codec.");
-        }
-        vpx_video_writer_close(writer);
 
         ConfigureBits(width, height, _surface->pitch);
     }
@@ -338,6 +339,19 @@ private:
         if (SDL_MUSTLOCK(_surface))
         {
             SDL_UnlockSurface(_surface);
+        }
+        if (SDL_BlitSurface(_surface, nullptr, _RGBASurface, nullptr))
+        {
+            LOG_FATAL("SDL_BlitSurface %s", SDL_GetError());
+            exit(1);
+        }
+        std::unique_ptr<uint8_t[]> dst = std::make_unique<uint8_t[]>(_RGBASurface->w * _RGBASurface->h * 4);
+        if (SDL_ConvertPixels(
+                _RGBASurface->w, _RGBASurface->h, _RGBASurface->format->format, _RGBASurface->pixels, _RGBASurface->pitch,
+                SDL_PIXELFORMAT_IYUV, dst.get(), _RGBASurface->w * 4)
+            != 0)
+        {
+            LOG_ERROR("SDL reported error: %s\n", SDL_GetError());
         }
 
         // Copy the surface to the window
