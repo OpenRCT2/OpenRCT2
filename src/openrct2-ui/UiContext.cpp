@@ -827,7 +827,6 @@ private:
         // Initialise the surface, palette and draw buffer
         DrawingEngineInit();
         InferDisplayDPI();
-        OnResize(width, height);
 
         UpdateFullscreenResolutions();
 
