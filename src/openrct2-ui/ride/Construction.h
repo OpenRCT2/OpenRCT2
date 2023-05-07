@@ -45,6 +45,7 @@ constexpr std::array DropdownOrder = {
     TrackElemType::RightHalfBankedHelixDownLarge,
     TrackElemType::Booster,
     TrackElemType::Brakes,
+    TrackElemType::OnRidePhoto,
     TrackElemType::LeftQuarterBankedHelixLargeUp,
     TrackElemType::RightQuarterBankedHelixLargeUp,
     TrackElemType::LeftQuarterBankedHelixLargeDown,
