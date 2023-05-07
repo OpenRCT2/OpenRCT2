@@ -74,10 +74,9 @@ public:
             throw std::runtime_error("Unable to open " + path);
         }
         auto length = fs.tellg();
-        char* buffer = new char[length];
-        fs.read(buffer, length);
-        auto result = std::string(buffer, buffer + length);
-        delete[] buffer;
+        std::unique_ptr<char[]> buffer = std::make_unique<char[]>(length);
+        fs.read(buffer.get(), length);
+        auto result = std::string(buffer.get(), buffer.get() + length);
         return result;
     }
 
