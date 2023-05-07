@@ -73,7 +73,9 @@ public:
         {
             throw std::runtime_error("Unable to open " + path);
         }
-        auto length = fs.end - fs.beg;
+        fs.seekg(0, fs.end);
+        auto length = fs.tellg();
+        fs.seekg(0, fs.beg);
         std::unique_ptr<char[]> buffer = std::make_unique<char[]>(length);
         fs.read(buffer.get(), length);
         auto result = std::string(buffer.get(), buffer.get() + length);
