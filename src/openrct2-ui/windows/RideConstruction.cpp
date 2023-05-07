@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../ride/Construction.h"
+
 #include <algorithm>
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -199,10 +201,7 @@ class RideConstructionWindow final : public Window
 {
 private:
     uint8_t _currentlyShowingBrakeOrBoosterSpeed{};
-    uint64_t _currentDisabledSpecialTrackPieces{};
-    track_type_t _currentPossibleRideConfigurations[64]{};
-    uint16_t _numCurrentPossibleRideConfigurations{};
-    uint16_t _numCurrentPossibleSpecialTrackPieces{};
+    SpecialElementsDropdownState _specialElementDropdownState;
     bool _autoOpeningShop{};
 
 public:
@@ -749,34 +748,38 @@ public:
                     | (1uLL << WIDX_LEFT_CURVE_SMALL) | (1uLL << WIDX_LEFT_CURVE);
             }
         }
-        if (IsTrackEnabled(TRACK_HELIX_LARGE_UNBANKED))
+        // If the previous track is flat and the next track is flat, attempt to show buttons for helixes
+        if (_currentTrackSlopeEnd == TRACK_SLOPE_NONE && _currentTrackSlopeEnd == _previousTrackSlopeEnd)
         {
-            if (_currentTrackSlopeEnd == TRACK_SLOPE_NONE && _currentTrackBankEnd == TRACK_SLOPE_NONE)
+            // If the bank is none, attempt to show unbanked quarter helixes
+            if (_currentTrackBankEnd == TRACK_BANK_NONE
+                && (_currentTrackCurve == TRACK_CURVE_LEFT || _currentTrackCurve == TRACK_CURVE_RIGHT))
             {
-                if (_currentTrackCurve == TRACK_CURVE_LEFT || _currentTrackCurve == TRACK_CURVE_RIGHT)
-                {
-                    if (_currentTrackSlopeEnd == _previousTrackSlopeEnd)
-                    {
-                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
-                        disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_STEEP);
-                    }
-                }
+                if (IsTrackEnabled(TRACK_HELIX_DOWN_UNBANKED_QUARTER))
+                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
+                if (IsTrackEnabled(TRACK_HELIX_UP_UNBANKED_QUARTER))
+                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_STEEP);
             }
-        }
-        else if (
-            (IsTrackEnabled(TRACK_HELIX_SMALL)
-             || (IsTrackEnabled(TRACK_HELIX_LARGE) && _currentTrackCurve != TRACK_CURVE_LEFT_SMALL
-                 && _currentTrackCurve != TRACK_CURVE_RIGHT_SMALL))
-            && (_currentTrackCurve == TRACK_CURVE_LEFT || _currentTrackCurve == TRACK_CURVE_RIGHT
-                || _currentTrackCurve == TRACK_CURVE_LEFT_SMALL || _currentTrackCurve == TRACK_CURVE_RIGHT_SMALL)
-            && (_currentTrackSlopeEnd == TRACK_SLOPE_NONE && _currentTrackBankEnd != TRACK_BANK_NONE))
-        {
-            if (_previousTrackSlopeEnd == _currentTrackSlopeEnd)
+            // If the track is banked left or right and curvature is standard size (2.5 tile radius), attempt to show buttons
+            // for half or quarter helixes
+            else if (
+                (_currentTrackBankEnd == TRACK_BANK_LEFT || _currentTrackBankEnd == TRACK_BANK_RIGHT)
+                && (_currentTrackCurve == TRACK_CURVE_LEFT || _currentTrackCurve == TRACK_CURVE_RIGHT))
             {
-                // Enable helix
-                disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
-                if (!currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
-                    || gCheatsEnableAllDrawableTrackPieces)
+                if (IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_HALF) || IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_QUARTER))
+                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
+                if (IsTrackEnabled(TRACK_HELIX_UP_BANKED_HALF) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_QUARTER))
+                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_STEEP);
+            }
+            // If the track is banked left or right and curvature is small size (1.5 tile radius), attempt to show buttons for
+            // half helixes
+            else if (
+                (_currentTrackBankEnd == TRACK_BANK_LEFT || _currentTrackBankEnd == TRACK_BANK_RIGHT)
+                && (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL || _currentTrackCurve == TRACK_CURVE_RIGHT_SMALL))
+            {
+                if (IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_HALF))
+                    disabledWidgets &= ~(1uLL << WIDX_SLOPE_DOWN_STEEP);
+                if (IsTrackEnabled(TRACK_HELIX_UP_BANKED_HALF))
                     disabledWidgets &= ~(1uLL << WIDX_SLOPE_UP_STEEP);
             }
         }
@@ -1048,7 +1051,7 @@ public:
                 break;
             case WIDX_SLOPE_DOWN_STEEP:
                 RideConstructionInvalidateCurrentTrack();
-                if (IsTrackEnabled(TRACK_HELIX_SMALL))
+                if (IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_HALF) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_HALF))
                 {
                     if (_currentTrackCurve == TRACK_CURVE_LEFT && _currentTrackBankEnd == TRACK_BANK_LEFT)
                     {
@@ -1081,7 +1084,7 @@ public:
                         break;
                     }
                 }
-                if (IsTrackEnabled(TRACK_HELIX_LARGE))
+                if (IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_QUARTER) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_QUARTER))
                 {
                     if (_currentTrackCurve == TRACK_CURVE_LEFT && _currentTrackBankEnd == TRACK_BANK_LEFT)
                     {
@@ -1100,7 +1103,7 @@ public:
                         break;
                     }
                 }
-                if (IsTrackEnabled(TRACK_HELIX_LARGE_UNBANKED))
+                if (IsTrackEnabled(TRACK_HELIX_DOWN_UNBANKED_QUARTER) || IsTrackEnabled(TRACK_HELIX_UP_UNBANKED_QUARTER))
                 {
                     if (_currentTrackBankEnd == TRACK_BANK_NONE)
                     {
@@ -1186,7 +1189,7 @@ public:
                 break;
             case WIDX_SLOPE_UP_STEEP:
                 RideConstructionInvalidateCurrentTrack();
-                if (IsTrackEnabled(TRACK_HELIX_SMALL))
+                if (IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_HALF) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_HALF))
                 {
                     if (_currentTrackCurve == TRACK_CURVE_LEFT && _currentTrackBankEnd == TRACK_BANK_LEFT)
                     {
@@ -1217,7 +1220,7 @@ public:
                         break;
                     }
                 }
-                if (IsTrackEnabled(TRACK_HELIX_LARGE))
+                if (IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_QUARTER) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_QUARTER))
                 {
                     if (_currentTrackCurve == TRACK_CURVE_LEFT && _currentTrackBankEnd == TRACK_BANK_LEFT)
                     {
@@ -1236,7 +1239,7 @@ public:
                         break;
                     }
                 }
-                if (IsTrackEnabled(TRACK_HELIX_LARGE_UNBANKED))
+                if (IsTrackEnabled(TRACK_HELIX_DOWN_UNBANKED_QUARTER) || IsTrackEnabled(TRACK_HELIX_UP_UNBANKED_QUARTER))
                 {
                     if (_currentTrackBankEnd == TRACK_BANK_NONE)
                     {
@@ -1392,7 +1395,7 @@ public:
 
         RideConstructionInvalidateCurrentTrack();
         _currentTrackPrice = MONEY64_UNDEFINED;
-        track_type_t trackPiece = _currentPossibleRideConfigurations[selectedIndex];
+        track_type_t trackPiece = _specialElementDropdownState.Elements[selectedIndex].TrackType;
         switch (trackPiece)
         {
             case TrackElemType::EndStation:
@@ -1561,13 +1564,13 @@ public:
             widgets[WIDX_EXIT].type = WindowWidgetType::Button;
         }
 
-        if (_numCurrentPossibleSpecialTrackPieces == 0)
+        if (_specialElementDropdownState.HasActiveElements)
         {
-            widgets[WIDX_SPECIAL_TRACK_DROPDOWN].type = WindowWidgetType::Empty;
+            widgets[WIDX_SPECIAL_TRACK_DROPDOWN].type = WindowWidgetType::Button;
         }
         else
         {
-            widgets[WIDX_SPECIAL_TRACK_DROPDOWN].type = WindowWidgetType::Button;
+            widgets[WIDX_SPECIAL_TRACK_DROPDOWN].type = WindowWidgetType::Empty;
         }
 
         if (IsTrackEnabled(TRACK_STRAIGHT))
@@ -1658,8 +1661,8 @@ public:
             widgets[WIDX_SLOPE_DOWN].type = WindowWidgetType::FlatBtn;
             widgets[WIDX_SLOPE_UP].type = WindowWidgetType::FlatBtn;
         }
-        if (IsTrackEnabled(TRACK_HELIX_SMALL) && _currentTrackBankEnd != TRACK_BANK_NONE
-            && _currentTrackSlopeEnd == TRACK_SLOPE_NONE)
+        if ((IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_HALF) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_HALF))
+            && _currentTrackBankEnd != TRACK_BANK_NONE && _currentTrackSlopeEnd == TRACK_SLOPE_NONE)
         {
             if (_currentTrackCurve >= TRACK_CURVE_LEFT && _currentTrackCurve <= TRACK_CURVE_RIGHT_SMALL)
             {
@@ -1742,8 +1745,8 @@ public:
             }
         }
 
-        if (IsTrackEnabled(TRACK_HELIX_LARGE_UNBANKED) && _currentTrackSlopeEnd == TRACK_SLOPE_NONE
-            && _currentTrackBankEnd == TRACK_BANK_NONE
+        if ((IsTrackEnabled(TRACK_HELIX_DOWN_UNBANKED_QUARTER) || IsTrackEnabled(TRACK_HELIX_UP_UNBANKED_QUARTER))
+            && _currentTrackSlopeEnd == TRACK_SLOPE_NONE && _currentTrackBankEnd == TRACK_BANK_NONE
             && (_currentTrackCurve == TRACK_CURVE_LEFT || _currentTrackCurve == TRACK_CURVE_RIGHT))
         {
             widgets[WIDX_SLOPE_DOWN_STEEP].image = ImageId(SPR_RIDE_CONSTRUCTION_HELIX_DOWN);
@@ -1768,7 +1771,8 @@ public:
             widgets[WIDX_SLOPE_UP].right = tmp;
         }
 
-        if ((IsTrackEnabled(TRACK_HELIX_LARGE) || IsTrackEnabled(TRACK_HELIX_SMALL))
+        if ((IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_QUARTER) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_QUARTER)
+             || IsTrackEnabled(TRACK_HELIX_DOWN_BANKED_HALF) || IsTrackEnabled(TRACK_HELIX_UP_BANKED_HALF))
             && (_currentTrackCurve >= TRACK_CURVE_LEFT && _currentTrackCurve <= TRACK_CURVE_RIGHT_SMALL)
             && _currentTrackSlopeEnd == TRACK_SLOPE_NONE && _currentTrackBankEnd != TRACK_BANK_NONE)
         {
@@ -2094,90 +2098,14 @@ public:
 
     void UpdatePossibleRideConfigurations()
     {
-        int32_t trackType;
         auto currentRide = GetRide(_currentRideIndex);
         if (currentRide == nullptr)
         {
             return;
         }
-
+        _specialElementDropdownState = BuildSpecialElementsList(
+            *currentRide, _currentTrackPieceDirection, _previousTrackSlopeEnd, _previousTrackBankEnd, _rideConstructionState);
         _currentlyShowingBrakeOrBoosterSpeed = false;
-
-        int32_t currentPossibleRideConfigurationIndex = 0;
-        _numCurrentPossibleSpecialTrackPieces = 0;
-        for (trackType = 0; trackType < TrackElemType::Count; trackType++)
-        {
-            const auto& ted = GetTrackElementDescriptor(trackType);
-            int32_t trackTypeCategory = ted.Definition.type;
-
-            if (ted.Description == STR_EMPTY)
-                continue;
-
-            if (!IsTrackEnabled(trackTypeCategory))
-            {
-                continue;
-            }
-
-            int32_t slope, bank;
-            bool buildDirectionIsDiagonal = false;
-            if (_rideConstructionState == RideConstructionState::Front
-                || _rideConstructionState == RideConstructionState::Place)
-            {
-                slope = ted.Definition.vangle_start;
-                bank = ted.Definition.bank_start;
-                buildDirectionIsDiagonal = TrackPieceDirectionIsDiagonal(ted.Coordinates.rotation_begin);
-            }
-            else if (_rideConstructionState == RideConstructionState::Back)
-            {
-                slope = ted.Definition.vangle_end;
-                bank = ted.Definition.bank_end;
-                buildDirectionIsDiagonal = TrackPieceDirectionIsDiagonal(ted.Coordinates.rotation_end);
-            }
-            else
-            {
-                continue;
-            }
-
-            if (!currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
-            {
-                if (ted.Definition.type == TRACK_HELIX_SMALL || ted.Definition.type == TRACK_HELIX_LARGE)
-                {
-                    if (bank != _previousTrackBankEnd)
-                    {
-                        if (_previousTrackBankEnd != TRACK_BANK_NONE)
-                            continue;
-
-                        if (bank != TRACK_BANK_LEFT)
-                            continue;
-                    }
-                }
-            }
-            if ((ted.Definition.bank_start == TRACK_BANK_UPSIDE_DOWN || ted.Definition.bank_end == TRACK_BANK_UPSIDE_DOWN)
-                && (bank != _previousTrackBankEnd))
-                continue;
-
-            if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
-                && !gCheatsEnableAllDrawableTrackPieces
-                && ((
-                    trackType == TrackElemType::LeftHalfBankedHelixUpSmall
-                    || trackType == TrackElemType::RightHalfBankedHelixUpSmall
-                    || trackType == TrackElemType::LeftHalfBankedHelixUpLarge
-                    || trackType == TrackElemType::RightHalfBankedHelixUpLarge)))
-                continue;
-
-            _currentPossibleRideConfigurations[currentPossibleRideConfigurationIndex] = trackType;
-            _currentDisabledSpecialTrackPieces |= (1uLL << currentPossibleRideConfigurationIndex);
-            if (TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection) == buildDirectionIsDiagonal
-                && slope == _previousTrackSlopeEnd && bank == _previousTrackBankEnd
-                && (trackType != TrackElemType::TowerBase
-                    || currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES)))
-            {
-                _currentDisabledSpecialTrackPieces &= ~(1uLL << currentPossibleRideConfigurationIndex);
-                _numCurrentPossibleSpecialTrackPieces++;
-            }
-            currentPossibleRideConfigurationIndex++;
-        }
-        _numCurrentPossibleRideConfigurations = currentPossibleRideConfigurationIndex;
     }
 
     void UpdateMapSelection()
@@ -2247,11 +2175,6 @@ public:
     }
 
 private:
-    bool TrackPieceDirectionIsDiagonal(const uint8_t direction)
-    {
-        return direction >= NumOrthogonalDirections;
-    }
-
     void Construct()
     {
         RideId rideIndex;
@@ -2538,9 +2461,9 @@ private:
     void ShowSpecialTrackDropdown(Widget* widget)
     {
         int32_t defaultIndex = -1;
-        for (int32_t i = 0; i < _numCurrentPossibleRideConfigurations; i++)
+        for (size_t i = 0; i < _specialElementDropdownState.Elements.size(); i++)
         {
-            track_type_t trackPiece = _currentPossibleRideConfigurations[i];
+            track_type_t trackPiece = _specialElementDropdownState.Elements[i].TrackType;
 
             const auto& ted = GetTrackElementDescriptor(trackPiece);
             StringId trackPieceStringId = ted.Description;
@@ -2557,20 +2480,17 @@ private:
             gDropdownItems[i].Format = trackPieceStringId;
             if ((trackPiece | RideConstructionSpecialPieceSelected) == _currentTrackCurve)
             {
-                defaultIndex = i;
+                defaultIndex = static_cast<int32_t>(i);
             }
         }
 
         WindowDropdownShowTextCustomWidth(
             { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 0,
-            _numCurrentPossibleRideConfigurations, widget->width());
+            _specialElementDropdownState.Elements.size(), widget->width());
 
-        for (int32_t i = 0; i < 64; i++)
+        for (size_t i = 0; i < _specialElementDropdownState.Elements.size(); i++)
         {
-            if (_currentDisabledSpecialTrackPieces & (1uLL << i))
-            {
-                Dropdown::SetDisabled(i, true);
-            }
+            Dropdown::SetDisabled(static_cast<int32_t>(i), _specialElementDropdownState.Elements[i].Disabled);
         }
         gDropdownDefaultIndex = defaultIndex;
     }
