@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "DrawingEngineFactory.hpp"
+#include "vpx/vpx_encoder.h"
 
 #include <SDL.h>
 #include <algorithm>
@@ -23,6 +24,35 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Ui;
 
+struct VpxRational
+{
+    int numerator;
+    int denominator;
+};
+
+typedef struct
+{
+    uint32_t codec_fourcc;
+    int frame_width;
+    int frame_height;
+    struct VpxRational time_base;
+} VpxVideoInfo;
+
+typedef struct VpxInterface
+{
+    const char* name;
+    uint32_t fourcc;
+    vpx_codec_iface_t* (*codec_interface)(void);
+} VpxInterface;
+
+#define VP9_FOURCC 0x30395056
+
+extern "C" vpx_codec_iface_t* vpx_codec_vp9_cx();
+
+static const VpxInterface vpx_encoders[] = {
+    { "vp9", VP9_FOURCC, &vpx_codec_vp9_cx },
+};
+
 class SoftwareDrawingEngine final : public X8DrawingEngine
 {
 private:
@@ -31,6 +61,9 @@ private:
     SDL_Surface* _surface = nullptr;
     SDL_Surface* _RGBASurface = nullptr;
     SDL_Palette* _palette = nullptr;
+    VpxVideoInfo info{};
+    const VpxInterface* encoder = NULL;
+    vpx_image_t raw{};
 
 public:
     explicit SoftwareDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
@@ -49,10 +82,14 @@ public:
 
     void Initialise() override
     {
+        encoder = &vpx_encoders[0];
     }
 
     void Resize(uint32_t width, uint32_t height) override
     {
+        static int i;
+        printf("resize %d, %ux%u\n\n", i++, width, height);
+        fflush(stdout);
         SDL_FreeSurface(_surface);
         SDL_FreeSurface(_RGBASurface);
         SDL_FreePalette(_palette);
@@ -72,6 +109,21 @@ public:
         {
             LOG_FATAL("SDL_SetSurfacePalette failed %s", SDL_GetError());
             exit(-1);
+        }
+
+        info.codec_fourcc = encoder->fourcc;
+        info.frame_width = width;
+        info.frame_height = height;
+        info.time_base.numerator = 1;
+        info.time_base.denominator = 60;
+        if (info.frame_width <= 0 || info.frame_height <= 0 || (info.frame_width % 2) != 0 || (info.frame_height % 2) != 0)
+        {
+            LOG_FATAL("Invalid frame size: %dx%d", info.frame_width, info.frame_height);
+        }
+
+        if (!vpx_img_alloc(&raw, VPX_IMG_FMT_I420, info.frame_width, info.frame_height, 1))
+        {
+            LOG_FATAL("Failed to allocate image.");
         }
 
         ConfigureBits(width, height, _surface->pitch);

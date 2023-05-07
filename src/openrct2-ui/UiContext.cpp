@@ -760,7 +760,6 @@ private:
 
         // Initialise the surface, palette and draw buffer
         DrawingEngineInit();
-        OnResize(width, height);
 
         UpdateFullscreenResolutions();
 
