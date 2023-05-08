@@ -281,4 +281,4 @@ if(MACOS_BUNDLE)
     )
 endif ()
 
-target_link_libraries(${PROJECT_NAME} vpx)
+target_link_libraries(${PROJECT_NAME} vpx yuv)
