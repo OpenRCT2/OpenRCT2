@@ -28,6 +28,7 @@
 #        include <fontconfig/fontconfig.h>
 #    endif // NO_TTF
 
+#    include "../Date.h"
 #    include "../OpenRCT2.h"
 #    include "../core/Path.hpp"
 #    include "../localisation/Language.h"

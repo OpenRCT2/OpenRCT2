@@ -209,8 +209,8 @@ public:
             {
                 if (dropdownIndex == -1)
                     return;
-                _mainColour = dropdownIndex;
-                auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), dropdownIndex, _textColour, !_isSmall);
+                _mainColour = ColourDropDownIndexToColour(dropdownIndex);
+                auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), _mainColour, _textColour, !_isSmall);
                 GameActions::Execute(&signSetStyleAction);
                 break;
             }
@@ -218,8 +218,8 @@ public:
             {
                 if (dropdownIndex == -1)
                     return;
-                _textColour = dropdownIndex;
-                auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), _mainColour, dropdownIndex, !_isSmall);
+                _textColour = ColourDropDownIndexToColour(dropdownIndex);
+                auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), _mainColour, _textColour, !_isSmall);
                 GameActions::Execute(&signSetStyleAction);
                 break;
             }
@@ -250,7 +250,10 @@ public:
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;
-
+            if (wallEntry == nullptr)
+            {
+                return;
+            }
             if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
             {
                 main_colour_btn->type = WindowWidgetType::ColourBtn;
@@ -266,7 +269,10 @@ public:
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;
-
+            if (sceneryEntry == nullptr)
+            {
+                return;
+            }
             if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
             {
                 main_colour_btn->type = WindowWidgetType::ColourBtn;
@@ -287,7 +293,7 @@ public:
 
         if (viewport != nullptr)
         {
-            WindowDrawViewport(&dpi, *this);
+            WindowDrawViewport(dpi, *this);
         }
     }
 

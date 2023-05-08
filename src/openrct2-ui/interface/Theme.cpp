@@ -148,6 +148,7 @@ static constexpr const WindowThemeDesc WindowThemeDescriptors[] =
     { WindowClass::NewCampaign,                 "WC_NEW_CAMPAIGN",                   STR_THEMES_WINDOW_NEW_CAMPAIGN,                   COLOURS_3(COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW,              COLOUR_DARK_YELLOW                                 ) },
     { WindowClass::KeyboardShortcutList,        "WC_KEYBOARD_SHORTCUT_LIST",         STR_THEMES_WINDOW_KEYBOARD_SHORTCUT_LIST,         COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
     { WindowClass::ChangeKeyboardShortcut,      "WC_CHANGE_KEYBOARD_SHORTCUT",       STR_THEMES_WINDOW_CHANGE_KEYBOARD_SHORTCUT,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
+    { WindowClass::ResetShortcutKeysPrompt,     "WC_RESET_SHORTCUT_KEYS_PROMPT",     STR_SHORTCUT_ACTION_RESET,                        COLOURS_1(TRANSLUCENT(COLOUR_BORDEAUX_RED)                                                                                     ) },
     { WindowClass::Map,                         "WC_MAP",                            STR_THEMES_WINDOW_MAP,                            COLOURS_2(COLOUR_DARK_GREEN,               COLOUR_DARK_BROWN                                                                   ) },
     { WindowClass::Banner,                      "WC_BANNER",                         STR_THEMES_WINDOW_BANNER,                         COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
     { WindowClass::EditorObjectSelection,       "WC_EDITOR_OBJECT_SELECTION",        STR_THEMES_WINDOW_EDITOR_OBJECT_SELECTION,        COLOURS_3(COLOUR_LIGHT_PURPLE,             COLOUR_GREY,                     COLOUR_GREY                                        ) },
@@ -768,6 +769,55 @@ void ThemeSetColour(WindowClass wc, uint8_t index, colour_t colour)
     ThemeManager::CurrentTheme->SetEntry(&entry);
 
     ThemeSave();
+}
+
+// Quick and dirty mapping for new colours to original colours, until flags are extracted from colour upper bits
+colour_t ThemeOverrideExtendedColour(colour_t inputColour)
+{
+    switch (inputColour)
+    {
+        case COLOUR_DARK_OLIVE_DARK:
+        case COLOUR_DARK_OLIVE_LIGHT:
+            return COLOUR_DARK_OLIVE_GREEN;
+        case COLOUR_SATURATED_BROWN_LIGHT:
+            return COLOUR_LIGHT_BROWN;
+        case COLOUR_BORDEAUX_RED_DARK:
+        case COLOUR_BORDEAUX_RED_LIGHT:
+            return COLOUR_BORDEAUX_RED;
+        case COLOUR_GRASS_GREEN_DARK:
+        case COLOUR_GRASS_GREEN_LIGHT:
+            return COLOUR_MOSS_GREEN;
+        case COLOUR_OLIVE_DARK:
+        case COLOUR_OLIVE_LIGHT:
+            return COLOUR_OLIVE_GREEN;
+        case COLOUR_SATURATED_GREEN_LIGHT:
+            return COLOUR_BRIGHT_GREEN;
+        case COLOUR_TAN_DARK:
+        case COLOUR_TAN_LIGHT:
+            return COLOUR_SALMON_PINK;
+        case COLOUR_DULL_PURPLE_LIGHT:
+            return COLOUR_LIGHT_PURPLE;
+        case COLOUR_DULL_GREEN_DARK:
+        case COLOUR_DULL_GREEN_LIGHT:
+            return COLOUR_DARK_GREEN;
+        case COLOUR_SATURATED_PURPLE_DARK:
+        case COLOUR_SATURATED_PURPLE_LIGHT:
+            return COLOUR_BRIGHT_PURPLE;
+        case COLOUR_ORANGE_LIGHT:
+            return COLOUR_LIGHT_ORANGE;
+        case COLOUR_AQUA_DARK:
+            return COLOUR_AQUAMARINE;
+        case COLOUR_MAGENTA_LIGHT:
+            return COLOUR_BRIGHT_PINK;
+        case COLOUR_DULL_BROWN_DARK:
+        case COLOUR_DULL_BROWN_LIGHT:
+            return COLOUR_DARK_BROWN;
+        case COLOUR_INVISIBLE:
+        case COLOUR_VOID:
+            return COLOUR_BLACK;
+        default:
+            return inputColour;
+    }
 }
 
 uint8_t ThemeGetFlags()

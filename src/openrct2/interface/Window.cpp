@@ -84,8 +84,8 @@ namespace WindowCloseFlags
     static constexpr uint32_t CloseSingle = (1 << 1);
 } // namespace WindowCloseFlags
 
-static void WindowDrawCore(DrawPixelInfo* dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
-static void WindowDrawSingle(DrawPixelInfo* dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+static void WindowDrawCore(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
 std::list<std::shared_ptr<WindowBase>>::iterator WindowGetIterator(const WindowBase* w)
 {
@@ -1130,7 +1130,7 @@ void MainWindowZoom(bool zoomIn, bool atCursor)
  * Splits a drawing of a window into regions that can be seen and are not hidden
  * by other opaque overlapping windows.
  */
-void WindowDraw(DrawPixelInfo* dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void WindowDraw(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     if (!WindowIsVisible(w))
         return;
@@ -1185,7 +1185,7 @@ void WindowDraw(DrawPixelInfo* dpi, WindowBase& w, int32_t left, int32_t top, in
 /**
  * Draws the given window and any other overlapping transparent windows.
  */
-static void WindowDrawCore(DrawPixelInfo* dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+static void WindowDrawCore(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // Clamp region
     left = std::max<int32_t>(left, w.windowPos.x);
@@ -1208,51 +1208,50 @@ static void WindowDrawCore(DrawPixelInfo* dpi, WindowBase& w, int32_t left, int3
     }
 }
 
-static void WindowDrawSingle(DrawPixelInfo* dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // Copy dpi so we can crop it
-    DrawPixelInfo copy = *dpi;
-    dpi = &copy;
+    DrawPixelInfo copy = dpi;
 
     // Clamp left to 0
-    int32_t overflow = left - dpi->x;
+    int32_t overflow = left - copy.x;
     if (overflow > 0)
     {
-        dpi->x += overflow;
-        dpi->width -= overflow;
-        if (dpi->width <= 0)
+        copy.x += overflow;
+        copy.width -= overflow;
+        if (copy.width <= 0)
             return;
-        dpi->pitch += overflow;
-        dpi->bits += overflow;
+        copy.pitch += overflow;
+        copy.bits += overflow;
     }
 
     // Clamp width to right
-    overflow = dpi->x + dpi->width - right;
+    overflow = copy.x + copy.width - right;
     if (overflow > 0)
     {
-        dpi->width -= overflow;
-        if (dpi->width <= 0)
+        copy.width -= overflow;
+        if (copy.width <= 0)
             return;
-        dpi->pitch += overflow;
+        copy.pitch += overflow;
     }
 
     // Clamp top to 0
-    overflow = top - dpi->y;
+    overflow = top - copy.y;
     if (overflow > 0)
     {
-        dpi->y += overflow;
-        dpi->height -= overflow;
-        if (dpi->height <= 0)
+        copy.y += overflow;
+        copy.height -= overflow;
+        if (copy.height <= 0)
             return;
-        dpi->bits += (dpi->width + dpi->pitch) * overflow;
+        copy.bits += (copy.width + copy.pitch) * overflow;
     }
 
     // Clamp height to bottom
-    overflow = dpi->y + dpi->height - bottom;
+    overflow = copy.y + copy.height - bottom;
     if (overflow > 0)
     {
-        dpi->height -= overflow;
-        if (dpi->height <= 0)
+        copy.height -= overflow;
+        if (copy.height <= 0)
             return;
     }
 
@@ -1266,7 +1265,7 @@ static void WindowDrawSingle(DrawPixelInfo* dpi, WindowBase& w, int32_t left, in
     gCurrentWindowColours[2] = NOT_TRANSLUCENT(w.colours[2]);
     gCurrentWindowColours[3] = NOT_TRANSLUCENT(w.colours[3]);
 
-    WindowEventPaintCall(&w, dpi);
+    WindowEventPaintCall(&w, copy);
 }
 
 /**
@@ -1276,9 +1275,9 @@ static void WindowDrawSingle(DrawPixelInfo* dpi, WindowBase& w, int32_t left, in
  * @param dpi (edi)
  * @param w (esi)
  */
-void WindowDrawViewport(DrawPixelInfo* dpi, WindowBase& w)
+void WindowDrawViewport(DrawPixelInfo& dpi, WindowBase& w)
 {
-    ViewportRender(dpi, w.viewport, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } });
+    ViewportRender(dpi, w.viewport, { { dpi.x, dpi.y }, { dpi.x + dpi.width, dpi.y + dpi.height } });
 }
 
 void WindowSetPosition(WindowBase& w, const ScreenCoordsXY& screenCoords)
@@ -1647,18 +1646,18 @@ void WindowEventInvalidateCall(WindowBase* w)
         w->event_handlers->invalidate(w);
 }
 
-void WindowEventPaintCall(WindowBase* w, DrawPixelInfo* dpi)
+void WindowEventPaintCall(WindowBase* w, DrawPixelInfo& dpi)
 {
     if (w->event_handlers == nullptr)
-        w->OnDraw(*dpi);
+        w->OnDraw(dpi);
     else if (w->event_handlers->paint != nullptr)
         w->event_handlers->paint(w, dpi);
 }
 
-void WindowEventScrollPaintCall(WindowBase* w, DrawPixelInfo* dpi, int32_t scrollIndex)
+void WindowEventScrollPaintCall(WindowBase* w, DrawPixelInfo& dpi, int32_t scrollIndex)
 {
     if (w->event_handlers == nullptr)
-        w->OnScrollDraw(scrollIndex, *dpi);
+        w->OnScrollDraw(scrollIndex, dpi);
     else if (w->event_handlers->scroll_paint != nullptr)
         w->event_handlers->scroll_paint(w, dpi, scrollIndex);
 }
@@ -1974,7 +1973,7 @@ void TextinputCancel()
 }
 
 void WindowStartTextbox(
-    WindowBase& call_w, WidgetIndex call_widget, StringId existing_text, char* existing_args, int32_t maxLength)
+    WindowBase& call_w, WidgetIndex call_widget, StringId existing_text, const char* existing_args, int32_t maxLength)
 {
     if (gUsingWidgetTextBox)
         WindowCancelTextbox();
@@ -2089,9 +2088,9 @@ bool WindowIsVisible(WindowBase& w)
  * right (dx)
  * bottom (bp)
  */
-void WindowDrawAll(DrawPixelInfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void WindowDrawAll(DrawPixelInfo& dpi, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
-    auto windowDPI = dpi->Crop({ left, top }, { right - left, bottom - top });
+    auto windowDPI = dpi.Crop({ left, top }, { right - left, bottom - top });
     WindowVisitEach([&windowDPI, left, top, right, bottom](WindowBase* w) {
         if (w->flags & WF_TRANSPARENT)
             return;
@@ -2099,7 +2098,7 @@ void WindowDrawAll(DrawPixelInfo* dpi, int32_t left, int32_t top, int32_t right,
             return;
         if (left >= w->windowPos.x + w->width || top >= w->windowPos.y + w->height)
             return;
-        WindowDraw(&windowDPI, *w, left, top, right, bottom);
+        WindowDraw(windowDPI, *w, left, top, right, bottom);
     });
 }
 
@@ -2220,8 +2219,8 @@ void WidgetScrollUpdateThumbs(WindowBase& w, WidgetIndex widget_index)
         {
             double barPosition = (scroll.h_thumb_right * 1.0) / view_size;
 
-            scroll.h_thumb_left = static_cast<uint16_t>(std::lround(scroll.h_thumb_left - (20 * barPosition)));
-            scroll.h_thumb_right = static_cast<uint16_t>(std::lround(scroll.h_thumb_right + (20 * (1 - barPosition))));
+            scroll.h_thumb_left = static_cast<int32_t>(std::lround(scroll.h_thumb_left - (20 * barPosition)));
+            scroll.h_thumb_right = static_cast<int32_t>(std::lround(scroll.h_thumb_right + (20 * (1 - barPosition))));
         }
     }
 
@@ -2249,8 +2248,8 @@ void WidgetScrollUpdateThumbs(WindowBase& w, WidgetIndex widget_index)
         {
             double barPosition = (scroll.v_thumb_bottom * 1.0) / view_size;
 
-            scroll.v_thumb_top = static_cast<uint16_t>(std::lround(scroll.v_thumb_top - (20 * barPosition)));
-            scroll.v_thumb_bottom = static_cast<uint16_t>(std::lround(scroll.v_thumb_bottom + (20 * (1 - barPosition))));
+            scroll.v_thumb_top = static_cast<int32_t>(std::lround(scroll.v_thumb_top - (20 * barPosition)));
+            scroll.v_thumb_bottom = static_cast<int32_t>(std::lround(scroll.v_thumb_bottom + (20 * (1 - barPosition))));
         }
     }
 }

@@ -47,6 +47,7 @@
 #    include "bindings/world/ScMap.hpp"
 #    include "bindings/world/ScPark.hpp"
 #    include "bindings/world/ScParkMessage.hpp"
+#    include "bindings/world/ScResearch.hpp"
 #    include "bindings/world/ScScenario.hpp"
 #    include "bindings/world/ScTile.hpp"
 #    include "bindings/world/ScTileElement.hpp"
@@ -409,6 +410,7 @@ void ScriptEngine::Initialise()
     ScPlayer::Register(ctx);
     ScPlayerGroup::Register(ctx);
     ScProfiler::Register(ctx);
+    ScResearch::Register(ctx);
     ScRide::Register(ctx);
     ScRideStation::Register(ctx);
     ScRideObject::Register(ctx);
@@ -439,7 +441,7 @@ void ScriptEngine::Initialise()
     dukglue_register_global(ctx, std::make_shared<ScDate>(), "date");
     dukglue_register_global(ctx, std::make_shared<ScMap>(ctx), "map");
     dukglue_register_global(ctx, std::make_shared<ScNetwork>(ctx), "network");
-    dukglue_register_global(ctx, std::make_shared<ScPark>(), "park");
+    dukglue_register_global(ctx, std::make_shared<ScPark>(ctx), "park");
     dukglue_register_global(ctx, std::make_shared<ScProfiler>(ctx), "profiler");
     dukglue_register_global(ctx, std::make_shared<ScScenario>(), "scenario");
 
@@ -1347,7 +1349,7 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "ridesetstatus", GameCommand::SetRideStatus },
     { "ridesetvehicle", GameCommand::SetRideVehicles },
     { "scenariosetsetting", GameCommand::EditScenarioOptions },
-    { "setcheat", GameCommand::Cheat },
+    { "cheatset", GameCommand::Cheat },
     { "signsetname", GameCommand::SetSignName },
     { "signsetstyle", GameCommand::SetSignStyle },
     { "smallsceneryplace", GameCommand::PlaceScenery },

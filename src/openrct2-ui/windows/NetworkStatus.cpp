@@ -99,7 +99,7 @@ public:
 
     void OnDraw(DrawPixelInfo& dpi) override
     {
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
         thread_local std::string _buffer;
         _buffer.assign("{BLACK}");
         _buffer += _windowNetworkStatusText;

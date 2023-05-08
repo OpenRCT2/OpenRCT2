@@ -350,7 +350,7 @@ public:
                 Close();
                 break;
             case WIDX_LAST_DEVELOPMENT_BUTTON:
-                News::OpenSubject(News::ItemType::Research, gResearchLastItem->rawValue);
+                WindowResearchDevelopmentMouseUp(widgetIndex, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
                 break;
             case WIDX_RESEARCH_FUNDING_BUTTON:
                 ContextOpenWindowView(WV_FINANCES_RESEARCH);
@@ -397,14 +397,7 @@ public:
 
         if (_currentTab == RESEARCH_TAB)
         {
-            widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::Empty;
-            if (gResearchLastItem.has_value())
-            {
-                auto type = gResearchLastItem->type;
-                widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
-                const auto index = (type == Research::EntryType::Ride) ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
-                widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = ImageId(index);
-            }
+            WindowResearchDevelopmentPrepareDraw(this, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
         }
 
         const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
@@ -427,7 +420,7 @@ public:
         }
         else
         {
-            WindowResearchDevelopmentPagePaint(this, &dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
+            WindowResearchDevelopmentDraw(this, dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
         }
     }
 
@@ -490,7 +483,7 @@ public:
                 buttonFlags |= INSET_RECT_FLAG_BORDER_INSET;
             if (new_ride.HighlightedRide == *listItem || buttonFlags != 0)
                 GfxFillRectInset(
-                    &dpi, { coords, coords + ScreenCoordsXY{ 115, 115 } }, colours[1],
+                    dpi, { coords, coords + ScreenCoordsXY{ 115, 115 } }, colours[1],
                     INSET_RECT_FLAG_FILL_MID_LIGHT | buttonFlags);
 
             // Draw ride image with feathered border
@@ -986,7 +979,7 @@ private:
             spriteIndex += tab == THRILL_TAB ? ThrillRidesTabAnimationSequence[frame] : frame;
 
             GfxDrawSprite(
-                &dpi, ImageId(spriteIndex, colours[1]),
+                dpi, ImageId(spriteIndex, colours[1]),
                 windowPos + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
         }
     }

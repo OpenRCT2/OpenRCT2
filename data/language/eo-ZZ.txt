@@ -1220,8 +1220,8 @@ STR_1838    :Kontento: {COMMA16}%
 STR_1839    :Fidindo: {COMMA16}%
 STR_1840    :Periodo de nefunkciado: {COMMA16}%
 STR_1841    :Profito: po {CURRENCY2DP} por horo
-STR_1842    :Plej ŝatata de: {COMMA16} gasto
-STR_1843    :Plej ŝatata de: {COMMA16} gastoj
+STR_1842    :Plej ŝatata de: {COMMA32} gasto
+STR_1843    :Plej ŝatata de: {COMMA32} gastoj
 STR_1844    :Elekti tipon de informoj por montri en listo de atrakcioj
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} gastoj
@@ -1830,7 +1830,7 @@ STR_2487    :Montri ‘faktajn’ nomojn de gastoj
 STR_2488    :Baskuligi inter montrado de ‘faktaj’ nomoj de gastoj, kaj gastnumeroj
 STR_2489    :Klavarokomandojn…
 STR_2490    :Klavarokomandojn
-STR_2491    :Restartigi klavojn
+STR_2491    :Restarigi klavojn
 STR_2492    :Remeti ĉiujn klavarokomandojn al iliaj defaŭltaj agordoj
 STR_2493    :Fermi plej supran fenestron
 STR_2494    :Fermi ĉiujn glitajn fenestrojn
@@ -2190,8 +2190,8 @@ STR_3118    :{BLACK}{STRINGID} iras al la atrakcio
 STR_3119    :{BLACK}{STRINGID} riparas la atrakcion
 STR_3120    :Trovi plej proksiman disponeblan mekanikiston, aŭ mekanikiston, kiu riparas la atrakcion
 STR_3121    :Ne eblas trovi mekanikiston, aŭ ĉiuj proksimaj mekanikistoj okupiĝas
-STR_3122    :{WINDOW_COLOUR_2}Plej ŝatata atrakcio de: {BLACK}{COMMA16} gasto
-STR_3123    :{WINDOW_COLOUR_2}Plej ŝatata atrakcio de: {BLACK}{COMMA16} gastoj
+STR_3122    :{WINDOW_COLOUR_2}Plej ŝatata atrakcio de: {BLACK}{COMMA32} gasto
+STR_3123    :{WINDOW_COLOUR_2}Plej ŝatata atrakcio de: {BLACK}{COMMA32} gastoj
 STR_3124    :Rompita {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Faktoro de Eksciteco: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Faktoro de Intenseco: {BLACK}+{COMMA16}%
@@ -3649,6 +3649,44 @@ STR_6544    :Prunto ne povas esti negativa!
 STR_6545    :Uzi interezan kalkulon de RCT1
 STR_6546    :Uzi la interezan kalkulan algoritmon de RollerCoaster Tycoon 1, kiu uzis fiksitan procenton de proksimume 1.33%.
 STR_6547    :Ĉiuj Pejzaĝoj
+STR_6548    :Montri balustradojn ĉe kuniĝo
+STR_6549    :Kongruaj objektoj ne povas esti elektitaj!
+STR_6550    :Ĉi tiu elemento estas inkluzivita por retrokongruo kun malnovaj aŭ difektitaj objektoj. Ĝi ne povas esti elektita, nur malelektita.
+STR_6551    :Armea verdo
+STR_6552    :Mielroso-koloro
+STR_6553    :Flavecbruno
+STR_6554    :Grenata koloro
+STR_6555    :Korala rozkoloro
+STR_6556    :Arbara verdo
+STR_6557    :Kartuzio
+STR_6558    :Ĉasista verdo
+STR_6559    :Celadono
+STR_6560    :Limea verdo
+STR_6561    :Sepio
+STR_6562    :Persiko-koloro
+STR_6563    :Vinko
+STR_6564    :Viridiano
+STR_6565    :Marŝaŭma verdo
+STR_6566    :Violo
+STR_6567    :Lavendo
+STR_6568    :Paŝtela oranĝkoloro
+STR_6569    :Profunda akvo
+STR_6570    :Paŝtela rozkoloro
+STR_6571    :Umbro
+STR_6572    :Flavgrizo
+STR_6573    :Nevidebla
+STR_6574    :Vaka
+STR_6575    :Permesi specialajn kolorskemojn
+STR_6576    :Aldonas specialajn kolorojn al koloro-fallisto
+STR_6577    :Rapideco de blokparto-bremso
+STR_6578    :Agordi rapidlimon de blokparto-bremsoj. En blokpartoj-reĝimo, apudaj bremsoj kun pli malrapida rapideco estas ligitaj al la blokparto-bremso.
+STR_6579    :Blokparto-bremsoj estos agorditaj al defaŭlta rapideco, kiam konservite kiel trakdesegnaĵo
+STR_6580    :Restarigi
+STR_6581    :Ĉu vi certas, ke vi volas restarigi ĉiujn klavarokomandojn sur ĉi tiu langeto?
+STR_6582    :Malfermi klavarokomandoj-fenestron
+STR_6583    :{WINDOW_COLOUR_2}Inversaj Trajnoj
+STR_6584    :Elektu por funkciigi trajnojn inverse
+STR_6585    :Ne eblas ŝanĝi tion…
 
 #############
 # Scenarios #

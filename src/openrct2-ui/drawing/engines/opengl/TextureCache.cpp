@@ -201,7 +201,7 @@ void TextureCache::CreateTextures()
 
 void TextureCache::GeneratePaletteTexture()
 {
-    static_assert(PALETTE_TO_G1_OFFSET_COUNT + 5 < 256, "Height of palette too large!");
+    static_assert(PALETTE_TOTAL_OFFSETS + 5 < 256, "Height of palette too large!");
     constexpr int32_t height = 256;
     constexpr int32_t width = height;
     DrawPixelInfo dpi = CreateDPI(width, height);
@@ -212,15 +212,18 @@ void TextureCache::GeneratePaletteTexture()
         dpi.bits[i] = i;
     }
 
-    for (int i = 0; i < PALETTE_TO_G1_OFFSET_COUNT; ++i)
+    for (int i = 0; i < PALETTE_TOTAL_OFFSETS; ++i)
     {
         GLint y = PaletteToY(static_cast<FilterPaletteID>(i));
 
         auto g1Index = GetPaletteG1Index(i);
         if (g1Index.has_value())
         {
-            auto element = GfxGetG1Element(g1Index.value());
-            GfxDrawSpriteSoftware(&dpi, ImageId(g1Index.value()), { -element->x_offset, y - element->y_offset });
+            const auto* element = GfxGetG1Element(g1Index.value());
+            if (element != nullptr)
+            {
+                GfxDrawSpriteSoftware(dpi, ImageId(g1Index.value()), { -element->x_offset, y - element->y_offset });
+            }
         }
     }
 
@@ -354,7 +357,7 @@ DrawPixelInfo TextureCache::GetImageAsDPI(const ImageId imageId)
     int32_t height = g1Element->height;
 
     DrawPixelInfo dpi = CreateDPI(width, height);
-    GfxDrawSpriteSoftware(&dpi, imageId, { -g1Element->x_offset, -g1Element->y_offset });
+    GfxDrawSpriteSoftware(dpi, imageId, { -g1Element->x_offset, -g1Element->y_offset });
     return dpi;
 }
 
@@ -367,7 +370,7 @@ DrawPixelInfo TextureCache::GetGlyphAsDPI(const ImageId imageId, const PaletteMa
     DrawPixelInfo dpi = CreateDPI(width, height);
 
     const auto glyphCoords = ScreenCoordsXY{ -g1Element->x_offset, -g1Element->y_offset };
-    GfxDrawSpritePaletteSetSoftware(&dpi, imageId, glyphCoords, palette);
+    GfxDrawSpritePaletteSetSoftware(dpi, imageId, glyphCoords, palette);
     return dpi;
 }
 

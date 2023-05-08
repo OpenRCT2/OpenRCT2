@@ -327,7 +327,7 @@ static Widget TrackWidgets[] = {
 };
 
 constexpr int32_t NumSceneryProperties = 4; // The checkbox groups both count for 2 rows
-constexpr int32_t NumSceneryDetails = 4;
+constexpr int32_t NumSceneryDetails = 3;
 constexpr int32_t SceneryPropertiesHeight = 16 + NumSceneryProperties * 21;
 constexpr int32_t SceneryDetailsHeight = 20 + NumSceneryDetails * 11;
 static Widget SceneryWidgets[] = {
@@ -1540,7 +1540,7 @@ public:
     {
         const int32_t listWidth = widgets[WIDX_LIST].width();
         GfxFillRect(
-            &dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
+            dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
 
         // Show usage hint when nothing is selected
         if (!_tileSelected)
@@ -1573,12 +1573,12 @@ public:
             // Draw row background colour
             auto fillRectangle = ScreenRect{ { 0, screenCoords.y }, { listWidth, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } };
             if (selectedRow)
-                GfxFillRect(&dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
+                GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1]].mid_dark);
             else if (hoveredRow)
-                GfxFillRect(&dpi, fillRectangle, ColourMapA[colours[1]].mid_dark | 0x1000000);
+                GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1]].mid_dark | 0x1000000);
             // Zebra stripes
             else if (((windowTileInspectorElementCount - i) & 1) == 0)
-                GfxFillRect(&dpi, fillRectangle, ColourMapA[colours[1]].light | 0x1000000);
+                GfxFillRect(dpi, fillRectangle, ColourMapA[colours[1]].light | 0x1000000);
 
             const StringId stringFormat = (selectedRow || hoveredRow) ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
             auto checkboxFormatter = Formatter();
@@ -1586,7 +1586,7 @@ public:
             checkboxFormatter.Add<char*>(CheckBoxMarkString);
 
             // Draw checkbox and check if visible
-            GfxFillRectInset(&dpi, { { 2, screenCoords.y }, { 15, screenCoords.y + 11 } }, colours[1], INSET_RECT_F_E0);
+            GfxFillRectInset(dpi, { { 2, screenCoords.y }, { 15, screenCoords.y + 11 } }, colours[1], INSET_RECT_F_E0);
             if (!tileElement->IsInvisible())
             {
                 auto eyeFormatter = Formatter();

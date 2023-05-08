@@ -64,21 +64,21 @@ set(TITLE_SEQUENCE_VERSION "0.4.0")
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v${TITLE_SEQUENCE_VERSION}/title-sequences.zip")
 set(TITLE_SEQUENCE_SHA1 "4ab0065e5a4d9f9c77d94718bbdfcfcd5a389da0")
 
-set(OBJECTS_VERSION "1.3.8")
+set(OBJECTS_VERSION "1.3.11")
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
-set(OBJECTS_SHA1 "2888092aab93df15bb78c4c910b13c33b1e318ef")
+set(OBJECTS_SHA1 "02ddf6c685a2da8bac98a57b34be95d63192443d")
 
-set(OPENSFX_VERSION "1.0.2")
+set(OPENSFX_VERSION "1.0.3")
 set(OPENSFX_URL  "https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v${OPENSFX_VERSION}/opensound.zip")
-set(OPENSFX_SHA1 "64EF7E0B7785602C91AEC66F005C035B05A2133B")
+set(OPENSFX_SHA1 "ffec5a97bd5035860c4c9a43fe32cf51886478e3")
 
-set(OPENMSX_VERSION "1.1.0")
+set(OPENMSX_VERSION "1.3.0")
 set(OPENMSX_URL  "https://github.com/OpenRCT2/OpenMusic/releases/download/v${OPENMSX_VERSION}/openmusic.zip")
-set(OPENMSX_SHA1 "8f0cf6b2fd4727e91b0d4062e7f199a43d15e777")
+set(OPENMSX_SHA1 "b0cec998a3679f1cde17d91f2508ec4923c1a25c")
 
-set(REPLAYS_VERSION "0.0.77")
+set(REPLAYS_VERSION "0.0.78")
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
-set(REPLAYS_SHA1 "65CA6D830789C074F575F15E3F9E2C28691C24F8")
+set(REPLAYS_SHA1 "31C5D07EED8481D5C6D57F9E4FE9443AAEDE7739")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
@@ -406,7 +406,7 @@ endif ()
 # Include tests
 if (WITH_TESTS)
     enable_testing()
-    include("${ROOT_DIR}/test/tests/CMakeLists.txt" NO_POLICY_SCOPE)
+    add_subdirectory("test/tests")
 endif ()
 
 # macOS bundle "install" is handled in src/openrct2-ui/CMakeLists.txt

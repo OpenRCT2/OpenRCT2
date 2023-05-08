@@ -1,4 +1,4 @@
-# STR_XXXX part is read and XXXX becomes the string id number.
+﻿# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -1220,8 +1220,8 @@ STR_1838    :满意度：{COMMA16}%
 STR_1839    :可靠度：{COMMA16}%
 STR_1840    :故障度：{COMMA16}%
 STR_1841    :利润：每小时{CURRENCY2DP}
-STR_1842    :{COMMA16}游客最喜爱的游乐设施
-STR_1843    :{COMMA16}游客最喜爱的游乐设施
+STR_1842    :{COMMA32}游客最喜爱的游乐设施
+STR_1843    :{COMMA32}游客最喜爱的游乐设施
 STR_1844    :选择要在游乐设施/店面列表中显示的信息类别
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32}游客
@@ -2190,8 +2190,8 @@ STR_3118    :{BLACK}{STRINGID}正在前往到这个游乐设施
 STR_3119    :{BLACK}{STRINGID}正在修复这个游乐设施
 STR_3120    :将最邻近，或在维修此游乐设施的维修人员定位
 STR_3121    :无法定位维修人员，或者附近的维修人员都在工作中
-STR_3122    :{WINDOW_COLOUR_2}游客的最爱：{BLACK}{COMMA16}位游客
-STR_3123    :{WINDOW_COLOUR_2}游客的最爱：{BLACK}{COMMA16}位游客
+STR_3122    :{WINDOW_COLOUR_2}游客的最爱：{BLACK}{COMMA32}位游客
+STR_3123    :{WINDOW_COLOUR_2}游客的最爱：{BLACK}{COMMA32}位游客
 STR_3124    :故障的{STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}兴奋度加成：{BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}刺激度加成：{BLACK}+{COMMA16}%
@@ -3649,6 +3649,44 @@ STR_6544    :贷款不得为负！
 STR_6545    :使用RCT1的贷款汇率
 STR_6546    :使用过山车大亨1的贷款利率算法，此算法使用固定的1.33%作为贷款利率。
 STR_6547    :全部景物
+STR_6548    :在路口显示栏杆
+STR_6549    :兼容性物品无法被选中！
+STR_6550    :包含此条目是为了向后兼容旧的或损坏的对象。它不能被选中，只能被取消选中。
+STR_6551    :军绿色
+STR_6552    :蜜瓜绿
+STR_6553    :浅棕色
+STR_6554    :栗褐色
+STR_6555    :珊瑚粉
+STR_6556    :森林绿
+STR_6557    :黄绿色
+STR_6558    :猎人绿
+STR_6559    :青瓷色
+STR_6560    :青柠绿
+STR_6561    :棕褐色
+STR_6562    :桃色
+STR_6563    :长春花色
+STR_6564    :深绿色
+STR_6565    :海泡石绿
+STR_6566    :紫色
+STR_6567    :薰衣草色
+STR_6568    :淡橙色
+STR_6569    :深水蓝
+STR_6570    :肉粉色
+STR_6571    :琥珀色
+STR_6572    :浅褐色
+STR_6573    :隐形
+STR_6574    :虚空
+STR_6575    :允许特殊配色
+STR_6576    :在调色板中加入特殊颜色
+STR_6577    :分段制动器速度
+STR_6578    :给分段制动器设置速度上限。 在分段模式中, 相邻的速度较慢的制动器与分段制动器相连.
+STR_6579    :保存为轨道设计时，分段制动器速度将设置为默认速度。
+STR_6580    :重置
+STR_6581    :您确定要重置此标签页上的所有快捷键吗？
+STR_6582    :打开快捷键窗口
+STR_6583    :{WINDOW_COLOUR_2}反向列车
+STR_6584    :选择反向运行列车
+STR_6585    :无法做出更改……
 
 #############
 # Scenarios #

@@ -333,7 +333,7 @@ private:
         if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL)
             spriteIndex += (frame_no / 2) % 8;
 
-        GfxDrawSprite(&dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+        GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
         // Tab 2
         widget = &widgets[WIDX_TAB_2];
@@ -341,12 +341,12 @@ private:
         if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS)
             spriteIndex += (frame_no / 4) % 8;
 
-        GfxDrawSprite(&dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+        GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
         // Tab 3
         widget = &widgets[WIDX_TAB_3];
         spriteIndex = SPR_TAB_PARK;
-        GfxDrawSprite(&dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+        GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
     }
 
     void SetPage(int32_t newPage)
@@ -613,7 +613,7 @@ private:
     {
         ScreenCoordsXY screenCoords{};
 
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
         DrawTabImages(dpi);
 
         const auto& initialCashWidget = widgets[WIDX_INITIAL_CASH];
@@ -861,7 +861,7 @@ private:
     {
         ScreenCoordsXY screenCoords{};
 
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
         DrawTabImages(dpi);
 
         const auto& cashPerGuestWidget = widgets[WIDX_CASH_PER_GUEST];
@@ -1180,7 +1180,7 @@ private:
     {
         ScreenCoordsXY screenCoords{};
 
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
         DrawTabImages(dpi);
 
         const auto& landCostWidget = widgets[WIDX_LAND_COST];

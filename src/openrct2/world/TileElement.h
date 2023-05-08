@@ -434,9 +434,10 @@ private:
     ObjectEntryIndex entryIndex; // 5
     uint8_t age;                 // 7
     uint8_t Colour[3];           // 8
+    uint8_t Flags2;              // B
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t Pad0B[5];
+    uint8_t Pad0B[4];
 #pragma clang diagnostic pop
 
 public:
@@ -701,8 +702,6 @@ enum
 #define TILE_ELEMENT_TYPE_MASK 0b00111100
 #define TILE_ELEMENT_DIRECTION_MASK 0b00000011
 #define TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK 0b00001111
-
-#define TILE_ELEMENT_COLOUR_MASK 0b00011111
 
 enum
 {

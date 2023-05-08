@@ -629,7 +629,7 @@ void WindowInitScrollWidgets(WindowBase& w)
  *
  *  rct2: 0x006EB15C
  */
-void WindowDrawWidgets(WindowBase& w, DrawPixelInfo* dpi)
+void WindowDrawWidgets(WindowBase& w, DrawPixelInfo& dpi)
 {
     Widget* widget;
     WidgetIndex widgetIndex;
@@ -646,14 +646,14 @@ void WindowDrawWidgets(WindowBase& w, DrawPixelInfo* dpi)
         if (widget->IsVisible())
         {
             // Check if widget is outside the draw region
-            if (w.windowPos.x + widget->left < dpi->x + dpi->width && w.windowPos.x + widget->right >= dpi->x)
+            if (w.windowPos.x + widget->left < dpi.x + dpi.width && w.windowPos.x + widget->right >= dpi.x)
             {
-                if (w.windowPos.y + widget->top < dpi->y + dpi->height && w.windowPos.y + widget->bottom >= dpi->y)
+                if (w.windowPos.y + widget->top < dpi.y + dpi.height && w.windowPos.y + widget->bottom >= dpi.y)
                 {
                     if (w.IsLegacy())
                         WidgetDraw(dpi, w, widgetIndex);
                     else
-                        w.OnDrawWidget(widgetIndex, *dpi);
+                        w.OnDrawWidget(widgetIndex, dpi);
                 }
             }
         }
@@ -710,12 +710,12 @@ bool Window::IsLegacy()
 
 void Window::OnDraw(DrawPixelInfo& dpi)
 {
-    WindowDrawWidgets(*this, &dpi);
+    WindowDrawWidgets(*this, dpi);
 }
 
 void Window::OnDrawWidget(WidgetIndex widgetIndex, DrawPixelInfo& dpi)
 {
-    WidgetDraw(&dpi, *this, widgetIndex);
+    WidgetDraw(dpi, *this, widgetIndex);
 }
 
 void Window::InitScrollWidgets()
@@ -760,7 +760,7 @@ void Window::SetCheckboxValue(WidgetIndex widgetIndex, bool value)
 
 void Window::DrawWidgets(DrawPixelInfo& dpi)
 {
-    WindowDrawWidgets(*this, &dpi);
+    WindowDrawWidgets(*this, dpi);
 }
 
 void Window::Close()

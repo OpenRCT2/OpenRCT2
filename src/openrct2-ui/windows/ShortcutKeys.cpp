@@ -19,6 +19,8 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
+WindowBase* ResetShortcutKeysPromptOpen();
+
 static constexpr const StringId WINDOW_TITLE = STR_SHORTCUTS_TITLE;
 static constexpr const int32_t WW = 420;
 static constexpr const int32_t WH = 280;
@@ -41,7 +43,7 @@ enum WindowShortcutWidgetIdx
 static Widget window_shortcut_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({0,    43}, {350, 287}, WindowWidgetType::Resize, WindowColour::Secondary),
-    MakeWidget({4,    47}, {412, 245}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
+    MakeWidget({4,    47}, {412, 215}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
     MakeWidget({4, WH-15}, {150,  12}, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP),
     WIDGETS_END,
 };
@@ -193,6 +195,11 @@ public:
         max_height = WH_SC_MAX;
     }
 
+    void OnClose() override
+    {
+        WindowCloseByClass(WindowClass::ResetShortcutKeysPrompt);
+    }
+
     void OnResize() override
     {
         WindowSetResize(*this, min_width, min_height, max_width, max_height);
@@ -219,7 +226,7 @@ public:
                 Close();
                 break;
             case WIDX_RESET:
-                ResetAll();
+                ResetShortcutKeysPromptOpen();
                 break;
             default:
             {
@@ -299,7 +306,7 @@ public:
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
         GfxFillRect(
-            &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
+            dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
 
         // TODO: the line below is a workaround for what is presumably a bug with dpi->width
         //       see https://github.com/OpenRCT2/OpenRCT2/issues/11238 for details
@@ -334,6 +341,21 @@ public:
     void RefreshBindings()
     {
         InitialiseList();
+    }
+
+    void ResetAllOnActiveTab()
+    {
+        auto& shortcutManager = GetShortcutManager();
+        for (const auto& item : _list)
+        {
+            auto shortcut = shortcutManager.GetShortcut(item.ShortcutId);
+            if (shortcut != nullptr)
+            {
+                shortcut->Current = shortcut->Default;
+            }
+        }
+        shortcutManager.SaveUserBindings();
+        RefreshBindings();
     }
 
 private:
@@ -451,21 +473,6 @@ private:
         }
     }
 
-    void ResetAll()
-    {
-        auto& shortcutManager = GetShortcutManager();
-        for (const auto& item : _list)
-        {
-            auto shortcut = shortcutManager.GetShortcut(item.ShortcutId);
-            if (shortcut != nullptr)
-            {
-                shortcut->Current = shortcut->Default;
-            }
-        }
-        shortcutManager.SaveUserBindings();
-        RefreshBindings();
-    }
-
     void DrawTabImages(DrawPixelInfo& dpi) const
     {
         for (size_t i = 0; i < _tabs.size(); i++)
@@ -490,7 +497,7 @@ private:
                 }
 
                 const auto& widget = widgets[widgetIndex];
-                GfxDrawSprite(&dpi, ImageId(imageId), windowPos + ScreenCoordsXY{ widget.left, widget.top });
+                GfxDrawSprite(dpi, ImageId(imageId), windowPos + ScreenCoordsXY{ widget.left, widget.top });
             }
         }
     }
@@ -498,8 +505,8 @@ private:
     void DrawSeparator(DrawPixelInfo& dpi, int32_t y, int32_t scrollWidth)
     {
         const int32_t top = y + (SCROLLABLE_ROW_HEIGHT / 2) - 1;
-        GfxFillRect(&dpi, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[0]].mid_dark);
-        GfxFillRect(&dpi, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[0]].lightest);
+        GfxFillRect(dpi, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[0]].mid_dark);
+        GfxFillRect(dpi, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[0]].lightest);
     }
 
     void DrawItem(DrawPixelInfo& dpi, int32_t y, int32_t scrollWidth, const ShortcutStringPair& shortcut, bool isHighlighted)
@@ -508,7 +515,7 @@ private:
         if (isHighlighted)
         {
             format = STR_WINDOW_COLOUR_2_STRINGID;
-            GfxFilterRect(&dpi, { 0, y - 1, scrollWidth, y + (SCROLLABLE_ROW_HEIGHT - 2) }, FilterPaletteID::PaletteDarken1);
+            GfxFilterRect(dpi, { 0, y - 1, scrollWidth, y + (SCROLLABLE_ROW_HEIGHT - 2) }, FilterPaletteID::PaletteDarken1);
         }
 
         auto bindingOffset = (scrollWidth * 2) / 3;
@@ -553,3 +560,65 @@ WindowBase* WindowShortcutKeysOpen()
     }
     return w;
 }
+
+#pragma region Reset prompt
+static constexpr const int32_t RESET_PROMPT_WW = 200;
+static constexpr const int32_t RESET_PROMPT_WH = 80;
+
+enum
+{
+    WIDX_RESET_PROMPT_BACKGROUND,
+    WIDX_RESET_PROMPT_TITLE,
+    WIDX_RESET_PROMPT_CLOSE,
+    WIDX_RESET_PROMPT_LABEL,
+    WIDX_RESET_PROMPT_RESET,
+    WIDX_RESET_PROMPT_CANCEL
+};
+
+static Widget WindowResetShortcutKeysPromptWidgets[] = {
+    WINDOW_SHIM_WHITE(STR_SHORTCUT_ACTION_RESET, RESET_PROMPT_WW, RESET_PROMPT_WH),
+    MakeWidget(
+        { 2, 30 }, { RESET_PROMPT_WW - 4, 12 }, WindowWidgetType::LabelCentred, WindowColour::Primary,
+        STR_RESET_SHORTCUT_KEYS_PROMPT),
+    MakeWidget({ 8, RESET_PROMPT_WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_RESET),
+    MakeWidget(
+        { RESET_PROMPT_WW - 95, RESET_PROMPT_WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary,
+        STR_SAVE_PROMPT_CANCEL),
+    WIDGETS_END,
+};
+
+class ResetShortcutKeysPrompt final : public Window
+{
+    void OnOpen() override
+    {
+        widgets = WindowResetShortcutKeysPromptWidgets;
+    }
+
+    void OnMouseUp(WidgetIndex widgetIndex) override
+    {
+        switch (widgetIndex)
+        {
+            case WIDX_RESET_PROMPT_RESET:
+            {
+                auto w = WindowFindByClass(WindowClass::KeyboardShortcutList);
+                if (w != nullptr)
+                {
+                    static_cast<ShortcutKeysWindow*>(w)->ResetAllOnActiveTab();
+                }
+                Close();
+                break;
+            }
+            case WIDX_RESET_PROMPT_CANCEL:
+            case WIDX_RESET_PROMPT_CLOSE:
+                Close();
+                break;
+        }
+    }
+};
+
+WindowBase* ResetShortcutKeysPromptOpen()
+{
+    return WindowFocusOrCreate<ResetShortcutKeysPrompt>(
+        WindowClass::ResetShortcutKeysPrompt, RESET_PROMPT_WW, RESET_PROMPT_WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+}
+#pragma endregion

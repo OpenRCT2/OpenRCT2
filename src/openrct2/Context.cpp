@@ -1175,7 +1175,7 @@ namespace OpenRCT2
 
             // TODO: This variable has been never "variable" in time, some code expects
             // this to be 40Hz (25 ms). Refactor this once the UI is decoupled.
-            gCurrentDeltaTime = static_cast<uint32_t>(GAME_UPDATE_TIME_MS * 1000.0f);
+            gCurrentDeltaTime = static_cast<uint16_t>(GAME_UPDATE_TIME_MS * 1000.0f);
 
             if (GameIsNotPaused())
             {

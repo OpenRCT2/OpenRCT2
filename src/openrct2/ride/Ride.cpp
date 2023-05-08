@@ -307,7 +307,7 @@ size_t Ride::GetNumPrices() const
 
 int32_t Ride::GetAge() const
 {
-    return gDateMonthsElapsed - build_date;
+    return GetDate().GetMonthsElapsed() - build_date;
 }
 
 int32_t Ride::GetTotalQueueLength() const
@@ -953,7 +953,7 @@ void ResetAllRideBuildDates()
 {
     for (auto& ride : GetRideManager())
     {
-        ride.build_date -= gDateMonthsElapsed;
+        ride.build_date -= GetDate().GetMonthsElapsed();
     }
 }
 
@@ -3050,18 +3050,76 @@ static void RideOpenBlockBrakes(const CoordsXYE& startElement)
         auto trackType = currentElement.element->AsTrack()->GetTrackType();
         switch (trackType)
         {
+            case TrackElemType::BlockBrakes:
+                BlockBrakeSetLinkedBrakesClosed(
+                    CoordsXYZ(currentElement.x, currentElement.y, currentElement.element->GetBaseZ()),
+                    *currentElement.element->AsTrack(), false);
+                [[fallthrough]];
             case TrackElemType::EndStation:
             case TrackElemType::CableLiftHill:
             case TrackElemType::Up25ToFlat:
             case TrackElemType::Up60ToFlat:
             case TrackElemType::DiagUp25ToFlat:
             case TrackElemType::DiagUp60ToFlat:
-            case TrackElemType::BlockBrakes:
                 currentElement.element->AsTrack()->SetBrakeClosed(false);
                 break;
         }
     } while (TrackBlockGetNext(&currentElement, &currentElement, nullptr, nullptr)
              && currentElement.element != startElement.element);
+}
+
+/**
+ * Set the open status of brakes adjacent to the block brake
+ */
+void BlockBrakeSetLinkedBrakesClosed(const CoordsXYZ& vehicleTrackLocation, TrackElement& trackElement, bool isClosed)
+{
+    uint8_t brakeSpeed = trackElement.GetBrakeBoosterSpeed();
+
+    auto tileElement = reinterpret_cast<TileElement*>(&trackElement);
+    auto location = vehicleTrackLocation;
+    TrackBeginEnd trackBeginEnd, slowTrackBeginEnd;
+    TileElement slowTileElement = *tileElement;
+    bool counter = true;
+    CoordsXY slowLocation = location;
+    do
+    {
+        if (!TrackBlockGetPrevious({ location, tileElement }, &trackBeginEnd))
+        {
+            return;
+        }
+        if (trackBeginEnd.begin_x == vehicleTrackLocation.x && trackBeginEnd.begin_y == vehicleTrackLocation.y
+            && tileElement == trackBeginEnd.begin_element)
+        {
+            return;
+        }
+
+        location.x = trackBeginEnd.end_x;
+        location.y = trackBeginEnd.end_y;
+        location.z = trackBeginEnd.begin_z;
+        tileElement = trackBeginEnd.begin_element;
+
+        if (trackBeginEnd.begin_element->AsTrack()->GetTrackType() == TrackElemType::Brakes)
+        {
+            trackBeginEnd.begin_element->AsTrack()->SetBrakeClosed(
+                (trackBeginEnd.begin_element->AsTrack()->GetBrakeBoosterSpeed() >= brakeSpeed) || isClosed);
+        }
+
+        // prevent infinite loop
+        counter = !counter;
+        if (counter)
+        {
+            TrackBlockGetPrevious({ slowLocation, &slowTileElement }, &slowTrackBeginEnd);
+            slowLocation.x = slowTrackBeginEnd.end_x;
+            slowLocation.y = slowTrackBeginEnd.end_y;
+            slowTileElement = *(slowTrackBeginEnd.begin_element);
+            if (slowLocation == location && slowTileElement.GetBaseZ() == tileElement->GetBaseZ()
+                && slowTileElement.GetType() == tileElement->GetType()
+                && slowTileElement.GetDirection() == tileElement->GetDirection())
+            {
+                return;
+            }
+        }
+    } while (trackBeginEnd.begin_element->AsTrack()->GetTrackType() == TrackElemType::Brakes);
 }
 
 /**
@@ -3156,9 +3214,9 @@ static Vehicle* VehicleCreateCar(
     }
 
     // Loc6DD9A5:
-    vehicle->sprite_width = carEntry.sprite_width;
-    vehicle->sprite_height_negative = carEntry.sprite_height_negative;
-    vehicle->sprite_height_positive = carEntry.sprite_height_positive;
+    vehicle->SpriteData.Width = carEntry.sprite_width;
+    vehicle->SpriteData.HeightMin = carEntry.sprite_height_negative;
+    vehicle->SpriteData.HeightMax = carEntry.sprite_height_positive;
     vehicle->mass = carEntry.car_mass;
     vehicle->num_seats = carEntry.num_seats;
     vehicle->speed = carEntry.powered_max_speed;
@@ -3216,7 +3274,7 @@ static Vehicle* VehicleCreateCar(
             if (numAttempts > 10000)
                 return nullptr;
 
-            vehicle->sprite_direction = ScenarioRand() & 0x1E;
+            vehicle->Orientation = ScenarioRand() & 0x1E;
             chosenLoc.y = dodgemPos.y + (ScenarioRand() & 0xFF);
             chosenLoc.x = dodgemPos.x + (ScenarioRand() & 0xFF);
         } while (vehicle->DodgemsCarWouldCollideAt(chosenLoc).has_value());
@@ -3264,7 +3322,7 @@ static Vehicle* VehicleCreateCar(
         vehicle->TrackLocation = chosenLoc;
 
         int32_t direction = trackElement->GetDirection();
-        vehicle->sprite_direction = direction << 3;
+        vehicle->Orientation = direction << 3;
 
         if (ride.type == RIDE_TYPE_SPACE_RINGS)
         {
@@ -3297,7 +3355,7 @@ static Vehicle* VehicleCreateCar(
 
         vehicle->MoveTo(chosenLoc);
         vehicle->SetTrackType(trackElement->GetTrackType());
-        vehicle->SetTrackDirection(vehicle->sprite_direction >> 3);
+        vehicle->SetTrackDirection(vehicle->Orientation >> 3);
         vehicle->track_progress = 31;
         if (carEntry.flags & CAR_ENTRY_FLAG_MINI_GOLF)
         {
@@ -3312,6 +3370,12 @@ static Vehicle* VehicleCreateCar(
             }
         }
         vehicle->SetState(Vehicle::Status::MovingToEndOfStation);
+
+        if (ride.HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS))
+        {
+            vehicle->SubType = carIndex == (ride.num_cars_per_train - 1) ? Vehicle::Type::Head : Vehicle::Type::Tail;
+            vehicle->SetFlag(VehicleFlags::CarIsReversed);
+        }
     }
 
     // Loc6DDD5E:
@@ -3329,11 +3393,14 @@ static TrainReference VehicleCreateTrain(
     Ride& ride, const CoordsXYZ& trainPos, int32_t vehicleIndex, int32_t* remainingDistance, TrackElement* trackElement)
 {
     TrainReference train = { nullptr, nullptr };
+    bool isReversed = ride.HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS);
 
     for (int32_t carIndex = 0; carIndex < ride.num_cars_per_train; carIndex++)
     {
-        auto vehicle = RideEntryGetVehicleAtPosition(ride.subtype, ride.num_cars_per_train, carIndex);
-        auto car = VehicleCreateCar(ride, vehicle, carIndex, vehicleIndex, trainPos, remainingDistance, trackElement);
+        auto carSpawnIndex = (isReversed) ? (ride.num_cars_per_train - 1) - carIndex : carIndex;
+
+        auto vehicle = RideEntryGetVehicleAtPosition(ride.subtype, ride.num_cars_per_train, carSpawnIndex);
+        auto car = VehicleCreateCar(ride, vehicle, carSpawnIndex, vehicleIndex, trainPos, remainingDistance, trackElement);
         if (car == nullptr)
             break;
 
@@ -3534,7 +3601,8 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
         {
             CoordsXYE firstBlock{};
             RideCreateVehiclesFindFirstBlock(*this, &firstBlock);
-            MoveTrainsToBlockBrakes(firstBlock.element->AsTrack());
+            MoveTrainsToBlockBrakes(
+                { firstBlock.x, firstBlock.y, firstBlock.element->GetBaseZ() }, *firstBlock.element->AsTrack());
         }
         else
         {
@@ -3567,7 +3635,7 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
  * preceding that block.
  *  rct2: 0x006DDF9C
  */
-void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
+void Ride::MoveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackElement& firstBlock)
 {
     for (int32_t i = 0; i < NumTrains; i++)
     {
@@ -3578,7 +3646,8 @@ void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
         // At this point, all vehicles have state of MovingToEndOfStation, which slowly moves forward at a constant speed
         // regardless of incline. The first vehicle stops at the station immediately, while all other vehicles seek forward
         // until they reach a closed block brake. The block brake directly before the station is set to closed every frame
-        // because the trains will open the block brake when the tail leaves the station.
+        // because the trains will open the block brake when the tail leaves the station. Brakes have no effect at this time, so
+        // do not set linked brakes when closing the first block.
         train->UpdateTrackMotion(nullptr);
 
         if (i == 0)
@@ -3597,7 +3666,7 @@ void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
                 break;
             }
 
-            firstBlock->SetBrakeClosed(true);
+            firstBlock.SetBrakeClosed(true);
             for (Vehicle* car = train; car != nullptr; car = GetEntity<Vehicle>(car->next_vehicle_on_train))
             {
                 car->velocity = 0;
@@ -3607,8 +3676,13 @@ void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
             }
         } while (!(train->UpdateTrackMotion(nullptr) & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE));
 
-        // All vehicles are in position, set the block brake directly before the station one last time
-        firstBlock->SetBrakeClosed(true);
+        // All vehicles are in position, set the block brake directly before the station one last time and make sure the brakes
+        // are set appropriately
+        firstBlock.SetBrakeClosed(true);
+        if (firstBlock.GetTrackType() == TrackElemType::BlockBrakes)
+        {
+            BlockBrakeSetLinkedBrakesClosed(firstBlockPosition, firstBlock, true);
+        }
         for (Vehicle* car = train; car != nullptr; car = GetEntity<Vehicle>(car->next_vehicle_on_train))
         {
             car->ClearFlag(VehicleFlags::CollisionDisabled);
@@ -4596,7 +4670,15 @@ void RideUpdateVehicleColours(const Ride& ride)
                     colours = ride.vehicle_colours[i];
                     break;
                 case RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR:
-                    colours = ride.vehicle_colours[std::min(carIndex, OpenRCT2::Limits::MaxCarsPerTrain - 1)];
+                    if (vehicle->HasFlag(VehicleFlags::CarIsReversed))
+                    {
+                        colours = ride.vehicle_colours[std::min(
+                            (ride.num_cars_per_train - 1) - carIndex, OpenRCT2::Limits::MaxCarsPerTrain - 1)];
+                    }
+                    else
+                    {
+                        colours = ride.vehicle_colours[std::min(carIndex, OpenRCT2::Limits::MaxCarsPerTrain - 1)];
+                    }
                     break;
             }
 
@@ -4642,7 +4724,7 @@ struct NecessarySpriteGroup
 OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideObjectEntry& rideEntry)
 {
     // TODO: Use a std::span when C++20 available as 6 is due to jagged array
-    static const std::array<NecessarySpriteGroup, 6> trackPieceRequiredSprites[TRACK_GROUP_COUNT] = {
+    static const std::array<NecessarySpriteGroup, 6> trackPieceRequiredSprites[] = {
         { SpriteGroupType::SlopeFlat, SpritePrecision::None },     // TRACK_FLAT
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 }, // TRACK_STRAIGHT
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 }, // TRACK_STATION_END
@@ -4665,6 +4747,7 @@ OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideO
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 }, // TRACK_CURVE_VERY_SMALL
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 }, // TRACK_CURVE_SMALL
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 }, // TRACK_CURVE
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 }, // TRACK_CURVE_LARGE
         { SpriteGroupType::FlatBanked22, SpritePrecision::Sprites4, SpriteGroupType::FlatBanked45, SpritePrecision::Sprites4,
           SpriteGroupType::FlatBanked67, SpritePrecision::Sprites4, SpriteGroupType::FlatBanked90, SpritePrecision::Sprites4,
           SpriteGroupType::InlineTwists, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
@@ -4675,11 +4758,13 @@ OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideO
         { SpriteGroupType::Corkscrews, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
           SpritePrecision::Sprites4 },                                 // TRACK_CORKSCREW
         { SpriteGroupType::SlopeFlat, SpritePrecision::None },         // TRACK_TOWER_BASE
-        { SpriteGroupType::FlatBanked45, SpritePrecision::Sprites16 }, // TRACK_HELIX_SMALL
-        { SpriteGroupType::FlatBanked45, SpritePrecision::Sprites16 }, // TRACK_HELIX_LARGE
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 },    // TRACK_HELIX_LARGE_UNBANKED
+        { SpriteGroupType::FlatBanked45, SpritePrecision::Sprites16 }, // TRACK_HELIX_UP_BANKED_HALF
+        { SpriteGroupType::FlatBanked45, SpritePrecision::Sprites16 }, // TRACK_HELIX_DOWN_BANKED_HALF
+        { SpriteGroupType::FlatBanked45, SpritePrecision::Sprites16 }, // TRACK_HELIX_UP_BANKED_QUARTER
+        { SpriteGroupType::FlatBanked45, SpritePrecision::Sprites16 }, // TRACK_HELIX_DOWN_BANKED_QUARTER
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 },    // TRACK_HELIX_UP_UNBANKED_QUARTER
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 },    // TRACK_HELIX_DOWN_UNBANKED_QUARTER
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 },     // TRACK_BRAKES
-        {},                                                            // TRACK_25
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 },     // TRACK_ON_RIDE_PHOTO
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4, SpriteGroupType::Slopes12,
           SpritePrecision::Sprites4 }, // TRACK_WATER_SPLASH
@@ -4709,10 +4794,9 @@ OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideO
         { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60,
           SpritePrecision::Sprites4 },                             // TRACK_SLOPE_STEEP_LONG
         { SpriteGroupType::Slopes90, SpritePrecision::Sprites16 }, // TRACK_CURVE_VERTICAL
-        {},                                                        // TRACK_42
         { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60,
-          SpritePrecision::Sprites4 },                                   // TRACK_LIFT_HILL_CABLE
-        { SpriteGroupType::CurvedLiftHill, SpritePrecision::Sprites16 }, // TRACK_LIFT_HILL_CURVED
+          SpritePrecision::Sprites4 },                                     // TRACK_LIFT_HILL_CABLE
+        { SpriteGroupType::CurvedLiftHillUp, SpritePrecision::Sprites16 }, // TRACK_LIFT_HILL_CURVED
         { SpriteGroupType::Slopes90, SpritePrecision::Sprites4, SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4,
           SpriteGroupType::SlopeInverted, SpritePrecision::Sprites4 }, // TRACK_QUARTER_LOOP
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 },     // TRACK_SPINNING_TUNNEL
@@ -4743,6 +4827,7 @@ OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideO
           SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90, SpritePrecision::Sprites4,
           SpriteGroupType::SlopesLoop, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
           SpritePrecision::Sprites4 },                             // TRACK_FLYING_HALF_LOOP_INVERTED_DOWN
+        {},                                                        // TRACK_FLAT_RIDE_BASE
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 }, // TRACK_WATERFALL
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 }, // TRACK_WHIRLPOOL
         { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60,
@@ -4780,7 +4865,10 @@ OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideO
         { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
           SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90,
           SpritePrecision::Sprites4 }, // TRACK_FLYING_HALF_LOOP_UNINVERTED_DOWN
+        {},                            // TRACK_SLOPE_CURVE_LARGE
+        {},                            // TRACK_SLOPE_CURVE_LARGE_BANKED
     };
+    static_assert(std::size(trackPieceRequiredSprites) == TRACK_GROUP_COUNT);
 
     // Only check default vehicle; it's assumed the others will have correct sprites if this one does (I've yet to find an
     // exception, at least)
@@ -5078,6 +5166,12 @@ void Ride::SetNumCarsPerVehicle(int32_t numCarsPerVehicle)
     GameActions::Execute(&rideSetVehicleAction);
 }
 
+void Ride::SetReversedTrains(bool reverseTrains)
+{
+    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::TrainsReversed, reverseTrains);
+    GameActions::Execute(&rideSetVehicleAction);
+}
+
 void Ride::SetToDefaultInspectionInterval()
 {
     uint8_t defaultInspectionInterval = gConfigGeneral.DefaultInspectionInterval;
@@ -5162,7 +5256,7 @@ void Ride::Delete()
 void Ride::Renew()
 {
     // Set build date to current date (so the ride is brand new)
-    build_date = gDateMonthsElapsed;
+    build_date = GetDate().GetMonthsElapsed();
     reliability = RIDE_INITIAL_RELIABILITY;
 }
 
@@ -5333,17 +5427,17 @@ void FixInvalidVehicleSpriteSizes()
                     break;
                 }
 
-                if (vehicle->sprite_width == 0)
+                if (vehicle->SpriteData.Width == 0)
                 {
-                    vehicle->sprite_width = carEntry->sprite_width;
+                    vehicle->SpriteData.Width = carEntry->sprite_width;
                 }
-                if (vehicle->sprite_height_negative == 0)
+                if (vehicle->SpriteData.HeightMin == 0)
                 {
-                    vehicle->sprite_height_negative = carEntry->sprite_height_negative;
+                    vehicle->SpriteData.HeightMin = carEntry->sprite_height_negative;
                 }
-                if (vehicle->sprite_height_positive == 0)
+                if (vehicle->SpriteData.HeightMax == 0)
                 {
-                    vehicle->sprite_height_positive = carEntry->sprite_height_positive;
+                    vehicle->SpriteData.HeightMax = carEntry->sprite_height_positive;
                 }
             }
         }

@@ -190,80 +190,89 @@ enum class FilterPaletteID : int32_t
 {
     PaletteNull = 0,
 
-    PaletteWater = 32,
+    PaletteWater = COLOUR_COUNT,
 
-    Palette34 = 34,
+    PaletteLandMarker0, // North (corner/edge)
+    PaletteLandMarker1, // East (corner/edge)
+    PaletteLandMarker2, // South (corner/edge)
+    PaletteLandMarker3, // West (corner/edge)
+    PaletteSceneryGroundMarker,
+    PaletteWaterMarker,
+    PaletteQuarterMarker0, // North (not sure why it couldn't just use PaletteLandMarker0)
+    PaletteQuarterMarker1, // East
+    PaletteQuarterMarker2, // South
+    PaletteQuarterMarker3, // West
+    PaletteRideGroundMarker,
+    PaletteGhost, // Construction marker
+    Palette45,    // Decolourise + lighten
+    Palette46,
 
-    Palette44 = 44, // Construction marker
-    Palette45 = 45, // Decolourise + lighten
-    Palette46 = 46,
+    PaletteDarken3,
 
-    PaletteDarken3 = 47,
-
-    PaletteDarken1 = 49,
-    PaletteDarken2 = 50,
-    Palette51 = 51, // Decolourise + darken
-    PaletteTranslucentGrey = 52,
-    PaletteTranslucentGreyHighlight = 53,
-    PaletteTranslucentGreyShadow = 54,
-    PaletteTranslucentLightBlue = 55,
-    PaletteTranslucentLightBlueHighlight = 56,
-    PaletteTranslucentLightBlueShadow = 57,
-    PaletteTranslucentBordeauxRed = 58,
-    PaletteTranslucentBordeauxRedHighlight = 59,
-    PaletteTranslucentBordeauxRedShadow = 60,
-    PaletteTranslucentDarkGreen = 61,
-    PaletteTranslucentDarkGreenHighlight = 62,
-    PaletteTranslucentDarkGreenShadow = 63,
-    PaletteTranslucentLightPurple = 64,
-    PaletteTranslucentLightPurpleHighlight = 65,
-    PaletteTranslucentLightPurpleShadow = 66,
-    PaletteTranslucentDarkOliveGreen = 67,
-    PaletteTranslucentDarkOliveGreenHighlight = 68,
-    PaletteTranslucentDarkOliveGreenShadow = 69,
-    PaletteTranslucentLightBrown = 70,
-    PaletteTranslucentLightBrownHighlight = 71,
-    PaletteTranslucentLightBrownShadow = 72,
-    PaletteTranslucentYellow = 73,
-    PaletteTranslucentYellowHighlight = 74,
-    PaletteTranslucentYellowShadow = 75,
-    PaletteTranslucentMossGreen = 76,
-    PaletteTranslucentMossGreenHighlight = 77,
-    PaletteTranslucentMossGreenShadow = 78,
-    PaletteTranslucentOliveGreen = 79,
-    PaletteTranslucentOliveGreenHighlight = 80,
-    PaletteTranslucentOliveGreenShadow = 81,
-    PaletteTranslucentBrightGreen = 82,
-    PaletteTranslucentBrightGreenHighlight = 83,
-    PaletteTranslucentBrightGreenShadow = 84,
-    PaletteTranslucentSalmonPink = 85,
-    PaletteTranslucentSalmonPinkHighlight = 86,
-    PaletteTranslucentSalmonPinkShadow = 87,
-    PaletteTranslucentBrightPurple = 88,
-    PaletteTranslucentBrightPurpleHighlight = 89,
-    PaletteTranslucentBrightPurpleShadow = 90,
-    PaletteTranslucentBrightRed = 91,
-    PaletteTranslucentBrightRedHighlight = 92,
-    PaletteTranslucentBrightRedShadow = 93,
-    PaletteTranslucentLightOrange = 94,
-    PaletteTranslucentLightOrangeHighlight = 95,
-    PaletteTranslucentLightOrangeShadow = 96,
-    PaletteTranslucentTeal = 97,
-    PaletteTranslucentTealHighlight = 98,
-    PaletteTranslucentTealShadow = 99,
-    PaletteTranslucentBrightPink = 100,
-    PaletteTranslucentBrightPinkHighlight = 101,
-    PaletteTranslucentBrightPinkShadow = 102,
-    PaletteTranslucentDarkBrown = 103,
-    PaletteTranslucentDarkBrownHighlight = 104,
-    PaletteTranslucentDarkBrownShadow = 105,
-    PaletteTranslucentLightPink = 106,
-    PaletteTranslucentLightPinkHighlight = 107,
-    PaletteTranslucentLightPinkShadow = 108,
-    PaletteTranslucentWhite = 109,
-    PaletteTranslucentWhiteHighlight = 110,
-    PaletteTranslucentWhiteShadow = 111,
-    PaletteGlass = 112,
+    PaletteDarken1 = PaletteDarken3 + 2,
+    PaletteDarken2,
+    Palette51, // Decolourise + darken
+    PaletteTranslucentGrey,
+    PaletteTranslucentGreyHighlight,
+    PaletteTranslucentGreyShadow,
+    PaletteTranslucentLightBlue,
+    PaletteTranslucentLightBlueHighlight,
+    PaletteTranslucentLightBlueShadow,
+    PaletteTranslucentBordeauxRed,
+    PaletteTranslucentBordeauxRedHighlight,
+    PaletteTranslucentBordeauxRedShadow,
+    PaletteTranslucentDarkGreen,
+    PaletteTranslucentDarkGreenHighlight,
+    PaletteTranslucentDarkGreenShadow,
+    PaletteTranslucentLightPurple,
+    PaletteTranslucentLightPurpleHighlight,
+    PaletteTranslucentLightPurpleShadow,
+    PaletteTranslucentDarkOliveGreen,
+    PaletteTranslucentDarkOliveGreenHighlight,
+    PaletteTranslucentDarkOliveGreenShadow,
+    PaletteTranslucentLightBrown,
+    PaletteTranslucentLightBrownHighlight,
+    PaletteTranslucentLightBrownShadow,
+    PaletteTranslucentYellow,
+    PaletteTranslucentYellowHighlight,
+    PaletteTranslucentYellowShadow,
+    PaletteTranslucentMossGreen,
+    PaletteTranslucentMossGreenHighlight,
+    PaletteTranslucentMossGreenShadow,
+    PaletteTranslucentOliveGreen,
+    PaletteTranslucentOliveGreenHighlight,
+    PaletteTranslucentOliveGreenShadow,
+    PaletteTranslucentBrightGreen,
+    PaletteTranslucentBrightGreenHighlight,
+    PaletteTranslucentBrightGreenShadow,
+    PaletteTranslucentSalmonPink,
+    PaletteTranslucentSalmonPinkHighlight,
+    PaletteTranslucentSalmonPinkShadow,
+    PaletteTranslucentBrightPurple,
+    PaletteTranslucentBrightPurpleHighlight,
+    PaletteTranslucentBrightPurpleShadow,
+    PaletteTranslucentBrightRed,
+    PaletteTranslucentBrightRedHighlight,
+    PaletteTranslucentBrightRedShadow,
+    PaletteTranslucentLightOrange,
+    PaletteTranslucentLightOrangeHighlight,
+    PaletteTranslucentLightOrangeShadow,
+    PaletteTranslucentTeal,
+    PaletteTranslucentTealHighlight,
+    PaletteTranslucentTealShadow,
+    PaletteTranslucentBrightPink,
+    PaletteTranslucentBrightPinkHighlight,
+    PaletteTranslucentBrightPinkShadow,
+    PaletteTranslucentDarkBrown,
+    PaletteTranslucentDarkBrownHighlight,
+    PaletteTranslucentDarkBrownShadow,
+    PaletteTranslucentLightPink,
+    PaletteTranslucentLightPinkHighlight,
+    PaletteTranslucentLightPinkShadow,
+    PaletteTranslucentWhite,
+    PaletteTranslucentWhiteHighlight,
+    PaletteTranslucentWhiteShadow,
+    PaletteGlass,
     PaletteGlassBlack = PaletteGlass + COLOUR_BLACK,
     PaletteGlassGrey = PaletteGlass + COLOUR_GREY,
     PaletteGlassWhite = PaletteGlass + COLOUR_WHITE,
@@ -296,6 +305,30 @@ enum class FilterPaletteID : int32_t
     PaletteGlassDarkPink = PaletteGlass + COLOUR_DARK_PINK,
     PaletteGlassBrightPink = PaletteGlass + COLOUR_BRIGHT_PINK,
     PaletteGlassLightPink = PaletteGlass + COLOUR_LIGHT_PINK,
+    PaletteGlassDarkOliveDark = PaletteGlass + COLOUR_DARK_OLIVE_DARK,
+    PaletteGlassDarkOliveLight = PaletteGlass + COLOUR_DARK_OLIVE_LIGHT,
+    PaletteGlassSaturatedBrownLight = PaletteGlass + COLOUR_SATURATED_BROWN_LIGHT,
+    PaletteGlassBordeauxRedDark = PaletteGlass + COLOUR_BORDEAUX_RED_DARK,
+    PaletteGlassBordeauxRedLight = PaletteGlass + COLOUR_BORDEAUX_RED_LIGHT,
+    PaletteGlassGrassGreenDark = PaletteGlass + COLOUR_GRASS_GREEN_DARK,
+    PaletteGlassGrassGreenLight = PaletteGlass + COLOUR_GRASS_GREEN_LIGHT,
+    PaletteGlassOliveDark = PaletteGlass + COLOUR_OLIVE_DARK,
+    PaletteGlassOliveLight = PaletteGlass + COLOUR_OLIVE_LIGHT,
+    PaletteGlassSaturatedGreenLight = PaletteGlass + COLOUR_SATURATED_GREEN_LIGHT,
+    PaletteGlassTanDark = PaletteGlass + COLOUR_TAN_DARK,
+    PaletteGlassTanLight = PaletteGlass + COLOUR_TAN_LIGHT,
+    PaletteGlassDullPurpleLight = PaletteGlass + COLOUR_DULL_PURPLE_LIGHT,
+    PaletteGlassDullGreenDark = PaletteGlass + COLOUR_DULL_GREEN_DARK,
+    PaletteGlassDullGreenLight = PaletteGlass + COLOUR_DULL_GREEN_LIGHT,
+    PaletteGlassSaturatedPurpleDark = PaletteGlass + COLOUR_SATURATED_PURPLE_DARK,
+    PaletteGlassSaturatedPurpleLight = PaletteGlass + COLOUR_SATURATED_PURPLE_LIGHT,
+    PaletteGlassOrangeLight = PaletteGlass + COLOUR_ORANGE_LIGHT,
+    PaletteGlassAquaDark = PaletteGlass + COLOUR_AQUA_DARK,
+    PaletteGlassMagentaLight = PaletteGlass + COLOUR_MAGENTA_LIGHT,
+    PaletteGlassDullBrownDark = PaletteGlass + COLOUR_DULL_BROWN_DARK,
+    PaletteGlassDullBrownLight = PaletteGlass + COLOUR_DULL_BROWN_LIGHT,
+    PaletteGlassInvisible = PaletteGlass + COLOUR_INVISIBLE,
+    PaletteGlassVoid = PaletteGlass + COLOUR_VOID,
 };
 
 struct TranslucentWindowPalette
@@ -446,6 +479,7 @@ void FASTCALL BlitPixels(const uint8_t* src, uint8_t* dst, const PaletteMap& pal
 }
 
 #define PALETTE_TO_G1_OFFSET_COUNT 144
+constexpr uint8_t PALETTE_TOTAL_OFFSETS = 192;
 
 #define INSET_RECT_F_30 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE)
 #define INSET_RECT_F_60 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN)
@@ -468,7 +502,7 @@ extern int32_t gPickupPeepY;
 
 extern bool gTinyFontAntiAliased;
 
-bool ClipDrawPixelInfo(DrawPixelInfo* dst, DrawPixelInfo* src, const ScreenCoordsXY& coords, int32_t width, int32_t height);
+bool ClipDrawPixelInfo(DrawPixelInfo& dst, DrawPixelInfo& src, const ScreenCoordsXY& coords, int32_t width, int32_t height);
 void GfxSetDirtyBlocks(const ScreenRect& rect);
 void GfxInvalidateScreen();
 
@@ -478,20 +512,20 @@ void LoadPalette();
 
 // other
 void GfxClear(DrawPixelInfo* dpi, uint8_t paletteIndex);
-void GfxFilterPixel(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette);
+void GfxFilterPixel(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, FilterPaletteID palette);
 void GfxInvalidatePickedUpPeep();
-void GfxDrawPickedUpPeep(DrawPixelInfo* dpi);
+void GfxDrawPickedUpPeep(DrawPixelInfo& dpi);
 
 // line
-void GfxDrawLine(DrawPixelInfo* dpi, const ScreenLine& line, int32_t colour);
-void GfxDrawLineSoftware(DrawPixelInfo* dpi, const ScreenLine& line, int32_t colour);
+void GfxDrawLine(DrawPixelInfo& dpi, const ScreenLine& line, int32_t colour);
+void GfxDrawLineSoftware(DrawPixelInfo& dpi, const ScreenLine& line, int32_t colour);
 void GfxDrawDashedLine(
-    DrawPixelInfo* dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color);
+    DrawPixelInfo& dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color);
 
 // rect
-void GfxFillRect(DrawPixelInfo* dpi, const ScreenRect& rect, int32_t colour);
-void GfxFillRectInset(DrawPixelInfo* dpi, const ScreenRect& rect, int32_t colour, uint8_t flags);
-void GfxFilterRect(DrawPixelInfo* dpi, const ScreenRect& rect, FilterPaletteID palette);
+void GfxFillRect(DrawPixelInfo& dpi, const ScreenRect& rect, int32_t colour);
+void GfxFillRectInset(DrawPixelInfo& dpi, const ScreenRect& rect, int32_t colour, uint8_t flags);
+void GfxFilterRect(DrawPixelInfo& dpi, const ScreenRect& rect, FilterPaletteID palette);
 
 // sprite
 bool GfxLoadG1(const OpenRCT2::IPlatformEnvironment& env);
@@ -508,16 +542,16 @@ bool IsCsgLoaded();
 void FASTCALL GfxSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& args);
 void FASTCALL GfxBmpSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& args);
 void FASTCALL GfxRleSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& args);
-void FASTCALL GfxDrawSprite(DrawPixelInfo* dpi, const ImageId image_id, const ScreenCoordsXY& coords);
+void FASTCALL GfxDrawSprite(DrawPixelInfo& dpi, const ImageId image_id, const ScreenCoordsXY& coords);
 void FASTCALL GfxDrawGlyph(DrawPixelInfo* dpi, const ImageId image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
 void FASTCALL GfxDrawSpriteSolid(DrawPixelInfo* dpi, const ImageId image, const ScreenCoordsXY& coords, uint8_t colour);
 void FASTCALL GfxDrawSpriteRawMasked(
     DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const ImageId maskImage, const ImageId colourImage);
-void FASTCALL GfxDrawSpriteSoftware(DrawPixelInfo* dpi, const ImageId imageId, const ScreenCoordsXY& spriteCoords);
+void FASTCALL GfxDrawSpriteSoftware(DrawPixelInfo& dpi, const ImageId imageId, const ScreenCoordsXY& spriteCoords);
 void FASTCALL GfxDrawSpritePaletteSetSoftware(
-    DrawPixelInfo* dpi, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
+    DrawPixelInfo& dpi, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
 void FASTCALL GfxDrawSpriteRawMaskedSoftware(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage);
+    DrawPixelInfo& dpi, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage);
 
 // string
 void GfxDrawString(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint = {});

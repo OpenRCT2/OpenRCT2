@@ -183,7 +183,8 @@ GameActions::Result CheatSetAction::Execute() const
             RenewRides();
             break;
         case CheatType::MakeDestructible:
-            MakeDestructible();
+            gCheatsMakeAllDestructible = _param1 != 0;
+            WindowInvalidateByClass(WindowClass::Ride);
             break;
         case CheatType::FixRides:
             FixBrokenRides();
@@ -243,6 +244,9 @@ GameActions::Result CheatSetAction::Execute() const
             break;
         case CheatType::AllowRegularPathAsQueue:
             gCheatsAllowRegularPathAsQueue = _param1 != 0;
+            break;
+        case CheatType::AllowSpecialColourSchemes:
+            gCheatsAllowSpecialColourSchemes = static_cast<bool>(_param1);
             break;
         default:
         {
@@ -367,7 +371,7 @@ void CheatSetAction::SetGrassLength(int32_t length) const
     {
         for (int32_t x = 0; x < gMapSize.x; x++)
         {
-            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement == nullptr)
                 continue;
 
@@ -468,16 +472,6 @@ void CheatSetAction::RenewRides() const
     for (auto& ride : GetRideManager())
     {
         ride.Renew();
-    }
-    WindowInvalidateByClass(WindowClass::Ride);
-}
-
-void CheatSetAction::MakeDestructible() const
-{
-    for (auto& ride : GetRideManager())
-    {
-        ride.lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE;
-        ride.lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
     }
     WindowInvalidateByClass(WindowClass::Ride);
 }
@@ -617,12 +611,12 @@ void CheatSetAction::GiveObjectToGuests(int32_t object) const
                 break;
             case OBJECT_BALLOON:
                 peep->GiveItem(ShopItem::Balloon);
-                peep->BalloonColour = ScenarioRandMax(COLOUR_COUNT - 1);
+                peep->BalloonColour = ScenarioRandMax(COLOUR_NUM_NORMAL);
                 peep->UpdateSpriteType();
                 break;
             case OBJECT_UMBRELLA:
                 peep->GiveItem(ShopItem::Umbrella);
-                peep->UmbrellaColour = ScenarioRandMax(COLOUR_COUNT - 1);
+                peep->UmbrellaColour = ScenarioRandMax(COLOUR_NUM_NORMAL);
                 peep->UpdateSpriteType();
                 break;
         }

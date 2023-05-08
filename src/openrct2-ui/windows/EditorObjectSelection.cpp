@@ -195,7 +195,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
     MakeWidget({470, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_OBJECT_SELECTION_ADVANCED, STR_OBJECT_SELECTION_ADVANCED_TIP),
-    MakeWidget({  4, 60}, {288, 327}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
+    MakeWidget({  4, 60}, {288, 277}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
     MakeWidget({391, 45}, {114, 114}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                                  ),
     MakeWidget({470, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
     MakeWidget({350, 22}, {114,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_OBJECT_FILTER,             STR_OBJECT_FILTER_TIP            ),
@@ -707,7 +707,7 @@ public:
             {
                 // Draw checkbox
                 if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem.flags & 0x20))
-                    GfxFillRectInset(&dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
+                    GfxFillRectInset(dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
 
                 // Highlight background
                 auto highlighted = i == static_cast<size_t>(selected_list_item)
@@ -715,7 +715,7 @@ public:
                 if (highlighted)
                 {
                     auto bottom = screenCoords.y + (SCROLLABLE_ROW_HEIGHT - 1);
-                    GfxFilterRect(&dpi, { 0, screenCoords.y, width, bottom }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(dpi, { 0, screenCoords.y, width, bottom }, FilterPaletteID::PaletteDarken1);
                 }
 
                 // Draw checkmark
@@ -968,7 +968,7 @@ public:
             {
                 auto image = ImageId(ObjectSelectionPages[i].Image);
                 auto screenPos = windowPos + ScreenCoordsXY{ widget.left, widget.top };
-                GfxDrawSprite(&dpi, image, screenPos);
+                GfxDrawSprite(dpi, image, screenPos);
             }
         }
 
@@ -998,14 +998,14 @@ public:
                 spriteIndex += (i == 4 ? ThrillRidesTabAnimationSequence[frame] : frame);
 
                 auto screenPos = windowPos + ScreenCoordsXY{ widget.left, widget.top };
-                GfxDrawSprite(&dpi, ImageId(spriteIndex, colours[1]), screenPos);
+                GfxDrawSprite(dpi, ImageId(spriteIndex, colours[1]), screenPos);
             }
         }
 
         // Preview background
         const auto& previewWidget = widgets[WIDX_PREVIEW];
         GfxFillRect(
-            &dpi,
+            dpi,
             { windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 },
               windowPos + ScreenCoordsXY{ previewWidget.right - 1, previewWidget.bottom - 1 } },
             ColourMapA[colours[1]].darkest);
@@ -1057,7 +1057,7 @@ public:
             auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
             _width = previewWidget.width() - 1;
             int32_t _height = previewWidget.height() - 1;
-            if (ClipDrawPixelInfo(&clipDPI, &dpi, screenPos, _width, _height))
+            if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, _width, _height))
             {
                 _loadedObject->DrawPreview(clipDPI, _width, _height);
             }
@@ -1073,8 +1073,8 @@ public:
             DrawTextEllipsised(dpi, screenPos, _width, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
         }
 
-        DrawDescriptions(&dpi);
-        DrawDebugData(&dpi);
+        DrawDescriptions(dpi);
+        DrawDebugData(dpi);
     }
 
 private:
@@ -1132,7 +1132,8 @@ private:
             uint8_t selectionFlags = _objectSelectionFlags[i];
             const ObjectRepositoryItem* item = &items[i];
             if (item->Type == GetSelectedObjectType() && !(selectionFlags & ObjectSelectionFlags::Flag6) && FilterSource(item)
-                && FilterString(*item) && FilterChunks(item) && FilterSelected(selectionFlags))
+                && FilterString(*item) && FilterChunks(item) && FilterSelected(selectionFlags)
+                && FilterCompatibilityObject(*item, selectionFlags))
             {
                 auto filter = std::make_unique<RideFilters>();
                 filter->category[0] = 0;
@@ -1184,11 +1185,19 @@ private:
         _listItems.shrink_to_fit();
     }
 
-    void DrawDescriptions(DrawPixelInfo* dpi)
+    void DrawDescriptions(DrawPixelInfo& dpi)
     {
         const auto& widget = widgets[WIDX_PREVIEW];
         auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_LIST].right + 4, widget.bottom + 23 };
         auto _width2 = windowPos.x + this->width - screenPos.x - 4;
+
+        if (_loadedObject->IsCompatibilityObject())
+        {
+            screenPos.y += DrawTextWrapped(
+                               dpi, screenPos, _width2, STR_OBJECT_SELECTION_COMPAT_OBJECT_DESCRIPTION, {},
+                               { COLOUR_BRIGHT_RED })
+                + LIST_ROW_HEIGHT;
+        }
 
         auto description = ObjectGetDescription(_loadedObject.get());
         if (!description.empty())
@@ -1197,7 +1206,7 @@ private:
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(description.c_str());
 
-            screenPos.y += DrawTextWrapped(*dpi, screenPos, _width2, STR_WINDOW_COLOUR_2_STRINGID, ft) + LIST_ROW_HEIGHT;
+            screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_WINDOW_COLOUR_2_STRINGID, ft) + LIST_ROW_HEIGHT;
         }
         if (GetSelectedObjectType() == ObjectType::Ride)
         {
@@ -1218,7 +1227,7 @@ private:
                 }
                 auto ft = Formatter();
                 ft.Add<const char*>(sells.c_str());
-                screenPos.y += DrawTextWrapped(*dpi, screenPos, _width2, STR_RIDE_OBJECT_SHOP_SELLS, ft) + 2;
+                screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_RIDE_OBJECT_SHOP_SELLS, ft) + 2;
             }
         }
         else if (GetSelectedObjectType() == ObjectType::SceneryGroup)
@@ -1226,11 +1235,11 @@ private:
             const auto* sceneryGroupObject = reinterpret_cast<SceneryGroupObject*>(_loadedObject.get());
             auto ft = Formatter();
             ft.Add<uint16_t>(sceneryGroupObject->GetNumIncludedObjects());
-            screenPos.y += DrawTextWrapped(*dpi, screenPos, _width2, STR_INCLUDES_X_OBJECTS, ft) + 2;
+            screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_INCLUDES_X_OBJECTS, ft) + 2;
         }
         else if (GetSelectedObjectType() == ObjectType::Music)
         {
-            screenPos.y += DrawTextWrapped(*dpi, screenPos, _width2, STR_MUSIC_OBJECT_TRACK_HEADER) + 2;
+            screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_MUSIC_OBJECT_TRACK_HEADER) + 2;
             const auto* musicObject = reinterpret_cast<MusicObject*>(_loadedObject.get());
             for (size_t i = 0; i < musicObject->GetTrackCount(); i++)
             {
@@ -1243,12 +1252,12 @@ private:
                 auto ft = Formatter();
                 ft.Add<const char*>(track->Name.c_str());
                 ft.Add<const char*>(track->Composer.c_str());
-                screenPos.y += DrawTextWrapped(*dpi, screenPos + ScreenCoordsXY{ 10, 0 }, _width2, stringId, ft);
+                screenPos.y += DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 10, 0 }, _width2, stringId, ft);
             }
         }
     }
 
-    void DrawDebugData(DrawPixelInfo* dpi)
+    void DrawDebugData(DrawPixelInfo& dpi)
     {
         ObjectListItem* listItem = &_listItems[selected_list_item];
         auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height - (LIST_ROW_HEIGHT * 6) };
@@ -1256,7 +1265,7 @@ private:
         // Draw fallback image warning
         if (_loadedObject && _loadedObject->UsesFallbackImages())
         {
-            DrawTextBasic(*dpi, screenPos, STR_OBJECT_USES_FALLBACK_IMAGES, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+            DrawTextBasic(dpi, screenPos, STR_OBJECT_USES_FALLBACK_IMAGES, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
         }
         screenPos.y += LIST_ROW_HEIGHT;
 
@@ -1264,14 +1273,14 @@ private:
         if (GetSelectedObjectType() == ObjectType::Ride)
         {
             auto stringId = GetRideTypeStringId(listItem->repositoryItem);
-            DrawTextBasic(*dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+            DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
         }
 
         screenPos.y += LIST_ROW_HEIGHT;
 
         // Draw object source
         auto stringId = ObjectManagerGetSourceGameString(listItem->repositoryItem->GetFirstSourceGame());
-        DrawTextBasic(*dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+        DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
         screenPos.y += LIST_ROW_HEIGHT;
 
         // Draw object filename
@@ -1281,7 +1290,7 @@ private:
             ft.Add<StringId>(STR_STRING);
             ft.Add<const utf8*>(path.c_str());
             DrawTextBasic(
-                *dpi, { windowPos.x + this->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
+                dpi, { windowPos.x + this->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
                 { COLOUR_BLACK, TextAlignment::RIGHT });
             screenPos.y += LIST_ROW_HEIGHT;
         }
@@ -1301,7 +1310,7 @@ private:
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(authorsString.c_str());
             DrawTextEllipsised(
-                *dpi, { windowPos.x + width - 5, screenPos.y }, width - widgets[WIDX_LIST].right - 4,
+                dpi, { windowPos.x + width - 5, screenPos.y }, width - widgets[WIDX_LIST].right - 4,
                 STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::RIGHT });
         }
     }
@@ -1327,6 +1336,12 @@ private:
         }
 
         return false;
+    }
+
+    bool FilterCompatibilityObject(const ObjectRepositoryItem& item, uint8_t objectFlag)
+    {
+        // Only show compat objects if they are not selected already.
+        return !(item.Flags & ObjectItemFlags::IsCompatibilityObject) || (objectFlag & ObjectSelectionFlags::Selected);
     }
 
     static bool IsFilterInName(const ObjectRepositoryItem& item, std::string_view filter)
@@ -1438,7 +1453,8 @@ private:
             for (size_t i = 0; i < numObjects; i++)
             {
                 const ObjectRepositoryItem* item = &items[i];
-                if (FilterSource(item) && FilterString(*item) && FilterChunks(item) && FilterSelected(selectionFlags[i]))
+                if (FilterSource(item) && FilterString(*item) && FilterChunks(item) && FilterSelected(selectionFlags[i])
+                    && FilterCompatibilityObject(*item, selectionFlags[i]))
                 {
                     _filter_object_counts[EnumValue(item->Type)]++;
                 }
