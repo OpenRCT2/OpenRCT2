@@ -11,6 +11,7 @@
 
 #include <SDL.h>
 #include <algorithm>
+#include <libyuv.h>
 #include <openrct2/Game.h>
 #include <openrct2/common.h>
 #include <openrct2/config/Config.h>
@@ -237,7 +238,7 @@ public:
         SDL_FreePalette(_palette);
 
         _surface = SDL_CreateRGBSurface(0, width, height, 8, 0, 0, 0, 0);
-        _RGBASurface = SDL_CreateRGBSurfaceWithFormat(0, width, height, 32, SDL_PIXELFORMAT_RGBA8888);
+        _RGBASurface = SDL_CreateRGBSurfaceWithFormat(0, width, height, 32, SDL_PIXELFORMAT_ARGB8888);
         SDL_SetSurfaceBlendMode(_RGBASurface, SDL_BLENDMODE_NONE);
         _palette = SDL_AllocPalette(256);
 
@@ -357,13 +358,18 @@ private:
         if (frame_number++ == 0)
         {
             {
-                auto file = fopen("/tmp/frameyuv", "wb");
-                fwrite(dst.get(), _RGBASurface->pitch * _RGBASurface->h * 4, 1, file);
-                fclose(file);
-            }
-            {
                 auto file = fopen("/tmp/framergba", "wb");
                 fwrite(_RGBASurface->pixels, _RGBASurface->pitch * _RGBASurface->h * 4, 1, file);
+                fclose(file);
+            }
+            libyuv::ARGBToI444(
+                static_cast<uint8_t*>(_RGBASurface->pixels), _RGBASurface->pitch, raw.planes[0], raw.stride[0], raw.planes[1],
+                raw.stride[1], raw.planes[2], raw.stride[1], _RGBASurface->w, _RGBASurface->h);
+            {
+                auto file = fopen("/tmp/frameyuv", "wb");
+                fwrite(raw.planes[0], raw.stride[0], _RGBASurface->h, file);
+                fwrite(raw.planes[1], raw.stride[1], _RGBASurface->h, file);
+                fwrite(raw.planes[2], raw.stride[1], _RGBASurface->h, file);
                 fclose(file);
             }
         }
