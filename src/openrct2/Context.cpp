@@ -1279,9 +1279,10 @@ namespace OpenRCT2
 
         void RunFrame()
         {
+            Platform::AdvanceTicks();
             PROFILED_FUNCTION();
 
-            const auto deltaTime = _timer.GetElapsedTimeAndRestart().count();
+            //const auto deltaTime = _timer.GetElapsedTimeAndRestart().count();
 
             // Make sure we catch the state change and reset it.
             bool useVariableFrame = ShouldRunVariableFrame();
@@ -1295,6 +1296,8 @@ namespace OpenRCT2
                 tweener.Restore();
                 tweener.Reset();
             }
+
+            constexpr float deltaTime = 1.0f / 60;
 
             UpdateTimeAccumulators(deltaTime);
 
