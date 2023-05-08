@@ -365,6 +365,25 @@ namespace OpenRCT2::Platform
         datetime64 utcNow = epochAsTicks + utcEpochTicks;
         return utcNow;
     }
-} // namespace OpenRCT2::Platform
+
+    u8string GetRCT1SteamDir()
+    {
+        return u8"app_285310" PATH_SEPARATOR u8"depot_285311";
+    }
+
+    u8string GetRCT2SteamDir()
+    {
+        return u8"app_285330" PATH_SEPARATOR u8"depot_285331";
+    }
+
+    void Sleep(uint32_t ms)
+    {
+        usleep(ms * 1000);
+    }
+
+    void InitTicks()
+    {
+    }
+} // namespace Platform
 
 #endif
