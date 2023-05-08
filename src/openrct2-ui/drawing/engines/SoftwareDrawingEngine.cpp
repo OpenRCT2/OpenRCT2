@@ -101,7 +101,7 @@ static void ivf_write_file_header(FILE* outfile, const struct vpx_codec_enc_cfg*
 {
     ivf_write_file_header_with_video_info(outfile, fourcc, frame_cnt, cfg->g_w, cfg->g_h, cfg->g_timebase);
 }
-/*
+
 static void ivf_write_frame_header(FILE* outfile, int64_t pts, size_t frame_size)
 {
     char header[12];
@@ -111,7 +111,6 @@ static void ivf_write_frame_header(FILE* outfile, int64_t pts, size_t frame_size
     mem_put_le32(header + 8, static_cast<int>(pts >> 32));
     fwrite(header, 1, 12, outfile);
 }
-*/
 
 static void write_header(FILE* file, const VpxVideoInfo* info, int frame_count)
 {
@@ -165,7 +164,7 @@ static void vpx_video_writer_close(VpxVideoWriter* writer)
         free(writer);
     }
 }
-/*
+
 static int vpx_video_writer_write_frame(VpxVideoWriter* writer, const uint8_t* buffer, size_t size, int64_t pts)
 {
     ivf_write_frame_header(writer->file, pts, size);
@@ -176,7 +175,7 @@ static int vpx_video_writer_write_frame(VpxVideoWriter* writer, const uint8_t* b
 
     return 1;
 }
-*/
+
 static void die_codec(vpx_codec_ctx_t* ctx, const char* s)
 {
     const char* detail = vpx_codec_error_detail(ctx);
@@ -185,6 +184,32 @@ static void die_codec(vpx_codec_ctx_t* ctx, const char* s)
     if (detail)
         LOG_ERROR("    %s\n", detail);
     exit(EXIT_FAILURE);
+}
+
+static int encode_frame(vpx_codec_ctx_t* codec, vpx_image_t* img, int frame_index, int flags, VpxVideoWriter* writer)
+{
+    int got_pkts = 0;
+    vpx_codec_iter_t iter = NULL;
+    const vpx_codec_cx_pkt_t* pkt = NULL;
+    const vpx_codec_err_t res = vpx_codec_encode(codec, img, frame_index, 1, flags, VPX_DL_GOOD_QUALITY);
+    if (res != VPX_CODEC_OK)
+        die_codec(codec, "Failed to encode frame");
+    while ((pkt = vpx_codec_get_cx_data(codec, &iter)) != NULL)
+    {
+        got_pkts = 1;
+        if (pkt->kind == VPX_CODEC_CX_FRAME_PKT)
+        {
+            const int keyframe = (pkt->data.frame.flags & VPX_FRAME_IS_KEY) != 0;
+            if (!vpx_video_writer_write_frame(
+                    writer, static_cast<uint8_t*>(pkt->data.frame.buf), pkt->data.frame.sz, pkt->data.frame.pts))
+            {
+                die_codec(codec, "Failed to write compressed frame");
+            }
+            printf(keyframe ? "K" : ".");
+            fflush(stdout);
+        }
+    }
+    return got_pkts;
 }
 
 class SoftwareDrawingEngine final : public X8DrawingEngine
@@ -215,6 +240,10 @@ public:
         SDL_FreeSurface(_surface);
         SDL_FreeSurface(_RGBASurface);
         SDL_FreePalette(_palette);
+
+        while (encode_frame(&codec, NULL, -1, 0, writer))
+        {
+        }
 
         vpx_img_free(&raw);
         if (vpx_codec_destroy(&codec))
@@ -283,6 +312,7 @@ public:
         cfg.g_timebase.num = info.time_base.numerator;
         cfg.g_timebase.den = info.time_base.denominator;
         cfg.g_threads = 8;
+        cfg.g_profile = 1;
 
         writer = vpx_video_writer_open("/tmp/out.webm", kContainerIVF, &info);
         if (!writer)
@@ -357,23 +387,17 @@ private:
         {
             LOG_ERROR("SDL reported error: %s\n", SDL_GetError());
         }
-        static int frame_number;
-        if (frame_number++ == 0)
-        {
-            {
-                auto filergba = fopen("/tmp/framergba", "wb");
-                fwrite(_RGBASurface->pixels, _RGBASurface->pitch * _RGBASurface->h * 4, 1, filergba);
-                fclose(filergba);
-            }
-        }
         libyuv::ARGBToI444(
             static_cast<uint8_t*>(_RGBASurface->pixels), _RGBASurface->pitch, raw.planes[0], raw.stride[0], raw.planes[1],
             raw.stride[1], raw.planes[2], raw.stride[1], _RGBASurface->w, _RGBASurface->h);
-        {
+        /*{
             fwrite(raw.planes[0], raw.stride[0], _RGBASurface->h, file);
             fwrite(raw.planes[1], raw.stride[1], _RGBASurface->h, file);
             fwrite(raw.planes[2], raw.stride[1], _RGBASurface->h, file);
-        }
+        }*/
+
+        static int frame_count;
+        encode_frame(&codec, &raw, frame_count++, 0, writer);
 
         // Copy the surface to the window
         if (gConfigGeneral.WindowScale == 1 || gConfigGeneral.WindowScale <= 0)
