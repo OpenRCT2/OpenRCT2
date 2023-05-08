@@ -901,17 +901,6 @@ namespace Platform
         return false;
     }
 
-    uint32_t GetTicks()
-    {
-        LARGE_INTEGER pfc;
-        QueryPerformanceCounter(&pfc);
-
-        LARGE_INTEGER runningDelta;
-        runningDelta.QuadPart = pfc.QuadPart - _entryTimestamp.QuadPart;
-
-        return static_cast<uint32_t>(runningDelta.QuadPart / _frequency);
-    }
-
     void Sleep(uint32_t ms)
     {
         ::Sleep(ms);

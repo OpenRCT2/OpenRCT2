@@ -387,17 +387,6 @@ namespace Platform
     void InitTicks()
     {
     }
-
-    uint32_t GetTicks()
-    {
-        struct timespec ts;
-        if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0)
-        {
-            LOG_FATAL("clock_gettime failed");
-            exit(-1);
-        }
-        return static_cast<uint32_t>(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
-    }
 } // namespace Platform
 
 #endif

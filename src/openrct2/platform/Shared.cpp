@@ -35,6 +35,8 @@ static constexpr std::array _prohibitedCharacters = { '/' };
 
 namespace Platform
 {
+    static double _ticks = 0;
+
     void CoreInit()
     {
         static bool initialised = false;
@@ -50,6 +52,17 @@ namespace Platform
             BitCountInit();
             MaskInit();
         }
+    }
+
+    uint32_t GetTicks()
+    {
+        return round(_ticks);
+    }
+
+    void AdvanceTicks()
+    {
+        // ms to advance ticks by. 16.67 => 1000/16.67 = 60fps
+        _ticks += 16.67;
     }
 
     CurrencyType GetCurrencyValue(const char* currCode)

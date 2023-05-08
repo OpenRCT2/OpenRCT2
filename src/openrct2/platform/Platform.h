@@ -12,6 +12,7 @@
 #include "../common.h"
 #include "../config/Config.h"
 
+#include <cmath>
 #include <ctime>
 #include <string>
 
@@ -78,6 +79,8 @@ namespace Platform
     bool IsRCT2Path(std::string_view path);
     bool IsRCTClassicPath(std::string_view path);
     bool OriginalGameDataExists(std::string_view path);
+
+    void AdvanceTicks();
 
     std::string GetUsername();
 
