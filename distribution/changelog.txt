@@ -1,3 +1,6 @@
+0.4.6 (in development)
+------------------------------------------------------------------------
+
 0.4.5 (2023-05-08)
 ------------------------------------------------------------------------
 - Feature: [#18713] Block brakes have speed control and brakes slower than adjacent block brakes copy block brake speed when block brake open.
