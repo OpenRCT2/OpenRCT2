@@ -49,8 +49,8 @@
     <ObjectsSha1>622434a2fd968d063d2a35c16f07b7cc77ebca6b</ObjectsSha1>
     <OpenSFXUrl>https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.3/opensound.zip</OpenSFXUrl>
     <OpenSFXSha1>ffec5a97bd5035860c4c9a43fe32cf51886478e3</OpenSFXSha1>
-    <OpenMSXUrl>https://github.com/OpenRCT2/OpenMusic/releases/download/v1.2.0/openmusic.zip</OpenMSXUrl>
-    <OpenMSXSha1>c1c9b030c83c12ff628e8ec72fcfe748291a5344</OpenMSXSha1>
+    <OpenMSXUrl>https://github.com/OpenRCT2/OpenMusic/releases/download/v1.3.0/openmusic.zip</OpenMSXUrl>
+    <OpenMSXSha1>b0cec998a3679f1cde17d91f2508ec4923c1a25c</OpenMSXSha1>
     <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.78/replays.zip</ReplaysUrl>
     <ReplaysSha1>31C5D07EED8481D5C6D57F9E4FE9443AAEDE7739</ReplaysSha1>
   </PropertyGroup>
