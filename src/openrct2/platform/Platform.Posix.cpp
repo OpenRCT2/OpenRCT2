@@ -31,9 +31,7 @@
 #    include <sys/time.h>
 
 // The name of the mutex used to prevent multiple instances of the game from running
-static constexpr u8string_view SINGLE_INSTANCE_MUTEX_NAME = u8"openrct2.lock";
-
-static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
+static constexpr const utf8* SINGLE_INSTANCE_MUTEX_NAME = u8"openrct2.lock";
 
 namespace Platform
 {
@@ -309,13 +307,11 @@ namespace Platform
 
     bool LockSingleInstance()
     {
-        auto pidFilePath = Path::Combine(_userDataDirectoryPath, SINGLE_INSTANCE_MUTEX_NAME);
-
         // We will never close this file manually. The operating system will
         // take care of that, because flock keeps the lock as long as the
         // file is open and closes it automatically on file close.
         // This is intentional.
-        int32_t pidFile = open(pidFilePath.c_str(), O_CREAT | O_RDWR, 0666);
+        int32_t pidFile = open(SINGLE_INSTANCE_MUTEX_NAME, O_CREAT | O_RDWR, 0666);
 
         if (pidFile == -1)
         {
