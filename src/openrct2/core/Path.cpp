@@ -53,9 +53,12 @@ namespace Path
         return fs::u8path(path).parent_path().u8string();
     }
 
-    void CreateDirectory(u8string_view path)
+    bool CreateDirectory(u8string_view path)
     {
-        Platform::EnsureDirectoryExists(u8string(path).c_str());
+        std::error_code ec;
+        fs::create_directories(fs::u8path(path), ec);
+        // create_directories returns false if the directory already exists, but the error code is zero.
+        return ec.value() == 0;
     }
 
     bool DirectoryExists(u8string_view path)

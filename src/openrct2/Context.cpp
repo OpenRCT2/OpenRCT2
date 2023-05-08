@@ -1240,7 +1240,7 @@ namespace OpenRCT2
             for (const auto& dirId : dirIds)
             {
                 auto path = _env->GetDirectoryPath(dirBase, dirId);
-                if (!Platform::EnsureDirectoryExists(path.c_str()))
+                if (!Path::CreateDirectory(path))
                     LOG_ERROR("Unable to create directory '%s'.", path.c_str());
             }
         }
@@ -1274,14 +1274,10 @@ namespace OpenRCT2
                 auto dstDirectory = Path::GetDirectory(dst);
 
                 // Create the directory if necessary
-                if (!Path::DirectoryExists(dstDirectory.c_str()))
+                if (!Path::CreateDirectory(dstDirectory))
                 {
-                    Console::WriteLine("Creating directory '%s'", dstDirectory.c_str());
-                    if (!Platform::EnsureDirectoryExists(dstDirectory.c_str()))
-                    {
-                        Console::Error::WriteLine("Could not create directory %s.", dstDirectory.c_str());
-                        break;
-                    }
+                    Console::Error::WriteLine("Could not create directory %s.", dstDirectory.c_str());
+                    break;
                 }
 
                 // Only copy the file if it doesn't already exist

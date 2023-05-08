@@ -536,8 +536,7 @@ private:
      */
     void ConvertMegaPark(const std::string& srcPath, const std::string& dstPath)
     {
-        auto directory = Path::GetDirectory(dstPath);
-        Platform::EnsureDirectoryExists(directory.c_str());
+        Path::CreateDirectory(Path::GetDirectory(dstPath));
 
         auto mpdat = File::ReadAllBytes(srcPath);
 

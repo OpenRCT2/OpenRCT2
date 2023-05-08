@@ -292,7 +292,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
         Console::WriteLine("Key generated, saving private bits as %s", keyPath.c_str());
 
         const auto keysDirectory = NetworkGetKeysDirectory();
-        if (!Platform::EnsureDirectoryExists(keysDirectory.c_str()))
+        if (!Path::CreateDirectory(keysDirectory))
         {
             LOG_ERROR("Unable to create directory %s.", keysDirectory.c_str());
             return false;
@@ -1071,8 +1071,9 @@ std::string NetworkBase::BeginLog(const std::string& directory, const std::strin
         throw std::runtime_error("strftime failed");
     }
 
-    Platform::EnsureDirectoryExists(Path::Combine(directory, midName).c_str());
-    return Path::Combine(directory, midName, filename);
+    auto directoryMidName = Path::Combine(directory, midName);
+    Path::CreateDirectory(directoryMidName);
+    return Path::Combine(directoryMidName, filename);
 }
 
 void NetworkBase::AppendLog(std::ostream& fs, std::string_view s)
@@ -2495,7 +2496,7 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
 
             std::string outputPath = GetContext().GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_DESYNCS);
 
-            Platform::EnsureDirectoryExists(outputPath.c_str());
+            Path::CreateDirectory(outputPath);
 
             char uniqueFileName[128] = {};
             snprintf(

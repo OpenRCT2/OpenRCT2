@@ -19,7 +19,6 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/TrackDesign.h>
@@ -370,7 +369,7 @@ private:
     {
         auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
         auto destPath = env->GetDirectoryPath(OpenRCT2::DIRBASE::USER, OpenRCT2::DIRID::TRACK);
-        if (!Platform::EnsureDirectoryExists(destPath.c_str()))
+        if (!Path::CreateDirectory(destPath))
         {
             LOG_ERROR("Unable to create directory '%s'", destPath.c_str());
             ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});

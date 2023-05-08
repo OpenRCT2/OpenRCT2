@@ -882,7 +882,7 @@ public:
             case WIDX_NEW_FOLDER:
             {
                 const u8string path = Path::Combine(_directory, text);
-                if (!Platform::EnsureDirectoryExists(path))
+                if (!Path::CreateDirectory(path))
                 {
                     ContextShowError(STR_UNABLE_TO_CREATE_FOLDER, STR_NONE, {});
                     return;

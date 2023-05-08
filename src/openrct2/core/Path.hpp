@@ -24,7 +24,7 @@ namespace Path
     }
 
     u8string GetDirectory(u8string_view path);
-    void CreateDirectory(u8string_view path);
+    bool CreateDirectory(u8string_view path);
     bool DirectoryExists(u8string_view path);
     bool DeleteDirectory(u8string_view path);
     u8string GetFileName(u8string_view origPath);

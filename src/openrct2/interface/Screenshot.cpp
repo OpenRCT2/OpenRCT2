@@ -134,7 +134,7 @@ static std::string ScreenshotGetFormattedDateTime()
 static std::optional<std::string> ScreenshotGetNextPath()
 {
     auto screenshotDirectory = ScreenshotGetDirectory();
-    if (!Platform::EnsureDirectoryExists(screenshotDirectory.c_str()))
+    if (!Path::CreateDirectory(screenshotDirectory))
     {
         LOG_ERROR("Unable to save screenshots in OpenRCT2 screenshot directory.");
         return std::nullopt;
