@@ -237,7 +237,7 @@ public:
         SDL_FreePalette(_palette);
 
         _surface = SDL_CreateRGBSurface(0, width, height, 8, 0, 0, 0, 0);
-        _RGBASurface = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
+        _RGBASurface = SDL_CreateRGBSurfaceWithFormat(0, width, height, 32, SDL_PIXELFORMAT_RGBA8888);
         SDL_SetSurfaceBlendMode(_RGBASurface, SDL_BLENDMODE_NONE);
         _palette = SDL_AllocPalette(256);
 
@@ -345,13 +345,27 @@ private:
             LOG_FATAL("SDL_BlitSurface %s", SDL_GetError());
             exit(1);
         }
-        std::unique_ptr<uint8_t[]> dst = std::make_unique<uint8_t[]>(_RGBASurface->w * _RGBASurface->h * 4);
+        std::unique_ptr<uint8_t[]> dst = std::make_unique<uint8_t[]>(_RGBASurface->pitch * _RGBASurface->h * 4);
         if (SDL_ConvertPixels(
                 _RGBASurface->w, _RGBASurface->h, _RGBASurface->format->format, _RGBASurface->pixels, _RGBASurface->pitch,
-                SDL_PIXELFORMAT_IYUV, dst.get(), _RGBASurface->w * 4)
+                SDL_PIXELFORMAT_IYUV, dst.get(), _RGBASurface->pitch)
             != 0)
         {
             LOG_ERROR("SDL reported error: %s\n", SDL_GetError());
+        }
+        static int frame_number;
+        if (frame_number++ == 0)
+        {
+            {
+                auto file = fopen("/tmp/frameyuv", "wb");
+                fwrite(dst.get(), _RGBASurface->pitch * _RGBASurface->h * 4, 1, file);
+                fclose(file);
+            }
+            {
+                auto file = fopen("/tmp/framergba", "wb");
+                fwrite(_RGBASurface->pixels, _RGBASurface->pitch * _RGBASurface->h * 4, 1, file);
+                fclose(file);
+            }
         }
 
         // Copy the surface to the window
