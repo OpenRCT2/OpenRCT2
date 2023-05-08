@@ -1301,11 +1301,11 @@ namespace OpenRCT2
 
             if (useVariableFrame)
             {
-                RunVariableFrame(deltaTime);
+                RunVariableFrame();
             }
             else
             {
-                RunFixedFrame(deltaTime);
+                RunFixedFrame();
             }
         }
 
@@ -1324,7 +1324,7 @@ namespace OpenRCT2
             }
         }
 
-        void RunFixedFrame(float deltaTime)
+        void RunFixedFrame()
         {
             PROFILED_FUNCTION();
 
@@ -1355,7 +1355,7 @@ namespace OpenRCT2
             }
         }
 
-        void RunVariableFrame(float deltaTime)
+        void RunVariableFrame()
         {
             PROFILED_FUNCTION();
 
