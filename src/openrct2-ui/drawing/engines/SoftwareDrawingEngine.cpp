@@ -200,6 +200,7 @@ private:
     vpx_image_t raw{};
     VpxVideoWriter* writer = NULL;
     vpx_codec_ctx_t codec{};
+    FILE* file{};
 
 public:
     explicit SoftwareDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
@@ -221,6 +222,7 @@ public:
             die_codec(&codec, "Failed to destroy codec.");
         }
         vpx_video_writer_close(writer);
+        fclose(file);
     }
 
     void Initialise() override
@@ -241,6 +243,7 @@ public:
         _RGBASurface = SDL_CreateRGBSurfaceWithFormat(0, width, height, 32, SDL_PIXELFORMAT_ARGB8888);
         SDL_SetSurfaceBlendMode(_RGBASurface, SDL_BLENDMODE_NONE);
         _palette = SDL_AllocPalette(256);
+        file = fopen("/tmp/frameyuv", "wb");
 
         if (_surface == nullptr || _palette == nullptr || _RGBASurface == nullptr)
         {
@@ -358,20 +361,18 @@ private:
         if (frame_number++ == 0)
         {
             {
-                auto file = fopen("/tmp/framergba", "wb");
-                fwrite(_RGBASurface->pixels, _RGBASurface->pitch * _RGBASurface->h * 4, 1, file);
-                fclose(file);
+                auto filergba = fopen("/tmp/framergba", "wb");
+                fwrite(_RGBASurface->pixels, _RGBASurface->pitch * _RGBASurface->h * 4, 1, filergba);
+                fclose(filergba);
             }
-            libyuv::ARGBToI444(
-                static_cast<uint8_t*>(_RGBASurface->pixels), _RGBASurface->pitch, raw.planes[0], raw.stride[0], raw.planes[1],
-                raw.stride[1], raw.planes[2], raw.stride[1], _RGBASurface->w, _RGBASurface->h);
-            {
-                auto file = fopen("/tmp/frameyuv", "wb");
-                fwrite(raw.planes[0], raw.stride[0], _RGBASurface->h, file);
-                fwrite(raw.planes[1], raw.stride[1], _RGBASurface->h, file);
-                fwrite(raw.planes[2], raw.stride[1], _RGBASurface->h, file);
-                fclose(file);
-            }
+        }
+        libyuv::ARGBToI444(
+            static_cast<uint8_t*>(_RGBASurface->pixels), _RGBASurface->pitch, raw.planes[0], raw.stride[0], raw.planes[1],
+            raw.stride[1], raw.planes[2], raw.stride[1], _RGBASurface->w, _RGBASurface->h);
+        {
+            fwrite(raw.planes[0], raw.stride[0], _RGBASurface->h, file);
+            fwrite(raw.planes[1], raw.stride[1], _RGBASurface->h, file);
+            fwrite(raw.planes[2], raw.stride[1], _RGBASurface->h, file);
         }
 
         // Copy the surface to the window
