@@ -279,6 +279,11 @@ public:
         SDL_SetWindowGrab(_window, value ? SDL_TRUE : SDL_FALSE);
     }
 
+    void SetWindowTitle(std::string value) override
+    {
+        SDL_SetWindowTitle(_window, value.c_str());
+    }
+
     void SetKeysPressed(uint32_t keysym, uint8_t scancode) override
     {
         _lastKeyPressed = keysym;
@@ -340,7 +345,7 @@ public:
                     if (e.window.event == SDL_WINDOWEVENT_RESIZED)
                     {
                         LOG_VERBOSE("New Window size: %ux%u\n", e.window.data1, e.window.data2);
-                        //OnResize(e.window.data1, e.window.data2);
+                        // OnResize(e.window.data1, e.window.data2);
                     }
 
                     switch (e.window.event)

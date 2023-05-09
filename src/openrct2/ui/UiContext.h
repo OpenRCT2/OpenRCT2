@@ -142,6 +142,7 @@ namespace OpenRCT2
             virtual ScreenCoordsXY GetCursorPosition() abstract;
             virtual void SetCursorPosition(const ScreenCoordsXY& cursorPosition) abstract;
             virtual void SetCursorTrap(bool value) abstract;
+            virtual void SetWindowTitle(std::string value) abstract;
             virtual const uint8_t* GetKeysState() abstract;
             virtual const uint8_t* GetKeysPressed() abstract;
             virtual void SetKeysPressed(uint32_t keysym, uint8_t scancode) abstract;

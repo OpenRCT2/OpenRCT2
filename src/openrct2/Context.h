@@ -209,6 +209,7 @@ int32_t ContextGetWidth();
 int32_t ContextGetHeight();
 bool ContextHasFocus();
 void ContextSetCursorTrap(bool value);
+void ContextSetWindowTitle(std::string value);
 WindowBase* ContextOpenWindow(WindowClass wc);
 WindowBase* ContextOpenDetailWindow(uint8_t type, int32_t id);
 WindowBase* ContextOpenWindowView(uint8_t view);

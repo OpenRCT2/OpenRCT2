@@ -147,6 +147,9 @@ namespace OpenRCT2::Ui
         void SetCursorTrap(bool /*value*/) override
         {
         }
+        void SetWindowTitle(std::string /*value*/) override
+        {
+        }
         const uint8_t* GetKeysState() override
         {
             return nullptr;
