@@ -1057,7 +1057,7 @@ namespace OpenRCT2
             WindowClose(*WindowFindByClass(WindowClass::TitleMenu));
             WindowClose(*WindowFindByClass(WindowClass::TitleExit));
             TitleSetHideVersionInfo(true);
-            gConfigGeneral.ShowFPS = false;
+            gConfigGeneral.ShowFPS = true;
             Platform::AdvanceTicks();
             PROFILED_FUNCTION();
 

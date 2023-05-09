@@ -26,6 +26,8 @@
 #include "../title/TitleScreen.h"
 #include "../ui/UiContext.h"
 
+#include <string>
+
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Paint;
@@ -102,20 +104,9 @@ void Painter::PaintReplayNotice(DrawPixelInfo& dpi, const char* text)
 
 void Painter::PaintFPS(DrawPixelInfo& dpi)
 {
-    ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, 2);
-
     MeasureFPS();
-
-    char buffer[64]{};
-    FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{WHITE}{INT32}", _currentFPS);
-
-    // Draw Text
-    int32_t stringWidth = GfxGetStringWidth(buffer, FontStyle::Medium);
-    screenCoords.x = screenCoords.x - (stringWidth / 2);
-    GfxDrawString(dpi, screenCoords, buffer);
-
-    // Make area dirty so the text doesn't get drawn over the last
-    GfxSetDirtyBlocks({ { screenCoords - ScreenCoordsXY{ 16, 4 } }, { dpi.lastStringPos.x + 16, 16 } });
+    using namespace std::string_literals;
+    ContextSetWindowTitle("OpenRCT2 FPS: "s + std::to_string(_currentFPS));
 }
 
 void Painter::MeasureFPS()
