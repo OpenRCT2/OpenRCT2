@@ -340,7 +340,7 @@ public:
                     if (e.window.event == SDL_WINDOWEVENT_RESIZED)
                     {
                         LOG_VERBOSE("New Window size: %ux%u\n", e.window.data1, e.window.data2);
-                        OnResize(e.window.data1, e.window.data2);
+                        //OnResize(e.window.data1, e.window.data2);
                     }
 
                     switch (e.window.event)
