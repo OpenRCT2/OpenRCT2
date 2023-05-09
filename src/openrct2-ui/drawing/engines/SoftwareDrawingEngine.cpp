@@ -18,6 +18,7 @@
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/X8DrawingEngine.h>
+#include <openrct2/title/TitleSequenceRender.h>
 #include <openrct2/ui/UiContext.h>
 #include <vpx/vp8cx.h>
 #include <vpx/vpx_encoder.h>
@@ -26,6 +27,7 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Ui;
 
+bool gShouldRender = true;
 struct VpxRational
 {
     int numerator;
@@ -206,7 +208,8 @@ static int encode_frame(vpx_codec_ctx_t* codec, vpx_image_t* img, int frame_inde
                 die_codec(codec, "Failed to write compressed frame");
             }
             printf(keyframe ? "K" : ".");
-            if (frame_index % 100 == 0) {
+            if (frame_index % 100 == 0)
+            {
                 printf("%d", frame_index);
             }
             fflush(stdout);
@@ -254,7 +257,7 @@ public:
             die_codec(&codec, "Failed to destroy codec.");
         }
         vpx_video_writer_close(writer);
-        //fclose(file);
+        // fclose(file);
     }
 
     void Initialise() override
@@ -275,7 +278,7 @@ public:
         _RGBASurface = SDL_CreateRGBSurfaceWithFormat(0, width, height, 32, SDL_PIXELFORMAT_ARGB8888);
         SDL_SetSurfaceBlendMode(_RGBASurface, SDL_BLENDMODE_NONE);
         _palette = SDL_AllocPalette(256);
-        //file = fopen("/tmp/frameyuv", "wb");
+        // file = fopen("/tmp/frameyuv", "wb");
 
         if (_surface == nullptr || _palette == nullptr || _RGBASurface == nullptr)
         {
@@ -293,7 +296,7 @@ public:
         info.frame_width = width;
         info.frame_height = height;
         info.time_base.numerator = 1;
-        info.time_base.denominator = 60;
+        info.time_base.denominator = FPS;
         if (info.frame_width <= 0 || info.frame_height <= 0 || (info.frame_width % 2) != 0 || (info.frame_height % 2) != 0)
         {
             LOG_FATAL(
@@ -383,14 +386,6 @@ private:
             LOG_FATAL("SDL_BlitSurface %s", SDL_GetError());
             exit(1);
         }
-        std::unique_ptr<uint8_t[]> dst = std::make_unique<uint8_t[]>(_RGBASurface->pitch * _RGBASurface->h * 4);
-        if (SDL_ConvertPixels(
-                _RGBASurface->w, _RGBASurface->h, _RGBASurface->format->format, _RGBASurface->pixels, _RGBASurface->pitch,
-                SDL_PIXELFORMAT_IYUV, dst.get(), _RGBASurface->pitch)
-            != 0)
-        {
-            LOG_ERROR("SDL reported error: %s\n", SDL_GetError());
-        }
         libyuv::ARGBToI444(
             static_cast<uint8_t*>(_RGBASurface->pixels), _RGBASurface->pitch, raw.planes[0], raw.stride[0], raw.planes[1],
             raw.stride[1], raw.planes[2], raw.stride[1], _RGBASurface->w, _RGBASurface->h);
@@ -401,7 +396,10 @@ private:
         }*/
 
         static int frame_count;
-        encode_frame(&codec, &raw, frame_count++, 0, writer);
+        if (gShouldRender)
+        {
+            encode_frame(&codec, &raw, frame_count++, 0, writer);
+        }
 
         // Copy the surface to the window
         if (gConfigGeneral.WindowScale == 1 || gConfigGeneral.WindowScale <= 0)

@@ -34,6 +34,7 @@
 #include <openrct2/scenes/title/TitleSequence.h>
 #include <openrct2/scenes/title/TitleSequenceManager.h>
 #include <openrct2/scenes/title/TitleSequencePlayer.h>
+#include <openrct2/scenes/title/TitleSequenceRender.h>
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/MapAnimation.h>
@@ -268,6 +269,7 @@ namespace OpenRCT2::Title
                 _position = 0;
                 printf(" Reached the end of script, closing ");
                 ContextQuit();
+                gShouldRender = false;
             }
             _waitCounter = 0;
         }
