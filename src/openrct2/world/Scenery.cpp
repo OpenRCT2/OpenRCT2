@@ -24,11 +24,11 @@
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../object/BannerSceneryEntry.h"
-#include "../object/FootpathItemEntry.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
+#include "../object/PathAdditionEntry.h"
 #include "../object/SceneryGroupEntry.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/WallSceneryEntry.h"
@@ -153,11 +153,11 @@ void SceneryUpdateTile(const CoordsXY& sceneryPos)
                 auto* pathAddEntry = tileElement->AsPath()->GetAdditionEntry();
                 if (pathAddEntry != nullptr)
                 {
-                    if (pathAddEntry->flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER)
+                    if (pathAddEntry->flags & PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER)
                     {
                         JumpingFountain::StartAnimation(JumpingFountainType::Water, sceneryPos, tileElement);
                     }
-                    else if (pathAddEntry->flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW)
+                    else if (pathAddEntry->flags & PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW)
                     {
                         JumpingFountain::StartAnimation(JumpingFountainType::Snow, sceneryPos, tileElement);
                     }
@@ -358,7 +358,7 @@ static bool IsSceneryEntryValid(const ScenerySelection& item)
         case SCENERY_TYPE_SMALL:
             return OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_PATH_ITEM:
-            return OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(item.EntryIndex) != nullptr;
+            return OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_WALL:
             return OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(item.EntryIndex) != nullptr;
         case SCENERY_TYPE_LARGE:
@@ -440,7 +440,7 @@ ObjectType GetObjectTypeFromSceneryType(uint8_t type)
         case SCENERY_TYPE_SMALL:
             return ObjectType::SmallScenery;
         case SCENERY_TYPE_PATH_ITEM:
-            return ObjectType::PathBits;
+            return ObjectType::PathAdditions;
         case SCENERY_TYPE_WALL:
             return ObjectType::Walls;
         case SCENERY_TYPE_LARGE:
@@ -458,7 +458,7 @@ uint8_t GetSceneryTypeFromObjectType(ObjectType type)
     {
         case ObjectType::SmallScenery:
             return SCENERY_TYPE_SMALL;
-        case ObjectType::PathBits:
+        case ObjectType::PathAdditions:
             return SCENERY_TYPE_PATH_ITEM;
         case ObjectType::Walls:
             return SCENERY_TYPE_WALL;

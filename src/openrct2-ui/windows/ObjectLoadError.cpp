@@ -311,7 +311,7 @@ static constexpr StringId GetStringFromObjectType(const ObjectType type)
             return STR_OBJECT_SELECTION_PATH_SIGNS;
         case ObjectType::Paths:
             return STR_OBJECT_SELECTION_FOOTPATHS;
-        case ObjectType::PathBits:
+        case ObjectType::PathAdditions:
             return STR_OBJECT_SELECTION_PATH_EXTRAS;
         case ObjectType::SceneryGroup:
             return STR_OBJECT_SELECTION_SCENERY_GROUPS;

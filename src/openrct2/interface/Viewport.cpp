@@ -1471,7 +1471,7 @@ VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlag
             }
             break;
         case ViewportInteractionItem::Footpath:
-        case ViewportInteractionItem::FootpathItem:
+        case ViewportInteractionItem::PathAddition:
         case ViewportInteractionItem::Banner:
             if (viewFlags & VIEWPORT_FLAG_HIDE_PATHS)
             {

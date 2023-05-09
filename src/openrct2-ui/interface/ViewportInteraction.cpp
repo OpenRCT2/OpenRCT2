@@ -32,9 +32,9 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/BannerSceneryEntry.h>
-#include <openrct2/object/FootpathItemEntry.h>
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
+#include <openrct2/object/PathAdditionEntry.h>
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/ride/Ride.h>
@@ -54,7 +54,7 @@
 
 static void ViewportInteractionRemoveScenery(TileElement* tileElement, const CoordsXY& mapCoords);
 static void ViewportInteractionRemoveFootpath(TileElement* tileElement, const CoordsXY& mapCoords);
-static void ViewportInteractionRemoveFootpathItem(TileElement* tileElement, const CoordsXY& mapCoords);
+static void ViewportInteractionRemovePathAddition(TileElement* tileElement, const CoordsXY& mapCoords);
 static void ViewportInteractionRemoveParkWall(TileElement* tileElement, const CoordsXY& mapCoords);
 static void ViewportInteractionRemoveLargeScenery(TileElement* tileElement, const CoordsXY& mapCoords);
 static void ViewportInteractionRemoveParkEntrance(TileElement* tileElement, CoordsXY mapCoords);
@@ -478,7 +478,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             SetMapTooltip(ft);
             return info;
 
-        case ViewportInteractionItem::FootpathItem:
+        case ViewportInteractionItem::PathAddition:
         {
             auto* pathAddEntry = tileElement->AsPath()->GetAdditionEntry();
             ft.Add<StringId>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
@@ -578,8 +578,8 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords)
         case ViewportInteractionItem::Footpath:
             ViewportInteractionRemoveFootpath(info.Element, info.Loc);
             break;
-        case ViewportInteractionItem::FootpathItem:
-            ViewportInteractionRemoveFootpathItem(info.Element, info.Loc);
+        case ViewportInteractionItem::PathAddition:
+            ViewportInteractionRemovePathAddition(info.Element, info.Loc);
             break;
         case ViewportInteractionItem::ParkEntrance:
             ViewportInteractionRemoveParkEntrance(info.Element, info.Loc);
@@ -644,7 +644,7 @@ static void ViewportInteractionRemoveFootpath(TileElement* tileElement, const Co
  *
  *  rct2: 0x006A61AB
  */
-static void ViewportInteractionRemoveFootpathItem(TileElement* tileElement, const CoordsXY& mapCoords)
+static void ViewportInteractionRemovePathAddition(TileElement* tileElement, const CoordsXY& mapCoords)
 {
     auto footpathAdditionRemoveAction = FootpathAdditionRemoveAction({ mapCoords.x, mapCoords.y, tileElement->GetBaseZ() });
     GameActions::Execute(&footpathAdditionRemoveAction);

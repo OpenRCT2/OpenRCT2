@@ -560,7 +560,7 @@ namespace RCT1
                             case ObjectType::LargeScenery:
                             case ObjectType::Walls:
                             case ObjectType::Paths:
-                            case ObjectType::PathBits:
+                            case ObjectType::PathAdditions:
                             {
                                 RCT12::EntryList* entries = GetEntryList(objectType);
 
@@ -1473,7 +1473,7 @@ namespace RCT1
             AppendRequiredObjects(result, ObjectType::LargeScenery, _largeSceneryEntries);
             AppendRequiredObjects(result, ObjectType::Walls, _wallEntries);
             AppendRequiredObjects(result, ObjectType::Paths, _pathEntries);
-            AppendRequiredObjects(result, ObjectType::PathBits, _pathAdditionEntries);
+            AppendRequiredObjects(result, ObjectType::PathAdditions, _pathAdditionEntries);
             AppendRequiredObjects(result, ObjectType::SceneryGroup, _sceneryGroupEntries);
             AppendRequiredObjects(
                 result, ObjectType::Banners,
@@ -2443,7 +2443,7 @@ namespace RCT1
                     return &_wallEntries;
                 case ObjectType::Paths:
                     return &_pathEntries;
-                case ObjectType::PathBits:
+                case ObjectType::PathAdditions:
                     return &_pathAdditionEntries;
                 case ObjectType::SceneryGroup:
                     return &_sceneryGroupEntries;

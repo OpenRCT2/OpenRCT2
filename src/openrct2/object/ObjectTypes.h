@@ -25,7 +25,7 @@ enum class ObjectType : uint8_t
     Walls,
     Banners,
     Paths,
-    PathBits,
+    PathAdditions,
     SceneryGroup,
     ParkEntrance,
     Water,
@@ -49,7 +49,7 @@ constexpr std::array ObjectTypes = {
     ObjectType::Walls,
     ObjectType::Banners,
     ObjectType::Paths,
-    ObjectType::PathBits,
+    ObjectType::PathAdditions,
     ObjectType::SceneryGroup,
     ObjectType::ParkEntrance,
     ObjectType::Water,
@@ -68,7 +68,7 @@ static_assert(ObjectTypes.size() == static_cast<uint8_t>(ObjectType::Count));
 // Object types that can be saved in a park file.
 constexpr std::array<ObjectType, 16> TransientObjectTypes = {
     ObjectType::Ride,         ObjectType::SmallScenery, ObjectType::LargeScenery,    ObjectType::Walls,
-    ObjectType::Banners,      ObjectType::Paths,        ObjectType::PathBits,        ObjectType::SceneryGroup,
+    ObjectType::Banners,      ObjectType::Paths,        ObjectType::PathAdditions,   ObjectType::SceneryGroup,
     ObjectType::ParkEntrance, ObjectType::Water,        ObjectType::TerrainSurface,  ObjectType::TerrainEdge,
     ObjectType::Station,      ObjectType::Music,        ObjectType::FootpathSurface, ObjectType::FootpathRailings,
 };

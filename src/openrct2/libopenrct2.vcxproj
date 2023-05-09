@@ -316,8 +316,8 @@
     <ClInclude Include="object\EntranceEntry.h" />
     <ClInclude Include="object\EntranceObject.h" />
     <ClInclude Include="object\FootpathEntry.h" />
-    <ClInclude Include="object\FootpathItemEntry.h" />
-    <ClInclude Include="object\FootpathItemObject.h" />
+    <ClInclude Include="object\PathAdditionEntry.h" />
+    <ClInclude Include="object\PathAdditionObject.h" />
     <ClInclude Include="object\FootpathObject.h" />
     <ClInclude Include="object\FootpathRailingsObject.h" />
     <ClInclude Include="object\FootpathSurfaceObject.h" />
@@ -358,6 +358,7 @@
     <ClInclude Include="paint\Paint.SessionFlags.h" />
     <ClInclude Include="paint\Painter.h" />
     <ClInclude Include="paint\Supports.h" />
+    <ClInclude Include="paint\tile_element\Paint.PathAddition.h" />
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
     <ClInclude Include="paint\VirtualFloor.h" />
@@ -819,7 +820,7 @@
     <ClCompile Include="object\BannerObject.cpp" />
     <ClCompile Include="object\DefaultObjects.cpp" />
     <ClCompile Include="object\EntranceObject.cpp" />
-    <ClCompile Include="object\FootpathItemObject.cpp" />
+    <ClCompile Include="object\PathAdditionObject.cpp" />
     <ClCompile Include="object\FootpathObject.cpp" />
     <ClCompile Include="object\FootpathRailingsObject.cpp" />
     <ClCompile Include="object\FootpathSurfaceObject.cpp" />
@@ -856,6 +857,7 @@
     <ClCompile Include="paint\tile_element\Paint.Entrance.cpp" />
     <ClCompile Include="paint\tile_element\Paint.LargeScenery.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Path.cpp" />
+    <ClCompile Include="paint\tile_element\Paint.PathAddition.cpp" />
     <ClCompile Include="paint\tile_element\Paint.SmallScenery.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Surface.cpp" />
     <ClCompile Include="paint\tile_element\Paint.TileElement.cpp" />
