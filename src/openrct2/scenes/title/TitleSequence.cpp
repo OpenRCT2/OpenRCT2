@@ -331,6 +331,7 @@ namespace OpenRCT2::Title
     {
         std::vector<TitleCommand> commands;
         auto fs = OpenRCT2::MemoryStream(script.data(), script.size());
+        uint32_t NumFramesToRender{};
         do
         {
             std::vector<std::array<char, 128>> parts;
@@ -387,6 +388,7 @@ namespace OpenRCT2::Title
                 {
                     uint16_t milliseconds = atoi(parts[1].data()) & 0xFFFF;
                     command = WaitCommand{ milliseconds };
+                    NumFramesToRender += std::ceil(static_cast<double>(milliseconds) / (1000.f / 60.f));
                 }
                 else if (String::iequals(token, "RESTART"))
                 {
@@ -409,6 +411,7 @@ namespace OpenRCT2::Title
                 commands.push_back(std::move(*command));
             }
         } while (fs.GetPosition() < fs.GetLength());
+        LOG_INFO("Need to render around %u frames", NumFramesToRender);
         return commands;
     }
 
