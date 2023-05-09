@@ -25,6 +25,8 @@
 #include "../ui/WindowManager.h"
 #include "../world/TileInspector.h"
 
+#include <string>
+
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Paint;
@@ -97,41 +99,11 @@ void Painter::PaintReplayNotice(RenderTarget& rt, const char* text)
     GfxSetDirtyBlocks({ screenCoords, screenCoords + ScreenCoordsXY{ stringWidth, 16 } });
 }
 
-static bool ShouldShowFPS()
-{
-    if (gLegacyScene == LegacyScene::titleSequence)
-        return true;
-
-    auto* windowMgr = Ui::GetWindowManager();
-    return windowMgr->FindByClass(WindowClass::TopToolbar);
-}
-
 void Painter::PaintFPS(RenderTarget& rt)
 {
-    if (!ShouldShowFPS())
-        return;
-
     MeasureFPS();
-
-    char buffer[64]{};
-    FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{WHITE}{INT32}", _currentFPS);
-    const int32_t stringWidth = GfxGetStringWidth(buffer, FontStyle::Medium);
-
-    // Figure out where counter should be rendered
-    ScreenCoordsXY screenCoords(_uiContext.GetWidth() / 2, 2);
-    screenCoords.x = screenCoords.x - (stringWidth / 2);
-
-    // Move counter below toolbar if buttons are centred
-    const bool isTitle = gLegacyScene == LegacyScene::titleSequence;
-    if (!isTitle && Config::Get().interface.ToolbarButtonsCentred)
-    {
-        screenCoords.y = kTopToolbarHeight + 3;
-    }
-
-    DrawText(rt, screenCoords, { COLOUR_WHITE }, buffer);
-
-    // Make area dirty so the text doesn't get drawn over the last
-    GfxSetDirtyBlocks({ { screenCoords - ScreenCoordsXY{ 16, 4 } }, { rt.lastStringPos.x + 16, screenCoords.y + 16 } });
+    using namespace std::string_literals;
+    ContextSetWindowTitle("OpenRCT2 FPS: "s + std::to_string(_currentFPS));
 }
 
 void Painter::MeasureFPS()
