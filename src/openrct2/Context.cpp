@@ -1051,10 +1051,16 @@ namespace OpenRCT2
 
         void RunFrame()
         {
+            WindowClose(*WindowFindByClass(WindowClass::TitleLogo));
+            WindowClose(*WindowFindByClass(WindowClass::TitleOptions));
+            WindowClose(*WindowFindByClass(WindowClass::TitleMenu));
+            WindowClose(*WindowFindByClass(WindowClass::TitleExit));
+            TitleSetHideVersionInfo(true);
+            gConfigGeneral.ShowFPS = false;
             Platform::AdvanceTicks();
             PROFILED_FUNCTION();
 
-            //const auto deltaTime = _timer.GetElapsedTimeAndRestart().count();
+            // const auto deltaTime = _timer.GetElapsedTimeAndRestart().count();
 
             // Make sure we catch the state change and reset it.
             bool useVariableFrame = ShouldRunVariableFrame();
