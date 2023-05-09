@@ -307,8 +307,7 @@ namespace OpenRCT2::Title
         auto scanner = Path::ScanDirectory(pattern, true);
         while (scanner->Next())
         {
-            const utf8* path = scanner->GetPathRelative();
-            saves.push_back(path);
+            saves.push_back(scanner->GetPathRelative());
         }
         return saves;
     }
