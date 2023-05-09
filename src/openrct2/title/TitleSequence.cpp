@@ -25,6 +25,7 @@
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
 #include "../util/Util.h"
+#include "TitleSequenceRender.h"
 
 #include <algorithm>
 #include <array>
@@ -389,7 +390,7 @@ namespace OpenRCT2::Title
                 {
                     uint16_t milliseconds = atoi(parts[1].data()) & 0xFFFF;
                     command = WaitCommand{ milliseconds };
-                    NumFramesToRender += std::ceil(static_cast<double>(milliseconds) / (1000.f / 60.f));
+                    NumFramesToRender += std::ceil(static_cast<double>(milliseconds) / (1000.f / FPS));
                 }
                 else if (_stricmp(token, "RESTART") == 0)
                 {

@@ -69,6 +69,7 @@
 #include "scripting/ScriptEngine.h"
 #include "title/TitleScreen.h"
 #include "title/TitleSequenceManager.h"
+#include "title/TitleSequenceRender.h"
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "util/Util.h"
@@ -1075,7 +1076,7 @@ namespace OpenRCT2
                 tweener.Reset();
             }
 
-            constexpr float deltaTime = 1.0f / 60;
+            constexpr float deltaTime = 1.0f / FPS;
 
             UpdateTimeAccumulators(deltaTime);
 
