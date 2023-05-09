@@ -231,6 +231,7 @@ OpenRCT2::WindowBase* ContextOpenWindowView(uint8_t view);
 OpenRCT2::WindowBase* ContextShowError(StringId title, StringId message, const class Formatter& args, bool autoClose = false);
 OpenRCT2::WindowBase* ContextOpenIntent(OpenRCT2::Intent* intent);
 void ContextBroadcastIntent(OpenRCT2::Intent* intent);
+void ContextSetWindowTitle(std::string value);
 void ContextForceCloseWindowByClass(WindowClass wc);
 void ContextHandleInput();
 void ContextInputHandleKeyboard(bool isTitle);

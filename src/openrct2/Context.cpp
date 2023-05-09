@@ -1722,6 +1722,11 @@ void ContextSetCursorTrap(bool value)
     GetContext()->GetUiContext().SetCursorTrap(value);
 }
 
+void ContextSetWindowTitle(std::string value)
+{
+    GetContext()->GetUiContext()->SetWindowTitle(value);
+}
+
 WindowBase* ContextOpenWindow(WindowClass wc)
 {
     auto windowManager = Ui::GetWindowManager();
