@@ -206,6 +206,9 @@ static int encode_frame(vpx_codec_ctx_t* codec, vpx_image_t* img, int frame_inde
                 die_codec(codec, "Failed to write compressed frame");
             }
             printf(keyframe ? "K" : ".");
+            if (frame_index % 100 == 0) {
+                printf("%d", frame_index);
+            }
             fflush(stdout);
         }
     }
@@ -251,7 +254,7 @@ public:
             die_codec(&codec, "Failed to destroy codec.");
         }
         vpx_video_writer_close(writer);
-        fclose(file);
+        //fclose(file);
     }
 
     void Initialise() override
@@ -272,7 +275,7 @@ public:
         _RGBASurface = SDL_CreateRGBSurfaceWithFormat(0, width, height, 32, SDL_PIXELFORMAT_ARGB8888);
         SDL_SetSurfaceBlendMode(_RGBASurface, SDL_BLENDMODE_NONE);
         _palette = SDL_AllocPalette(256);
-        file = fopen("/tmp/frameyuv", "wb");
+        //file = fopen("/tmp/frameyuv", "wb");
 
         if (_surface == nullptr || _palette == nullptr || _RGBASurface == nullptr)
         {
@@ -293,7 +296,8 @@ public:
         info.time_base.denominator = 60;
         if (info.frame_width <= 0 || info.frame_height <= 0 || (info.frame_width % 2) != 0 || (info.frame_height % 2) != 0)
         {
-            LOG_FATAL("Invalid frame size: %dx%d", info.frame_width, info.frame_height);
+            LOG_FATAL(
+                "Invalid frame size: %dx%d (need to be larger than zero and even-sized)", info.frame_width, info.frame_height);
         }
 
         if (!vpx_img_alloc(&raw, VPX_IMG_FMT_I444, info.frame_width, info.frame_height, 1))

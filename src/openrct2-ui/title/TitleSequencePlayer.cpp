@@ -268,6 +268,8 @@ namespace OpenRCT2::Title
             if (_position >= static_cast<int32_t>(_sequence->Commands.size()))
             {
                 _position = 0;
+                printf(" Reached the end of script, closing ");
+                ContextQuit();
             }
             _waitCounter = 0;
         }
