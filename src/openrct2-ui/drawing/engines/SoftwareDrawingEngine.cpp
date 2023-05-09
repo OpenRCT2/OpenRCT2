@@ -225,6 +225,7 @@ private:
     SDL_Window* _window = nullptr;
     SDL_Surface* _surface = nullptr;
     SDL_Surface* _RGBASurface = nullptr;
+    SDL_Surface* _ScaledRGBASurface = nullptr;
     SDL_Palette* _palette = nullptr;
     VpxVideoInfo info{};
     const VpxInterface* encoder = NULL;
@@ -276,6 +277,8 @@ public:
 
         _surface = SDL_CreateRGBSurface(0, width, height, 8, 0, 0, 0, 0);
         _RGBASurface = SDL_CreateRGBSurfaceWithFormat(0, width, height, 32, SDL_PIXELFORMAT_ARGB8888);
+        _ScaledRGBASurface = SDL_CreateRGBSurfaceWithFormat(
+            0, width * gConfigGeneral.WindowScale, height * gConfigGeneral.WindowScale, 32, SDL_PIXELFORMAT_ARGB8888);
         SDL_SetSurfaceBlendMode(_RGBASurface, SDL_BLENDMODE_NONE);
         _palette = SDL_AllocPalette(256);
         // file = fopen("/tmp/frameyuv", "wb");
@@ -293,8 +296,8 @@ public:
         }
 
         info.codec_fourcc = encoder->fourcc;
-        info.frame_width = width;
-        info.frame_height = height;
+        info.frame_width = width * gConfigGeneral.WindowScale;
+        info.frame_height = height * gConfigGeneral.WindowScale;
         info.time_base.numerator = 1;
         info.time_base.denominator = FPS;
         if (info.frame_width <= 0 || info.frame_height <= 0 || (info.frame_width % 2) != 0 || (info.frame_height % 2) != 0)
@@ -386,9 +389,14 @@ private:
             LOG_FATAL("SDL_BlitSurface %s", SDL_GetError());
             exit(1);
         }
+        if (SDL_BlitScaled(_RGBASurface, nullptr, _ScaledRGBASurface, nullptr))
+        {
+            LOG_FATAL("SDL_BlitScaled %s", SDL_GetError());
+            exit(1);
+        }
         libyuv::ARGBToI444(
-            static_cast<uint8_t*>(_RGBASurface->pixels), _RGBASurface->pitch, raw.planes[0], raw.stride[0], raw.planes[1],
-            raw.stride[1], raw.planes[2], raw.stride[1], _RGBASurface->w, _RGBASurface->h);
+            static_cast<uint8_t*>(_ScaledRGBASurface->pixels), _ScaledRGBASurface->pitch, raw.planes[0], raw.stride[0],
+            raw.planes[1], raw.stride[1], raw.planes[2], raw.stride[1], _ScaledRGBASurface->w, _ScaledRGBASurface->h);
         /*{
             fwrite(raw.planes[0], raw.stride[0], _RGBASurface->h, file);
             fwrite(raw.planes[1], raw.stride[1], _RGBASurface->h, file);
