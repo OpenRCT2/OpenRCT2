@@ -11,7 +11,9 @@
 
 #include <SDL.h>
 #include <algorithm>
+#include <condition_variable>
 #include <libyuv.h>
+#include <mutex>
 #include <openrct2/Game.h>
 #include <openrct2/common.h>
 #include <openrct2/config/Config.h>
@@ -20,6 +22,7 @@
 #include <openrct2/drawing/X8DrawingEngine.h>
 #include <openrct2/title/TitleSequenceRender.h>
 #include <openrct2/ui/UiContext.h>
+#include <thread>
 #include <vpx/vp8cx.h>
 #include <vpx/vpx_encoder.h>
 
@@ -218,6 +221,45 @@ static int encode_frame(vpx_codec_ctx_t* codec, vpx_image_t* img, int frame_inde
     return got_pkts;
 }
 
+struct EncodeThreadData
+{
+    std::mutex* SurfaceMutex;
+    std::condition_variable* NotifyCV;
+    SDL_Surface** Surface;
+    SDL_Surface** ScaledSurface;
+    int* Ready;
+    VpxVideoWriter** writer;
+    vpx_codec_ctx_t* codec{};
+    vpx_image_t* raw{};
+};
+
+static void EncodeThreadFunc(EncodeThreadData& etd)
+{
+    while (true)
+    {
+        std::unique_lock lock(*etd.SurfaceMutex);
+        (*etd.NotifyCV).wait(lock, [etd] { return *etd.Ready != 0; });
+        if (*etd.Ready == 2)
+        {
+            printf("closing down thread");
+            fflush(stdout);
+            break;
+        }
+        *etd.Ready = 0;
+        if (SDL_BlitScaled(*etd.Surface, nullptr, *etd.ScaledSurface, nullptr))
+        {
+            LOG_FATAL("SDL_BlitScaled %s", SDL_GetError());
+            exit(1);
+        }
+        libyuv::ARGBToI444(
+            static_cast<uint8_t*>((*etd.ScaledSurface)->pixels), (*etd.ScaledSurface)->pitch, etd.raw->planes[0],
+            etd.raw->stride[0], etd.raw->planes[1], etd.raw->stride[1], etd.raw->planes[2], etd.raw->stride[1],
+            (*etd.ScaledSurface)->w, (*etd.ScaledSurface)->h);
+        static int frame_count;
+        encode_frame(etd.codec, etd.raw, frame_count++, 0, *etd.writer);
+    }
+}
+
 class SoftwareDrawingEngine final : public X8DrawingEngine
 {
 private:
@@ -233,6 +275,11 @@ private:
     VpxVideoWriter* writer = NULL;
     vpx_codec_ctx_t codec{};
     FILE* file{};
+    std::thread EncodeThread{};
+    std::mutex SurfaceMutex{};
+    std::condition_variable NotifyCV{};
+    int Ready{};
+    EncodeThreadData etd{};
 
 public:
     explicit SoftwareDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
@@ -244,6 +291,13 @@ public:
 
     ~SoftwareDrawingEngine() override
     {
+        {
+            std::unique_lock lock(SurfaceMutex);
+            Ready = 2;
+            NotifyCV.notify_one();
+        }
+        EncodeThread.join();
+
         SDL_FreeSurface(_surface);
         SDL_FreeSurface(_RGBASurface);
         SDL_FreePalette(_palette);
@@ -264,6 +318,15 @@ public:
     void Initialise() override
     {
         encoder = &vpx_encoders[0];
+        etd.codec = &codec;
+        etd.NotifyCV = &NotifyCV;
+        etd.raw = &raw;
+        etd.Ready = &Ready;
+        etd.ScaledSurface = &_ScaledRGBASurface;
+        etd.Surface = &_RGBASurface;
+        etd.writer = &writer;
+        etd.SurfaceMutex = &SurfaceMutex;
+        EncodeThread = std::thread(EncodeThreadFunc, std::ref(etd));
     }
 
     void Resize(uint32_t width, uint32_t height) override
@@ -384,58 +447,30 @@ private:
         {
             SDL_UnlockSurface(_surface);
         }
-        if (SDL_BlitSurface(_surface, nullptr, _RGBASurface, nullptr))
+        /*{
+            fwrite(raw.planes[0], raw.stride[0], _RGBASurface->h, file);
+            fwrite(raw.planes[1], raw.stride[1], _RGBASurface->h, file);
+            fwrite(raw.planes[2], raw.stride[1], _RGBASurface->h, file); // not a typo, indices are planes[2], but strides[1].
+        }*/
+
+        SDL_Surface* windowSurface = SDL_GetWindowSurface(_window);
+        if (SDL_BlitSurface(_surface, nullptr, windowSurface, nullptr))
         {
             LOG_FATAL("SDL_BlitSurface %s", SDL_GetError());
             exit(1);
         }
-        if (SDL_BlitScaled(_RGBASurface, nullptr, _ScaledRGBASurface, nullptr))
-        {
-            LOG_FATAL("SDL_BlitScaled %s", SDL_GetError());
-            exit(1);
-        }
-        libyuv::ARGBToI444(
-            static_cast<uint8_t*>(_ScaledRGBASurface->pixels), _ScaledRGBASurface->pitch, raw.planes[0], raw.stride[0],
-            raw.planes[1], raw.stride[1], raw.planes[2], raw.stride[1], _ScaledRGBASurface->w, _ScaledRGBASurface->h);
-        /*{
-            fwrite(raw.planes[0], raw.stride[0], _RGBASurface->h, file);
-            fwrite(raw.planes[1], raw.stride[1], _RGBASurface->h, file);
-            fwrite(raw.planes[2], raw.stride[1], _RGBASurface->h, file);
-        }*/
 
-        static int frame_count;
-        if (gShouldRender)
         {
-            encode_frame(&codec, &raw, frame_count++, 0, writer);
-        }
-
-        // Copy the surface to the window
-        if (gConfigGeneral.WindowScale == 1 || gConfigGeneral.WindowScale <= 0)
-        {
-            SDL_Surface* windowSurface = SDL_GetWindowSurface(_window);
-            if (SDL_BlitSurface(_surface, nullptr, windowSurface, nullptr))
-            {
-                LOG_FATAL("SDL_BlitSurface %s", SDL_GetError());
-                exit(1);
-            }
-        }
-        else
-        {
-            // first blit to rgba surface to change the pixel format
+            std::unique_lock lock(SurfaceMutex);
             if (SDL_BlitSurface(_surface, nullptr, _RGBASurface, nullptr))
             {
                 LOG_FATAL("SDL_BlitSurface %s", SDL_GetError());
                 exit(1);
             }
-
-            // then scale to window size. Without changing to RGBA first, SDL complains
-            // about blit configurations being incompatible.
-            if (SDL_BlitScaled(_RGBASurface, nullptr, SDL_GetWindowSurface(_window), nullptr))
-            {
-                LOG_FATAL("SDL_BlitScaled %s", SDL_GetError());
-                exit(1);
-            }
+            Ready = 1;
+            NotifyCV.notify_one();
         }
+
         if (SDL_UpdateWindowSurface(_window))
         {
             LOG_FATAL("SDL_UpdateWindowSurface %s", SDL_GetError());
