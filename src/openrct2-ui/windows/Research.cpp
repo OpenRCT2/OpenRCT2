@@ -280,6 +280,11 @@ private:
         }
     }
 
+    void OnResize() override
+    {
+        ResizeFrameWithPage();
+    }
+
     void DrawTabImage(DrawPixelInfo& dpi, int32_t tabPage, int32_t spriteIndex)
     {
         WidgetIndex widgetIndex = WIDX_TAB_1 + tabPage;

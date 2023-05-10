@@ -365,6 +365,11 @@ public:
         }
     }
 
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
+
 private:
     void OnClose() override
     {

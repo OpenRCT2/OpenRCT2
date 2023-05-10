@@ -350,6 +350,8 @@ public:
                 Invalidate();
             }
         }
+
+        ResizeFrameWithPage();
     }
 
     void OnUpdate() override
@@ -377,13 +379,6 @@ public:
             _colour_index_2 = -1;
         }
 
-        window_themes_widgets[WIDX_THEMES_BACKGROUND].right = width - 1;
-        window_themes_widgets[WIDX_THEMES_BACKGROUND].bottom = height - 1;
-        window_themes_widgets[WIDX_THEMES_TAB_CONTENT_PANEL].right = width - 1;
-        window_themes_widgets[WIDX_THEMES_TAB_CONTENT_PANEL].bottom = height - 1;
-        window_themes_widgets[WIDX_THEMES_TITLE].right = width - 2;
-        window_themes_widgets[WIDX_THEMES_CLOSE].left = width - 2 - 0x0B;
-        window_themes_widgets[WIDX_THEMES_CLOSE].right = width - 2 - 0x0B + 0x0A;
         window_themes_widgets[WIDX_THEMES_LIST].right = width - 4;
         window_themes_widgets[WIDX_THEMES_LIST].bottom = height - 0x0F;
 

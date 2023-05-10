@@ -2595,7 +2595,7 @@ static void WindowRideMainPaint(WindowBase* w, DrawPixelInfo& dpi)
     {
         WindowDrawViewport(dpi, *w);
         if (w->viewport->flags & VIEWPORT_FLAG_SOUND_ON)
-            GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), w->windowPos + ScreenCoordsXY{ 2, 2 });
+            GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*w));
     }
 
     // View dropdown

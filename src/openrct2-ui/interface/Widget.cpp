@@ -15,6 +15,7 @@
 #include <cmath>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
@@ -565,11 +566,14 @@ static void WidgetCaptionDraw(DrawPixelInfo& dpi, WindowBase& w, WidgetIndex wid
     int32_t width = widget->width() - 4;
     if ((widget + 1)->type == WindowWidgetType::CloseBox)
     {
-        width -= 10;
+        width -= CloseButtonWidth;
         if ((widget + 2)->type == WindowWidgetType::CloseBox)
-            width -= 10;
+            width -= CloseButtonWidth;
     }
     topLeft.x += width / 2;
+    if (gConfigInterface.WindowButtonsOnTheLeft)
+        topLeft.x += CloseButtonWidth;
+
     DrawTextEllipsised(
         dpi, topLeft, width, widget->text, Formatter::Common(),
         { COLOUR_WHITE | static_cast<uint8_t>(COLOUR_FLAG_OUTLINE), TextAlignment::CENTRE });

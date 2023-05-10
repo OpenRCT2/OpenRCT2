@@ -190,6 +190,11 @@ public:
             DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
         }
     }
+
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
 };
 
 WindowBase* WindowSceneryScatterOpen()

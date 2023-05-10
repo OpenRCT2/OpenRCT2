@@ -359,6 +359,11 @@ public:
         }
     }
 
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
+
 private:
     void UpdatePreview()
     {
