@@ -251,7 +251,7 @@ static void EncodeThreadFunc(EncodeThreadData& etd)
             LOG_FATAL("SDL_BlitScaled %s", SDL_GetError());
             exit(1);
         }
-        libyuv::ARGBToI444(
+        libyuv::ARGBToI420(
             static_cast<uint8_t*>((*etd.ScaledSurface)->pixels), (*etd.ScaledSurface)->pitch, etd.raw->planes[0],
             etd.raw->stride[0], etd.raw->planes[1], etd.raw->stride[1], etd.raw->planes[2], etd.raw->stride[1],
             (*etd.ScaledSurface)->w, (*etd.ScaledSurface)->h);
@@ -369,7 +369,7 @@ public:
                 "Invalid frame size: %dx%d (need to be larger than zero and even-sized)", info.frame_width, info.frame_height);
         }
 
-        if (!vpx_img_alloc(&raw, VPX_IMG_FMT_I444, info.frame_width, info.frame_height, 1))
+        if (!vpx_img_alloc(&raw, VPX_IMG_FMT_I420, info.frame_width, info.frame_height, 1))
         {
             LOG_FATAL("Failed to allocate image.");
         }
@@ -385,7 +385,7 @@ public:
         cfg.g_timebase.num = info.time_base.numerator;
         cfg.g_timebase.den = info.time_base.denominator;
         cfg.g_threads = 8;
-        cfg.g_profile = 1;
+        cfg.g_profile = 0;
 
         writer = vpx_video_writer_open("/tmp/out.webm", kContainerIVF, &info);
         if (!writer)
