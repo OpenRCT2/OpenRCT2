@@ -1,13 +1,19 @@
-0.4.5 (in development)
+0.4.6 (in development)
+------------------------------------------------------------------------
+- Change: [#20110] Fix a few RCT1 build height parity discrepancies.
+
+0.4.5 (2023-05-08)
 ------------------------------------------------------------------------
 - Feature: [#18713] Block brakes have speed control and brakes slower than adjacent block brakes copy block brake speed when block brake open.
 - Feature: [#19276] Add Powered Lifthill to Giga Coaster.
-- Feature: [#19305] Add new Reversed Trains ride setting to run trains backwards.
+- Feature: [#19305] Add new Reversed Trains ride setting to run trains backwards, granting a bonus to ride ratings.
 - Feature: [#19305] [Plugin] Add “Car.isReversed” to allow individual ride vehicles to run backwards.
 - Feature: [#19446] Add new color options to color dropdown.
 - Feature: [#19547] Add large sloped turns to hybrid coaster and single rail coaster.
 - Feature: [#19930] Add plugin APIs for research.
 - Feature: [OpenMusic#25] Added Prehistoric ride music style.
+- Feature: [OpenMusic#26] Fairground Organ style 2 with new recordings from Herman's 35er Voigt (Previously known as Bressingham Voigt).
+- Feature: [OpenMusic#28] Add Ragtime style 2 ride music.
 - Improved: [#17739] Raise water and land height limits to 254 units/182m/600ft.
 - Improved: [#18490] Reduce guests walking through trains on level crossing next to station.
 - Improved: [#18996] When marketing campaigns are disabled, disable the Marketing tab in the Finances window.
@@ -16,6 +22,7 @@
 - Improved: [#19905] Add prompt before resetting shortcut keys.
 - Improved: [#19952] Add colour preset to Spiral Slide using the new colour options.
 - Improved: [#19953] Add keyboard shortcut to Keyboard Shortcuts window.
+- Improved: [#20055] Performance improvement for the software renderer.
 - Change: [OpenSFX#17] Update Hybrid RC lifthill loop.
 - Fix: [#12598] Number of holes is not set correctly when saving track designs.
 - Fix: [#13130] Android always defaulting to UK locale for language, currency and temperature.
@@ -41,6 +48,9 @@
 - Fix: [#20016] The group box for small scenery details in the Tile Inspector window has unused empty space.
 - Fix: [#20018] Shops not calculating up-keep cost.
 - Fix: [#20033] Asset packs cannot reference game data.
+- Fix: [#20104] [Plugin] Some network APIs use player index and group index.
+- Fix: [#20099] Some scrollbar is glitched or have incorrect size when open window for the first time
+- Fix: [#20134] Grass length being updated for tiles in the void, causing unneccesary drawing operations.
 
 0.4.4 (2023-03-28)
 ------------------------------------------------------------------------

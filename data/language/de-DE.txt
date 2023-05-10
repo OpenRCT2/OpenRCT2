@@ -3646,7 +3646,44 @@ STR_6544    :Darlehen kann nicht negativ sein!
 STR_6545    :RCT1-Zinsberechnung benutzen
 STR_6546    :Den Zinsberechnungsalgorithmus von RollerCoaster Tycoon 1 verwenden, welcher einen festen Prozentsatz von ca. 1,33% benutzt.
 STR_6547    :Jede Szenerie
-
+STR_6548    :Geländer an Kreuzung zeigen
+STR_6549    :Kompabilitätsobjekte können nicht ausgewählt werden!
+STR_6550    :Dieser Eintrag wird für die Abwärtskompabilität mit alten oder beschädigten Objekten bereitgestellt. Er kann nicht ausgewählt werden. Er kann nur abgewählt werden.
+STR_6551    :Armeegrün
+STR_6552    :Honigtau
+STR_6553    :Loh
+STR_6554    :Kastanienrot
+STR_6555    :Koralle
+STR_6556    :Waldgrün
+STR_6557    :Chartreuse
+STR_6558    :Jagdgrün
+STR_6559    :Seladon
+STR_6560    :Lindgrün
+STR_6561    :Sepia
+STR_6562    :Pfirsich
+STR_6563    :Helllavendel
+STR_6564    :Blaugrün
+STR_6565    :Meerschaumgrün
+STR_6566    :Violett
+STR_6567    :Lavendel
+STR_6568    :Pastellorange
+STR_6569    :Tiefes Wasser
+STR_6570    :Pastellrosa
+STR_6571    :Umbra
+STR_6572    :Beige
+STR_6573    :Unsichtbar
+STR_6574    :Leere
+STR_6575    :Erlaube spezielle Farbschemas
+STR_6576    :Fügt Sonderfarben zur Farbpalette hinzu
+STR_6577    :Blockbremsengeschwindigkeit
+STR_6578    :Geschwindigkeitsbegrenzung für Blockbremsen festlegen. Im Blockbereichsmodus werden benachbarte Bremsen mit einer langsameren Geschwindigkeit mit der Blockbremse verknüpft.
+STR_6579    :Blockbremsen werden zur Standardgeschwindigkeit gesetzt, wenn sie als Streckenentwurf gespeichert werden
+STR_6580    :Zurücksetzen
+STR_6581    :Sind Sie sich sicher, dass Sie alle Tastenkürzel in dieser Registerkarte zurücksetzen wollen?
+STR_6582    :Tastenkürzelfenster öffnen
+STR_6583    :{WINDOW_COLOUR_2}Umgekehrte Züge
+STR_6584    :Auswählen, um Züge rückwärts fahren zu lassen
+STR_6585    :Änderungen können nicht ausgeführt werden …
 
 #############
 # Scenarios #

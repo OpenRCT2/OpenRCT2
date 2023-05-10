@@ -7,11 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-// Ignore isatty warning on WIN32
-#ifndef _CRT_NONSTDC_NO_WARNINGS
-#    define _CRT_NONSTDC_NO_WARNINGS
-#endif
-
 #include "../Context.h"
 #include "../OpenRCT2.h"
 #include "../platform/Platform.h"

@@ -40,7 +40,6 @@ constexpr const RideTypeDescriptor SubmarineRideRTD =
     SET_FIELD(Heights, { 255, 16, 0, 3, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateSubmarineRide),
     SET_FIELD(RatingsMultipliers, { 70, 6, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 4, 0, 0 }),
     SET_FIELD(BuildCosts, { 35.00_GBP, 2.50_GBP, 5, }),
@@ -54,6 +53,19 @@ constexpr const RideTypeDescriptor SubmarineRideRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_SUBMARINE_RIDE_TRACK, SPR_RIDE_DESIGN_PREVIEW_SUBMARINE_RIDE_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "submarine_ride"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(2, 20), RIDE_RATING(1, 80), RIDE_RATING(1, 40) },
+        7,
+        -1,
+        false,
+        {
+            { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
+            { RatingsModifierType::BonusProximity,        0,                11183, 0, 0 },
+            { RatingsModifierType::BonusScenery,          0,                22310, 0, 0 },
+        },
+    }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_BoatHire),
 };

@@ -15,9 +15,9 @@
 #include "config/Config.h"
 #include "core/Console.hpp"
 #include "core/FileSystem.hpp"
+#include "core/Path.hpp"
 #include "core/String.hpp"
 #include "object/AudioSampleTable.h"
-#include "platform/Platform.h"
 
 #include <cstdio>
 
@@ -72,7 +72,7 @@ void AssetPackManager::Scan()
     Scan(openrct2Dir);
 
     auto userDirectory = fs::u8path(env->GetDirectoryPath(DIRBASE::USER, DIRID::ASSET_PACK));
-    Platform::EnsureDirectoryExists(userDirectory.u8string());
+    Path::CreateDirectory(userDirectory.u8string());
     Scan(userDirectory);
 }
 

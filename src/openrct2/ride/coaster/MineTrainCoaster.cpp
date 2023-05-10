@@ -5556,7 +5556,7 @@ static void MineTrainRCTrackDiagFlatTo25DegUp(
             PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
             break;
         case 2:
-            if (direction == 0)
+            if (direction == 2)
             {
                 ImageIndex imageIndex = trackElement.HasChain() ? 20392 : 20364;
                 PaintAddImageAsParent(

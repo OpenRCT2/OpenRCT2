@@ -1299,7 +1299,7 @@ STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :No podeu demanar més diners!
 STR_1919    :No teniu prou diners!
 STR_1920    :No podeu tornar el préstec!
-STR_1921    :Comença una nova partida
+STR_1921    :Comença una partida nova
 STR_1922    :Continua una partida desada
 STR_1924    :Surt
 STR_1925    :Aquesta persona aquí no es pot col·locar…
@@ -3657,6 +3657,41 @@ STR_6547    :Tots els decorats
 STR_6548    :Mostra les baranes a les cruïlles
 STR_6549    :Els objectes de compatibilitat no es poden seleccionar!
 STR_6550    :Aquesta entrada s’inclou per a facilitar la compatibilitat amb versions antigues o danyades d’alguns objectes. No es pot seleccionar. L’únic que es pot fer és desseleccionar-la.
+STR_6551    :Verd militar
+STR_6552    :Mel
+STR_6553    :Bronzejat
+STR_6554    :Granat
+STR_6555    :Rosa coral
+STR_6556    :Verd bosc
+STR_6557    :Verd Chartreuse
+STR_6558    :Verd caçador
+STR_6559    :Verd clar
+STR_6560    :Verd llima
+STR_6561    :Sèpia
+STR_6562    :Préssec
+STR_6563    :Blau lavanda
+STR_6564    :Verd maragda
+STR_6565    :Aiguamarina
+STR_6566    :Violeta
+STR_6567    :Lavanda
+STR_6568    :Taronja pastel
+STR_6569    :Blau fosc
+STR_6570    :Rosa pastel
+STR_6571    :Cafè
+STR_6572    :Beige
+STR_6573    :Invisible
+STR_6574    :Buit
+STR_6575    :Permet esquemes de color especials
+STR_6576    :Afegeix més colors al desplegable de colors
+STR_6577    :Velocitat del fre de bloc
+STR_6578    :Estableix el límit de velocitat per als frens de bloc. En mode de secció de bloc, els frens adjacents amb una velocitat inferior es vinculen amb el fre de bloc.
+STR_6579    :Els frens de bloc s’establiran a la velocitat per defecte quan es desi el disseny de les vies
+STR_6580    :Restableix
+STR_6581    :Esteu segur que voleu restablir totes les dreceres de teclat d’aquesta pestanya?
+STR_6582    :Obre la finestra de dreceres de teclat
+STR_6583    :{WINDOW_COLOUR_2}Inverteix el sentit
+STR_6584    :Trieu-ho per a invertir el sentit de moviment dels cotxes
+STR_6585    :Els canvis no es poden fer…
 
 #############
 # Scenarios #

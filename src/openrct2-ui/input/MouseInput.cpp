@@ -1647,7 +1647,12 @@ bool InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER modifier)
 void InputScrollViewport(const ScreenCoordsXY& scrollScreenCoords)
 {
     WindowBase* mainWindow = WindowGetMain();
+    if (mainWindow == nullptr)
+        return;
+
     Viewport* viewport = mainWindow->viewport;
+    if (viewport == nullptr)
+        return;
 
     const int32_t speed = gConfigGeneral.EdgeScrollingSpeed;
 

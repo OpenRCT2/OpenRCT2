@@ -57,7 +57,7 @@ static std::vector<ReplayTestData> GetReplayFiles()
     while (scanner->Next())
     {
         ReplayTestData test;
-        test.name = sanitizeTestName(scanner->GetFileInfo()->Name);
+        test.name = sanitizeTestName(scanner->GetFileInfo().Name);
         test.filePath = scanner->GetPath();
         res.push_back(std::move(test));
     }

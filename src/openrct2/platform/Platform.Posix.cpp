@@ -31,9 +31,7 @@
 #    include <sys/time.h>
 
 // The name of the mutex used to prevent multiple instances of the game from running
-static constexpr u8string_view SINGLE_INSTANCE_MUTEX_NAME = u8"openrct2.lock";
-
-static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
+static constexpr const utf8* SINGLE_INSTANCE_MUTEX_NAME = u8"openrct2.lock";
 
 namespace Platform
 {
@@ -307,64 +305,13 @@ namespace Platform
 #    endif // __EMSCRIPTEN__
     }
 
-    // Implement our own version of getumask(), as it is documented being
-    // "a vaporware GNU extension".
-    static mode_t openrct2_getumask()
-    {
-        mode_t mask = umask(0);
-        umask(mask);
-        return 0777 & ~mask; // Keep in mind 0777 is octal
-    }
-
-    bool EnsureDirectoryExists(u8string_view path)
-    {
-        mode_t mask = openrct2_getumask();
-        char buffer[MAX_PATH];
-        SafeStrCpy(buffer, u8string(path).c_str(), sizeof(buffer));
-
-        LOG_VERBOSE("Create directory: %s", buffer);
-        for (char* p = buffer + 1; *p != '\0'; p++)
-        {
-            if (*p == '/')
-            {
-                // Temporarily truncate
-                *p = '\0';
-
-                LOG_VERBOSE("mkdir(%s)", buffer);
-                if (mkdir(buffer, mask) != 0)
-                {
-                    if (errno != EEXIST)
-                    {
-                        return false;
-                    }
-                }
-
-                // Restore truncation
-                *p = '/';
-            }
-        }
-
-        LOG_VERBOSE("mkdir(%s)", buffer);
-        if (mkdir(buffer, mask) != 0)
-        {
-            if (errno != EEXIST)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     bool LockSingleInstance()
     {
-        auto pidFilePath = Path::Combine(_userDataDirectoryPath, SINGLE_INSTANCE_MUTEX_NAME);
-
         // We will never close this file manually. The operating system will
         // take care of that, because flock keeps the lock as long as the
         // file is open and closes it automatically on file close.
         // This is intentional.
-        int32_t pidFile = open(pidFilePath.c_str(), O_CREAT | O_RDWR, 0666);
+        int32_t pidFile = open(SINGLE_INSTANCE_MUTEX_NAME, O_CREAT | O_RDWR, 0666);
 
         if (pidFile == -1)
         {

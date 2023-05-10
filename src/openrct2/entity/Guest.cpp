@@ -29,9 +29,9 @@
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../network/network.h"
-#include "../object/FootpathItemEntry.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/MusicObject.h"
+#include "../object/PathAdditionEntry.h"
 #include "../object/WallSceneryEntry.h"
 #include "../peep/GuestPathfinding.h"
 #include "../peep/RideUseSystem.h"
@@ -1169,7 +1169,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                         if (pathElement->HasAddition() && !pathElement->AdditionIsGhost())
                         {
                             auto* pathAddEntry = pathElement->GetAdditionEntry();
-                            if (pathAddEntry != nullptr && (pathAddEntry->flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN))
+                            if (pathAddEntry != nullptr && (pathAddEntry->flags & PATH_ADDITION_FLAG_IS_QUEUE_SCREEN))
                             {
                                 found = true;
                             }
@@ -2942,7 +2942,8 @@ static PeepThoughtType PeepAssessSurroundings(int16_t centre_x, int16_t centre_y
                         if (tileElement->AsPath()->AdditionIsGhost())
                             break;
 
-                        if (pathAddEntry->flags & (PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER | PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW))
+                        if (pathAddEntry->flags
+                            & (PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER | PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW))
                         {
                             num_fountains++;
                             break;
@@ -5450,7 +5451,7 @@ void Guest::UpdateWalking()
                 return;
             }
 
-            if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BENCH))
+            if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BENCH))
                 positions_free = 9;
         }
     }
@@ -5874,7 +5875,7 @@ void Guest::UpdateUsingBin()
                     break;
 
                 auto* pathAddEntry = pathElement->GetAdditionEntry();
-                if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN))
+                if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN))
                     break;
 
                 if (pathElement->IsBroken())
@@ -5986,7 +5987,7 @@ static PathElement* FindBench(const CoordsXYZ& loc)
             continue;
 
         auto* pathAddEntry = pathElement->GetAdditionEntry();
-        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_BIT_FLAG_IS_BENCH))
+        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BENCH))
             continue;
 
         if (pathElement->IsBroken())
@@ -6075,7 +6076,7 @@ static PathElement* FindBin(const CoordsXYZ& loc)
             continue;
 
         auto* pathAddEntry = pathElement->GetAdditionEntry();
-        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN))
+        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN))
             continue;
 
         if (pathElement->IsBroken())
@@ -6153,7 +6154,7 @@ static PathElement* FindBreakableElement(const CoordsXYZ& loc)
             continue;
 
         auto* pathAddEntry = pathElement->GetAdditionEntry();
-        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_BIT_FLAG_BREAKABLE))
+        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_ADDITION_FLAG_BREAKABLE))
             continue;
 
         if (pathElement->IsBroken())

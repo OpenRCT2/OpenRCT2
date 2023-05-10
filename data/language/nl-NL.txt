@@ -3683,6 +3683,9 @@ STR_6579    :De snelheden van de blokremmen zullen niet worden opgeslagen in het
 STR_6580    :Toetsen herstellen
 STR_6581    :Weet je zeker dat je alle sneltoetsen op dit tabblad weer wilt terugzetten op de standaardwaarden?
 STR_6582    :Sneltoetsen openen
+STR_6583    :{WINDOW_COLOUR_2}Achterstevoren
+STR_6584    :Keert de trein om, zodat hij achterstevoren over de baan rijdt.
+STR_6585    :Kan dit niet wijzigen…
 
 #############
 # Scenarios #

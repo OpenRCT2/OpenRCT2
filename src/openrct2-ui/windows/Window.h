@@ -120,8 +120,14 @@ WindowBase* WindowMapOpen();
 void WindowMapReset();
 
 WindowBase* WindowResearchOpen();
-void WindowResearchDevelopmentPagePaint(WindowBase* w, DrawPixelInfo& dpi, WidgetIndex baseWidgetIndex);
-void WindowResearchFundingPagePaint(WindowBase* w, DrawPixelInfo& dpi, WidgetIndex baseWidgetIndex);
+void WindowResearchDevelopmentMouseUp(WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex);
+void WindowResearchDevelopmentPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex);
+void WindowResearchDevelopmentDraw(WindowBase* w, DrawPixelInfo& dpi, WidgetIndex baseWidgetIndex);
+void WindowResearchFundingMouseDown(WindowBase* w, WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex);
+void WindowResearchFundingMouseUp(WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex);
+void WindowResearchFundingDropdown(WidgetIndex widgetIndex, int32_t selectedIndex, WidgetIndex baseWidgetIndex);
+void WindowResearchFundingPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex);
+void WindowResearchFundingDraw(WindowBase* w, DrawPixelInfo& dpi);
 
 WindowBase* WindowNewRideOpen();
 WindowBase* WindowNewRideOpenResearch();

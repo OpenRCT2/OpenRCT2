@@ -3691,7 +3691,8 @@ STR_6577    :Vitesse des freins de bloc
 STR_6578    :Définit la vitesse maximale aux freins de bloc. En mode blocs de voie, les freins adjacents avec une vitesse plus faible sont liés aux freins de bloc.
 STR_6579    :La vitesse des freins de bloc sera changée à la valeur par défaut quand la conception de voie sera sauvegardée
 STR_6580    :Réinitialiser
-STR_6581    :Voulez-vous vraiment réinitialiser tous les raccourcis claviers de cet onglet?
+STR_6581    :Voulez-vous vraiment réinitialiser tous les raccourcis claviers de cet onglet ?
+STR_6582    :Ouvrir la fenêtre des raccourcis clavier
 
 #############
 # Scenarios #

@@ -24,7 +24,7 @@ namespace Path
     }
 
     u8string GetDirectory(u8string_view path);
-    void CreateDirectory(u8string_view path);
+    bool CreateDirectory(u8string_view path);
     bool DirectoryExists(u8string_view path);
     bool DeleteDirectory(u8string_view path);
     u8string GetFileName(u8string_view origPath);
@@ -33,6 +33,7 @@ namespace Path
     u8string WithExtension(u8string_view path, u8string_view newExtension);
     bool IsAbsolute(u8string_view path);
     u8string GetAbsolute(u8string_view relative);
+    u8string GetRelative(u8string_view path, u8string_view base);
     bool Equals(u8string_view a, u8string_view b);
 
     /**

@@ -20,12 +20,12 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
-#include <openrct2/object/FootpathItemEntry.h>
 #include <openrct2/object/FootpathObject.h>
 #include <openrct2/object/FootpathRailingsObject.h>
 #include <openrct2/object/FootpathSurfaceObject.h>
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
+#include <openrct2/object/PathAdditionEntry.h>
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
@@ -441,7 +441,7 @@ static constexpr TileInspectorGroupboxSettings PageGroupBoxSettings[] = {
 
 static constexpr int32_t ViewportInteractionFlags = EnumsToFlags(
     ViewportInteractionItem::Terrain, ViewportInteractionItem::Entity, ViewportInteractionItem::Ride,
-    ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::FootpathItem,
+    ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::PathAddition,
     ViewportInteractionItem::ParkEntrance, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
     ViewportInteractionItem::Banner);
 // clang-format off
@@ -1152,9 +1152,9 @@ public:
                     // Path addition
                     if (tileElement->AsPath()->HasAddition())
                     {
-                        const auto pathBitEntry = tileElement->AsPath()->GetAdditionEntry();
-                        StringId additionNameId = pathBitEntry != nullptr ? pathBitEntry->name
-                                                                          : static_cast<StringId>(STR_UNKNOWN_OBJECT_TYPE);
+                        const auto pathAdditionEntry = tileElement->AsPath()->GetAdditionEntry();
+                        StringId additionNameId = pathAdditionEntry != nullptr ? pathAdditionEntry->name
+                                                                               : static_cast<StringId>(STR_UNKNOWN_OBJECT_TYPE);
                         auto ft = Formatter();
                         ft.Add<StringId>(additionNameId);
                         DrawTextBasic(

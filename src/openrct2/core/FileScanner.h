@@ -20,7 +20,7 @@ namespace FileScanner
 {
     struct FileInfo
     {
-        const utf8* Name;
+        u8string Name;
         uint64_t Size;
         uint64_t LastModified;
     };
@@ -30,9 +30,9 @@ struct IFileScanner
 {
     virtual ~IFileScanner() = default;
 
-    virtual const FileScanner::FileInfo* GetFileInfo() const abstract;
-    virtual const utf8* GetPath() const abstract;
-    virtual const utf8* GetPathRelative() const abstract;
+    virtual const FileScanner::FileInfo& GetFileInfo() const abstract;
+    virtual const u8string& GetPath() const abstract;
+    virtual u8string GetPathRelative() const abstract;
 
     virtual void Reset() abstract;
     virtual bool Next() abstract;

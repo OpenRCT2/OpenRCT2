@@ -41,7 +41,6 @@ constexpr const RideTypeDescriptor SuspendedMonorailRTD =
     SET_FIELD(Heights, { 12, 40, 32, 8, }),
     SET_FIELD(MaxMass, 78),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateSuspendedMonorail),
     SET_FIELD(RatingsMultipliers, { 70, 6, -10 }),
     SET_FIELD(UpkeepCosts, { 70, 20, 0, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 32.50_GBP, 2.50_GBP, 50, }),
@@ -57,5 +56,25 @@ constexpr const RideTypeDescriptor SuspendedMonorailRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_SUSPENDED_MONORAIL_TRACK, SPR_RIDE_DESIGN_PREVIEW_SUSPENDED_MONORAIL_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "suspended_monorail"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(2, 15), RIDE_RATING(0, 23), RIDE_RATING(0, 8) },
+        14,
+        -1,
+        false,
+        {
+            { RatingsModifierType::BonusLength,            6000,             764, 0, 0 },
+            { RatingsModifierType::BonusTrainLength,       0,                93622, 0, 0 },
+            { RatingsModifierType::BonusMaxSpeed,          0,                44281, 70849, 35424 },
+            { RatingsModifierType::BonusAverageSpeed,      0,                291271, 218453, 0 },
+            { RatingsModifierType::BonusDuration,          150,              21845, 0, 0 },
+            { RatingsModifierType::BonusSheltered,         0,                5140, 6553, 18724 },
+            { RatingsModifierType::BonusProximity,         0,                12525, 0, 0 },
+            { RatingsModifierType::BonusScenery,           0,                25098, 0, 0 },
+            { RatingsModifierType::RequirementLength,      0xAA0000,         2, 2, 2 },
+            { RatingsModifierType::RequirementUnsheltered, 4,                4, 1, 1 },
+        },
+    }),
 };
 // clang-format on
