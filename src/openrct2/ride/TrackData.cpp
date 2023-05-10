@@ -12,6 +12,7 @@
 #include "../localisation/StringIds.h"
 #include "Track.h"
 #include "TrackPaint.h"
+#include "thrill/meta/Condor.h"
 
 #include <cstdint>
 #include <iterator>
@@ -7149,7 +7150,7 @@ namespace OpenRCT2
         {
             std::array<TrackElementDescriptor, TrackElemType::Count> res{};
 
-            for (int i = 0; i < TrackElemType::Count; i++)
+            for (int i = 0; i < TrackElemType::Count-1; i++)
             {
                 TrackElementDescriptor& desc = res[i];
                 desc.Description = RideConfigurationStringIds[i];
@@ -7173,6 +7174,8 @@ namespace OpenRCT2
                     desc.SequenceProperties[j] = TrackSequenceProperties[i][j];
                 }
             }
+
+            res[TrackElemType::FlatTrack9x9] = TowerBase9x9TED;
 
             return res;
         }

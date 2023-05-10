@@ -576,7 +576,9 @@ namespace TrackElemType
     constexpr track_type_t FlyerHalfLoopInvertedUp = 291;
     constexpr track_type_t FlyerHalfLoopUninvertedDown = 292;
 
-    constexpr track_type_t Count = 293;
+    constexpr track_type_t FlatTrack9x9 = 293;
+
+    constexpr track_type_t Count = 294;
     constexpr track_type_t None = 65535;
 
 }; // namespace TrackElemType

@@ -108,9 +108,9 @@ static void PaintCondorBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    trackSequence = track_map_3x3[direction][trackSequence];
+    trackSequence = TrackMap9x9[direction][trackSequence];
 
-    int32_t edges = edges_3x3[trackSequence];
+    int32_t edges = Edges9x9[trackSequence];
 
     WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
@@ -210,7 +210,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionCondor(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::TowerBase:
+        case TrackElemType::FlatTrack9x9:
             return PaintCondorBase;
 
         case TrackElemType::TowerSection:
