@@ -1355,7 +1355,7 @@ private:
         SceneryRemoveGhostToolPlacement();
 
         // 6e265b
-        auto footpathAdditionPlaceAction = FootpathAdditionPlaceAction(loc, entryIndex + 1);
+        auto footpathAdditionPlaceAction = FootpathAdditionPlaceAction(loc, entryIndex);
         footpathAdditionPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         footpathAdditionPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
             if (result->Error != GameActions::Status::Ok)
@@ -2308,7 +2308,7 @@ private:
                 if (gridPos.IsNull())
                     return;
 
-                auto footpathAdditionPlaceAction = FootpathAdditionPlaceAction({ gridPos, z }, selectedScenery + 1);
+                auto footpathAdditionPlaceAction = FootpathAdditionPlaceAction({ gridPos, z }, selectedScenery);
 
                 footpathAdditionPlaceAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error != GameActions::Status::Ok)
