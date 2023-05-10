@@ -387,7 +387,15 @@ public:
         cfg.g_threads = 8;
         cfg.g_profile = 0;
 
-        writer = vpx_video_writer_open("/tmp/out.webm", kContainerIVF, &info);
+        using namespace std::string_literals;
+        char* titleSeqName = getenv("TITLE_SEQUENCE_NAME");
+        std::string titleSequenceNameStr;
+        if (titleSeqName != nullptr) {
+            titleSequenceNameStr = titleSeqName;
+        }
+        std::string filename = "out"s + titleSequenceNameStr + ".webm";
+        printf("Rendering to file %s\n", filename.c_str());
+        writer = vpx_video_writer_open(filename.c_str(), kContainerIVF, &info);
         if (!writer)
         {
             LOG_FATAL("Failed to open %s for writing.", "/tmp/out.webm");
