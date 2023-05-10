@@ -460,6 +460,7 @@ private:
             exit(1);
         }
 
+        if (gShouldRender)
         {
             std::unique_lock lock(SurfaceMutex);
             if (SDL_BlitSurface(_surface, nullptr, _RGBASurface, nullptr))
