@@ -69,7 +69,7 @@
     </ClCompile>
     <Link>
       <LargeAddressAware Condition="'$(Platform)'=='Win32'">true</LargeAddressAware>
-      <AdditionalDependencies>wininet.lib;imm32.lib;version.lib;winmm.lib;crypt32.lib;wldap32.lib;shlwapi.lib;setupapi.lib;bcrypt.lib;winhttp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>wininet.lib;imm32.lib;version.lib;winmm.lib;crypt32.lib;wldap32.lib;shlwapi.lib;setupapi.lib;bcrypt.lib;winhttp.lib;vpx.lib;yuv.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalDependencies Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x64'">fribidi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/OPT:NOLBR /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
