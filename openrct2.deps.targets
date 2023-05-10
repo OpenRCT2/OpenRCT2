@@ -210,12 +210,12 @@
   <PropertyGroup>
     <RootDir>$(MsBuildThisFileDirectory)</RootDir>
     <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
-    <LibsUrl Condition="'$(Platform)'=='ARM64'">https://github.com/OpenRCT2/Dependencies/releases/download/v37/openrct2-libs-v37-arm64-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='ARM64'">508bbd39b9be3d746ed8e17b6c0e7a79f6fa13c8</LibsSha1>
-    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v37/openrct2-libs-v37-x64-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='x64'">28fabdb3fe8ddb7c73cd1c5e57ec8df5bd6232e5</LibsSha1>
-    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v37/openrct2-libs-v37-x86-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='Win32'">9984c1e317dcfb3aaf8e17f1db2ebb0f771e2373</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='ARM64'">https://github.com/janisozaur/Dependencies/releases/download/v999-libyuv-libvpx-v2/openrct2-libs-v999-libyuv-libvpx-v2-arm64-windows-static.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='ARM64'">7573444ab7b44492c7134c9362b4c570617fb7fa</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/janisozaur/Dependencies/releases/download/v999-libyuv-libvpx-v2/openrct2-libs-v999-libyuv-libvpx-v2-x64-windows-static.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='x64'">aa64cc5362c55e94218aa8edabf59b81bcbe5558</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/janisozaur/Dependencies/releases/download/v999-libyuv-libvpx-v2/openrct2-libs-v999-libyuv-libvpx-v2-x86-windows-static.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='Win32'">68f3dc82b7c5a019a654e74daf1128c564538f44</LibsSha1>
     <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.14/title-sequences.zip</TitleSequencesUrl>
     <TitleSequencesSha1>6c04781b959b468e1f65ec2d2f21f5aaa5e5724d</TitleSequencesSha1>
     <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.7.0/objects.zip</ObjectsUrl>
