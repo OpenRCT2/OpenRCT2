@@ -390,7 +390,8 @@ public:
         using namespace std::string_literals;
         char* titleSeqName = getenv("TITLE_SEQUENCE_NAME");
         std::string titleSequenceNameStr;
-        if (titleSeqName != nullptr) {
+        if (titleSeqName != nullptr)
+        {
             titleSequenceNameStr = titleSeqName;
         }
         std::string filename = "out"s + titleSequenceNameStr + ".webm";
