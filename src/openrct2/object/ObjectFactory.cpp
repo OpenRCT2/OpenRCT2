@@ -531,10 +531,20 @@ namespace ObjectFactory
                 RCTObjectEntry entry = {};
                 entry.flags = std::stoul(originalId.substr(0, 8), nullptr, 16);
                 entry.checksum = std::stoul(originalId.substr(18, 8), nullptr, 16);
-                entry.SetType(objectType);
                 auto minLength = std::min<size_t>(8, originalName.length());
                 std::memcpy(entry.name, originalName.c_str(), minLength);
-                descriptor = ObjectEntryDescriptor(entry);
+
+                // Some bad objects try to override different types
+                if (entry.GetType() != objectType)
+                {
+                    LOG_ERROR(
+                        "Object \"%s\" has invalid originalId set \"%s\". Ignoring override.", id.c_str(), originalId.c_str());
+                    descriptor = ObjectEntryDescriptor(objectType, id);
+                }
+                else
+                {
+                    descriptor = ObjectEntryDescriptor(entry);
+                }
             }
             else
             {
