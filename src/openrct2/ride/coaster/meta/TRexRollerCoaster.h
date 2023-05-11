@@ -29,7 +29,7 @@ constexpr const RideTypeDescriptor TRexRollerCoasterRTD =
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 0, 0, 30, 15, 52, 0 }),
-    SET_FIELD(Naming, { STR_RIDE_NAME_MAURER_STEEL_ROLLER_COASTER, STR_RIDE_DESCRIPTION_MAURER_STEEL_ROLLER_COASTER }),
+    SET_FIELD(Naming, { STR_RIDE_NAME_T_REX_ROLLER_COASTER, STR_RIDE_DESCRIPTION_T_REX_ROLLER_COASTER }),
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_T_REX_ROLLER_COASTER)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),

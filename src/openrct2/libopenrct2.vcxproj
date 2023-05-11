@@ -425,6 +425,7 @@
     <ClInclude Include="ride\coaster\meta\SteelWildMouse.h" />
     <ClInclude Include="ride\coaster\meta\Steeplechase.h" />
     <ClInclude Include="ride\coaster\meta\SuspendedSwingingCoaster.h" />
+	<ClInclude Include="ride\coaster\meta\TRexRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\TwisterRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\VerticalDropCoaster.h" />
     <ClInclude Include="ride\coaster\meta\VirginiaReel.h" />
@@ -921,6 +922,7 @@
     <ClCompile Include="ride\coaster\StandUpRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\Steeplechase.cpp" />
     <ClCompile Include="ride\coaster\SuspendedSwingingCoaster.cpp" />
+	<ClCompile Include="ride\coaster\TRexRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\VirginiaReel.cpp" />
     <ClCompile Include="ride\coaster\WildMouse.cpp" />
     <ClCompile Include="ride\coaster\WoodenRollerCoaster.cpp" />
