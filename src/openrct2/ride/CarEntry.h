@@ -68,7 +68,7 @@ enum : uint32_t
     CAR_ENTRY_FLAG_SWINGING = 1 << 17,
     CAR_ENTRY_FLAG_SPINNING = 1 << 18,
     CAR_ENTRY_FLAG_POWERED = 1 << 19,
-    CAR_ENTRY_FLAG_RIDERS_SCREAM = 1 << 20,
+    CAR_ENTRY_FLAG_RIDERS_SCREAM = 1 << 20,   // Only valid for front/default car of train
     CAR_ENTRY_FLAG_SUSPENDED_SWING = 1 << 21, // Suspended swinging coaster, or bobsleigh if SLIDE_SWING is also enabled.
     CAR_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION = 1 << 22,
     CAR_ENTRY_FLAG_VEHICLE_ANIMATION = 1 << 23, // Set on animated vehicles like the Multi-dimension coaster trains,
@@ -199,7 +199,7 @@ struct CarEntry
     uint8_t no_seating_rows;
     uint8_t spinning_inertia;
     uint8_t spinning_friction;
-    OpenRCT2::Audio::SoundId friction_sound_id;
+    OpenRCT2::Audio::SoundId friction_sound_id; // Only valid for front/default car of train
     uint8_t ReversedCarIndex; // When the car is reversed (using a turntable or reverser), it will be changed to this car.
     uint8_t sound_range;
     uint8_t double_sound_frequency; // (Doubles the velocity when working out the sound frequency {used on go karts})

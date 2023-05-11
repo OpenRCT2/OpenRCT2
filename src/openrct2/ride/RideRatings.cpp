@@ -243,12 +243,6 @@ static bool RideRatingIsUpdatingRide(RideId id)
 
 static bool ShouldSkipRatingCalculation(const Ride& ride)
 {
-    // Skip anything that isn't a real ride.
-    if (ride.GetClassification() != RideClassification::Ride)
-    {
-        return true;
-    }
-
     // Skip rides that are closed.
     if (ride.status == RideStatus::Closed)
     {

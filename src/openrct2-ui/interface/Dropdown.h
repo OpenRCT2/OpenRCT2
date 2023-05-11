@@ -59,6 +59,8 @@ void WindowDropdownShowColourAvailable(
 uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems);
 bool WindowDropDownHasMultipleColumns(size_t numItems);
 
+colour_t ColourDropDownIndexToColour(uint8_t ddidx);
+
 namespace Dropdown
 {
     enum class ItemFlag : uint8_t
@@ -134,5 +136,4 @@ namespace Dropdown
 
         return true;
     }
-
 } // namespace Dropdown

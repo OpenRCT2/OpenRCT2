@@ -1619,19 +1619,16 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
     const auto hasRandomShopColour = ride.HasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS);
 
     if (shopItem == ShopItem::TShirt)
-        TshirtColour = hasRandomShopColour ? ColourToPaletteIndex(ScenarioRandMax(COLOUR_NUM_NORMAL))
-                                           : ride.track_colour[0].main;
+        TshirtColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Hat)
-        HatColour = hasRandomShopColour ? ColourToPaletteIndex(ScenarioRandMax(COLOUR_NUM_NORMAL)) : ride.track_colour[0].main;
+        HatColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Balloon)
-        BalloonColour = hasRandomShopColour ? ColourToPaletteIndex(ScenarioRandMax(COLOUR_NUM_NORMAL))
-                                            : ride.track_colour[0].main;
+        BalloonColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Umbrella)
-        UmbrellaColour = hasRandomShopColour ? ColourToPaletteIndex(ScenarioRandMax(COLOUR_NUM_NORMAL))
-                                             : ride.track_colour[0].main;
+        UmbrellaColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Map)
         ResetPathfindGoal();
@@ -3749,19 +3746,20 @@ void Guest::UpdateRideAdvanceThroughEntrance()
     }
 
     auto destination = GetDestination();
+    auto loadPositionWithReversal = (vehicle->HasFlag(VehicleFlags::CarIsReversed)) ? -load_position : load_position;
     switch (vehicle->Orientation / 8)
     {
         case 0:
-            destination.x = vehicle->x - load_position;
+            destination.x = vehicle->x - loadPositionWithReversal;
             break;
         case 1:
-            destination.y = vehicle->y + load_position;
+            destination.y = vehicle->y + loadPositionWithReversal;
             break;
         case 2:
-            destination.x = vehicle->x + load_position;
+            destination.x = vehicle->x + loadPositionWithReversal;
             break;
         case 3:
-            destination.y = vehicle->y - load_position;
+            destination.y = vehicle->y - loadPositionWithReversal;
             break;
     }
     SetDestination(destination);

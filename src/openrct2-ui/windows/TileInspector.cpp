@@ -327,7 +327,7 @@ static Widget TrackWidgets[] = {
 };
 
 constexpr int32_t NumSceneryProperties = 4; // The checkbox groups both count for 2 rows
-constexpr int32_t NumSceneryDetails = 4;
+constexpr int32_t NumSceneryDetails = 3;
 constexpr int32_t SceneryPropertiesHeight = 16 + NumSceneryProperties * 21;
 constexpr int32_t SceneryDetailsHeight = 20 + NumSceneryDetails * 11;
 static Widget SceneryWidgets[] = {
