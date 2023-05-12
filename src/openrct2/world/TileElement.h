@@ -623,6 +623,7 @@ private:
     uint8_t _val{ 0 };
 
 public:
+    QuarterTile(){};
     constexpr QuarterTile(uint8_t tileQuarter, uint8_t zQuarter)
         : _val(tileQuarter | (zQuarter << 4))
     {

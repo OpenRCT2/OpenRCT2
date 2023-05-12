@@ -122,7 +122,7 @@ static void PaintCondorBase(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB,
         session.CurrentRotation);
 
-    if (trackSequence == 0)
+    if (trackSequence == 40)
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
             (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_90_DEG : SPR_ROTO_DROP_TOWER_BASE));
@@ -347,10 +347,13 @@ void CondorRideUpdateWating(Ride& ride)
     const auto trainId = ride.vehicles[0];
     auto* car = GetEntity<Vehicle>(trainId);
 
-    if (car->status == Vehicle::Status::Travelling)
+    if (car != nullptr)
     {
-        //car->FinishDeparting();
-        condorRideData->State = CondorRideState::Climbing;
+        if (car->status == Vehicle::Status::Travelling)
+        {
+            // car->FinishDeparting();
+            condorRideData->State = CondorRideState::Climbing;
+        }
     }
 }
 

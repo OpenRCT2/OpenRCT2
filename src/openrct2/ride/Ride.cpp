@@ -641,7 +641,8 @@ bool TrackBlockGetPreviousFromZero(
         if (nextRotation != directionStart)
             continue;
 
-        int16_t nextZ = nextTrackCoordinate.z_end - nextTrackBlock->z + tileElement->GetBaseZ();
+        auto tileElementBaseZ = tileElement->GetBaseZ();
+        int16_t nextZ = nextTrackCoordinate.z_end - nextTrackBlock->z + tileElementBaseZ;
         if (nextZ != trackPos.z)
             continue;
 

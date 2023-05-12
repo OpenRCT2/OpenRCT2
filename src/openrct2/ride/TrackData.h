@@ -120,3 +120,7 @@ namespace OpenRCT2
         const TrackElementDescriptor& GetTrackElementDescriptor(const uint32_t type);
     } // namespace TrackMetaData
 } // namespace OpenRCT2
+
+extern std::vector<std::vector<uint8_t>> TrackMap9x9;
+extern std::vector<uint8_t> Edges9x9;
+extern TrackElementDescriptor TowerBase9x9TED;

@@ -13,6 +13,7 @@
 #include "Track.h"
 #include "TrackPaint.h"
 #include "thrill/meta/Condor.h"
+#include "RideBaseBuilder.h"
 
 #include <cstdint>
 #include <iterator>
@@ -7142,11 +7143,37 @@ static constexpr const StringId RideConfigurationStringIds[] = {
     STR_HALF_LOOP,                     // TrackElemType::FlyerHalfLoopUninvertedDown
 };
 
+std::vector<PreviewTrack> TrackBlock9x9;
+std::vector<uint8_t> Sequence9x9;
+std::vector<std::vector<uint8_t>> TrackMap9x9;
+std::vector<uint8_t> Edges9x9;
+
+// clang-format off
+TrackElementDescriptor TowerBase9x9TED =
+{
+    SET_FIELD(Description, STR_ENTRY_EXIT_PLATFORM),
+    SET_FIELD(Coordinates, { 0, 0, 0, 96, 160, 128 } ),
+    SET_FIELD(Block, nullptr),
+    SET_FIELD(PieceLength, 32),
+    SET_FIELD(CurveChain, { RideConstructionSpecialPieceSelected | TrackElemType::TowerSection, TRACK_CURVE_NONE } ),
+    SET_FIELD(AlternativeType, 0),
+    SET_FIELD(PriceModifier, 0),
+    SET_FIELD(MirrorElement, 0),
+    SET_FIELD(HeightMarkerPositions, 0),
+    SET_FIELD(Flags, 0),
+    SET_FIELD(SequenceElementAllowedWallEdges, {} ),
+    SET_FIELD(SequenceProperties, {}),
+    SET_FIELD(Definition, {} ),
+    SET_FIELD(SpinFunction, 0),
+    SET_FIELD(VerticalFactor, nullptr),
+    SET_FIELD(LateralFactor, nullptr),
+};
+
 namespace OpenRCT2
 {
     namespace TrackMetaData
     {
-        static constexpr auto BuildDescriptorTable()
+        static auto BuildDescriptorTable()
         {
             std::array<TrackElementDescriptor, TrackElemType::Count> res{};
 
@@ -7175,6 +7202,15 @@ namespace OpenRCT2
                 }
             }
 
+            //build the 9x9 base
+            RideBaseBuilder builder(9, 9);
+            TrackBlock9x9 = builder.GetBlocks();
+            Sequence9x9 = builder.GetSequences();
+            TrackMap9x9 = builder.GetMapping();
+            Edges9x9 = builder.GetEdges();
+
+            TowerBase9x9TED.Block = TrackBlock9x9.data();
+            std::copy(Sequence9x9.begin(), Sequence9x9.end(), TowerBase9x9TED.SequenceProperties.begin());
             res[TrackElemType::FlatTrack9x9] = TowerBase9x9TED;
 
             return res;

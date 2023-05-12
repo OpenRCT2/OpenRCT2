@@ -28,199 +28,41 @@ void CondorRideUpdate(Ride& ride);
                                                          { 8, 32, 0, 0, 0, { 0b1111, 0 }, RCT_PREVIEW_TRACK_FLAG_1 },
                                                          TRACK_BLOCK_END };*/
 
-static std::vector<PreviewTrack> GetTrackBlocks9x9()
+template<size_t NumElements> static void MakeCenterElementLast(std::array<PreviewTrack, NumElements>& elements)
 {
-    std::vector<PreviewTrack> result;
-    uint8_t index = 0;
-    result.reserve(82);
+    auto middleIndex = (elements.size() - 1) / 2;
+    auto middleElement = elements.begin() + middleIndex;
 
-    for (int16_t x = 0; x < 9 * 32; x += 32)
-    {
-        for (int16_t y = 0; y < 9 * 32; y += 32)
-        {
-            PreviewTrack track{ index, x, y, 0, 0, { 0b1111, 0 }, 0 };
-            result.push_back(track);
-            index++;
-        }
-    }
-    result.push_back(TRACK_BLOCK_END);
-    return result;
+    auto lastElement = elements.end() - 2;
+    auto lastIndex = lastElement->index;
+    lastElement->index = middleElement->index;
+    middleElement->index = lastIndex;
+    std::iter_swap(middleElement, lastElement);
 }
-static auto TrackBlock9x9 = GetTrackBlocks9x9();
 
-static std::array<uint8_t, MaxSequencesPerPiece> GetTrack9x9Sequences()
+template<size_t NumElements> static void MakeCenterElementLast(std::array<uint8_t, NumElements>& elements)
 {
-    std::array<uint8_t, MaxSequencesPerPiece> res;
-    uint8_t index = 0;
+    auto middleIndex = (elements.size()) / 2;
+    auto middleElement = elements.begin() + middleIndex;
 
-    //do the first row
-    for (int x = 0; x < 9; x++)
-    {
-        if (x == 0)
-            res[index] = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN;
-        else if (x == 8)
-            res[index] = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1;
-        else
-            res[index] = TRACK_SEQUENCE_FLAG_DIRECTION_0;
-        index++;
-    }
-
-    // middle rows
-    for (int y = 1; y < 8; y++)
-    {
-        for (int x = 0; x < 9; x++)
-        {
-            if (x == 0)
-                res[index] = TRACK_SEQUENCE_FLAG_DIRECTION_3;
-            else if (x == 8)
-                res[index] = TRACK_SEQUENCE_FLAG_DIRECTION_1;
-            else
-                res[index] = 0;
-            index++;
-        }
-    }
-
-    // last row
-    for (int x = 0; x < 9; x++)
-    {
-        if (x == 0)
-            res[index] = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3;
-        else if (x == 8)
-            res[index] = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2;
-        else
-            res[index] = TRACK_SEQUENCE_FLAG_DIRECTION_2;
-        index++;
-    }
-    return res;
+    auto lastElement = elements.end() - 1;
+    std::iter_swap(middleElement, lastElement);
 }
-static auto Sequence9x9 = GetTrack9x9Sequences();
 
-/*const uint8_t track_map_3x3[][9] = {
-    { 0, 1, 2, 3, 4, 5, 6, 7, 8 },
-    { 0, 3, 5, 7, 2, 8, 1, 6, 4 },
-    { 0, 7, 8, 6, 5, 4, 3, 1, 2 },
-    { 0, 6, 4, 1, 8, 2, 7, 3, 5 },
-};*/
-
-static std::array<std::array<uint8_t, 81>, 4> GetTrackMapSequence9x9()
+template<size_t NumElements>
+static void MakeCenterTileLast(std::array<uint8_t, NumElements>& elements)
 {
-    std::array<std::array<uint8_t, 81>, 4> res;
+    //find the center element
+    auto centerElement = std::find(elements.begin(), elements.end(), NumElements / 2);
 
-    std::array<std::array<uint8_t, 9>, 9> regular;
-    uint32_t index = 0;
-    for (int y = 0; y < 9; y++)
-    {
-        for (int x = 0; x < 9; x++)
-        {
-            regular[x][y] = index;
-            index++;
-        }
-    }
+    //find the last element i.e. max index
+    auto lastElement = std::find(elements.begin(), elements.end(), NumElements-1);
 
-    std::array<std::array<uint8_t, 9>, 9> transposed;
-    for (int y = 0; y < 9; y++)
-    {
-        for (int x = 0; x < 9; x++)
-        {
-            transposed[x][y] = regular[y][8 - x];
-        }
-    }
-
-    index = 0;
-    for (int y = 0; y < 9; y++)
-    {
-        for (int x = 0; x < 9; x++)
-        {
-            index = x + y * 9;
-            res[0][index] = regular[x][y];
-            res[3][index] = transposed[x][y];
-            index++;
-        }
-    }
-
-    res[2] = res[0];
-    std::reverse(res[2].begin(), res[2].end());
-
-    res[1] = res[3];
-    std::reverse(res[1].begin(), res[1].end());
-    return res;
+    //swap
+    std::iter_swap(centerElement, lastElement);
 }
-static auto TrackMap9x9 = GetTrackMapSequence9x9();
-
-/*const uint8_t edges_3x3[] = {
-    0, EDGE_NE | EDGE_NW, EDGE_NE, EDGE_NE | EDGE_SE, EDGE_NW, EDGE_SE, EDGE_SW | EDGE_NW, EDGE_SW | EDGE_SE, EDGE_SW,
-};*/
-
-static std::array<uint8_t, 81> GetEdges9x9()
-{
-    std::array<uint8_t, 81> res;
-
-    //first row
-    auto index = 0;
-    for (int x = 0; x < 9; x++)
-    {
-        if (x == 0)
-            res[index] = EDGE_NE | EDGE_NW;
-        else if (x == 8)
-            res[index] = EDGE_NE | EDGE_SE;
-        else
-            res[index] = EDGE_NE;
-        index++;
-    }
-
-    // middle rows
-    for (int y = 1; y < 8; y++)
-    {
-        for (int x = 0; x < 9; x++)
-        {
-            if (x == 0)
-                res[index] = EDGE_NW;
-            else if (x == 8)
-                res[index] = EDGE_SE;
-            else
-                res[index] = 0;
-            index++;
-        }
-    }
-
-    //last row
-    for (int x = 0; x < 9; x++)
-    {
-        if (x == 0)
-            res[index] = EDGE_NW | EDGE_SW;
-        else if (x == 8)
-            res[index] = EDGE_SW | EDGE_SE;
-        else
-            res[index] = EDGE_SW;
-        index++;
-    }
-
-    return res;
-}
-static auto Edges9x9 = GetEdges9x9();
 
     //static std::vector<PreviewTrack> GetTrackBlocks9x9()
-
-// clang-format off
-const TrackElementDescriptor TowerBase9x9TED =
-{
-    SET_FIELD(Description, STR_ENTRY_EXIT_PLATFORM),
-    SET_FIELD(Coordinates, { 0, 2, 0, 0, 0, 32 } ),
-    SET_FIELD(Block, TrackBlock9x9.data()),
-    SET_FIELD(PieceLength, 0),
-    SET_FIELD(CurveChain, { 0, 0 } ),
-    SET_FIELD(AlternativeType, 0),
-    SET_FIELD(PriceModifier, 0),
-    SET_FIELD(MirrorElement, 0),
-    SET_FIELD(HeightMarkerPositions, 0),
-    SET_FIELD(Flags, 0),
-    SET_FIELD(SequenceElementAllowedWallEdges, {} ),
-    SET_FIELD(SequenceProperties, Sequence9x9),
-    SET_FIELD(Definition, {0, 0, 0, 0, 0, 0} ),
-    SET_FIELD(SpinFunction, 0),
-    SET_FIELD(VerticalFactor, nullptr),
-    SET_FIELD(LateralFactor, nullptr),
-};
 
 constexpr const RideTypeDescriptor CondorRTD =
 {
