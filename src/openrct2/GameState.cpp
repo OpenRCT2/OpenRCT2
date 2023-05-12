@@ -185,26 +185,25 @@ void GameState::Tick()
     }
 
     // Update the game one or more times
-    for (uint32_t i = 0; i < numUpdates; i++)
-    {
-        UpdateLogic();
-        if (gGameSpeed == 1)
-        {
-            if (InputGetState() == InputState::Reset || InputGetState() == InputState::Normal)
-            {
-                if (InputTestFlag(INPUT_FLAG_VIEWPORT_SCROLLING))
-                {
-                    InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
-                    break;
-                }
-            }
-            else
-            {
-                break;
-            }
-        }
-    }
+	InputState inputState = InputGetState();
+	
+	for (uint32_t i = 0; i < numUpdates; i++)
+	{
+	UpdateLogic();
+	while (gGameSpeed == 1 && (inputState == InputState::Reset || inputState == InputState::Normal))
+	{
+        bool viewportScrollingFlag = InputTestFlag(INPUT_FLAG_VIEWPORT_SCROLLING);
+		if (viewportScrollingFlag)
+		{
+        InputSetFlag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
+        break;
+		}
 
+        inputState = InputGetState();
+	}
+	
+	}
+	
     NetworkFlush();
 
     if (!gOpenRCT2Headless)
