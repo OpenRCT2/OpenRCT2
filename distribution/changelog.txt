@@ -1,5 +1,6 @@
 0.4.6 (in development)
 ------------------------------------------------------------------------
+- Improved: [#20200] Allow audio files to play to up to 44100hz sample rate (from 22050hz).
 - Change: [#20110] Fix a few RCT1 build height parity discrepancies.
 
 0.4.5 (2023-05-08)
