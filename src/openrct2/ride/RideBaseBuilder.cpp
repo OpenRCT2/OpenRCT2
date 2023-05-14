@@ -1,4 +1,5 @@
 #include "RideBaseBuilder.h"
+#include <algorithm>
 
 RideBaseBuilder::RideBaseBuilder(uint8_t sizeX, uint8_t sizeY)
     : _sizeX(sizeX)
@@ -20,13 +21,29 @@ RideBaseBuilder::RideBaseBuilder(uint8_t sizeX, uint8_t sizeY)
 
 void RideBaseBuilder::SwapTiles(uint8_t index0, uint8_t index1)
 {
+    //swap the blocks
+    auto block0 = std::find_if(_blocks.begin(), _blocks.end(), [index0](const auto& block) { return block.index == index0; });
+    auto block1 = std::find_if(_blocks.begin(), _blocks.end(), [index1](const auto& block) { return block.index == index1; });
+
+    block0->index = index1;
+    block1->index = index0;
+    std::iter_swap(block0, block1);
+
+    //swap the edges
+    //std::iter_swap(_edges.begin() + index0, _edges.begin() + index1);
+
+    //change the track mapping
+    for (auto& mapping : _mapping)
+    {
+        std::iter_swap(mapping.begin() + index0, mapping.begin() + index1);
+    }
 }
 
 uint8_t RideBaseBuilder::GetTileIndex(uint8_t x, uint8_t y) const
 {
-    std::vector<PreviewTrack>::const_iterator res = std::find_if(
-        _blocks.begin(), _blocks.end(), [x, y](const auto& block) { return block.x / 32 == x && block.y / 32 == y; });
-    if (res != _blocks.end())
+    auto res = std::find_if(
+        _blocks.cbegin(), _blocks.cend(), [x, y](const auto& block) { return block.x / 32 == x && block.y / 32 == y; });
+    if (res != _blocks.cend())
         return res->index;
     else
         return 255;

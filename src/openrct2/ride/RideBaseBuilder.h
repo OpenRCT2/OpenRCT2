@@ -4,6 +4,10 @@
 #include <vector>
 #include "TrackData.h"
 
+/// <summary>
+/// RideBaseBuilder only supports square bases for now
+/// Non-square bases requires specific handling for the track mapping
+/// </summary>
 class RideBaseBuilder
 {
 public:

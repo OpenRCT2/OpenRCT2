@@ -7204,6 +7204,12 @@ namespace OpenRCT2
 
             //build the 9x9 base
             RideBaseBuilder builder(9, 9);
+
+            //swap the center tile for the last tile
+            auto centerTile = builder.GetTileIndex(5, 4);
+            auto lastTile = builder.GetTileIndex(8, 8);
+            builder.SwapTiles(centerTile, lastTile);
+
             TrackBlock9x9 = builder.GetBlocks();
             Sequence9x9 = builder.GetSequences();
             TrackMap9x9 = builder.GetMapping();
