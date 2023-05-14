@@ -1349,34 +1349,22 @@ private:
                 break;
             case WIDX_TITLE_MUSIC_DROPDOWN:
             {
-                if (!IsRCT1TitleMusicAvailable())
+                const bool rct1MusicThemeIsAvailable = IsRCT1TitleMusicAvailable();
+                int32_t numItems{};
+                int32_t checkedIndex{};
+                for (auto theme : TitleThemeOptions)
                 {
-                    // Only show None and RCT2
-                    int32_t numItems{};
+                    if (theme.Kind == TitleMusicKind::RCT1 && !rct1MusicThemeIsAvailable)
+                        continue;
+
+                    if (gConfigSound.TitleMusic == theme.Kind)
+                        checkedIndex = numItems;
+
                     gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[numItems++].Args = TitleMusicNames[0];
-                    gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[numItems++].Args = TitleMusicNames[2];
-                    gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[numItems++].Args = TitleMusicNames[3];
-                    ShowDropdown(widget, numItems);
-                    if (gConfigSound.TitleMusic == TitleMusicKind::None)
-                        Dropdown::SetChecked(0, true);
-                    else if (gConfigSound.TitleMusic == TitleMusicKind::RCT2)
-                        Dropdown::SetChecked(1, true);
+                    gDropdownItems[numItems++].Args = theme.Name;
                 }
-                else
-                {
-                    // Show None, RCT1, RCT2 and random
-                    int32_t numItems{};
-                    for (auto musicName : TitleMusicNames)
-                    {
-                        gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[numItems++].Args = musicName;
-                    }
-                    ShowDropdown(widget, numItems);
-                    Dropdown::SetChecked(EnumValue(gConfigSound.TitleMusic), true);
-                }
+                ShowDropdown(widget, numItems);
+                Dropdown::SetChecked(checkedIndex, true);
                 break;
             }
         }
@@ -1409,18 +1397,12 @@ private:
                 break;
             case WIDX_TITLE_MUSIC_DROPDOWN:
             {
-                auto titleMusic = static_cast<TitleMusicKind>(dropdownIndex);
-                if (!IsRCT1TitleMusicAvailable() && dropdownIndex >= EnumValue(TitleMusicKind::RCT1))
-                {
-                    titleMusic = static_cast<TitleMusicKind>(EnumValue(titleMusic) + 1);
-                }
-
-                gConfigSound.TitleMusic = titleMusic;
+                gConfigSound.TitleMusic = TitleThemeOptions[dropdownIndex].Kind;
                 ConfigSaveDefault();
                 Invalidate();
 
                 OpenRCT2::Audio::StopTitleMusic();
-                if (titleMusic != TitleMusicKind::None)
+                if (gConfigSound.TitleMusic != TitleMusicKind::None)
                 {
                     OpenRCT2::Audio::PlayTitleMusic();
                 }
@@ -1467,14 +1449,14 @@ private:
         return { 500, 0 };
     }
 
-    StringId GetTitleMusicName()
+    StringId GetTitleMusicName() const
     {
-        auto index = EnumValue(gConfigSound.TitleMusic);
-        if (index < 0 || static_cast<size_t>(index) >= std::size(TitleMusicNames))
-        {
-            index = EnumValue(TitleMusicKind::None);
-        }
-        return TitleMusicNames[index];
+        auto theme = std::find_if(std::begin(TitleThemeOptions), std::end(TitleThemeOptions), [](auto&& theme) {
+            return gConfigSound.TitleMusic == theme.Kind;
+        });
+        if (theme != std::end(TitleThemeOptions))
+            return theme->Name;
+        return STR_OPENRCT2_DROPDOWN;
     }
 
     void AudioPrepareDraw()
@@ -2148,9 +2130,16 @@ private:
         STR_SAVE_EVERY_30MINUTES, STR_SAVE_EVERY_HOUR,     STR_SAVE_NEVER,
     };
 
-    static constexpr StringId TitleMusicNames[] = {
-        STR_OPTIONS_MUSIC_VALUE_NONE, STR_ROLLERCOASTER_TYCOON_1_DROPDOWN, STR_ROLLERCOASTER_TYCOON_2_DROPDOWN,
-        STR_OPENRCT2_DROPDOWN,        STR_OPTIONS_MUSIC_VALUE_RANDOM,
+    static constexpr struct
+    {
+        TitleMusicKind Kind;
+        StringId Name;
+    } TitleThemeOptions[] = {
+        { TitleMusicKind::None, STR_OPTIONS_MUSIC_VALUE_NONE },
+        { TitleMusicKind::OpenRCT2, STR_OPENRCT2_DROPDOWN },
+        { TitleMusicKind::RCT1, STR_ROLLERCOASTER_TYCOON_1_DROPDOWN },
+        { TitleMusicKind::RCT2, STR_ROLLERCOASTER_TYCOON_2_DROPDOWN },
+        { TitleMusicKind::Random, STR_OPTIONS_MUSIC_VALUE_RANDOM },
     };
 
     static constexpr StringId FullscreenModeNames[] = {
