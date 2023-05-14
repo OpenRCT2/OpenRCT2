@@ -1,6 +1,7 @@
 0.4.6 (in development)
 ------------------------------------------------------------------------
 - Change: [#20110] Fix a few RCT1 build height parity discrepancies.
+- Fix: [#19823] Parkobj, disallow overriding objects of different object types.
 
 0.4.5 (2023-05-08)
 ------------------------------------------------------------------------
