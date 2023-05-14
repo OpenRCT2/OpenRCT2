@@ -269,35 +269,34 @@ namespace OpenRCT2::Audio
         }
     }
 
-    static ObjectEntryDescriptor GetTitleMusicDescriptor(TitleMusicKind kind)
-    {
-        switch (kind)
-        {
-            default:
-                return {};
-            case TitleMusicKind::RCT1:
-                return ObjectEntryDescriptor(ObjectType::Audio, AudioObjectIdentifiers::RCT1Title);
-            case TitleMusicKind::RCT2:
-                return ObjectEntryDescriptor(ObjectType::Audio, AudioObjectIdentifiers::RCT2Title);
-            case TitleMusicKind::OpenRCT2:
-                return ObjectEntryDescriptor(ObjectType::Audio, AudioObjectIdentifiers::OpenRCT2Title);
-            case TitleMusicKind::Random:
-                switch (UtilRand() % 3)
-                {
-                    case 0:
-                        return GetTitleMusicDescriptor(TitleMusicKind::RCT1);
-                    case 1:
-                        return GetTitleMusicDescriptor(TitleMusicKind::RCT2);
-                    case 2:
-                    default:
-                        return GetTitleMusicDescriptor(TitleMusicKind::OpenRCT2);
-                }
-        }
-    }
-
     static ObjectEntryDescriptor GetTitleMusicDescriptor()
     {
-        return GetTitleMusicDescriptor(gConfigSound.TitleMusic);
+        static constexpr std::array selectableAudioIds{
+            AudioObjectIdentifiers::OpenRCT2Title,
+            AudioObjectIdentifiers::RCT1Title,
+            AudioObjectIdentifiers::RCT2Title,
+        };
+        int32_t IdIndex{};
+        switch (gConfigSound.TitleMusic)
+        {
+            default:
+            case TitleMusicKind::OpenRCT2:
+                IdIndex = 0;
+                break;
+            case TitleMusicKind::RCT1:
+                IdIndex = 1;
+                break;
+            case TitleMusicKind::RCT2:
+                IdIndex = 2;
+                break;
+            case TitleMusicKind::Random:
+                IdIndex = UtilRand() % std::size(selectableAudioIds);
+                break;
+            case TitleMusicKind::None:
+                return {};
+        }
+
+        return ObjectEntryDescriptor(ObjectType::Audio, selectableAudioIds[IdIndex]);
     }
 
     void PlayTitleMusic()
