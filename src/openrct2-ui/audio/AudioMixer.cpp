@@ -30,7 +30,7 @@ void AudioMixer::Init(const char* device)
     want.freq = 44100;
     want.format = AUDIO_S16SYS;
     want.channels = 2;
-    want.samples = 2048 * 8;
+    want.samples = 4096;
     want.callback = [](void* arg, uint8_t* dst, int32_t length) -> void {
         auto* mixer = static_cast<AudioMixer*>(arg);
         mixer->GetNextAudioChunk(dst, static_cast<size_t>(length));
