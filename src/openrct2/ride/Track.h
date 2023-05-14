@@ -92,7 +92,7 @@ enum
 {
     TRACK_ELEMENT_FLAGS2_CHAIN_LIFT = 1 << 0,
     TRACK_ELEMENT_FLAGS2_INVERTED = 1 << 1,
-    // Used for giga coaster
+    // Used for T_REX coaster
     TRACK_ELEMENT_FLAGS2_CABLE_LIFT = 1 << 2,
     TRACK_ELEMENT_FLAGS2_HIGHLIGHT = 1 << 3,
     TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT = 1 << 4,

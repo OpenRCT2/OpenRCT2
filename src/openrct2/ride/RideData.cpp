@@ -37,7 +37,7 @@
 #include "coaster/meta/CompactInvertedCoaster.h"
 #include "coaster/meta/CorkscrewRollerCoaster.h"
 #include "coaster/meta/FlyingRollerCoaster.h"
-#include "coaster/meta/GigaCoaster.h"
+#include "coaster/meta/TRexRollerCoaster.h"
 #include "coaster/meta/HeartlineTwisterCoaster.h"
 #include "coaster/meta/HybridCoaster.h"
 #include "coaster/meta/HyperTwister.h"
@@ -313,7 +313,7 @@ constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_REVERSER_ROLLER_COASTER            */ ReverserRollerCoasterRTD,
     /* RIDE_TYPE_HEARTLINE_TWISTER_COASTER          */ HeartlineTwisterCoasterRTD,
     /* RIDE_TYPE_MINI_GOLF                          */ MiniGolfRTD,
-    /* RIDE_TYPE_GIGA_COASTER                       */ GigaCoasterRTD,
+    /* RIDE_TYPE_T_REX_COASTER                       */ TRexRollerCoasterRTD,
     /* RIDE_TYPE_ROTO_DROP                          */ RotoDropRTD,
     /* RIDE_TYPE_FLYING_SAUCERS                     */ FlyingSaucersRTD,
     /* RIDE_TYPE_CROOKED_HOUSE                      */ CrookedHouseRTD,

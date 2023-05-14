@@ -1238,7 +1238,7 @@ static money64 RideComputeUpkeep(RideRatingUpdateState& state, const Ride& ride)
     upkeep += ride.GetRideTypeDescriptor().UpkeepCosts.CostPerCar * ride.num_cars_per_train;
 
     // slight upkeep boosts for some rides - 5 for mini railway, 10 for log
-    // flume/rapids, 10 for roller coaster, 28 for giga coaster
+    // flume/rapids, 10 for roller coaster, 28 for T_REX coaster
     upkeep += ride.GetRideTypeDescriptor().UpkeepCosts.CostPerStation * ride.num_stations;
 
     if (ride.mode == RideMode::ReverseInclineLaunchedShuttle)

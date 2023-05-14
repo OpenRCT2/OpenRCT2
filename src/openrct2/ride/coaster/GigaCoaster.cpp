@@ -19,28 +19,28 @@
 #include "../TrackPaint.h"
 
 // Closed block brakes and regular brakes use the same images
-static constexpr const uint32_t GIGA_COASTER_BRAKE_SW_NE_OPEN_1 = 18076;
-static constexpr const uint32_t GIGA_COASTER_BRAKE_NW_SE_OPEN_1 = 18077;
-static constexpr const uint32_t GIGA_COASTER_BRAKE_SW_NE_CLOSED_1 = 18078;
-static constexpr const uint32_t GIGA_COASTER_BRAKE_NW_SE_CLOSED_1 = 18079;
-static constexpr const uint32_t GIGA_COASTER_BRAKE_SW_NE_OPEN_2 = 18080;
-static constexpr const uint32_t GIGA_COASTER_BRAKE_NW_SE_OPEN_2 = 18081;
-static constexpr const uint32_t GIGA_COASTER_BRAKE_SW_NE_CLOSED_2 = 18082;
-static constexpr const uint32_t GIGA_COASTER_BRAKE_NW_SE_CLOSED_2 = 18083;
+static constexpr const uint32_t T_REX_COASTER_BRAKE_SW_NE_OPEN_1 = 18076;
+static constexpr const uint32_t T_REX_COASTER_BRAKE_NW_SE_OPEN_1 = 18077;
+static constexpr const uint32_t T_REX_COASTER_BRAKE_SW_NE_CLOSED_1 = 18078;
+static constexpr const uint32_t T_REX_COASTER_BRAKE_NW_SE_CLOSED_1 = 18079;
+static constexpr const uint32_t T_REX_COASTER_BRAKE_SW_NE_OPEN_2 = 18080;
+static constexpr const uint32_t T_REX_COASTER_BRAKE_NW_SE_OPEN_2 = 18081;
+static constexpr const uint32_t T_REX_COASTER_BRAKE_SW_NE_CLOSED_2 = 18082;
+static constexpr const uint32_t T_REX_COASTER_BRAKE_NW_SE_CLOSED_2 = 18083;
 
-static constexpr const uint32_t _GigaCoasterBrakeImages[NumOrthogonalDirections][2][2] = {
-    { { GIGA_COASTER_BRAKE_SW_NE_OPEN_1, GIGA_COASTER_BRAKE_SW_NE_OPEN_2 },
-      { GIGA_COASTER_BRAKE_SW_NE_CLOSED_1, GIGA_COASTER_BRAKE_SW_NE_CLOSED_2 } },
-    { { GIGA_COASTER_BRAKE_NW_SE_OPEN_1, GIGA_COASTER_BRAKE_NW_SE_OPEN_2 },
-      { GIGA_COASTER_BRAKE_NW_SE_CLOSED_1, GIGA_COASTER_BRAKE_NW_SE_CLOSED_2 } },
-    { { GIGA_COASTER_BRAKE_SW_NE_OPEN_1, GIGA_COASTER_BRAKE_SW_NE_OPEN_2 },
-      { GIGA_COASTER_BRAKE_SW_NE_CLOSED_1, GIGA_COASTER_BRAKE_SW_NE_CLOSED_2 } },
-    { { GIGA_COASTER_BRAKE_NW_SE_OPEN_1, GIGA_COASTER_BRAKE_NW_SE_OPEN_2 },
-      { GIGA_COASTER_BRAKE_NW_SE_CLOSED_1, GIGA_COASTER_BRAKE_NW_SE_CLOSED_2 } },
+static constexpr const uint32_t _T_REXCoasterBrakeImages[NumOrthogonalDirections][2][2] = {
+    { { T_REX_COASTER_BRAKE_SW_NE_OPEN_1, T_REX_COASTER_BRAKE_SW_NE_OPEN_2 },
+      { T_REX_COASTER_BRAKE_SW_NE_CLOSED_1, T_REX_COASTER_BRAKE_SW_NE_CLOSED_2 } },
+    { { T_REX_COASTER_BRAKE_NW_SE_OPEN_1, T_REX_COASTER_BRAKE_NW_SE_OPEN_2 },
+      { T_REX_COASTER_BRAKE_NW_SE_CLOSED_1, T_REX_COASTER_BRAKE_NW_SE_CLOSED_2 } },
+    { { T_REX_COASTER_BRAKE_SW_NE_OPEN_1, T_REX_COASTER_BRAKE_SW_NE_OPEN_2 },
+      { T_REX_COASTER_BRAKE_SW_NE_CLOSED_1, T_REX_COASTER_BRAKE_SW_NE_CLOSED_2 } },
+    { { T_REX_COASTER_BRAKE_NW_SE_OPEN_1, T_REX_COASTER_BRAKE_NW_SE_OPEN_2 },
+      { T_REX_COASTER_BRAKE_NW_SE_CLOSED_1, T_REX_COASTER_BRAKE_NW_SE_CLOSED_2 } },
 };
 
 /** rct2: 0x008AD674 */
-static void GigaRCTrackFlat(
+static void T_REXRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -124,7 +124,7 @@ static void GigaRCTrackFlat(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void GigaRCTrackStation(
+static void T_REXRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -139,7 +139,7 @@ static void GigaRCTrackStation(
     {
         bool isClosed = trackElement.IsBrakeClosed();
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(_GigaCoasterBrakeImages[direction][isClosed][0]),
+            session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(_T_REXCoasterBrakeImages[direction][isClosed][0]),
             { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
     else
@@ -160,7 +160,7 @@ static void GigaRCTrackStation(
 }
 
 /** rct2: 0x008AD684 */
-static void GigaRCTrack25DegUp(
+static void T_REXRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -268,7 +268,7 @@ static void GigaRCTrack25DegUp(
 }
 
 /** rct2: 0x008AD694 */
-static void GigaRCTrack60DegUp(
+static void T_REXRCTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -346,7 +346,7 @@ static void GigaRCTrack60DegUp(
 }
 
 /** rct2: 0x008AD6A4 */
-static void GigaRCTrackFlatTo25DegUp(
+static void T_REXRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -454,7 +454,7 @@ static void GigaRCTrackFlatTo25DegUp(
 }
 
 /** rct2: 0x008AD6B4 */
-static void GigaRCTrack25DegUpTo60DegUp(
+static void T_REXRCTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -544,7 +544,7 @@ static void GigaRCTrack25DegUpTo60DegUp(
 }
 
 /** rct2: 0x008AD6C4 */
-static void GigaRCTrack60DegUpTo25DegUp(
+static void T_REXRCTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -634,7 +634,7 @@ static void GigaRCTrack60DegUpTo25DegUp(
 }
 
 /** rct2: 0x008AD6D4 */
-static void GigaRCTrack25DegUpToFlat(
+static void T_REXRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -742,55 +742,55 @@ static void GigaRCTrack25DegUpToFlat(
 }
 
 /** rct2: 0x008AD6E4 */
-static void GigaRCTrack25DegDown(
+static void T_REXRCTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrack25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD6F4 */
-static void GigaRCTrack60DegDown(
+static void T_REXRCTrack60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrack60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD704 */
-static void GigaRCTrackFlatTo25DegDown(
+static void T_REXRCTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrack25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD714 */
-static void GigaRCTrack25DegDownTo60DegDown(
+static void T_REXRCTrack25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrack60DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD724 */
-static void GigaRCTrack60DegDownTo25DegDown(
+static void T_REXRCTrack60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrack25DegUpTo60DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD734 */
-static void GigaRCTrack25DegDownToFlat(
+static void T_REXRCTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD744 */
-static void GigaRCTrackLeftQuarterTurn5(
+static void T_REXRCTrackLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -965,16 +965,16 @@ static void GigaRCTrackLeftQuarterTurn5(
 }
 
 /** rct2: 0x008AD754 */
-static void GigaRCTrackRightQuarterTurn5(
+static void T_REXRCTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    GigaRCTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    T_REXRCTrackLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD764 */
-static void GigaRCTrackFlatToLeftBank(
+static void T_REXRCTrackFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1018,7 +1018,7 @@ static void GigaRCTrackFlatToLeftBank(
 }
 
 /** rct2: 0x008AD774 */
-static void GigaRCTrackFlatToRightBank(
+static void T_REXRCTrackFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1062,7 +1062,7 @@ static void GigaRCTrackFlatToRightBank(
 }
 
 /** rct2: 0x008AD784 */
-static void GigaRCTrackLeftBankToFlat(
+static void T_REXRCTrackLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1106,7 +1106,7 @@ static void GigaRCTrackLeftBankToFlat(
 }
 
 /** rct2: 0x008AD794 */
-static void GigaRCTrackRightBankToFlat(
+static void T_REXRCTrackRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1150,7 +1150,7 @@ static void GigaRCTrackRightBankToFlat(
 }
 
 /** rct2: 0x008AD7A4 */
-static void GigaRCTrackBankedLeftQuarterTurn5(
+static void T_REXRCTrackBankedLeftQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1331,16 +1331,16 @@ static void GigaRCTrackBankedLeftQuarterTurn5(
 }
 
 /** rct2: 0x008AD7B4 */
-static void GigaRCTrackBankedRightQuarterTurn5(
+static void T_REXRCTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    GigaRCTrackBankedLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    T_REXRCTrackBankedLeftQuarterTurn5(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD7C4 */
-static void GigaRCTrackLeftBankTo25DegUp(
+static void T_REXRCTrackLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1391,7 +1391,7 @@ static void GigaRCTrackLeftBankTo25DegUp(
 }
 
 /** rct2: 0x008AD7D4 */
-static void GigaRCTrackRightBankTo25DegUp(
+static void T_REXRCTrackRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1442,7 +1442,7 @@ static void GigaRCTrackRightBankTo25DegUp(
 }
 
 /** rct2: 0x008AD7E4 */
-static void GigaRCTrack25DegUpToLeftBank(
+static void T_REXRCTrack25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1493,7 +1493,7 @@ static void GigaRCTrack25DegUpToLeftBank(
 }
 
 /** rct2: 0x008AD7F4 */
-static void GigaRCTrack25DegUpToRightBank(
+static void T_REXRCTrack25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1544,39 +1544,39 @@ static void GigaRCTrack25DegUpToRightBank(
 }
 
 /** rct2: 0x008AD804 */
-static void GigaRCTrackLeftBankTo25DegDown(
+static void T_REXRCTrackLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrack25DegUpToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrack25DegUpToRightBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD814 */
-static void GigaRCTrackRightBankTo25DegDown(
+static void T_REXRCTrackRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrack25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrack25DegUpToLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD824 */
-static void GigaRCTrack25DegDownToLeftBank(
+static void T_REXRCTrack25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrackRightBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD834 */
-static void GigaRCTrack25DegDownToRightBank(
+static void T_REXRCTrack25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrackLeftBankTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD844 */
-static void GigaRCTrackLeftBank(
+static void T_REXRCTrackLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1614,15 +1614,15 @@ static void GigaRCTrackLeftBank(
 }
 
 /** rct2: 0x008AD854 */
-static void GigaRCTrackRightBank(
+static void T_REXRCTrackRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrackLeftBank(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD864 */
-static void GigaRCTrackLeftQuarterTurn525DegUp(
+static void T_REXRCTrackLeftQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1797,7 +1797,7 @@ static void GigaRCTrackLeftQuarterTurn525DegUp(
 }
 
 /** rct2: 0x008AD874 */
-static void GigaRCTrackRightQuarterTurn525DegUp(
+static void T_REXRCTrackRightQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -1972,25 +1972,25 @@ static void GigaRCTrackRightQuarterTurn525DegUp(
 }
 
 /** rct2: 0x008AD884 */
-static void GigaRCTrackLeftQuarterTurn525DegDown(
+static void T_REXRCTrackLeftQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    GigaRCTrackRightQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    T_REXRCTrackRightQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD894 */
-static void GigaRCTrackRightQuarterTurn525DegDown(
+static void T_REXRCTrackRightQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    GigaRCTrackLeftQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    T_REXRCTrackLeftQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD8A4 */
-static void GigaRCTrackSBendLeft(
+static void T_REXRCTrackSBendLeft(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2139,7 +2139,7 @@ static void GigaRCTrackSBendLeft(
 }
 
 /** rct2: 0x008AD8B4 */
-static void GigaRCTrackSBendRight(
+static void T_REXRCTrackSBendRight(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2288,7 +2288,7 @@ static void GigaRCTrackSBendRight(
 }
 
 /** rct2: 0x008AD8F4 */
-static void GigaRCTrackLeftQuarterTurn3(
+static void T_REXRCTrackLeftQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2400,16 +2400,16 @@ static void GigaRCTrackLeftQuarterTurn3(
 }
 
 /** rct2: 0x008AD904 */
-static void GigaRCTrackRightQuarterTurn3(
+static void T_REXRCTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    GigaRCTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    T_REXRCTrackLeftQuarterTurn3(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD914 */
-static void GigaRCTrackLeftQuarterTurn3Bank(
+static void T_REXRCTrackLeftQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2527,16 +2527,16 @@ static void GigaRCTrackLeftQuarterTurn3Bank(
 }
 
 /** rct2: 0x008AD924 */
-static void GigaRCTrackRightQuarterTurn3Bank(
+static void T_REXRCTrackRightQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    GigaRCTrackLeftQuarterTurn3Bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    T_REXRCTrackLeftQuarterTurn3Bank(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD934 */
-static void GigaRCTrackLeftQuarterTurn325DegUp(
+static void T_REXRCTrackLeftQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2623,7 +2623,7 @@ static void GigaRCTrackLeftQuarterTurn325DegUp(
 }
 
 /** rct2: 0x008AD944 */
-static void GigaRCTrackRightQuarterTurn325DegUp(
+static void T_REXRCTrackRightQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2717,25 +2717,25 @@ static void GigaRCTrackRightQuarterTurn325DegUp(
 }
 
 /** rct2: 0x008AD954 */
-static void GigaRCTrackLeftQuarterTurn325DegDown(
+static void T_REXRCTrackLeftQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    GigaRCTrackRightQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    T_REXRCTrackRightQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD964 */
-static void GigaRCTrackRightQuarterTurn325DegDown(
+static void T_REXRCTrackRightQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    GigaRCTrackLeftQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    T_REXRCTrackLeftQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD974 */
-static void GigaRCTrackLeftHalfBankedHelixUpSmall(
+static void T_REXRCTrackLeftHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -2965,7 +2965,7 @@ static void GigaRCTrackLeftHalfBankedHelixUpSmall(
 }
 
 /** rct2: 0x008AD984 */
-static void GigaRCTrackRightHalfBankedHelixUpSmall(
+static void T_REXRCTrackRightHalfBankedHelixUpSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3195,7 +3195,7 @@ static void GigaRCTrackRightHalfBankedHelixUpSmall(
 }
 
 /** rct2: 0x008AD994 */
-static void GigaRCTrackLeftHalfBankedHelixDownSmall(
+static void T_REXRCTrackLeftHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3205,11 +3205,11 @@ static void GigaRCTrackLeftHalfBankedHelixDownSmall(
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    GigaRCTrackRightHalfBankedHelixUpSmall(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    T_REXRCTrackRightHalfBankedHelixUpSmall(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD9A4 */
-static void GigaRCTrackRightHalfBankedHelixDownSmall(
+static void T_REXRCTrackRightHalfBankedHelixDownSmall(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3219,11 +3219,11 @@ static void GigaRCTrackRightHalfBankedHelixDownSmall(
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    GigaRCTrackLeftHalfBankedHelixUpSmall(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    T_REXRCTrackLeftHalfBankedHelixUpSmall(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD9B4 */
-static void GigaRCTrackLeftHalfBankedHelixUpLarge(
+static void T_REXRCTrackLeftHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3579,7 +3579,7 @@ static void GigaRCTrackLeftHalfBankedHelixUpLarge(
 }
 
 /** rct2: 0x008AD9C4 */
-static void GigaRCTrackRightHalfBankedHelixUpLarge(
+static void T_REXRCTrackRightHalfBankedHelixUpLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3949,7 +3949,7 @@ static void GigaRCTrackRightHalfBankedHelixUpLarge(
 }
 
 /** rct2: 0x008AD9D4 */
-static void GigaRCTrackLeftHalfBankedHelixDownLarge(
+static void T_REXRCTrackLeftHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3959,11 +3959,11 @@ static void GigaRCTrackLeftHalfBankedHelixDownLarge(
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    GigaRCTrackRightHalfBankedHelixUpLarge(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    T_REXRCTrackRightHalfBankedHelixUpLarge(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008AD9E4 */
-static void GigaRCTrackRightHalfBankedHelixDownLarge(
+static void T_REXRCTrackRightHalfBankedHelixDownLarge(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -3973,11 +3973,11 @@ static void GigaRCTrackRightHalfBankedHelixDownLarge(
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    GigaRCTrackLeftHalfBankedHelixUpLarge(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    T_REXRCTrackLeftHalfBankedHelixUpLarge(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADA14 */
-static void GigaRCTrackLeftQuarterTurn160DegUp(
+static void T_REXRCTrackLeftQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4022,7 +4022,7 @@ static void GigaRCTrackLeftQuarterTurn160DegUp(
 }
 
 /** rct2: 0x008AD9F4 */
-static void GigaRCTrackRightQuarterTurn160DegUp(
+static void T_REXRCTrackRightQuarterTurn160DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4067,23 +4067,23 @@ static void GigaRCTrackRightQuarterTurn160DegUp(
 }
 
 /** rct2: 0x008ADA04 */
-static void GigaRCTrackLeftQuarterTurn160DegDown(
+static void T_REXRCTrackLeftQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrackRightQuarterTurn160DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    T_REXRCTrackRightQuarterTurn160DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADA24 */
-static void GigaRCTrackRightQuarterTurn160DegDown(
+static void T_REXRCTrackRightQuarterTurn160DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrackLeftQuarterTurn160DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    T_REXRCTrackLeftQuarterTurn160DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADA34 */
-static void GigaRCTrackBrakes(
+static void T_REXRCTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4092,19 +4092,19 @@ static void GigaRCTrackBrakes(
         case 0:
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(GIGA_COASTER_BRAKE_SW_NE_CLOSED_1),
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(T_REX_COASTER_BRAKE_SW_NE_CLOSED_1),
                 { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(GIGA_COASTER_BRAKE_SW_NE_CLOSED_2),
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(T_REX_COASTER_BRAKE_SW_NE_CLOSED_2),
                 { 0, 0, height }, { { 0, 27, height + 5 }, { 32, 1, 11 } });
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(GIGA_COASTER_BRAKE_NW_SE_CLOSED_1),
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(T_REX_COASTER_BRAKE_NW_SE_CLOSED_1),
                 { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(GIGA_COASTER_BRAKE_NW_SE_CLOSED_2),
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(T_REX_COASTER_BRAKE_NW_SE_CLOSED_2),
                 { 0, 0, height }, { { 0, 27, height + 5 }, { 32, 1, 11 } });
             break;
     }
@@ -4119,7 +4119,7 @@ static void GigaRCTrackBrakes(
 }
 
 /** rct2: 0x008ADC84 */
-static void GigaRCTrack25DegUpLeftBanked(
+static void T_REXRCTrack25DegUpLeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4164,7 +4164,7 @@ static void GigaRCTrack25DegUpLeftBanked(
 }
 
 /** rct2: 0x008ADC94 */
-static void GigaRCTrack25DegUpRightBanked(
+static void T_REXRCTrack25DegUpRightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4209,7 +4209,7 @@ static void GigaRCTrack25DegUpRightBanked(
 }
 
 /** rct2: 0x008ADA44 */
-static void GigaRCTrackOnRidePhoto(
+static void T_REXRCTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4259,23 +4259,23 @@ static void GigaRCTrackOnRidePhoto(
 }
 
 /** rct2: 0x008ADCA4 */
-static void GigaRCTrack25DegDownLeftBanked(
+static void T_REXRCTrack25DegDownLeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrack25DegUpRightBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrack25DegUpRightBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADCB4 */
-static void GigaRCTrack25DegDownRightBanked(
+static void T_REXRCTrack25DegDownRightBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrack25DegUpLeftBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrack25DegUpLeftBanked(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADED4 */
-static void GigaRCTrackFlatTo60DegUpLongBase(
+static void T_REXRCTrackFlatTo60DegUpLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4566,7 +4566,7 @@ static void GigaRCTrackFlatTo60DegUpLongBase(
 }
 
 /** rct2: 0x008ADEE4 */
-static void GigaRCTrack60DegUpToFlatLongBase(
+static void T_REXRCTrack60DegUpToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4719,23 +4719,23 @@ static void GigaRCTrack60DegUpToFlatLongBase(
 }
 
 /** rct2: 0x008ADEF4 */
-static void GigaRCTrack60DegDownToFlatLongBase(
+static void T_REXRCTrack60DegDownToFlatLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrackFlatTo60DegUpLongBase(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrackFlatTo60DegUpLongBase(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADF04 */
-static void GigaRCTrackFlatTo60DegDownLongBase(
+static void T_REXRCTrackFlatTo60DegDownLongBase(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrack60DegUpToFlatLongBase(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrack60DegUpToFlatLongBase(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADF14 */
-static void GigaRCTrackCableLiftHill(
+static void T_REXRCTrackCableLiftHill(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -4913,7 +4913,7 @@ static void GigaRCTrackCableLiftHill(
 }
 
 /** rct2: 0x008ADA64 */
-static void GigaRCTrackLeftEighthToDiag(
+static void T_REXRCTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5058,7 +5058,7 @@ static void GigaRCTrackLeftEighthToDiag(
 }
 
 /** rct2: 0x008ADA74 */
-static void GigaRCTrackRightEighthToDiag(
+static void T_REXRCTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5203,25 +5203,25 @@ static void GigaRCTrackRightEighthToDiag(
 }
 
 /** rct2: 0x008ADA84 */
-static void GigaRCTrackLeftEighthToOrthogonal(
+static void T_REXRCTrackLeftEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    GigaRCTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrackRightEighthToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADA94 */
-static void GigaRCTrackRightEighthToOrthogonal(
+static void T_REXRCTrackRightEighthToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    GigaRCTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    T_REXRCTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADAA4 */
-static void GigaRCTrackLeftEighthBankToDiag(
+static void T_REXRCTrackLeftEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5366,7 +5366,7 @@ static void GigaRCTrackLeftEighthBankToDiag(
 }
 
 /** rct2: 0x008ADAB4 */
-static void GigaRCTrackRightEighthBankToDiag(
+static void T_REXRCTrackRightEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5511,25 +5511,25 @@ static void GigaRCTrackRightEighthBankToDiag(
 }
 
 /** rct2: 0x008ADAC4 */
-static void GigaRCTrackLeftEighthBankToOrthogonal(
+static void T_REXRCTrackLeftEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    GigaRCTrackRightEighthBankToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrackRightEighthBankToDiag(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADAD4 */
-static void GigaRCTrackRightEighthBankToOrthogonal(
+static void T_REXRCTrackRightEighthBankToOrthogonal(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    GigaRCTrackLeftEighthBankToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+    T_REXRCTrackLeftEighthBankToDiag(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADA54 */
-static void GigaRCTrackDiagFlat(
+static void T_REXRCTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5675,7 +5675,7 @@ static void GigaRCTrackDiagFlat(
 }
 
 /** rct2: 0x008ADB04 */
-static void GigaRCTrackDiag25DegUp(
+static void T_REXRCTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5821,7 +5821,7 @@ static void GigaRCTrackDiag25DegUp(
 }
 
 /** rct2: 0x008ADB64 */
-static void GigaRCTrackDiag60DegUp(
+static void T_REXRCTrackDiag60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5897,7 +5897,7 @@ static void GigaRCTrackDiag60DegUp(
 }
 
 /** rct2: 0x008ADAE4 */
-static void GigaRCTrackDiagFlatTo25DegUp(
+static void T_REXRCTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6043,7 +6043,7 @@ static void GigaRCTrackDiagFlatTo25DegUp(
 }
 
 /** rct2: 0x008ADB44 */
-static void GigaRCTrackDiag25DegUpTo60DegUp(
+static void T_REXRCTrackDiag25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6119,7 +6119,7 @@ static void GigaRCTrackDiag25DegUpTo60DegUp(
 }
 
 /** rct2: 0x008ADB54 */
-static void GigaRCTrackDiag60DegUpTo25DegUp(
+static void T_REXRCTrackDiag60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6195,7 +6195,7 @@ static void GigaRCTrackDiag60DegUpTo25DegUp(
 }
 
 /** rct2: 0x008ADAF4 */
-static void GigaRCTrackDiag25DegUpToFlat(
+static void T_REXRCTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6341,7 +6341,7 @@ static void GigaRCTrackDiag25DegUpToFlat(
 }
 
 /** rct2: 0x008ADB34 */
-static void GigaRCTrackDiag25DegDown(
+static void T_REXRCTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6487,7 +6487,7 @@ static void GigaRCTrackDiag25DegDown(
 }
 
 /** rct2: 0x008ADB94 */
-static void GigaRCTrackDiag60DegDown(
+static void T_REXRCTrackDiag60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6563,7 +6563,7 @@ static void GigaRCTrackDiag60DegDown(
 }
 
 /** rct2: 0x008ADB14 */
-static void GigaRCTrackDiagFlatTo25DegDown(
+static void T_REXRCTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6707,7 +6707,7 @@ static void GigaRCTrackDiagFlatTo25DegDown(
 }
 
 /** rct2: 0x008ADB74 */
-static void GigaRCTrackDiag25DegDownTo60DegDown(
+static void T_REXRCTrackDiag25DegDownTo60DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6783,7 +6783,7 @@ static void GigaRCTrackDiag25DegDownTo60DegDown(
 }
 
 /** rct2: 0x008ADB84 */
-static void GigaRCTrackDiag60DegDownTo25DegDown(
+static void T_REXRCTrackDiag60DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -6859,7 +6859,7 @@ static void GigaRCTrackDiag60DegDownTo25DegDown(
 }
 
 /** rct2: 0x008ADB24 */
-static void GigaRCTrackDiag25DegDownToFlat(
+static void T_REXRCTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7005,7 +7005,7 @@ static void GigaRCTrackDiag25DegDownToFlat(
 }
 
 /** rct2: 0x008ADBC4 */
-static void GigaRCTrackDiagFlatToLeftBank(
+static void T_REXRCTrackDiagFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7084,7 +7084,7 @@ static void GigaRCTrackDiagFlatToLeftBank(
 }
 
 /** rct2: 0x008ADBD4 */
-static void GigaRCTrackDiagFlatToRightBank(
+static void T_REXRCTrackDiagFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7163,7 +7163,7 @@ static void GigaRCTrackDiagFlatToRightBank(
 }
 
 /** rct2: 0x008ADBE4 */
-static void GigaRCTrackDiagLeftBankToFlat(
+static void T_REXRCTrackDiagLeftBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7242,7 +7242,7 @@ static void GigaRCTrackDiagLeftBankToFlat(
 }
 
 /** rct2: 0x008ADBF4 */
-static void GigaRCTrackDiagRightBankToFlat(
+static void T_REXRCTrackDiagRightBankToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7321,7 +7321,7 @@ static void GigaRCTrackDiagRightBankToFlat(
 }
 
 /** rct2: 0x008ADC24 */
-static void GigaRCTrackDiagLeftBankTo25DegUp(
+static void T_REXRCTrackDiagLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7400,7 +7400,7 @@ static void GigaRCTrackDiagLeftBankTo25DegUp(
 }
 
 /** rct2: 0x008ADC34 */
-static void GigaRCTrackDiagRightBankTo25DegUp(
+static void T_REXRCTrackDiagRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7479,7 +7479,7 @@ static void GigaRCTrackDiagRightBankTo25DegUp(
 }
 
 /** rct2: 0x008ADC04 */
-static void GigaRCTrackDiag25DegUpToLeftBank(
+static void T_REXRCTrackDiag25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7558,7 +7558,7 @@ static void GigaRCTrackDiag25DegUpToLeftBank(
 }
 
 /** rct2: 0x008ADC14 */
-static void GigaRCTrackDiag25DegUpToRightBank(
+static void T_REXRCTrackDiag25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7637,7 +7637,7 @@ static void GigaRCTrackDiag25DegUpToRightBank(
 }
 
 /** rct2: 0x008ADC44 */
-static void GigaRCTrackDiagLeftBankTo25DegDown(
+static void T_REXRCTrackDiagLeftBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7714,7 +7714,7 @@ static void GigaRCTrackDiagLeftBankTo25DegDown(
 }
 
 /** rct2: 0x008ADC54 */
-static void GigaRCTrackDiagRightBankTo25DegDown(
+static void T_REXRCTrackDiagRightBankTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7791,7 +7791,7 @@ static void GigaRCTrackDiagRightBankTo25DegDown(
 }
 
 /** rct2: 0x008ADC64 */
-static void GigaRCTrackDiag25DegDownToLeftBank(
+static void T_REXRCTrackDiag25DegDownToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7870,7 +7870,7 @@ static void GigaRCTrackDiag25DegDownToLeftBank(
 }
 
 /** rct2: 0x008ADC74 */
-static void GigaRCTrackDiag25DegDownToRightBank(
+static void T_REXRCTrackDiag25DegDownToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -7949,7 +7949,7 @@ static void GigaRCTrackDiag25DegDownToRightBank(
 }
 
 /** rct2: 0x008ADBA4 */
-static void GigaRCTrackDiagLeftBank(
+static void T_REXRCTrackDiagLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8025,7 +8025,7 @@ static void GigaRCTrackDiagLeftBank(
 }
 
 /** rct2: 0x008ADBB4 */
-static void GigaRCTrackDiagRightBank(
+static void T_REXRCTrackDiagRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8101,16 +8101,16 @@ static void GigaRCTrackDiagRightBank(
 }
 
 /** rct2: 0x008ADEC4 */
-static void GigaRCTrackBlockBrakes(
+static void T_REXRCTrackBlockBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(_GigaCoasterBrakeImages[direction][isClosed][0]),
+        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(_T_REXCoasterBrakeImages[direction][isClosed][0]),
         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(_GigaCoasterBrakeImages[direction][isClosed][1]),
+        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(_T_REXCoasterBrakeImages[direction][isClosed][1]),
         { 0, 0, height }, { { 0, 27, height + 5 }, { 32, 1, 11 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -8124,7 +8124,7 @@ static void GigaRCTrackBlockBrakes(
 }
 
 /** rct2: 0x008ADCC4 */
-static void GigaRCTrackLeftBankedQuarterTurn325DegUp(
+static void T_REXRCTrackLeftBankedQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8211,7 +8211,7 @@ static void GigaRCTrackLeftBankedQuarterTurn325DegUp(
 }
 
 /** rct2: 0x008ADCD4 */
-static void GigaRCTrackRightBankedQuarterTurn325DegUp(
+static void T_REXRCTrackRightBankedQuarterTurn325DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8305,25 +8305,25 @@ static void GigaRCTrackRightBankedQuarterTurn325DegUp(
 }
 
 /** rct2: 0x008ADCE4 */
-static void GigaRCTrackLeftBankedQuarterTurn325DegDown(
+static void T_REXRCTrackLeftBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    GigaRCTrackRightBankedQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    T_REXRCTrackRightBankedQuarterTurn325DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADCF4 */
-static void GigaRCTrackRightBankedQuarterTurn325DegDown(
+static void T_REXRCTrackRightBankedQuarterTurn325DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    GigaRCTrackLeftBankedQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    T_REXRCTrackLeftBankedQuarterTurn325DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADD04 */
-static void GigaRCTrackLeftBankedQuarterTurn525DegUp(
+static void T_REXRCTrackLeftBankedQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8498,7 +8498,7 @@ static void GigaRCTrackLeftBankedQuarterTurn525DegUp(
 }
 
 /** rct2: 0x008ADD14 */
-static void GigaRCTrackRightBankedQuarterTurn525DegUp(
+static void T_REXRCTrackRightBankedQuarterTurn525DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8673,25 +8673,25 @@ static void GigaRCTrackRightBankedQuarterTurn525DegUp(
 }
 
 /** rct2: 0x008ADD24 */
-static void GigaRCTrackLeftBankedQuarterTurn525DegDown(
+static void T_REXRCTrackLeftBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    GigaRCTrackRightBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
+    T_REXRCTrackRightBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADD34 */
-static void GigaRCTrackRightBankedQuarterTurn525DegDown(
+static void T_REXRCTrackRightBankedQuarterTurn525DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    GigaRCTrackLeftBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    T_REXRCTrackLeftBankedQuarterTurn525DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADD44 */
-static void GigaRCTrack25DegUpToLeftBanked25DegUp(
+static void T_REXRCTrack25DegUpToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8739,7 +8739,7 @@ static void GigaRCTrack25DegUpToLeftBanked25DegUp(
 }
 
 /** rct2: 0x008ADD54 */
-static void GigaRCTrack25DegUpToRightBanked25DegUp(
+static void T_REXRCTrack25DegUpToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8787,7 +8787,7 @@ static void GigaRCTrack25DegUpToRightBanked25DegUp(
 }
 
 /** rct2: 0x008ADD64 */
-static void GigaRCTrackLeftBanked25DegUpTo25DegUp(
+static void T_REXRCTrackLeftBanked25DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8835,7 +8835,7 @@ static void GigaRCTrackLeftBanked25DegUpTo25DegUp(
 }
 
 /** rct2: 0x008ADD74 */
-static void GigaRCTrackRightBanked25DegUpTo25DegUp(
+static void T_REXRCTrackRightBanked25DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8883,39 +8883,39 @@ static void GigaRCTrackRightBanked25DegUpTo25DegUp(
 }
 
 /** rct2: 0x008ADD84 */
-static void GigaRCTrack25DegDownToLeftBanked25DegDown(
+static void T_REXRCTrack25DegDownToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrackRightBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrackRightBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADD94 */
-static void GigaRCTrack25DegDownToRightBanked25DegDown(
+static void T_REXRCTrack25DegDownToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrackLeftBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrackLeftBanked25DegUpTo25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADDA4 */
-static void GigaRCTrackLeftBanked25DegDownTo25DegDown(
+static void T_REXRCTrackLeftBanked25DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrack25DegUpToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrack25DegUpToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADDB4 */
-static void GigaRCTrackRightBanked25DegDownTo25DegDown(
+static void T_REXRCTrackRightBanked25DegDownTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrack25DegUpToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrack25DegUpToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADDC4 */
-static void GigaRCTrackLeftBankedFlatToLeftBanked25DegUp(
+static void T_REXRCTrackLeftBankedFlatToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -8960,7 +8960,7 @@ static void GigaRCTrackLeftBankedFlatToLeftBanked25DegUp(
 }
 
 /** rct2: 0x008ADDD4 */
-static void GigaRCTrackRightBankedFlatToRightBanked25DegUp(
+static void T_REXRCTrackRightBankedFlatToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9005,7 +9005,7 @@ static void GigaRCTrackRightBankedFlatToRightBanked25DegUp(
 }
 
 /** rct2: 0x008ADE04 */
-static void GigaRCTrackLeftBanked25DegUpToLeftBankedFlat(
+static void T_REXRCTrackLeftBanked25DegUpToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9050,7 +9050,7 @@ static void GigaRCTrackLeftBanked25DegUpToLeftBankedFlat(
 }
 
 /** rct2: 0x008ADE14 */
-static void GigaRCTrackRightBanked25DegUpToRightBankedFlat(
+static void T_REXRCTrackRightBanked25DegUpToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9095,39 +9095,39 @@ static void GigaRCTrackRightBanked25DegUpToRightBankedFlat(
 }
 
 /** rct2: 0x008ADE24 */
-static void GigaRCTrackLeftBankedFlatToLeftBanked25DegDown(
+static void T_REXRCTrackLeftBankedFlatToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrackRightBanked25DegUpToRightBankedFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrackRightBanked25DegUpToRightBankedFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADE34 */
-static void GigaRCTrackRightBankedFlatToRightBanked25DegDown(
+static void T_REXRCTrackRightBankedFlatToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrackLeftBanked25DegUpToLeftBankedFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrackLeftBanked25DegUpToLeftBankedFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADDE4 */
-static void GigaRCTrackLeftBanked25DegDownToLeftBankedFlat(
+static void T_REXRCTrackLeftBanked25DegDownToLeftBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrackRightBankedFlatToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrackRightBankedFlatToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADDF4 */
-static void GigaRCTrackRightBanked25DegDownToRightBankedFlat(
+static void T_REXRCTrackRightBanked25DegDownToRightBankedFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrackLeftBankedFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrackLeftBankedFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADE44 */
-static void GigaRCTrackFlatToLeftBanked25DegUp(
+static void T_REXRCTrackFlatToLeftBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9175,7 +9175,7 @@ static void GigaRCTrackFlatToLeftBanked25DegUp(
 }
 
 /** rct2: 0x008ADE54 */
-static void GigaRCTrackFlatToRightBanked25DegUp(
+static void T_REXRCTrackFlatToRightBanked25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9223,7 +9223,7 @@ static void GigaRCTrackFlatToRightBanked25DegUp(
 }
 
 /** rct2: 0x008ADE64 */
-static void GigaRCTrackLeftBanked25DegUpToFlat(
+static void T_REXRCTrackLeftBanked25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9271,7 +9271,7 @@ static void GigaRCTrackLeftBanked25DegUpToFlat(
 }
 
 /** rct2: 0x008ADE74 */
-static void GigaRCTrackRightBanked25DegUpToFlat(
+static void T_REXRCTrackRightBanked25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9319,38 +9319,38 @@ static void GigaRCTrackRightBanked25DegUpToFlat(
 }
 
 /** rct2: 0x008ADE84 */
-static void GigaRCTrackFlatToLeftBanked25DegDown(
+static void T_REXRCTrackFlatToLeftBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrackRightBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrackRightBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADE94 */
-static void GigaRCTrackFlatToRightBanked25DegDown(
+static void T_REXRCTrackFlatToRightBanked25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrackLeftBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrackLeftBanked25DegUpToFlat(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADEA4 */
-static void GigaRCTrackLeftBanked25DegDownToFlat(
+static void T_REXRCTrackLeftBanked25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrackFlatToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrackFlatToRightBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
 /** rct2: 0x008ADEB4 */
-static void GigaRCTrackRightBanked25DegDownToFlat(
+static void T_REXRCTrackRightBanked25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    GigaRCTrackFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+    T_REXRCTrackFlatToLeftBanked25DegUp(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
 }
 
-static void GigaRCTrackBooster(
+static void T_REXRCTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9365,13 +9365,13 @@ static void GigaRCTrackBooster(
         case 0:
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_RC_BOOSTER_NE_SW),
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_T_REX_RC_BOOSTER_NE_SW),
                 { ne_sw_offsetX, ne_sw_offsetY, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_RC_BOOSTER_NW_SE),
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_T_REX_RC_BOOSTER_NW_SE),
                 { nw_se_offsetX, nw_se_offsetY, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
@@ -9385,12 +9385,12 @@ static void GigaRCTrackBooster(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static void GigaRCTrackPoweredLift(
+static void T_REXRCTrackPoweredLift(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_RC_POWERED_LIFT_0 + direction),
+        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_T_REX_RC_POWERED_LIFT_0 + direction),
         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -9410,291 +9410,291 @@ static void GigaRCTrackPoweredLift(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionGigaRC(int32_t trackType)
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionT_REXRC(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::Flat:
-            return GigaRCTrackFlat;
+            return T_REXRCTrackFlat;
         case TrackElemType::EndStation:
         case TrackElemType::BeginStation:
         case TrackElemType::MiddleStation:
-            return GigaRCTrackStation;
+            return T_REXRCTrackStation;
         case TrackElemType::Up25:
-            return GigaRCTrack25DegUp;
+            return T_REXRCTrack25DegUp;
         case TrackElemType::Up60:
-            return GigaRCTrack60DegUp;
+            return T_REXRCTrack60DegUp;
         case TrackElemType::FlatToUp25:
-            return GigaRCTrackFlatTo25DegUp;
+            return T_REXRCTrackFlatTo25DegUp;
         case TrackElemType::Up25ToUp60:
-            return GigaRCTrack25DegUpTo60DegUp;
+            return T_REXRCTrack25DegUpTo60DegUp;
         case TrackElemType::Up60ToUp25:
-            return GigaRCTrack60DegUpTo25DegUp;
+            return T_REXRCTrack60DegUpTo25DegUp;
         case TrackElemType::Up25ToFlat:
-            return GigaRCTrack25DegUpToFlat;
+            return T_REXRCTrack25DegUpToFlat;
         case TrackElemType::Down25:
-            return GigaRCTrack25DegDown;
+            return T_REXRCTrack25DegDown;
         case TrackElemType::Down60:
-            return GigaRCTrack60DegDown;
+            return T_REXRCTrack60DegDown;
         case TrackElemType::FlatToDown25:
-            return GigaRCTrackFlatTo25DegDown;
+            return T_REXRCTrackFlatTo25DegDown;
         case TrackElemType::Down25ToDown60:
-            return GigaRCTrack25DegDownTo60DegDown;
+            return T_REXRCTrack25DegDownTo60DegDown;
         case TrackElemType::Down60ToDown25:
-            return GigaRCTrack60DegDownTo25DegDown;
+            return T_REXRCTrack60DegDownTo25DegDown;
         case TrackElemType::Down25ToFlat:
-            return GigaRCTrack25DegDownToFlat;
+            return T_REXRCTrack25DegDownToFlat;
         case TrackElemType::LeftQuarterTurn5Tiles:
-            return GigaRCTrackLeftQuarterTurn5;
+            return T_REXRCTrackLeftQuarterTurn5;
         case TrackElemType::RightQuarterTurn5Tiles:
-            return GigaRCTrackRightQuarterTurn5;
+            return T_REXRCTrackRightQuarterTurn5;
         case TrackElemType::FlatToLeftBank:
-            return GigaRCTrackFlatToLeftBank;
+            return T_REXRCTrackFlatToLeftBank;
         case TrackElemType::FlatToRightBank:
-            return GigaRCTrackFlatToRightBank;
+            return T_REXRCTrackFlatToRightBank;
         case TrackElemType::LeftBankToFlat:
-            return GigaRCTrackLeftBankToFlat;
+            return T_REXRCTrackLeftBankToFlat;
         case TrackElemType::RightBankToFlat:
-            return GigaRCTrackRightBankToFlat;
+            return T_REXRCTrackRightBankToFlat;
         case TrackElemType::BankedLeftQuarterTurn5Tiles:
-            return GigaRCTrackBankedLeftQuarterTurn5;
+            return T_REXRCTrackBankedLeftQuarterTurn5;
         case TrackElemType::BankedRightQuarterTurn5Tiles:
-            return GigaRCTrackBankedRightQuarterTurn5;
+            return T_REXRCTrackBankedRightQuarterTurn5;
         case TrackElemType::LeftBankToUp25:
-            return GigaRCTrackLeftBankTo25DegUp;
+            return T_REXRCTrackLeftBankTo25DegUp;
         case TrackElemType::RightBankToUp25:
-            return GigaRCTrackRightBankTo25DegUp;
+            return T_REXRCTrackRightBankTo25DegUp;
         case TrackElemType::Up25ToLeftBank:
-            return GigaRCTrack25DegUpToLeftBank;
+            return T_REXRCTrack25DegUpToLeftBank;
         case TrackElemType::Up25ToRightBank:
-            return GigaRCTrack25DegUpToRightBank;
+            return T_REXRCTrack25DegUpToRightBank;
         case TrackElemType::LeftBankToDown25:
-            return GigaRCTrackLeftBankTo25DegDown;
+            return T_REXRCTrackLeftBankTo25DegDown;
         case TrackElemType::RightBankToDown25:
-            return GigaRCTrackRightBankTo25DegDown;
+            return T_REXRCTrackRightBankTo25DegDown;
         case TrackElemType::Down25ToLeftBank:
-            return GigaRCTrack25DegDownToLeftBank;
+            return T_REXRCTrack25DegDownToLeftBank;
         case TrackElemType::Down25ToRightBank:
-            return GigaRCTrack25DegDownToRightBank;
+            return T_REXRCTrack25DegDownToRightBank;
         case TrackElemType::LeftBank:
-            return GigaRCTrackLeftBank;
+            return T_REXRCTrackLeftBank;
         case TrackElemType::RightBank:
-            return GigaRCTrackRightBank;
+            return T_REXRCTrackRightBank;
         case TrackElemType::LeftQuarterTurn5TilesUp25:
-            return GigaRCTrackLeftQuarterTurn525DegUp;
+            return T_REXRCTrackLeftQuarterTurn525DegUp;
         case TrackElemType::RightQuarterTurn5TilesUp25:
-            return GigaRCTrackRightQuarterTurn525DegUp;
+            return T_REXRCTrackRightQuarterTurn525DegUp;
         case TrackElemType::LeftQuarterTurn5TilesDown25:
-            return GigaRCTrackLeftQuarterTurn525DegDown;
+            return T_REXRCTrackLeftQuarterTurn525DegDown;
         case TrackElemType::RightQuarterTurn5TilesDown25:
-            return GigaRCTrackRightQuarterTurn525DegDown;
+            return T_REXRCTrackRightQuarterTurn525DegDown;
         case TrackElemType::SBendLeft:
-            return GigaRCTrackSBendLeft;
+            return T_REXRCTrackSBendLeft;
         case TrackElemType::SBendRight:
-            return GigaRCTrackSBendRight;
+            return T_REXRCTrackSBendRight;
         case TrackElemType::LeftQuarterTurn3Tiles:
-            return GigaRCTrackLeftQuarterTurn3;
+            return T_REXRCTrackLeftQuarterTurn3;
         case TrackElemType::RightQuarterTurn3Tiles:
-            return GigaRCTrackRightQuarterTurn3;
+            return T_REXRCTrackRightQuarterTurn3;
         case TrackElemType::LeftBankedQuarterTurn3Tiles:
-            return GigaRCTrackLeftQuarterTurn3Bank;
+            return T_REXRCTrackLeftQuarterTurn3Bank;
         case TrackElemType::RightBankedQuarterTurn3Tiles:
-            return GigaRCTrackRightQuarterTurn3Bank;
+            return T_REXRCTrackRightQuarterTurn3Bank;
         case TrackElemType::LeftQuarterTurn3TilesUp25:
-            return GigaRCTrackLeftQuarterTurn325DegUp;
+            return T_REXRCTrackLeftQuarterTurn325DegUp;
         case TrackElemType::RightQuarterTurn3TilesUp25:
-            return GigaRCTrackRightQuarterTurn325DegUp;
+            return T_REXRCTrackRightQuarterTurn325DegUp;
         case TrackElemType::LeftQuarterTurn3TilesDown25:
-            return GigaRCTrackLeftQuarterTurn325DegDown;
+            return T_REXRCTrackLeftQuarterTurn325DegDown;
         case TrackElemType::RightQuarterTurn3TilesDown25:
-            return GigaRCTrackRightQuarterTurn325DegDown;
+            return T_REXRCTrackRightQuarterTurn325DegDown;
         case TrackElemType::LeftHalfBankedHelixUpSmall:
-            return GigaRCTrackLeftHalfBankedHelixUpSmall;
+            return T_REXRCTrackLeftHalfBankedHelixUpSmall;
         case TrackElemType::RightHalfBankedHelixUpSmall:
-            return GigaRCTrackRightHalfBankedHelixUpSmall;
+            return T_REXRCTrackRightHalfBankedHelixUpSmall;
         case TrackElemType::LeftHalfBankedHelixDownSmall:
-            return GigaRCTrackLeftHalfBankedHelixDownSmall;
+            return T_REXRCTrackLeftHalfBankedHelixDownSmall;
         case TrackElemType::RightHalfBankedHelixDownSmall:
-            return GigaRCTrackRightHalfBankedHelixDownSmall;
+            return T_REXRCTrackRightHalfBankedHelixDownSmall;
         case TrackElemType::LeftHalfBankedHelixUpLarge:
-            return GigaRCTrackLeftHalfBankedHelixUpLarge;
+            return T_REXRCTrackLeftHalfBankedHelixUpLarge;
         case TrackElemType::RightHalfBankedHelixUpLarge:
-            return GigaRCTrackRightHalfBankedHelixUpLarge;
+            return T_REXRCTrackRightHalfBankedHelixUpLarge;
         case TrackElemType::LeftHalfBankedHelixDownLarge:
-            return GigaRCTrackLeftHalfBankedHelixDownLarge;
+            return T_REXRCTrackLeftHalfBankedHelixDownLarge;
         case TrackElemType::RightHalfBankedHelixDownLarge:
-            return GigaRCTrackRightHalfBankedHelixDownLarge;
+            return T_REXRCTrackRightHalfBankedHelixDownLarge;
         case TrackElemType::LeftQuarterTurn1TileUp60:
-            return GigaRCTrackLeftQuarterTurn160DegUp;
+            return T_REXRCTrackLeftQuarterTurn160DegUp;
         case TrackElemType::RightQuarterTurn1TileUp60:
-            return GigaRCTrackRightQuarterTurn160DegUp;
+            return T_REXRCTrackRightQuarterTurn160DegUp;
         case TrackElemType::LeftQuarterTurn1TileDown60:
-            return GigaRCTrackLeftQuarterTurn160DegDown;
+            return T_REXRCTrackLeftQuarterTurn160DegDown;
         case TrackElemType::RightQuarterTurn1TileDown60:
-            return GigaRCTrackRightQuarterTurn160DegDown;
+            return T_REXRCTrackRightQuarterTurn160DegDown;
         case TrackElemType::Brakes:
-            return GigaRCTrackBrakes;
+            return T_REXRCTrackBrakes;
         case TrackElemType::Up25LeftBanked:
-            return GigaRCTrack25DegUpLeftBanked;
+            return T_REXRCTrack25DegUpLeftBanked;
         case TrackElemType::Up25RightBanked:
-            return GigaRCTrack25DegUpRightBanked;
+            return T_REXRCTrack25DegUpRightBanked;
         case TrackElemType::OnRidePhoto:
-            return GigaRCTrackOnRidePhoto;
+            return T_REXRCTrackOnRidePhoto;
         case TrackElemType::Down25LeftBanked:
-            return GigaRCTrack25DegDownLeftBanked;
+            return T_REXRCTrack25DegDownLeftBanked;
         case TrackElemType::Down25RightBanked:
-            return GigaRCTrack25DegDownRightBanked;
+            return T_REXRCTrack25DegDownRightBanked;
         case TrackElemType::FlatToUp60LongBase:
-            return GigaRCTrackFlatTo60DegUpLongBase;
+            return T_REXRCTrackFlatTo60DegUpLongBase;
         case TrackElemType::Up60ToFlatLongBase:
-            return GigaRCTrack60DegUpToFlatLongBase;
+            return T_REXRCTrack60DegUpToFlatLongBase;
         case TrackElemType::Down60ToFlatLongBase:
-            return GigaRCTrack60DegDownToFlatLongBase;
+            return T_REXRCTrack60DegDownToFlatLongBase;
         case TrackElemType::FlatToDown60LongBase:
-            return GigaRCTrackFlatTo60DegDownLongBase;
+            return T_REXRCTrackFlatTo60DegDownLongBase;
         case TrackElemType::CableLiftHill:
-            return GigaRCTrackCableLiftHill;
+            return T_REXRCTrackCableLiftHill;
         case TrackElemType::LeftEighthToDiag:
-            return GigaRCTrackLeftEighthToDiag;
+            return T_REXRCTrackLeftEighthToDiag;
         case TrackElemType::RightEighthToDiag:
-            return GigaRCTrackRightEighthToDiag;
+            return T_REXRCTrackRightEighthToDiag;
         case TrackElemType::LeftEighthToOrthogonal:
-            return GigaRCTrackLeftEighthToOrthogonal;
+            return T_REXRCTrackLeftEighthToOrthogonal;
         case TrackElemType::RightEighthToOrthogonal:
-            return GigaRCTrackRightEighthToOrthogonal;
+            return T_REXRCTrackRightEighthToOrthogonal;
         case TrackElemType::LeftEighthBankToDiag:
-            return GigaRCTrackLeftEighthBankToDiag;
+            return T_REXRCTrackLeftEighthBankToDiag;
         case TrackElemType::RightEighthBankToDiag:
-            return GigaRCTrackRightEighthBankToDiag;
+            return T_REXRCTrackRightEighthBankToDiag;
         case TrackElemType::LeftEighthBankToOrthogonal:
-            return GigaRCTrackLeftEighthBankToOrthogonal;
+            return T_REXRCTrackLeftEighthBankToOrthogonal;
         case TrackElemType::RightEighthBankToOrthogonal:
-            return GigaRCTrackRightEighthBankToOrthogonal;
+            return T_REXRCTrackRightEighthBankToOrthogonal;
         case TrackElemType::DiagFlat:
-            return GigaRCTrackDiagFlat;
+            return T_REXRCTrackDiagFlat;
         case TrackElemType::DiagUp25:
-            return GigaRCTrackDiag25DegUp;
+            return T_REXRCTrackDiag25DegUp;
         case TrackElemType::DiagUp60:
-            return GigaRCTrackDiag60DegUp;
+            return T_REXRCTrackDiag60DegUp;
         case TrackElemType::DiagFlatToUp25:
-            return GigaRCTrackDiagFlatTo25DegUp;
+            return T_REXRCTrackDiagFlatTo25DegUp;
         case TrackElemType::DiagUp25ToUp60:
-            return GigaRCTrackDiag25DegUpTo60DegUp;
+            return T_REXRCTrackDiag25DegUpTo60DegUp;
         case TrackElemType::DiagUp60ToUp25:
-            return GigaRCTrackDiag60DegUpTo25DegUp;
+            return T_REXRCTrackDiag60DegUpTo25DegUp;
         case TrackElemType::DiagUp25ToFlat:
-            return GigaRCTrackDiag25DegUpToFlat;
+            return T_REXRCTrackDiag25DegUpToFlat;
         case TrackElemType::DiagDown25:
-            return GigaRCTrackDiag25DegDown;
+            return T_REXRCTrackDiag25DegDown;
         case TrackElemType::DiagDown60:
-            return GigaRCTrackDiag60DegDown;
+            return T_REXRCTrackDiag60DegDown;
         case TrackElemType::DiagFlatToDown25:
-            return GigaRCTrackDiagFlatTo25DegDown;
+            return T_REXRCTrackDiagFlatTo25DegDown;
         case TrackElemType::DiagDown25ToDown60:
-            return GigaRCTrackDiag25DegDownTo60DegDown;
+            return T_REXRCTrackDiag25DegDownTo60DegDown;
         case TrackElemType::DiagDown60ToDown25:
-            return GigaRCTrackDiag60DegDownTo25DegDown;
+            return T_REXRCTrackDiag60DegDownTo25DegDown;
         case TrackElemType::DiagDown25ToFlat:
-            return GigaRCTrackDiag25DegDownToFlat;
+            return T_REXRCTrackDiag25DegDownToFlat;
         case TrackElemType::DiagFlatToLeftBank:
-            return GigaRCTrackDiagFlatToLeftBank;
+            return T_REXRCTrackDiagFlatToLeftBank;
         case TrackElemType::DiagFlatToRightBank:
-            return GigaRCTrackDiagFlatToRightBank;
+            return T_REXRCTrackDiagFlatToRightBank;
         case TrackElemType::DiagLeftBankToFlat:
-            return GigaRCTrackDiagLeftBankToFlat;
+            return T_REXRCTrackDiagLeftBankToFlat;
         case TrackElemType::DiagRightBankToFlat:
-            return GigaRCTrackDiagRightBankToFlat;
+            return T_REXRCTrackDiagRightBankToFlat;
         case TrackElemType::DiagLeftBankToUp25:
-            return GigaRCTrackDiagLeftBankTo25DegUp;
+            return T_REXRCTrackDiagLeftBankTo25DegUp;
         case TrackElemType::DiagRightBankToUp25:
-            return GigaRCTrackDiagRightBankTo25DegUp;
+            return T_REXRCTrackDiagRightBankTo25DegUp;
         case TrackElemType::DiagUp25ToLeftBank:
-            return GigaRCTrackDiag25DegUpToLeftBank;
+            return T_REXRCTrackDiag25DegUpToLeftBank;
         case TrackElemType::DiagUp25ToRightBank:
-            return GigaRCTrackDiag25DegUpToRightBank;
+            return T_REXRCTrackDiag25DegUpToRightBank;
         case TrackElemType::DiagLeftBankToDown25:
-            return GigaRCTrackDiagLeftBankTo25DegDown;
+            return T_REXRCTrackDiagLeftBankTo25DegDown;
         case TrackElemType::DiagRightBankToDown25:
-            return GigaRCTrackDiagRightBankTo25DegDown;
+            return T_REXRCTrackDiagRightBankTo25DegDown;
         case TrackElemType::DiagDown25ToLeftBank:
-            return GigaRCTrackDiag25DegDownToLeftBank;
+            return T_REXRCTrackDiag25DegDownToLeftBank;
         case TrackElemType::DiagDown25ToRightBank:
-            return GigaRCTrackDiag25DegDownToRightBank;
+            return T_REXRCTrackDiag25DegDownToRightBank;
         case TrackElemType::DiagLeftBank:
-            return GigaRCTrackDiagLeftBank;
+            return T_REXRCTrackDiagLeftBank;
         case TrackElemType::DiagRightBank:
-            return GigaRCTrackDiagRightBank;
+            return T_REXRCTrackDiagRightBank;
         case TrackElemType::BlockBrakes:
-            return GigaRCTrackBlockBrakes;
+            return T_REXRCTrackBlockBrakes;
         case TrackElemType::LeftBankedQuarterTurn3TileUp25:
-            return GigaRCTrackLeftBankedQuarterTurn325DegUp;
+            return T_REXRCTrackLeftBankedQuarterTurn325DegUp;
         case TrackElemType::RightBankedQuarterTurn3TileUp25:
-            return GigaRCTrackRightBankedQuarterTurn325DegUp;
+            return T_REXRCTrackRightBankedQuarterTurn325DegUp;
         case TrackElemType::LeftBankedQuarterTurn3TileDown25:
-            return GigaRCTrackLeftBankedQuarterTurn325DegDown;
+            return T_REXRCTrackLeftBankedQuarterTurn325DegDown;
         case TrackElemType::RightBankedQuarterTurn3TileDown25:
-            return GigaRCTrackRightBankedQuarterTurn325DegDown;
+            return T_REXRCTrackRightBankedQuarterTurn325DegDown;
         case TrackElemType::LeftBankedQuarterTurn5TileUp25:
-            return GigaRCTrackLeftBankedQuarterTurn525DegUp;
+            return T_REXRCTrackLeftBankedQuarterTurn525DegUp;
         case TrackElemType::RightBankedQuarterTurn5TileUp25:
-            return GigaRCTrackRightBankedQuarterTurn525DegUp;
+            return T_REXRCTrackRightBankedQuarterTurn525DegUp;
         case TrackElemType::LeftBankedQuarterTurn5TileDown25:
-            return GigaRCTrackLeftBankedQuarterTurn525DegDown;
+            return T_REXRCTrackLeftBankedQuarterTurn525DegDown;
         case TrackElemType::RightBankedQuarterTurn5TileDown25:
-            return GigaRCTrackRightBankedQuarterTurn525DegDown;
+            return T_REXRCTrackRightBankedQuarterTurn525DegDown;
         case TrackElemType::Up25ToLeftBankedUp25:
-            return GigaRCTrack25DegUpToLeftBanked25DegUp;
+            return T_REXRCTrack25DegUpToLeftBanked25DegUp;
         case TrackElemType::Up25ToRightBankedUp25:
-            return GigaRCTrack25DegUpToRightBanked25DegUp;
+            return T_REXRCTrack25DegUpToRightBanked25DegUp;
         case TrackElemType::LeftBankedUp25ToUp25:
-            return GigaRCTrackLeftBanked25DegUpTo25DegUp;
+            return T_REXRCTrackLeftBanked25DegUpTo25DegUp;
         case TrackElemType::RightBankedUp25ToUp25:
-            return GigaRCTrackRightBanked25DegUpTo25DegUp;
+            return T_REXRCTrackRightBanked25DegUpTo25DegUp;
         case TrackElemType::Down25ToLeftBankedDown25:
-            return GigaRCTrack25DegDownToLeftBanked25DegDown;
+            return T_REXRCTrack25DegDownToLeftBanked25DegDown;
         case TrackElemType::Down25ToRightBankedDown25:
-            return GigaRCTrack25DegDownToRightBanked25DegDown;
+            return T_REXRCTrack25DegDownToRightBanked25DegDown;
         case TrackElemType::LeftBankedDown25ToDown25:
-            return GigaRCTrackLeftBanked25DegDownTo25DegDown;
+            return T_REXRCTrackLeftBanked25DegDownTo25DegDown;
         case TrackElemType::RightBankedDown25ToDown25:
-            return GigaRCTrackRightBanked25DegDownTo25DegDown;
+            return T_REXRCTrackRightBanked25DegDownTo25DegDown;
         case TrackElemType::LeftBankedFlatToLeftBankedUp25:
-            return GigaRCTrackLeftBankedFlatToLeftBanked25DegUp;
+            return T_REXRCTrackLeftBankedFlatToLeftBanked25DegUp;
         case TrackElemType::RightBankedFlatToRightBankedUp25:
-            return GigaRCTrackRightBankedFlatToRightBanked25DegUp;
+            return T_REXRCTrackRightBankedFlatToRightBanked25DegUp;
         case TrackElemType::LeftBankedUp25ToLeftBankedFlat:
-            return GigaRCTrackLeftBanked25DegUpToLeftBankedFlat;
+            return T_REXRCTrackLeftBanked25DegUpToLeftBankedFlat;
         case TrackElemType::RightBankedUp25ToRightBankedFlat:
-            return GigaRCTrackRightBanked25DegUpToRightBankedFlat;
+            return T_REXRCTrackRightBanked25DegUpToRightBankedFlat;
         case TrackElemType::LeftBankedFlatToLeftBankedDown25:
-            return GigaRCTrackLeftBankedFlatToLeftBanked25DegDown;
+            return T_REXRCTrackLeftBankedFlatToLeftBanked25DegDown;
         case TrackElemType::RightBankedFlatToRightBankedDown25:
-            return GigaRCTrackRightBankedFlatToRightBanked25DegDown;
+            return T_REXRCTrackRightBankedFlatToRightBanked25DegDown;
         case TrackElemType::LeftBankedDown25ToLeftBankedFlat:
-            return GigaRCTrackLeftBanked25DegDownToLeftBankedFlat;
+            return T_REXRCTrackLeftBanked25DegDownToLeftBankedFlat;
         case TrackElemType::RightBankedDown25ToRightBankedFlat:
-            return GigaRCTrackRightBanked25DegDownToRightBankedFlat;
+            return T_REXRCTrackRightBanked25DegDownToRightBankedFlat;
         case TrackElemType::FlatToLeftBankedUp25:
-            return GigaRCTrackFlatToLeftBanked25DegUp;
+            return T_REXRCTrackFlatToLeftBanked25DegUp;
         case TrackElemType::FlatToRightBankedUp25:
-            return GigaRCTrackFlatToRightBanked25DegUp;
+            return T_REXRCTrackFlatToRightBanked25DegUp;
         case TrackElemType::LeftBankedUp25ToFlat:
-            return GigaRCTrackLeftBanked25DegUpToFlat;
+            return T_REXRCTrackLeftBanked25DegUpToFlat;
         case TrackElemType::RightBankedUp25ToFlat:
-            return GigaRCTrackRightBanked25DegUpToFlat;
+            return T_REXRCTrackRightBanked25DegUpToFlat;
         case TrackElemType::FlatToLeftBankedDown25:
-            return GigaRCTrackFlatToLeftBanked25DegDown;
+            return T_REXRCTrackFlatToLeftBanked25DegDown;
         case TrackElemType::FlatToRightBankedDown25:
-            return GigaRCTrackFlatToRightBanked25DegDown;
+            return T_REXRCTrackFlatToRightBanked25DegDown;
         case TrackElemType::LeftBankedDown25ToFlat:
-            return GigaRCTrackLeftBanked25DegDownToFlat;
+            return T_REXRCTrackLeftBanked25DegDownToFlat;
         case TrackElemType::RightBankedDown25ToFlat:
-            return GigaRCTrackRightBanked25DegDownToFlat;
+            return T_REXRCTrackRightBanked25DegDownToFlat;
 
         case TrackElemType::Booster:
-            return GigaRCTrackBooster;
+            return T_REXRCTrackBooster;
         case TrackElemType::PoweredLift:
-            return GigaRCTrackPoweredLift;
+            return T_REXRCTrackPoweredLift;
     }
     return nullptr;
 }

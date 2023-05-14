@@ -330,7 +330,7 @@ void FormatStringToUpper(utf8* dest, size_t size, StringId format, const void* a
 void FormatReadableSize(char* buf, size_t bufSize, uint64_t sizeBytes)
 {
     constexpr uint32_t SizeTable[] = {
-        STR_SIZE_BYTE, STR_SIZE_KILOBYTE, STR_SIZE_MEGABYTE, STR_SIZE_GIGABYTE, STR_SIZE_TERABYTE,
+        STR_SIZE_BYTE, STR_SIZE_KILOBYTE, STR_SIZE_MEGABYTE, STR_SIZE_T_REXBYTE, STR_SIZE_TERABYTE,
     };
 
     double size = sizeBytes;
