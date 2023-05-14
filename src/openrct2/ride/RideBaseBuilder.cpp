@@ -197,27 +197,28 @@ void RideBaseBuilder::BuildSequences()
             if (x == 0)
             {
                 if (y == 0)
-                    edges[x][y] = EDGE_NE | EDGE_NW;
+                    edges[x][y] = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_3
+                        | TRACK_SEQUENCE_FLAG_ORIGIN;
                 else if (y == (_sizeY-1))
-                    edges[x][y] = EDGE_NE | EDGE_SE;
+                    edges[x][y] = TRACK_SEQUENCE_FLAG_DIRECTION_0 | TRACK_SEQUENCE_FLAG_DIRECTION_1;
                 else
-                    edges[x][y] = EDGE_NE;
+                    edges[x][y] = TRACK_SEQUENCE_FLAG_DIRECTION_0;
             }
             else if (x == (_sizeX-1))
             {
                 if (y == 0)
-                    edges[x][y] = EDGE_NW | EDGE_SW;
+                    edges[x][y] = TRACK_SEQUENCE_FLAG_DIRECTION_2 | TRACK_SEQUENCE_FLAG_DIRECTION_3;
                 else if (y == (_sizeY-1))
-                    edges[x][y] = EDGE_SW | EDGE_SE;
+                    edges[x][y] = TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_2;
                 else
-                    edges[x][y] = EDGE_SW;
+                    edges[x][y] = TRACK_SEQUENCE_FLAG_DIRECTION_2;
             }
             else
             {
                 if (y == 0)
-                    edges[x][y] = EDGE_NW;
+                    edges[x][y] = TRACK_SEQUENCE_FLAG_DIRECTION_3;
                 else if (y == (_sizeY-1))
-                    edges[x][y] = EDGE_SE;
+                    edges[x][y] = TRACK_SEQUENCE_FLAG_DIRECTION_1;
                 else
                     edges[x][y] = 0;
             }
