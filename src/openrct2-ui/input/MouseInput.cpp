@@ -59,7 +59,7 @@ uint16_t gTooltipTimeout;
 WidgetRef gTooltipWidget;
 ScreenCoordsXY gTooltipCursor;
 
-static int16_t _clickRepeatTicks;
+static uint32_t _clickRepeatTicks;
 
 static MouseState GameGetNextInput(ScreenCoordsXY& screenCoords);
 static void InputWidgetOver(const ScreenCoordsXY& screenCoords, WindowBase* w, WidgetIndex widgetIndex);
@@ -1078,7 +1078,7 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, WindowBase* w, W
                 gPressedWidget.widget_index = widgetIndex;
                 _inputFlags |= INPUT_FLAG_WIDGET_PRESSED;
                 _inputState = InputState::WidgetPressed;
-                _clickRepeatTicks = 1;
+                _clickRepeatTicks = gCurrentRealTimeTicks;
 
                 WidgetInvalidateByNumber(windowClass, windowNumber, widgetIndex);
                 WindowEventMouseDownCall(w, widgetIndex);
@@ -1298,15 +1298,17 @@ void InputStateWidgetPressed(
 
             if (_clickRepeatTicks != 0)
             {
-                _clickRepeatTicks++;
+                const auto clickRepeatsDelta = gCurrentRealTimeTicks - _clickRepeatTicks;
 
                 // Handle click repeat
-                if (_clickRepeatTicks >= 16 && (_clickRepeatTicks & 3) == 0)
+                if (clickRepeatsDelta >= 16 && (clickRepeatsDelta & 3) == 0)
                 {
                     if (WidgetIsHoldable(*w, widgetIndex))
                     {
                         WindowEventMouseDownCall(w, widgetIndex);
                     }
+
+                    _clickRepeatTicks = gCurrentRealTimeTicks;
                 }
             }
 
