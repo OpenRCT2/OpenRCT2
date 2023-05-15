@@ -1397,6 +1397,14 @@ private:
                 break;
             case WIDX_TITLE_MUSIC_DROPDOWN:
             {
+                // HACK: When RCT1 is not available, it's not in the dropdown, so indices higher than it should be incremented
+                const bool rct1MusicThemeIsAvailable = IsRCT1TitleMusicAvailable();
+                for (size_t i = 0; i < std::size(TitleThemeOptions) && static_cast<int32_t>(i) <= dropdownIndex; i++)
+                {
+                    if (TitleThemeOptions[i].Kind == TitleMusicKind::RCT1 && !rct1MusicThemeIsAvailable)
+                        dropdownIndex++;
+                }
+
                 gConfigSound.TitleMusic = TitleThemeOptions[dropdownIndex].Kind;
                 ConfigSaveDefault();
                 Invalidate();
