@@ -1459,8 +1459,8 @@ private:
 
     StringId GetTitleMusicName() const
     {
-        auto theme = std::find_if(std::begin(TitleThemeOptions), std::end(TitleThemeOptions), [](auto&& theme) {
-            return gConfigSound.TitleMusic == theme.Kind;
+        auto theme = std::find_if(std::begin(TitleThemeOptions), std::end(TitleThemeOptions), [](auto&& option) {
+            return gConfigSound.TitleMusic == option.Kind;
         });
         if (theme != std::end(TitleThemeOptions))
             return theme->Name;
