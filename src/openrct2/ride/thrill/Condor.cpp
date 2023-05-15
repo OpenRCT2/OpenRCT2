@@ -20,6 +20,7 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 #include "../VehiclePaint.h"
+#include "../RideBoundboxBuilder.h"
 
 #include <algorithm>
 #include <cstring>
@@ -42,7 +43,8 @@ void VehicleVisualCondor(
     PaintSession& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const CarEntry* carEntry)
 {
-    imageDirection = OpenRCT2::Entity::Yaw::YawTo32(imageDirection);
+    //dont draw here, it doesn't work since the sprites are wider than 64 pixels!
+    /*imageDirection = OpenRCT2::Entity::Yaw::YawTo32(imageDirection);
 
     auto imageFlags = ImageId(0, vehicle->colours.Body, vehicle->colours.Trim);
     if (vehicle->IsGhost())
@@ -50,8 +52,12 @@ void VehicleVisualCondor(
         imageFlags = ConstructionMarker;
     }
 
-    ImageId image_id;
-    int32_t baseImage_id = (carEntry->base_image_id + 4) + ((vehicle->animation_frame / 4) & 0x3);
+    ImageId bodyIdLeft = imageFlags.WithIndex(carEntry->base_image_id);
+    ImageId bodyIdRight = imageFlags.WithIndex(carEntry->base_image_id + 1);
+    PaintAddImageAsParent(session, bodyIdLeft, { 0, 0, z + 32 }, { 64, 64, 96 }, { 0, 0, z + 2 });
+    PaintAddImageAsParent(session, bodyIdRight, { 0, 0, z + 32 }, { 64, 64, 96 }, { 0, 0, z + 2 });
+
+    /*int32_t baseImage_id = (carEntry->base_image_id + 4) + ((vehicle->animation_frame / 4) & 0x3);
     if (vehicle->restraints_position >= 64)
     {
         baseImage_id += 7;
@@ -100,7 +106,57 @@ void VehicleVisualCondor(
 
     assert(carEntry->effect_visual == 1);
     // Although called in original code, effect_visual (splash effects) are not used for many rides and does not make sense so
-    // it was taken out
+    // it was taken out*/
+}
+
+static void PaintCondorStructure(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement, CoordsXYZ bbOffset, CoordsXYZ bbSize)
+{
+    auto rideEntry = ride.GetRideEntry();
+    if (rideEntry == nullptr)
+        return;
+
+    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && !ride.vehicles[0].IsNull())
+    {
+        session.InteractionType = ViewportInteractionItem::Entity;
+        session.CurrentlyDrawnEntity = GetEntity<Vehicle>(ride.vehicles[0]);
+    }
+
+    /*auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto imageFlags = session.TrackColours[SCHEME_MISC];
+    if (imageFlags != TrackGhost)
+    {
+        imageTemplate = imageFlags;
+    }
+
+    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + direction);*/
+    auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto imageFlags = session.TrackColours[SCHEME_MISC];
+    if (imageFlags != TrackGhost)
+    {
+        imageTemplate = imageFlags;
+    }
+    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id);
+
+    std::array<CoordsXY, 4> offsets = { CoordsXY{ 0, 128 }, CoordsXY{ 128, 256 }, CoordsXY{ 256, 128 }, CoordsXY{ 128, 0 } };
+    std::array<CoordsXY, 4>
+            offsets2 = { CoordsXY{ 50, 0 }, CoordsXY{ 0, -50 }, CoordsXY{ -50, 0 }, CoordsXY{ 0, 50 } };
+
+    for (int i = 0; i < 4; i++)
+    {
+        PaintAddImageAsParent(
+            session, imageId,
+            { -bbOffset.x + offsets[i].x + offsets2[i].x, -bbOffset.y + offsets[i].y + offsets2[i].y, height + 32 },
+            { { offsets[i].x + offsets2[i].x, offsets[i].y + offsets2[i].y, height + 32 }, { 24, 24, 48 } });
+    }
+
+    
+    /*PaintAddImageAsParent(
+        session, imageId, { -bbOffset.x + 0 + 64, -bbOffset.y + 144 + 0, height + 64 },
+        { { 64, 144, height + 7 }, { 24, 24, 48 } });*/
+    /*PaintAddImageAsParent(
+        session, imageId, { -bbOffset.x, -bbOffset.y + 128, height + 48 }, { { 0, 0, height + 7 }, { 24, 24, 48 } });*/
 }
 
 /** rct2: 0x00886194 */
@@ -143,6 +199,16 @@ static void PaintCondorBase(
 
         return;
     }
+
+    const auto& bbBuilder = RideBoundboxBuilder(TowerBase9x9TED.Block, 81);
+    auto offsets = bbBuilder.GetOffsets();
+
+    auto sequenceValid = std::find_if(
+        offsets.begin(), offsets.end(), [trackSequence](const auto& elem) { return elem.first == trackSequence; });
+    if (sequenceValid != offsets.end())
+        PaintCondorStructure(
+            session, ride, trackSequence, direction, height, trackElement, CoordsXYZ{ sequenceValid->second, 32 },
+            CoordsXYZ{ 32, 32, 32 });
 
     int32_t blockedSegments = 0;
     switch (trackSequence)
@@ -227,10 +293,7 @@ static constexpr const CoordsXY word_9A3AB4[4] = {
     { -96, 0 },
 };
 
-static constexpr const CoordsXY StartLocations[] = { { 32, 0 },    { 20, 25 },   { -7, 31 }, { -29, 14 },
-                                                     { -29, -14 }, { -7, -31 }, { 20, -25 } };
-
-static constexpr const uint32_t StartDirections[] = { 8, 3, 31, 26, 22, 17, 13 };
+static constexpr const CoordsXY StartLocations[] = { { 80, 0 }, { 0, 80 }, { -80, 0 }, { 0, -80 } };
 
 CondorVehicleData::CondorVehicleData()
     : VehicleIndex(0)
@@ -313,14 +376,10 @@ void CondorCreateVehicle(
     vehicle->update_flags = 0;
 
     // place the car in a circle, centered around the tower
-    auto centerOffset = CoordsXY{ 16, 16 };
-    auto chosenLoc = carPosition + CoordsXYZ{ StartLocations[carIndex % 7] + centerOffset, 0 };
+    auto centerOffset = CoordsXY{ 144, 144 };
+    auto chosenLoc = carPosition + CoordsXYZ{ StartLocations[carIndex % 4] + centerOffset, 0 };
     vehicle->MoveTo(chosenLoc);
-
-    // set the angle of the vehicle
-    // 32 sprites for a complete rotation
-    vehicle->sprite_direction = StartDirections[carIndex % 7];
-    // vehicle->sprite_direction = 9;
+    vehicle->sprite_direction = 0;
     vehicle->Pitch = 0;
 
     vehicle->VehicleData = std::make_unique<CondorVehicleData>();
@@ -357,7 +416,7 @@ void CondorRideUpdateWating(Ride& ride)
     }
 }
 
-static void CondorRideUpdateClimbing(Ride& ride)
+/*static void CondorRideUpdateClimbing(Ride& ride)
 {
     auto condorRideData = static_cast<CondorRideData*>(ride.Data.get());
     if (condorRideData != nullptr)
@@ -385,7 +444,7 @@ static void CondorRideUpdateFalling(Ride& ride)
         }
         condorRideData->VehiclesZ = height;
     }
-}
+}*/
 
 void CondorRideUpdate(Ride& ride)
 {
@@ -398,10 +457,10 @@ void CondorRideUpdate(Ride& ride)
                 CondorRideUpdateWating(ride);
                 break;
             case CondorRideState::Climbing:
-                CondorRideUpdateClimbing(ride);
+                //CondorRideUpdateClimbing(ride);
                 break;
             case CondorRideState::Falling:
-                CondorRideUpdateFalling(ride);
+                //CondorRideUpdateFalling(ride);
                 break;
         }
     }

@@ -3740,5 +3740,8 @@ void Vehicle::Paint(PaintSession& session, int32_t imageDirection) const
         case VEHICLE_VISUAL_SUBMARINE:
             VehicleVisualSubmarine(session, x, imageDirection, y, z + zOffset, this, carEntry);
             break;
+        case VEHICLE_VISUAL_CONDOR:
+            VehicleVisualCondor(session, x, imageDirection, y, z + zOffset, this, carEntry);
+            break;
     }
 }

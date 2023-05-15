@@ -433,6 +433,7 @@
     <ClInclude Include="ride\Ride.h" />
     <ClInclude Include="ride\RideAudio.h" />
     <ClInclude Include="ride\RideBaseBuilder.h" />
+    <ClInclude Include="ride\RideBoundboxBuilder.h" />
     <ClInclude Include="ride\RideColour.h" />
     <ClInclude Include="ride\RideConstruction.h" />
     <ClInclude Include="ride\RideData.h" />
@@ -920,6 +921,7 @@
     <ClCompile Include="ride\Ride.cpp" />
     <ClCompile Include="ride\RideAudio.cpp" />
     <ClCompile Include="ride\RideBaseBuilder.cpp" />
+    <ClCompile Include="ride\RideBoundboxBuilder.cpp" />
     <ClCompile Include="ride\RideConstruction.cpp" />
     <ClCompile Include="ride\RideData.cpp" />
     <ClCompile Include="ride\RideRatings.cpp" />
