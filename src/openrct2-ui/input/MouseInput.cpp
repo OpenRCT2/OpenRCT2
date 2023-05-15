@@ -45,7 +45,7 @@ static RCTMouseData _mouseInputQueue[64];
 static uint8_t _mouseInputQueueReadIndex = 0;
 static uint8_t _mouseInputQueueWriteIndex = 0;
 
-static uint32_t _ticksSinceDragStart;
+static std::optional<uint32_t> _ticksSinceDragStart;
 static WidgetRef _dragWidget;
 static uint8_t _dragScrollIndex;
 static int32_t _originalWindowWidth;
@@ -179,7 +179,7 @@ static void InputScrollDragBegin(const ScreenCoordsXY& screenCoords, WindowBase*
     _dragWidget.window_classification = w->classification;
     _dragWidget.window_number = w->number;
     _dragWidget.widget_index = widgetIndex;
-    _ticksSinceDragStart = 0;
+    _ticksSinceDragStart = gCurrentRealTimeTicks;
 
     _dragScrollIndex = WindowGetScrollDataIndex(*w, widgetIndex);
     ContextHideCursor();
@@ -243,10 +243,9 @@ static void InputScrollRight(const ScreenCoordsXY& screenCoords, MouseState stat
     switch (state)
     {
         case MouseState::Released:
-            _ticksSinceDragStart += gCurrentDeltaTime;
             if (screenCoords.x != 0 || screenCoords.y != 0)
             {
-                _ticksSinceDragStart = 1000;
+                _ticksSinceDragStart = std::nullopt;
                 InputScrollDragContinue(screenCoords, w);
             }
             break;
@@ -349,7 +348,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
             else if (state == MouseState::RightRelease)
             {
                 InputViewportDragEnd();
-                if (_ticksSinceDragStart < 500)
+                if (_ticksSinceDragStart.has_value() && gCurrentRealTimeTicks - _ticksSinceDragStart.value() < 500)
                 {
                     // If the user pressed the right mouse button for less than 500 ticks, interpret as right click
                     ViewportInteractionRightClick(screenCoords);
@@ -526,7 +525,7 @@ static void InputViewportDragBegin(WindowBase& w)
     _inputState = InputState::ViewportRight;
     _dragWidget.window_classification = w.classification;
     _dragWidget.window_number = w.number;
-    _ticksSinceDragStart = 0;
+    _ticksSinceDragStart = gCurrentRealTimeTicks;
     auto cursorPosition = ContextGetCursorPosition();
     gInputDragLast = cursorPosition;
     if (!gConfigGeneral.InvertViewportDrag)
@@ -557,7 +556,6 @@ static void InputViewportDragContinue()
     }
 
     viewport = w->viewport;
-    _ticksSinceDragStart += gCurrentRealTimeTicks;
     if (viewport == nullptr)
     {
         ContextShowCursor();
@@ -571,7 +569,7 @@ static void InputViewportDragContinue()
 
             // If the drag time is less than 500 the "drag" is usually interpreted as a right click.
             // As the user moved the mouse, don't interpret it as right click in any case.
-            _ticksSinceDragStart = 1000;
+            _ticksSinceDragStart = std::nullopt;
 
             differentialCoords.x = (viewport->zoom + 1).ApplyTo(differentialCoords.x);
             differentialCoords.y = (viewport->zoom + 1).ApplyTo(differentialCoords.y);
