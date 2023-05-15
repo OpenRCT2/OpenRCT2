@@ -32,6 +32,7 @@
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/Scenery.h>
+#include <optional>
 
 struct RCTMouseData
 {
@@ -59,7 +60,7 @@ uint16_t gTooltipTimeout;
 WidgetRef gTooltipWidget;
 ScreenCoordsXY gTooltipCursor;
 
-static uint32_t _clickRepeatTicks;
+static std::optional<uint32_t> _clickRepeatTicks;
 
 static MouseState GameGetNextInput(ScreenCoordsXY& screenCoords);
 static void InputWidgetOver(const ScreenCoordsXY& screenCoords, WindowBase* w, WidgetIndex widgetIndex);
@@ -1297,7 +1298,7 @@ void InputStateWidgetPressed(
                 break;
 
             // If this variable is non-zero then its the last tick the mouse down event was fired.
-            if (_clickRepeatTicks != 0)
+            if (_clickRepeatTicks.has_value())
             {
                 // The initial amount of time in ticks to wait until the first click repeat.
                 constexpr auto ticksUntilRepeats = 16U;
@@ -1306,7 +1307,7 @@ void InputStateWidgetPressed(
                 constexpr auto eventDelayInTicks = 3U;
 
                 // The amount of ticks since the last click repeat.
-                const auto clickRepeatsDelta = gCurrentRealTimeTicks - _clickRepeatTicks;
+                const auto clickRepeatsDelta = gCurrentRealTimeTicks - _clickRepeatTicks.value();
 
                 // Handle click repeat, only start this when at least 16 ticks elapsed.
                 if (clickRepeatsDelta >= ticksUntilRepeats && (clickRepeatsDelta & eventDelayInTicks) == 0)
@@ -1442,7 +1443,7 @@ void InputStateWidgetPressed(
             return;
     }
 
-    _clickRepeatTicks = 0;
+    _clickRepeatTicks = std::nullopt;
     if (_inputState != InputState::DropdownActive)
     {
         // Hold down widget and drag outside of area??
