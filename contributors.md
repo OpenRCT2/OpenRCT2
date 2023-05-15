@@ -277,6 +277,13 @@ The following people are not part of the development team, but have been contrib
 ## Music
 * Karst "Jalmaan" van Galen Last (AuraSpecs)
 * (Flyxxpy)
+* Jan Büchner (Greyfade)
+* Allister Brimble
+* Herman Riddering
+
+## Sound Effects
+* Karst van Galen Last (AuraSpecs)
+* (ThatGuyYouKnow)
 
 ## RollerCoaster Tycoon 2 credits
 Design and programming by Chris Sawyer

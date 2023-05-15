@@ -3691,6 +3691,10 @@ STR_6583    :{WINDOW_COLOUR_2}Reversed Trains
 STR_6584    :Select to run trains backwards
 STR_6585    :Can’t make changes…
 
+STR_6586    :OpenRCT2
+STR_6587    :The OpenRCT2 Title Theme is a work of Allister Brimble,{NEWLINE}licenced CC BY-SA 4.0.
+STR_6588    :Thanks to Herman Riddering for allowing us to record the 35er Voigt.
+
 #############
 # Scenarios #
 ################

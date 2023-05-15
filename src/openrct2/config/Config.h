@@ -251,9 +251,10 @@ enum class MeasurementFormat : int32_t
 enum class TitleMusicKind : int32_t
 {
     None,
+    Random,
+    OpenRCT2,
     RCT1,
     RCT2,
-    Random
 };
 
 extern GeneralConfiguration gConfigGeneral;

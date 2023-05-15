@@ -271,19 +271,32 @@ namespace OpenRCT2::Audio
 
     static ObjectEntryDescriptor GetTitleMusicDescriptor()
     {
+        static constexpr std::array selectableAudioIds{
+            AudioObjectIdentifiers::OpenRCT2Title,
+            AudioObjectIdentifiers::RCT1Title,
+            AudioObjectIdentifiers::RCT2Title,
+        };
+        int32_t IdIndex{};
         switch (gConfigSound.TitleMusic)
         {
             default:
-                return {};
+            case TitleMusicKind::OpenRCT2:
+                IdIndex = 0;
+                break;
             case TitleMusicKind::RCT1:
-                return ObjectEntryDescriptor(ObjectType::Audio, AudioObjectIdentifiers::RCT1Title);
+                IdIndex = 1;
+                break;
             case TitleMusicKind::RCT2:
-                return ObjectEntryDescriptor(ObjectType::Audio, AudioObjectIdentifiers::RCT2Title);
+                IdIndex = 2;
+                break;
             case TitleMusicKind::Random:
-                return ObjectEntryDescriptor(
-                    ObjectType::Audio,
-                    (UtilRand() & 1) ? AudioObjectIdentifiers::RCT1Title : AudioObjectIdentifiers::RCT2Title);
+                IdIndex = UtilRand() % std::size(selectableAudioIds);
+                break;
+            case TitleMusicKind::None:
+                return {};
         }
+
+        return ObjectEntryDescriptor(ObjectType::Audio, selectableAudioIds[IdIndex]);
     }
 
     void PlayTitleMusic()

@@ -362,7 +362,8 @@ namespace Config
             model->Device = reader->GetString("audio_device", "");
             model->MasterSoundEnabled = reader->GetBoolean("master_sound", true);
             model->MasterVolume = reader->GetInt32("master_volume", 100);
-            model->TitleMusic = static_cast<TitleMusicKind>(reader->GetInt32("title_music", EnumValue(TitleMusicKind::RCT2)));
+            model->TitleMusic = static_cast<TitleMusicKind>(
+                reader->GetInt32("title_theme", EnumValue(TitleMusicKind::OpenRCT2)));
             model->SoundEnabled = reader->GetBoolean("sound", true);
             model->SoundVolume = reader->GetInt32("sound_volume", 100);
             model->RideMusicEnabled = reader->GetBoolean("ride_music", true);
@@ -378,7 +379,7 @@ namespace Config
         writer->WriteString("audio_device", model->Device);
         writer->WriteBoolean("master_sound", model->MasterSoundEnabled);
         writer->WriteInt32("master_volume", model->MasterVolume);
-        writer->WriteInt32("title_music", EnumValue(model->TitleMusic));
+        writer->WriteInt32("title_theme", EnumValue(model->TitleMusic));
         writer->WriteBoolean("sound", model->SoundEnabled);
         writer->WriteInt32("sound_volume", model->SoundVolume);
         writer->WriteBoolean("ride_music", model->RideMusicEnabled);
