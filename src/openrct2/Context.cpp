@@ -1115,6 +1115,7 @@ namespace OpenRCT2
                 _ticksAccumulator -= GAME_UPDATE_TIME_MS;
             }
 
+            ContextHandleInput();
             WindowUpdateAll();
 
             if (ShouldDraw())
@@ -1147,6 +1148,7 @@ namespace OpenRCT2
                     tweener.PostTick();
             }
 
+            ContextHandleInput();
             WindowUpdateAll();
 
             if (shouldDraw)

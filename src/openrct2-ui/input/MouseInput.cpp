@@ -543,7 +543,6 @@ static void InputViewportDragContinue()
     Viewport* viewport;
 
     auto newDragCoords = ContextGetCursorPosition();
-    const CursorState* cursorState = ContextGetCursorState();
 
     auto differentialCoords = newDragCoords - gInputDragLast;
     w = WindowFindByNumber(_dragWidget.window_classification, _dragWidget.window_number);
@@ -557,7 +556,7 @@ static void InputViewportDragContinue()
     }
 
     viewport = w->viewport;
-    _ticksSinceDragStart += gCurrentDeltaTime;
+    _ticksSinceDragStart += gCurrentRealTimeTicks;
     if (viewport == nullptr)
     {
         ContextShowCursor();
@@ -586,14 +585,7 @@ static void InputViewportDragContinue()
         }
     }
 
-    if (cursorState->touch || gConfigGeneral.InvertViewportDrag)
-    {
-        gInputDragLast = newDragCoords;
-    }
-    else
-    {
-        ContextSetCursorPosition(gInputDragLast);
-    }
+    gInputDragLast = newDragCoords;
 }
 
 static void InputViewportDragEnd()
