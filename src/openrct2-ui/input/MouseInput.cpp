@@ -198,6 +198,8 @@ static void InputScrollDragContinue(const ScreenCoordsXY& screenCoords, WindowBa
     auto& scroll = w->scrolls[scrollIndex];
 
     ScreenCoordsXY differentialCoords = screenCoords - gInputDragLast;
+    if (differentialCoords.x == 0 && differentialCoords.y == 0)
+        return;
 
     if (scroll.flags & HSCROLLBAR_VISIBLE)
     {
