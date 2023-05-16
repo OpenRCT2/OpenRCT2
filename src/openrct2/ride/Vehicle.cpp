@@ -7636,8 +7636,7 @@ Loc6DAEB9:
     {
         if (track_progress == 80)
         {
-            vehicle_type ^= 1;
-            carEntry = Entry();
+            Flags ^= VehicleFlags::CarIsReversed;
         }
         if (_vehicleVelocityF64E08 >= 0x40000)
         {
@@ -7713,8 +7712,7 @@ Loc6DAEB9:
         {
             if (track_progress == 32)
             {
-                vehicle_type = carEntry->ReversedCarIndex;
-                carEntry = Entry();
+                Flags ^= VehicleFlags::CarIsReversed;
             }
         }
         else
