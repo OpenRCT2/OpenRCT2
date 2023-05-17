@@ -547,6 +547,9 @@ static void InputViewportDragContinue()
     auto newDragCoords = ContextGetCursorPosition();
 
     auto differentialCoords = newDragCoords - gInputDragLast;
+    if (differentialCoords.x == 0 && differentialCoords.y == 0)
+        return;
+
     w = WindowFindByNumber(_dragWidget.window_classification, _dragWidget.window_number);
 
     // #3294: Window can be closed during a drag session, so just finish
@@ -586,7 +589,15 @@ static void InputViewportDragContinue()
         }
     }
 
-    gInputDragLast = newDragCoords;
+    const CursorState* cursorState = ContextGetCursorState();
+    if (cursorState->touch || gConfigGeneral.InvertViewportDrag)
+    {
+        gInputDragLast = newDragCoords;
+    }
+    else
+    {
+        ContextSetCursorPosition(gInputDragLast);
+    }
 }
 
 static void InputViewportDragEnd()
