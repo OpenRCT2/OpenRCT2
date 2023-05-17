@@ -249,7 +249,7 @@ public:
     void OnClose() override
     {
         RideConstructionInvalidateCurrentTrack();
-        ViewportSetVisibility(0);
+        ViewportSetVisibility(ViewportVisibility::Default);
 
         MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -2236,14 +2236,14 @@ private:
         const auto resultData = res.GetData<TrackPlaceActionResult>();
         if (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND)
         {
-            ViewportSetVisibility(1);
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
         }
 
         const bool helixSelected = (_currentTrackCurve & RideConstructionSpecialPieceSelected)
             && TrackTypeIsHelix(_currentTrackCurve & ~RideConstructionSpecialPieceSelected);
         if (helixSelected || (_currentTrackSlopeEnd != TRACK_SLOPE_NONE))
         {
-            ViewportSetVisibility(2);
+            ViewportSetVisibility(ViewportVisibility::TrackHeights);
         }
     }
 

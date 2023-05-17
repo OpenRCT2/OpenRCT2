@@ -1338,12 +1338,12 @@ private:
         if (placementData.GroundFlags & ELEMENT_IS_UNDERGROUND)
         {
             // Set underground on
-            ViewportSetVisibility(4);
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewGhostOn);
         }
         else
         {
             // Set underground off
-            ViewportSetVisibility(5);
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewGhostOff);
         }
 
         gSceneryGhostType |= SCENERY_GHOST_FLAG_0;
@@ -1420,12 +1420,12 @@ private:
         if (placementData.GroundFlags & ELEMENT_IS_UNDERGROUND)
         {
             // Set underground on
-            ViewportSetVisibility(4);
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewGhostOn);
         }
         else
         {
             // Set underground off
-            ViewportSetVisibility(5);
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewGhostOff);
         }
 
         gSceneryGhostType |= SCENERY_GHOST_FLAG_3;

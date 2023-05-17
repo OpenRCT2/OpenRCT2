@@ -181,7 +181,7 @@ public:
     void OnClose() override
     {
         FootpathProvisionalUpdate();
-        ViewportSetVisibility(0);
+        ViewportSetVisibility(ViewportVisibility::Default);
         MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         WindowInvalidateByClass(WindowClass::TopToolbar);
@@ -1048,7 +1048,7 @@ private:
 
                 if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
                 {
-                    ViewportSetVisibility(1);
+                    ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
                 }
 
                 gFootpathConstructFromPosition = footpathLoc;

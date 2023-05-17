@@ -92,7 +92,7 @@ public:
     void OnClose() override
     {
         ClearProvisional();
-        ViewportSetVisibility(0);
+        ViewportSetVisibility(ViewportVisibility::Default);
         MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
