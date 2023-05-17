@@ -20,7 +20,6 @@
 
 std::string FormatStringID(StringId format, const void* args);
 void FormatStringToUpper(char* dest, size_t size, StringId format, const void* args);
-void generate_string_file();
 
 /**
  * Formats sizeBytes into buf as a human readable text, e.x.: "1024 MB"
