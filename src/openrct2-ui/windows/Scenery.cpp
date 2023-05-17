@@ -216,7 +216,7 @@ public:
     {
         SceneryRemoveGhostToolPlacement();
         HideGridlines();
-        ViewportSetVisibility(0);
+        ViewportSetVisibility(ViewportVisibility::Default);
 
         if (gWindowSceneryScatterEnabled)
             WindowCloseByClass(WindowClass::SceneryScatter);

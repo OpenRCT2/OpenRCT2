@@ -160,11 +160,11 @@ money64 FootpathProvisionalSet(
 
         if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
         {
-            ViewportSetVisibility(1);
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
         }
         else
         {
-            ViewportSetVisibility(3);
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewOff);
         }
     }
 

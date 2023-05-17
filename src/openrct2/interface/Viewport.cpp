@@ -1315,7 +1315,7 @@ void HideConstructionRights()
  *
  *  rct2: 0x006CB70A
  */
-void ViewportSetVisibility(uint8_t mode)
+void ViewportSetVisibility(ViewportVisibility mode)
 {
     WindowBase* window = WindowGetMain();
 
@@ -1326,7 +1326,7 @@ void ViewportSetVisibility(uint8_t mode)
 
         switch (mode)
         {
-            case 0:
+            case ViewportVisibility::Default:
             { // Set all these flags to 0, and invalidate if any were active
                 uint32_t mask = VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_RIDES | VIEWPORT_FLAG_HIDE_SCENERY
                     | VIEWPORT_FLAG_HIDE_PATHS | VIEWPORT_FLAG_LAND_HEIGHTS | VIEWPORT_FLAG_TRACK_HEIGHTS
@@ -1338,19 +1338,19 @@ void ViewportSetVisibility(uint8_t mode)
                 vp->flags &= ~mask;
                 break;
             }
-            case 1: // 6CB79D
-            case 4: // 6CB7C4
+            case ViewportVisibility::UndergroundViewOn:      // 6CB79D
+            case ViewportVisibility::UndergroundViewGhostOn: // 6CB7C4
                 // Set underground on, invalidate if it was off
                 invalidate += !(vp->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
                 vp->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
                 break;
-            case 2: // 6CB7EB
+            case ViewportVisibility::TrackHeights: // 6CB7EB
                 // Set track heights on, invalidate if off
                 invalidate += !(vp->flags & VIEWPORT_FLAG_TRACK_HEIGHTS);
                 vp->flags |= VIEWPORT_FLAG_TRACK_HEIGHTS;
                 break;
-            case 3: // 6CB7B1
-            case 5: // 6CB7D8
+            case ViewportVisibility::UndergroundViewOff:      // 6CB7B1
+            case ViewportVisibility::UndergroundViewGhostOff: // 6CB7D8
                 // Set underground off, invalidate if it was on
                 invalidate += vp->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
                 vp->flags &= ~(static_cast<uint16_t>(VIEWPORT_FLAG_UNDERGROUND_INSIDE));
