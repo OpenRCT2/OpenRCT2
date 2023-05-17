@@ -143,15 +143,48 @@ static void PaintCondorStructure(
     std::array<CoordsXY, 4>
             offsets2 = { CoordsXY{ 50, 0 }, CoordsXY{ 0, -50 }, CoordsXY{ -50, 0 }, CoordsXY{ 0, 50 } };
 
+    const int NumVehicleAnimationFrames = 8;
+    auto armsImageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + NumVehicleAnimationFrames);
+    /*PaintAddImageAsParent(
+        session, imageId,
+        { -bbOffset.x + offsets[1].x + offsets2[1].x, -bbOffset.y + offsets[1].y + offsets2[1].y, height + 32 },
+        { { offsets[1].x + offsets2[1].x, offsets[1].y + offsets2[1].y, height + 32 }, { 1, 1, 1 } });
+    PaintAddImageAsChild(
+        session, armsImageId, { -bbOffset.x + 128, -bbOffset.y + 128, height + 32 },
+        { { 128, 128, height + 200 }, { 24, 24, 1 } });
+    PaintAddImageAsParent(
+        session, imageId,
+        { -bbOffset.x + offsets[2].x + offsets2[2].x, -bbOffset.y + offsets[2].y + offsets2[2].y, height + 32 },
+        { { offsets[2].x + offsets2[2].x, offsets[2].y + offsets2[2].y, height + 32 }, { 1, 1, 1 } });
+    PaintAddImageAsChild(
+        session, armsImageId, { -bbOffset.x + 128, -bbOffset.y + 128, height + 32 },
+        { { 128, 128, height + 200 }, { 24, 24, 1 } });*/
+
     for (int i = 0; i < 4; i++)
     {
         PaintAddImageAsParent(
             session, imageId,
             { -bbOffset.x + offsets[i].x + offsets2[i].x, -bbOffset.y + offsets[i].y + offsets2[i].y, height + 32 },
-            { { offsets[i].x + offsets2[i].x, offsets[i].y + offsets2[i].y, height + 32 }, { 24, 24, 48 } });
+            { { offsets[i].x + offsets2[i].x, offsets[i].y + offsets2[i].y, height + 32 }, { 24, 24, 12 } });
+        PaintAddImageAsChild(
+            session, armsImageId, { -bbOffset.x + 128, -bbOffset.y + 128, height + 32 },
+            { { 128, 128, height + 32 }, { 24, 24, 12 } });
     }
+    /*PaintAddImageAsParent(
+        session, imageId,
+        { -bbOffset.x + offsets[2].x + offsets2[2].x, -bbOffset.y + offsets[2].y + offsets2[2].y, height + 32 },
+        { { offsets[2].x + offsets2[2].x, offsets[2].y + offsets2[2].y, height + 32 }, { 24, 24, 1 } });
+    PaintAddImageAsChild(
+        session, imageId,
+        { -bbOffset.x + offsets[1].x + offsets2[1].x, -bbOffset.y + offsets[1].y + offsets2[1].y, height + 32 },
+        { { offsets[1].x + offsets2[1].x, offsets[1].y + offsets2[1].y, height + 32 }, { 24, 24, 1 } });*/
 
-    
+
+
+
+
+
+
     /*PaintAddImageAsParent(
         session, imageId, { -bbOffset.x + 0 + 64, -bbOffset.y + 144 + 0, height + 64 },
         { { 64, 144, height + 7 }, { 24, 24, 48 } });*/
