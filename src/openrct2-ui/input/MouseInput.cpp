@@ -56,7 +56,7 @@ static uint8_t _currentScrollArea;
 
 ScreenCoordsXY gInputDragLast;
 
-uint16_t gTooltipTimeout;
+uint32_t gTooltipCloseTimeout;
 WidgetRef gTooltipWidget;
 ScreenCoordsXY gTooltipCursor;
 
@@ -482,7 +482,7 @@ static void InputWindowPositionContinue(
 static void InputWindowPositionEnd(WindowBase& w, const ScreenCoordsXY& screenCoords)
 {
     _inputState = InputState::Normal;
-    gTooltipTimeout = 0;
+    gTooltipCloseTimeout = 0;
     gTooltipWidget = _dragWidget;
     WindowEventMovedCall(&w, screenCoords);
 }
@@ -513,7 +513,7 @@ static void InputWindowResizeContinue(WindowBase& w, const ScreenCoordsXY& scree
 static void InputWindowResizeEnd()
 {
     _inputState = InputState::Normal;
-    gTooltipTimeout = 0;
+    gTooltipCloseTimeout = 0;
     gTooltipWidget = _dragWidget;
 }
 
@@ -1403,7 +1403,7 @@ void InputStateWidgetPressed(
                         }
 
                         _inputState = InputState::Normal;
-                        gTooltipTimeout = 0;
+                        gTooltipCloseTimeout = 0;
                         gTooltipWidget.widget_index = cursor_widgetIndex;
                         gTooltipWidget.window_classification = cursor_w_class;
                         gTooltipWidget.window_number = cursor_w_number;
@@ -1427,7 +1427,7 @@ void InputStateWidgetPressed(
                 return;
             }
 
-            gTooltipTimeout = 0;
+            gTooltipCloseTimeout = 0;
             gTooltipWidget.widget_index = cursor_widgetIndex;
 
             if (w == nullptr)
@@ -1515,19 +1515,23 @@ static void InputUpdateTooltip(WindowBase* w, WidgetIndex widgetIndex, const Scr
     {
         if (gTooltipCursor == screenCoords)
         {
-            _tooltipNotShownTicks++;
-            if (_tooltipNotShownTicks > 50 && w != nullptr && WidgetIsVisible(*w, widgetIndex))
+            if (gCurrentRealTimeTicks >= _tooltipNotShownTimeout && w != nullptr && WidgetIsVisible(*w, widgetIndex))
             {
-                gTooltipTimeout = 0;
+                gTooltipCloseTimeout = gCurrentRealTimeTicks + 8000;
                 WindowTooltipOpen(w, widgetIndex, screenCoords);
             }
         }
+        else
+        {
+            ResetTooltipNotShown();
+        }
 
-        gTooltipTimeout = 0;
+        gTooltipCloseTimeout = gCurrentRealTimeTicks + 8000;
         gTooltipCursor = screenCoords;
     }
     else
     {
+        gTooltipCursor = screenCoords;
         ResetTooltipNotShown();
 
         if (w == nullptr || gTooltipWidget.window_classification != w->classification
@@ -1537,8 +1541,7 @@ static void InputUpdateTooltip(WindowBase* w, WidgetIndex widgetIndex, const Scr
             WindowTooltipClose();
         }
 
-        gTooltipTimeout += gCurrentDeltaTime;
-        if (gTooltipTimeout >= 8000)
+        if (gCurrentRealTimeTicks >= gTooltipCloseTimeout)
         {
             WindowCloseByClass(WindowClass::Tooltip);
         }
