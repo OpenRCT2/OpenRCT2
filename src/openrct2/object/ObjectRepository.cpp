@@ -79,7 +79,7 @@ class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 29;
+    static constexpr uint16_t VERSION = 30;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
@@ -121,6 +121,7 @@ public:
             item.Generation = object->GetGeneration();
             item.Identifier = object->GetIdentifier();
             item.ObjectEntry = object->GetObjectEntry();
+            item.OverrideEntry = object->GetOverrideEntry();
             item.Version = object->GetVersion();
             item.Path = path;
             item.Name = object->GetName();
@@ -140,6 +141,7 @@ protected:
         ds << item.Type;
         ds << item.Generation;
         ds << item.Identifier;
+        ds << item.OverrideEntry;
         ds << item.ObjectEntry;
         ds << item.Path;
         ds << item.Name;
@@ -182,6 +184,7 @@ class ObjectRepository final : public IObjectRepository
     ObjectFileIndex const _fileIndex;
     std::vector<ObjectRepositoryItem> _items;
     ObjectIdentifierMap _newItemMap;
+    ObjectEntryMap _overrideMap;
     ObjectEntryMap _itemMap;
 
 public:
@@ -246,6 +249,11 @@ public:
 
     const ObjectRepositoryItem* FindObject(const RCTObjectEntry* objectEntry) const override final
     {
+        auto over = _overrideMap.find(*objectEntry);
+        if (over != _overrideMap.end())
+        {
+            return &_items[over->second];
+        }
         auto kvp = _itemMap.find(*objectEntry);
         if (kvp != _itemMap.end())
         {
@@ -362,6 +370,7 @@ private:
         _items.clear();
         _newItemMap.clear();
         _itemMap.clear();
+        _overrideMap.clear();
     }
 
     void SortItems()
@@ -379,6 +388,7 @@ private:
         // Rebuild item map
         _itemMap.clear();
         _newItemMap.clear();
+        _overrideMap.clear();
         for (size_t i = 0; i < _items.size(); i++)
         {
             RCTObjectEntry entry = _items[i].ObjectEntry;
@@ -386,6 +396,10 @@ private:
             if (!_items[i].Identifier.empty())
             {
                 _newItemMap[_items[i].Identifier] = i;
+                if (!_items[i].OverrideEntry.IsEmpty())
+                {
+                    _overrideMap[_items[i].OverrideEntry] = i;
+                }
             }
         }
     }
@@ -433,6 +447,10 @@ private:
             if (!item.Identifier.empty())
             {
                 _newItemMap[item.Identifier] = index;
+                if (!item.OverrideEntry.IsEmpty())
+                {
+                    _overrideMap[item.OverrideEntry] = index;
+                }
             }
             if (!item.ObjectEntry.IsEmpty())
             {

@@ -46,6 +46,7 @@ struct ObjectRepositoryItem
     ObjectGeneration Generation;
     std::string Identifier; // e.g. rct2.c3d
     RCTObjectEntry ObjectEntry;
+    RCTObjectEntry OverrideEntry;
     std::string Path;
     std::string Name;
     ObjectVersion Version;

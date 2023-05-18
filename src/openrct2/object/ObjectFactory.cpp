@@ -522,39 +522,33 @@ namespace ObjectFactory
                 id = OpenRCT2::Audio::AudioObjectIdentifiers::RCT2Base;
 
             auto version = VersionTuple(Json::GetString(jRoot["version"]));
-            ObjectEntryDescriptor descriptor;
+            
             auto originalId = Json::GetString(jRoot["originalId"]);
+            RCTObjectEntry overrideEntry = {};
             if (originalId.length() == 8 + 1 + 8 + 1 + 8)
             {
                 auto originalName = originalId.substr(9, 8);
 
-                RCTObjectEntry entry = {};
-                entry.flags = std::stoul(originalId.substr(0, 8), nullptr, 16);
-                entry.checksum = std::stoul(originalId.substr(18, 8), nullptr, 16);
+                overrideEntry.flags = std::stoul(originalId.substr(0, 8), nullptr, 16);
+                overrideEntry.checksum = std::stoul(originalId.substr(18, 8), nullptr, 16);
                 auto minLength = std::min<size_t>(8, originalName.length());
-                std::memcpy(entry.name, originalName.c_str(), minLength);
+                std::memcpy(overrideEntry.name, originalName.c_str(), minLength);
 
                 // Some bad objects try to override different types
-                if (entry.GetType() != objectType)
+                if (overrideEntry.GetType() != objectType)
                 {
                     LOG_ERROR(
                         "Object \"%s\" has invalid originalId set \"%s\". Ignoring override.", id.c_str(), originalId.c_str());
-                    descriptor = ObjectEntryDescriptor(objectType, id);
-                }
-                else
-                {
-                    descriptor = ObjectEntryDescriptor(entry);
+                    overrideEntry = RCTObjectEntry{};
                 }
             }
-            else
-            {
-                descriptor = ObjectEntryDescriptor(objectType, id);
-            }
+            ObjectEntryDescriptor descriptor = ObjectEntryDescriptor(objectType, id);
             descriptor.Version = version;
             result = CreateObject(objectType);
             result->SetVersion(version);
             result->SetIdentifier(id);
             result->SetDescriptor(descriptor);
+            result->SetOverrideEntry(overrideEntry);
             result->MarkAsJsonObject();
             auto readContext = ReadObjectContext(objectRepository, id, loadImageTable, fileRetriever);
             result->ReadJson(&readContext, jRoot);

@@ -189,6 +189,7 @@ private:
     std::string _identifier;
     ObjectVersion _version;
     ObjectEntryDescriptor _descriptor{};
+    RCTObjectEntry _overrideEntry{};
     StringTable _stringTable;
     ImageTable _imageTable;
     std::vector<ObjectSourceGame> _sourceGames;
@@ -235,6 +236,10 @@ public:
     {
         _identifier = identifier;
     }
+    void SetOverrideEntry(RCTObjectEntry overrideEntry)
+    {
+        _overrideEntry = overrideEntry;
+    }
 
     void MarkAsJsonObject()
     {
@@ -255,6 +260,12 @@ public:
     {
         return _descriptor;
     }
+
+    RCTObjectEntry GetOverrideEntry() const
+    {
+        return _overrideEntry;
+    }
+
     void SetDescriptor(const ObjectEntryDescriptor& value)
     {
         _descriptor = value;
