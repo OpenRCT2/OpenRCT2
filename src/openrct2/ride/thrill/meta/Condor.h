@@ -138,6 +138,9 @@ struct CondorRideData : public RideData
     int32_t TowerBase;
     CondorRideState State;
     int32_t ArmRotation;
+
+    std::array<int32_t, 4> QuadRotation;
+    int32_t InitialQuadRotation;
 };
 
 class CondorVehicleData : public VehicleData

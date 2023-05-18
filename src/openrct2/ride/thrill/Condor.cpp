@@ -49,7 +49,7 @@ void VehicleVisualCondor(
 static constexpr const std::array<CoordsXY, 4> StartLocations = { CoordsXY{ 0, 128 }, CoordsXY{ 128, 256 },
                                                                   CoordsXY{ 256, 128 }, CoordsXY{ 128, 0 } };
 
-static constexpr int CondorRadius = 78;
+static constexpr int CondorRadius = 48;
 static constexpr int CondorCenter = 128;
 static constexpr float CondorAngleDelta = 0.09817f;
 
@@ -86,7 +86,7 @@ static void PaintCondorStructure(
     {
         imageTemplate = imageFlags;
     }
-    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id);
+    
 
     std::array<CoordsXY, 4> offsets = StartLocations;
     std::array<CoordsXY, 4>
@@ -105,14 +105,8 @@ static void PaintCondorStructure(
             int locationIndex = i * 16;
             locationIndex += condorRideData->ArmRotation;
             locationIndex %= 64;
-            /*PaintAddImageAsParent(
-                session, imageId,
-                { -bbOffset.x + offsets[i].x + offsets2[i].x, -bbOffset.y + offsets[i].y + offsets2[i].y,
-                  32 + vehicleZ },
-                { { offsets[i].x + offsets2[i].x, offsets[i].y + offsets2[i].y, vehicleZ + 32 }, { 24, 24, 12 } });
-            PaintAddImageAsChild(
-                session, armsImageId, { -bbOffset.x + 128, -bbOffset.y + 128, vehicleZ + 32},
-                { { 128, 128, 32 + vehicleZ }, { 24, 24, 12 } });*/
+
+            auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + condorRideData->QuadRotation[i]);
             PaintAddImageAsParent(
                 session, imageId,
                 { -bbOffset.x + CondorLocations[locationIndex].x, -bbOffset.y + CondorLocations[locationIndex].y,
@@ -291,6 +285,8 @@ CondorRideData::CondorRideData()
     , TowerBase(0)
     , ArmRotation(0)
 {
+    QuadRotation = { 0, 0, 0, 0 };
+    InitialQuadRotation = QuadRotation[0];
 }
 
 static uint32_t CondorGetTowerHeight(const Vehicle& vehicle)
@@ -397,6 +393,12 @@ static void CondorRideUpdateClimbing(Ride& ride)
         condorRideData->VehiclesZ = height;
         condorRideData->ArmRotation++;
         condorRideData->ArmRotation %= 64;
+
+        for (auto& quadRot : condorRideData->QuadRotation)
+        {
+            quadRot++;
+            quadRot %= 8;
+        }
     }
 }
 
@@ -408,12 +410,24 @@ static void CondorRideUpdateFalling(Ride& ride)
         int32_t height = condorRideData->VehiclesZ - 1;
         condorRideData->ArmRotation++;
         condorRideData->ArmRotation %= 64;
+
+        for (auto& quadRot : condorRideData->QuadRotation)
+        {
+            quadRot++;
+            quadRot %= 8;
+        }
+
         if (height < condorRideData->TowerBase)
         {
             height = condorRideData->TowerBase;
 
-            if (condorRideData->ArmRotation == 0)
+            if (condorRideData->ArmRotation != 0)
+                condorRideData->State = CondorRideState::Falling;
+            else if (condorRideData->QuadRotation[0] != condorRideData->InitialQuadRotation)
+                condorRideData->State = CondorRideState::Falling;
+            else
                 condorRideData->State = CondorRideState::Waiting;
+
         }
         condorRideData->VehiclesZ = height;
     }
