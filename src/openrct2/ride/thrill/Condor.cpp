@@ -44,70 +44,27 @@ void VehicleVisualCondor(
     const CarEntry* carEntry)
 {
     //dont draw here, it doesn't work since the sprites are wider than 64 pixels!
-    /*imageDirection = OpenRCT2::Entity::Yaw::YawTo32(imageDirection);
-
-    auto imageFlags = ImageId(0, vehicle->colours.Body, vehicle->colours.Trim);
-    if (vehicle->IsGhost())
-    {
-        imageFlags = ConstructionMarker;
-    }
-
-    ImageId bodyIdLeft = imageFlags.WithIndex(carEntry->base_image_id);
-    ImageId bodyIdRight = imageFlags.WithIndex(carEntry->base_image_id + 1);
-    PaintAddImageAsParent(session, bodyIdLeft, { 0, 0, z + 32 }, { 64, 64, 96 }, { 0, 0, z + 2 });
-    PaintAddImageAsParent(session, bodyIdRight, { 0, 0, z + 32 }, { 64, 64, 96 }, { 0, 0, z + 2 });
-
-    /*int32_t baseImage_id = (carEntry->base_image_id + 4) + ((vehicle->animation_frame / 4) & 0x3);
-    if (vehicle->restraints_position >= 64)
-    {
-        baseImage_id += 7;
-        baseImage_id += (vehicle->restraints_position / 64);
-    }
-
-    // Draw back:
-    image_id = imageFlags.WithIndex(baseImage_id);
-    PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 2, 2, 41 }, { -11, -11, z + 1 });
-
-    // Draw front:
-    image_id = imageFlags.WithIndex(baseImage_id + 4);
-    PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
-
-    if (vehicle->num_peeps > 0 && !vehicle->IsGhost())
-    {
-        uint8_t riding_peep_sprites[64];
-        std::fill_n(riding_peep_sprites, sizeof(riding_peep_sprites), 0xFF);
-        for (int32_t i = 0; i < vehicle->num_peeps; i++)
-        {
-            uint8_t cl = (i & 3) * 16;
-            cl += (i & 0xFC);
-            cl += vehicle->animation_frame / 4;
-            cl += (imageDirection / 8) * 16;
-            cl &= 0x3F;
-            riding_peep_sprites[cl] = vehicle->peep_tshirt_colours[i];
-        }
-
-        // Draw riding peep sprites in back to front order:
-        for (int32_t j = 0; j <= 48; j++)
-        {
-            int32_t i = (j % 2) ? (48 - (j / 2)) : (j / 2);
-            if (riding_peep_sprites[i] != 0xFF)
-            {
-                baseImage_id = carEntry->base_image_id + 20 + i;
-                if (vehicle->restraints_position >= 64)
-                {
-                    baseImage_id += 64;
-                    baseImage_id += vehicle->restraints_position / 64;
-                }
-                image_id = ImageId(baseImage_id, riding_peep_sprites[i]);
-                PaintAddImageAsChild(session, image_id, { 0, 0, z }, { { -5, -5, z + 1 }, { 16, 16, 41 } });
-            }
-        }
-    }
-
-    assert(carEntry->effect_visual == 1);
-    // Although called in original code, effect_visual (splash effects) are not used for many rides and does not make sense so
-    // it was taken out*/
 }
+
+static constexpr const std::array<CoordsXY, 4> StartLocations = { CoordsXY{ 0, 128 }, CoordsXY{ 128, 256 },
+                                                                  CoordsXY{ 256, 128 }, CoordsXY{ 128, 0 } };
+
+static constexpr int CondorRadius = 78;
+static constexpr int CondorCenter = 128;
+static constexpr float CondorAngleDelta = 0.09817f;
+
+static std::array<CoordsXY, 64> CalculateLocations()
+{
+    std::array<CoordsXY, 64> res;
+    int i = 0;
+    for (i = 0; i < 64; i++)
+    {
+        res[i] = CoordsXY{ static_cast<int>(CondorCenter + CondorRadius * cos(i * CondorAngleDelta)),
+                           static_cast<int>(CondorCenter + CondorRadius * sin(i * CondorAngleDelta)) };
+    }
+    return res;
+}
+static auto CondorLocations = CalculateLocations();
 
 static void PaintCondorStructure(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -123,14 +80,6 @@ static void PaintCondorStructure(
         session.CurrentlyDrawnEntity = GetEntity<Vehicle>(ride.vehicles[0]);
     }
 
-    /*auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != TrackGhost)
-    {
-        imageTemplate = imageFlags;
-    }
-
-    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + direction);*/
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     auto imageFlags = session.TrackColours[SCHEME_MISC];
     if (imageFlags != TrackGhost)
@@ -139,57 +88,42 @@ static void PaintCondorStructure(
     }
     auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id);
 
-    std::array<CoordsXY, 4> offsets = { CoordsXY{ 0, 128 }, CoordsXY{ 128, 256 }, CoordsXY{ 256, 128 }, CoordsXY{ 128, 0 } };
+    std::array<CoordsXY, 4> offsets = StartLocations;
     std::array<CoordsXY, 4>
             offsets2 = { CoordsXY{ 50, 0 }, CoordsXY{ 0, -50 }, CoordsXY{ -50, 0 }, CoordsXY{ 0, 50 } };
 
     const int NumVehicleAnimationFrames = 8;
-    auto armsImageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + NumVehicleAnimationFrames);
-    /*PaintAddImageAsParent(
-        session, imageId,
-        { -bbOffset.x + offsets[1].x + offsets2[1].x, -bbOffset.y + offsets[1].y + offsets2[1].y, height + 32 },
-        { { offsets[1].x + offsets2[1].x, offsets[1].y + offsets2[1].y, height + 32 }, { 1, 1, 1 } });
-    PaintAddImageAsChild(
-        session, armsImageId, { -bbOffset.x + 128, -bbOffset.y + 128, height + 32 },
-        { { 128, 128, height + 200 }, { 24, 24, 1 } });
-    PaintAddImageAsParent(
-        session, imageId,
-        { -bbOffset.x + offsets[2].x + offsets2[2].x, -bbOffset.y + offsets[2].y + offsets2[2].y, height + 32 },
-        { { offsets[2].x + offsets2[2].x, offsets[2].y + offsets2[2].y, height + 32 }, { 1, 1, 1 } });
-    PaintAddImageAsChild(
-        session, armsImageId, { -bbOffset.x + 128, -bbOffset.y + 128, height + 32 },
-        { { 128, 128, height + 200 }, { 24, 24, 1 } });*/
 
-    for (int i = 0; i < 4; i++)
+
+    auto condorRideData = static_cast<CondorRideData*>(ride.Data.get());
+    if (condorRideData != nullptr)
     {
-        PaintAddImageAsParent(
-            session, imageId,
-            { -bbOffset.x + offsets[i].x + offsets2[i].x, -bbOffset.y + offsets[i].y + offsets2[i].y, height + 32 },
-            { { offsets[i].x + offsets2[i].x, offsets[i].y + offsets2[i].y, height + 32 }, { 24, 24, 12 } });
-        PaintAddImageAsChild(
-            session, armsImageId, { -bbOffset.x + 128, -bbOffset.y + 128, height + 32 },
-            { { 128, 128, height + 32 }, { 24, 24, 12 } });
+        auto vehicleZ = condorRideData->VehiclesZ;
+        auto armsImageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + NumVehicleAnimationFrames + (condorRideData->ArmRotation % 16));
+        for (int i = 0; i < 4; i++)
+        {
+            int locationIndex = i * 16;
+            locationIndex += condorRideData->ArmRotation;
+            locationIndex %= 64;
+            /*PaintAddImageAsParent(
+                session, imageId,
+                { -bbOffset.x + offsets[i].x + offsets2[i].x, -bbOffset.y + offsets[i].y + offsets2[i].y,
+                  32 + vehicleZ },
+                { { offsets[i].x + offsets2[i].x, offsets[i].y + offsets2[i].y, vehicleZ + 32 }, { 24, 24, 12 } });
+            PaintAddImageAsChild(
+                session, armsImageId, { -bbOffset.x + 128, -bbOffset.y + 128, vehicleZ + 32},
+                { { 128, 128, 32 + vehicleZ }, { 24, 24, 12 } });*/
+            PaintAddImageAsParent(
+                session, imageId,
+                { -bbOffset.x + CondorLocations[locationIndex].x, -bbOffset.y + CondorLocations[locationIndex].y,
+                  32 + vehicleZ },
+                { { CondorLocations[locationIndex].x, CondorLocations[locationIndex].y, vehicleZ + 32 }, { 24, 24, 12 } });
+            PaintAddImageAsChild(
+                session, armsImageId, { -bbOffset.x + 128, -bbOffset.y + 128, vehicleZ + 32 },
+                { { 128, 128, 32 + vehicleZ }, { 24, 24, 12 } });
+        }
     }
-    /*PaintAddImageAsParent(
-        session, imageId,
-        { -bbOffset.x + offsets[2].x + offsets2[2].x, -bbOffset.y + offsets[2].y + offsets2[2].y, height + 32 },
-        { { offsets[2].x + offsets2[2].x, offsets[2].y + offsets2[2].y, height + 32 }, { 24, 24, 1 } });
-    PaintAddImageAsChild(
-        session, imageId,
-        { -bbOffset.x + offsets[1].x + offsets2[1].x, -bbOffset.y + offsets[1].y + offsets2[1].y, height + 32 },
-        { { offsets[1].x + offsets2[1].x, offsets[1].y + offsets2[1].y, height + 32 }, { 24, 24, 1 } });*/
 
-
-
-
-
-
-
-    /*PaintAddImageAsParent(
-        session, imageId, { -bbOffset.x + 0 + 64, -bbOffset.y + 144 + 0, height + 64 },
-        { { 64, 144, height + 7 }, { 24, 24, 48 } });*/
-    /*PaintAddImageAsParent(
-        session, imageId, { -bbOffset.x, -bbOffset.y + 128, height + 48 }, { { 0, 0, height + 7 }, { 24, 24, 48 } });*/
 }
 
 /** rct2: 0x00886194 */
@@ -326,8 +260,6 @@ static constexpr const CoordsXY word_9A3AB4[4] = {
     { -96, 0 },
 };
 
-static constexpr const CoordsXY StartLocations[] = { { 80, 0 }, { 0, 80 }, { -80, 0 }, { 0, -80 } };
-
 CondorVehicleData::CondorVehicleData()
     : VehicleIndex(0)
 {
@@ -357,6 +289,7 @@ CondorRideData::CondorRideData()
     , VehiclesZ(0)
     , TowerTop(0)
     , TowerBase(0)
+    , ArmRotation(0)
 {
 }
 
@@ -410,10 +343,11 @@ void CondorCreateVehicle(
 
     // place the car in a circle, centered around the tower
     auto centerOffset = CoordsXY{ 144, 144 };
-    auto chosenLoc = carPosition + CoordsXYZ{ StartLocations[carIndex % 4] + centerOffset, 0 };
+    auto chosenLoc = carPosition + CoordsXYZ{ StartLocations[carIndex], 0 };
     vehicle->MoveTo(chosenLoc);
     vehicle->sprite_direction = 0;
     vehicle->Pitch = 0;
+    vehicle->TrackLocation = carPosition + CoordsXYZ{ centerOffset, 0 };
 
     vehicle->VehicleData = std::make_unique<CondorVehicleData>();
     auto condorData = static_cast<CondorVehicleData*>(vehicle->VehicleData.get());
@@ -449,7 +383,7 @@ void CondorRideUpdateWating(Ride& ride)
     }
 }
 
-/*static void CondorRideUpdateClimbing(Ride& ride)
+static void CondorRideUpdateClimbing(Ride& ride)
 {
     auto condorRideData = static_cast<CondorRideData*>(ride.Data.get());
     if (condorRideData != nullptr)
@@ -461,6 +395,8 @@ void CondorRideUpdateWating(Ride& ride)
             condorRideData->State = CondorRideState::Falling;
         }
         condorRideData->VehiclesZ = height;
+        condorRideData->ArmRotation++;
+        condorRideData->ArmRotation %= 64;
     }
 }
 
@@ -470,14 +406,18 @@ static void CondorRideUpdateFalling(Ride& ride)
     if (condorRideData != nullptr)
     {
         int32_t height = condorRideData->VehiclesZ - 1;
+        condorRideData->ArmRotation++;
+        condorRideData->ArmRotation %= 64;
         if (height < condorRideData->TowerBase)
         {
             height = condorRideData->TowerBase;
-            condorRideData->State = CondorRideState::Waiting;
+
+            if (condorRideData->ArmRotation == 0)
+                condorRideData->State = CondorRideState::Waiting;
         }
         condorRideData->VehiclesZ = height;
     }
-}*/
+}
 
 void CondorRideUpdate(Ride& ride)
 {
@@ -490,10 +430,10 @@ void CondorRideUpdate(Ride& ride)
                 CondorRideUpdateWating(ride);
                 break;
             case CondorRideState::Climbing:
-                //CondorRideUpdateClimbing(ride);
+                CondorRideUpdateClimbing(ride);
                 break;
             case CondorRideState::Falling:
-                //CondorRideUpdateFalling(ride);
+                CondorRideUpdateFalling(ride);
                 break;
         }
     }

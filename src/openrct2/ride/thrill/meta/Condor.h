@@ -137,6 +137,7 @@ struct CondorRideData : public RideData
     int32_t TowerTop;
     int32_t TowerBase;
     CondorRideState State;
+    int32_t ArmRotation;
 };
 
 class CondorVehicleData : public VehicleData
