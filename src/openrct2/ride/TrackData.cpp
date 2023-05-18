@@ -7149,10 +7149,13 @@ std::vector<std::vector<uint8_t>> TrackMap9x9;
 std::vector<uint8_t> Edges9x9;
 
 // clang-format off
+static constexpr const int CondorCenterTileX = 4;
+static constexpr const int CondorCenterTileY = 3;
+
 TrackElementDescriptor TowerBase9x9TED =
 {
     SET_FIELD(Description, STR_ENTRY_EXIT_PLATFORM),
-    SET_FIELD(Coordinates, { 0, 0, 0, 96, 160, 128 } ),
+    SET_FIELD(Coordinates, { 0, 0, 0, 96, CondorCenterTileX * 32, CondorCenterTileY * 32 } ),
     SET_FIELD(Block, nullptr),
     SET_FIELD(PieceLength, 32),
     SET_FIELD(CurveChain, { RideConstructionSpecialPieceSelected | TrackElemType::TowerSection, TRACK_CURVE_NONE } ),
@@ -7203,11 +7206,11 @@ namespace OpenRCT2
             }
 
             //build the 9x9 base
-            RideBaseBuilder builder(9, 9);
+            RideBaseBuilder builder(7, 7);
 
             //swap the center tile for the last tile
-            auto centerTile = builder.GetTileIndex(5, 4);
-            auto lastTile = builder.GetTileIndex(8, 8);
+            auto centerTile = builder.GetTileIndex(CondorCenterTileX, CondorCenterTileY);
+            auto lastTile = builder.GetTileIndex(6, 6);
             builder.SwapTiles(centerTile, lastTile);
 
             TrackBlock9x9 = builder.GetBlocks();

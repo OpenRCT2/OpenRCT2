@@ -46,11 +46,11 @@ void VehicleVisualCondor(
     //dont draw here, it doesn't work since the sprites are wider than 64 pixels!
 }
 
-static constexpr const std::array<CoordsXY, 4> StartLocations = { CoordsXY{ 0, 128 }, CoordsXY{ 128, 256 },
-                                                                  CoordsXY{ 256, 128 }, CoordsXY{ 128, 0 } };
+static constexpr const std::array<CoordsXY, 4> StartLocations = { CoordsXY{ 0, 96 }, CoordsXY{ 96, 192 },
+                                                                  CoordsXY{ 192, 96 }, CoordsXY{ 128, 0 } };
 
 static constexpr int CondorRadius = 48;
-static constexpr int CondorCenter = 128;
+static constexpr int CondorCenter = 96;
 static constexpr float CondorAngleDelta = 0.09817f;
 
 static std::array<CoordsXY, 64> CalculateLocations()
@@ -113,8 +113,8 @@ static void PaintCondorStructure(
                   32 + vehicleZ },
                 { { CondorLocations[locationIndex].x, CondorLocations[locationIndex].y, vehicleZ + 32 }, { 24, 24, 12 } });
             PaintAddImageAsChild(
-                session, armsImageId, { -bbOffset.x + 128, -bbOffset.y + 128, vehicleZ + 32 },
-                { { 128, 128, 32 + vehicleZ }, { 24, 24, 12 } });
+                session, armsImageId, { -bbOffset.x + CondorCenter, -bbOffset.y + CondorCenter, vehicleZ + 32 },
+                { { CondorCenter, CondorCenter, 32 + vehicleZ }, { 24, 24, 12 } });
         }
     }
 
@@ -139,7 +139,7 @@ static void PaintCondorBase(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB,
         session.CurrentRotation);
 
-    if (trackSequence == 40)
+    if (trackSequence == 24)
     {
         auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
             (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_90_DEG : SPR_ROTO_DROP_TOWER_BASE));
@@ -161,7 +161,7 @@ static void PaintCondorBase(
         return;
     }
 
-    const auto& bbBuilder = RideBoundboxBuilder(TowerBase9x9TED.Block, 81);
+    const auto& bbBuilder = RideBoundboxBuilder(TowerBase9x9TED.Block, 49);
     auto offsets = bbBuilder.GetOffsets();
 
     auto sequenceValid = std::find_if(
@@ -338,7 +338,7 @@ void CondorCreateVehicle(
     vehicle->update_flags = 0;
 
     // place the car in a circle, centered around the tower
-    auto centerOffset = CoordsXY{ 144, 144 };
+    auto centerOffset = CoordsXY{ CondorCenter, CondorCenter };
     auto chosenLoc = carPosition + CoordsXYZ{ StartLocations[carIndex], 0 };
     vehicle->MoveTo(chosenLoc);
     vehicle->sprite_direction = 0;
