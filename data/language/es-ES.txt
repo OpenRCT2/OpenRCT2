@@ -3691,6 +3691,9 @@ STR_6582    :Abrir ventana de atajos de teclado
 STR_6583    :{WINDOW_COLOUR_2}Trenes Invertidos
 STR_6584    :Selecciona para que los trenes viajen marcha atrás
 STR_6585    :No se puede realizar cambios…
+STR_6586    :OpenRCT2
+STR_6587    :El tema principal de OpenRTC es una obra de Allister Brimble,{NEWLINE}licenciada bajo CC BY-SA 4.0.
+STR_6588    :Gracias a Herman Riddering por permitirnos grabar el 35er Voigt.
 
 ##############
 # Escenarios #
