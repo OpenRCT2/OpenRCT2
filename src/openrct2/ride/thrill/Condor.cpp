@@ -66,6 +66,20 @@ static std::array<CoordsXY, 64> CalculateLocations()
 }
 static auto CondorLocations = CalculateLocations();
 
+static constexpr int MaxAnimationFrameTime = 8;
+
+static constexpr int GetAnimationFrameTime(int currentHeight, int minHeight, int maxHeight)
+{
+    float progress = static_cast<float>(currentHeight - minHeight) / static_cast<float>(maxHeight - minHeight);
+    return (1.0f - MaxAnimationFrameTime) * progress + MaxAnimationFrameTime;
+}
+
+constexpr int NumTiltAngles = 8;
+static uint8_t GetVehicleTilt(uint8_t rotationFrameTime)
+{
+    return (MaxAnimationFrameTime / rotationFrameTime) - 1;
+}
+
 static void PaintCondorStructure(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, CoordsXYZ bbOffset, CoordsXYZ bbSize)
@@ -99,14 +113,17 @@ static void PaintCondorStructure(
     if (condorRideData != nullptr)
     {
         auto vehicleZ = condorRideData->VehiclesZ;
-        auto armsImageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + NumVehicleAnimationFrames + (condorRideData->ArmRotation % 16));
+        auto tilt = GetVehicleTilt(condorRideData->RotationFrameTime);
+        auto armsImageId = imageTemplate.WithIndex(
+            rideEntry->Cars[0].base_image_id + NumVehicleAnimationFrames * NumTiltAngles + (condorRideData->ArmRotation % 16));
         for (int i = 0; i < 4; i++)
         {
             int locationIndex = i * 16;
             locationIndex += condorRideData->ArmRotation;
             locationIndex %= 64;
 
-            auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + condorRideData->QuadRotation[i]);
+            auto imageId = imageTemplate.WithIndex(
+                rideEntry->Cars[0].base_image_id + tilt * NumVehicleAnimationFrames + condorRideData->QuadRotation[i]);
             PaintAddImageAsParent(
                 session, imageId,
                 { -bbOffset.x + CondorLocations[locationIndex].x, -bbOffset.y + CondorLocations[locationIndex].y,
@@ -284,6 +301,9 @@ CondorRideData::CondorRideData()
     , TowerTop(0)
     , TowerBase(0)
     , ArmRotation(0)
+    , RotationFrameTime(MaxAnimationFrameTime)
+    , ArmRotationCounter(0)
+    , SpinningTopCounter(0)
 {
     QuadRotation = { 0, 0, 0, 0 };
     InitialQuadRotation = QuadRotation[0];
@@ -379,20 +399,16 @@ void CondorRideUpdateWating(Ride& ride)
     }
 }
 
-static void CondorRideUpdateClimbing(Ride& ride)
+static void UpdateRotation(CondorRideData* condorRideData)
 {
-    auto condorRideData = static_cast<CondorRideData*>(ride.Data.get());
-    if (condorRideData != nullptr)
+    condorRideData->RotationFrameTime = GetAnimationFrameTime(condorRideData->VehiclesZ, condorRideData->TowerBase, condorRideData->TowerTop);
+    condorRideData->ArmRotationCounter++;
+
+    if (condorRideData->ArmRotationCounter >= condorRideData->RotationFrameTime)
     {
-        int32_t height = condorRideData->VehiclesZ + 1;
-        if (height > condorRideData->TowerTop)
-        {
-            height = condorRideData->TowerTop;
-            condorRideData->State = CondorRideState::Falling;
-        }
-        condorRideData->VehiclesZ = height;
         condorRideData->ArmRotation++;
         condorRideData->ArmRotation %= 64;
+        condorRideData->ArmRotationCounter = 0;
 
         for (auto& quadRot : condorRideData->QuadRotation)
         {
@@ -402,20 +418,30 @@ static void CondorRideUpdateClimbing(Ride& ride)
     }
 }
 
+static void CondorRideUpdateClimbing(Ride& ride)
+{
+    auto condorRideData = static_cast<CondorRideData*>(ride.Data.get());
+    if (condorRideData != nullptr)
+    {
+        int32_t height = condorRideData->VehiclesZ + 1;
+        if (height > condorRideData->TowerTop)
+        {
+            height = condorRideData->TowerTop;
+            condorRideData->State = CondorRideState::SpinningAtTop;
+        }
+        condorRideData->VehiclesZ = height;
+
+        UpdateRotation(condorRideData);
+    }
+}
+
 static void CondorRideUpdateFalling(Ride& ride)
 {
     auto condorRideData = static_cast<CondorRideData*>(ride.Data.get());
     if (condorRideData != nullptr)
     {
         int32_t height = condorRideData->VehiclesZ - 1;
-        condorRideData->ArmRotation++;
-        condorRideData->ArmRotation %= 64;
-
-        for (auto& quadRot : condorRideData->QuadRotation)
-        {
-            quadRot++;
-            quadRot %= 8;
-        }
+        UpdateRotation(condorRideData);
 
         if (height < condorRideData->TowerBase)
         {
@@ -430,6 +456,23 @@ static void CondorRideUpdateFalling(Ride& ride)
 
         }
         condorRideData->VehiclesZ = height;
+    }
+}
+
+constexpr int SpinningTopTime = 60;
+static void CondorRideUpdateSpinningAtTop(Ride& ride)
+{
+    auto condorRideData = static_cast<CondorRideData*>(ride.Data.get());
+    if (condorRideData != nullptr)
+    {
+        UpdateRotation(condorRideData);
+        condorRideData->SpinningTopCounter++;
+        if (condorRideData->SpinningTopCounter >= SpinningTopTime)
+        {
+            condorRideData->SpinningTopCounter = 0;
+            condorRideData->State = CondorRideState::Falling;
+        }
+            
     }
 }
 
@@ -448,6 +491,9 @@ void CondorRideUpdate(Ride& ride)
                 break;
             case CondorRideState::Falling:
                 CondorRideUpdateFalling(ride);
+                break;
+            case CondorRideState::SpinningAtTop:
+                CondorRideUpdateSpinningAtTop(ride);
                 break;
         }
     }
@@ -469,7 +515,8 @@ void CondorUpdateTravelling(Vehicle& vehicle)
         auto* car = &vehicle;
         do
         {
-            if (condorRideData->State == CondorRideState::Climbing || condorRideData->State == CondorRideState::Falling)
+            if (condorRideData->State == CondorRideState::Climbing || condorRideData->State == CondorRideState::Falling
+                || condorRideData->State == CondorRideState::SpinningAtTop)
             {
                 auto target = car->GetLocation();
                 target.z = condorRideData->VehiclesZ;

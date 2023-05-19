@@ -125,7 +125,8 @@ enum CondorRideState
 {
     Waiting,
     Climbing,
-    Falling
+    Falling,
+    SpinningAtTop,
 };
 
 struct CondorRideData : public RideData
@@ -137,7 +138,10 @@ struct CondorRideData : public RideData
     int32_t TowerTop;
     int32_t TowerBase;
     CondorRideState State;
+    int32_t RotationFrameTime;
+    int32_t ArmRotationCounter;
     int32_t ArmRotation;
+    int32_t SpinningTopCounter;
 
     std::array<int32_t, 4> QuadRotation;
     int32_t InitialQuadRotation;
