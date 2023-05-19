@@ -1371,6 +1371,11 @@ public:
             HeightmapGenerateMap();
         }
     }
+
+    void OnResize() override
+    {
+        ResizeFrameWithPage();
+    }
 };
 
 WindowBase* WindowMapgenOpen()

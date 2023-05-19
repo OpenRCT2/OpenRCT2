@@ -3994,6 +3994,9 @@ enum : uint16_t
     STR_ABOUT_OPENRCT2_TITLE = 6587,
     STR_ABOUT_FAIRGROUND_ORGAN = 6588,
 
+    STR_WINDOW_BUTTONS_ON_THE_LEFT = 6589,
+    STR_WINDOW_BUTTONS_ON_THE_LEFT_TIP = 6590,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

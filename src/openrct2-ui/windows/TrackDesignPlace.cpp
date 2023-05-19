@@ -312,6 +312,11 @@ public:
         }
     }
 
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
+
     void ClearProvisionalTemporarily()
     {
         if (_hasPlacementGhost)

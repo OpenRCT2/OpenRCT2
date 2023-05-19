@@ -2262,8 +2262,16 @@ void WindowBase::ResizeFrame()
     // Title
     widgets[1].right = width - 2;
     // Close button
-    widgets[2].left = width - 13;
-    widgets[2].right = width - 3;
+    if (gConfigInterface.WindowButtonsOnTheLeft)
+    {
+        widgets[2].left = 2;
+        widgets[2].right = 2 + CloseButtonWidth;
+    }
+    else
+    {
+        widgets[2].left = width - 3 - CloseButtonWidth;
+        widgets[2].right = width - 3;
+    }
 }
 
 void WindowBase::ResizeFrameWithPage()

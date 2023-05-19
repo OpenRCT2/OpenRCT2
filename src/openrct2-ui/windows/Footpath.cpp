@@ -1399,6 +1399,11 @@ public:
         OnMouseUp(WIDX_CONSTRUCT);
     }
 
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
+
 #pragma endregion
 };
 

@@ -741,6 +741,11 @@ public:
         LoadDesignsList(item);
         return true;
     }
+
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
 };
 
 WindowBase* WindowTrackListOpen(const RideSelection item)

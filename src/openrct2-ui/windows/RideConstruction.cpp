@@ -304,6 +304,7 @@ public:
 
     void OnResize() override
     {
+        ResizeFrame();
         WindowRideConstructionUpdateEnabledTrackPieces();
 
         auto currentRide = GetRide(_currentRideIndex);

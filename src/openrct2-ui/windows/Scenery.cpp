@@ -317,6 +317,8 @@ public:
             WindowEventInvalidateCall(this);
             ContentUpdateScroll();
         }
+
+        ResizeFrameWithPage();
     }
 
     void OnMouseDown(WidgetIndex widgetIndex) override
@@ -739,13 +741,6 @@ public:
             }
         }
 
-        widgets[WIDX_SCENERY_BACKGROUND].right = windowWidth - 1;
-        widgets[WIDX_SCENERY_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_SCENERY_TAB_CONTENT_PANEL].right = windowWidth - 1;
-        widgets[WIDX_SCENERY_TAB_CONTENT_PANEL].bottom = height - 1;
-        widgets[WIDX_SCENERY_TITLE].right = windowWidth - 2;
-        widgets[WIDX_SCENERY_CLOSE].left = windowWidth - 13;
-        widgets[WIDX_SCENERY_CLOSE].right = widgets[WIDX_SCENERY_CLOSE].left + 10;
         widgets[WIDX_SCENERY_LIST].right = windowWidth - 26;
         widgets[WIDX_SCENERY_LIST].bottom = height - 14;
 

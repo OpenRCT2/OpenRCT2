@@ -1121,6 +1121,11 @@ private:
             break;
         }
     }
+
+    void OnResize() override
+    {
+        ResizeFrameWithPage();
+    }
 };
 
 WindowBase* WindowCheatsOpen()

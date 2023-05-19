@@ -135,6 +135,7 @@ struct InterfaceConfiguration
     int32_t ObjectSelectionFilterFlags;
     int32_t ScenarioselectLastTab;
     bool ListRideVehiclesSeparately;
+    bool WindowButtonsOnTheLeft;
 };
 
 struct SoundConfiguration

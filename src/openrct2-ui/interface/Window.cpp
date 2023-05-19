@@ -828,3 +828,9 @@ void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_ta
         }
     }
 }
+
+ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w)
+{
+    const uint8_t buttonOffset = (gConfigInterface.WindowButtonsOnTheLeft) ? CloseButtonWidth + 2 : 0;
+    return w.windowPos + ScreenCoordsXY{ 2 + buttonOffset, 2 };
+}
