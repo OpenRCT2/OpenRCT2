@@ -252,7 +252,7 @@ public:
 
     CursorID OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID cursorId) override
     {
-        gTooltipTimeout = 2000;
+        gTooltipCloseTimeout = gCurrentRealTimeTicks + 2000;
         return cursorId;
     }
 

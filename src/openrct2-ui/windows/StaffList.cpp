@@ -177,6 +177,7 @@ public:
             height = min_height;
             Invalidate();
         }
+        ResizeFrameWithPage();
     }
 
     void OnUpdate() override
@@ -263,13 +264,6 @@ public:
         }
         SetWidgetPressed(WIDX_STAFF_LIST_QUICK_FIRE, _quickFireMode);
 
-        widgets[WIDX_STAFF_LIST_BACKGROUND].right = width - 1;
-        widgets[WIDX_STAFF_LIST_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_STAFF_LIST_TAB_CONTENT_PANEL].right = width - 1;
-        widgets[WIDX_STAFF_LIST_TAB_CONTENT_PANEL].bottom = height - 1;
-        widgets[WIDX_STAFF_LIST_TITLE].right = width - 2;
-        widgets[WIDX_STAFF_LIST_CLOSE].left = width - 2 - 11;
-        widgets[WIDX_STAFF_LIST_CLOSE].right = width - 2 - 11 + 10;
         widgets[WIDX_STAFF_LIST_LIST].right = width - 4;
         widgets[WIDX_STAFF_LIST_LIST].bottom = height - 15;
         widgets[WIDX_STAFF_LIST_QUICK_FIRE].left = width - 77;

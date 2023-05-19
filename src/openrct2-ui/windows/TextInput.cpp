@@ -313,6 +313,11 @@ public:
         return numLines * 10 + WH;
     }
 
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
+
 private:
     static void DrawIMEComposition(DrawPixelInfo& dpi, int32_t cursorX, int32_t cursorY)
     {

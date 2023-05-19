@@ -2998,6 +2998,7 @@ STR_5833    :Cambia il formato della data utilizzato
 STR_5834    :Seleziona il dispositivo audio utilizzato da OpenRCT2
 STR_5835    :Disattiva l’audio del gioco se la finestra perde il focus
 STR_5836    :Imposta la musica da utilizzare nel menu principale.{NEWLINE}Selezionando RCT1 sarà necessario copiare il file “data/css17.dat” dalla cartella di RCT1 a “data/css50.dat” nella cartella di RCT2, oppure impostare il percorso di RCT1 nella scheda “Altro”.
+STR_5836    :Seleziona la musica da utilizzare nel menu principale.{NEWLINE}Per selezionare il tema di RCT1 è necessario impostare il percorso di RCT1 nella scheda Avanzate.
 STR_5837    :Crea e gestisci i temi dell’interfaccia
 STR_5838    :Mostra un pulsante differente per le finanze nella barra degli strumenti
 STR_5839    :Mostra un pulsante differente per le ricerche e sviluppo nella barra degli strumenti
@@ -3431,7 +3432,7 @@ STR_6318    :Network desync rilevato.{NEWLINE}File log: {STRING}
 STR_6319    :Blocco freno chiuso
 STR_6320    :Indistruttibile
 STR_6321    :L’aggiunta è rotta
-STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Id entità: {BLACK}{INT32}
 STR_6323    :Simulazione
 STR_6324    :Simula
 STR_6325    :Simula attrazione
@@ -3627,6 +3628,19 @@ STR_6516    :Uno o più oggetti aggiunti necessitano che RCT1 sia collegato per 
 STR_6517    :Uno o più oggetti di questo parco necessitano che RCT1 sia collegato per una corretta visualizzazione. Saranno usate immagini di ripiego.
 STR_6518    :{BLACK}Passa il cursore sopra a uno scenario per visualizzare la sua descrizione e il suo obiettivo. Fai clic per iniziare a giocare.
 STR_6519    :Extra
+STR_6520    :Pacchetti di risorse
+STR_6521    :Bassa priorità
+STR_6522    :Alta priorità
+STR_6523    :Abbassa la priorità del pacchetto di risorse selezionato.
+STR_6524    :Aumenta la priorità del pacchetto di risorse selezionato.
+STR_6525    :Ricarica tutte le risorse nel gioco con i pacchetti di risorse attivi.
+STR_6526    :(grafica, musica ed effetti sonori di base)
+STR_6527    :Competizioni
+STR_6528    :Parametri del tracciato non validi!
+STR_6529    :Parametro dello schema colore non valido!
+STR_6530    :User Created Expansion Set
+STR_6531    :The Time Machine
+STR_6532    :Katy’s Dreamworld
 
 
 #############
@@ -4383,3 +4397,102 @@ STR_DTLS    :Questo vecchio parco a tema ha vissuto tempi migliori. Aiuta il pro
 STR_SCNR    :Il Mondo dei Panda
 STR_PARK    :Il Mondo dei Panda
 STR_DTLS    :Aggiungi più attrazioni per attirare più visitatori in questo parco a tema sui panda.
+
+###
+<UCES Halloween>
+STR_SCNR    :Cemetery Ridge
+STR_PARK    :Cemetery Ridge
+STR_DTLS    :Questo è Halloween, l'Halloween di UCES, le zucche urlano nel bel mezzo della notte! Questo cimitero è in grossi guai e tocca a te salvarlo, lasciando però i morti riposare in pace! Sarai in grado di tenere i fantasmi all'interno delle loro tombe e far rabbrividire i tuoi visitatori?{NEWLINE}Autore: Squid
+
+###############################################################################
+## UCES: The Time Machine (2003)
+###############################################################################
+<Lighthouse of Alexandria by Katatude for UCES>
+STR_SCNR    :The Lighthouse of Alexandria
+STR_PARK    :The Lighthouse of Alexandria
+STR_DTLS    :Alessandro costruì la città; i greci, i romani e gli egiziani lasciarono le loro tracce. Ma il più grande regalo è una delle Meraviglie del Mondo Antico, il Faro. Visitalo e creaci un parco!{NEWLINE}Autore: Katatude
+
+<Cleveland's Luna Park>
+STR_SCNR    :Luna Park, Cleveland
+STR_PARK    :Luna Park
+STR_DTLS    :Proprio com’era il giorno della sua apertura, il 18 maggio 1905.{NEWLINE}Autore: Aetherwave
+
+<Mount Vesuvius 1700 A.D. by Katatude for UCES>
+STR_SCNR    :Mount Vesuvius
+STR_PARK    :Mount Vesuvius
+STR_DTLS    :Pompei ed Ercolano furono ricoperte dal Vesuvio nel 79 a.C. Visita gli scavi e costruiscici un parco!{NEWLINE}Autore: Katatude
+
+<The Sandbox by Katatude for UCES>
+STR_SCNR    :The Sandbox
+STR_PARK    :The Sandbox
+STR_DTLS    :Quello che tutti desiderano - una sandbox! Quindi prendi secchio e pala e costruisci un parco!{NEWLINE}Autore: Katatude
+
+<Niagara Falls & Gorge by Katatude for UCES>
+STR_SCNR    :Niagara Falls & Gorge
+STR_PARK    :Niagara Falls
+STR_DTLS    :Le American Falls, le Bridal Falls e le Canadian Horseshoe Falls sul confine del Niagara, 1850.{NEWLINE}Autore: Katatude
+
+<Rocky Mountain Miners>
+STR_SCNR    :Rocky Mountain Miners
+STR_PARK    :Rocky Mountain Miners
+STR_DTLS    :Una frana ha danneggiato la tua ferrovia. I tuoi lavoratori sono andati a scavare, ci sarà dell’oro nelle montagne russe?{NEWLINE}Autori: Squid, Buckone, Fossil
+
+<The Time Machine by Katatude for UCES>
+STR_SCNR    :The Time Machine
+STR_PARK    :The Time Machine
+STR_DTLS    :La macchina del tempo. Costruisci e viaggia, dove vuoi, quando vuoi. L’eternità ti aspetta. È tutto relativo.{NEWLINE}Autore: Katatude
+
+<Tower of Babel>
+STR_SCNR    :Tower of Babel
+STR_PARK    :Tower of Babel
+STR_DTLS    :Ehii! Guarda dove ci ha portato adesso la macchina del tempo! Dove sono finiti tutti?{NEWLINE}Autore: Fossil
+
+<Transformation>
+STR_SCNR    :Transformation
+STR_PARK    :Transformation
+STR_DTLS    :Ti stavamo aspettando…{NEWLINE}Autore: Fossil
+
+<Urbis Incognitus>
+STR_SCNR    :Urbis Incognitus
+STR_PARK    :Urbis Incognitus
+STR_DTLS    :I romani sono stanchi delle lotte noiose tra gladiatori. Dagli qualcosa di più eccitante, trasforma la città romana nel più grande parco divertimenti della storia!{NEWLINE}Autore: Kaffe
+
+###############################################################################
+## UCES: Katy’s Dreamworld (2003)
+###############################################################################
+
+<Beneath the Christmas Tree by Katatude for UCES>
+STR_SCNR    :Beneath the Christmas Tree
+STR_PARK    :Winter Wonderland
+STR_DTLS    :La mamma ha costruito questa scena sotto al nostro albero. Ora vuole che ci costruiamo un parco! Puoi aiutarci?{NEWLINE}Autore: Katatude
+
+<Bigrock Blast>
+STR_SCNR    :Bigrock Blast
+STR_PARK    :Bigrock Blast
+STR_DTLS    :Dopo un’esplosione alle Miniere Pietragrossa S.p.A., agli abitanti di Pietragrossa tocca costruire un parco divertimenti per mantenere la loro città viva.{NEWLINE}Autori: rbarclay & buckone
+
+<Camp Mockingbird for UCES by Katatude>
+STR_SCNR    :Camp Mockingbird
+STR_PARK    :Camp Mockingbird
+STR_DTLS    :Solo 500 dollari a settimana per questo campo estivo! Spacca il salvadanaio e divertiti a costruire un parco.{NEWLINE}Autore: Katatude
+
+<Choo Choo Town>
+STR_SCNR    :Choo-Choo Town
+STR_PARK    :Choo-Choo Town
+STR_DTLS    :Mamma! Papà! Voglio andare a Choo-Choo Town!{NEWLINE}Autore: Fossil
+
+<Dragon Islands>
+STR_SCNR    :Dragon Islands
+STR_PARK    :Dragon Islands
+STR_DTLS    :L'isola dei dragoni? Non sono sicuro di volerci andare…{NEWLINE}Autore: Fossil
+
+<Kiddy Karnival II>
+STR_SCNR    :Kiddie Karnival II
+STR_PARK    :Kiddie Karnival
+STR_DTLS    :Ehi bambini! Divertiamoci!{NEWLINE}Autori: Piehead & Fossil
+
+<Sand Dune>
+STR_SCNR    :Sand Dune
+STR_PARK    :Sand Dune
+STR_DTLS    :In veste di proprietario di un piccolo parco, hai acquistato un ampio terreno lungo la costa per espanderti e portare più visitatori tra le dune di sabbia, ma stai attento: non puoi disturbare queste dune così ecologicamente fragili!{NEWLINE}Autore: rbarclay
+

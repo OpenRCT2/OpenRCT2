@@ -92,7 +92,7 @@ public:
     void OnClose() override
     {
         ClearProvisional();
-        ViewportSetVisibility(0);
+        ViewportSetVisibility(ViewportVisibility::Default);
         MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -310,6 +310,11 @@ public:
             ft.Add<money64>(_placementCost);
             DrawTextBasic(dpi, this->windowPos + ScreenCoordsXY{ 88, 94 }, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
         }
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 
     void ClearProvisionalTemporarily()

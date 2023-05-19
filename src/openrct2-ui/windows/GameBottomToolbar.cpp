@@ -648,7 +648,7 @@ public:
             case WIDX_GUESTS:
             case WIDX_PARK_RATING:
             case WIDX_DATE:
-                gTooltipTimeout = 2000;
+                gTooltipCloseTimeout = gCurrentRealTimeTicks + 2000;
                 break;
         }
         return cursorId;

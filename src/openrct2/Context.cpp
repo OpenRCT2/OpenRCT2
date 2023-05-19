@@ -1112,11 +1112,11 @@ namespace OpenRCT2
             {
                 Tick();
 
-                // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
-                WindowUpdateAll();
-
                 _ticksAccumulator -= GAME_UPDATE_TIME_MS;
             }
+
+            ContextHandleInput();
+            WindowUpdateAll();
 
             if (ShouldDraw())
             {
@@ -1141,15 +1141,15 @@ namespace OpenRCT2
 
                 Tick();
 
-                // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
-                WindowUpdateAll();
-
                 _ticksAccumulator -= GAME_UPDATE_TIME_MS;
 
                 // Get the next position of each sprite
                 if (shouldDraw)
                     tweener.PostTick();
             }
+
+            ContextHandleInput();
+            WindowUpdateAll();
 
             if (shouldDraw)
             {

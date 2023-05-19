@@ -107,7 +107,7 @@ public:
     void OnClose() override
     {
         RideConstructionInvalidateCurrentTrack();
-        ViewportSetVisibility(0);
+        ViewportSetVisibility(ViewportVisibility::Default);
 
         MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -162,6 +162,7 @@ public:
 
     void OnResize() override
     {
+        ResizeFrameWithPage();
         uint64_t disabledWidgets = 0;
         if (_rideConstructionState == RideConstructionState::Place)
         {

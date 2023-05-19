@@ -3682,18 +3682,17 @@ STR_6576    :Adds special colours to colour dropdown
 STR_6577    :Block brake speed
 STR_6578    :Set speed limit for block brakes. In block section mode, adjacent brakes with a slower speed are linked to the block brake.
 STR_6579    :Block brakes will be set to default speed when saved as track design
-
 STR_6580    :Reset
 STR_6581    :Are you sure you want to reset all shortcut keys on this tab?
 STR_6582    :Open keyboard shortcuts window
-
 STR_6583    :{WINDOW_COLOUR_2}Reversed Trains
 STR_6584    :Select to run trains backwards
 STR_6585    :Can’t make changes…
-
 STR_6586    :OpenRCT2
-STR_6587    :The OpenRCT2 Title Theme is a work of Allister Brimble,{NEWLINE}licenced CC BY-SA 4.0.
+STR_6587    :The OpenRCT2 Title Theme is a work of Allister Brimble,{NEWLINE}licensed CC BY-SA 4.0.
 STR_6588    :Thanks to Herman Riddering for allowing us to record the 35er Voigt.
+STR_6589    :Show window buttons on the left
+STR_6590    :Show the window buttons (e.g. to close the window) on the left of the title bar instead of on the right.
 
 #############
 # Scenarios #

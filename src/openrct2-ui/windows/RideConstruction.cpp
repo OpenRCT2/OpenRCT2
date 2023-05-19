@@ -249,7 +249,7 @@ public:
     void OnClose() override
     {
         RideConstructionInvalidateCurrentTrack();
-        ViewportSetVisibility(0);
+        ViewportSetVisibility(ViewportVisibility::Default);
 
         MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -304,6 +304,7 @@ public:
 
     void OnResize() override
     {
+        ResizeFrame();
         WindowRideConstructionUpdateEnabledTrackPieces();
 
         auto currentRide = GetRide(_currentRideIndex);
@@ -388,6 +389,18 @@ public:
                 // Disable all slopes
                 disabledWidgets |= (1uLL << WIDX_SLOPE_GROUPBOX) | (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN)
                     | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
+            }
+        }
+        // If ride type does not have access to diagonal sloped turns, disallow simultaneous use of banked and sloped diagonals
+        if (!IsTrackEnabled(TRACK_SLOPE_CURVE_LARGE) && TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection))
+        {
+            if (_currentTrackSlopeEnd != TRACK_SLOPE_NONE)
+            {
+                disabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
+            }
+            else if (_currentTrackBankEnd != TRACK_BANK_NONE)
+            {
+                disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_SLOPE_UP);
             }
         }
         if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
@@ -2236,14 +2249,14 @@ private:
         const auto resultData = res.GetData<TrackPlaceActionResult>();
         if (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND)
         {
-            ViewportSetVisibility(1);
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
         }
 
         const bool helixSelected = (_currentTrackCurve & RideConstructionSpecialPieceSelected)
             && TrackTypeIsHelix(_currentTrackCurve & ~RideConstructionSpecialPieceSelected);
         if (helixSelected || (_currentTrackSlopeEnd != TRACK_SLOPE_NONE))
         {
-            ViewportSetVisibility(2);
+            ViewportSetVisibility(ViewportVisibility::TrackHeights);
         }
     }
 

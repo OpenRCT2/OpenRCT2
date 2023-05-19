@@ -261,6 +261,11 @@ private:
 
         // Licence
     }
+
+    void OnResize() override
+    {
+        ResizeFrameWithPage();
+    }
 };
 
 /**

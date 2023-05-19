@@ -1,17 +1,22 @@
 0.4.6 (in development)
 ------------------------------------------------------------------------
+- Feature: [#15660] Ability to show window buttons on the left.
 - Feature: [OpenMusic#41] Official Title Theme by Allister Brimble.
-- Improved: [#20200] Allow audio files to play to up to 44100hz sample rate (from 22050hz).
+- Improved: [#20200] Allow audio files to play to up to 44100 Hz sample rate (from 22050 Hz).
+- Improved: [#20243] Add new colour preset to Side Friction Roller Coaster (using the new colours).
 - Change: [#20110] Fix a few RCT1 build height parity discrepancies.
-- Fix: [#19823] Parkobj, disallow overriding objects of different object types.
+- Fix: [#6152] Camera and UI are no longer locked at 40 Hz, providing a smoother experience.
+- Fix: [#19823] Parkobj: disallow overriding objects of different object types.
+- Fix: [#20111] All coaster types can access the new diagonal slope pieces.
+- Fix: [#20155] Fairground organ style 2 shows up as regular music, rather than for the merry-go-round.
 
 0.4.5 (2023-05-08)
 ------------------------------------------------------------------------
-- Feature: [#18713] Block brakes have speed control and brakes slower than adjacent block brakes copy block brake speed when block brake open.
+- Feature: [#18713] Block brakes have speed control and brakes slower than adjacent block brakes copy block brake speed when the block brake is open.
 - Feature: [#19276] Add Powered Lifthill to Giga Coaster.
 - Feature: [#19305] Add new Reversed Trains ride setting to run trains backwards, granting a bonus to ride ratings.
 - Feature: [#19305] [Plugin] Add “Car.isReversed” to allow individual ride vehicles to run backwards.
-- Feature: [#19446] Add new color options to color dropdown.
+- Feature: [#19446] Add new colour options to colour dropdown.
 - Feature: [#19547] Add large sloped turns to hybrid coaster and single rail coaster.
 - Feature: [#19930] Add plugin APIs for research.
 - Feature: [OpenMusic#25] Added Prehistoric ride music style.

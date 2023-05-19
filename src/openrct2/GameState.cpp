@@ -230,8 +230,6 @@ void GameState::Tick()
         gWindowMapFlashingFlags &= ~MapFlashingFlags::StaffListOpen;
 
         ContextUpdateMapTooltip();
-
-        ContextHandleInput();
     }
 
     // Always perform autosave check, even when paused

@@ -727,6 +727,7 @@ public:
             Invalidate();
             height = min_height;
         }
+        ResizeFrame();
     }
 
     void OnMouseDown(WidgetIndex widgetIndex) override

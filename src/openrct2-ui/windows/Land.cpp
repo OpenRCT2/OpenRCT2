@@ -307,6 +307,11 @@ public:
         }
     }
 
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
+
 private:
     void DrawDropdownButtons(DrawPixelInfo& dpi)
     {

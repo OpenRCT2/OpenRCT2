@@ -3687,6 +3687,9 @@ STR_6582    :Malfermi klavarokomandoj-fenestron
 STR_6583    :{WINDOW_COLOUR_2}Inversaj Trajnoj
 STR_6584    :Elektu por funkciigi trajnojn inverse
 STR_6585    :Ne eblas ŝanĝi tion…
+STR_6586    :OpenRCT2
+STR_6587    :La Titolomuziko de OpenRCT2 estas verko de Allister Brimble,{NEWLINE}rajtigita CC BY-SA 4.0.
+STR_6588    :Dank' al Herman Riddering pro permesi al ni registri la 35er Voigt.
 
 #############
 # Scenarios #
