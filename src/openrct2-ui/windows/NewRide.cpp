@@ -957,7 +957,7 @@ private:
 
             //
             StringId stringId = STR_NEW_RIDE_COST;
-            if (!GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+            if (GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
                 stringId = STR_NEW_RIDE_COST_FROM;
 
             ft = Formatter();
