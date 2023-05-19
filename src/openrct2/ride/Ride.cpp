@@ -2593,7 +2593,7 @@ static StationIndexWithMessage RideModeCheckStationPresent(const Ride& ride)
     if (stationIndex.IsNull())
     {
         const auto& rtd = ride.GetRideTypeDescriptor();
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
             return { StationIndex::GetNull(), STR_NOT_YET_CONSTRUCTED };
 
         if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
