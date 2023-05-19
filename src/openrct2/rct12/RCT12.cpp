@@ -755,6 +755,9 @@ static constexpr std::string_view _musicStyles[] = {
     "openrct2.music.dodgems",
     "openrct2.music.blizzard",
     "openrct2.music.extraterrestrial",
+    "openrct2.music.fairground2",
+    "openrct2.music.ragtime2",
+    "openrct2.music.prehistoric",
 };
 
 std::string_view GetStationIdentifierFromStyle(uint8_t style)
