@@ -3480,6 +3480,11 @@ namespace OpenRCT2::Ui::Windows
                 ft.Rewind();
                 ft.Increment(20);
                 ft.Add<uint16_t>(ride->liftHillSpeed);
+
+                if (rtd.Category == RideCategory::water && ride->liftHillSpeed == 0)
+                    widgets[WIDX_LIFT_HILL_SPEED].text = STR_WALKING_PACE;
+                else
+                    widgets[WIDX_LIFT_HILL_SPEED].text = STR_LIFT_HILL_CHAIN_SPEED_VALUE;
             }
             else
             {

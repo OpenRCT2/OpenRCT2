@@ -69,3 +69,21 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, OpenRCT2::TrackElemType 
 
 std::pair<uint8_t, SpecialElements> splitCombinedHelicesAndSpecialElements(uint8_t combinedValue);
 std::pair<uint8_t, uint8_t> splitCombinedNumDropsPoweredLifts(uint8_t combinedValue);
+
+/**
+ * Water rides used to be very slow. Convert their rollers to lift, so that the user can speed them up if desired.
+ *
+ * @param rideType
+ * @param trackType
+ * @param parkFileVersion
+ * @return
+ */
+bool TrackTypeMustBeMadeChained(ride_type_t rideType, OpenRCT2::TrackElemType trackType, int32_t parkFileVersion = -1);
+
+/**
+ * Determine if the ride needs a roller-to-chain conversion.
+ *
+ * @param rideType
+ * @return
+ */
+bool RideTypeHasConvertibleRollers(ride_type_t rideType);

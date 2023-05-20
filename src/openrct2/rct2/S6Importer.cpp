@@ -85,6 +85,8 @@ namespace OpenRCT2::RCT2
         bool _isSV7 = false;
         bool _isScenario = false;
         OpenRCT2::BitSet<Limits::kMaxRidesInPark> _isFlatRide{};
+        OpenRCT2::BitSet<Limits::kMaxRidesInPark> _hadAChainLiftBefore{};
+        OpenRCT2::BitSet<Limits::kMaxRidesInPark> _isConvertedWaterRide{};
         ObjectEntryIndex _pathToSurfaceMap[16];
         ObjectEntryIndex _pathToQueueSurfaceMap[16];
         ObjectEntryIndex _pathToRailingMap[16];
@@ -597,6 +599,7 @@ namespace OpenRCT2::RCT2
             {
                 OpenRCT2::RCT12::FetchAndApplyScenarioPatch(_s6Path);
             }
+            SetConvertedWaterRideSpeed();
 
             ResearchDetermineFirstOfType();
             UpdateConsolidatedPatrolAreas();
@@ -620,6 +623,23 @@ namespace OpenRCT2::RCT2
             gameState.scenarioCompletedBy = RCT2StringToUTF8(gameState.scenarioCompletedBy, RCT2LanguageId::EnglishUK);
             gameState.scenarioOptions.name = RCT2StringToUTF8(gameState.scenarioOptions.name, RCT2LanguageId::EnglishUK);
             gameState.scenarioOptions.details = RCT2StringToUTF8(gameState.scenarioOptions.details, RCT2LanguageId::EnglishUK);
+        }
+
+        /*
+         * If a water ride already had a chain lift, it was hacked, and thus we shouldn’t touch the lift speed,
+         * or the behaviour of imported saves would change.
+         */
+        void SetConvertedWaterRideSpeed()
+        {
+            for (uint16_t rideIndex = 0; rideIndex < _isConvertedWaterRide.capacity(); rideIndex++)
+            {
+                if (_isConvertedWaterRide[rideIndex] && !_hadAChainLiftBefore[rideIndex])
+                {
+                    auto* ride = GetRide(RideId::FromUnderlying(rideIndex));
+                    if (ride != nullptr)
+                        ride->liftHillSpeed = 0;
+                }
+            }
         }
 
         void ImportRides()
@@ -1424,10 +1444,22 @@ namespace OpenRCT2::RCT2
                     {
                         dst2->SetSeatRotation(src2->GetSeatRotation());
                     }
+                    if (src2->HasChain())
+                    {
+                        _hadAChainLiftBefore[src2->GetRideIndex()] = true;
+                    }
 
                     if (TrackTypeMustBeMadeInvisible(rideType, dst2->GetTrackType()))
                     {
                         dst->SetInvisible(true);
+                    }
+                    if (RideTypeHasConvertibleRollers(rideType))
+                    {
+                        _isConvertedWaterRide[src2->GetRideIndex()] = true;
+                        if (TrackTypeMustBeMadeChained(rideType, trackType))
+                        {
+                            dst2->SetHasChain(true);
+                        }
                     }
 
                     break;
