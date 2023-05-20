@@ -1603,7 +1603,7 @@ namespace RCT1
                     dst2->SetHasQueueBanner(src2->HasQueueBanner());
                     dst2->SetEdges(src2->GetEdges());
                     dst2->SetCorners(src2->GetCorners());
-                    dst2->SetAddition(src2->GetAddition());
+                    dst2->SetAddition(0);
                     dst2->SetAdditionIsGhost(false);
                     dst2->SetAdditionStatus(src2->GetAdditionStatus());
 
@@ -1631,7 +1631,7 @@ namespace RCT1
                     dst2->SetRailingsEntryIndex(railingsEntryIndex);
 
                     // Additions
-                    ObjectEntryIndex additionType = dst2->GetAddition();
+                    ObjectEntryIndex additionType = src2->GetAddition();
                     if (additionType != RCT1_PATH_ADDITION_NONE)
                     {
                         ObjectEntryIndex normalisedType = RCT1::NormalisePathAddition(additionType);
@@ -1640,7 +1640,7 @@ namespace RCT1
                         {
                             dst2->SetIsBroken(true);
                         }
-                        dst2->SetAddition(entryIndex + 1);
+                        dst2->SetAdditionEntryIndex(entryIndex);
                     }
                     return 1;
                 }
