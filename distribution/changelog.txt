@@ -2,7 +2,6 @@
 ------------------------------------------------------------------------
 - Feature: [#15660] Ability to show window buttons on the left.
 - Feature: [OpenMusic#41] Official Title Theme by Allister Brimble.
-- Improved: [#20200] Allow audio files to play to up to 44100 Hz sample rate (from 22050 Hz).
 - Improved: [#20119, #20243] Add new colour presets to several roller coasters (using the new colours).
 - Change: [#20110] Fix a few RCT1 build height parity discrepancies.
 - Fix: [#6152] Camera and UI are no longer locked at 40 Hz, providing a smoother experience.

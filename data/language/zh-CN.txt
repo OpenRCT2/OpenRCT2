@@ -3687,6 +3687,9 @@ STR_6582    :打开快捷键窗口
 STR_6583    :{WINDOW_COLOUR_2}反向列车
 STR_6584    :选择反向运行列车
 STR_6585    :无法做出更改……
+STR_6586    :OpenRCT2
+STR_6587    :OpenRCT2的标题样式由Allister Brimble设计,{NEWLINE}授权 CC BY-SA 4.0.
+STR_6588    :感谢Herman Riddering允许我们录制“35er Voigt”。
 
 #############
 # Scenarios #
