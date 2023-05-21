@@ -3,6 +3,7 @@
 - Feature: [#15660] Ability to show window buttons on the left.
 - Feature: [OpenMusic#41] Official Title Theme by Allister Brimble.
 - Improved: [#20243] Add new colour preset to Side Friction Roller Coaster (using the new colours).
+- Improved: [#20264] Guests will only jump in mazes when facing a hedge.
 - Change: [#20110] Fix a few RCT1 build height parity discrepancies.
 - Fix: [#6152] Camera and UI are no longer locked at 40 Hz, providing a smoother experience.
 - Fix: [#19823] Parkobj: disallow overriding objects of different object types.

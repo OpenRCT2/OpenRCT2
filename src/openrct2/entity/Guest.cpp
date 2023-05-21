@@ -4882,17 +4882,6 @@ void Guest::UpdateRideMazePathfinding()
         return;
     }
 
-    if (IsActionInterruptable())
-    {
-        if (Energy > 80 && !(PeepFlags & PEEP_FLAGS_SLOW_WALK) && !ClimateIsRaining() && (ScenarioRand() & 0xFFFF) <= 2427)
-        {
-            Action = PeepActionType::Jump;
-            ActionFrame = 0;
-            ActionSpriteImageOffset = 0;
-            UpdateCurrentActionSpriteType();
-        }
-    }
-
     auto targetLoc = GetDestination().ToTileStart();
 
     auto stationBaseZ = ride->GetStation().GetBaseZ();
@@ -4970,6 +4959,18 @@ void Guest::UpdateRideMazePathfinding()
         case maze_type::hedge:
             SetDestination(targetLoc);
             Var37 = _MazeGetNewDirectionFromEdge[Var37 / 4][chosenEdge];
+            if (chosenEdge != MazeLastEdge)
+            {
+                // Guest is facing a hedge before turning, occasionally jump to look over
+                if (IsActionInterruptable() && Energy > 80 && !(PeepFlags & PEEP_FLAGS_SLOW_WALK) && !ClimateIsRaining()
+                    && (ScenarioRand() & 0xFFFF) <= 2427)
+                {
+                    Action = PeepActionType::Jump;
+                    ActionFrame = 0;
+                    ActionSpriteImageOffset = 0;
+                    UpdateCurrentActionSpriteType();
+                }
+            }
             MazeLastEdge = chosenEdge;
             break;
         case maze_type::entrance_or_exit:
