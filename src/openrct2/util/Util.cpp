@@ -619,3 +619,13 @@ size_t StrCatFTime(char* buffer, size_t bufferSize, const char* format, const st
     }
     return 0;
 }
+
+float CubicLerp(float x, float x0, float x1, float x2, float x3, float y0, float y1, float y2, float y3)
+{
+    float res = 0.0f;
+    res += (x - x1) * (x - x2) * (x - x3) / (x0 - x1) / (x0 - x2) / (x0 - x3) * y0;
+    res += (x - x0) * (x - x2) * (x - x3) / (x1 - x0) / (x1 - x2) / (x1 - x3) * y1;
+    res += (x - x0) * (x - x1) * (x - x3) / (x2 - x0) / (x2 - x1) / (x2 - x3) * y2;
+    res += (x - x0) * (x - x1) * (x - x2) / (x3 - x0) / (x3 - x1) / (x3 - x2) * y3;
+    return res;
+}

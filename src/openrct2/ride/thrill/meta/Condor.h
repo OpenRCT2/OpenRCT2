@@ -138,8 +138,10 @@ struct CondorRideData : public RideData
     int32_t TowerTop;
     int32_t TowerBase;
     CondorRideState State;
-    int32_t RotationFrameTime;
-    int32_t ArmRotationCounter;
+    int32_t TowerRotationFrameTime;
+    int32_t VehicleRotationFrameTime;
+    int32_t TowerRotationCounter;
+    int32_t VehicleRotationCounter;
     int32_t ArmRotation;
     int32_t SpinningTopCounter;
 

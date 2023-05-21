@@ -52,6 +52,7 @@ money64 AddClamp_money64(money64 value, money64 value_to_add);
 
 uint8_t Lerp(uint8_t a, uint8_t b, float t);
 float FLerp(float a, float b, float t);
+float CubicLerp(float x, float x0, float x1, float x2, float x3, float y0, float y1, float y2, float y3);
 uint8_t SoftLight(uint8_t a, uint8_t b);
 
 size_t StrCatFTime(char* buffer, size_t bufferSize, const char* format, const struct tm* tp);

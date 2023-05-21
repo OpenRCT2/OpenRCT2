@@ -21,6 +21,7 @@
 #include "../Vehicle.h"
 #include "../VehiclePaint.h"
 #include "../RideBoundboxBuilder.h"
+#include "../../util/Util.h"
 
 #include <algorithm>
 #include <cstring>
@@ -53,11 +54,13 @@ static constexpr int CondorRadius = 48;
 static constexpr int CondorCenter = 96;
 static constexpr float CondorAngleDelta = 0.09817f;
 
-static std::array<CoordsXY, 64> CalculateLocations()
+static constexpr int NumArmSprites = 16;
+
+static std::array<CoordsXY, NumArmSprites*4> CalculateLocations()
 {
-    std::array<CoordsXY, 64> res;
+    std::array<CoordsXY, NumArmSprites*4> res;
     int i = 0;
-    for (i = 0; i < 64; i++)
+    for (i = 0; i < NumArmSprites*4; i++)
     {
         res[i] = CoordsXY{ static_cast<int>(CondorCenter + CondorRadius * cos(i * CondorAngleDelta)),
                            static_cast<int>(CondorCenter + CondorRadius * sin(i * CondorAngleDelta)) };
@@ -66,18 +69,53 @@ static std::array<CoordsXY, 64> CalculateLocations()
 }
 static auto CondorLocations = CalculateLocations();
 
-static constexpr int MaxAnimationFrameTime = 8;
+static constexpr int NumArmSpritesSymmetry = 4;
+static constexpr int NumVehicleAngles = 8;
+static constexpr int NumCarsPerVehicle = 7;
+static constexpr int NumCarsTiltAngles = 8;
 
-static constexpr int GetAnimationFrameTime(int currentHeight, int minHeight, int maxHeight)
+// degrees/second
+static constexpr float MaxVehicleRotationSpeed = 120;
+static constexpr float MinVehicleRotationSpeed = 10;
+static constexpr float MaxTowerRotationSpeed = 30;
+static constexpr float MinTowerRotationSpeed = 10;
+
+static int GetTowerRotationFrameTime(int currentHeight, int minHeight, int maxHeight)
 {
     float progress = static_cast<float>(currentHeight - minHeight) / static_cast<float>(maxHeight - minHeight);
-    return (1.0f - MaxAnimationFrameTime) * progress + MaxAnimationFrameTime;
+
+    //spin faster at the middle point
+    float rotationSpeed = CubicLerp(
+        progress, -1.0f, 0.0f, 0.5f, 1.0f, MinTowerRotationSpeed, MinTowerRotationSpeed, MaxTowerRotationSpeed,
+        MinTowerRotationSpeed);
+
+    float rotationFrameTime = 1.0f / rotationSpeed / static_cast<float>(NumArmSprites) * NumArmSpritesSymmetry * 360.0f;
+    return static_cast<int>(rotationFrameTime);
 }
 
-constexpr int NumTiltAngles = 8;
-static uint8_t GetVehicleTilt(uint8_t rotationFrameTime)
+static int GetVehicleRotationFrameTime(int currentHeight, int minHeight, int maxHeight)
 {
-    return (MaxAnimationFrameTime / rotationFrameTime) - 1;
+    float progress = static_cast<float>(currentHeight - minHeight) / static_cast<float>(maxHeight - minHeight);
+
+    //the max vehicle rotation speed is at the top
+    float rotationSpeed = CubicLerp(
+        progress, -1.0f, 0.0f, 1.0f, 2.0f, MinVehicleRotationSpeed, MinVehicleRotationSpeed, MaxVehicleRotationSpeed,
+        MaxVehicleRotationSpeed);
+
+    float rotationFrameTime = 1.0f / rotationSpeed / static_cast<float>(NumVehicleAngles) * static_cast<float>(NumCarsPerVehicle) * 360.0f;
+    return static_cast<int>(rotationFrameTime);
+}
+
+static int MaxVehicleRotationFrameTime = GetVehicleRotationFrameTime(0, 0, 100);
+static int MinVehicleRotationFrameTime = GetVehicleRotationFrameTime(100, 0, 100);
+
+// tilt angle is function of the vehicle roation speed
+constexpr int NumTiltAngles = 8;
+static uint8_t GetVehicleTilt(int vehicleFrameTime)
+{
+    float progress = static_cast<float>(vehicleFrameTime - MinVehicleRotationFrameTime)
+        / static_cast<float>(MaxVehicleRotationFrameTime - MinVehicleRotationFrameTime);
+    return Lerp(NumCarsTiltAngles - 1, 0, progress);
 }
 
 static void PaintCondorStructure(
@@ -106,24 +144,21 @@ static void PaintCondorStructure(
     std::array<CoordsXY, 4>
             offsets2 = { CoordsXY{ 50, 0 }, CoordsXY{ 0, -50 }, CoordsXY{ -50, 0 }, CoordsXY{ 0, 50 } };
 
-    const int NumVehicleAnimationFrames = 8;
-
-
     auto condorRideData = static_cast<CondorRideData*>(ride.Data.get());
     if (condorRideData != nullptr)
     {
         auto vehicleZ = condorRideData->VehiclesZ;
-        auto tilt = GetVehicleTilt(condorRideData->RotationFrameTime);
+        auto tilt = GetVehicleTilt(condorRideData->VehicleRotationFrameTime);
         auto armsImageId = imageTemplate.WithIndex(
-            rideEntry->Cars[0].base_image_id + NumVehicleAnimationFrames * NumTiltAngles + (condorRideData->ArmRotation % 16));
+            rideEntry->Cars[0].base_image_id + NumVehicleAngles * NumTiltAngles + (condorRideData->ArmRotation % 16));
         for (int i = 0; i < 4; i++)
         {
-            int locationIndex = i * 16;
+            int locationIndex = i * NumArmSprites;
             locationIndex += condorRideData->ArmRotation;
-            locationIndex %= 64;
+            locationIndex %= (NumArmSprites * 4);
 
             auto imageId = imageTemplate.WithIndex(
-                rideEntry->Cars[0].base_image_id + tilt * NumVehicleAnimationFrames + condorRideData->QuadRotation[i]);
+                rideEntry->Cars[0].base_image_id + tilt * NumVehicleAngles + condorRideData->QuadRotation[i]);
             PaintAddImageAsParent(
                 session, imageId,
                 { -bbOffset.x + CondorLocations[locationIndex].x, -bbOffset.y + CondorLocations[locationIndex].y,
@@ -301,12 +336,14 @@ CondorRideData::CondorRideData()
     , TowerTop(0)
     , TowerBase(0)
     , ArmRotation(0)
-    , RotationFrameTime(MaxAnimationFrameTime)
-    , ArmRotationCounter(0)
+    , TowerRotationCounter(0)
     , SpinningTopCounter(0)
+    , VehicleRotationCounter(0)
 {
     QuadRotation = { 0, 0, 0, 0 };
     InitialQuadRotation = QuadRotation[0];
+    TowerRotationFrameTime = GetTowerRotationFrameTime(0, 0, 100);
+    VehicleRotationFrameTime = GetVehicleRotationFrameTime(0, 0, 100);
 }
 
 static uint32_t CondorGetTowerHeight(const Vehicle& vehicle)
@@ -401,20 +438,28 @@ void CondorRideUpdateWating(Ride& ride)
 
 static void UpdateRotation(CondorRideData* condorRideData)
 {
-    condorRideData->RotationFrameTime = GetAnimationFrameTime(condorRideData->VehiclesZ, condorRideData->TowerBase, condorRideData->TowerTop);
-    condorRideData->ArmRotationCounter++;
+    condorRideData->TowerRotationFrameTime = GetTowerRotationFrameTime(condorRideData->VehiclesZ, condorRideData->TowerBase, condorRideData->TowerTop);
+    condorRideData->TowerRotationCounter++;
 
-    if (condorRideData->ArmRotationCounter >= condorRideData->RotationFrameTime)
+    if (condorRideData->TowerRotationCounter >= condorRideData->TowerRotationFrameTime)
     {
         condorRideData->ArmRotation++;
-        condorRideData->ArmRotation %= 64;
-        condorRideData->ArmRotationCounter = 0;
+        condorRideData->ArmRotation %= (NumArmSprites * 4);
+        condorRideData->TowerRotationCounter = 0;
+    }
 
+    condorRideData->VehicleRotationFrameTime = GetVehicleRotationFrameTime(
+        condorRideData->VehiclesZ, condorRideData->TowerBase, condorRideData->TowerTop);
+    condorRideData->VehicleRotationCounter++;
+
+    if (condorRideData->VehicleRotationCounter >= condorRideData->VehicleRotationFrameTime)
+    {
         for (auto& quadRot : condorRideData->QuadRotation)
         {
             quadRot++;
             quadRot %= 8;
         }
+        condorRideData->VehicleRotationCounter = 0;
     }
 }
 
@@ -441,18 +486,26 @@ static void CondorRideUpdateFalling(Ride& ride)
     if (condorRideData != nullptr)
     {
         int32_t height = condorRideData->VehiclesZ - 1;
+
+        auto oldArmRotation = condorRideData->ArmRotation;
         UpdateRotation(condorRideData);
 
         if (height < condorRideData->TowerBase)
         {
             height = condorRideData->TowerBase;
 
+            if (oldArmRotation % (NumArmSprites * 4) == 0)
+                condorRideData->ArmRotation = 0;
+
             if (condorRideData->ArmRotation != 0)
                 condorRideData->State = CondorRideState::Falling;
             else if (condorRideData->QuadRotation[0] != condorRideData->InitialQuadRotation)
                 condorRideData->State = CondorRideState::Falling;
             else
+            {
                 condorRideData->State = CondorRideState::Waiting;
+            }
+                
 
         }
         condorRideData->VehiclesZ = height;
@@ -466,6 +519,10 @@ static void CondorRideUpdateSpinningAtTop(Ride& ride)
     if (condorRideData != nullptr)
     {
         UpdateRotation(condorRideData);
+
+        //dont spin the arms when at top
+        condorRideData->TowerRotationCounter = 0;
+
         condorRideData->SpinningTopCounter++;
         if (condorRideData->SpinningTopCounter >= SpinningTopTime)
         {
