@@ -22,6 +22,7 @@
 #include "../audio/audio.h"
 #include "../core/Guard.hpp"
 #include "../entity/Duck.h"
+#include "../entity/EntityTweener.h"
 #include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../interface/Cursors.h"
@@ -2306,6 +2307,10 @@ void ShiftMap(const TileCoordsXY& amount)
         for (const auto& entityId : list)
         {
             auto entity = GetEntity(entityId);
+
+            // Do not tween the entity
+            EntityTweener::Get().RemoveEntity(entity);
+
             auto location = entity->GetLocation();
             location += amountToMove;
             entity->MoveTo(location);
@@ -2316,26 +2321,35 @@ void ShiftMap(const TileCoordsXY& amount)
                 case EntityType::Staff:
                 {
                     auto peep = entity->As<Peep>();
-                    peep->NextLoc += amountToMove;
-                    peep->DestinationX += amountToMove.x;
-                    peep->DestinationY += amountToMove.y;
-                    peep->PathfindGoal += amount;
-                    for (auto& h : peep->PathfindHistory)
-                        h += amount;
+                    if (peep != nullptr)
+                    {
+                        peep->NextLoc += amountToMove;
+                        peep->DestinationX += amountToMove.x;
+                        peep->DestinationY += amountToMove.y;
+                        peep->PathfindGoal += amount;
+                        for (auto& h : peep->PathfindHistory)
+                            h += amount;
+                    }
                     break;
                 }
                 case EntityType::Vehicle:
                 {
                     auto vehicle = entity->As<Vehicle>();
-                    vehicle->TrackLocation += amountToMove;
-                    vehicle->BoatLocation += amountToMove;
+                    if (vehicle != nullptr)
+                    {
+                        vehicle->TrackLocation += amountToMove;
+                        vehicle->BoatLocation += amountToMove;
+                    }
                     break;
                 }
                 case EntityType::Duck:
                 {
                     auto duck = entity->As<Duck>();
-                    duck->target_x += amountToMove.x;
-                    duck->target_y += amountToMove.y;
+                    if (duck != nullptr)
+                    {
+                        duck->target_x += amountToMove.x;
+                        duck->target_y += amountToMove.y;
+                    }
                     break;
                 }
                 default:
@@ -2344,14 +2358,17 @@ void ShiftMap(const TileCoordsXY& amount)
             if (entityType == EntityType::Staff)
             {
                 auto staff = entity->As<Staff>();
-                auto patrol = staff->PatrolInfo;
-                if (patrol != nullptr)
+                if (staff != nullptr)
                 {
-                    auto positions = patrol->ToVector();
-                    for (auto& p : positions)
-                        p += amount;
-                    patrol->Clear();
-                    patrol->Union(positions);
+                    auto patrol = staff->PatrolInfo;
+                    if (patrol != nullptr)
+                    {
+                        auto positions = patrol->ToVector();
+                        for (auto& p : positions)
+                            p += amount;
+                        patrol->Clear();
+                        patrol->Union(positions);
+                    }
                 }
             }
         }
