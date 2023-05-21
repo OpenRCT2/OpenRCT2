@@ -57,7 +57,7 @@ struct PreviewTrack
     int16_t x;     // 0x01
     int16_t y;     // 0x03
     int16_t z;     // 0x05
-    uint8_t var_07;
+    int32_t var_07;
     QuarterTile var_08;
     uint8_t flags;
 };
@@ -576,7 +576,7 @@ namespace TrackElemType
     constexpr track_type_t FlyerHalfLoopInvertedUp = 291;
     constexpr track_type_t FlyerHalfLoopUninvertedDown = 292;
 
-    constexpr track_type_t FlatTrack9x9 = 293;
+    constexpr track_type_t FlatTrack7x7 = 293;
 
     constexpr track_type_t Count = 294;
     constexpr track_type_t None = 65535;

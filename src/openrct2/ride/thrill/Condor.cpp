@@ -22,6 +22,7 @@
 #include "../VehiclePaint.h"
 #include "../RideBoundboxBuilder.h"
 #include "../../util/Util.h"
+#include <cmath>
 
 #include <algorithm>
 #include <cstring>
@@ -80,6 +81,13 @@ static constexpr float MinVehicleRotationSpeed = 10;
 static constexpr float MaxTowerRotationSpeed = 30;
 static constexpr float MinTowerRotationSpeed = 10;
 
+//rise time
+static constexpr int32_t MaxRiseFrameTime = 4;
+static constexpr int32_t MinRiseFrameTime = 2;
+
+//standing at the top of the tower
+constexpr int SpinningTopTime = 120;
+
 static int GetTowerRotationFrameTime(int currentHeight, int minHeight, int maxHeight)
 {
     float progress = static_cast<float>(currentHeight - minHeight) / static_cast<float>(maxHeight - minHeight);
@@ -90,7 +98,7 @@ static int GetTowerRotationFrameTime(int currentHeight, int minHeight, int maxHe
         MinTowerRotationSpeed);
 
     float rotationFrameTime = 1.0f / rotationSpeed / static_cast<float>(NumArmSprites) * NumArmSpritesSymmetry * 360.0f;
-    return static_cast<int>(rotationFrameTime);
+    return static_cast<int>(round(rotationFrameTime));
 }
 
 static int GetVehicleRotationFrameTime(int currentHeight, int minHeight, int maxHeight)
@@ -103,7 +111,17 @@ static int GetVehicleRotationFrameTime(int currentHeight, int minHeight, int max
         MaxVehicleRotationSpeed);
 
     float rotationFrameTime = 1.0f / rotationSpeed / static_cast<float>(NumVehicleAngles) * static_cast<float>(NumCarsPerVehicle) * 360.0f;
-    return static_cast<int>(rotationFrameTime);
+    return static_cast<int>(round(rotationFrameTime));
+}
+
+static int GetCondorRiseFrameTime(int currentHeight, int minHeight, int maxHeight)
+{
+    float progress = static_cast<float>(currentHeight - minHeight) / static_cast<float>(maxHeight - minHeight);
+
+    //maximum raise speed is at middle of tower
+    auto riseFrameTime = CubicLerp(
+        progress, -1.0f, 0.0f, 0.5f, 1.0f, MaxRiseFrameTime, MaxRiseFrameTime, MinRiseFrameTime, MaxRiseFrameTime);
+    return static_cast<int>(round(riseFrameTime));
 }
 
 static int MaxVehicleRotationFrameTime = GetVehicleRotationFrameTime(0, 0, 100);
@@ -122,6 +140,10 @@ static void PaintCondorStructure(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement, CoordsXYZ bbOffset, CoordsXYZ bbSize)
 {
+    //dont paint the vehicles if the ride is closed
+    if (ride.status == RideStatus::Closed)
+        return;
+
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
         return;
@@ -289,7 +311,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionCondor(int32_t trackType)
 {
     switch (trackType)
     {
-        case TrackElemType::FlatTrack9x9:
+        case TrackElemType::FlatTrack7x7:
             return PaintCondorBase;
 
         case TrackElemType::TowerSection:
@@ -339,6 +361,8 @@ CondorRideData::CondorRideData()
     , TowerRotationCounter(0)
     , SpinningTopCounter(0)
     , VehicleRotationCounter(0)
+    , RiseFrameCounter(0)
+    , RiseFrameTime(MaxRiseFrameTime)
 {
     QuadRotation = { 0, 0, 0, 0 };
     InitialQuadRotation = QuadRotation[0];
@@ -468,7 +492,16 @@ static void CondorRideUpdateClimbing(Ride& ride)
     auto condorRideData = static_cast<CondorRideData*>(ride.Data.get());
     if (condorRideData != nullptr)
     {
-        int32_t height = condorRideData->VehiclesZ + 1;
+        int32_t height = condorRideData->VehiclesZ;
+        condorRideData->RiseFrameTime = GetCondorRiseFrameTime(
+            condorRideData->VehiclesZ, condorRideData->TowerBase, condorRideData->TowerTop);
+        condorRideData->RiseFrameCounter++;
+        if (condorRideData->RiseFrameCounter >= condorRideData->RiseFrameTime)
+        {
+            condorRideData->RiseFrameCounter = 0;
+            height++;
+        }
+
         if (height > condorRideData->TowerTop)
         {
             height = condorRideData->TowerTop;
@@ -485,9 +518,18 @@ static void CondorRideUpdateFalling(Ride& ride)
     auto condorRideData = static_cast<CondorRideData*>(ride.Data.get());
     if (condorRideData != nullptr)
     {
-        int32_t height = condorRideData->VehiclesZ - 1;
+        condorRideData->RiseFrameTime = GetCondorRiseFrameTime(
+            condorRideData->VehiclesZ, condorRideData->TowerBase, condorRideData->TowerTop);
+        condorRideData->RiseFrameCounter++;
+        int32_t height = condorRideData->VehiclesZ;
+        if (condorRideData->RiseFrameCounter >= condorRideData->RiseFrameTime)
+        {
+            condorRideData->RiseFrameCounter = 0;
+            height--;
+        }
 
         auto oldArmRotation = condorRideData->ArmRotation;
+        auto oldQuadRotation = condorRideData->QuadRotation[0];
         UpdateRotation(condorRideData);
 
         if (height < condorRideData->TowerBase)
@@ -496,6 +538,15 @@ static void CondorRideUpdateFalling(Ride& ride)
 
             if (oldArmRotation % (NumArmSprites * 4) == 0)
                 condorRideData->ArmRotation = 0;
+
+            if (oldQuadRotation == condorRideData->InitialQuadRotation)
+            {
+                condorRideData->QuadRotation[0] = condorRideData->InitialQuadRotation;
+                condorRideData->QuadRotation[1] = condorRideData->QuadRotation[0] + NumArmSprites;
+                condorRideData->QuadRotation[2] = condorRideData->QuadRotation[1] + NumArmSprites;
+                condorRideData->QuadRotation[3] = condorRideData->QuadRotation[2] + NumArmSprites;
+            }
+                
 
             if (condorRideData->ArmRotation != 0)
                 condorRideData->State = CondorRideState::Falling;
@@ -512,7 +563,7 @@ static void CondorRideUpdateFalling(Ride& ride)
     }
 }
 
-constexpr int SpinningTopTime = 60;
+
 static void CondorRideUpdateSpinningAtTop(Ride& ride)
 {
     auto condorRideData = static_cast<CondorRideData*>(ride.Data.get());
@@ -601,4 +652,22 @@ void CondorUpdateMotion(Vehicle& vehicle)
 
 void CondorUpdateWaitingForDepart(Vehicle& vehicle)
 {
+}
+
+void CondorRideData::Reset()
+{
+    State = CondorRideState::Waiting;
+    VehiclesZ = 0;
+    TowerTop = 0;
+    TowerBase = 0;
+    ArmRotation = 0;
+    TowerRotationCounter = 0;
+    SpinningTopCounter = 0;
+    VehicleRotationCounter = 0;
+    RiseFrameCounter = 0;
+    RiseFrameTime = MaxRiseFrameTime;
+    QuadRotation = { 0, 0, 0, 0 };
+    InitialQuadRotation = QuadRotation[0];
+    TowerRotationFrameTime = GetTowerRotationFrameTime(0, 0, 100);
+    VehicleRotationFrameTime = GetVehicleRotationFrameTime(0, 0, 100);
 }

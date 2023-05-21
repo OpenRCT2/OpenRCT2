@@ -113,6 +113,7 @@ struct RideData
 {
     virtual ~RideData() {}
     virtual RideDataType GetType() const = 0;
+    virtual void Reset() = 0;
 };
 
     /**

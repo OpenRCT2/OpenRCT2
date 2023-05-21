@@ -7208,6 +7208,14 @@ namespace OpenRCT2
             //build the 9x9 base
             RideBaseBuilder builder(7, 7);
 
+            //we need to put a very big clearance so the ride gets drawn at any height
+            for (int i = 0; i < 49; i++)
+                builder.SetTileClearance(i, 512);
+
+            //the center tiles shouldn't have too much clearance because we need to build the center piece
+            builder.SetTileClearance(24, 64);
+            builder.SetTileClearance(48, 64);
+
             //swap the center tile for the last tile
             auto centerTile = builder.GetTileIndex(CondorCenterTileX, CondorCenterTileY);
             auto lastTile = builder.GetTileIndex(6, 6);
@@ -7220,7 +7228,7 @@ namespace OpenRCT2
 
             TowerBase9x9TED.Block = TrackBlock9x9.data();
             std::copy(Sequence9x9.begin(), Sequence9x9.end(), TowerBase9x9TED.SequenceProperties.begin());
-            res[TrackElemType::FlatTrack9x9] = TowerBase9x9TED;
+            res[TrackElemType::FlatTrack7x7] = TowerBase9x9TED;
 
             return res;
         }

@@ -550,6 +550,9 @@ GameActions::Result TrackPlaceAction::Execute() const
                 STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
+        //const auto& rtd = ride->GetRideTypeDescriptor();
+        //if (rtd.VisibleClearanceHeight.has_value())
+            //clearanceZ += rtd.VisibleClearanceHeight.value();
         trackElement->SetClearanceZ(clearanceZ);
         trackElement->SetDirection(_origin.direction);
         trackElement->SetHasChain(_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED);

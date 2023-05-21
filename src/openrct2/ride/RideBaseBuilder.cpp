@@ -234,4 +234,9 @@ void RideBaseBuilder::BuildSequences()
     }
 }
 
+void RideBaseBuilder::SetTileClearance(uint8_t index, int32_t clearance)
+{
+    _blocks[index].var_07 = clearance;
+}
+
 

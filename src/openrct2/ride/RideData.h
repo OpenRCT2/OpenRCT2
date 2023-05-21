@@ -104,8 +104,8 @@ struct RideBuildCost
 
 struct RideHeights
 {
-    uint8_t MaxHeight;
-    uint8_t ClearanceHeight;
+    uint16_t MaxHeight;
+    uint16_t ClearanceHeight;
     int8_t VehicleZOffset;
     uint8_t PlatformHeight;
 };
@@ -254,6 +254,8 @@ struct RideTypeDescriptor
 
     UpdateRideApproachVehicleWaypointsFunction UpdateRideApproachVehicleWaypoints = UpdateRideApproachVehicleWaypointsDefault;
     CarPlacementType CarPlacement = CarPlacementType::Default;
+
+    std::optional<int32_t> VisibleClearanceHeight;
 
     bool HasFlag(uint64_t flag) const;
     void GetAvailableTrackPieces(RideTrackGroup& res) const;

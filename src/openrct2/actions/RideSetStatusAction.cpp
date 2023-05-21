@@ -142,9 +142,13 @@ GameActions::Result RideSetStatusAction::Execute() const
         res.Position = { location, TileElementHeight(location) };
     }
 
+    auto& rideData = ride->Data;
     switch (_status)
     {
         case RideStatus::Closed:
+            if (rideData != nullptr)
+                rideData->Reset();
+
             if (ride->status == _status || ride->status == RideStatus::Simulating)
             {
                 if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))

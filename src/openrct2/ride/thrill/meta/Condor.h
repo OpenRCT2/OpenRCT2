@@ -71,7 +71,7 @@ constexpr const RideTypeDescriptor CondorRTD =
     SET_FIELD(EnabledTrackPieces, {TRACK_TOWER_BASE}),
     SET_FIELD(ExtraTrackPieces, {}),
     SET_FIELD(CoveredTrackPieces, {}),
-    SET_FIELD(StartTrackPiece, TrackElemType::FlatTrack9x9),
+    SET_FIELD(StartTrackPiece, TrackElemType::FlatTrack7x7),
     SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionCondor),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
                      RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
@@ -86,7 +86,7 @@ constexpr const RideTypeDescriptor CondorRTD =
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_CONDOR)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
-    SET_FIELD(Heights, { 255, 32, 3, 2, }),
+    SET_FIELD(Heights, { 1024, 32, 3, 2, }),
     SET_FIELD(MaxMass, 15),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
     SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateRotoDrop),
@@ -119,6 +119,7 @@ constexpr const RideTypeDescriptor CondorRTD =
     SET_FIELD(MusicTrackOffsetLength, OpenRCT2::RideAudio::RideMusicGetTrackOffsetLength_Default),
     SET_FIELD(UpdateRideApproachVehicleWaypoints, UpdateRideApproachVehicleWaypointsDefault),
     SET_FIELD(CarPlacement, CarPlacementType::Condor),
+    SET_FIELD(VisibleClearanceHeight, 4096),
 };
 
 enum CondorRideState
@@ -145,8 +146,13 @@ struct CondorRideData : public RideData
     int32_t ArmRotation;
     int32_t SpinningTopCounter;
 
+    int32_t RiseFrameTime;
+    int32_t RiseFrameCounter;
+
     std::array<int32_t, 4> QuadRotation;
     int32_t InitialQuadRotation;
+
+    void Reset() override;
 };
 
 class CondorVehicleData : public VehicleData

@@ -14,6 +14,7 @@ public:
     RideBaseBuilder(uint8_t sizeX, uint8_t sizeY);
 
     void SwapTiles(uint8_t index0, uint8_t index1);
+    void SetTileClearance(uint8_t index, int32_t clearance);
     uint8_t GetTileIndex(uint8_t x, uint8_t y) const;
 
     std::vector<PreviewTrack> GetBlocks() const;
