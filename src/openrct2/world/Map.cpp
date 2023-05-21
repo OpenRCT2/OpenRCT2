@@ -2251,8 +2251,8 @@ void ShiftMap(const TileCoordsXY& amount)
         {
             auto srcX = x - amount.x;
             auto srcY = y - amount.y;
-            if (x >= 0 && y >= 0 && x < gMapSize.x && y < gMapSize.y && srcX >= 0 && srcY >= 0 && srcX < gMapSize.x
-                && srcY < gMapSize.y)
+            if (x > 0 && y > 0 && x < gMapSize.x - 1 && y < gMapSize.y - 1 && srcX > 0 && srcY > 0 && srcX < gMapSize.x - 1
+                && srcY < gMapSize.y - 1)
             {
                 auto srcTile = _tileIndex.GetFirstElementAt(TileCoordsXY(srcX, srcY));
                 do
@@ -2271,7 +2271,21 @@ void ShiftMap(const TileCoordsXY& amount)
             }
             else
             {
-                newElements.push_back(GetDefaultSurfaceElement());
+                auto copyX = std::clamp(srcX, 1, gMapSize.x - 2);
+                auto copyY = std::clamp(srcY, 1, gMapSize.y - 2);
+                auto srcTile = MapGetSurfaceElementAt(TileCoordsXY(copyX, copyY));
+                if (srcTile != nullptr)
+                {
+                    auto tileEl = *srcTile;
+                    tileEl.SetOwner(OWNERSHIP_UNOWNED);
+                    tileEl.SetParkFences(0);
+                    tileEl.SetLastForTile(true);
+                    newElements.push_back(*reinterpret_cast<TileElement*>(&tileEl));
+                }
+                else
+                {
+                    newElements.push_back(GetDefaultSurfaceElement());
+                }
             }
         }
     }
@@ -2324,6 +2338,8 @@ void ShiftMap(const TileCoordsXY& amount)
                     duck->target_y += amountToMove.y;
                     break;
                 }
+                default:
+                    break;
             }
             if (entityType == EntityType::Staff)
             {
