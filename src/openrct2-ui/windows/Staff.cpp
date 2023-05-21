@@ -1055,6 +1055,8 @@ private:
             {
                 SetWidgetDisabled(WIDX_PICKUP, true);
             }
+
+            SetWidgetDisabled(WIDX_FIRE, staff->State == PeepState::Fixing || staff->State == PeepState::Inspecting);
         }
     }
 

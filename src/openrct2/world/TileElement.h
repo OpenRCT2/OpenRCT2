@@ -311,6 +311,7 @@ public:
     ObjectEntryIndex GetAdditionEntryIndex() const;
     const PathAdditionEntry* GetAdditionEntry() const;
     void SetAddition(uint8_t newAddition);
+    void SetAdditionEntryIndex(ObjectEntryIndex entryIndex);
 
     bool AdditionIsGhost() const;
     void SetAdditionIsGhost(bool isGhost);
