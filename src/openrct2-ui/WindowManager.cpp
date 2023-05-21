@@ -191,6 +191,8 @@ public:
                 return WindowBannerOpen(id);
             case WD_NEW_CAMPAIGN:
                 return WindowNewCampaignOpen(id);
+            case WD_CANCEL_CAMPAIGN:
+                return WindowCancelCampaignPromptOpen(id);
             case WD_DEMOLISH_RIDE:
                 return WindowRideDemolishPromptOpen(*GetRide(RideId::FromUnderlying(id)));
             case WD_REFURBISH_RIDE:

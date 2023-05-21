@@ -60,6 +60,8 @@ extern bool gDebugStringFormatting;
 
 extern const StringId ObjectiveNames[12];
 extern const StringId ResearchFundingLevelNames[4];
-extern const StringId MarketingCampaignNames[ADVERTISING_CAMPAIGN_COUNT][3];
+extern const StringId MarketingCampaignFinishedNames[ADVERTISING_CAMPAIGN_COUNT][3];
+extern const StringId MarketingCampaignRenewedNames[ADVERTISING_CAMPAIGN_COUNT][3];
+extern const StringId MarketingCampaignCantRenewNames[ADVERTISING_CAMPAIGN_COUNT][3];
 extern const StringId RideInspectionIntervalNames[];
 extern const StringId PeepThoughts[174];

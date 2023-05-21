@@ -41,17 +41,19 @@ enum WindowNewCampaignWidgetIdx {
     WIDX_WEEKS_SPINNER,
     WIDX_WEEKS_INCREASE_BUTTON,
     WIDX_WEEKS_DECREASE_BUTTON,
+    WIDX_AUTO_RENEW_CHECKBOX,
     WIDX_START_BUTTON
 };
 
 static Widget window_new_campaign_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget        ({ 14, 24}, {126, 12}, WindowWidgetType::Label,    WindowColour::Primary, STR_EMPTY                                  ), // ride label
-    MakeWidget        ({100, 24}, {242, 12}, WindowWidgetType::DropdownMenu, WindowColour::Primary, STR_EMPTY                                  ), // ride dropdown
-    MakeWidget        ({330, 25}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Primary, STR_DROPDOWN_GLYPH                         ), // ride dropdown button
-    MakeWidget        ({ 14, 41}, {126, 14}, WindowWidgetType::Label,    WindowColour::Primary, STR_LENGTH_OF_TIME                         ), // weeks label
-    MakeSpinnerWidgets({120, 41}, {100, 14}, WindowWidgetType::Spinner,  WindowColour::Primary, STR_EMPTY                                  ), // weeks (3 widgets)
-    MakeWidget        ({ 14, 89}, {322, 14}, WindowWidgetType::Button,   WindowColour::Primary, STR_MARKETING_START_THIS_MARKETING_CAMPAIGN), // start button
+    MakeWidget        ({ 14, 24}, {126, 12}, WindowWidgetType::Label,        WindowColour::Primary,   STR_EMPTY                                                 ), // ride label
+    MakeWidget        ({100, 24}, {242, 12}, WindowWidgetType::DropdownMenu, WindowColour::Primary,   STR_EMPTY                                                 ), // ride dropdown
+    MakeWidget        ({330, 25}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Primary,   STR_DROPDOWN_GLYPH                                        ), // ride dropdown button
+    MakeWidget        ({ 14, 41}, {126, 14}, WindowWidgetType::Label,        WindowColour::Primary,   STR_LENGTH_OF_TIME                                        ), // weeks label
+    MakeSpinnerWidgets({120, 41}, {100, 14}, WindowWidgetType::Spinner,      WindowColour::Primary,   STR_EMPTY                                                 ), // weeks (3 widgets)
+    MakeWidget        ({224, 42}, {143, 12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MARKETING_AUTO_RENEW, STR_MARKETING_AUTO_RENEW_TOOLTIP), // Auto renew
+    MakeWidget        ({ 14, 89}, {322, 14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_MARKETING_START_THIS_MARKETING_CAMPAIGN               ), // start button
     WIDGETS_END,
 };
 // clang-format on
@@ -61,6 +63,7 @@ class NewCampaignWindow final : public Window
 private:
     std::vector<RideId> RideList;
     std::vector<ShopItem> ShopItems;
+    uint8_t autoRenew = 0;
 
     static bool RideValueCompare(const RideId& a, const RideId& b)
     {
@@ -161,7 +164,7 @@ public:
 
     void SetCampaign(int16_t campaignType)
     {
-        widgets[WIDX_TITLE].text = MarketingCampaignNames[campaignType][0];
+        widgets[WIDX_TITLE].text = MarketingCampaignFinishedNames[campaignType][0];
 
         // Campaign type
         campaign.campaign_type = campaignType;
@@ -243,6 +246,10 @@ public:
                 campaign.no_weeks = std::max(campaign.no_weeks - 1, 2);
                 Invalidate();
                 break;
+            case WIDX_AUTO_RENEW_CHECKBOX:
+                campaign.autoRenew = campaign.autoRenew == 1 ? 0 : 1;
+                Invalidate();
+                break;
         }
     }
 
@@ -256,7 +263,7 @@ public:
             case WIDX_START_BUTTON:
             {
                 auto gameAction = ParkMarketingAction(
-                    campaign.campaign_type, campaign.RideId.ToUnderlying(), campaign.no_weeks);
+                    campaign.campaign_type, campaign.RideId.ToUnderlying(), campaign.no_weeks, campaign.autoRenew);
                 gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error == GameActions::Status::Ok)
                     {
@@ -340,6 +347,8 @@ public:
         WidgetSetDisabled(*this, WIDX_START_BUTTON, false);
         if (widgets[WIDX_RIDE_DROPDOWN].type == WindowWidgetType::DropdownMenu && campaign.RideId == RideId::GetNull())
             WidgetSetDisabled(*this, WIDX_START_BUTTON, true);
+
+        SetCheckboxValue(WIDX_AUTO_RENEW_CHECKBOX, campaign.autoRenew == 1);
     }
 
     void OnDraw(DrawPixelInfo& dpi) override

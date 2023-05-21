@@ -21,10 +21,11 @@
 
 #include <iterator>
 
-ParkMarketingAction::ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks)
+ParkMarketingAction::ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks, int32_t autoRenew)
     : _type(type)
     , _item(item)
     , _numWeeks(numWeeks)
+    , _autoRenew(autoRenew)
 {
 }
 
@@ -33,6 +34,7 @@ void ParkMarketingAction::AcceptParameters(GameActionParameterVisitor& visitor)
     visitor.Visit("type", _type);
     visitor.Visit("item", _item);
     visitor.Visit("duration", _numWeeks);
+    visitor.Visit("autoRenew", _autoRenew);
 }
 
 uint16_t ParkMarketingAction::GetActionFlags() const
@@ -43,7 +45,7 @@ uint16_t ParkMarketingAction::GetActionFlags() const
 void ParkMarketingAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
-    stream << DS_TAG(_type) << DS_TAG(_item) << DS_TAG(_numWeeks);
+    stream << DS_TAG(_type) << DS_TAG(_item) << DS_TAG(_numWeeks) << DS_TAG(_autoRenew);
 }
 
 GameActions::Result ParkMarketingAction::Query() const
@@ -66,8 +68,14 @@ GameActions::Result ParkMarketingAction::Execute() const
 {
     MarketingCampaign campaign{};
     campaign.Type = _type;
+    campaign.NumWeeks = _numWeeks;
     campaign.WeeksLeft = _numWeeks;
     campaign.Flags = MarketingCampaignFlags::FIRST_WEEK;
+    if (_autoRenew)
+    {
+        campaign.Flags |= MarketingCampaignFlags::AUTOMATIC_RENEW;
+    }
+
     if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
     {
         campaign.RideId = RideId::FromUnderlying(_item);

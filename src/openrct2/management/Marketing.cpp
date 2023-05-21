@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../Game.h"
+#include "../actions/ParkMarketingAction.h"
 #include "../config/Config.h"
 #include "../entity/Guest.h"
 #include "../interface/Window.h"
@@ -88,12 +89,12 @@ static void MarketingRaiseFinishedNotification(const MarketingCampaign& campaign
             ft.Add<StringId>(GetShopItemDescriptor(campaign.ShopItemType).Naming.Plural);
         }
 
-        News::AddItemToQueue(News::ItemType::Campaign, MarketingCampaignNames[campaign.Type][2], 0, ft);
+        News::AddItemToQueue(News::ItemType::Campaign, MarketingCampaignFinishedNames[campaign.Type][2], 0, ft);
     }
 }
 
 /**
- * Update status of marketing campaigns and send produce a news item when they have finished.
+ * Update status of marketing campaigns and produce a news item when they have finished.
  *  rct2: 0x0069E0C1
  */
 void MarketingUpdate()
@@ -117,10 +118,18 @@ void MarketingUpdate()
             campaign.WeeksLeft--;
         }
 
-        if (campaign.WeeksLeft == 0)
+        if (campaign.WeeksLeft <= 0)
         {
-            MarketingRaiseFinishedNotification(campaign);
-            it = gMarketingCampaigns.erase(it);
+            if (campaign.Flags & MarketingCampaignFlags::AUTOMATIC_RENEW)
+            {
+                MarketingTryRenewCampaign(campaign);
+                ++it;
+            }
+            else
+            {
+                MarketingRaiseFinishedNotification(campaign);
+                it = gMarketingCampaigns.erase(it);
+            }
         }
         else
         {
@@ -129,6 +138,45 @@ void MarketingUpdate()
     }
 
     WindowInvalidateByClass(WindowClass::Finances);
+}
+
+void MarketingTryRenewCampaign(const MarketingCampaign& campaign)
+{
+    auto gameAction = ParkMarketingAction(campaign.Type, campaign.RideId.ToUnderlying(), campaign.NumWeeks, 1);
+    gameAction.SetCallback([campaign](const GameAction* ga, const GameActions::Result* result) {
+        Formatter ft;
+        // This sets the string parameters for the marketing types that have an argument.
+        if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
+        {
+            auto ride = GetRide(campaign.RideId);
+            if (ride != nullptr)
+            {
+                ride->FormatNameTo(ft);
+            }
+        }
+        else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
+        {
+            ft.Add<StringId>(GetShopItemDescriptor(campaign.ShopItemType).Naming.Plural);
+        }
+
+        StringId newsId;
+        if (result->Error == GameActions::Status::Ok)
+        {
+            newsId = MarketingCampaignRenewedNames[campaign.Type][2];
+        }
+        else if (result->Error == GameActions::Status::InsufficientFunds)
+        {
+            newsId = MarketingCampaignCantRenewNames[campaign.Type][2];
+            MarketingCancelCampaign(campaign.Type);
+        }
+        else
+        {
+            return;
+        }
+
+        News::AddItemToQueue(News::ItemType::Campaign, newsId, 0, ft);
+    });
+    GameActions::Execute(&gameAction);
 }
 
 void MarketingSetGuestCampaign(Guest* peep, int32_t campaignType)
@@ -257,3 +305,15 @@ void MarketingCancelCampaignsForRide(const RideId rideId)
     auto removedIt = std::remove_if(v.begin(), v.end(), isCampaignForRideFn);
     v.erase(removedIt, v.end());
 }
+
+void MarketingCancelCampaign(int32_t campaignType)
+{
+    auto isCampaignType = [&campaignType](MarketingCampaign& campaign) {
+        return campaign.Type == campaignType;
+    };
+
+    auto& v = gMarketingCampaigns;
+    auto removedIt = std::remove_if(v.begin(), v.end(), isCampaignType);
+    v.erase(removedIt, v.end());
+}
+

@@ -17,10 +17,11 @@ private:
     int32_t _type{};
     int32_t _item{};
     int32_t _numWeeks{};
+    int32_t _autoRenew{};
 
 public:
     ParkMarketingAction() = default;
-    ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks);
+    ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks, int32_t autoRenew);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

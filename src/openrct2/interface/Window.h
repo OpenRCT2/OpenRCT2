@@ -261,6 +261,7 @@ struct CampaignVariables
 {
     int16_t campaign_type;
     int16_t no_weeks; // 0x482
+    int8_t autoRenew;
     union
     {
         ::RideId RideId;
@@ -390,6 +391,7 @@ enum WindowDetail
 {
     WD_BANNER,
     WD_NEW_CAMPAIGN,
+    WD_CANCEL_CAMPAIGN,
     WD_DEMOLISH_RIDE,
     WD_REFURBISH_RIDE,
     WD_SIGN,

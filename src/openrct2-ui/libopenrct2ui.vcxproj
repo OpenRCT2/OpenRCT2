@@ -150,6 +150,7 @@
     <ClCompile Include="windows\About.cpp" />
     <ClCompile Include="windows\AssetPacks.cpp" />
     <ClCompile Include="windows\Banner.cpp" />
+    <ClCompile Include="windows\CancelMarketingCampaignPrompt.cpp" />
     <ClCompile Include="windows\Changelog.cpp" />
     <ClCompile Include="windows\Cheats.cpp" />
     <ClCompile Include="windows\ClearScenery.cpp" />

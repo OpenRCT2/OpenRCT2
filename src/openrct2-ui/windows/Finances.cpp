@@ -60,13 +60,19 @@ enum
     WIDX_LOAN_DECREASE,
 
     WIDX_ACTIVE_CAMPAIGNS_GROUP = WIDX_TAB_CONTENT,
+    WIDX_CANCEL_CAMPAIGN_1,
+    WIDX_CANCEL_CAMPAIGN_2,
+    WIDX_CANCEL_CAMPAIGN_3,
+    WIDX_CANCEL_CAMPAIGN_4,
+    WIDX_CANCEL_CAMPAIGN_5,
+    WIDX_CANCEL_CAMPAIGN_6,
     WIDX_CAMPAIGNS_AVAILABLE_GROUP,
-    WIDX_CAMPAIGN_1,
-    WIDX_CAMPAIGN_2,
-    WIDX_CAMPAIGN_3,
-    WIDX_CAMPAIGN_4,
-    WIDX_CAMPAIGN_5,
-    WIDX_CAMPAIGN_6,
+    WIDX_START_CAMPAIGN_1,
+    WIDX_START_CAMPAIGN_2,
+    WIDX_START_CAMPAIGN_3,
+    WIDX_START_CAMPAIGN_4,
+    WIDX_START_CAMPAIGN_5,
+    WIDX_START_CAMPAIGN_6,
 
     WIDX_RESEARCH_FUNDING_GROUP = WIDX_TAB_CONTENT,
     WIDX_RESEARCH_FUNDING,
@@ -139,7 +145,13 @@ static Widget _windowFinancesMarketingWidgets[] =
 {
     MAIN_FINANCES_WIDGETS(STR_MARKETING, RSW_OTHER_TABS, RSH_OTHER_TABS, WW_OTHER_TABS, WH_OTHER_TABS),
     MakeWidget({3, 47}, { WW_OTHER_TABS - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_IN_OPERATION                                   ),
-    MakeWidget({3, 47}, { WW_OTHER_TABS - 6, 206}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_AVAILABLE                                      ),
+    MakeWidget({8,  0}, {12, 12},                  WindowWidgetType::ImgBtn,   WindowColour::Secondary, STR_CLOSE_X,                          STR_CANCEL                       ),
+    MakeWidget({8,  0}, {12, 12},                  WindowWidgetType::ImgBtn,   WindowColour::Secondary, STR_CLOSE_X,                          STR_CANCEL                       ),
+    MakeWidget({8,  0}, {12, 12},                  WindowWidgetType::ImgBtn,   WindowColour::Secondary, STR_CLOSE_X,                          STR_CANCEL                       ),
+    MakeWidget({8,  0}, {12, 12},                  WindowWidgetType::ImgBtn,   WindowColour::Secondary, STR_CLOSE_X,                          STR_CANCEL                       ),
+    MakeWidget({8,  0}, {12, 12},                  WindowWidgetType::ImgBtn,   WindowColour::Secondary, STR_CLOSE_X,                          STR_CANCEL                       ),
+    MakeWidget({8,  0}, {12, 12},                  WindowWidgetType::ImgBtn,   WindowColour::Secondary, STR_CLOSE_X,                          STR_CANCEL                       ),
+    MakeWidget({3,200}, {WW_OTHER_TABS - 6,  206}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_AVAILABLE                                      ),
     MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
     MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
     MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
@@ -781,9 +793,13 @@ public:
 
     void OnMouseUpMarketing(WidgetIndex widgetIndex)
     {
-        if (widgetIndex >= WIDX_CAMPAIGN_1 && widgetIndex <= WIDX_CAMPAIGN_6)
+        if (widgetIndex >= WIDX_CANCEL_CAMPAIGN_1 && widgetIndex <= WIDX_CANCEL_CAMPAIGN_6)
         {
-            ContextOpenDetailWindow(WD_NEW_CAMPAIGN, widgetIndex - WIDX_CAMPAIGN_1);
+            ContextOpenDetailWindow(WD_CANCEL_CAMPAIGN, widgetIndex - WIDX_CANCEL_CAMPAIGN_1);
+        }
+        if (widgetIndex >= WIDX_START_CAMPAIGN_1 && widgetIndex <= WIDX_START_CAMPAIGN_6)
+        {
+            ContextOpenDetailWindow(WD_NEW_CAMPAIGN, widgetIndex - WIDX_START_CAMPAIGN_1);
         }
     }
 
@@ -796,12 +812,32 @@ public:
         // Update group box positions
         _windowFinancesMarketingWidgets[WIDX_ACTIVE_CAMPAIGNS_GROUP].bottom = y - 22;
         _windowFinancesMarketingWidgets[WIDX_CAMPAIGNS_AVAILABLE_GROUP].top = y - 13;
+        _windowFinancesMarketingWidgets[WIDX_CAMPAIGNS_AVAILABLE_GROUP].bottom = WH_OTHER_TABS - 6;
+
+        // Update cancel campaign button visibility
+        int32_t activeCampaignCancelButtons = 0;
+        for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
+        {
+            auto cancelButton = &_windowFinancesMarketingWidgets[WIDX_CANCEL_CAMPAIGN_1 + i];
+            auto marketingCampaign = MarketingGetCampaign(i);
+            if (marketingCampaign == nullptr)
+            {
+                cancelButton->type = WindowWidgetType::Empty;
+            }
+            else
+            {
+                cancelButton->type = WindowWidgetType::Button;
+                cancelButton->top = 61 + (BUTTON_FACE_HEIGHT * activeCampaignCancelButtons);
+                cancelButton->bottom = cancelButton->top + BUTTON_FACE_HEIGHT - 1;
+                activeCampaignCancelButtons++;
+            }
+        }
 
         // Update new campaign button visibility
         y += 3;
         for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
         {
-            auto campaignButton = &_windowFinancesMarketingWidgets[WIDX_CAMPAIGN_1 + i];
+            auto campaignButton = &_windowFinancesMarketingWidgets[WIDX_START_CAMPAIGN_1 + i];
             auto marketingCampaign = MarketingGetCampaign(i);
             if (marketingCampaign == nullptr && MarketingIsCampaignTypeApplicable(i))
             {
@@ -859,15 +895,36 @@ public:
                 }
             }
             // Advertisement
-            DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 296, MarketingCampaignNames[i][1], ft);
+            DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 14, 0 }, 282, MarketingCampaignFinishedNames[i][1], ft);
 
             // Duration
             uint16_t weeksRemaining = marketingCampaign->WeeksLeft;
             ft = Formatter();
             ft.Add<uint16_t>(weeksRemaining);
-            DrawTextBasic(
-                dpi, screenCoords + ScreenCoordsXY{ 304, 0 },
-                weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, ft);
+            uint16_t strKey;
+            if (marketingCampaign->Flags & MarketingCampaignFlags::AUTOMATIC_RENEW)
+            {
+                if (weeksRemaining == 1)
+                {
+                    strKey = STR_RENEWS_IN_1_WEEK;
+                }
+                else
+                {
+                    strKey = STR_RENEWS_IN_X_WEEKS;
+                }
+            }
+            else
+            {
+                if (weeksRemaining == 1)
+                {
+                    strKey = STR_1_WEEK_REMAINING;
+                }
+                else
+                {
+                    strKey = STR_X_WEEKS_REMAINING;
+                }
+            }
+            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 304, 0 }, strKey, ft);
 
             screenCoords.y += LIST_ROW_HEIGHT;
         }
@@ -882,11 +939,11 @@ public:
         // Draw campaign button text
         for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
         {
-            auto campaignButton = &_windowFinancesMarketingWidgets[WIDX_CAMPAIGN_1 + i];
+            auto campaignButton = &_windowFinancesMarketingWidgets[WIDX_START_CAMPAIGN_1 + i];
             if (campaignButton->type != WindowWidgetType::Empty)
             {
                 // Draw button text
-                DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, MarketingCampaignNames[i][0]);
+                DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, MarketingCampaignFinishedNames[i][0]);
                 auto ft = Formatter();
                 ft.Add<money64>(AdvertisingCampaignPricePerWeek[i]);
                 DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ WH_SUMMARY, 0 }, STR_MARKETING_PER_WEEK, ft);

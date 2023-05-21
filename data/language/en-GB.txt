@@ -1864,6 +1864,13 @@ STR_2521    :Show staff list
 STR_2522    :Show recent messages
 STR_2523    :Show map
 STR_2524    :Screenshot
+STR_2525    :Auto Renew
+STR_2526    :Automatically renew this marketing campaign with the same parameters when it expires
+STR_2527    :{BLACK}(Renews in {COMMA16} weeks)
+STR_2528    :{BLACK}(Renews in {COMMA16} week)
+STR_2529    :Cancel Marketing Campaign
+STR_2530    :{WINDOW_COLOUR_1}Are you sure you want to can cancel this marketing campaign?{NEWLINE}You money will not be refunded!
+STR_2531    :No
 STR_2533    :Backspace
 STR_2534    :Tab
 STR_2537    :Clear
@@ -2582,6 +2589,7 @@ STR_5281    :Features
 STR_5282    :RCT1 Ride Open/Close Lights
 STR_5283    :RCT1 Park Open/Close Lights
 STR_5284    :RCT1 Scenario Selection Font
+STR_5285    :Cancel Marketing Campaign Prompt
 STR_5287    :Ride is already broken down
 STR_5288    :Ride is closed
 STR_5289    :No breakdowns available for this ride
@@ -3679,6 +3687,19 @@ STR_6573    :Invisible
 STR_6574    :Void
 STR_6575    :Allow special colour schemes
 STR_6576    :Adds special colours to colour dropdown
+
+STR_6577    :{YELLOW}Your marketing campaign for free entry to the park was renewed
+STR_6578    :{YELLOW}Your marketing campaign for free rides on {STRINGID} was renewed
+STR_6579    :{YELLOW}Your marketing campaign for half-price entry to the park was renewed
+STR_6580    :{YELLOW}Your marketing campaign for free {STRINGID} was renewed
+STR_6581    :{YELLOW}Your advertising campaign for the park was renewed
+STR_6582    :{YELLOW}Your advertising campaign for {STRINGID} was renewed
+STR_6583    :{YELLOW}Your marketing campaign for free entry to the park could not be renewed
+STR_6584    :{YELLOW}Your marketing campaign for free rides on {STRINGID} could not be renewed
+STR_6585    :{YELLOW}Your marketing campaign for half-price entry to the park could not be renewed
+STR_6586    :{YELLOW}Your marketing campaign for free {STRINGID} could not be renewed
+STR_6587    :{YELLOW}Your advertising campaign for the park could not be renewed
+STR_6588    :{YELLOW}Your advertising campaign for {STRINGID} could not be renewed
 
 #############
 # Scenarios #

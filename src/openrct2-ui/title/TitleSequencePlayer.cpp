@@ -359,6 +359,7 @@ namespace OpenRCT2::Title
         {
             WindowCloseByClass(WindowClass::ConstructRide);
             WindowCloseByClass(WindowClass::DemolishRidePrompt);
+            WindowCloseByClass(WindowClass::CancelCampaignPrompt);
             WindowCloseByClass(WindowClass::EditorInventionListDrag);
             WindowCloseByClass(WindowClass::EditorInventionList);
             WindowCloseByClass(WindowClass::EditorObjectSelection);

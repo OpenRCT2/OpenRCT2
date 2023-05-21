@@ -13,6 +13,7 @@
 #include <openrct2/Identifiers.h>
 #include <openrct2/common.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/management/Marketing.h>
 #include <openrct2/windows/TileInspectorGlobals.h>
 #include <string_view>
 
@@ -95,6 +96,7 @@ WindowBase* WindowSignOpen(rct_windownumber number);
 WindowBase* WindowSignSmallOpen(rct_windownumber number);
 WindowBase* WindowPlayerOpen(uint8_t id);
 WindowBase* WindowNewCampaignOpen(int16_t campaignType);
+WindowBase* WindowCancelCampaignPromptOpen(int32_t campaignType);
 
 WindowBase* WindowInstallTrackOpen(const utf8* path);
 void WindowGuestListRefreshList();

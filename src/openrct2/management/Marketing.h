@@ -46,6 +46,7 @@ enum
 struct MarketingCampaign
 {
     uint8_t Type{};
+    uint8_t NumWeeks{};
     uint8_t WeeksLeft{};
     uint8_t Flags{};
     union
@@ -57,7 +58,8 @@ struct MarketingCampaign
 
 namespace MarketingCampaignFlags
 {
-    constexpr uint8_t FIRST_WEEK = 1 << 0;
+    constexpr uint8_t FIRST_WEEK =      1 << 0;
+    constexpr uint8_t AUTOMATIC_RENEW = 1 << 1;
 }
 
 extern const money64 AdvertisingCampaignPricePerWeek[ADVERTISING_CAMPAIGN_COUNT];
@@ -65,8 +67,10 @@ extern std::vector<MarketingCampaign> gMarketingCampaigns;
 
 uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaign);
 void MarketingUpdate();
+void MarketingTryRenewCampaign(const MarketingCampaign& campaign);
 void MarketingSetGuestCampaign(Guest* peep, int32_t campaign);
 bool MarketingIsCampaignTypeApplicable(int32_t campaignType);
 MarketingCampaign* MarketingGetCampaign(int32_t campaignType);
 void MarketingNewCampaign(const MarketingCampaign& campaign);
 void MarketingCancelCampaignsForRide(const RideId rideId);
+void MarketingCancelCampaign(int32_t campaignType);

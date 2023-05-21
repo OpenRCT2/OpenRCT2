@@ -106,6 +106,7 @@ The following people are not part of the development team, but have been contrib
 * Josh Trzebiatowski (trzejos) - Ride and scenery filtering
 * (kyphii) - Extended color selection
 * Phumdol Lookthipnapha (beam41) - Misc.
+* Ian Spence (ecnepsnai) - Quality of Life (Auto open shops & stalls, Auto renew advertising)
 
 ## Bug fixes
 * (KirilAngelov)

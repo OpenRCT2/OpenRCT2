@@ -852,6 +852,7 @@ namespace OpenRCT2
                     cs.ReadWrite(campaign.WeeksLeft);
                     cs.ReadWrite(campaign.Flags);
                     cs.ReadWrite(campaign.RideId);
+                    cs.ReadWrite(campaign.NumWeeks);
                 });
 
                 // Awards
