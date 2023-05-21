@@ -657,9 +657,7 @@ void CondorUpdateWaitingForDepart(Vehicle& vehicle)
 void CondorRideData::Reset()
 {
     State = CondorRideState::Waiting;
-    VehiclesZ = 0;
-    TowerTop = 0;
-    TowerBase = 0;
+    VehiclesZ = TowerBase;
     ArmRotation = 0;
     TowerRotationCounter = 0;
     SpinningTopCounter = 0;
