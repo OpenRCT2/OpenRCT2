@@ -9,6 +9,7 @@
 - Fix: [#19823] Parkobj: disallow overriding objects of different object types.
 - Fix: [#20111] All coaster types can access the new diagonal slope pieces.
 - Fix: [#20155] Fairground organ style 2 shows up as regular music, rather than for the merry-go-round.
+- Fix: [#20260] Ride locks up when inspecting/fixing staff member is fired.
 
 0.4.5 (2023-05-08)
 ------------------------------------------------------------------------
