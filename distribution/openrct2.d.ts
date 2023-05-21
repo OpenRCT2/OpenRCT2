@@ -939,6 +939,8 @@ declare global {
     interface MapChangeSizeArgs extends GameActionArgs {
         targetSizeX: number;
         targetSizeY: number;
+        shiftX: number;
+        shiftY: number;
     }
 
     interface MazePlaceTrackArgs extends GameActionArgs {
