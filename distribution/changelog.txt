@@ -42,6 +42,7 @@
 0.4.10 (2024-04-02)
 ------------------------------------------------------------------------
 - Feature: [#18171] Add port of the RCT1 Stand-Up Roller Coaster.
+- Feature: [#20263] Ability to increase the size of the map in the (0, 0) direction.
 - Feature: [#21590] [Plugin] Plugins can now read and write banner properties of tile elements.
 - Feature: [#21636] Add shortcut key for sorting tile elements.
 - Feature: [objects#294] Add scenery versions of wooden truss supports.
