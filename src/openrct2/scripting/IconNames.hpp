@@ -114,6 +114,8 @@ namespace OpenRCT2::Scripting
         { "selection_edge_ne", SPR_G2_SELECTION_EDGE_NE },
         { "selection_edge_sw", SPR_G2_SELECTION_EDGE_SW },
         { "selection_edge_se", SPR_G2_SELECTION_EDGE_SE },
+        { "palette_invisible", SPR_G2_ICON_PALETTE_INVISIBLE },
+        { "palette_invisible_pressed", SPR_G2_ICON_PALETTE_INVISIBLE_PRESSED },
     };
 
     // Maps legacy G2 icons sprite indices to new sprite indices
