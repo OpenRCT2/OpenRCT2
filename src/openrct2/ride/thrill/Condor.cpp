@@ -73,7 +73,7 @@ static auto CondorLocations = CalculateLocations();
 static constexpr int NumArmSpritesSymmetry = 4;
 static constexpr int NumVehicleAngles = 8;
 static constexpr int NumCarsPerVehicle = 7;
-static constexpr int NumCarsTiltAngles = 8;
+static constexpr int NumCarsTiltAngles = 4;
 
 // degrees/second
 static constexpr float MaxVehicleRotationSpeed = 120;
@@ -172,24 +172,57 @@ static void PaintCondorStructure(
         auto vehicleZ = condorRideData->VehiclesZ;
         auto tilt = GetVehicleTilt(condorRideData->VehicleRotationFrameTime);
         auto armsImageId = imageTemplate.WithIndex(
-            rideEntry->Cars[0].base_image_id + NumVehicleAngles * NumTiltAngles + (condorRideData->ArmRotation % 16));
-        for (int i = 0; i < 4; i++)
-        {
-            int locationIndex = i * NumArmSprites;
-            locationIndex += condorRideData->ArmRotation;
-            locationIndex %= (NumArmSprites * 4);
+            rideEntry->Cars[0].base_image_id + (condorRideData->ArmRotation % 16));
 
-            auto imageId = imageTemplate.WithIndex(
-                rideEntry->Cars[0].base_image_id + tilt * NumVehicleAngles + condorRideData->QuadRotation[i]);
-            PaintAddImageAsParent(
-                session, imageId,
-                { -bbOffset.x + CondorLocations[locationIndex].x, -bbOffset.y + CondorLocations[locationIndex].y,
-                  32 + vehicleZ },
-                { { CondorLocations[locationIndex].x, CondorLocations[locationIndex].y, vehicleZ + 32 }, { 24, 24, 12 } });
-            PaintAddImageAsChild(
-                session, armsImageId, { -bbOffset.x + CondorCenter, -bbOffset.y + CondorCenter, vehicleZ + 32 },
-                { { CondorCenter, CondorCenter, 32 + vehicleZ }, { 24, 24, 12 } });
+        //arm offset
+        auto carIndex = rideEntry->Cars[0].base_image_id + NumArmSprites;
+
+        //tilt offset
+        carIndex = carIndex + tilt * NumVehicleAngles * (NumCarsPerVehicle + 1);
+
+        auto vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
+        auto car0 = vehicle->GetCar(0);
+        auto car1 = vehicle->GetCar(0);
+        auto car2 = vehicle->GetCar(0);
+        auto car3 = vehicle->GetCar(0);
+
+        if (car0 != nullptr && car1 != nullptr && car2 != nullptr && car3 != nullptr)
+        {
+            std::array<uint8_t, 4> numPeeps = { car0->num_peeps, car1->num_peeps, car2->num_peeps, car3->num_peeps };
+            for (int i = 0; i < 4; i++)
+            {
+                int locationIndex = i * NumArmSprites;
+                locationIndex += condorRideData->ArmRotation;
+                locationIndex %= (NumArmSprites * 4);
+
+                // draw the cars
+                auto imageId = imageTemplate.WithIndex(carIndex + condorRideData->QuadRotation[i]);
+                PaintAddImageAsParent(
+                    session, imageId,
+                    { -bbOffset.x + CondorLocations[locationIndex].x, -bbOffset.y + CondorLocations[locationIndex].y,
+                      32 + vehicleZ },
+                    { { CondorLocations[locationIndex].x, CondorLocations[locationIndex].y, vehicleZ + 32 }, { 24, 24, 12 } });
+
+                //draw the peeps
+                for (int j = 0; j < numPeeps[i]; j++)
+                {
+                    auto peepId = imageTemplate.WithIndex(
+                        carIndex + NumVehicleAngles + j * NumVehicleAngles + condorRideData->QuadRotation[i]);
+                    PaintAddImageAsChild(
+                        session, peepId,
+                        { -bbOffset.x + CondorLocations[locationIndex].x, -bbOffset.y + CondorLocations[locationIndex].y,
+                          32 + vehicleZ },
+                        { { CondorLocations[locationIndex].x, CondorLocations[locationIndex].y, vehicleZ + 32 },
+                          { 24, 24, 12 } });
+                }
+
+                //(over)draw the arms
+                PaintAddImageAsChild(
+                    session, armsImageId, { -bbOffset.x + CondorCenter, -bbOffset.y + CondorCenter, vehicleZ + 32 },
+                    { { CondorCenter, CondorCenter, 32 + vehicleZ }, { 24, 24, 12 } });
+            }
         }
+        
     }
 
 }
