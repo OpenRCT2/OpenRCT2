@@ -47,12 +47,10 @@ TEST_F(LanguagePackTest, language_pack_simple)
     ASSERT_STREQ(lang->GetString(2), "Spiral Roller Coaster");
     ASSERT_EQ(lang->GetScenarioOverrideStringId("Arid Heights", 0), 0x7000);
     ASSERT_STREQ(lang->GetString(0x7000), "Arid Heights scenario string");
-    ASSERT_EQ(lang->GetObjectOverrideStringId("CONDORRD", 0), 0x6000);
     ASSERT_STREQ(lang->GetString(0x6000), "my test ride");
     // Test some negatives too
     ASSERT_EQ(lang->GetString(1000), nullptr);
     ASSERT_EQ(lang->GetScenarioOverrideStringId("No such park", 0), STR_NONE);
-    ASSERT_EQ(lang->GetObjectOverrideStringId("        ", 0), STR_NONE);
 }
 
 TEST_F(LanguagePackTest, language_pack_multibyte)
@@ -65,7 +63,6 @@ TEST_F(LanguagePackTest, language_pack_multibyte)
     ASSERT_EQ(lang->GetScenarioOverrideStringId("Forest Frontiers", 2), 0x7002);
     ASSERT_STREQ(lang->GetString(0x7000), "Forest Frontiers");
     ASSERT_STREQ(lang->GetString(0x7002), u8"在隱藏於森林深處的清空範圍中, 建造一個很受歡迎的樂園");
-    ASSERT_EQ(lang->GetObjectOverrideStringId("CONDORRD", 0), 0x6000);
     ASSERT_STREQ(lang->GetString(0x6000), u8"神鷹暢遊");
 }
 

@@ -323,14 +323,13 @@ private:
 
     void ParseGroupObject(IStringReader* reader)
     {
-        auto sb = StringBuilder();
+        // THIS IS NO LONGER USED SO WE ARE JUST SKIPPING OVER
         codepoint_t codepoint;
 
         // Should have already deduced that the next codepoint is a [
         reader->Skip();
 
         // Read string up to ] or line end
-        bool closedCorrectly = false;
         while (reader->TryPeek(&codepoint))
         {
             if (IsNewLine(codepoint))
@@ -339,10 +338,8 @@ private:
             reader->Skip();
             if (codepoint == ']')
             {
-                closedCorrectly = true;
                 break;
             }
-            sb.Append(codepoint);
         }
     }
 
