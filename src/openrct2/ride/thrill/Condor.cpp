@@ -172,7 +172,7 @@ static void PaintCondorStructure(
         auto vehicleZ = condorRideData->VehiclesZ;
         auto tilt = GetVehicleTilt(condorRideData->VehicleRotationFrameTime);
         auto armsImageId = imageTemplate.WithIndex(
-            rideEntry->Cars[0].base_image_id + (condorRideData->ArmRotation % 16));
+            rideEntry->Cars[0].base_image_id + (condorRideData->ArmRotation % NumArmSprites));
 
         //arm offset
         auto carIndex = rideEntry->Cars[0].base_image_id + NumArmSprites;
@@ -182,13 +182,13 @@ static void PaintCondorStructure(
 
         auto vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
         auto car0 = vehicle->GetCar(0);
-        auto car1 = vehicle->GetCar(0);
-        auto car2 = vehicle->GetCar(0);
-        auto car3 = vehicle->GetCar(0);
+        auto car1 = vehicle->GetCar(1);
+        auto car2 = vehicle->GetCar(2);
+        auto car3 = vehicle->GetCar(3);
 
         if (car0 != nullptr && car1 != nullptr && car2 != nullptr && car3 != nullptr)
         {
-            std::array<uint8_t, 4> numPeeps = { car0->num_peeps, car1->num_peeps, car2->num_peeps, car3->num_peeps };
+            std::array<Vehicle*, 4> cars = { car0, car1, car2, car3 };
             for (int i = 0; i < 4; i++)
             {
                 int locationIndex = i * NumArmSprites;
@@ -196,7 +196,7 @@ static void PaintCondorStructure(
                 locationIndex %= (NumArmSprites * 4);
 
                 // draw the cars
-                auto imageId = imageTemplate.WithIndex(carIndex + condorRideData->QuadRotation[i]);
+                auto imageId = imageTemplate.WithIndex(carIndex + (condorRideData->QuadRotation[i] % NumArmSprites));
                 PaintAddImageAsParent(
                     session, imageId,
                     { -bbOffset.x + CondorLocations[locationIndex].x, -bbOffset.y + CondorLocations[locationIndex].y,
@@ -204,16 +204,17 @@ static void PaintCondorStructure(
                     { { CondorLocations[locationIndex].x, CondorLocations[locationIndex].y, vehicleZ + 32 }, { 24, 24, 12 } });
 
                 //draw the peeps
-                for (int j = 0; j < numPeeps[i]; j++)
+                for (int j = 0; j < cars[i]->num_peeps; j += 2)
                 {
-                    auto peepId = imageTemplate.WithIndex(
-                        carIndex + NumVehicleAngles + j * NumVehicleAngles + condorRideData->QuadRotation[i]);
+                    auto peepTemplate = ImageId(0, cars[i]->peep_tshirt_colours[j], cars[i]->peep_tshirt_colours[j + 1]);
+                    auto peepId = peepTemplate.WithIndex(
+                        carIndex + (1 + j / 2) * NumVehicleAngles + condorRideData->QuadRotation[i] % NumArmSprites);
                     PaintAddImageAsChild(
                         session, peepId,
                         { -bbOffset.x + CondorLocations[locationIndex].x, -bbOffset.y + CondorLocations[locationIndex].y,
                           32 + vehicleZ },
                         { { CondorLocations[locationIndex].x, CondorLocations[locationIndex].y, vehicleZ + 32 },
-                          { 24, 24, 12 } });
+                          { 1, 1, 1 } });
                 }
 
                 //(over)draw the arms
@@ -514,7 +515,7 @@ static void UpdateRotation(CondorRideData* condorRideData)
         for (auto& quadRot : condorRideData->QuadRotation)
         {
             quadRot++;
-            quadRot %= 8;
+            quadRot %= NumVehicleAngles;
         }
         condorRideData->VehicleRotationCounter = 0;
     }
@@ -565,11 +566,11 @@ static void CondorRideUpdateFalling(Ride& ride)
         auto oldQuadRotation = condorRideData->QuadRotation[0];
         UpdateRotation(condorRideData);
 
-        if (height < condorRideData->TowerBase)
+        if (height <= condorRideData->TowerBase)
         {
             height = condorRideData->TowerBase;
 
-            if (oldArmRotation % (NumArmSprites * 4) == 0)
+            if (oldArmRotation == 0)
                 condorRideData->ArmRotation = 0;
 
             if (oldQuadRotation == condorRideData->InitialQuadRotation)
