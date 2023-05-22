@@ -45,10 +45,9 @@ void PathAdditionObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
 
     // Add path additions to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.
     // Since this is already done the other way round for original items, avoid adding those to prevent duplicates.
-    auto identifier = GetLegacyIdentifier();
 
     auto& objectRepository = context->GetObjectRepository();
-    auto item = objectRepository.FindObjectLegacy(identifier);
+    auto item = objectRepository.FindObject(GetDescriptor());
     if (item != nullptr)
     {
         auto sourceGame = item->GetFirstSourceGame();

@@ -265,7 +265,7 @@ public:
         return _usesFallbackImages;
     }
 
-    // Legacy data structures
+    // DONOT USE THIS CAN LEAD TO OBJECT COLLISIONS
     std::string_view GetLegacyIdentifier() const
     {
         return _descriptor.GetName();
