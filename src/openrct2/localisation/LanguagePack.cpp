@@ -182,27 +182,6 @@ public:
         return nullptr;
     }
 
-    StringId GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) override
-    {
-        Guard::Assert(index < ObjectOverrideMaxStringCount);
-
-        int32_t ooIndex = 0;
-        for (const ObjectOverride& objectOverride : _objectOverrides)
-        {
-            if (std::string_view(objectOverride.name, 8) == legacyIdentifier)
-            {
-                if (objectOverride.strings[index].empty())
-                {
-                    return STR_NONE;
-                }
-                return ObjectOverrideBase + (ooIndex * ObjectOverrideMaxStringCount) + index;
-            }
-            ooIndex++;
-        }
-
-        return STR_NONE;
-    }
-
     StringId GetScenarioOverrideStringId(const utf8* scenarioFilename, uint8_t index) override
     {
         Guard::ArgumentNotNull(scenarioFilename);
@@ -226,17 +205,6 @@ public:
     }
 
 private:
-    ObjectOverride* GetObjectOverride(const std::string& objectIdentifier)
-    {
-        for (auto& oo : _objectOverrides)
-        {
-            if (strncmp(oo.name, objectIdentifier.c_str(), 8) == 0)
-            {
-                return &oo;
-            }
-        }
-        return nullptr;
-    }
 
     ScenarioOverride* GetScenarioOverride(const std::string& scenarioIdentifier)
     {
@@ -375,31 +343,6 @@ private:
                 break;
             }
             sb.Append(codepoint);
-        }
-
-        if (closedCorrectly)
-        {
-            while (sb.GetLength() < 8)
-            {
-                sb.Append(' ');
-            }
-            if (sb.GetLength() == 8)
-            {
-                _currentGroup = sb.GetStdString();
-                _currentObjectOverride = GetObjectOverride(_currentGroup);
-                _currentScenarioOverride = nullptr;
-                if (_currentObjectOverride == nullptr)
-                {
-                    if (_objectOverrides.size() == MAX_OBJECT_OVERRIDES)
-                    {
-                        LOG_WARNING("Maximum number of localised object strings exceeded.");
-                    }
-
-                    _objectOverrides.emplace_back();
-                    _currentObjectOverride = &_objectOverrides[_objectOverrides.size() - 1];
-                    std::copy_n(_currentGroup.c_str(), 8, _currentObjectOverride->name);
-                }
-            }
         }
     }
 

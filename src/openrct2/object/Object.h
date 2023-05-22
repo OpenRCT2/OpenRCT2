@@ -220,7 +220,6 @@ protected:
      */
     void PopulateTablesFromJson(IReadObjectContext* context, json_t& root);
 
-    std::string GetOverrideString(uint8_t index) const;
     std::string GetString(ObjectStringID index) const;
     std::string GetString(int32_t language, ObjectStringID index) const;
 
