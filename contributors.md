@@ -108,6 +108,7 @@ The following people are not part of the development team, but have been contrib
 * Phumdol Lookthipnapha (beam41) - Misc.
 * Nikolas Parshook (nparshook) - Misc.
 * Wenzhao Qiu (qwzhaox) - Misc.
+* Tiago Reul (reul) - Misc.
 
 ## Bug fixes
 * (KirilAngelov)
