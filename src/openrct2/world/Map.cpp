@@ -576,7 +576,7 @@ int16_t TileElementHeight(const CoordsXYZ& loc, uint8_t slope)
     int8_t quad = 0, quad_extra = 0; // which quadrant the element is in?
                                      // quad_extra is for extra height tiles
 
-    uint8_t xl, yl; // coordinates across this tile
+    uint8_t xl, yl;                  // coordinates across this tile
 
     uint8_t TILE_SIZE = 32;
 
@@ -2300,6 +2300,7 @@ void ShiftMap(const TileCoordsXY& amount)
         entrance += amountToMove;
 
     // Entities
+    auto& entityTweener = EntityTweener::Get();
     for (auto i = 0; i < EnumValue(EntityType::Count); i++)
     {
         auto entityType = static_cast<EntityType>(i);
@@ -2309,7 +2310,7 @@ void ShiftMap(const TileCoordsXY& amount)
             auto entity = GetEntity(entityId);
 
             // Do not tween the entity
-            EntityTweener::Get().RemoveEntity(entity);
+            entityTweener.RemoveEntity(entity);
 
             auto location = entity->GetLocation();
             location += amountToMove;
