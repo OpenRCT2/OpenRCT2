@@ -205,7 +205,6 @@ public:
     }
 
 private:
-
     ScenarioOverride* GetScenarioOverride(const std::string& scenarioIdentifier)
     {
         for (auto& so : _scenarioOverrides)
