@@ -12,7 +12,7 @@
 
 namespace OpenRCT2::Limits
 {
-    constexpr const uint16_t MaxRidesInPark = 1000;
+    constexpr const uint16_t MaxRidesInPark = 28640;
     constexpr const uint16_t MaxStationsPerRide = 255;
     constexpr const uint8_t CustomerHistorySize = RCT12::Limits::CustomerHistorySize;
     constexpr const uint16_t MaxGolfHoles = RCT12::Limits::MaxGolfHoles;
