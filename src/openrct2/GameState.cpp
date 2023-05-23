@@ -22,6 +22,7 @@
 #include "actions/GameAction.h"
 #include "config/Config.h"
 #include "entity/EntityRegistry.h"
+#include "entity/EntityTweener.h"
 #include "entity/PatrolArea.h"
 #include "entity/Staff.h"
 #include "interface/Screenshot.h"
@@ -94,6 +95,8 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     auto& scriptEngine = GetContext()->GetScriptEngine();
     scriptEngine.ClearParkStorage();
 #endif
+
+    EntityTweener::Get().Reset();
 }
 
 /**
