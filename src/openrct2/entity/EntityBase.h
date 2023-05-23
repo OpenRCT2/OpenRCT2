@@ -35,6 +35,14 @@ struct EntitySpriteData
     ScreenRect SpriteRect;
 };
 
+namespace EntityRenderFlags
+{
+    // Disables tweening for this tick, this is helpful when entities are teleported
+    // and should not be tweened.
+    constexpr uint32_t kInvalidateTweening = (1U << 0);
+
+} // namespace EntityRenderFlags
+
 struct EntityBase
 {
     EntityType Type;
@@ -42,6 +50,8 @@ struct EntityBase
     int32_t x;
     int32_t y;
     int32_t z;
+    // Rendering specific flags, this should not be stored in the save file.
+    uint32_t RenderFlags;
     EntitySpriteData SpriteData;
     // Used as direction or rotation depending on the entity.
     uint8_t Orientation;

@@ -15,22 +15,28 @@
 #include "EntityRegistry.h"
 
 #include <cmath>
+
+void EntityTweener::AddEntity(EntityBase* entity)
+{
+    entity->RenderFlags &= ~EntityRenderFlags::kInvalidateTweening;
+    
+    Entities.push_back(entity);
+    PrePos.emplace_back(entity->GetLocation());
+}
+
 void EntityTweener::PopulateEntities()
 {
     for (auto ent : EntityList<Guest>())
     {
-        Entities.push_back(ent);
-        PrePos.emplace_back(ent->GetLocation());
+        AddEntity(ent);
     }
     for (auto ent : EntityList<Staff>())
     {
-        Entities.push_back(ent);
-        PrePos.emplace_back(ent->GetLocation());
+        AddEntity(ent);
     }
     for (auto ent : EntityList<Vehicle>())
     {
-        Entities.push_back(ent);
-        PrePos.emplace_back(ent->GetLocation());
+        AddEntity(ent);
     }
 }
 
@@ -57,9 +63,16 @@ void EntityTweener::PostTick()
     }
 }
 
+static bool CanTweenEntity(EntityBase* ent)
+{
+    if (ent->Is<Guest>() || ent->Is<Staff>() || ent->Is<Vehicle>())
+        return true;
+    return false;
+}
+
 void EntityTweener::RemoveEntity(EntityBase* entity)
 {
-    if (!entity->Is<Peep>() && !entity->Is<Vehicle>())
+    if (!CanTweenEntity(entity))
     {
         // Only peeps and vehicles are tweened, bail if type is incorrect.
         return;
@@ -77,6 +90,9 @@ void EntityTweener::Tween(float alpha)
     {
         auto* ent = Entities[i];
         if (ent == nullptr)
+            continue;
+
+        if (ent->RenderFlags & EntityRenderFlags::kInvalidateTweening)
             continue;
 
         auto& posA = PrePos[i];
@@ -100,6 +116,9 @@ void EntityTweener::Restore()
     {
         auto* ent = Entities[i];
         if (ent == nullptr)
+            continue;
+
+        if (ent->RenderFlags & EntityRenderFlags::kInvalidateTweening)
             continue;
 
         EntitySetCoordinates(PostPos[i], ent);
