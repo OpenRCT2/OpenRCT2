@@ -19,7 +19,7 @@
 void EntityTweener::AddEntity(EntityBase* entity)
 {
     entity->RenderFlags &= ~EntityRenderFlags::kInvalidateTweening;
-    
+
     Entities.push_back(entity);
     PrePos.emplace_back(entity->GetLocation());
 }

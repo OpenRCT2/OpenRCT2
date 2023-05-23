@@ -473,6 +473,13 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
         EntitySetCoordinates(loc, this);
         Invalidate(); // Invalidate new position.
     }
+
+    if (!gInUpdateCode)
+    {
+        // Make sure we don't tween when the position was modified outside of the
+        // update loop.
+        RenderFlags |= EntityRenderFlags::kInvalidateTweening;
+    }
 }
 
 void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity)
