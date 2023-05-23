@@ -28,20 +28,10 @@
 
 // Don't try to load more than language files that exceed 64 MiB
 constexpr uint64_t MAX_LANGUAGE_SIZE = 64 * 1024 * 1024;
-constexpr uint64_t MAX_OBJECT_OVERRIDES = 4096;
 constexpr uint64_t MAX_SCENARIO_OVERRIDES = 4096;
-
-constexpr StringId ObjectOverrideBase = 0x6000;
-constexpr int32_t ObjectOverrideMaxStringCount = 3;
 
 constexpr StringId ScenarioOverrideBase = 0x7000;
 constexpr int32_t ScenarioOverrideMaxStringCount = 3;
-
-struct ObjectOverride
-{
-    char name[8] = { 0 };
-    std::string strings[ObjectOverrideMaxStringCount];
-};
 
 struct ScenarioOverride
 {
@@ -54,14 +44,12 @@ class LanguagePack final : public ILanguagePack
 private:
     uint16_t const _id;
     std::vector<std::string> _strings;
-    std::vector<ObjectOverride> _objectOverrides;
     std::vector<ScenarioOverride> _scenarioOverrides;
 
     ///////////////////////////////////////////////////////////////////////////
     // Parsing work data
     ///////////////////////////////////////////////////////////////////////////
     std::string _currentGroup;
-    ObjectOverride* _currentObjectOverride = nullptr;
     ScenarioOverride* _currentScenarioOverride = nullptr;
 
 public:
@@ -112,7 +100,6 @@ public:
 
         // Clean up the parsing work data
         _currentGroup.clear();
-        _currentObjectOverride = nullptr;
         _currentScenarioOverride = nullptr;
     }
 
@@ -154,21 +141,6 @@ public:
                 && !_scenarioOverrides[ooIndex].strings[ooStringIndex].empty())
             {
                 return _scenarioOverrides[ooIndex].strings[ooStringIndex].c_str();
-            }
-
-            return nullptr;
-        }
-
-        if (stringId >= ObjectOverrideBase)
-        {
-            int32_t offset = stringId - ObjectOverrideBase;
-            int32_t ooIndex = offset / ObjectOverrideMaxStringCount;
-            int32_t ooStringIndex = offset % ObjectOverrideMaxStringCount;
-
-            if (_objectOverrides.size() > static_cast<size_t>(ooIndex)
-                && !_objectOverrides[ooIndex].strings[ooStringIndex].empty())
-            {
-                return _objectOverrides[ooIndex].strings[ooStringIndex].c_str();
             }
 
             return nullptr;
@@ -340,6 +312,7 @@ private:
                 break;
             }
         }
+        _currentGroup.clear();
     }
 
     void ParseGroupScenario(IStringReader* reader)
@@ -369,7 +342,6 @@ private:
         if (closedCorrectly)
         {
             _currentGroup = sb.GetStdString();
-            _currentObjectOverride = nullptr;
             _currentScenarioOverride = GetScenarioOverride(_currentGroup);
             if (_currentScenarioOverride == nullptr)
             {
@@ -496,11 +468,7 @@ private:
         }
         else
         {
-            if (_currentObjectOverride != nullptr)
-            {
-                _currentObjectOverride->strings[stringId] = s;
-            }
-            else
+            if (_currentScenarioOverride != nullptr)
             {
                 _currentScenarioOverride->strings[stringId] = std::move(s);
             }
