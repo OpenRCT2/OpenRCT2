@@ -1300,7 +1300,7 @@ void Guest::UpdateSitting()
 
         if (HasFoodOrDrink())
         {
-            if ((ScenarioRand() & 0xFFFF) > 1310)
+            if ((ScenarioRand() & 0xFFFFU) > 1310U)
             {
                 TryGetUpFromSitting();
                 return;
@@ -1312,8 +1312,8 @@ void Guest::UpdateSitting()
             return;
         }
 
-        int32_t rand = ScenarioRand();
-        if ((rand & 0xFFFF) > 131)
+        const auto rand = ScenarioRand();
+        if ((rand & 0xFFFFU) > 131U)
         {
             TryGetUpFromSitting();
             return;
@@ -1325,12 +1325,12 @@ void Guest::UpdateSitting()
         }
 
         Action = PeepActionType::SittingLookAroundLeft;
-        if (rand & 0x80000000)
+        if (rand & 0x80000000U)
         {
             Action = PeepActionType::SittingLookAroundRight;
         }
 
-        if (rand & 0x40000000)
+        if (rand & 0x40000000U)
         {
             Action = PeepActionType::SittingCheckWatch;
         }
