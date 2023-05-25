@@ -1466,7 +1466,7 @@ void Guest::CheckCantFindExit()
  *
  *  rct2: 0x0069AF1E
  */
-bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
+bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
 {
     money64 itemValue;
 
@@ -1485,7 +1485,8 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
         return false;
     }
 
-    if (GetShopItemDescriptor(shopItem).IsFoodOrDrink())
+    const auto& shopItemDescriptor = GetShopItemDescriptor(shopItem);
+    if (shopItemDescriptor.IsFoodOrDrink())
     {
         int32_t food = UtilBitScanForward(GetFoodOrDrinkFlags());
         if (food != -1)
@@ -1510,19 +1511,19 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
         return false;
     }
 
-    if (GetShopItemDescriptor(shopItem).IsFood() && (Hunger > 75))
+    if (shopItemDescriptor.IsFood() && (Hunger > 75))
     {
         InsertNewThought(PeepThoughtType::NotHungry);
         return false;
     }
 
-    if (GetShopItemDescriptor(shopItem).IsDrink() && (Thirst > 75))
+    if (shopItemDescriptor.IsDrink() && (Thirst > 75))
     {
         InsertNewThought(PeepThoughtType::NotThirsty);
         return false;
     }
 
-    if (!isRainingAndUmbrella && (shopItem != ShopItem::Map) && GetShopItemDescriptor(shopItem).IsSouvenir() && !hasVoucher)
+    if (!isRainingAndUmbrella && (shopItem != ShopItem::Map) && shopItemDescriptor.IsSouvenir() && !hasVoucher)
     {
         if (((ScenarioRand() & 0x7F) + 0x73) > Happiness || GuestNumRides < 3)
             return false;
@@ -1545,11 +1546,11 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
         }
 
         if (gClimateCurrent.Temperature >= 21)
-            itemValue = GetShopItemDescriptor(shopItem).HotValue;
+            itemValue = shopItemDescriptor.HotValue;
         else if (gClimateCurrent.Temperature <= 11)
-            itemValue = GetShopItemDescriptor(shopItem).ColdValue;
+            itemValue = shopItemDescriptor.ColdValue;
         else
-            itemValue = GetShopItemDescriptor(shopItem).BaseValue;
+            itemValue = shopItemDescriptor.BaseValue;
 
         if (itemValue < price)
         {
@@ -1567,7 +1568,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
                 if (itemValue > (static_cast<money64>(ScenarioRand() & 0x07)))
                 {
                     // "I'm not paying that much for x"
-                    InsertNewThought(GetShopItemDescriptor(shopItem).TooMuchThought, ride.id);
+                    InsertNewThought(shopItemDescriptor.TooMuchThought, ride.id);
                     return false;
                 }
             }
@@ -1582,7 +1583,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
                 if (itemValue >= static_cast<money64>(ScenarioRand() & 0x07))
                 {
                     // "This x is a really good value"
-                    InsertNewThought(GetShopItemDescriptor(shopItem).GoodValueThought, ride.id);
+                    InsertNewThought(shopItemDescriptor.GoodValueThought, ride.id);
                 }
             }
 
@@ -1593,11 +1594,11 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
 
         // reset itemValue for satisfaction calculation
         if (gClimateCurrent.Temperature >= 21)
-            itemValue = GetShopItemDescriptor(shopItem).HotValue;
+            itemValue = shopItemDescriptor.HotValue;
         else if (gClimateCurrent.Temperature <= 11)
-            itemValue = GetShopItemDescriptor(shopItem).ColdValue;
+            itemValue = shopItemDescriptor.ColdValue;
         else
-            itemValue = GetShopItemDescriptor(shopItem).BaseValue;
+            itemValue = shopItemDescriptor.BaseValue;
         itemValue -= price;
         uint8_t satisfaction = 0;
         if (itemValue > -8)
@@ -1633,7 +1634,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
     if (shopItem == ShopItem::Map)
         ResetPathfindGoal();
 
-    uint16_t consumptionTime = GetShopItemDescriptor(shopItem).ConsumptionTime;
+    uint16_t consumptionTime = shopItemDescriptor.ConsumptionTime;
     TimeToConsume = std::min((TimeToConsume + consumptionTime), 255);
 
     if (shopItem == ShopItem::Photo)
@@ -1654,39 +1655,39 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
     {
         auto ft = Formatter();
         FormatNameTo(ft);
-        ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Indefinite);
+        ft.Add<StringId>(shopItemDescriptor.Naming.Indefinite);
         if (gConfigNotifications.GuestBoughtItem)
         {
             News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, Id, ft);
         }
     }
 
-    if (GetShopItemDescriptor(shopItem).IsFood())
+    if (shopItemDescriptor.IsFood())
         AmountOfFood++;
 
-    if (GetShopItemDescriptor(shopItem).IsDrink())
+    if (shopItemDescriptor.IsDrink())
         AmountOfDrinks++;
 
-    if (GetShopItemDescriptor(shopItem).IsSouvenir())
+    if (shopItemDescriptor.IsSouvenir())
         AmountOfSouvenirs++;
 
     money64* expend_type = &PaidOnSouvenirs;
     ExpenditureType expenditure = ExpenditureType::ShopStock;
 
-    if (GetShopItemDescriptor(shopItem).IsFood())
+    if (shopItemDescriptor.IsFood())
     {
         expend_type = &PaidOnFood;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 
-    if (GetShopItemDescriptor(shopItem).IsDrink())
+    if (shopItemDescriptor.IsDrink())
     {
         expend_type = &PaidOnDrink;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-        FinancePayment(GetShopItemDescriptor(shopItem).Cost, expenditure);
+        FinancePayment(shopItemDescriptor.Cost, expenditure);
 
     // Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
     expenditure = static_cast<ExpenditureType>(static_cast<int32_t>(expenditure) - 1);
@@ -1699,7 +1700,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
     {
         SpendMoney(*expend_type, price, expenditure);
     }
-    ride.total_profit += (price - GetShopItemDescriptor(shopItem).Cost);
+    ride.total_profit += (price - shopItemDescriptor.Cost);
     ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
     ride.cur_num_customers++;
     ride.total_customers++;
