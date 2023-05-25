@@ -3694,6 +3694,8 @@ STR_6585    :No se puede realizar cambios…
 STR_6586    :OpenRCT2
 STR_6587    :El tema principal de OpenRTC es una obra de Allister Brimble,{NEWLINE}licenciada bajo CC BY-SA 4.0.
 STR_6588    :Gracias a Herman Riddering por permitirnos grabar el 35er Voigt.
+STR_6589    :Mostrar botones de ventana a la izquierda
+STR_6590    :Mostrar los botones de ventana (como el de cerrar la ventana) a la izquierda de la barra de título en lugar de a la derecha.
 
 ##############
 # Escenarios #
