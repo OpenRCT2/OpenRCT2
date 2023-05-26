@@ -88,7 +88,7 @@ money64 PlaceProvisionalTrackPiece(
     int16_t z_begin, z_end;
     const auto& ted = GetTrackElementDescriptor(trackType);
     const TrackCoordinates& coords = ted.Coordinates;
-    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
     {
         z_begin = coords.z_begin;
         z_end = coords.z_end;
