@@ -50,12 +50,6 @@ GameActions::Result SurfaceSetStyleAction::Query() const
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     if (_surfaceStyle != OBJECT_ENTRY_INDEX_NULL)
     {
-        if (_surfaceStyle > 0x1F)
-        {
-            LOG_ERROR("Invalid surface style.");
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
-        }
-
         const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
             objManager.GetLoadedObject(ObjectType::TerrainSurface, _surfaceStyle));
 
@@ -68,12 +62,6 @@ GameActions::Result SurfaceSetStyleAction::Query() const
 
     if (_edgeStyle != OBJECT_ENTRY_INDEX_NULL)
     {
-        if (_edgeStyle > 0xF)
-        {
-            LOG_ERROR("Invalid edge style.");
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
-        }
-
         const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, _edgeStyle));
 
         if (edgeObj == nullptr)
