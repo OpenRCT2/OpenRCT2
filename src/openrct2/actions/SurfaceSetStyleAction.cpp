@@ -56,7 +56,8 @@ GameActions::Result SurfaceSetStyleAction::Query() const
         if (surfaceObj == nullptr)
         {
             LOG_ERROR("Invalid surface style.");
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_UNKNOWN_OBJECT_TYPE);
         }
     }
 
@@ -67,7 +68,8 @@ GameActions::Result SurfaceSetStyleAction::Query() const
         if (edgeObj == nullptr)
         {
             LOG_ERROR("Invalid edge style.");
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_UNKNOWN_OBJECT_TYPE);
         }
     }
 
