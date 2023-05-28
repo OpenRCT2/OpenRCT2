@@ -97,7 +97,7 @@ using money64 = fixed64_1dp;
 // pair of `doubles` to represent that type. This cannot be converted to a
 // `constexpr`. As a workaround, statically cast the `long double` down to a
 // `double`. All of the uses of _GBP constants fit just fine, and if anyone
-// really tries to use a T_REXntic constant that can't fit in a double, they are
+// really tries to use a gigantic constant that can't fit in a double, they are
 // probably going to be breaking other things anyways.
 // For more details, see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=26374
 constexpr money64 operator"" _GBP(long double money) noexcept

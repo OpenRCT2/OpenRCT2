@@ -119,7 +119,7 @@ enum
     // Used for multi-dimension coaster
     RCT12_TRACK_ELEMENT_COLOUR_FLAG_INVERTED = (1 << 2),
 
-    // Used for T_REX coaster
+    // Used for giga coaster
     RCT12_TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT = (1 << 3),
 
     RCT12_TRACK_ELEMENT_DOOR_A_MASK = 0b00011100,
