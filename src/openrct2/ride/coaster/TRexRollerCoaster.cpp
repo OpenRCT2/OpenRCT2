@@ -18045,6 +18045,47 @@ namespace TRexRC
     {
         trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
         TrackLeftEighthBankToDiagUp25(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
+              
+    }
+    static void MiniRCTrackBooster(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
+    {
+        // These offsets could be moved to the g2.dat file when that supports offsets.
+        int8_t ne_sw_offsetX = 7;
+        int8_t ne_sw_offsetY = -15;
+        int8_t nw_se_offsetX = -15;
+        int8_t nw_se_offsetY = 7;
+
+        switch (direction)
+        {
+            case 0:
+            case 2:
+                PaintAddImageAsParentRotated(
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_MINI_RC_BOOSTER_NE_SW),
+                    { ne_sw_offsetX, ne_sw_offsetY, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+                {
+                    MetalASupportsPaintSetup(
+                        session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                }
+                break;
+            case 1:
+            case 3:
+                PaintAddImageAsParentRotated(
+                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_MINI_RC_BOOSTER_NW_SE),
+                    { nw_se_offsetX, nw_se_offsetY, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+                {
+                    MetalASupportsPaintSetup(
+                        session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                }
+                break;
+        }
+        PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        PaintUtilSetSegmentSupportHeight(
+            session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 
     TRACK_PAINT_FUNCTION GetTrackPaintFunction(int32_t trackType)
@@ -18530,6 +18571,8 @@ namespace TRexRC
                 return TrackLeftEighthBankToOrthogonalDown25;
             case TrackElemType::RightEighthBankToOrthogonalDown25:
                 return TrackRightEighthBankToOrthogonalDown25;
+            case TrackElemType::Booster:
+                return MiniRCTrackBooster;
         }
         return nullptr;
     }
