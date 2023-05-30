@@ -3696,6 +3696,8 @@ STR_6587    :El tema principal de OpenRTC es una obra de Allister Brimble,{NEWLI
 STR_6588    :Gracias a Herman Riddering por permitirnos grabar el 35er Voigt.
 STR_6589    :Mostrar botones de ventana a la izquierda
 STR_6590    :Mostrar los botones de ventana (como el de cerrar la ventana) a la izquierda de la barra de título en lugar de a la derecha.
+STR_6591    :El empleado está reparando una atracción y no puede ser despedido.
+STR_6592    :El empleado está inspeccionando una atracción y no puede ser despedido.
 
 ##############
 # Escenarios #
