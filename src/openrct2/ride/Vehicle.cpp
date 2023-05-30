@@ -1434,6 +1434,16 @@ void Vehicle::UpdateMeasurements()
         }
 
         int32_t distance = abs(((velocity + acceleration) >> 10) * 42);
+        if (distance < 1000 && (status == Vehicle::Status::Travelling))
+        {
+            // Strict difficulty doesn't include ultra-low speeds counting towards
+            // the distance travelled, in order to avoid block-brake cheese.
+            if (gParkFlags & PARK_FLAGS_STRICT_DIFFICULTY)
+            {
+                distance = 0;
+            }
+        }
+
         if (NumLaps == 0)
         {
             stationForTestSegment.SegmentLength = AddClamp_int32_t(stationForTestSegment.SegmentLength, distance);
@@ -1982,7 +1992,6 @@ void Vehicle::UpdateMovingToEndOfStation()
                 velocity -= velocity / 16;
                 acceleration = 0;
             }
-
             curFlags = UpdateTrackMotion(&station);
 
             if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1)
@@ -3191,6 +3200,7 @@ void Vehicle::UpdateDeparting()
             if (velocity <= curSpeed)
             {
                 acceleration = 15539;
+
                 if (velocity != 0)
                 {
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
@@ -3689,6 +3699,26 @@ void Vehicle::UpdateTravelling()
             if (velocity <= curRide->lift_hill_speed * 31079)
             {
                 acceleration = 15539;
+                // Strict difficulty tries to remove chain-lift hopping cheese
+                // to increase track length.
+                if (gParkFlags & PARK_FLAGS_STRICT_DIFFICULTY)
+                {
+                    if (velocity < 0)
+                    {
+                        if (velocity > -3)
+                        {
+                            velocity = 0;
+                            SetFlag(VehicleFlags::StoppedOnLift);
+                        }
+                        else
+                            acceleration = std::min(abs(velocity / 2), 15539);
+                    }
+                    else if (velocity != 0 && _vehicleBreakdown != 0)
+                    {
+                        ClearFlag(VehicleFlags::StoppedOnLift);
+                    }
+                }
+
                 if (velocity != 0)
                 {
                     if (_vehicleBreakdown == 0)

@@ -18,6 +18,7 @@
 #include "../scripting/ScriptEngine.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
+#include "../world/Park.h"
 #include "../world/Surface.h"
 #include "Ride.h"
 #include "RideData.h"
@@ -1136,9 +1137,32 @@ static void RideRatingsCalculateValue(Ride& ride)
 
     // Start with the base ratings, multiplied by the ride type specific weights for excitement, intensity and nausea.
     const auto& ratingsMultipliers = ride.GetRideTypeDescriptor().RatingsMultipliers;
+
     money64 value = (((ride.excitement * ratingsMultipliers.Excitement) * 32) >> 15)
         + (((ride.intensity * ratingsMultipliers.Intensity) * 32) >> 15)
         + (((ride.nausea * ratingsMultipliers.Nausea) * 32) >> 15);
+
+    if (gParkFlags & PARK_FLAGS_STRICT_DIFFICULTY)
+    {
+        // Strict Difficulty reduces the impact of park value bombs by requiring
+        // adding value penalties to excessive gs
+        if (ride.max_negative_vertical_g < -FIXED_2DP(2, 50))
+            value /= 4;
+        if (ride.max_lateral_g > FIXED_2DP(2, 80))
+            value /= 4;
+        if (ride.max_lateral_g > FIXED_2DP(3, 10))
+            value /= 4;
+        if (ride.intensity >= RIDE_RATING(10, 00))
+            value /= 8;
+
+        // Value penalties are applied for similar rides in the park to
+        // discrouage coaster spam in pay-per-ride parks
+        int32_t similar_rides = ride.GetSimilarRidesCount();
+        if (similar_rides > 3)
+            value /= 4;
+        if (similar_rides > 6)
+            value /= 4;
+    }
 
     int32_t monthsOld = 0;
     if (!gCheatsDisableRideValueAging)

@@ -36,6 +36,7 @@ enum class ScenarioSetSetting : uint8_t
     GuestGenerationHigherDifficultyLevel,
     AllowEarlyCompletion,
     UseRCT1Interest,
+    GuestStrictDifficulty,
     Count
 };
 

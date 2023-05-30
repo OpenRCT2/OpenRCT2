@@ -1003,15 +1003,23 @@ void Guest::Tick128UpdateGuest(int32_t index)
             }
         }
 
-        if (State == PeepState::Walking && !OutsideOfPark && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && GuestNumRides == 0
+        if (State == PeepState::Walking && !OutsideOfPark && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK)
             && GuestHeadingToRideId.IsNull())
         {
+            uint32_t required_rides = 1;
             uint32_t time_duration = gCurrentTicks - ParkEntryTime;
             time_duration /= 2048;
 
-            if (time_duration >= 5)
+            // Strict difficulty requires guests to continually experience rides or else they'll leave
+            if (gParkFlags & PARK_FLAGS_STRICT_DIFFICULTY)
             {
-                PickRideToGoOn();
+                required_rides = time_duration / 5;
+            }
+
+            if (time_duration >= 5 && GuestNumRides <= required_rides)
+            {
+                if (required_rides <= 1)
+                    PickRideToGoOn();
 
                 if (GuestHeadingToRideId.IsNull())
                 {
@@ -1183,11 +1191,23 @@ void Guest::Tick128UpdateGuest(int32_t index)
                          * slowly happier, up to a certain level. */
                         /* Why don't queue line TV monitors start affecting the peeps
                          * as soon as they join the queue?? */
-                        if (HappinessTarget < 90)
-                            HappinessTarget = 90;
 
-                        if (HappinessTarget < 165)
-                            HappinessTarget += 2;
+                        /* Strict difficulty will make peeps get annoyed if they wait too
+                         * long even if there are TV monitors. Though entertainers can keep
+                         * them in line a bit longer. */
+                        if (gParkFlags & PARK_FLAGS_STRICT_DIFFICULTY && TimeInQueue >= 10000)
+                        {
+                            if ((0xFFFF & ScenarioRand()) <= 256)
+                                HappinessTarget = std::max(HappinessTarget - 4, 0);
+                        }
+                        else
+                        {
+                            if (HappinessTarget < 90)
+                                HappinessTarget = 90;
+
+                            if (HappinessTarget < 165)
+                                HappinessTarget += 2;
+                        }
                     }
                     else
                     {
@@ -1556,9 +1576,16 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
         {
             itemValue -= price;
 
-            if (!isRainingAndUmbrella)
+            if (!isRainingAndUmbrella || (gParkFlags & PARK_FLAGS_STRICT_DIFFICULTY))
             {
                 itemValue = -itemValue;
+
+                /* Strict difficulty reduces the desire of guests to buy overpriced umbrellas when raining */
+                if (isRainingAndUmbrella)
+                {
+                    itemValue /= 2;
+                }
+
                 if (Happiness >= 128)
                 {
                     itemValue /= 2;
@@ -5618,6 +5645,17 @@ void Guest::UpdateQueuing()
         {
             // Create the I have been waiting in line ages thought
             InsertNewThought(PeepThoughtType::QueuingAges, CurrentRide);
+        }
+        // Strict Difficulty will make guest leave queues even if there are tvs and
+        // enterainers keeping them happy.
+        if (TimeInQueue >= 20000 && (gParkFlags & PARK_FLAGS_STRICT_DIFFICULTY) && (0xFFFF & ScenarioRand()) <= 93)
+        {
+            Orientation ^= (1 << 4);
+            HappinessTarget = std::max(HappinessTarget - 210, 0);
+            Invalidate();
+            RemoveFromQueue();
+            SetState(PeepState::One);
+            return;
         }
     }
     else

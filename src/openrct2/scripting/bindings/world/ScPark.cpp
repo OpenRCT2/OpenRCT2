@@ -42,6 +42,7 @@ namespace OpenRCT2::Scripting
         { "freeParkEntry", PARK_FLAGS_PARK_FREE_ENTRY },
         { "difficultParkRating", PARK_FLAGS_DIFFICULT_PARK_RATING },
         { "unlockAllPrices", PARK_FLAGS_UNLOCK_ALL_PRICES },
+        { "strictDifficulty", PARK_FLAGS_STRICT_DIFFICULTY },
     });
 
     ScPark::ScPark(duk_context* ctx)

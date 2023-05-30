@@ -41,6 +41,7 @@
 #include "../windows/Intent.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
+#include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "PatrolArea.h"
@@ -913,7 +914,11 @@ void Staff::EntertainerUpdateNearbyPeeps() const
         }
         else if (guest->State == PeepState::Queuing)
         {
-            guest->TimeInQueue = std::max(0, guest->TimeInQueue - 200);
+            // Strict Difficulty will make guests eventually leave queue lines if they stay
+            // in them long enough, even with entertainers, so TimeInQueue shouldn't be
+            // decreased in this case.
+            if (!(gParkFlags & PARK_FLAGS_STRICT_DIFFICULTY))
+                guest->TimeInQueue = std::max(0, guest->TimeInQueue - 200);
             guest->HappinessTarget = std::min(guest->HappinessTarget + 3, PEEP_MAX_HAPPINESS);
         }
     }

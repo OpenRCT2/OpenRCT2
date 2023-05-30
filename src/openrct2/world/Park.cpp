@@ -485,7 +485,9 @@ money64 Park::CalculateParkValue() const
     money64 result = 0;
     for (const auto& ride : GetRideManager())
     {
-        result += CalculateRideValue(ride);
+        // Strict difficulty requires rides to have some customers to contribute to park value
+        if (!(gParkFlags & PARK_FLAGS_STRICT_DIFFICULTY) || ride.total_customers > 0)
+            result += CalculateRideValue(ride);
     }
 
     // +7.00 per guest
@@ -559,8 +561,30 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
         if (ride.lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
             continue;
 
+        // Strict Difficulty requires rides to be somewhat unique and to have at least one
+        // customer in order to increase the soft-guest cap. If the number of guests in the
+        // parks is less than 500, then the total_customers requirement is dropped so there
+        // will be a bit more guest generation at the very start of building the park.
+        if (gParkFlags & PARK_FLAGS_STRICT_DIFFICULTY)
+        {
+            if (ride.GetSimilarRidesCount() > 3)
+                continue;
+            if (ride.total_customers == 0 && gNumGuestsInPark > 500)
+                continue;
+        }
+        uint8_t apply_bonus = ride.GetRideTypeDescriptor().BonusValue;
+
+        if (ride.max_negative_vertical_g < -FIXED_2DP(2, 50))
+            apply_bonus /= 2;
+        if (ride.max_lateral_g > FIXED_2DP(2, 80))
+            apply_bonus /= 2;
+        if (ride.max_lateral_g > FIXED_2DP(3, 10))
+            apply_bonus /= 2;
+        if (ride.intensity >= RIDE_RATING(10, 00))
+            apply_bonus /= 2;
+
         // Add guest score for ride type
-        suggestedMaxGuests += ride.GetRideTypeDescriptor().BonusValue;
+        suggestedMaxGuests += apply_bonus;
 
         // If difficult guest generation, extra guests are available for good rides
         if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
@@ -683,6 +707,17 @@ void Park::GenerateGuests()
         // Random chance of guest generation
         auto probability = MarketingGetCampaignGuestGenerationProbability(campaign.Type);
         auto random = ScenarioRandMax(std::numeric_limits<uint16_t>::max());
+
+        // Strict Difficulty reduces ad guest generation if the guest count is above the soft guest cap.
+        if (gParkFlags & PARK_FLAGS_STRICT_DIFFICULTY)
+        {
+            if (gNumGuestsInPark >= _suggestedGuestMaximum + 500)
+                probability = 0;
+            else if (gNumGuestsInPark >= _suggestedGuestMaximum + 250)
+                probability /= 4;
+            else if (gNumGuestsInPark >= _suggestedGuestMaximum)
+                probability /= 2;
+        }
         if (random < probability)
         {
             GenerateGuestFromCampaign(campaign.Type);

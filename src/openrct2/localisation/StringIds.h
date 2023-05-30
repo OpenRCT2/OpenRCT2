@@ -4000,6 +4000,8 @@ enum : uint16_t
     STR_CANT_FIRE_STAFF_FIXING = 6591,
     STR_CANT_FIRE_STAFF_INSPECTING = 6592,
 
+    STR_STRICT_DIFFICULTY = 6593,
+    STR_STRICT_DIFFICULTY_TIP = 6594,
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

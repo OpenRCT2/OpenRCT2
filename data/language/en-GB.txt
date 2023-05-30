@@ -3696,6 +3696,10 @@ STR_6590    :Show the window buttons (e.g. to close the window) on the left of t
 STR_6591    :Staff member is currently fixing a ride and can’t be fired.
 STR_6592    :Staff member is currently inspecting a ride and can’t be fired.
 
+STR_6593    :Stricter park requirements
+STR_6594    :Adds anti-cheesing requirements for guest generation, park value, etc.
+
+
 #############
 # Scenarios #
 ################

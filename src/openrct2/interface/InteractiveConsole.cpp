@@ -649,6 +649,10 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         {
             console.WriteFormatLine("difficult_guest_generation %d", (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0);
         }
+        else if (argv[0] == "strict_difficulty")
+        {
+            console.WriteFormatLine("strict_difficulty %d", (gParkFlags & PARK_FLAGS_STRICT_DIFFICULTY) != 0);
+        }
         else if (argv[0] == "park_open")
         {
             console.WriteFormatLine("park_open %d", (gParkFlags & PARK_FLAGS_PARK_OPEN) != 0);
@@ -970,6 +974,17 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
                     console.WriteLineError("set difficult_guest_generation command failed, likely due to permissions.");
                 else
                     console.Execute("get difficult_guest_generation");
+            });
+            GameActions::Execute(&scenarioSetSetting);
+        }
+        else if (argv[0] == "strict_difficulty" && InvalidArguments(&invalidArgs, int_valid[0]))
+        {
+            auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::GuestStrictDifficulty, int_val[0]);
+            scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
+                if (res->Error != GameActions::Status::Ok)
+                    console.WriteLineError("set strict_difficulty command failed, likely due to permissions.");
+                else
+                    console.Execute("get strict_difficulty");
             });
             GameActions::Execute(&scenarioSetSetting);
         }
@@ -1971,6 +1986,8 @@ static constexpr const utf8* console_variable_table[] = {
     "cheat_disable_clearance_checks",
     "cheat_disable_support_limits",
     "current_rotation",
+    "strict_difficulty",
+ 
 };
 
 static constexpr const utf8* console_window_table[] = {

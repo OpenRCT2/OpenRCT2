@@ -832,6 +832,12 @@ void Peep::UpdateFalling()
         {
             // Remove peep if it has gone to the void
             Remove();
+
+            // Strict Difficulty scenario option treats voided guests like casualties.
+            if (gParkFlags & PARK_FLAGS_STRICT_DIFFICULTY)
+            {
+                gParkRatingCasualtyPenalty = std::min(gParkRatingCasualtyPenalty + 25, 1000);
+            }
             return;
         }
         MoveTo({ x, y, z - 2 });

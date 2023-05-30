@@ -396,6 +396,7 @@ public:
 
     int32_t GetTotalLength() const;
     int32_t GetTotalTime() const;
+    int32_t GetSimilarRidesCount() const;
 
     const StationObject* GetStationObject() const;
     const MusicObject* GetMusicObject() const;

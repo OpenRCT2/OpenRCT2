@@ -258,6 +258,18 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             }
             break;
         }
+        case ScenarioSetSetting::GuestStrictDifficulty:
+        {
+            if (_value != 0)
+            {
+                gParkFlags |= PARK_FLAGS_STRICT_DIFFICULTY;
+            }
+            else
+            {
+                gParkFlags &= ~PARK_FLAGS_STRICT_DIFFICULTY;
+            }
+            break;
+        }
         default:
             LOG_ERROR("Invalid setting: %u", _setting);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);

@@ -894,6 +894,46 @@ int32_t Ride::GetTotalTime() const
     return totalTime;
 }
 
+int32_t Ride::GetSimilarRidesCount() const
+{
+    // Iterate through rides and return the number of rides that have similar stats
+    uint32_t otherSimilarRidesOfSameType = 0;
+
+    for (auto& r : GetRideManager())
+    {
+        uint16_t similar_count = 0;
+
+        if (std::abs(r.max_speed - max_speed) / 29127 < 10)
+            similar_count++;
+        if (std::abs(r.turn_count_default - turn_count_default) < 3)
+            similar_count++;
+        if (std::abs(r.turn_count_banked - turn_count_banked) < 3)
+            similar_count++;
+        if (std::abs(r.turn_count_sloped - turn_count_sloped) < 2)
+            similar_count++;
+        if (std::abs(r.drops - drops) < 3)
+            similar_count++;
+        if (std::abs(r.highest_drop_height - highest_drop_height) < 2)
+            similar_count++;
+        if (std::abs(r.inversions - inversions) < 2)
+            similar_count++;
+        if (std::abs(r.GetTotalLength() - GetTotalLength()) < std::min(r.GetTotalLength(), GetTotalLength()) / 3)
+            similar_count++;
+        if (std::abs(r.max_lateral_g - max_lateral_g) < FIXED_2DP(0, 20))
+            similar_count++;
+        if (std::abs(r.intensity - intensity) < FIXED_2DP(0, 50))
+            similar_count++;
+        if (std::abs(r.excitement - excitement) < FIXED_2DP(0, 50))
+            similar_count++;
+
+        if ((GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) && similar_count >= 10) || similar_count >= 8)
+        {
+            otherSimilarRidesOfSameType += 1;
+        }
+    }
+    return otherSimilarRidesOfSameType;
+}
+
 bool Ride::CanHaveMultipleCircuits() const
 {
     if (!(GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS)))

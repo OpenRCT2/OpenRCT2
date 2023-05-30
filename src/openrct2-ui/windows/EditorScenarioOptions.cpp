@@ -36,7 +36,7 @@ static constexpr const int32_t WW_GUESTS = 380;
 static constexpr const int32_t WH_GUESTS = 149;
 
 static constexpr const int32_t WW_PARK = 400;
-static constexpr const int32_t WH_PARK = 200;
+static constexpr const int32_t WH_PARK = 217;
 
 #pragma region Widgets
 
@@ -116,7 +116,8 @@ enum {
     WIDX_FORBID_LANDSCAPE_CHANGES,
     WIDX_FORBID_HIGH_CONSTRUCTION,
     WIDX_HARD_PARK_RATING,
-    WIDX_HARD_GUEST_GENERATION
+    WIDX_HARD_GUEST_GENERATION,
+    WIDX_STRICT_DIFFICULTY 
 };
 
 static Widget window_editor_scenario_options_financial_widgets[] = {
@@ -168,6 +169,8 @@ static Widget window_editor_scenario_options_park_widgets[] = {
     MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
     MakeWidget        ({  8, 167}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP          ),
     MakeWidget        ({  8, 184}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_GUEST_GENERATION,    STR_HARD_GUEST_GENERATION_TIP     ),
+    MakeWidget        ({  8, 201}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_STRICT_DIFFICULTY,    STR_STRICT_DIFFICULTY_TIP     ),
+ 
     WIDGETS_END,
 };
 
@@ -969,12 +972,20 @@ private:
                 Invalidate();
                 break;
             }
+            case WIDX_STRICT_DIFFICULTY:
+            {
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::GuestStrictDifficulty, gParkFlags & PARK_FLAGS_STRICT_DIFFICULTY ? 0 : 1);
+                GameActions::Execute(&scenarioSetSetting);
+                Invalidate();
+                break;
+            }
         }
     }
 
     void ParkResize()
     {
-        WindowSetResize(*this, 400, 200, 400, 200);
+        WindowSetResize(*this, 400, 217, 400, 217);
     }
 
     void ParkMouseDown(WidgetIndex widgetIndex)
@@ -1169,6 +1180,7 @@ private:
         SetWidgetPressed(WIDX_FORBID_HIGH_CONSTRUCTION, gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION);
         SetWidgetPressed(WIDX_HARD_PARK_RATING, gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING);
         SetWidgetPressed(WIDX_HARD_GUEST_GENERATION, gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION);
+        SetWidgetPressed(WIDX_STRICT_DIFFICULTY, gParkFlags & PARK_FLAGS_STRICT_DIFFICULTY);
 
         widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
                                                                                  : WindowWidgetType::CloseBox;
