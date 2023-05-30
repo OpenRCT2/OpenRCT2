@@ -890,3 +890,38 @@ template<typename T, T TNull, typename TTag> struct DataSerializerTraitsT<TIdent
         stream->Write(msg, strlen(msg));
     }
 };
+
+template<> struct DataSerializerTraitsT<Banner>
+{
+    static void encode(OpenRCT2::IStream* stream, const Banner& banner)
+    {
+        DataSerializerTraits<BannerIndex>().encode(stream, banner.id);
+        DataSerializerTraits<ObjectEntryIndex>().encode(stream, banner.type);
+        stream->WriteValue(banner.flags);
+        stream->WriteString(banner.text);
+        stream->WriteValue(banner.colour);
+        DataSerializerTraits<RideId>().encode(stream, banner.ride_index);
+        stream->WriteValue(banner.text_colour);
+        DataSerializerTraits<TileCoordsXY>().encode(stream, banner.position);
+    }
+
+    static void decode(OpenRCT2::IStream* stream, Banner& banner)
+    {
+        DataSerializerTraits<BannerIndex>().decode(stream, banner.id);
+        DataSerializerTraits<ObjectEntryIndex>().decode(stream, banner.type);
+        stream->Read(&banner.flags);
+        banner.text = stream->ReadStdString();
+        stream->Read(&banner.colour);
+        DataSerializerTraits<RideId>().decode(stream, banner.ride_index);
+        stream->Read(&banner.text_colour);
+        DataSerializerTraits<TileCoordsXY>().decode(stream, banner.position);
+    }
+
+    static void log(OpenRCT2::IStream* stream, const Banner& banner)
+    {
+        char msg[128] = {};
+        snprintf(
+            msg, sizeof(msg), "Banner(x = %d, y = %d, text = %s)", banner.position.x, banner.position.y, banner.text.c_str());
+        stream->Write(msg, strlen(msg));
+    }
+};
