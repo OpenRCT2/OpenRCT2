@@ -694,9 +694,45 @@ namespace TRexRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
+    
+        
         switch (trackSequence)
         {
             case 0:
+
+                    if (trackElement.HasChain())
+                {
+                    switch (direction)
+                    {
+                        case 0:
+                            PaintAddImageAsParentRotated(
+                                session, direction,
+                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 0)),
+                                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                            break;
+                        case 1:
+                            PaintAddImageAsParentRotated(
+                                session, direction,
+                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 1)),
+                                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                            break;
+                        case 2:
+                            PaintAddImageAsParentRotated(
+                                session, direction,
+                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 2)),
+                                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                            break;
+                        case 3:
+                            PaintAddImageAsParentRotated(
+                                session, direction,
+                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 3)),
+                                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                            break;
+                    }
+                }
+                else
+
+
                 switch (direction)
                 {
                     case 0:

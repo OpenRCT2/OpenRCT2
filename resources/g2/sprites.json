@@ -27853,6 +27853,58 @@
         "y_offset": -68,
         "palette": "keep"
     },
+	{
+        "path": "/track/trex/vertical_lift_1.png",
+        "x_offset": -6,
+        "y_offset": -28,
+        "palette": ""
+    },
+    {
+        "path": "/track/trex/vertical_lift_2.png",
+        "x_offset": -6,
+        "y_offset": -28,
+        "palette": ""
+    },
+    {
+        "path": "/track/trex/vertical_3.png",
+        "x_offset": -6,
+        "y_offset": -28,
+        "palette": "keep"
+    },
+    {
+        "path": "/track/trex/vertical_4.png",
+        "x_offset": -6,
+        "y_offset": -28,
+		"palette": "keep"
+    },
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
     {
         "path": "/track/trex/flat_diag_lift_1.png",
         "x_offset": -32,
