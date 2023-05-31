@@ -264,7 +264,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
     };
 
     gInUpdateCode = true;
-    
+
     gScreenAge++;
     if (gScreenAge == 0)
         gScreenAge--;
