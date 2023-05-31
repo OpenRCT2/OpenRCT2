@@ -273,7 +273,6 @@ static void EntityReset(EntityBase* entity)
 
     entity->Id = entityIndex;
     entity->Type = EntityType::Null;
-    entity->RenderFlags = 0;
 }
 
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
@@ -472,13 +471,6 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
     {
         EntitySetCoordinates(loc, this);
         Invalidate(); // Invalidate new position.
-    }
-
-    if (!gInUpdateCode)
-    {
-        // Make sure we don't tween when the position was modified outside of the
-        // update loop.
-        RenderFlags |= EntityRenderFlags::kInvalidateTweening;
     }
 }
 
