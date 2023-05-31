@@ -97,7 +97,8 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
     auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(_entryIndex);
     if (pathAdditionEntry == nullptr)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
     uint16_t sceneryFlags = pathAdditionEntry->flags;
 
@@ -164,7 +165,8 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
     auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(_entryIndex);
     if (pathAdditionEntry == nullptr)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
 
     res.Cost = pathAdditionEntry->price;

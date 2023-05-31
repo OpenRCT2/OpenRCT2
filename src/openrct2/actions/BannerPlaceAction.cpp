@@ -99,7 +99,8 @@ GameActions::Result BannerPlaceAction::Query() const
     if (bannerEntry == nullptr)
     {
         LOG_ERROR("Invalid banner object type. bannerType = ", _bannerType);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
     res.Cost = bannerEntry->price;
 
@@ -126,7 +127,8 @@ GameActions::Result BannerPlaceAction::Execute() const
     if (bannerEntry == nullptr)
     {
         LOG_ERROR("Invalid banner object type. bannerType = ", _bannerType);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
 
     auto banner = CreateBanner();
