@@ -109,8 +109,6 @@ void GameState::Tick()
 {
     PROFILED_FUNCTION();
 
-    gInUpdateCode = true;
-
     // Normal game play will update only once every GAME_UPDATE_TIME_MS
     uint32_t numUpdates = 1;
 
@@ -250,7 +248,6 @@ void GameState::Tick()
     }
 
     gDoSingleUpdate = false;
-    gInUpdateCode = false;
 }
 
 void GameState::UpdateLogic(LogicTimings* timings)
@@ -266,6 +263,8 @@ void GameState::UpdateLogic(LogicTimings* timings)
         }
     };
 
+    gInUpdateCode = true;
+    
     gScreenAge++;
     if (gScreenAge == 0)
         gScreenAge--;
@@ -290,6 +289,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
         // Don't run past the server, this condition can happen during map changes.
         if (NetworkGetServerTick() == gCurrentTicks)
         {
+            gInUpdateCode = false;
             return;
         }
 
@@ -397,6 +397,8 @@ void GameState::UpdateLogic(LogicTimings* timings)
     {
         timings->CurrentIdx = (timings->CurrentIdx + 1) % LOGIC_UPDATE_MEASUREMENTS_COUNT;
     }
+
+    gInUpdateCode = false;
 }
 
 void GameState::CreateStateSnapshot()
