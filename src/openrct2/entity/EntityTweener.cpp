@@ -18,8 +18,6 @@
 
 void EntityTweener::AddEntity(EntityBase* entity)
 {
-    entity->RenderFlags &= ~EntityRenderFlags::kInvalidateTweening;
-
     Entities.push_back(entity);
     PrePos.emplace_back(entity->GetLocation());
 }
@@ -92,9 +90,6 @@ void EntityTweener::Tween(float alpha)
         if (ent == nullptr)
             continue;
 
-        if (ent->RenderFlags & EntityRenderFlags::kInvalidateTweening)
-            continue;
-
         auto& posA = PrePos[i];
         auto& posB = PostPos[i];
 
@@ -116,9 +111,6 @@ void EntityTweener::Restore()
     {
         auto* ent = Entities[i];
         if (ent == nullptr)
-            continue;
-
-        if (ent->RenderFlags & EntityRenderFlags::kInvalidateTweening)
             continue;
 
         EntitySetCoordinates(PostPos[i], ent);
