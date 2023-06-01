@@ -708,7 +708,7 @@ namespace TRexRC
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 0)),
-                                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                                { 0, 0, height }, { { 0, 6, height }, { 2, 20, 31 } });
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(

@@ -27857,13 +27857,13 @@
         "path": "/track/trex/vertical_lift_1.png",
         "x_offset": -6,
         "y_offset": -28,
-        "palette": ""
+        "palette": "keep"
     },
     {
         "path": "/track/trex/vertical_lift_2.png",
         "x_offset": -6,
         "y_offset": -28,
-        "palette": ""
+        "palette": "keep"
     },
     {
         "path": "/track/trex/vertical_3.png",
