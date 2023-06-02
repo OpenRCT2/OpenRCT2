@@ -27853,6 +27853,33 @@
         "y_offset": -68,
         "palette": "keep"
     },
+	
+	
+    {
+        "path": "/track/trex/steep_to_vertical_up_lift_1.png",
+        "x_offset": -22,
+        "y_offset": -52,
+        "palette": "keep"
+    },
+    {
+        "path": "/track/trex/steep_to_vertical_up_lift_2.png",
+        "x_offset": -22,
+        "y_offset": -52,
+        "palette": "keep"
+    },
+    {
+        "path": "/track/trex/steep_to_vertical_up_lift_3.png",
+        "x_offset": -6,
+        "y_offset": -52,
+        "palette": "keep"
+    },
+    {
+        "path": "/track/trex/steep_to_vertical_up_lift_4.png",
+        "x_offset": -6,
+        "y_offset": -52,
+        "palette": "keep"
+    },
+    	
 	{
         "path": "/track/trex/vertical_lift_1.png",
         "x_offset": -6,
@@ -27880,7 +27907,30 @@
 	
 	
 	
-	
+	{
+        "path": "/track/trex/vertical_to_steep_up_lift_1.png",
+        "x_offset": -6,
+        "y_offset": -60,
+        "palette": "keep"
+    },
+    {
+        "path": "/track/trex/vertical_to_steep_up_lift_2.png",
+        "x_offset": -6,
+        "y_offset": -44,
+        "palette": "keep"
+    },
+    {
+        "path": "/track/trex/vertical_to_steep_up_lift_3.png",
+        "x_offset": -22,
+        "y_offset": -44,
+        "palette": "keep"
+    },
+    {
+        "path": "/track/trex/vertical_to_steep_up_lift_4.png",
+        "x_offset": -22,
+        "y_offset": -60,
+        "palette": "keep"
+    },
 	
 	
 	

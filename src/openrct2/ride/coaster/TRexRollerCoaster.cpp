@@ -707,25 +707,25 @@ namespace TRexRC
                         case 0:
                             PaintAddImageAsParentRotated(
                                 session, direction,
-                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 0)),
+                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 4)),
                                 { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
-                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 1)),
+                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 5)),
                                 { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
                             break;
                         case 2:
                             PaintAddImageAsParentRotated(
                                 session, direction,
-                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 2)),
+                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 6)),
                                 { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
                             break;
                         case 3:
                             PaintAddImageAsParentRotated(
                                 session, direction,
-                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 3)),
+                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 7)),
                                 { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
                             break;
                     }
@@ -792,22 +792,25 @@ namespace TRexRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_VERTICAL + 0)),
+                            session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 0)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_VERTICAL + 1)),
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 1)),
                             { 0, 0, height }, { { 24, 6, height }, { 2, 20, 55 } });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_VERTICAL + 2)),
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 2)),
                             { 0, 0, height }, { { 24, 6, height }, { 2, 20, 55 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_TRACK_VERTICAL + 3)),
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 3)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
@@ -872,6 +875,40 @@ namespace TRexRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
+
+
+       if (trackElement.HasChain())
+        {
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 8)),
+                        { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 9)),
+                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 10)),
+                        { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction,
+                        session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 11)),
+                        { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
+                    break;
+            }
+        }
+        else
+
+
         switch (direction)
         {
             case 0:
