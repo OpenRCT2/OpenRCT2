@@ -257,7 +257,7 @@ namespace OpenRCT2::Scripting
         bool RegisterCustomAction(
             const std::shared_ptr<Plugin>& plugin, std::string_view action, const DukValue& query, const DukValue& execute);
         void RunGameActionHooks(const GameAction& action, GameActions::Result& result, bool isExecute);
-        [[nodiscard]] std::unique_ptr<GameAction> CreateGameAction(const std::string& actionid, const DukValue& args);
+        [[nodiscard]] std::unique_ptr<GameAction> CreateGameAction(const std::string& actionid, const DukValue& args, const std::string& pluginName);
         [[nodiscard]] DukValue GameActionResultToDuk(const GameAction& action, const GameActions::Result& result);
 
         void SaveSharedStorage();
