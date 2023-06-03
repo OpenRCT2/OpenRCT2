@@ -1087,10 +1087,11 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAct
         }
         return DukToGameActionResult(dukResult);
     }
-
+ 
     auto action = GameActions::Result();
     action.Error = GameActions::Status::Unknown;
-    action.ErrorTitle = " [Unknown custom action] \n" + customAction.GetPluginName() + ": " + actionz;
+    action.ErrorTitle = "Unknown custom action";
+    action.ErrorMessage = customAction.GetPluginName() + ": " + actionz;
     return action;
 }
 
