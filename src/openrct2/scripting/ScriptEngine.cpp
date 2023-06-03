@@ -1087,7 +1087,7 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAct
         }
         return DukToGameActionResult(dukResult);
     }
- 
+
     auto action = GameActions::Result();
     action.Error = GameActions::Status::Unknown;
     action.ErrorTitle = "Unknown custom action";
