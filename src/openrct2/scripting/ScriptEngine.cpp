@@ -1466,7 +1466,8 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, GameActions::Res
     }
 }
 
-std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(const std::string& actionid, const DukValue& args, const std::string& pluginName)
+std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(
+    const std::string& actionid, const DukValue& args, const std::string& pluginName)
 {
     auto action = CreateGameActionFromActionId(actionid);
     if (action != nullptr)
