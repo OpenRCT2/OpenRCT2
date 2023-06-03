@@ -24452,7 +24452,7 @@
     {
         "path": "track/trex/left_vertical_loop_1_4.png",
         "x_offset": -38,
-        "y_offset": 19,
+        "y_offset": 21,
         "palette": "keep"
     },
     {
@@ -24572,7 +24572,7 @@
     {
         "path": "track/trex/right_vertical_loop_2_4.png",
         "x_offset": -22,
-        "y_offset": 13,
+        "y_offset": 10,
         "palette": "keep"
     },
     {
@@ -24608,7 +24608,7 @@
     {
         "path": "track/trex/right_vertical_loop_4_2.png",
         "x_offset": -9,
-        "y_offset": -44,
+        "y_offset": -54,
         "palette": "keep"
     },
     {
