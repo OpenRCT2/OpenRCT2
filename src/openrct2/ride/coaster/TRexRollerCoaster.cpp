@@ -116,7 +116,7 @@ namespace TRexRC
                 { { 0, 6, height + 3 }, { 32, 20, 1 } });
         }
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][2]), { 0, 0, height - 2 },
+            session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][2]), { 0, 0, height +2 },
             { { 0, 2, height }, { 32, 28, 2 } });
         TrackPaintUtilDrawStationMetalSupports2(
             session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Tubes);
