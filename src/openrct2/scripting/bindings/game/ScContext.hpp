@@ -348,10 +348,10 @@ namespace OpenRCT2::Scripting
             auto ctx = scriptEngine.GetContext();
             try
             {
-                auto action = scriptEngine.CreateGameAction(actionid, args);
+                auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+                auto action = scriptEngine.CreateGameAction(actionid, args, plugin->GetMetadata().Name);
                 if (action != nullptr)
                 {
-                    auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
                     if (isExecute)
                     {
                         action->SetCallback(
