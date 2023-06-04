@@ -21,6 +21,7 @@ class EntityTweener
 
 private:
     void PopulateEntities();
+    void AddEntity(EntityBase* entity);
 
 public:
     static EntityTweener& Get();

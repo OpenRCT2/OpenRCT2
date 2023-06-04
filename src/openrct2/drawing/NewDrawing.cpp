@@ -115,11 +115,11 @@ void DrawingEngineDispose()
     }
 }
 
-DrawPixelInfo* DrawingEngineGetDpi()
+DrawPixelInfo& DrawingEngineGetDpi()
 {
     auto context = GetContext();
     auto drawingEngine = context->GetDrawingEngine();
-    return drawingEngine->GetDrawingPixelInfo();
+    return *(drawingEngine->GetDrawingPixelInfo());
 }
 
 bool DrawingEngineHasDirtyOptimisations()
@@ -170,42 +170,42 @@ void GfxClear(DrawPixelInfo* dpi, uint8_t paletteIndex)
     }
 }
 
-void GfxFillRect(DrawPixelInfo* dpi, const ScreenRect& rect, int32_t colour)
+void GfxFillRect(DrawPixelInfo& dpi, const ScreenRect& rect, int32_t colour)
 {
-    auto drawingEngine = dpi->DrawingEngine;
+    auto drawingEngine = dpi.DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext();
-        dc->FillRect(dpi, colour, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
+        dc->FillRect(&dpi, colour, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
     }
 }
 
-void GfxFilterRect(DrawPixelInfo* dpi, const ScreenRect& rect, FilterPaletteID palette)
+void GfxFilterRect(DrawPixelInfo& dpi, const ScreenRect& rect, FilterPaletteID palette)
 {
-    auto drawingEngine = dpi->DrawingEngine;
+    auto drawingEngine = dpi.DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext();
-        dc->FilterRect(dpi, palette, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
+        dc->FilterRect(&dpi, palette, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
     }
 }
 
-void GfxDrawLine(DrawPixelInfo* dpi, const ScreenLine& line, int32_t colour)
+void GfxDrawLine(DrawPixelInfo& dpi, const ScreenLine& line, int32_t colour)
 {
-    auto drawingEngine = dpi->DrawingEngine;
+    auto drawingEngine = dpi.DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext();
-        dc->DrawLine(dpi, colour, line);
+        dc->DrawLine(&dpi, colour, line);
     }
 }
 
 void GfxDrawDashedLine(
-    DrawPixelInfo* dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color)
+    DrawPixelInfo& dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color)
 {
     assert(dashedLineSegmentLength > 0);
 
-    const auto drawingEngine = dpi->DrawingEngine;
+    const auto drawingEngine = dpi.DrawingEngine;
     if (drawingEngine != nullptr)
     {
         constexpr int32_t precisionFactor = 1000;
@@ -228,18 +228,18 @@ void GfxDrawDashedLine(
         {
             x = screenLine.GetX1() + dxPrecise * i * 2 / precisionFactor;
             y = screenLine.GetY1() + dyPrecise * i * 2 / precisionFactor;
-            dc->DrawLine(dpi, color, { { x, y }, { x + dxPrecise / precisionFactor, y + dyPrecise / precisionFactor } });
+            dc->DrawLine(&dpi, color, { { x, y }, { x + dxPrecise / precisionFactor, y + dyPrecise / precisionFactor } });
         }
     }
 }
 
-void FASTCALL GfxDrawSprite(DrawPixelInfo* dpi, const ImageId imageId, const ScreenCoordsXY& coords)
+void FASTCALL GfxDrawSprite(DrawPixelInfo& dpi, const ImageId imageId, const ScreenCoordsXY& coords)
 {
-    auto drawingEngine = dpi->DrawingEngine;
+    auto drawingEngine = dpi.DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext();
-        dc->DrawSprite(dpi, imageId, coords.x, coords.y);
+        dc->DrawSprite(&dpi, imageId, coords.x, coords.y);
     }
 }
 

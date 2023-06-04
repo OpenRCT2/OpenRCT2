@@ -24,11 +24,12 @@ constexpr const RideTypeDescriptor FlyingSaucersRTD =
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::FlatTrack4x4),
     SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionFlyingSaucers),
-    SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION |
-                     RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_HAS_NO_TRACK |
+    SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
+                     RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE |
                      RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
                      RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
-                     RIDE_TYPE_FLAG_SINGLE_SESSION | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
+                     RIDE_TYPE_FLAG_SINGLE_SESSION | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT |
+                     RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::Dodgems)),
     SET_FIELD(DefaultMode, RideMode::Dodgems),
     SET_FIELD(OperatingSettings, { 20, 180, 0, 0, 0, 0 }),
@@ -39,7 +40,6 @@ constexpr const RideTypeDescriptor FlyingSaucersRTD =
     SET_FIELD(Heights, { 9, 48, 2, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateFlyingSaucers),
     SET_FIELD(RatingsMultipliers, { 50, 25, 0 }),
     SET_FIELD(UpkeepCosts, { 90, 1, 0, 5, 0, 0 }),
     SET_FIELD(BuildCosts, { 35.00_GBP, 2.00_GBP, 1, }),
@@ -56,5 +56,19 @@ constexpr const RideTypeDescriptor FlyingSaucersRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_FLYING_SAUCERS_TRACK, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "flying_saucers"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(2, 40), RIDE_RATING(0, 55), RIDE_RATING(0, 39) },
+        32,
+        0,
+        false,
+        {
+            // Special case, passing -2 to represent division by 2
+            { RatingsModifierType::BonusOperationOption, 0, 1, -2, 0 }, 
+            { RatingsModifierType::BonusNumTrains,       4, RIDE_RATING(0, 80), 0, 0 },
+            { RatingsModifierType::BonusScenery,         0, 5577, 0, 0 },
+        },
+    }),
 };
 // clang-format on

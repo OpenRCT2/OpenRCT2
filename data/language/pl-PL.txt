@@ -1218,8 +1218,8 @@ STR_1838    :Satysfakcja: {COMMA16}%
 STR_1839    :Niezawodność: {COMMA16}%
 STR_1840    :Przestoje w pracy: {COMMA16}%
 STR_1841    :Zysk: {CURRENCY} na godzinę
-STR_1842    :Ulubiony dla: {COMMA16} gościa
-STR_1843    :Ulubiony dla: {COMMA16} gości
+STR_1842    :Ulubiony dla: {COMMA32} gościa
+STR_1843    :Ulubiony dla: {COMMA32} gości
 STR_1844    :Wybierz rodzaj informacji do pokazania
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} gości
@@ -2188,8 +2188,8 @@ STR_3118    :{BLACK}{STRINGID} zmierza w stronę atrakcji
 STR_3119    :{BLACK}{STRINGID} naprawia atrakcję
 STR_3120    :Znajdź najbliższego wolnego mechanika lub mechanika naprawiającego atrakcję
 STR_3121    :Nie udało się znaleźć mechanika lub wszyscy mechanicy w okolicy są zajęci
-STR_3122    :{WINDOW_COLOUR_2}Ulubiona atrakcja: {BLACK}{COMMA16} gości
-STR_3123    :{WINDOW_COLOUR_2}Ulubiona atrakcja: {BLACK}{COMMA16} gości
+STR_3122    :{WINDOW_COLOUR_2}Ulubiona atrakcja: {BLACK}{COMMA32} gości
+STR_3123    :{WINDOW_COLOUR_2}Ulubiona atrakcja: {BLACK}{COMMA32} gości
 STR_3124    :Zepsute: {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Emocje: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensywność: {BLACK}+{COMMA16}%

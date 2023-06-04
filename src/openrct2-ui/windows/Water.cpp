@@ -175,6 +175,11 @@ public:
         }
     }
 
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
+
 private:
     void InputSize()
     {

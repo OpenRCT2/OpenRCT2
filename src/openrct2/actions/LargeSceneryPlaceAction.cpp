@@ -85,7 +85,8 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
     if (sceneryEntry == nullptr)
     {
         LOG_ERROR("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
 
     uint32_t totalNumTiles = GetTotalNumTiles(sceneryEntry->tiles);
@@ -197,7 +198,8 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
     if (sceneryEntry == nullptr)
     {
         LOG_ERROR("Invalid game command for scenery placement, sceneryType = %u", _sceneryType);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
 
     if (sceneryEntry->tiles == nullptr)

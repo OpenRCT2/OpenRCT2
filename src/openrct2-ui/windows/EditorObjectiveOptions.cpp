@@ -210,10 +210,10 @@ public:
         switch (page)
         {
             case WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN:
-                OnDrawMain(&dpi);
+                OnDrawMain(dpi);
                 break;
             case WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES:
-                OnDrawRides(&dpi);
+                OnDrawRides(dpi);
                 break;
         }
     }
@@ -262,7 +262,7 @@ public:
     {
         if (page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES)
         {
-            OnScrollDrawRides(&dpi, scrollIndex);
+            OnScrollDrawRides(dpi, scrollIndex);
         }
     }
 
@@ -332,7 +332,7 @@ private:
         ResizeFrameWithPage();
     }
 
-    void DrawTabImages(DrawPixelInfo* dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         Widget* widget;
         int32_t spriteIndex;
@@ -835,23 +835,23 @@ private:
      *
      *  rct2: 0x0067161C
      */
-    void OnDrawMain(DrawPixelInfo* dpi)
+    void OnDrawMain(DrawPixelInfo& dpi)
     {
         int32_t widthToSet;
         StringId stringId;
 
-        DrawWidgets(*dpi);
+        DrawWidgets(dpi);
         DrawTabImages(dpi);
 
         // Objective label
         auto screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_OBJECTIVE].top };
-        DrawTextBasic(*dpi, screenCoords, STR_OBJECTIVE_WINDOW);
+        DrawTextBasic(dpi, screenCoords, STR_OBJECTIVE_WINDOW);
 
         // Objective value
         screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_OBJECTIVE].left + 1, widgets[WIDX_OBJECTIVE].top };
         auto ft = Formatter();
         ft.Add<StringId>(ObjectiveDropdownOptionNames[gScenarioObjective.Type]);
-        DrawTextBasic(*dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
+        DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
 
         if (widgets[WIDX_OBJECTIVE_ARG_1].type != WindowWidgetType::Empty)
         {
@@ -880,7 +880,7 @@ private:
                     stringId = STR_WINDOW_OBJECTIVE_EXCITEMENT_RATING;
                     break;
             }
-            DrawTextBasic(*dpi, screenCoords, stringId);
+            DrawTextBasic(dpi, screenCoords, stringId);
 
             // Objective argument 1 value
             screenCoords = windowPos
@@ -913,21 +913,21 @@ private:
                     ft.Add<money64>(gScenarioObjective.Currency);
                     break;
             }
-            DrawTextBasic(*dpi, screenCoords, stringId, ft, COLOUR_BLACK);
+            DrawTextBasic(dpi, screenCoords, stringId, ft, COLOUR_BLACK);
         }
 
         if (widgets[WIDX_OBJECTIVE_ARG_2].type != WindowWidgetType::Empty)
         {
             // Objective argument 2 label
             screenCoords = windowPos + ScreenCoordsXY{ 28, widgets[WIDX_OBJECTIVE_ARG_2].top };
-            DrawTextBasic(*dpi, screenCoords, STR_WINDOW_OBJECTIVE_DATE);
+            DrawTextBasic(dpi, screenCoords, STR_WINDOW_OBJECTIVE_DATE);
 
             // Objective argument 2 value
             screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_OBJECTIVE_ARG_2].left + 1, widgets[WIDX_OBJECTIVE_ARG_2].top };
             ft = Formatter();
             ft.Add<uint16_t>((gScenarioObjective.Year * MONTH_COUNT) - 1);
-            DrawTextBasic(*dpi, screenCoords, STR_WINDOW_OBJECTIVE_VALUE_DATE, ft);
+            DrawTextBasic(dpi, screenCoords, STR_WINDOW_OBJECTIVE_VALUE_DATE, ft);
         }
 
         // Park name
@@ -941,7 +941,7 @@ private:
             ft = Formatter();
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(parkName);
-            DrawTextEllipsised(*dpi, screenCoords, widthToSet, STR_WINDOW_PARK_NAME, ft);
+            DrawTextEllipsised(dpi, screenCoords, widthToSet, STR_WINDOW_PARK_NAME, ft);
         }
 
         // Scenario name
@@ -951,11 +951,11 @@ private:
         ft = Formatter();
         ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(gScenarioName.c_str());
-        DrawTextEllipsised(*dpi, screenCoords, widthToSet, STR_WINDOW_SCENARIO_NAME, ft);
+        DrawTextEllipsised(dpi, screenCoords, widthToSet, STR_WINDOW_SCENARIO_NAME, ft);
 
         // Scenario details label
         screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_DETAILS].top };
-        DrawTextBasic(*dpi, screenCoords, STR_WINDOW_PARK_DETAILS);
+        DrawTextBasic(dpi, screenCoords, STR_WINDOW_PARK_DETAILS);
 
         // Scenario details value
         screenCoords = windowPos + ScreenCoordsXY{ 16, widgets[WIDX_DETAILS].top + 10 };
@@ -964,17 +964,17 @@ private:
         ft = Formatter();
         ft.Add<StringId>(STR_STRING);
         ft.Add<const char*>(gScenarioDetails.c_str());
-        DrawTextWrapped(*dpi, screenCoords, widthToSet, STR_BLACK_STRING, ft);
+        DrawTextWrapped(dpi, screenCoords, widthToSet, STR_BLACK_STRING, ft);
 
         // Scenario category label
         screenCoords = windowPos + ScreenCoordsXY{ 8, widgets[WIDX_CATEGORY].top };
-        DrawTextBasic(*dpi, screenCoords, STR_WINDOW_SCENARIO_GROUP);
+        DrawTextBasic(dpi, screenCoords, STR_WINDOW_SCENARIO_GROUP);
 
         // Scenario category value
         screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_CATEGORY].left + 1, widgets[WIDX_CATEGORY].top };
         ft = Formatter();
         ft.Add<StringId>(ScenarioCategoryStringIds[gScenarioCategory]);
-        DrawTextBasic(*dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
+        DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
     }
 
 #pragma endregion
@@ -1094,29 +1094,29 @@ private:
      *
      *  rct2: 0x00672340
      */
-    void OnDrawRides(DrawPixelInfo* dpi)
+    void OnDrawRides(DrawPixelInfo& dpi)
     {
-        DrawWidgets(*dpi);
+        DrawWidgets(dpi);
         DrawTabImages(dpi);
 
         DrawTextBasic(
-            *dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PAGE_BACKGROUND].top + 3 }, STR_WINDOW_PRESERVATION_ORDER);
+            dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_PAGE_BACKGROUND].top + 3 }, STR_WINDOW_PRESERVATION_ORDER);
     }
 
     /**
      *
      *  rct2: 0x0067236F
      */
-    void OnScrollDrawRides(DrawPixelInfo* dpi, int32_t scrollIndex)
+    void OnScrollDrawRides(DrawPixelInfo& dpi, int32_t scrollIndex)
     {
         int32_t colour = ColourMapA[colours[1]].mid_light;
-        GfxFillRect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } }, colour);
+        GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
 
         for (int32_t i = 0; i < no_list_items; i++)
         {
             int32_t y = i * 12;
 
-            if (y + 12 < dpi->y || y >= dpi->y + dpi->height)
+            if (y + 12 < dpi.y || y >= dpi.y + dpi.height)
                 continue;
 
             // Checkbox
@@ -1139,7 +1139,7 @@ private:
                 {
                     auto darkness = stringId == STR_WINDOW_COLOUR_2_STRINGID ? TextDarkness::ExtraDark : TextDarkness::Dark;
                     GfxDrawString(
-                        *dpi, { 2, y }, static_cast<const char*>(CheckBoxMarkString),
+                        dpi, { 2, y }, static_cast<const char*>(CheckBoxMarkString),
                         { static_cast<colour_t>(colours[1] & 0x7F), FontStyle::Medium, darkness });
                 }
 
@@ -1147,7 +1147,7 @@ private:
 
                 Formatter ft;
                 currentRide->FormatNameTo(ft);
-                DrawTextBasic(*dpi, { 15, y }, stringId, ft);
+                DrawTextBasic(dpi, { 15, y }, stringId, ft);
             }
         }
     }

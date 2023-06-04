@@ -13,7 +13,6 @@
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../localisation/Localisation.h"
 #include "../world/Banner.h"
 
@@ -25,7 +24,7 @@ void StationObject::Load()
     auto numImages = GetImageTable().GetCount();
     if (numImages != 0)
     {
-        BaseImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+        BaseImageId = LoadImages();
 
         uint32_t shelterOffset = (Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT) ? 32 : 16;
         if (numImages > shelterOffset)
@@ -38,7 +37,7 @@ void StationObject::Load()
 void StationObject::Unload()
 {
     LanguageFreeObjectString(NameStringId);
-    GfxObjectFreeImages(BaseImageId, GetImageTable().GetCount());
+    UnloadImages();
 
     NameStringId = 0;
     BaseImageId = ImageIndexUndefined;
@@ -64,16 +63,16 @@ void StationObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t heigh
         imageId = imageId.WithSecondary(colour1);
     }
 
-    GfxDrawSprite(&dpi, imageId, screenCoords);
+    GfxDrawSprite(dpi, imageId, screenCoords);
     if (Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
     {
-        GfxDrawSprite(&dpi, tImageId, screenCoords);
+        GfxDrawSprite(dpi, tImageId, screenCoords);
     }
 
-    GfxDrawSprite(&dpi, imageId.WithIndexOffset(4), screenCoords);
+    GfxDrawSprite(dpi, imageId.WithIndexOffset(4), screenCoords);
     if (Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
     {
-        GfxDrawSprite(&dpi, tImageId.WithIndexOffset(4), screenCoords);
+        GfxDrawSprite(dpi, tImageId.WithIndexOffset(4), screenCoords);
     }
 }
 

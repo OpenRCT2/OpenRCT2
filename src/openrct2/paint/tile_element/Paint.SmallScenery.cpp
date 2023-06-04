@@ -277,7 +277,7 @@ static void PaintSmallSceneryBody(
                 frame = (frame >> delay) & sceneryEntry->animation_mask;
 
                 auto imageIndex = 0;
-                if (frame < sceneryEntry->num_frames)
+                if (frame < sceneryEntry->FrameOffsetCount)
                 {
                     imageIndex = sceneryEntry->frame_offsets[frame];
                 }
@@ -344,11 +344,11 @@ void PaintSmallScenery(PaintSession& session, uint8_t direction, int32_t height,
     if (sceneryElement.IsGhost())
     {
         session.InteractionType = ViewportInteractionItem::None;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
     else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&sceneryElement)))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
 
     PaintSmallSceneryBody(session, direction, height, sceneryElement, sceneryEntry, imageTemplate);

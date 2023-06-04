@@ -29,6 +29,7 @@ constexpr static StringId SetVehicleTypeErrorTitle[] = {
     STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL,
     STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL,
     STR_RIDE_SET_VEHICLE_TYPE_FAIL,
+    STR_RIDE_SET_VEHICLE_REVERSED_FAIL,
 };
 
 RideSetVehicleAction::RideSetVehicleAction(RideId rideIndex, RideSetVehicleType type, uint16_t value, uint8_t colour)
@@ -87,6 +88,7 @@ GameActions::Result RideSetVehicleAction::Query() const
     {
         case RideSetVehicleType::NumTrains:
         case RideSetVehicleType::NumCarsPerTrain:
+        case RideSetVehicleType::TrainsReversed:
             break;
         case RideSetVehicleType::RideEntry:
         {
@@ -182,6 +184,15 @@ GameActions::Result RideSetVehicleAction::Execute() const
                 ride->proposed_num_cars_per_train = std::clamp(
                     ride->proposed_num_cars_per_train, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
             }
+            break;
+        }
+        case RideSetVehicleType::TrainsReversed:
+        {
+            RideClearForConstruction(*ride);
+            ride->RemovePeeps();
+            ride->vehicle_change_timeout = 100;
+
+            ride->SetLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS, _value);
             break;
         }
 

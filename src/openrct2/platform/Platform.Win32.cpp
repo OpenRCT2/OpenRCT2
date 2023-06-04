@@ -786,13 +786,6 @@ namespace Platform
         return !path.empty() ? Path::Combine(path, font.filename) : std::string();
     }
 
-    bool EnsureDirectoryExists(u8string_view path)
-    {
-        auto wPath = String::ToWideChar(path);
-        auto success = CreateDirectoryW(wPath.c_str(), nullptr);
-        return success != FALSE || GetLastError() == ERROR_ALREADY_EXISTS;
-    }
-
     bool LockSingleInstance()
     {
         // Check if operating system mutex exists

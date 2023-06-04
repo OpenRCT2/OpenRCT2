@@ -265,7 +265,7 @@ struct Ride
     uint16_t vehicle_change_timeout;
     uint8_t num_block_brakes;
     uint8_t lift_hill_speed;
-    uint16_t guests_favourite;
+    uint32_t guests_favourite;
     uint32_t lifecycle_flags;
     uint16_t total_air_time;
     StationIndex current_test_station;
@@ -304,7 +304,7 @@ private:
     void Update();
     void UpdateQueueLength(StationIndex stationIndex);
     ResultWithMessage CreateVehicles(const CoordsXYE& element, bool isApplying);
-    void MoveTrainsToBlockBrakes(TrackElement* firstBlock);
+    void MoveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackElement& firstBlock);
     money64 CalculateIncomePerHour() const;
     void ChainQueues() const;
     void ConstructMissingEntranceOrExit() const;
@@ -327,6 +327,7 @@ public:
 
     void SetNumTrains(int32_t numTrains);
     void SetNumCarsPerVehicle(int32_t numCarsPerVehicle);
+    void SetReversedTrains(bool reversedTrains);
     void UpdateMaxVehicles();
     void UpdateNumberOfCircuits();
 
@@ -455,6 +456,7 @@ enum
     RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED = 1 << 19, // Not used anymore
     RIDE_LIFECYCLE_FIXED_RATINGS = 1 << 20,        // When set, the ratings will not be updated (useful for hacked rides).
     RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS = 1 << 21,
+    RIDE_LIFECYCLE_REVERSED_TRAINS = 1 << 22,
 };
 
 // Constants used by the ride_type->flags property at 0x008
@@ -1066,6 +1068,8 @@ money64 RideEntranceExitPlaceGhost(
 
 ResultWithMessage RideAreAllPossibleEntrancesAndExitsBuilt(const Ride& ride);
 void RideFixBreakdown(Ride& ride, int32_t reliabilityIncreaseFactor);
+
+void BlockBrakeSetLinkedBrakesClosed(const CoordsXYZ& vehicleTrackLocation, TrackElement& tileElement, bool isOpen);
 
 uint8_t RideEntryGetVehicleAtPosition(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position);
 void RideUpdateVehicleColours(const Ride& ride);

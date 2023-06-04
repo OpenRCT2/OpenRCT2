@@ -46,7 +46,7 @@ enum : uint32_t
     CAR_ENTRY_FLAG_REVERSER_BOGIE = 1 << 4,
     CAR_ENTRY_FLAG_REVERSER_PASSENGER_CAR = 1 << 5,
     CAR_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET = 1 << 6, // Set on vehicles that support running inverted for extended periods
-                                                     // of time, i.e. the Flying, Lay-down and Multi-dimension RCs.
+    // of time, i.e. the Flying, Lay-down and Multi-dimension RCs.
     CAR_ENTRY_FLAG_DODGEM_INUSE_LIGHTS = 1
         << 7, // When set the vehicle has an additional frame for when in use. Used only by dodgems.
     CAR_ENTRY_FLAG_ALLOW_DOORS_DEPRECATED = 1 << 8, // Not used any more - every vehicle will now work with doors.
@@ -56,30 +56,30 @@ enum : uint32_t
         << 11, // Instead of the default 32 rotation frames. Only used for boat hire and works only for non sloped sprites.
     CAR_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES = 1
         << 12, // Setting this will cause the game to set carEntry->num_vertical_frames to
-               // carEntry->num_vertical_frames_override, rather than determining it itself.
+    // carEntry->num_vertical_frames_override, rather than determining it itself.
     CAR_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET = 1
         << 13, // Used together with HAS_INVERTED_SPRITE_SET and RECALCULATE_SPRITE_BOUNDS and includes the inverted sprites
-               // into the function that recalculates the sprite bounds.
+    // into the function that recalculates the sprite bounds.
     CAR_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES = 1
         << 14, // 16x additional frames for vehicle. A spinning item with additional frames must always face forward to
-               // load/unload. Spinning without can load/unload at 4 rotations.
+    // load/unload. Spinning without can load/unload at 4 rotations.
     CAR_ENTRY_FLAG_LIFT = 1 << 15,
     CAR_ENTRY_FLAG_ENABLE_TRIM_COLOUR = 1 << 16,
     CAR_ENTRY_FLAG_SWINGING = 1 << 17,
     CAR_ENTRY_FLAG_SPINNING = 1 << 18,
     CAR_ENTRY_FLAG_POWERED = 1 << 19,
-    CAR_ENTRY_FLAG_RIDERS_SCREAM = 1 << 20,
+    CAR_ENTRY_FLAG_RIDERS_SCREAM = 1 << 20,   // Only valid for front/default car of train
     CAR_ENTRY_FLAG_SUSPENDED_SWING = 1 << 21, // Suspended swinging coaster, or bobsleigh if SLIDE_SWING is also enabled.
     CAR_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION = 1 << 22,
     CAR_ENTRY_FLAG_VEHICLE_ANIMATION = 1 << 23, // Set on animated vehicles like the Multi-dimension coaster trains,
-                                                // Miniature Railway locomotives and Helicycles.
-    CAR_ENTRY_FLAG_RIDER_ANIMATION = 1 << 24,   // Set when the animation updates rider sprite positions.
+    // Miniature Railway locomotives and Helicycles.
+    CAR_ENTRY_FLAG_RIDER_ANIMATION = 1 << 24, // Set when the animation updates rider sprite positions.
     CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING = 1 << 25,
     CAR_ENTRY_FLAG_LOADING_WAYPOINTS = 1
         << 26, // Peep loading positions have x and y coordinates. Normal rides just have offsets.
     CAR_ENTRY_FLAG_SLIDE_SWING = 1
         << 27, // Set on dingy slides. They have there own swing value calculations and have a different amount of images.
-               // Also set on bobsleighs together with the SUSPENDED_SWING flag.
+    // Also set on bobsleighs together with the SUSPENDED_SWING flag.
     CAR_ENTRY_FLAG_CHAIRLIFT = 1 << 28,
     CAR_ENTRY_FLAG_WATER_RIDE = 1 << 29, // Set on rides where water would provide continuous propulsion.
     CAR_ENTRY_FLAG_GO_KART = 1 << 30,
@@ -107,6 +107,10 @@ enum : uint32_t
     CAR_SPRITE_FLAG_USE_4_ROTATION_FRAMES = (1 << 15),
 };
 
+/*
+ * When adding a sprite group, add multiplier to SpriteGroupMultiplier in RideObject.cpp and add sprite group data to cable
+ * lifthill vehicle in RideData.cpp and update the SpriteGroups interface in distribution/openrct2.d.ts
+ */
 enum class SpriteGroupType : uint8_t
 {
     SlopeFlat = 0,
@@ -144,20 +148,22 @@ enum class SpriteGroupType : uint8_t
     Slopes60Banked22,
     Corkscrews,
     RestraintAnimation,
-    CurvedLiftHill,
+    CurvedLiftHillUp,
+    CurvedLiftHillDown,
     Count
 };
 
 static const std::string SpriteGroupNames[] = {
-    "slopeFlat",        "slopes12",         "slopes25",           "slopes42",
-    "slopes60",         "slopes75",         "slopes90",           "slopesLoop",
-    "slopeInverted",    "slopes8",          "slopes16",           "slopes50",
-    "flatBanked22",     "flatBanked45",     "flatBanked67",       "flatBanked90",
-    "inlineTwists",     "slopes12Banked22", "slopes8Banked22",    "slopes25Banked22",
-    "slopes8Banked45",  "slopes16Banked22", "slopes16Banked45",   "slopes25Banked45",
-    "slopes12Banked45", "slopes25Banked67", "slopes25Banked90",   "slopes25InlineTwists",
-    "slopes42Banked22", "slopes42Banked45", "slopes42Banked67",   "slopes42Banked90",
-    "slopes60Banked22", "corkscrews",       "restraintAnimation", "curvedLiftHill",
+    "slopeFlat",          "slopes12",         "slopes25",           "slopes42",
+    "slopes60",           "slopes75",         "slopes90",           "slopesLoop",
+    "slopeInverted",      "slopes8",          "slopes16",           "slopes50",
+    "flatBanked22",       "flatBanked45",     "flatBanked67",       "flatBanked90",
+    "inlineTwists",       "slopes12Banked22", "slopes8Banked22",    "slopes25Banked22",
+    "slopes8Banked45",    "slopes16Banked22", "slopes16Banked45",   "slopes25Banked45",
+    "slopes12Banked45",   "slopes25Banked67", "slopes25Banked90",   "slopes25InlineTwists",
+    "slopes42Banked22",   "slopes42Banked45", "slopes42Banked67",   "slopes42Banked90",
+    "slopes60Banked22",   "corkscrews",       "restraintAnimation", "curvedLiftHillUp",
+    "curvedLiftHillDown",
 };
 static_assert(std::size(SpriteGroupNames) == EnumValue(SpriteGroupType::Count));
 
@@ -193,7 +199,7 @@ struct CarEntry
     uint8_t no_seating_rows;
     uint8_t spinning_inertia;
     uint8_t spinning_friction;
-    OpenRCT2::Audio::SoundId friction_sound_id;
+    OpenRCT2::Audio::SoundId friction_sound_id; // Only valid for front/default car of train
     uint8_t ReversedCarIndex; // When the car is reversed (using a turntable or reverser), it will be changed to this car.
     uint8_t sound_range;
     uint8_t double_sound_frequency; // (Doubles the velocity when working out the sound frequency {used on go karts})
@@ -203,7 +209,7 @@ struct CarEntry
     uint8_t effect_visual;
     uint8_t draw_order;
     uint8_t num_vertical_frames_override; // A custom number that can be used rather than letting RCT2 determine it.
-                                          // Needs the CAR_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
+    // Needs the CAR_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
     uint8_t peep_loading_waypoint_segments;
     uint16_t AnimationSpeed;
     uint8_t AnimationFrames;

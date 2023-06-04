@@ -180,7 +180,7 @@ static void WildMouseTrackFlat(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(
@@ -241,7 +241,7 @@ static void WildMouseTrack25DegUp(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
@@ -282,11 +282,11 @@ static void WildMouseTrack60DegUp(
     {
         if (direction == 0 || direction == 3)
         {
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -33, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, -33, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         else
         {
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
     if (direction == 0 || direction == 3)
@@ -319,7 +319,7 @@ static void WildMouseTrackFlatTo25DegUp(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -4, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, -4, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
@@ -366,7 +366,7 @@ static void WildMouseTrack25DegUpTo60DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -13, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, -13, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
@@ -413,7 +413,7 @@ static void WildMouseTrack60DegUpTo25DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -21, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, -21, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
@@ -445,7 +445,7 @@ static void WildMouseTrack25DegUpToFlat(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -7, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, -7, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
@@ -543,7 +543,7 @@ static void WildMouseTrackRightQuarterTurn3(
     {
         case 0:
         case 3:
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -604,7 +604,7 @@ static void WildMouseTrackRightQuarterTurn325DegDown(
     {
         case 0:
         case 3:
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -669,16 +669,18 @@ static void WildMouseTrackRightQuarterTurn325DegUp(
     switch (trackSequence)
     {
         case 0:
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             if (direction == 2)
             {
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, 4, -11, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
             else
             {
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, 4, -9, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
             break;
     }
@@ -742,7 +744,7 @@ static void WildMouseTrackLeftQuarterTurn1(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 6, height }, { 24, 24, 2 } });
             break;
     }
-    MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
     TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -789,7 +791,7 @@ static void WildMouseTrackFlatTo60DegUp(
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -5, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, -5, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     if (direction == 0 || direction == 3)
     {
@@ -838,11 +840,11 @@ static void WildMouseTrack60DegUpToFlat(
     {
         if (direction == 0 || direction == 3)
         {
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, -17, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, -17, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         else
         {
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
     if (direction == 0 || direction == 3)
@@ -883,7 +885,7 @@ static void WildMouseTrackBrakes(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(
@@ -907,7 +909,7 @@ static void WildMouseTrackRotationControlToggle(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(
@@ -925,7 +927,7 @@ static void WildMouseTrackBlockBrakes(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(

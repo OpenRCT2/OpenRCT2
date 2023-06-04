@@ -283,7 +283,7 @@ private:
         auto previousWidget = widgets[WIDX_PREVIOUS_IMAGE];
         auto leftTop = windowPos + ScreenCoordsXY{ previousWidget.left, previousWidget.top };
         auto rightBottom = windowPos + ScreenCoordsXY{ previousWidget.right, previousWidget.bottom };
-        GfxFilterRect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+        GfxFilterRect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
     }
 
     void DrawLeftButton(DrawPixelInfo& dpi)
@@ -292,10 +292,10 @@ private:
             + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 1, widgets[WIDX_PREVIOUS_IMAGE].top + 1 };
         const auto bottomRight = windowPos
             + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].right - 1, widgets[WIDX_PREVIOUS_IMAGE].bottom - 1 };
-        GfxFillRectInset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
 
         GfxDrawSprite(
-            &dpi, ImageId(SPR_PREVIOUS),
+            dpi, ImageId(SPR_PREVIOUS),
             windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 6, widgets[WIDX_PREVIOUS_IMAGE].top + 6 });
 
         colour_t textColour = NOT_TRANSLUCENT(colours[1]);
@@ -321,7 +321,7 @@ private:
         auto nextWidget = widgets[WIDX_NEXT_IMAGE];
         auto leftTop = windowPos + ScreenCoordsXY{ nextWidget.left, nextWidget.top };
         auto rightBottom = windowPos + ScreenCoordsXY{ nextWidget.right, nextWidget.bottom };
-        GfxFilterRect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+        GfxFilterRect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
     }
 
     void DrawRightButton(DrawPixelInfo& dpi)
@@ -329,10 +329,10 @@ private:
         const auto topLeft = windowPos + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].left + 1, widgets[WIDX_NEXT_IMAGE].top + 1 };
         const auto bottomRight = windowPos
             + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].right - 1, widgets[WIDX_NEXT_IMAGE].bottom - 1 };
-        GfxFillRectInset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
 
         GfxDrawSprite(
-            &dpi, ImageId(SPR_NEXT),
+            dpi, ImageId(SPR_NEXT),
             windowPos + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].right - 29, widgets[WIDX_NEXT_IMAGE].top + 6 });
 
         colour_t textColour = NOT_TRANSLUCENT(colours[1]);

@@ -34,9 +34,9 @@ Vehicle* CableLiftSegmentCreate(
     current->SubType = head ? Vehicle::Type::Head : Vehicle::Type::Tail;
     current->var_44 = var_44;
     current->remaining_distance = remaining_distance;
-    current->sprite_width = 10;
-    current->sprite_height_negative = 10;
-    current->sprite_height_positive = 10;
+    current->SpriteData.Width = 10;
+    current->SpriteData.HeightMin = 10;
+    current->SpriteData.HeightMax = 10;
     current->mass = 100;
     current->num_seats = 0;
     current->speed = 20;
@@ -63,7 +63,7 @@ Vehicle* CableLiftSegmentCreate(
         peep = EntityId::GetNull();
     }
     current->TrackSubposition = VehicleTrackSubposition::Default;
-    current->sprite_direction = direction << 3;
+    current->Orientation = direction << 3;
 
     z = z * COORDS_Z_STEP;
     current->TrackLocation = { x, y, z };
@@ -71,7 +71,7 @@ Vehicle* CableLiftSegmentCreate(
 
     current->MoveTo({ 16, 16, z });
     current->SetTrackType(TrackElemType::CableLiftHill);
-    current->SetTrackDirection(current->sprite_direction >> 3);
+    current->SetTrackDirection(current->Orientation >> 3);
     current->track_progress = 164;
     current->Flags = VehicleFlags::CollisionDisabled;
     current->SetState(Vehicle::Status::MovingToEndOfStation, 0);
@@ -285,7 +285,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
         _vehicleCurPosition.y = nextVehiclePosition.y;
         _vehicleCurPosition.z = nextVehiclePosition.z;
 
-        sprite_direction = moveInfo->direction;
+        Orientation = moveInfo->direction;
         bank_rotation = moveInfo->bank_rotation;
         Pitch = moveInfo->Pitch;
 
@@ -351,7 +351,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
         _vehicleCurPosition.y = unk.y;
         _vehicleCurPosition.z = unk.z;
 
-        sprite_direction = moveInfo->direction;
+        Orientation = moveInfo->direction;
         bank_rotation = moveInfo->bank_rotation;
         Pitch = moveInfo->Pitch;
 

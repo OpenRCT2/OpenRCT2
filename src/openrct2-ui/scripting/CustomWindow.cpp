@@ -49,7 +49,7 @@ namespace OpenRCT2::Ui::Windows
 
     static Widget CustomDefaultWidgets[] = {
         { WindowWidgetType::Frame, 0, 0, 0, 0, 0, 0xFFFFFFFF, STR_NONE },                  // panel / background
-        { WindowWidgetType::Caption, 0, 1, 0, 1, 14, STR_STRING, STR_WINDOW_TITLE_TIP },   // title bar
+        { WindowWidgetType::Caption, 0, 0, 0, 1, 14, STR_STRING, STR_WINDOW_TITLE_TIP },   // title bar
         { WindowWidgetType::CloseBox, 0, 0, 0, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP }, // close x button
         { WindowWidgetType::Resize, 1, 0, 0, 14, 0, 0xFFFFFFFF, STR_NONE },                // content panel
     };
@@ -464,7 +464,7 @@ namespace OpenRCT2::Ui::Windows
             // Since the plugin may alter widget positions and sizes during an update event,
             // we need to force an update for all list view scrollbars
             WidgetIndex widgetIndex = 0;
-            for (auto widget = widgets; widget->type != WindowWidgetType::Empty; widget++)
+            for (auto widget = widgets; widget->type != WindowWidgetType::Last; widget++)
             {
                 if (widget->type == WindowWidgetType::Scroll)
                 {
@@ -476,13 +476,9 @@ namespace OpenRCT2::Ui::Windows
 
         void OnPrepareDraw() override
         {
-            widgets[WIDX_BACKGROUND].right = width - 1;
-            widgets[WIDX_BACKGROUND].bottom = height - 1;
-            widgets[WIDX_TITLE].right = width - 2;
-            widgets[WIDX_CLOSE].left = width - 13;
-            widgets[WIDX_CLOSE].right = width - 3;
-            widgets[WIDX_CONTENT_PANEL].right = width - 1;
-            widgets[WIDX_CONTENT_PANEL].bottom = height - 1;
+            // This has to be called to ensure the window frame is correctly initialised - not doing this will
+            // cause an assertion to be hit.
+            ResizeFrameWithPage();
             widgets[WIDX_CLOSE].text = (colours[0] & COLOUR_FLAG_TRANSLUCENT) ? STR_CLOSE_X_WHITE : STR_CLOSE_X;
 
             // Having the content panel visible for transparent windows makes the borders darker than they should be
@@ -530,14 +526,14 @@ namespace OpenRCT2::Ui::Windows
 
         void OnDraw(DrawPixelInfo& dpi) override
         {
-            WindowDrawWidgets(*this, &dpi);
+            WindowDrawWidgets(*this, dpi);
             DrawTabImages(dpi);
             if (viewport != nullptr)
             {
                 auto widgetIndex = GetViewportWidgetIndex();
                 if (WidgetIsVisible(*this, widgetIndex.value_or(false)))
                 {
-                    WindowDrawViewport(&dpi, *this);
+                    WindowDrawViewport(dpi, *this);
                 }
             }
         }
@@ -554,7 +550,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     DrawPixelInfo widgetDpi;
                     if (ClipDrawPixelInfo(
-                            &widgetDpi, &dpi, { windowPos.x + widget.left, windowPos.y + widget.top }, widget.width(),
+                            widgetDpi, dpi, { windowPos.x + widget.left, windowPos.y + widget.top }, widget.width(),
                             widget.height()))
                     {
                         auto ctx = onDraw.context();
@@ -680,7 +676,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (widgetDesc->Type == "colourpicker")
                 {
-                    UpdateWidgetColour(this, widgetIndex, dropdownIndex);
+                    UpdateWidgetColour(this, widgetIndex, ColourDropDownIndexToColour(dropdownIndex));
                 }
                 else if (widgetDesc->Type == "dropdown")
                 {
@@ -751,7 +747,7 @@ namespace OpenRCT2::Ui::Windows
             const auto& info = GetInfo(this);
             if (scrollIndex < static_cast<int32_t>(info.ListViews.size()))
             {
-                info.ListViews[scrollIndex].Paint(this, &dpi, &scrolls[scrollIndex]);
+                info.ListViews[scrollIndex].Paint(this, dpi, &scrolls[scrollIndex]);
             }
         }
 
@@ -866,7 +862,7 @@ namespace OpenRCT2::Ui::Windows
                         auto imageOffset = frame % tab.imageFrameCount;
                         image = image.WithIndex(image.GetIndex() + imageOffset);
                     }
-                    GfxDrawSprite(&dpi, image, leftTop);
+                    GfxDrawSprite(dpi, image, leftTop);
                 }
                 tabIndex++;
             }

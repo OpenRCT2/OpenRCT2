@@ -377,6 +377,11 @@ public:
         }
     }
 
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
+
 private:
     uint8_t _landRightsMode;
     money64 _landRightsCost;

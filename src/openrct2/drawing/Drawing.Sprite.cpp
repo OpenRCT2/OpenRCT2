@@ -444,7 +444,7 @@ static std::optional<PaletteMap> FASTCALL GfxDrawSpriteGetPalette(ImageId imageI
     return paletteMap;
 }
 
-void FASTCALL GfxDrawSpriteSoftware(DrawPixelInfo* dpi, const ImageId imageId, const ScreenCoordsXY& spriteCoords)
+void FASTCALL GfxDrawSpriteSoftware(DrawPixelInfo& dpi, const ImageId imageId, const ScreenCoordsXY& spriteCoords)
 {
     if (imageId.HasValue())
     {
@@ -467,7 +467,7 @@ void FASTCALL GfxDrawSpriteSoftware(DrawPixelInfo* dpi, const ImageId imageId, c
  * y (dx)
  */
 void FASTCALL GfxDrawSpritePaletteSetSoftware(
-    DrawPixelInfo* dpi, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
+    DrawPixelInfo& dpi, const ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
     int32_t x = coords.x;
     int32_t y = coords.y;
@@ -478,30 +478,30 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
         return;
     }
 
-    if (dpi->zoom_level > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE))
+    if (dpi.zoom_level > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE))
     {
-        DrawPixelInfo zoomed_dpi = *dpi;
-        zoomed_dpi.bits = dpi->bits;
-        zoomed_dpi.x = dpi->x >> 1;
-        zoomed_dpi.y = dpi->y >> 1;
-        zoomed_dpi.height = dpi->height >> 1;
-        zoomed_dpi.width = dpi->width >> 1;
-        zoomed_dpi.pitch = dpi->pitch;
-        zoomed_dpi.zoom_level = dpi->zoom_level - 1;
+        DrawPixelInfo zoomed_dpi = dpi;
+        zoomed_dpi.bits = dpi.bits;
+        zoomed_dpi.x = dpi.x >> 1;
+        zoomed_dpi.y = dpi.y >> 1;
+        zoomed_dpi.height = dpi.height >> 1;
+        zoomed_dpi.width = dpi.width >> 1;
+        zoomed_dpi.pitch = dpi.pitch;
+        zoomed_dpi.zoom_level = dpi.zoom_level - 1;
 
         const auto spriteCoords = ScreenCoordsXY{ x >> 1, y >> 1 };
         GfxDrawSpritePaletteSetSoftware(
-            &zoomed_dpi, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), spriteCoords, paletteMap);
+            zoomed_dpi, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), spriteCoords, paletteMap);
         return;
     }
 
-    if (dpi->zoom_level > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_NO_ZOOM_DRAW))
+    if (dpi.zoom_level > ZoomLevel{ 0 } && (g1->flags & G1_FLAG_NO_ZOOM_DRAW))
     {
         return;
     }
 
     // Its used super often so we will define it to a separate variable.
-    const auto zoom_level = dpi->zoom_level;
+    const auto zoom_level = dpi.zoom_level;
     const int32_t zoom_mask = zoom_level > ZoomLevel{ 0 } ? zoom_level.ApplyTo(0xFFFFFFFF) : 0xFFFFFFFF;
 
     if (zoom_level > ZoomLevel{ 0 } && g1->flags & G1_FLAG_RLE_COMPRESSION)
@@ -520,11 +520,11 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     // the zoom mask on the y coordinate but does on x.
     if (g1->flags & G1_FLAG_RLE_COMPRESSION)
     {
-        dest_start_y -= dpi->y;
+        dest_start_y -= dpi.y;
     }
     else
     {
-        dest_start_y = (dest_start_y & zoom_mask) - dpi->y;
+        dest_start_y = (dest_start_y & zoom_mask) - dpi.y;
     }
     // This is the start y coordinate on the source
     int32_t source_start_y = 0;
@@ -555,11 +555,11 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
 
     int32_t dest_end_y = dest_start_y + height;
 
-    if (dest_end_y > dpi->height)
+    if (dest_end_y > dpi.height)
     {
         // If the destination y is outside of the drawing
         // image reduce the height of the image
-        height -= dest_end_y - dpi->height;
+        height -= dest_end_y - dpi.height;
     }
     // If the image no longer has anything to draw
     if (height <= 0)
@@ -573,7 +573,7 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
     // This is the source start x coordinate
     int32_t source_start_x = 0;
     // This is the destination start x coordinate
-    int16_t dest_start_x = ((x + g1->x_offset + ~zoom_mask) & zoom_mask) - dpi->x;
+    int16_t dest_start_x = ((x + g1->x_offset + ~zoom_mask) & zoom_mask) - dpi.x;
 
     if (dest_start_x < 0)
     {
@@ -600,11 +600,11 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
 
     int32_t dest_end_x = dest_start_x + width;
 
-    if (dest_end_x > dpi->width)
+    if (dest_end_x > dpi.width)
     {
         // If the destination x is outside of the drawing area
         // reduce the image width.
-        width -= dest_end_x - dpi->width;
+        width -= dest_end_x - dpi.width;
         // If there is no image to draw.
         if (width <= 0)
             return;
@@ -612,12 +612,12 @@ void FASTCALL GfxDrawSpritePaletteSetSoftware(
 
     dest_start_x = zoom_level.ApplyInversedTo(dest_start_x);
 
-    uint8_t* dest_pointer = dpi->bits;
+    uint8_t* dest_pointer = dpi.bits;
     // Move the pointer to the start point of the destination
-    dest_pointer += (zoom_level.ApplyInversedTo(dpi->width) + dpi->pitch) * dest_start_y + dest_start_x;
+    dest_pointer += (zoom_level.ApplyInversedTo(dpi.width) + dpi.pitch) * dest_start_y + dest_start_x;
 
     DrawSpriteArgs args(imageId, paletteMap, *g1, source_start_x, source_start_y, width, height, dest_pointer);
-    GfxSpriteToBuffer(*dpi, args);
+    GfxSpriteToBuffer(dpi, args);
 }
 
 void FASTCALL GfxSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
@@ -639,7 +639,7 @@ void FASTCALL GfxSpriteToBuffer(DrawPixelInfo& dpi, const DrawSpriteArgs& args)
  *  rct2: 0x00681DE2
  */
 void FASTCALL GfxDrawSpriteRawMaskedSoftware(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage)
+    DrawPixelInfo& dpi, const ScreenCoordsXY& scrCoords, const ImageId maskImage, const ImageId colourImage)
 {
     int32_t left, top, right, bottom, width, height;
     auto imgMask = GfxGetG1Element(maskImage);
@@ -656,7 +656,7 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
         return;
     }
 
-    if (dpi->zoom_level != ZoomLevel{ 0 })
+    if (dpi.zoom_level != ZoomLevel{ 0 })
     {
         // TODO: Implement other zoom levels (probably not used though)
         assert(false);
@@ -668,10 +668,10 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
 
     auto offsetCoords = scrCoords + ScreenCoordsXY{ imgMask->x_offset, imgMask->y_offset };
 
-    left = std::max<int32_t>(dpi->x, offsetCoords.x);
-    top = std::max<int32_t>(dpi->y, offsetCoords.y);
-    right = std::min(dpi->x + dpi->width, offsetCoords.x + width);
-    bottom = std::min(dpi->y + dpi->height, offsetCoords.y + height);
+    left = std::max<int32_t>(dpi.x, offsetCoords.x);
+    top = std::max<int32_t>(dpi.y, offsetCoords.y);
+    right = std::min(dpi.x + dpi.width, offsetCoords.x + width);
+    bottom = std::min(dpi.y + dpi.height, offsetCoords.y + height);
 
     width = right - left;
     height = bottom - top;
@@ -683,11 +683,11 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
 
     uint8_t const* maskSrc = imgMask->offset + (skipY * imgMask->width) + skipX;
     uint8_t const* colourSrc = imgColour->offset + (skipY * imgColour->width) + skipX;
-    uint8_t* dst = dpi->bits + (left - dpi->x) + ((top - dpi->y) * (dpi->width + dpi->pitch));
+    uint8_t* dst = dpi.bits + (left - dpi.x) + ((top - dpi.y) * (dpi.width + dpi.pitch));
 
     int32_t maskWrap = imgMask->width - width;
     int32_t colourWrap = imgColour->width - width;
-    int32_t dstWrap = ((dpi->width + dpi->pitch) - width);
+    int32_t dstWrap = ((dpi.width + dpi.pitch) - width);
 
     MaskFn(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
 }

@@ -11,7 +11,7 @@
 
 #include "../Game.h"
 #include "../core/DataSerialiser.h"
-#include "../object/FootpathItemEntry.h"
+#include "../object/PathAdditionEntry.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
@@ -142,10 +142,10 @@ void JumpingFountain::Create(
     {
         jumpingFountain->Iteration = iteration;
         jumpingFountain->FountainFlags = newFlags;
-        jumpingFountain->sprite_direction = direction << 3;
-        jumpingFountain->sprite_width = 33;
-        jumpingFountain->sprite_height_negative = 36;
-        jumpingFountain->sprite_height_positive = 12;
+        jumpingFountain->Orientation = direction << 3;
+        jumpingFountain->SpriteData.Width = 33;
+        jumpingFountain->SpriteData.HeightMin = 36;
+        jumpingFountain->SpriteData.HeightMax = 12;
         jumpingFountain->MoveTo(newLoc);
         jumpingFountain->FountainType = newType;
         jumpingFountain->NumTicksAlive = 0;
@@ -204,7 +204,7 @@ JumpingFountainType JumpingFountain::GetType() const
 void JumpingFountain::AdvanceAnimation()
 {
     const JumpingFountainType newType = GetType();
-    const int32_t direction = (sprite_direction >> 3) & 7;
+    const int32_t direction = (Orientation >> 3) & 7;
     const CoordsXY newLoc = CoordsXY{ x, y } + CoordsDirectionDelta[direction];
 
     int32_t availableDirections = 0;
@@ -249,8 +249,8 @@ void JumpingFountain::AdvanceAnimation()
 
 bool JumpingFountain::IsJumpingFountain(const JumpingFountainType newType, const CoordsXYZ& newLoc)
 {
-    const int32_t pathBitFlagMask = newType == JumpingFountainType::Snow ? PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW
-                                                                         : PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER;
+    const int32_t pathAdditionFlagMask = newType == JumpingFountainType::Snow ? PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW
+                                                                              : PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER;
 
     TileElement* tileElement = MapGetFirstElementAt(newLoc);
     if (tileElement == nullptr)
@@ -266,8 +266,8 @@ bool JumpingFountain::IsJumpingFountain(const JumpingFountainType newType, const
         if (!tileElement->AsPath()->HasAddition())
             continue;
 
-        auto* pathBitEntry = tileElement->AsPath()->GetAdditionEntry();
-        if (pathBitEntry != nullptr && pathBitEntry->flags & pathBitFlagMask)
+        auto* pathAdditionEntry = tileElement->AsPath()->GetAdditionEntry();
+        if (pathAdditionEntry != nullptr && pathAdditionEntry->flags & pathAdditionFlagMask)
         {
             return true;
         }
@@ -278,7 +278,7 @@ bool JumpingFountain::IsJumpingFountain(const JumpingFountainType newType, const
 
 void JumpingFountain::GoToEdge(const CoordsXYZ& newLoc, const int32_t availableDirections) const
 {
-    int32_t direction = (sprite_direction >> 3) << 1;
+    int32_t direction = (Orientation >> 3) << 1;
     if (availableDirections & (1 << direction))
     {
         CreateNext(newLoc, direction);
@@ -318,7 +318,7 @@ void JumpingFountain::Bounce(const CoordsXYZ& newLoc, const int32_t availableDir
     Iteration++;
     if (Iteration < 8)
     {
-        int32_t direction = ((sprite_direction >> 3) ^ 2) << 1;
+        int32_t direction = ((Orientation >> 3) ^ 2) << 1;
         if (availableDirections & (1 << direction))
         {
             CreateNext(newLoc, direction);
@@ -339,7 +339,7 @@ void JumpingFountain::Split(const CoordsXYZ& newLoc, int32_t availableDirections
     if (Iteration < 3)
     {
         const auto newType = GetType();
-        int32_t direction = ((sprite_direction >> 3) ^ 2) << 1;
+        int32_t direction = ((Orientation >> 3) ^ 2) << 1;
         availableDirections &= ~(1 << direction);
         availableDirections &= ~(1 << (direction + 1));
 
@@ -417,7 +417,7 @@ void JumpingFountain::Paint(PaintSession& session, int32_t imageDirection) const
     // Fountain is firing anti clockwise
     bool reversed = (FountainFlags & FOUNTAIN_FLAG::DIRECTION);
     // Fountain rotation
-    bool rotated = (sprite_direction / 16) & 1;
+    bool rotated = (Orientation / 16) & 1;
     bool isAntiClockwise = (imageDirection / 2) & 1; // Clockwise or Anti-clockwise
 
     // These cancel each other out

@@ -149,6 +149,7 @@ static constexpr const WindowThemeDesc WindowThemeDescriptors[] =
     { WindowClass::CancelCampaignPrompt,        "WD_CANCEL_CAMPAIGN",                STR_THEMES_CANCEL_CAMPAIGN_PROMPT,                COLOURS_1(TRANSLUCENT(COLOUR_BORDEAUX_RED)                                                                                     ) },
     { WindowClass::KeyboardShortcutList,        "WC_KEYBOARD_SHORTCUT_LIST",         STR_THEMES_WINDOW_KEYBOARD_SHORTCUT_LIST,         COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
     { WindowClass::ChangeKeyboardShortcut,      "WC_CHANGE_KEYBOARD_SHORTCUT",       STR_THEMES_WINDOW_CHANGE_KEYBOARD_SHORTCUT,       COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
+    { WindowClass::ResetShortcutKeysPrompt,     "WC_RESET_SHORTCUT_KEYS_PROMPT",     STR_SHORTCUT_ACTION_RESET,                        COLOURS_1(TRANSLUCENT(COLOUR_BORDEAUX_RED)                                                                                     ) },
     { WindowClass::Map,                         "WC_MAP",                            STR_THEMES_WINDOW_MAP,                            COLOURS_2(COLOUR_DARK_GREEN,               COLOUR_DARK_BROWN                                                                   ) },
     { WindowClass::Banner,                      "WC_BANNER",                         STR_THEMES_WINDOW_BANNER,                         COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
     { WindowClass::EditorObjectSelection,       "WC_EDITOR_OBJECT_SELECTION",        STR_THEMES_WINDOW_EDITOR_OBJECT_SELECTION,        COLOURS_3(COLOUR_LIGHT_PURPLE,             COLOUR_GREY,                     COLOUR_GREY                                        ) },
@@ -537,12 +538,12 @@ namespace ThemeManager
         auto scanner = Path::ScanDirectory(themesPattern, true);
         while (scanner->Next())
         {
-            auto fileInfo = scanner->GetFileInfo();
-            auto name = Path::GetFileNameWithoutExtension(std::string(fileInfo->Name));
+            const auto& fileInfo = scanner->GetFileInfo();
+            auto name = Path::GetFileNameWithoutExtension(fileInfo.Name);
 
             AvailableTheme theme{};
             theme.Name = name;
-            theme.Path = GetThemeFileName(theme.Name);
+            theme.Path = GetThemeFileName(name);
             outThemes->push_back(std::move(theme));
 
             if (Path::Equals(CurrentThemePath, scanner->GetPath()))

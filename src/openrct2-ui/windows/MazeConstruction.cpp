@@ -107,7 +107,7 @@ public:
     void OnClose() override
     {
         RideConstructionInvalidateCurrentTrack();
-        ViewportSetVisibility(0);
+        ViewportSetVisibility(ViewportVisibility::Default);
 
         MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -162,6 +162,7 @@ public:
 
     void OnResize() override
     {
+        ResizeFrameWithPage();
         uint64_t disabledWidgets = 0;
         if (_rideConstructionState == RideConstructionState::Place)
         {
@@ -366,7 +367,7 @@ private:
             if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)
             {
                 ToolCancel();
-                if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+                if (!currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
                     WindowCloseByClass(WindowClass::RideConstruction);
             }
             else

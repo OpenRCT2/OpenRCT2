@@ -421,7 +421,7 @@ GameActions::Result TrackRemoveAction::Execute() const
         // If the removed tile is a station modify station properties.
         // Don't do this if the ride is simulating and the tile is a ghost to prevent desyncs.
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN
-            && !(ride->status == RideStatus::Simulating && tileElement->Flags & TILE_ELEMENT_FLAG_GHOST)
+            && (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) || (GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN))
             && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             const auto removeElementResult = TrackRemoveStationElement(

@@ -88,6 +88,7 @@ enum class WindowClass : uint8_t
     Transparency = 134,
     AssetPacks = 135,
     CancelCampaignPrompt = 136,
+    ResetShortcutKeysPrompt = 137,
 
     // Only used for colour schemes
     Staff = 220,

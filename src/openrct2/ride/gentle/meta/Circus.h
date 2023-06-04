@@ -24,10 +24,11 @@ constexpr const RideTypeDescriptor CircusRTD =
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::FlatTrack3x3),
     SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionCircus),
-    SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
-                     RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-                     RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT |
-                     RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_SINGLE_SESSION | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
+    SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
+                     RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
+                     RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
+                     RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_SINGLE_SESSION |
+                     RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::Circus)),
     SET_FIELD(DefaultMode, RideMode::Circus),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
@@ -38,7 +39,6 @@ constexpr const RideTypeDescriptor CircusRTD =
     SET_FIELD(Heights, { 12, 128, 3, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateCircus),
     SET_FIELD(RatingsMultipliers, { 20, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 62.50_GBP, 1.00_GBP, 1, }),
@@ -50,6 +50,15 @@ constexpr const RideTypeDescriptor CircusRTD =
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "circus"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(2, 10), RIDE_RATING(0, 30), RIDE_RATING(0, 0) },
+        9,
+        7,
+        false,
+        { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
+    }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::CircusStartRideMusicChannel),

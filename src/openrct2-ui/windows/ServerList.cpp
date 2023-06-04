@@ -33,6 +33,8 @@
 #    define WHEIGHT_MAX 800
 #    define ITEM_HEIGHT (3 + 9 + 3)
 
+constexpr size_t MaxPlayerNameLength = 32;
+
 enum
 {
     WIDX_BACKGROUND,
@@ -59,14 +61,14 @@ enum
 
 // clang-format off
 static Widget window_server_list_widgets[] = {
-    MakeWidget({  0,  0}, {341, 91}, WindowWidgetType::Frame,    WindowColour::Primary                                           ), // panel / background
-    MakeWidget({  1,  1}, {338, 14}, WindowWidgetType::Caption,  WindowColour::Primary,   STR_SERVER_LIST,   STR_WINDOW_TITLE_TIP), // title bar
-    MakeWidget({327,  2}, { 11, 12}, WindowWidgetType::CloseBox, WindowColour::Primary,   STR_CLOSE_X,       STR_CLOSE_WINDOW_TIP), // close x button
-    MakeWidget({100, 20}, {245, 12}, WindowWidgetType::TextBox,  WindowColour::Secondary                                         ), // player name text box
-    MakeWidget({  6, 37}, {332, 14}, WindowWidgetType::Scroll,   WindowColour::Secondary                                         ), // server list
-    MakeWidget({  6, 53}, {101, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_FETCH_SERVERS                      ), // fetch servers button
-    MakeWidget({112, 53}, {101, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_ADD_SERVER                         ), // add server button
-    MakeWidget({218, 53}, {101, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_START_SERVER                       ), // start server button
+    MakeWidget({  0,  0}, {341,  91}, WindowWidgetType::Frame,    WindowColour::Primary                                           ), // panel / background
+    MakeWidget({  1,  1}, {338,  14}, WindowWidgetType::Caption,  WindowColour::Primary,   STR_SERVER_LIST,   STR_WINDOW_TITLE_TIP), // title bar
+    MakeWidget({327,  2}, { 11,  12}, WindowWidgetType::CloseBox, WindowColour::Primary,   STR_CLOSE_X,       STR_CLOSE_WINDOW_TIP), // close x button
+    MakeWidget({100, 20}, {245,  12}, WindowWidgetType::TextBox,  WindowColour::Secondary                                         ), // player name text box
+    MakeWidget({  6, 37}, {489, 226}, WindowWidgetType::Scroll,   WindowColour::Secondary                                         ), // server list
+    MakeWidget({  6, 53}, {101,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_FETCH_SERVERS                      ), // fetch servers button
+    MakeWidget({112, 53}, {101,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_ADD_SERVER                         ), // add server button
+    MakeWidget({218, 53}, {101,  14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_START_SERVER                       ), // start server button
     WIDGETS_END,
 };
 // clang-format on
@@ -76,7 +78,7 @@ void JoinServer(std::string address);
 class ServerListWindow final : public Window
 {
 private:
-    char _playerName[32 + 1] = {};
+    u8string _playerName;
     ServerList _serverList;
     std::future<std::tuple<std::vector<ServerListEntry>, StringId>> _fetchFuture;
     uint32_t _numPlayersOnline = 0;
@@ -90,7 +92,8 @@ public:
 
     void OnOpen() override
     {
-        window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
+        _playerName = gConfigNetwork.PlayerName;
+        window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
         widgets = window_server_list_widgets;
         InitScrollWidgets();
         no_list_items = 0;
@@ -106,8 +109,6 @@ public:
 
         WindowSetResize(*this, WWIDTH_MIN, WHEIGHT_MIN, WWIDTH_MAX, WHEIGHT_MAX);
 
-        SafeStrCpy(_playerName, gConfigNetwork.PlayerName.c_str(), sizeof(_playerName));
-
         no_list_items = static_cast<uint16_t>(_serverList.GetCount());
 
         ServerListFetchServersBegin();
@@ -117,6 +118,7 @@ public:
     {
         _serverList = {};
         _fetchFuture = {};
+        ConfigSaveDefault();
     }
 
     void OnMouseUp(WidgetIndex widgetIndex) override
@@ -127,7 +129,7 @@ public:
                 Close();
                 break;
             case WIDX_PLAYER_NAME_INPUT:
-                WindowStartTextbox(*this, widgetIndex, STR_STRING, _playerName, 63);
+                WindowStartTextbox(*this, widgetIndex, STR_STRING, _playerName.c_str(), MaxPlayerNameLength);
                 break;
             case WIDX_LIST:
             {
@@ -267,7 +269,7 @@ public:
         if (text.empty())
             return;
 
-        std::string temp = static_cast<std::string>(text);
+        auto temp = u8string{ text };
 
         switch (widgetIndex)
         {
@@ -275,14 +277,9 @@ public:
                 if (_playerName == text)
                     return;
 
-                text.copy(_playerName, sizeof(_playerName));
-
-                // Don't allow empty player names
-                if (_playerName[0] != '\0')
-                {
-                    gConfigNetwork.PlayerName = _playerName;
-                    ConfigSaveDefault();
-                }
+                _playerName = temp;
+                gConfigNetwork.PlayerName = _playerName;
+                window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
 
                 InvalidateWidget(WIDX_PLAYER_NAME_INPUT);
                 break;
@@ -350,8 +347,7 @@ public:
             if (highlighted)
             {
                 GfxFilterRect(
-                    &dpi, { 0, screenCoords.y, listWidgetWidth, screenCoords.y + ITEM_HEIGHT },
-                    FilterPaletteID::PaletteDarken1);
+                    dpi, { 0, screenCoords.y, listWidgetWidth, screenCoords.y + ITEM_HEIGHT }, FilterPaletteID::PaletteDarken1);
                 _version = serverDetails.Version;
             }
 
@@ -406,14 +402,14 @@ public:
                 bool correctVersion = serverDetails.Version == NetworkGetVersion();
                 compatibilitySpriteId = correctVersion ? SPR_G2_RCT1_OPEN_BUTTON_2 : SPR_G2_RCT1_CLOSE_BUTTON_2;
             }
-            GfxDrawSprite(&dpi, ImageId(compatibilitySpriteId), { right, screenCoords.y + 1 });
+            GfxDrawSprite(dpi, ImageId(compatibilitySpriteId), { right, screenCoords.y + 1 });
             right -= 4;
 
             // Draw lock icon
             right -= 8;
             if (serverDetails.RequiresPassword)
             {
-                GfxDrawSprite(&dpi, ImageId(SPR_G2_LOCKED), { right, screenCoords.y + 4 });
+                GfxDrawSprite(dpi, ImageId(SPR_G2_LOCKED), { right, screenCoords.y + 4 });
             }
             right -= 6;
 

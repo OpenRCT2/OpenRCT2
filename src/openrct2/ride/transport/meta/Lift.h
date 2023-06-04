@@ -38,7 +38,6 @@ constexpr const RideTypeDescriptor LiftRTD =
     SET_FIELD(Heights, { 255, 32, 3, 2, }),
     SET_FIELD(MaxMass, 15),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateLift),
     SET_FIELD(RatingsMultipliers, { 80, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 10, 0, 0 }),
     SET_FIELD(BuildCosts, { 19.50_GBP, 0.00_GBP, 4, }),
@@ -54,5 +53,19 @@ constexpr const RideTypeDescriptor LiftRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_LIFT_TRACK, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "lift"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(1, 11), RIDE_RATING(0, 35), RIDE_RATING(0, 30) },
+        15,
+        7,
+        false,
+        {
+            { RatingsModifierType::BonusProximity,         0, 11183, 0, 0 },
+            { RatingsModifierType::BonusScenery,           0, 83662, 0, 0 },
+            { RatingsModifierType::BonusTowerRide,       0, 45875, 0, 26214 },
+            { RatingsModifierType::RequirementUnsheltered, 5, 4, 1, 1 },
+        },
+    }),
 };
 // clang-format on

@@ -165,11 +165,11 @@ public:
         switch (page)
         {
             case WINDOW_PLAYER_PAGE_OVERVIEW:
-                OnDrawOverview(&dpi);
+                OnDrawOverview(dpi);
                 break;
 
             case WINDOW_PLAYER_PAGE_STATISTICS:
-                OnDrawStatistics(&dpi);
+                OnDrawStatistics(dpi);
                 break;
         }
     }
@@ -258,7 +258,7 @@ private:
         }
     }
 
-    void DrawTabImages(DrawPixelInfo* dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         Widget* widget;
 
@@ -430,9 +430,9 @@ private:
         WidgetSetEnabled(*this, WIDX_KICK, canKick && !isOwnWindow && !isServer);
     }
 
-    void OnDrawOverview(DrawPixelInfo* dpi)
+    void OnDrawOverview(DrawPixelInfo& dpi)
     {
-        DrawWidgets(*dpi);
+        DrawWidgets(dpi);
         DrawTabImages(dpi);
 
         int32_t player = NetworkGetPlayerIndex(static_cast<uint8_t>(number));
@@ -454,7 +454,7 @@ private:
             ft.Add<const char*>(_buffer.c_str());
 
             DrawTextEllipsised(
-                *dpi, windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
+                dpi, windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
                 { TextAlignment::CENTRE });
         }
 
@@ -463,10 +463,10 @@ private:
 
         auto ft = Formatter();
         ft.Add<StringId>(STR_PING);
-        DrawTextBasic(*dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
+        DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
         char ping[64];
         snprintf(ping, 64, "%d ms", NetworkGetPlayerPing(player));
-        GfxDrawString(*dpi, screenCoords + ScreenCoordsXY(30, 0), ping, { colours[2] });
+        GfxDrawString(dpi, screenCoords + ScreenCoordsXY(30, 0), ping, { colours[2] });
 
         // Draw last action
         screenCoords = windowPos + ScreenCoordsXY{ width / 2, height - 13 };
@@ -481,7 +481,7 @@ private:
         {
             ft.Add<StringId>(STR_ACTION_NA);
         }
-        DrawTextEllipsised(*dpi, screenCoords, updatedWidth, STR_LAST_ACTION_RAN, ft, { TextAlignment::CENTRE });
+        DrawTextEllipsised(dpi, screenCoords, updatedWidth, STR_LAST_ACTION_RAN, ft, { TextAlignment::CENTRE });
 
         if (viewport != nullptr && var_492 != -1)
         {
@@ -629,9 +629,9 @@ private:
         WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_2);
     }
 
-    void OnDrawStatistics(DrawPixelInfo* dpi)
+    void OnDrawStatistics(DrawPixelInfo& dpi)
     {
-        DrawWidgets(*dpi);
+        DrawWidgets(dpi);
         DrawTabImages(dpi);
 
         int32_t player = NetworkGetPlayerIndex(static_cast<uint8_t>(number));
@@ -646,13 +646,13 @@ private:
 
         auto ft = Formatter();
         ft.Add<uint32_t>(NetworkGetPlayerCommandsRan(player));
-        DrawTextBasic(*dpi, screenCoords, STR_COMMANDS_RAN, ft);
+        DrawTextBasic(dpi, screenCoords, STR_COMMANDS_RAN, ft);
 
         screenCoords.y += LIST_ROW_HEIGHT;
 
         ft = Formatter();
         ft.Add<uint32_t>(NetworkGetPlayerMoneySpent(player));
-        DrawTextBasic(*dpi, screenCoords, STR_MONEY_SPENT, ft);
+        DrawTextBasic(dpi, screenCoords, STR_MONEY_SPENT, ft);
     }
 
 #pragma endregion

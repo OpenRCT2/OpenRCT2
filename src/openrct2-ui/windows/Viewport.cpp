@@ -156,7 +156,7 @@ public:
 
         // Draw viewport
         if (viewport != nullptr)
-            WindowDrawViewport(&dpi, *this);
+            WindowDrawViewport(dpi, *this);
     }
 
     void OnResize() override

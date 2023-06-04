@@ -40,7 +40,6 @@ constexpr const RideTypeDescriptor RiverRaftsRTD =
     SET_FIELD(Heights, { 12, 24, 7, 11, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateRiverRafts),
     SET_FIELD(RatingsMultipliers, { 80, 34, 6 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 9, 0, 10 }),
     SET_FIELD(BuildCosts, { 20.00_GBP, 2.50_GBP, 30, }),
@@ -54,5 +53,23 @@ constexpr const RideTypeDescriptor RiverRaftsRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_RIVER_RAFTS_TRACK, SPR_RIDE_DESIGN_PREVIEW_RIVER_RAFTS_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "river_rafts"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(1, 45), RIDE_RATING(0, 25), RIDE_RATING(0, 34) },
+        12,
+        -1,
+        false,
+        {
+            { RatingsModifierType::BonusLength,           2000,             7208, 0, 0 },
+            { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 40), RIDE_RATING(0, 05), 0 },
+            { RatingsModifierType::BonusMaxSpeed,         0,                531372, 655360, 301111 },
+            { RatingsModifierType::BonusDuration,         500,              13107, 0, 0 },
+            { RatingsModifierType::BonusTurns,            0,                22291, 20860, 4574 },
+            { RatingsModifierType::BonusDrops,            0,                78643, 93622, 62259 },
+            { RatingsModifierType::BonusProximity,        0,                13420, 0, 0 },
+            { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
+        },
+    }),
 };
 // clang-format on

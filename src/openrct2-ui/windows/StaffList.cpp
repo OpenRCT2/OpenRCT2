@@ -177,6 +177,7 @@ public:
             height = min_height;
             Invalidate();
         }
+        ResizeFrameWithPage();
     }
 
     void OnUpdate() override
@@ -239,7 +240,7 @@ public:
     {
         if (widgetIndex == WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER)
         {
-            auto action = StaffSetColourAction(GetSelectedStaffType(), dropdownIndex);
+            auto action = StaffSetColourAction(GetSelectedStaffType(), ColourDropDownIndexToColour(dropdownIndex));
             GameActions::Execute(&action);
         }
     }
@@ -263,13 +264,6 @@ public:
         }
         SetWidgetPressed(WIDX_STAFF_LIST_QUICK_FIRE, _quickFireMode);
 
-        widgets[WIDX_STAFF_LIST_BACKGROUND].right = width - 1;
-        widgets[WIDX_STAFF_LIST_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_STAFF_LIST_TAB_CONTENT_PANEL].right = width - 1;
-        widgets[WIDX_STAFF_LIST_TAB_CONTENT_PANEL].bottom = height - 1;
-        widgets[WIDX_STAFF_LIST_TITLE].right = width - 2;
-        widgets[WIDX_STAFF_LIST_CLOSE].left = width - 2 - 11;
-        widgets[WIDX_STAFF_LIST_CLOSE].right = width - 2 - 11 + 10;
         widgets[WIDX_STAFF_LIST_LIST].right = width - 4;
         widgets[WIDX_STAFF_LIST_LIST].bottom = height - 15;
         widgets[WIDX_STAFF_LIST_QUICK_FIRE].left = width - 77;
@@ -377,7 +371,7 @@ public:
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
         GfxFillRect(
-            &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
+            dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
 
         // How much space do we have for the name and action columns? (Discount scroll area and icons.)
         const int32_t nonIconSpace = widgets[WIDX_STAFF_LIST_LIST].width() - 15 - 68;
@@ -405,7 +399,7 @@ public:
 
                 if (i == _highlightedIndex)
                 {
-                    GfxFilterRect(&dpi, { 0, y, 800, y + (SCROLLABLE_ROW_HEIGHT - 1) }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(dpi, { 0, y, 800, y + (SCROLLABLE_ROW_HEIGHT - 1) }, FilterPaletteID::PaletteDarken1);
                     format = (_quickFireMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
                 }
 
@@ -420,7 +414,7 @@ public:
                 // True if a patrol path is set for the worker
                 if (peep->HasPatrolArea())
                 {
-                    GfxDrawSprite(&dpi, ImageId(SPR_STAFF_PATROL_PATH), { nameColumnSize + 5, y });
+                    GfxDrawSprite(dpi, ImageId(SPR_STAFF_PATROL_PATH), { nameColumnSize + 5, y });
                 }
 
                 auto staffOrderIcon_x = nameColumnSize + 20;
@@ -433,7 +427,7 @@ public:
                     {
                         if (staffOrders & 1)
                         {
-                            GfxDrawSprite(&dpi, ImageId(staffOrderSprite), { staffOrderIcon_x, y });
+                            GfxDrawSprite(dpi, ImageId(staffOrderSprite), { staffOrderIcon_x, y });
                         }
                         staffOrders = staffOrders >> 1;
                         staffOrderIcon_x += 9;
@@ -443,7 +437,7 @@ public:
                 }
                 else
                 {
-                    GfxDrawSprite(&dpi, ImageId(GetEntertainerCostumeSprite(peep->SpriteType)), { staffOrderIcon_x, y });
+                    GfxDrawSprite(dpi, ImageId(GetEntertainerCostumeSprite(peep->SpriteType)), { staffOrderIcon_x, y });
                 }
             }
 
@@ -599,7 +593,7 @@ private:
         auto imageId = (_selectedTab == tabIndex ? (_tabAnimationIndex & ~3) : 0);
         imageId += GetPeepAnimation(type).base_image + 1;
         GfxDrawSprite(
-            &dpi, ImageId(imageId, colour), windowPos + ScreenCoordsXY{ (widget.left + widget.right) / 2, widget.bottom - 6 });
+            dpi, ImageId(imageId, colour), windowPos + ScreenCoordsXY{ (widget.left + widget.right) / 2, widget.bottom - 6 });
     }
 
     void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, PeepSpriteType type) const
@@ -608,12 +602,12 @@ private:
         const auto& widget = widgets[widgetIndex];
         DrawPixelInfo clippedDpi;
         if (ClipDrawPixelInfo(
-                &clippedDpi, &dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 },
-                widget.right - widget.left - 1, widget.bottom - widget.top - 1))
+                clippedDpi, dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, widget.right - widget.left - 1,
+                widget.bottom - widget.top - 1))
         {
             auto imageId = (_selectedTab == 3 ? (_tabAnimationIndex & ~3) : 0);
             imageId += GetPeepAnimation(type).base_image + 1;
-            GfxDrawSprite(&clippedDpi, ImageId(imageId), { 15, 23 });
+            GfxDrawSprite(clippedDpi, ImageId(imageId), { 15, 23 });
         }
     }
 

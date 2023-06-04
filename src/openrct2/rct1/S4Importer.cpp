@@ -560,7 +560,7 @@ namespace RCT1
                             case ObjectType::LargeScenery:
                             case ObjectType::Walls:
                             case ObjectType::Paths:
-                            case ObjectType::PathBits:
+                            case ObjectType::PathAdditions:
                             {
                                 RCT12::EntryList* entries = GetEntryList(objectType);
 
@@ -1274,13 +1274,13 @@ namespace RCT1
             dst->ActionFrame = src->ActionFrame;
 
             const SpriteBounds* spriteBounds = &GetSpriteBounds(dst->SpriteType, dst->ActionSpriteType);
-            dst->sprite_width = spriteBounds->sprite_width;
-            dst->sprite_height_negative = spriteBounds->sprite_height_negative;
-            dst->sprite_height_positive = spriteBounds->sprite_height_positive;
+            dst->SpriteData.Width = spriteBounds->sprite_width;
+            dst->SpriteData.HeightMax = spriteBounds->sprite_height_negative;
+            dst->SpriteData.HeightMin = spriteBounds->sprite_height_positive;
 
             dst->MoveTo({ src->x, src->y, src->z });
 
-            dst->sprite_direction = src->EntityDirection;
+            dst->Orientation = src->EntityDirection;
 
             // Peep name
             if (IsUserStringID(src->NameStringID))
@@ -1366,10 +1366,10 @@ namespace RCT1
 
         void ImportEntityCommonProperties(EntityBase* dst, const RCT12EntityBase* src)
         {
-            dst->sprite_direction = src->EntityDirection;
-            dst->sprite_width = src->SpriteWidth;
-            dst->sprite_height_negative = src->SpriteHeightNegative;
-            dst->sprite_height_positive = src->SpriteHeightPositive;
+            dst->Orientation = src->EntityDirection;
+            dst->SpriteData.Width = src->SpriteWidth;
+            dst->SpriteData.HeightMin = src->SpriteHeightNegative;
+            dst->SpriteData.HeightMax = src->SpriteHeightPositive;
             dst->x = src->x;
             dst->y = src->y;
             dst->z = src->z;
@@ -1473,7 +1473,7 @@ namespace RCT1
             AppendRequiredObjects(result, ObjectType::LargeScenery, _largeSceneryEntries);
             AppendRequiredObjects(result, ObjectType::Walls, _wallEntries);
             AppendRequiredObjects(result, ObjectType::Paths, _pathEntries);
-            AppendRequiredObjects(result, ObjectType::PathBits, _pathAdditionEntries);
+            AppendRequiredObjects(result, ObjectType::PathAdditions, _pathAdditionEntries);
             AppendRequiredObjects(result, ObjectType::SceneryGroup, _sceneryGroupEntries);
             AppendRequiredObjects(
                 result, ObjectType::Banners,
@@ -1603,7 +1603,7 @@ namespace RCT1
                     dst2->SetHasQueueBanner(src2->HasQueueBanner());
                     dst2->SetEdges(src2->GetEdges());
                     dst2->SetCorners(src2->GetCorners());
-                    dst2->SetAddition(src2->GetAddition());
+                    dst2->SetAddition(0);
                     dst2->SetAdditionIsGhost(false);
                     dst2->SetAdditionStatus(src2->GetAdditionStatus());
 
@@ -1631,7 +1631,7 @@ namespace RCT1
                     dst2->SetRailingsEntryIndex(railingsEntryIndex);
 
                     // Additions
-                    ObjectEntryIndex additionType = dst2->GetAddition();
+                    ObjectEntryIndex additionType = src2->GetAddition();
                     if (additionType != RCT1_PATH_ADDITION_NONE)
                     {
                         ObjectEntryIndex normalisedType = RCT1::NormalisePathAddition(additionType);
@@ -1640,7 +1640,7 @@ namespace RCT1
                         {
                             dst2->SetIsBroken(true);
                         }
-                        dst2->SetAddition(entryIndex + 1);
+                        dst2->SetAdditionEntryIndex(entryIndex);
                     }
                     return 1;
                 }
@@ -1674,6 +1674,8 @@ namespace RCT1
                     // Skipping IsHighlighted()
 
                     auto trackType = dst2->GetTrackType();
+                    // Brakes import as closed to preserve legacy behaviour
+                    dst2->SetBrakeClosed(trackType == TrackElemType::Brakes);
                     if (TrackTypeHasSpeedSetting(trackType))
                     {
                         dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
@@ -2441,7 +2443,7 @@ namespace RCT1
                     return &_wallEntries;
                 case ObjectType::Paths:
                     return &_pathEntries;
-                case ObjectType::PathBits:
+                case ObjectType::PathAdditions:
                     return &_pathAdditionEntries;
                 case ObjectType::SceneryGroup:
                     return &_sceneryGroupEntries;
@@ -2723,12 +2725,12 @@ namespace RCT1
         dst->remaining_distance = src->RemainingDistance;
 
         // Properties from vehicle entry
-        dst->sprite_width = src->SpriteWidth;
-        dst->sprite_height_negative = src->SpriteHeightNegative;
-        dst->sprite_height_positive = src->SpriteHeightPositive;
-        dst->sprite_direction = src->EntityDirection;
+        dst->SpriteData.Width = src->SpriteWidth;
+        dst->SpriteData.HeightMin = src->SpriteHeightNegative;
+        dst->SpriteData.HeightMax = src->SpriteHeightPositive;
+        dst->Orientation = src->EntityDirection;
 
-        dst->SpriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
+        dst->SpriteData.SpriteRect = ScreenRect(src->SpriteLeft, src->SpriteTop, src->SpriteRight, src->SpriteBottom);
 
         dst->mass = src->Mass;
         dst->num_seats = src->NumSeats;
@@ -2817,6 +2819,7 @@ namespace RCT1
         {
             dst->SetFlag(VehicleFlags::Crashed);
         }
+        dst->BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
     }
 
     template<> void S4Importer::ImportEntity<Guest>(const RCT12EntityBase& srcBase)

@@ -181,7 +181,7 @@ public:
     void OnClose() override
     {
         FootpathProvisionalUpdate();
-        ViewportSetVisibility(0);
+        ViewportSetVisibility(ViewportVisibility::Default);
         MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         WindowInvalidateByClass(WindowClass::TopToolbar);
@@ -432,8 +432,8 @@ public:
     void OnDraw(DrawPixelInfo& dpi) override
     {
         ScreenCoordsXY screenCoords;
-        WindowDrawWidgets(*this, &dpi);
-        WindowFootpathDrawDropdownButtons(&dpi);
+        WindowDrawWidgets(*this, dpi);
+        WindowFootpathDrawDropdownButtons(dpi);
 
         if (!IsWidgetDisabled(WIDX_CONSTRUCT))
         {
@@ -482,7 +482,7 @@ public:
                 screenCoords = this->windowPos
                     + ScreenCoordsXY{ window_footpath_widgets[WIDX_CONSTRUCT].midX(),
                                       window_footpath_widgets[WIDX_CONSTRUCT].bottom - 60 };
-                GfxDrawSprite(&dpi, ImageId(image), screenCoords);
+                GfxDrawSprite(dpi, ImageId(image), screenCoords);
             }
 
             // Draw build this... label
@@ -568,7 +568,7 @@ private:
         }
     }
 
-    void WindowFootpathDrawDropdownButtons(DrawPixelInfo* dpi)
+    void WindowFootpathDrawDropdownButtons(DrawPixelInfo& dpi)
     {
         if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL)
         {
@@ -620,7 +620,7 @@ private:
         }
     }
 
-    void WindowFootpathDrawDropdownButton(DrawPixelInfo* dpi, WidgetIndex widgetIndex, ImageIndex image)
+    void WindowFootpathDrawDropdownButton(DrawPixelInfo& dpi, WidgetIndex widgetIndex, ImageIndex image)
     {
         const auto& widget = widgets[widgetIndex];
         GfxDrawSprite(dpi, ImageId(image), { windowPos.x + widget.left, windowPos.y + widget.top });
@@ -1048,7 +1048,7 @@ private:
 
                 if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
                 {
-                    ViewportSetVisibility(1);
+                    ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
                 }
 
                 gFootpathConstructFromPosition = footpathLoc;
@@ -1397,6 +1397,11 @@ public:
         }
 
         OnMouseUp(WIDX_CONSTRUCT);
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 
 #pragma endregion

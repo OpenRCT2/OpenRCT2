@@ -378,6 +378,11 @@ public:
         ft.Add<money64>(AdvertisingCampaignPricePerWeek[campaign.campaign_type] * campaign.no_weeks);
         DrawTextBasic(dpi, screenCoords, STR_MARKETING_TOTAL_COST, ft);
     }
+
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
 };
 
 WindowBase* WindowNewCampaignOpen(int16_t campaignType)

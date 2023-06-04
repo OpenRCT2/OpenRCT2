@@ -22,7 +22,7 @@ struct CoordsXY;
 struct LargeSceneryEntry;
 struct SmallSceneryEntry;
 struct WallSceneryEntry;
-struct PathBitEntry;
+struct PathAdditionEntry;
 struct BannerSceneryEntry;
 struct FootpathEntry;
 class LargeSceneryObject;
@@ -309,8 +309,9 @@ public:
     bool HasAddition() const;
     uint8_t GetAddition() const;
     ObjectEntryIndex GetAdditionEntryIndex() const;
-    const PathBitEntry* GetAdditionEntry() const;
+    const PathAdditionEntry* GetAdditionEntry() const;
     void SetAddition(uint8_t newAddition);
+    void SetAdditionEntryIndex(ObjectEntryIndex entryIndex);
 
     bool AdditionIsGhost() const;
     void SetAdditionIsGhost(bool isGhost);

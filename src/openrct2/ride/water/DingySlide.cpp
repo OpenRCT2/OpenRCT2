@@ -376,7 +376,7 @@ static void DinghySlideTrackFlat(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -405,9 +405,9 @@ static void DinghySlideTrackStation(
         { 32, 32, 1 });
 
     MetalASupportsPaintSetup(
-        session, METAL_SUPPORTS_TUBES, 5 + (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        session, MetalSupportType::Tubes, 5 + (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     MetalASupportsPaintSetup(
-        session, METAL_SUPPORTS_TUBES, 8 - (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        session, MetalSupportType::Tubes, 8 - (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 
@@ -445,7 +445,7 @@ static void DinghySlideTrack25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 0 || direction == 3)
@@ -481,7 +481,7 @@ static void DinghySlideTrack60DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 0 || direction == 3)
@@ -526,7 +526,7 @@ static void DinghySlideTrackFlatTo25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 0 || direction == 3)
@@ -562,7 +562,7 @@ static void DinghySlideTrack25DegUpTo60DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 0 || direction == 3)
@@ -598,7 +598,7 @@ static void DinghySlideTrack60DegUpTo25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 0 || direction == 3)
@@ -643,7 +643,7 @@ static void DinghySlideTrack25DegUpToFlat(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 0 || direction == 3)
@@ -769,7 +769,7 @@ static void DinghySlideTrackRightQuarterTurn5(
     {
         case 0:
         case 6:
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -877,7 +877,7 @@ static void DinghySlideTrackSBendLeft(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
@@ -889,7 +889,7 @@ static void DinghySlideTrackSBendLeft(
             if (direction == 0 || direction == 1)
             {
                 MetalASupportsPaintSetup(
-                    session, METAL_SUPPORTS_TUBES, 5 + (direction & 1), (direction & 1), height,
+                    session, MetalSupportType::Tubes, 5 + (direction & 1), (direction & 1), height,
                     session.TrackColours[SCHEME_SUPPORTS]);
             }
             PaintUtilSetSegmentSupportHeight(
@@ -905,7 +905,7 @@ static void DinghySlideTrackSBendLeft(
             if (direction == 2 || direction == 3)
             {
                 MetalASupportsPaintSetup(
-                    session, METAL_SUPPORTS_TUBES, 5 + (direction & 1), (direction & 1), height,
+                    session, MetalSupportType::Tubes, 5 + (direction & 1), (direction & 1), height,
                     session.TrackColours[SCHEME_SUPPORTS]);
             }
             PaintUtilSetSegmentSupportHeight(
@@ -917,7 +917,7 @@ static void DinghySlideTrackSBendLeft(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
@@ -982,7 +982,7 @@ static void DinghySlideTrackSBendRight(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
@@ -994,7 +994,7 @@ static void DinghySlideTrackSBendRight(
             if (direction == 0 || direction == 1)
             {
                 MetalASupportsPaintSetup(
-                    session, METAL_SUPPORTS_TUBES, 8 - (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, 8 - (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1009,7 +1009,7 @@ static void DinghySlideTrackSBendRight(
             if (direction == 2 || direction == 3)
             {
                 MetalASupportsPaintSetup(
-                    session, METAL_SUPPORTS_TUBES, 8 - (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, 8 - (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1020,7 +1020,7 @@ static void DinghySlideTrackSBendRight(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
@@ -1103,7 +1103,7 @@ static void DinghySlideTrackRightQuarterTurn3(
     {
         case 0:
         case 3:
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -1152,7 +1152,7 @@ static void DinghySlideTrackFlatCovered(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -1181,7 +1181,7 @@ static void DinghySlideTrack25DegUpCovered(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 0 || direction == 3)
@@ -1217,7 +1217,7 @@ static void DinghySlideTrack60DegUpCovered(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 0 || direction == 3)
@@ -1253,7 +1253,7 @@ static void DinghySlideTrackFlatTo25DegUpCovered(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 0 || direction == 3)
@@ -1289,7 +1289,7 @@ static void DinghySlideTrack25DegUpTo60DegUpCovered(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 0 || direction == 3)
@@ -1325,7 +1325,7 @@ static void DinghySlideTrack60DegUpTo25DegUpCovered(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 0 || direction == 3)
@@ -1361,7 +1361,7 @@ static void DinghySlideTrack25DegUpToFlatCovered(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 0 || direction == 3)
@@ -1487,7 +1487,7 @@ static void DinghySlideTrackRightQuarterTurn5Covered(
     {
         case 0:
         case 6:
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -1588,7 +1588,7 @@ static void DinghySlideTrackSBendLeftCovered(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
@@ -1600,7 +1600,7 @@ static void DinghySlideTrackSBendLeftCovered(
             if (direction == 0 || direction == 1)
             {
                 MetalASupportsPaintSetup(
-                    session, METAL_SUPPORTS_TUBES, 5 + (direction & 1), (direction & 1), height,
+                    session, MetalSupportType::Tubes, 5 + (direction & 1), (direction & 1), height,
                     session.TrackColours[SCHEME_SUPPORTS]);
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1616,7 +1616,7 @@ static void DinghySlideTrackSBendLeftCovered(
             if (direction == 2 || direction == 3)
             {
                 MetalASupportsPaintSetup(
-                    session, METAL_SUPPORTS_TUBES, 5 + (direction & 1), (direction & 1), height,
+                    session, MetalSupportType::Tubes, 5 + (direction & 1), (direction & 1), height,
                     session.TrackColours[SCHEME_SUPPORTS]);
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1628,7 +1628,7 @@ static void DinghySlideTrackSBendLeftCovered(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
@@ -1693,7 +1693,7 @@ static void DinghySlideTrackSBendRightCovered(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
@@ -1705,7 +1705,7 @@ static void DinghySlideTrackSBendRightCovered(
             if (direction == 0 || direction == 1)
             {
                 MetalASupportsPaintSetup(
-                    session, METAL_SUPPORTS_TUBES, 8 - (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, 8 - (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1720,7 +1720,7 @@ static void DinghySlideTrackSBendRightCovered(
             if (direction == 2 || direction == 3)
             {
                 MetalASupportsPaintSetup(
-                    session, METAL_SUPPORTS_TUBES, 8 - (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, 8 - (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1731,7 +1731,7 @@ static void DinghySlideTrackSBendRightCovered(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
@@ -1814,7 +1814,7 @@ static void DinghySlideTrackRightQuarterTurn3Covered(
     {
         case 0:
         case 3:
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 

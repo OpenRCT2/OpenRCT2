@@ -88,7 +88,7 @@ static void ChairliftPaintUtilDrawSupports(PaintSession& session, int32_t segmen
             continue;
         }
 
-        if (MetalASupportsPaintSetup(session, METAL_SUPPORTS_TRUSS, s, 0, height, session.TrackColours[SCHEME_SUPPORTS]))
+        if (MetalASupportsPaintSetup(session, MetalSupportType::Truss, s, 0, height, session.TrackColours[SCHEME_SUPPORTS]))
         {
             success = true;
         }
@@ -108,7 +108,7 @@ static void ChairliftPaintUtilDrawSupports(PaintSession& session, int32_t segmen
         }
         uint16_t temp = supportSegments[s].height;
         supportSegments[s].height = session.Support.height;
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_TRUSS, s, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Truss, s, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         supportSegments[s].height = temp;
     }
 }

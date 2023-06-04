@@ -1824,7 +1824,7 @@ void JuniorRCPaintTrackFlat(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork, 4, 0, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -1862,8 +1862,8 @@ void JuniorRCPaintStation(
         }
         PaintAddImageAsChild(session, imageId, { 0, 6, height }, { { 0, 0, height }, { 32, 20, 1 } });
 
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
@@ -1887,8 +1887,8 @@ void JuniorRCPaintStation(
         }
         PaintAddImageAsChild(session, imageId, { 6, 0, height }, { { 0, 0, height }, { 20, 32, 1 } });
 
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
 
@@ -1912,7 +1912,7 @@ void JuniorRCPaintTrack25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        int32_t supportType = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
+        auto supportType = (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork;
         MetalASupportsPaintSetup(session, supportType, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -1940,7 +1940,7 @@ void JuniorRCPaintTrackFlatTo25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        int32_t supportType = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
+        auto supportType = (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork;
         uint16_t ax = (direction == 0) ? 5 : 3;
         MetalASupportsPaintSetup(session, supportType, 4, ax, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -1982,7 +1982,7 @@ void JuniorRCPaintTrack25DegUpToFlat(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        int32_t supportType = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
+        auto supportType = (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork;
         MetalASupportsPaintSetup(session, supportType, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -2012,12 +2012,12 @@ static void JuniorRCRightQuarterTurn5TilesPaintSetup(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, supportHeight,
+                session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork, 4, 0, supportHeight,
                 session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 6:
             MetalASupportsPaintSetup(
-                session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 0, supportHeight,
+                session, (direction & 1) ? MetalSupportType::Fork : MetalSupportType::ForkAlt, 4, 0, supportHeight,
                 session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
@@ -2125,8 +2125,8 @@ static void JuniorRCFlatToLeftBankPaintSetup(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        int32_t edi = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
-        MetalASupportsPaintSetup(session, edi, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        auto supportType = (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork;
+        MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -2173,8 +2173,8 @@ static void JuniorRCFlatToRightBankPaintSetup(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        int32_t edi = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
-        MetalASupportsPaintSetup(session, edi, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        auto supportType = (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork;
+        MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -2289,12 +2289,12 @@ static void JuniorRCBankedRightQuarterTurn5TilesPaintSetup(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, supportHeight,
+                session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork, 4, 0, supportHeight,
                 session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 6:
             MetalASupportsPaintSetup(
-                session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 0, supportHeight,
+                session, (direction & 1) ? MetalSupportType::Fork : MetalSupportType::ForkAlt, 4, 0, supportHeight,
                 session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
@@ -2394,8 +2394,8 @@ static void JuniorRCLeftBankTo25DegUpPaintSetup(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        int32_t edi = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
-        MetalASupportsPaintSetup(session, edi, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+        auto supportType = (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork;
+        MetalASupportsPaintSetup(session, supportType, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     switch (direction)
@@ -2454,8 +2454,8 @@ static void JuniorRCRightBankTo25DegUpPaintSetup(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        int32_t edi = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
-        MetalASupportsPaintSetup(session, edi, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+        auto supportType = (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork;
+        MetalASupportsPaintSetup(session, supportType, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     switch (direction)
@@ -2531,8 +2531,8 @@ static void JuniorRC25DegUpToLeftBankPaintSetup(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        int32_t edi = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
-        MetalASupportsPaintSetup(session, edi, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+        auto supportType = (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork;
+        MetalASupportsPaintSetup(session, supportType, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -2592,8 +2592,8 @@ static void JuniorRC25DegUpToRightBankPaintSetup(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        int32_t edi = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
-        MetalASupportsPaintSetup(session, edi, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+        auto supportType = (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork;
+        MetalASupportsPaintSetup(session, supportType, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -2680,8 +2680,8 @@ static void JuniorRCLeftBankPaintSetup(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        int32_t edi = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
-        MetalASupportsPaintSetup(session, edi, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        auto supportType = (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork;
+        MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -2713,13 +2713,13 @@ void JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4,
+                session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork, 4,
                 (direction == 0 || direction == 3) ? 10 : 8, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 6:
             MetalASupportsPaintSetup(
-                session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, supportSpecial[direction], height,
-                session.TrackColours[SCHEME_SUPPORTS]);
+                session, (direction & 1) ? MetalSupportType::Fork : MetalSupportType::ForkAlt, 4, supportSpecial[direction],
+                height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -2791,12 +2791,12 @@ void JuniorRCPaintTrackRightQuarterTurn5Tiles25DegUp(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, supportSpecial[direction], height,
-                session.TrackColours[SCHEME_SUPPORTS]);
+                session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork, 4, supportSpecial[direction],
+                height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 6:
             MetalASupportsPaintSetup(
-                session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 8, height,
+                session, (direction & 1) ? MetalSupportType::Fork : MetalSupportType::ForkAlt, 4, 8, height,
                 session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
@@ -2944,13 +2944,13 @@ static void JuniorRCSBendLeftPaintSetup(
         switch (trackSequence)
         {
             case 0:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Fork, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Fork, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Fork, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -2964,13 +2964,16 @@ static void JuniorRCSBendLeftPaintSetup(
         switch (trackSequence)
         {
             case 0:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK_ALT, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::ForkAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK_ALT, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::ForkAlt, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK_ALT, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::ForkAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -3043,13 +3046,13 @@ static void JuniorRCSBendRightPaintSetup(
         switch (trackSequence)
         {
             case 0:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Fork, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Fork, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Fork, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -3063,13 +3066,16 @@ static void JuniorRCSBendRightPaintSetup(
         switch (trackSequence)
         {
             case 0:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK_ALT, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::ForkAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK_ALT, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::ForkAlt, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK_ALT, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::ForkAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -3106,9 +3112,9 @@ static void JuniorRCRightQuarterTurn3TilesPaintSetup(
         defaultRightQuarterTurn3TilesBoundLengths, nullptr);
     TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TUNNEL_0);
 
-    static constexpr uint8_t supportType[2][4] = {
-        { 1, 0, 0, 2 },
-        { 2, 0, 0, 1 },
+    static constexpr MetalSupportType supportType[2][4] = {
+        { MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt },
+        { MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork },
     };
     switch (trackSequence)
     {
@@ -3221,9 +3227,9 @@ static void JuniorRCRightQuarterTurn3TilesBankPaintSetup(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
     }
 
-    uint8_t supportType[2][4] = {
-        { 1, 0, 0, 2 },
-        { 2, 0, 0, 1 },
+    static constexpr MetalSupportType supportType[2][4] = {
+        { MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt },
+        { MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork },
     };
     switch (trackSequence)
     {
@@ -3302,9 +3308,9 @@ void JuniorRCPaintTrackRightQuarterTurn3Tiles25DegUp(
         PaintUtilPushTunnelRight(session, height - 8, TUNNEL_1);
     }
 
-    uint8_t supportType[2][4] = {
-        { 1, 0, 0, 2 },
-        { 2, 0, 0, 1 },
+    static constexpr MetalSupportType supportType[2][4] = {
+        { MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt },
+        { MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork },
     };
     switch (trackSequence)
     {
@@ -3383,9 +3389,9 @@ void JuniorRCPaintTrackRightQuarterTurn3Tiles25DegDown(
         PaintUtilPushTunnelRight(session, height + 8, TUNNEL_2);
     }
 
-    static constexpr uint8_t supportType[2][4] = {
-        { 1, 0, 0, 2 },
-        { 2, 0, 0, 1 },
+    static constexpr MetalSupportType supportType[2][4] = {
+        { MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt },
+        { MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork },
     };
     switch (trackSequence)
     {
@@ -3491,13 +3497,13 @@ static void JuniorRCRightHalfBankedHelixUpSmallPaintSetup(
     if (trackSequence == 0)
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 2, height,
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork, 4, 2, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
     else if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 6, height,
+            session, (direction & 1) ? MetalSupportType::Fork : MetalSupportType::ForkAlt, 4, 6, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -3559,13 +3565,13 @@ static void JuniorRCRightHalfBankedHelixDownSmallPaintSetup(
     if (trackSequence == 0)
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 6, height,
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork, 4, 6, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
     else if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 2, height,
+            session, (direction & 1) ? MetalSupportType::Fork : MetalSupportType::ForkAlt, 4, 2, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -3657,13 +3663,13 @@ static void JuniorRCRightHalfBankedHelixUpLargePaintSetup(
     if (trackSequence == 0)
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 1, height,
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork, 4, 1, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
     else if (trackSequence == 6)
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 7, height,
+            session, (direction & 1) ? MetalSupportType::Fork : MetalSupportType::ForkAlt, 4, 7, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -3741,13 +3747,13 @@ static void JuniorRCRightHalfBankedHelixDownLargePaintSetup(
     if (trackSequence == 0)
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 7, height,
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork, 4, 7, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
     else if (trackSequence == 6)
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 1, height,
+            session, (direction & 1) ? MetalSupportType::Fork : MetalSupportType::ForkAlt, 4, 1, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -3859,8 +3865,8 @@ static void JuniorRCBrakePaintSetup(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        int32_t edi = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
-        MetalASupportsPaintSetup(session, edi, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        auto supportType = (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork;
+        MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -3895,8 +3901,8 @@ static void JuniorRCBlockBrakePaintSetup(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        int32_t edi = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
-        MetalASupportsPaintSetup(session, edi, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        auto supportType = (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork;
+        MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -3918,18 +3924,20 @@ static void JuniorRCLeftEighthToDiagPaintSetup(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+                session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork, 4, 0, height,
                 session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 4:
             if (direction == 0)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::ForkAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 1)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Fork, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 2)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::ForkAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 3)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Fork, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -3980,18 +3988,20 @@ static void JuniorRCRightEighthToDiagPaintSetup(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+                session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork, 4, 0, height,
                 session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 4:
             if (direction == 0)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK_ALT, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::ForkAlt, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 1)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Fork, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 2)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK_ALT, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::ForkAlt, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 3)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Fork, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -4143,18 +4153,20 @@ static void JuniorRCLeftEighthToDiagBankPaintSetup(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+                session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork, 4, 0, height,
                 session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 4:
             if (direction == 0)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Fork, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 1)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK_ALT, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::ForkAlt, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 2)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Fork, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 3)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK_ALT, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::ForkAlt, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -4286,18 +4298,20 @@ static void JuniorRCRightEighthToDiagBankPaintSetup(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height,
+                session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork, 4, 0, height,
                 session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 4:
             if (direction == 0)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Fork, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 1)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::ForkAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 2)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Fork, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 3)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::ForkAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -4379,8 +4393,8 @@ void JuniorRCPaintTrackDiagFlat(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4399,8 +4413,8 @@ void JuniorRCPaintTrackDiag25DegUp(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4420,8 +4434,8 @@ void JuniorRCPaintTrackDiagFlatTo25DegUp(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4444,8 +4458,8 @@ void JuniorRCPaintTrackDiagFlatTo60DegUp(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            0, height + 6, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 0, height + 6, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4465,8 +4479,8 @@ void JuniorRCPaintTrackDiag25DegUpToFlat(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            4, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 4, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4489,8 +4503,8 @@ void JuniorRCPaintTrackDiag60DegUpToFlat(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            4, height + 13, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 4, height + 13, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4510,8 +4524,8 @@ void JuniorRCPaintTrackDiag25DegDown(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4531,8 +4545,8 @@ void JuniorRCPaintTrackDiagFlatTo25DegDown(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            4, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 4, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4555,8 +4569,8 @@ void JuniorRCPaintTrackDiagFlatTo60DegDown(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            4, height + 7, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 4, height + 7, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4576,8 +4590,8 @@ void JuniorRCPaintTrackDiag25DegDownToFlat(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4600,8 +4614,8 @@ void JuniorRCPaintTrackDiag60DegDownToFlat(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4744,8 +4758,8 @@ static void JuniorRCDiagFlatToLeftBankPaintSetup(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4771,8 +4785,8 @@ static void JuniorRCDiagFlatToRightBankPaintSetup(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4798,8 +4812,8 @@ static void JuniorRCDiagLeftBankToFlatPaintSetup(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4825,8 +4839,8 @@ static void JuniorRCDiagRightBankToFlatPaintSetup(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4852,8 +4866,8 @@ static void JuniorRCDiagLeftBankTo25DegUpPaintSetup(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4879,8 +4893,8 @@ static void JuniorRCDiagRightBankTo25DegUpPaintSetup(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4906,8 +4920,8 @@ static void JuniorRCDiag25DegUpToLeftBankPaintSetup(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            4, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 4, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4933,8 +4947,8 @@ static void JuniorRCDiag25DegUpToRightBankPaintSetup(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            4, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 4, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4960,8 +4974,8 @@ static void JuniorRCDiagLeftBankTo25DegDownPaintSetup(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            4, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 4, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4987,8 +5001,8 @@ static void JuniorRCDiagRightBankTo25DegDownPaintSetup(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            4, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 4, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -5014,8 +5028,8 @@ static void JuniorRCDiag25DegDownToLeftBankPaintSetup(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -5041,8 +5055,8 @@ static void JuniorRCDiag25DegDownToRightBankPaintSetup(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -5078,8 +5092,8 @@ static void JuniorRCDiagLeftBankPaintSetup(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -5101,8 +5115,8 @@ static void JuniorRCDiagRightBankPaintSetup(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -5170,7 +5184,7 @@ void JuniorRCPaintTrack60DegUp(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, support[direction & 3], height,
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork, 4, support[direction & 3], height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -5262,7 +5276,7 @@ void JuniorRCPaintTrack25DegUpTo60DegUp(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, support[direction & 3], height,
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork, 4, support[direction & 3], height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -5332,7 +5346,7 @@ void JuniorRCPaintTrack60DegUpTo25DegUp(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 20, height,
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork, 4, 20, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -5369,8 +5383,8 @@ void JuniorRCPaintTrackDiag60DegUp(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            36, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 36, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -5390,8 +5404,8 @@ void JuniorRCPaintTrackDiag60DegDown(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            28, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 28, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -5411,8 +5425,8 @@ void JuniorRCPaintTrackDiag25DegUpTo60DegUp(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            16, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 16, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -5443,8 +5457,8 @@ void JuniorRCPaintTrackDiag60DegUpTo25DegUp(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            21, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 21, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -5475,8 +5489,8 @@ void JuniorRCPaintTrackDiag25DegDownTo60DegDown(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            17, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 17, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -5496,8 +5510,8 @@ void JuniorRCPaintTrackDiag60DegDownTo25DegDown(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction],
-            8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork,
+            junior_rc_diag_support_segment[direction], 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -5646,7 +5660,7 @@ static void JuniorRCFlatTo60DegUpPaintSetup(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, support[direction], height - 7,
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork, 4, support[direction], height - 7,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -5707,7 +5721,7 @@ static void JuniorRC60DegUpToFlatPaintSetup(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 20, height - 5,
+            session, (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork, 4, 20, height - 5,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -5822,7 +5836,7 @@ static void JuniorRCBoosterPaintSetup(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        uint8_t supportType = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
+        auto supportType = (direction & 1) ? MetalSupportType::ForkAlt : MetalSupportType::Fork;
         MetalASupportsPaintSetup(session, supportType, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -5845,9 +5859,9 @@ static void JuniorRCTrackOnRidePhoto(
                 session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height + photoCameraOffset },
                 { 32, 32, 1 });
             MetalASupportsPaintSetup(
-                session, METAL_SUPPORTS_FORK, 5, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Fork, 5, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             MetalASupportsPaintSetup(
-                session, METAL_SUPPORTS_FORK, 8, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Fork, 8, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, imageId, { 0, 6, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
             break;
@@ -5856,9 +5870,9 @@ static void JuniorRCTrackOnRidePhoto(
                 session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height + photoCameraOffset },
                 { 32, 32, 1 });
             MetalASupportsPaintSetup(
-                session, METAL_SUPPORTS_FORK_ALT, 6, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::ForkAlt, 6, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             MetalASupportsPaintSetup(
-                session, METAL_SUPPORTS_FORK_ALT, 7, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::ForkAlt, 7, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, imageId, { 0, 6, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
             break;
@@ -5867,9 +5881,9 @@ static void JuniorRCTrackOnRidePhoto(
                 session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height + photoCameraOffset },
                 { 32, 32, 1 });
             MetalASupportsPaintSetup(
-                session, METAL_SUPPORTS_FORK, 5, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Fork, 5, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             MetalASupportsPaintSetup(
-                session, METAL_SUPPORTS_FORK, 8, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Fork, 8, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, imageId, { 0, 6, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
             break;
@@ -5878,9 +5892,9 @@ static void JuniorRCTrackOnRidePhoto(
                 session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height + photoCameraOffset },
                 { 32, 32, 1 });
             MetalASupportsPaintSetup(
-                session, METAL_SUPPORTS_FORK_ALT, 6, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::ForkAlt, 6, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             MetalASupportsPaintSetup(
-                session, METAL_SUPPORTS_FORK_ALT, 7, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::ForkAlt, 7, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, imageId, { 0, 6, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
             break;

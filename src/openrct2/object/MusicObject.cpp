@@ -74,13 +74,13 @@ void MusicObject::Load()
     }
 
     _hasPreview = !!GetImageTable().GetCount();
-    _previewImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _previewImageId = LoadImages();
 }
 
 void MusicObject::Unload()
 {
     LanguageFreeObjectString(NameStringId);
-    GfxObjectFreeImages(_previewImageId, GetImageTable().GetCount());
+    UnloadImages();
 
     _hasPreview = false;
     _previewImageId = 0;
@@ -93,7 +93,7 @@ void MusicObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height)
     int32_t x = width / 2;
     int32_t y = height / 2;
     if (_hasPreview)
-        GfxDrawSprite(&dpi, ImageId(_previewImageId), { 0, 0 });
+        GfxDrawSprite(dpi, ImageId(_previewImageId), { 0, 0 });
     else
         DrawTextBasic(dpi, { x, y }, STR_WINDOW_NO_IMAGE, {}, { TextAlignment::CENTRE });
 }

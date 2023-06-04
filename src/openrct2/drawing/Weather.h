@@ -37,4 +37,4 @@ static constexpr const uint8_t SnowPattern[] =
 
 // clang-format on
 
-void DrawWeather(DrawPixelInfo* dpi, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer);
+void DrawWeather(DrawPixelInfo& dpi, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer);

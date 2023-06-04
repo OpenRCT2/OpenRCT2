@@ -252,7 +252,7 @@ public:
 
     CursorID OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID cursorId) override
     {
-        gTooltipTimeout = 2000;
+        gTooltipCloseTimeout = gCurrentRealTimeTicks + 2000;
         return cursorId;
     }
 
@@ -269,7 +269,7 @@ public:
 
     void OnDraw(DrawPixelInfo& dpi) override
     {
-        GfxFilterRect(&dpi, _filterRect, FilterPaletteID::Palette51);
+        GfxFilterRect(dpi, _filterRect, FilterPaletteID::Palette51);
         DrawWidgets(dpi);
     }
 };

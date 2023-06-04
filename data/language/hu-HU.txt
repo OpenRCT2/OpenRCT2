@@ -359,9 +359,6 @@ STR_0978    :Új enyhe játékok
 STR_0979    :Új hullámvasutak
 STR_0980    :Új izgalmas játékok
 STR_0981    :Új vízi játékok
-STR_0982    :Új boltok és bódék
-STR_0983    :Kutatás-fejlesztés
-STR_0979    :Új hullámvasutak
 STR_0982    :Új boltok & bódék
 STR_0983    :Kutatás-fejlesztés
 STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
@@ -711,8 +708,6 @@ STR_1327    :Az objektumok forgatása 90°-kal
 STR_1328    :Vízszintes talaj szükséges
 STR_1329    :{WINDOW_COLOUR_2}Kilövési sebesség:
 STR_1330    :A legnagyobb sebesség az állomás elhagyásakor
-STR_1361    :Nem változtatható meg a sebesség…
-STR_1362    :Nem változtatható meg a kilövési sebesség…
 STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
@@ -1215,8 +1210,8 @@ STR_1838    :Elégedettség: {COMMA16}%
 STR_1839    :Megbízhatóság: {COMMA16}%
 STR_1840    :Üzemszünet: {COMMA16}%
 STR_1841    :Nyereség: {CURRENCY2DP} óránként
-STR_1842    :Kedvence: {COMMA16} vendégnek
-STR_1843    :Kedvence: {COMMA16} vendégnek
+STR_1842    :Kedvence: {COMMA32} vendégnek
+STR_1843    :Kedvence: {COMMA32} vendégnek
 STR_1844    :A játékok/épületek listájában megjelenített információtípus kiválasztása
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} vendég
@@ -2185,8 +2180,8 @@ STR_3118    :{BLACK}{STRINGID} a játék felé tart
 STR_3119    :{BLACK}{STRINGID} javítja a játékot
 STR_3120    :A legközelebbi elérhető vagy a játékot javító gépész megkeresése
 STR_3121    :Nem található gépész, vagy az összes közeli gépész elfoglalt
-STR_3122    :{WINDOW_COLOUR_2}Kedvenc játéka: {BLACK}{COMMA16} vendégnek
-STR_3123    :{WINDOW_COLOUR_2}Kedvenc játéka: {BLACK}{COMMA16} vendégnek
+STR_3122    :{WINDOW_COLOUR_2}Kedvenc játéka: {BLACK}{COMMA32} vendégnek
+STR_3123    :{WINDOW_COLOUR_2}Kedvenc játéka: {BLACK}{COMMA32} vendégnek
 STR_3124    :Hibás {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Izgalmi faktor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intenzitási faktor: {BLACK}+{COMMA16}%
@@ -2939,6 +2934,7 @@ STR_5786    :Érvénytelen csoportnév
 STR_5787    :{COMMA32} játékos van online
 STR_5788    :Alap ellenőrzési időköz:
 STR_5789    :Villámhatás kikapcsolása
+STR_5790    :Az RCT1-stílusú árazás ki- és bekapcsolása{NEWLINE}(például belépési díj egyszerre a parkba és a játékokra)
 STR_5791    :Az összes játék megbízhatóságát 100%-ra{NEWLINE}állítja és visszaállítja az építési idejüket „idén”-re
 STR_5792    :Megjavítja az összes meghibásodott játékot
 STR_5793    :Törli a játék ütközési előzményeit,{NEWLINE}így a vendégek nem fognak panaszkodni, hogy nem biztonságos
@@ -2950,8 +2946,6 @@ STR_5798    :Engedélyezi az építési tevékenységeket szünet közben
 STR_5799    :Letiltja a játékok fékhiba miatta meghibásodásait és ütközéseit
 STR_5800    :Megakadályozza, hogy meghibásodjanak a játékok
 STR_5801    :Szemetelés kikapcsolása
-STR_5790    :Az RCT1-stílusú árazás ki- és bekapcsolása{NEWLINE}(például belépési díj egyszerre a parkba és a játékokra)
-STR_5795    :A vendégek a park összes játékára felülnek,{NEWLINE}még az extrém magas intenzitásúakra is
 STR_5802    :A vendégek nem szemetelnek és hánynak
 STR_5803    :A kiválasztott térképelem forgatása
 STR_5804    :Hang némítása

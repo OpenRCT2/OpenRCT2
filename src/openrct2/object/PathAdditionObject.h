@@ -9,13 +9,13 @@
 
 #pragma once
 
-#include "FootpathItemEntry.h"
+#include "PathAdditionEntry.h"
 #include "SceneryObject.h"
 
-class FootpathItemObject final : public SceneryObject
+class PathAdditionObject final : public SceneryObject
 {
 private:
-    PathBitEntry _legacyType = {};
+    PathAdditionEntry _legacyType = {};
 
 public:
     void* GetLegacyData() override

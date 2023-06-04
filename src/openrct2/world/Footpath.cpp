@@ -22,13 +22,13 @@
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
-#include "../object/FootpathItemEntry.h"
 #include "../object/FootpathObject.h"
 #include "../object/FootpathRailingsObject.h"
 #include "../object/FootpathSurfaceObject.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
+#include "../object/PathAdditionEntry.h"
 #include "../paint/VirtualFloor.h"
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
@@ -160,11 +160,11 @@ money64 FootpathProvisionalSet(
 
         if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
         {
-            ViewportSetVisibility(1);
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
         }
         else
         {
-            ViewportSetVisibility(3);
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewOff);
         }
     }
 
@@ -1628,19 +1628,26 @@ uint8_t PathElement::GetAddition() const
 
 ObjectEntryIndex PathElement::GetAdditionEntryIndex() const
 {
+    // `Additions` is set to 0 when there is no addition, so the value 1 corresponds with path addition slot 0, etc.
     return GetAddition() - 1;
 }
 
-const PathBitEntry* PathElement::GetAdditionEntry() const
+const PathAdditionEntry* PathElement::GetAdditionEntry() const
 {
     if (!HasAddition())
         return nullptr;
-    return OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(GetAdditionEntryIndex());
+    return OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(GetAdditionEntryIndex());
 }
 
 void PathElement::SetAddition(uint8_t newAddition)
 {
     Additions = newAddition;
+}
+
+void PathElement::SetAdditionEntryIndex(ObjectEntryIndex entryIndex)
+{
+    // `Additions` is set to 0 when there is no addition, so the value 1 corresponds with path addition slot 0, etc.
+    Additions = entryIndex + 1;
 }
 
 bool PathElement::AdditionIsGhost() const

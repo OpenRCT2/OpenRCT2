@@ -1791,7 +1791,7 @@ namespace OpenRCT2::Scripting
         auto* ctx = scriptEngine.GetContext();
         auto* el = _element->AsPath();
         if (el != nullptr && el->HasAddition())
-            duk_push_int(ctx, el->GetAddition() - 1);
+            duk_push_int(ctx, el->GetAdditionEntryIndex());
         else
             duk_push_null(ctx);
         return DukValue::take_from_stack(ctx);
@@ -1807,7 +1807,7 @@ namespace OpenRCT2::Scripting
                 auto addition = value.as_int();
                 if (addition >= 0 && addition <= 254)
                 {
-                    el->SetAddition(addition + 1);
+                    el->SetAdditionEntryIndex(addition);
                 }
             }
             else

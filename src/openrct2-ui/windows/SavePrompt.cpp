@@ -185,6 +185,11 @@ public:
     {
         DrawWidgets(dpi);
     }
+
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
 };
 
 WindowBase* WindowSavePromptOpen()

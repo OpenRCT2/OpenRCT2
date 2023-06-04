@@ -11,6 +11,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
@@ -82,20 +83,20 @@ public:
         int32_t bottom = windowPos.y + height - 1;
 
         // Background
-        GfxFilterRect(&dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::Palette45);
-        GfxFilterRect(&dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::PaletteGlassLightOrange);
+        GfxFilterRect(dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::Palette45);
+        GfxFilterRect(dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::PaletteGlassLightOrange);
 
         // Sides
-        GfxFilterRect(&dpi, { { left + 0, top + 2 }, { left + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
-        GfxFilterRect(&dpi, { { right + 0, top + 2 }, { right + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
-        GfxFilterRect(&dpi, { { left + 2, bottom + 0 }, { right - 2, bottom + 0 } }, FilterPaletteID::PaletteDarken3);
-        GfxFilterRect(&dpi, { { left + 2, top + 0 }, { right - 2, top + 0 } }, FilterPaletteID::PaletteDarken3);
+        GfxFilterRect(dpi, { { left + 0, top + 2 }, { left + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
+        GfxFilterRect(dpi, { { right + 0, top + 2 }, { right + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
+        GfxFilterRect(dpi, { { left + 2, bottom + 0 }, { right - 2, bottom + 0 } }, FilterPaletteID::PaletteDarken3);
+        GfxFilterRect(dpi, { { left + 2, top + 0 }, { right - 2, top + 0 } }, FilterPaletteID::PaletteDarken3);
 
         // Corners
-        GfxFilterPixel(&dpi, { left + 1, top + 1 }, FilterPaletteID::PaletteDarken3);
-        GfxFilterPixel(&dpi, { right - 1, top + 1 }, FilterPaletteID::PaletteDarken3);
-        GfxFilterPixel(&dpi, { left + 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
-        GfxFilterPixel(&dpi, { right - 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
+        GfxFilterPixel(dpi, { left + 1, top + 1 }, FilterPaletteID::PaletteDarken3);
+        GfxFilterPixel(dpi, { right - 1, top + 1 }, FilterPaletteID::PaletteDarken3);
+        GfxFilterPixel(dpi, { left + 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
+        GfxFilterPixel(dpi, { right - 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
 
         // Text
         left = windowPos.x + ((width + 1) / 2) - 1;
@@ -126,7 +127,7 @@ private:
 void WindowTooltipReset(const ScreenCoordsXY& screenCoords)
 {
     gTooltipCursor = screenCoords;
-    gTooltipTimeout = 0;
+    gTooltipCloseTimeout = 0;
     gTooltipWidget.window_classification = WindowClass::Null;
     InputSetState(InputState::Normal);
     InputSetFlag(INPUT_FLAG_4, false);
@@ -188,6 +189,6 @@ void WindowTooltipOpen(WindowBase* widgetWindow, WidgetIndex widgetIndex, const 
 void WindowTooltipClose()
 {
     WindowCloseByClass(WindowClass::Tooltip);
-    gTooltipTimeout = 0;
+    gTooltipCloseTimeout = 0;
     gTooltipWidget.window_classification = WindowClass::Null;
 }

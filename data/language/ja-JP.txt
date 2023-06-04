@@ -1212,8 +1212,8 @@ STR_1838    :満足度: {COMMA16}%
 STR_1839    :信頼度: {COMMA16}%
 STR_1840    :ダウンタイム: {COMMA16}%
 STR_1841    :利益: {CURRENCY2DP}/時間
-STR_1842    :{COMMA16}人の来客のお気に入り
-STR_1843    :{COMMA16}人の来客のお気に入り
+STR_1842    :{COMMA32}人の来客のお気に入り
+STR_1843    :{COMMA32}人の来客のお気に入り
 STR_1844    :乗物/施設のリストで表示したい情報の種類を選択
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32}人の来客
@@ -2182,8 +2182,8 @@ STR_3118    :{BLACK}{STRINGID}はライドに向かっています
 STR_3119    :{BLACK}{STRINGID}はライドを修理中
 STR_3120    :一番近い手の空いている整備士、または乗物を修理中の整備士を探す
 STR_3121    :整備士が見つからない、あるいは作業中の整備士しかいませんでした
-STR_3122    :{WINDOW_COLOUR_2}お気に入りのライド: {BLACK}{COMMA16}ゲスト
-STR_3123    :{WINDOW_COLOUR_2}お気に入りのライド: {BLACK}{COMMA16}ゲスト
+STR_3122    :{WINDOW_COLOUR_2}お気に入りのライド: {BLACK}{COMMA32}ゲスト
+STR_3123    :{WINDOW_COLOUR_2}お気に入りのライド: {BLACK}{COMMA32}ゲスト
 STR_3124    :壊れた{STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}興奮倍率: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}強烈倍率: {BLACK}+{COMMA16}%

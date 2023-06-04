@@ -104,7 +104,7 @@ static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
              ObjectType::Walls,
              ObjectType::Banners,
              ObjectType::Paths,
-             ObjectType::PathBits,
+             ObjectType::PathAdditions,
              ObjectType::SceneryGroup,
              ObjectType::ParkEntrance,
              ObjectType::Water,

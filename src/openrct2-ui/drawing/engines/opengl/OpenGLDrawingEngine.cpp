@@ -131,7 +131,7 @@ public:
     }
 
     virtual void Draw(
-        DrawPixelInfo* dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+        DrawPixelInfo& dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
         const uint8_t* weatherpattern) override
     {
         const uint8_t* pattern = weatherpattern;
@@ -141,7 +141,7 @@ public:
         uint8_t patternStartXOffset = xStart % patternXSpace;
         uint8_t patternStartYOffset = yStart % patternYSpace;
 
-        uint32_t pixelOffset = (dpi->pitch + dpi->width) * y + x;
+        uint32_t pixelOffset = (dpi.pitch + dpi.width) * y + x;
         uint8_t patternYPos = patternStartYOffset % patternYSpace;
 
         for (; height != 0; height--)
@@ -157,14 +157,14 @@ public:
                 auto patternPixel = pattern[patternYPos * 2 + 1];
                 for (; xPixelOffset < finalPixelOffset; xPixelOffset += patternXSpace)
                 {
-                    int32_t pixelX = xPixelOffset % dpi->width;
-                    int32_t pixelY = (xPixelOffset / dpi->width) % dpi->height;
+                    int32_t pixelX = xPixelOffset % dpi.width;
+                    int32_t pixelY = (xPixelOffset / dpi.width) % dpi.height;
 
-                    _drawingContext->DrawLine(dpi, patternPixel, { { pixelX, pixelY }, { pixelX + 1, pixelY + 1 } });
+                    _drawingContext->DrawLine(&dpi, patternPixel, { { pixelX, pixelY }, { pixelX + 1, pixelY + 1 } });
                 }
             }
 
-            pixelOffset += dpi->pitch + dpi->width;
+            pixelOffset += dpi.pitch + dpi.width;
             patternYPos++;
             patternYPos %= patternYSpace;
         }
@@ -325,14 +325,14 @@ public:
         _drawingContext->CalculcateClipping(&_bitsDPI);
 
         WindowUpdateAllViewports();
-        WindowDrawAll(&_bitsDPI, 0, 0, _width, _height);
+        WindowDrawAll(_bitsDPI, 0, 0, _width, _height);
     }
 
     void PaintWeather() override
     {
         _drawingContext->CalculcateClipping(&_bitsDPI);
 
-        DrawWeather(&_bitsDPI, &_weatherDrawer);
+        DrawWeather(_bitsDPI, &_weatherDrawer);
     }
 
     std::string Screenshot() override
@@ -340,7 +340,7 @@ public:
         const OpenGLFramebuffer& framebuffer = _drawingContext->GetFinalFramebuffer();
         framebuffer.Bind();
         framebuffer.GetPixels(_bitsDPI);
-        std::string result = ScreenshotDumpPNG(&_bitsDPI);
+        std::string result = ScreenshotDumpPNG(_bitsDPI);
         return result;
     }
 

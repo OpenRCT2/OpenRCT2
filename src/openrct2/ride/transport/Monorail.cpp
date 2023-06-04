@@ -410,7 +410,7 @@ static void PaintMonorailTrackFlat(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -463,13 +463,13 @@ static void PaintMonorailStation(
 
     if (direction == 0 || direction == 2)
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     else
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
@@ -512,7 +512,7 @@ static void PaintMonorailTrack25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -554,7 +554,7 @@ static void PaintMonorailTrackFlatTo25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -596,7 +596,7 @@ static void PaintMonorailTrack25DegUpToFlat(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -642,7 +642,7 @@ static void PaintMonorailTrackRightQuarterTurn5Tiles(
     {
         case 0:
         case 6:
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -740,13 +740,13 @@ static void PaintMonorailTrackSBendLeft(
         switch (trackSequence)
         {
             case 0:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -760,13 +760,13 @@ static void PaintMonorailTrackSBendLeft(
         switch (trackSequence)
         {
             case 0:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -829,13 +829,13 @@ static void PaintMonorailTrackSBendRight(
         switch (trackSequence)
         {
             case 0:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -849,13 +849,13 @@ static void PaintMonorailTrackSBendRight(
         switch (trackSequence)
         {
             case 0:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -896,7 +896,7 @@ static void PaintMonorailTrackRightQuarterTurn3Tiles(
     {
         case 0:
         case 3:
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -950,17 +950,17 @@ static void PaintMonorailTrackLeftEighthToDiag(
     switch (trackSequence)
     {
         case 0:
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 4:
             if (direction == 0)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 1)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 2)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 3)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -1016,17 +1016,17 @@ static void PaintMonorailTrackRightEighthToDiag(
     switch (trackSequence)
     {
         case 0:
-            MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 4:
             if (direction == 0)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 1)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 2)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 3)
-                MetalASupportsPaintSetup(session, METAL_SUPPORTS_BOXED, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -1118,7 +1118,7 @@ static void PaintMonorailTrackDiagFlat(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, METAL_SUPPORTS_BOXED, monorail_diag_support_segment[direction], 0, height,
+            session, MetalSupportType::Boxed, monorail_diag_support_segment[direction], 0, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -1141,7 +1141,7 @@ static void PaintMonorailTrackDiag25DegUp(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, METAL_SUPPORTS_BOXED, monorail_diag_support_segment[direction], 8, height,
+            session, MetalSupportType::Boxed, monorail_diag_support_segment[direction], 8, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -1164,7 +1164,7 @@ static void PaintMonorailTrackDiagFlatTo25DegUp(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, METAL_SUPPORTS_BOXED, monorail_diag_support_segment[direction], 0, height,
+            session, MetalSupportType::Boxed, monorail_diag_support_segment[direction], 0, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -1187,7 +1187,7 @@ static void PaintMonorailTrackDiag25DegUpToFlat(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, METAL_SUPPORTS_BOXED, monorail_diag_support_segment[direction], 4, height,
+            session, MetalSupportType::Boxed, monorail_diag_support_segment[direction], 4, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -1210,7 +1210,7 @@ static void PaintMonorailTrackDiag25DegDown(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, METAL_SUPPORTS_BOXED, monorail_diag_support_segment[direction], 8, height,
+            session, MetalSupportType::Boxed, monorail_diag_support_segment[direction], 8, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -1234,7 +1234,7 @@ static void PaintMonorailTrackDiagFlatTo25DegDown(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, METAL_SUPPORTS_BOXED, monorail_diag_support_segment[direction], 4, height,
+            session, MetalSupportType::Boxed, monorail_diag_support_segment[direction], 4, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -1258,7 +1258,7 @@ static void PaintMonorailTrackDiag25DegDownToFlat(
     if (trackSequence == 3)
     {
         MetalBSupportsPaintSetup(
-            session, METAL_SUPPORTS_BOXED, monorail_diag_support_segment[direction], 0, height,
+            session, MetalSupportType::Boxed, monorail_diag_support_segment[direction], 0, height,
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 

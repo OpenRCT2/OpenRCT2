@@ -74,17 +74,74 @@ namespace Platform
 
     uint16_t GetLocaleLanguage()
     {
-        return LANGUAGE_ENGLISH_UK;
+        JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
+
+        jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+        jclass activityClass = env->GetObjectClass(activity);
+        jmethodID getDefaultLocale = env->GetMethodID(
+            activityClass, "getDefaultLocale", "([Ljava/lang/String;)Ljava/lang/String;");
+
+        jobjectArray jLanguageTags = env->NewObjectArray(
+            LANGUAGE_COUNT, env->FindClass("java/lang/String"), env->NewStringUTF(""));
+
+        for (int32_t i = 1; i < LANGUAGE_COUNT; ++i)
+        {
+            jstring jTag = env->NewStringUTF(LanguagesDescriptors[i].locale);
+            env->SetObjectArrayElement(jLanguageTags, i, jTag);
+        }
+
+        jstring jniString = static_cast<jstring>(env->CallObjectMethod(activity, getDefaultLocale, jLanguageTags));
+
+        const char* jniChars = env->GetStringUTFChars(jniString, nullptr);
+        std::string defaultLocale = jniChars;
+
+        env->ReleaseStringUTFChars(jniString, jniChars);
+        for (int32_t i = 0; i < LANGUAGE_COUNT; ++i)
+        {
+            jobject strToFree = env->GetObjectArrayElement(jLanguageTags, i);
+            env->DeleteLocalRef(strToFree);
+        }
+        env->DeleteLocalRef(jLanguageTags);
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(activityClass);
+
+        return LanguageGetIDFromLocale(defaultLocale.c_str());
     }
 
     CurrencyType GetLocaleCurrency()
     {
-        return Platform::GetCurrencyValue(NULL);
+        JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
+
+        jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+        jclass activityClass = env->GetObjectClass(activity);
+        jmethodID getDefaultLocale = env->GetMethodID(activityClass, "getLocaleCurrency", "()Ljava/lang/String;");
+
+        jstring jniString = static_cast<jstring>(env->CallObjectMethod(activity, getDefaultLocale));
+
+        const char* jniChars = env->GetStringUTFChars(jniString, nullptr);
+        std::string localeCurrencyCode = jniChars;
+
+        env->ReleaseStringUTFChars(jniString, jniChars);
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(activityClass);
+
+        return Platform::GetCurrencyValue(localeCurrencyCode.c_str());
     }
 
     MeasurementFormat GetLocaleMeasurementFormat()
     {
-        return MeasurementFormat::Metric;
+        JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
+
+        jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+        jclass activityClass = env->GetObjectClass(activity);
+        jmethodID getIsImperialLocaleMeasurementFormat = env->GetMethodID(
+            activityClass, "isImperialLocaleMeasurementFormat", "()Z");
+
+        jboolean isImperial = env->CallBooleanMethod(activity, getIsImperialLocaleMeasurementFormat);
+
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(activityClass);
+        return isImperial == JNI_TRUE ? MeasurementFormat::Imperial : MeasurementFormat::Metric;
     }
 
     std::string GetSteamPath()

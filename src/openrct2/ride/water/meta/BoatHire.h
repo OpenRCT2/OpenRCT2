@@ -38,7 +38,6 @@ constexpr const RideTypeDescriptor BoatHireRTD =
     SET_FIELD(Heights, { 255, 16, 0, 3, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateBoatHire),
     SET_FIELD(RatingsMultipliers, { 70, 6, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 4, 0, 0 }),
     SET_FIELD(BuildCosts, { 27.50_GBP, 0.00_GBP, 5, }),
@@ -59,6 +58,19 @@ constexpr const RideTypeDescriptor BoatHireRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_BOAT_HIRE_TRACK, SPR_RIDE_DESIGN_PREVIEW_BOAT_HIRE_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "boat_hire"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::Normal,
+        { RIDE_RATING(1, 90), RIDE_RATING(0, 80), RIDE_RATING(0, 90) },
+        7,
+        0,
+        false,
+        {
+            { RatingsModifierType::BonusBoatHireNoCircuit, 0, RIDE_RATING(0, 20), 0, 0 },
+            { RatingsModifierType::BonusProximity,         0, 11183, 0, 0 },
+            { RatingsModifierType::BonusScenery,           0, 22310, 0, 0 },
+        },
+    }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_BoatHire),
 };

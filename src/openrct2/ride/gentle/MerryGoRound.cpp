@@ -75,7 +75,7 @@ static void PaintCarousel(
     auto rotationOffset = 0;
     if (vehicle != nullptr)
     {
-        auto rotation = ((vehicle->sprite_direction >> 3) + session.CurrentRotation) << 5;
+        auto rotation = ((vehicle->Orientation >> 3) + session.CurrentRotation) << 5;
         rotationOffset = (vehicle->Pitch + rotation) % 128;
     }
 

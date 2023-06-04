@@ -178,7 +178,7 @@ public:
 
     void OnDraw(DrawPixelInfo& dpi) override
     {
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
 
         // Draw area as a number for tool sizes bigger than 7
         if (gWindowSceneryScatterSize > MAX_TOOL_SIZE_WITH_SPRITE)
@@ -189,6 +189,11 @@ public:
             ft.Add<uint16_t>(gWindowSceneryScatterSize);
             DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
         }
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 };
 

@@ -226,7 +226,8 @@ public:
                 if (dropdownIndex == -1)
                     break;
 
-                auto bannerSetStyle = BannerSetStyleAction(BannerSetStyleType::PrimaryColour, GetBannerIndex(), dropdownIndex);
+                auto bannerSetStyle = BannerSetStyleAction(
+                    BannerSetStyleType::PrimaryColour, GetBannerIndex(), ColourDropDownIndexToColour(dropdownIndex));
                 GameActions::Execute(&bannerSetStyle);
                 break;
             }
@@ -262,7 +263,7 @@ public:
 
         if (viewport != nullptr)
         {
-            WindowDrawViewport(&dpi, *this);
+            WindowDrawViewport(dpi, *this);
         }
     }
 
@@ -293,6 +294,11 @@ public:
         colourBtn->image = GetColourButtonImage(banner->colour);
         Widget* dropDownWidget = &window_banner_widgets[WIDX_TEXT_COLOUR_DROPDOWN];
         dropDownWidget->text = BannerColouredTextFormats[banner->text_colour];
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 };
 

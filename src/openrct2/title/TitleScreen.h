@@ -65,4 +65,4 @@ size_t TitleGetCurrentSequence();
 bool TitlePreviewSequence(size_t value);
 void TitleStopPreviewingSequence();
 bool TitleIsPreviewingSequence();
-void DrawOpenRCT2(DrawPixelInfo* dpi, const ScreenCoordsXY& screenCoords);
+void DrawOpenRCT2(DrawPixelInfo& dpi, const ScreenCoordsXY& screenCoords);

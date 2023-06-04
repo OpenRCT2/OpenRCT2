@@ -24,7 +24,6 @@
 #include "AudioObject.h"
 #include "BannerObject.h"
 #include "EntranceObject.h"
-#include "FootpathItemObject.h"
 #include "FootpathObject.h"
 #include "FootpathRailingsObject.h"
 #include "FootpathSurfaceObject.h"
@@ -33,6 +32,7 @@
 #include "Object.h"
 #include "ObjectLimits.h"
 #include "ObjectList.h"
+#include "PathAdditionObject.h"
 #include "RideObject.h"
 #include "SceneryGroupObject.h"
 #include "SmallSceneryObject.h"
@@ -345,8 +345,8 @@ namespace ObjectFactory
             case ObjectType::Paths:
                 result = std::make_unique<FootpathObject>();
                 break;
-            case ObjectType::PathBits:
-                result = std::make_unique<FootpathItemObject>();
+            case ObjectType::PathAdditions:
+                result = std::make_unique<PathAdditionObject>();
                 break;
             case ObjectType::SceneryGroup:
                 result = std::make_unique<SceneryGroupObject>();
@@ -393,7 +393,7 @@ namespace ObjectFactory
         if (s == "footpath_banner")
             return ObjectType::Banners;
         if (s == "footpath_item")
-            return ObjectType::PathBits;
+            return ObjectType::PathAdditions;
         if (s == "scenery_small")
             return ObjectType::SmallScenery;
         if (s == "scenery_large")
@@ -531,10 +531,20 @@ namespace ObjectFactory
                 RCTObjectEntry entry = {};
                 entry.flags = std::stoul(originalId.substr(0, 8), nullptr, 16);
                 entry.checksum = std::stoul(originalId.substr(18, 8), nullptr, 16);
-                entry.SetType(objectType);
                 auto minLength = std::min<size_t>(8, originalName.length());
                 std::memcpy(entry.name, originalName.c_str(), minLength);
-                descriptor = ObjectEntryDescriptor(entry);
+
+                // Some bad objects try to override different types
+                if (entry.GetType() != objectType)
+                {
+                    LOG_ERROR(
+                        "Object \"%s\" has invalid originalId set \"%s\". Ignoring override.", id.c_str(), originalId.c_str());
+                    descriptor = ObjectEntryDescriptor(objectType, id);
+                }
+                else
+                {
+                    descriptor = ObjectEntryDescriptor(entry);
+                }
             }
             else
             {

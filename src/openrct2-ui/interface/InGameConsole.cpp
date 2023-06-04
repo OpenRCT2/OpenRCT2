@@ -264,7 +264,7 @@ void InGameConsole::Update()
     _consoleCaretTicks = (_consoleCaretTicks + 1) % 30;
 }
 
-void InGameConsole::Draw(DrawPixelInfo* dpi) const
+void InGameConsole::Draw(DrawPixelInfo& dpi) const
 {
     if (!_isOpen)
         return;
@@ -314,7 +314,7 @@ void InGameConsole::Draw(DrawPixelInfo* dpi) const
     {
         const size_t index = i + _consoleScrollPos;
         lineBuffer = _colourFormatStr + _consoleLines[index];
-        GfxDrawString(*dpi, screenCoords, lineBuffer.c_str(), { textColour, InGameConsoleGetFontStyle() });
+        GfxDrawString(dpi, screenCoords, lineBuffer.c_str(), { textColour, InGameConsoleGetFontStyle() });
         screenCoords.y += lineHeight;
     }
 
@@ -322,7 +322,7 @@ void InGameConsole::Draw(DrawPixelInfo* dpi) const
 
     // Draw current line
     lineBuffer = _colourFormatStr + _consoleCurrentLine;
-    DrawText(*dpi, screenCoords, { TEXT_COLOUR_255, InGameConsoleGetFontStyle() }, lineBuffer.c_str(), true);
+    DrawText(dpi, screenCoords, { TEXT_COLOUR_255, InGameConsoleGetFontStyle() }, lineBuffer.c_str(), true);
 
     // Draw caret
     if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD)

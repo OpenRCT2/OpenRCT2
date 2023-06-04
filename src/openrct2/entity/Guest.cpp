@@ -29,9 +29,9 @@
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../network/network.h"
-#include "../object/FootpathItemEntry.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/MusicObject.h"
+#include "../object/PathAdditionEntry.h"
 #include "../object/WallSceneryEntry.h"
 #include "../peep/GuestPathfinding.h"
 #include "../peep/RideUseSystem.h"
@@ -500,8 +500,8 @@ void Guest::GivePassingPeepsPizza(Guest* passingPeep)
 
     passingPeep->GiveItem(ShopItem::Pizza);
 
-    int32_t peepDirection = (sprite_direction >> 3) ^ 2;
-    int32_t otherPeepOppositeDirection = passingPeep->sprite_direction >> 3;
+    int32_t peepDirection = (Orientation >> 3) ^ 2;
+    int32_t otherPeepOppositeDirection = passingPeep->Orientation >> 3;
     if (peepDirection == otherPeepOppositeDirection)
     {
         if (passingPeep->IsActionInterruptable())
@@ -1169,7 +1169,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                         if (pathElement->HasAddition() && !pathElement->AdditionIsGhost())
                         {
                             auto* pathAddEntry = pathElement->GetAdditionEntry();
-                            if (pathAddEntry != nullptr && (pathAddEntry->flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN))
+                            if (pathAddEntry != nullptr && (pathAddEntry->flags & PATH_ADDITION_FLAG_IS_QUEUE_SCREEN))
                             {
                                 found = true;
                             }
@@ -1258,7 +1258,7 @@ void Guest::UpdateSitting()
 
         MoveTo(loc);
 
-        sprite_direction = ((Var37 + 2) & 3) * 8;
+        Orientation = ((Var37 + 2) & 3) * 8;
         Action = PeepActionType::Idle;
         NextActionSpriteType = PeepActionSpriteType::SittingIdle;
         SwitchNextActionSpriteType();
@@ -1300,7 +1300,7 @@ void Guest::UpdateSitting()
 
         if (HasFoodOrDrink())
         {
-            if ((ScenarioRand() & 0xFFFF) > 1310)
+            if ((ScenarioRand() & 0xFFFFU) > 1310U)
             {
                 TryGetUpFromSitting();
                 return;
@@ -1312,8 +1312,8 @@ void Guest::UpdateSitting()
             return;
         }
 
-        int32_t rand = ScenarioRand();
-        if ((rand & 0xFFFF) > 131)
+        const auto rand = ScenarioRand();
+        if ((rand & 0xFFFFU) > 131U)
         {
             TryGetUpFromSitting();
             return;
@@ -1325,12 +1325,12 @@ void Guest::UpdateSitting()
         }
 
         Action = PeepActionType::SittingLookAroundLeft;
-        if (rand & 0x80000000)
+        if (rand & 0x80000000U)
         {
             Action = PeepActionType::SittingLookAroundRight;
         }
 
-        if (rand & 0x40000000)
+        if (rand & 0x40000000U)
         {
             Action = PeepActionType::SittingCheckWatch;
         }
@@ -1466,7 +1466,7 @@ void Guest::CheckCantFindExit()
  *
  *  rct2: 0x0069AF1E
  */
-bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
+bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
 {
     money64 itemValue;
 
@@ -1485,7 +1485,8 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
         return false;
     }
 
-    if (GetShopItemDescriptor(shopItem).IsFoodOrDrink())
+    const auto& shopItemDescriptor = GetShopItemDescriptor(shopItem);
+    if (shopItemDescriptor.IsFoodOrDrink())
     {
         int32_t food = UtilBitScanForward(GetFoodOrDrinkFlags());
         if (food != -1)
@@ -1510,19 +1511,19 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
         return false;
     }
 
-    if (GetShopItemDescriptor(shopItem).IsFood() && (Hunger > 75))
+    if (shopItemDescriptor.IsFood() && (Hunger > 75))
     {
         InsertNewThought(PeepThoughtType::NotHungry);
         return false;
     }
 
-    if (GetShopItemDescriptor(shopItem).IsDrink() && (Thirst > 75))
+    if (shopItemDescriptor.IsDrink() && (Thirst > 75))
     {
         InsertNewThought(PeepThoughtType::NotThirsty);
         return false;
     }
 
-    if (!isRainingAndUmbrella && (shopItem != ShopItem::Map) && GetShopItemDescriptor(shopItem).IsSouvenir() && !hasVoucher)
+    if (!isRainingAndUmbrella && (shopItem != ShopItem::Map) && shopItemDescriptor.IsSouvenir() && !hasVoucher)
     {
         if (((ScenarioRand() & 0x7F) + 0x73) > Happiness || GuestNumRides < 3)
             return false;
@@ -1545,11 +1546,11 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
         }
 
         if (gClimateCurrent.Temperature >= 21)
-            itemValue = GetShopItemDescriptor(shopItem).HotValue;
+            itemValue = shopItemDescriptor.HotValue;
         else if (gClimateCurrent.Temperature <= 11)
-            itemValue = GetShopItemDescriptor(shopItem).ColdValue;
+            itemValue = shopItemDescriptor.ColdValue;
         else
-            itemValue = GetShopItemDescriptor(shopItem).BaseValue;
+            itemValue = shopItemDescriptor.BaseValue;
 
         if (itemValue < price)
         {
@@ -1567,7 +1568,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
                 if (itemValue > (static_cast<money64>(ScenarioRand() & 0x07)))
                 {
                     // "I'm not paying that much for x"
-                    InsertNewThought(GetShopItemDescriptor(shopItem).TooMuchThought, ride.id);
+                    InsertNewThought(shopItemDescriptor.TooMuchThought, ride.id);
                     return false;
                 }
             }
@@ -1582,7 +1583,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
                 if (itemValue >= static_cast<money64>(ScenarioRand() & 0x07))
                 {
                     // "This x is a really good value"
-                    InsertNewThought(GetShopItemDescriptor(shopItem).GoodValueThought, ride.id);
+                    InsertNewThought(shopItemDescriptor.GoodValueThought, ride.id);
                 }
             }
 
@@ -1593,11 +1594,11 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
 
         // reset itemValue for satisfaction calculation
         if (gClimateCurrent.Temperature >= 21)
-            itemValue = GetShopItemDescriptor(shopItem).HotValue;
+            itemValue = shopItemDescriptor.HotValue;
         else if (gClimateCurrent.Temperature <= 11)
-            itemValue = GetShopItemDescriptor(shopItem).ColdValue;
+            itemValue = shopItemDescriptor.ColdValue;
         else
-            itemValue = GetShopItemDescriptor(shopItem).BaseValue;
+            itemValue = shopItemDescriptor.BaseValue;
         itemValue -= price;
         uint8_t satisfaction = 0;
         if (itemValue > -8)
@@ -1619,25 +1620,21 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
     const auto hasRandomShopColour = ride.HasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS);
 
     if (shopItem == ShopItem::TShirt)
-        TshirtColour = hasRandomShopColour ? ColourToPaletteIndex(ScenarioRandMax(COLOUR_NUM_NORMAL - 1))
-                                           : ride.track_colour[0].main;
+        TshirtColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Hat)
-        HatColour = hasRandomShopColour ? ColourToPaletteIndex(ScenarioRandMax(COLOUR_NUM_NORMAL - 1))
-                                        : ride.track_colour[0].main;
+        HatColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Balloon)
-        BalloonColour = hasRandomShopColour ? ColourToPaletteIndex(ScenarioRandMax(COLOUR_NUM_NORMAL - 1))
-                                            : ride.track_colour[0].main;
+        BalloonColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Umbrella)
-        UmbrellaColour = hasRandomShopColour ? ColourToPaletteIndex(ScenarioRandMax(COLOUR_NUM_NORMAL - 1))
-                                             : ride.track_colour[0].main;
+        UmbrellaColour = hasRandomShopColour ? ScenarioRandMax(COLOUR_NUM_NORMAL) : ride.track_colour[0].main;
 
     if (shopItem == ShopItem::Map)
         ResetPathfindGoal();
 
-    uint16_t consumptionTime = GetShopItemDescriptor(shopItem).ConsumptionTime;
+    uint16_t consumptionTime = shopItemDescriptor.ConsumptionTime;
     TimeToConsume = std::min((TimeToConsume + consumptionTime), 255);
 
     if (shopItem == ShopItem::Photo)
@@ -1658,39 +1655,39 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
     {
         auto ft = Formatter();
         FormatNameTo(ft);
-        ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Indefinite);
+        ft.Add<StringId>(shopItemDescriptor.Naming.Indefinite);
         if (gConfigNotifications.GuestBoughtItem)
         {
             News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, Id, ft);
         }
     }
 
-    if (GetShopItemDescriptor(shopItem).IsFood())
+    if (shopItemDescriptor.IsFood())
         AmountOfFood++;
 
-    if (GetShopItemDescriptor(shopItem).IsDrink())
+    if (shopItemDescriptor.IsDrink())
         AmountOfDrinks++;
 
-    if (GetShopItemDescriptor(shopItem).IsSouvenir())
+    if (shopItemDescriptor.IsSouvenir())
         AmountOfSouvenirs++;
 
     money64* expend_type = &PaidOnSouvenirs;
     ExpenditureType expenditure = ExpenditureType::ShopStock;
 
-    if (GetShopItemDescriptor(shopItem).IsFood())
+    if (shopItemDescriptor.IsFood())
     {
         expend_type = &PaidOnFood;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 
-    if (GetShopItemDescriptor(shopItem).IsDrink())
+    if (shopItemDescriptor.IsDrink())
     {
         expend_type = &PaidOnDrink;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-        FinancePayment(GetShopItemDescriptor(shopItem).Cost, expenditure);
+        FinancePayment(shopItemDescriptor.Cost, expenditure);
 
     // Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
     expenditure = static_cast<ExpenditureType>(static_cast<int32_t>(expenditure) - 1);
@@ -1703,7 +1700,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
     {
         SpendMoney(*expend_type, price, expenditure);
     }
-    ride.total_profit += (price - GetShopItemDescriptor(shopItem).Cost);
+    ride.total_profit += (price - shopItemDescriptor.Cost);
     ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
     ride.cur_num_customers++;
     ride.total_customers++;
@@ -2943,7 +2940,8 @@ static PeepThoughtType PeepAssessSurroundings(int16_t centre_x, int16_t centre_y
                         if (tileElement->AsPath()->AdditionIsGhost())
                             break;
 
-                        if (pathAddEntry->flags & (PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER | PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW))
+                        if (pathAddEntry->flags
+                            & (PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER | PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW))
                         {
                             num_fountains++;
                             break;
@@ -3346,7 +3344,7 @@ void Guest::UpdateBuying()
             }
             WindowInvalidateByNumber(WindowClass::Peep, Id);
         }
-        sprite_direction ^= 0x10;
+        Orientation ^= 0x10;
 
         auto destination = CoordsXY{ 16, 16 } + NextLoc;
         SetDestination(destination);
@@ -3457,7 +3455,7 @@ void Guest::UpdateRideAtEntrance()
         else
         {
             DestinationTolerance = 0;
-            sprite_direction ^= (1 << 4);
+            Orientation ^= (1 << 4);
             Invalidate();
         }
     }
@@ -3749,19 +3747,20 @@ void Guest::UpdateRideAdvanceThroughEntrance()
     }
 
     auto destination = GetDestination();
-    switch (vehicle->sprite_direction / 8)
+    auto loadPositionWithReversal = (vehicle->HasFlag(VehicleFlags::CarIsReversed)) ? -load_position : load_position;
+    switch (vehicle->Orientation / 8)
     {
         case 0:
-            destination.x = vehicle->x - load_position;
+            destination.x = vehicle->x - loadPositionWithReversal;
             break;
         case 1:
-            destination.y = vehicle->y + load_position;
+            destination.y = vehicle->y + loadPositionWithReversal;
             break;
         case 2:
-            destination.x = vehicle->x + load_position;
+            destination.x = vehicle->x + loadPositionWithReversal;
             break;
         case 3:
-            destination.y = vehicle->y - load_position;
+            destination.y = vehicle->y - loadPositionWithReversal;
             break;
     }
     SetDestination(destination);
@@ -3819,7 +3818,7 @@ static void PeepGoToRideExit(Peep* peep, const Ride& ride, int16_t x, int16_t y,
 
     peep->SetDestination({ x, y }, 2);
 
-    peep->sprite_direction = exit_direction * 8;
+    peep->Orientation = exit_direction * 8;
     peep->RideSubState = PeepRideSubState::ApproachExit;
 }
 
@@ -4201,7 +4200,7 @@ void Guest::UpdateRideLeaveVehicle()
 
                 if (carEntry->flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
                 {
-                    specialDirection = ((vehicle->sprite_direction + 3) / 8) + 1;
+                    specialDirection = ((vehicle->Orientation + 3) / 8) + 1;
                     specialDirection &= 3;
 
                     if (vehicle->TrackSubposition == VehicleTrackSubposition::GoKartsRightLane)
@@ -4236,7 +4235,7 @@ void Guest::UpdateRideLeaveVehicle()
         {
             int8_t loadPosition = carEntry->peep_loading_positions[CurrentSeat];
 
-            switch (vehicle->sprite_direction / 8)
+            switch (vehicle->Orientation / 8)
             {
                 case 0:
                     platformLocation.x -= loadPosition;
@@ -4759,7 +4758,7 @@ void Guest::UpdateRideOnSpiralSlide()
 
                 MoveTo({ newLocation, z });
 
-                sprite_direction = (Var37 & 0xC) * 2;
+                Orientation = (Var37 & 0xC) * 2;
 
                 Var37++;
                 return;
@@ -5451,7 +5450,7 @@ void Guest::UpdateWalking()
                 return;
             }
 
-            if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BENCH))
+            if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BENCH))
                 positions_free = 9;
         }
     }
@@ -5666,7 +5665,7 @@ void Guest::UpdateQueuing()
     if (Happiness <= 65 && (0xFFFF & ScenarioRand()) < 2184)
     {
         // Give up queueing for the ride
-        sprite_direction ^= (1 << 4);
+        Orientation ^= (1 << 4);
         Invalidate();
         RemoveFromQueue();
         SetState(PeepState::One);
@@ -5758,7 +5757,7 @@ void Guest::UpdateWatching()
 
         SetDestination(GetLocation());
 
-        sprite_direction = (Var37 & 3) * 8;
+        Orientation = (Var37 & 3) * 8;
 
         Action = PeepActionType::Idle;
         NextActionSpriteType = PeepActionSpriteType::WatchRide;
@@ -5875,7 +5874,7 @@ void Guest::UpdateUsingBin()
                     break;
 
                 auto* pathAddEntry = pathElement->GetAdditionEntry();
-                if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN))
+                if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN))
                     break;
 
                 if (pathElement->IsBroken())
@@ -5987,7 +5986,7 @@ static PathElement* FindBench(const CoordsXYZ& loc)
             continue;
 
         auto* pathAddEntry = pathElement->GetAdditionEntry();
-        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_BIT_FLAG_IS_BENCH))
+        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BENCH))
             continue;
 
         if (pathElement->IsBroken())
@@ -6076,7 +6075,7 @@ static PathElement* FindBin(const CoordsXYZ& loc)
             continue;
 
         auto* pathAddEntry = pathElement->GetAdditionEntry();
-        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN))
+        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN))
             continue;
 
         if (pathElement->IsBroken())
@@ -6154,7 +6153,7 @@ static PathElement* FindBreakableElement(const CoordsXYZ& loc)
             continue;
 
         auto* pathAddEntry = pathElement->GetAdditionEntry();
-        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_BIT_FLAG_BREAKABLE))
+        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_ADDITION_FLAG_BREAKABLE))
             continue;
 
         if (pathElement->IsBroken())
@@ -7077,12 +7076,12 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->FavouriteRideRating = 0;
 
     const SpriteBounds* spriteBounds = &GetSpriteBounds(peep->SpriteType, peep->ActionSpriteType);
-    peep->sprite_width = spriteBounds->sprite_width;
-    peep->sprite_height_negative = spriteBounds->sprite_height_negative;
-    peep->sprite_height_positive = spriteBounds->sprite_height_positive;
+    peep->SpriteData.Width = spriteBounds->sprite_width;
+    peep->SpriteData.HeightMin = spriteBounds->sprite_height_negative;
+    peep->SpriteData.HeightMax = spriteBounds->sprite_height_positive;
+    peep->Orientation = 0;
 
     peep->MoveTo(coords);
-    peep->sprite_direction = 0;
     peep->Mass = (ScenarioRand() & 0x1F) + 45;
     peep->PathCheckOptimisation = 0;
     peep->InteractionRideIndex = RideId::GetNull();

@@ -152,7 +152,7 @@ public:
         const auto& widget = widgets[WIDX_HIDE_STAFF];
         auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.top };
         auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, gStaffMechanicColour);
-        GfxDrawSprite(&dpi, image, screenCoords);
+        GfxDrawSprite(dpi, image, screenCoords);
     }
 
 private:
@@ -241,6 +241,11 @@ private:
         gConfigGeneral.InvisiblePaths = wflags & VIEWPORT_FLAG_INVISIBLE_PATHS;
         gConfigGeneral.InvisibleSupports = wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
         ConfigSaveDefault();
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 };
 

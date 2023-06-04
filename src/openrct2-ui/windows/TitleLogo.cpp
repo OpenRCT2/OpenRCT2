@@ -60,8 +60,8 @@ public:
     void OnDraw(DrawPixelInfo& dpi) override
     {
         auto screenCoords = windowPos + ScreenCoordsXY{ 2, 2 };
-        GfxDrawSprite(&dpi, ImageId(SPR_G2_LOGO), screenCoords);
-        GfxDrawSprite(&dpi, ImageId(SPR_G2_TITLE), screenCoords + ScreenCoordsXY{ 104, 18 });
+        GfxDrawSprite(dpi, ImageId(SPR_G2_LOGO), screenCoords);
+        GfxDrawSprite(dpi, ImageId(SPR_G2_TITLE), screenCoords + ScreenCoordsXY{ 104, 18 });
     }
 };
 

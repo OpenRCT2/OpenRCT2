@@ -44,6 +44,8 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScObject::identifier_get, nullptr, "identifier");
             dukglue_register_property(ctx, &ScObject::legacyIdentifier_get, nullptr, "legacyIdentifier");
             dukglue_register_property(ctx, &ScObject::name_get, nullptr, "name");
+            dukglue_register_property(ctx, &ScObject::baseImageId_get, nullptr, "baseImageId");
+            dukglue_register_property(ctx, &ScObject::numImages_get, nullptr, "numImages");
         }
 
         static std::optional<ObjectType> StringToObjectType(std::string_view type)
@@ -124,6 +126,26 @@ namespace OpenRCT2::Scripting
                 return obj->GetName();
             }
             return {};
+        }
+
+        uint32_t baseImageId_get() const
+        {
+            auto obj = GetObject();
+            if (obj != nullptr)
+            {
+                return obj->GetBaseImageId();
+            }
+            return 0;
+        }
+
+        uint32_t numImages_get() const
+        {
+            auto obj = GetObject();
+            if (obj != nullptr)
+            {
+                return obj->GetNumImages();
+            }
+            return 0;
         }
 
     protected:
