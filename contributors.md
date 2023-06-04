@@ -111,7 +111,6 @@ The following people are not part of the development team, but have been contrib
 * Tiago Reul (reul) - Misc.
 * Ian Spence (ecnepsnai) - Quality of Life (Auto open shops & stalls, Auto renew advertising)
 
-=======
 ## Bug fixes
 * (KirilAngelov)
 * (halfbro)

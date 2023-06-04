@@ -12,8 +12,8 @@
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/Identifiers.h>
 #include <openrct2/common.h>
-#include <openrct2/ride/Ride.h>
 #include <openrct2/management/Marketing.h>
+#include <openrct2/ride/Ride.h>
 #include <openrct2/windows/TileInspectorGlobals.h>
 #include <string_view>
 

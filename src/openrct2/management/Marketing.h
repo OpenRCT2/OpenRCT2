@@ -58,9 +58,9 @@ struct MarketingCampaign
 
 namespace MarketingCampaignFlags
 {
-    constexpr uint8_t FIRST_WEEK =      1 << 0;
+    constexpr uint8_t FIRST_WEEK = 1 << 0;
     constexpr uint8_t AUTOMATIC_RENEW = 1 << 1;
-}
+} // namespace MarketingCampaignFlags
 
 extern const money64 AdvertisingCampaignPricePerWeek[ADVERTISING_CAMPAIGN_COUNT];
 extern std::vector<MarketingCampaign> gMarketingCampaigns;

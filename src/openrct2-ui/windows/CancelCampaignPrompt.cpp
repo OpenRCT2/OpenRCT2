@@ -9,10 +9,10 @@
 
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
-#include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/Context.h>
-#include <openrct2/drawing/Drawing.h>
 #include <openrct2/Game.h>
+#include <openrct2/actions/RideDemolishAction.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Marketing.h>
 #include <openrct2/windows/Intent.h>
@@ -70,7 +70,6 @@ public:
             case WIDX_CLOSE:
                 Close();
                 break;
-
         }
     }
 
@@ -93,7 +92,8 @@ WindowBase* WindowCancelCampaignPromptOpen(int32_t campaignType)
     {
         auto windowPos = w->windowPos;
         WindowClose(*w);
-        newWindow = WindowCreate<CancelCampaignPromptWindow>(WindowClass::CancelCampaignPrompt, windowPos, WW, WH, WF_TRANSPARENT);
+        newWindow = WindowCreate<CancelCampaignPromptWindow>(
+            WindowClass::CancelCampaignPrompt, windowPos, WW, WH, WF_TRANSPARENT);
     }
     else
     {

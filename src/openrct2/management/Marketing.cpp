@@ -150,7 +150,7 @@ void MarketingUpdate()
     for (auto it = campaignsToRenew.begin(); it != campaignsToRenew.end(); ++it)
     {
         auto& campaignType = *it;
-        MarketingCampaign * campaign = MarketingGetCampaign(campaignType);
+        MarketingCampaign* campaign = MarketingGetCampaign(campaignType);
         campaign->WeeksLeft = campaign->NumWeeks;
         MarketingNewCampaign(*campaign);
     }
@@ -333,12 +333,9 @@ void MarketingCancelCampaignsForRide(const RideId rideId)
 
 void MarketingCancelCampaign(int32_t campaignType)
 {
-    auto isCampaignType = [&campaignType](MarketingCampaign& campaign) {
-        return campaign.Type == campaignType;
-    };
+    auto isCampaignType = [&campaignType](MarketingCampaign& campaign) { return campaign.Type == campaignType; };
 
     auto& v = gMarketingCampaigns;
     auto removedIt = std::remove_if(v.begin(), v.end(), isCampaignType);
     v.erase(removedIt, v.end());
 }
-
