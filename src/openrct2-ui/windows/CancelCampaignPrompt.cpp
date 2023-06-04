@@ -75,7 +75,7 @@ public:
 
     void OnDraw(DrawPixelInfo& dpi) override
     {
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
 
         ScreenCoordsXY stringCoords(windowPos.x + WW / 2, windowPos.y + (WH / 2) - 3);
         DrawTextWrapped(dpi, stringCoords, WW - 4, STR_CANCEL_MARKETING_CONFIRM, Formatter{}, { TextAlignment::CENTRE });
