@@ -63,7 +63,6 @@ class NewCampaignWindow final : public Window
 private:
     std::vector<RideId> RideList;
     std::vector<ShopItem> ShopItems;
-    uint8_t autoRenew = 0;
 
     static bool RideValueCompare(const RideId& a, const RideId& b)
     {

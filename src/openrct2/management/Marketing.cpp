@@ -104,6 +104,8 @@ void MarketingUpdate()
     if (gCheatsNeverendingMarketing)
         return;
 
+    std::vector<uint32_t> campaignsToRenew;
+
     for (auto it = gMarketingCampaigns.begin(); it != gMarketingCampaigns.end();)
     {
         auto& campaign = *it;
@@ -122,8 +124,16 @@ void MarketingUpdate()
         {
             if (campaign.Flags & MarketingCampaignFlags::AUTOMATIC_RENEW)
             {
-                MarketingTryRenewCampaign(campaign);
-                ++it;
+                bool didRenew = MarketingTryRenewCampaign(campaign);
+                if (didRenew)
+                {
+                    campaignsToRenew.push_back(campaign.Type);
+                    ++it;
+                }
+                else
+                {
+                    it = gMarketingCampaigns.erase(it);
+                }
             }
             else
             {
@@ -137,46 +147,61 @@ void MarketingUpdate()
         }
     }
 
+    for (auto it = campaignsToRenew.begin(); it != campaignsToRenew.end(); ++it)
+    {
+        auto& campaignType = *it;
+        MarketingCampaign * campaign = MarketingGetCampaign(campaignType);
+        campaign->WeeksLeft = campaign->NumWeeks;
+        MarketingNewCampaign(*campaign);
+    }
+
     WindowInvalidateByClass(WindowClass::Finances);
 }
 
-void MarketingTryRenewCampaign(const MarketingCampaign& campaign)
+bool MarketingTryRenewCampaign(const MarketingCampaign& campaign)
 {
-    auto gameAction = ParkMarketingAction(campaign.Type, campaign.RideId.ToUnderlying(), campaign.NumWeeks, 1);
-    gameAction.SetCallback([campaign](const GameAction* ga, const GameActions::Result* result) {
-        Formatter ft;
-        // This sets the string parameters for the marketing types that have an argument.
-        if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
-        {
-            auto ride = GetRide(campaign.RideId);
-            if (ride != nullptr)
-            {
-                ride->FormatNameTo(ft);
-            }
-        }
-        else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
-        {
-            ft.Add<StringId>(GetShopItemDescriptor(campaign.ShopItemType).Naming.Plural);
-        }
+    money64 cost = campaign.NumWeeks * AdvertisingCampaignPricePerWeek[campaign.Type];
 
-        StringId newsId;
-        if (result->Error == GameActions::Status::Ok)
+    Formatter ft;
+    // This sets the string parameters for the marketing types that have an argument.
+    if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
+    {
+        auto ride = GetRide(campaign.RideId);
+        if (ride != nullptr)
         {
-            newsId = MarketingCampaignRenewedNames[campaign.Type][2];
+            ride->FormatNameTo(ft);
         }
-        else if (result->Error == GameActions::Status::InsufficientFunds)
+    }
+    else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
+    {
+        ft.Add<StringId>(GetShopItemDescriptor(campaign.ShopItemType).Naming.Plural);
+    }
+
+    StringId newsId;
+
+    bool didRenew = false;
+    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    {
+        newsId = MarketingCampaignRenewedNames[campaign.Type][2];
+        didRenew = true;
+    }
+    else
+    {
+        bool canRenew = cost <= gCash;
+        if (canRenew)
         {
-            newsId = MarketingCampaignCantRenewNames[campaign.Type][2];
-            MarketingCancelCampaign(campaign.Type);
+            FinancePayment(cost, ExpenditureType::Marketing);
+            newsId = MarketingCampaignRenewedNames[campaign.Type][2];
+            didRenew = true;
         }
         else
         {
-            return;
+            newsId = MarketingCampaignCantRenewNames[campaign.Type][2];
         }
+    }
 
-        News::AddItemToQueue(News::ItemType::Campaign, newsId, 0, ft);
-    });
-    GameActions::Execute(&gameAction);
+    News::AddItemToQueue(News::ItemType::Campaign, newsId, 0, ft);
+    return didRenew;
 }
 
 void MarketingSetGuestCampaign(Guest* peep, int32_t campaignType)

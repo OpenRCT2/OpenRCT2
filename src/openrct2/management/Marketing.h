@@ -67,7 +67,7 @@ extern std::vector<MarketingCampaign> gMarketingCampaigns;
 
 uint16_t MarketingGetCampaignGuestGenerationProbability(int32_t campaign);
 void MarketingUpdate();
-void MarketingTryRenewCampaign(const MarketingCampaign& campaign);
+bool MarketingTryRenewCampaign(const MarketingCampaign& campaign);
 void MarketingSetGuestCampaign(Guest* peep, int32_t campaign);
 bool MarketingIsCampaignTypeApplicable(int32_t campaignType);
 MarketingCampaign* MarketingGetCampaign(int32_t campaignType);
