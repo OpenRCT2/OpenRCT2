@@ -18196,7 +18196,8 @@ namespace TRexRC
         const TrackElement& trackElement)
     {
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_RC_POWERED_LIFT_0 + direction),
+            session, direction,
+            session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_T_REX_TRACK_SLOPE_BANK_TRANSITION + direction),
             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
