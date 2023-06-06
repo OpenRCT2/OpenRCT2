@@ -1479,6 +1479,11 @@ namespace RCT2
                     {
                         dst->SetInvisible(true);
                     }
+                    if (TrackTypeMustBeMadeChained(rideType, dst2->GetTrackType()))
+                    {
+                        dst2->SetHasChain(true);
+                        auto* ride if (ride != nullptr) ride->lift_hill_speed = 0;
+                    }
 
                     break;
                 }

@@ -1648,7 +1648,7 @@ namespace RCT1
                 {
                     auto dst2 = dst->AsTrack();
                     auto src2 = src->AsTrack();
-                    const auto* ride = GetRide(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
+                    auto* ride = GetRide(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                     auto rideType = (ride != nullptr) ? ride->type : RIDE_TYPE_NULL;
 
                     dst2->SetTrackType(RCT1TrackTypeToOpenRCT2(src2->GetTrackType(), rideType));
@@ -1695,6 +1695,12 @@ namespace RCT1
                     if (TrackTypeMustBeMadeInvisible(rideType, trackType))
                     {
                         dst->SetInvisible(true);
+                    }
+                    if (TrackTypeMustBeMadeChained(rideType, trackType))
+                    {
+                        dst2->SetHasChain(true);
+                        if (ride != nullptr)
+                            ride->lift_hill_speed = 0;
                     }
 
                     return 1;

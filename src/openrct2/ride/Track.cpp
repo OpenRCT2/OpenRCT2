@@ -949,3 +949,23 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, track_type_t trackType, 
 
     return false;
 }
+
+bool TrackTypeMustBeMadeChained(ride_type_t rideType, track_type_t trackType, int32_t parkFileVersion)
+{
+    if (parkFileVersion > 30)
+        return false;
+
+    const bool isWaterRideWithRollers
+        = (rideType == RIDE_TYPE_LOG_FLUME || rideType == RIDE_TYPE_SPLASH_BOATS || rideType == RIDE_TYPE_RIVER_RAFTS
+           || rideType == RIDE_TYPE_RIVER_RAPIDS);
+    if (!isWaterRideWithRollers)
+        return false;
+
+    const bool trackTypeHasRollers
+        = (trackType == TrackElemType::FlatToUp25 || trackType == TrackElemType::Up25
+           || trackType == TrackElemType::Up25ToFlat);
+    if (!trackTypeHasRollers)
+        return false;
+
+    return true;
+}

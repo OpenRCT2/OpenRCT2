@@ -704,3 +704,13 @@ std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl);
  * @return
  */
 bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, track_type_t trackType, int32_t parkFileVersion = -1);
+
+/**
+ * Water rides used to be very slow. Convert their rollers to lift, so that the user can speed them up if desired.
+ *
+ * @param rideType
+ * @param trackType
+ * @param parkFileVersion
+ * @return
+ */
+bool TrackTypeMustBeMadeChained(ride_type_t rideType, track_type_t trackType, int32_t parkFileVersion = -1);

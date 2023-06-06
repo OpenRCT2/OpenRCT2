@@ -1100,6 +1100,11 @@ namespace OpenRCT2
                                     {
                                         it.element->SetInvisible(true);
                                     }
+                                    if (TrackTypeMustBeMadeChained(
+                                            trackElement->GetRideType(), trackType, os.GetHeader().TargetVersion))
+                                    {
+                                        trackElement->SetHasChain(true);
+                                    }
                                     if (os.GetHeader().TargetVersion < BlockBrakeImprovementsVersion)
                                     {
                                         if (trackType == TrackElemType::Brakes)

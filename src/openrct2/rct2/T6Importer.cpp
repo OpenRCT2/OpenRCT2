@@ -137,6 +137,10 @@ namespace RCT2
 
             td->operation_setting = std::min(td->operation_setting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
 
+            // This needs to be done before importing the track elements, as we need to check the ride type when
+            // importing the track elements.
+            UpdateRideType(td);
+
             const auto& rtd = GetRideTypeDescriptor(td->type);
             if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
             {
@@ -173,6 +177,10 @@ namespace RCT2
 
                     trackElement.type = trackType;
                     trackElement.flags = t6TrackElement.Flags;
+                    if (TrackTypeMustBeMadeChained(td->type, trackType))
+                    {
+                        trackElement.flags |= RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+                    }
                     td->track_elements.push_back(trackElement);
                 }
 
@@ -208,8 +216,6 @@ namespace RCT2
             }
 
             td->name = _name;
-
-            UpdateRideType(td);
 
             return td;
         }
