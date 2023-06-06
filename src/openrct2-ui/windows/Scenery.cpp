@@ -741,6 +741,7 @@ public:
             }
         }
 
+        ResizeFrameWithPage();
         widgets[WIDX_SCENERY_LIST].right = windowWidth - 26;
         widgets[WIDX_SCENERY_LIST].bottom = height - 14;
 
