@@ -23,6 +23,7 @@
 #include "../ride/TrackData.h"
 #include "../windows/Intent.h"
 #include "../windows/TileInspectorGlobals.h"
+#include "../world/MapAnimation.h"
 #include "Banner.h"
 #include "Footpath.h"
 #include "Location.hpp"
@@ -364,6 +365,7 @@ namespace OpenRCT2::TileInspector
             *pastedElement = element;
             pastedElement->SetLastForTile(lastForTile);
 
+            MapAnimationAutoCreateAtTileElement(tileLoc, pastedElement);
             MapInvalidateTileFull(loc);
 
             if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
