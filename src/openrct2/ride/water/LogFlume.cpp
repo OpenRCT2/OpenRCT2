@@ -223,18 +223,36 @@ static void PaintLogFlumeTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr uint32_t imageIds[4][2] = {
-        { SPR_LOG_FLUME_25_DEG_UP_SW_NE, SPR_LOG_FLUME_25_DEG_UP_FRONT_SW_NE },
-        { SPR_LOG_FLUME_25_DEG_UP_NW_SE, SPR_LOG_FLUME_25_DEG_UP_FRONT_NW_SE },
-        { SPR_LOG_FLUME_25_DEG_UP_NE_SW, SPR_LOG_FLUME_25_DEG_UP_FRONT_NE_SW },
-        { SPR_LOG_FLUME_25_DEG_UP_SE_NW, SPR_LOG_FLUME_25_DEG_UP_FRONT_SE_NW },
-    };
+    if (trackElement.HasChain())
+    {
+        static constexpr uint32_t imageIds[4][2] = {
+            { SPR_LOG_FLUME_25_DEG_UP_SW_NE, SPR_LOG_FLUME_25_DEG_UP_FRONT_SW_NE },
+            { SPR_LOG_FLUME_25_DEG_UP_NW_SE, SPR_LOG_FLUME_25_DEG_UP_FRONT_NW_SE },
+            { SPR_LOG_FLUME_25_DEG_UP_NE_SW, SPR_LOG_FLUME_25_DEG_UP_FRONT_NE_SW },
+            { SPR_LOG_FLUME_25_DEG_UP_SE_NW, SPR_LOG_FLUME_25_DEG_UP_FRONT_SE_NW },
+        };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+        auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
 
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
-    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 50 } });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+        PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 50 } });
+    }
+    else
+    {
+        static constexpr uint32_t imageIds[4][2] = {
+            { SPR_LOG_FLUME_25_DEG_DOWN_NE_SW, SPR_LOG_FLUME_25_DEG_UP_FRONT_SW_NE },
+            { SPR_LOG_FLUME_25_DEG_DOWN_SE_NW, SPR_LOG_FLUME_25_DEG_UP_FRONT_NW_SE },
+            { SPR_LOG_FLUME_25_DEG_DOWN_SW_NE, SPR_LOG_FLUME_25_DEG_UP_FRONT_NE_SW },
+            { SPR_LOG_FLUME_25_DEG_DOWN_NW_SE, SPR_LOG_FLUME_25_DEG_UP_FRONT_SE_NW },
+        };
+
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+        auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+        PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 50 } });
+    }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
@@ -258,18 +276,36 @@ static void PaintLogFlumeTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr uint32_t imageIds[4][2] = {
-        { SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_SW_NE, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_SW_NE },
-        { SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_NW_SE, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_NW_SE },
-        { SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_NE_SW, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_NE_SW },
-        { SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_SE_NW, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_SE_NW },
-    };
+    if (trackElement.HasChain())
+    {
+        static constexpr uint32_t imageIds[4][2] = {
+            { SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_SW_NE, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_SW_NE },
+            { SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_NW_SE, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_NW_SE },
+            { SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_NE_SW, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_NE_SW },
+            { SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_SE_NW, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_SE_NW },
+        };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+        auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
 
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
-    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 42 } });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+        PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 42 } });
+    }
+    else
+    {
+        static constexpr uint32_t imageIds[4][2] = {
+            { SPR_G2_FLUME_WATER_FLAT_25_REVERSED_1, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_SW_NE },
+            { SPR_G2_FLUME_WATER_FLAT_25_REVERSED_2, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_NW_SE },
+            { SPR_G2_FLUME_WATER_FLAT_25_REVERSED_3, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_NE_SW },
+            { SPR_G2_FLUME_WATER_FLAT_25_REVERSED_4, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_SE_NW },
+        };
+
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+        auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+        PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 42 } });
+    }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
@@ -293,18 +329,36 @@ static void PaintLogFlumeTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr uint32_t imageIds[4][2] = {
-        { SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_SW_NE, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_SW_NE },
-        { SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_NW_SE, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_NW_SE },
-        { SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_NE_SW, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_NE_SW },
-        { SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_SE_NW, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_SE_NW },
-    };
+    if (trackElement.HasChain())
+    {
+        static constexpr uint32_t imageIds[4][2] = {
+            { SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_SW_NE, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_SW_NE },
+            { SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_NW_SE, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_NW_SE },
+            { SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_NE_SW, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_NE_SW },
+            { SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_SE_NW, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_SE_NW },
+        };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+        auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
 
-    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
-    PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+        PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
+    }
+    else
+    {
+        static constexpr uint32_t imageIds[4][2] = {
+            { SPR_G2_FLUME_WATER_FLAT_25_REVERSED_5, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_SW_NE },
+            { SPR_G2_FLUME_WATER_FLAT_25_REVERSED_6, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_NW_SE },
+            { SPR_G2_FLUME_WATER_FLAT_25_REVERSED_7, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_NE_SW },
+            { SPR_G2_FLUME_WATER_FLAT_25_REVERSED_8, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_SE_NW },
+        };
+
+        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+        auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+
+        PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
+        PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
+    }
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
