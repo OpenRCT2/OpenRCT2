@@ -633,6 +633,11 @@ private:
     {
         _tabAnimationOffset++;
         _tabAnimationOffset %= 24;
+
+        // Update pickup animation, can only happen in this tab.
+        picked_peep_frame++;
+        picked_peep_frame %= 48;
+
         InvalidateWidget(WIDX_TAB_1);
     }
 
@@ -663,9 +668,6 @@ private:
 
         gPickupPeepX = screenCoords.x - 1;
         gPickupPeepY = screenCoords.y + 16;
-
-        picked_peep_frame++;
-        picked_peep_frame %= 48;
 
         auto staff = GetStaff();
         if (staff == nullptr)
