@@ -5004,84 +5004,148 @@
         "y_offset": -22,
         "palette": "keep"
     },
-    {   "path": "track/flume/water_up_reverse_flow_1.png",
+    {
+        "path": "track/flume/water_up_reverse_flow_1.png",
         "x_offset": -27,
         "y_offset": -14,
         "palette": "keep"
     },
-    {   "path": "track/flume/water_up_reverse_flow_2.png",
+    {
+        "path": "track/flume/water_up_reverse_flow_2.png",
         "x_offset": -23,
         "y_offset": -6,
         "palette": "keep"
     },
-    {   "path": "track/flume/water_up_reverse_flow_3.png",
+    {
+        "path": "track/flume/water_up_reverse_flow_3.png",
         "x_offset": -27,
         "y_offset": -6,
         "palette": "keep"
     },
-    {   "path": "track/flume/water_up_reverse_flow_4.png",
+    {
+        "path": "track/flume/water_up_reverse_flow_4.png",
         "x_offset": -24,
         "y_offset": -14,
         "palette": "keep"
     },
-    {   "path": "track/flume/water_up_reverse_flow_5.png",
+    {
+        "path": "track/flume/water_up_reverse_flow_5.png",
         "x_offset": -28,
         "y_offset": -14,
         "palette": "keep"
     },
-    {   "path": "track/flume/water_up_reverse_flow_6.png",
+    {
+        "path": "track/flume/water_up_reverse_flow_6.png",
         "x_offset": -20,
         "y_offset": -6,
         "palette": "keep"
     },
-    {   "path": "track/flume/water_up_reverse_flow_7.png",
+    {
+        "path": "track/flume/water_up_reverse_flow_7.png",
         "x_offset": -26,
         "y_offset": -6,
         "palette": "keep"
     },
-    {   "path": "track/flume/water_up_reverse_flow_8.png",
+    {
+        "path": "track/flume/water_up_reverse_flow_8.png",
         "x_offset": -23,
         "y_offset": -13,
         "palette": "keep"
     },
-    {   "path": "track/splash/water_up_reverse_flow_1.png",
+    {
+        "path": "track/splash/water_up_reverse_flow_1.png",
         "x_offset": -32,
         "y_offset": -15,
         "palette": "keep"
     },
-    {   "path": "track/splash/water_up_reverse_flow_2.png",
+    {
+        "path": "track/splash/water_up_reverse_flow_2.png",
         "x_offset": -32,
         "y_offset": -7,
         "palette": "keep"
     },
-    {   "path": "track/splash/water_up_reverse_flow_3.png",
+    {
+        "path": "track/splash/water_up_reverse_flow_3.png",
         "x_offset": -32,
         "y_offset": -7,
         "palette": "keep"
     },
-    {   "path": "track/splash/water_up_reverse_flow_4.png",
+    {
+        "path": "track/splash/water_up_reverse_flow_4.png",
         "x_offset": -32,
         "y_offset": -15,
         "palette": "keep"
     },
-    {   "path": "track/splash/water_up_reverse_flow_5.png",
+    {
+        "path": "track/splash/water_up_reverse_flow_5.png",
         "x_offset": -32,
         "y_offset": -15,
         "palette": "keep"
     },
-    {   "path": "track/splash/water_up_reverse_flow_6.png",
+    {
+        "path": "track/splash/water_up_reverse_flow_6.png",
         "x_offset": -32,
         "y_offset": -7,
         "palette": "keep"
     },
-    {   "path": "track/splash/water_up_reverse_flow_7.png",
+    {
+        "path": "track/splash/water_up_reverse_flow_7.png",
         "x_offset": -32,
         "y_offset": -7,
         "palette": "keep"
     },
-    {   "path": "track/splash/water_up_reverse_flow_8.png",
+    {
+        "path": "track/splash/water_up_reverse_flow_8.png",
         "x_offset": -32,
         "y_offset": -15,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rapids/water_up_reverse_flow_1.png",
+        "x_offset": -32,
+        "y_offset": -24,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rapids/water_up_reverse_flow_2.png",
+        "x_offset": -29,
+        "y_offset": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rapids/water_up_reverse_flow_3.png",
+        "x_offset": -32,
+        "y_offset": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rapids/water_up_reverse_flow_4.png",
+        "x_offset": -26,
+        "y_offset": -23,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rapids/water_up_reverse_flow_5.png",
+        "x_offset": -32,
+        "y_offset": -24,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rapids/water_up_reverse_flow_6.png",
+        "x_offset": -19,
+        "y_offset": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rapids/water_up_reverse_flow_7.png",
+        "x_offset": -32,
+        "y_offset": -16,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rapids/water_up_reverse_flow_8.png",
+        "x_offset": -27,
+        "y_offset": -23,
         "palette": "keep"
     },
     {
