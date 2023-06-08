@@ -130,7 +130,7 @@ public:
         ContextStopTextInput();
     }
 
-    void OnPeriodicUpdate() override
+    void OnUpdate() override
     {
         if (HasParentWindow())
         {
