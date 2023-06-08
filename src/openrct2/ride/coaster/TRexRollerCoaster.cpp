@@ -707,25 +707,25 @@ namespace TRexRC
                         case 0:
                             PaintAddImageAsParentRotated(
                                 session, direction,
-                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 4)),
+                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 8)),
                                 { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction,
-                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 5)),
+                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 9)),
                                 { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
                             break;
                         case 2:
                             PaintAddImageAsParentRotated(
                                 session, direction,
-                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 6)),
+                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 10)),
                                 { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
                             break;
                         case 3:
                             PaintAddImageAsParentRotated(
                                 session, direction,
-                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 7)),
+                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 11)),
                                 { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
                             break;
                     }
@@ -883,25 +883,25 @@ namespace TRexRC
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 8)),
+                        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 4)),
                         { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 9)),
+                        session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 5)),
                         { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 10)),
+                        session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 6)),
                         { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 11)),
+                        session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_T_REX_LIFT_TRACK_VERTICAL + 7)),
                         { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
                     break;
             }
@@ -18151,23 +18151,19 @@ namespace TRexRC
         TrackLeftEighthBankToDiagUp25(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
               
     }
-    static void MiniRCTrackBooster(
+    static void TrackBooster(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
-        // These offsets could be moved to the g2.dat file when that supports offsets.
-        int8_t ne_sw_offsetX = 7;
-        int8_t ne_sw_offsetY = -15;
-        int8_t nw_se_offsetX = -15;
-        int8_t nw_se_offsetY = 7;
-
+        
         switch (direction)
         {
             case 0:
             case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_MINI_RC_BOOSTER_NE_SW),
-                    { ne_sw_offsetX, ne_sw_offsetY, height }, { { 0, 6, height }, { 32, 20, 3 } });
+               PaintAddImageAsParentRotated(
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_T_REX_TRACK_BOOSTER + (direction & 1)),
+            { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
@@ -18177,8 +18173,9 @@ namespace TRexRC
             case 1:
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_MINI_RC_BOOSTER_NW_SE),
-                    { nw_se_offsetX, nw_se_offsetY, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                    session, direction,
+                    session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_T_REX_TRACK_BOOSTER + (direction & 1)),
+                    { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
@@ -18699,7 +18696,7 @@ namespace TRexRC
             case TrackElemType::RightEighthBankToOrthogonalDown25:
                 return TrackRightEighthBankToOrthogonalDown25;
             case TrackElemType::Booster:
-                return MiniRCTrackBooster;
+                return TrackBooster;
             case TrackElemType::PoweredLift:
                 return GigaRCTrackPoweredLift;
         }
