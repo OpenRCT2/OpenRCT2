@@ -18188,12 +18188,12 @@ namespace TRexRC
             session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
-    static void GigaRCTrackPoweredLift(
+    static void TrackPoweredLift(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_RC_POWERED_LIFT_0 + direction),
+            session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_T_REX_TRACK_POWERED_LIFT + 4 + direction),
             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -18698,7 +18698,7 @@ namespace TRexRC
             case TrackElemType::Booster:
                 return TrackBooster;
             case TrackElemType::PoweredLift:
-                return GigaRCTrackPoweredLift;
+                return TrackPoweredLift;
         }
         return nullptr;
     }

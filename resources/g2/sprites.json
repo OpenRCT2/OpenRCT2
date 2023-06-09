@@ -20661,6 +20661,36 @@
         "y_offset": -5,
         "palette": "keep"
     },
+	
+	
+	
+	{
+        "path": "track/trex/powered_lift_1.png",
+        "x_offset": -22,
+        "y_offset": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/trex/powered_lift_2.png",
+        "x_offset": -22,
+        "y_offset": -3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/trex/powered_lift_3.png",
+        "x_offset": -22,
+        "y_offset": -3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/trex/powered_lift_4.png",
+        "x_offset": -22,
+        "y_offset": -20,
+        "palette": "keep"
+    },
+	
+	
+	
     {
         "path": "track/trex/flat_to_gentle_up_1.png",
         "x_offset": -22,
@@ -24510,7 +24540,7 @@
     {
         "path": "track/trex/left_vertical_loop_3_4.png",
         "x_offset": -22,
-        "y_offset": 12,
+        "y_offset": 10,
         "palette": "keep"
     },
     {
@@ -24582,7 +24612,7 @@
     {
         "path": "track/trex/right_vertical_loop_2_4.png",
         "x_offset": -22,
-        "y_offset": 12,
+        "y_offset": 9,
         "palette": "keep"
     },
     {
@@ -24618,7 +24648,7 @@
     {
         "path": "track/trex/right_vertical_loop_4_2.png",
         "x_offset": -9,
-        "y_offset": -44,
+        "y_offset": -48,
         "palette": "keep"
     },
     {
