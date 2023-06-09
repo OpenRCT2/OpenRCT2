@@ -50,7 +50,7 @@ constexpr const RideTypeDescriptor MaurerRollerCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MINI_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINI_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(Name, "trex_rc"),
+    SET_FIELD(Name, "maurer_rc"),
 
     SET_FIELD(RatingsData,
     {
