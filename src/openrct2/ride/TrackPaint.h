@@ -485,8 +485,8 @@ namespace AlpineRC
     TRACK_PAINT_FUNCTION GetTrackPaintFunction(int32_t trackType);
 }
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionClassicWoodenRC(int32_t trackType);
-namespace TRexRC
+namespace MaurerRC
 {
     TRACK_PAINT_FUNCTION GetTrackPaintFunction(int32_t trackType);
 }
-TRACK_PAINT_FUNCTION GetTrackPaintFunctionTRexRC(int32_t trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionMaurerRC(int32_t trackType);
