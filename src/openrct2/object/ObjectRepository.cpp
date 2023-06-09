@@ -690,22 +690,6 @@ std::unique_ptr<Object> ObjectRepositoryLoadObject(const RCTObjectEntry* objectE
     return object;
 }
 
-void ScenarioTranslate(ScenarioIndexEntry* scenarioEntry)
-{
-    StringId localisedStringIds[3];
-    if (LanguageGetLocalisedScenarioStrings(scenarioEntry->Name, localisedStringIds))
-    {
-        if (localisedStringIds[0] != STR_NONE)
-        {
-            String::Set(scenarioEntry->Name, sizeof(scenarioEntry->Name), LanguageGetString(localisedStringIds[0]));
-        }
-        if (localisedStringIds[2] != STR_NONE)
-        {
-            String::Set(scenarioEntry->Details, sizeof(scenarioEntry->Details), LanguageGetString(localisedStringIds[2]));
-        }
-    }
-}
-
 size_t ObjectRepositoryGetItemsCount()
 {
     auto& objectRepository = GetContext()->GetObjectRepository();

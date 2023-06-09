@@ -804,3 +804,19 @@ bool ScenarioRepositoryTryRecordHighscore(const utf8* scenarioFileName, money64 
     IScenarioRepository* repo = GetScenarioRepository();
     return repo->TryRecordHighscore(LocalisationService_GetCurrentLanguage(), scenarioFileName, companyValue, name);
 }
+
+void ScenarioTranslate(ScenarioIndexEntry* scenarioEntry)
+{
+    StringId localisedStringIds[3];
+    if (LanguageGetLocalisedScenarioStrings(scenarioEntry->Name, localisedStringIds))
+    {
+        if (localisedStringIds[0] != STR_NONE)
+        {
+            String::Set(scenarioEntry->Name, sizeof(scenarioEntry->Name), LanguageGetString(localisedStringIds[0]));
+        }
+        if (localisedStringIds[2] != STR_NONE)
+        {
+            String::Set(scenarioEntry->Details, sizeof(scenarioEntry->Details), LanguageGetString(localisedStringIds[2]));
+        }
+    }
+}

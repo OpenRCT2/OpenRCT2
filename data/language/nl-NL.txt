@@ -3686,6 +3686,13 @@ STR_6582    :Sneltoetsen openen
 STR_6583    :{WINDOW_COLOUR_2}Achterstevoren
 STR_6584    :Keert de trein om, zodat hij achterstevoren over de baan rijdt.
 STR_6585    :Kan dit niet wijzigen…
+STR_6586    :OpenRCT2
+STR_6587    :De titelmuziek van OpenRCT2 Title Theme is gemaakt door Allister Brimble,{NEWLINE}en beschikbaar gemaakt onder de CC BY-SA 4.0-licentie.
+STR_6588    :Met dank aan Herman Riddering, die ons toestemming gaf om zijn 35er Voigt op te nemen.
+STR_6589    :Vensterknoppen aan de linkerkant
+STR_6590    :Verplaatst de vensterknoppen (o.a. voor het sluiten van het venster), die normaal gesproken rechts staan, naar de linkerkant van de titelbalk.
+STR_6591    :Deze werknemer is momenteel bezig met het repareren van een attractie en kan daarom niet worden ontslagen.
+STR_6592    :Deze werknemer is momenteel bezig met het inspecteren van een attractie en kan daarom niet worden ontslagen.
 
 #############
 # Scenarios #

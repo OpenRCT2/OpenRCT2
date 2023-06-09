@@ -15,7 +15,7 @@ class FootpathAdditionPlaceAction final : public GameActionBase<GameCommand::Pla
 {
 private:
     CoordsXYZ _loc;
-    ObjectEntryIndex _pathItemType{};
+    ObjectEntryIndex _entryIndex{};
 
 public:
     FootpathAdditionPlaceAction() = default;

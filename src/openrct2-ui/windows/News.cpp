@@ -306,6 +306,11 @@ public:
             i++;
         }
     }
+
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
 };
 
 WindowBase* WindowNewsOpen()

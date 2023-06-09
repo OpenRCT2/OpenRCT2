@@ -130,7 +130,7 @@ public:
         ContextStopTextInput();
     }
 
-    void OnPeriodicUpdate() override
+    void OnUpdate() override
     {
         if (HasParentWindow())
         {
@@ -311,6 +311,11 @@ public:
         int32_t numLines{};
         GfxWrapString(text, WW - (24 + 13), FontStyle::Medium, nullptr, &numLines);
         return numLines * 10 + WH;
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 
 private:

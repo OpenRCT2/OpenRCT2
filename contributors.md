@@ -108,6 +108,7 @@ The following people are not part of the development team, but have been contrib
 * Phumdol Lookthipnapha (beam41) - Misc.
 * Nikolas Parshook (nparshook) - Misc.
 * Wenzhao Qiu (qwzhaox) - Misc.
+* Tiago Reul (reul) - Misc.
 
 ## Bug fixes
 * (KirilAngelov)
@@ -276,6 +277,13 @@ The following people are not part of the development team, but have been contrib
 ## Music
 * Karst "Jalmaan" van Galen Last (AuraSpecs)
 * (Flyxxpy)
+* Jan Büchner (Greyfade)
+* Allister Brimble
+* Herman Riddering
+
+## Sound Effects
+* Karst van Galen Last (AuraSpecs)
+* (ThatGuyYouKnow)
 
 ## RollerCoaster Tycoon 2 credits
 Design and programming by Chris Sawyer

@@ -25,14 +25,14 @@
 
 FootpathAdditionPlaceAction::FootpathAdditionPlaceAction(const CoordsXYZ& loc, ObjectEntryIndex pathItemType)
     : _loc(loc)
-    , _pathItemType(pathItemType)
+    , _entryIndex(pathItemType)
 {
 }
 
 void FootpathAdditionPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
-    visitor.Visit("object", _pathItemType);
+    visitor.Visit("object", _entryIndex);
 }
 
 uint16_t FootpathAdditionPlaceAction::GetActionFlags() const
@@ -44,7 +44,7 @@ void FootpathAdditionPlaceAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
-    stream << DS_TAG(_loc) << DS_TAG(_pathItemType);
+    stream << DS_TAG(_loc) << DS_TAG(_entryIndex);
 }
 
 GameActions::Result FootpathAdditionPlaceAction::Query() const
@@ -88,46 +88,45 @@ GameActions::Result FootpathAdditionPlaceAction::Query() const
     }
 
     // No change
-    if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && pathElement->GetAddition() == _pathItemType && !(pathElement->IsBroken()))
+    if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && pathElement->GetAdditionEntryIndex() == _entryIndex
+        && !(pathElement->IsBroken()))
     {
         return res;
     }
 
-    if (_pathItemType != 0)
+    auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(_entryIndex);
+    if (pathAdditionEntry == nullptr)
     {
-        auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(_pathItemType - 1);
-        if (pathAdditionEntry == nullptr)
-        {
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
-        }
-        uint16_t sceneryFlags = pathAdditionEntry->flags;
-
-        if ((sceneryFlags & PATH_ADDITION_FLAG_DONT_ALLOW_ON_SLOPE) && pathElement->IsSloped())
-        {
-            return GameActions::Result(
-                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_ON_SLOPED_FOOTPATH);
-        }
-
-        if ((sceneryFlags & PATH_ADDITION_FLAG_DONT_ALLOW_ON_QUEUE) && pathElement->IsQueue())
-        {
-            return GameActions::Result(
-                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CANNOT_PLACE_THESE_ON_QUEUE_LINE_AREA);
-        }
-
-        if (!(sceneryFlags & (PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER | PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW))
-            && (pathElement->GetEdges()) == 0x0F)
-        {
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
-        }
-
-        if ((sceneryFlags & PATH_ADDITION_FLAG_IS_QUEUE_SCREEN) && !pathElement->IsQueue())
-        {
-            return GameActions::Result(
-                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA);
-        }
-
-        res.Cost = pathAdditionEntry->price;
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
+    uint16_t sceneryFlags = pathAdditionEntry->flags;
+
+    if ((sceneryFlags & PATH_ADDITION_FLAG_DONT_ALLOW_ON_SLOPE) && pathElement->IsSloped())
+    {
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_ON_SLOPED_FOOTPATH);
+    }
+
+    if ((sceneryFlags & PATH_ADDITION_FLAG_DONT_ALLOW_ON_QUEUE) && pathElement->IsQueue())
+    {
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CANNOT_PLACE_THESE_ON_QUEUE_LINE_AREA);
+    }
+
+    if (!(sceneryFlags & (PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER | PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW))
+        && (pathElement->GetEdges()) == 0x0F)
+    {
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+    }
+
+    if ((sceneryFlags & PATH_ADDITION_FLAG_IS_QUEUE_SCREEN) && !pathElement->IsQueue())
+    {
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA);
+    }
+
+    res.Cost = pathAdditionEntry->price;
 
     // Should place a ghost?
     if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
@@ -157,22 +156,20 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
     }
 
     // No change
-    if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && pathElement->GetAddition() == _pathItemType && !(pathElement->IsBroken())
-        && !pathElement->AdditionIsGhost())
+    if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && pathElement->GetAdditionEntryIndex() == _entryIndex
+        && !(pathElement->IsBroken()) && !pathElement->AdditionIsGhost())
     {
         return res;
     }
 
-    if (_pathItemType != 0)
+    auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(_entryIndex);
+    if (pathAdditionEntry == nullptr)
     {
-        auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(_pathItemType - 1);
-        if (pathAdditionEntry == nullptr)
-        {
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
-        }
-
-        res.Cost = pathAdditionEntry->price;
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
+
+    res.Cost = pathAdditionEntry->price;
 
     if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
     {
@@ -181,23 +178,14 @@ GameActions::Result FootpathAdditionPlaceAction::Execute() const
     else
     {
         FootpathInterruptPeeps(_loc);
-    }
-
-    if ((_pathItemType != 0 && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
-        || (_pathItemType == 0 && pathElement->AdditionIsGhost()))
-    {
         pathElement->SetAdditionIsGhost(false);
     }
 
-    pathElement->SetAddition(_pathItemType);
+    pathElement->SetAdditionEntryIndex(_entryIndex);
     pathElement->SetIsBroken(false);
-    if (_pathItemType != 0)
+    if (pathAdditionEntry->flags & PATH_ADDITION_FLAG_IS_BIN)
     {
-        auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(_pathItemType - 1);
-        if (pathAdditionEntry != nullptr && pathAdditionEntry->flags & PATH_ADDITION_FLAG_IS_BIN)
-        {
-            pathElement->SetAdditionStatus(255);
-        }
+        pathElement->SetAdditionStatus(255);
     }
     MapInvalidateTileFull(_loc);
     return res;

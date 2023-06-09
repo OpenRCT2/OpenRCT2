@@ -218,6 +218,11 @@ public:
             : STR_SUFFIX;
         DrawTextBasic(dpi, drawPos, stringId, {}, { colours[1] });
     }
+
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
 };
 
 WindowBase* CustomCurrencyWindowOpen()

@@ -72,9 +72,9 @@ set(OPENSFX_VERSION "1.0.2")
 set(OPENSFX_URL  "https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v${OPENSFX_VERSION}/opensound.zip")
 set(OPENSFX_SHA1 "64EF7E0B7785602C91AEC66F005C035B05A2133B")
 
-set(OPENMSX_VERSION "1.3.0")
+set(OPENMSX_VERSION "1.3.1")
 set(OPENMSX_URL  "https://github.com/OpenRCT2/OpenMusic/releases/download/v${OPENMSX_VERSION}/openmusic.zip")
-set(OPENMSX_SHA1 "b0cec998a3679f1cde17d91f2508ec4923c1a25c")
+set(OPENMSX_SHA1 "cb7b05af97aaf7949fb509063d45df6613f20521")
 
 set(REPLAYS_VERSION "0.0.78")
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
@@ -86,8 +86,8 @@ option(PORTABLE "Create a portable build (-rpath=$ORIGIN)" OFF)
 option(APPIMAGE "Create an appimage build (-rpath=$ORIGIN/../lib)" OFF)
 option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." ON)
 option(DOWNLOAD_OBJECTS "Download objects during installation." ON)
-option(DOWNLOAD_OPENSFX "Download OpenSoundEffects during installation." OFF)
-option(DOWNLOAD_OPENMSX "Download OpenMusic during installation." OFF)
+option(DOWNLOAD_OPENSFX "Download OpenSoundEffects during installation." ON)
+option(DOWNLOAD_OPENMSX "Download OpenMusic during installation." ON)
 CMAKE_DEPENDENT_OPTION(DOWNLOAD_REPLAYS "Download replays during installation." ON
     "WITH_TESTS" OFF)
 CMAKE_DEPENDENT_OPTION(MACOS_USE_DEPENDENCIES "Use OpenRCT2 dependencies instead of system libraries" ON
@@ -159,12 +159,6 @@ if (MACOS_USE_DEPENDENCIES)
         endif()
     endif ()
 endif ()
-
-# If OS is Linux, import OpenSoundEffects and OpenMusic
-if(UNIX AND NOT APPLE)
-    set(DOWNLOAD_OPENMSX ON)
-    set(DOWNLOAD_OPENSFX ON)
-endif()
 
 # LIST of supported flags, use SET_CHECK_CXX_FLAGS() to apply to target.
 # Use ADD_CHECK_CXX_COMPILER_FLAG() to add to list.

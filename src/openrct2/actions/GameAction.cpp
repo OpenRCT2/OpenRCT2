@@ -334,10 +334,11 @@ namespace GameActions
                         return result;
                     }
                 }
-                else if (NetworkGetMode() == NETWORK_MODE_SERVER)
+                else if (NetworkGetMode() == NETWORK_MODE_SERVER || !gInUpdateCode)
                 {
                     // If player is the server it would execute right away as where clients execute the commands
                     // at the beginning of the frame, so we have to put them into the queue.
+                    // This is also the case when its executed from the UI update.
                     if (!(actionFlags & GameActions::Flags::ClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                     {
                         LOG_VERBOSE("[%s] GameAction::Execute %s (Queue)", GetRealm(), action->GetName());

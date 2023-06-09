@@ -755,7 +755,7 @@ private:
             WindowDrawViewport(dpi, *this);
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
-                GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
+                GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*this));
             }
         }
 
@@ -850,10 +850,12 @@ private:
 
     void OnUpdateOverview()
     {
-        int32_t newAnimationFrame = _guestAnimationFrame;
-        newAnimationFrame++;
-        newAnimationFrame %= 24;
-        _guestAnimationFrame = newAnimationFrame;
+        _guestAnimationFrame++;
+        _guestAnimationFrame %= 24;
+
+        // Update pickup animation, can only happen in this tab.
+        picked_peep_frame++;
+        picked_peep_frame %= 48;
 
         WidgetInvalidate(*this, WIDX_TAB_1);
         WidgetInvalidate(*this, WIDX_TAB_2);
@@ -930,11 +932,6 @@ private:
 
         gPickupPeepX = screenCoords.x - 1;
         gPickupPeepY = screenCoords.y + 16;
-        picked_peep_frame++;
-        if (picked_peep_frame >= 48)
-        {
-            picked_peep_frame = 0;
-        }
 
         const auto peep = GetGuest();
         if (peep == nullptr)

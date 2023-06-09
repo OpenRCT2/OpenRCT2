@@ -937,6 +937,11 @@ public:
         DrawTabImage(dpi, WINDOW_FINANCES_PAGE_MARKETING, SPR_TAB_FINANCES_MARKETING_0);
         DrawTabImage(dpi, WINDOW_FINANCES_PAGE_RESEARCH, SPR_TAB_FINANCES_RESEARCH_0);
     }
+
+    void OnResize() override
+    {
+        ResizeFrameWithPage();
+    }
 };
 
 static FinancesWindow* FinancesWindowOpen(uint8_t page)

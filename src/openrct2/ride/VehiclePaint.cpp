@@ -1036,10 +1036,8 @@ static void VehicleSpritePaintRestraints(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     int32_t boundingBoxNum = YawTo16(imageDirection);
-    auto restraintFrame = ((vehicle->restraints_position - 64) / 64) * 4;
-    auto spriteNum = (carEntry->SpriteByYaw(imageDirection, SpriteGroupType::RestraintAnimation) + restraintFrame)
-            * carEntry->base_num_frames
-        + carEntry->GroupImageId(SpriteGroupType::RestraintAnimation);
+    auto restraintFrame = ((vehicle->restraints_position - 64) / 64);
+    auto spriteNum = carEntry->SpriteOffset(SpriteGroupType::RestraintAnimation, imageDirection, restraintFrame);
     vehicle_sprite_paint(session, vehicle, spriteNum, VehicleBoundboxes[carEntry->draw_order][boundingBoxNum], z, carEntry);
 }
 

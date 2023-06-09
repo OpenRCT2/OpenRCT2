@@ -11,6 +11,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
@@ -126,7 +127,7 @@ private:
 void WindowTooltipReset(const ScreenCoordsXY& screenCoords)
 {
     gTooltipCursor = screenCoords;
-    gTooltipTimeout = 0;
+    gTooltipCloseTimeout = 0;
     gTooltipWidget.window_classification = WindowClass::Null;
     InputSetState(InputState::Normal);
     InputSetFlag(INPUT_FLAG_4, false);
@@ -188,6 +189,6 @@ void WindowTooltipOpen(WindowBase* widgetWindow, WidgetIndex widgetIndex, const 
 void WindowTooltipClose()
 {
     WindowCloseByClass(WindowClass::Tooltip);
-    gTooltipTimeout = 0;
+    gTooltipCloseTimeout = 0;
     gTooltipWidget.window_classification = WindowClass::Null;
 }

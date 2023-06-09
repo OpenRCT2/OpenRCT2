@@ -160,11 +160,11 @@ money64 FootpathProvisionalSet(
 
         if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
         {
-            ViewportSetVisibility(1);
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
         }
         else
         {
-            ViewportSetVisibility(3);
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewOff);
         }
     }
 
@@ -1628,6 +1628,7 @@ uint8_t PathElement::GetAddition() const
 
 ObjectEntryIndex PathElement::GetAdditionEntryIndex() const
 {
+    // `Additions` is set to 0 when there is no addition, so the value 1 corresponds with path addition slot 0, etc.
     return GetAddition() - 1;
 }
 
@@ -1641,6 +1642,12 @@ const PathAdditionEntry* PathElement::GetAdditionEntry() const
 void PathElement::SetAddition(uint8_t newAddition)
 {
     Additions = newAddition;
+}
+
+void PathElement::SetAdditionEntryIndex(ObjectEntryIndex entryIndex)
+{
+    // `Additions` is set to 0 when there is no addition, so the value 1 corresponds with path addition slot 0, etc.
+    Additions = entryIndex + 1;
 }
 
 bool PathElement::AdditionIsGhost() const

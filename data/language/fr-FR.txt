@@ -3693,6 +3693,12 @@ STR_6579    :La vitesse des freins de bloc sera changée à la valeur par défau
 STR_6580    :Réinitialiser
 STR_6581    :Voulez-vous vraiment réinitialiser tous les raccourcis claviers de cet onglet ?
 STR_6582    :Ouvrir la fenêtre des raccourcis clavier
+STR_6583    :{WINDOW_COLOUR_2}Trains inversés
+STR_6584    :Fait rouler les trains à l’envers
+STR_6585    :Impossible d’effectuer les changements…
+STR_6586    :OpenRCT2
+STR_6587    :Le thème principal d’OpenRCT2 est une création d’Allister Brimble,{NEWLINE}sous licence CC BY-SA 4.0.
+STR_6588    :Merci à Herman Riddering pour nous avoir permis d’enregistrer le 35er Voigt.
 
 #############
 # Scenarios #
