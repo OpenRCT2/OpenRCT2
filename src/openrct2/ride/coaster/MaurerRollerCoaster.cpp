@@ -18703,4 +18703,4 @@ namespace MaurerRC
         return nullptr;
     }
 
-} // namespace MauerRC
+} // namespace MaurerRC
