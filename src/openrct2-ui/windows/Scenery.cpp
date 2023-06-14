@@ -1129,7 +1129,7 @@ private:
         if (IsSceneryAvailableToBuild(selection))
         {
             // Add scenery to all tab
-            auto allTabInfo = GetSceneryTabInfoForAll();
+            auto* allTabInfo = GetSceneryTabInfoForAll();
             if (allTabInfo != nullptr)
             {
                 allTabInfo->AddEntryToBack(selection);
