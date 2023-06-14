@@ -99,3 +99,8 @@ TEST_F(RideRatings, BigMap)
 {
     TestRatings("BigMapTest.sv6", 100);
 }
+
+TEST_F(RideRatings, EverythingPark)
+{
+    TestRatings("EverythingPark.park", 529);
+}

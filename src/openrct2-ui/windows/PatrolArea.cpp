@@ -283,6 +283,11 @@ private:
         auto coords = FootpathGetCoordinatesFromPos(pos, nullptr, nullptr);
         return coords.IsNull() ? std::nullopt : std::make_optional(coords);
     }
+
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
 };
 
 WindowBase* WindowPatrolAreaOpen(EntityId staffId)

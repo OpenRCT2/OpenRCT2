@@ -13,7 +13,7 @@
 #include "../interface/Cursors.h"
 #include "ObjectTypes.h"
 
-enum class PathBitDrawType : uint8_t
+enum class PathAdditionDrawType : uint8_t
 {
     Light,
     Bin,
@@ -23,25 +23,25 @@ enum class PathBitDrawType : uint8_t
 
 enum
 {
-    PATH_BIT_FLAG_IS_BIN = 1 << 0,
-    PATH_BIT_FLAG_IS_BENCH = 1 << 1,
-    PATH_BIT_FLAG_BREAKABLE = 1 << 2,
-    PATH_BIT_FLAG_LAMP = 1 << 3,
-    PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER = 1 << 4,
-    PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW = 1 << 5,
-    PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE = 1 << 6,
-    PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE = 1 << 7,
-    PATH_BIT_FLAG_IS_QUEUE_SCREEN = 1 << 8
+    PATH_ADDITION_FLAG_IS_BIN = 1 << 0,
+    PATH_ADDITION_FLAG_IS_BENCH = 1 << 1,
+    PATH_ADDITION_FLAG_BREAKABLE = 1 << 2,
+    PATH_ADDITION_FLAG_LAMP = 1 << 3,
+    PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER = 1 << 4,
+    PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW = 1 << 5,
+    PATH_ADDITION_FLAG_DONT_ALLOW_ON_QUEUE = 1 << 6,
+    PATH_ADDITION_FLAG_DONT_ALLOW_ON_SLOPE = 1 << 7,
+    PATH_ADDITION_FLAG_IS_QUEUE_SCREEN = 1 << 8
 };
 
-struct PathBitEntry
+struct PathAdditionEntry
 {
-    static constexpr auto kObjectType = ObjectType::PathBits;
+    static constexpr auto kObjectType = ObjectType::PathAdditions;
 
     StringId name;
     uint32_t image;
     uint16_t flags;
-    PathBitDrawType draw_type;
+    PathAdditionDrawType draw_type;
     CursorID tool_id;
     money64 price;
     ObjectEntryIndex scenery_tab_id;

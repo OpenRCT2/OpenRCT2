@@ -19,7 +19,7 @@ constexpr const RideTypeDescriptor MiniRollerCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
-    SET_FIELD(EnabledTrackPieces, { TRACK_STRAIGHT, TRACK_STATION_END, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_SLOPE_CURVE_STEEP, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_SMALL, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_BLOCK_BRAKES, TRACK_SLOPE_ROLL_BANKING, TRACK_LIFT_HILL}),
+    SET_FIELD(EnabledTrackPieces, { TRACK_STRAIGHT, TRACK_STATION_END, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_SLOPE_CURVE_STEEP, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_DOWN_BANKED_HALF, TRACK_HELIX_UP_BANKED_HALF, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_BLOCK_BRAKES, TRACK_SLOPE_ROLL_BANKING, TRACK_LIFT_HILL}),
     SET_FIELD(ExtraTrackPieces, {TRACK_BOOSTER, TRACK_LIFT_HILL_CURVED}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
@@ -71,6 +71,7 @@ constexpr const RideTypeDescriptor MiniRollerCoasterRTD =
             { RatingsModifierType::BonusTurns,            0,                26749, 34767, 45749 },
             { RatingsModifierType::BonusDrops,            0,                29127, 46811, 49152 },
             { RatingsModifierType::BonusSheltered,        0,                25700, 30583, 35108 },
+            { RatingsModifierType::BonusReversedTrains,   0,                2, 10, 12 },
             { RatingsModifierType::BonusProximity,        0,                20130, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                9760, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 12,               2, 2, 2 },

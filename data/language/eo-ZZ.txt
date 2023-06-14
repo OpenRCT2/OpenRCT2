@@ -3687,6 +3687,13 @@ STR_6582    :Malfermi klavarokomandoj-fenestron
 STR_6583    :{WINDOW_COLOUR_2}Inversaj Trajnoj
 STR_6584    :Elektu por funkciigi trajnojn inverse
 STR_6585    :Ne eblas ŝanĝi tion…
+STR_6586    :OpenRCT2
+STR_6587    :La Titolomuziko de OpenRCT2 estas verko de Allister Brimble,{NEWLINE}rajtigita CC BY-SA 4.0.
+STR_6588    :Dank' al Herman Riddering pro permesi al ni registri la 35er Voigt.
+STR_6589    :Montri fenestro-butonojn maldekstre
+STR_6590    :Montri la fenestro-butonojn (ekz. fermi la fenestron) maldekstre de la titola breto anstataŭ dekstre.
+STR_6591    :Dungito nune estas riparanta atrakcion kaj ne povas esti maldungita.
+STR_6592    :Dungito nune estas inspektanta atrakcion kaj ne povas esti maldungita.
 
 #############
 # Scenarios #

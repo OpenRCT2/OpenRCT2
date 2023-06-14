@@ -20,7 +20,6 @@
 
 std::string FormatStringID(StringId format, const void* args);
 void FormatStringToUpper(char* dest, size_t size, StringId format, const void* args);
-void generate_string_file();
 
 /**
  * Formats sizeBytes into buf as a human readable text, e.x.: "1024 MB"
@@ -39,8 +38,6 @@ size_t GetStringSize(const utf8* text);
 #define MONEY_STRING_MAXLENGTH 14
 money64 StringToMoney(const char* string_to_monetise);
 void MoneyToString(money64 amount, char* buffer_to_put_value_to, size_t buffer_len, bool forceDecimals);
-
-bool IsUserStringID(StringId stringId);
 
 #define MAX_USER_STRINGS 1024
 #define USER_STRING_MAX_LENGTH 32

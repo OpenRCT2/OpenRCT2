@@ -19,7 +19,7 @@ constexpr const RideTypeDescriptor InvertedRollerCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
-    SET_FIELD(EnabledTrackPieces, {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_VERTICAL_LOOP, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_SLOPE_CURVE_STEEP, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_TWIST, TRACK_HALF_LOOP, TRACK_CORKSCREW, TRACK_HELIX_LARGE, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_HALF_LOOP_LARGE, TRACK_BLOCK_BRAKES, TRACK_SLOPE_ROLL_BANKING}),
+    SET_FIELD(EnabledTrackPieces, {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_VERTICAL_LOOP, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_SLOPE_CURVE_STEEP, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_TWIST, TRACK_HALF_LOOP, TRACK_CORKSCREW, TRACK_HELIX_DOWN_BANKED_QUARTER, TRACK_HELIX_UP_BANKED_QUARTER, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_HALF_LOOP_LARGE, TRACK_BLOCK_BRAKES, TRACK_SLOPE_ROLL_BANKING}),
     SET_FIELD(ExtraTrackPieces, {TRACK_BOOSTER}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
@@ -35,7 +35,7 @@ constexpr const RideTypeDescriptor InvertedRollerCoasterRTD =
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_INVERTED_ROLLER_COASTER)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
-    SET_FIELD(Heights, { 38, 40, 29, 8, }),
+    SET_FIELD(Heights, { 42, 40, 29, 8, }),
     SET_FIELD(MaxMass, 27),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftBM, 5, 7 }),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
@@ -48,10 +48,12 @@ constexpr const RideTypeDescriptor InvertedRollerCoasterRTD =
     SET_FIELD(ColourPresets,TRACK_COLOUR_PRESETS(
         { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_BLACK },
         { COLOUR_WHITE, COLOUR_YELLOW, COLOUR_WHITE },
-        { COLOUR_SALMON_PINK, COLOUR_SALMON_PINK, COLOUR_GREY },
         { COLOUR_BLACK, COLOUR_BRIGHT_RED, COLOUR_BLACK },
         { COLOUR_SATURATED_BROWN, COLOUR_WHITE, COLOUR_SATURATED_BROWN },
         { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_BLACK },
+        { COLOUR_BLACK, COLOUR_BLACK, COLOUR_DULL_PURPLE_LIGHT }, // Great Bear
+        { COLOUR_DARK_BLUE, COLOUR_DARK_BLUE, COLOUR_SATURATED_BROWN_LIGHT }, // Montu / Oziris
+        { COLOUR_DARK_PINK, COLOUR_DARK_PINK, COLOUR_SATURATED_PURPLE_DARK }, // Banshee (Renders)
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_INVERTED_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_INVERTED_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
@@ -74,6 +76,7 @@ constexpr const RideTypeDescriptor InvertedRollerCoasterRTD =
             { RatingsModifierType::BonusTurns,            0,                26749, 29552, 57186 },
             { RatingsModifierType::BonusDrops,            0,                29127, 39009, 49152 },
             { RatingsModifierType::BonusSheltered,        0,                15420, 15291, 35108 },
+            { RatingsModifierType::BonusReversedTrains,   0,                2, 12, 20 },
             { RatingsModifierType::BonusProximity,        0,                15657, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                8366, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 12,               2, 2, 2 },

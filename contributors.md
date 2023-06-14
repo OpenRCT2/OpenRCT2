@@ -9,6 +9,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Tulio Paschoalin Leao (tupaschoal)
 * Olivier Wervers (Oli414)
 * Rik Smeets (rik-smeets)
+* Matthias Moninger (ZehMatt)
 
 ## Former development team members
 * Lewis Fox (LRFLEW)
@@ -16,7 +17,6 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (zsilencer)
 * Richard Jenkins (rwjuk)
 * Aaron van Geffen (AaronVanGeffen)
-* Matthias Moninger (ZehMatt)
 * Michael Steenbeek (Gymnasiast)
 
 ## Long term contributors
@@ -108,6 +108,7 @@ The following people are not part of the development team, but have been contrib
 * Phumdol Lookthipnapha (beam41) - Misc.
 * Nikolas Parshook (nparshook) - Misc.
 * Wenzhao Qiu (qwzhaox) - Misc.
+* Tiago Reul (reul) - Misc.
 
 ## Bug fixes
 * (KirilAngelov)
@@ -277,6 +278,13 @@ The following people are not part of the development team, but have been contrib
 ## Music
 * Karst "Jalmaan" van Galen Last (AuraSpecs)
 * (Flyxxpy)
+* Jan Büchner (Greyfade)
+* Allister Brimble
+* Herman Riddering
+
+## Sound Effects
+* Karst van Galen Last (AuraSpecs)
+* (ThatGuyYouKnow)
 
 ## RollerCoaster Tycoon 2 credits
 Design and programming by Chris Sawyer

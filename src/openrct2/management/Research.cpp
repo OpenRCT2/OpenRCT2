@@ -540,7 +540,7 @@ bool ResearchIsInvented(ObjectType objectType, ObjectEntryIndex index)
         case ObjectType::LargeScenery:
         case ObjectType::Walls:
         case ObjectType::Banners:
-        case ObjectType::PathBits:
+        case ObjectType::PathAdditions:
             return SceneryIsInvented({ static_cast<uint8_t>(objectType), index });
         default:
             return true;

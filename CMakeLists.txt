@@ -64,17 +64,17 @@ set(TITLE_SEQUENCE_VERSION "0.4.0")
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v${TITLE_SEQUENCE_VERSION}/title-sequences.zip")
 set(TITLE_SEQUENCE_SHA1 "4ab0065e5a4d9f9c77d94718bbdfcfcd5a389da0")
 
-set(OBJECTS_VERSION "1.3.10")
+set(OBJECTS_VERSION "1.3.11")
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
-set(OBJECTS_SHA1 "622434a2fd968d063d2a35c16f07b7cc77ebca6b")
+set(OBJECTS_SHA1 "02ddf6c685a2da8bac98a57b34be95d63192443d")
 
 set(OPENSFX_VERSION "1.0.3")
 set(OPENSFX_URL  "https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v${OPENSFX_VERSION}/opensound.zip")
 set(OPENSFX_SHA1 "ffec5a97bd5035860c4c9a43fe32cf51886478e3")
 
-set(OPENMSX_VERSION "1.2.0")
+set(OPENMSX_VERSION "1.3.1")
 set(OPENMSX_URL  "https://github.com/OpenRCT2/OpenMusic/releases/download/v${OPENMSX_VERSION}/openmusic.zip")
-set(OPENMSX_SHA1 "c1c9b030c83c12ff628e8ec72fcfe748291a5344")
+set(OPENMSX_SHA1 "cb7b05af97aaf7949fb509063d45df6613f20521")
 
 set(REPLAYS_VERSION "0.0.78")
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
@@ -86,8 +86,8 @@ option(PORTABLE "Create a portable build (-rpath=$ORIGIN)" OFF)
 option(APPIMAGE "Create an appimage build (-rpath=$ORIGIN/../lib)" OFF)
 option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." ON)
 option(DOWNLOAD_OBJECTS "Download objects during installation." ON)
-option(DOWNLOAD_OPENSFX "Download OpenSoundEffects during installation." OFF)
-option(DOWNLOAD_OPENMSX "Download OpenMusic during installation." OFF)
+option(DOWNLOAD_OPENSFX "Download OpenSoundEffects during installation." ON)
+option(DOWNLOAD_OPENMSX "Download OpenMusic during installation." ON)
 CMAKE_DEPENDENT_OPTION(DOWNLOAD_REPLAYS "Download replays during installation." ON
     "WITH_TESTS" OFF)
 CMAKE_DEPENDENT_OPTION(MACOS_USE_DEPENDENCIES "Use OpenRCT2 dependencies instead of system libraries" ON
@@ -159,12 +159,6 @@ if (MACOS_USE_DEPENDENCIES)
         endif()
     endif ()
 endif ()
-
-# If OS is Linux, import OpenSoundEffects and OpenMusic
-if(UNIX AND NOT APPLE)
-    set(DOWNLOAD_OPENMSX ON)
-    set(DOWNLOAD_OPENSFX ON)
-endif()
 
 # LIST of supported flags, use SET_CHECK_CXX_FLAGS() to apply to target.
 # Use ADD_CHECK_CXX_COMPILER_FLAG() to add to list.

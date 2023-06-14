@@ -522,7 +522,7 @@ private:
 
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
-                GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
+                GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*this));
             }
         }
 
@@ -633,6 +633,11 @@ private:
     {
         _tabAnimationOffset++;
         _tabAnimationOffset %= 24;
+
+        // Update pickup animation, can only happen in this tab.
+        picked_peep_frame++;
+        picked_peep_frame %= 48;
+
         InvalidateWidget(WIDX_TAB_1);
     }
 
@@ -663,9 +668,6 @@ private:
 
         gPickupPeepX = screenCoords.x - 1;
         gPickupPeepY = screenCoords.y + 16;
-
-        picked_peep_frame++;
-        picked_peep_frame %= 48;
 
         auto staff = GetStaff();
         if (staff == nullptr)
@@ -1055,6 +1057,8 @@ private:
             {
                 SetWidgetDisabled(WIDX_PICKUP, true);
             }
+
+            SetWidgetDisabled(WIDX_FIRE, staff->State == PeepState::Fixing || staff->State == PeepState::Inspecting);
         }
     }
 

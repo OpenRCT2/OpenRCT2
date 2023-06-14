@@ -20,7 +20,6 @@
 #include "object/ObjectLimits.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
-#include "platform/Platform.h"
 #include "util/Util.h"
 
 #include <cmath>
@@ -370,7 +369,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        if (!Platform::EnsureDirectoryExists(outputPath))
+        if (!Path::CreateDirectory(outputPath))
         {
             fprintf(stderr, "Unable to create directory.\n");
             return -1;
@@ -430,7 +429,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         auto& objManager = context->GetObjectManager();
         const auto* const metaObject = objManager.GetLoadedObject(objectType, entryIndex);
 
-        if (!Platform::EnsureDirectoryExists(outputPath))
+        if (!Path::CreateDirectory(outputPath))
         {
             fprintf(stderr, "Unable to create directory.\n");
             return -1;

@@ -21,7 +21,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../network/network.h"
-#include "../object/FootpathItemEntry.h"
+#include "../object/PathAdditionEntry.h"
 #include "../ride/Ride.h"
 #include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
@@ -439,8 +439,8 @@ void CheatSetAction::RemoveLitter() const
         if (!path->HasAddition())
             continue;
 
-        auto* pathBitEntry = path->GetAdditionEntry();
-        if (pathBitEntry != nullptr && pathBitEntry->flags & PATH_BIT_FLAG_IS_BIN)
+        auto* pathAdditionEntry = path->GetAdditionEntry();
+        if (pathAdditionEntry != nullptr && pathAdditionEntry->flags & PATH_ADDITION_FLAG_IS_BIN)
             path->SetAdditionStatus(0xFF);
 
     } while (TileElementIteratorNext(&it));

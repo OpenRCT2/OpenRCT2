@@ -89,6 +89,11 @@ public:
             DrawTextWrapped(dpi, stringCoords, WW - 4, stringId, ft, { TextAlignment::CENTRE });
         }
     }
+
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
 };
 
 WindowBase* WindowRideRefurbishPromptOpen(const Ride& ride)

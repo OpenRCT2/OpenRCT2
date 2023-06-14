@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "FootpathItemObject.h"
+#include "PathAdditionObject.h"
 
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
@@ -20,11 +20,11 @@
 
 #include <unordered_map>
 
-void FootpathItemObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
+void PathAdditionObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
     stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.flags = stream->ReadValue<uint16_t>();
-    _legacyType.draw_type = static_cast<PathBitDrawType>(stream->ReadValue<uint8_t>());
+    _legacyType.draw_type = static_cast<PathAdditionDrawType>(stream->ReadValue<uint8_t>());
     _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
     _legacyType.price = stream->ReadValue<money16>();
     _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
@@ -43,7 +43,7 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
         context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
     }
 
-    // Add path bits to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.
+    // Add path additions to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.
     // Since this is already done the other way round for original items, avoid adding those to prevent duplicates.
     auto identifier = GetLegacyIdentifier();
 
@@ -61,7 +61,7 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     }
 }
 
-void FootpathItemObject::Load()
+void PathAdditionObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.name = LanguageAllocateObjectString(GetName());
@@ -70,7 +70,7 @@ void FootpathItemObject::Load()
     _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
 }
 
-void FootpathItemObject::Unload()
+void PathAdditionObject::Unload()
 {
     LanguageFreeObjectString(_legacyType.name);
     UnloadImages();
@@ -79,28 +79,28 @@ void FootpathItemObject::Unload()
     _legacyType.image = 0;
 }
 
-void FootpathItemObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
+void PathAdditionObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
     GfxDrawSprite(dpi, ImageId(_legacyType.image), screenCoords - ScreenCoordsXY{ 22, 24 });
 }
 
-static PathBitDrawType ParseDrawType(const std::string& s)
+static PathAdditionDrawType ParseDrawType(const std::string& s)
 {
     if (s == "lamp")
-        return PathBitDrawType::Light;
+        return PathAdditionDrawType::Light;
     if (s == "bin")
-        return PathBitDrawType::Bin;
+        return PathAdditionDrawType::Bin;
     if (s == "bench")
-        return PathBitDrawType::Bench;
+        return PathAdditionDrawType::Bench;
     if (s == "fountain")
-        return PathBitDrawType::JumpingFountain;
-    return PathBitDrawType::Light;
+        return PathAdditionDrawType::JumpingFountain;
+    return PathAdditionDrawType::Light;
 }
 
-void FootpathItemObject::ReadJson(IReadObjectContext* context, json_t& root)
+void PathAdditionObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
-    Guard::Assert(root.is_object(), "FootpathItemObject::ReadJson expects parameter root to be object");
+    Guard::Assert(root.is_object(), "PathAdditionObject::ReadJson expects parameter root to be object");
 
     json_t properties = root["properties"];
 
@@ -116,15 +116,15 @@ void FootpathItemObject::ReadJson(IReadObjectContext* context, json_t& root)
         _legacyType.flags = Json::GetFlags<uint16_t>(
             properties,
             {
-                { "isBin",                  PATH_BIT_FLAG_IS_BIN,                   Json::FlagType::Normal },
-                { "isBench",                PATH_BIT_FLAG_IS_BENCH,                 Json::FlagType::Normal },
-                { "isBreakable",            PATH_BIT_FLAG_BREAKABLE,                Json::FlagType::Normal },
-                { "isLamp",                 PATH_BIT_FLAG_LAMP,                     Json::FlagType::Normal },
-                { "isJumpingFountainWater", PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER,   Json::FlagType::Normal },
-                { "isJumpingFountainSnow",  PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW,    Json::FlagType::Normal },
-                { "isAllowedOnQueue",       PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE,      Json::FlagType::Inverted },
-                { "isAllowedOnSlope",       PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE,      Json::FlagType::Inverted },
-                { "isTelevision",           PATH_BIT_FLAG_IS_QUEUE_SCREEN,          Json::FlagType::Normal },
+                { "isBin",                  PATH_ADDITION_FLAG_IS_BIN,                   Json::FlagType::Normal },
+                { "isBench",                PATH_ADDITION_FLAG_IS_BENCH,                 Json::FlagType::Normal },
+                { "isBreakable",            PATH_ADDITION_FLAG_BREAKABLE,                Json::FlagType::Normal },
+                { "isLamp",                 PATH_ADDITION_FLAG_LAMP,                     Json::FlagType::Normal },
+                { "isJumpingFountainWater", PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER,   Json::FlagType::Normal },
+                { "isJumpingFountainSnow",  PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW,    Json::FlagType::Normal },
+                { "isAllowedOnQueue",       PATH_ADDITION_FLAG_DONT_ALLOW_ON_QUEUE,      Json::FlagType::Inverted },
+                { "isAllowedOnSlope",       PATH_ADDITION_FLAG_DONT_ALLOW_ON_SLOPE,      Json::FlagType::Inverted },
+                { "isTelevision",           PATH_ADDITION_FLAG_IS_QUEUE_SCREEN,          Json::FlagType::Normal },
             });
         // clang-format on
     }

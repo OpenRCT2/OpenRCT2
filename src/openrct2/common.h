@@ -11,6 +11,11 @@
 
 #undef M_PI
 
+// Ignore isatty warning on WIN32
+#ifndef _CRT_NONSTDC_NO_WARNINGS
+#    define _CRT_NONSTDC_NO_WARNINGS
+#endif
+
 #ifdef _MSC_VER
 #    include <ctime>
 #endif

@@ -39,3 +39,4 @@ struct Window : WindowBase
 void WindowAllWheelInput();
 void ApplyScreenSaverLockSetting();
 void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id);
+ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w);

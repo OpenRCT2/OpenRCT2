@@ -15,7 +15,7 @@
 #include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
-#include "../object/FootpathItemEntry.h"
+#include "../object/PathAdditionEntry.h"
 #include "../ride/RideConstruction.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/Footpath.h"
@@ -244,7 +244,7 @@ GameActions::Result FootpathPlaceAction::ElementUpdateExecute(PathElement* pathE
         if (_constructFlags & PathConstructFlag::IsQueue)
         {
             // remove any addition that isn't a TV or a lamp
-            if ((elem->flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) == 0 && (elem->flags & PATH_BIT_FLAG_LAMP) == 0)
+            if ((elem->flags & PATH_ADDITION_FLAG_IS_QUEUE_SCREEN) == 0 && (elem->flags & PATH_ADDITION_FLAG_LAMP) == 0)
             {
                 pathElement->SetIsBroken(false);
                 pathElement->SetAddition(0);
@@ -253,7 +253,7 @@ GameActions::Result FootpathPlaceAction::ElementUpdateExecute(PathElement* pathE
         else
         {
             // remove all TVs
-            if ((elem->flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) != 0)
+            if ((elem->flags & PATH_ADDITION_FLAG_IS_QUEUE_SCREEN) != 0)
             {
                 pathElement->SetIsBroken(false);
                 pathElement->SetAddition(0);

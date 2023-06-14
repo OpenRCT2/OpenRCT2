@@ -116,6 +116,7 @@ static void RideRatingsApplyBonusDrops(RatingTuple& ratings, const Ride& ride, R
 static void RideRatingsApplyBonusSheltered(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusRotations(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusOperationOption(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusReversedTrains(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusGoKartRace(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusTowerRide(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusRotoDrop(RatingTuple& ratings, const Ride& ride);
@@ -942,6 +943,9 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
                 break;
             case RatingsModifierType::BonusOperationOption:
                 RideRatingsApplyBonusOperationOption(ratings, ride, modifier);
+                break;
+            case RatingsModifierType::BonusReversedTrains:
+                RideRatingsApplyBonusReversedTrains(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusGoKartRace:
                 RideRatingsApplyBonusGoKartRace(ratings, ride, modifier);
@@ -1915,6 +1919,16 @@ static void RideRatingsApplyBonusOperationOption(RatingTuple& ratings, const Rid
     int32_t intensity = (modifier.Intensity >= 0) ? (ride.operation_option * modifier.Intensity)
                                                   : (ride.operation_option / std::abs(modifier.Intensity));
     RideRatingsAdd(ratings, ride.operation_option * modifier.Excitement, intensity, ride.operation_option * modifier.Nausea);
+}
+
+static void RideRatingsApplyBonusReversedTrains(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
+{
+    if (ride.HasLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS))
+    {
+        RideRatingsAdd(
+            ratings, ((ratings.Excitement * modifier.Excitement) >> 7), (ratings.Intensity * modifier.Intensity) >> 7,
+            (ratings.Nausea * modifier.Nausea) >> 7);
+    }
 }
 
 static void RideRatingsApplyBonusGoKartRace(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)

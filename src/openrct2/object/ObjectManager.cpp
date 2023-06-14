@@ -19,11 +19,11 @@
 #include "../ride/RideAudio.h"
 #include "../util/Util.h"
 #include "BannerSceneryEntry.h"
-#include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
 #include "ObjectList.h"
 #include "ObjectRepository.h"
+#include "PathAdditionObject.h"
 #include "RideObject.h"
 #include "SceneryGroupObject.h"
 #include "SmallSceneryObject.h"
@@ -479,7 +479,7 @@ private:
         UpdateSceneryGroupIndexes<LargeSceneryEntry>(ObjectType::LargeScenery);
         UpdateSceneryGroupIndexes<WallSceneryEntry>(ObjectType::Walls);
         UpdateSceneryGroupIndexes<BannerSceneryEntry>(ObjectType::Banners);
-        UpdateSceneryGroupIndexes<PathBitEntry>(ObjectType::PathBits);
+        UpdateSceneryGroupIndexes<PathAdditionEntry>(ObjectType::PathAdditions);
 
         auto& list = GetObjectList(ObjectType::SceneryGroup);
         for (auto* loadedObject : list)

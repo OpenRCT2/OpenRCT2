@@ -90,7 +90,7 @@ static std::optional<uint8_t> GetSceneryType(const ObjectType type)
             return SCENERY_TYPE_WALL;
         case ObjectType::Banners:
             return SCENERY_TYPE_BANNER;
-        case ObjectType::PathBits:
+        case ObjectType::PathAdditions:
             return SCENERY_TYPE_PATH_ITEM;
         default:
             return std::nullopt;

@@ -1,13 +1,29 @@
-0.4.5 (in development)
+0.4.6 (in development)
 ------------------------------------------------------------------------
-- Feature: [#18713] Block brakes have speed control and brakes slower than adjacent block brakes copy block brake speed when block brake open.
+- Feature: [#15660] Ability to show window buttons on the left.
+- Feature: [OpenMusic#41] Official Title Theme by Allister Brimble.
+- Improved: [#20119, #20243] Add new colour presets to several roller coasters (using the new colours).
+- Change: [#20110] Fix a few RCT1 build height parity discrepancies.
+- Fix: [#6152] Camera and UI are no longer locked at 40 Hz, providing a smoother experience.
+- Fix: [#19823] Parkobj: disallow overriding objects of different object types.
+- Fix: [#20083] Cannot use terrain surfaces with ID > 32 and terrain edges with ID > 16.
+- Fix: [#20111] All coaster types can access the new diagonal slope pieces.
+- Fix: [#20155] Fairground organ style 2 shows up as regular music, rather than for the merry-go-round.
+- Fix: [#20260] Ride locks up when inspecting/fixing staff member is fired.
+- Fix: [#20262] Title screen music missing when “random” title music is selected and RCT1 is no longer linked.
+
+0.4.5 (2023-05-08)
+------------------------------------------------------------------------
+- Feature: [#18713] Block brakes have speed control and brakes slower than adjacent block brakes copy block brake speed when the block brake is open.
 - Feature: [#19276] Add Powered Lifthill to Giga Coaster.
-- Feature: [#19305] Add new Reversed Trains ride setting to run trains backwards.
+- Feature: [#19305] Add new Reversed Trains ride setting to run trains backwards, granting a bonus to ride ratings.
 - Feature: [#19305] [Plugin] Add “Car.isReversed” to allow individual ride vehicles to run backwards.
-- Feature: [#19446] Add new color options to color dropdown.
+- Feature: [#19446] Add new colour options to colour dropdown.
 - Feature: [#19547] Add large sloped turns to hybrid coaster and single rail coaster.
 - Feature: [#19930] Add plugin APIs for research.
 - Feature: [OpenMusic#25] Added Prehistoric ride music style.
+- Feature: [OpenMusic#26] Fairground Organ style 2 with new recordings from Herman's 35er Voigt (Previously known as Bressingham Voigt).
+- Feature: [OpenMusic#28] Add Ragtime style 2 ride music.
 - Improved: [#17739] Raise water and land height limits to 254 units/182m/600ft.
 - Improved: [#18490] Reduce guests walking through trains on level crossing next to station.
 - Improved: [#18996] When marketing campaigns are disabled, disable the Marketing tab in the Finances window.
@@ -44,6 +60,8 @@
 - Fix: [#20018] Shops not calculating up-keep cost.
 - Fix: [#20033] Asset packs cannot reference game data.
 - Fix: [#20104] [Plugin] Some network APIs use player index and group index.
+- Fix: [#20099] Some scrollbar is glitched or have incorrect size when open window for the first time
+- Fix: [#20134] Grass length being updated for tiles in the void, causing unneccesary drawing operations.
 
 0.4.4 (2023-03-28)
 ------------------------------------------------------------------------

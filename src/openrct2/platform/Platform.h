@@ -113,7 +113,6 @@ namespace Platform
     u8string StrDecompToPrecomp(u8string_view input);
     bool RequireNewWindow(bool openGL);
 
-    bool EnsureDirectoryExists(u8string_view path);
     // Returns the bitmask of the GetLogicalDrives function for windows, 0 for other systems
     int32_t GetDrives();
     time_t FileGetModifiedTime(u8string_view path);

@@ -318,6 +318,11 @@ public:
             viewport->flags = gConfigGeneral.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
         Invalidate();
     }
+
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
 };
 
 /**

@@ -537,12 +537,12 @@ namespace ThemeManager
         auto scanner = Path::ScanDirectory(themesPattern, true);
         while (scanner->Next())
         {
-            auto fileInfo = scanner->GetFileInfo();
-            auto name = Path::GetFileNameWithoutExtension(std::string(fileInfo->Name));
+            const auto& fileInfo = scanner->GetFileInfo();
+            auto name = Path::GetFileNameWithoutExtension(fileInfo.Name);
 
             AvailableTheme theme{};
             theme.Name = name;
-            theme.Path = GetThemeFileName(theme.Name);
+            theme.Path = GetThemeFileName(name);
             outThemes->push_back(std::move(theme));
 
             if (Path::Equals(CurrentThemePath, scanner->GetPath()))

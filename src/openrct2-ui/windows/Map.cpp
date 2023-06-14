@@ -152,6 +152,7 @@ public:
             | (1uLL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_X_DOWN) | (1uLL << WIDX_LAND_TOOL_LARGER)
             | (1uLL << WIDX_LAND_TOOL_SMALLER);
 
+        ResizeMap();
         InitScrollWidgets();
 
         _rotation = GetCurrentRotation();
@@ -753,14 +754,7 @@ public:
 
         // Resize widgets to window size
         ResizeFrameWithPage();
-        widgets[WIDX_MAP].right = width - 4;
-
-        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
-            widgets[WIDX_MAP].bottom = height - 1 - 72;
-        else if (selected_tab == PAGE_RIDES)
-            widgets[WIDX_MAP].bottom = height - 1 - (4 * LIST_ROW_HEIGHT + 4);
-        else
-            widgets[WIDX_MAP].bottom = height - 1 - 14;
+        ResizeMap();
 
         widgets[WIDX_MAP_SIZE_SPINNER_Y].top = height - 15;
         widgets[WIDX_MAP_SIZE_SPINNER_Y].bottom = height - 4;
@@ -1385,6 +1379,18 @@ private:
         y /= 32;
 
         return { -x + y + MAXIMUM_MAP_SIZE_TECHNICAL - 8, x + y - 8 };
+    }
+
+    void ResizeMap()
+    {
+        widgets[WIDX_MAP].right = width - 4;
+
+        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
+            widgets[WIDX_MAP].bottom = height - 1 - 72;
+        else if (selected_tab == PAGE_RIDES)
+            widgets[WIDX_MAP].bottom = height - 1 - (4 * LIST_ROW_HEIGHT + 4);
+        else
+            widgets[WIDX_MAP].bottom = height - 1 - 14;
     }
 
     uint8_t _activeTool;

@@ -179,7 +179,7 @@ void SetupInUseSelectionFlags()
                 if (footpathEl->HasAddition())
                 {
                     auto pathAdditionEntryIndex = footpathEl->GetAdditionEntryIndex();
-                    Editor::SetSelectedObject(ObjectType::PathBits, pathAdditionEntryIndex, ObjectSelectionFlags::InUse);
+                    Editor::SetSelectedObject(ObjectType::PathAdditions, pathAdditionEntryIndex, ObjectSelectionFlags::InUse);
                 }
                 break;
             }

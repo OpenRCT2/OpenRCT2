@@ -22,6 +22,7 @@
 #include "actions/GameAction.h"
 #include "config/Config.h"
 #include "entity/EntityRegistry.h"
+#include "entity/EntityTweener.h"
 #include "entity/PatrolArea.h"
 #include "entity/Staff.h"
 #include "interface/Screenshot.h"
@@ -94,6 +95,8 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     auto& scriptEngine = GetContext()->GetScriptEngine();
     scriptEngine.ClearParkStorage();
 #endif
+
+    EntityTweener::Get().Reset();
 }
 
 /**
@@ -105,8 +108,6 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
 void GameState::Tick()
 {
     PROFILED_FUNCTION();
-
-    gInUpdateCode = true;
 
     // Normal game play will update only once every GAME_UPDATE_TIME_MS
     uint32_t numUpdates = 1;
@@ -230,8 +231,6 @@ void GameState::Tick()
         gWindowMapFlashingFlags &= ~MapFlashingFlags::StaffListOpen;
 
         ContextUpdateMapTooltip();
-
-        ContextHandleInput();
     }
 
     // Always perform autosave check, even when paused
@@ -249,7 +248,6 @@ void GameState::Tick()
     }
 
     gDoSingleUpdate = false;
-    gInUpdateCode = false;
 }
 
 void GameState::UpdateLogic(LogicTimings* timings)
@@ -264,6 +262,8 @@ void GameState::UpdateLogic(LogicTimings* timings)
             timings->TimingInfo[part][timings->CurrentIdx] = std::chrono::high_resolution_clock::now() - start_time;
         }
     };
+
+    gInUpdateCode = true;
 
     gScreenAge++;
     if (gScreenAge == 0)
@@ -289,6 +289,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
         // Don't run past the server, this condition can happen during map changes.
         if (NetworkGetServerTick() == gCurrentTicks)
         {
+            gInUpdateCode = false;
             return;
         }
 
@@ -396,6 +397,8 @@ void GameState::UpdateLogic(LogicTimings* timings)
     {
         timings->CurrentIdx = (timings->CurrentIdx + 1) % LOGIC_UPDATE_MEASUREMENTS_COUNT;
     }
+
+    gInUpdateCode = false;
 }
 
 void GameState::CreateStateSnapshot()

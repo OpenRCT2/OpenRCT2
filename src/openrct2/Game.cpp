@@ -704,7 +704,7 @@ void GameAutosave()
 
     auto env = GetContext()->GetPlatformEnvironment();
     auto autosaveDir = Path::Combine(env->GetDirectoryPath(DIRBASE::USER, subDirectory), u8"autosave");
-    Platform::EnsureDirectoryExists(autosaveDir.c_str());
+    Path::CreateDirectory(autosaveDir);
 
     auto path = Path::Combine(autosaveDir, timeName);
     auto backupFileName = u8string(u8"autosave") + fileExtension + u8".bak";

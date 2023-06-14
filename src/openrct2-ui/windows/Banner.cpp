@@ -295,6 +295,11 @@ public:
         Widget* dropDownWidget = &window_banner_widgets[WIDX_TEXT_COLOUR_DROPDOWN];
         dropDownWidget->text = BannerColouredTextFormats[banner->text_colour];
     }
+
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
 };
 
 /**

@@ -50,7 +50,7 @@ struct DirectoryChild
     uint64_t LastModified = 0;
 };
 
-static uint32_t GetPathChecksum(const utf8* path);
+static uint32_t GetPathChecksum(u8string_view path);
 static bool MatchWildcard(const utf8* fileName, const utf8* pattern);
 
 class FileScannerBase : public IFileScanner
@@ -58,64 +58,54 @@ class FileScannerBase : public IFileScanner
 private:
     struct DirectoryState
     {
-        std::string Path;
+        u8string Path;
         std::vector<DirectoryChild> Listing;
         int32_t Index = 0;
     };
 
     // Options
-    std::string _rootPath;
-    std::vector<std::string> _patterns;
-    bool _recurse;
+    const u8string _rootPath;
+    const std::vector<std::string> _patterns;
+    const bool _recurse;
 
     // State
     bool _started = false;
     std::stack<DirectoryState> _directoryStack;
 
     // Current
-    FileScanner::FileInfo* _currentFileInfo;
-    utf8* _currentPath;
+    FileScanner::FileInfo _currentFileInfo;
+    u8string _currentPath;
 
 public:
-    FileScannerBase(const std::string& pattern, bool recurse)
+    FileScannerBase(u8string_view pattern, bool recurse)
+        : _rootPath(Path::GetDirectory(pattern))
+        , _patterns(GetPatterns(Path::GetFileName(pattern)))
+        , _recurse(recurse)
     {
-        _rootPath = Path::GetDirectory(pattern);
-        _recurse = recurse;
-        _patterns = GetPatterns(Path::GetFileName(pattern));
-
-        _currentPath = Memory::Allocate<utf8>(MAX_PATH);
-        _currentFileInfo = Memory::Allocate<FileScanner::FileInfo>();
-
-        Reset();
     }
 
-    ~FileScannerBase() override
-    {
-        Memory::Free(_currentPath);
-        Memory::Free(_currentFileInfo);
-    }
+    ~FileScannerBase() override = default;
 
-    const FileScanner::FileInfo* GetFileInfo() const override
+    const FileScanner::FileInfo& GetFileInfo() const override
     {
         return _currentFileInfo;
     }
 
-    const utf8* GetPath() const override
+    const u8string& GetPath() const override
     {
         return _currentPath;
     }
 
-    const utf8* GetPathRelative() const override
+    u8string GetPathRelative() const override
     {
-        // +1 to remove the path separator
-        return _currentPath + _rootPath.size() + 1;
+        return Path::GetRelative(_currentPath, _rootPath);
     }
 
     void Reset() override
     {
         _started = false;
-        _directoryStack = std::stack<DirectoryState>();
-        _currentPath[0] = 0;
+        _directoryStack = {};
+        _currentPath.clear();
     }
 
     bool Next() override
@@ -147,12 +137,11 @@ public:
                 }
                 else if (PatternMatch(child->Name))
                 {
-                    auto path = Path::Combine(state->Path, child->Name);
-                    String::Set(_currentPath, MAX_PATH, path.c_str());
+                    _currentPath = Path::Combine(state->Path, child->Name);
 
-                    _currentFileInfo->Name = child->Name.c_str();
-                    _currentFileInfo->Size = child->Size;
-                    _currentFileInfo->LastModified = child->LastModified;
+                    _currentFileInfo.Name = child->Name;
+                    _currentFileInfo.Size = child->Size;
+                    _currentFileInfo.LastModified = child->LastModified;
                     return true;
                 }
             }
@@ -216,7 +205,7 @@ private:
 class FileScannerWindows final : public FileScannerBase
 {
 public:
-    FileScannerWindows(const std::string& pattern, bool recurse)
+    FileScannerWindows(u8string_view pattern, bool recurse)
         : FileScannerBase(pattern, recurse)
     {
     }
@@ -269,7 +258,7 @@ private:
 class FileScannerUnix final : public FileScannerBase
 {
 public:
-    FileScannerUnix(const std::string& pattern, bool recurse)
+    FileScannerUnix(u8string_view pattern, bool recurse)
         : FileScannerBase(pattern, recurse)
     {
     }
@@ -349,13 +338,13 @@ void Path::QueryDirectory(QueryDirectoryResult* result, const std::string& patte
     auto scanner = Path::ScanDirectory(pattern, true);
     while (scanner->Next())
     {
-        const FileScanner::FileInfo* fileInfo = scanner->GetFileInfo();
-        const utf8* path = scanner->GetPath();
+        const FileScanner::FileInfo& fileInfo = scanner->GetFileInfo();
+        const u8string& path = scanner->GetPath();
 
         result->TotalFiles++;
-        result->TotalFileSize += fileInfo->Size;
-        result->FileDateModifiedChecksum ^= static_cast<uint32_t>(fileInfo->LastModified >> 32)
-            ^ static_cast<uint32_t>(fileInfo->LastModified & 0xFFFFFFFF);
+        result->TotalFileSize += fileInfo.Size;
+        result->FileDateModifiedChecksum ^= static_cast<uint32_t>(fileInfo.LastModified >> 32)
+            ^ static_cast<uint32_t>(fileInfo.LastModified & 0xFFFFFFFF);
         result->FileDateModifiedChecksum = Numerics::ror32(result->FileDateModifiedChecksum, 5);
         result->PathChecksum += GetPathChecksum(path);
     }
@@ -380,12 +369,12 @@ std::vector<std::string> Path::GetDirectories(const std::string& path)
     return subDirectories;
 }
 
-static uint32_t GetPathChecksum(const utf8* path)
+static uint32_t GetPathChecksum(u8string_view path)
 {
     uint32_t hash = 0xD8430DED;
-    for (const utf8* ch = path; *ch != '\0'; ch++)
+    for (const utf8 ch : path)
     {
-        hash += (*ch);
+        hash += ch;
         hash += (hash << 10);
         hash ^= (hash >> 6);
     }

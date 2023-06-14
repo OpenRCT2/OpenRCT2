@@ -81,12 +81,22 @@ enum class ViewportInteractionItem : uint8_t
     Water,
     Scenery,
     Footpath,
-    FootpathItem,
+    PathAddition,
     ParkEntrance,
     Wall,
     LargeScenery,
     Label,
     Banner
+};
+
+enum class ViewportVisibility : uint8_t
+{
+    Default = 0,
+    UndergroundViewOn = 1,
+    TrackHeights = 2,
+    UndergroundViewOff = 3,
+    UndergroundViewGhostOn = 4,
+    UndergroundViewGhostOff = 5,
 };
 
 constexpr uint16_t ViewportInteractionItemAll = std::numeric_limits<uint16_t>::max();
@@ -148,7 +158,7 @@ void ShowLandRights();
 void HideLandRights();
 void ShowConstructionRights();
 void HideConstructionRights();
-void ViewportSetVisibility(uint8_t mode);
+void ViewportSetVisibility(ViewportVisibility mode);
 
 InteractionInfo GetMapCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32_t flags);
 InteractionInfo GetMapCoordinatesFromPosWindow(WindowBase* window, const ScreenCoordsXY& screenCoords, int32_t flags);

@@ -311,7 +311,7 @@ static constexpr StringId GetStringFromObjectType(const ObjectType type)
             return STR_OBJECT_SELECTION_PATH_SIGNS;
         case ObjectType::Paths:
             return STR_OBJECT_SELECTION_FOOTPATHS;
-        case ObjectType::PathBits:
+        case ObjectType::PathAdditions:
             return STR_OBJECT_SELECTION_PATH_EXTRAS;
         case ObjectType::SceneryGroup:
             return STR_OBJECT_SELECTION_SCENERY_GROUPS;
@@ -549,6 +549,11 @@ public:
             const auto type = GetStringFromObjectType(entry.GetType());
             DrawTextBasic(dpi, { TYPE_COL_LEFT - 3, screenCoords.y }, type, {}, { COLOUR_DARK_GREEN });
         }
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 
     void Initialise(utf8* path, const size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
