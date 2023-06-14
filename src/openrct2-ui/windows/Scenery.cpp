@@ -1122,8 +1122,12 @@ private:
 
         if (IsSceneryAvailableToBuild(selection))
         {
-            // Get current tab
-            const auto tabIndex = FindTabWithScenery(selection);
+            // Add scenery to all tab
+            auto* allTabInfo = GetSceneryTabInfoForAll();
+            if (allTabInfo != nullptr)
+            {
+                allTabInfo->AddEntryToBack(selection);
+            }
 
             // Add scenery to primary group (usually trees or path additions)
             if (sceneryGroupIndex != OBJECT_ENTRY_INDEX_NULL)
@@ -1136,7 +1140,8 @@ private:
                 }
             }
 
-            // If scenery is no tab, add it to misc
+            // If scenery has no tab, add it to misc
+            const auto tabIndex = FindTabWithScenery(selection);
             if (!tabIndex.has_value())
             {
                 auto* tabInfo = GetSceneryTabInfoForMisc();
@@ -1144,13 +1149,6 @@ private:
                 {
                     tabInfo->AddEntryToBack(selection);
                 }
-            }
-
-            // Add all scenery to all tab
-            auto tabInfo = GetSceneryTabInfoForAll();
-            if (tabInfo != nullptr)
-            {
-                tabInfo->AddEntryToBack(selection);
             }
         }
     }
