@@ -12,6 +12,7 @@
 - Fix: [#20155] Fairground organ style 2 shows up as regular music, rather than for the merry-go-round.
 - Fix: [#20260] Ride locks up when inspecting/fixing staff member is fired.
 - Fix: [#20262] Title screen music missing when “random” title music is selected and RCT1 is no longer linked.
+- Fix: [#20361] Crash when using random map generation.
 
 0.4.5 (2023-05-08)
 ------------------------------------------------------------------------

@@ -370,7 +370,7 @@ static void MapGenPlaceTrees()
                         neighbourPos.y = std::clamp(neighbourPos.y, COORDS_XY_STEP, COORDS_XY_STEP * (gMapSize.y - 1));
 
                         const auto neighboutSurface = MapGetSurfaceElementAt(neighbourPos);
-                        if (neighboutSurface->GetWaterHeight() > 0)
+                        if (neighboutSurface != nullptr && neighboutSurface->GetWaterHeight() > 0)
                         {
                             float distance = std::sqrt(offsetX * offsetX + offsetY * offsetY);
                             oasisScore += 0.5f / (maxOasisDistance * distance);
