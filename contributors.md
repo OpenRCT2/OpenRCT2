@@ -214,7 +214,7 @@ The following people are not part of the development team, but have been contrib
 * Conrad Cash (HouseholdVTuber)
 * Michael Bickerton (mdbckrtn)
 * Nehemiah Negussie (nehemiah-negussie)
-* (zzril)
+* Severin Paul Höfer (zzril)
 * Ernest Elgin (eaeiv)
 * Ernest Wong (ErnWong)
 * Joel H. (HtotheTML)
