@@ -72,8 +72,6 @@ static constexpr const StringId WINDOW_TITLE = STR_RIDE_WINDOW_TITLE;
 static constexpr const int32_t WH = 207;
 static constexpr const int32_t WW = 316;
 
-static void PopulateVehicleTypeDropdown(const Ride& ride, bool forceRefresh = false);
-
 enum
 {
     WINDOW_RIDE_PAGE_MAIN,
@@ -429,149 +427,6 @@ static constexpr const uint64_t window_ride_page_hold_down_widgets[] = {
 
 #pragma endregion
 
-#pragma region Events
-
-// 0x0098DFD4
-static WindowEventList window_ride_main_events([](auto& events) {
-    events.mouse_up = &WindowRideMainMouseup;
-    events.resize = &WindowRideMainResize;
-    events.mouse_down = &WindowRideMainMousedown;
-    events.dropdown = &WindowRideMainDropdown;
-    events.update = &WindowRideMainUpdate;
-    events.text_input = &WindowRideMainTextinput;
-    events.viewport_rotate = &WindowRideMainViewportRotate;
-    events.invalidate = &WindowRideMainInvalidate;
-    events.paint = &WindowRideMainPaint;
-});
-
-// 0x0098E204
-static WindowEventList window_ride_vehicle_events([](auto& events) {
-    events.mouse_up = &WindowRideVehicleMouseup;
-    events.resize = &WindowRideVehicleResize;
-    events.mouse_down = &WindowRideVehicleMousedown;
-    events.dropdown = &WindowRideVehicleDropdown;
-    events.update = &WindowRideVehicleUpdate;
-    events.tooltip = &WindowRideVehicleTooltip;
-    events.invalidate = &WindowRideVehicleInvalidate;
-    events.paint = &WindowRideVehiclePaint;
-    events.scroll_paint = &WindowRideVehicleScrollpaint;
-});
-
-// 0x0098E0B4
-static WindowEventList window_ride_operating_events([](auto& events) {
-    events.mouse_up = &WindowRideOperatingMouseup;
-    events.resize = &WindowRideOperatingResize;
-    events.mouse_down = &WindowRideOperatingMousedown;
-    events.dropdown = &WindowRideOperatingDropdown;
-    events.update = &WindowRideOperatingUpdate;
-    events.text_input = &WindowRideOperatingTextinput;
-    events.invalidate = &WindowRideOperatingInvalidate;
-    events.paint = &WindowRideOperatingPaint;
-});
-
-// 0x0098E124
-static WindowEventList window_ride_maintenance_events([](auto& events) {
-    events.mouse_up = &WindowRideMaintenanceMouseup;
-    events.resize = &WindowRideMaintenanceResize;
-    events.mouse_down = &WindowRideMaintenanceMousedown;
-    events.dropdown = &WindowRideMaintenanceDropdown;
-    events.update = &WindowRideMaintenanceUpdate;
-    events.invalidate = &WindowRideMaintenanceInvalidate;
-    events.paint = &WindowRideMaintenancePaint;
-});
-
-// 0x0098E044
-static WindowEventList window_ride_colour_events([](auto& events) {
-    events.close = &WindowRideColourClose;
-    events.mouse_up = &WindowRideColourMouseup;
-    events.resize = &WindowRideColourResize;
-    events.mouse_down = &WindowRideColourMousedown;
-    events.dropdown = &WindowRideColourDropdown;
-    events.update = &WindowRideColourUpdate;
-    events.tool_down = &WindowRideColourTooldown;
-    events.tool_drag = &WindowRideColourTooldrag;
-    events.invalidate = &WindowRideColourInvalidate;
-    events.paint = &WindowRideColourPaint;
-    events.scroll_paint = &WindowRideColourScrollpaint;
-});
-
-// 0x0098E194
-static WindowEventList window_ride_music_events([](auto& events) {
-    events.mouse_up = &WindowRideMusicMouseup;
-    events.resize = &WindowRideMusicResize;
-    events.mouse_down = &WindowRideMusicMousedown;
-    events.dropdown = &WindowRideMusicDropdown;
-    events.update = &WindowRideMusicUpdate;
-    events.invalidate = &WindowRideMusicInvalidate;
-    events.paint = &WindowRideMusicPaint;
-});
-
-// 0x0098DE14
-static WindowEventList window_ride_measurements_events([](auto& events) {
-    events.close = &WindowRideMeasurementsClose;
-    events.mouse_up = &WindowRideMeasurementsMouseup;
-    events.resize = &WindowRideMeasurementsResize;
-    events.mouse_down = &WindowRideMeasurementsMousedown;
-    events.dropdown = &WindowRideMeasurementsDropdown;
-    events.update = &WindowRideMeasurementsUpdate;
-    events.tool_down = &WindowRideMeasurementsTooldown;
-    events.tool_drag = &WindowRideMeasurementsTooldrag;
-    events.tool_abort = &WindowRideMeasurementsToolabort;
-    events.invalidate = &WindowRideMeasurementsInvalidate;
-    events.paint = &WindowRideMeasurementsPaint;
-});
-
-// 0x0098DF64
-static WindowEventList window_ride_graphs_events([](auto& events) {
-    events.mouse_up = &WindowRideGraphsMouseup;
-    events.resize = &WindowRideGraphsResize;
-    events.mouse_down = &WindowRideGraphsMousedown;
-    events.update = &WindowRideGraphsUpdate;
-    events.get_scroll_size = &WindowRideGraphsScrollgetheight;
-    events.scroll_select = &WindowRideGraphs15;
-    events.tooltip = &WindowRideGraphsTooltip;
-    events.invalidate = &WindowRideGraphsInvalidate;
-    events.paint = &WindowRideGraphsPaint;
-    events.scroll_paint = &WindowRideGraphsScrollpaint;
-});
-
-// 0x0098DEF4
-static WindowEventList window_ride_income_events([](auto& events) {
-    events.mouse_up = &WindowRideIncomeMouseup;
-    events.resize = &WindowRideIncomeResize;
-    events.mouse_down = &WindowRideIncomeMousedown;
-    events.update = &WindowRideIncomeUpdate;
-    events.text_input = &WindowRideIncomeTextinput;
-    events.invalidate = &WindowRideIncomeInvalidate;
-    events.paint = &WindowRideIncomePaint;
-});
-
-// 0x0098DE84
-static WindowEventList window_ride_customer_events([](auto& events) {
-    events.mouse_up = &WindowRideCustomerMouseup;
-    events.resize = &WindowRideCustomerResize;
-    events.update = &WindowRideCustomerUpdate;
-    events.invalidate = &WindowRideCustomerInvalidate;
-    events.paint = &WindowRideCustomerPaint;
-});
-
-// clang-format off
-static WindowEventList *window_ride_page_events[] = {
-    &window_ride_main_events,
-    &window_ride_vehicle_events,
-    &window_ride_operating_events,
-    &window_ride_maintenance_events,
-    &window_ride_colour_events,
-    &window_ride_music_events,
-    &window_ride_measurements_events,
-    &window_ride_graphs_events,
-    &window_ride_income_events,
-    &window_ride_customer_events,
-};
-// clang-format on
-
-#pragma endregion
-
 static bool _collectTrackDesignScenery = false;
 static int32_t _lastSceneryX = 0;
 static int32_t _lastSceneryY = 0;
@@ -764,6 +619,7 @@ static std::vector<VehicleTypeLabel> VehicleDropdownData;
 
 class RideWindow final : public Window
 {
+public:
     RideWindow(const Ride& ride)
     {
         rideId = ride.id;
@@ -785,6 +641,362 @@ class RideWindow final : public Window
         UpdateOverallView(ride);
 
         PopulateVehicleTypeDropdown(ride, true);
+    }
+
+    virtual void OnClose() override
+    {
+        switch (page)
+        {
+            case WINDOW_RIDE_PAGE_COLOUR:
+                ColourClose();
+                break;
+            case WINDOW_RIDE_PAGE_MEASUREMENTS:
+                MeasurementsClose();
+                break;
+        }
+    }
+    virtual void OnResize() override
+    {
+        switch (page)
+        {
+            case WINDOW_RIDE_PAGE_MAIN:
+                MainResize();
+                break;
+            case WINDOW_RIDE_PAGE_VEHICLE:
+                VehicleResize();
+                break;
+            case WINDOW_RIDE_PAGE_OPERATING:
+                OperatingResize();
+                break;
+            case WINDOW_RIDE_PAGE_MAINTENANCE:
+                MaintenanceResize();
+                break;
+            case WINDOW_RIDE_PAGE_COLOUR:
+                ColourResize();
+                break;
+            case WINDOW_RIDE_PAGE_MUSIC:
+                MusicResize();
+                break;
+            case WINDOW_RIDE_PAGE_MEASUREMENTS:
+                MeasurementsResize();
+                break;
+            case WINDOW_RIDE_PAGE_GRAPHS:
+                GraphsResize();
+                break;
+            case WINDOW_RIDE_PAGE_INCOME:
+                IncomeResize();
+                break;
+            case WINDOW_RIDE_PAGE_CUSTOMER:
+                CustomerResize();
+                break;
+        }
+    }
+    virtual void OnUpdate() override
+    {
+        switch (page)
+        {
+            case WINDOW_RIDE_PAGE_MAIN:
+                MainUpdate();
+                break;
+            case WINDOW_RIDE_PAGE_VEHICLE:
+                VehicleUpdate();
+                break;
+            case WINDOW_RIDE_PAGE_OPERATING:
+                OperatingUpdate();
+                break;
+            case WINDOW_RIDE_PAGE_MAINTENANCE:
+                MaintenanceUpdate();
+                break;
+            case WINDOW_RIDE_PAGE_COLOUR:
+                ColourUpdate();
+                break;
+            case WINDOW_RIDE_PAGE_MUSIC:
+                MusicUpdate();
+                break;
+            case WINDOW_RIDE_PAGE_MEASUREMENTS:
+                MeasurementsUpdate();
+                break;
+            case WINDOW_RIDE_PAGE_GRAPHS:
+                GraphsUpdate();
+                break;
+            case WINDOW_RIDE_PAGE_INCOME:
+                IncomeUpdate();
+                break;
+            case WINDOW_RIDE_PAGE_CUSTOMER:
+                CustomerUpdate();
+                break;
+        }
+    }
+
+    virtual void OnPrepareDraw() override
+    {
+        switch (page)
+        {
+            case WINDOW_RIDE_PAGE_MAIN:
+                MainOnPrepareDraw();
+                break;
+            case WINDOW_RIDE_PAGE_VEHICLE:
+                VehicleOnPrepareDraw();
+                break;
+            case WINDOW_RIDE_PAGE_OPERATING:
+                OperatingOnPrepareDraw();
+                break;
+            case WINDOW_RIDE_PAGE_MAINTENANCE:
+                MaintenanceOnPrepareDraw();
+                break;
+            case WINDOW_RIDE_PAGE_COLOUR:
+                ColourOnPrepareDraw();
+                break;
+            case WINDOW_RIDE_PAGE_MUSIC:
+                MusicOnPrepareDraw();
+                break;
+            case WINDOW_RIDE_PAGE_MEASUREMENTS:
+                MeasurementsOnPrepareDraw();
+                break;
+            case WINDOW_RIDE_PAGE_GRAPHS:
+                GraphsOnPrepareDraw();
+                break;
+            case WINDOW_RIDE_PAGE_INCOME:
+                IncomeOnPrepareDraw();
+                break;
+            case WINDOW_RIDE_PAGE_CUSTOMER:
+                CustomerOnPrepareDraw();
+                break;
+        }
+    }
+    virtual void OnDraw(DrawPixelInfo& dpi) override
+    {
+        switch (page)
+        {
+            case WINDOW_RIDE_PAGE_MAIN:
+                MainOnDraw(dpi);
+                break;
+            case WINDOW_RIDE_PAGE_VEHICLE:
+                VehicleOnDraw(dpi);
+                break;
+            case WINDOW_RIDE_PAGE_OPERATING:
+                OperatingOnDraw(dpi);
+                break;
+            case WINDOW_RIDE_PAGE_MAINTENANCE:
+                MaintenanceOnDraw(dpi);
+                break;
+            case WINDOW_RIDE_PAGE_COLOUR:
+                ColourOnDraw(dpi);
+                break;
+            case WINDOW_RIDE_PAGE_MUSIC:
+                MusicOnDraw(dpi);
+                break;
+            case WINDOW_RIDE_PAGE_MEASUREMENTS:
+                MeasurementsOnDraw(dpi);
+                break;
+            case WINDOW_RIDE_PAGE_GRAPHS:
+                GraphsOnDraw(dpi);
+                break;
+            case WINDOW_RIDE_PAGE_INCOME:
+                IncomeOnDraw(dpi);
+                break;
+            case WINDOW_RIDE_PAGE_CUSTOMER:
+                CustomerOnDraw(dpi);
+                break;
+        }
+    }
+
+    virtual OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback) override
+    {
+        switch (page)
+        {
+            case WINDOW_RIDE_PAGE_VEHICLE:
+                return VehicleTooltip(widgetIndex, fallback);
+            case WINDOW_RIDE_PAGE_GRAPHS:
+                return GraphsTooltip(widgetIndex, fallback);
+        }
+        return { fallback, {} };
+    }
+    virtual void OnMouseDown(WidgetIndex widgetIndex) override
+    {
+        switch (page)
+        {
+            case WINDOW_RIDE_PAGE_MAIN:
+                MainOnMouseDown(widgetIndex);
+                break;
+            case WINDOW_RIDE_PAGE_VEHICLE:
+                VehicleOnMouseDown(widgetIndex);
+                break;
+            case WINDOW_RIDE_PAGE_OPERATING:
+                OperatingOnMouseDown(widgetIndex);
+                break;
+            case WINDOW_RIDE_PAGE_MAINTENANCE:
+                MaintenanceOnMouseDown(widgetIndex);
+                break;
+            case WINDOW_RIDE_PAGE_COLOUR:
+                ColourOnMouseDown(widgetIndex);
+                break;
+            case WINDOW_RIDE_PAGE_MUSIC:
+                MusicOnMouseDown(widgetIndex);
+                break;
+            case WINDOW_RIDE_PAGE_MEASUREMENTS:
+                MeasurementsOnMouseDown(widgetIndex);
+                break;
+            case WINDOW_RIDE_PAGE_GRAPHS:
+                GraphsOnMouseDown(widgetIndex);
+                break;
+            case WINDOW_RIDE_PAGE_INCOME:
+                IncomeOnMouseDown(widgetIndex);
+                break;
+        }
+    }
+    virtual void OnMouseUp(WidgetIndex widgetIndex) override
+    {
+        switch (page)
+        {
+            case WINDOW_RIDE_PAGE_MAIN:
+                MainOnMouseUp(widgetIndex);
+                break;
+            case WINDOW_RIDE_PAGE_VEHICLE:
+                VehicleOnMouseUp(widgetIndex);
+                break;
+            case WINDOW_RIDE_PAGE_OPERATING:
+                OperatingOnMouseUp(widgetIndex);
+                break;
+            case WINDOW_RIDE_PAGE_MAINTENANCE:
+                MaintenanceOnMouseUp(widgetIndex);
+                break;
+            case WINDOW_RIDE_PAGE_COLOUR:
+                ColourOnMouseUp(widgetIndex);
+                break;
+            case WINDOW_RIDE_PAGE_MUSIC:
+                MusicOnMouseUp(widgetIndex);
+                break;
+            case WINDOW_RIDE_PAGE_MEASUREMENTS:
+                MeasurementsOnMouseUp(widgetIndex);
+                break;
+            case WINDOW_RIDE_PAGE_GRAPHS:
+                GraphsOnMouseUp(widgetIndex);
+                break;
+            case WINDOW_RIDE_PAGE_INCOME:
+                IncomeOnMouseUp(widgetIndex);
+                break;
+            case WINDOW_RIDE_PAGE_CUSTOMER:
+                CustomerOnMouseUp(widgetIndex);
+                break;
+        }
+    }
+    virtual void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
+    {
+        switch (page)
+        {
+            case WINDOW_RIDE_PAGE_MAIN:
+                MainOnDropdown(widgetIndex, selectedIndex);
+                break;
+            case WINDOW_RIDE_PAGE_VEHICLE:
+                VehicleOnDropdown(widgetIndex, selectedIndex);
+                break;
+            case WINDOW_RIDE_PAGE_OPERATING:
+                OperatingOnDropdown(widgetIndex, selectedIndex);
+                break;
+            case WINDOW_RIDE_PAGE_MAINTENANCE:
+                MaintenanceOnDropdown(widgetIndex, selectedIndex);
+                break;
+            case WINDOW_RIDE_PAGE_COLOUR:
+                ColourOnDropdown(widgetIndex, selectedIndex);
+                break;
+            case WINDOW_RIDE_PAGE_MUSIC:
+                MusicOnDropdown(widgetIndex, selectedIndex);
+                break;
+            case WINDOW_RIDE_PAGE_MEASUREMENTS:
+                MeasurementsOnDropdown(widgetIndex, selectedIndex);
+                break;
+        }
+    }
+    virtual void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override
+    {
+        switch (page)
+        {
+            case WINDOW_RIDE_PAGE_MAIN:
+                MainOnTextInput(widgetIndex, text);
+                break;
+            case WINDOW_RIDE_PAGE_OPERATING:
+                OperatingOnTextInput(widgetIndex, text);
+                break;
+            case WINDOW_RIDE_PAGE_INCOME:
+                IncomeOnTextInput(widgetIndex, text);
+                break;
+        }
+    }
+    virtual ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+    {
+        switch (page)
+        {
+            case WINDOW_RIDE_PAGE_GRAPHS:
+                return GraphsScrollGetSize(scrollIndex);
+        }
+        return {};
+    }
+    virtual void OnScrollSelect(int32_t scrollIndex, int32_t scrollAreaType) override
+    {
+        switch (page)
+        {
+            case WINDOW_RIDE_PAGE_GRAPHS:
+                Graphs15(scrollIndex, scrollAreaType);
+                break;
+        }
+    }
+    virtual void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
+    {
+        switch (page)
+        {
+            case WINDOW_RIDE_PAGE_VEHICLE:
+                VehicleOnScrollDraw(dpi, scrollIndex);
+                break;
+            case WINDOW_RIDE_PAGE_COLOUR:
+                ColourOnScrollDraw(dpi, scrollIndex);
+                break;
+            case WINDOW_RIDE_PAGE_GRAPHS:
+                GraphsOnScrollDraw(dpi, scrollIndex);
+                break;
+        }
+    }
+    virtual void OnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    {
+        switch (page)
+        {
+            case WINDOW_RIDE_PAGE_COLOUR:
+                ColourOnToolDown(widgetIndex, screenCoords);
+                break;
+            case WINDOW_RIDE_PAGE_MEASUREMENTS:
+                MeasurementsOnToolDown(widgetIndex, screenCoords);
+                break;
+        }
+    }
+    virtual void OnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    {
+        switch (page)
+        {
+            case WINDOW_RIDE_PAGE_COLOUR:
+                ColourOnToolDrag(widgetIndex, screenCoords);
+                break;
+            case WINDOW_RIDE_PAGE_MEASUREMENTS:
+                MeasurementsOnToolDrag(widgetIndex, screenCoords);
+                break;
+        }
+    }
+    virtual void OnToolAbort(WidgetIndex widgetIndex) override
+    {
+        switch (page)
+        {
+            case WINDOW_RIDE_PAGE_MEASUREMENTS:
+                MeasurementsOnToolAbort(widgetIndex);
+                break;
+        }
+    }
+    virtual void OnViewportRotate() override
+    {
+        switch (page)
+        {
+            case WINDOW_RIDE_PAGE_MAIN:
+                MainViewportRotate();
+                break;
+        }
     }
 
 private:
@@ -1092,7 +1304,6 @@ private:
         RemoveViewport();
 
         hold_down_widgets = window_ride_page_hold_down_widgets[page];
-        event_handlers = window_ride_page_events[page];
         pressed_widgets = 0;
         widgets = window_ride_page_widgets[page];
         DisableTabs();
@@ -1253,7 +1464,7 @@ private:
         }
     }
 
-    void MainMouseup(WidgetIndex widgetIndex)
+    void MainOnMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -1745,26 +1956,26 @@ private:
         Dropdown::SetChecked(pos, true);
     }
 
-    void MainMousedown(WidgetIndex widgetIndex, Widget* widget)
+    void MainOnMouseDown(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
             case WIDX_VIEW_DROPDOWN:
-                ShowViewDropdown(widget);
+                ShowViewDropdown(&widgets[widgetIndex]);
                 break;
             case WIDX_OPEN:
-                ShowOpenDropdown(widget);
+                ShowOpenDropdown(&widgets[widgetIndex]);
                 break;
             case WIDX_RIDE_TYPE_DROPDOWN:
-                ShowRideTypeDropdown(widget);
+                ShowRideTypeDropdown(&widgets[widgetIndex]);
                 break;
             case WIDX_LOCATE:
-                ShowLocateDropdown(widget);
+                ShowLocateDropdown(&widgets[widgetIndex]);
                 break;
         }
     }
 
-    void MainDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
+    void MainOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         switch (widgetIndex)
         {
@@ -1892,15 +2103,16 @@ private:
         WidgetInvalidate(*this, WIDX_STATUS);
     }
 
-    void MainTextinput(WidgetIndex widgetIndex, const char* text)
+    void MainOnTextInput(WidgetIndex widgetIndex, std::string_view text)
     {
-        if (widgetIndex != WIDX_RENAME || text == nullptr)
+        if (widgetIndex != WIDX_RENAME || text.empty())
             return;
 
         auto ride = GetRide(rideId);
         if (ride != nullptr)
         {
-            auto gameAction = RideSetNameAction(ride->id, text);
+            auto strText = std::string(text);
+            auto gameAction = RideSetNameAction(ride->id, strText);
             GameActions::Execute(&gameAction);
         }
     }
@@ -2174,7 +2386,7 @@ private:
         return GetStatusStation(ft);
     }
 
-    void MainOnPaint(DrawPixelInfo& dpi)
+    void MainOnDraw(DrawPixelInfo& dpi)
     {
         Widget* widget;
 
@@ -2231,7 +2443,7 @@ private:
 
 #pragma region Vehicle
 
-    void VehicleMouseup(WidgetIndex widgetIndex)
+    void VehicleOnMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -2258,7 +2470,7 @@ private:
         WindowSetResize(*this, 316, 221, 316, 221);
     }
 
-    void VehicleMousedown(WidgetIndex widgetIndex, Widget* widget)
+    void VehicleOnMouseDown(WidgetIndex widgetIndex)
     {
         auto ride = GetRide(rideId);
         if (ride == nullptr)
@@ -2291,7 +2503,7 @@ private:
         }
     }
 
-    void VehicleDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
+    void VehicleOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         if (dropdownIndex == -1)
             return;
@@ -2319,9 +2531,9 @@ private:
         WidgetInvalidate(*this, WIDX_TAB_2);
     }
 
-    OpenRCT2String VehicleTooltip(WindowBase* const w, const WidgetIndex widgetIndex, StringId fallback)
+    OpenRCT2String VehicleTooltip(const WidgetIndex widgetIndex, StringId fallback)
     {
-        auto ride = GetRide(w->rideId);
+        auto ride = GetRide(rideId);
         if (ride == nullptr)
             return { STR_NONE, {} };
 
@@ -2471,7 +2683,7 @@ private:
         }
     }
 
-    void VehiclePaint(DrawPixelInfo& dpi)
+    void VehicleOnDraw(DrawPixelInfo& dpi)
     {
         WindowDrawWidgets(*this, dpi);
         DrawTabImages(dpi);
@@ -2545,7 +2757,7 @@ private:
         ImageId imageId;
     };
 
-    void VehicleScrollpaint(DrawPixelInfo& dpi, int32_t scrollIndex)
+    void VehicleOnScrollDraw(DrawPixelInfo& dpi, int32_t scrollIndex)
     {
         auto ride = GetRide(rideId);
         if (ride == nullptr)
@@ -2743,7 +2955,7 @@ private:
         Dropdown::SetChecked(ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK, true);
     }
 
-    void OperatingMouseup(WidgetIndex widgetIndex)
+    void OperatingOnMouseUp(WidgetIndex widgetIndex)
     {
         auto ride = GetRide(rideId);
         if (ride == nullptr)
@@ -2793,7 +3005,7 @@ private:
         WindowSetResize(*this, 316, 186, 316, 186);
     }
 
-    void OperatingMousedown(WidgetIndex widgetIndex, Widget* widget)
+    void OperatingOnMouseDown(WidgetIndex widgetIndex)
     {
         auto ride = GetRide(rideId);
         if (ride == nullptr)
@@ -2862,10 +3074,10 @@ private:
                     std::clamp<int16_t>(ride->max_waiting_time - 1, lower_bound, upper_bound));
                 break;
             case WIDX_MODE_DROPDOWN:
-                ModeDropdown(widget);
+                ModeDropdown(&widgets[widgetIndex]);
                 break;
             case WIDX_LOAD_DROPDOWN:
-                LoadDropdown(widget);
+                LoadDropdown(&widgets[widgetIndex]);
                 break;
             case WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE:
                 upper_bound = gCheatsUnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
@@ -2934,7 +3146,7 @@ private:
         WindowTextInputRawOpen(this, WIDX_MODE_TWEAK, title, STR_ENTER_VALUE, ft, buffer, 4);
     }
 
-    void OperatingDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
+    void OperatingOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         if (dropdownIndex == -1)
             return;
@@ -2987,9 +3199,9 @@ private:
         }
     }
 
-    void OperatingTextinput(WidgetIndex widgetIndex, const char* text)
+    void OperatingOnTextInput(WidgetIndex widgetIndex, std::string_view text)
     {
-        if (text == nullptr)
+        if (text.empty())
             return;
 
         auto ride = GetRide(rideId);
@@ -3274,7 +3486,7 @@ private:
         WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
     }
 
-    void OperatingPaint(DrawPixelInfo& dpi)
+    void OperatingOnDraw(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -3345,7 +3557,7 @@ private:
         }
     }
 
-    void MaintenanceMouseup(WidgetIndex widgetIndex)
+    void MaintenanceOnMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -3378,7 +3590,7 @@ private:
         WindowSetResize(*this, 316, 135, 316, 135);
     }
 
-    void MaintenanceMousedown(WidgetIndex widgetIndex, Widget* widget)
+    void MaintenanceOnMouseDown(WidgetIndex widgetIndex)
     {
         auto ride = GetRide(rideId);
         if (ride == nullptr)
@@ -3388,7 +3600,7 @@ private:
         if (rideEntry == nullptr)
             return;
 
-        Widget* dropdownWidget = widget;
+        Widget* dropdownWidget = &widgets[widgetIndex];
         int32_t j, num_items;
 
         switch (widgetIndex)
@@ -3402,7 +3614,7 @@ private:
                 }
                 WindowDropdownShowTextCustomWidth(
                     { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                    colours[1], 0, Dropdown::Flag::StayOpen, 7, widget->right - dropdownWidget->left);
+                    colours[1], 0, Dropdown::Flag::StayOpen, 7, widgets[widgetIndex].right - dropdownWidget->left);
 
                 Dropdown::SetChecked(ride->inspection_interval, true);
                 break;
@@ -3476,7 +3688,7 @@ private:
         }
     }
 
-    void MaintenanceDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
+    void MaintenanceOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         if (dropdownIndex == -1)
             return;
@@ -3635,7 +3847,7 @@ private:
         }
     }
 
-    void MaintenancePaint(DrawPixelInfo& dpi)
+    void MaintenanceOnDraw(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -3817,7 +4029,7 @@ private:
         ToolCancel();
     }
 
-    void ColourMouseup(WidgetIndex widgetIndex)
+    void ColourOnMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -3857,7 +4069,7 @@ private:
         WindowSetResize(*this, 316, 207, 316, 207);
     }
 
-    void ColourMousedown(WidgetIndex widgetIndex, Widget* widget)
+    void ColourOnMouseDown(WidgetIndex widgetIndex)
     {
         VehicleColour vehicleColour;
         int32_t i, numItems;
@@ -3872,7 +4084,7 @@ private:
             return;
 
         auto colourSchemeIndex = ride_colour;
-        auto dropdownWidget = widget - 1;
+        auto dropdownWidget = &widgets[widgetIndex] - 1;
 
         switch (widgetIndex)
         {
@@ -3885,18 +4097,20 @@ private:
 
                 WindowDropdownShowTextCustomWidth(
                     { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                    colours[1], 0, Dropdown::Flag::StayOpen, 4, widget->right - dropdownWidget->left);
+                    colours[1], 0, Dropdown::Flag::StayOpen, 4, widgets[widgetIndex].right - dropdownWidget->left);
 
                 Dropdown::SetChecked(colourSchemeIndex, true);
                 break;
             case WIDX_TRACK_MAIN_COLOUR:
-                WindowDropdownShowColour(this, widget, colours[1], ride->track_colour[colourSchemeIndex].main);
+                WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], ride->track_colour[colourSchemeIndex].main);
                 break;
             case WIDX_TRACK_ADDITIONAL_COLOUR:
-                WindowDropdownShowColour(this, widget, colours[1], ride->track_colour[colourSchemeIndex].additional);
+                WindowDropdownShowColour(
+                    this, &widgets[widgetIndex], colours[1], ride->track_colour[colourSchemeIndex].additional);
                 break;
             case WIDX_TRACK_SUPPORT_COLOUR:
-                WindowDropdownShowColour(this, widget, colours[1], ride->track_colour[colourSchemeIndex].supports);
+                WindowDropdownShowColour(
+                    this, &widgets[widgetIndex], colours[1], ride->track_colour[colourSchemeIndex].supports);
                 break;
             case WIDX_MAZE_STYLE_DROPDOWN:
                 for (i = 0; i < 4; i++)
@@ -3907,7 +4121,7 @@ private:
 
                 WindowDropdownShowTextCustomWidth(
                     { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                    colours[1], 0, Dropdown::Flag::StayOpen, 4, widget->right - dropdownWidget->left);
+                    colours[1], 0, Dropdown::Flag::StayOpen, 4, widgets[widgetIndex].right - dropdownWidget->left);
 
                 Dropdown::SetChecked(ride->track_colour[colourSchemeIndex].supports, true);
                 break;
@@ -3932,7 +4146,7 @@ private:
 
                 WindowDropdownShowTextCustomWidth(
                     { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                    colours[1], 0, Dropdown::Flag::StayOpen, ddIndex, widget->right - dropdownWidget->left);
+                    colours[1], 0, Dropdown::Flag::StayOpen, ddIndex, widgets[widgetIndex].right - dropdownWidget->left);
                 break;
             }
             case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
@@ -3948,7 +4162,7 @@ private:
                 WindowDropdownShowTextCustomWidth(
                     { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                     colours[1], 0, Dropdown::Flag::StayOpen, rideEntry->max_cars_in_train > 1 ? 3 : 2,
-                    widget->right - dropdownWidget->left);
+                    widgets[widgetIndex].right - dropdownWidget->left);
 
                 Dropdown::SetChecked(ride->colour_scheme_type & 3, true);
                 break;
@@ -3969,26 +4183,26 @@ private:
 
                 WindowDropdownShowTextCustomWidth(
                     { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                    colours[1], 0, Dropdown::Flag::StayOpen, numItems, widget->right - dropdownWidget->left);
+                    colours[1], 0, Dropdown::Flag::StayOpen, numItems, widgets[widgetIndex].right - dropdownWidget->left);
 
                 Dropdown::SetChecked(vehicleIndex, true);
                 break;
             case WIDX_VEHICLE_BODY_COLOUR:
                 vehicleColour = RideGetVehicleColour(*ride, vehicleIndex);
-                WindowDropdownShowColour(this, widget, colours[1], vehicleColour.Body);
+                WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], vehicleColour.Body);
                 break;
             case WIDX_VEHICLE_TRIM_COLOUR:
                 vehicleColour = RideGetVehicleColour(*ride, vehicleIndex);
-                WindowDropdownShowColour(this, widget, colours[1], vehicleColour.Trim);
+                WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], vehicleColour.Trim);
                 break;
             case WIDX_VEHICLE_TERNARY_COLOUR:
                 vehicleColour = RideGetVehicleColour(*ride, vehicleIndex);
-                WindowDropdownShowColour(this, widget, colours[1], vehicleColour.Tertiary);
+                WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], vehicleColour.Tertiary);
                 break;
         }
     }
 
-    void ColourDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
+    void ColourOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         if (dropdownIndex == -1)
             return;
@@ -4100,13 +4314,13 @@ private:
         WidgetInvalidate(*this, WIDX_VEHICLE_PREVIEW);
     }
 
-    void ColourTooldown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
+    void ColourOnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
         if (widgetIndex == WIDX_PAINT_INDIVIDUAL_AREA)
             SetTrackColourScheme(screenCoords);
     }
 
-    void ColourTooldrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
+    void ColourOnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
         if (widgetIndex == WIDX_PAINT_INDIVIDUAL_AREA)
             SetTrackColourScheme(screenCoords);
@@ -4359,8 +4573,7 @@ private:
         WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
     }
 
-    
-    void ColourPaint(DrawPixelInfo& dpi)
+    void ColourOnDraw(DrawPixelInfo& dpi)
     {
         // TODO: This should use lists and identified sprites
         DrawPixelInfo clippedDpi;
@@ -4476,7 +4689,7 @@ private:
         }
     }
 
-    void ColourScrollpaint(DrawPixelInfo& dpi, int32_t scrollIndex) const
+    void ColourOnScrollDraw(DrawPixelInfo& dpi, int32_t scrollIndex) const
     {
         auto ride = GetRide(rideId);
         if (ride == nullptr)
@@ -4529,12 +4742,12 @@ private:
         }
     }
 
-    void MusicMouseup(WidgetIndex widgetIndex)
+    void MusicOnMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-            Close();
+                Close();
                 return;
             case WIDX_TAB_1:
             case WIDX_TAB_2:
@@ -4573,12 +4786,12 @@ private:
      *
      *  rct2: 0x006B1EFC
      */
-    void MusicMousedown(WidgetIndex widgetIndex, Widget* widget)
+    void MusicOnMouseDown(WidgetIndex widgetIndex)
     {
         if (widgetIndex != WIDX_MUSIC_DROPDOWN)
             return;
 
-        auto dropdownWidget = widget - 1;
+        auto dropdownWidget = &widgets[widgetIndex] - 1;
         auto ride = GetRide(rideId);
         if (ride == nullptr)
             return;
@@ -4634,8 +4847,8 @@ private:
         }
 
         WindowDropdownShowTextCustomWidth(
-            { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-            colours[1], 0, Dropdown::Flag::StayOpen, numItems, widget->right - dropdownWidget->left);
+            { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1, colours[1],
+            0, Dropdown::Flag::StayOpen, numItems, widgets[widgetIndex].right - dropdownWidget->left);
 
         // Set currently checked item
         for (size_t i = 0; i < numItems; i++)
@@ -4647,7 +4860,7 @@ private:
         }
     }
 
-    void MusicDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
+    void MusicOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         if (widgetIndex == WIDX_MUSIC_DROPDOWN && dropdownIndex >= 0
             && static_cast<size_t>(dropdownIndex) < window_ride_current_music_style_order.size())
@@ -4711,7 +4924,7 @@ private:
         WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
     }
 
-    void MusicPaint(DrawPixelInfo& dpi)
+    void MusicOnDraw(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -4837,7 +5050,7 @@ private:
         MeasurementsDesignCancel();
     }
 
-    void MeasurementsMouseup(WidgetIndex widgetIndex)
+    void MeasurementsOnMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -4876,7 +5089,7 @@ private:
         WindowSetResize(*this, 316, 234, 316, 234);
     }
 
-    void MeasurementsMousedown(WidgetIndex widgetIndex, Widget* widget)
+    void MeasurementsOnMouseDown(WidgetIndex widgetIndex)
     {
         if (widgetIndex != WIDX_SAVE_TRACK_DESIGN)
             return;
@@ -4889,7 +5102,9 @@ private:
         gDropdownItems[1].Format = STR_SAVE_TRACK_DESIGN_WITH_SCENERY_ITEM;
 
         WindowDropdownShowText(
-            { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1],
+            { windowPos.x +widgets[widgetIndex].left, windowPos.y + widgets[widgetIndex].top },
+            widgets[widgetIndex].height() + 1,
+            colours[1],
             Dropdown::Flag::StayOpen, 2);
         gDropdownDefaultIndex = 0;
         if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
@@ -4900,7 +5115,7 @@ private:
         }
     }
 
-    void MeasurementsDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
+    void MeasurementsOnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
         if (widgetIndex != WIDX_SAVE_TRACK_DESIGN)
             return;
@@ -4923,7 +5138,7 @@ private:
         WidgetInvalidate(*this, WIDX_TAB_7);
     }
 
-    void MeasurementsTooldown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
+    void MeasurementsOnToolDown(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
         _lastSceneryX = screenCoords.x;
         _lastSceneryY = screenCoords.y;
@@ -4947,7 +5162,7 @@ private:
         }
     }
 
-    void MeasurementsTooldrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
+    void MeasurementsOnToolDrag(WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
     {
         if (screenCoords.x == _lastSceneryX && screenCoords.y == _lastSceneryY)
             return;
@@ -4971,7 +5186,7 @@ private:
         }
     }
 
-    void MeasurementsToolabort(WidgetIndex widgetIndex)
+    void MeasurementsOnToolAbort(WidgetIndex widgetIndex)
     {
         MeasurementsDesignCancel();
     }
@@ -5026,7 +5241,7 @@ private:
         WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
     }
 
-    void MeasurementsPaint(DrawPixelInfo& dpi)
+    void MeasurementsOnDraw(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
@@ -5036,14 +5251,12 @@ private:
             Widget* widget = &window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND];
 
             ScreenCoordsXY widgetCoords(windowPos.x + widget->width() / 2, windowPos.y + widget->top + 40);
-            DrawTextWrapped(
-                dpi, widgetCoords, width - 8, STR_CLICK_ITEMS_OF_SCENERY_TO_SELECT, {}, { TextAlignment::CENTRE });
+            DrawTextWrapped(dpi, widgetCoords, width - 8, STR_CLICK_ITEMS_OF_SCENERY_TO_SELECT, {}, { TextAlignment::CENTRE });
 
             widgetCoords.x = windowPos.x + 4;
             widgetCoords.y = windowPos.y + window_ride_measurements_widgets[WIDX_SELECT_NEARBY_SCENERY].bottom + 17;
             GfxFillRectInset(
-                dpi, { widgetCoords, { windowPos.x + 312, widgetCoords.y + 1 } }, colours[1],
-                INSET_RECT_FLAG_BORDER_INSET);
+                dpi, { widgetCoords, { windowPos.x + 312, widgetCoords.y + 1 } }, colours[1], INSET_RECT_FLAG_BORDER_INSET);
         }
         else
         {
@@ -5296,7 +5509,7 @@ private:
         Invalidate();
     }
 
-    void GraphsMouseup(WidgetIndex widgetIndex)
+    void GraphsOnMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -5323,7 +5536,7 @@ private:
         WindowSetResize(*this, 316, 182, 500, 450);
     }
 
-    void GraphsMousedown(WidgetIndex widgetIndex, Widget* widget)
+    void GraphsOnMouseDown(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -5370,12 +5583,13 @@ private:
         WidgetScrollUpdateThumbs(*this, WIDX_GRAPH);
     }
 
-    void GraphsScrollgetheight(int32_t scrollIndex, int32_t* width, int32_t* height)
+    ScreenSize GraphsScrollGetSize(int32_t scrollIndex)
     {
         OnPrepareDraw();
 
+        ScreenSize size{};
         // Set minimum size
-        *width = window_ride_graphs_widgets[WIDX_GRAPH].width() - 2;
+        size.width = window_ride_graphs_widgets[WIDX_GRAPH].width() - 2;
 
         // Get measurement size
         auto ride = GetRide(rideId);
@@ -5385,9 +5599,10 @@ private:
             std::tie(measurement, std::ignore) = ride->GetMeasurement();
             if (measurement != nullptr)
             {
-                *width = std::max<int32_t>(*width, measurement->num_items);
+                size.width = std::max<int32_t>(size.width, measurement->num_items);
             }
         }
+        return size;
     }
 
     void Graphs15(int32_t scrollIndex, int32_t scrollAreaType)
@@ -5480,13 +5695,13 @@ private:
         WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
     }
 
-    void GraphsPaint(DrawPixelInfo& dpi)
+    void GraphsOnDraw(DrawPixelInfo& dpi)
     {
         DrawWidgets(dpi);
         DrawTabImages(dpi);
     }
 
-    void GraphsScrollpaint(DrawPixelInfo& dpi, int32_t scrollIndex)
+    void GraphsOnScrollDraw(DrawPixelInfo& dpi, int32_t scrollIndex)
     {
         GfxClear(&dpi, ColourMapA[COLOUR_SATURATED_GREEN].darker);
 
@@ -5820,12 +6035,12 @@ private:
         IncomeSetSecondaryPrice(price);
     }
 
-    void IncomeMouseup(WidgetIndex widgetIndex)
+    void IncomeOnMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-            Close();
+                Close();
                 return;
             case WIDX_TAB_1:
             case WIDX_TAB_2:
@@ -5878,7 +6093,7 @@ private:
         WindowSetResize(*this, 316, 194, 316, 194);
     }
 
-    void IncomeMousedown(WidgetIndex widgetIndex, Widget* widget)
+    void IncomeOnMouseDown(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
@@ -5911,12 +6126,13 @@ private:
         }
     }
 
-    void IncomeTextinput(WidgetIndex widgetIndex, const char* text)
+    void IncomeOnTextInput(WidgetIndex widgetIndex, std::string_view text)
     {
-        if ((widgetIndex != WIDX_PRIMARY_PRICE && widgetIndex != WIDX_SECONDARY_PRICE) || text == nullptr)
+        if ((widgetIndex != WIDX_PRIMARY_PRICE && widgetIndex != WIDX_SECONDARY_PRICE) || text.empty())
             return;
 
-        money64 price = StringToMoney(text);
+        std::string strText{ text };
+        money64 price = StringToMoney(strText.c_str());
         if (price == MONEY64_UNDEFINED)
         {
             return;
@@ -6044,7 +6260,7 @@ private:
         WindowAlignTabs(this, WIDX_TAB_1, WIDX_TAB_10);
     }
 
-    void IncomePaint(DrawPixelInfo& dpi)
+    void IncomeOnDraw(DrawPixelInfo& dpi)
     {
         StringId stringId;
         money64 profit;
@@ -6148,12 +6364,12 @@ private:
 
 #pragma region Customer
 
-    void CustomerMouseup(WidgetIndex widgetIndex)
+    void CustomerOnMouseUp(WidgetIndex widgetIndex)
     {
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-            Close();
+                Close();
                 return;
             case WIDX_TAB_1:
             case WIDX_TAB_2:
@@ -6252,7 +6468,7 @@ private:
         }
     }
 
-    void CustomerPaint(DrawPixelInfo& dpi)
+    void CustomerOnDraw(DrawPixelInfo& dpi)
     {
         ShopItem shopItem;
         int16_t popularity, satisfaction, queueTime;
