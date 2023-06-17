@@ -191,6 +191,8 @@ static const std::unordered_map<char32_t, int32_t> codepointOffsetMap = {
     { UnicodeChar::cyrillic_dotted_i, 'i' - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::cyrillic_yi, 239 - CS_SPRITE_FONT_OFFSET }, // Looks just like ï
     { UnicodeChar::cyrillic_je, 'j' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_ghe_upturn_uc, SPR_G2_CYRILLIC_GHE_UPTURN_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ghe_upturn, SPR_G2_CYRILLIC_GHE_UPTURN_LOWER - SPR_CHAR_START },
 
     // Punctuation
     { UnicodeChar::left_brace, SPR_G2_LEFT_BRACE - SPR_CHAR_START },

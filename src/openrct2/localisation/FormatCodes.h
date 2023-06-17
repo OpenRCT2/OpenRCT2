@@ -289,6 +289,9 @@ namespace UnicodeChar
     constexpr char32_t cyrillic_yi = 0x0457;
     constexpr char32_t cyrillic_je = 0x0458;
 
+    constexpr char32_t cyrillic_ghe_upturn_uc = 0x490;
+    constexpr char32_t cyrillic_ghe_upturn = 0x491;
+
     // Punctuation
     constexpr char32_t left_brace = 0x7B;
     constexpr char32_t vertical_bar = 0x7C;

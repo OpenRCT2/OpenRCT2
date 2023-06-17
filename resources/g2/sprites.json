@@ -830,6 +830,17 @@
         "forceBmp": true
     },
     {
+        "path": "font/cyrillic/U1168-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1169-small.png",
+        "y_offset": 1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/german-openquotes-small.png",
         "y_offset": 6,
         "palette": "keep",
@@ -1455,6 +1466,17 @@
     },
     {
         "path": "font/cyrillic/U1103-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1168-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1169-bold.png",
+        "y_offset": 1,
         "palette": "keep",
         "forceBmp": true
     },
@@ -2093,6 +2115,16 @@
     {
         "path": "font/cyrillic/U1103-tiny.png",
         "y_offset": 1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1168-tiny.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1169-tiny.png",
         "palette": "keep",
         "forceBmp": true
     },
