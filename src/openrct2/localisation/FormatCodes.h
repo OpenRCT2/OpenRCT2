@@ -213,6 +213,7 @@ namespace UnicodeChar
 
     // Cyrillic alphabet
     constexpr char32_t cyrillic_io_uc = 0x401;
+    constexpr char32_t cyrillic_ukrainian_ie_uc = 0x404;
     constexpr char32_t cyrillic_dze_uc = 0x0405;
     constexpr char32_t cyrillic_dotted_i_uc = 0x0406;
     constexpr char32_t cyrillic_yi_uc = 0x0407;
@@ -284,6 +285,7 @@ namespace UnicodeChar
     constexpr char32_t cyrillic_ya = 0x44F;
 
     constexpr char32_t cyrillic_io = 0x451;
+    constexpr char32_t cyrillic_ukrainian_ie = 0x454;
     constexpr char32_t cyrillic_dze = 0x0455;
     constexpr char32_t cyrillic_dotted_i = 0x0456;
     constexpr char32_t cyrillic_yi = 0x0457;

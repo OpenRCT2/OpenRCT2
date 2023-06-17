@@ -603,6 +603,11 @@
         "forceBmp": true
     },
     {
+        "path": "font/cyrillic/U1028-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/cyrillic/U1041-small.png",
         "palette": "keep",
         "forceBmp": true
@@ -826,6 +831,12 @@
     },
     {
         "path": "font/cyrillic/U1103-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1108-small.png",
+        "y_offset": 2,
         "palette": "keep",
         "forceBmp": true
     },
@@ -1243,6 +1254,11 @@
         "forceBmp": true
     },
     {
+        "path": "font/cyrillic/U1028-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/cyrillic/U1041-bold.png",
         "palette": "keep",
         "forceBmp": true
@@ -1466,6 +1482,12 @@
     },
     {
         "path": "font/cyrillic/U1103-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1108-bold.png",
+        "y_offset": 2,
         "palette": "keep",
         "forceBmp": true
     },
@@ -1882,6 +1904,11 @@
         "forceBmp": true
     },
     {
+        "path": "font/cyrillic/U1028-tiny.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/cyrillic/U1041-tiny.png",
         "palette": "keep",
         "forceBmp": true
@@ -1998,6 +2025,7 @@
     },
     {
         "path": "font/cyrillic/U1075-tiny.png",
+        "y_offset": 1,
         "palette": "keep",
         "forceBmp": true
     },
@@ -2119,12 +2147,19 @@
         "forceBmp": true
     },
     {
+        "path": "font/cyrillic/U1108-tiny.png",
+        "y_offset": 1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/cyrillic/U1168-tiny.png",
         "palette": "keep",
         "forceBmp": true
     },
     {
         "path": "font/cyrillic/U1169-tiny.png",
+        "y_offset": 1,
         "palette": "keep",
         "forceBmp": true
     },
