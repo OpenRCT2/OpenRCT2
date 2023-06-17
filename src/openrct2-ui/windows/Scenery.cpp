@@ -1108,6 +1108,11 @@ private:
         for (size_t i = 0; i < _tabEntries.size(); i++)
         {
             const auto& tabInfo = _tabEntries[i];
+            if (tabInfo.IsAll())
+            {
+                // The scenery will be always added here so exclude this one.
+                continue;
+            }
             if (tabInfo.Contains(scenery))
             {
                 return i;
