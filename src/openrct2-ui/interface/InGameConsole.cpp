@@ -82,7 +82,7 @@ void InGameConsole::Input(ConsoleInput input)
             _consoleTextInputSession->SelectionStart = _consoleCurrentLine.size();
             break;
         case ConsoleInput::HistoryNext:
-            if (_consoleHistoryIndex < _consoleHistory.size() - 1)
+            if (_consoleHistoryIndex + 1 < _consoleHistory.size())
             {
                 _consoleHistoryIndex++;
                 _consoleCurrentLine = _consoleHistory[_consoleHistoryIndex];
