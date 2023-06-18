@@ -13,6 +13,7 @@
 - Fix: [#20260] Ride locks up when inspecting/fixing staff member is fired.
 - Fix: [#20262] Title screen music missing when “random” title music is selected and RCT1 is no longer linked.
 - Fix: [#20361] Crash when using random map generation.
+- Fix: [#20413] Crash when attempting to navigate an empty console history.
 
 0.4.5 (2023-05-08)
 ------------------------------------------------------------------------
