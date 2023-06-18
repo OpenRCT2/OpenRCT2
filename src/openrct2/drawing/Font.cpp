@@ -117,6 +117,7 @@ static const std::unordered_map<char32_t, int32_t> codepointOffsetMap = {
 
     // Cyrillic alphabet
     { UnicodeChar::cyrillic_io_uc, 203 - CS_SPRITE_FONT_OFFSET }, // Looks just like Ë
+    { UnicodeChar::cyrillic_ukrainian_ie_uc, SPR_G2_CYRILLIC_UKRAINIAN_IE_UPPER - SPR_CHAR_START },
     { UnicodeChar::cyrillic_dze_uc, 'S' - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::cyrillic_dotted_i_uc, 'I' - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::cyrillic_yi_uc, 207 - CS_SPRITE_FONT_OFFSET }, // Looks just like Ï
@@ -186,11 +187,14 @@ static const std::unordered_map<char32_t, int32_t> codepointOffsetMap = {
     { UnicodeChar::cyrillic_e, SPR_G2_CYRILLIC_E_LOWER - SPR_CHAR_START },
     { UnicodeChar::cyrillic_yu, SPR_G2_CYRILLIC_YU_LOWER - SPR_CHAR_START },
     { UnicodeChar::cyrillic_ya, SPR_G2_CYRILLIC_YA_LOWER - SPR_CHAR_START },
-    { UnicodeChar::cyrillic_io, 235 - CS_SPRITE_FONT_OFFSET }, // Looks just like ë
+    { UnicodeChar::cyrillic_io, 235 - CS_SPRITE_FONT_OFFSET },                                   // Looks just like ë
+    { UnicodeChar::cyrillic_ukrainian_ie, SPR_G2_CYRILLIC_UKRAINIAN_IE_LOWER - SPR_CHAR_START }, // Looks just like ë
     { UnicodeChar::cyrillic_dze, 's' - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::cyrillic_dotted_i, 'i' - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::cyrillic_yi, 239 - CS_SPRITE_FONT_OFFSET }, // Looks just like ï
     { UnicodeChar::cyrillic_je, 'j' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_ghe_upturn_uc, SPR_G2_CYRILLIC_GHE_UPTURN_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ghe_upturn, SPR_G2_CYRILLIC_GHE_UPTURN_LOWER - SPR_CHAR_START },
 
     // Punctuation
     { UnicodeChar::left_brace, SPR_G2_LEFT_BRACE - SPR_CHAR_START },
