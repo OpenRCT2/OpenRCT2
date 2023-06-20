@@ -59,7 +59,6 @@ struct WindowBase
     {
         CampaignVariables campaign;
         NewRideVariables new_ride;
-        RideVariables ride;
         TrackListVariables track_list;
         ErrorVariables error;
         void* custom_info;
