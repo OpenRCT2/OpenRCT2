@@ -259,18 +259,6 @@ struct WindowEventList
     }
 };
 
-struct CampaignVariables
-{
-    int16_t campaign_type;
-    int16_t no_weeks; // 0x482
-    union
-    {
-        ::RideId RideId;
-        ObjectEntryIndex ShopItemId;
-    };
-    uint32_t Pad486;
-};
-
 struct NewRideVariables
 {
     RideSelection SelectedRide;    // 0x480

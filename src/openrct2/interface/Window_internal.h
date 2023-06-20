@@ -56,7 +56,6 @@ struct WindowBase
     std::optional<Focus> focus;
     union
     {
-        CampaignVariables campaign;
         NewRideVariables new_ride;
         TrackListVariables track_list;
         ErrorVariables error;
