@@ -1067,7 +1067,7 @@ public:
 private:
     void DrawTabImage(DrawPixelInfo& dpi, int32_t tab, int32_t spriteIndex)
     {
-        WidgetIndex widgetIndex = WIDX_TAB_1 + page;
+        WidgetIndex widgetIndex = WIDX_TAB_1 + tab;
 
         if (!WidgetIsDisabled(*this, widgetIndex))
         {

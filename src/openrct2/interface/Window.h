@@ -280,7 +280,6 @@ struct NewRideVariables
     uint16_t selected_ride_countdown; // 488
 };
 
-
 struct TrackListVariables
 {
     bool track_list_being_updated;
