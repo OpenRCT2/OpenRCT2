@@ -427,6 +427,8 @@ static constexpr const uint64_t window_ride_page_hold_down_widgets[] = {
 
 #pragma endregion
 
+static void CancelScenerySelection();
+
 static bool _collectTrackDesignScenery = false;
 static int32_t _lastSceneryX = 0;
 static int32_t _lastSceneryY = 0;
@@ -619,6 +621,8 @@ static std::vector<VehicleTypeLabel> VehicleDropdownData;
 
 class RideWindow final : public Window
 {
+    int16_t _viewIndex;
+
 public:
     RideWindow(const Ride& ride)
     {
@@ -999,6 +1003,67 @@ public:
         }
     }
 
+    void SetPage(int32_t newPage)
+    {
+        int32_t listen;
+
+        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
+            if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
+                ToolCancel();
+
+        if (newPage == WINDOW_RIDE_PAGE_VEHICLE)
+        {
+            auto constructionWindow = WindowFindByClass(WindowClass::RideConstruction);
+            if (constructionWindow != nullptr && constructionWindow->number == number)
+            {
+                WindowCloseByClass(WindowClass::RideConstruction);
+                // Closing the construction window sets the tab to the first page, which we don't want here,
+                // as user just clicked the Vehicle page
+                SetPage(WINDOW_RIDE_PAGE_VEHICLE);
+            }
+        }
+
+        // Set listen only to viewport
+        listen = 0;
+        if (newPage == WINDOW_RIDE_PAGE_MAIN && page == WINDOW_RIDE_PAGE_MAIN && viewport != nullptr
+            && !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
+            listen++;
+
+        page = newPage;
+        frame_no = 0;
+        picked_peep_frame = 0;
+
+        // There doesn't seem to be any need for this call, and it can sometimes modify the reported number of cars per train,
+        // so I've removed it if (newPage == WINDOW_RIDE_PAGE_VEHICLE) { ride_update_max_vehicles(ride);
+        //}
+
+        RemoveViewport();
+
+        hold_down_widgets = window_ride_page_hold_down_widgets[page];
+        pressed_widgets = 0;
+        widgets = window_ride_page_widgets[page];
+        DisableTabs();
+        Invalidate();
+
+        OnResize();
+        OnPrepareDraw();
+        InitScrollWidgets();
+        Invalidate();
+
+        if (listen != 0 && viewport != nullptr)
+            viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+    }
+
+    void SetViewIndex(int16_t newIndex)
+    {
+        _viewIndex = newIndex;
+        OnViewportRotate();
+    }
+    int16_t GetViewIndex() const
+    {
+        return _viewIndex;
+    }
+
 private:
     void DrawTabImage(DrawPixelInfo& dpi, int32_t tab, int32_t spriteIndex)
     {
@@ -1059,15 +1124,15 @@ private:
         if (!WidgetIsDisabled(*this, widgetIndex))
         {
             auto screenCoords = ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
-            int32_t width = widget.right - screenCoords.x;
-            int32_t height = widget.bottom - 3 - screenCoords.y;
+            int32_t clipWidth = widget.right - screenCoords.x;
+            int32_t clipHeight = widget.bottom - 3 - screenCoords.y;
             if (page == WINDOW_RIDE_PAGE_VEHICLE)
-                height += 4;
+                clipHeight += 4;
 
             screenCoords += windowPos;
 
             DrawPixelInfo clipDPI;
-            if (!ClipDrawPixelInfo(clipDPI, dpi, screenCoords, width, height))
+            if (!ClipDrawPixelInfo(clipDPI, dpi, screenCoords, clipWidth, clipHeight))
             {
                 return;
             }
@@ -1267,57 +1332,6 @@ private:
         }
     }
 
-    void SetPage(int32_t newPage)
-    {
-        int32_t listen;
-
-        if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
-            if (classification == gCurrentToolWidget.window_classification && number == gCurrentToolWidget.window_number)
-                ToolCancel();
-
-        if (newPage == WINDOW_RIDE_PAGE_VEHICLE)
-        {
-            auto constructionWindow = WindowFindByClass(WindowClass::RideConstruction);
-            if (constructionWindow != nullptr && constructionWindow->number == number)
-            {
-                WindowCloseByClass(WindowClass::RideConstruction);
-                // Closing the construction window sets the tab to the first page, which we don't want here,
-                // as user just clicked the Vehicle page
-                SetPage(WINDOW_RIDE_PAGE_VEHICLE);
-            }
-        }
-
-        // Set listen only to viewport
-        listen = 0;
-        if (newPage == WINDOW_RIDE_PAGE_MAIN && page == WINDOW_RIDE_PAGE_MAIN && viewport != nullptr
-            && !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
-            listen++;
-
-        page = newPage;
-        frame_no = 0;
-        picked_peep_frame = 0;
-
-        // There doesn't seem to be any need for this call, and it can sometimes modify the reported number of cars per train,
-        // so I've removed it if (newPage == WINDOW_RIDE_PAGE_VEHICLE) { ride_update_max_vehicles(ride);
-        //}
-
-        RemoveViewport();
-
-        hold_down_widgets = window_ride_page_hold_down_widgets[page];
-        pressed_widgets = 0;
-        widgets = window_ride_page_widgets[page];
-        DisableTabs();
-        Invalidate();
-
-        OnResize();
-        OnPrepareDraw();
-        InitScrollWidgets();
-        Invalidate();
-
-        if (listen != 0 && viewport != nullptr)
-            viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
-    }
-
     void SetPressedTab()
     {
         int32_t i;
@@ -1339,7 +1353,7 @@ private:
         if (ride == nullptr)
             return std::nullopt;
 
-        int32_t viewSelectionIndex = this->ride.view - 1 - ride->NumTrains;
+        int32_t viewSelectionIndex = this->_viewIndex - 1 - ride->NumTrains;
         if (viewSelectionIndex < 0)
         {
             return std::nullopt;
@@ -1365,7 +1379,7 @@ private:
         if (ride == nullptr)
             return;
 
-        int32_t viewSelectionIndex = this->ride.view - 1;
+        int32_t viewSelectionIndex = this->_viewIndex - 1;
 
         std::optional<Focus> newFocus;
 
@@ -1403,7 +1417,7 @@ private:
         {
             if (viewSelectionIndex > 0)
             {
-                this->ride.view = 0;
+                this->_viewIndex = 0;
             }
             if (number < ride_overall_views.size())
             {
@@ -1437,10 +1451,10 @@ private:
             const auto& view_widget = widgets[WIDX_VIEWPORT];
 
             auto screenPos = windowPos + ScreenCoordsXY{ view_widget.left + 1, view_widget.top + 1 };
-            int32_t width = view_widget.width() - 1;
-            int32_t height = view_widget.height() - 1;
+            int32_t viewWidth = view_widget.width() - 1;
+            int32_t viewHeight = view_widget.height() - 1;
 
-            ViewportCreate(this, screenPos, width, height, focus.value());
+            ViewportCreate(this, screenPos, viewWidth, viewHeight, focus.value());
 
             flags |= WF_NO_SCROLLING;
             Invalidate();
@@ -1645,7 +1659,7 @@ private:
         }
 
         // Set checked item
-        Dropdown::SetChecked(this->ride.view, true);
+        Dropdown::SetChecked(this->_viewIndex, true);
     }
 
     RideStatus GetNextDefaultStatus(const Ride& ride) const
@@ -1819,8 +1833,8 @@ private:
         WindowDropdownShowText(
             { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 2);
         gDropdownDefaultIndex = 0;
-        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK) || this->ride.view == 0
-            || this->ride.view > ride->NumTrains)
+        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK) || this->_viewIndex == 0
+            || this->_viewIndex > ride->NumTrains)
         {
             // Disable if we're a flat ride, 'overall view' is selected or a station is selected
             Dropdown::SetDisabled(1, true);
@@ -1834,11 +1848,11 @@ private:
         {
             if (!(ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MAIN))
             {
-                if (this->ride.view > 0)
+                if (this->_viewIndex > 0)
                 {
-                    if (this->ride.view <= ride->NumTrains)
+                    if (this->_viewIndex <= ride->NumTrains)
                     {
-                        Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[this->ride.view - 1]);
+                        Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[this->_viewIndex - 1]);
                         if (vehicle != nullptr)
                         {
                             auto headVehicleSpriteIndex = vehicle->Id;
@@ -1935,10 +1949,10 @@ private:
         }
 
         Widget* dropdownWidget = widget - 1;
-        auto width = WindowDropDownHasMultipleColumns(numItems) ? dropdownWidget->width() - 24 : dropdownWidget->width();
+        auto ddWidth = WindowDropDownHasMultipleColumns(numItems) ? dropdownWidget->width() - 24 : dropdownWidget->width();
         WindowDropdownShowTextCustomWidth(
             { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1, colours[1],
-            0, Dropdown::Flag::StayOpen, numItems, width);
+            0, Dropdown::Flag::StayOpen, numItems, ddWidth);
 
         // Find the current vehicle type in the ordered list.
         int32_t pos = 0;
@@ -1982,7 +1996,7 @@ private:
             case WIDX_VIEW_DROPDOWN:
                 if (dropdownIndex == -1)
                 {
-                    dropdownIndex = ride.view + 1;
+                    dropdownIndex = _viewIndex + 1;
                     auto ride = GetRide(rideId);
                     if (ride != nullptr)
                     {
@@ -1998,7 +2012,7 @@ private:
                     }
                 }
 
-                ride.view = dropdownIndex;
+                _viewIndex = dropdownIndex;
                 InitViewport();
                 Invalidate();
                 break;
@@ -2082,12 +2096,12 @@ private:
         {
             if (!(ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MAIN))
             {
-                if (this->ride.view == 0)
+                if (this->_viewIndex == 0)
                     return;
 
-                if (this->ride.view <= ride->NumTrains)
+                if (this->_viewIndex <= ride->NumTrains)
                 {
-                    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[this->ride.view - 1]);
+                    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[this->_viewIndex - 1]);
                     if (vehicle == nullptr
                         || (vehicle->status != Vehicle::Status::Travelling
                             && vehicle->status != Vehicle::Status::TravellingCableLift
@@ -2288,7 +2302,7 @@ private:
         if (ride == nullptr)
             return STR_EMPTY;
 
-        auto vehicle = GetEntity<Vehicle>(ride->vehicles[this->ride.view - 1]);
+        auto vehicle = GetEntity<Vehicle>(ride->vehicles[this->_viewIndex - 1]);
         if (vehicle == nullptr)
             return STR_EMPTY;
 
@@ -2377,9 +2391,9 @@ private:
     StringId GetStatus(Formatter& ft) const
     {
         auto ride = GetRide(rideId);
-        if (this->ride.view == 0)
+        if (this->_viewIndex == 0)
             return GetStatusOverallView(ft);
-        if (ride != nullptr && this->ride.view <= ride->NumTrains)
+        if (ride != nullptr && this->_viewIndex <= ride->NumTrains)
             return GetStatusVehicle(ft);
         if (ride != nullptr && ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
             return GetStatusOverallView(ft);
@@ -2407,17 +2421,17 @@ private:
             return;
 
         auto ft = Formatter();
-        if (this->ride.view != 0)
+        if (this->_viewIndex != 0)
         {
-            if (this->ride.view > ride->NumTrains)
+            if (this->_viewIndex > ride->NumTrains)
             {
                 ft.Add<StringId>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.station).number);
-                ft.Add<uint16_t>(this->ride.view - ride->NumTrains);
+                ft.Add<uint16_t>(this->_viewIndex - ride->NumTrains);
             }
             else
             {
                 ft.Add<StringId>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).number);
-                ft.Add<uint16_t>(this->ride.view);
+                ft.Add<uint16_t>(this->_viewIndex);
             }
         }
         else
@@ -4940,22 +4954,6 @@ private:
         return RatingNames[index];
     }
 
-    void CancelScenerySelection()
-    {
-        gGamePaused &= ~GAME_PAUSED_SAVING_TRACK;
-        gTrackDesignSaveMode = false;
-        OpenRCT2::Audio::Resume();
-
-        WindowBase* main_w = WindowGetMain();
-        if (main_w != nullptr)
-        {
-            main_w->viewport->flags &= ~(VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE);
-        }
-
-        GfxInvalidateScreen();
-        ToolCancel();
-    }
-
     void SetupScenerySelection()
     {
         if (gTrackDesignSaveMode)
@@ -5102,10 +5100,8 @@ private:
         gDropdownItems[1].Format = STR_SAVE_TRACK_DESIGN_WITH_SCENERY_ITEM;
 
         WindowDropdownShowText(
-            { windowPos.x +widgets[widgetIndex].left, windowPos.y + widgets[widgetIndex].top },
-            widgets[widgetIndex].height() + 1,
-            colours[1],
-            Dropdown::Flag::StayOpen, 2);
+            { windowPos.x + widgets[widgetIndex].left, windowPos.y + widgets[widgetIndex].top },
+            widgets[widgetIndex].height() + 1, colours[1], Dropdown::Flag::StayOpen, 2);
         gDropdownDefaultIndex = 0;
         if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
         {
@@ -5144,10 +5140,10 @@ private:
         _lastSceneryY = screenCoords.y;
         _collectTrackDesignScenery = true; // Default to true in case user does not select anything valid
 
-        constexpr auto flags = EnumsToFlags(
+        constexpr auto interactionFlags = EnumsToFlags(
             ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall,
             ViewportInteractionItem::LargeScenery);
-        auto info = GetMapCoordinatesFromPos(screenCoords, flags);
+        auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
         switch (info.SpriteType)
         {
             case ViewportInteractionItem::Scenery:
@@ -5169,10 +5165,10 @@ private:
         _lastSceneryX = screenCoords.x;
         _lastSceneryY = screenCoords.y;
 
-        auto flags = EnumsToFlags(
+        auto interactionFlags = EnumsToFlags(
             ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::Wall,
             ViewportInteractionItem::LargeScenery);
-        auto info = GetMapCoordinatesFromPos(screenCoords, flags);
+        auto info = GetMapCoordinatesFromPos(screenCoords, interactionFlags);
         switch (info.SpriteType)
         {
             case ViewportInteractionItem::Scenery:
@@ -5193,10 +5189,10 @@ private:
 
     void MeasurementsOnPrepareDraw()
     {
-        auto widgets = window_ride_page_widgets[page];
-        if (widgets != widgets)
+        auto newWidgets = window_ride_page_widgets[page];
+        if (widgets != newWidgets)
         {
-            widgets = widgets;
+            widgets = newWidgets;
             InitScrollWidgets();
         }
 
@@ -5718,8 +5714,8 @@ private:
         {
             // No measurement message
             ScreenCoordsXY stringCoords(widget->width() / 2, widget->height() / 2 - 5);
-            int32_t width = widget->width() - 2;
-            DrawTextWrapped(dpi, stringCoords, width, message.str, message.args, { TextAlignment::CENTRE });
+            int32_t txtWidth = widget->width() - 2;
+            DrawTextWrapped(dpi, stringCoords, txtWidth, message.str, message.args, { TextAlignment::CENTRE });
             return;
         }
 
@@ -5790,7 +5786,7 @@ private:
         // Uses the force limits (used to draw extreme G's in red on measurement tab) to determine if line should be drawn red.
         int32_t intensityThresholdPositive = 0;
         int32_t intensityThresholdNegative = 0;
-        for (int32_t width = 0; width < dpi.width; width++, x++)
+        for (int32_t graphWidth = 0; graphWidth < dpi.width; graphWidth++, x++)
         {
             if (x < 0 || x >= measurement->num_items - 1)
                 continue;
@@ -5873,8 +5869,6 @@ private:
 #pragma endregion
 
 #pragma region Income
-
-    static utf8 _moneyInputText[MONEY_STRING_MAXLENGTH];
 
     static void UpdateSamePriceThroughoutFlags(ShopItem shop_item)
     {
@@ -6037,6 +6031,8 @@ private:
 
     void IncomeOnMouseUp(WidgetIndex widgetIndex)
     {
+        utf8 _moneyInputText[MONEY_STRING_MAXLENGTH] = {};
+
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
@@ -6599,32 +6595,9 @@ private:
  *
  *  rct2: 0x006AEAB4
  */
-static WindowBase* Open(const Ride& ride)
+static RideWindow* WindowRideOpen(const Ride& ride)
 {
-    WindowBase* w;
-
-    w = WindowCreateAutoPos(316, 207, window_ride_page_events[0], WindowClass::Ride, WF_10 | WF_RESIZABLE);
-    w->widgets = window_ride_page_widgets[WINDOW_RIDE_PAGE_MAIN];
-    w->hold_down_widgets = window_ride_page_hold_down_widgets[WINDOW_RIDE_PAGE_MAIN];
-    w->rideId = ride.id;
-
-    w->page = WINDOW_RIDE_PAGE_MAIN;
-    w->vehicleIndex = 0;
-    w->frame_no = 0;
-    w->list_information_type = 0;
-    w->picked_peep_frame = 0;
-    w->ride_colour = 0;
-    DisableTabs(w);
-    w->min_width = 316;
-    w->min_height = 180;
-    w->max_width = 500;
-    w->max_height = 450;
-
-    UpdateOverallView(ride);
-
-    PopulateVehicleTypeDropdown(ride, true);
-
-    return w;
+    return WindowCreate<RideWindow>(WindowClass::Ride, 316, 207, WF_10 | WF_RESIZABLE, ride);
 }
 
 /**
@@ -6638,16 +6611,15 @@ WindowBase* WindowRideMainOpen(const Ride& ride)
         return nullptr;
     }
 
-    WindowBase* w = WindowBringToFrontByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+    RideWindow* w = static_cast<RideWindow*>(WindowBringToFrontByNumber(WindowClass::Ride, ride.id.ToUnderlying()));
     if (w == nullptr)
     {
         w = WindowRideOpen(ride);
-        w->ride.var_482 = -1;
-        w->ride.view = 0;
+        w->SetViewIndex(0);
     }
-    else if (w->ride.view >= (1 + ride.NumTrains + ride.num_stations))
+    else if (w->GetViewIndex() >= (1 + ride.NumTrains + ride.num_stations))
     {
-        w->ride.view = 0;
+        w->SetViewIndex(0);
     }
 
     if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE))
@@ -6660,10 +6632,10 @@ WindowBase* WindowRideMainOpen(const Ride& ride)
 
     if (w->page != WINDOW_RIDE_PAGE_MAIN)
     {
-        SetPage(w, WINDOW_RIDE_PAGE_MAIN);
+        w->SetPage(WINDOW_RIDE_PAGE_MAIN);
     }
 
-    InitViewport(w);
+    w->OnViewportRotate();
     return w;
 }
 
@@ -6679,11 +6651,10 @@ static WindowBase* WindowRideOpenStation(const Ride& ride, StationIndex stationI
     if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
         return WindowRideMainOpen(ride);
 
-    auto w = WindowBringToFrontByNumber(WindowClass::Ride, ride.id.ToUnderlying());
+    auto* w = static_cast<RideWindow*>(WindowBringToFrontByNumber(WindowClass::Ride, ride.id.ToUnderlying()));
     if (w == nullptr)
     {
         w = WindowRideOpen(ride);
-        w->ride.var_482 = -1;
     }
 
     if (InputTestFlag(INPUT_FLAG_TOOL_ACTIVE) && gCurrentToolWidget.window_classification == w->classification
@@ -6691,18 +6662,6 @@ static WindowBase* WindowRideOpenStation(const Ride& ride, StationIndex stationI
     {
         ToolCancel();
     }
-
-    w->page = WINDOW_RIDE_PAGE_MAIN;
-    w->width = 316;
-    w->height = 180;
-    w->Invalidate();
-
-    w->widgets = window_ride_page_widgets[w->page];
-    w->hold_down_widgets = window_ride_page_hold_down_widgets[w->page];
-    w->event_handlers = window_ride_page_events[w->page];
-    w->pressed_widgets = 0;
-    DisableTabs(w);
-    InitScrollWidgets();
 
     // View
     for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
@@ -6713,8 +6672,7 @@ static WindowBase* WindowRideOpenStation(const Ride& ride, StationIndex stationI
         }
     }
 
-    w->ride.view = 1 + ride.NumTrains + stationIndex.ToUnderlying();
-    InitViewport(w);
+    w->SetViewIndex(1 + ride.NumTrains + stationIndex.ToUnderlying());
 
     return w;
 }
@@ -6775,7 +6733,7 @@ WindowBase* WindowRideOpenVehicle(Vehicle* vehicle)
         return nullptr;
 
     // Get view index
-    int32_t view = 1;
+    int16_t view = 1;
     for (int32_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
     {
         if (ride->vehicles[i] == headVehicleSpriteIndex)
@@ -6784,7 +6742,7 @@ WindowBase* WindowRideOpenVehicle(Vehicle* vehicle)
         view++;
     }
 
-    WindowBase* w = WindowFindByNumber(WindowClass::Ride, ride->id.ToUnderlying());
+    auto* w = static_cast<RideWindow*>(WindowFindByNumber(WindowClass::Ride, ride->id.ToUnderlying()));
     if (w != nullptr)
     {
         w->Invalidate();
@@ -6796,7 +6754,7 @@ WindowBase* WindowRideOpenVehicle(Vehicle* vehicle)
         }
 
         int32_t openedPeepWindow = 0;
-        if (w->ride.view == view)
+        if (w->GetViewIndex() == view)
         {
             int32_t numPeepsLeft = vehicle->num_peeps;
             for (int32_t i = 0; i < 32 && numPeepsLeft > 0; i++)
@@ -6819,31 +6777,59 @@ WindowBase* WindowRideOpenVehicle(Vehicle* vehicle)
             }
         }
 
-        w = openedPeepWindow ? WindowFindByNumber(WindowClass::Ride, ride->id.ToUnderlying())
-                             : WindowBringToFrontByNumber(WindowClass::Ride, ride->id.ToUnderlying());
+        w = static_cast<RideWindow*>(
+            openedPeepWindow ? WindowFindByNumber(WindowClass::Ride, ride->id.ToUnderlying())
+                             : WindowBringToFrontByNumber(WindowClass::Ride, ride->id.ToUnderlying()));
     }
 
     if (w == nullptr)
     {
         w = WindowRideOpen(*ride);
-        w->ride.var_482 = -1;
     }
 
-    w->page = WINDOW_RIDE_PAGE_MAIN;
-    w->width = 316;
-    w->height = 180;
-    w->Invalidate();
-
-    w->widgets = window_ride_page_widgets[w->page];
-    w->hold_down_widgets = window_ride_page_hold_down_widgets[w->page];
-    w->event_handlers = window_ride_page_events[w->page];
-    w->pressed_widgets = 0;
-    DisableTabs(w);
-    InitScrollWidgets();
-
-    w->ride.view = view;
-    InitViewport(w);
+    w->SetViewIndex(view);
     w->Invalidate();
 
     return w;
+}
+
+void WindowRideInvalidateVehicle(const Vehicle& vehicle)
+{
+    auto* w = static_cast<RideWindow*>(WindowFindByNumber(WindowClass::Ride, vehicle.ride.ToUnderlying()));
+    if (w == nullptr)
+        return;
+
+    auto ride = vehicle.GetRide();
+    auto viewVehicleIndex = w->GetViewIndex() - 1;
+    if (ride == nullptr || viewVehicleIndex < 0 || viewVehicleIndex >= ride->NumTrains)
+        return;
+
+    if (vehicle.Id != ride->vehicles[viewVehicleIndex])
+        return;
+
+    w->Invalidate();
+}
+
+static void CancelScenerySelection()
+{
+    gGamePaused &= ~GAME_PAUSED_SAVING_TRACK;
+    gTrackDesignSaveMode = false;
+    OpenRCT2::Audio::Resume();
+
+    WindowBase* main_w = WindowGetMain();
+    if (main_w != nullptr)
+    {
+        main_w->viewport->flags &= ~(VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE);
+    }
+
+    GfxInvalidateScreen();
+    ToolCancel();
+}
+
+void WindowRideMeasurementsDesignCancel()
+{
+    if (gTrackDesignSaveMode)
+    {
+        CancelScenerySelection();
+    }
 }

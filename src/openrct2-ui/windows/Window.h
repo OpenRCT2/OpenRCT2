@@ -140,6 +140,7 @@ void WindowRideListRefreshList(WindowBase* w);
 WindowBase* WindowRideMainOpen(const Ride& ride);
 WindowBase* WindowRideOpenTrack(TileElement* tileElement);
 WindowBase* WindowRideOpenVehicle(Vehicle* vehicle);
+void WindowRideInvalidateVehicle(const Vehicle& vehicle);
 void WindowRideMeasurementsDesignCancel();
 
 // rct2: 0x00F635EE

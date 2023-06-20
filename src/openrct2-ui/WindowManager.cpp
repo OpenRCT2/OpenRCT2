@@ -455,19 +455,10 @@ public:
             case INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW:
             {
                 auto vehicle = static_cast<Vehicle*>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
-                auto* w = WindowFindByNumber(WindowClass::Ride, vehicle->ride.ToUnderlying());
-                if (w == nullptr)
-                    return;
-
-                auto ride = vehicle->GetRide();
-                auto viewVehicleIndex = w->ride.view - 1;
-                if (ride == nullptr || viewVehicleIndex < 0 || viewVehicleIndex >= ride->NumTrains)
-                    return;
-
-                if (vehicle->Id != ride->vehicles[viewVehicleIndex])
-                    return;
-
-                w->Invalidate();
+                if (vehicle != nullptr)
+                {
+                    WindowRideInvalidateVehicle(*vehicle);
+                }
                 break;
             }
 

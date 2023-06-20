@@ -280,12 +280,6 @@ struct NewRideVariables
     uint16_t selected_ride_countdown; // 488
 };
 
-struct RideVariables
-{
-    int16_t view;
-    int32_t var_482;
-    int32_t var_486;
-};
 
 struct TrackListVariables
 {
