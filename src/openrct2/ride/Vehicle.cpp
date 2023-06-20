@@ -5529,6 +5529,10 @@ OpenRCT2::Audio::SoundId Vehicle::UpdateScreamSound()
                 continue;
             if (vehicle2->Pitch <= 15)
                 return ProduceScreamSound(totalNumPeeps);
+            // Pitch 52 occurs on steep diagonal backward drops.
+            // (50 and 51 occur on gentle ones.)
+            if (vehicle2->Pitch == 52)
+                return ProduceScreamSound(totalNumPeeps);
         }
         return OpenRCT2::Audio::SoundId::Null;
     }
@@ -5546,6 +5550,10 @@ OpenRCT2::Audio::SoundId Vehicle::UpdateScreamSound()
         if (vehicle2->Pitch < 17)
             continue;
         if (vehicle2->Pitch <= 23)
+            return ProduceScreamSound(totalNumPeeps);
+        // Pitch 55 occurs on steep diagonal drops.
+        // (53 and 54 occur on gentle ones.)
+        if (vehicle2->Pitch == 55)
             return ProduceScreamSound(totalNumPeeps);
     }
     return OpenRCT2::Audio::SoundId::Null;
