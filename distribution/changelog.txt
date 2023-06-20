@@ -6,6 +6,7 @@
 - Improved: [#20393, #20410] Add Cyrillic characters Ґґ, Ѕѕ, Єє, Іі, Її, and Јј to the sprite font. 
 - Change: [#20110] Fix a few RCT1 build height parity discrepancies.
 - Fix: [#6152] Camera and UI are no longer locked at 40 Hz, providing a smoother experience.
+- Fix: [#9534] Screams no longer cut-off on steep diagonal drops
 - Fix: [#19823] Parkobj: disallow overriding objects of different object types.
 - Fix: [#20083] Cannot use terrain surfaces with ID > 32 and terrain edges with ID > 16.
 - Fix: [#20111] All coaster types can access the new diagonal slope pieces.
