@@ -82,7 +82,7 @@ static Widget window_loadsave_widgets[] =
 
 #pragma endregion
 
-static WindowBase* WindowOverwritePromptOpen(const char* name, const char* path);
+static WindowBase* WindowOverwritePromptOpen(const std::string_view name, const std::string_view path);
 
 enum
 {
@@ -905,7 +905,7 @@ public:
                     Path::Combine(_directory, text), RemovePatternWildcard(_extensionPattern));
 
                 if (File::Exists(path))
-                    WindowOverwritePromptOpen(std::string(text).c_str(), path.c_str());
+                    WindowOverwritePromptOpen(text, path);
                 else
                     Select(path.c_str());
                 break;
@@ -961,7 +961,7 @@ public:
             // TYPE_FILE
             // Load or overwrite
             if ((_type & 0x01) == LOADSAVETYPE_SAVE)
-                WindowOverwritePromptOpen(_listItems[selectedItem].name.c_str(), _listItems[selectedItem].path.c_str());
+                WindowOverwritePromptOpen(_listItems[selectedItem].name, _listItems[selectedItem].path);
             else
                 Select(_listItems[selectedItem].path.c_str());
         }
@@ -1111,69 +1111,61 @@ static Widget window_overwrite_prompt_widgets[] = {
     WIDGETS_END,
 };
 
-static void WindowOverwritePromptMouseup(WindowBase* w, WidgetIndex widgetIndex);
-static void WindowOverwritePromptPaint(WindowBase* w, DrawPixelInfo& dpi);
-
-static WindowEventList window_overwrite_prompt_events([](auto& events) {
-    events.mouse_up = &WindowOverwritePromptMouseup;
-    events.paint = &WindowOverwritePromptPaint;
-});
-
-static char _window_overwrite_prompt_name[256];
-static char _window_overwrite_prompt_path[MAX_PATH];
-
-static WindowBase* WindowOverwritePromptOpen(const char* name, const char* path)
+class OverwritePromptWindow final : public Window
 {
-    WindowBase* w;
+    std::string _name;
+    std::string _path;
 
+public:
+    OverwritePromptWindow(const std::string_view name, const std::string_view path)
+        : _name(name)
+        , _path(path)
+    {
+        widgets = window_overwrite_prompt_widgets;
+        colours[0] = TRANSLUCENT(COLOUR_BORDEAUX_RED);
+    }
+
+    void OnMouseUp(WidgetIndex widgetIndex) override
+    {
+        switch (widgetIndex)
+        {
+            case WIDX_OVERWRITE_OVERWRITE:
+            {
+                Select(_path.c_str());
+
+                // As the LoadSaveWindow::Select function can change the order of the
+                // windows we can't use WindowClose(w).
+                WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
+                break;
+            }
+
+            case WIDX_OVERWRITE_CANCEL:
+            case WIDX_OVERWRITE_CLOSE:
+                Close();
+                break;
+        }
+    }
+
+    void OnDraw(DrawPixelInfo& dpi) override
+    {
+        DrawWidgets(dpi);
+
+        auto ft = Formatter();
+        ft.Add<StringId>(STR_STRING);
+        ft.Add<char*>(_name.c_str());
+
+        ScreenCoordsXY stringCoords(windowPos.x + width / 2, windowPos.y + (height / 2) - 3);
+        DrawTextWrapped(dpi, stringCoords, width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, ft, { TextAlignment::CENTRE });
+    }
+};
+
+static WindowBase* WindowOverwritePromptOpen(const std::string_view name, const std::string_view path)
+{
     WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
 
-    w = WindowCreateCentred(
-        OVERWRITE_WW, OVERWRITE_WH, &window_overwrite_prompt_events, WindowClass::LoadsaveOverwritePrompt, WF_STICK_TO_FRONT);
-    w->widgets = window_overwrite_prompt_widgets;
-
-    WindowInitScrollWidgets(*w);
-
-    w->flags |= WF_TRANSPARENT;
-    w->colours[0] = TRANSLUCENT(COLOUR_BORDEAUX_RED);
-
-    SafeStrCpy(_window_overwrite_prompt_name, name, sizeof(_window_overwrite_prompt_name));
-    SafeStrCpy(_window_overwrite_prompt_path, path, sizeof(_window_overwrite_prompt_path));
-
-    return w;
-}
-
-static void WindowOverwritePromptMouseup(WindowBase* w, WidgetIndex widgetIndex)
-{
-    switch (widgetIndex)
-    {
-        case WIDX_OVERWRITE_OVERWRITE:
-        {
-            Select(_window_overwrite_prompt_path);
-
-            // As the LoadSaveWindow::Select function can change the order of the
-            // windows we can't use WindowClose(w).
-            WindowCloseByClass(WindowClass::LoadsaveOverwritePrompt);
-            break;
-        }
-
-        case WIDX_OVERWRITE_CANCEL:
-        case WIDX_OVERWRITE_CLOSE:
-            WindowClose(*w);
-            break;
-    }
-}
-
-static void WindowOverwritePromptPaint(WindowBase* w, DrawPixelInfo& dpi)
-{
-    WindowDrawWidgets(*w, dpi);
-
-    auto ft = Formatter();
-    ft.Add<StringId>(STR_STRING);
-    ft.Add<char*>(_window_overwrite_prompt_name);
-
-    ScreenCoordsXY stringCoords(w->windowPos.x + w->width / 2, w->windowPos.y + (w->height / 2) - 3);
-    DrawTextWrapped(dpi, stringCoords, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, ft, { TextAlignment::CENTRE });
+    return WindowCreate<OverwritePromptWindow>(
+        WindowClass::LoadsaveOverwritePrompt, OVERWRITE_WW, OVERWRITE_WH, WF_TRANSPARENT | WF_STICK_TO_FRONT | WF_CENTRE_SCREEN,
+        name, path);
 }
 
 #pragma endregion
