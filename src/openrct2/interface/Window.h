@@ -274,11 +274,6 @@ struct TrackListVariables
     bool reload_track_designs;
 };
 
-struct ErrorVariables
-{
-    uint16_t var_480;
-};
-
 struct WindowCloseModifier
 {
     WindowIdentifier window;

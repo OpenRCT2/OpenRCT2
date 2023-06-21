@@ -58,7 +58,6 @@ struct WindowBase
     {
         NewRideVariables new_ride;
         TrackListVariables track_list;
-        ErrorVariables error;
         void* custom_info;
     };
     union

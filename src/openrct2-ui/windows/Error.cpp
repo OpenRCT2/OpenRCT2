@@ -34,6 +34,7 @@ class ErrorWindow final : public Window
 private:
     std::string _text;
     uint16_t _numLines;
+    uint8_t _staleCount;
 
 public:
     ErrorWindow(std::string text, uint16_t numLines)
@@ -48,7 +49,7 @@ public:
         window_error_widgets[WIDX_BACKGROUND].bottom = height;
 
         widgets = window_error_widgets;
-        error.var_480 = 0;
+        _staleCount = 0;
         if (!gDisableErrorWindowSound)
         {
             OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Error, 0, windowPos.x + (width / 2));
@@ -99,8 +100,8 @@ public:
 
     void OnUnknown5() override
     {
-        error.var_480++;
-        if (error.var_480 >= 8)
+        _staleCount++;
+        if (_staleCount >= 8)
         {
             Close();
         }
