@@ -10781,10 +10781,10 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedRC(int32_t trackType)
             return InvertedRCTrackLeftLargeHalfLoopUp;
         case TrackElemType::RightLargeHalfLoopUp:
             return InvertedRCTrackRightLargeHalfLoopUp;
-        case TrackElemType::RightLargeHalfLoopDown:
-            return InvertedRCTrackRightLargeHalfLoopDown;
         case TrackElemType::LeftLargeHalfLoopDown:
-            return InvertedRCTrackLeftLargeHalfLoopDown;
+            return InvertedRCTrackRightLargeHalfLoopDown; // still need to propagate the variable renaming
+        case TrackElemType::RightLargeHalfLoopDown:
+            return InvertedRCTrackLeftLargeHalfLoopDown; // still need to propagate the variable renaming
         case TrackElemType::BlockBrakes:
             return InvertedRCTrackBlockBrakes;
         case TrackElemType::LeftBankedQuarterTurn3TileUp25:

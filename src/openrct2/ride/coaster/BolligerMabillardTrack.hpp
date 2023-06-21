@@ -13334,10 +13334,10 @@ template<MetalSupportType supportType> TRACK_PAINT_FUNCTION GetTrackPaintFunctio
             return BolligerMabillardTrackLeftLargeHalfLoopUp<supportType>;
         case TrackElemType::RightLargeHalfLoopUp:
             return BolligerMabillardTrackRightLargeHalfLoopUp<supportType>;
-        case TrackElemType::RightLargeHalfLoopDown:
-            return BolligerMabillardTrackRightLargeHalfLoopDown<supportType>;
         case TrackElemType::LeftLargeHalfLoopDown:
-            return BolligerMabillardTrackLeftLargeHalfLoopDown<supportType>;
+            return BolligerMabillardTrackRightLargeHalfLoopDown<supportType>; // still need to propagate the variable renaming
+        case TrackElemType::RightLargeHalfLoopDown:
+            return BolligerMabillardTrackLeftLargeHalfLoopDown<supportType>; // still need to propagate the variable renaming
         case TrackElemType::Up90ToInvertedFlatQuarterLoop:
             return BolligerMabillardTrack90DegToInvertedFlatQuarterLoopUp<supportType>;
         case TrackElemType::InvertedFlatToDown90QuarterLoop:

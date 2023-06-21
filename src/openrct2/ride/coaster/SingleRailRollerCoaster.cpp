@@ -17817,10 +17817,10 @@ namespace SingleRailRC
                 return TrackLeftLargeHalfLoopUp;
             case TrackElemType::RightLargeHalfLoopUp:
                 return TrackRightLargeHalfLoopUp;
-            case TrackElemType::RightLargeHalfLoopDown:
-                return TrackRightLargeHalfLoopDown;
             case TrackElemType::LeftLargeHalfLoopDown:
-                return TrackLeftLargeHalfLoopDown;
+                return TrackRightLargeHalfLoopDown; // still need to propagate the variable renaming
+            case TrackElemType::RightLargeHalfLoopDown:
+                return TrackLeftLargeHalfLoopDown; // still need to propagate the variable renaming
             case TrackElemType::FlatToUp60:
                 return TrackFlatTo60DegUp;
             case TrackElemType::Up60ToFlat:

@@ -5938,10 +5938,10 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLimLaunchedRC(int32_t trackType)
             return LimLaunchedRCTrackLeftLargeHalfLoopUp;
         case TrackElemType::RightLargeHalfLoopUp:
             return LimLaunchedRCTrackRightLargeHalfLoopUp;
-        case TrackElemType::RightLargeHalfLoopDown:
-            return LimLaunchedRCTrackRightLargeHalfLoopDown;
         case TrackElemType::LeftLargeHalfLoopDown:
-            return LimLaunchedRCTrackLeftLargeHalfLoopDown;
+            return LimLaunchedRCTrackRightLargeHalfLoopDown; // still need to propagate the variable renaming
+        case TrackElemType::RightLargeHalfLoopDown:
+            return LimLaunchedRCTrackLeftLargeHalfLoopDown; // still need to propagate the variable renaming
         case TrackElemType::LeftLargeCorkscrewUp:
             return LimLaunchedRCTrackLeftLargeCorkscrewUp;
         case TrackElemType::RightLargeCorkscrewUp:

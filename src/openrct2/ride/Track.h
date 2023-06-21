@@ -454,8 +454,8 @@ namespace TrackElemType
     constexpr track_type_t PoweredLift = 182;
     constexpr track_type_t LeftLargeHalfLoopUp = 183;
     constexpr track_type_t RightLargeHalfLoopUp = 184;
-    constexpr track_type_t RightLargeHalfLoopDown = 185;
-    constexpr track_type_t LeftLargeHalfLoopDown = 186;
+    constexpr track_type_t LeftLargeHalfLoopDown = 185;
+    constexpr track_type_t RightLargeHalfLoopDown = 186;
     constexpr track_type_t LeftFlyerTwistUp = 187;
     constexpr track_type_t RightFlyerTwistUp = 188;
     constexpr track_type_t LeftFlyerTwistDown = 189;
