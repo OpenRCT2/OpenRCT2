@@ -381,6 +381,10 @@ public:
 
     void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
+        if (dropdownIndex == -1)
+        {
+            return;
+        }
         switch (widgetIndex)
         {
             case WIDX_PAGE_DROPDOWN_BUTTON:

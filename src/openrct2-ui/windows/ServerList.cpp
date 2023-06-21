@@ -169,6 +169,10 @@ public:
 
     void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
     {
+        if (selectedIndex == -1)
+        {
+            return;
+        }
         auto serverIndex = selected_list_item;
         if (serverIndex >= 0 && serverIndex < static_cast<int32_t>(_serverList.GetCount()))
         {
