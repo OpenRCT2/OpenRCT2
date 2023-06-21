@@ -259,15 +259,6 @@ struct WindowEventList
     }
 };
 
-struct NewRideVariables
-{
-    RideSelection SelectedRide;    // 0x480
-    RideSelection HighlightedRide; // 0x482
-    uint16_t Pad484;
-    uint16_t Pad486;
-    uint16_t selected_ride_countdown; // 488
-};
-
 struct TrackListVariables
 {
     bool track_list_being_updated;

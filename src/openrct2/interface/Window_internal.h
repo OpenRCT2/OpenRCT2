@@ -56,7 +56,6 @@ struct WindowBase
     std::optional<Focus> focus;
     union
     {
-        NewRideVariables new_ride;
         TrackListVariables track_list;
         void* custom_info;
     };
