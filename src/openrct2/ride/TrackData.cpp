@@ -291,8 +291,8 @@ static constexpr TrackCoordinates _trackCoordinates[] = {
         { 0, 1, 0, -112, -64, 64 },  // TrackElemType::RightCorkscrewDown
         { 0, 2, 0, 216, -32, -32 },  // TrackElemType::LeftMediumHalfLoopUp
         { 0, 2, 0, 216, -32, 32 },   // TrackElemType::RightMediumHalfLoopUp
-        { 0, 2, 0, -216, 32, -32 },  // TrackElemType::RightMediumHalfLoopDown
-        { 0, 2, 0, -216, 32, 32 },   // TrackElemType::LeftMediumHalfLoopDown
+        { 0, 2, 0, -216, 32, -32 },  // TrackElemType::LeftMediumHalfLoopDown
+        { 0, 2, 0, -216, 32, 32 },   // TrackElemType::RightMediumHalfLoopDown
         { 0, 0, 0, 56, -64, 0 },     // TrackElemType::LeftZeroGRollUp
         { 0, 0, 0, 56, -64, 0 },     // TrackElemType::RightZeroGRollUp
         { 0, 0, 0, -56,-64, 0 },     // TrackElemType::RightZeroGRollDown
@@ -633,8 +633,8 @@ static constexpr uint8_t TrackSequenceProperties[][MaxSequencesPerPiece] = {
     { 0 }, // TrackElemType::RightCorkscrewDown
     { 0 }, // TrackElemType::LeftMediumHalfLoopUp
     { 0 }, // TrackElemType::RightMediumHalfLoopUp
-    { 0 }, // TrackElemType::RightMediumHalfLoopDown
     { 0 }, // TrackElemType::LeftMediumHalfLoopDown
+    { 0 }, // TrackElemType::RightMediumHalfLoopDown
     { 0 }, // TrackElemType::LeftZeroGRollUp
     { 0 }, // TrackElemType::RightZeroGRollUp
     { 0 }, // TrackElemType::RightZeroGRollDown
@@ -3621,8 +3621,8 @@ static constexpr uint8_t TrackPieceLengths[] = {
     96,     // TrackElemType::RightCorkscrewDown
     80,     // TrackElemType::LeftMediumHalfLoopUp
     80,     // TrackElemType::RightMediumHalfLoopUp
-    80,     // TrackElemType::RightMediumHalfLoopDown
     80,     // TrackElemType::LeftMediumHalfLoopDown
+    80,     // TrackElemType::RightMediumHalfLoopDown
     96,     // TrackElemType::LeftZeroGRollUp
     96,     // TrackElemType::RightZeroGRollUp
     96,     // TrackElemType::RightZeroGRollDown
@@ -6205,8 +6205,8 @@ static constexpr uint16_t TrackFlags[] = {
     /* TrackElemType::RightLargeCorkscrewDown                       */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
     /* TrackElemType::LeftMediumHalfLoopUp                          */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_NORMAL_TO_INVERSION | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
     /* TrackElemType::RightMediumHalfLoopUp                         */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_NORMAL_TO_INVERSION | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
-    /* TrackElemType::RightMediumHalfLoopDown                       */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
     /* TrackElemType::LeftMediumHalfLoopDown                        */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
+    /* TrackElemType::RightMediumHalfLoopDown                       */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
     /* TrackElemType::LeftZeroGRollUp                               */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_NORMAL_TO_INVERSION | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
     /* TrackElemType::RightZeroGRollUp                              */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_NORMAL_TO_INVERSION | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
     /* TrackElemType::RightZeroGRollDown                            */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
@@ -7873,8 +7873,8 @@ static constexpr StringId RideConfigurationStringIds[] = {
     STR_LARGE_HALF_CORKSCREW_RIGHT,    // TrackElemType::RightCorkscrewDown
     STR_MEDIUM_HALF_LOOP_LEFT,         // TrackElemType::LeftMediumHalfLoopUp
     STR_MEDIUM_HALF_LOOP_RIGHT,        // TrackElemType::RightMediumHalfLoopUp
-    STR_MEDIUM_HALF_LOOP_LEFT,         // TrackElemType::RightMediumHalfLoopDown
-    STR_MEDIUM_HALF_LOOP_RIGHT,        // TrackElemType::LeftMediumHalfLoopDown
+    STR_MEDIUM_HALF_LOOP_LEFT,         // TrackElemType::LeftMediumHalfLoopDown
+    STR_MEDIUM_HALF_LOOP_RIGHT,        // TrackElemType::RightMediumHalfLoopDown
     STR_ZERO_G_ROLL_LEFT,              // TrackElemType::LeftZeroGRollUp
     STR_ZERO_G_ROLL_RIGHT,             // TrackElemType::RightZeroGRollUp
     STR_ZERO_G_ROLL_LEFT,              // TrackElemType::RightZeroGRollDown
