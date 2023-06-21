@@ -31,7 +31,6 @@ struct RCTObjectEntry;
  */
 struct WindowBase
 {
-    WindowEventList* event_handlers{};
     Viewport* viewport{};
     uint64_t disabled_widgets{};
     uint64_t pressed_widgets{};

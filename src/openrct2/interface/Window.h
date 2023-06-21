@@ -609,13 +609,6 @@ T* WindowFocusOrCreate(WindowClass cls, int32_t width, int32_t height, uint32_t 
     return static_cast<T*>(w);
 }
 
-WindowBase* WindowCreate(
-    const ScreenCoordsXY& pos, int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags);
-WindowBase* WindowCreateAutoPos(
-    int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags);
-WindowBase* WindowCreateCentred(
-    int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags);
-
 void WindowClose(WindowBase& window);
 void WindowCloseByClass(WindowClass cls);
 void WindowCloseByNumber(WindowClass cls, rct_windownumber number);

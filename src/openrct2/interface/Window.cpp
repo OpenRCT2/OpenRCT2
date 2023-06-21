@@ -1413,247 +1413,139 @@ void ToolCancel()
 
 void WindowEventCloseCall(WindowBase* w)
 {
-    if (w->event_handlers == nullptr)
-        w->OnClose();
-    else if (w->event_handlers->close != nullptr)
-        w->event_handlers->close(w);
+    w->OnClose();
 }
 
 void WindowEventMouseUpCall(WindowBase* w, WidgetIndex widgetIndex)
 {
-    if (w->event_handlers == nullptr)
-        w->OnMouseUp(widgetIndex);
-    else if (w->event_handlers->mouse_up != nullptr)
-        w->event_handlers->mouse_up(w, widgetIndex);
+    w->OnMouseUp(widgetIndex);
 }
 
 void WindowEventResizeCall(WindowBase* w)
 {
-    if (w->event_handlers == nullptr)
-        w->OnResize();
-    else if (w->event_handlers->resize != nullptr)
-        w->event_handlers->resize(w);
+    w->OnResize();
 }
 
 void WindowEventMouseDownCall(WindowBase* w, WidgetIndex widgetIndex)
 {
-    if (w->event_handlers == nullptr)
-        w->OnMouseDown(widgetIndex);
-    else if (w->event_handlers->mouse_down != nullptr)
-        w->event_handlers->mouse_down(w, widgetIndex, &w->widgets[widgetIndex]);
+    w->OnMouseDown(widgetIndex);
 }
 
 void WindowEventDropdownCall(WindowBase* w, WidgetIndex widgetIndex, int32_t dropdownIndex)
 {
-    if (w->event_handlers == nullptr)
-    {
-        w->OnDropdown(widgetIndex, dropdownIndex);
-    }
-    else if (w->event_handlers->dropdown != nullptr)
-    {
-        w->event_handlers->dropdown(w, widgetIndex, dropdownIndex);
-    }
+    w->OnDropdown(widgetIndex, dropdownIndex);
 }
 
 void WindowEventUnknown05Call(WindowBase* w)
 {
-    if (w->event_handlers == nullptr)
-    {
-        w->OnUnknown5();
-    }
-    else if (w->event_handlers->unknown_05 != nullptr)
-    {
-        w->event_handlers->unknown_05(w);
-    }
+    w->OnUnknown5();
 }
 
 void WindowEventUpdateCall(WindowBase* w)
 {
-    if (w->event_handlers == nullptr)
-        w->OnUpdate();
-    else if (w->event_handlers->update != nullptr)
-        w->event_handlers->update(w);
+    w->OnUpdate();
 }
 
 void WindowEventPeriodicUpdateCall(WindowBase* w)
 {
-    if (w->event_handlers == nullptr)
-        w->OnPeriodicUpdate();
-    else if (w->event_handlers->periodic_update != nullptr)
-        w->event_handlers->periodic_update(w);
+    w->OnPeriodicUpdate();
 }
 
 void WindowEventToolUpdateCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers == nullptr)
-        w->OnToolUpdate(widgetIndex, screenCoords);
-    else if (w->event_handlers->tool_update != nullptr)
-        w->event_handlers->tool_update(w, widgetIndex, screenCoords);
+    w->OnToolUpdate(widgetIndex, screenCoords);
 }
 
 void WindowEventToolDownCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers == nullptr)
-        w->OnToolDown(widgetIndex, screenCoords);
-    else if (w->event_handlers->tool_down != nullptr)
-        w->event_handlers->tool_down(w, widgetIndex, screenCoords);
+    w->OnToolDown(widgetIndex, screenCoords);
 }
 
 void WindowEventToolDragCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers == nullptr)
-        w->OnToolDrag(widgetIndex, screenCoords);
-    else if (w->event_handlers->tool_drag != nullptr)
-        w->event_handlers->tool_drag(w, widgetIndex, screenCoords);
+    w->OnToolDrag(widgetIndex, screenCoords);
 }
 
 void WindowEventToolUpCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers == nullptr)
-        w->OnToolUp(widgetIndex, screenCoords);
-    else if (w->event_handlers->tool_up != nullptr)
-        w->event_handlers->tool_up(w, widgetIndex, screenCoords);
+    w->OnToolUp(widgetIndex, screenCoords);
 }
 
 void WindowEventToolAbortCall(WindowBase* w, WidgetIndex widgetIndex)
 {
-    if (w->event_handlers == nullptr)
-        w->OnToolAbort(widgetIndex);
-    else if (w->event_handlers->tool_abort != nullptr)
-        w->event_handlers->tool_abort(w, widgetIndex);
+    w->OnToolAbort(widgetIndex);
 }
 
 void WindowGetScrollSize(WindowBase* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
-    if (w->event_handlers == nullptr)
-    {
-        auto size = w->OnScrollGetSize(scrollIndex);
-        if (width != nullptr)
-            *width = size.width;
-        if (height != nullptr)
-            *height = size.height;
-    }
-    else if (w->event_handlers->get_scroll_size != nullptr)
-    {
-        w->event_handlers->get_scroll_size(w, scrollIndex, width, height);
-    }
+    auto size = w->OnScrollGetSize(scrollIndex);
+    if (width != nullptr)
+        *width = size.width;
+    if (height != nullptr)
+        *height = size.height;
 }
 
 void WindowEventScrollMousedownCall(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers == nullptr)
-        w->OnScrollMouseDown(scrollIndex, screenCoords);
-    else if (w->event_handlers->scroll_mousedown != nullptr)
-        w->event_handlers->scroll_mousedown(w, scrollIndex, screenCoords);
+    w->OnScrollMouseDown(scrollIndex, screenCoords);
 }
 
 void WindowEventScrollMousedragCall(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers == nullptr)
-        w->OnScrollMouseDrag(scrollIndex, screenCoords);
-    else if (w->event_handlers->scroll_mousedrag != nullptr)
-        w->event_handlers->scroll_mousedrag(w, scrollIndex, screenCoords);
+    w->OnScrollMouseDrag(scrollIndex, screenCoords);
 }
 
 void WindowEventScrollMouseoverCall(WindowBase* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers == nullptr)
-        w->OnScrollMouseOver(scrollIndex, screenCoords);
-    else if (w->event_handlers->scroll_mouseover != nullptr)
-        w->event_handlers->scroll_mouseover(w, scrollIndex, screenCoords);
+    w->OnScrollMouseOver(scrollIndex, screenCoords);
 }
 
 void WindowEventTextinputCall(WindowBase* w, WidgetIndex widgetIndex, const char* text)
 {
-    if (w->event_handlers == nullptr)
+    if (text != nullptr)
     {
-        if (text != nullptr)
-        {
-            w->OnTextInput(widgetIndex, text);
-        }
-    }
-    else if (w->event_handlers->text_input != nullptr)
-    {
-        w->event_handlers->text_input(w, widgetIndex, text);
+        w->OnTextInput(widgetIndex, text);
     }
 }
 
 void WindowEventViewportRotateCall(WindowBase* w)
 {
-    if (w->event_handlers == nullptr)
-        w->OnViewportRotate();
-    else if (w->event_handlers != nullptr)
-        if (w->event_handlers->viewport_rotate != nullptr)
-            w->event_handlers->viewport_rotate(w);
+    w->OnViewportRotate();
 }
 
 void WindowEventScrollSelectCall(WindowBase* w, int32_t scrollIndex, int32_t scrollAreaType)
 {
-    if (w->event_handlers == nullptr)
-        w->OnScrollSelect(scrollIndex, scrollAreaType);
-    else if (w->event_handlers->scroll_select != nullptr)
-        w->event_handlers->scroll_select(w, scrollIndex, scrollAreaType);
+    w->OnScrollSelect(scrollIndex, scrollAreaType);
 }
 
 OpenRCT2String WindowEventTooltipCall(WindowBase* w, const WidgetIndex widgetIndex, const StringId fallback)
 {
-    if (w->event_handlers == nullptr)
-    {
-        return w->OnTooltip(widgetIndex, fallback);
-    }
-
-    if (w->event_handlers->tooltip != nullptr)
-    {
-        return w->event_handlers->tooltip(w, widgetIndex, fallback);
-    }
-
-    return { fallback, {} };
+    return w->OnTooltip(widgetIndex, fallback);
 }
 
 CursorID WindowEventCursorCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    CursorID cursorId = CursorID::Arrow;
-    if (w->event_handlers == nullptr)
-    {
-        cursorId = w->OnCursor(widgetIndex, screenCoords, cursorId);
-    }
-    else if (w->event_handlers->cursor != nullptr)
-        w->event_handlers->cursor(w, widgetIndex, screenCoords, &cursorId);
-    return cursorId;
+    return w->OnCursor(widgetIndex, screenCoords, CursorID::Arrow);
 }
 
 void WindowEventMovedCall(WindowBase* w, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers == nullptr)
-    {
-        w->OnMoved(screenCoords);
-    }
-    else if (w->event_handlers->moved != nullptr)
-        w->event_handlers->moved(w, screenCoords);
+    w->OnMoved(screenCoords);
 }
 
 void WindowEventInvalidateCall(WindowBase* w)
 {
-    if (w->event_handlers == nullptr)
-        w->OnPrepareDraw();
-    else if (w->event_handlers->invalidate != nullptr)
-        w->event_handlers->invalidate(w);
+    w->OnPrepareDraw();
 }
 
 void WindowEventPaintCall(WindowBase* w, DrawPixelInfo& dpi)
 {
-    if (w->event_handlers == nullptr)
-        w->OnDraw(dpi);
-    else if (w->event_handlers->paint != nullptr)
-        w->event_handlers->paint(w, dpi);
+    w->OnDraw(dpi);
 }
 
 void WindowEventScrollPaintCall(WindowBase* w, DrawPixelInfo& dpi, int32_t scrollIndex)
 {
-    if (w->event_handlers == nullptr)
-        w->OnScrollDraw(scrollIndex, dpi);
-    else if (w->event_handlers->scroll_paint != nullptr)
-        w->event_handlers->scroll_paint(w, dpi, scrollIndex);
+    w->OnScrollDraw(scrollIndex, dpi);
 }
 
 /**
