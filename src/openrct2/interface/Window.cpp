@@ -129,13 +129,10 @@ void WindowUpdateAllViewports()
  */
 void WindowUpdateAll()
 {
-    // WindowUpdateAllViewports();
-
-    // 1000 tick update
-    gWindowUpdateTicks += gCurrentDeltaTime;
-    if (gWindowUpdateTicks >= 1000)
+    // Periodic update happens every second so 40 ticks.
+    if (gCurrentRealTimeTicks >= gWindowUpdateTicks)
     {
-        gWindowUpdateTicks = 0;
+        gWindowUpdateTicks = gCurrentRealTimeTicks + 40;
 
         WindowVisitEach([](WindowBase* w) { WindowEventPeriodicUpdateCall(w); });
     }

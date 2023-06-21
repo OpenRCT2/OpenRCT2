@@ -104,8 +104,6 @@ static void InputUpdateTooltip(WindowBase* w, WidgetIndex widgetIndex, const Scr
  */
 void GameHandleInput()
 {
-    WindowVisitEach([](WindowBase* w) { WindowEventPeriodicUpdateCall(w); });
-
     InvalidateAllWindowsAfterInput();
 
     MouseState state;
