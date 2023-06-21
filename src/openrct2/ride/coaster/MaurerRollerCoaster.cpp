@@ -884,7 +884,7 @@ namespace MaurerRC
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_MAURER_LIFT_TRACK_VERTICAL + 4)),
-                        { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
+                        { 0, 0, height }, { { 0, 6, height + 8 }, { 2, 20, 3 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -902,7 +902,7 @@ namespace MaurerRC
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_MAURER_LIFT_TRACK_VERTICAL + 7)),
-                        { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
+                        { 0, 0, height }, { { 0, 6, height + 8 }, { 2, 20, 3 } });
                     break;
             }
         }
@@ -971,7 +971,7 @@ namespace MaurerRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_MAURER_TRACK_VERTICAL + 4)),
-                            { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
+                            { 0, 0, height }, { { 0, 6, height + 8 }, { 2, 20, 3 } });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
