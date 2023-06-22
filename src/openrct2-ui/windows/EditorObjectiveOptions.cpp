@@ -288,7 +288,6 @@ private:
 
         page = newPage;
         frame_no = 0;
-        var_492 = 0;
         no_list_items = 0;
         selected_list_item = -1;
         hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[newPage];

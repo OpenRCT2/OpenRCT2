@@ -78,6 +78,9 @@ static Widget *window_player_page_widgets[] = {
 
 class PlayerWindow final : public Window
 {
+    int16_t _previousRotation = -1;
+    bool _drawViewport = true;
+
 public:
     void Init(const uint8_t id)
     {
@@ -305,7 +308,7 @@ private:
                     return;
                 }
                 // Don't scroll if the view was originally undefined
-                if (var_492 == -1)
+                if (!_drawViewport)
                 {
                     scroll = false;
                 }
@@ -322,12 +325,12 @@ private:
                 }
 
                 // Draw the viewport
-                var_492 = 0;
+                _drawViewport = true;
             }
             else
             {
                 // Don't draw the viewport
-                var_492 = -1;
+                _drawViewport = false;
             }
         }
     }
@@ -368,9 +371,9 @@ private:
         bool scroll = true;
 
         // Use this spare window field for rotation check
-        if (var_4AE != GetCurrentRotation())
+        if (_previousRotation != GetCurrentRotation())
         {
-            var_4AE = GetCurrentRotation();
+            _previousRotation = GetCurrentRotation();
             scroll = false;
         }
         UpdateViewport(scroll);
@@ -483,7 +486,7 @@ private:
         }
         DrawTextEllipsised(dpi, screenCoords, updatedWidth, STR_LAST_ACTION_RAN, ft, { TextAlignment::CENTRE });
 
-        if (viewport != nullptr && var_492 != -1)
+        if (viewport != nullptr && _drawViewport)
         {
             WindowDrawViewport(dpi, *this);
         }
