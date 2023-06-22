@@ -465,15 +465,7 @@ public:
             case INTENT_ACTION_RIDE_PAINT_RESET_VEHICLE:
             {
                 auto rideIndex = intent.GetUIntExtra(INTENT_EXTRA_RIDE_ID);
-                auto w = WindowFindByNumber(WindowClass::Ride, rideIndex);
-                if (w != nullptr)
-                {
-                    if (w->page == 4) // WINDOW_RIDE_PAGE_COLOUR
-                    {
-                        w->vehicleIndex = 0;
-                    }
-                    w->Invalidate();
-                }
+                WindowRidePaintResetVehicle(RideId::FromUnderlying(rideIndex));
                 break;
             }
 

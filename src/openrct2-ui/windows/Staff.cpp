@@ -126,6 +126,7 @@ class StaffWindow final : public Window
 private:
     EntertainerCostume _availableCostumes[static_cast<uint8_t>(EntertainerCostume::Count)]{};
     uint16_t _tabAnimationOffset = 0;
+    int32_t _pickedPeepOldX = LOCATION_NULL;
 
 public:
     void Initialise(EntityId entityId)
@@ -361,7 +362,7 @@ private:
         {
             case WIDX_PICKUP:
             {
-                picked_peep_old_x = staff->x;
+                _pickedPeepOldX = staff->x;
                 CoordsXYZ nullLoc{};
                 nullLoc.SetNull();
                 PeepPickupAction pickupAction{ PeepPickupType::Pickup, EntityId::FromUnderlying(number), nullLoc,
@@ -710,7 +711,7 @@ private:
             return;
 
         PeepPickupAction pickupAction{
-            PeepPickupType::Cancel, EntityId::FromUnderlying(number), { picked_peep_old_x, 0, 0 }, NetworkGetCurrentPlayerId()
+            PeepPickupType::Cancel, EntityId::FromUnderlying(number), { _pickedPeepOldX, 0, 0 }, NetworkGetCurrentPlayerId()
         };
         GameActions::Execute(&pickupAction);
     }

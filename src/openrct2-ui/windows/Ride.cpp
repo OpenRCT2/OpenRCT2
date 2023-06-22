@@ -627,6 +627,7 @@ class RideWindow final : public Window
     const RideObjectEntry* _vehicleDropdownRideType = nullptr;
     bool _vehicleDropdownExpanded = false;
     std::vector<VehicleTypeLabel> _vehicleDropdownData;
+    int16_t _vehicleIndex;
 
 public:
     RideWindow(const Ride& ride)
@@ -636,7 +637,7 @@ public:
         hold_down_widgets = PageHoldDownWidgets[WINDOW_RIDE_PAGE_MAIN];
 
         page = WINDOW_RIDE_PAGE_MAIN;
-        vehicleIndex = 0;
+        _vehicleIndex = 0;
         frame_no = 0;
         list_information_type = 0;
         picked_peep_frame = 0;
@@ -1065,6 +1066,11 @@ public:
     int16_t GetViewIndex() const
     {
         return _viewIndex;
+    }
+
+    void ResetVehicleIndex()
+    {
+        _vehicleIndex = 0;
     }
 
 private:
@@ -4195,18 +4201,18 @@ private:
                     { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                     colours[1], 0, Dropdown::Flag::StayOpen, numItems, widgets[widgetIndex].right - dropdownWidget->left);
 
-                Dropdown::SetChecked(vehicleIndex, true);
+                Dropdown::SetChecked(_vehicleIndex, true);
                 break;
             case WIDX_VEHICLE_BODY_COLOUR:
-                vehicleColour = RideGetVehicleColour(*ride, vehicleIndex);
+                vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
                 WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], vehicleColour.Body);
                 break;
             case WIDX_VEHICLE_TRIM_COLOUR:
-                vehicleColour = RideGetVehicleColour(*ride, vehicleIndex);
+                vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
                 WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], vehicleColour.Trim);
                 break;
             case WIDX_VEHICLE_TERNARY_COLOUR:
-                vehicleColour = RideGetVehicleColour(*ride, vehicleIndex);
+                vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
                 WindowDropdownShowColour(this, &widgets[widgetIndex], colours[1], vehicleColour.Tertiary);
                 break;
         }
@@ -4284,24 +4290,26 @@ private:
                 auto rideSetAppearanceAction = RideSetAppearanceAction(
                     rideId, RideSetAppearanceType::VehicleColourScheme, dropdownIndex, 0);
                 GameActions::Execute(&rideSetAppearanceAction);
-                vehicleIndex = 0;
+                _vehicleIndex = 0;
             }
             break;
             case WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN:
-                vehicleIndex = dropdownIndex;
+                _vehicleIndex = dropdownIndex;
                 Invalidate();
                 break;
             case WIDX_VEHICLE_BODY_COLOUR:
             {
                 auto rideSetAppearanceAction = RideSetAppearanceAction(
-                    rideId, RideSetAppearanceType::VehicleColourBody, ColourDropDownIndexToColour(dropdownIndex), vehicleIndex);
+                    rideId, RideSetAppearanceType::VehicleColourBody, ColourDropDownIndexToColour(dropdownIndex),
+                    _vehicleIndex);
                 GameActions::Execute(&rideSetAppearanceAction);
             }
             break;
             case WIDX_VEHICLE_TRIM_COLOUR:
             {
                 auto rideSetAppearanceAction = RideSetAppearanceAction(
-                    rideId, RideSetAppearanceType::VehicleColourTrim, ColourDropDownIndexToColour(dropdownIndex), vehicleIndex);
+                    rideId, RideSetAppearanceType::VehicleColourTrim, ColourDropDownIndexToColour(dropdownIndex),
+                    _vehicleIndex);
                 GameActions::Execute(&rideSetAppearanceAction);
             }
             break;
@@ -4309,7 +4317,7 @@ private:
             {
                 auto rideSetAppearanceAction = RideSetAppearanceAction(
                     rideId, RideSetAppearanceType::VehicleColourTernary, ColourDropDownIndexToColour(dropdownIndex),
-                    vehicleIndex);
+                    _vehicleIndex);
                 GameActions::Execute(&rideSetAppearanceAction);
             }
             break;
@@ -4482,9 +4490,9 @@ private:
         {
             int32_t vehicleColourSchemeType = ride->colour_scheme_type & 3;
             if (vehicleColourSchemeType == 0)
-                vehicleIndex = 0;
+                _vehicleIndex = 0;
 
-            vehicleColour = RideGetVehicleColour(*ride, vehicleIndex);
+            vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
 
             _colourWidgets[WIDX_VEHICLE_PREVIEW].type = WindowWidgetType::Scroll;
             _colourWidgets[WIDX_VEHICLE_BODY_COLOUR].type = WindowWidgetType::ColourBtn;
@@ -4545,7 +4553,7 @@ private:
             ft.Add<StringId>(VehicleColourSchemeNames[vehicleColourSchemeType]);
             ft.Add<StringId>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).singular);
             ft.Add<StringId>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).capitalised);
-            ft.Add<uint16_t>(vehicleIndex + 1);
+            ft.Add<uint16_t>(_vehicleIndex + 1);
 
             // Vehicle index
             if (vehicleColourSchemeType != 0)
@@ -4708,7 +4716,7 @@ private:
             return;
 
         auto vehiclePreviewWidget = &_colourWidgets[WIDX_VEHICLE_PREVIEW];
-        auto vehicleColour = RideGetVehicleColour(*ride, vehicleIndex);
+        auto vehicleColour = RideGetVehicleColour(*ride, _vehicleIndex);
 
         // Background colour
         GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, PALETTE_INDEX_12);
@@ -4717,7 +4725,7 @@ private:
         auto screenCoords = ScreenCoordsXY{ vehiclePreviewWidget->width() / 2, vehiclePreviewWidget->height() - 15 };
 
         // ?
-        auto trainCarIndex = (ride->colour_scheme_type & 3) == RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR ? vehicleIndex
+        auto trainCarIndex = (ride->colour_scheme_type & 3) == RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR ? _vehicleIndex
                                                                                                          : rideEntry->TabCar;
 
         const auto& carEntry = rideEntry->Cars[RideEntryGetVehicleAtPosition(
@@ -6799,6 +6807,19 @@ void WindowRideInvalidateVehicle(const Vehicle& vehicle)
         return;
 
     w->Invalidate();
+}
+
+void WindowRidePaintResetVehicle(RideId rideIndex)
+{
+    auto w = static_cast<RideWindow*>(WindowFindByNumber(WindowClass::Ride, rideIndex.ToUnderlying()));
+    if (w != nullptr)
+    {
+        if (w->page == 4) // WINDOW_RIDE_PAGE_COLOUR
+        {
+            w->ResetVehicleIndex();
+        }
+        w->Invalidate();
+    }
 }
 
 static void CancelScenerySelection()
