@@ -3963,8 +3963,8 @@ static constexpr TrackCurveChain gTrackCurveChain[] = {
     { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeCorkscrewUp },    // TrackElemType::RightCorkscrewDown
     { RideConstructionSpecialPieceSelected | TrackElemType::RightMediumHalfLoopDown, TRACK_CURVE_NONE }, // TrackElemType::LeftMediumHalfLoopUp
     { RideConstructionSpecialPieceSelected | TrackElemType::LeftMediumHalfLoopDown, TRACK_CURVE_NONE },  // TrackElemType::RightMediumHalfLoopUp
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::LeftMediumHalfLoopUp },    // TrackElemType::LeftMediumHalfLoopDown
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::RightMediumHalfLoopUp },   // TrackElemType::RightMediumHalfLoopDown
+    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::RightMediumHalfLoopUp },   // TrackElemType::LeftMediumHalfLoopDown
+    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::LeftMediumHalfLoopUp },    // TrackElemType::RightMediumHalfLoopDown
     { RideConstructionSpecialPieceSelected | TrackElemType::LeftZeroGRollDown, TRACK_CURVE_NONE },       // TrackElemType::LeftZeroGRollUp
     { RideConstructionSpecialPieceSelected | TrackElemType::RightZeroGRollDown, TRACK_CURVE_NONE },      // TrackElemType::RightZeroGRollUp
     { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::LeftZeroGRollUp },         // TrackElemType::LeftZeroGRollDown
