@@ -356,7 +356,6 @@ private:
 
         page = newPage;
         frame_no = 0;
-        var_492 = 0;
         hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[page];
         widgets = window_editor_scenario_options_widgets[page];
         Invalidate();
