@@ -132,7 +132,7 @@ void WindowUpdateAll()
     // Periodic update happens every second so 40 ticks.
     if (gCurrentRealTimeTicks >= gWindowUpdateTicks)
     {
-        gWindowUpdateTicks = gCurrentRealTimeTicks + 40;
+        gWindowUpdateTicks = gCurrentRealTimeTicks + GAME_UPDATE_FPS;
 
         WindowVisitEach([](WindowBase* w) { WindowEventPeriodicUpdateCall(w); });
     }
