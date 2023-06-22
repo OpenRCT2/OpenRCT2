@@ -19027,10 +19027,10 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRC(int32_t trackType)
             return BolligerMabillardTrackLeftLargeHalfLoopUp<MetalSupportType::TubesInverted>;
         case TrackElemType::RightFlyerLargeHalfLoopUninvertedUp:
             return BolligerMabillardTrackRightLargeHalfLoopUp<MetalSupportType::TubesInverted>;
-        case TrackElemType::RightFlyerLargeHalfLoopInvertedDown:
-            return BolligerMabillardTrackRightLargeHalfLoopDown<MetalSupportType::TubesInverted>;
-        case TrackElemType::LeftFlyerLargeHalfLoopInvertedDown:
+        case TrackElemType::RightFlyerLargeHalfLoopInvertedDown: // probably should rename this element as well
             return BolligerMabillardTrackLeftLargeHalfLoopDown<MetalSupportType::TubesInverted>;
+        case TrackElemType::LeftFlyerLargeHalfLoopInvertedDown: // probably should rename this element as well
+            return BolligerMabillardTrackRightLargeHalfLoopDown<MetalSupportType::TubesInverted>;
         case TrackElemType::FlyerHalfLoopInvertedUp:
             return FlyingRCTrackHalfLoopInvertedUp;
         case TrackElemType::FlyerHalfLoopUninvertedDown:

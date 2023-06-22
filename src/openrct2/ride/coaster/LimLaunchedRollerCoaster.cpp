@@ -5207,14 +5207,14 @@ static void LimLaunchedRCTrackRightLargeHalfLoopUp(
     }
 }
 
-static void LimLaunchedRCTrackRightLargeHalfLoopDown(
+static void LimLaunchedRCTrackLeftLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     LimLaunchedRCTrackRightLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
-static void LimLaunchedRCTrackLeftLargeHalfLoopDown(
+static void LimLaunchedRCTrackRightLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -5939,9 +5939,9 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLimLaunchedRC(int32_t trackType)
         case TrackElemType::RightLargeHalfLoopUp:
             return LimLaunchedRCTrackRightLargeHalfLoopUp;
         case TrackElemType::LeftLargeHalfLoopDown:
-            return LimLaunchedRCTrackRightLargeHalfLoopDown; // still need to propagate the variable renaming
+            return LimLaunchedRCTrackLeftLargeHalfLoopDown;
         case TrackElemType::RightLargeHalfLoopDown:
-            return LimLaunchedRCTrackLeftLargeHalfLoopDown; // still need to propagate the variable renaming
+            return LimLaunchedRCTrackRightLargeHalfLoopDown;
         case TrackElemType::LeftLargeCorkscrewUp:
             return LimLaunchedRCTrackLeftLargeCorkscrewUp;
         case TrackElemType::RightLargeCorkscrewUp:

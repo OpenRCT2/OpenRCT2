@@ -12356,7 +12356,7 @@ static void BolligerMabillardTrackRightLargeHalfLoopUp(
 }
 
 template<MetalSupportType supportType>
-static void BolligerMabillardTrackRightLargeHalfLoopDown(
+static void BolligerMabillardTrackLeftLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -12364,7 +12364,7 @@ static void BolligerMabillardTrackRightLargeHalfLoopDown(
 }
 
 template<MetalSupportType supportType>
-static void BolligerMabillardTrackLeftLargeHalfLoopDown(
+static void BolligerMabillardTrackRightLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -13335,9 +13335,9 @@ template<MetalSupportType supportType> TRACK_PAINT_FUNCTION GetTrackPaintFunctio
         case TrackElemType::RightLargeHalfLoopUp:
             return BolligerMabillardTrackRightLargeHalfLoopUp<supportType>;
         case TrackElemType::LeftLargeHalfLoopDown:
-            return BolligerMabillardTrackRightLargeHalfLoopDown<supportType>; // still need to propagate the variable renaming
+            return BolligerMabillardTrackLeftLargeHalfLoopDown<supportType>;
         case TrackElemType::RightLargeHalfLoopDown:
-            return BolligerMabillardTrackLeftLargeHalfLoopDown<supportType>; // still need to propagate the variable renaming
+            return BolligerMabillardTrackRightLargeHalfLoopDown<supportType>;
         case TrackElemType::Up90ToInvertedFlatQuarterLoop:
             return BolligerMabillardTrack90DegToInvertedFlatQuarterLoopUp<supportType>;
         case TrackElemType::InvertedFlatToDown90QuarterLoop:

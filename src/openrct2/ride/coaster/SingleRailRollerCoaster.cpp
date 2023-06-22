@@ -13829,14 +13829,14 @@ namespace SingleRailRC
         }
     }
 
-    static void TrackRightLargeHalfLoopDown(
+    static void TrackLeftLargeHalfLoopDown(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         TrackRightLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement);
     }
 
-    static void TrackLeftLargeHalfLoopDown(
+    static void TrackRightLargeHalfLoopDown(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
@@ -17818,9 +17818,9 @@ namespace SingleRailRC
             case TrackElemType::RightLargeHalfLoopUp:
                 return TrackRightLargeHalfLoopUp;
             case TrackElemType::LeftLargeHalfLoopDown:
-                return TrackRightLargeHalfLoopDown; // still need to propagate the variable renaming
+                return TrackLeftLargeHalfLoopDown;
             case TrackElemType::RightLargeHalfLoopDown:
-                return TrackLeftLargeHalfLoopDown; // still need to propagate the variable renaming
+                return TrackRightLargeHalfLoopDown;
             case TrackElemType::FlatToUp60:
                 return TrackFlatTo60DegUp;
             case TrackElemType::Up60ToFlat:
