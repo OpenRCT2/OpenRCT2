@@ -6,7 +6,8 @@
 - Improved: [#20393, #20410] Add Cyrillic characters Ґґ, Ѕѕ, Єє, Іі, Її, and Јј to the sprite font. 
 - Change: [#20110] Fix a few RCT1 build height parity discrepancies.
 - Fix: [#6152] Camera and UI are no longer locked at 40 Hz, providing a smoother experience.
-- Fix: [#9534] Screams no longer cut-off on steep diagonal drops
+- Fix: [#9534] Screams no longer cut-off on steep diagonal drops.
+- Fix: [#19450] The correct element is now auto-suggested when building a Medium Half Loop backwards.
 - Fix: [#19823] Parkobj: disallow overriding objects of different object types.
 - Fix: [#19878] Unresearched scenery can be placed via prebuilt rides.
 - Fix: [#20083] Cannot use terrain surfaces with ID > 32 and terrain edges with ID > 16.
@@ -16,12 +17,14 @@
 - Fix: [#20155] Fairground organ style 2 shows up as regular music, rather than for the merry-go-round.
 - Fix: [#20260] Ride locks up when inspecting/fixing staff member is fired.
 - Fix: [#20262] Title screen music missing when “random” title music is selected and RCT1 is no longer linked.
+- Fix: [#20342] Large Half Loop (left) now only appears once in the special elements dropdown.
 - Fix: [#20361] Crash when using random map generation.
+- Fix: [#20364] Adding too much money with cheats causes an overflow.
+- Fix: [#20365] Money cheat input does not support negative values.
 - Fix: [#20413] Crash when attempting to navigate an empty console history.
 - Fix: [#20417] Plugin/custom windows are missing the left border in the title bar.
 - Fix: [#20429] Error window tooltip not closing after 8 seconds.
-- Fix: [#20364] Adding too much money with cheats causes an overflow.
-- Fix: [#20365] Money cheat input does not support negative values.
+- Fix: [#20456] Downward large half loops on flying coasters (fly-to-lie) are now correctly named.
 
 0.4.5 (2023-05-08)
 ------------------------------------------------------------------------
