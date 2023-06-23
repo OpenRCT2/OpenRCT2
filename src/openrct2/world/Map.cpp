@@ -551,7 +551,7 @@ int16_t TileElementHeight(const CoordsXY& loc)
     int8_t quad = 0, quad_extra = 0; // which quadrant the element is in?
                                      // quad_extra is for extra height tiles
 
-    uint8_t xl, yl;                  // coordinates across this tile
+    uint8_t xl, yl; // coordinates across this tile
 
     uint8_t TILE_SIZE = 32;
 
