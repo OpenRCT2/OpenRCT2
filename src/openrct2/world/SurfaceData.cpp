@@ -1,10 +1,12 @@
 #include "SurfaceData.h"
 
+#include "Surface.h"
+
 // 0x00981A1E
 // Table of pre-calculated surface slopes (32) when raising the land tile for a given selection (5)
 // 0x1F = new slope
 // 0x20 = base height increases
-static const uint8_t TileElementRaiseStyles[9][32] = {
+constexpr uint8_t TileElementRaiseStyles[9][32] = {
     // MAP_SELECT_TYPE_CORNER_0
     { TILE_ELEMENT_SLOPE_N_CORNER_UP,
       TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT | TILE_ELEMENT_SLOPE_N_CORNER_UP | TILE_ELEMENT_SLOPE_E_CORNER_UP
@@ -337,7 +339,7 @@ static const uint8_t TileElementRaiseStyles[9][32] = {
 // Basically the inverse of the table above.
 // 0x1F = new slope
 // 0x20 = base height increases
-const uint8_t TileElementLowerStyles[9][32] = {
+constexpr uint8_t TileElementLowerStyles[9][32] = {
     // MAP_SELECT_TYPE_CORNER_0
     { SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT | TILE_ELEMENT_SLOPE_E_CORNER_UP | TILE_ELEMENT_SLOPE_S_CORNER_UP
           | TILE_ELEMENT_SLOPE_W_CORNER_UP,
