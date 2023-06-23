@@ -1447,10 +1447,7 @@ void WindowEventDropdownCall(WindowBase* w, WidgetIndex widgetIndex, int32_t dro
 {
     if (w->event_handlers == nullptr)
     {
-        if (dropdownIndex != -1)
-        {
-            w->OnDropdown(widgetIndex, dropdownIndex);
-        }
+        w->OnDropdown(widgetIndex, dropdownIndex);
     }
     else if (w->event_handlers->dropdown != nullptr)
     {

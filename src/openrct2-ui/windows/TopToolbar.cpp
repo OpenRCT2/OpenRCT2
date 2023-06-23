@@ -2653,6 +2653,10 @@ public:
 
     void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
     {
+        if (selectedIndex == -1)
+        {
+            return;
+        }
         switch (widgetIndex)
         {
             case WIDX_FILE_MENU:

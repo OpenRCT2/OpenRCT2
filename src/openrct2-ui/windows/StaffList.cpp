@@ -238,6 +238,10 @@ public:
 
     void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
+        if (dropdownIndex == -1)
+        {
+            return;
+        }
         if (widgetIndex == WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER)
         {
             auto action = StaffSetColourAction(GetSelectedStaffType(), ColourDropDownIndexToColour(dropdownIndex));

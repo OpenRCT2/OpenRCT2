@@ -219,6 +219,10 @@ public:
 
     void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
     {
+        if (selectedIndex == -1)
+        {
+            return;
+        }
         if (widgetIndex == WIDX_GAME_TOOLS)
         {
             switch (selectedIndex)
