@@ -583,6 +583,7 @@
     <ClInclude Include="world\ScenerySelection.h" />
     <ClInclude Include="world\SmallScenery.h" />
     <ClInclude Include="world\Surface.h" />
+    <ClInclude Include="world\SurfaceData.h" />
     <ClInclude Include="world\TileElement.h" />
     <ClInclude Include="world\TileElementsView.h" />
     <ClInclude Include="world\TileInspector.h" />
@@ -1043,6 +1044,7 @@
     <ClCompile Include="world\Scenery.cpp" />
     <ClCompile Include="world\SmallScenery.cpp" />
     <ClCompile Include="world\Surface.cpp" />
+    <ClCompile Include="world\SurfaceData.cpp" />
     <ClCompile Include="world\TileElement.cpp" />
     <ClCompile Include="world/TileElementBase.cpp" />
     <ClCompile Include="world\TileInspector.cpp" />
