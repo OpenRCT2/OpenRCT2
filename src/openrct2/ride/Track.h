@@ -574,12 +574,12 @@ namespace TrackElemType
 
     constexpr track_type_t LeftFlyerLargeHalfLoopUninvertedUp = 283;
     constexpr track_type_t RightFlyerLargeHalfLoopUninvertedUp = 284;
-    constexpr track_type_t RightFlyerLargeHalfLoopInvertedDown = 285;
-    constexpr track_type_t LeftFlyerLargeHalfLoopInvertedDown = 286;
-    constexpr track_type_t LeftFlyerLargeHalfLoopInvertedUp = 287;
-    constexpr track_type_t RightFlyerLargeHalfLoopInvertedUp = 288;
-    constexpr track_type_t RightFlyerLargeHalfLoopUninvertedDown = 289;
-    constexpr track_type_t LeftFlyerLargeHalfLoopUninvertedDown = 290;
+    constexpr track_type_t LeftFlyerLargeHalfLoopInvertedDown = 285;
+    constexpr track_type_t RightFlyerLargeHalfLoopInvertedDown = 286;
+    constexpr track_type_t LeftFlyerLargeHalfLoopInvertedUp = 287;      // not implemented
+    constexpr track_type_t RightFlyerLargeHalfLoopInvertedUp = 288;     // not implemented
+    constexpr track_type_t LeftFlyerLargeHalfLoopUninvertedDown = 289;  // not implemented
+    constexpr track_type_t RightFlyerLargeHalfLoopUninvertedDown = 290; // not implemented
 
     constexpr track_type_t FlyerHalfLoopInvertedUp = 291;
     constexpr track_type_t FlyerHalfLoopUninvertedDown = 292;

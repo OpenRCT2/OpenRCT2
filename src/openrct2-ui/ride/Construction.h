@@ -127,12 +127,12 @@ constexpr std::array DropdownOrder = {
     TrackElemType::RightLargeZeroGRollDown,
     TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp,
     TrackElemType::LeftFlyerLargeHalfLoopInvertedDown,
+    TrackElemType::LeftFlyerLargeHalfLoopInvertedUp,     // (not implemented)
+    TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown, // (not implemented)
     TrackElemType::RightFlyerLargeHalfLoopUninvertedUp,
     TrackElemType::RightFlyerLargeHalfLoopInvertedDown,
-    TrackElemType::LeftFlyerLargeHalfLoopInvertedUp,
-    TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown,
-    TrackElemType::RightFlyerLargeHalfLoopInvertedUp,
-    TrackElemType::RightFlyerLargeHalfLoopUninvertedDown,
+    TrackElemType::RightFlyerLargeHalfLoopInvertedUp,     // (not implemented)
+    TrackElemType::RightFlyerLargeHalfLoopUninvertedDown, // (not implemented)
 };
 constexpr size_t DropdownLength = DropdownOrder.size();
 

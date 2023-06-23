@@ -19027,9 +19027,9 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRC(int32_t trackType)
             return BolligerMabillardTrackLeftLargeHalfLoopUp<MetalSupportType::TubesInverted>;
         case TrackElemType::RightFlyerLargeHalfLoopUninvertedUp:
             return BolligerMabillardTrackRightLargeHalfLoopUp<MetalSupportType::TubesInverted>;
-        case TrackElemType::RightFlyerLargeHalfLoopInvertedDown: // probably should rename this element as well
+        case TrackElemType::LeftFlyerLargeHalfLoopInvertedDown:
             return BolligerMabillardTrackLeftLargeHalfLoopDown<MetalSupportType::TubesInverted>;
-        case TrackElemType::LeftFlyerLargeHalfLoopInvertedDown: // probably should rename this element as well
+        case TrackElemType::RightFlyerLargeHalfLoopInvertedDown:
             return BolligerMabillardTrackRightLargeHalfLoopDown<MetalSupportType::TubesInverted>;
         case TrackElemType::FlyerHalfLoopInvertedUp:
             return FlyingRCTrackHalfLoopInvertedUp;
@@ -19039,10 +19039,12 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRC(int32_t trackType)
             return FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp;
         case TrackElemType::RightFlyerLargeHalfLoopInvertedUp:
             return FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp;
-        case TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown:
-            return FlyingRCTrackLeftFlyingLargeHalfLoopUninvertedDown;
-        case TrackElemType::RightFlyerLargeHalfLoopUninvertedDown:
-            return FlyingRCTrackRightFlyingLargeHalfLoopUninvertedDown;
+        case TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown:       // not implemented
+            return FlyingRCTrackRightFlyingLargeHalfLoopUninvertedDown; // not implemented - but may want to rename this for
+                                                                        // consistency anyway
+        case TrackElemType::RightFlyerLargeHalfLoopUninvertedDown:      // not implemented
+            return FlyingRCTrackLeftFlyingLargeHalfLoopUninvertedDown;  // not implemented - but may want to rename this for
+                                                                        // consistency anyway
     }
     return GetTrackPaintFunctionBolligerMabillard<MetalSupportType::Tubes>(trackType);
 }
