@@ -681,12 +681,12 @@ const uint8_t TileElementLowerStyles[9][32] = {
       TILE_ELEMENT_SLOPE_N_CORNER_UP | TILE_ELEMENT_SLOPE_W_CORNER_UP },
 };
 
-uint8_t LowerSurfaceCornerFlags(uint8_t SelectedCorner, uint8_t CurrentSlope)
+uint8_t LowerSurfaceCornerFlags(size_t SelectedCorner, size_t CurrentSlope)
 {
     return TileElementLowerStyles[SelectedCorner][CurrentSlope];
 }
 
-uint8_t RaiseSurfaceCornerFlags(uint8_t SelectedCorner, uint8_t CurrentSlope)
+uint8_t RaiseSurfaceCornerFlags(size_t SelectedCorner, size_t CurrentSlope)
 {
     return TileElementRaiseStyles[SelectedCorner][CurrentSlope];
 }
