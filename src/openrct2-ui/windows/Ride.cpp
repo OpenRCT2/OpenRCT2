@@ -1836,8 +1836,7 @@ private:
         WindowDropdownShowText(
             { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 2);
         gDropdownDefaultIndex = 0;
-        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK) || _viewIndex == 0
-            || _viewIndex > ride->NumTrains)
+        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK) || _viewIndex == 0 || _viewIndex > ride->NumTrains)
         {
             // Disable if we're a flat ride, 'overall view' is selected or a station is selected
             Dropdown::SetDisabled(1, true);
@@ -3038,7 +3037,7 @@ private:
                 break;
             case WIDX_LIFT_HILL_SPEED_INCREASE:
                 upperBound = gCheatsUnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
-                                                           : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
+                                                          : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
                 lowerBound = gCheatsUnlockOperatingLimits ? 0 : ride->GetRideTypeDescriptor().LiftData.minimum_speed;
                 SetOperatingSetting(
                     rideId, RideSetSetting::LiftHillSpeed,
@@ -3046,7 +3045,7 @@ private:
                 break;
             case WIDX_LIFT_HILL_SPEED_DECREASE:
                 upperBound = gCheatsUnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
-                                                           : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
+                                                          : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
                 lowerBound = gCheatsUnlockOperatingLimits ? 0 : ride->GetRideTypeDescriptor().LiftData.minimum_speed;
                 SetOperatingSetting(
                     rideId, RideSetSetting::LiftHillSpeed,
@@ -3094,14 +3093,14 @@ private:
                 break;
             case WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE:
                 upperBound = gCheatsUnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
-                                                           : OpenRCT2::Limits::MaxCircuitsPerRide;
+                                                          : OpenRCT2::Limits::MaxCircuitsPerRide;
                 lowerBound = 1;
                 SetOperatingSetting(
                     rideId, RideSetSetting::NumCircuits, std::clamp<int16_t>(ride->num_circuits + 1, lowerBound, upperBound));
                 break;
             case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
                 upperBound = gCheatsUnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
-                                                           : OpenRCT2::Limits::MaxCircuitsPerRide;
+                                                          : OpenRCT2::Limits::MaxCircuitsPerRide;
                 lowerBound = 1;
                 SetOperatingSetting(
                     rideId, RideSetSetting::NumCircuits, std::clamp<int16_t>(ride->num_circuits - 1, lowerBound, upperBound));
