@@ -44,7 +44,7 @@ struct PaletteBGRA
     uint8_t Alpha{};
 };
 
-constexpr const auto PALETTE_SIZE = 256;
+constexpr auto PALETTE_SIZE = 256;
 
 struct GamePalette
 {

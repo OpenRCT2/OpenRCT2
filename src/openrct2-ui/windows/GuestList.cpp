@@ -28,9 +28,9 @@
 #include <openrct2/world/Park.h>
 #include <vector>
 
-static constexpr const StringId WINDOW_TITLE = STR_GUESTS;
-static constexpr const int32_t WH = 330;
-static constexpr const int32_t WW = 350;
+static constexpr StringId WINDOW_TITLE = STR_GUESTS;
+static constexpr int32_t WH = 330;
+static constexpr int32_t WW = 350;
 
 enum WindowGuestListWidgetIdx
 {
@@ -126,8 +126,8 @@ private:
         char Name[256];
     };
 
-    static constexpr const uint8_t SUMMARISED_GUEST_ROW_HEIGHT = SCROLLABLE_ROW_HEIGHT + 11;
-    static constexpr const auto GUESTS_PER_PAGE = 2000;
+    static constexpr uint8_t SUMMARISED_GUEST_ROW_HEIGHT = SCROLLABLE_ROW_HEIGHT + 11;
+    static constexpr auto GUESTS_PER_PAGE = 2000;
     static constexpr const auto GUEST_PAGE_HEIGHT = GUESTS_PER_PAGE * SCROLLABLE_ROW_HEIGHT;
     static constexpr size_t MaxGroups = 240;
 

@@ -23,7 +23,7 @@
 #include "../Supports.h"
 #include "Paint.TileElement.h"
 
-static constexpr const CoordsXY lengths[] = {
+static constexpr CoordsXY lengths[] = {
     { 12, 26 },
     { 26, 12 },
     { 12, 26 },
@@ -116,7 +116,7 @@ static void PaintSmallSceneryBody(
     {
         if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HALF_SPACE))
         {
-            static constexpr const CoordsXY sceneryHalfTileOffsets[] = {
+            static constexpr CoordsXY sceneryHalfTileOffsets[] = {
                 { 3, 3 },
                 { 3, 17 },
                 { 17, 3 },

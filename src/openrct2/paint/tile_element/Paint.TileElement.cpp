@@ -303,7 +303,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         return;
     }
 
-    static constexpr const int32_t segmentPositions[][3] = {
+    static constexpr int32_t segmentPositions[][3] = {
         { 0, 6, 2 },
         { 5, 4, 8 },
         { 1, 7, 3 },

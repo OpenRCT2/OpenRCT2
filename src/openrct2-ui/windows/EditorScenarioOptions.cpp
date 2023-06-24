@@ -29,14 +29,14 @@
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const int32_t WW_FINANCIAL = 280;
-static constexpr const int32_t WH_FINANCIAL = 149;
+static constexpr int32_t WW_FINANCIAL = 280;
+static constexpr int32_t WH_FINANCIAL = 149;
 
-static constexpr const int32_t WW_GUESTS = 380;
-static constexpr const int32_t WH_GUESTS = 149;
+static constexpr int32_t WW_GUESTS = 380;
+static constexpr int32_t WH_GUESTS = 149;
 
-static constexpr const int32_t WW_PARK = 400;
-static constexpr const int32_t WH_PARK = 200;
+static constexpr int32_t WW_PARK = 400;
+static constexpr int32_t WH_PARK = 200;
 
 #pragma region Widgets
 
@@ -48,7 +48,7 @@ enum {
     WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT
 };
 
-static constexpr const StringId ClimateNames[] = {
+static constexpr StringId ClimateNames[] = {
     STR_CLIMATE_COOL_AND_WET,
     STR_CLIMATE_WARM,
     STR_CLIMATE_HOT_AND_DRY,

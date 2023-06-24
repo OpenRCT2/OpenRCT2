@@ -28,17 +28,17 @@
 #include <openrct2/util/Util.h>
 #include <vector>
 
-static constexpr const StringId WINDOW_TITLE = STR_SELECT_SCENARIO;
-static constexpr const int32_t WW = 734;
-static constexpr const int32_t WH = 384;
-static constexpr const int32_t SidebarWidth = 180;
-static constexpr const int32_t TabWidth = 92;
-static constexpr const int32_t TabHeight = 34;
-static constexpr const int32_t TrueFontSize = 24;
-static constexpr const int32_t WidgetsStart = 17;
-static constexpr const int32_t TabsStart = WidgetsStart;
-static constexpr const int32_t InitialNumUnlockedScenarios = 5;
-constexpr const uint8_t NumTabs = 10;
+static constexpr StringId WINDOW_TITLE = STR_SELECT_SCENARIO;
+static constexpr int32_t WW = 734;
+static constexpr int32_t WH = 384;
+static constexpr int32_t SidebarWidth = 180;
+static constexpr int32_t TabWidth = 92;
+static constexpr int32_t TabHeight = 34;
+static constexpr int32_t TrueFontSize = 24;
+static constexpr int32_t WidgetsStart = 17;
+static constexpr int32_t TabsStart = WidgetsStart;
+static constexpr int32_t InitialNumUnlockedScenarios = 5;
+constexpr uint8_t NumTabs = 10;
 
 enum class ListItemType : uint8_t
 {
@@ -82,7 +82,7 @@ enum
     WIDX_SCENARIOLIST
 };
 
-static constexpr const StringId kScenarioOriginStringIds[] = {
+static constexpr StringId kScenarioOriginStringIds[] = {
     STR_SCENARIO_CATEGORY_RCT1,        STR_SCENARIO_CATEGORY_RCT1_AA,    STR_SCENARIO_CATEGORY_RCT1_LL,
     STR_SCENARIO_CATEGORY_RCT2,        STR_SCENARIO_CATEGORY_RCT2_WW,    STR_SCENARIO_CATEGORY_RCT2_TT,
     STR_SCENARIO_CATEGORY_UCES,        STR_SCENARIO_CATEGORY_REAL_PARKS, STR_SCENARIO_CATEGORY_EXTRAS_PARKS,

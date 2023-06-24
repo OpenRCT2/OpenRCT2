@@ -1063,7 +1063,7 @@ int32_t StaffGetAvailableEntertainerCostumeList(EntertainerCostume* costumeList)
 }
 
 /** rct2: 0x009929C8 */
-static constexpr const CoordsXY _MowingWaypoints[] = {
+static constexpr CoordsXY _MowingWaypoints[] = {
     { 28, 28 }, { 28, 4 }, { 20, 4 }, { 20, 28 }, { 12, 28 }, { 12, 4 }, { 4, 4 }, { 4, 28 },
 };
 
@@ -1510,7 +1510,7 @@ void Staff::UpdateAnswering()
 }
 
 /** rct2: 0x00992A5C */
-static constexpr const CoordsXY _WateringUseOffsets[] = {
+static constexpr CoordsXY _WateringUseOffsets[] = {
     { 3, 16 }, { 16, 29 }, { 29, 16 }, { 16, 3 }, { 3, 29 }, { 29, 29 }, { 29, 3 }, { 3, 3 },
 };
 
@@ -1853,7 +1853,7 @@ enum
  * - index 8 is for inspecting a ride.
  */
 // clang-format off
-static constexpr const uint32_t FixingSubstatesForBreakdown[9] = {
+static constexpr uint32_t FixingSubstatesForBreakdown[9] = {
     ( // BREAKDOWN_SAFETY_CUT_OUT
         (1 << PEEP_FIXING_MOVE_TO_STATION_END) |
         (1 << PEEP_FIXING_FIX_STATION_END) |
@@ -2185,7 +2185,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
 }
 
 /** rct2: 0x00992A3C */
-static constexpr const CoordsXY _StationFixingOffsets[] = {
+static constexpr CoordsXY _StationFixingOffsets[] = {
     { -12, 0 },
     { 0, 12 },
     { 12, 0 },

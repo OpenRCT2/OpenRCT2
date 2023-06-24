@@ -68,7 +68,7 @@ using namespace OpenRCT2;
 // entrance of the slide. Up to 4 waypoints for each 4 sides that an ride entrance can be located
 // and 4 different rotations of the ride. 4 * 4 * 4 = 64 locations.
 // clang-format off
-static constexpr const CoordsXY SpiralSlideWalkingPath[64] = {
+static constexpr CoordsXY SpiralSlideWalkingPath[64] = {
     {  56,   8 },
     {   8,   8 },
     {   8,  32 },
@@ -136,7 +136,7 @@ static constexpr const CoordsXY SpiralSlideWalkingPath[64] = {
 };
 
 /** rct2: 0x00981F4C, 0x00981F4E */
-static constexpr const CoordsXY _WatchingPositionOffsets[] = {
+static constexpr CoordsXY _WatchingPositionOffsets[] = {
     {  7,  5 },
     {  5, 25 },
     { 25,  5 },
@@ -171,7 +171,7 @@ static constexpr const CoordsXY _WatchingPositionOffsets[] = {
     {  0,  7 },
 };
 
-static constexpr const ride_rating NauseaMaximumThresholds[] = {
+static constexpr ride_rating NauseaMaximumThresholds[] = {
     300,
     600,
     800,
@@ -179,7 +179,7 @@ static constexpr const ride_rating NauseaMaximumThresholds[] = {
 };
 
 /** rct2: 009823AC */
-static constexpr const PeepThoughtType crowded_thoughts[] = {
+static constexpr PeepThoughtType crowded_thoughts[] = {
     PeepThoughtType::Lost,
     PeepThoughtType::Tired,
     PeepThoughtType::BadLitter,
@@ -418,7 +418,7 @@ static struct
 };
 
 // These arrays contain the base minimum and maximum nausea ratings for peeps, based on their nausea tolerance level.
-static constexpr const ride_rating NauseaMinimumThresholds[] = {
+static constexpr ride_rating NauseaMinimumThresholds[] = {
     0,
     0,
     200,
@@ -3498,7 +3498,7 @@ void Guest::UpdateRideAtEntrance()
 }
 
 /** rct2: 0x00981FD4, 0x00981FD6 */
-static constexpr const CoordsXY _MazeEntranceStart[] = {
+static constexpr CoordsXY _MazeEntranceStart[] = {
     { 8, 8 },
     { 8, 24 },
     { 24, 24 },
@@ -4687,7 +4687,7 @@ void Guest::UpdateRideApproachSpiralSlide()
 }
 
 /** rct2: 0x00981F0C, 0x00981F0E */
-static constexpr const CoordsXY _SpiralSlideEnd[] = {
+static constexpr CoordsXY _SpiralSlideEnd[] = {
     { 25, 56 },
     { 56, 7 },
     { 7, -24 },
@@ -4695,7 +4695,7 @@ static constexpr const CoordsXY _SpiralSlideEnd[] = {
 };
 
 /** rct2: 0x00981F1C, 0x00981F1E */
-static constexpr const CoordsXY _SpiralSlideEndWaypoint[] = {
+static constexpr CoordsXY _SpiralSlideEndWaypoint[] = {
     { 8, 56 },
     { 56, 24 },
     { 24, -24 },
@@ -4846,7 +4846,7 @@ void Guest::UpdateRideLeaveSpiralSlide()
 }
 
 /** rct2: 0x00981FE4 */
-static constexpr const uint8_t _MazeGetNewDirectionFromEdge[][4] = {
+static constexpr uint8_t _MazeGetNewDirectionFromEdge[][4] = {
     { 15, 7, 15, 7 },
     { 11, 3, 11, 3 },
     { 7, 15, 7, 15 },
@@ -4854,7 +4854,7 @@ static constexpr const uint8_t _MazeGetNewDirectionFromEdge[][4] = {
 };
 
 /** rct2: 0x00981FF4 */
-static constexpr const uint8_t _MazeCurrentDirectionToOpenHedge[][4] = {
+static constexpr uint8_t _MazeCurrentDirectionToOpenHedge[][4] = {
     { 1, 2, 14, 0 },
     { 4, 5, 6, 2 },
     { 6, 8, 9, 10 },
@@ -5314,7 +5314,7 @@ void Guest::UpdateWalking()
         {
             if ((0xFFFF & ScenarioRand()) <= 4096)
             {
-                static constexpr const Litter::Type litter_types[] = {
+                static constexpr Litter::Type litter_types[] = {
                     Litter::Type::EmptyCan,
                     Litter::Type::Rubbish,
                     Litter::Type::BurgerBox,
@@ -6979,7 +6979,7 @@ void Guest::InsertNewThought(PeepThoughtType thoughtType, uint16_t thoughtArgume
 
 // clang-format off
 /** rct2: 0x009823A0 */
-static constexpr const PeepNauseaTolerance nausea_tolerance_distribution[] = {
+static constexpr PeepNauseaTolerance nausea_tolerance_distribution[] = {
     PeepNauseaTolerance::None,
     PeepNauseaTolerance::Low, PeepNauseaTolerance::Low,
     PeepNauseaTolerance::Average, PeepNauseaTolerance::Average, PeepNauseaTolerance::Average,
@@ -6987,7 +6987,7 @@ static constexpr const PeepNauseaTolerance nausea_tolerance_distribution[] = {
 };
 
 /** rct2: 0x009823BC */
-static constexpr const uint8_t trouser_colours[] = {
+static constexpr uint8_t trouser_colours[] = {
     COLOUR_BLACK,
     COLOUR_GREY,
     COLOUR_LIGHT_BROWN,
@@ -7016,7 +7016,7 @@ static constexpr const uint8_t trouser_colours[] = {
 };
 
 /** rct2: 0x009823D5 */
-static constexpr const uint8_t tshirt_colours[] = {
+static constexpr uint8_t tshirt_colours[] = {
     COLOUR_BLACK,
     COLOUR_GREY,
     COLOUR_LIGHT_BROWN,
@@ -7257,7 +7257,7 @@ enum
     PEEP_FACE_OFFSET_VERY_VERY_HAPPY,
 };
 
-static constexpr const int32_t face_sprite_small[] = {
+static constexpr int32_t face_sprite_small[] = {
     SPR_PEEP_SMALL_FACE_ANGRY,
     SPR_PEEP_SMALL_FACE_VERY_VERY_SICK,
     SPR_PEEP_SMALL_FACE_VERY_SICK,
@@ -7273,7 +7273,7 @@ static constexpr const int32_t face_sprite_small[] = {
     SPR_PEEP_SMALL_FACE_VERY_VERY_HAPPY,
 };
 
-static constexpr const int32_t face_sprite_large[] = {
+static constexpr int32_t face_sprite_large[] = {
     SPR_PEEP_LARGE_FACE_ANGRY_0,
     SPR_PEEP_LARGE_FACE_VERY_VERY_SICK_0,
     SPR_PEEP_LARGE_FACE_VERY_SICK_0,

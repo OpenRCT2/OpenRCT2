@@ -83,14 +83,14 @@ const std::array<CoordsXY, NumOrthogonalDirections> DirectionOffsets = {
 };
 
 // rct2: 0x0097B974
-static constexpr const uint16_t EntranceDirections[] = {
+static constexpr uint16_t EntranceDirections[] = {
     (4),     0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_RIDE_ENTRANCE,
     (4),     0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_RIDE_EXIT,
     (4 | 1), 0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_PARK_ENTRANCE
 };
 
 /** rct2: 0x0098D7F0 */
-static constexpr const uint8_t connected_path_count[] = {
+static constexpr uint8_t connected_path_count[] = {
     0, // 0b0000
     1, // 0b0001
     1, // 0b0010

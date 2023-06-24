@@ -35,8 +35,8 @@
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_STRINGID;
-static constexpr const int32_t WH = 224;
+static constexpr StringId WINDOW_TITLE = STR_STRINGID;
+static constexpr int32_t WH = 224;
 
 // clang-format off
 enum WindowParkPage {
@@ -167,7 +167,7 @@ struct WindowParkAward {
     uint32_t sprite;
 };
 
-static constexpr const WindowParkAward _parkAwards[] = {
+static constexpr WindowParkAward _parkAwards[] = {
     { STR_AWARD_MOST_UNTIDY,                SPR_AWARD_MOST_UNTIDY },
     { STR_AWARD_MOST_TIDY,                  SPR_AWARD_MOST_TIDY },
     { STR_AWARD_BEST_ROLLERCOASTERS,        SPR_AWARD_BEST_ROLLERCOASTERS },

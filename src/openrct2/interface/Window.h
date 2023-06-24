@@ -38,7 +38,7 @@ enum class CursorID : uint8_t;
 enum class RideConstructionState : uint8_t;
 enum class CloseWindowModifier : uint8_t;
 
-constexpr const uint8_t CloseButtonWidth = 10;
+constexpr uint8_t CloseButtonWidth = 10;
 
 #define SCROLLABLE_ROW_HEIGHT 12
 #define LIST_ROW_HEIGHT 12

@@ -189,7 +189,7 @@ const uint32_t trackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile[4] = {
     SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SE_SW,
 };
 
-static constexpr const uint32_t trackSpritesGhostTrainSpinningTunnel[2][2][4] = {
+static constexpr uint32_t trackSpritesGhostTrainSpinningTunnel[2][2][4] = {
     {
         {
             SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_SW_NE_FRAME_0,
@@ -783,7 +783,7 @@ bool TrackPaintUtilDrawStationCovers2(
     if (baseImageIndex == ImageIndexUndefined)
         return false;
 
-    static constexpr const int16_t heights[][2] = {
+    static constexpr int16_t heights[][2] = {
         { 22, 0 },
         { 30, 0 },
         { 46, 0 },
@@ -995,7 +995,7 @@ constexpr CoordsXYZ defaultRightHelixUpSmallQuarterBoundOffsets[4][3][2] = {
     },
 };
 
-static constexpr const int8_t right_helix_up_small_quarter_tiles_sprite_map[] = {
+static constexpr int8_t right_helix_up_small_quarter_tiles_sprite_map[] = {
     0,
     -1,
     1,
@@ -1099,7 +1099,7 @@ constexpr CoordsXY defaultRightHelixUpLargeQuarterBoundLengths[4][5][2] = {
     },
 };
 
-static constexpr const int8_t right_helix_up_large_quarter_sprite_map[] = {
+static constexpr int8_t right_helix_up_large_quarter_sprite_map[] = {
     0, -1, 1, 2, -1, 3, 4,
 };
 void TrackPaintUtilRightHelixUpLargeQuarterTilesPaint(
@@ -1276,7 +1276,7 @@ const uint8_t mapLeftEighthTurnToOrthogonal[] = {
     4, 2, 3, 1, 0,
 };
 
-static constexpr const int8_t eighth_to_diag_sprite_map[] = {
+static constexpr int8_t eighth_to_diag_sprite_map[] = {
     0, 1, 2, -1, 3,
 };
 void TrackPaintUtilEighthToDiagTilesPaint(
@@ -1315,7 +1315,7 @@ constexpr CoordsXY defaultDiagBoundLengths[4] = {
     { 32, 32 },
 };
 
-static constexpr const int8_t diag_sprite_map[4][4] = {
+static constexpr int8_t diag_sprite_map[4][4] = {
     { -1, 0, -1, -1 },
     { -1, -1, -1, 0 },
     { -1, -1, 0, -1 },
@@ -1440,7 +1440,7 @@ constexpr CoordsXY defaultRightQuarterTurn5TilesBoundLengths[4][5] = {
     },
 };
 
-static constexpr const int8_t right_quarter_turn_5_tiles_sprite_map[] = {
+static constexpr int8_t right_quarter_turn_5_tiles_sprite_map[] = {
     0, -1, 1, 2, -1, 3, 4,
 };
 
@@ -1526,7 +1526,7 @@ void TrackPaintUtilRightQuarterTurn5TilesWoodenSupports(
 {
     if (trackSequence != 1 && trackSequence != 4)
     {
-        static constexpr const uint8_t supportTypes[][7] = {
+        static constexpr uint8_t supportTypes[][7] = {
             { 0, 0xFF, 4, 2, 0xFF, 4, 1 },
             { 1, 0xFF, 5, 3, 0xFF, 5, 0 },
             { 0, 0xFF, 2, 4, 0xFF, 2, 1 },
@@ -1613,7 +1613,7 @@ constexpr CoordsXY defaultRightQuarterTurn3TilesBoundLengths[4][3] = {
     },
 };
 
-static constexpr const int8_t right_quarter_turn_3_tiles_sprite_map[] = {
+static constexpr int8_t right_quarter_turn_3_tiles_sprite_map[] = {
     0,
     -1,
     1,
@@ -1836,7 +1836,7 @@ void TrackPaintUtilRightQuarterTurn3Tiles25DegDownTunnel(
     }
 }
 
-static constexpr const int8_t left_quarter_turn_3_tiles_sprite_map[] = {
+static constexpr int8_t left_quarter_turn_3_tiles_sprite_map[] = {
     2,
     -1,
     1,
@@ -2052,7 +2052,7 @@ void TrackPaintUtilSpinningTunnelPaint(PaintSession& session, int8_t thickness, 
 void TrackPaintUtilOnridePhotoSmallPaint(
     PaintSession& session, Direction direction, int32_t height, const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][3] = {
+    static constexpr uint32_t imageIds[4][3] = {
         { SPR_ON_RIDE_PHOTO_SIGN_SMALL_SW_NE, SPR_ON_RIDE_PHOTO_CAMERA_SMALL_S, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_S },
         { SPR_ON_RIDE_PHOTO_SIGN_SMALL_NW_SE, SPR_ON_RIDE_PHOTO_CAMERA_SMALL_W, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_W },
         { SPR_ON_RIDE_PHOTO_SIGN_SMALL_NE_SW, SPR_ON_RIDE_PHOTO_CAMERA_SMALL_N, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_N },
@@ -2090,7 +2090,7 @@ void TrackPaintUtilOnridePhotoSmallPaint(
 void TrackPaintUtilOnridePhotoPaint(
     PaintSession& session, Direction direction, int32_t height, const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][3] = {
+    static constexpr uint32_t imageIds[4][3] = {
         { SPR_ON_RIDE_PHOTO_SIGN_SW_NE, SPR_ON_RIDE_PHOTO_CAMERA_S, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_S },
         { SPR_ON_RIDE_PHOTO_SIGN_NW_SE, SPR_ON_RIDE_PHOTO_CAMERA_W, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_W },
         { SPR_ON_RIDE_PHOTO_SIGN_NE_SW, SPR_ON_RIDE_PHOTO_CAMERA_N, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_N },
@@ -2125,7 +2125,7 @@ void TrackPaintUtilOnridePhotoPaint(
     }
 }
 
-static constexpr const uint16_t RightVerticalLoopSegments[] = {
+static constexpr uint16_t RightVerticalLoopSegments[] = {
     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
     SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4,

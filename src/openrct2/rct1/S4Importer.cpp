@@ -75,7 +75,7 @@
 #include <memory>
 #include <vector>
 
-static constexpr const ObjectEntryIndex ObjectEntryIndexIgnore = 254;
+static constexpr ObjectEntryIndex ObjectEntryIndexIgnore = 254;
 
 using namespace OpenRCT2;
 

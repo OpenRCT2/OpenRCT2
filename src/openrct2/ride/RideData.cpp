@@ -243,7 +243,7 @@ const StringId RideModeNames[] = {
 };
 // clang-format on
 
-constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
+constexpr RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_SPIRAL_ROLLER_COASTER              */ SpiralRollerCoasterRTD,
     /* RIDE_TYPE_STAND_UP_ROLLER_COASTER            */ StandUpRollerCoasterRTD,
     /* RIDE_TYPE_SUSPENDED_SWINGING_COASTER         */ SuspendedSwingingCoasterRTD,

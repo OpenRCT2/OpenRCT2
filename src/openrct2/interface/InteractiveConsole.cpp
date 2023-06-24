@@ -1984,7 +1984,7 @@ static constexpr const utf8* console_window_table[] = {
 };
 // clang-format on
 
-static constexpr const ConsoleCommand console_command_table[] = {
+static constexpr ConsoleCommand console_command_table[] = {
     { "abort", ConsoleCommandAbort, "Calls std::abort(), for testing purposes only.", "abort" },
     { "add_news_item", ConsoleCommandAddNewsItem, "Inserts a news item", "add_news_item [<type> <message> <assoc>]" },
     { "assert", ConsoleCommandAssert, "Triggers assertion failure, for testing purposes only", "assert" },

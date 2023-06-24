@@ -209,7 +209,7 @@ enum
 
 // clang-format off
 // from left to right
-static constexpr const int32_t left_aligned_widgets_order[] = {
+static constexpr int32_t left_aligned_widgets_order[] = {
     WIDX_PAUSE,
     WIDX_FASTFORWARD,
     WIDX_FILE_MENU,
@@ -229,7 +229,7 @@ static constexpr const int32_t left_aligned_widgets_order[] = {
 };
 
 // from right to left
-static constexpr const int32_t right_aligned_widgets_order[] = {
+static constexpr int32_t right_aligned_widgets_order[] = {
     WIDX_NEWS,
     WIDX_GUESTS,
     WIDX_STAFF,

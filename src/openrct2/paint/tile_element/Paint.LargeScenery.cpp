@@ -31,7 +31,7 @@
 #include "Paint.TileElement.h"
 
 // clang-format off
-static constexpr const BoundBoxXY LargeSceneryBoundBoxes[] = {
+static constexpr BoundBoxXY LargeSceneryBoundBoxes[] = {
     { { 3, 3 }, { 26, 26 } },
     { { 17, 17 }, { 12, 12 } },
     { { 17, 3 }, { 12, 12 } },

@@ -44,9 +44,9 @@ enum class DisplayType {
 
 #pragma region Widgets
 
-static constexpr const StringId WINDOW_TITLE = STR_VIEW_CLIPPING_TITLE;
-static constexpr const int32_t WW = 180;
-static constexpr const int32_t WH = 155;
+static constexpr StringId WINDOW_TITLE = STR_VIEW_CLIPPING_TITLE;
+static constexpr int32_t WW = 180;
+static constexpr int32_t WH = 155;
 
 static Widget window_view_clipping_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),

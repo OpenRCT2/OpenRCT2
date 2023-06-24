@@ -68,9 +68,9 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
-static constexpr const StringId WINDOW_TITLE = STR_RIDE_WINDOW_TITLE;
-static constexpr const int32_t WH = 207;
-static constexpr const int32_t WW = 316;
+static constexpr StringId WINDOW_TITLE = STR_RIDE_WINDOW_TITLE;
+static constexpr int32_t WH = 207;
+static constexpr int32_t WW = 316;
 
 enum
 {
@@ -396,7 +396,7 @@ static Widget *window_ride_page_widgets[] = {
     window_ride_customer_widgets,
 };
 
-static constexpr const uint64_t window_ride_page_hold_down_widgets[] = {
+static constexpr uint64_t window_ride_page_hold_down_widgets[] = {
     0,
     (1uLL << WIDX_VEHICLE_TRAINS_INCREASE) |
         (1uLL << WIDX_VEHICLE_TRAINS_DECREASE) |
@@ -444,7 +444,7 @@ struct RideOverallView
 
 static std::vector<RideOverallView> ride_overall_views = {};
 
-static constexpr const int32_t window_ride_tab_animation_divisor[] = {
+static constexpr int32_t window_ride_tab_animation_divisor[] = {
     0, // WINDOW_RIDE_PAGE_MAIN
     0, // WINDOW_RIDE_PAGE_VEHICLE
     2, // WINDOW_RIDE_PAGE_OPERATING
@@ -458,7 +458,7 @@ static constexpr const int32_t window_ride_tab_animation_divisor[] = {
 };
 static_assert(std::size(window_ride_tab_animation_divisor) == WINDOW_RIDE_PAGE_COUNT);
 
-static constexpr const int32_t window_ride_tab_animation_frames[] = {
+static constexpr int32_t window_ride_tab_animation_frames[] = {
     0,  // WINDOW_RIDE_PAGE_MAIN
     0,  // WINDOW_RIDE_PAGE_VEHICLE
     4,  // WINDOW_RIDE_PAGE_OPERATING
@@ -473,7 +473,7 @@ static constexpr const int32_t window_ride_tab_animation_frames[] = {
 static_assert(std::size(window_ride_tab_animation_frames) == WINDOW_RIDE_PAGE_COUNT);
 
 // clang-format off
-static constexpr const StringId RatingNames[] = {
+static constexpr StringId RatingNames[] = {
     STR_RATING_LOW,
     STR_RATING_MEDIUM,
     STR_RATING_HIGH,
@@ -483,7 +483,7 @@ static constexpr const StringId RatingNames[] = {
 };
 // clang-format on
 
-static constexpr const StringId RideBreakdownReasonNames[] = {
+static constexpr StringId RideBreakdownReasonNames[] = {
     STR_RIDE_BREAKDOWN_SAFETY_CUT_OUT,          // BREAKDOWN_SAFETY_CUT_OUT
     STR_RIDE_BREAKDOWN_RESTRAINTS_STUCK_CLOSED, // BREAKDOWN_RESTRAINTS_STUCK_CLOSED
     STR_RIDE_BREAKDOWN_RESTRAINTS_STUCK_OPEN,   // BREAKDOWN_RESTRAINTS_STUCK_OPEN
@@ -503,7 +503,7 @@ const StringId ColourSchemeNames[] = {
 };
 static_assert(std::size(ColourSchemeNames) == RIDE_COLOUR_SCHEME_COUNT);
 
-static constexpr const StringId VehicleLoadNames[] = {
+static constexpr StringId VehicleLoadNames[] = {
     STR_QUARTER_LOAD,       //  WAIT_FOR_LOAD_QUARTER
     STR_HALF_LOAD,          //  WAIT_FOR_LOAD_HALF
     STR_THREE_QUARTER_LOAD, //  WAIT_FOR_LOAD_THREE_QUARTER
@@ -512,14 +512,14 @@ static constexpr const StringId VehicleLoadNames[] = {
 };
 static_assert(std::size(VehicleLoadNames) == WAIT_FOR_LOAD_COUNT);
 
-static constexpr const StringId VehicleColourSchemeNames[] = {
+static constexpr StringId VehicleColourSchemeNames[] = {
     STR_ALL_VEHICLES_IN_SAME_COLOURS,  // RIDE_COLOUR_SCHEME_MODE_ALL_SAME,
     STR_DIFFERENT_COLOURS_PER,         // RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN,
     STR_DIFFERENT_COLOURS_PER_VEHICLE, // RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR,
 };
 static_assert(std::size(VehicleColourSchemeNames) == RIDE_COLOUR_SCHEME_MODE_COUNT);
 
-static constexpr const StringId VehicleStatusNames[] = {
+static constexpr StringId VehicleStatusNames[] = {
     STR_MOVING_TO_END_OF,          // Vehicle::Status::MovingToEndOfStation
     STR_WAITING_FOR_PASSENGERS_AT, // Vehicle::Status::WaitingForPassengers
     STR_WAITING_TO_DEPART,         // Vehicle::Status::WaitingToDepart
@@ -553,7 +553,7 @@ static constexpr const StringId VehicleStatusNames[] = {
     STR_STOPPED_BY_BLOCK_BRAKES,   // Vehicle::Status::StoppedByBlockBrakes
 };
 
-static constexpr const StringId SingleSessionVehicleStatusNames[] = {
+static constexpr StringId SingleSessionVehicleStatusNames[] = {
     STR_STOPPING_0,             // Vehicle::Status::MovingToEndOfStation
     STR_WAITING_FOR_PASSENGERS, // Vehicle::Status::WaitingForPassengers
     STR_WAITING_TO_START,       // Vehicle::Status::WaitingToDepart
@@ -569,7 +569,7 @@ struct WindowRideMazeDesignOption
     uint32_t sprite;
 };
 
-static constexpr const WindowRideMazeDesignOption MazeOptions[] = {
+static constexpr WindowRideMazeDesignOption MazeOptions[] = {
     { STR_RIDE_DESIGN_MAZE_BRICK_WALLS, SPR_RIDE_DESIGN_PREVIEW_MAZE_BRICK_WALLS },
     { STR_RIDE_DESIGN_MAZE_HEDGES, SPR_RIDE_DESIGN_PREVIEW_MAZE_HEDGES },
     { STR_RIDE_DESIGN_MAZE_ICE_BLOCKS, SPR_RIDE_DESIGN_PREVIEW_MAZE_ICE_BLOCKS },
@@ -585,7 +585,7 @@ struct GraphsYAxis
 };
 
 /** rct2: 0x0098DD98 */
-static constexpr const GraphsYAxis window_graphs_y_axi[] = {
+static constexpr GraphsYAxis window_graphs_y_axi[] = {
     { 11, 0, 10, STR_RIDE_STATS_VELOCITY_FORMAT }, // GRAPH_VELOCITY
     { 10, 0, 15, STR_RIDE_STATS_ALTITUDE_FORMAT }, // GRAPH_ALTITUDE
     { 13, -3, 1, STR_RIDE_STATS_G_FORCE_FORMAT },  // GRAPH_VERTICAL

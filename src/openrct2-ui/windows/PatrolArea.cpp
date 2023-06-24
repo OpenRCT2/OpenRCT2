@@ -25,9 +25,9 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_SET_PATROL_AREA;
-static constexpr const int32_t WH = 54;
-static constexpr const int32_t WW = 104;
+static constexpr StringId WINDOW_TITLE = STR_SET_PATROL_AREA;
+static constexpr int32_t WH = 54;
+static constexpr int32_t WW = 104;
 
 enum WindowPatrolAreaWidgetIdx
 {

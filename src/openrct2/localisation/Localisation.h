@@ -46,7 +46,7 @@ void MoneyToString(money64 amount, char* buffer_to_put_value_to, size_t buffer_l
 #define REAL_NAME_START 0xA000
 #define REAL_NAME_END 0xDFFF
 
-constexpr const size_t CommonTextBufferSize = 512;
+constexpr size_t CommonTextBufferSize = 512;
 
 // Real name data
 extern const char real_name_initials[16];

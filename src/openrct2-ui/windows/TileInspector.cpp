@@ -41,19 +41,19 @@
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/TileInspector.h>
 
-static constexpr const StringId EntranceTypeStringIds[] = {
+static constexpr StringId EntranceTypeStringIds[] = {
     STR_TILE_INSPECTOR_ENTRANCE_TYPE_RIDE_ENTRANCE,
     STR_TILE_INSPECTOR_ENTRANCE_TYPE_RIDE_EXIT,
     STR_TILE_INSPECTOR_ENTRANCE_TYPE_PARK_ENTRANC,
 };
 
-static constexpr const StringId ParkEntrancePartStringIds[] = {
+static constexpr StringId ParkEntrancePartStringIds[] = {
     STR_TILE_INSPECTOR_ENTRANCE_MIDDLE,
     STR_TILE_INSPECTOR_ENTRANCE_LEFT,
     STR_TILE_INSPECTOR_ENTRANCE_RIGHT,
 };
 
-static constexpr const StringId WallSlopeStringIds[] = {
+static constexpr StringId WallSlopeStringIds[] = {
     STR_TILE_INSPECTOR_WALL_FLAT,
     STR_TILE_INSPECTOR_WALL_SLOPED_LEFT,
     STR_TILE_INSPECTOR_WALL_SLOPED_RIGHT,
@@ -185,10 +185,10 @@ static_assert(WC_TILE_INSPECTOR__WIDX_SPINNER_Y_DECREASE == WIDX_SPINNER_Y_DECRE
 
 #pragma region MEASUREMENTS
 
-static constexpr const StringId WINDOW_TITLE = STR_TILE_INSPECTOR_TITLE;
+static constexpr StringId WINDOW_TITLE = STR_TILE_INSPECTOR_TITLE;
 // Window sizes
-static constexpr const int32_t WW = 400;
-static constexpr const int32_t WH = 170;
+static constexpr int32_t WW = 400;
+static constexpr int32_t WH = 170;
 
 constexpr int32_t MIN_WW = WW;
 constexpr int32_t MAX_WW = WW;

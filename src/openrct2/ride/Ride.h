@@ -94,9 +94,9 @@ enum class RideClassification
 
 namespace ShelteredSectionsBits
 {
-    constexpr const uint8_t NumShelteredSectionsMask = 0b00011111;
-    constexpr const uint8_t RotatingWhileSheltered = 0b00100000;
-    constexpr const uint8_t BankingWhileSheltered = 0b01000000;
+    constexpr uint8_t NumShelteredSectionsMask = 0b00011111;
+    constexpr uint8_t RotatingWhileSheltered = 0b00100000;
+    constexpr uint8_t BankingWhileSheltered = 0b01000000;
 }; // namespace ShelteredSectionsBits
 
 struct TrackDesign;

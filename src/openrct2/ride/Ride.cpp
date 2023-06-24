@@ -91,7 +91,7 @@ RideMode& operator++(RideMode& d, int)
     return d = (d == RideMode::Count) ? RideMode::Normal : static_cast<RideMode>(static_cast<uint8_t>(d) + 1);
 }
 
-static constexpr const int32_t RideInspectionInterval[] = {
+static constexpr int32_t RideInspectionInterval[] = {
     10, 20, 30, 45, 60, 120, 0, 0,
 };
 
@@ -1204,7 +1204,7 @@ void Ride::UpdatePopularity(const uint8_t pop_amount)
 }
 
 /** rct2: 0x0098DDB8, 0x0098DDBA */
-static constexpr const CoordsXY ride_spiral_slide_main_tile_offset[][4] = {
+static constexpr CoordsXY ride_spiral_slide_main_tile_offset[][4] = {
     {
         { 32, 32 },
         { 0, 32 },
@@ -3155,7 +3155,7 @@ static int32_t count_free_misc_sprite_slots()
     return std::max(0, miscSpriteCount + remainingSpriteCount - 300);
 }
 
-static constexpr const CoordsXY word_9A3AB4[4] = {
+static constexpr CoordsXY word_9A3AB4[4] = {
     { 0, 0 },
     { 0, -96 },
     { -96, -96 },
@@ -3163,7 +3163,7 @@ static constexpr const CoordsXY word_9A3AB4[4] = {
 };
 
 // clang-format off
-static constexpr const CoordsXY word_9A2A60[] = {
+static constexpr CoordsXY word_9A2A60[] = {
     { 0, 16 },
     { 16, 31 },
     { 31, 16 },

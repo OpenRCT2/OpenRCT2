@@ -26,7 +26,7 @@
 struct ObjectRepositoryItem;
 using ride_type_t = uint16_t;
 
-constexpr const size_t VersionNumFields = 3;
+constexpr size_t VersionNumFields = 3;
 using ObjectVersion = std::tuple<uint16_t, uint16_t, uint16_t>;
 static_assert(std::tuple_size<ObjectVersion>{} == VersionNumFields);
 

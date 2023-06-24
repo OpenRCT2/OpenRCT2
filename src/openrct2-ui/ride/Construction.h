@@ -134,7 +134,7 @@ constexpr std::array DropdownOrder = {
     TrackElemType::RightFlyerLargeHalfLoopInvertedUp,
     TrackElemType::RightFlyerLargeHalfLoopUninvertedDown,
 };
-constexpr const size_t DropdownLength = DropdownOrder.size();
+constexpr size_t DropdownLength = DropdownOrder.size();
 
 // Update the magic number with the current number of track elements to silence
 static_assert(TrackElemType::Count == 337, "Reminder to add new track element to special dropdown list");

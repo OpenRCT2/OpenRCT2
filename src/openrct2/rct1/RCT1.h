@@ -15,7 +15,7 @@
 
 namespace RCT1
 {
-    constexpr const uint8_t RCT1ResearchFlagsSeparator = 0xFF;
+    constexpr uint8_t RCT1ResearchFlagsSeparator = 0xFF;
 
     enum class RideType : uint8_t
     {

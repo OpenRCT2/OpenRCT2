@@ -39,12 +39,12 @@
 #include <cstring>
 #include <iterator>
 
-static constexpr const uint8_t Byte97B444[] = {
+static constexpr uint8_t Byte97B444[] = {
     0, 2, 1, 3, 8, 10, 9, 11, 4, 6, 5, 7, 12, 14, 13, 15, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 16, 0, 18, 15, 0,
 };
 
 // rct2: 0x97B464, 0x97B474, 0x97B484, 0x97B494
-static constexpr const CoordsXY viewport_surface_paint_data[][4] = {
+static constexpr CoordsXY viewport_surface_paint_data[][4] = {
     {
         { 32, 0 },
         { -32, 32 },
@@ -91,7 +91,7 @@ struct CornerHeight
 /**
 *  rct2: 0x0097B4A4 (R), 0x0097B4C4 (T), 0x0097B4E4 (L), 0x0097B504 (B)
 */
-static constexpr const CornerHeight corner_heights[] = {
+static constexpr CornerHeight corner_heights[] = {
     // T  R  B  L
     { 0, 0, 0, 0 },
     { 0, 0, 1, 0 },
@@ -128,30 +128,30 @@ static constexpr const CornerHeight corner_heights[] = {
 };
 
 // bottom left tint
-static constexpr const uint8_t Byte97B524[] = {
+static constexpr uint8_t Byte97B524[] = {
     2, 5, 1, 4, 2, 5, 1, 2, 2, 4,
     1, 2, 1, 3, 0, 3, 1, 5, 0,
 };
 
 // top left tint
-static constexpr const uint32_t Byte97B537[] = {
+static constexpr uint32_t Byte97B537[] = {
     2, 5, 2, 4, 2, 5, 1, 1, 3, 4,
     3, 2, 1, 2, 0, 3, 1, 5, 0,
 };
 
 // top right tint
-static constexpr const uint8_t Byte97B54A[] = {
+static constexpr uint8_t Byte97B54A[] = {
     2, 2, 2, 4, 0, 0, 1, 1, 3, 4,
     3, 5, 1, 2, 2, 3, 1, 5, 0,
 };
 
 // bottom right tint
-static constexpr const uint8_t Byte97B55D[] = {
+static constexpr uint8_t Byte97B55D[] = {
     2, 2, 1, 4, 0, 0, 1, 2, 2, 4,
     1, 5, 1, 3, 2, 3, 1, 5, 0,
 };
 
-static constexpr const uint8_t _tunnelHeights[TUNNEL_TYPE_COUNT][2] = {
+static constexpr uint8_t _tunnelHeights[TUNNEL_TYPE_COUNT][2] = {
     { 2, 2 },
     { 3, 3 },
     { 3, 5 },
@@ -177,7 +177,7 @@ static constexpr const uint8_t _tunnelHeights[TUNNEL_TYPE_COUNT][2] = {
     { 2, 2 },
 };
 
-static constexpr const int16_t _boundBoxZOffsets[TUNNEL_TYPE_COUNT] = {
+static constexpr int16_t _boundBoxZOffsets[TUNNEL_TYPE_COUNT] = {
     0,
     0,
     -32,
@@ -205,11 +205,11 @@ static constexpr const int16_t _boundBoxZOffsets[TUNNEL_TYPE_COUNT] = {
 
 // clang-format on
 // tunnel offset
-static constexpr const uint8_t Byte97B5B0[TUNNEL_TYPE_COUNT] = {
+static constexpr uint8_t Byte97B5B0[TUNNEL_TYPE_COUNT] = {
     0, 0, 0, 3, 3, 3, 6, 6, 6, 6, 10, 11, 12, 13, 14, 14, 16, 17, 18, 19, 20, 21, 22,
 };
 
-static constexpr const uint8_t Byte97B740[] = {
+static constexpr uint8_t Byte97B740[] = {
     0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 1, 4, 0,
 };
 
@@ -233,7 +233,7 @@ struct TileSurfaceBoundaryData
     BoundBoxXY Boundbox;
 };
 
-static constexpr const TileSurfaceBoundaryData _tileSurfaceBoundaries[4] = {
+static constexpr TileSurfaceBoundaryData _tileSurfaceBoundaries[4] = {
     {
         // Bottom right
         1,

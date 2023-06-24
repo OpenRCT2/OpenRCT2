@@ -17,7 +17,7 @@
 #include "CommandLine.hpp"
 
 // clang-format off
-static constexpr const CommandLineOptionDefinition NoOptions[]
+static constexpr CommandLineOptionDefinition NoOptions[]
 {
     OptionTableEnd
 };

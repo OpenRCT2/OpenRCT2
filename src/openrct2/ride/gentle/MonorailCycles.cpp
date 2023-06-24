@@ -70,12 +70,12 @@ enum
     SprMonorailCyclesSBendRightNwSePart3 = 16869,
 };
 
-static constexpr const uint32_t MonorailCyclesTrackPiecesFlat[2] = {
+static constexpr uint32_t MonorailCyclesTrackPiecesFlat[2] = {
     SprMonorailCyclesFlatSwNe,
     SprMonorailCyclesFlatNwSe,
 };
 
-static constexpr const uint32_t MonorailCyclesTrackPiecesFlatQuarterTurn5Tiles[4][5] = {
+static constexpr uint32_t MonorailCyclesTrackPiecesFlatQuarterTurn5Tiles[4][5] = {
     {
         SprMonorailCyclesFlatQuarterTurn5TilesSwSePart0,
         SprMonorailCyclesFlatQuarterTurn5TilesSwSePart1,
@@ -106,7 +106,7 @@ static constexpr const uint32_t MonorailCyclesTrackPiecesFlatQuarterTurn5Tiles[4
     },
 };
 
-static constexpr const uint32_t MonorailCyclesTrackPiecesSBendLeft[2][4] = {
+static constexpr uint32_t MonorailCyclesTrackPiecesSBendLeft[2][4] = {
     {
         SprMonorailCyclesSBendLeftSwNePart0,
         SprMonorailCyclesSBendLeftSwNePart1,
@@ -121,7 +121,7 @@ static constexpr const uint32_t MonorailCyclesTrackPiecesSBendLeft[2][4] = {
     },
 };
 
-static constexpr const uint32_t MonorailCyclesTrackPiecesSBendRight[2][4] = {
+static constexpr uint32_t MonorailCyclesTrackPiecesSBendRight[2][4] = {
     {
         SprMonorailCyclesSBendRightSwNePart0,
         SprMonorailCyclesSBendRightSwNePart1,
@@ -136,7 +136,7 @@ static constexpr const uint32_t MonorailCyclesTrackPiecesSBendRight[2][4] = {
     },
 };
 
-static constexpr const uint32_t MonorailCyclesTrackPiecesFlatQuarterTurn3Tiles[4][3] = {
+static constexpr uint32_t MonorailCyclesTrackPiecesFlatQuarterTurn3Tiles[4][3] = {
     {
         SprMonorailCyclesFlatQuarterTurn3TilesSwSePart0,
         SprMonorailCyclesFlatQuarterTurn3TilesSwSePart1,
@@ -254,7 +254,7 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static constexpr const uint8_t monorail_cycles_right_quarter_turn_3_tiles_to_left_turn_map[] = {
+static constexpr uint8_t monorail_cycles_right_quarter_turn_3_tiles_to_left_turn_map[] = {
     3,
     1,
     2,
@@ -270,14 +270,14 @@ static void PaintMonorailCyclesTrackRightQuarterTurn3Tiles(
     PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
-static constexpr const int8_t MonorailCyclesTrackRightQuarterTurn5TilesSupportHeightOffset[][7] = {
+static constexpr int8_t MonorailCyclesTrackRightQuarterTurn5TilesSupportHeightOffset[][7] = {
     { -2, 0, -2, 0, 0, -3, -1 },
     { -3, 0, 0, 0, 0, 0, 0 },
     { 0 },
     { 0, 0, 0, 0, 0, -2, -3 },
 };
 
-static constexpr const int8_t MonorailCyclesTrackRightQuarterTurn5TilesSupportSpecial[][7] = {
+static constexpr int8_t MonorailCyclesTrackRightQuarterTurn5TilesSupportSpecial[][7] = {
     { 0, 0, 0, 0, 0, 0, 0 },
     { 0, 0, 0, 0, 0, 0, 1 },
     { 0, 0, 1, 0, 0, 1, 1 },

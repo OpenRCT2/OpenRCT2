@@ -159,7 +159,7 @@ static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
     PaintUtilSetGeneralSupportHeight(session, height + 16, 0x20);
 }
 
-static constexpr const uint8_t submarine_ride_right_quarter_turn_3_tiles_to_left_turn_map[] = {
+static constexpr uint8_t submarine_ride_right_quarter_turn_3_tiles_to_left_turn_map[] = {
     3,
     1,
     2,

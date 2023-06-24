@@ -435,14 +435,14 @@ enum
     SPR_WOODEN_RC_STATION_RAILS_NW_SE = 24840,
 };
 
-static constexpr const uint32_t _wooden_rc_block_brakes_image_ids[4][3] = {
+static constexpr uint32_t _wooden_rc_block_brakes_image_ids[4][3] = {
     { SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_SW_NE },
     { SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE },
     { SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_SW_NE },
     { SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE },
 };
 
-static constexpr const uint32_t _wooden_rc_station_block_brakes_image_ids[4][2] = {
+static constexpr uint32_t _wooden_rc_station_block_brakes_image_ids[4][2] = {
     { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_SW_NE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_SW_NE },
     { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_NW_SE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_NW_SE },
     { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_SW_NE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_SW_NE },
@@ -460,13 +460,13 @@ static void WoodenRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][2] = {
+    static constexpr uint32_t imageIds[4][2] = {
         { SPR_WOODEN_RC_FLAT_SW_NE, SPR_WOODEN_RC_FLAT_CHAIN_SW_NE },
         { SPR_WOODEN_RC_FLAT_NW_SE, SPR_WOODEN_RC_FLAT_CHAIN_NW_SE },
         { SPR_WOODEN_RC_FLAT_SW_NE, SPR_WOODEN_RC_FLAT_CHAIN_NE_SW },
         { SPR_WOODEN_RC_FLAT_NW_SE, SPR_WOODEN_RC_FLAT_CHAIN_SE_NW },
     };
-    static constexpr const uint32_t railsImageIds[4][2] = {
+    static constexpr uint32_t railsImageIds[4][2] = {
         { SPR_WOODEN_RC_FLAT_RAILS_SW_NE, SPR_WOODEN_RC_FLAT_CHAIN_RAILS_SW_NE },
         { SPR_WOODEN_RC_FLAT_RAILS_NW_SE, SPR_WOODEN_RC_FLAT_CHAIN_RAILS_NW_SE },
         { SPR_WOODEN_RC_FLAT_RAILS_SW_NE, SPR_WOODEN_RC_FLAT_CHAIN_RAILS_NE_SW },
@@ -488,7 +488,7 @@ static void WoodenRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t stationImageIds[4][2] = {
+    static constexpr uint32_t stationImageIds[4][2] = {
         { SPR_WOODEN_RC_STATION_SW_NE, SPR_WOODEN_RC_STATION_RAILS_SW_NE },
         { SPR_WOODEN_RC_STATION_NW_SE, SPR_WOODEN_RC_STATION_RAILS_NW_SE },
         { SPR_WOODEN_RC_STATION_SW_NE, SPR_WOODEN_RC_STATION_RAILS_SW_NE },
@@ -522,7 +522,7 @@ static void WoodenRCTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[2][4][4] = {
+    static constexpr uint32_t imageIds[2][4][4] = {
         {
             {
                 SPR_WOODEN_RC_25_DEG_SW_NE,
@@ -608,14 +608,14 @@ static void WoodenRCTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIdsChained[4][2] = {
+    static constexpr uint32_t imageIdsChained[4][2] = {
         { SPR_G2_WOODEN_RC_60_SWNE_CHAINED, SPR_WOODEN_RC_60_DEG_RAILS_SW_NE },
         { SPR_G2_WOODEN_RC_60_SWNE_CHAINED_BACK, SPR_WOODEN_RC_60_DEG_RAILS_NW_SE },
         { SPR_G2_WOODEN_RC_60_SENW_CHAINED_BACK, SPR_WOODEN_RC_60_DEG_RAILS_NE_SW },
         { SPR_G2_WOODEN_RC_60_SENW_CHAINED, SPR_WOODEN_RC_60_DEG_RAILS_SE_NW },
     };
 
-    static constexpr const uint32_t imageIds[4][2] = {
+    static constexpr uint32_t imageIds[4][2] = {
         { SPR_WOODEN_RC_60_DEG_SW_NE, SPR_WOODEN_RC_60_DEG_RAILS_SW_NE },
         { SPR_WOODEN_RC_60_DEG_NW_SE, SPR_WOODEN_RC_60_DEG_RAILS_NW_SE },
         { SPR_WOODEN_RC_60_DEG_NE_SW, SPR_WOODEN_RC_60_DEG_RAILS_NE_SW },
@@ -674,7 +674,7 @@ static void WoodenRCTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[2][4][4] = {
+    static constexpr uint32_t imageIds[2][4][4] = {
         {
             {
                 SPR_WOODEN_RC_FLAT_TO_25_DEG_SW_NE,
@@ -760,7 +760,7 @@ static void WoodenRCTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIdsChained[4][4] = {
+    static constexpr uint32_t imageIdsChained[4][4] = {
         {
             SPR_G2_WOODEN_RC_25_60_SWNE_CHAINED,
             SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_SW_NE,
@@ -787,7 +787,7 @@ static void WoodenRCTrack25DegUpTo60DegUp(
         },
     };
 
-    static constexpr const uint32_t imageIds[4][4] = {
+    static constexpr uint32_t imageIds[4][4] = {
         {
             SPR_WOODEN_RC_25_DEG_TO_60_DEG_SW_NE,
             SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_SW_NE,
@@ -871,7 +871,7 @@ static void WoodenRCTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIdsChained[4][4] = {
+    static constexpr uint32_t imageIdsChained[4][4] = {
         {
             SPR_G2_WOODEN_RC_60_25_SWNE_CHAINED,
             SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_SW_NE,
@@ -898,7 +898,7 @@ static void WoodenRCTrack60DegUpTo25DegUp(
         },
     };
 
-    static constexpr const uint32_t imageIds[4][4] = {
+    static constexpr uint32_t imageIds[4][4] = {
         {
             SPR_WOODEN_RC_60_DEG_TO_25_DEG_SW_NE,
             SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_SW_NE,
@@ -983,7 +983,7 @@ static void WoodenRCTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[2][4][4] = {
+    static constexpr uint32_t imageIds[2][4][4] = {
         {
             {
                 SPR_WOODEN_RC_25_DEG_TO_FLAT_SW_NE,
@@ -1122,7 +1122,7 @@ static void WoodenRCTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBoundBox2 imageIds[2][4][7] = {
+    static constexpr SpriteBoundBox2 imageIds[2][4][7] = {
         {
             {
                 {
@@ -1473,7 +1473,7 @@ static void WoodenRCTrackFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][4] = {
+    static constexpr uint32_t imageIds[4][4] = {
         {
             SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_SW_NE,
             SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_SW_NE,
@@ -1521,7 +1521,7 @@ static void WoodenRCTrackFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][4] = {
+    static constexpr uint32_t imageIds[4][4] = {
         {
             SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_SW_NE,
             SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_RAILS_SW_NE,
@@ -1586,7 +1586,7 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBoundBox2 imageIds[2][4][7] = {
+    static constexpr SpriteBoundBox2 imageIds[2][4][7] = {
         {
             {
                 {
@@ -1937,7 +1937,7 @@ static void WoodenRCTrackLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][4] = {
+    static constexpr uint32_t imageIds[4][4] = {
         {
             SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_SW_NE,
             SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_RAILS_SW_NE,
@@ -1992,7 +1992,7 @@ static void WoodenRCTrackRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][4] = {
+    static constexpr uint32_t imageIds[4][4] = {
         {
             SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_SW_NE,
             SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_RAILS_SW_NE,
@@ -2047,7 +2047,7 @@ static void WoodenRCTrack25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][4] = {
+    static constexpr uint32_t imageIds[4][4] = {
         {
             SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_SW_NE,
             SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_RAILS_SW_NE,
@@ -2102,7 +2102,7 @@ static void WoodenRCTrack25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][4] = {
+    static constexpr uint32_t imageIds[4][4] = {
         {
             SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_SW_NE,
             SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_RAILS_SW_NE,
@@ -2193,7 +2193,7 @@ static void WoodenRCTrackLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][2] = {
+    static constexpr uint32_t imageIds[4][2] = {
         { SPR_WOODEN_RC_LEFT_BANK_SW_NE, SPR_WOODEN_RC_LEFT_BANK_RAILS_SW_NE },
         { SPR_WOODEN_RC_LEFT_BANK_NW_SE, SPR_WOODEN_RC_LEFT_BANK_RAILS_NW_SE },
         { SPR_WOODEN_RC_LEFT_BANK_NE_SW, SPR_WOODEN_RC_LEFT_BANK_RAILS_NE_SW },
@@ -7037,7 +7037,7 @@ static void WoodenRCTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][2] = {
+    static constexpr uint32_t imageIds[4][2] = {
         { SPR_WOODEN_RC_BRAKES_SW_NE, SPR_WOODEN_RC_BRAKES_RAILS_SW_NE },
         { SPR_WOODEN_RC_BRAKES_NW_SE, SPR_WOODEN_RC_BRAKES_RAILS_NW_SE },
         { SPR_WOODEN_RC_BRAKES_SW_NE, SPR_WOODEN_RC_BRAKES_RAILS_SW_NE },
@@ -14754,13 +14754,13 @@ static void WoodenRCTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4] = {
+    static constexpr uint32_t imageIds[4] = {
         SPR_G2_WOODEN_RC_BOOSTER_SW_NE,
         SPR_G2_WOODEN_RC_BOOSTER_NW_SE,
         SPR_G2_WOODEN_RC_BOOSTER_SW_NE,
         SPR_G2_WOODEN_RC_BOOSTER_NW_SE,
     };
-    static constexpr const uint32_t railsImageIds[4] = {
+    static constexpr uint32_t railsImageIds[4] = {
         SPR_WOODEN_RC_FLAT_CHAIN_RAILS_SW_NE,
         SPR_WOODEN_RC_FLAT_CHAIN_RAILS_NW_SE,
         SPR_WOODEN_RC_FLAT_CHAIN_RAILS_NE_SW,

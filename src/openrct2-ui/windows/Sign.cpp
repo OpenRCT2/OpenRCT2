@@ -27,9 +27,9 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Wall.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_SIGN;
-static constexpr const int32_t WW = 113;
-static constexpr const int32_t WH = 96;
+static constexpr StringId WINDOW_TITLE = STR_SIGN;
+static constexpr int32_t WW = 113;
+static constexpr int32_t WH = 96;
 
 // clang-format off
 enum WindowSignWidgetIdx {

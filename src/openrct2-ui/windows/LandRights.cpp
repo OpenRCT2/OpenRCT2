@@ -22,9 +22,9 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_LAND_RIGHTS;
-static constexpr const int32_t WH = 94;
-static constexpr const int32_t WW = 98;
+static constexpr StringId WINDOW_TITLE = STR_LAND_RIGHTS;
+static constexpr int32_t WH = 94;
+static constexpr int32_t WW = 98;
 
 // clang-format off
 enum WindowLandRightsWidgetIdx {

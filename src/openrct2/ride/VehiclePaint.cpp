@@ -3709,7 +3709,7 @@ using vehicle_sprite_func = void (*)(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry);
 
 // clang-format off
-static constexpr const vehicle_sprite_func PaintFunctionsByPitch[] = {
+static constexpr vehicle_sprite_func PaintFunctionsByPitch[] = {
     VehiclePitchFlat,
     VehiclePitchUp12,
     VehiclePitchUp25,

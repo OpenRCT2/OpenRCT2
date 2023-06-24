@@ -36,9 +36,9 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_STRINGID;
-static constexpr const int32_t WH = 157;
-static constexpr const int32_t WW = 192;
+static constexpr StringId WINDOW_TITLE = STR_STRINGID;
+static constexpr int32_t WH = 157;
+static constexpr int32_t WW = 192;
 
 enum WindowGuestPage
 {
@@ -150,7 +150,7 @@ static constexpr std::array _guestWindowPageWidgets = {
 static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
 // clang-format on
 
-static constexpr const std::array _guestWindowPageSizes = {
+static constexpr std::array _guestWindowPageSizes = {
     std::array{ ScreenSize{ 192, 159 }, ScreenSize{ 500, 450 } }, // WINDOW_GUEST_OVERVIEW
     std::array{ ScreenSize{ 192, 180 }, ScreenSize{ 192, 180 } }, // WINDOW_GUEST_STATS
     std::array{ ScreenSize{ 192, 180 }, ScreenSize{ 500, 400 } }, // WINDOW_GUEST_RIDES
@@ -1184,7 +1184,7 @@ private:
 
         // Nausea tolerance
         {
-            static constexpr const StringId _nauseaTolerances[] = {
+            static constexpr StringId _nauseaTolerances[] = {
                 STR_PEEP_STAT_NAUSEA_TOLERANCE_NONE,
                 STR_PEEP_STAT_NAUSEA_TOLERANCE_LOW,
                 STR_PEEP_STAT_NAUSEA_TOLERANCE_AVERAGE,

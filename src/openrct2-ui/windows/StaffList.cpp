@@ -61,9 +61,9 @@ enum WindowStaffListWidgetIdx
     WIDX_STAFF_LIST_MAP,
 };
 
-static constexpr const StringId WINDOW_TITLE = STR_STAFF;
-static constexpr const int32_t WW = 320;
-static constexpr const int32_t WH = 270;
+static constexpr StringId WINDOW_TITLE = STR_STAFF;
+static constexpr int32_t WW = 320;
+static constexpr int32_t WH = 270;
 constexpr int32_t MAX_WW = 500;
 constexpr int32_t MAX_WH = 450;
 
