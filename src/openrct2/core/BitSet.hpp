@@ -307,7 +307,7 @@ namespace OpenRCT2
             return _data;
         }
 
-        constexpr Storage& data() const noexcept
+        constexpr const Storage& data() const noexcept
         {
             return _data;
         }
