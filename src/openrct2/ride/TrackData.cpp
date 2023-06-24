@@ -2852,10 +2852,10 @@ static constexpr PreviewTrack TrackBlocksLeftFlyerLargeHalfLoopInvertedDown[] = 
     { 0, 0, 0, 0, 24, { 0b1111, 0 }, 0 },
     { 1, -32, 0, -184, 192, { 0b1111, 0 }, 0 },
     { 2, -64, 0, -128, 96, { 0b1111, 0 }, 0 },
-    { 3, -32, 32, -184, 192, { 0b1111, 0 }, 0 },
-    { 4, 0, 32, -216, 56, { 0b1111, 0 }, 0 },
-    { 5, 32, 32, -232, 40, { 0b1111, 0b1100 }, 0 },
-    { 6, 64, 32, -248, 24, { 0b1111, 0b1100 }, 0 },
+    { 3, -32, -32, -184, 192, { 0b1111, 0 }, 0 },
+    { 4, 0, -32, -216, 56, { 0b1111, 0 }, 0 },
+    { 5, 32, -32, -232, 40, { 0b1111, 0b1100 }, 0 },
+    { 6, 64, -32, -248, 24, { 0b1111, 0b1100 }, 0 },
     TRACK_BLOCK_END
 };
 
@@ -2863,10 +2863,10 @@ static constexpr PreviewTrack TrackBlocksRightFlyerLargeHalfLoopInvertedDown[] =
     { 0, 0, 0, 0, 24, { 0b1111, 0 }, 0 },
     { 1, -32, 0, -184, 192, { 0b1111, 0 }, 0 },
     { 2, -64, 0, -128, 96, { 0b1111, 0 }, 0 },
-    { 3, -32, -32, -184, 192, { 0b1111, 0 }, 0 },
-    { 4, 0, -32, -216, 56, { 0b1111, 0 }, 0 },
-    { 5, 32, -32, -232, 40, { 0b1111, 0b1100 }, 0 },
-    { 6, 64, -32, -248, 24, { 0b1111, 0b1100 }, 0 },
+    { 3, -32, 32, -184, 192, { 0b1111, 0 }, 0 },
+    { 4, 0, 32, -216, 56, { 0b1111, 0 }, 0 },
+    { 5, 32, 32, -232, 40, { 0b1111, 0b1100 }, 0 },
+    { 6, 64, 32, -248, 24, { 0b1111, 0b1100 }, 0 },
     TRACK_BLOCK_END
 };
 
@@ -2896,10 +2896,10 @@ static constexpr PreviewTrack TrackBlocksLeftFlyerLargeHalfLoopUninvertedDown[] 
     { 0, 0, 0, -32, 40, { 0b1111, 0 }, 0 },
     { 1, -32, 0, -216, 192, { 0b1111, 0 }, 0 },
     { 2, -64, 0, -160, 96, { 0b1111, 0 }, 0 },
-    { 3, -32, 32, -216, 192, { 0b1111, 0 }, 0 },
-    { 4, 0, 32, -248, 56, { 0b1111, 0 }, 0 },
-    { 5, 32, 32, -264, 40, { 0b1111, 0b1100 }, 0 },
-    { 6, 64, 32, -280, 24, { 0b1111, 0b1100 }, 0 },
+    { 3, -32, -32, -216, 192, { 0b1111, 0 }, 0 },
+    { 4, 0, -32, -248, 56, { 0b1111, 0 }, 0 },
+    { 5, 32, -32, -264, 40, { 0b1111, 0b1100 }, 0 },
+    { 6, 64, -32, -280, 24, { 0b1111, 0b1100 }, 0 },
     TRACK_BLOCK_END
 };
 
@@ -2907,10 +2907,10 @@ static constexpr PreviewTrack TrackBlocksRightFlyerLargeHalfLoopUninvertedDown[]
     { 0, 0, 0, -32, 40, { 0b1111, 0 }, 0 },
     { 1, -32, 0, -216, 192, { 0b1111, 0 }, 0 },
     { 2, -64, 0, -160, 96, { 0b1111, 0 }, 0 },
-    { 3, -32, -32, -216, 192, { 0b1111, 0 }, 0 },
-    { 4, 0, -32, -248, 56, { 0b1111, 0 }, 0 },
-    { 5, 32, -32, -264, 40, { 0b1111, 0b1100 }, 0 },
-    { 6, 64, -32, -280, 24, { 0b1111, 0b1100 }, 0 },
+    { 3, -32, 32, -216, 192, { 0b1111, 0 }, 0 },
+    { 4, 0, 32, -248, 56, { 0b1111, 0 }, 0 },
+    { 5, 32, 32, -264, 40, { 0b1111, 0b1100 }, 0 },
+    { 6, 64, 32, -280, 24, { 0b1111, 0b1100 }, 0 },
     TRACK_BLOCK_END
 };
 
@@ -3292,12 +3292,12 @@ static constexpr std::array<const PreviewTrack*, TrackElemType::Count> TrackBloc
 
     TrackBlocksLeftFlyerLargeHalfLoopUninvertedUp,    // LeftFlyerLargeHalfLoopUninvertedUp
     TrackBlocksRightFlyerLargeHalfLoopUninvertedUp,   // RightFlyerLargeHalfLoopUninvertedUp
-    TrackBlocksRightFlyerLargeHalfLoopInvertedDown,   // LeftFlyerLargeHalfLoopInvertedDown (probably want to rename TrackBlocks as well)
-    TrackBlocksLeftFlyerLargeHalfLoopInvertedDown,    // RightFlyerLargeHalfLoopInvertedDown (probably want to rename TrackBlocks as well)
+    TrackBlocksLeftFlyerLargeHalfLoopInvertedDown,    // LeftFlyerLargeHalfLoopInvertedDown
+    TrackBlocksRightFlyerLargeHalfLoopInvertedDown,   // RightFlyerLargeHalfLoopInvertedDown
     TrackBlocksLeftFlyerLargeHalfLoopInvertedUp,      // TrackElemType::LeftFlyerLargeHalfLoopInvertedUp (not implemented)
     TrackBlocksRightFlyerLargeHalfLoopInvertedUp,     // TrackElemType::RightFlyerLargeHalfLoopInvertedUp (not implemented)
-    TrackBlocksRightFlyerLargeHalfLoopUninvertedDown, // TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown (not implemented, but may want to rename TrackBlocks for consistency)
-    TrackBlocksLeftFlyerLargeHalfLoopUninvertedDown,  // TrackElemType::RightFlyerLargeHalfLoopUninvertedDown (not implemented, but may want to rename TrackBlocks for consistency)
+    TrackBlocksLeftFlyerLargeHalfLoopUninvertedDown,  // TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown (not implemented)
+    TrackBlocksRightFlyerLargeHalfLoopUninvertedDown, // TrackElemType::RightFlyerLargeHalfLoopUninvertedDown (not implemented)
     TrackBlocksFlyerHalfLoopUpInverted,    // TrackElemType::FlyerHalfLoopInvertedUp
     TrackBlocksFlyerHalfLoopDownUpright,   // TrackElemType::FlyerHalfLoopUninvertedDown
     TrackBlocksLeftEighthToDiagUp25,          // TrackElemType::LeftEighthToDiagUp25          
