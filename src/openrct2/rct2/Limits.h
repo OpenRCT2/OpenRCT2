@@ -22,9 +22,9 @@ namespace RCT2::Limits
     constexpr uint32_t MaxTileElements = 0x30000;
     constexpr uint16_t MaxAnimatedObjects = 2000;
     constexpr uint8_t MaxResearchedRideTypeQuads = 8;  // With 32 bits per uint32_t, this means there is room for
-                                                             // 256 types.
+                                                       // 256 types.
     constexpr uint8_t MaxResearchedRideEntryQuads = 8; // With 32 bits per uint32_t, this means there is room for
-                                                             // 256 entries.
+                                                       // 256 entries.
     constexpr uint8_t MaxResearchedSceneryItemQuads = 56;
     constexpr const uint16_t MaxResearchedSceneryItems = (MaxResearchedSceneryItemQuads * 32); // There are 32
                                                                                                // bits per
