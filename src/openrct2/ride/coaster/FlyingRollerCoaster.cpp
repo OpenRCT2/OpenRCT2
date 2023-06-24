@@ -18695,14 +18695,14 @@ static void FlyingRCTrackLeftFlyingLargeHalfLoopUninvertedDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(session, ride, 6 - trackSequence, direction, height, trackElement);
+    FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
 static void FlyingRCTrackRightFlyingLargeHalfLoopUninvertedDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(session, ride, 6 - trackSequence, direction, height, trackElement);
+    FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRC(int32_t trackType)
@@ -19035,16 +19035,14 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRC(int32_t trackType)
             return FlyingRCTrackHalfLoopInvertedUp;
         case TrackElemType::FlyerHalfLoopUninvertedDown:
             return FlyingRCTrackHalfLoopUninvertedDown;
-        case TrackElemType::LeftFlyerLargeHalfLoopInvertedUp:
+        case TrackElemType::LeftFlyerLargeHalfLoopInvertedUp: // not implemented
             return FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp;
-        case TrackElemType::RightFlyerLargeHalfLoopInvertedUp:
+        case TrackElemType::RightFlyerLargeHalfLoopInvertedUp: // not implemented
             return FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp;
-        case TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown:       // not implemented
-            return FlyingRCTrackRightFlyingLargeHalfLoopUninvertedDown; // not implemented - but may want to rename this for
-                                                                        // consistency anyway
-        case TrackElemType::RightFlyerLargeHalfLoopUninvertedDown:      // not implemented
-            return FlyingRCTrackLeftFlyingLargeHalfLoopUninvertedDown;  // not implemented - but may want to rename this for
-                                                                        // consistency anyway
+        case TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown: // not implemented
+            return FlyingRCTrackLeftFlyingLargeHalfLoopUninvertedDown;
+        case TrackElemType::RightFlyerLargeHalfLoopUninvertedDown: // not implemented
+            return FlyingRCTrackRightFlyingLargeHalfLoopUninvertedDown;
     }
     return GetTrackPaintFunctionBolligerMabillard<MetalSupportType::Tubes>(trackType);
 }
