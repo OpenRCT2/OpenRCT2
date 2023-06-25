@@ -269,7 +269,7 @@ DukValue ScObjectManager::CreateScObject(duk_context* ctx, ObjectType type, int3
             return GetObjectAsDukValue(ctx, std::make_shared<ScLargeSceneryObject>(type, index));
         case ObjectType::Walls:
             return GetObjectAsDukValue(ctx, std::make_shared<ScWallObject>(type, index));
-        case ObjectType::PathBits:
+        case ObjectType::PathAdditions:
             return GetObjectAsDukValue(ctx, std::make_shared<ScFootpathAdditionObject>(type, index));
         case ObjectType::Banners:
             return GetObjectAsDukValue(ctx, std::make_shared<ScBannerObject>(type, index));
