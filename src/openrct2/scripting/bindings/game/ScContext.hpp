@@ -301,6 +301,19 @@ namespace OpenRCT2::Scripting
             return 1;
         }
 
+#    ifdef _MSC_VER
+        // HACK workaround to resolve issue #14853
+        //      The exception thrown in duk_error was causing a crash when RAII kicked in for this lambda.
+        //      Only ensuring it was not in the same generated method fixed it.
+        __declspec(noinline)
+#    endif
+            std::shared_ptr<ScDisposable> CreateSubscription(HOOK_TYPE hookType, const DukValue& callback)
+        {
+            auto owner = _execInfo.GetCurrentPlugin();
+            auto cookie = _hookEngine.Subscribe(hookType, owner, callback);
+            return std::make_shared<ScDisposable>([this, hookType, cookie]() { _hookEngine.Unsubscribe(hookType, cookie); });
+        }
+
         std::shared_ptr<ScDisposable> subscribe(const std::string& hook, const DukValue& callback)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -328,8 +341,7 @@ namespace OpenRCT2::Scripting
                 duk_error(ctx, DUK_ERR_ERROR, "Hook type not available for this plugin type.");
             }
 
-            auto cookie = _hookEngine.Subscribe(hookType, owner, callback);
-            return std::make_shared<ScDisposable>([this, hookType, cookie]() { _hookEngine.Unsubscribe(hookType, cookie); });
+            return CreateSubscription(hookType, callback);
         }
 
         void queryAction(const std::string& action, const DukValue& args, const DukValue& callback)
