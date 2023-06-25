@@ -10,6 +10,7 @@
 #pragma once
 
 #include <array>
+#include <cstddef>
 #include <cstdint>
 #include <limits>
 
@@ -78,3 +79,4 @@ constexpr std::array<ObjectType, 2> IntransientObjectTypes = { ObjectType::Scena
 
 bool ObjectTypeIsTransient(ObjectType type);
 bool ObjectTypeIsIntransient(ObjectType type);
+size_t GetObjectTypeLimit(ObjectType type);

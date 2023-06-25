@@ -175,6 +175,12 @@ public:
         return RepositoryItemToObject(ori);
     }
 
+    Object* LoadObject(const ObjectEntryDescriptor& descriptor, ObjectEntryIndex slot) override
+    {
+        const ObjectRepositoryItem* ori = _objectRepository.FindObject(descriptor);
+        return RepositoryItemToObject(ori, slot);
+    }
+
     void LoadObjects(const ObjectList& objectList) override
     {
         // Find all the required objects

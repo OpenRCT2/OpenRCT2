@@ -26,6 +26,7 @@
 - Feature: [#19446] Add new colour options to colour dropdown.
 - Feature: [#19547] Add large sloped turns to hybrid coaster and single rail coaster.
 - Feature: [#19930] Add plugin APIs for research.
+- Feature: [#19979] Add plugin API for scenery groups.
 - Feature: [OpenMusic#25] Added Prehistoric ride music style.
 - Feature: [OpenMusic#26] Fairground Organ style 2 with new recordings from Herman's 35er Voigt (Previously known as Bressingham Voigt).
 - Feature: [OpenMusic#28] Add Ragtime style 2 ride music.

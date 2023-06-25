@@ -139,9 +139,12 @@ struct ObjectEntryDescriptor
     bool HasValue() const;
     ObjectType GetType() const;
     std::string_view GetName() const;
+    std::string ToString() const;
 
     bool operator==(const ObjectEntryDescriptor& rhs) const;
     bool operator!=(const ObjectEntryDescriptor& rhs) const;
+
+    static ObjectEntryDescriptor Parse(std::string_view identifier);
 };
 
 struct IObjectRepository;
