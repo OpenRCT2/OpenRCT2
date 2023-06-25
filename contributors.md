@@ -221,6 +221,7 @@ The following people are not part of the development team, but have been contrib
 * John Mulcahy (jayjay300)
 * Chase Percy (Chase-Percy)
 * Wenzhao Qiu (qwzhaox)
+* Michael Bernardi (mrmbernardi)
 
 ## Toolchain
 * (Balletie) - macOS
