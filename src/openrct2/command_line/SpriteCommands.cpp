@@ -23,7 +23,7 @@ ImportMode gSpriteMode = ImportMode::Default;
 static const char* _mode;
 
 // clang-format off
-static constexpr const CommandLineOptionDefinition SpriteOptions[]
+static constexpr CommandLineOptionDefinition SpriteOptions[]
 {
     { CMDLINE_TYPE_STRING, &_mode, 'm', "mode", "the type of sprite conversion <" SZ_DEFAULT "|" SZ_CLOSEST "|" SZ_DITHERING ">" },
     OptionTableEnd

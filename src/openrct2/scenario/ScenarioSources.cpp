@@ -34,7 +34,7 @@ namespace ScenarioSources
 #pragma region Scenario Data
 
     // clang-format off
-    static constexpr const ScenarioAlias ScenarioAliases[] =
+    static constexpr ScenarioAlias ScenarioAliases[] =
     {
         // UK - US differences:
         { "Katie's Dreamland",                      "Katie's World"                             },
@@ -116,7 +116,7 @@ namespace ScenarioSources
     };
 
     // RCT
-    static constexpr const ScenarioTitleDescriptor ScenarioTitlesRCT1[] =
+    static constexpr ScenarioTitleDescriptor ScenarioTitlesRCT1[] =
     {
         { SC_FOREST_FRONTIERS,          "Forest Frontiers",     SCENARIO_CATEGORY_BEGINNER      },
         { SC_DYNAMITE_DUNES,            "Dynamite Dunes",       SCENARIO_CATEGORY_BEGINNER      },
@@ -143,7 +143,7 @@ namespace ScenarioSources
     };
 
     // RCT: Added Attractions
-    static constexpr const ScenarioTitleDescriptor ScenarioTitlesRCT1AA[] =
+    static constexpr ScenarioTitleDescriptor ScenarioTitlesRCT1AA[] =
     {
         { SC_WHISPERING_CLIFFS,         "Whispering Cliffs",    SCENARIO_CATEGORY_BEGINNER      },
         { SC_THREE_MONKEYS_PARK,        "Three Monkeys Park",   SCENARIO_CATEGORY_BEGINNER      },
@@ -178,7 +178,7 @@ namespace ScenarioSources
     };
 
     // RCT: Loopy Landscapes
-    static constexpr const ScenarioTitleDescriptor ScenarioTitlesRCT1LL[] =
+    static constexpr ScenarioTitleDescriptor ScenarioTitlesRCT1LL[] =
     {
         {   SC_ICEBERG_ISLANDS,         "Iceberg Islands",      SCENARIO_CATEGORY_BEGINNER      },
         {   SC_VOLCANIA,                "Volcania",             SCENARIO_CATEGORY_BEGINNER      },
@@ -213,7 +213,7 @@ namespace ScenarioSources
     };
 
     // RCT2
-    static constexpr const ScenarioTitleDescriptor ScenarioTitlesRCT2[] =
+    static constexpr ScenarioTitleDescriptor ScenarioTitlesRCT2[] =
     {
         { SC_UNIDENTIFIED,              "Electric Fields",      SCENARIO_CATEGORY_BEGINNER      },
         { SC_UNIDENTIFIED,              "Factory Capers",       SCENARIO_CATEGORY_BEGINNER      },
@@ -233,7 +233,7 @@ namespace ScenarioSources
     };
 
     // RCT2: Wacky Worlds
-    static constexpr const ScenarioTitleDescriptor ScenarioTitlesRCT2WW[] =
+    static constexpr ScenarioTitleDescriptor ScenarioTitlesRCT2WW[] =
     {
         { SC_UNIDENTIFIED,              "Africa - Victoria Falls",                          SCENARIO_CATEGORY_BEGINNER      },
         { SC_UNIDENTIFIED,              "Asia - Great Wall of China Tourism Enhancement",   SCENARIO_CATEGORY_BEGINNER      },
@@ -255,7 +255,7 @@ namespace ScenarioSources
     };
 
     // RCT2: Time Twister
-    static constexpr const ScenarioTitleDescriptor ScenarioTitlesRCT2TT[] =
+    static constexpr ScenarioTitleDescriptor ScenarioTitlesRCT2TT[] =
     {
         { SC_UNIDENTIFIED,              "Dark Age - Robin Hood",                            SCENARIO_CATEGORY_BEGINNER      },
         { SC_UNIDENTIFIED,              "Prehistoric - After the Asteroid",                 SCENARIO_CATEGORY_BEGINNER      },
@@ -274,7 +274,7 @@ namespace ScenarioSources
     };
 
     // User Created Expansion Sets
-    static constexpr const ScenarioTitleDescriptor ScenarioTitlesUCES[] =
+    static constexpr ScenarioTitleDescriptor ScenarioTitlesUCES[] =
     {
         { SC_UNIDENTIFIED,              "Lighthouse of Alexandria by Katatude for UCES",    SCENARIO_CATEGORY_TIME_MACHINE     },
         { SC_UNIDENTIFIED,              "Cleveland's Luna Park",                            SCENARIO_CATEGORY_TIME_MACHINE     },
@@ -297,7 +297,7 @@ namespace ScenarioSources
     };
 
     // Real parks
-    static constexpr const ScenarioTitleDescriptor ScenarioTitlesRealParks[] =
+    static constexpr ScenarioTitleDescriptor ScenarioTitlesRealParks[] =
     {
         { SC_ALTON_TOWERS,              "Alton Towers",                                     SCENARIO_CATEGORY_REAL  },
         { SC_HEIDE_PARK,                "Heide-Park",                                       SCENARIO_CATEGORY_REAL  },
@@ -310,7 +310,7 @@ namespace ScenarioSources
     };
 
     // Other parks
-    static constexpr const ScenarioTitleDescriptor ScenarioTitlesExtrasParks[] =
+    static constexpr ScenarioTitleDescriptor ScenarioTitlesExtrasParks[] =
     {
         { SC_FORT_ANACHRONISM,                          "Fort Anachronism",                                 SCENARIO_CATEGORY_DLC            },
         { SC_PCPLAYER,                                  "PC Player",                                        SCENARIO_CATEGORY_DLC            },

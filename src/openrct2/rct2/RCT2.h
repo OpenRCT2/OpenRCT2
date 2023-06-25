@@ -24,10 +24,10 @@ enum class EditorStep : uint8_t;
 
 namespace RCT2
 {
-    constexpr const StringId RCT2_RIDE_STRING_START = 2;
+    constexpr StringId RCT2_RIDE_STRING_START = 2;
 
     // clang-format off
-    constexpr const uint16_t RCT2_OBJECT_ENTRY_COUNT =
+    constexpr uint16_t RCT2_OBJECT_ENTRY_COUNT =
         Limits::MaxRideObjects +
         Limits::MaxSmallSceneryObjects +
         Limits::MaxLargeSceneryObjects +
@@ -43,7 +43,7 @@ namespace RCT2
     static_assert(RCT2_OBJECT_ENTRY_COUNT == 721);
 
     // clang-format off
-    constexpr const int32_t RCT2ObjectEntryGroupCounts[] = {
+    constexpr int32_t RCT2ObjectEntryGroupCounts[] = {
         Limits::MaxRideObjects,
         Limits::MaxSmallSceneryObjects,
         Limits::MaxLargeSceneryObjects,

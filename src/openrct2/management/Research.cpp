@@ -43,7 +43,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr const int32_t _researchRate[] = {
+static constexpr int32_t _researchRate[] = {
     0,
     160,
     250,
@@ -908,7 +908,7 @@ bool ResearchItem::Exists() const
 }
 
 // clang-format off
-static constexpr const StringId _editorInventionsResearchCategories[] = {
+static constexpr StringId _editorInventionsResearchCategories[] = {
     STR_RESEARCH_NEW_TRANSPORT_RIDES,
     STR_RESEARCH_NEW_GENTLE_RIDES,
     STR_RESEARCH_NEW_ROLLER_COASTERS,
@@ -927,7 +927,7 @@ StringId ResearchItem::GetCategoryInventionString() const
 }
 
 // clang-format off
-static constexpr const StringId _researchCategoryNames[] = {
+static constexpr StringId _researchCategoryNames[] = {
     STR_RESEARCH_CATEGORY_TRANSPORT,
     STR_RESEARCH_CATEGORY_GENTLE,
     STR_RESEARCH_CATEGORY_ROLLERCOASTER,

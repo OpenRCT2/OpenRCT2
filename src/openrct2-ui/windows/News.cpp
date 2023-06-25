@@ -21,9 +21,9 @@
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/sprites.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_RECENT_MESSAGES;
-static constexpr const int32_t WH = 300;
-static constexpr const int32_t WW = 400;
+static constexpr StringId WINDOW_TITLE = STR_RECENT_MESSAGES;
+static constexpr int32_t WH = 300;
+static constexpr int32_t WW = 400;
 
 // clang-format off
 enum WindowNewsWidgetIdx {

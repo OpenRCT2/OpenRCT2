@@ -695,7 +695,7 @@ uint32_t LightFXGetLightPolution()
     return _lightPolution_front;
 }
 
-static constexpr const int16_t offsetLookup[] = {
+static constexpr int16_t offsetLookup[] = {
     10, 10, 9, 8, 7, 6, 4, 2, 0, -2, -4, -6, -7, -8, -9, -10, -10, -10, -9, -8, -7, -6, -4, -2, 0, 2, 4, 6, 7, 8, 9, 10,
 };
 void LightFxAddLightsMagicVehicle_ObservationTower(const Vehicle* vehicle)

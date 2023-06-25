@@ -28,12 +28,12 @@
 #include <openrct2/windows/Intent.h>
 #include <vector>
 
-static constexpr const StringId WINDOW_TITLE = STR_SELECT_DESIGN;
-static constexpr const int32_t WH = 441;
-static constexpr const int32_t WW = 600;
-static constexpr const int32_t DEBUG_PATH_HEIGHT = 12;
-static constexpr const int32_t ROTATE_AND_SCENERY_BUTTON_SIZE = 24;
-static constexpr const int32_t WINDOW_PADDING = 5;
+static constexpr StringId WINDOW_TITLE = STR_SELECT_DESIGN;
+static constexpr int32_t WH = 441;
+static constexpr int32_t WW = 600;
+static constexpr int32_t DEBUG_PATH_HEIGHT = 12;
+static constexpr int32_t ROTATE_AND_SCENERY_BUTTON_SIZE = 24;
+static constexpr int32_t WINDOW_PADDING = 5;
 
 // clang-format off
 enum {

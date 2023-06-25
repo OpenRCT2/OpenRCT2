@@ -148,7 +148,7 @@ static void SideFrictionRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4] = {
+    static constexpr uint32_t imageIds[4] = {
         21610,
         21611,
         21610,

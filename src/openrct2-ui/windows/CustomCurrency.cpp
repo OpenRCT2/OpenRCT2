@@ -18,9 +18,9 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_CUSTOM_CURRENCY_WINDOW_TITLE;
-static constexpr const int32_t WH = 100;
-static constexpr const int32_t WW = 400;
+static constexpr StringId WINDOW_TITLE = STR_CUSTOM_CURRENCY_WINDOW_TITLE;
+static constexpr int32_t WH = 100;
+static constexpr int32_t WW = 400;
 
 // clang-format off
 enum WindowCustomCurrencyWidgetIdx {

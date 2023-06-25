@@ -36,9 +36,9 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
-static constexpr const StringId WINDOW_TITLE = STR_STRING;
-static constexpr const int32_t WH = 124;
-static constexpr const int32_t WW = 200;
+static constexpr StringId WINDOW_TITLE = STR_STRING;
+static constexpr int32_t WH = 124;
+static constexpr int32_t WW = 200;
 constexpr int16_t TRACK_MINI_PREVIEW_WIDTH = 168;
 constexpr int16_t TRACK_MINI_PREVIEW_HEIGHT = 78;
 constexpr uint16_t TRACK_MINI_PREVIEW_SIZE = TRACK_MINI_PREVIEW_WIDTH * TRACK_MINI_PREVIEW_HEIGHT;

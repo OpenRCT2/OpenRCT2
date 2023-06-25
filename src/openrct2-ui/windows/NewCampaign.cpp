@@ -23,9 +23,9 @@
 
 using namespace OpenRCT2;
 
-static constexpr const StringId WINDOW_TITLE = STR_NONE;
-static constexpr const int32_t WH = 109;
-static constexpr const int32_t WW = 350;
+static constexpr StringId WINDOW_TITLE = STR_NONE;
+static constexpr int32_t WH = 109;
+static constexpr int32_t WW = 350;
 
 constexpr uint16_t SELECTED_ITEM_UNDEFINED = 0xFFFF;
 

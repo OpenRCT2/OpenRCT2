@@ -20,10 +20,10 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/windows/Intent.h>
 
-static constexpr const int32_t WH_SAVE = 54;
-static constexpr const int32_t WW_SAVE = 260;
-static constexpr const int32_t WH_QUIT = 38;
-static constexpr const int32_t WW_QUIT = 177;
+static constexpr int32_t WH_SAVE = 54;
+static constexpr int32_t WW_SAVE = 260;
+static constexpr int32_t WH_QUIT = 38;
+static constexpr int32_t WW_QUIT = 177;
 
 // clang-format off
 enum WindowSavePromptWidgetIdx {
@@ -60,7 +60,7 @@ static Widget window_quit_prompt_widgets[] = {
     WIDGETS_END,
 };
 
-static constexpr const StringId window_save_prompt_labels[][2] = {
+static constexpr StringId window_save_prompt_labels[][2] = {
     { STR_LOAD_GAME_PROMPT_TITLE,   STR_SAVE_BEFORE_LOADING },
     { STR_QUIT_GAME_PROMPT_TITLE,   STR_SAVE_BEFORE_QUITTING },
     { STR_QUIT_GAME_2_PROMPT_TITLE, STR_SAVE_BEFORE_QUITTING_2 },

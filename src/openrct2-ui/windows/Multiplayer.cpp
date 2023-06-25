@@ -120,13 +120,13 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
 
 // clang-format on
 
-static constexpr const int32_t window_multiplayer_animation_divisor[] = {
+static constexpr int32_t window_multiplayer_animation_divisor[] = {
     4,
     4,
     2,
     2,
 };
-static constexpr const int32_t window_multiplayer_animation_frames[] = {
+static constexpr int32_t window_multiplayer_animation_frames[] = {
     8,
     8,
     7,

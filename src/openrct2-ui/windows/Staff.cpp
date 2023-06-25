@@ -34,10 +34,10 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_STRINGID;
+static constexpr StringId WINDOW_TITLE = STR_STRINGID;
 
-static constexpr const int32_t WW = 190;
-static constexpr const int32_t WH = 180;
+static constexpr int32_t WW = 190;
+static constexpr int32_t WH = 180;
 
 enum WindowStaffPage
 {

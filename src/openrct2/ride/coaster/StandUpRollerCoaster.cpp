@@ -18,12 +18,12 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
-static constexpr const uint32_t STAND_UP_BLOCK_BRAKE_SW_NE_OPEN = 25571;
-static constexpr const uint32_t STAND_UP_BLOCK_BRAKE_NW_SE_OPEN = 25572;
-static constexpr const uint32_t STAND_UP_BLOCK_BRAKE_SW_NE_CLOSED = 25573;
-static constexpr const uint32_t STAND_UP_BLOCK_BRAKE_NW_SE_CLOSED = 25574;
+static constexpr uint32_t STAND_UP_BLOCK_BRAKE_SW_NE_OPEN = 25571;
+static constexpr uint32_t STAND_UP_BLOCK_BRAKE_NW_SE_OPEN = 25572;
+static constexpr uint32_t STAND_UP_BLOCK_BRAKE_SW_NE_CLOSED = 25573;
+static constexpr uint32_t STAND_UP_BLOCK_BRAKE_NW_SE_CLOSED = 25574;
 
-static constexpr const uint32_t _StandUpBlockBrakeImages[NumOrthogonalDirections][2] = {
+static constexpr uint32_t _StandUpBlockBrakeImages[NumOrthogonalDirections][2] = {
     { STAND_UP_BLOCK_BRAKE_SW_NE_OPEN, STAND_UP_BLOCK_BRAKE_SW_NE_CLOSED },
     { STAND_UP_BLOCK_BRAKE_NW_SE_OPEN, STAND_UP_BLOCK_BRAKE_NW_SE_CLOSED },
     { STAND_UP_BLOCK_BRAKE_SW_NE_OPEN, STAND_UP_BLOCK_BRAKE_SW_NE_CLOSED },
@@ -92,7 +92,7 @@ static void StandUpRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][2] = {
+    static constexpr uint32_t imageIds[4][2] = {
         { 25567, SPR_STATION_BASE_A_SW_NE },
         { 25568, SPR_STATION_BASE_A_NW_SE },
         { 25567, SPR_STATION_BASE_A_SW_NE },

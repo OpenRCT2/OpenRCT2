@@ -19,16 +19,16 @@
 #include "../TrackPaint.h"
 
 // Closed block brakes and regular brakes use the same images
-static constexpr const uint32_t GIGA_COASTER_BRAKE_SW_NE_OPEN_1 = 18076;
-static constexpr const uint32_t GIGA_COASTER_BRAKE_NW_SE_OPEN_1 = 18077;
-static constexpr const uint32_t GIGA_COASTER_BRAKE_SW_NE_CLOSED_1 = 18078;
-static constexpr const uint32_t GIGA_COASTER_BRAKE_NW_SE_CLOSED_1 = 18079;
-static constexpr const uint32_t GIGA_COASTER_BRAKE_SW_NE_OPEN_2 = 18080;
-static constexpr const uint32_t GIGA_COASTER_BRAKE_NW_SE_OPEN_2 = 18081;
-static constexpr const uint32_t GIGA_COASTER_BRAKE_SW_NE_CLOSED_2 = 18082;
-static constexpr const uint32_t GIGA_COASTER_BRAKE_NW_SE_CLOSED_2 = 18083;
+static constexpr uint32_t GIGA_COASTER_BRAKE_SW_NE_OPEN_1 = 18076;
+static constexpr uint32_t GIGA_COASTER_BRAKE_NW_SE_OPEN_1 = 18077;
+static constexpr uint32_t GIGA_COASTER_BRAKE_SW_NE_CLOSED_1 = 18078;
+static constexpr uint32_t GIGA_COASTER_BRAKE_NW_SE_CLOSED_1 = 18079;
+static constexpr uint32_t GIGA_COASTER_BRAKE_SW_NE_OPEN_2 = 18080;
+static constexpr uint32_t GIGA_COASTER_BRAKE_NW_SE_OPEN_2 = 18081;
+static constexpr uint32_t GIGA_COASTER_BRAKE_SW_NE_CLOSED_2 = 18082;
+static constexpr uint32_t GIGA_COASTER_BRAKE_NW_SE_CLOSED_2 = 18083;
 
-static constexpr const uint32_t _GigaCoasterBrakeImages[NumOrthogonalDirections][2][2] = {
+static constexpr uint32_t _GigaCoasterBrakeImages[NumOrthogonalDirections][2][2] = {
     { { GIGA_COASTER_BRAKE_SW_NE_OPEN_1, GIGA_COASTER_BRAKE_SW_NE_OPEN_2 },
       { GIGA_COASTER_BRAKE_SW_NE_CLOSED_1, GIGA_COASTER_BRAKE_SW_NE_CLOSED_2 } },
     { { GIGA_COASTER_BRAKE_NW_SE_OPEN_1, GIGA_COASTER_BRAKE_NW_SE_OPEN_2 },
@@ -128,7 +128,7 @@ static void GigaRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][2] = {
+    static constexpr uint32_t imageIds[4][2] = {
         { 18084, SPR_STATION_BASE_A_SW_NE },
         { 18085, SPR_STATION_BASE_A_NW_SE },
         { 18084, SPR_STATION_BASE_A_SW_NE },

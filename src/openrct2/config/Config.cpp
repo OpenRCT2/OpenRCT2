@@ -39,9 +39,9 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
 #ifdef __APPLE__
-static constexpr const bool WindowButtonsOnTheLeftDefault = true;
+static constexpr bool WindowButtonsOnTheLeftDefault = true;
 #else
-static constexpr const bool WindowButtonsOnTheLeftDefault = false;
+static constexpr bool WindowButtonsOnTheLeftDefault = false;
 #endif
 
 namespace Config

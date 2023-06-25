@@ -64,7 +64,7 @@
 #include <string_view>
 #include <vector>
 
-constexpr const uint32_t BlockBrakeImprovementsVersion = 27;
+constexpr uint32_t BlockBrakeImprovementsVersion = 27;
 
 using namespace OpenRCT2;
 

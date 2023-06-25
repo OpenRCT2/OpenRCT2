@@ -28,19 +28,19 @@
 #include "../../world/Wall.h"
 #include "Paint.TileElement.h"
 
-static constexpr const uint8_t DirectionToDoorImageOffset0[] = {
+static constexpr uint8_t DirectionToDoorImageOffset0[] = {
     2, 2, 22, 26, 30, 34, 34, 34, 34, 34, 30, 26, 22, 2, 6, 2, 2, 2, 6, 10, 14, 18, 18, 18, 18, 18, 14, 10, 6, 2, 22, 2,
 };
 
-static constexpr const uint8_t DirectionToDoorImageOffset1[] = {
+static constexpr uint8_t DirectionToDoorImageOffset1[] = {
     0, 0, 4, 8, 12, 16, 16, 16, 16, 16, 12, 8, 4, 0, 20, 0, 0, 0, 20, 24, 28, 32, 32, 32, 32, 32, 28, 24, 20, 0, 4, 0,
 };
 
-static constexpr const uint8_t DirectionToDoorImageOffset2[] = {
+static constexpr uint8_t DirectionToDoorImageOffset2[] = {
     2, 2, 6, 10, 14, 18, 18, 18, 18, 18, 14, 10, 6, 2, 22, 2, 2, 2, 22, 26, 30, 34, 34, 34, 34, 34, 30, 26, 22, 2, 6, 2,
 };
 
-static constexpr const uint8_t DirectionToDoorImageOffset3[] = {
+static constexpr uint8_t DirectionToDoorImageOffset3[] = {
     0, 0, 20, 24, 28, 32, 32, 32, 32, 32, 28, 24, 20, 0, 4, 0, 0, 0, 4, 8, 12, 16, 16, 16, 16, 16, 12, 8, 4, 0, 20, 0,
 };
 

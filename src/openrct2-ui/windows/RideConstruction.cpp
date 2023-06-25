@@ -46,13 +46,13 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
-static constexpr const int32_t WH = 394;
-static constexpr const int32_t WW = 166;
+static constexpr StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
+static constexpr int32_t WH = 394;
+static constexpr int32_t WW = 166;
 
-static constexpr const uint16_t ARROW_PULSE_DURATION = 200;
+static constexpr uint16_t ARROW_PULSE_DURATION = 200;
 // Width of the group boxes, e.g. “Banking”
-static constexpr const int32_t GW = WW - 6;
+static constexpr int32_t GW = WW - 6;
 
 using namespace OpenRCT2::TrackMetaData;
 
@@ -166,7 +166,7 @@ static StringId _trackPlaceErrorMessage;
 static bool _autoRotatingShop;
 static bool _gotoStartPlacementMode = false;
 
-static constexpr const StringId RideConstructionSeatAngleRotationStrings[] = {
+static constexpr StringId RideConstructionSeatAngleRotationStrings[] = {
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_180, STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_135,
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_90,  STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_45,
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_0,       STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_45,
@@ -1928,8 +1928,8 @@ public:
             hold_down_widgets |= (1uLL << WIDX_SPEED_SETTING_SPINNER_UP) | (1uLL << WIDX_SPEED_SETTING_SPINNER_DOWN);
         }
 
-        static constexpr const int16_t bankingGroupboxRightNoSeatRotation = 162;
-        static constexpr const int16_t bankingGroupboxRightWithSeatRotation = 92;
+        static constexpr int16_t bankingGroupboxRightNoSeatRotation = 162;
+        static constexpr int16_t bankingGroupboxRightWithSeatRotation = 92;
 
         widgets[WIDX_BANKING_GROUPBOX].right = bankingGroupboxRightNoSeatRotation;
         widgets[WIDX_SEAT_ROTATION_GROUPBOX].type = WindowWidgetType::Empty;

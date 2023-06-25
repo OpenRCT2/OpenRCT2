@@ -17,8 +17,8 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const int32_t WW = 200;
-static constexpr const int32_t WH = 100;
+static constexpr int32_t WW = 200;
+static constexpr int32_t WH = 100;
 
 // clang-format off
 enum WindowRideRefurbishWidgetIdx

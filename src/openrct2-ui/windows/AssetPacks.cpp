@@ -20,9 +20,9 @@
 
 using namespace OpenRCT2;
 
-static constexpr const StringId WINDOW_TITLE = STR_ASSET_PACKS;
-static constexpr const int32_t WW = 400;
-static constexpr const int32_t WH = 200;
+static constexpr StringId WINDOW_TITLE = STR_ASSET_PACKS;
+static constexpr int32_t WW = 400;
+static constexpr int32_t WH = 200;
 
 // clang-format off
 enum WindowAssetPacksWidgetIdx {

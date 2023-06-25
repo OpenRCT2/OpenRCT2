@@ -54,9 +54,9 @@ enum WINDOW_TRANSPARENCY_WIDGET_IDX
 
 #pragma region MEASUREMENTS
 
-static constexpr const StringId WINDOW_TITLE = STR_TRANSPARENCY_OPTIONS_TITLE;
-static constexpr const int32_t WW = 204;
-static constexpr const int32_t WH = 57;
+static constexpr StringId WINDOW_TITLE = STR_TRANSPARENCY_OPTIONS_TITLE;
+static constexpr int32_t WW = 204;
+static constexpr int32_t WH = 57;
 
 static constexpr ScreenSize HIDE_SIZE = {24, 24};
 static constexpr ScreenSize INVISIBLE_SIZE = {24, 12};

@@ -29,7 +29,7 @@ namespace
 
     constexpr const char* APPLICATION_ID = "378612438200877056";
     constexpr const char* STEAM_APP_ID = nullptr;
-    constexpr const auto REFRESH_INTERVAL = 5.0s;
+    constexpr auto REFRESH_INTERVAL = 5.0s;
 } // namespace
 
 static void OnReady([[maybe_unused]] const DiscordUser* request)

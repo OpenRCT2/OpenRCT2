@@ -475,7 +475,7 @@ void X8DrawingContext::Clear(DrawPixelInfo* dpi, uint8_t paletteIndex)
 
 /** rct2: 0x0097FF04 */
 // clang-format off
-static constexpr const uint16_t Pattern[] = {
+static constexpr uint16_t Pattern[] = {
     0b0111111110000000,
     0b0011111111000000,
     0b0001111111100000,
@@ -495,7 +495,7 @@ static constexpr const uint16_t Pattern[] = {
 };
 
 /** rct2: 0x0097FF14 */
-static constexpr const uint16_t PatternInverse[] = {
+static constexpr uint16_t PatternInverse[] = {
     0b1000000001111111,
     0b1100000000111111,
     0b1110000000011111,

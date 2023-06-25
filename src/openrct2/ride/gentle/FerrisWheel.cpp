@@ -19,14 +19,14 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 
-static constexpr const uint8_t Edges1X4NeSw[] = {
+static constexpr uint8_t Edges1X4NeSw[] = {
     EDGE_NW | EDGE_SE,
     EDGE_NW | EDGE_SE | EDGE_NE,
     EDGE_NW | EDGE_SE,
     EDGE_NW | EDGE_SE | EDGE_SW,
 };
 
-static constexpr const uint8_t Edges1X4NwSe[] = {
+static constexpr uint8_t Edges1X4NwSe[] = {
     EDGE_NE | EDGE_SW,
     EDGE_NE | EDGE_SW | EDGE_NW,
     EDGE_NE | EDGE_SW,

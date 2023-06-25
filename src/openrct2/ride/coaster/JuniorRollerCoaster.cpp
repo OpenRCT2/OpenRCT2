@@ -608,7 +608,7 @@ enum
     SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_E_W_PART_0_2 = 28382,
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_flat[3][4] = {
+static constexpr uint32_t junior_rc_track_pieces_flat[3][4] = {
     {
         SPR_JUNIOR_RC_FLAT_SW_NE,
         SPR_JUNIOR_RC_FLAT_NW_SE,
@@ -629,7 +629,7 @@ static constexpr const uint32_t junior_rc_track_pieces_flat[3][4] = {
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_block_brake[2][4] = {
+static constexpr uint32_t junior_rc_track_pieces_block_brake[2][4] = {
     {
         SPR_JUNIOR_RC_FLAT_BLOCK_SW_NE,
         SPR_JUNIOR_RC_FLAT_BLOCK_NW_SE,
@@ -644,7 +644,7 @@ static constexpr const uint32_t junior_rc_track_pieces_block_brake[2][4] = {
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_station[2][4] = {
+static constexpr uint32_t junior_rc_track_pieces_station[2][4] = {
     {
         SPR_JUNIOR_RC_STATION_SW_NE,
         SPR_JUNIOR_RC_STATION_NW_SE,
@@ -659,7 +659,7 @@ static constexpr const uint32_t junior_rc_track_pieces_station[2][4] = {
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_25_deg_up[3][4] = {
+static constexpr uint32_t junior_rc_track_pieces_25_deg_up[3][4] = {
     {
         SPR_JUNIOR_RC_25_DEG_SW_NE,
         SPR_JUNIOR_RC_25_DEG_NW_SE,
@@ -680,7 +680,7 @@ static constexpr const uint32_t junior_rc_track_pieces_25_deg_up[3][4] = {
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_flat_to_25_deg_up[3][4] = {
+static constexpr uint32_t junior_rc_track_pieces_flat_to_25_deg_up[3][4] = {
     {
         SPR_JUNIOR_RC_FLAT_TO_25_DEG_UP_SW_NE,
         SPR_JUNIOR_RC_FLAT_TO_25_DEG_UP_NW_SE,
@@ -701,7 +701,7 @@ static constexpr const uint32_t junior_rc_track_pieces_flat_to_25_deg_up[3][4] =
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_25_deg_up_to_flat[3][4] = {
+static constexpr uint32_t junior_rc_track_pieces_25_deg_up_to_flat[3][4] = {
     {
         SPR_JUNIOR_RC_25_DEG_UP_TO_FLAT_SW_NE,
         SPR_JUNIOR_RC_25_DEG_UP_TO_FLAT_NW_SE,
@@ -722,21 +722,21 @@ static constexpr const uint32_t junior_rc_track_pieces_25_deg_up_to_flat[3][4] =
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_flat_to_left_bank[4][2] = {
+static constexpr uint32_t junior_rc_track_pieces_flat_to_left_bank[4][2] = {
     { SPR_JUNIOR_RC_FLAT_TO_LEFT_BANK_SW_NE, SPR_JUNIOR_RC_FLAT_TO_LEFT_BANK_SW_NE_FRONT },
     { SPR_JUNIOR_RC_FLAT_TO_LEFT_BANK_NW_SE, SPR_JUNIOR_RC_FLAT_TO_LEFT_BANK_NW_SE_FRONT },
     { SPR_JUNIOR_RC_FLAT_TO_LEFT_BANK_NE_SW, 0 },
     { SPR_JUNIOR_RC_FLAT_TO_LEFT_BANK_SE_NW, 0 }
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_flat_to_right_bank[4][2] = {
+static constexpr uint32_t junior_rc_track_pieces_flat_to_right_bank[4][2] = {
     { SPR_JUNIOR_RC_FLAT_TO_RIGHT_BANK_SW_NE, 0 },
     { SPR_JUNIOR_RC_FLAT_TO_RIGHT_BANK_NW_SE, 0 },
     { SPR_JUNIOR_RC_FLAT_TO_RIGHT_BANK_NE_SW, SPR_JUNIOR_RC_FLAT_TO_RIGHT_BANK_NE_SW_FRONT },
     { SPR_JUNIOR_RC_FLAT_TO_RIGHT_BANK_SE_NW, SPR_JUNIOR_RC_FLAT_TO_RIGHT_BANK_SE_NW_FRONT },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_flat_quarter_turn_5_tiles[4][5] = {
+static constexpr uint32_t junior_rc_track_pieces_flat_quarter_turn_5_tiles[4][5] = {
     {
         SPR_JUNIOR_RC_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_0,
         SPR_JUNIOR_RC_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_1,
@@ -767,7 +767,7 @@ static constexpr const uint32_t junior_rc_track_pieces_flat_quarter_turn_5_tiles
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_banked_quarter_turn_5_tiles[4][5] = {
+static constexpr uint32_t junior_rc_track_pieces_banked_quarter_turn_5_tiles[4][5] = {
     {
         SPR_JUNIOR_RC_BANKED_QUARTER_TURN_5_TILES_SW_SE_PART_0,
         SPR_JUNIOR_RC_BANKED_QUARTER_TURN_5_TILES_SW_SE_PART_1,
@@ -798,42 +798,42 @@ static constexpr const uint32_t junior_rc_track_pieces_banked_quarter_turn_5_til
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_left_banked_to_25_deg_up[4][2] = {
+static constexpr uint32_t junior_rc_track_pieces_left_banked_to_25_deg_up[4][2] = {
     { SPR_JUNIOR_RC_LEFT_BANK_TO_25_DEG_UP_SW_NE, SPR_JUNIOR_RC_LEFT_BANK_TO_25_DEG_UP_SW_NE_FRONT },
     { SPR_JUNIOR_RC_LEFT_BANK_TO_25_DEG_UP_NW_SE, SPR_JUNIOR_RC_LEFT_BANK_TO_25_DEG_UP_NW_SE_FRONT },
     { SPR_JUNIOR_RC_LEFT_BANK_TO_25_DEG_UP_NE_SW, 0 },
     { SPR_JUNIOR_RC_LEFT_BANK_TO_25_DEG_UP_SE_NW, 0 },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_right_banked_to_25_deg_up[4][2] = {
+static constexpr uint32_t junior_rc_track_pieces_right_banked_to_25_deg_up[4][2] = {
     { SPR_JUNIOR_RC_RIGHT_BANK_TO_25_DEG_UP_SW_NE, 0 },
     { SPR_JUNIOR_RC_RIGHT_BANK_TO_25_DEG_UP_NW_SE, 0 },
     { SPR_JUNIOR_RC_RIGHT_BANK_TO_25_DEG_UP_NE_SW, SPR_JUNIOR_RC_RIGHT_BANK_TO_25_DEG_UP_NE_SW_FRONT },
     { SPR_JUNIOR_RC_RIGHT_BANK_TO_25_DEG_UP_SE_NW, SPR_JUNIOR_RC_RIGHT_BANK_TO_25_DEG_UP_SE_NW_FRONT },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_25_deg_up_to_left_bank[4][2] = {
+static constexpr uint32_t junior_rc_track_pieces_25_deg_up_to_left_bank[4][2] = {
     { SPR_JUNIOR_RC_25_DEG_UP_TO_LEFT_BANK_SW_NE, SPR_JUNIOR_RC_25_DEG_UP_TO_LEFT_BANK_SW_NE_FRONT },
     { SPR_JUNIOR_RC_25_DEG_UP_TO_LEFT_BANK_NW_SE, SPR_JUNIOR_RC_25_DEG_UP_TO_LEFT_BANK_NW_SE_FRONT },
     { SPR_JUNIOR_RC_25_DEG_UP_TO_LEFT_BANK_NE_SW, 0 },
     { SPR_JUNIOR_RC_25_DEG_UP_TO_LEFT_BANK_SE_NW, 0 },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_25_deg_up_to_right_bank[4][2] = {
+static constexpr uint32_t junior_rc_track_pieces_25_deg_up_to_right_bank[4][2] = {
     { SPR_JUNIOR_RC_25_DEG_UP_TO_RIGHT_BANK_SW_NE, 0 },
     { SPR_JUNIOR_RC_25_DEG_UP_TO_RIGHT_BANK_NW_SE, 0 },
     { SPR_JUNIOR_RC_25_DEG_UP_TO_RIGHT_BANK_NE_SW, SPR_JUNIOR_RC_25_DEG_UP_TO_RIGHT_BANK_NE_SW_FRONT },
     { SPR_JUNIOR_RC_25_DEG_UP_TO_RIGHT_BANK_SE_NW, SPR_JUNIOR_RC_25_DEG_UP_TO_RIGHT_BANK_SE_NW_FRONT },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_left_bank[4] = {
+static constexpr uint32_t junior_rc_track_pieces_left_bank[4] = {
     SPR_JUNIOR_RC_LEFT_BANK_SW_NE,
     SPR_JUNIOR_RC_LEFT_BANK_NW_SE,
     SPR_JUNIOR_RC_LEFT_BANK_NE_SW,
     SPR_JUNIOR_RC_LEFT_BANK_SE_NW,
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_left_quarter_turn_5_tiles_25_deg_up[2][4][5] = {
+static constexpr uint32_t junior_rc_track_pieces_left_quarter_turn_5_tiles_25_deg_up[2][4][5] = {
     {
         {
             SPR_JUNIOR_RC_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP_SW_SE_PART_0,
@@ -896,7 +896,7 @@ static constexpr const uint32_t junior_rc_track_pieces_left_quarter_turn_5_tiles
     },
 };
 
-static constexpr const CoordsXY junior_rc_left_quarter_turn_5_tiles_25_deg_up_offsets[4][5] = {
+static constexpr CoordsXY junior_rc_left_quarter_turn_5_tiles_25_deg_up_offsets[4][5] = {
     {
         { 0, 6 },
         { 0, 0 },
@@ -927,7 +927,7 @@ static constexpr const CoordsXY junior_rc_left_quarter_turn_5_tiles_25_deg_up_of
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_right_quarter_turn_5_tiles_25_deg_up[2][4][5] = {
+static constexpr uint32_t junior_rc_track_pieces_right_quarter_turn_5_tiles_25_deg_up[2][4][5] = {
     {
         {
             SPR_JUNIOR_RC_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP_SW_SE_PART_0,
@@ -990,7 +990,7 @@ static constexpr const uint32_t junior_rc_track_pieces_right_quarter_turn_5_tile
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_s_bend_left[2][4] = {
+static constexpr uint32_t junior_rc_track_pieces_s_bend_left[2][4] = {
     {
         SPR_JUNIOR_RC_S_BEND_LEFT_SW_NE_PART_0,
         SPR_JUNIOR_RC_S_BEND_LEFT_SW_NE_PART_1,
@@ -1005,7 +1005,7 @@ static constexpr const uint32_t junior_rc_track_pieces_s_bend_left[2][4] = {
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_s_bend_right[2][4] = {
+static constexpr uint32_t junior_rc_track_pieces_s_bend_right[2][4] = {
     {
         SPR_JUNIOR_RC_S_BEND_RIGHT_SW_NE_PART_0,
         SPR_JUNIOR_RC_S_BEND_RIGHT_SW_NE_PART_1,
@@ -1020,7 +1020,7 @@ static constexpr const uint32_t junior_rc_track_pieces_s_bend_right[2][4] = {
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
+static constexpr uint32_t junior_rc_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
     {
         SPR_JUNIOR_RC_QUARTER_TURN_3_TILES_SW_SE_PART_0,
         SPR_JUNIOR_RC_QUARTER_TURN_3_TILES_SW_SE_PART_1,
@@ -1043,7 +1043,7 @@ static constexpr const uint32_t junior_rc_track_pieces_flat_quarter_turn_3_tiles
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_banked_quarter_turn_3_tiles[4][3] = {
+static constexpr uint32_t junior_rc_track_pieces_banked_quarter_turn_3_tiles[4][3] = {
     {
         SPR_JUNIOR_RC_BANKED_QUARTER_TURN_3_TILES_SW_SE_PART_0,
         SPR_JUNIOR_RC_BANKED_QUARTER_TURN_3_TILES_SW_SE_PART_1,
@@ -1066,7 +1066,7 @@ static constexpr const uint32_t junior_rc_track_pieces_banked_quarter_turn_3_til
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_up[2][4][2] = {
+static constexpr uint32_t junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_up[2][4][2] = {
     {
         { SPR_JUNIOR_RC_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP_SW_SE_PART_0,
           SPR_JUNIOR_RC_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP_SW_SE_PART_1 },
@@ -1089,7 +1089,7 @@ static constexpr const uint32_t junior_rc_track_pieces_right_quarter_turn_3_tile
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_down[2][4][2] = {
+static constexpr uint32_t junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_down[2][4][2] = {
     {
         { SPR_JUNIOR_RC_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN_SW_SE_PART_0,
           SPR_JUNIOR_RC_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN_SW_SE_PART_1 },
@@ -1112,7 +1112,7 @@ static constexpr const uint32_t junior_rc_track_pieces_right_quarter_turn_3_tile
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_right_half_banked_helix_up_small_quarter_tiles[4][3][2] = {
+static constexpr uint32_t junior_rc_track_pieces_right_half_banked_helix_up_small_quarter_tiles[4][3][2] = {
     {
         { SPR_JUNIOR_RC_RIGHT_HALF_BANKED_HELIX_UP_SMALL_SW_SE_PART_0 },
         { SPR_JUNIOR_RC_RIGHT_HALF_BANKED_HELIX_UP_SMALL_SW_SE_PART_1 },
@@ -1137,7 +1137,7 @@ static constexpr const uint32_t junior_rc_track_pieces_right_half_banked_helix_u
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_right_half_banked_helix_down_small_quarter_tiles[4][3][2] = {
+static constexpr uint32_t junior_rc_track_pieces_right_half_banked_helix_down_small_quarter_tiles[4][3][2] = {
     {
         { SPR_JUNIOR_RC_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL_SW_SE_PART_0 },
         { SPR_JUNIOR_RC_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL_SW_SE_PART_1 },
@@ -1162,7 +1162,7 @@ static constexpr const uint32_t junior_rc_track_pieces_right_half_banked_helix_d
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_right_half_banked_helix_up_large_quarter_tiles[4][5][2] = {
+static constexpr uint32_t junior_rc_track_pieces_right_half_banked_helix_up_large_quarter_tiles[4][5][2] = {
     {
         { SPR_JUNIOR_RC_RIGHT_HALF_BANKED_HELIX_UP_LARGE_SW_SE_PART_0 },
         { SPR_JUNIOR_RC_RIGHT_HALF_BANKED_HELIX_UP_LARGE_SW_SE_PART_1 },
@@ -1195,7 +1195,7 @@ static constexpr const uint32_t junior_rc_track_pieces_right_half_banked_helix_u
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_right_half_banked_helix_down_large_quarter_tiles[4][5][2] = {
+static constexpr uint32_t junior_rc_track_pieces_right_half_banked_helix_down_large_quarter_tiles[4][5][2] = {
     {
         { SPR_JUNIOR_RC_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE_SW_SE_PART_0 },
         { SPR_JUNIOR_RC_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE_SW_SE_PART_1 },
@@ -1228,14 +1228,14 @@ static constexpr const uint32_t junior_rc_track_pieces_right_half_banked_helix_d
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_brake[4] = {
+static constexpr uint32_t junior_rc_track_pieces_brake[4] = {
     SPR_JUNIOR_RC_FLAT_SW_NE_BRAKED,
     SPR_JUNIOR_RC_FLAT_NW_SE_BRAKED,
     SPR_JUNIOR_RC_FLAT_SW_NE_BRAKED,
     SPR_JUNIOR_RC_FLAT_NW_SE_BRAKED,
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_left_eight_to_diag[4][4] = {
+static constexpr uint32_t junior_rc_track_pieces_left_eight_to_diag[4][4] = {
     {
         SPR_JUNIOR_RC_EIGHT_TO_DIAG_SW_N_PART_0,
         SPR_JUNIOR_RC_EIGHT_TO_DIAG_SW_N_PART_1,
@@ -1262,7 +1262,7 @@ static constexpr const uint32_t junior_rc_track_pieces_left_eight_to_diag[4][4] 
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_right_eight_to_diag[4][4] = {
+static constexpr uint32_t junior_rc_track_pieces_right_eight_to_diag[4][4] = {
     {
         SPR_JUNIOR_RC_EIGHT_TO_DIAG_SW_E_PART_0,
         SPR_JUNIOR_RC_EIGHT_TO_DIAG_SW_E_PART_1,
@@ -1289,7 +1289,7 @@ static constexpr const uint32_t junior_rc_track_pieces_right_eight_to_diag[4][4]
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_left_eight_to_diag_bank[4][4] = {
+static constexpr uint32_t junior_rc_track_pieces_left_eight_to_diag_bank[4][4] = {
     {
         SPR_JUNIOR_RC_EIGHT_TO_DIAG_BANK_SW_N_PART_0,
         SPR_JUNIOR_RC_EIGHT_TO_DIAG_BANK_SW_N_PART_1,
@@ -1316,7 +1316,7 @@ static constexpr const uint32_t junior_rc_track_pieces_left_eight_to_diag_bank[4
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_right_eight_to_diag_bank[4][4] = {
+static constexpr uint32_t junior_rc_track_pieces_right_eight_to_diag_bank[4][4] = {
     {
         SPR_JUNIOR_RC_EIGHT_TO_DIAG_BANK_SW_E_PART_0,
         SPR_JUNIOR_RC_EIGHT_TO_DIAG_BANK_SW_E_PART_1,
@@ -1343,7 +1343,7 @@ static constexpr const uint32_t junior_rc_track_pieces_right_eight_to_diag_bank[
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_flat[3][4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_flat[3][4] = {
     {
         SPR_JUNIOR_RC_DIAG_FLAT_W_E,
         SPR_JUNIOR_RC_DIAG_FLAT_N_S,
@@ -1364,7 +1364,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_flat[3][4] = {
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_25_deg_up[3][4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_25_deg_up[3][4] = {
     {
         SPR_JUNIOR_RC_DIAG_25_DEG_UP_W_E,
         SPR_JUNIOR_RC_DIAG_25_DEG_UP_N_S,
@@ -1385,7 +1385,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_25_deg_up[3][4] = {
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_flat_to_25_deg_up[3][4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_flat_to_25_deg_up[3][4] = {
     {
         SPR_JUNIOR_RC_DIAG_FLAT_TO_25_DEG_UP_W_E,
         SPR_JUNIOR_RC_DIAG_FLAT_TO_25_DEG_UP_N_S,
@@ -1406,7 +1406,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_flat_to_25_deg_up[3]
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_flat_to_60_deg_up[2][4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_flat_to_60_deg_up[2][4] = {
     {
         SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_W_E,
         SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_N_S,
@@ -1421,7 +1421,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_flat_to_60_deg_up[2]
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_25_deg_up_to_flat[3][4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_25_deg_up_to_flat[3][4] = {
     {
         SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_FLAT_W_E,
         SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_FLAT_N_S,
@@ -1442,7 +1442,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_25_deg_up_to_flat[3]
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_60_deg_up_to_flat[2][4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_60_deg_up_to_flat[2][4] = {
     {
         SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_W_E,
         SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_N_S,
@@ -1457,7 +1457,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_60_deg_up_to_flat[2]
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_25_deg_down[3][4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_25_deg_down[3][4] = {
     {
         SPR_JUNIOR_RC_DIAG_25_DEG_UP_E_W,
         SPR_JUNIOR_RC_DIAG_25_DEG_UP_S_N,
@@ -1478,7 +1478,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_25_deg_down[3][4] = 
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_flat_to_25_deg_down[3][4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_flat_to_25_deg_down[3][4] = {
     {
         SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_FLAT_E_W,
         SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_FLAT_S_N,
@@ -1499,7 +1499,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_flat_to_25_deg_down[
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_flat_to_60_deg_down[2][4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_flat_to_60_deg_down[2][4] = {
     {
         SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_E_W,
         SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_FLAT_S_N,
@@ -1514,7 +1514,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_flat_to_60_deg_down[
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_25_deg_down_to_flat[3][4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_25_deg_down_to_flat[3][4] = {
     {
         SPR_JUNIOR_RC_DIAG_FLAT_TO_25_DEG_UP_E_W,
         SPR_JUNIOR_RC_DIAG_FLAT_TO_25_DEG_UP_S_N,
@@ -1535,7 +1535,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_25_deg_down_to_flat[
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_60_deg_down_to_flat[2][4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_60_deg_down_to_flat[2][4] = {
     {
         SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_E_W,
         SPR_JUNIOR_RC_DIAG_FLAT_TO_60_DEG_UP_S_N,
@@ -1550,105 +1550,105 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_60_deg_down_to_flat[
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_flat_to_left_bank[4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_flat_to_left_bank[4] = {
     SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_W_E,
     SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_N_S,
     SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_E_W,
     SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_S_N,
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_flat_to_right_bank[4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_flat_to_right_bank[4] = {
     SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_W_E,
     SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_N_S,
     SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_E_W,
     SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_S_N,
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_right_bank_to_flat[4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_right_bank_to_flat[4] = {
     SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_E_W,
     SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_S_N,
     SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_W_E,
     SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_N_S,
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_left_bank_to_flat[4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_left_bank_to_flat[4] = {
     SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_E_W,
     SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_S_N,
     SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_W_E,
     SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_N_S,
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_left_bank_to_25_deg_up[4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_left_bank_to_25_deg_up[4] = {
     SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_W_E,
     SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_N_S,
     SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_E_W,
     SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_S_N,
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_right_bank_to_25_deg_up[4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_right_bank_to_25_deg_up[4] = {
     SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_W_E,
     SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_N_S,
     SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_E_W,
     SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_S_N,
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_25_deg_up_to_left_bank[4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_25_deg_up_to_left_bank[4] = {
     SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_W_E,
     SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_N_S,
     SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_E_W,
     SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_S_N,
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_25_deg_up_to_right_bank[4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_25_deg_up_to_right_bank[4] = {
     SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_W_E,
     SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_N_S,
     SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_E_W,
     SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_S_N,
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_right_bank_to_25_deg_down[4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_right_bank_to_25_deg_down[4] = {
     SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_E_W,
     SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_S_N,
     SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_W_E,
     SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_N_S,
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_left_bank_to_25_deg_down[4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_left_bank_to_25_deg_down[4] = {
     SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_E_W,
     SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_S_N,
     SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_W_E,
     SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_N_S,
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_25_deg_down_to_right_bank[4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_25_deg_down_to_right_bank[4] = {
     SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_E_W,
     SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_S_N,
     SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_W_E,
     SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_N_S,
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_25_deg_down_to_left_bank[4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_25_deg_down_to_left_bank[4] = {
     SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_E_W,
     SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_S_N,
     SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_W_E,
     SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_N_S,
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_left_bank[4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_left_bank[4] = {
     SPR_JUNIOR_RC_DIAG_LEFT_BANK_W_E,
     SPR_JUNIOR_RC_DIAG_LEFT_BANK_N_S,
     SPR_JUNIOR_RC_DIAG_LEFT_BANK_E_W,
     SPR_JUNIOR_RC_DIAG_LEFT_BANK_S_N,
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_right_bank[4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_right_bank[4] = {
     SPR_JUNIOR_RC_DIAG_LEFT_BANK_E_W,
     SPR_JUNIOR_RC_DIAG_LEFT_BANK_S_N,
     SPR_JUNIOR_RC_DIAG_LEFT_BANK_W_E,
     SPR_JUNIOR_RC_DIAG_LEFT_BANK_N_S,
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_flat_to_60_deg_up[2][4][2] = {
+static constexpr uint32_t junior_rc_track_pieces_flat_to_60_deg_up[2][4][2] = {
     {
         { SPR_JUNIOR_RC_FLAT_TO_60_DEG_UP_SW_NE, 0 },
         { SPR_JUNIOR_RC_FLAT_TO_60_DEG_UP_NW_SE, SPR_JUNIOR_RC_FLAT_TO_60_DEG_UP_NW_SE_PART_0_2 },
@@ -1663,7 +1663,7 @@ static constexpr const uint32_t junior_rc_track_pieces_flat_to_60_deg_up[2][4][2
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_60_deg_up_to_flat[2][4][2] = {
+static constexpr uint32_t junior_rc_track_pieces_60_deg_up_to_flat[2][4][2] = {
     {
         { SPR_JUNIOR_RC_60_DEG_UP_TO_FLAT_SW_NE, 0 },
         { SPR_JUNIOR_RC_60_DEG_UP_TO_FLAT_NW_SE, SPR_JUNIOR_RC_60_DEG_UP_TO_FLAT_NW_SE_PART_0_2 },
@@ -1678,7 +1678,7 @@ static constexpr const uint32_t junior_rc_track_pieces_60_deg_up_to_flat[2][4][2
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_60_deg_up[2][4] = {
+static constexpr uint32_t junior_rc_track_pieces_60_deg_up[2][4] = {
     {
         SPR_JUNIOR_RC_60_DEG_SW_NE,
         SPR_JUNIOR_RC_60_DEG_NW_SE,
@@ -1693,7 +1693,7 @@ static constexpr const uint32_t junior_rc_track_pieces_60_deg_up[2][4] = {
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_25_deg_up_to_60_deg_up[2][4][2] = {
+static constexpr uint32_t junior_rc_track_pieces_25_deg_up_to_60_deg_up[2][4][2] = {
     {
         { SPR_JUNIOR_RC_25_DEG_TO_60_DEG_UP_SW_NE, 0 },
         { SPR_JUNIOR_RC_25_DEG_TO_60_DEG_UP_NW_SE, SPR_JUNIOR_RC_25_DEG_TO_60_DEG_UP_NW_SE_PART_0_2 },
@@ -1708,7 +1708,7 @@ static constexpr const uint32_t junior_rc_track_pieces_25_deg_up_to_60_deg_up[2]
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_60_deg_up_to_25_deg_up[2][4][2] = {
+static constexpr uint32_t junior_rc_track_pieces_60_deg_up_to_25_deg_up[2][4][2] = {
     {
         { SPR_JUNIOR_RC_60_DEG_TO_25_DEG_UP_SW_NE, 0 },
         { SPR_JUNIOR_RC_60_DEG_TO_25_DEG_UP_NW_SE, SPR_JUNIOR_RC_60_DEG_TO_25_DEG_UP_NW_SE_PART_0_2 },
@@ -1723,7 +1723,7 @@ static constexpr const uint32_t junior_rc_track_pieces_60_deg_up_to_25_deg_up[2]
     }
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_60_deg_up[2][4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_60_deg_up[2][4] = {
     {
         SPR_JUNIOR_RC_DIAG_60_DEG_UP_W_E,
         SPR_JUNIOR_RC_DIAG_60_DEG_UP_N_S,
@@ -1738,7 +1738,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_60_deg_up[2][4] = {
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_60_deg_down[2][4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_60_deg_down[2][4] = {
     {
         SPR_JUNIOR_RC_DIAG_60_DEG_UP_E_W,
         SPR_JUNIOR_RC_DIAG_60_DEG_UP_S_N,
@@ -1753,7 +1753,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_60_deg_down[2][4] = 
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_25_deg_up_to_60_deg_up[2][4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_25_deg_up_to_60_deg_up[2][4] = {
     {
         SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_60_DEG_UP_W_E,
         SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_60_DEG_UP_N_S,
@@ -1768,7 +1768,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_25_deg_up_to_60_deg_
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_60_deg_up_to_25_deg_up[2][4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_60_deg_up_to_25_deg_up[2][4] = {
     {
         SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_25_DEG_UP_W_E,
         SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_25_DEG_UP_N_S,
@@ -1783,7 +1783,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_60_deg_up_to_25_deg_
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_25_deg_down_to_60_deg_down[2][4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_25_deg_down_to_60_deg_down[2][4] = {
     {
         SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_25_DEG_UP_E_W,
         SPR_JUNIOR_RC_DIAG_60_DEG_UP_TO_25_DEG_UP_S_N,
@@ -1798,7 +1798,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_25_deg_down_to_60_de
     },
 };
 
-static constexpr const uint32_t junior_rc_track_pieces_diag_60_deg_down_to_25_deg_down[2][4] = {
+static constexpr uint32_t junior_rc_track_pieces_diag_60_deg_down_to_25_deg_down[2][4] = {
     {
         SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_60_DEG_UP_E_W,
         SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_60_DEG_UP_S_N,
@@ -1991,7 +1991,7 @@ void JuniorRCPaintTrack25DegUpToFlat(
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
 }
 
-static constexpr const int8_t junior_rc_track_right_quarter_turn_5_tiles_support_height_offset[][7] = {
+static constexpr int8_t junior_rc_track_right_quarter_turn_5_tiles_support_height_offset[][7] = {
     { 0, 0, 0, 0, 0, 0, -1 },
     { -1, 0, 0, 0, 0, 0, 0 },
     { 0 },
@@ -2073,7 +2073,7 @@ static void JuniorRCRightQuarterTurn5TilesPaintSetup(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static constexpr const uint8_t junior_rc_left_quarter_turn_5_tiles_to_right_turn_map[] = {
+static constexpr uint8_t junior_rc_left_quarter_turn_5_tiles_to_right_turn_map[] = {
     6, 4, 5, 3, 1, 2, 0,
 };
 
@@ -2196,7 +2196,7 @@ static void JuniorRCRightBankToFlatPaintSetup(
     JuniorRCFlatToLeftBankPaintSetup(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
-static constexpr const CoordsXY junior_rc_banked_right_quarter_turn_5_tiles_bound_lengths[4][5] = {
+static constexpr CoordsXY junior_rc_banked_right_quarter_turn_5_tiles_bound_lengths[4][5] = {
     {
         { 32, 20 },
         { 32, 16 },
@@ -2227,7 +2227,7 @@ static constexpr const CoordsXY junior_rc_banked_right_quarter_turn_5_tiles_boun
     },
 };
 
-static constexpr const CoordsXYZ junior_rc_banked_right_quarter_turn_5_tiles_bound_offsets[4][5] = {
+static constexpr CoordsXYZ junior_rc_banked_right_quarter_turn_5_tiles_bound_offsets[4][5] = {
     {
         { 0, 6, 0 },
         { 0, 16, 0 },
@@ -2641,14 +2641,14 @@ static void JuniorRC25DegDownToRightBankPaintSetup(
     JuniorRCLeftBankTo25DegUpPaintSetup(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
-static constexpr const CoordsXYZ junior_rc_left_bank_bound_lengths[4] = {
+static constexpr CoordsXYZ junior_rc_left_bank_bound_lengths[4] = {
     { 32, 1, 26 },
     { 1, 32, 26 },
     { 32, 20, 1 },
     { 20, 32, 1 },
 };
 
-static constexpr const CoordsXY junior_rc_left_bank_bound_offsets[4] = {
+static constexpr CoordsXY junior_rc_left_bank_bound_offsets[4] = {
     { 0, 27 },
     { 27, 0 },
     { 0, 6 },
@@ -3152,7 +3152,7 @@ static void JuniorRCLeftQuarterTurn3TilesPaintSetup(
     JuniorRCRightQuarterTurn3TilesPaintSetup(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 
-static constexpr const CoordsXY junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths[4][3] = {
+static constexpr CoordsXY junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths[4][3] = {
     {
         { 32, 20 },
         { 16, 16 },
@@ -3175,7 +3175,7 @@ static constexpr const CoordsXY junior_rc_right_quarter_turn_3_tiles_bank_bound_
     },
 };
 
-static constexpr const CoordsXYZ junior_rc_right_quarter_turn_3_tiles_bank_offsets[4][3] = {
+static constexpr CoordsXYZ junior_rc_right_quarter_turn_3_tiles_bank_offsets[4][3] = {
     {
         { 0, 6, 0 },
         { 16, 16, 0 },
@@ -3451,7 +3451,7 @@ static void JuniorRCRightQuarterTurn3Tiles25DegDownPaintSetup(
         isChained ? JuniorRCChainType::FrictionWheels : JuniorRCChainType::None);
 }
 
-static constexpr const uint8_t junior_rc_left_quarter_turn_3_tiles_to_right_turn_map[] = {
+static constexpr uint8_t junior_rc_left_quarter_turn_3_tiles_to_right_turn_map[] = {
     3,
     1,
     2,
@@ -4058,7 +4058,7 @@ static void JuniorRCRightEighthToOrthogonalPaintSetup(
     JuniorRCLeftEighthToDiagPaintSetup(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
-static constexpr const CoordsXY junior_rc_left_eighth_to_diag_bank_bound_lengths[4][4] = {
+static constexpr CoordsXY junior_rc_left_eighth_to_diag_bank_bound_lengths[4][4] = {
     {
         { 32, 1 },
         { 32, 16 },
@@ -4085,7 +4085,7 @@ static constexpr const CoordsXY junior_rc_left_eighth_to_diag_bank_bound_lengths
     },
 };
 
-static constexpr const CoordsXYZ junior_rc_left_eighth_to_diag_bank_bound_offsets[4][4] = {
+static constexpr CoordsXYZ junior_rc_left_eighth_to_diag_bank_bound_offsets[4][4] = {
     {
         { 0, 27, 0 },
         { 0, 0, 0 },
@@ -4112,7 +4112,7 @@ static constexpr const CoordsXYZ junior_rc_left_eighth_to_diag_bank_bound_offset
     },
 };
 
-static constexpr const int8_t junior_rc_left_eighth_to_diag_bank_thickness[4][4] = {
+static constexpr int8_t junior_rc_left_eighth_to_diag_bank_thickness[4][4] = {
     {
         26,
         1,
@@ -4203,7 +4203,7 @@ static void JuniorRCLeftEighthToDiagBankPaintSetup(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static constexpr const CoordsXY junior_rc_right_eighth_to_diag_bank_bound_lengths[4][4] = {
+static constexpr CoordsXY junior_rc_right_eighth_to_diag_bank_bound_lengths[4][4] = {
     {
         { 32, 20 },
         { 16, 16 },
@@ -4230,7 +4230,7 @@ static constexpr const CoordsXY junior_rc_right_eighth_to_diag_bank_bound_length
     },
 };
 
-static constexpr const CoordsXYZ junior_rc_right_eighth_to_diag_bank_bound_offsets[4][4] = {
+static constexpr CoordsXYZ junior_rc_right_eighth_to_diag_bank_bound_offsets[4][4] = {
     {
         { 0, 6, 0 },
         { 0, 0, 0 },
@@ -4257,7 +4257,7 @@ static constexpr const CoordsXYZ junior_rc_right_eighth_to_diag_bank_bound_offse
     },
 };
 
-static constexpr const int8_t junior_rc_right_eighth_to_diag_bank_thickness[4][4] = {
+static constexpr int8_t junior_rc_right_eighth_to_diag_bank_thickness[4][4] = {
     {
         1,
         1,
@@ -4368,14 +4368,14 @@ static void JuniorRCRightEighthToOrthogonalBankPaintSetup(
     JuniorRCLeftEighthToDiagBankPaintSetup(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
-static constexpr const int32_t junior_rc_diag_blocked_segments[] = {
+static constexpr int32_t junior_rc_diag_blocked_segments[] = {
     SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4 | SEGMENT_BC,
     SEGMENT_C4 | SEGMENT_CC | SEGMENT_C8 | SEGMENT_B4,
     SEGMENT_D0 | SEGMENT_C4 | SEGMENT_C0 | SEGMENT_D4,
     SEGMENT_D0 | SEGMENT_C4 | SEGMENT_B8 | SEGMENT_C8,
 };
 
-static constexpr const uint8_t junior_rc_diag_support_segment[] = {
+static constexpr uint8_t junior_rc_diag_support_segment[] = {
     1,
     0,
     2,
@@ -5064,14 +5064,14 @@ static void JuniorRCDiag25DegDownToRightBankPaintSetup(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-static constexpr const CoordsXYZ junior_rc_diag_left_bank_bound_offsets[4] = {
+static constexpr CoordsXYZ junior_rc_diag_left_bank_bound_offsets[4] = {
     { -16, -16, 27 },
     { -16, -16, 0 },
     { -16, -16, 0 },
     { -16, -16, 0 },
 };
 
-static constexpr const CoordsXYZ junior_rc_diag_right_bank_bound_offsets[4] = {
+static constexpr CoordsXYZ junior_rc_diag_right_bank_bound_offsets[4] = {
     { -16, -16, 0 },
     { -16, -16, 0 },
     { -16, -16, 27 },
@@ -5124,28 +5124,28 @@ static void JuniorRCDiagRightBankPaintSetup(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static constexpr const CoordsXY junior_rc_60_deg_up_bound_offsets[4] = {
+static constexpr CoordsXY junior_rc_60_deg_up_bound_offsets[4] = {
     { 0, 6 },
     { 10, 29 },
     { 29, 10 },
     { 6, 0 },
 };
 
-static constexpr const CoordsXY junior_rc_60_deg_up_tile_offsets[4] = {
+static constexpr CoordsXY junior_rc_60_deg_up_tile_offsets[4] = {
     { 0, 6 },
     { 6, 0 },
     { 0, 6 },
     { 6, 0 },
 };
 
-static constexpr const int8_t junior_rc_60_deg_up_bound_thickness[4] = {
+static constexpr int8_t junior_rc_60_deg_up_bound_thickness[4] = {
     1,
     75,
     75,
     1,
 };
 
-static constexpr const CoordsXY junior_rc_60_deg_up_bound_lengths[4] = {
+static constexpr CoordsXY junior_rc_60_deg_up_bound_lengths[4] = {
     { 32, 20 },
     { 10, 1 },
     { 1, 10 },
@@ -5210,21 +5210,21 @@ static void JuniorRC60DegDownPaintSetup(
     JuniorRC60DegUpPaintSetup(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
-static constexpr const CoordsXY junior_rc_25_deg_up_to_60_deg_up_bound_lengths[4][2] = {
+static constexpr CoordsXY junior_rc_25_deg_up_to_60_deg_up_bound_lengths[4][2] = {
     { { 32, 20 }, { 0, 0 } },
     { { 10, 32 }, { 2, 32 } },
     { { 32, 10 }, { 32, 2 } },
     { { 20, 32 }, { 0, 0 } },
 };
 
-static constexpr const int8_t junior_rc_25_deg_up_to_60_deg_up_bound_thickness[4] = {
+static constexpr int8_t junior_rc_25_deg_up_to_60_deg_up_bound_thickness[4] = {
     1,
     43,
     43,
     1,
 };
 
-static constexpr const CoordsXY junior_rc_25_deg_up_to_60_deg_up_bound_offsets[4][2] = {
+static constexpr CoordsXY junior_rc_25_deg_up_to_60_deg_up_bound_offsets[4][2] = {
     { { 0, 6 }, { 0, 0 } },
     { { 10, 0 }, { 4, 0 } },
     { { 0, 10 }, { 0, 4 } },
@@ -5579,35 +5579,35 @@ static void JuniorRCDiag60DegDownTo25DegDownPaintSetup(
         isChained ? JuniorRCChainType::FrictionWheels : JuniorRCChainType::None);
 }
 
-static constexpr const CoordsXY junior_rc_flat_to_60_deg_up_bound_lengths[4][2] = {
+static constexpr CoordsXY junior_rc_flat_to_60_deg_up_bound_lengths[4][2] = {
     { { 32, 24 }, { 0, 0 } },
     { { 10, 1 }, { 2, 32 } },
     { { 1, 10 }, { 32, 2 } },
     { { 24, 32 }, { 0, 0 } },
 };
 
-static constexpr const int8_t junior_rc_flat_to_60_deg_up_bound_thickness[4] = {
+static constexpr int8_t junior_rc_flat_to_60_deg_up_bound_thickness[4] = {
     1,
     43,
     43,
     1,
 };
 
-static constexpr const CoordsXY junior_rc_flat_to_60_deg_up_bound_offsets[4][2] = {
+static constexpr CoordsXY junior_rc_flat_to_60_deg_up_bound_offsets[4][2] = {
     { { 0, 4 }, { 0, 0 } },
     { { 10, 0 }, { 4, 0 } },
     { { 0, 10 }, { 0, 4 } },
     { { 4, 0 }, { 0, 0 } },
 };
 
-static constexpr const CoordsXY junior_rc_flat_to_60_deg_up_tile_offsets[4][2] = {
+static constexpr CoordsXY junior_rc_flat_to_60_deg_up_tile_offsets[4][2] = {
     { { 12, -10 }, { 0, 0 } },
     { { 22, 9 }, { 12, -11 } },
     { { 30, 7 }, { 5, 0 } },
     { { 12, -12 }, { 0, 0 } },
 };
 
-static constexpr const CoordsXY junior_rc_60_deg_up_to_flat_tile_offsets[4][2] = {
+static constexpr CoordsXY junior_rc_60_deg_up_to_flat_tile_offsets[4][2] = {
     { { 13, -9 }, { 0, 0 } },
     { { 32, 9 }, { -7, -11 } },
     { { 22, 18 }, { 2, -19 } },
@@ -5850,7 +5850,7 @@ static void JuniorRCTrackOnRidePhoto(
     const TrackElement& trackElement)
 {
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_flat[0][direction]);
-    constexpr const int8_t photoCameraOffset = -1;
+    constexpr int8_t photoCameraOffset = -1;
 
     switch (direction)
     {

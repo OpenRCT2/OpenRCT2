@@ -20,12 +20,12 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
-static constexpr const uint32_t BM_BLOCK_BRAKE_SW_NE_OPEN = 17150;
-static constexpr const uint32_t BM_BLOCK_BRAKE_NW_SE_OPEN = 17151;
-static constexpr const uint32_t BM_BLOCK_BRAKE_SW_NE_CLOSED = 17152;
-static constexpr const uint32_t BM_BLOCK_BRAKE_NW_SE_CLOSED = 17153;
+static constexpr uint32_t BM_BLOCK_BRAKE_SW_NE_OPEN = 17150;
+static constexpr uint32_t BM_BLOCK_BRAKE_NW_SE_OPEN = 17151;
+static constexpr uint32_t BM_BLOCK_BRAKE_SW_NE_CLOSED = 17152;
+static constexpr uint32_t BM_BLOCK_BRAKE_NW_SE_CLOSED = 17153;
 
-static constexpr const uint32_t _BolligerMabillardBlockBrakeImages[NumOrthogonalDirections][2] = {
+static constexpr uint32_t _BolligerMabillardBlockBrakeImages[NumOrthogonalDirections][2] = {
     { BM_BLOCK_BRAKE_SW_NE_OPEN, BM_BLOCK_BRAKE_SW_NE_CLOSED },
     { BM_BLOCK_BRAKE_NW_SE_OPEN, BM_BLOCK_BRAKE_NW_SE_CLOSED },
     { BM_BLOCK_BRAKE_SW_NE_OPEN, BM_BLOCK_BRAKE_SW_NE_CLOSED },
@@ -39,7 +39,7 @@ static void BolligerMabillardTrackFlat(
 {
     if (trackElement.HasChain())
     {
-        static constexpr const uint32_t imageIds[] = {
+        static constexpr uint32_t imageIds[] = {
             17486,
             17487,
             17488,
@@ -56,7 +56,7 @@ static void BolligerMabillardTrackFlat(
     }
     else
     {
-        static constexpr const uint32_t imageIds[] = {
+        static constexpr uint32_t imageIds[] = {
             17146,
             17147,
             17146,
@@ -83,7 +83,7 @@ static void BolligerMabillardTrackStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][2] = {
+    static constexpr uint32_t imageIds[4][2] = {
         { 17154, SPR_STATION_BASE_A_SW_NE },
         { 17155, SPR_STATION_BASE_A_NW_SE },
         { 17154, SPR_STATION_BASE_A_SW_NE },

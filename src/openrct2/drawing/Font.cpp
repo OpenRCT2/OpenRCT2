@@ -21,7 +21,7 @@
 #include <limits>
 #include <unordered_map>
 
-static constexpr const int32_t SpriteFontLineHeight[FontStyleCount] = {
+static constexpr int32_t SpriteFontLineHeight[FontStyleCount] = {
     10,
     10,
     6,

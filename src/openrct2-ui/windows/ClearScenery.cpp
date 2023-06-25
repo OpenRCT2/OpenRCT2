@@ -30,9 +30,9 @@ enum WindowClearSceneryWidgetIdx
     WIDX_FOOTPATH
 };
 // clang-format on
-static constexpr const StringId WINDOW_TITLE = STR_CLEAR_SCENERY;
-static constexpr const int32_t WW = 98;
-static constexpr const int32_t WH = 94;
+static constexpr StringId WINDOW_TITLE = STR_CLEAR_SCENERY;
+static constexpr int32_t WW = 98;
+static constexpr int32_t WH = 94;
 
 static constexpr ScreenSize CLEAR_SCENERY_BUTTON = { 24, 24 };
 

@@ -89,14 +89,14 @@ enum
     SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE = 22227,
 };
 
-static constexpr const uint32_t reverse_freefall_rc_track_pieces_station[4] = {
+static constexpr uint32_t reverse_freefall_rc_track_pieces_station[4] = {
     SPR_REVERSE_FREEFALL_RC_STATION_SW_NE,
     SPR_REVERSE_FREEFALL_RC_STATION_NW_SE,
     SPR_REVERSE_FREEFALL_RC_STATION_SW_NE,
     SPR_REVERSE_FREEFALL_RC_STATION_NW_SE,
 };
 
-static constexpr const uint32_t reverse_freefall_rc_track_pieces_slope[7][4] = {
+static constexpr uint32_t reverse_freefall_rc_track_pieces_slope[7][4] = {
     {
         SPR_REVERSE_FREEFALL_RC_SLOPE_SW_NE_0,
         SPR_REVERSE_FREEFALL_RC_SLOPE_NW_SE_0,
@@ -136,7 +136,7 @@ static constexpr const uint32_t reverse_freefall_rc_track_pieces_slope[7][4] = {
     },
 };
 
-static constexpr const uint32_t reverse_freefall_rc_track_pieces_slope_supports[7][4] = {
+static constexpr uint32_t reverse_freefall_rc_track_pieces_slope_supports[7][4] = {
     {
         SPR_REVERSE_FREEFALL_RC_SLOPE_SUPPORTS_SW_NE_0,
         SPR_REVERSE_FREEFALL_RC_SLOPE_SUPPORTS_NW_SE_0,
@@ -181,14 +181,14 @@ static constexpr const uint32_t reverse_freefall_rc_track_pieces_slope_supports[
     },
 };
 
-static constexpr const uint32_t reverse_freefall_rc_track_pieces_vertical[4] = {
+static constexpr uint32_t reverse_freefall_rc_track_pieces_vertical[4] = {
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SW_NE,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_NW_SE,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_NE_SW,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SE_NW,
 };
 
-static constexpr const uint32_t reverse_freefall_rc_track_pieces_vertical_supports[4] = {
+static constexpr uint32_t reverse_freefall_rc_track_pieces_vertical_supports[4] = {
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_SW_NE,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_NW_SE,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_NE_SW,
@@ -260,10 +260,10 @@ static void PaintReverseFreefallRCSlope(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const int8_t bbHeights03[] = { 1, 6, 14, 37, 64 };
-    static constexpr const int8_t bbHeights12[] = { 1, 6, 14, 27, 59 };
-    static constexpr const int32_t supportHeights[] = { 48, 64, 128, 176, 208, 240, 240 };
-    static constexpr const int32_t tunnelOffsets03[] = { 0, 0, 0, 16, 64 };
+    static constexpr int8_t bbHeights03[] = { 1, 6, 14, 37, 64 };
+    static constexpr int8_t bbHeights12[] = { 1, 6, 14, 27, 59 };
+    static constexpr int32_t supportHeights[] = { 48, 64, 128, 176, 208, 240, 240 };
+    static constexpr int32_t tunnelOffsets03[] = { 0, 0, 0, 16, 64 };
 
     auto supportsImageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
         reverse_freefall_rc_track_pieces_slope_supports[trackSequence][direction]);
@@ -394,7 +394,7 @@ static void PaintReverseFreefallRCOnridePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4] = {
+    static constexpr uint32_t imageIds[4] = {
         SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE,
         SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE,
         SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE,

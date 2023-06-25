@@ -29,12 +29,12 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_OBJECTIVE_SELECTION;
-static constexpr const int32_t WH = 229;
-static constexpr const int32_t WW = 450;
+static constexpr StringId WINDOW_TITLE = STR_OBJECTIVE_SELECTION;
+static constexpr int32_t WH = 229;
+static constexpr int32_t WW = 450;
 
 // The number has to leave a bit of room for other entities like vehicles, litter and balloons.
-static constexpr const uint16_t MaxObjectiveGuests = 50000;
+static constexpr uint16_t MaxObjectiveGuests = 50000;
 
 #pragma region Widgets
 
@@ -45,7 +45,7 @@ enum {
     WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_COUNT
 };
 
-static constexpr const StringId ObjectiveDropdownOptionNames[] = {
+static constexpr StringId ObjectiveDropdownOptionNames[] = {
     STR_OBJECTIVE_DROPDOWN_NONE,
     STR_OBJECTIVE_DROPDOWN_NUMBER_OF_GUESTS_AT_A_GIVEN_DATE,
     STR_OBJECTIVE_DROPDOWN_PARK_VALUE_AT_A_GIVEN_DATE,

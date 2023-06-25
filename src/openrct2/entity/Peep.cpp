@@ -416,7 +416,7 @@ void Peep::StateReset()
 }
 
 /** rct2: 0x00981D7C, 0x00981D7E */
-static constexpr const CoordsXY word_981D7C[4] = {
+static constexpr CoordsXY word_981D7C[4] = {
     { -2, 0 },
     { 0, 2 },
     { 2, 0 },
@@ -1551,7 +1551,7 @@ void Peep::FormatActionTo(Formatter& ft) const
     }
 }
 
-static constexpr const StringId _staffNames[] = {
+static constexpr StringId _staffNames[] = {
     STR_HANDYMAN_X,
     STR_MECHANIC_X,
     STR_SECURITY_GUARD_X,

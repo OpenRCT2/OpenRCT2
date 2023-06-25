@@ -27,7 +27,7 @@ enum
     SprDodgemsFenceTopLeft = 21937
 };
 
-static constexpr const uint32_t DodgemsFenceSprites[] = {
+static constexpr uint32_t DodgemsFenceSprites[] = {
     SprDodgemsFenceTopRight,
     SprDodgemsFenceBottomRight,
     SprDodgemsFenceBottomLeft,

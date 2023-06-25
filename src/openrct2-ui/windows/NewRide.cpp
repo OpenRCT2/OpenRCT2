@@ -40,12 +40,12 @@
 
 using namespace OpenRCT2::TrackMetaData;
 
-static constexpr const StringId WindowTitle = STR_NONE;
-static constexpr const int32_t WindowHeight = 382;
-static constexpr const int32_t WindowWidth = 601;
-static constexpr const int32_t RideListItemsMax = 384;
-static constexpr const int32_t RideTabCount = 6;
-static constexpr const int32_t GroupByTrackTypeWidth = 172;
+static constexpr StringId WindowTitle = STR_NONE;
+static constexpr int32_t WindowHeight = 382;
+static constexpr int32_t WindowWidth = 601;
+static constexpr int32_t RideListItemsMax = 384;
+static constexpr int32_t RideTabCount = 6;
+static constexpr int32_t GroupByTrackTypeWidth = 172;
 
 #pragma region Ride type view order
 
@@ -53,7 +53,7 @@ static constexpr const int32_t GroupByTrackTypeWidth = 172;
  * The order of ride types shown in the new ride window so that the order stays consistent across games and rides of the same
  * type are kept together.
  */
-static constexpr const ride_type_t RideTypeViewOrder[] = {
+static constexpr ride_type_t RideTypeViewOrder[] = {
     // Transport rides
     RIDE_TYPE_MINIATURE_RAILWAY,
     RIDE_TYPE_MONORAIL,
@@ -199,8 +199,8 @@ enum
     WIDX_GROUP_BY_TRACK_TYPE,
 };
 
-static constexpr const ScreenCoordsXY GroupByTrackTypeOrigin{ WindowWidth - 8 - GroupByTrackTypeWidth, 47 };
-static constexpr const ScreenSize GroupTrackTypeSize{ GroupByTrackTypeWidth, 14 };
+static constexpr ScreenCoordsXY GroupByTrackTypeOrigin{ WindowWidth - 8 - GroupByTrackTypeWidth, 47 };
+static constexpr ScreenSize GroupTrackTypeSize{ GroupByTrackTypeWidth, 14 };
 
 // clang-format off
 static Widget window_new_ride_widgets[] = {
@@ -227,7 +227,7 @@ static Widget window_new_ride_widgets[] = {
 
 #pragma endregion
 
-static constexpr const StringId RideTitles[] = {
+static constexpr StringId RideTitles[] = {
     STR_NEW_TRANSPORT_RIDES,      // TRANSPORT_TAB
     STR_NEW_GENTLE_RIDES,         // GENTLE_TAB
     STR_NEW_ROLLER_COASTERS,      // ROLLER_COASTER_TAB
@@ -238,7 +238,7 @@ static constexpr const StringId RideTitles[] = {
 };
 static_assert(std::size(RideTitles) == TAB_COUNT);
 
-static constexpr const int32_t TabAnimationLoops[] = {
+static constexpr int32_t TabAnimationLoops[] = {
     20, // TRANSPORT_TAB
     32, // GENTLE_TAB
     10, // ROLLER_COASTER_TAB
@@ -249,7 +249,7 @@ static constexpr const int32_t TabAnimationLoops[] = {
 };
 static_assert(std::size(TabAnimationLoops) == TAB_COUNT);
 
-static constexpr const int32_t TabAnimationDivisor[] = {
+static constexpr int32_t TabAnimationDivisor[] = {
     4, // TRANSPORT_TAB
     8, // GENTLE_TAB
     2, // ROLLER_COASTER_TAB
@@ -260,7 +260,7 @@ static constexpr const int32_t TabAnimationDivisor[] = {
 };
 static_assert(std::size(TabAnimationDivisor) == TAB_COUNT);
 
-static constexpr const int32_t ThrillRidesTabAnimationSequence[] = {
+static constexpr int32_t ThrillRidesTabAnimationSequence[] = {
     5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 0, 0,
 };
 

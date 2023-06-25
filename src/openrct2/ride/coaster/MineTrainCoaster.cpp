@@ -18,12 +18,12 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
-static constexpr const uint32_t MINE_TRAIN_BLOCK_BRAKE_SW_NE_OPEN = 20060;
-static constexpr const uint32_t MINE_TRAIN_BLOCK_BRAKE_NW_SE_OPEN = 20061;
-static constexpr const uint32_t MINE_TRAIN_BLOCK_BRAKE_SW_NE_CLOSED = 20062;
-static constexpr const uint32_t MINE_TRAIN_BLOCK_BRAKE_NW_SE_CLOSED = 20063;
+static constexpr uint32_t MINE_TRAIN_BLOCK_BRAKE_SW_NE_OPEN = 20060;
+static constexpr uint32_t MINE_TRAIN_BLOCK_BRAKE_NW_SE_OPEN = 20061;
+static constexpr uint32_t MINE_TRAIN_BLOCK_BRAKE_SW_NE_CLOSED = 20062;
+static constexpr uint32_t MINE_TRAIN_BLOCK_BRAKE_NW_SE_CLOSED = 20063;
 
-static constexpr const uint32_t _MineTrainBlockBrakeImages[NumOrthogonalDirections][2] = {
+static constexpr uint32_t _MineTrainBlockBrakeImages[NumOrthogonalDirections][2] = {
     { MINE_TRAIN_BLOCK_BRAKE_SW_NE_OPEN, MINE_TRAIN_BLOCK_BRAKE_SW_NE_CLOSED },
     { MINE_TRAIN_BLOCK_BRAKE_NW_SE_OPEN, MINE_TRAIN_BLOCK_BRAKE_NW_SE_CLOSED },
     { MINE_TRAIN_BLOCK_BRAKE_SW_NE_OPEN, MINE_TRAIN_BLOCK_BRAKE_SW_NE_CLOSED },
@@ -107,7 +107,7 @@ static void MineTrainRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][2] = {
+    static constexpr uint32_t imageIds[4][2] = {
         { 20064, SPR_STATION_BASE_B_SW_NE },
         { 20065, SPR_STATION_BASE_B_NW_SE },
         { 20064, SPR_STATION_BASE_B_SW_NE },

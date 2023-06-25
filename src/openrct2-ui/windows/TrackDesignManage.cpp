@@ -17,12 +17,12 @@
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_STRING;
-static constexpr const int32_t WH = 44;
-static constexpr const int32_t WW = 250;
-static constexpr const int32_t WH_DELETE_PROMPT = 74;
-static constexpr const int32_t WW_DELETE_PROMPT = 250;
-static constexpr const int32_t TrackDesignNameMaxLength = 127;
+static constexpr StringId WINDOW_TITLE = STR_STRING;
+static constexpr int32_t WH = 44;
+static constexpr int32_t WW = 250;
+static constexpr int32_t WH_DELETE_PROMPT = 74;
+static constexpr int32_t WW_DELETE_PROMPT = 250;
+static constexpr int32_t TrackDesignNameMaxLength = 127;
 
 #pragma region Widgets
 

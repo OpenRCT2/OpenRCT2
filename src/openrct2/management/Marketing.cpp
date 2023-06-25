@@ -33,7 +33,7 @@ const money64 AdvertisingCampaignPricePerWeek[] = {
     200.00_GBP, // RIDE
 };
 
-static constexpr const uint16_t AdvertisingCampaignGuestGenerationProbabilities[] = {
+static constexpr uint16_t AdvertisingCampaignGuestGenerationProbabilities[] = {
     400, 300, 200, 200, 250, 200,
 };
 

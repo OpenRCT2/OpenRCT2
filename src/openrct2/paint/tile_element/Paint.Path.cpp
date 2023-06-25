@@ -56,7 +56,7 @@ const uint8_t PathSlopeToLandSlope[] = {
     TILE_ELEMENT_SLOPE_SE_SIDE_UP,
 };
 
-static constexpr const uint8_t Byte98D6E0[] = {
+static constexpr uint8_t Byte98D6E0[] = {
     0, 1, 2, 3, 4, 5, 6,  7,  8, 9,  10, 11, 12, 13, 14, 15, 0, 1, 2, 20, 4, 5, 6, 22, 8, 9, 10, 26, 12, 13, 14, 36,
     0, 1, 2, 3, 4, 5, 21, 23, 8, 9,  10, 11, 12, 13, 33, 37, 0, 1, 2, 3,  4, 5, 6, 24, 8, 9, 10, 11, 12, 13, 14, 38,
     0, 1, 2, 3, 4, 5, 6,  7,  8, 9,  10, 11, 29, 30, 34, 39, 0, 1, 2, 3,  4, 5, 6, 7,  8, 9, 10, 11, 12, 13, 14, 40,
@@ -68,7 +68,7 @@ static constexpr const uint8_t Byte98D6E0[] = {
 };
 
 // clang-format off
-static constexpr const BoundBoxXY stru_98D804[] = {
+static constexpr BoundBoxXY stru_98D804[] = {
     { { 3, 3 }, { 26, 26 } },
     { { 0, 3 }, { 29, 26 } },
     { { 3, 3 }, { 26, 29 } },
@@ -87,7 +87,7 @@ static constexpr const BoundBoxXY stru_98D804[] = {
     { { 0, 0 }, { 32, 32 } },
 };
 
-static constexpr const uint8_t Byte98D8A4[] = {
+static constexpr uint8_t Byte98D8A4[] = {
     0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0
 };
 // clang-format on

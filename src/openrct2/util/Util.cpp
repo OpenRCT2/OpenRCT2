@@ -194,7 +194,7 @@ static int32_t BitCountPopcnt(uint32_t source)
 static int32_t BitCountLut(uint32_t source)
 {
     // https://graphics.stanford.edu/~seander/bithacks.html
-    static constexpr const uint8_t BitsSetTable256[256] = {
+    static constexpr uint8_t BitsSetTable256[256] = {
 #define B2(n) n, (n) + 1, (n) + 1, (n) + 2
 #define B4(n) B2(n), B2((n) + 1), B2((n) + 1), B2((n) + 2)
 #define B6(n) B4(n), B4((n) + 1), B4((n) + 1), B4((n) + 2)

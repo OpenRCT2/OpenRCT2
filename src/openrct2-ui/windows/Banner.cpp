@@ -23,9 +23,9 @@
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>
 
-static constexpr const int32_t WW = 113;
-static constexpr const int32_t WH = 96;
-static constexpr const StringId WINDOW_TITLE = STR_BANNER_WINDOW_TITLE;
+static constexpr int32_t WW = 113;
+static constexpr int32_t WH = 96;
+static constexpr StringId WINDOW_TITLE = STR_BANNER_WINDOW_TITLE;
 
 // clang-format off
 enum WindowBannerWidgetIdx {
@@ -41,7 +41,7 @@ enum WindowBannerWidgetIdx {
     WIDX_TEXT_COLOUR_DROPDOWN_BUTTON
 };
 
-static constexpr const StringId BannerColouredTextFormats[] = {
+static constexpr StringId BannerColouredTextFormats[] = {
     STR_TEXT_COLOUR_BLACK,
     STR_TEXT_COLOUR_GREY,
     STR_TEXT_COLOUR_WHITE,

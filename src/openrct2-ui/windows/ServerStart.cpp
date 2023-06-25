@@ -42,8 +42,8 @@ enum {
     WIDX_LOAD_SERVER
 };
 
-static constexpr const int32_t WW = 300;
-static constexpr const int32_t WH = 154;
+static constexpr int32_t WW = 300;
+static constexpr int32_t WH = 154;
 
 static Widget _windowServerStartWidgets[] = {
     MakeWidget({ 0, 0 }, { WW, WH }, WindowWidgetType::Frame, WindowColour::Primary), // panel / background

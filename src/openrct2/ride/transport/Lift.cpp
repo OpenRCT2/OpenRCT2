@@ -28,7 +28,7 @@ enum
     SPR_LIFT_CAGE_NW_FRONT = 15003,
 };
 
-static constexpr const uint32_t lift_cage_sprites[][2] = {
+static constexpr uint32_t lift_cage_sprites[][2] = {
     { SPR_LIFT_CAGE_BACK, SPR_LIFT_CAGE_FRONT },       { SPR_LIFT_CAGE_NE_BACK, SPR_LIFT_CAGE_NE_FRONT },
     { SPR_LIFT_CAGE_SE_BACK, SPR_LIFT_CAGE_SE_FRONT }, { SPR_LIFT_CAGE_SW_BACK, SPR_LIFT_CAGE_SW_FRONT },
     { SPR_LIFT_CAGE_NW_BACK, SPR_LIFT_CAGE_NW_FRONT },

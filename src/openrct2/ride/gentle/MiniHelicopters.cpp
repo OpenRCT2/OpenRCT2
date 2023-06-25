@@ -272,7 +272,7 @@ static void PaintMiniHelicoptersTrackLeftQuarterTurn3Tiles(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static constexpr const uint8_t MiniHelicoptersRightQuarterTurn3TilesToLeftTurnMap[] = {
+static constexpr uint8_t MiniHelicoptersRightQuarterTurn3TilesToLeftTurnMap[] = {
     3,
     1,
     2,

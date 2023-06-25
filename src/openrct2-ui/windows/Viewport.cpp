@@ -32,9 +32,9 @@ enum WindowViewportWidgetIdx
 
 #pragma region MEASUREMENTS
 
-static constexpr const StringId WINDOW_TITLE = STR_VIEWPORT_NO;
-static constexpr const int32_t WW = 200;
-static constexpr const int32_t WH = 200;
+static constexpr StringId WINDOW_TITLE = STR_VIEWPORT_NO;
+static constexpr int32_t WW = 200;
+static constexpr int32_t WH = 200;
 
 static constexpr ScreenSize VIEWPORT_BUTTON = {24, 24};
 

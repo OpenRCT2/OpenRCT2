@@ -438,7 +438,7 @@ namespace OpenRCT2
 
     template<typename T> static void FormatMinutesSeconds(FormatBuffer& ss, T value)
     {
-        static constexpr const StringId Formats[][2] = {
+        static constexpr StringId Formats[][2] = {
             { STR_DURATION_SEC, STR_DURATION_SECS },
             { STR_DURATION_MIN_SEC, STR_DURATION_MIN_SECS },
             { STR_DURATION_MINS_SEC, STR_DURATION_MINS_SECS },
@@ -460,7 +460,7 @@ namespace OpenRCT2
 
     template<typename T> static void FormatHoursMinutes(FormatBuffer& ss, T value)
     {
-        static constexpr const StringId Formats[][2] = {
+        static constexpr StringId Formats[][2] = {
             { STR_REALTIME_MIN, STR_REALTIME_MINS },
             { STR_REALTIME_HOUR_MIN, STR_REALTIME_HOUR_MINS },
             { STR_REALTIME_HOURS_MIN, STR_REALTIME_HOURS_MINS },

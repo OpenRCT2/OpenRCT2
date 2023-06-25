@@ -18,9 +18,9 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_SACK_STAFF;
-static constexpr const int32_t WW = 200;
-static constexpr const int32_t WH = 100;
+static constexpr StringId WINDOW_TITLE = STR_SACK_STAFF;
+static constexpr int32_t WW = 200;
+static constexpr int32_t WH = 100;
 
 // clang-format off
 enum WindowStaffFireWidgetIdx {

@@ -86,7 +86,7 @@ static constexpr const char* SnowTrees[] = {
 #pragma endregion
 
 // Randomly chosen base terrains. We rarely want a whole map made out of chequerboard or rock.
-static constexpr const std::string_view BaseTerrain[] = {
+static constexpr std::string_view BaseTerrain[] = {
     "rct2.terrain_surface.grass", "rct2.terrain_surface.sand", "rct2.terrain_surface.sand_brown",
     "rct2.terrain_surface.dirt",  "rct2.terrain_surface.ice",
 };

@@ -41,9 +41,9 @@
 
 #pragma region Widgets
 
-static constexpr const StringId WINDOW_TITLE = STR_NONE;
-static constexpr const int32_t WW = 350;
-static constexpr const int32_t WH = 400;
+static constexpr StringId WINDOW_TITLE = STR_NONE;
+static constexpr int32_t WW = 350;
+static constexpr int32_t WH = 400;
 
 static constexpr uint16_t DATE_TIME_GAP = 2;
 

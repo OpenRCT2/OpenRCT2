@@ -172,7 +172,7 @@ public:
 
     void SetFullscreenMode(FULLSCREEN_MODE mode) override
     {
-        static constexpr const int32_t _sdlFullscreenFlags[] = {
+        static constexpr int32_t _sdlFullscreenFlags[] = {
             0,
             SDL_WINDOW_FULLSCREEN,
             SDL_WINDOW_FULLSCREEN_DESKTOP,

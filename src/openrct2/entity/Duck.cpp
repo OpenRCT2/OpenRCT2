@@ -23,10 +23,10 @@
 #include <iterator>
 #include <limits>
 
-constexpr const int32_t DUCK_MAX_STATES = 5;
+constexpr int32_t DUCK_MAX_STATES = 5;
 
 // clang-format off
-static constexpr const CoordsXY DuckMoveOffset[] =
+static constexpr CoordsXY DuckMoveOffset[] =
 {
     { -1,  0 },
     {  0,  1 },
@@ -34,28 +34,28 @@ static constexpr const CoordsXY DuckMoveOffset[] =
     {  0, -1 },
 };
 
-static constexpr const uint8_t DuckAnimationFlyToWater[] =
+static constexpr uint8_t DuckAnimationFlyToWater[] =
 {
     8, 9, 10, 11, 12, 13
 };
 
-static constexpr const uint8_t DuckAnimationSwim[] =
+static constexpr uint8_t DuckAnimationSwim[] =
 {
     0
 };
 
-static constexpr const uint8_t DuckAnimationDrink[] =
+static constexpr uint8_t DuckAnimationDrink[] =
 {
     1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 0xFF
 };
 
-static constexpr const uint8_t DuckAnimationDoubleDrink[] =
+static constexpr uint8_t DuckAnimationDoubleDrink[] =
 {
     4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6,
     6, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, 0, 0, 0, 0, 0xFF
 };
 
-static constexpr const uint8_t DuckAnimationFlyAway[] =
+static constexpr uint8_t DuckAnimationFlyAway[] =
 {
     8, 9, 10, 11, 12, 13
 };

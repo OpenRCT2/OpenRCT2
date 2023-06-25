@@ -33,8 +33,8 @@ class FootpathSurfaceObject;
 class FootpathRailingsObject;
 using track_type_t = uint16_t;
 
-constexpr const uint8_t MAX_ELEMENT_HEIGHT = 255;
-constexpr const uint8_t OWNER_MASK = 0b00001111;
+constexpr uint8_t MAX_ELEMENT_HEIGHT = 255;
+constexpr uint8_t OWNER_MASK = 0b00001111;
 
 #pragma pack(push, 1)
 

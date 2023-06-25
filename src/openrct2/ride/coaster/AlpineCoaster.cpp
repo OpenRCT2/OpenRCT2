@@ -96,7 +96,7 @@ namespace AlpineRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
-        static constexpr const uint32_t imageIds[4][3] = {
+        static constexpr uint32_t imageIds[4][3] = {
             { (SPR_G2_ALPINE_TRACK_FLAT + 0), (SPR_G2_ALPINE_TRACK_FLAT + 0), SPR_STATION_BASE_B_SW_NE },
             { (SPR_G2_ALPINE_TRACK_FLAT + 1), (SPR_G2_ALPINE_TRACK_FLAT + 1), SPR_STATION_BASE_B_NW_SE },
             { (SPR_G2_ALPINE_TRACK_FLAT + 0), (SPR_G2_ALPINE_TRACK_FLAT + 0), SPR_STATION_BASE_B_SW_NE },
