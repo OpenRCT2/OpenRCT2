@@ -5983,3 +5983,15 @@ ResultWithMessage Ride::ChangeStatusCreateVehicles(bool isApplying, const Coords
 
     return { true };
 }
+
+uint8_t Ride::GetEntranceStyle() const
+{
+    if (const auto* stationObject = GetStationObject(); stationObject != nullptr)
+    {
+        return GetStationStyleFromIdentifier(stationObject->GetIdentifier());
+    }
+    else
+    {
+        return RCT12_STATION_STYLE_PLAIN;
+    }
+}

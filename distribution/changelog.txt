@@ -11,6 +11,7 @@
 - Change: [#20790] Default ride price set to free if park charges for entry.
 - Change: [#20880] Restore removed default coaster colours.
 - Change: [#21102] The money effect will now update even when the game is paused.
+- Fix: [#5677] Balloons pass through the ground and objects.
 - Fix: [#12299] Placing ride entrances/exits ignores the Disable Clearance Checks cheat.
 - Fix: [#13473] Guests complain that the default Circus price is too high.
 - Fix: [#15293] TTF fonts don’t format correctly with OpenGL.
