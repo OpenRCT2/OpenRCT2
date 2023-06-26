@@ -518,7 +518,6 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                ToolCancel();
                 Close();
                 return;
 
@@ -559,7 +558,7 @@ public:
         if (tileInspectorPage == TileInspectorPage::Default || windowTileInspectorSelectedIndex == -1)
             return;
 
-        TileElement* const tileElement = GetSelectedElement();
+        const TileElement* const tileElement = GetSelectedElement();
 
         // Update selection, can be nullptr.
         OpenRCT2::TileInspector::SetSelectedElement(tileElement);
@@ -713,6 +712,12 @@ public:
 
     void OnClose() override
     {
+        ToolCancel();
+        TileElement* const elem = GetSelectedElement();
+        if (elem != nullptr)
+        {
+            MapInvalidateElement(_toolMap, elem);
+        }
         OpenRCT2::TileInspector::SetSelectedElement(nullptr);
     }
 
@@ -923,7 +928,7 @@ public:
         if (dropdownIndex == -1)
             return;
         // Get selected element
-        TileElement* const tileElement = GetSelectedElement();
+        const TileElement* const tileElement = GetSelectedElement();
         if (tileInspectorPage == TileInspectorPage::Wall)
         {
             Guard::Assert(tileElement->GetType() == TileElementType::Wall, "Element is not a wall");
@@ -1044,7 +1049,7 @@ public:
                 + ScreenCoordsXY{ widgets[WIDX_GROUPBOX_DETAILS].left + 7, widgets[WIDX_GROUPBOX_DETAILS].top + 14 };
 
             // Get map element
-            TileElement* const tileElement = GetSelectedElement();
+            const TileElement* const tileElement = GetSelectedElement();
             if (tileElement == nullptr)
                 return;
 
@@ -1834,8 +1839,10 @@ private:
 
     void CopyElement()
     {
+        const TileElement* const tileElement = GetSelectedElement();
+        Guard::Assert(tileElement != nullptr, "Invalid tile element");
         // Copy value, in case the element gets moved
-        _copiedElement = *GetSelectedElement();
+        _copiedElement = *tileElement;
         _copiedBanner = {};
         auto bannerIndex = _copiedElement.GetBannerIndex();
         if (bannerIndex != BannerIndex::GetNull())
@@ -1987,22 +1994,26 @@ private:
 
     TileElement* GetSelectedElement()
     {
+        if (windowTileInspectorSelectedIndex == -1)
+        {
+            return nullptr;
+        }
         Guard::Assert(
             windowTileInspectorSelectedIndex >= 0 && windowTileInspectorSelectedIndex < windowTileInspectorElementCount,
             "Selected list item out of range");
-        return MapGetFirstElementAt(_toolMap) + windowTileInspectorSelectedIndex;
+        return MapGetNthElementAt(_toolMap, windowTileInspectorSelectedIndex);
     }
 
     void OnPrepareDraw() override
     {
+        const TileElement* const tileElement = GetSelectedElement();
+
         // Set the correct page automatically
         TileInspectorPage p = TileInspectorPage::Default;
-        if (windowTileInspectorSelectedIndex != -1)
+        if (tileElement != nullptr)
         {
-            const auto element = GetSelectedElement();
-            switch (element->GetType())
+            switch (tileElement->GetType())
             {
-                default:
                 case TileElementType::Surface:
                     p = TileInspectorPage::Surface;
                     break;
@@ -2098,9 +2109,6 @@ private:
         // Using a switch, because I don't think giving each page their own callbacks is
         // needed here, as only the mouseup and invalidate functions are different.
         const int32_t propertiesAnchor = widgets[WIDX_GROUPBOX_PROPERTIES].top;
-        const TileElement* const tileElement = GetSelectedElement();
-        if (tileElement == nullptr)
-            return;
 
         switch (tileElement->GetType())
         {
