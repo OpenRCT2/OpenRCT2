@@ -1436,11 +1436,6 @@ void WindowEventDropdownCall(WindowBase* w, WidgetIndex widgetIndex, int32_t dro
     w->OnDropdown(widgetIndex, dropdownIndex);
 }
 
-void WindowEventUnknown05Call(WindowBase* w)
-{
-    w->OnUnknown5();
-}
-
 void WindowEventUpdateCall(WindowBase* w)
 {
     w->OnUpdate();

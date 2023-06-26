@@ -184,9 +184,6 @@ struct WindowBase
     {
     }
     virtual CursorID OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID);
-    virtual void OnUnknown5()
-    {
-    }
 
     void ResizeFrame();
     void ResizeFrameWithPage();

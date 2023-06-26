@@ -98,8 +98,9 @@ public:
             dpi, { leftTop + ScreenCoordsXY{ (width + 1) / 2 - 1, 1 } }, _numLines, _text.data(), FontStyle::Medium);
     }
 
-    void OnUnknown5() override
+    void OnPeriodicUpdate() override
     {
+        // Close the window after 8 seconds of showing
         _staleCount++;
         if (_staleCount >= 8)
         {
