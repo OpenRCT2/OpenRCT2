@@ -259,36 +259,10 @@ struct WindowEventList
     }
 };
 
-struct CampaignVariables
-{
-    int16_t campaign_type;
-    int16_t no_weeks; // 0x482
-    union
-    {
-        ::RideId RideId;
-        ObjectEntryIndex ShopItemId;
-    };
-    uint32_t Pad486;
-};
-
-struct NewRideVariables
-{
-    RideSelection SelectedRide;    // 0x480
-    RideSelection HighlightedRide; // 0x482
-    uint16_t Pad484;
-    uint16_t Pad486;
-    uint16_t selected_ride_countdown; // 488
-};
-
 struct TrackListVariables
 {
     bool track_list_being_updated;
     bool reload_track_designs;
-};
-
-struct ErrorVariables
-{
-    uint16_t var_480;
 };
 
 struct WindowCloseModifier

@@ -17,6 +17,7 @@
 - Fix: [#20361] Crash when using random map generation.
 - Fix: [#20413] Crash when attempting to navigate an empty console history.
 - Fix: [#20417] Plugin/custom windows are missing the left border in the title bar.
+- Fix: [#20429] Error window tooltip not closing after 8 seconds.
 
 0.4.5 (2023-05-08)
 ------------------------------------------------------------------------

@@ -654,7 +654,7 @@ public:
         return cursorId;
     }
 
-    void OnUnknown5() override
+    void OnPeriodicUpdate() override
     {
         InvalidateDirtyWidgets();
     }

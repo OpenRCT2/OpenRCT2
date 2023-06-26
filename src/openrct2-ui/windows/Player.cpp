@@ -111,16 +111,6 @@ public:
         pressed_widgets = 0;
     }
 
-    void OnClose() override
-    {
-        switch (page)
-        {
-            case WINDOW_PLAYER_PAGE_STATISTICS:
-                OnCloseStatistics();
-                break;
-        }
-    }
-
     void OnResize() override
     {
         switch (page)
@@ -588,14 +578,6 @@ private:
 #pragma endregion
 
 #pragma region Statistics
-
-    void OnCloseStatistics()
-    {
-        if (error.var_480)
-        {
-            error.var_480 = 0;
-        }
-    }
 
     void OnResizeStatistics()
     {

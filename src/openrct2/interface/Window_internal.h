@@ -56,10 +56,7 @@ struct WindowBase
     std::optional<Focus> focus;
     union
     {
-        CampaignVariables campaign;
-        NewRideVariables new_ride;
         TrackListVariables track_list;
-        ErrorVariables error;
         void* custom_info;
     };
     union
@@ -187,9 +184,6 @@ struct WindowBase
     {
     }
     virtual CursorID OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID);
-    virtual void OnUnknown5()
-    {
-    }
 
     void ResizeFrame();
     void ResizeFrameWithPage();
