@@ -1109,19 +1109,27 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAct
 GameActions::Result ScriptEngine::DukToGameActionResult(const DukValue& d)
 {
     auto result = GameActions::Result();
-    result.Error = static_cast<GameActions::Status>(AsOrDefault<int32_t>(d["error"]));
-    result.ErrorTitle = AsOrDefault<std::string>(d["errorTitle"]);
-    result.ErrorMessage = AsOrDefault<std::string>(d["errorMessage"]);
-    result.Cost = AsOrDefault<int32_t>(d["cost"]);
-
-    auto expenditureType = AsOrDefault<std::string>(d["expenditureType"]);
-    if (!expenditureType.empty())
+    if (d.type() == DUK_TYPE_OBJECT)
     {
-        auto expenditure = StringToExpenditureType(expenditureType);
-        if (expenditure != ExpenditureType::Count)
+        result.Error = static_cast<GameActions::Status>(AsOrDefault<int32_t>(d["error"]));
+        result.ErrorTitle = AsOrDefault<std::string>(d["errorTitle"]);
+        result.ErrorMessage = AsOrDefault<std::string>(d["errorMessage"]);
+        result.Cost = AsOrDefault<int32_t>(d["cost"]);
+        auto expenditureType = AsOrDefault<std::string>(d["expenditureType"]);
+        if (!expenditureType.empty())
         {
-            result.Expenditure = expenditure;
+            auto expenditure = StringToExpenditureType(expenditureType);
+            if (expenditure != ExpenditureType::Count)
+            {
+                result.Expenditure = expenditure;
+            }
         }
+    }
+    else
+    {
+        result.Error = GameActions::Status::Unknown;
+        result.ErrorTitle = "Unknown";
+        result.ErrorMessage = "Unknown";
     }
     return result;
 }
