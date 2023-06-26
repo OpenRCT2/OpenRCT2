@@ -567,7 +567,8 @@ namespace OpenRCT2::Ui::Windows
                     break;
                 default:
                 {
-                    if (widgetIndex >= WIDX_TAB_0 && widgetIndex < static_cast<WidgetIndex>(WIDX_TAB_0 + _info.Desc.Tabs.size()))
+                    if (widgetIndex >= WIDX_TAB_0
+                        && widgetIndex < static_cast<WidgetIndex>(WIDX_TAB_0 + _info.Desc.Tabs.size()))
                     {
                         ChangeTab(widgetIndex - WIDX_TAB_0);
                         break;
