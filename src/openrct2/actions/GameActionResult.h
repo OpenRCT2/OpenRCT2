@@ -49,12 +49,6 @@ namespace GameActions
         Unknown = std::numeric_limits<std::underlying_type_t<Status>>::max(),
     };
 
-#ifdef __WARN_SUGGEST_FINAL_METHODS__
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
-#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
-#endif
-
     /**
      * Represents the result of a game action query or execution.
      */
@@ -108,9 +102,5 @@ namespace GameActions
 #endif
         }
     };
-
-#ifdef __WARN_SUGGEST_FINAL_METHODS__
-#    pragma GCC diagnostic pop
-#endif
 
 } // namespace GameActions
