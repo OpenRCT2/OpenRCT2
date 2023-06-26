@@ -691,7 +691,6 @@
     <ClCompile Include="Cheats.cpp" />
     <ClCompile Include="CommandLineSprite.cpp" />
     <ClCompile Include="command_line\BenchGfxCommmands.cpp" />
-    <ClCompile Include="command_line/BenchUpdate.cpp" />
     <ClCompile Include="command_line\CommandLine.cpp" />
     <ClCompile Include="command_line\ConvertCommand.cpp" />
     <ClCompile Include="command_line\ParkInfoCommands.cpp" />

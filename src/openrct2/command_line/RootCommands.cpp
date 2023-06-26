@@ -141,7 +141,6 @@ const CommandLineCommand CommandLine::RootCommands[]
     DefineSubCommand("screenshot",      CommandLine::ScreenshotCommands       ),
     DefineSubCommand("sprite",          CommandLine::SpriteCommands           ),
     DefineSubCommand("benchgfx",        CommandLine::BenchGfxCommands         ),
-    DefineSubCommand("benchsimulate",   CommandLine::BenchUpdateCommands      ),
     DefineSubCommand("simulate",        CommandLine::SimulateCommands         ),
     DefineSubCommand("parkinfo",        CommandLine::ParkInfoCommands         ),
     CommandTableEnd
