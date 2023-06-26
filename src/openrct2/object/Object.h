@@ -223,7 +223,6 @@ protected:
      */
     void PopulateTablesFromJson(IReadObjectContext* context, json_t& root);
 
-    std::string GetOverrideString(uint8_t index) const;
     std::string GetString(ObjectStringID index) const;
     std::string GetString(int32_t language, ObjectStringID index) const;
 
@@ -268,7 +267,7 @@ public:
         return _usesFallbackImages;
     }
 
-    // Legacy data structures
+    // DONOT USE THIS CAN LEAD TO OBJECT COLLISIONS
     std::string_view GetLegacyIdentifier() const
     {
         return _descriptor.GetName();
