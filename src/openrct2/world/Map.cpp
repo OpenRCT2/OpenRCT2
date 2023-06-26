@@ -2402,5 +2402,6 @@ void ShiftMap(const TileCoordsXY& amount)
             banner->position += amount;
             count++;
         }
+        id = BannerIndex::FromUnderlying(id.ToUnderlying() + 1);
     }
 }
