@@ -38,6 +38,8 @@ static bool WindowFitsBetweenOthers(const ScreenCoordsXY& loc, int32_t width, in
 {
     for (auto& w : g_window_list)
     {
+        if (w->flags & WF_DEAD)
+            continue;
         if (w->flags & WF_STICK_TO_BACK)
             continue;
 
@@ -131,6 +133,8 @@ static ScreenCoordsXY GetAutoPositionForNewWindow(int32_t width, int32_t height)
     // Place window next to another
     for (auto& w : g_window_list)
     {
+        if (w->flags & WF_DEAD)
+            continue;
         if (w->flags & WF_STICK_TO_BACK)
             continue;
 
@@ -158,6 +162,8 @@ static ScreenCoordsXY GetAutoPositionForNewWindow(int32_t width, int32_t height)
     // Overlap
     for (auto& w : g_window_list)
     {
+        if (w->flags & WF_DEAD)
+            continue;
         if (w->flags & WF_STICK_TO_BACK)
             continue;
 
@@ -222,6 +228,8 @@ WindowBase* WindowCreate(
         // Close least recently used window
         for (auto& w : g_window_list)
         {
+            if (w->flags & WF_DEAD)
+                continue;
             if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
             {
                 WindowClose(*w.get());
