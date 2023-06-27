@@ -67,11 +67,6 @@ struct WindowBase
     uint16_t frame_no{};              // updated every tic for motion in windows sprites
     uint16_t list_information_type{}; // 0 for none
     int16_t picked_peep_frame;        // Animation frame of picked peep in staff window and guest window
-    union
-    {
-        uint16_t ride_colour;
-        const ScenarioIndexEntry* highlighted_scenario;
-    };
     int16_t selected_tab{};
     EntityId viewport_target_sprite{ EntityId::GetNull() };
     ScreenCoordsXY savedViewPos{};

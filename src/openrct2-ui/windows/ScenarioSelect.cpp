@@ -115,6 +115,7 @@ private:
     bool _titleEditor = false;
     std::function<void(std::string_view)> _callback;
     std::vector<ScenarioListItem> _listItems;
+    const ScenarioIndexEntry* _highlightedScenario = nullptr;
 
 public:
     ScenarioSelectWindow(std::function<void(std::string_view)> callback, bool isTitleEditor)
@@ -129,7 +130,7 @@ public:
         ScenarioRepositoryScan();
 
         widgets = _scenarioSelectWidgets;
-        highlighted_scenario = nullptr;
+        _highlightedScenario = nullptr;
         InitTabs();
         InitialiseListItems();
         InitScrollWidgets();
@@ -153,7 +154,7 @@ public:
         if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB10)
         {
             selected_tab = widgetIndex - 4;
-            highlighted_scenario = nullptr;
+            _highlightedScenario = nullptr;
             gConfigInterface.ScenarioselectLastTab = selected_tab;
             ConfigSaveDefault();
             InitialiseListItems();
@@ -197,7 +198,7 @@ public:
         }
 
         // Return if no scenario highlighted
-        scenario = highlighted_scenario;
+        scenario = _highlightedScenario;
         if (scenario == nullptr)
         {
             if (_showLockedInformation)
@@ -362,9 +363,9 @@ public:
             }
         }
 
-        if (highlighted_scenario != selected)
+        if (_highlightedScenario != selected)
         {
-            highlighted_scenario = selected;
+            _highlightedScenario = selected;
             Invalidate();
         }
         else if (_showLockedInformation != originalShowLockedInformation)
@@ -445,7 +446,7 @@ public:
                 {
                     // Draw hover highlight
                     const ScenarioIndexEntry* scenario = listItem.scenario.scenario;
-                    bool isHighlighted = highlighted_scenario == scenario;
+                    bool isHighlighted = _highlightedScenario == scenario;
                     if (isHighlighted)
                     {
                         GfxFilterRect(dpi, { 0, y, width, y + scenarioItemHeight - 1 }, FilterPaletteID::PaletteDarken1);

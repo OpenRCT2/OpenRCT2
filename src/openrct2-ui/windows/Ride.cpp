@@ -627,7 +627,9 @@ class RideWindow final : public Window
     const RideObjectEntry* _vehicleDropdownRideType = nullptr;
     bool _vehicleDropdownExpanded = false;
     std::vector<VehicleTypeLabel> _vehicleDropdownData;
-    int16_t _vehicleIndex;
+    int16_t _vehicleIndex = 0;
+    uint16_t _rideColour = 0;
+    bool _autoScrollGraph = true;
 
 public:
     RideWindow(const Ride& ride)
@@ -637,11 +639,9 @@ public:
         hold_down_widgets = PageHoldDownWidgets[WINDOW_RIDE_PAGE_MAIN];
 
         page = WINDOW_RIDE_PAGE_MAIN;
-        _vehicleIndex = 0;
         frame_no = 0;
         list_information_type = 0;
         picked_peep_frame = 0;
-        ride_colour = 0;
         DisableTabs();
         min_width = 316;
         min_height = 180;
@@ -947,7 +947,7 @@ public:
         switch (page)
         {
             case WINDOW_RIDE_PAGE_GRAPHS:
-                Graphs15(scrollIndex, scrollAreaType);
+                GraphsOnScrollSelect(scrollIndex, scrollAreaType);
                 break;
         }
     }
@@ -4011,7 +4011,7 @@ private:
 
     void SetTrackColourScheme(const ScreenCoordsXY& screenPos)
     {
-        auto newColourScheme = static_cast<uint8_t>(ride_colour);
+        auto newColourScheme = static_cast<uint8_t>(_rideColour);
         auto info = GetMapCoordinatesFromPos(screenPos, EnumsToFlags(ViewportInteractionItem::Ride));
 
         if (info.SpriteType != ViewportInteractionItem::Ride)
@@ -4099,7 +4099,7 @@ private:
         if (rideEntry == nullptr)
             return;
 
-        auto colourSchemeIndex = ride_colour;
+        auto colourSchemeIndex = _rideColour;
         auto dropdownWidget = &widgets[widgetIndex] - 1;
 
         switch (widgetIndex)
@@ -4226,13 +4226,13 @@ private:
         switch (widgetIndex)
         {
             case WIDX_TRACK_COLOUR_SCHEME_DROPDOWN:
-                ride_colour = static_cast<uint16_t>(dropdownIndex);
+                _rideColour = static_cast<uint16_t>(dropdownIndex);
                 Invalidate();
                 break;
             case WIDX_TRACK_MAIN_COLOUR:
             {
                 auto rideSetAppearanceAction = RideSetAppearanceAction(
-                    rideId, RideSetAppearanceType::TrackColourMain, ColourDropDownIndexToColour(dropdownIndex), ride_colour);
+                    rideId, RideSetAppearanceType::TrackColourMain, ColourDropDownIndexToColour(dropdownIndex), _rideColour);
                 GameActions::Execute(&rideSetAppearanceAction);
             }
             break;
@@ -4240,7 +4240,7 @@ private:
             {
                 auto rideSetAppearanceAction = RideSetAppearanceAction(
                     rideId, RideSetAppearanceType::TrackColourAdditional, ColourDropDownIndexToColour(dropdownIndex),
-                    ride_colour);
+                    _rideColour);
                 GameActions::Execute(&rideSetAppearanceAction);
             }
             break;
@@ -4248,14 +4248,14 @@ private:
             {
                 auto rideSetAppearanceAction = RideSetAppearanceAction(
                     rideId, RideSetAppearanceType::TrackColourSupports, ColourDropDownIndexToColour(dropdownIndex),
-                    ride_colour);
+                    _rideColour);
                 GameActions::Execute(&rideSetAppearanceAction);
             }
             break;
             case WIDX_MAZE_STYLE_DROPDOWN:
             {
                 auto rideSetAppearanceAction = RideSetAppearanceAction(
-                    rideId, RideSetAppearanceType::MazeStyle, dropdownIndex, ride_colour);
+                    rideId, RideSetAppearanceType::MazeStyle, dropdownIndex, _rideColour);
                 GameActions::Execute(&rideSetAppearanceAction);
             }
             break;
@@ -4372,7 +4372,7 @@ private:
         ride->FormatNameTo(ft);
 
         // Track colours
-        int32_t colourScheme = ride_colour;
+        int32_t colourScheme = _rideColour;
         trackColour = ride->track_colour[colourScheme];
 
         // Maze style
@@ -4610,7 +4610,7 @@ private:
                   { windowPos + ScreenCoordsXY{ trackPreviewWidget.right - 1, trackPreviewWidget.bottom - 1 } } },
                 PALETTE_INDEX_12);
 
-        auto trackColour = ride->track_colour[ride_colour];
+        auto trackColour = ride->track_colour[_rideColour];
 
         //
         auto rideEntry = ride->GetRideEntry();
@@ -5495,14 +5495,13 @@ private:
 
     void SetGraph(int32_t type)
     {
-        if ((list_information_type & 0xFF) == type)
+        if (list_information_type == type)
         {
-            list_information_type ^= 0x8000;
+            _autoScrollGraph = !_autoScrollGraph;
         }
         else
         {
-            list_information_type &= 0xFF00;
-            list_information_type |= type;
+            list_information_type = type;
         }
         Invalidate();
     }
@@ -5566,7 +5565,7 @@ private:
 
         widget = &_graphsWidgets[WIDX_GRAPH];
         x = scrolls[0].h_left;
-        if (!(list_information_type & 0x8000))
+        if (_autoScrollGraph)
         {
             auto ride = GetRide(rideId);
             if (ride != nullptr)
@@ -5603,9 +5602,9 @@ private:
         return size;
     }
 
-    void Graphs15(int32_t scrollIndex, int32_t scrollAreaType)
+    void GraphsOnScrollSelect(int32_t scrollIndex, int32_t scrollAreaType)
     {
-        list_information_type |= 0x8000;
+        _autoScrollGraph = false;
     }
 
     OpenRCT2String GraphsTooltip(const WidgetIndex widgetIndex, const StringId fallback)
@@ -5658,7 +5657,7 @@ private:
         pressed_widgets &= ~(1uLL << WIDX_GRAPH_ALTITUDE);
         pressed_widgets &= ~(1uLL << WIDX_GRAPH_VERTICAL);
         pressed_widgets &= ~(1uLL << WIDX_GRAPH_LATERAL);
-        pressed_widgets |= (1LL << (WIDX_GRAPH_VELOCITY + (list_information_type & 0xFF)));
+        pressed_widgets |= (1LL << (WIDX_GRAPH_VELOCITY + list_information_type));
 
         // Hide graph buttons that are not applicable
         if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
@@ -5742,7 +5741,7 @@ private:
         }
 
         // Horizontal grid lines
-        int32_t listType = list_information_type & 0xFF;
+        int32_t listType = list_information_type;
         int16_t yUnit = GraphsYAxisDetails[listType].unit;
         StringId stringID = GraphsYAxisDetails[listType].label;
         int16_t yUnitInterval = GraphsYAxisDetails[listType].unit_interval;

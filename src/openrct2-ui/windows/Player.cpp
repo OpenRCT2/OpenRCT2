@@ -96,7 +96,6 @@ public:
         page = 0;
         frame_no = 0;
         list_information_type = 0;
-        picked_peep_frame = 0;
         min_width = 210;
         min_height = 134;
         max_width = 500;
