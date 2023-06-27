@@ -912,11 +912,6 @@ namespace Platform
         return static_cast<uint32_t>(runningDelta.QuadPart / _frequency);
     }
 
-    void Sleep(uint32_t ms)
-    {
-        ::Sleep(ms);
-    }
-
     void InitTicks()
     {
         LARGE_INTEGER freq;
