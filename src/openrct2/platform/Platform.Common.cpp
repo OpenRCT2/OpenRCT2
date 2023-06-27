@@ -39,15 +39,6 @@ namespace Platform
 {
     void CoreInit()
     {
-        static bool initialised = false;
-        if (!initialised)
-        {
-            initialised = true;
-
-#ifdef __ANDROID__
-            Platform::AndroidInitClassLoader();
-#endif // __ANDROID__
-        }
     }
 
     CurrencyType GetCurrencyValue(const char* currCode)

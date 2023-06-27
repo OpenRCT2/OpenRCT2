@@ -103,7 +103,6 @@ namespace Platform
     bool SetupUriProtocol();
 #endif
 #ifdef __ANDROID__
-    void AndroidInitClassLoader();
     jclass AndroidFindClass(JNIEnv* env, std::string_view name);
 #endif
 
