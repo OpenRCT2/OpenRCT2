@@ -629,6 +629,7 @@ class RideWindow final : public Window
     std::vector<VehicleTypeLabel> _vehicleDropdownData;
     int16_t _vehicleIndex = 0;
     uint16_t _rideColour = 0;
+    bool _autoScrollGraph = true;
 
 public:
     RideWindow(const Ride& ride)
@@ -5494,14 +5495,13 @@ private:
 
     void SetGraph(int32_t type)
     {
-        if ((list_information_type & 0xFF) == type)
+        if (list_information_type == type)
         {
-            list_information_type ^= 0x8000;
+            _autoScrollGraph = !_autoScrollGraph;
         }
         else
         {
-            list_information_type &= 0xFF00;
-            list_information_type |= type;
+            list_information_type = type;
         }
         Invalidate();
     }
@@ -5565,7 +5565,7 @@ private:
 
         widget = &_graphsWidgets[WIDX_GRAPH];
         x = scrolls[0].h_left;
-        if (!(list_information_type & 0x8000))
+        if (_autoScrollGraph)
         {
             auto ride = GetRide(rideId);
             if (ride != nullptr)
@@ -5604,7 +5604,7 @@ private:
 
     void Graphs15(int32_t scrollIndex, int32_t scrollAreaType)
     {
-        list_information_type |= 0x8000;
+        _autoScrollGraph = false;
     }
 
     OpenRCT2String GraphsTooltip(const WidgetIndex widgetIndex, const StringId fallback)
@@ -5657,7 +5657,7 @@ private:
         pressed_widgets &= ~(1uLL << WIDX_GRAPH_ALTITUDE);
         pressed_widgets &= ~(1uLL << WIDX_GRAPH_VERTICAL);
         pressed_widgets &= ~(1uLL << WIDX_GRAPH_LATERAL);
-        pressed_widgets |= (1LL << (WIDX_GRAPH_VELOCITY + (list_information_type & 0xFF)));
+        pressed_widgets |= (1LL << (WIDX_GRAPH_VELOCITY + list_information_type));
 
         // Hide graph buttons that are not applicable
         if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
@@ -5741,7 +5741,7 @@ private:
         }
 
         // Horizontal grid lines
-        int32_t listType = list_information_type & 0xFF;
+        int32_t listType = list_information_type;
         int16_t yUnit = GraphsYAxisDetails[listType].unit;
         StringId stringID = GraphsYAxisDetails[listType].label;
         int16_t yUnitInterval = GraphsYAxisDetails[listType].unit_interval;
