@@ -278,7 +278,6 @@ WindowBase* WindowCreate(
 
     w->focus = std::nullopt;
     w->page = 0;
-    w->var_48C = 0;
 
     ColourSchemeUpdate(w);
     w->Invalidate();

@@ -545,7 +545,6 @@ private:
             // If autoposition of staff is disabled, pickup peep and then open the staff window
             if (staff->State == PeepState::Picked)
             {
-                picked_peep_old_x = staff->x;
                 CoordsXYZ nullLoc{};
                 nullLoc.SetNull();
 

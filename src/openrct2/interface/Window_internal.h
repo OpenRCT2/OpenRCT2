@@ -64,12 +64,6 @@ struct WindowBase
         int16_t page;
         TileInspectorPage tileInspectorPage;
     };
-    union
-    {
-        int16_t picked_peep_old_x; // staff window: peep x gets set to 0x8000 on pickup, this is the old value
-        int16_t vehicleIndex;      // Ride window: selected car when setting vehicle colours
-        int16_t var_48C;
-    };
     uint16_t frame_no{};              // updated every tic for motion in windows sprites
     uint16_t list_information_type{}; // 0 for none
     int16_t picked_peep_frame;        // Animation frame of picked peep in staff window and guest window
