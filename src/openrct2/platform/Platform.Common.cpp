@@ -24,7 +24,9 @@
 
 #include <algorithm>
 #include <array>
+#include <chrono>
 #include <cstring>
+#include <thread>
 #include <time.h>
 
 #ifdef _WIN32
@@ -136,4 +138,10 @@ namespace Platform
         return 1;
     }
 #endif
+
+    void Sleep(uint32_t ms)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+    }
+
 } // namespace Platform
