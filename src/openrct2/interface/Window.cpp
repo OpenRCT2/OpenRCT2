@@ -224,7 +224,7 @@ void WindowClose(WindowBase& w)
 void WindowFlushDead()
 {
     // Remove all windows in g_window_list that have the WF_DEAD flag
-    g_window_list.remove_if([](const std::shared_ptr<WindowBase>& w) -> bool { return w->flags & WF_DEAD; });
+    g_window_list.remove_if([](auto&& w) -> bool { return w->flags & WF_DEAD; });
 }
 
 template<typename TPred> static void WindowCloseByCondition(TPred pred, uint32_t flags = WindowCloseFlags::None)
