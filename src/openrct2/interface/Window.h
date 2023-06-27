@@ -294,6 +294,7 @@ enum WINDOW_FLAGS
     WF_SCROLLING_TO_LOCATION = (1 << 3),
     WF_TRANSPARENT = (1 << 4),
     WF_NO_BACKGROUND = (1 << 5), // Instead of half transparency, completely remove the window background
+    WF_DEAD = (1U << 6),         // Window is closed and will be deleted in the next update.
     WF_7 = (1 << 7),
     WF_RESIZABLE = (1 << 8),
     WF_NO_AUTO_CLOSE = (1 << 9), // Don't auto close this window if too many windows are open
@@ -584,6 +585,7 @@ T* WindowFocusOrCreate(WindowClass cls, int32_t width, int32_t height, uint32_t 
 }
 
 void WindowClose(WindowBase& window);
+void WindowFlushDead();
 void WindowCloseByClass(WindowClass cls);
 void WindowCloseByNumber(WindowClass cls, rct_windownumber number);
 void WindowCloseByNumber(WindowClass cls, EntityId number);

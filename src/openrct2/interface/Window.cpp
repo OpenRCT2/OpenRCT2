@@ -80,8 +80,7 @@ static constexpr float window_scroll_locations[][2] = {
 namespace WindowCloseFlags
 {
     static constexpr uint32_t None = 0;
-    static constexpr uint32_t IterateReverse = (1 << 0);
-    static constexpr uint32_t CloseSingle = (1 << 1);
+    static constexpr uint32_t CloseSingle = (1 << 0);
 } // namespace WindowCloseFlags
 
 static void WindowDrawCore(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
@@ -99,6 +98,8 @@ void WindowVisitEach(std::function<void(WindowBase*)> func)
     auto windowList = g_window_list;
     for (auto& w : windowList)
     {
+        if (w->flags & WF_DEAD)
+            continue;
         func(w.get());
     }
 }
@@ -129,6 +130,8 @@ void WindowUpdateAllViewports()
  */
 void WindowUpdateAll()
 {
+    WindowFlushDead();
+
     // Periodic update happens every second so 40 ticks.
     if (gCurrentRealTimeTicks >= gWindowUpdateTicks)
     {
@@ -165,6 +168,8 @@ static void WindowCloseSurplus(int32_t cap, WindowClass avoid_classification)
         WindowBase* foundW{};
         for (auto& w : g_window_list)
         {
+            if (w->flags & WF_DEAD)
+                continue;
             if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
             {
                 foundW = w.get();
@@ -205,76 +210,40 @@ void WindowSetWindowLimit(int32_t value)
  */
 void WindowClose(WindowBase& w)
 {
-    auto itWindow = WindowGetIterator(&w);
-    if (itWindow == g_window_list.end())
-        return;
-
-    // Explicit copy of the shared ptr to keep the memory valid.
-    std::shared_ptr<WindowBase> window = *itWindow;
-
-    WindowEventCloseCall(window.get());
+    WindowEventCloseCall(&w);
 
     // Remove viewport
-    window->RemoveViewport();
+    w.RemoveViewport();
 
     // Invalidate the window (area)
-    window->Invalidate();
+    w.Invalidate();
 
-    // The window list may have been modified in the close event
-    itWindow = WindowGetIterator(&w);
-    if (itWindow != g_window_list.end())
-        g_window_list.erase(itWindow);
+    w.flags |= WF_DEAD;
+}
+
+void WindowFlushDead()
+{
+    // Remove all windows in g_window_list that have the WF_DEAD flag
+    g_window_list.remove_if([](const std::shared_ptr<WindowBase>& w) -> bool { return w->flags & WF_DEAD; });
 }
 
 template<typename TPred> static void WindowCloseByCondition(TPred pred, uint32_t flags = WindowCloseFlags::None)
 {
-    bool listUpdated;
-    do
+    for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); ++it)
     {
-        listUpdated = false;
+        auto& wnd = *(*it);
+        if (wnd.flags & WF_DEAD)
+            continue;
 
-        auto closeSingle = [&](std::shared_ptr<WindowBase> window) -> bool {
-            if (!pred(window.get()))
+        if (pred(&wnd))
+        {
+            WindowClose(wnd);
+            if (flags & WindowCloseFlags::CloseSingle)
             {
-                return false;
+                return;
             }
-
-            // Keep track of current amount, if a new window is created upon closing
-            // we need to break this current iteration and restart.
-            size_t previousCount = g_window_list.size();
-
-            WindowClose(*window.get());
-
-            if ((flags & WindowCloseFlags::CloseSingle) != 0)
-            {
-                // Only close a single one.
-                return true;
-            }
-
-            if (previousCount >= g_window_list.size())
-            {
-                // A new window was created during the close event.
-                return true;
-            }
-
-            // Keep closing windows.
-            return false;
-        };
-
-        // The closest to something like for_each_if is using find_if in order to avoid duplicate code
-        // to change the loop direction.
-        auto windowList = g_window_list;
-        if ((flags & WindowCloseFlags::IterateReverse) != 0)
-            listUpdated = std::find_if(windowList.rbegin(), windowList.rend(), closeSingle) != windowList.rend();
-        else
-            listUpdated = std::find_if(windowList.begin(), windowList.end(), closeSingle) != windowList.end();
-
-        // If requested to close only a single window and a new window was created during close
-        // we ignore it.
-        if ((flags & WindowCloseFlags::CloseSingle) != 0)
-            break;
-
-    } while (listUpdated);
+        }
+    }
 }
 
 /**
@@ -314,6 +283,8 @@ WindowBase* WindowFindByClass(WindowClass cls)
 {
     for (auto& w : g_window_list)
     {
+        if (w->flags & WF_DEAD)
+            continue;
         if (w->classification == cls)
         {
             return w.get();
@@ -333,6 +304,8 @@ WindowBase* WindowFindByNumber(WindowClass cls, rct_windownumber number)
 {
     for (auto& w : g_window_list)
     {
+        if (w->flags & WF_DEAD)
+            continue;
         if (w->classification == cls && w->number == number)
         {
             return w.get();
@@ -363,7 +336,7 @@ void WindowCloseTop()
     }
 
     auto pred = [](WindowBase* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); };
-    WindowCloseByCondition(pred, WindowCloseFlags::CloseSingle | WindowCloseFlags::IterateReverse);
+    WindowCloseByCondition(pred, WindowCloseFlags::CloseSingle);
 }
 
 /**
@@ -380,7 +353,6 @@ void WindowCloseAll()
 void WindowCloseAllExceptClass(WindowClass cls)
 {
     WindowCloseByClass(WindowClass::Dropdown);
-
     WindowCloseByCondition([cls](WindowBase* w) -> bool {
         return w->classification != cls && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT));
     });
@@ -416,6 +388,9 @@ WindowBase* WindowFindFromPoint(const ScreenCoordsXY& screenCoords)
     for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
     {
         auto& w = *it;
+        if (w->flags & WF_DEAD)
+            continue;
+
         if (screenCoords.x < w->windowPos.x || screenCoords.x >= w->windowPos.x + w->width || screenCoords.y < w->windowPos.y
             || screenCoords.y >= w->windowPos.y + w->height)
             continue;
@@ -811,6 +786,8 @@ WindowBase* WindowGetMain()
 {
     for (auto& w : g_window_list)
     {
+        if (w->flags & WF_DEAD)
+            continue;
         if (w->classification == WindowClass::MainWindow)
         {
             return w.get();
@@ -1198,6 +1175,8 @@ static void WindowDrawCore(DrawPixelInfo& dpi, WindowBase& w, int32_t left, int3
     for (auto it = WindowGetIterator(&w); it != g_window_list.end(); it++)
     {
         auto* v = (*it).get();
+        if (v->flags & WF_DEAD)
+            continue;
         if ((&w == v || (v->flags & WF_TRANSPARENT)) && WindowIsVisible(*v))
         {
             WindowDrawSingle(dpi, *v, left, top, right, bottom);
@@ -1943,6 +1922,8 @@ bool WindowIsVisible(WindowBase& w)
     for (auto it = std::next(itPos); it != g_window_list.end(); it++)
     {
         auto& w_other = *(*it);
+        if (w_other.flags & WF_DEAD)
+            continue;
 
         // if covered by a higher window, no rendering needed
         if (w_other.windowPos.x <= w.windowPos.x && w_other.windowPos.y <= w.windowPos.y
@@ -1989,6 +1970,8 @@ Viewport* WindowGetPreviousViewport(Viewport* current)
     for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
     {
         auto& w = **it;
+        if (w.flags & WF_DEAD)
+            continue;
         if (w.viewport != nullptr)
         {
             if (foundPrevious)
@@ -2050,6 +2033,9 @@ WindowBase* WindowGetListening()
     for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
     {
         auto& w = **it;
+        if (w.flags & WF_DEAD)
+            continue;
+
         auto viewport = w.viewport;
         if (viewport != nullptr)
         {
