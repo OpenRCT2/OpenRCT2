@@ -41,10 +41,6 @@
 #    pragma comment(                                                                                                           \
         linker,                                                                                                                \
         "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
-
-static uint32_t _frequency = 0;
-static LARGE_INTEGER _entryTimestamp;
-
 // The name of the mutex used to prevent multiple instances of the game from running
 static constexpr wchar_t SINGLE_INSTANCE_MUTEX_NAME[] = L"RollerCoaster Tycoon 2_GSKMUTEX";
 
@@ -901,24 +897,6 @@ namespace Platform
         return false;
     }
 
-    uint32_t GetTicks()
-    {
-        LARGE_INTEGER pfc;
-        QueryPerformanceCounter(&pfc);
-
-        LARGE_INTEGER runningDelta;
-        runningDelta.QuadPart = pfc.QuadPart - _entryTimestamp.QuadPart;
-
-        return static_cast<uint32_t>(runningDelta.QuadPart / _frequency);
-    }
-
-    void InitTicks()
-    {
-        LARGE_INTEGER freq;
-        QueryPerformanceFrequency(&freq);
-        _frequency = static_cast<uint32_t>(freq.QuadPart / 1000);
-        QueryPerformanceCounter(&_entryTimestamp);
-    }
 } // namespace Platform
 
 #endif

@@ -125,7 +125,6 @@ namespace Platform
     uint32_t GetTicks();
 
     void Sleep(uint32_t ms);
-    void InitTicks();
 } // namespace Platform
 
 #ifdef __ANDROID__
