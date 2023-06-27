@@ -2239,7 +2239,7 @@ MapRange ClampRangeWithinMap(const MapRange& range)
 
 void ShiftMap(const TileCoordsXY& amount)
 {
-    if (amount.x == 0 || amount.y == 0)
+    if (amount.x == 0 && amount.y == 0)
         return;
 
     auto amountToMove = amount.ToCoordsXY();
