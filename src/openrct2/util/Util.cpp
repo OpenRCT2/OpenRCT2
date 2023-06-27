@@ -204,12 +204,7 @@ static int32_t BitCountLut(uint32_t source)
         + BitsSetTable256[source >> 24];
 }
 
-static int32_t (*BitCountFn)(uint32_t);
-
-void BitCountInit()
-{
-    BitCountFn = BitCountPopcntAvailable() ? BitCountPopcnt : BitCountLut;
-}
+static const auto BitCountFn = BitCountPopcntAvailable() ? BitCountPopcnt : BitCountLut;
 
 int32_t BitCount(uint32_t source)
 {

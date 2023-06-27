@@ -48,7 +48,6 @@ namespace Platform
             Platform::AndroidInitClassLoader();
 #endif // __ANDROID__
 
-            BitCountInit();
             MaskInit();
         }
     }
