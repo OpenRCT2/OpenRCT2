@@ -90,7 +90,7 @@ TEST(BitTest, test_big)
     static_assert(size == 32u);
 
     bits.flip();
-#if defined(_M_X64) || defined(_M_ARM64) || defined(__x86_64__)
+#if defined(_M_X64) || defined(_M_ARM64) || defined(_LP64)
     static_assert(std::is_same_v<decltype(bits)::BlockType, uint64_t>);
     static_assert(bits.data().size() == 4);
     ASSERT_EQ(bits.data()[0], ~0uLL);
