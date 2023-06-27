@@ -490,7 +490,6 @@ int32_t CommandLineForGfxbench(const char** argv, int32_t argc)
         return -1;
     }
 
-    Platform::CoreInit();
     int32_t iterationCount = 5;
     if (argc == 2)
     {
@@ -587,7 +586,6 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
     DrawPixelInfo dpi;
     try
     {
-        Platform::CoreInit();
         bool customLocation = false;
         bool centreMapX = false;
         bool centreMapY = false;

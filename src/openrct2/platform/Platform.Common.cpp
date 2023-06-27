@@ -37,10 +37,6 @@ static constexpr std::array _prohibitedCharacters = { '/' };
 
 namespace Platform
 {
-    void CoreInit()
-    {
-    }
-
     CurrencyType GetCurrencyValue(const char* currCode)
     {
         if (currCode == nullptr || strlen(currCode) < 3)

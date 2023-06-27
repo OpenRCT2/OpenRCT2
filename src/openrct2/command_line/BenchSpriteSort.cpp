@@ -70,7 +70,6 @@ static void fixup_pointers(std::vector<RecordedPaintSession>& s)
 
 static std::vector<RecordedPaintSession> extract_paint_session(std::string_view parkFileName)
 {
-    Platform::CoreInit();
     gOpenRCT2Headless = true;
     auto context = OpenRCT2::CreateContext();
     std::vector<RecordedPaintSession> sessions;

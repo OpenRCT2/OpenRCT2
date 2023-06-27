@@ -118,7 +118,6 @@ static int CommandLineForBenchSpriteSort(int argc, const char* const* argv)
     if (::benchmark::ReportUnrecognizedArguments(argc, &argv_for_benchmark[0]))
         return -1;
 
-    Platform::CoreInit();
     gOpenRCT2Headless = true;
 
     ::benchmark::RunSpecifiedBenchmarks();

@@ -65,7 +65,6 @@ protected:
         gOpenRCT2Headless = true;
         gOpenRCT2NoGraphics = true;
 
-        Platform::CoreInit();
         auto context = CreateContext();
         bool initialised = context->Initialise();
         ASSERT_TRUE(initialised);

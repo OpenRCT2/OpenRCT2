@@ -21,7 +21,6 @@ int main(int argc, const char** argv)
 {
     int32_t rc = EXIT_SUCCESS;
     int runGame = CommandLineRun(argv, argc);
-    Platform::CoreInit();
     if (runGame == EXITCODE_CONTINUE)
     {
         gOpenRCT2Headless = true;
