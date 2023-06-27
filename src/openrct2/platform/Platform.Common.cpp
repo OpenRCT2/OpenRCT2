@@ -47,8 +47,6 @@ namespace Platform
 #ifdef __ANDROID__
             Platform::AndroidInitClassLoader();
 #endif // __ANDROID__
-
-            MaskInit();
         }
     }
 
