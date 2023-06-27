@@ -947,7 +947,7 @@ public:
         switch (page)
         {
             case WINDOW_RIDE_PAGE_GRAPHS:
-                Graphs15(scrollIndex, scrollAreaType);
+                GraphsOnScrollSelect(scrollIndex, scrollAreaType);
                 break;
         }
     }
@@ -5602,7 +5602,7 @@ private:
         return size;
     }
 
-    void Graphs15(int32_t scrollIndex, int32_t scrollAreaType)
+    void GraphsOnScrollSelect(int32_t scrollIndex, int32_t scrollAreaType)
     {
         _autoScrollGraph = false;
     }
