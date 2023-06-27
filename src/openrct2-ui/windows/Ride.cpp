@@ -627,8 +627,8 @@ class RideWindow final : public Window
     const RideObjectEntry* _vehicleDropdownRideType = nullptr;
     bool _vehicleDropdownExpanded = false;
     std::vector<VehicleTypeLabel> _vehicleDropdownData;
-    int16_t _vehicleIndex;
-    uint16_t _rideColour;
+    int16_t _vehicleIndex = 0;
+    uint16_t _rideColour = 0;
 
 public:
     RideWindow(const Ride& ride)
@@ -638,11 +638,9 @@ public:
         hold_down_widgets = PageHoldDownWidgets[WINDOW_RIDE_PAGE_MAIN];
 
         page = WINDOW_RIDE_PAGE_MAIN;
-        _vehicleIndex = 0;
         frame_no = 0;
         list_information_type = 0;
         picked_peep_frame = 0;
-        _rideColour = 0;
         DisableTabs();
         min_width = 316;
         min_height = 180;
