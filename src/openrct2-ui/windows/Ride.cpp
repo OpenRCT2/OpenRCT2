@@ -628,6 +628,7 @@ class RideWindow final : public Window
     bool _vehicleDropdownExpanded = false;
     std::vector<VehicleTypeLabel> _vehicleDropdownData;
     int16_t _vehicleIndex;
+    uint16_t _rideColour;
 
 public:
     RideWindow(const Ride& ride)
@@ -641,7 +642,7 @@ public:
         frame_no = 0;
         list_information_type = 0;
         picked_peep_frame = 0;
-        ride_colour = 0;
+        _rideColour = 0;
         DisableTabs();
         min_width = 316;
         min_height = 180;
@@ -4011,7 +4012,7 @@ private:
 
     void SetTrackColourScheme(const ScreenCoordsXY& screenPos)
     {
-        auto newColourScheme = static_cast<uint8_t>(ride_colour);
+        auto newColourScheme = static_cast<uint8_t>(_rideColour);
         auto info = GetMapCoordinatesFromPos(screenPos, EnumsToFlags(ViewportInteractionItem::Ride));
 
         if (info.SpriteType != ViewportInteractionItem::Ride)
@@ -4099,7 +4100,7 @@ private:
         if (rideEntry == nullptr)
             return;
 
-        auto colourSchemeIndex = ride_colour;
+        auto colourSchemeIndex = _rideColour;
         auto dropdownWidget = &widgets[widgetIndex] - 1;
 
         switch (widgetIndex)
@@ -4226,13 +4227,13 @@ private:
         switch (widgetIndex)
         {
             case WIDX_TRACK_COLOUR_SCHEME_DROPDOWN:
-                ride_colour = static_cast<uint16_t>(dropdownIndex);
+                _rideColour = static_cast<uint16_t>(dropdownIndex);
                 Invalidate();
                 break;
             case WIDX_TRACK_MAIN_COLOUR:
             {
                 auto rideSetAppearanceAction = RideSetAppearanceAction(
-                    rideId, RideSetAppearanceType::TrackColourMain, ColourDropDownIndexToColour(dropdownIndex), ride_colour);
+                    rideId, RideSetAppearanceType::TrackColourMain, ColourDropDownIndexToColour(dropdownIndex), _rideColour);
                 GameActions::Execute(&rideSetAppearanceAction);
             }
             break;
@@ -4240,7 +4241,7 @@ private:
             {
                 auto rideSetAppearanceAction = RideSetAppearanceAction(
                     rideId, RideSetAppearanceType::TrackColourAdditional, ColourDropDownIndexToColour(dropdownIndex),
-                    ride_colour);
+                    _rideColour);
                 GameActions::Execute(&rideSetAppearanceAction);
             }
             break;
@@ -4248,14 +4249,14 @@ private:
             {
                 auto rideSetAppearanceAction = RideSetAppearanceAction(
                     rideId, RideSetAppearanceType::TrackColourSupports, ColourDropDownIndexToColour(dropdownIndex),
-                    ride_colour);
+                    _rideColour);
                 GameActions::Execute(&rideSetAppearanceAction);
             }
             break;
             case WIDX_MAZE_STYLE_DROPDOWN:
             {
                 auto rideSetAppearanceAction = RideSetAppearanceAction(
-                    rideId, RideSetAppearanceType::MazeStyle, dropdownIndex, ride_colour);
+                    rideId, RideSetAppearanceType::MazeStyle, dropdownIndex, _rideColour);
                 GameActions::Execute(&rideSetAppearanceAction);
             }
             break;
@@ -4372,7 +4373,7 @@ private:
         ride->FormatNameTo(ft);
 
         // Track colours
-        int32_t colourScheme = ride_colour;
+        int32_t colourScheme = _rideColour;
         trackColour = ride->track_colour[colourScheme];
 
         // Maze style
@@ -4610,7 +4611,7 @@ private:
                   { windowPos + ScreenCoordsXY{ trackPreviewWidget.right - 1, trackPreviewWidget.bottom - 1 } } },
                 PALETTE_INDEX_12);
 
-        auto trackColour = ride->track_colour[ride_colour];
+        auto trackColour = ride->track_colour[_rideColour];
 
         //
         auto rideEntry = ride->GetRideEntry();
