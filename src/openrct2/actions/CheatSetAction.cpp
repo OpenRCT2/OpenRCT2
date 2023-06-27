@@ -39,9 +39,9 @@
 #include "ParkSetLoanAction.h"
 #include "ParkSetParameterAction.h"
 
-using ParametersRange = std::pair<std::pair<int32_t, int32_t>, std::pair<int32_t, int32_t>>;
+using ParametersRange = std::pair<std::pair<int64_t, int64_t>, std::pair<int64_t, int64_t>>;
 
-CheatSetAction::CheatSetAction(CheatType cheatType, int32_t param1, int32_t param2)
+CheatSetAction::CheatSetAction(CheatType cheatType, int64_t param1, int64_t param2)
     : _cheatType(static_cast<int32_t>(cheatType))
     , _param1(param1)
     , _param2(param2)
@@ -320,7 +320,7 @@ ParametersRange CheatSetAction::GetParameterRange(CheatType cheatType) const
         case CheatType::AddMoney:
             [[fallthrough]];
         case CheatType::SetMoney:
-            return { { std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max() }, { 0, 0 } };
+            return { { std::numeric_limits<money64>::min(), std::numeric_limits<money64>::max() }, { 0, 0 } };
         case CheatType::SetGuestParameter:
             switch (_param1)
             {
