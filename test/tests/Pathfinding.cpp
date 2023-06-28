@@ -29,8 +29,6 @@ class PathfindingTestBase : public testing::Test
 public:
     static void SetUpTestCase()
     {
-        Platform::CoreInit();
-
         gOpenRCT2Headless = true;
         gOpenRCT2NoGraphics = true;
         _context = CreateContext();

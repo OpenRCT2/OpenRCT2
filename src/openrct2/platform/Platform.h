@@ -45,8 +45,6 @@ struct RealWorldTime;
 
 namespace Platform
 {
-    // Called very early in the program before parsing commandline arguments.
-    void CoreInit();
     std::string GetEnvironmentVariable(std::string_view name);
     std::string GetFolderPath(SPECIAL_FOLDER folder);
     std::string GetInstallPath();
@@ -103,7 +101,6 @@ namespace Platform
     bool SetupUriProtocol();
 #endif
 #ifdef __ANDROID__
-    void AndroidInitClassLoader();
     jclass AndroidFindClass(JNIEnv* env, std::string_view name);
 #endif
 
@@ -125,7 +122,6 @@ namespace Platform
     uint32_t GetTicks();
 
     void Sleep(uint32_t ms);
-    void InitTicks();
 } // namespace Platform
 
 #ifdef __ANDROID__

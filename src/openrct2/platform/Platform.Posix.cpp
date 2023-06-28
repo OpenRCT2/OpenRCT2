@@ -379,25 +379,6 @@ namespace Platform
         return u8"app_285330" PATH_SEPARATOR u8"depot_285331";
     }
 
-    void Sleep(uint32_t ms)
-    {
-        usleep(ms * 1000);
-    }
-
-    void InitTicks()
-    {
-    }
-
-    uint32_t GetTicks()
-    {
-        struct timespec ts;
-        if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0)
-        {
-            LOG_FATAL("clock_gettime failed");
-            exit(-1);
-        }
-        return static_cast<uint32_t>(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
-    }
 } // namespace Platform
 
 #endif

@@ -41,7 +41,6 @@ static std::unique_ptr<IContext> localStartGame(const std::string& parkPath)
 {
     gOpenRCT2Headless = true;
     gOpenRCT2NoGraphics = true;
-    Platform::CoreInit();
 
     auto context = CreateContext();
     if (!context->Initialise())

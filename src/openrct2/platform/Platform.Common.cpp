@@ -24,7 +24,9 @@
 
 #include <algorithm>
 #include <array>
+#include <chrono>
 #include <cstring>
+#include <thread>
 #include <time.h>
 
 #ifdef _WIN32
@@ -35,23 +37,6 @@ static constexpr std::array _prohibitedCharacters = { '/' };
 
 namespace Platform
 {
-    void CoreInit()
-    {
-        static bool initialised = false;
-        if (!initialised)
-        {
-            initialised = true;
-
-#ifdef __ANDROID__
-            Platform::AndroidInitClassLoader();
-#endif // __ANDROID__
-
-            InitTicks();
-            BitCountInit();
-            MaskInit();
-        }
-    }
-
     CurrencyType GetCurrencyValue(const char* currCode)
     {
         if (currCode == nullptr || strlen(currCode) < 3)
@@ -136,4 +121,18 @@ namespace Platform
         return 1;
     }
 #endif
+
+    void Sleep(uint32_t ms)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+    }
+
+    static const auto _processStartTime = std::chrono::high_resolution_clock::now();
+
+    uint32_t GetTicks()
+    {
+        const auto processTime = std::chrono::high_resolution_clock::now() - _processStartTime;
+        return static_cast<uint32_t>(std::chrono::duration_cast<std::chrono::milliseconds>(processTime).count());
+    }
+
 } // namespace Platform
