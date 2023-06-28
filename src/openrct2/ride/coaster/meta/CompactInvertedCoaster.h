@@ -59,7 +59,7 @@ constexpr RideTypeDescriptor CompactInvertedCoasterRTD =
         { RIDE_RATING(3, 15), RIDE_RATING(2, 80), RIDE_RATING(3, 20) },
         21,
         -1,
-        false,
+        true,
         {
             { RatingsModifierType::BonusLength,           6000,             764, 0, 0 },
             { RatingsModifierType::BonusSynchronisation,  0,                RIDE_RATING(0, 42), RIDE_RATING(0, 05), 0 },
