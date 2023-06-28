@@ -1256,7 +1256,7 @@ private:
     ScreenSize OnScrollGetSizeRides(int32_t scrollIndex)
     {
         ScreenSize newSize;
-        newSize.height = _riddenRides.size() * 10;
+        newSize.height = static_cast<int32_t>(_riddenRides.size()) * 10;
 
         if (selected_list_item != -1)
         {
@@ -1280,7 +1280,7 @@ private:
     void OnScrollMouseDownRides(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
     {
         auto index = screenCoords.y / 10;
-        if (index >= _riddenRides.size())
+        if (index >= static_cast<int32_t>(_riddenRides.size()))
             return;
 
         auto intent = Intent(WindowClass::Ride);
@@ -1291,7 +1291,7 @@ private:
     void OnScrollMouseOverRides(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
     {
         auto index = screenCoords.y / 10;
-        if (index >= _riddenRides.size())
+        if (index >= static_cast<int32_t>(_riddenRides.size()))
             return;
 
         if (index == selected_list_item)
@@ -1351,7 +1351,7 @@ private:
         auto colour = ColourMapA[colours[1]].mid_light;
         GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
 
-        for (size_t listIndex = 0; listIndex < _riddenRides.size(); listIndex++)
+        for (int32_t listIndex = 0; listIndex < static_cast<int32_t>(_riddenRides.size()); listIndex++)
         {
             int32_t y = listIndex * 10;
             StringId stringId = STR_BLACK_STRING;
