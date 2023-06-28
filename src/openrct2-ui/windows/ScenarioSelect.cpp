@@ -392,12 +392,9 @@ public:
                     {
                         OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
                         gFirstTimeSaving = true;
+                        Close(); // The callback will likely close this window so this is perhaps overkill
                         _callback(listItem.scenario.scenario->Path);
-                        if (IsTitleEditor())
-                        {
-                            Close();
-                            return;
-                        }
+                        return;
                     }
                     break;
             }
