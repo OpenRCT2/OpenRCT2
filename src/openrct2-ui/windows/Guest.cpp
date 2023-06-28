@@ -168,6 +168,7 @@ private:
     uint16_t _beingWatchedTimer = 0;
     uint16_t _guestAnimationFrame = 0;
     int16_t _pickedPeepX = LOCATION_NULL; // entity->x gets set to 0x8000 on pickup, this is the old value
+    std::vector<RideId> _riddenRides;
 
 public:
     void OnOpen() override
@@ -181,7 +182,6 @@ public:
         min_height = 157;
         max_width = 500;
         max_height = 450;
-        no_list_items = 0;
         selected_list_item = -1;
     }
 
@@ -493,7 +493,7 @@ private:
 
         page = newPage;
         frame_no = 0;
-        no_list_items = 0;
+        _riddenRides.clear();
         selected_list_item = -1;
 
         RemoveViewport();
@@ -1237,20 +1237,18 @@ private:
         if (!(numTicks & 0x7FF))
             Invalidate();
 
-        uint8_t currListPosition = 0;
+        const auto oldSize = _riddenRides.size();
         for (const auto& r : GetRideManager())
         {
             if (r.IsRide() && guest->HasRidden(r))
             {
-                list_item_positions[currListPosition] = r.id.ToUnderlying();
-                currListPosition++;
+                _riddenRides.push_back(r.id);
             }
         }
 
         // If there are new items
-        if (no_list_items != currListPosition)
+        if (oldSize != _riddenRides.size())
         {
-            no_list_items = currListPosition;
             Invalidate();
         }
     }
@@ -1258,7 +1256,7 @@ private:
     ScreenSize OnScrollGetSizeRides(int32_t scrollIndex)
     {
         ScreenSize newSize;
-        newSize.height = no_list_items * 10;
+        newSize.height = _riddenRides.size() * 10;
 
         if (selected_list_item != -1)
         {
@@ -1282,18 +1280,18 @@ private:
     void OnScrollMouseDownRides(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
     {
         auto index = screenCoords.y / 10;
-        if (index >= no_list_items)
+        if (index >= _riddenRides.size())
             return;
 
         auto intent = Intent(WindowClass::Ride);
-        intent.PutExtra(INTENT_EXTRA_RIDE_ID, list_item_positions[index]);
+        intent.PutExtra(INTENT_EXTRA_RIDE_ID, _riddenRides[index]);
         ContextOpenIntent(&intent);
     }
 
     void OnScrollMouseOverRides(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
     {
         auto index = screenCoords.y / 10;
-        if (index >= no_list_items)
+        if (index >= _riddenRides.size())
             return;
 
         if (index == selected_list_item)
@@ -1353,9 +1351,9 @@ private:
         auto colour = ColourMapA[colours[1]].mid_light;
         GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
 
-        for (int32_t listIndex = 0; listIndex < no_list_items; listIndex++)
+        for (size_t listIndex = 0; listIndex < _riddenRides.size(); listIndex++)
         {
-            auto y = listIndex * 10;
+            int32_t y = listIndex * 10;
             StringId stringId = STR_BLACK_STRING;
             if (listIndex == selected_list_item)
             {
@@ -1363,8 +1361,7 @@ private:
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
             }
 
-            const auto rId = RideId::FromUnderlying(list_item_positions[listIndex]);
-            auto* r = GetRide(rId);
+            auto* r = GetRide(_riddenRides[listIndex]);
             if (r != nullptr)
             {
                 auto ft = Formatter();
