@@ -495,7 +495,6 @@ void GameLoadInit()
     {
         intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
         ContextBroadcastIntent(&intent);
-        WindowUpdateAll();
     }
 
     OpenRCT2::Audio::StopTitleMusic();
