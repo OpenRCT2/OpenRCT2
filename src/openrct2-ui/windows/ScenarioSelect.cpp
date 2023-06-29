@@ -112,15 +112,13 @@ class ScenarioSelectWindow final : public Window
 {
 private:
     bool _showLockedInformation = false;
-    bool _titleEditor = false;
     std::function<void(std::string_view)> _callback;
     std::vector<ScenarioListItem> _listItems;
     const ScenarioIndexEntry* _highlightedScenario = nullptr;
 
 public:
-    ScenarioSelectWindow(std::function<void(std::string_view)> callback, bool isTitleEditor)
-        : _titleEditor(isTitleEditor)
-        , _callback(callback)
+    ScenarioSelectWindow(std::function<void(std::string_view)> callback)
+        : _callback(callback)
     {
     }
 
@@ -134,11 +132,6 @@ public:
         InitTabs();
         InitialiseListItems();
         InitScrollWidgets();
-    }
-
-    bool IsTitleEditor() const
-    {
-        return _titleEditor;
     }
 
     void OnMouseUp(WidgetIndex widgetIndex) override
@@ -184,7 +177,7 @@ public:
                 continue;
 
             auto ft = Formatter();
-            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || IsTitleEditor())
+            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
             {
                 ft.Add<StringId>(kScenarioOriginStringIds[i]);
             }
@@ -392,12 +385,9 @@ public:
                     {
                         OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
                         gFirstTimeSaving = true;
+                        // Callback will likely close this window! So should always return after it.
                         _callback(listItem.scenario.scenario->Path);
-                        if (IsTitleEditor())
-                        {
-                            Close();
-                            return;
-                        }
+                        return;
                     }
                     break;
             }
@@ -557,12 +547,10 @@ private:
 
             if (!IsScenarioVisible(*scenario))
                 continue;
-            if (IsTitleEditor() && scenario->SourceGame == ScenarioSource::Other)
-                continue;
 
             // Category heading
             StringId headingStringId = STR_NONE;
-            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || IsTitleEditor())
+            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
             {
                 if (selected_tab != static_cast<uint8_t>(ScenarioSource::Real) && currentHeading != scenario->Category)
                 {
@@ -667,7 +655,7 @@ private:
 
     bool IsScenarioVisible(const ScenarioIndexEntry& scenario) const
     {
-        if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || IsTitleEditor())
+        if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
         {
             if (static_cast<uint8_t>(scenario.SourceGame) != selected_tab)
             {
@@ -697,8 +685,6 @@ private:
             return false;
         if (selected_tab >= 6)
             return false;
-        if (IsTitleEditor())
-            return false;
 
         return true;
     }
@@ -710,10 +696,8 @@ private:
         for (size_t i = 0; i < numScenarios; i++)
         {
             const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
-            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || IsTitleEditor())
+            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
             {
-                if (IsTitleEditor() && scenario->SourceGame == ScenarioSource::Other)
-                    continue;
                 showPages |= 1 << static_cast<uint8_t>(scenario->SourceGame);
             }
             else
@@ -777,30 +761,22 @@ private:
     }
 };
 
-WindowBase* WindowScenarioselectOpen(scenarioselect_callback callback, bool titleEditor)
+WindowBase* WindowScenarioselectOpen(scenarioselect_callback callback)
 {
-    return WindowScenarioselectOpen(
-        [callback](std::string_view scenario) { callback(std::string(scenario).c_str()); }, titleEditor);
+    return WindowScenarioselectOpen([callback](std::string_view scenario) { callback(std::string(scenario).c_str()); });
 }
 
-WindowBase* WindowScenarioselectOpen(std::function<void(std::string_view)> callback, bool titleEditor)
+WindowBase* WindowScenarioselectOpen(std::function<void(std::string_view)> callback)
 {
     auto* window = static_cast<ScenarioSelectWindow*>(WindowBringToFrontByClass(WindowClass::ScenarioSelect));
     if (window != nullptr)
     {
-        if (window->IsTitleEditor() != titleEditor)
-        {
-            WindowCloseByClass(WindowClass::ScenarioSelect);
-        }
-        else
-        {
-            return window;
-        }
+        return window;
     }
 
     int32_t screenWidth = ContextGetWidth();
     int32_t screenHeight = ContextGetHeight();
     ScreenCoordsXY screenPos = { (screenWidth - WW) / 2, std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - WH) / 2) };
-    window = WindowCreate<ScenarioSelectWindow>(WindowClass::ScenarioSelect, screenPos, WW, WH, 0, callback, titleEditor);
+    window = WindowCreate<ScenarioSelectWindow>(WindowClass::ScenarioSelect, screenPos, WW, WH, 0, callback);
     return window;
 }

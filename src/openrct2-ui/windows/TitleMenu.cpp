@@ -132,7 +132,7 @@ public:
                 {
                     WindowCloseByClass(WindowClass::Loadsave);
                     WindowCloseByClass(WindowClass::ServerList);
-                    WindowScenarioselectOpen(WindowTitleMenuScenarioselectCallback, false);
+                    WindowScenarioselectOpen(WindowTitleMenuScenarioselectCallback);
                 }
                 break;
             case WIDX_CONTINUE_SAVED_GAME:

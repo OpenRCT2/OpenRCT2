@@ -101,8 +101,8 @@ void WindowGuestListRefreshList();
 WindowBase* WindowGuestListOpen();
 WindowBase* WindowGuestListOpenWithFilter(GuestListFilterType type, int32_t index);
 WindowBase* WindowStaffFirePromptOpen(Peep* peep);
-WindowBase* WindowScenarioselectOpen(scenarioselect_callback callback, bool titleEditor);
-WindowBase* WindowScenarioselectOpen(std::function<void(std::string_view)> callback, bool titleEditor);
+WindowBase* WindowScenarioselectOpen(scenarioselect_callback callback);
+WindowBase* WindowScenarioselectOpen(std::function<void(std::string_view)> callback);
 
 WindowBase* WindowErrorOpen(StringId title, StringId message, const class Formatter& formatter);
 WindowBase* WindowErrorOpen(std::string_view title, std::string_view message);
