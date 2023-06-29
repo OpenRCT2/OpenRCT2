@@ -757,12 +757,17 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
     else
     {
         auto obj = objectMgr.GetLoadedObject(scenery.scenery_object);
+        bool objectUnavailable = obj == nullptr;
         if (obj != nullptr)
         {
             result.Type = obj->GetObjectType();
             result.Index = objectMgr.GetLoadedObjectEntryIndex(obj);
+            if (!gCheatsIgnoreResearchStatus)
+            {
+                objectUnavailable = !ResearchIsInvented(result.Type, result.Index);
+            }
         }
-        else
+        if (objectUnavailable)
         {
             _trackDesignPlaceStateSceneryUnavailable = true;
             return {};

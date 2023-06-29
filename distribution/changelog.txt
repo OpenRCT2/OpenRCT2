@@ -8,6 +8,7 @@
 - Fix: [#6152] Camera and UI are no longer locked at 40 Hz, providing a smoother experience.
 - Fix: [#9534] Screams no longer cut-off on steep diagonal drops
 - Fix: [#19823] Parkobj: disallow overriding objects of different object types.
+- Fix: [#19878] Unresearched scenery can be placed via prebuilt rides.
 - Fix: [#20083] Cannot use terrain surfaces with ID > 32 and terrain edges with ID > 16.
 - Fix: [#20089] Potential crash when a window is closed from another window.
 - Fix: [#20103] [Plugin] Crash when custom plugin actions fail due to immutable state.

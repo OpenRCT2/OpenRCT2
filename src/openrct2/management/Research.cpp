@@ -537,11 +537,15 @@ bool ResearchIsInvented(ObjectType objectType, ObjectEntryIndex index)
         case ObjectType::SceneryGroup:
             return SceneryGroupIsInvented(index);
         case ObjectType::SmallScenery:
+            return SceneryIsInvented({ SCENERY_TYPE_SMALL, index });
         case ObjectType::LargeScenery:
+            return SceneryIsInvented({ SCENERY_TYPE_LARGE, index });
         case ObjectType::Walls:
+            return SceneryIsInvented({ SCENERY_TYPE_WALL, index });
         case ObjectType::Banners:
+            return SceneryIsInvented({ SCENERY_TYPE_BANNER, index });
         case ObjectType::PathAdditions:
-            return SceneryIsInvented({ static_cast<uint8_t>(objectType), index });
+            return SceneryIsInvented({ SCENERY_TYPE_PATH_ITEM, index });
         default:
             return true;
     }
