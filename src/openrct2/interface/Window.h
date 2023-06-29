@@ -223,42 +223,6 @@ struct Focus
     }
 };
 
-struct WindowEventList
-{
-    void (*close)(struct WindowBase*){};
-    void (*mouse_up)(struct WindowBase*, WidgetIndex){};
-    void (*resize)(struct WindowBase*){};
-    void (*mouse_down)(struct WindowBase*, WidgetIndex, Widget*){};
-    void (*dropdown)(struct WindowBase*, WidgetIndex, int32_t){};
-    void (*unknown_05)(struct WindowBase*){};
-    void (*update)(struct WindowBase*){};
-    void (*periodic_update)(struct WindowBase*){};
-    void (*tool_update)(struct WindowBase*, WidgetIndex, const ScreenCoordsXY&){};
-    void (*tool_down)(struct WindowBase*, WidgetIndex, const ScreenCoordsXY&){};
-    void (*tool_drag)(struct WindowBase*, WidgetIndex, const ScreenCoordsXY&){};
-    void (*tool_up)(struct WindowBase*, WidgetIndex, const ScreenCoordsXY&){};
-    void (*tool_abort)(struct WindowBase*, WidgetIndex){};
-    void (*get_scroll_size)(struct WindowBase*, int32_t, int32_t*, int32_t*){};
-    void (*scroll_mousedown)(struct WindowBase*, int32_t, const ScreenCoordsXY&){};
-    void (*scroll_mousedrag)(struct WindowBase*, int32_t, const ScreenCoordsXY&){};
-    void (*scroll_mouseover)(struct WindowBase*, int32_t, const ScreenCoordsXY&){};
-    void (*text_input)(struct WindowBase*, WidgetIndex, const char*){};
-    void (*viewport_rotate)(struct WindowBase*){};
-    void (*scroll_select)(struct WindowBase*, int32_t, int32_t){};
-    OpenRCT2String (*tooltip)(struct WindowBase*, const WidgetIndex, const StringId){};
-    void (*cursor)(struct WindowBase*, WidgetIndex, const ScreenCoordsXY&, CursorID*){};
-    void (*moved)(struct WindowBase*, const ScreenCoordsXY&){};
-    void (*invalidate)(struct WindowBase*){};
-    void (*paint)(struct WindowBase*, DrawPixelInfo&){};
-    void (*scroll_paint)(struct WindowBase*, DrawPixelInfo&, int32_t){};
-
-    typedef void (*fnEventInitializer)(WindowEventList&);
-    WindowEventList(fnEventInitializer fn)
-    {
-        fn(*this);
-    }
-};
-
 struct TrackListVariables
 {
     bool track_list_being_updated;
