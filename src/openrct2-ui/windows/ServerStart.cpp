@@ -134,7 +134,7 @@ public:
                 break;
             case WIDX_START_SERVER:
                 NetworkSetPassword(_password);
-                WindowScenarioselectOpen(ScenarioSelectCallback, false);
+                WindowScenarioselectOpen(ScenarioSelectCallback);
                 break;
             case WIDX_LOAD_SERVER:
                 NetworkSetPassword(_password);

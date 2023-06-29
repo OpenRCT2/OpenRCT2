@@ -285,7 +285,7 @@ public:
             }
             case WindowClass::ScenarioSelect:
                 return WindowScenarioselectOpen(
-                    reinterpret_cast<scenarioselect_callback>(intent->GetPointerExtra(INTENT_EXTRA_CALLBACK)), false);
+                    reinterpret_cast<scenarioselect_callback>(intent->GetPointerExtra(INTENT_EXTRA_CALLBACK)));
 
             case WindowClass::Null:
                 // Intent does not hold a window class
