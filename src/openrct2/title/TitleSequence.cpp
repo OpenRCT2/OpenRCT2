@@ -446,12 +446,12 @@ namespace OpenRCT2::Title
                 if (!whitespace)
                 {
                     if (part == 0
-                        && ((cindex == 4 && _strnicmp(parts[0].data(), "LOAD", 4) == 0)
-                            || (cindex == 6 && _strnicmp(parts[0].data(), "LOADSC", 6) == 0)))
+                        && ((cindex == 4 && String::StartsWith(parts[0].data(), "LOAD", true))
+                            || (cindex == 6 && String::StartsWith(parts[0].data(), "LOADSC", true))))
                     {
                         load = true;
                     }
-                    else if (part == 0 && cindex == 6 && _strnicmp(parts[0].data(), "FOLLOW", 6) == 0)
+                    else if (part == 0 && cindex == 6 && String::StartsWith(parts[0].data(), "FOLLOW", true))
                     {
                         sprite = true;
                     }
