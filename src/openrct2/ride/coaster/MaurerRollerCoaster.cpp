@@ -8408,7 +8408,7 @@ namespace MaurerRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_MAURER_TRACK_S_BEND + 1)),
                             { 0, 0, height }, { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 5, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
