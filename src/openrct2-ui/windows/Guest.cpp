@@ -1238,6 +1238,7 @@ private:
             Invalidate();
 
         const auto oldSize = _riddenRides.size();
+        _riddenRides.clear();
         for (const auto& r : GetRideManager())
         {
             if (r.IsRide() && guest->HasRidden(r))
