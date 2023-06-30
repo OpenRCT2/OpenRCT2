@@ -56,11 +56,6 @@ using colour_t = uint8_t;
 
 #endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
-// BSD and macOS have MAP_ANON instead of MAP_ANONYMOUS
-#ifndef MAP_ANONYMOUS
-#    define MAP_ANONYMOUS MAP_ANON
-#endif
-
 #define OPENRCT2_MASTER_SERVER_URL "https://servers.openrct2.io"
 
 // Time (represented as number of 100-nanosecond intervals since 0001-01-01T00:00:00Z)
