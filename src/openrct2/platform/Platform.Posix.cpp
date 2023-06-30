@@ -29,6 +29,7 @@
 #    include <pwd.h>
 #    include <sys/stat.h>
 #    include <sys/time.h>
+#    include <unistd.h>
 
 // The name of the mutex used to prevent multiple instances of the game from running
 static constexpr const utf8* SINGLE_INSTANCE_MUTEX_NAME = u8"openrct2.lock";
