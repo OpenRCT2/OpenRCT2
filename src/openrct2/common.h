@@ -56,10 +56,6 @@ using colour_t = uint8_t;
 
 #endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
-#ifdef _WIN32
-char* strndup(const char* src, size_t size);
-#endif
-
 // BSD and macOS have MAP_ANON instead of MAP_ANONYMOUS
 #ifndef MAP_ANONYMOUS
 #    define MAP_ANONYMOUS MAP_ANON
