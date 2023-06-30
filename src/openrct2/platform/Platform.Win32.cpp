@@ -47,21 +47,6 @@ static constexpr wchar_t SINGLE_INSTANCE_MUTEX_NAME[] = L"RollerCoaster Tycoon 2
 #    define SOFTWARE_CLASSES L"Software\\Classes"
 #    define MUI_CACHE L"Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache"
 
-char* strndup(const char* src, size_t size)
-{
-    size_t len = strnlen(src, size);
-    char* dst = reinterpret_cast<char*>(malloc(len + 1));
-
-    if (dst == nullptr)
-    {
-        return nullptr;
-    }
-
-    dst = reinterpret_cast<char*>(std::memcpy(dst, src, len));
-    dst[len] = '\0';
-    return dst;
-}
-
 namespace Platform
 {
     static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid);
