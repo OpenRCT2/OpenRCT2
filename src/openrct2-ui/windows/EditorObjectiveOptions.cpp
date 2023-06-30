@@ -134,6 +134,9 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
 
 class EditorObjectiveOptionsWindow final : public Window
 {
+private:
+    std::vector<RideId> _riddenRides;
+
 public:
     void OnOpen() override
     {
@@ -142,7 +145,6 @@ public:
         hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
         InitScrollWidgets();
         selected_tab = WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN;
-        no_list_items = 0;
         selected_list_item = -1;
         UpdateDisabledWidgets();
     }
@@ -288,7 +290,7 @@ private:
 
         page = newPage;
         frame_no = 0;
-        no_list_items = 0;
+        _riddenRides.clear();
         selected_list_item = -1;
         hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[newPage];
         widgets = window_editor_objective_options_widgets[newPage];
@@ -1000,19 +1002,19 @@ private:
         OnResize();
         InvalidateWidget(WIDX_TAB_2);
 
-        auto numItems = 0;
+
+        const auto oldSize = _riddenRides.size();
+        _riddenRides.clear();
         for (auto& currentRide : GetRideManager())
         {
             if (currentRide.IsRide())
             {
-                list_item_positions[numItems] = currentRide.id.ToUnderlying();
-                numItems++;
+                _riddenRides.push_back(currentRide.id);
             }
         }
 
-        if (no_list_items != numItems)
+        if (oldSize != _riddenRides.size())
         {
-            no_list_items = numItems;
             Invalidate();
         }
     }
@@ -1024,7 +1026,7 @@ private:
     ScreenSize OnScrollGetSizeRides(int32_t scrollIndex)
     {
         ScreenSize newSize;
-        newSize.height = no_list_items * 12;
+        newSize.height = static_cast<int32_t>(_riddenRides.size()) * 10;
 
         return newSize;
     }
@@ -1036,11 +1038,10 @@ private:
     void OnScrollMouseDownRides(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
     {
         auto i = screenCoords.y / 12;
-        if (i < 0 || i >= no_list_items)
+        if (i < 0 || i >= static_cast<int32_t>(_riddenRides.size()))
             return;
 
-        const auto currentRideId = RideId::FromUnderlying(list_item_positions[i]);
-        auto currentRide = GetRide(currentRideId);
+        auto* currentRide = GetRide(_riddenRides[i]);
         if (currentRide != nullptr)
         {
             currentRide->lifecycle_flags ^= RIDE_LIFECYCLE_INDESTRUCTIBLE;
@@ -1057,7 +1058,7 @@ private:
         int32_t i;
 
         i = screenCoords.y / 12;
-        if (i < 0 || i >= no_list_items)
+        if (i < 0 || i >= static_cast<int32_t>(_riddenRides.size()))
             return;
 
         if (selected_list_item != i)
@@ -1111,7 +1112,7 @@ private:
         int32_t colour = ColourMapA[colours[1]].mid_light;
         GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
 
-        for (int32_t i = 0; i < no_list_items; i++)
+        for (int32_t i = 0; i < static_cast<int32_t>(_riddenRides.size()); i++)
         {
             int32_t y = i * 12;
 
@@ -1130,8 +1131,7 @@ private:
             }
 
             // Checkbox mark
-            const auto currentRideId = RideId::FromUnderlying(list_item_positions[i]);
-            auto currentRide = GetRide(currentRideId);
+            auto* currentRide = GetRide(_riddenRides[i]);
             if (currentRide != nullptr)
             {
                 if (currentRide->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
