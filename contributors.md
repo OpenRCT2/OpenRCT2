@@ -222,6 +222,7 @@ The following people are not part of the development team, but have been contrib
 * Chase Percy (Chase-Percy)
 * Wenzhao Qiu (qwzhaox)
 * Michael Bernardi (mrmbernardi)
+* Aram Kazorian (aramk-hub)
 
 ## Toolchain
 * (Balletie) - macOS
