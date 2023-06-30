@@ -37,25 +37,6 @@ using colour_t = uint8_t;
 // Gets the name of a symbol as a C string
 #define nameof(symbol) #symbol
 
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-#    include <unistd.h>
-#    define STUB() LOG_WARNING("Function %s at %s:%d is a stub.", __PRETTY_FUNCTION__, __FILE__, __LINE__)
-#    define _strcmpi _stricmp
-#    define _stricmp(x, y) strcasecmp((x), (y))
-#    define _strnicmp(x, y, n) strncasecmp((x), (y), (n))
-
-#    if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-#        define RCT2_ENDIANNESS __ORDER_LITTLE_ENDIAN__
-#        define LOBYTE(w) (static_cast<uint8_t>(w))
-#        define HIBYTE(w) (static_cast<uint8_t>((static_cast<uint16_t>(w) >> 8) & 0xFF))
-#    endif // __BYTE_ORDER__
-
-#    ifndef RCT2_ENDIANNESS
-#        error Unknown endianness!
-#    endif // RCT2_ENDIANNESS
-
-#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-
 #define OPENRCT2_MASTER_SERVER_URL "https://servers.openrct2.io"
 
 // Time (represented as number of 100-nanosecond intervals since 0001-01-01T00:00:00Z)
