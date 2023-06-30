@@ -15,6 +15,7 @@
 #include "core/Imaging.h"
 #include "core/Json.hpp"
 #include "core/Path.hpp"
+#include "core/String.hpp"
 #include "drawing/Drawing.h"
 #include "drawing/ImageImporter.h"
 #include "object/ObjectLimits.h"
@@ -270,7 +271,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
     if (argc == 0)
         return -1;
 
-    if (_strcmpi(argv[0], "details") == 0)
+    if (String::IEquals(argv[0], "details"))
     {
         if (argc < 2)
         {
@@ -317,7 +318,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (_strcmpi(argv[0], "export") == 0)
+    if (String::IEquals(argv[0], "export"))
     {
         if (argc < 4)
         {
@@ -351,7 +352,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (_strcmpi(argv[0], "exportall") == 0)
+    if (String::IEquals(argv[0], "exportall"))
     {
         if (argc < 3)
         {
@@ -396,7 +397,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (_strcmpi(argv[0], "exportalldat") == 0)
+    if (String::IEquals(argv[0], "exportalldat"))
     {
         if (argc < 3)
         {
@@ -457,7 +458,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (_strcmpi(argv[0], "create") == 0)
+    if (String::IEquals(argv[0], "create"))
     {
         if (argc < 2)
         {
@@ -472,7 +473,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (_strcmpi(argv[0], "append") == 0)
+    if (String::IEquals(argv[0], "append"))
     {
         if (argc != 3 && argc != 5)
         {
@@ -524,7 +525,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (_strcmpi(argv[0], "build") == 0)
+    if (String::IEquals(argv[0], "build"))
     {
         if (argc < 3)
         {
@@ -612,7 +613,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (_strcmpi(argv[0], "combine") == 0)
+    if (String::IEquals(argv[0], "combine"))
     {
         return CommandLineForSpriteCombine(argv, argc);
     }

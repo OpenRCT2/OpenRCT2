@@ -186,7 +186,7 @@ namespace TitleSequenceManager
                 {
                     return a.PredefinedIndex < b.PredefinedIndex;
                 }
-                return _strcmpi(a.Name.c_str(), b.Name.c_str()) < 0;
+                return String::Compare(a.Name, b.Name, true) < 0;
             });
     }
 

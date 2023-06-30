@@ -21,6 +21,7 @@
 #include "../core/File.h"
 #include "../core/Imaging.h"
 #include "../core/Path.hpp"
+#include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Formatter.h"
@@ -574,7 +575,7 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
         }
     }
 
-    bool giantScreenshot = (argc == 5) && _stricmp(argv[2], "giant") == 0;
+    bool giantScreenshot = (argc == 5) && String::IEquals(argv[2], "giant");
     if (argc != 4 && argc != 8 && !giantScreenshot)
     {
         std::printf("Usage: openrct2 screenshot <file> <output_image> <width> <height> [<x> <y> <zoom> <rotation>]\n");
