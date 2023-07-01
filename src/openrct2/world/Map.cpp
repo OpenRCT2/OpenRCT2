@@ -21,6 +21,10 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
+#include "../entity/Duck.h"
+#include "../entity/EntityTweener.h"
+#include "../entity/PatrolArea.h"
+#include "../entity/Staff.h"
 #include "../interface/Cursors.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
@@ -43,6 +47,7 @@
 #include "../world/TilePointerIndex.hpp"
 #include "Banner.h"
 #include "Climate.h"
+#include "Entrance.h"
 #include "Footpath.h"
 #include "MapAnimation.h"
 #include "Park.h"
@@ -2226,4 +2231,177 @@ MapRange ClampRangeWithinMap(const MapRange& range)
     auto bY = std::min<decltype(range.GetBottom())>(mapSizeMax.y, range.GetBottom());
     MapRange validRange = MapRange{ aX, aY, bX, bY };
     return validRange;
+}
+
+void ShiftMap(const TileCoordsXY& amount)
+{
+    if (amount.x == 0 && amount.y == 0)
+        return;
+
+    auto amountToMove = amount.ToCoordsXY();
+
+    // Tile elements
+    auto newElements = std::vector<TileElement>();
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    {
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        {
+            auto srcX = x - amount.x;
+            auto srcY = y - amount.y;
+            if (x > 0 && y > 0 && x < gMapSize.x - 1 && y < gMapSize.y - 1 && srcX > 0 && srcY > 0 && srcX < gMapSize.x - 1
+                && srcY < gMapSize.y - 1)
+            {
+                auto srcTile = _tileIndex.GetFirstElementAt(TileCoordsXY(srcX, srcY));
+                do
+                {
+                    newElements.push_back(*srcTile);
+                } while (!(srcTile++)->IsLastForTile());
+            }
+            else if (x == 0 || y == 0 || x == gMapSize.x - 1 || y == gMapSize.y - 1)
+            {
+                auto surface = GetDefaultSurfaceElement();
+                surface.SetBaseZ(MINIMUM_LAND_HEIGHT_BIG);
+                surface.SetClearanceZ(MINIMUM_LAND_HEIGHT_BIG);
+                surface.AsSurface()->SetSlope(0);
+                surface.AsSurface()->SetWaterHeight(0);
+                newElements.push_back(surface);
+            }
+            else
+            {
+                auto copyX = std::clamp(srcX, 1, gMapSize.x - 2);
+                auto copyY = std::clamp(srcY, 1, gMapSize.y - 2);
+                auto srcTile = MapGetSurfaceElementAt(TileCoordsXY(copyX, copyY));
+                if (srcTile != nullptr)
+                {
+                    auto tileEl = *srcTile;
+                    tileEl.SetOwner(OWNERSHIP_UNOWNED);
+                    tileEl.SetParkFences(0);
+                    tileEl.SetLastForTile(true);
+                    newElements.push_back(*reinterpret_cast<TileElement*>(&tileEl));
+                }
+                else
+                {
+                    newElements.push_back(GetDefaultSurfaceElement());
+                }
+            }
+        }
+    }
+    SetTileElements(std::move(newElements));
+    MapRemoveOutOfRangeElements();
+
+    for (auto& spawn : gPeepSpawns)
+        spawn += amountToMove;
+
+    for (auto& entrance : gParkEntrances)
+        entrance += amountToMove;
+
+    // Entities
+    auto& entityTweener = EntityTweener::Get();
+    for (auto i = 0; i < EnumValue(EntityType::Count); i++)
+    {
+        auto entityType = static_cast<EntityType>(i);
+        auto& list = GetEntityList(entityType);
+        for (const auto& entityId : list)
+        {
+            auto entity = GetEntity(entityId);
+
+            // Do not tween the entity
+            entityTweener.RemoveEntity(entity);
+
+            auto location = entity->GetLocation();
+            location += amountToMove;
+            entity->MoveTo(location);
+
+            switch (entityType)
+            {
+                case EntityType::Guest:
+                case EntityType::Staff:
+                {
+                    auto peep = entity->As<Peep>();
+                    if (peep != nullptr)
+                    {
+                        peep->NextLoc += amountToMove;
+                        peep->DestinationX += amountToMove.x;
+                        peep->DestinationY += amountToMove.y;
+                        peep->PathfindGoal += amount;
+                        for (auto& h : peep->PathfindHistory)
+                            h += amount;
+                    }
+                    break;
+                }
+                case EntityType::Vehicle:
+                {
+                    auto vehicle = entity->As<Vehicle>();
+                    if (vehicle != nullptr)
+                    {
+                        vehicle->TrackLocation += amountToMove;
+                        vehicle->BoatLocation += amountToMove;
+                    }
+                    break;
+                }
+                case EntityType::Duck:
+                {
+                    auto duck = entity->As<Duck>();
+                    if (duck != nullptr)
+                    {
+                        duck->target_x += amountToMove.x;
+                        duck->target_y += amountToMove.y;
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+            if (entityType == EntityType::Staff)
+            {
+                auto staff = entity->As<Staff>();
+                if (staff != nullptr)
+                {
+                    auto patrol = staff->PatrolInfo;
+                    if (patrol != nullptr)
+                    {
+                        auto positions = patrol->ToVector();
+                        for (auto& p : positions)
+                            p += amount;
+                        patrol->Clear();
+                        patrol->Union(positions);
+                    }
+                }
+            }
+        }
+    }
+
+    // Rides
+    for (auto& ride : GetRideManager())
+    {
+        auto& stations = ride.GetStations();
+        for (auto& station : stations)
+        {
+            station.Start += amountToMove;
+            station.Entrance += amount;
+            station.Exit += amount;
+        }
+
+        ride.overall_view += amountToMove;
+        ride.boat_hire_return_position += amount;
+        ride.CurTestTrackLocation += amount;
+        ride.ChairliftBullwheelLocation[0] += amount;
+        ride.ChairliftBullwheelLocation[1] += amount;
+        ride.CableLiftLoc += amountToMove;
+    }
+
+    // Banners
+    auto numBanners = GetNumBanners();
+    auto id = BannerIndex::FromUnderlying(0);
+    size_t count = 0;
+    while (count < numBanners)
+    {
+        auto* banner = GetBanner(id);
+        if (banner != nullptr)
+        {
+            banner->position += amount;
+            count++;
+        }
+        id = BannerIndex::FromUnderlying(id.ToUnderlying() + 1);
+    }
 }

@@ -17,7 +17,13 @@
 #include "../world/Park.h"
 
 MapChangeSizeAction::MapChangeSizeAction(const TileCoordsXY& targetSize)
+    : MapChangeSizeAction(targetSize, TileCoordsXY())
+{
+}
+
+MapChangeSizeAction::MapChangeSizeAction(const TileCoordsXY& targetSize, const TileCoordsXY& shift)
     : _targetSize(targetSize)
+    , _shift(shift)
 {
 }
 
@@ -30,6 +36,7 @@ void MapChangeSizeAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
     stream << DS_TAG(_targetSize);
+    stream << DS_TAG(_shift);
 }
 
 GameActions::Result MapChangeSizeAction::Query() const
@@ -59,6 +66,9 @@ GameActions::Result MapChangeSizeAction::Execute() const
         MapExtendBoundarySurfaceY();
     }
 
+    // Shift the map (allows increasing the map at the 0,0 position
+    ShiftMap(_shift);
+
     // Shrink map
     if (_targetSize.x < gMapSize.x || _targetSize.y < gMapSize.y)
     {
@@ -80,4 +90,6 @@ void MapChangeSizeAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("targetSizeX", _targetSize.x);
     visitor.Visit("targetSizeY", _targetSize.y);
+    visitor.Visit("shiftX", _shift.x);
+    visitor.Visit("shiftY", _shift.y);
 }
