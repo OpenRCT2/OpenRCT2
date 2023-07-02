@@ -60,7 +60,7 @@ namespace OpenRCT2::Ui
 
         std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override
         {
-            STUB();
+            LOG_WARNING("Function %s at %s:%d is a stub.", __PRETTY_FUNCTION__, __FILE__, __LINE__);
 
             return nullptr;
         }
@@ -68,7 +68,7 @@ namespace OpenRCT2::Ui
         std::string ShowDirectoryDialog(SDL_Window* window, const std::string& title) override
         {
             LOG_INFO(title.c_str());
-            STUB();
+            LOG_WARNING("Function %s at %s:%d is a stub.", __PRETTY_FUNCTION__, __FILE__, __LINE__);
 
             return "/sdcard/rct2";
         }
@@ -79,7 +79,7 @@ namespace OpenRCT2::Ui
 
         void OpenURL(const std::string& url) override
         {
-            STUB();
+            LOG_WARNING("Function %s at %s:%d is a stub.", __PRETTY_FUNCTION__, __FILE__, __LINE__);
         }
 
         bool HasFilePicker() const override

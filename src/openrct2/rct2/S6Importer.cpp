@@ -172,7 +172,7 @@ namespace RCT2
             if (!path.empty())
             {
                 auto extension = Path::GetExtension(path);
-                _isSV7 = _stricmp(extension.c_str(), ".sv7") == 0;
+                _isSV7 = String::IEquals(extension, ".sv7");
             }
 
             chunkReader.ReadChunk(&_s6.Objects, sizeof(_s6.Objects));

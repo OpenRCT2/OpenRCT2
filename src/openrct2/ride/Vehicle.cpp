@@ -860,11 +860,11 @@ static uint8_t vehicle_sounds_update_get_pan_volume(OpenRCT2::Audio::VehicleSoun
     if (pan_y > 0)
     {
         pan_y = (0x400 - pan_y) / 4;
-        vol1 = LOBYTE(pan_y);
-        if (static_cast<int8_t>(HIBYTE(pan_y)) != 0)
+        vol1 = LoByte(pan_y);
+        if (static_cast<int8_t>(HiByte(pan_y)) != 0)
         {
             vol1 = 0xFF;
-            if (static_cast<int8_t>(HIBYTE(pan_y)) < 0)
+            if (static_cast<int8_t>(HiByte(pan_y)) < 0)
             {
                 vol1 = 0;
             }
@@ -878,11 +878,11 @@ static uint8_t vehicle_sounds_update_get_pan_volume(OpenRCT2::Audio::VehicleSoun
     if (pan_x > 0)
     {
         pan_x = (0x400 - pan_x) / 4;
-        vol2 = LOBYTE(pan_x);
-        if (static_cast<int8_t>(HIBYTE(pan_x)) != 0)
+        vol2 = LoByte(pan_x);
+        if (static_cast<int8_t>(HiByte(pan_x)) != 0)
         {
             vol2 = 0xFF;
-            if (static_cast<int8_t>(HIBYTE(pan_x)) < 0)
+            if (static_cast<int8_t>(HiByte(pan_x)) < 0)
             {
                 vol2 = 0;
             }

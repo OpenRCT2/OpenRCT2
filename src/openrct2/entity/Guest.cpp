@@ -17,6 +17,7 @@
 #include "../core/DataSerialiser.h"
 #include "../core/Guard.hpp"
 #include "../core/Numerics.hpp"
+#include "../core/String.hpp"
 #include "../entity/Balloon.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/MoneyEffect.h"
@@ -587,8 +588,10 @@ int32_t Guest::GetEasterEggNameId() const
     FormatStringLegacy(buffer, sizeof(buffer), STR_STRINGID, ft.Data());
 
     for (uint32_t i = 0; i < std::size(gPeepEasterEggNames); i++)
-        if (_stricmp(buffer, gPeepEasterEggNames[i]) == 0)
+    {
+        if (String::IEquals(buffer, gPeepEasterEggNames[i]))
             return static_cast<int32_t>(i);
+    }
 
     return -1;
 }
@@ -733,7 +736,7 @@ int32_t Guest::CheckEasterEggName(int32_t index) const
     FormatNameTo(ft);
     FormatStringLegacy(buffer, sizeof(buffer), STR_STRINGID, ft.Data());
 
-    return _stricmp(buffer, gPeepEasterEggNames[index]) == 0;
+    return String::IEquals(buffer, gPeepEasterEggNames[index]);
 }
 
 void Guest::Loc68F9F3()

@@ -57,8 +57,20 @@ namespace String
     int32_t Compare(const std::string& a, const std::string& b, bool ignoreCase = false);
     int32_t Compare(const utf8* a, const utf8* b, bool ignoreCase = false);
     bool Equals(std::string_view a, std::string_view b, bool ignoreCase = false);
+    inline bool IEquals(std::string_view a, std::string_view b)
+    {
+        return Equals(a, b, true);
+    }
     bool Equals(const std::string& a, const std::string& b, bool ignoreCase = false);
+    inline bool IEquals(const std::string& a, const std::string& b)
+    {
+        return Equals(a, b, true);
+    }
     bool Equals(const utf8* a, const utf8* b, bool ignoreCase = false);
+    inline bool IEquals(const utf8* a, const utf8* b)
+    {
+        return Equals(a, b, true);
+    }
     bool StartsWith(std::string_view str, std::string_view match, bool ignoreCase = false);
     bool EndsWith(std::string_view str, std::string_view match, bool ignoreCase = false);
     bool Contains(std::string_view haystack, std::string_view needle, bool ignoreCase = false);
