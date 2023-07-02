@@ -394,6 +394,8 @@ ParametersRange CheatSetAction::GetParameterRange(CheatType cheatType) const
             [[fallthrough]];
         case CheatType::RemoveLitter:
             return { { 0, 0 }, { 0, 0 } };
+        case CheatType::Count:
+            break;
     }
 
     // Should be unreachable unless new cheats are added, still have to return something
