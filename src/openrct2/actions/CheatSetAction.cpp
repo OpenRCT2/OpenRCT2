@@ -392,6 +392,8 @@ ParametersRange CheatSetAction::GetParameterRange(CheatType cheatType) const
             [[fallthrough]];
         case CheatType::ResetCrashStatus:
             [[fallthrough]];
+        case CheatType::NoCapOnQueueLengthDummy:
+            [[fallthrough]];
         case CheatType::RemoveLitter:
             return { { 0, 0 }, { 0, 0 } };
         case CheatType::Count:
