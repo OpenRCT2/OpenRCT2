@@ -792,7 +792,7 @@ private:
                 CheatsSet(CheatType::SetMoney, _moneySpinnerValue);
                 break;
             case WIDX_CLEAR_LOAN:
-                CheatsSet(CheatType::ClearLoan, CHEATS_MONEY_DEFAULT);
+                CheatsSet(CheatType::ClearLoan);
                 break;
         }
     }
