@@ -186,7 +186,7 @@ static int32_t BitCountPopcnt(uint32_t source)
 #elif defined(OpenRCT2_CPUID_MSVC_X86)
     return _mm_popcnt_u32(source);
 #else
-    openrct2_assert(false, "bitcount_popcnt() called, without support compiled in");
+    Guard::Fail("bitcount_popcnt() called, without support compiled in");
     return INT_MAX;
 #endif
 }

@@ -787,7 +787,7 @@ void LoadPalette()
 
     if (water_type != nullptr)
     {
-        openrct2_assert(water_type->image_id != 0xFFFFFFFF, "Failed to load water palette");
+        Guard::Assert(water_type->image_id != 0xFFFFFFFF, "Failed to load water palette");
         palette = water_type->image_id;
     }
 

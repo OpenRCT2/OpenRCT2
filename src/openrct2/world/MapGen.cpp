@@ -794,8 +794,8 @@ static void MapGenSmoothHeightmap(std::vector<uint8_t>& src, int32_t strength)
 
 void MapGenGenerateFromHeightmap(MapGenSettings* settings)
 {
-    openrct2_assert(!_heightMapData.mono_bitmap.empty(), "No height map loaded");
-    openrct2_assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");
+    Guard::Assert(!_heightMapData.mono_bitmap.empty(), "No height map loaded");
+    Guard::Assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");
 
     // Make a copy of the original height map that we can edit
     auto dest = _heightMapData.mono_bitmap;
@@ -835,8 +835,8 @@ void MapGenGenerateFromHeightmap(MapGenSettings* settings)
         }
     }
 
-    openrct2_assert(maxValue > minValue, "Input range is invalid");
-    openrct2_assert(settings->simplex_high > settings->simplex_low, "Output range is invalid");
+    Guard::Assert(maxValue > minValue, "Input range is invalid");
+    Guard::Assert(settings->simplex_high > settings->simplex_low, "Output range is invalid");
 
     const uint8_t rangeIn = maxValue - minValue;
     const uint8_t rangeOut = settings->simplex_high - settings->simplex_low;
