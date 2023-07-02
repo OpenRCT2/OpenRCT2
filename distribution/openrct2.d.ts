@@ -2183,12 +2183,12 @@ declare global {
         readonly satisfaction: number;
 
         /**
-         * The max speed in miles per hour.
+         * The max speed. (speed * 9) >> 18 = miles per hour.
          */
         readonly maxSpeed: number;
 
         /**
-         * The average speed in miles per hour.
+         * The average speed.
          */
         readonly averageSpeed: number;
 
@@ -2198,32 +2198,32 @@ declare global {
         readonly rideTime: number;
 
         /**
-         * Total length of the ride in meters. Use `context.formatString()` to convert into localised value/unit string. Ex: `formatString('{LENGTH}', ride.rideLength)`.
+         * Total length of the ride. Left shift
          */
         readonly rideLength: number;
 
         /**
-         * The max positive vertical Gs.
+         * The max positive vertical Gs in hundredths of a gram.
          */
         readonly maxPositiveVerticalGs: number;
 
         /**
-         * The max negative vertical Gs.
+         * The max negative vertical Gs in hundredths of a gram.
          */
         readonly maxNegativeVerticalGs: number;
 
         /**
-         * The max lateral Gs.
+         * The max lateral Gs in hundredths of a gram.
          */
         readonly maxLateralGs: number;
 
         /**
-         * The total airtime in seconds.
+         * The total airtime. Multiply by 3 to get hundredths of a second.
          */
         readonly totalAirTime: number;
 
         /**
-         * The number of drops.
+         * Formatted as 0b(YYXX XXXX) where YY is the  number of powered lifts and XXXXXX is the number of drops
          */
         readonly drops: number;
 
