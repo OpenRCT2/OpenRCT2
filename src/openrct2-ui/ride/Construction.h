@@ -127,10 +127,10 @@ constexpr std::array DropdownOrder = {
     TrackElemType::RightLargeZeroGRollDown,
     TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp,
     TrackElemType::LeftFlyerLargeHalfLoopInvertedDown,
-    TrackElemType::RightFlyerLargeHalfLoopUninvertedUp,
-    TrackElemType::RightFlyerLargeHalfLoopInvertedDown,
     TrackElemType::LeftFlyerLargeHalfLoopInvertedUp,
     TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown,
+    TrackElemType::RightFlyerLargeHalfLoopUninvertedUp,
+    TrackElemType::RightFlyerLargeHalfLoopInvertedDown,
     TrackElemType::RightFlyerLargeHalfLoopInvertedUp,
     TrackElemType::RightFlyerLargeHalfLoopUninvertedDown,
 };

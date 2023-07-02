@@ -18695,14 +18695,14 @@ static void FlyingRCTrackLeftFlyingLargeHalfLoopUninvertedDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(session, ride, 6 - trackSequence, direction, height, trackElement);
+    FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
 static void FlyingRCTrackRightFlyingLargeHalfLoopUninvertedDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    FlyingRCTrackRightFlyingLargeHalfLoopInvertedUp(session, ride, 6 - trackSequence, direction, height, trackElement);
+    FlyingRCTrackLeftFlyingLargeHalfLoopInvertedUp(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRC(int32_t trackType)
@@ -19027,10 +19027,10 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRC(int32_t trackType)
             return BolligerMabillardTrackLeftLargeHalfLoopUp<MetalSupportType::TubesInverted>;
         case TrackElemType::RightFlyerLargeHalfLoopUninvertedUp:
             return BolligerMabillardTrackRightLargeHalfLoopUp<MetalSupportType::TubesInverted>;
-        case TrackElemType::RightFlyerLargeHalfLoopInvertedDown:
-            return BolligerMabillardTrackRightLargeHalfLoopDown<MetalSupportType::TubesInverted>;
         case TrackElemType::LeftFlyerLargeHalfLoopInvertedDown:
             return BolligerMabillardTrackLeftLargeHalfLoopDown<MetalSupportType::TubesInverted>;
+        case TrackElemType::RightFlyerLargeHalfLoopInvertedDown:
+            return BolligerMabillardTrackRightLargeHalfLoopDown<MetalSupportType::TubesInverted>;
         case TrackElemType::FlyerHalfLoopInvertedUp:
             return FlyingRCTrackHalfLoopInvertedUp;
         case TrackElemType::FlyerHalfLoopUninvertedDown:
