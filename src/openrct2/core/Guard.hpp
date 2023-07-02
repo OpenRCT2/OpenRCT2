@@ -40,8 +40,9 @@ namespace Guard
 
     void Assert(bool expression, const char* message = nullptr, ...);
     void Assert_VA(bool expression, const char* message, va_list args);
-    void Fail(const char* message = nullptr, ...);
-    void Fail_VA(const char* message, va_list args);
+
+    [[noreturn]] void Fail(const char* message = nullptr, ...);
+    [[noreturn]] void Fail_VA(const char* message, va_list args);
 
     std::optional<std::string> GetLastAssertMessage();
 
