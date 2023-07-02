@@ -130,7 +130,7 @@ EntityBase* GetEntity(EntityId entityIndex)
     {
         return nullptr;
     }
-    openrct2_assert(entityIndex.ToUnderlying() < MAX_ENTITIES, "Tried getting entity %u", entityIndex.ToUnderlying());
+    Guard::Assert(entityIndex.ToUnderlying() < MAX_ENTITIES, "Tried getting entity %u", entityIndex.ToUnderlying());
     return TryGetEntity(entityIndex);
 }
 

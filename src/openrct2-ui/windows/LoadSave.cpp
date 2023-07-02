@@ -221,7 +221,7 @@ static const char* GetFilterPatternByType(const int32_t type, const bool isSave)
             return "*.bmp;*.png";
 
         default:
-            openrct2_assert(true, "Unsupported load/save directory type.");
+            Guard::Fail("Unsupported load/save directory type.");
     }
 
     return "";
@@ -1077,12 +1077,12 @@ WindowBase* WindowLoadsaveOpen(
             break;
 
         case LOADSAVETYPE_HEIGHTMAP:
-            openrct2_assert(!isSave, "Cannot save images through loadsave window");
+            Guard::Assert(!isSave, "Cannot save images through loadsave window");
             w->widgets[WIDX_TITLE].text = STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
             break;
 
         default:
-            openrct2_assert(true, "Unsupported load/save type: %d", type & 0x0F);
+            Guard::Fail("Unsupported load/save type: %d", type & 0x0F);
             break;
     }
 

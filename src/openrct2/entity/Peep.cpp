@@ -362,7 +362,7 @@ PeepActionSpriteType Peep::GetActionSpriteType()
         return PeepActionToSpriteTypeMap[EnumValue(Action)];
     }
 
-    openrct2_assert(
+    Guard::Assert(
         EnumValue(Action) >= std::size(PeepActionToSpriteTypeMap) && Action < PeepActionType::Idle, "Invalid peep action %u",
         EnumValue(Action));
     return PeepActionSpriteType::None;
@@ -2640,7 +2640,7 @@ void IncrementGuestsInPark()
     }
     else
     {
-        openrct2_assert(false, "Attempt to increment guests in park above max value (65535).");
+        Guard::Fail("Attempt to increment guests in park above max value (65535).");
     }
 }
 
@@ -2652,7 +2652,7 @@ void IncrementGuestsHeadingForPark()
     }
     else
     {
-        openrct2_assert(false, "Attempt to increment guests heading for park above max value (65535).");
+        Guard::Fail("Attempt to increment guests heading for park above max value (65535).");
     }
 }
 

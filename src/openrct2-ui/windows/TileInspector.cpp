@@ -925,7 +925,7 @@ public:
         TileElement* const tileElement = GetSelectedElement();
         if (tileInspectorPage == TileInspectorPage::Wall)
         {
-            openrct2_assert(tileElement->GetType() == TileElementType::Wall, "Element is not a wall");
+            Guard::Assert(tileElement->GetType() == TileElementType::Wall, "Element is not a wall");
             if (widgetIndex == WIDX_WALL_DROPDOWN_SLOPE_BUTTON)
                 WallSetSlope(windowTileInspectorSelectedIndex, dropdownIndex);
         }
@@ -1800,14 +1800,14 @@ private:
 
     void RemoveElement(int32_t elementIndex)
     {
-        openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
+        Guard::Assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
         auto modifyTile = TileModifyAction(_toolMap, TileModifyType::AnyRemove, elementIndex);
         GameActions::Execute(&modifyTile);
     }
 
     void RotateElement(int32_t elementIndex)
     {
-        openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
+        Guard::Assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
         auto modifyTile = TileModifyAction(_toolMap, TileModifyType::AnyRotate, elementIndex);
         GameActions::Execute(&modifyTile);
     }
@@ -1826,7 +1826,7 @@ private:
 
     void SortElements()
     {
-        openrct2_assert(_tileSelected, "No tile selected");
+        Guard::Assert(_tileSelected, "No tile selected");
         auto modifyTile = TileModifyAction(_toolMap, TileModifyType::AnySort);
         GameActions::Execute(&modifyTile);
     }
@@ -1890,8 +1890,8 @@ private:
 
     void PathToggleEdge(int32_t elementIndex, int32_t cornerIndex)
     {
-        openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
-        openrct2_assert(cornerIndex >= 0 && cornerIndex < 8, "cornerIndex out of range");
+        Guard::Assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
+        Guard::Assert(cornerIndex >= 0 && cornerIndex < 8, "cornerIndex out of range");
         auto modifyTile = TileModifyAction(_toolMap, TileModifyType::PathToggleEdge, elementIndex, cornerIndex);
         GameActions::Execute(&modifyTile);
     }
@@ -1906,7 +1906,7 @@ private:
     void WallSetSlope(int32_t elementIndex, int32_t slopeValue)
     {
         // Make sure only the correct bits are set
-        openrct2_assert((slopeValue & 3) == slopeValue, "slopeValue doesn't match its mask");
+        Guard::Assert((slopeValue & 3) == slopeValue, "slopeValue doesn't match its mask");
         auto modifyTile = TileModifyAction(_toolMap, TileModifyType::WallSetSlope, elementIndex, slopeValue);
         GameActions::Execute(&modifyTile);
     }
@@ -1946,7 +1946,7 @@ private:
     void QuarterTileSet(int32_t elementIndex, const int32_t quarterIndex)
     {
         // quarterIndex is widget index relative to WIDX_SCENERY_CHECK_QUARTER_N, so a value from 0-3
-        openrct2_assert(quarterIndex >= 0 && quarterIndex < 4, "quarterIndex out of range");
+        Guard::Assert(quarterIndex >= 0 && quarterIndex < 4, "quarterIndex out of range");
         auto modifyTile = TileModifyAction(
             _toolMap, TileModifyType::ScenerySetQuarterLocation, elementIndex, (quarterIndex - GetCurrentRotation()) & 3);
         GameActions::Execute(&modifyTile);
@@ -1962,7 +1962,7 @@ private:
 
     void BannerToggleBlock(int32_t elementIndex, int32_t edgeIndex)
     {
-        openrct2_assert(edgeIndex >= 0 && edgeIndex < 4, "edgeIndex out of range");
+        Guard::Assert(edgeIndex >= 0 && edgeIndex < 4, "edgeIndex out of range");
         // Make edgeIndex abstract
         edgeIndex = (edgeIndex - GetCurrentRotation()) & 3;
         auto modifyTile = TileModifyAction(_toolMap, TileModifyType::BannerToggleBlockingEdge, elementIndex, edgeIndex);
@@ -1971,14 +1971,14 @@ private:
 
     void ToggleInvisibility(int32_t elementIndex)
     {
-        openrct2_assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
+        Guard::Assert(elementIndex >= 0 && elementIndex < windowTileInspectorElementCount, "elementIndex out of range");
         auto modifyTile = TileModifyAction(_toolMap, TileModifyType::AnyToggleInvisilibity, elementIndex);
         GameActions::Execute(&modifyTile);
     }
 
     TileElement* GetSelectedElement()
     {
-        openrct2_assert(
+        Guard::Assert(
             windowTileInspectorSelectedIndex >= 0 && windowTileInspectorSelectedIndex < windowTileInspectorElementCount,
             "Selected list item out of range");
         return MapGetFirstElementAt(_toolMap) + windowTileInspectorSelectedIndex;
