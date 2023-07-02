@@ -135,7 +135,8 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
 class EditorObjectiveOptionsWindow final : public Window
 {
 private:
-    std::vector<RideId> _riddenRides;
+    // Not shops or facilities
+    std::vector<RideId> _rideableRides;
 
 public:
     void OnOpen() override
@@ -290,7 +291,7 @@ private:
 
         page = newPage;
         frame_no = 0;
-        _riddenRides.clear();
+        _rideableRides.clear();
         selected_list_item = -1;
         hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[newPage];
         widgets = window_editor_objective_options_widgets[newPage];
@@ -1002,17 +1003,17 @@ private:
         OnResize();
         InvalidateWidget(WIDX_TAB_2);
 
-        const auto oldSize = _riddenRides.size();
-        _riddenRides.clear();
+        const auto oldSize = _rideableRides.size();
+        _rideableRides.clear();
         for (auto& currentRide : GetRideManager())
         {
             if (currentRide.IsRide())
             {
-                _riddenRides.push_back(currentRide.id);
+                _rideableRides.push_back(currentRide.id);
             }
         }
 
-        if (oldSize != _riddenRides.size())
+        if (oldSize != _rideableRides.size())
         {
             Invalidate();
         }
@@ -1025,7 +1026,7 @@ private:
     ScreenSize OnScrollGetSizeRides(int32_t scrollIndex)
     {
         ScreenSize newSize;
-        newSize.height = static_cast<int32_t>(_riddenRides.size()) * 10;
+        newSize.height = static_cast<int32_t>(_rideableRides.size()) * 10;
 
         return newSize;
     }
@@ -1037,10 +1038,10 @@ private:
     void OnScrollMouseDownRides(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
     {
         auto i = screenCoords.y / 12;
-        if (i < 0 || i >= static_cast<int32_t>(_riddenRides.size()))
+        if (i < 0 || i >= static_cast<int32_t>(_rideableRides.size()))
             return;
 
-        auto* currentRide = GetRide(_riddenRides[i]);
+        auto* currentRide = GetRide(_rideableRides[i]);
         if (currentRide != nullptr)
         {
             currentRide->lifecycle_flags ^= RIDE_LIFECYCLE_INDESTRUCTIBLE;
@@ -1057,7 +1058,7 @@ private:
         int32_t i;
 
         i = screenCoords.y / 12;
-        if (i < 0 || i >= static_cast<int32_t>(_riddenRides.size()))
+        if (i < 0 || i >= static_cast<int32_t>(_rideableRides.size()))
             return;
 
         if (selected_list_item != i)
@@ -1111,7 +1112,7 @@ private:
         int32_t colour = ColourMapA[colours[1]].mid_light;
         GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
 
-        for (int32_t i = 0; i < static_cast<int32_t>(_riddenRides.size()); i++)
+        for (int32_t i = 0; i < static_cast<int32_t>(_rideableRides.size()); i++)
         {
             int32_t y = i * 12;
 
@@ -1130,7 +1131,7 @@ private:
             }
 
             // Checkbox mark
-            auto* currentRide = GetRide(_riddenRides[i]);
+            auto* currentRide = GetRide(_rideableRides[i]);
             if (currentRide != nullptr)
             {
                 if (currentRide->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
