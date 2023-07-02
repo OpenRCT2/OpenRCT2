@@ -805,12 +805,19 @@ void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_ta
 
     for (i = start_tab_id; i <= end_tab_id; i++)
     {
+        auto& widget = w->widgets[i];
         if (!WidgetIsDisabled(*w, i))
         {
-            auto& widget = w->widgets[i];
             widget.left = x;
             widget.right = x + tab_width;
             x += tab_width + 1;
+        }
+        else
+        {
+            // Workaround to not have two widgets share the same space otherwise WindowFindWidgetFromPoint
+            // can potentially return the disabled one which causes issues.
+            widget.left = 0;
+            widget.right = 0;
         }
     }
 }
