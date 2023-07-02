@@ -483,6 +483,7 @@ private:
     bool _applyToAll = false;
     bool _elementCopied = false;
     TileElement _copiedElement;
+    Banner _copiedBanner;
 
 public:
     void OnOpen() override
@@ -1835,13 +1836,21 @@ private:
     {
         // Copy value, in case the element gets moved
         _copiedElement = *GetSelectedElement();
+        _copiedBanner = {};
+        auto bannerIndex = _copiedElement.GetBannerIndex();
+        if (bannerIndex != BannerIndex::GetNull())
+        {
+            auto banner = GetBanner(bannerIndex);
+            if (banner != nullptr)
+                _copiedBanner = *banner;
+        }
         _elementCopied = true;
         Invalidate();
     }
 
     void PasteElement()
     {
-        auto modifyTile = TileModifyAction(_toolMap, TileModifyType::AnyPaste, 0, 0, _copiedElement);
+        auto modifyTile = TileModifyAction(_toolMap, TileModifyType::AnyPaste, 0, 0, _copiedElement, _copiedBanner);
         GameActions::Execute(&modifyTile);
     }
 

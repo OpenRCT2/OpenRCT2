@@ -8,6 +8,7 @@
 - Fix: [#6152] Camera and UI are no longer locked at 40 Hz, providing a smoother experience.
 - Fix: [#9534] Screams no longer cut-off on steep diagonal drops.
 - Fix: [#19450] The correct element is now auto-suggested when building a Medium Half Loop backwards.
+- Fix: [#19822] Tile inspector does not deep copy banners.
 - Fix: [#19823] Parkobj: disallow overriding objects of different object types.
 - Fix: [#19878] Unresearched scenery can be placed via prebuilt rides.
 - Fix: [#20083] Cannot use terrain surfaces with ID > 32 and terrain edges with ID > 16.
