@@ -2148,3 +2148,23 @@ void WindowBase::ResizeFrameWithPage()
     widgets[3].right = width - 1;
     widgets[3].bottom = height - 1;
 }
+
+void WindowBase::ResizeSpinner(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size)
+{
+    auto right = origin.x + size.width - 1;
+    auto bottom = origin.y + size.height - 1;
+    widgets[widgetIndex].left = origin.x;
+    widgets[widgetIndex].top = origin.y;
+    widgets[widgetIndex].right = right;
+    widgets[widgetIndex].bottom = bottom;
+
+    widgets[widgetIndex + 1].left = right - size.height;
+    widgets[widgetIndex + 1].top = origin.y + 1;
+    widgets[widgetIndex + 1].right = right - 1;
+    widgets[widgetIndex + 1].bottom = bottom - 1;
+
+    widgets[widgetIndex + 2].left = right - size.height * 2;
+    widgets[widgetIndex + 2].top = origin.y + 1;
+    widgets[widgetIndex + 2].right = right - size.height - 1;
+    widgets[widgetIndex + 2].bottom = bottom - 1;
+}
