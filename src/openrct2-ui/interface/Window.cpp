@@ -814,8 +814,8 @@ void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_ta
         }
         else
         {
-            // Workaround to not have two widgets share the same space otherwise WindowFindWidgetFromPoint
-            // can potentially return the disabled one which causes issues.
+            // Workaround #20535: Avoid disabled widgets from sharing the same space as active ones, otherwise
+            // WindowFindWidgetFromPoint could return the disabled one, causing issues.
             widget.left = 0;
             widget.right = 0;
         }
