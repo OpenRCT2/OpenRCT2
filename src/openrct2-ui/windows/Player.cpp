@@ -100,8 +100,6 @@ public:
         min_height = 134;
         max_width = 500;
         max_height = 450;
-        no_list_items = 0;
-        selected_list_item = -1;
 
         Invalidate();
 
@@ -216,8 +214,6 @@ private:
 
         page = newPage;
         frame_no = 0;
-        no_list_items = 0;
-        selected_list_item = -1;
 
         hold_down_widgets = 0;
         pressed_widgets = 0;

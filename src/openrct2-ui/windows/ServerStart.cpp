@@ -73,8 +73,6 @@ public:
         widgets[WIDX_GREETING_INPUT].string = _greeting;
         widgets[WIDX_PASSWORD_INPUT].string = _password;
         InitScrollWidgets();
-        no_list_items = 0;
-        selected_list_item = -1;
         frame_no = 0;
         min_width = width;
         min_height = height;

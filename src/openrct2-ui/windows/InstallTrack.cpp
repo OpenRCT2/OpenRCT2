@@ -81,7 +81,6 @@ public:
     void OnOpen() override
     {
         widgets = window_install_track_widgets;
-        track_list.track_list_being_updated = false;
 
         WindowInitScrollWidgets(*this);
         WindowPushOthersRight(*this);
