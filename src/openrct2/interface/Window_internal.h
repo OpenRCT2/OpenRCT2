@@ -50,7 +50,6 @@ struct WindowBase
     };
     uint16_t flags{};
     ScrollBar scrolls[3];
-    uint32_t list_item_positions[1024]{};
     uint16_t no_list_items{};     // 0 for no items
     int16_t selected_list_item{}; // -1 for none selected
     std::optional<Focus> focus;
