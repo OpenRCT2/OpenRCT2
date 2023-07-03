@@ -23,7 +23,7 @@ enum {
     WIDX_BACKGROUND
 };
 
-static Widget window_tooltip_widgets[] = {
+static Widget _tooltipWidgets[] = {
     MakeWidget({0, 0}, {200, 32}, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };
@@ -43,8 +43,9 @@ public:
         width = textWidth + 3;
         height = ((_tooltipNumLines + 1) * FontGetLineHeight(FontStyle::Small)) + 4;
 
-        window_tooltip_widgets[WIDX_BACKGROUND].right = width;
-        window_tooltip_widgets[WIDX_BACKGROUND].bottom = height;
+        widgets = _tooltipWidgets;
+        widgets[WIDX_BACKGROUND].right = width;
+        widgets[WIDX_BACKGROUND].bottom = height;
 
         int32_t screenWidth = ContextGetWidth();
         int32_t screenHeight = ContextGetHeight();
@@ -66,7 +67,6 @@ public:
 
     void OnOpen() override
     {
-        widgets = window_tooltip_widgets;
         ResetTooltipNotShown();
     }
 

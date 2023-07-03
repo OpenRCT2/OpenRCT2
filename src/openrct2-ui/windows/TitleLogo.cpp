@@ -22,7 +22,7 @@ enum
     WIDX_LOGO
 };
 
-static Widget window_title_logo_widgets[] = {
+static Widget _titleLogoWidgets[] = {
     MakeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };
@@ -36,7 +36,7 @@ public:
      */
     void OnOpen() override
     {
-        widgets = window_title_logo_widgets;
+        widgets = _titleLogoWidgets;
         WindowInitScrollWidgets(*this);
         colours[0] = TRANSLUCENT(COLOUR_GREY);
         colours[1] = TRANSLUCENT(COLOUR_GREY);

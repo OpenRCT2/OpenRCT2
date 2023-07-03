@@ -63,7 +63,7 @@ static constexpr ScreenSize INVISIBLE_SIZE = {24, 12};
 
 #pragma endregion
 
-static Widget window_transparency_main_widgets[] =
+static Widget _transparancyWidgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  2, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_VEGETATION),  STR_SEE_THROUGH_VEGETATION),
@@ -92,7 +92,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_transparency_main_widgets;
+        widgets = _transparancyWidgets;
         WindowPushOthersBelow(*this);
 
         auto* w = WindowGetMain();

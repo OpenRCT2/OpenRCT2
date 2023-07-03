@@ -45,7 +45,7 @@ enum
 static constexpr ScreenSize MenuButtonDims = { 82, 82 };
 static constexpr ScreenSize UpdateButtonDims = { MenuButtonDims.width * 4, 28 };
 
-static Widget window_title_menu_widgets[] = {
+static Widget _titleMenuWidgets[] = {
     MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_MENU_NEW_GAME),       STR_START_NEW_GAME_TIP),
     MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_MENU_LOAD_GAME),      STR_CONTINUE_SAVED_GAME_TIP),
     MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_G2_MENU_MULTIPLAYER), STR_SHOW_MULTIPLAYER_TIP),
@@ -91,7 +91,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_title_menu_widgets;
+        widgets = _titleMenuWidgets;
 
 #ifdef DISABLE_NETWORK
         widgets[WIDX_MULTIPLAYER].type = WindowWidgetType::Empty;
