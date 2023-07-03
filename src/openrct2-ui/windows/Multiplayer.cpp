@@ -347,7 +347,6 @@ void MultiplayerWindow::OnResize()
             WindowSetResize(*this, 420, 124, 500, 450);
 
             no_list_items = (IsServerPlayerInvisible() ? NetworkGetNumVisiblePlayers() : NetworkGetNumPlayers());
-            list_item_positions[0] = 0;
 
             widgets[WIDX_HEADER_PING].right = width - 5;
 
@@ -360,7 +359,6 @@ void MultiplayerWindow::OnResize()
             WindowSetResize(*this, 320, 200, 320, 500);
 
             no_list_items = NetworkGetNumActions();
-            list_item_positions[0] = 0;
 
             selected_list_item = -1;
             Invalidate();
