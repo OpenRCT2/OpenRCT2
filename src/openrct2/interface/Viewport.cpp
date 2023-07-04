@@ -806,8 +806,7 @@ void ViewportUpdateSmartFollowVehicle(WindowBase* window)
  *  edi: dpi
  *  ebp: bottom
  */
-void ViewportRender(
-    DrawPixelInfo& dpi, const Viewport* viewport, const ScreenRect& screenRect, std::vector<RecordedPaintSession>* sessions)
+void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport, const ScreenRect& screenRect)
 {
     auto [topLeft, bottomRight] = screenRect;
 
@@ -837,7 +836,7 @@ void ViewportRender(
         viewport->zoom.ApplyTo(std::min(bottomRight.y, viewport->height)),
     } + viewport->viewPos;
 
-    ViewportPaint(viewport, dpi, { topLeft, bottomRight }, sessions);
+    ViewportPaint(viewport, dpi, { topLeft, bottomRight });
 
 #ifdef DEBUG_SHOW_DIRTY_BOX
     // FIXME g_viewport_list doesn't exist anymore
@@ -846,75 +845,11 @@ void ViewportRender(
 #endif
 }
 
-static void RecordSession(
-    const PaintSession& session, std::vector<RecordedPaintSession>* recorded_sessions, size_t record_index)
-{
-    // Perform a deep copy of the paint session, use relative offsets.
-    // This is done to extract the session for benchmark.
-    // Place the copied session at provided record_index, so the caller can decide which columns/paint sessions to copy;
-    // there is no column information embedded in the session itself.
-    auto& recordedSession = recorded_sessions->at(record_index);
-    recordedSession.Session = session;
-    recordedSession.Entries.resize(session.PaintEntryChain.GetCount());
-
-    // Mind the offset needs to be calculated against the original `session`, not `session_copy`
-    std::unordered_map<PaintStruct*, PaintStruct*> entryRemap;
-
-    // Copy all entries
-    auto paintIndex = 0;
-    auto chain = session.PaintEntryChain.Head;
-    while (chain != nullptr)
-    {
-        for (size_t i = 0; i < chain->Count; i++)
-        {
-            auto& src = chain->PaintStructs[i];
-            auto& dst = recordedSession.Entries[paintIndex++];
-            dst = src;
-            entryRemap[src.AsBasic()] = reinterpret_cast<PaintStruct*>(i * sizeof(PaintEntry));
-        }
-        chain = chain->Next;
-    }
-    entryRemap[nullptr] = reinterpret_cast<PaintStruct*>(-1);
-
-    // Remap all entries
-    for (auto& ps : recordedSession.Entries)
-    {
-        auto& ptr = ps.AsBasic()->NextQuadrantEntry;
-        auto it = entryRemap.find(ptr);
-        if (it == entryRemap.end())
-        {
-            assert(false);
-            ptr = nullptr;
-        }
-        else
-        {
-            ptr = it->second;
-        }
-    }
-    for (auto& ptr : recordedSession.Session.Quadrants)
-    {
-        auto it = entryRemap.find(ptr);
-        if (it == entryRemap.end())
-        {
-            assert(false);
-            ptr = nullptr;
-        }
-        else
-        {
-            ptr = it->second;
-        }
-    }
-}
-
-static void ViewportFillColumn(PaintSession& session, std::vector<RecordedPaintSession>* recorded_sessions, size_t record_index)
+static void ViewportFillColumn(PaintSession& session)
 {
     PROFILED_FUNCTION();
 
     PaintSessionGenerate(session);
-    if (recorded_sessions != nullptr)
-    {
-        RecordSession(session, recorded_sessions, record_index);
-    }
     PaintSessionArrange(session);
 }
 
@@ -959,9 +894,7 @@ static void ViewportPaintColumn(PaintSession& session)
  *  edi: dpi
  *  ebp: bottom
  */
-void ViewportPaint(
-    const Viewport* viewport, DrawPixelInfo& dpi, const ScreenRect& screenRect,
-    std::vector<RecordedPaintSession>* recorded_sessions)
+void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const ScreenRect& screenRect)
 {
     PROFILED_FUNCTION();
 
@@ -1019,17 +952,8 @@ void ViewportPaint(
         useParallelDrawing = true;
     }
 
-    // Create space to record sessions and keep track which index is being drawn
-    size_t index = 0;
-    if (recorded_sessions != nullptr)
-    {
-        auto columnSize = rightBorder - alignedX;
-        auto columnCount = (columnSize + 31) / 32;
-        recorded_sessions->resize(columnCount);
-    }
-
     // Generate and sort columns.
-    for (x = alignedX; x < rightBorder; x += 32, index++)
+    for (x = alignedX; x < rightBorder; x += 32)
     {
         PaintSession* session = PaintSessionAlloc(dpi1, viewFlags);
         _paintColumns.push_back(session);
@@ -1055,12 +979,11 @@ void ViewportPaint(
 
         if (useMultithreading)
         {
-            _paintJobs->AddTask(
-                [session, recorded_sessions, index]() -> void { ViewportFillColumn(*session, recorded_sessions, index); });
+            _paintJobs->AddTask([session]() -> void { ViewportFillColumn(*session); });
         }
         else
         {
-            ViewportFillColumn(*session, recorded_sessions, index);
+            ViewportFillColumn(*session);
         }
     }
 
