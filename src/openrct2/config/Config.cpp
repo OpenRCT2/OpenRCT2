@@ -201,7 +201,12 @@ namespace Config
             model->SteamOverlayPause = reader->GetBoolean("steam_overlay_pause", true);
             model->WindowScale = reader->GetFloat("window_scale", Platform::GetDefaultScale());
             model->ShowFPS = reader->GetBoolean("show_fps", false);
-            model->MultiThreading = reader->GetBoolean("multi_threading", false);
+#ifdef _DEBUG
+            // Always have multi-threading disabled in debug builds, this makes things slower.
+            model->MultiThreading = false;
+#else
+            model->MultiThreading = reader->GetBoolean("multithreading", true);
+#endif // _DEBUG
             model->TrapCursor = reader->GetBoolean("trap_cursor", false);
             model->AutoOpenShops = reader->GetBoolean("auto_open_shops", false);
             model->ScenarioSelectMode = reader->GetInt32("scenario_select_mode", SCENARIO_SELECT_MODE_ORIGIN);
@@ -286,7 +291,7 @@ namespace Config
         writer->WriteBoolean("steam_overlay_pause", model->SteamOverlayPause);
         writer->WriteFloat("window_scale", model->WindowScale);
         writer->WriteBoolean("show_fps", model->ShowFPS);
-        writer->WriteBoolean("multi_threading", model->MultiThreading);
+        writer->WriteBoolean("multithreading", model->MultiThreading);
         writer->WriteBoolean("trap_cursor", model->TrapCursor);
         writer->WriteBoolean("auto_open_shops", model->AutoOpenShops);
         writer->WriteInt32("scenario_select_mode", model->ScenarioSelectMode);
