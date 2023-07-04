@@ -12009,7 +12009,7 @@ namespace MaurerRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_MAURER_TRACK_LARGE_CORKSCREW + 16)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 26, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 5, 22, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
