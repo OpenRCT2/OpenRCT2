@@ -262,7 +262,7 @@ The following people are not part of the development team, but have been contrib
 * Esperanto - (tellovishous), Raymond Zhao (rzhao271)
 * Finnish - (DJHasis), (Zode), (TheWing)
 * French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rmnvgr), (AziasYur), Hugo Courtial (s0r00t), David Delobel (incyclum), Nicolas Hawrysh (xp4xbox)
-* German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie)
+* German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie), Gilian Rehm (gr33ndev)
 * Italian - Luca Andrea Rossi (LucaRed), Precious Ugo Abara (48cfu)
 * Japanese - Aaron van Geffen (AaronVanGeffen), Haruna Chinzei, Nick Hall (nickhall), (jhako), Harry Lam (daihakken)
 * Korean - Willem J. Lee (telk5093), (NeverDruid); small fixes: (kexplo)
