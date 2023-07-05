@@ -150,66 +150,28 @@ namespace String
         return strcmp(a, b);
     }
 
-    bool Equals(std::string_view a, std::string_view b, bool ignoreCase)
+    template<typename TString> static bool EqualsImpl(TString&& lhs, TString&& rhs, bool ignoreCase)
     {
-        if (ignoreCase)
-        {
-            if (a.size() == b.size())
+        return std::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), [ignoreCase](auto a, auto b) {
+            const auto first = static_cast<unsigned char>(a);
+            const auto second = static_cast<unsigned char>(b);
+            if (((first | second) & 0x80) != 0)
             {
-                for (size_t i = 0; i < a.size(); i++)
-                {
-                    if (tolower(static_cast<unsigned char>(a[i])) != tolower(static_cast<unsigned char>(b[i])))
-                    {
-                        return false;
-                    }
-                }
-                return true;
+                // Only do case insensitive comparison on ASCII characters
+                return first == second;
             }
-
-            return false;
-        }
-
-        return a == b;
+            return ignoreCase ? (tolower(first) == tolower(second)) : (first == second);
+        });
     }
 
-    bool Equals(const std::string& a, const std::string& b, bool ignoreCase)
+    bool Equals(std::string_view a, std::string_view b)
     {
-        if (a.size() != b.size())
-            return false;
+        return EqualsImpl(a, b, false);
+    }
 
-        if (ignoreCase)
-        {
-            for (size_t i = 0; i < a.size(); i++)
-            {
-                auto ai = a[i];
-                auto bi = b[i];
-
-                // Only do case insensitive comparison on ASCII characters
-                if ((ai & 0x80) != 0 || (bi & 0x80) != 0)
-                {
-                    if (a[i] != b[i])
-                    {
-                        return false;
-                    }
-                }
-                else if (tolower(static_cast<unsigned char>(ai)) != tolower(static_cast<unsigned char>(bi)))
-                {
-                    return false;
-                }
-            }
-        }
-        else
-        {
-            for (size_t i = 0; i < a.size(); i++)
-            {
-                if (a[i] != b[i])
-                {
-                    return false;
-                }
-            }
-        }
-
-        return true;
+    bool Equals(const std::string& a, const std::string& b)
+    {
+        return EqualsImpl(a, b, false);
     }
 
     bool Equals(const utf8* a, const utf8* b, bool ignoreCase)
@@ -227,12 +189,31 @@ namespace String
         return strcmp(a, b) == 0;
     }
 
+    bool IEquals(std::string_view a, std::string_view b)
+    {
+        return EqualsImpl(a, b, true);
+    }
+
+    bool IEquals(const std::string& a, const std::string& b)
+    {
+        return EqualsImpl(a, b, true);
+    }
+
+    bool IEquals(const utf8* a, const utf8* b)
+    {
+        if (a == b)
+            return true;
+        if (a == nullptr || b == nullptr)
+            return false;
+        return _stricmp(a, b) == 0;
+    }
+
     bool StartsWith(std::string_view str, std::string_view match, bool ignoreCase)
     {
         if (str.size() >= match.size())
         {
             auto view = str.substr(0, match.size());
-            return Equals(view, match, ignoreCase);
+            return EqualsImpl(view, match, ignoreCase);
         }
         return false;
     }
@@ -242,7 +223,7 @@ namespace String
         if (str.size() >= match.size())
         {
             auto view = str.substr(str.size() - match.size());
-            return Equals(view, match, ignoreCase);
+            return EqualsImpl(view, match, ignoreCase);
         }
         return false;
     }
@@ -259,7 +240,7 @@ namespace String
         for (size_t start = 0; start <= end; start++)
         {
             auto sub = haystack.substr(start, needle.size());
-            if (Equals(sub, needle, ignoreCase))
+            if (EqualsImpl(sub, needle, ignoreCase))
             {
                 return true;
             }
