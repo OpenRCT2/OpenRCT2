@@ -170,30 +170,56 @@ TEST_F(StringTest, StrLogicalCmp)
     EXPECT_LT(StrLogicalCmp("!", "a"), 0);
 }
 
-TEST_F(StringTest, IEquals)
+TEST_F(StringTest, IEqualsU8String)
 {
-    EXPECT_TRUE(String::IEquals("", ""));
-    EXPECT_TRUE(String::IEquals("Test", "Test"));
-    EXPECT_TRUE(String::IEquals("TesT", "Test"));
-    EXPECT_TRUE(String::IEquals("TEsT", "Test"));
+    EXPECT_TRUE(String::IEquals(u8string{ u8"" }, u8string{ u8"" }));
+    EXPECT_TRUE(String::IEquals(u8string{ u8"Test" }, u8string{ u8"Test" }));
+    EXPECT_TRUE(String::IEquals(u8string{ u8"TesT" }, u8string{ u8"Test" }));
+    EXPECT_TRUE(String::IEquals(u8string{ u8"TEsT" }, u8string{ u8"Test" }));
 
-    EXPECT_FALSE(String::IEquals("Test", "Message"));
-    EXPECT_FALSE(String::IEquals("Test", "TestMessage"));
-    EXPECT_FALSE(String::IEquals("", "Test"));
-    EXPECT_FALSE(String::IEquals("Test", ""));
+    EXPECT_FALSE(String::IEquals(u8string{ u8"Test" }, u8string{ u8"Message" }));
+    EXPECT_FALSE(String::IEquals(u8string{ u8"Test" }, u8string{ u8"TestMessage" }));
+    EXPECT_FALSE(String::IEquals(u8string{ u8"" }, u8string{ u8"Test" }));
+    EXPECT_FALSE(String::IEquals(u8string{ u8"Test" }, u8string{ u8"" }));
 }
 
-TEST_F(StringTest, Equals)
+TEST_F(StringTest, IEqualsU8StringView)
 {
-    EXPECT_TRUE(String::Equals("", ""));
-    EXPECT_TRUE(String::Equals("Test", "Test"));
+    EXPECT_TRUE(String::IEquals(u8string_view{ u8"" }, u8string_view{ u8"" }));
+    EXPECT_TRUE(String::IEquals(u8string_view{ u8"Test" }, u8string_view{ u8"Test" }));
+    EXPECT_TRUE(String::IEquals(u8string_view{ u8"TesT" }, u8string_view{ u8"Test" }));
+    EXPECT_TRUE(String::IEquals(u8string_view{ u8"TEsT" }, u8string_view{ u8"Test" }));
 
-    EXPECT_FALSE(String::Equals("TesT", "Test"));
-    EXPECT_FALSE(String::Equals("TEsT", "Test"));
-    EXPECT_FALSE(String::Equals("Test", "Message"));
-    EXPECT_FALSE(String::Equals("Test", "TestMessage"));
-    EXPECT_FALSE(String::Equals("", "Test"));
-    EXPECT_FALSE(String::Equals("Test", ""));
+    EXPECT_FALSE(String::IEquals(u8string_view{ u8"Test" }, u8string_view{ u8"Message" }));
+    EXPECT_FALSE(String::IEquals(u8string_view{ u8"Test" }, u8string_view{ u8"TestMessage" }));
+    EXPECT_FALSE(String::IEquals(u8string_view{ u8"" }, u8string_view{ u8"Test" }));
+    EXPECT_FALSE(String::IEquals(u8string_view{ u8"Test" }, u8string_view{ u8"" }));
+}
+
+TEST_F(StringTest, EqualsU8String)
+{
+    EXPECT_TRUE(String::Equals(u8string{ u8"" }, u8string{ u8"" }));
+    EXPECT_TRUE(String::Equals(u8string{ u8"Test" }, u8string{ u8"Test" }));
+
+    EXPECT_FALSE(String::Equals(u8string{ u8"TesT" }, u8string{ u8"Test" }));
+    EXPECT_FALSE(String::Equals(u8string{ u8"TEsT" }, u8string{ u8"Test" }));
+    EXPECT_FALSE(String::Equals(u8string{ u8"Test" }, u8string{ u8"Message" }));
+    EXPECT_FALSE(String::Equals(u8string{ u8"Test" }, u8string{ u8"TestMessage" }));
+    EXPECT_FALSE(String::Equals(u8string{ u8"" }, u8string{ u8"Test" }));
+    EXPECT_FALSE(String::Equals(u8string{ u8"Test" }, u8string{ u8"" }));
+}
+
+TEST_F(StringTest, EqualsU8StringView)
+{
+    EXPECT_TRUE(String::Equals(u8string_view{ u8"" }, u8string_view{ u8"" }));
+    EXPECT_TRUE(String::Equals(u8string_view{ u8"Test" }, u8string_view{ u8"Test" }));
+
+    EXPECT_FALSE(String::Equals(u8string_view{ u8"TesT" }, u8string_view{ u8"Test" }));
+    EXPECT_FALSE(String::Equals(u8string_view{ u8"TEsT" }, u8string_view{ u8"Test" }));
+    EXPECT_FALSE(String::Equals(u8string_view{ u8"Test" }, u8string_view{ u8"Message" }));
+    EXPECT_FALSE(String::Equals(u8string_view{ u8"Test" }, u8string_view{ u8"TestMessage" }));
+    EXPECT_FALSE(String::Equals(u8string_view{ u8"" }, u8string_view{ u8"Test" }));
+    EXPECT_FALSE(String::Equals(u8string_view{ u8"Test" }, u8string_view{ u8"" }));
 }
 
 class CodepointViewTest : public testing::Test
