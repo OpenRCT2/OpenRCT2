@@ -108,7 +108,7 @@ namespace Path
 
     bool Equals(u8string_view a, u8string_view b)
     {
-        return Platform::ShouldIgnoreCase() ? String::IEquals(a,b) : String::Equals(a, b);
+        return Platform::ShouldIgnoreCase() ? String::IEquals(a, b) : String::Equals(a, b);
     }
 
     u8string ResolveCasing(u8string_view path)
