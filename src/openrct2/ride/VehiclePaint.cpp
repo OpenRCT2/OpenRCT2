@@ -3352,7 +3352,7 @@ static void VehiclePitchUp16BankedRight45(
 static void VehiclePitchUp16(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    switch (vehicle->bank_rotation)
+    switch (GetPaintBankRotation(vehicle))
     {
         case 0:
             VehiclePitchUp16Unbanked(session, vehicle, imageDirection, z, carEntry);
@@ -3594,7 +3594,7 @@ static void VehiclePitchDown16BankedRight45(
 static void VehiclePitchDown16(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    switch (vehicle->bank_rotation)
+    switch (GetPaintBankRotation(vehicle))
     {
         case 0:
             VehiclePitchDown16Unbanked(session, vehicle, imageDirection, z, carEntry);
