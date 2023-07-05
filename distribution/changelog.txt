@@ -24,6 +24,7 @@
 - Fix: [#20361] Crash when using random map generation.
 - Fix: [#20364] Adding too much money with cheats causes an overflow.
 - Fix: [#20365] Money cheat input does not support negative values.
+- Fix: [#20389] Reversed vehicles are now correctly banked on diagonal slopes.
 - Fix: [#20413] Crash when attempting to navigate an empty console history.
 - Fix: [#20417] Plugin/custom windows are missing the left border in the title bar.
 - Fix: [#20429] Error window tooltip not closing after 8 seconds.
