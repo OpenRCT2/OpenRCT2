@@ -164,12 +164,12 @@ namespace String
         });
     }
 
-    bool Equals(std::string_view a, std::string_view b)
+    bool Equals(u8string_view a, u8string_view b)
     {
         return EqualsImpl(a, b, false);
     }
 
-    bool Equals(const std::string& a, const std::string& b)
+    bool Equals(const u8string& a, const u8string& b)
     {
         return EqualsImpl(a, b, false);
     }
@@ -189,12 +189,12 @@ namespace String
         return strcmp(a, b) == 0;
     }
 
-    bool IEquals(std::string_view a, std::string_view b)
+    bool IEquals(u8string_view a, u8string_view b)
     {
         return EqualsImpl(a, b, true);
     }
 
-    bool IEquals(const std::string& a, const std::string& b)
+    bool IEquals(const u8string& a, const u8string& b)
     {
         return EqualsImpl(a, b, true);
     }

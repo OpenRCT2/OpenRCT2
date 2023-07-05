@@ -57,11 +57,11 @@ namespace String
     int32_t Compare(const std::string& a, const std::string& b, bool ignoreCase = false);
     int32_t Compare(const utf8* a, const utf8* b, bool ignoreCase = false);
 
-    bool Equals(std::string_view a, std::string_view b);
-    bool Equals(const std::string& a, const std::string& b);
+    bool Equals(u8string_view a, u8string_view b);
+    bool Equals(const u8string& a, const u8string& b);
     bool Equals(const utf8* a, const utf8* b, bool ignoreCase = false);
-    bool IEquals(std::string_view a, std::string_view b);
-    bool IEquals(const std::string& a, const std::string& b);
+    bool IEquals(u8string_view a, u8string_view b);
+    bool IEquals(const u8string& a, const u8string& b);
     bool IEquals(const utf8* a, const utf8* b);
 
     bool StartsWith(std::string_view str, std::string_view match, bool ignoreCase = false);
