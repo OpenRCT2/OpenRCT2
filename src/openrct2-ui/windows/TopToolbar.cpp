@@ -250,7 +250,7 @@ static constexpr int32_t right_aligned_widgets_order[] = {
 
 #pragma endregion
 
-static Widget window_top_toolbar_widgets[] = {
+static Widget _topToolbarWidgets[] = {
     MakeRemapWidget({  0, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TOOLBAR_PAUSE,          STR_PAUSE_GAME_TIP                ), // Pause
     MakeRemapWidget({ 60, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TOOLBAR_FILE,           STR_DISC_AND_GAME_OPTIONS_TIP     ), // File menu
     MakeRemapWidget({250, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_G2_TOOLBAR_MUTE,        STR_TOOLBAR_MUTE_TIP              ), // Mute
@@ -3189,7 +3189,7 @@ public:
 
         ScreenCoordsXY screenPos{};
         // Draw staff button image (setting masks to the staff colours)
-        if (window_top_toolbar_widgets[WIDX_STAFF].type != WindowWidgetType::Empty)
+        if (widgets[WIDX_STAFF].type != WindowWidgetType::Empty)
         {
             screenPos = { windowPos.x + widgets[WIDX_STAFF].left, windowPos.y + widgets[WIDX_STAFF].top };
             imgId = SPR_TOOLBAR_STAFF;
@@ -3199,7 +3199,7 @@ public:
         }
 
         // Draw fast forward button
-        if (window_top_toolbar_widgets[WIDX_FASTFORWARD].type != WindowWidgetType::Empty)
+        if (widgets[WIDX_FASTFORWARD].type != WindowWidgetType::Empty)
         {
             screenPos = { windowPos.x + widgets[WIDX_FASTFORWARD].left + 0, windowPos.y + widgets[WIDX_FASTFORWARD].top + 0 };
             if (WidgetIsPressed(*this, WIDX_FASTFORWARD))
@@ -3217,7 +3217,7 @@ public:
         }
 
         // Draw cheats button
-        if (window_top_toolbar_widgets[WIDX_CHEATS].type != WindowWidgetType::Empty)
+        if (widgets[WIDX_CHEATS].type != WindowWidgetType::Empty)
         {
             screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_CHEATS].left - 1, widgets[WIDX_CHEATS].top - 1 };
             if (WidgetIsPressed(*this, WIDX_CHEATS))
@@ -3318,7 +3318,7 @@ WindowBase* WindowTopToolbarOpen()
         WindowClass::TopToolbar, ScreenCoordsXY(0, 0), ContextGetWidth(), TOP_TOOLBAR_HEIGHT + 1,
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
 
-    window->widgets = window_top_toolbar_widgets;
+    window->widgets = _topToolbarWidgets;
 
     WindowInitScrollWidgets(*window);
 

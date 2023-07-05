@@ -51,7 +51,7 @@ enum {
 
 validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
 
-static Widget window_track_list_widgets[] = {
+static Widget _trackListWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  4,  18}, {218,  13}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_SELECT_OTHER_RIDE                                       ),
     MakeWidget({  4,  32}, {124,  13}, WindowWidgetType::TextBox,     WindowColour::Secondary                                                              ),
@@ -202,8 +202,8 @@ public:
     void OnOpen() override
     {
         String::Set(_filterString, sizeof(_filterString), "");
-        window_track_list_widgets[WIDX_FILTER_STRING].string = _filterString;
-        widgets = window_track_list_widgets;
+        _trackListWidgets[WIDX_FILTER_STRING].string = _filterString;
+        widgets = _trackListWidgets;
 
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
@@ -373,21 +373,21 @@ public:
         Formatter::Common().Add<StringId>(stringId);
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
-            window_track_list_widgets[WIDX_TITLE].text = STR_TRACK_DESIGNS;
-            window_track_list_widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_RENAME_OR_DELETE_IT;
+            widgets[WIDX_TITLE].text = STR_TRACK_DESIGNS;
+            widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_RENAME_OR_DELETE_IT;
         }
         else
         {
-            window_track_list_widgets[WIDX_TITLE].text = STR_SELECT_DESIGN;
-            window_track_list_widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP;
+            widgets[WIDX_TITLE].text = STR_SELECT_DESIGN;
+            widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP;
         }
 
         if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) || selected_list_item != 0)
         {
             pressed_widgets |= 1uLL << WIDX_TRACK_PREVIEW;
             disabled_widgets &= ~(1uLL << WIDX_TRACK_PREVIEW);
-            window_track_list_widgets[WIDX_ROTATE].type = WindowWidgetType::FlatBtn;
-            window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::FlatBtn;
+            widgets[WIDX_ROTATE].type = WindowWidgetType::FlatBtn;
+            widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::FlatBtn;
             if (gTrackDesignSceneryToggle)
             {
                 pressed_widgets &= ~(1uLL << WIDX_TOGGLE_SCENERY);
@@ -401,19 +401,17 @@ public:
         {
             pressed_widgets &= ~(1uLL << WIDX_TRACK_PREVIEW);
             disabled_widgets |= (1uLL << WIDX_TRACK_PREVIEW);
-            window_track_list_widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
-            window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::Empty;
+            widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
+            widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::Empty;
         }
 
         // When debugging tools are on, shift everything up a bit to make room for displaying the path.
         const int32_t bottomMargin = gConfigGeneral.DebuggingTools ? (WINDOW_PADDING + DEBUG_PATH_HEIGHT) : WINDOW_PADDING;
-        window_track_list_widgets[WIDX_TRACK_LIST].bottom = height - bottomMargin;
-        window_track_list_widgets[WIDX_ROTATE].bottom = height - bottomMargin;
-        window_track_list_widgets[WIDX_ROTATE].top = window_track_list_widgets[WIDX_ROTATE].bottom
-            - ROTATE_AND_SCENERY_BUTTON_SIZE;
-        window_track_list_widgets[WIDX_TOGGLE_SCENERY].bottom = window_track_list_widgets[WIDX_ROTATE].top;
-        window_track_list_widgets[WIDX_TOGGLE_SCENERY].top = window_track_list_widgets[WIDX_TOGGLE_SCENERY].bottom
-            - ROTATE_AND_SCENERY_BUTTON_SIZE;
+        widgets[WIDX_TRACK_LIST].bottom = height - bottomMargin;
+        widgets[WIDX_ROTATE].bottom = height - bottomMargin;
+        widgets[WIDX_ROTATE].top = widgets[WIDX_ROTATE].bottom - ROTATE_AND_SCENERY_BUTTON_SIZE;
+        widgets[WIDX_TOGGLE_SCENERY].bottom = widgets[WIDX_ROTATE].top;
+        widgets[WIDX_TOGGLE_SCENERY].top = widgets[WIDX_TOGGLE_SCENERY].bottom - ROTATE_AND_SCENERY_BUTTON_SIZE;
     }
 
     void OnUpdate() override

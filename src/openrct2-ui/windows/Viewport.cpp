@@ -40,7 +40,7 @@ static constexpr ScreenSize VIEWPORT_BUTTON = {24, 24};
 
 #pragma endregion
 
-static Widget window_viewport_widgets[] =
+static Widget _viewportWidgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({      0, 14}, { WW - 1, WH - 1}, WindowWidgetType::Resize,   WindowColour::Secondary                                         ), // resize
@@ -73,7 +73,7 @@ public:
     {
         GetFreeViewportNumber();
 
-        widgets = window_viewport_widgets;
+        widgets = _viewportWidgets;
 
         // Create viewport
         ViewportCreate(this, windowPos, width, height, Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ()));
@@ -175,7 +175,7 @@ public:
 
     void OnPrepareDraw() override
     {
-        Widget* viewportWidget = &window_viewport_widgets[WIDX_VIEWPORT];
+        Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
 
         ResizeFrameWithPage();
         widgets[WIDX_ZOOM_IN].left = width - 27;
