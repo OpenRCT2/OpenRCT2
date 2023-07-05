@@ -162,7 +162,7 @@ public:
         int32_t ooIndex = 0;
         for (const ScenarioOverride& scenarioOverride : _scenarioOverrides)
         {
-            if (String::Equals(scenarioOverride.filename.c_str(), scenarioFilename, true))
+            if (String::IEquals(scenarioOverride.filename.c_str(), scenarioFilename))
             {
                 if (scenarioOverride.strings[index].empty())
                 {
@@ -181,7 +181,7 @@ private:
     {
         for (auto& so : _scenarioOverrides)
         {
-            if (String::Equals(so.strings[0], scenarioIdentifier.c_str(), true))
+            if (String::IEquals(so.strings[0], scenarioIdentifier))
             {
                 return &so;
             }

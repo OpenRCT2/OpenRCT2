@@ -110,11 +110,11 @@ namespace RCT2
         ParkLoadResult Load(const u8string& path) override
         {
             const auto extension = Path::GetExtension(path);
-            if (String::Equals(extension, ".sc6", true))
+            if (String::IEquals(extension, ".sc6"))
             {
                 return LoadScenario(path);
             }
-            if (String::Equals(extension, ".sv6", true))
+            if (String::IEquals(extension, ".sv6"))
             {
                 return LoadSavedGame(path);
             }
@@ -586,8 +586,8 @@ namespace RCT2
                 // clang-format on
             }
             else if (
-                String::Equals(gScenarioFileName, "Six Flags Magic Mountain.SC6", true)
-                || String::Equals(gScenarioFileName, "six flags magic mountain.sea", true))
+                String::IEquals(gScenarioFileName, "Six Flags Magic Mountain.SC6")
+                || String::IEquals(gScenarioFileName, "six flags magic mountain.sea"))
             {
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
@@ -611,8 +611,8 @@ namespace RCT2
                     OWNERSHIP_OWNED);
             }
             else if (
-                String::Equals(gScenarioFileName, "N America - Extreme Hawaiian Island.SC6", true)
-                || String::Equals(gScenarioFileName, "n america - extreme hawaiian island.sea", true))
+                String::IEquals(gScenarioFileName, "N America - Extreme Hawaiian Island.SC6")
+                || String::IEquals(gScenarioFileName, "n america - extreme hawaiian island.sea"))
             {
                 FixLandOwnershipTilesWithOwnership(
                     {
@@ -647,8 +647,8 @@ namespace RCT2
             {
                 return;
             }
-            if (String::Equals(_s6.ScenarioFilename, "Infernal Views.SC6", true)
-                || String::Equals(_s6.ScenarioFilename, "infernal views.sea", true))
+            if (String::IEquals(_s6.ScenarioFilename, "Infernal Views.SC6")
+                || String::IEquals(_s6.ScenarioFilename, "infernal views.sea"))
             {
                 auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ 45, 62 });
 
@@ -656,7 +656,7 @@ namespace RCT2
             }
             else if (
                 String::Equals(_s6.ScenarioFilename, "Six Flags Holland.SC6")
-                || String::Equals(_s6.ScenarioFilename, "six flags holland.sea", true))
+                || String::IEquals(_s6.ScenarioFilename, "six flags holland.sea"))
 
             {
                 auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ 126, 73 });

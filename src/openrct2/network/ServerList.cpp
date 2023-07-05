@@ -118,7 +118,7 @@ void ServerList::Sort()
             [](const ServerListEntry& a, const ServerListEntry& b) {
                 if (a.Favourite == b.Favourite)
                 {
-                    return String::Equals(a.Address, b.Address, true);
+                    return String::IEquals(a.Address, b.Address);
                 }
                 return false;
             }),

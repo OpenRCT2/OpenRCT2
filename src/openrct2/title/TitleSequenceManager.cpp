@@ -169,7 +169,7 @@ namespace TitleSequenceManager
         auto filename = Path::GetFileName(path);
         for (size_t i = 0; i < std::size(PredefinedSequences); i++)
         {
-            if (String::Equals(filename, PredefinedSequences[i].Filename, true))
+            if (String::IEquals(filename, PredefinedSequences[i].Filename))
             {
                 return i;
             }
@@ -217,7 +217,7 @@ namespace TitleSequenceManager
     {
         TitleSequenceManagerItem item{};
 
-        if (String::Equals(Path::GetExtension(scanPath), u8".txt", true))
+        if (String::IEquals(Path::GetExtension(scanPath), u8".txt"))
         {
             // If we are given a .txt file, set the path to the containing directory
             item.Path = Path::GetDirectory(scanPath);
@@ -270,7 +270,7 @@ namespace TitleSequenceManager
     {
         for (const auto& pseq : TitleSequenceManager::PredefinedSequences)
         {
-            if (String::Equals(name, pseq.ConfigId, true))
+            if (String::IEquals(name, pseq.ConfigId))
             {
                 return true;
             }
@@ -315,7 +315,7 @@ const utf8* TitleSequenceManagerGetConfigID(size_t index)
     const auto filename = Path::GetFileName(item->Path);
     for (const auto& pseq : TitleSequenceManager::PredefinedSequences)
     {
-        if (String::Equals(filename, pseq.Filename, true))
+        if (String::IEquals(filename, pseq.Filename))
         {
             return pseq.ConfigId;
         }

@@ -49,9 +49,9 @@ const CommandLineCommand CommandLine::SpriteCommands[]
 
 static exitcode_t HandleSprite(CommandLineArgEnumerator* argEnumerator)
 {
-    if (String::Equals(_mode, SZ_CLOSEST, true))
+    if (String::IEquals(_mode, SZ_CLOSEST))
         gSpriteMode = ImportMode::Closest;
-    else if (String::Equals(_mode, SZ_DITHERING, true))
+    else if (String::IEquals(_mode, SZ_DITHERING))
         gSpriteMode = ImportMode::Dithering;
     Memory::Free(_mode);
 
