@@ -170,6 +170,32 @@ TEST_F(StringTest, StrLogicalCmp)
     EXPECT_LT(StrLogicalCmp("!", "a"), 0);
 }
 
+TEST_F(StringTest, IEquals)
+{
+    EXPECT_TRUE(String::IEquals("", ""));
+    EXPECT_TRUE(String::IEquals("Test", "Test"));
+    EXPECT_TRUE(String::IEquals("TesT", "Test"));
+    EXPECT_TRUE(String::IEquals("TEsT", "Test"));
+
+    EXPECT_FALSE(String::IEquals("Test", "Message"));
+    EXPECT_FALSE(String::IEquals("Test", "TestMessage"));
+    EXPECT_FALSE(String::IEquals("", "Test"));
+    EXPECT_FALSE(String::IEquals("Test", ""));
+}
+
+TEST_F(StringTest, Equals)
+{
+    EXPECT_TRUE(String::Equals("", ""));
+    EXPECT_TRUE(String::Equals("Test", "Test"));
+
+    EXPECT_FALSE(String::Equals("TesT", "Test"));
+    EXPECT_FALSE(String::Equals("TEsT", "Test"));
+    EXPECT_FALSE(String::Equals("Test", "Message"));
+    EXPECT_FALSE(String::Equals("Test", "TestMessage"));
+    EXPECT_FALSE(String::Equals("", "Test"));
+    EXPECT_FALSE(String::Equals("Test", ""));
+}
+
 class CodepointViewTest : public testing::Test
 {
 };
