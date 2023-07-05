@@ -162,7 +162,7 @@ public:
         int32_t ooIndex = 0;
         for (const ScenarioOverride& scenarioOverride : _scenarioOverrides)
         {
-            if (String::IEquals(scenarioOverride.filename.c_str(), scenarioFilename))
+            if (String::IEquals(scenarioOverride.filename, scenarioFilename))
             {
                 if (scenarioOverride.strings[index].empty())
                 {
