@@ -3684,6 +3684,13 @@ STR_6582    :Tastenkürzelfenster öffnen
 STR_6583    :{WINDOW_COLOUR_2}Umgekehrte Züge
 STR_6584    :Auswählen, um Züge rückwärts fahren zu lassen
 STR_6585    :Änderungen können nicht ausgeführt werden …
+STR_6586    :OpenRCT2
+STR_6587    :Das OpenRCT2-Titelthema ist ein Werk von Allister Brimble, {NEWLINE}lizenziert unter CC BY-SA 4.0.
+STR_6588    :Vielen Dank an Herman Riddering für die Erlaubnis, den 35er Voigt aufzunehmen.
+STR_6589    :Schaltflächen auf der linken Seite anzeigen
+STR_6590    :Schaltflächen (z.B. zum Schließen des Fensters) auf der linken anstatt auf der rechten Seite der Titelleiste anzeigen.
+STR_6591    :Der Mitarbeiter repariert gerade ein Fahrgeschäft und kann deshalb nicht entlassen werden.
+STR_6592    :Der Mitarbeiter inspiziert gerade ein Fahrgeschäft und kann deshalb nicht entlassen werden.
 
 #############
 # Scenarios #
