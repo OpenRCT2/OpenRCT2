@@ -1631,7 +1631,7 @@ namespace MaurerRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_MAURER_TRACK_LARGE_CURVE + 27)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 2, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -5825,7 +5825,7 @@ namespace MaurerRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_MAURER_TRACK_LARGE_CURVE_BANKED + 11)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -11658,7 +11658,7 @@ namespace MaurerRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -17804,7 +17804,7 @@ namespace MaurerRC
                                 (SPR_G2_MAURER_TRACK_GENTLE_LARGE_CURVE_BANKED + 108)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
