@@ -102,6 +102,7 @@ static constexpr const ride_type_t RideTypeViewOrder[] = {
     RIDE_TYPE_HYBRID_COASTER,
     RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER,
     RIDE_TYPE_ALPINE_COASTER,
+    RIDE_TYPE_MAURER_ROLLER_COASTER,
 
     // Gentle rides
     RIDE_TYPE_MONORAIL_CYCLES,

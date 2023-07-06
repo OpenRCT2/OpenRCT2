@@ -1,5 +1,6 @@
 0.4.6 (in development)
 ------------------------------------------------------------------------
+- Feature: Add Maurer Spinning Steel Coaster Track
 - Feature: [#15660] Ability to show window buttons on the left.
 - Feature: [OpenMusic#41] Official Title Theme by Allister Brimble.
 - Improved: [#20119, #20243] Add new colour presets to several roller coasters (using the new colours).

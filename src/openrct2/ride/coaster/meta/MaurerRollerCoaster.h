@@ -9,7 +9,9 @@
 
 #pragma once
 
+#include "../../../sprites.h"
 #include "../../RideData.h"
+#include "../../ShopItem.h"
 #include "../../Track.h"
 
 // clang-format off
@@ -35,7 +37,7 @@ constexpr const RideTypeDescriptor MaurerRollerCoasterRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(Heights, { 28, 24, 9, 11}),
     SET_FIELD(MaxMass, 18),
-    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftRMC, 5, 8 }),
+    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftClassic, 4, 6 }),
     SET_FIELD(RatingsMultipliers, { 52, 36, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 37.50_GBP, 2.50_GBP, 50}),
@@ -48,7 +50,7 @@ constexpr const RideTypeDescriptor MaurerRollerCoasterRTD =
         { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_BLACK },
         { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_DARK_GREEN }
     )),
-    SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MINI_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINI_ROLLER_COASTER_SUPPORTS }),
+    SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MAURER_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MAURER_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "trex_rc"),
 
