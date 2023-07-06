@@ -112,7 +112,7 @@ validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_EXIT);
 validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_ROTATE);
 
 // clang-format off
-static Widget window_ride_construction_widgets[] = {
+static Widget _rideConstructionWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget        ({  3,  17}, {     GW,  57}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_DIRECTION                                                                       ),
     MakeWidget        ({  3,  76}, {     GW,  41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_SLOPE                                                                           ),
@@ -213,7 +213,7 @@ public:
             return;
         }
 
-        widgets = window_ride_construction_widgets;
+        widgets = _rideConstructionWidgets;
         number = _currentRideIndex.ToUnderlying();
 
         InitScrollWidgets();

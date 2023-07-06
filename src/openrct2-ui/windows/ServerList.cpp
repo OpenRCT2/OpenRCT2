@@ -60,7 +60,7 @@ enum
 };
 
 // clang-format off
-static Widget window_server_list_widgets[] = {
+static Widget _serverListWidgets[] = {
     MakeWidget({  0,  0}, {341,  91}, WindowWidgetType::Frame,    WindowColour::Primary                                           ), // panel / background
     MakeWidget({  1,  1}, {338,  14}, WindowWidgetType::Caption,  WindowColour::Primary,   STR_SERVER_LIST,   STR_WINDOW_TITLE_TIP), // title bar
     MakeWidget({327,  2}, { 11,  12}, WindowWidgetType::CloseBox, WindowColour::Primary,   STR_CLOSE_X,       STR_CLOSE_WINDOW_TIP), // close x button
@@ -93,8 +93,8 @@ public:
     void OnOpen() override
     {
         _playerName = gConfigNetwork.PlayerName;
-        window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
-        widgets = window_server_list_widgets;
+        widgets = _serverListWidgets;
+        _serverListWidgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
         InitScrollWidgets();
         no_list_items = 0;
         selected_list_item = -1;
@@ -283,7 +283,7 @@ public:
 
                 _playerName = temp;
                 gConfigNetwork.PlayerName = _playerName;
-                window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
+                widgets[WIDX_PLAYER_NAME_INPUT].string = const_cast<utf8*>(_playerName.c_str());
 
                 InvalidateWidget(WIDX_PLAYER_NAME_INPUT);
                 break;
@@ -522,16 +522,16 @@ private:
         int32_t buttonBottom = buttonTop + buttonHeight;
         int32_t listBottom = buttonTop - margin;
 
-        window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].right = width - 6;
-        window_server_list_widgets[WIDX_LIST].left = 6;
-        window_server_list_widgets[WIDX_LIST].right = width - 6;
-        window_server_list_widgets[WIDX_LIST].bottom = listBottom;
-        window_server_list_widgets[WIDX_FETCH_SERVERS].top = buttonTop;
-        window_server_list_widgets[WIDX_FETCH_SERVERS].bottom = buttonBottom;
-        window_server_list_widgets[WIDX_ADD_SERVER].top = buttonTop;
-        window_server_list_widgets[WIDX_ADD_SERVER].bottom = buttonBottom;
-        window_server_list_widgets[WIDX_START_SERVER].top = buttonTop;
-        window_server_list_widgets[WIDX_START_SERVER].bottom = buttonBottom;
+        widgets[WIDX_PLAYER_NAME_INPUT].right = width - 6;
+        widgets[WIDX_LIST].left = 6;
+        widgets[WIDX_LIST].right = width - 6;
+        widgets[WIDX_LIST].bottom = listBottom;
+        widgets[WIDX_FETCH_SERVERS].top = buttonTop;
+        widgets[WIDX_FETCH_SERVERS].bottom = buttonBottom;
+        widgets[WIDX_ADD_SERVER].top = buttonTop;
+        widgets[WIDX_ADD_SERVER].bottom = buttonBottom;
+        widgets[WIDX_START_SERVER].top = buttonTop;
+        widgets[WIDX_START_SERVER].bottom = buttonBottom;
 
         no_list_items = static_cast<uint16_t>(_serverList.GetCount());
     }
