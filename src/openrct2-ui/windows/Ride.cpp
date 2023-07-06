@@ -2243,7 +2243,7 @@ private:
                 widgets[WIDX_SIMULATE_LIGHT].type = WindowWidgetType::ImgBtn;
 #endif
             widgets[WIDX_TEST_LIGHT].type = ride->SupportsStatus(RideStatus::Testing) ? WindowWidgetType::ImgBtn
-                                                                                           : WindowWidgetType::Empty;
+                                                                                      : WindowWidgetType::Empty;
             widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::ImgBtn;
 
             widgetHeight = 62;
@@ -3338,8 +3338,7 @@ private:
         {
             widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WindowWidgetType::Checkbox;
             widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].tooltip = STR_LEAVE_IF_ANOTHER_VEHICLE_ARRIVES_TIP;
-            widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].text = ride->GetRideTypeDescriptor()
-                                                                                   .NameConvention.vehicle
+            widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].text = ride->GetRideTypeDescriptor().NameConvention.vehicle
                     == RideComponentType::Boat
                 ? STR_LEAVE_IF_ANOTHER_BOAT_ARRIVES
                 : STR_LEAVE_IF_ANOTHER_TRAIN_ARRIVES;
@@ -3354,8 +3353,7 @@ private:
         {
             widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WindowWidgetType::Checkbox;
             widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].text = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS;
-            widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].tooltip
-                = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP;
+            widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].tooltip = STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP;
         }
         else
         {
@@ -4561,7 +4559,7 @@ private:
                 widgets[WIDX_VEHICLE_COLOUR_INDEX].type = WindowWidgetType::DropdownMenu;
                 widgets[WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN].type = WindowWidgetType::Button;
                 widgets[WIDX_VEHICLE_COLOUR_INDEX].text = vehicleColourSchemeType == 1 ? STR_RIDE_COLOUR_TRAIN_VALUE
-                                                                                              : STR_RIDE_COLOUR_VEHICLE_VALUE;
+                                                                                       : STR_RIDE_COLOUR_VEHICLE_VALUE;
             }
             else
             {
@@ -5263,8 +5261,7 @@ private:
                 return;
 
             auto screenCoords = windowPos
-                + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4,
-                                  widgets[WIDX_PAGE_BACKGROUND].top + 4 };
+                + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)
             {
