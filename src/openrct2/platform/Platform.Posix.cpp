@@ -223,7 +223,7 @@ namespace Platform
                 // Find a file which matches by name (case insensitive)
                 for (int32_t i = 0; i < count; i++)
                 {
-                    if (String::Equals(files[i]->d_name, fileName.c_str(), true))
+                    if (String::IEquals(files[i]->d_name, fileName.c_str()))
                     {
                         result = Path::Combine(directory, std::string(files[i]->d_name));
                         break;

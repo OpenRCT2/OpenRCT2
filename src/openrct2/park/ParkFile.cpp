@@ -745,12 +745,12 @@ namespace OpenRCT2
                     for (const auto* ori : ExportObjectsList)
                     {
                         auto extension = Path::GetExtension(ori->Path);
-                        if (String::Equals(extension, ".dat", true))
+                        if (String::IEquals(extension, ".dat"))
                         {
                             cs.Write(DESCRIPTOR_DAT);
                             cs.Write(&ori->ObjectEntry, sizeof(RCTObjectEntry));
                         }
-                        else if (String::Equals(extension, ".parkobj", true))
+                        else if (String::IEquals(extension, ".parkobj"))
                         {
                             cs.Write(DESCRIPTOR_PARKOBJ);
                             cs.Write(ori->Identifier);

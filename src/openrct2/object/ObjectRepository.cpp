@@ -101,11 +101,11 @@ public:
     {
         std::unique_ptr<Object> object;
         auto extension = Path::GetExtension(path);
-        if (String::Equals(extension, ".json", true))
+        if (String::IEquals(extension, ".json"))
         {
             object = ObjectFactory::CreateObjectFromJsonFile(_objectRepository, path, false);
         }
-        else if (String::Equals(extension, ".parkobj", true))
+        else if (String::IEquals(extension, ".parkobj"))
         {
             object = ObjectFactory::CreateObjectFromZipFile(_objectRepository, path, false);
         }
@@ -267,11 +267,11 @@ public:
         Guard::ArgumentNotNull(ori, GUARD_LINE);
 
         auto extension = Path::GetExtension(ori->Path);
-        if (String::Equals(extension, ".json", true))
+        if (String::IEquals(extension, ".json"))
         {
             return ObjectFactory::CreateObjectFromJsonFile(*this, ori->Path, !gOpenRCT2NoGraphics);
         }
-        if (String::Equals(extension, ".parkobj", true))
+        if (String::IEquals(extension, ".parkobj"))
         {
             return ObjectFactory::CreateObjectFromZipFile(*this, ori->Path, !gOpenRCT2NoGraphics);
         }

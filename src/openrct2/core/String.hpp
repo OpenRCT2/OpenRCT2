@@ -56,21 +56,14 @@ namespace String
     bool IsNullOrEmpty(const utf8* str);
     int32_t Compare(const std::string& a, const std::string& b, bool ignoreCase = false);
     int32_t Compare(const utf8* a, const utf8* b, bool ignoreCase = false);
-    bool Equals(std::string_view a, std::string_view b, bool ignoreCase = false);
-    inline bool IEquals(std::string_view a, std::string_view b)
-    {
-        return Equals(a, b, true);
-    }
-    bool Equals(const std::string& a, const std::string& b, bool ignoreCase = false);
-    inline bool IEquals(const std::string& a, const std::string& b)
-    {
-        return Equals(a, b, true);
-    }
+
+    bool Equals(u8string_view a, u8string_view b);
+    bool Equals(const u8string& a, const u8string& b);
     bool Equals(const utf8* a, const utf8* b, bool ignoreCase = false);
-    inline bool IEquals(const utf8* a, const utf8* b)
-    {
-        return Equals(a, b, true);
-    }
+    bool IEquals(u8string_view a, u8string_view b);
+    bool IEquals(const u8string& a, const u8string& b);
+    bool IEquals(const utf8* a, const utf8* b);
+
     bool StartsWith(std::string_view str, std::string_view match, bool ignoreCase = false);
     bool EndsWith(std::string_view str, std::string_view match, bool ignoreCase = false);
     bool Contains(std::string_view haystack, std::string_view needle, bool ignoreCase = false);

@@ -173,7 +173,7 @@ protected:
 private:
     static std::unique_ptr<IStream> GetStreamFromRCT2Scenario(const std::string& path)
     {
-        if (String::Equals(Path::GetExtension(path), ".sea", true))
+        if (String::IEquals(Path::GetExtension(path), ".sea"))
         {
             auto data = DecryptSea(fs::u8path(path));
             auto ms = std::make_unique<MemoryStream>();
@@ -196,7 +196,7 @@ private:
         try
         {
             std::string extension = Path::GetExtension(path);
-            if (String::Equals(extension, ".park", true))
+            if (String::IEquals(extension, ".park"))
             {
                 // OpenRCT2 park
                 bool result = false;
@@ -218,7 +218,7 @@ private:
                 return result;
             }
 
-            if (String::Equals(extension, ".sc4", true))
+            if (String::IEquals(extension, ".sc4"))
             {
                 // RCT1 scenario
                 bool result = false;
@@ -389,7 +389,7 @@ public:
             const auto scenarioFilename = Path::GetFileName(scenario.Path);
 
             // Note: this is always case insensitive search for cross platform consistency
-            if (String::Equals(filename, scenarioFilename, true))
+            if (String::IEquals(filename, scenarioFilename))
             {
                 return &scenario;
             }
@@ -407,7 +407,7 @@ public:
                 continue;
 
             // Note: this is always case insensitive search for cross platform consistency
-            if (String::Equals(name, scenario->InternalName, true))
+            if (String::IEquals(name, scenario->InternalName))
             {
                 return &_scenarios[i];
             }
@@ -441,18 +441,18 @@ public:
             const std::string scenarioExtension = Path::GetExtension(scenarioFileName);
 
             // Check if this is an RCTC scenario that corresponds to a known RCT1/2 scenario or vice versa, see #12626
-            if (String::Equals(scenarioExtension, ".sea", true))
+            if (String::IEquals(scenarioExtension, ".sea"))
             {
                 // Get scenario using RCT2 style name of RCTC scenario
                 scenario = GetByFilename((scenarioBaseName + ".sc6").c_str());
             }
-            else if (String::Equals(scenarioExtension, ".sc6", true))
+            else if (String::IEquals(scenarioExtension, ".sc6"))
             {
                 // Get scenario using RCTC style name of RCT2 scenario
                 scenario = GetByFilename((scenarioBaseName + ".sea").c_str());
             }
             // gScenarioFileName .Park scenarios is the full file path instead of just <scenarioName.park>, so need to convert
-            else if (String::Equals(scenarioExtension, ".park", true))
+            else if (String::IEquals(scenarioExtension, ".park"))
             {
                 scenario = GetByFilename((scenarioBaseName + ".park").c_str());
             }
@@ -496,7 +496,7 @@ private:
             const auto scenarioFilename = Path::GetFileName(scenario.Path);
 
             // Note: this is always case insensitive search for cross platform consistency
-            if (String::Equals(filename, scenarioFilename, true))
+            if (String::IEquals(filename, scenarioFilename))
             {
                 return &scenario;
             }
@@ -681,7 +681,7 @@ private:
                     bool notFound = true;
                     for (auto& highscore : _highscores)
                     {
-                        if (String::Equals(scBasic.Path, highscore->fileName, true))
+                        if (String::IEquals(scBasic.Path, highscore->fileName))
                         {
                             notFound = false;
 

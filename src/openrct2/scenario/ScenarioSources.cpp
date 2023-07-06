@@ -368,7 +368,7 @@ namespace ScenarioSources
             for (size_t j = 0; j < ScenarioTitlesBySource[i].count; j++)
             {
                 const ScenarioTitleDescriptor* desc = &ScenarioTitlesBySource[i].titles[j];
-                if (String::Equals(name, desc->Title, true))
+                if (String::IEquals(name, desc->Title))
                 {
                     outDesc->title = desc->Title;
                     outDesc->id = desc->Id;

@@ -320,7 +320,7 @@ namespace OpenRCT2::Title
         {
             auto name = zip->GetFileName(i);
             auto ext = Path::GetExtension(name);
-            if (String::Equals(ext, ".sv6", true) || String::Equals(ext, ".sc6", true) || String::Equals(ext, ".park", true))
+            if (String::IEquals(ext, ".sv6") || String::IEquals(ext, ".sc6") || String::IEquals(ext, ".park"))
             {
                 saves.push_back(std::move(name));
             }
@@ -348,7 +348,7 @@ namespace OpenRCT2::Title
                     const std::string relativePath = parts[1].data();
                     for (size_t i = 0; i < saves.size(); i++)
                     {
-                        if (String::Equals(relativePath, saves[i], true))
+                        if (String::IEquals(relativePath, saves[i]))
                         {
                             saveIndex = static_cast<uint8_t>(i);
                             break;

@@ -721,7 +721,7 @@ size_t ThemeGetIndexForName(const utf8* name)
     for (size_t i = 0; i < count; i++)
     {
         const utf8* tn = ThemeManagerGetAvailableThemeName(i);
-        if (String::Equals(tn, name, true))
+        if (String::IEquals(tn, name))
         {
             return i;
         }

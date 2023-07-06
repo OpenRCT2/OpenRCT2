@@ -2113,7 +2113,7 @@ std::string NetworkBase::MakePlayerNameUnique(const std::string& name)
         // Check if there is already a player with this name in the server
         for (const auto& player : player_list)
         {
-            if (String::Equals(player->Name.c_str(), new_name.c_str(), true))
+            if (String::IEquals(player->Name, new_name))
             {
                 unique = false;
                 break;
