@@ -220,12 +220,6 @@ The following people are not part of the development team, but have been contrib
 * Joel H. (HtotheTML)
 * John Mulcahy (jayjay300)
 * Chase Percy (Chase-Percy)
-<<<<<<< maurer
-=======
-* Wenzhao Qiu (qwzhaox)
-* Michael Bernardi (mrmbernardi)
-* Aram Kazorian (aramk-hub)
->>>>>>> develop
 
 ## Toolchain
 * (Balletie) - macOS
