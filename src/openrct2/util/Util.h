@@ -28,7 +28,6 @@ bool AVX2Available();
 
 int32_t UtilBitScanForward(int32_t source);
 int32_t UtilBitScanForward(int64_t source);
-void BitCountInit();
 int32_t BitCount(uint32_t source);
 int32_t StrLogicalCmp(char const* a, char const* b);
 char* SafeStrCpy(char* destination, const char* source, size_t num);
@@ -68,4 +67,14 @@ template<typename... T> [[nodiscard]] constexpr uint64_t EnumsToFlags(T... types
 template<typename TEnum> constexpr auto EnumValue(TEnum enumerator) noexcept
 {
     return static_cast<std::underlying_type_t<TEnum>>(enumerator);
+}
+
+constexpr uint8_t HiByte(uint16_t value)
+{
+    return static_cast<uint8_t>(value >> 8);
+}
+
+constexpr uint8_t LoByte(uint16_t value)
+{
+    return static_cast<uint8_t>(value & 0xFFU);
 }

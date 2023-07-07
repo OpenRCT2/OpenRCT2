@@ -29,6 +29,7 @@
 #    include <pwd.h>
 #    include <sys/stat.h>
 #    include <sys/time.h>
+#    include <unistd.h>
 
 // The name of the mutex used to prevent multiple instances of the game from running
 static constexpr const utf8* SINGLE_INSTANCE_MUTEX_NAME = u8"openrct2.lock";
@@ -222,7 +223,7 @@ namespace Platform
                 // Find a file which matches by name (case insensitive)
                 for (int32_t i = 0; i < count; i++)
                 {
-                    if (String::Equals(files[i]->d_name, fileName.c_str(), true))
+                    if (String::IEquals(files[i]->d_name, fileName.c_str()))
                     {
                         result = Path::Combine(directory, std::string(files[i]->d_name));
                         break;
@@ -379,25 +380,6 @@ namespace Platform
         return u8"app_285330" PATH_SEPARATOR u8"depot_285331";
     }
 
-    void Sleep(uint32_t ms)
-    {
-        usleep(ms * 1000);
-    }
-
-    void InitTicks()
-    {
-    }
-
-    uint32_t GetTicks()
-    {
-        struct timespec ts;
-        if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0)
-        {
-            LOG_FATAL("clock_gettime failed");
-            exit(-1);
-        }
-        return static_cast<uint32_t>(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
-    }
 } // namespace Platform
 
 #endif

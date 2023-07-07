@@ -32,7 +32,7 @@ const money64 research_cost_table[RESEARCH_FUNDING_COUNT] = {
     400.00_GBP, // Maximum funding
 };
 
-static constexpr const int32_t dword_988E60[static_cast<int32_t>(ExpenditureType::Count)] = {
+static constexpr int32_t dword_988E60[static_cast<int32_t>(ExpenditureType::Count)] = {
     1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0,
 };
 

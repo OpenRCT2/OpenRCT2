@@ -29,12 +29,12 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_OBJECTIVE_SELECTION;
-static constexpr const int32_t WH = 229;
-static constexpr const int32_t WW = 450;
+static constexpr StringId WINDOW_TITLE = STR_OBJECTIVE_SELECTION;
+static constexpr int32_t WH = 229;
+static constexpr int32_t WW = 450;
 
 // The number has to leave a bit of room for other entities like vehicles, litter and balloons.
-static constexpr const uint16_t MaxObjectiveGuests = 50000;
+static constexpr uint16_t MaxObjectiveGuests = 50000;
 
 #pragma region Widgets
 
@@ -45,7 +45,7 @@ enum {
     WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_COUNT
 };
 
-static constexpr const StringId ObjectiveDropdownOptionNames[] = {
+static constexpr StringId ObjectiveDropdownOptionNames[] = {
     STR_OBJECTIVE_DROPDOWN_NONE,
     STR_OBJECTIVE_DROPDOWN_NUMBER_OF_GUESTS_AT_A_GIVEN_DATE,
     STR_OBJECTIVE_DROPDOWN_PARK_VALUE_AT_A_GIVEN_DATE,
@@ -134,6 +134,10 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
 
 class EditorObjectiveOptionsWindow final : public Window
 {
+private:
+    // Not shops or facilities
+    std::vector<RideId> _rideableRides;
+
 public:
     void OnOpen() override
     {
@@ -142,7 +146,6 @@ public:
         hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
         InitScrollWidgets();
         selected_tab = WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN;
-        no_list_items = 0;
         selected_list_item = -1;
         UpdateDisabledWidgets();
     }
@@ -288,8 +291,7 @@ private:
 
         page = newPage;
         frame_no = 0;
-        var_492 = 0;
-        no_list_items = 0;
+        _rideableRides.clear();
         selected_list_item = -1;
         hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[newPage];
         widgets = window_editor_objective_options_widgets[newPage];
@@ -1001,19 +1003,18 @@ private:
         OnResize();
         InvalidateWidget(WIDX_TAB_2);
 
-        auto numItems = 0;
+        const auto oldSize = _rideableRides.size();
+        _rideableRides.clear();
         for (auto& currentRide : GetRideManager())
         {
             if (currentRide.IsRide())
             {
-                list_item_positions[numItems] = currentRide.id.ToUnderlying();
-                numItems++;
+                _rideableRides.push_back(currentRide.id);
             }
         }
 
-        if (no_list_items != numItems)
+        if (oldSize != _rideableRides.size())
         {
-            no_list_items = numItems;
             Invalidate();
         }
     }
@@ -1025,7 +1026,7 @@ private:
     ScreenSize OnScrollGetSizeRides(int32_t scrollIndex)
     {
         ScreenSize newSize;
-        newSize.height = no_list_items * 12;
+        newSize.height = static_cast<int32_t>(_rideableRides.size()) * 10;
 
         return newSize;
     }
@@ -1037,11 +1038,10 @@ private:
     void OnScrollMouseDownRides(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
     {
         auto i = screenCoords.y / 12;
-        if (i < 0 || i >= no_list_items)
+        if (i < 0 || i >= static_cast<int32_t>(_rideableRides.size()))
             return;
 
-        const auto currentRideId = RideId::FromUnderlying(list_item_positions[i]);
-        auto currentRide = GetRide(currentRideId);
+        auto* currentRide = GetRide(_rideableRides[i]);
         if (currentRide != nullptr)
         {
             currentRide->lifecycle_flags ^= RIDE_LIFECYCLE_INDESTRUCTIBLE;
@@ -1058,7 +1058,7 @@ private:
         int32_t i;
 
         i = screenCoords.y / 12;
-        if (i < 0 || i >= no_list_items)
+        if (i < 0 || i >= static_cast<int32_t>(_rideableRides.size()))
             return;
 
         if (selected_list_item != i)
@@ -1112,7 +1112,7 @@ private:
         int32_t colour = ColourMapA[colours[1]].mid_light;
         GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
 
-        for (int32_t i = 0; i < no_list_items; i++)
+        for (int32_t i = 0; i < static_cast<int32_t>(_rideableRides.size()); i++)
         {
             int32_t y = i * 12;
 
@@ -1131,8 +1131,7 @@ private:
             }
 
             // Checkbox mark
-            const auto currentRideId = RideId::FromUnderlying(list_item_positions[i]);
-            auto currentRide = GetRide(currentRideId);
+            auto* currentRide = GetRide(_rideableRides[i]);
             if (currentRide != nullptr)
             {
                 if (currentRide->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)

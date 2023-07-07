@@ -15,14 +15,6 @@
 #include <stdbool.h>
 #include <string>
 
-void openrct2_assert_fwd(bool expression, const char* message, ...);
-
-#define openrct2_assert(expr, msg, ...)                                                                                        \
-    if (!(expr))                                                                                                               \
-    {                                                                                                                          \
-        openrct2_assert_fwd((expr), msg, ##__VA_ARGS__);                                                                       \
-    }
-
 enum class ASSERT_BEHAVIOUR
 {
     ABORT,

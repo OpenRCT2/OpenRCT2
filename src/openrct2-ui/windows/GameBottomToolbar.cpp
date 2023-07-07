@@ -104,13 +104,13 @@ private:
             DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
         }
 
-        static constexpr const StringId _guestCountFormats[] = {
+        static constexpr StringId _guestCountFormats[] = {
             STR_BOTTOM_TOOLBAR_NUM_GUESTS_STABLE,
             STR_BOTTOM_TOOLBAR_NUM_GUESTS_DECREASE,
             STR_BOTTOM_TOOLBAR_NUM_GUESTS_INCREASE,
         };
 
-        static constexpr const StringId _guestCountFormatsSingular[] = {
+        static constexpr StringId _guestCountFormatsSingular[] = {
             STR_BOTTOM_TOOLBAR_NUM_GUESTS_STABLE_SINGULAR,
             STR_BOTTOM_TOOLBAR_NUM_GUESTS_DECREASE_SINGULAR,
             STR_BOTTOM_TOOLBAR_NUM_GUESTS_INCREASE_SINGULAR,
@@ -654,7 +654,7 @@ public:
         return cursorId;
     }
 
-    void OnUnknown5() override
+    void OnPeriodicUpdate() override
     {
         InvalidateDirtyWidgets();
     }

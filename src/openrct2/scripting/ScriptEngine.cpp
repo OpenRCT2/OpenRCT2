@@ -39,7 +39,9 @@
 #    include "bindings/network/ScPlayer.hpp"
 #    include "bindings/network/ScPlayerGroup.hpp"
 #    include "bindings/network/ScSocket.hpp"
+#    include "bindings/object/ScInstalledObject.hpp"
 #    include "bindings/object/ScObject.hpp"
+#    include "bindings/object/ScObjectManager.h"
 #    include "bindings/ride/ScRide.hpp"
 #    include "bindings/ride/ScRideStation.hpp"
 #    include "bindings/world/ScClimate.hpp"
@@ -403,8 +405,16 @@ void ScriptEngine::Initialise()
     ScDisposable::Register(ctx);
     ScMap::Register(ctx);
     ScNetwork::Register(ctx);
+    ScObjectManager::Register(ctx);
+    ScInstalledObject::Register(ctx);
     ScObject::Register(ctx);
+    ScSceneryObject::Register(ctx);
     ScSmallSceneryObject::Register(ctx);
+    ScLargeSceneryObject::Register(ctx);
+    ScWallObject::Register(ctx);
+    ScFootpathAdditionObject::Register(ctx);
+    ScBannerObject::Register(ctx);
+    ScSceneryGroupObject::Register(ctx);
     ScPark::Register(ctx);
     ScParkMessage::Register(ctx);
     ScPlayer::Register(ctx);
@@ -444,6 +454,7 @@ void ScriptEngine::Initialise()
     dukglue_register_global(ctx, std::make_shared<ScPark>(ctx), "park");
     dukglue_register_global(ctx, std::make_shared<ScProfiler>(ctx), "profiler");
     dukglue_register_global(ctx, std::make_shared<ScScenario>(), "scenario");
+    dukglue_register_global(ctx, std::make_shared<ScObjectManager>(), "objectManager");
 
     RegisterConstants();
 
@@ -1098,19 +1109,27 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAct
 GameActions::Result ScriptEngine::DukToGameActionResult(const DukValue& d)
 {
     auto result = GameActions::Result();
-    result.Error = static_cast<GameActions::Status>(AsOrDefault<int32_t>(d["error"]));
-    result.ErrorTitle = AsOrDefault<std::string>(d["errorTitle"]);
-    result.ErrorMessage = AsOrDefault<std::string>(d["errorMessage"]);
-    result.Cost = AsOrDefault<int32_t>(d["cost"]);
-
-    auto expenditureType = AsOrDefault<std::string>(d["expenditureType"]);
-    if (!expenditureType.empty())
+    if (d.type() == DUK_TYPE_OBJECT)
     {
-        auto expenditure = StringToExpenditureType(expenditureType);
-        if (expenditure != ExpenditureType::Count)
+        result.Error = static_cast<GameActions::Status>(AsOrDefault<int32_t>(d["error"]));
+        result.ErrorTitle = AsOrDefault<std::string>(d["errorTitle"]);
+        result.ErrorMessage = AsOrDefault<std::string>(d["errorMessage"]);
+        result.Cost = AsOrDefault<int32_t>(d["cost"]);
+        auto expenditureType = AsOrDefault<std::string>(d["expenditureType"]);
+        if (!expenditureType.empty())
         {
-            result.Expenditure = expenditure;
+            auto expenditure = StringToExpenditureType(expenditureType);
+            if (expenditure != ExpenditureType::Count)
+            {
+                result.Expenditure = expenditure;
+            }
         }
+    }
+    else
+    {
+        result.Error = GameActions::Status::Unknown;
+        result.ErrorTitle = "Unknown";
+        result.ErrorMessage = "Unknown";
     }
     return result;
 }

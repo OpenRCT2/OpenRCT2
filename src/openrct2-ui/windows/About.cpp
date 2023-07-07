@@ -21,10 +21,10 @@
 
 using namespace OpenRCT2;
 
-static constexpr const int32_t WW = 400;
-static constexpr const int32_t WH = 400;
-static constexpr const StringId WINDOW_TITLE = STR_ABOUT;
-static constexpr const int32_t TABHEIGHT = 50;
+static constexpr int32_t WW = 400;
+static constexpr int32_t WH = 400;
+static constexpr StringId WINDOW_TITLE = STR_ABOUT;
+static constexpr int32_t TABHEIGHT = 50;
 
 // clang-format off
 enum

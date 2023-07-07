@@ -37,7 +37,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr const StringId WINDOW_TITLE = STR_NONE;
+static constexpr StringId WINDOW_TITLE = STR_NONE;
 constexpr int32_t WINDOW_SCENERY_MIN_WIDTH = 634;
 constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 195;
 constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
@@ -1108,6 +1108,11 @@ private:
         for (size_t i = 0; i < _tabEntries.size(); i++)
         {
             const auto& tabInfo = _tabEntries[i];
+            if (tabInfo.IsAll())
+            {
+                // The scenery will be always added here so exclude this one.
+                continue;
+            }
             if (tabInfo.Contains(scenery))
             {
                 return i;
@@ -1122,8 +1127,12 @@ private:
 
         if (IsSceneryAvailableToBuild(selection))
         {
-            // Get current tab
-            const auto tabIndex = FindTabWithScenery(selection);
+            // Add scenery to all tab
+            auto* allTabInfo = GetSceneryTabInfoForAll();
+            if (allTabInfo != nullptr)
+            {
+                allTabInfo->AddEntryToBack(selection);
+            }
 
             // Add scenery to primary group (usually trees or path additions)
             if (sceneryGroupIndex != OBJECT_ENTRY_INDEX_NULL)
@@ -1136,7 +1145,8 @@ private:
                 }
             }
 
-            // If scenery is no tab, add it to misc
+            // If scenery has no tab, add it to misc
+            const auto tabIndex = FindTabWithScenery(selection);
             if (!tabIndex.has_value())
             {
                 auto* tabInfo = GetSceneryTabInfoForMisc();
@@ -1144,13 +1154,6 @@ private:
                 {
                     tabInfo->AddEntryToBack(selection);
                 }
-            }
-
-            // Add all scenery to all tab
-            auto tabInfo = GetSceneryTabInfoForAll();
-            if (tabInfo != nullptr)
-            {
-                tabInfo->AddEntryToBack(selection);
             }
         }
     }

@@ -266,10 +266,10 @@ enum WindowObjectLoadErrorWidgetIdx {
     WIDX_DOWNLOAD_ALL
 };
 
-static constexpr const StringId WINDOW_TITLE = STR_OBJECT_LOAD_ERROR_TITLE;
-static constexpr const int32_t WW = 450;
-static constexpr const int32_t WH = 400;
-static constexpr const int32_t WW_LESS_PADDING = WW - 5;
+static constexpr StringId WINDOW_TITLE = STR_OBJECT_LOAD_ERROR_TITLE;
+static constexpr int32_t WW = 450;
+static constexpr int32_t WH = 400;
+static constexpr int32_t WW_LESS_PADDING = WW - 5;
 constexpr int32_t NAME_COL_LEFT = 4;
 constexpr int32_t SOURCE_COL_LEFT = (WW_LESS_PADDING / 4) + 1;
 constexpr int32_t TYPE_COL_LEFT = 5 * WW_LESS_PADDING / 8 + 1;

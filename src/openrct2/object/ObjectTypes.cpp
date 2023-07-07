@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "ObjectTypes.h"
+#include "Object.h"
 
 #include <algorithm>
 
@@ -19,4 +19,12 @@ bool ObjectTypeIsTransient(ObjectType type)
 bool ObjectTypeIsIntransient(ObjectType type)
 {
     return std::find(IntransientObjectTypes.begin(), IntransientObjectTypes.end(), type) != std::end(IntransientObjectTypes);
+}
+
+size_t GetObjectTypeLimit(ObjectType type)
+{
+    auto index = EnumValue(type);
+    if (index >= EnumValue(ObjectType::Count))
+        return 0;
+    return static_cast<size_t>(object_entry_group_counts[index]);
 }

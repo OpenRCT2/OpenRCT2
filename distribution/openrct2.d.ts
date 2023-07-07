@@ -42,6 +42,10 @@ declare global {
     /** APIs for performance profiling. */
     var profiler: Profiler;
     /**
+     * APIs for getting, loading, and unloading objects.
+     */
+    var objectManager: ObjectManager;
+    /**
      * APIs for creating and editing title sequences.
      * These will only be available to clients that are not running headless mode.
      */
@@ -217,18 +221,39 @@ declare global {
         captureImage(options: CaptureOptions): void;
 
         /**
-         * Gets the loaded object at the given index.
-         * @param type The object type.
-         * @param index The index.
+         * @deprecated Use {@link ObjectManager.getObject} instead.
          */
         getObject(type: ObjectType, index: number): LoadedImageObject;
-        getObject(type: "music", index: number): LoadedObject;
+
+        /**
+         * @deprecated Use {@link ObjectManager.getObject} instead.
+         */
         getObject(type: "ride", index: number): RideObject;
+
+        /**
+         * @deprecated Use {@link ObjectManager.getObject} instead.
+         */
         getObject(type: "small_scenery", index: number): SmallSceneryObject;
 
+        /**
+         * @deprecated Use {@link ObjectManager.getObject} instead.
+         */
+        getObject(type: "music", index: number): LoadedObject;
+
+        /**
+         * @deprecated Use {@link ObjectManager.getAllObjects} instead.
+         */
         getAllObjects(type: ObjectType): LoadedImageObject[];
-        getAllObjects(type: "music"): LoadedObject[];
+
+        /**
+         * @deprecated Use {@link ObjectManager.getAllObjects} instead.
+         */
         getAllObjects(type: "ride"): RideObject[];
+
+        /**
+         * @deprecated Use {@link ObjectManager.getAllObjects} instead.
+         */
+        getAllObjects(type: "music"): LoadedObject[];
 
         /**
          * Gets the {@link TrackSegment} for the given type.
@@ -1586,10 +1611,80 @@ declare global {
         removeElement(index: number): void;
     }
 
+    type ObjectSourceGame =
+        "rct1" |
+        "added_attractions" |
+        "loopy_landscapes" |
+        "rct2" |
+        "wacky_worlds" |
+        "time_twister" |
+        "custom" |
+        "openrct2_official";
+
+    type ObjectGeneration = "dat" | "json";
+
+    /**
+     * Represents an installed OpenRCT2 object which may or may not be currently loaded into the park.
+     */
+    interface InstalledObject {
+        /**
+         * The full path of the object file.
+         */
+        readonly path: string;
+
+        /**
+         * Whether the object is an original .DAT file, or a .parkobj / .json file.
+         */
+        readonly generation: ObjectGeneration;
+
+        /**
+         * The object type.
+         */
+        readonly type: ObjectType;
+
+        /**
+         * The original game or expansion pack this object first appeared in.
+         */
+        readonly sourceGames: ObjectSourceGame[];
+
+        /**
+         * The unique identifier of the object, e.g. "rct2.burgb".
+         * For legacy DAT objects, the identifier will be in a format similar to "09F55405|DirtGras|B9B19A7F".
+         */
+        readonly identifier: string;
+
+        /**
+         * The original unique identifier of the object, e.g. "BURGB   ".
+         * This may have trailing spaces if the name is shorter than 8 characters.
+         * Only .DAT objects or JSON objects based on .DAT objects will have legacy identifiers.
+         */
+        readonly legacyIdentifier: string | null;
+
+        /**
+         * The object version, e.g. "1.5.2-pre".
+         */
+        readonly version: string;
+
+        /**
+         * Gets the list of authors for the object.
+         */
+        readonly authors: string[];
+
+        /**
+         * The name in the user's current language.
+         */
+        readonly name: string;
+    }
+
     /**
      * Represents the definition of a loaded object (.DAT or .json) such as ride type or scenery item.
      */
     interface LoadedObject {
+        /**
+         * Gets a reference to the installed object.
+         */
+        readonly installedObject: InstalledObject;
+
         /**
          * The object type.
          */
@@ -1602,7 +1697,7 @@ declare global {
 
         /**
          * The unique identifier of the object, e.g. "rct2.burgb".
-         * Only JSON objects will have an identifier.
+         * For legacy DAT objects, the identifier will be in a format similar to "09F55405|DirtGras|B9B19A7F".
          */
         readonly identifier: string;
 
@@ -1752,10 +1847,19 @@ declare global {
         readonly numVerticalFramesOverride: number;
     }
 
+    interface SceneryObject extends LoadedImageObject {
+        /**
+         * A list of scenery groups this object belongs to. This may not contain any
+         * scenery groups that contain this object by default. This is typically
+         * used for custom objects to be part of existing scenery groups.
+         */
+        readonly sceneryGroups: string[];
+    }
+
     /**
      * Represents the object definition of a small scenery item such a tree.
      */
-    interface SmallSceneryObject extends LoadedImageObject {
+    interface SmallSceneryObject extends SceneryObject {
         /**
          * Raw bit flags that describe characteristics of the scenery item.
          */
@@ -1775,6 +1879,32 @@ declare global {
          * How much the scenery item costs to remove.
          */
         readonly removalPrice: number;
+    }
+
+    interface LargeSceneryObject extends SceneryObject {
+
+    }
+
+    interface WallObject extends SceneryObject {
+
+    }
+
+    interface FootpathAdditionObject extends SceneryObject {
+
+    }
+
+    interface BannerObject extends SceneryObject {
+
+    }
+
+    /**
+     * Represents the object definition of a scenery group.
+     */
+    interface SceneryGroupObject extends LoadedImageObject {
+        /**
+         * The scenery items that belong to this scenery group.
+         */
+        readonly items: string[];
     }
 
     /**
@@ -2337,11 +2467,11 @@ declare global {
          * The current tilt of the car in the X/Y axis.
          */
         bankRotation: number;
-		
-		/**
-		 * Whether the car sprite is reversed or not.
-		 */ 
-		isReversed: boolean;
+
+        /**
+         * Whether the car sprite is reversed or not.
+         */
+        isReversed: boolean;
 
         /**
          * The colour of the car.
@@ -4587,5 +4717,82 @@ declare global {
         readonly totalTime: number;
         readonly parents: number[];
         readonly children: number[];
+    }
+
+    interface ObjectManager {
+        /**
+         * Gets all the objects that are installed and can be loaded into the park.
+         */
+        readonly installedObjects: InstalledObject[];
+
+        /**
+         * Gets the installed object with the given identifier, or null
+         * if the object was not found.
+         * @param identifier The object identifier.
+         */
+        getInstalledObject(identifier: string): InstalledObject | null;
+
+        /**
+         * Attempt to load the object into the current park at the given index for the object type.
+         * If an object already exists at the given index, that object will be unloaded and this object
+         * will replace it, providing the object type is the same.
+         * @param identifier The object identifier.
+         * @param index The index to load the object to. If not provided, an empty slot will be used.
+         * @returns The index of the loaded object.
+         */
+        load(identifier: string, index?: number): LoadedObject | null;
+
+        /**
+         * Attempt to load the given objects into the current park, given they are not already loaded.
+         */
+        load(identifiers: string[]): (LoadedObject | null)[];
+
+        /**
+         * Unloads the object, if loaded.
+         * @param identifier The object identifier to unload.
+         */
+        unload(identifier: string): void;
+
+        /**
+         * Unloads the specified objects, if loaded.
+         * @param identifiers The object identifiers to unload.
+         */
+        unload(identifiers: string[]): void;
+
+        /**
+         * Unloads the specified object, if loaded.
+         * @param type The object type.
+         * @param index The index of the slot to unload for the given type.
+         */
+        unload(type: ObjectType, index: number): void;
+
+        /**
+         * Gets the loaded object at the given index.
+         * @param type The object type.
+         * @param index The index.
+         */
+        getObject(type: ObjectType, index: number): LoadedObject;
+        getObject(type: "ride", index: number): RideObject;
+        getObject(type: "small_scenery", index: number): SmallSceneryObject;
+        getObject(type: "large_scenery", index: number): LargeSceneryObject;
+        getObject(type: "wall", index: number): WallObject;
+        getObject(type: "footpath_addition", index: number): FootpathAdditionObject;
+        getObject(type: "banner", index: number): BannerObject;
+        getObject(type: "scenery_group", index: number): SceneryGroupObject;
+        getObject(type: "music", index: number): LoadedObject;
+
+        /**
+         * Gets all the currently loaded objects for a given object type.
+         * @param type The object type.
+         */
+        getAllObjects(type: ObjectType): LoadedObject[];
+        getAllObjects(type: "ride"): RideObject[];
+        getAllObjects(type: "small_scenery"): SmallSceneryObject[];
+        getAllObjects(type: "large_scenery"): LargeSceneryObject[];
+        getAllObjects(type: "wall"): WallObject[];
+        getAllObjects(type: "footpath_addition"): FootpathAdditionObject[];
+        getAllObjects(type: "banner"): BannerObject[];
+        getAllObjects(type: "scenery_group"): SceneryGroupObject[];
+        getAllObjects(type: "music"): LoadedObject[];
     }
 }

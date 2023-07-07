@@ -10,11 +10,12 @@
 #pragma once
 
 #include <array>
+#include <cstddef>
 #include <cstdint>
 #include <limits>
 
 using ObjectEntryIndex = uint16_t;
-constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<ObjectEntryIndex>::max();
+constexpr ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<ObjectEntryIndex>::max();
 
 // First 0xF of RCTObjectEntry->flags
 enum class ObjectType : uint8_t
@@ -78,3 +79,4 @@ constexpr std::array<ObjectType, 2> IntransientObjectTypes = { ObjectType::Scena
 
 bool ObjectTypeIsTransient(ObjectType type);
 bool ObjectTypeIsIntransient(ObjectType type);
+size_t GetObjectTypeLimit(ObjectType type);

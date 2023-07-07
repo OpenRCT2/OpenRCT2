@@ -80,9 +80,10 @@ void InGameConsole::Input(ConsoleInput input)
             }
             _consoleTextInputSession->Length = UTF8Length(_consoleCurrentLine.c_str());
             _consoleTextInputSession->SelectionStart = _consoleCurrentLine.size();
+            RefreshCaret(_consoleTextInputSession->SelectionStart);
             break;
         case ConsoleInput::HistoryNext:
-            if (_consoleHistoryIndex < _consoleHistory.size() - 1)
+            if (_consoleHistoryIndex + 1 < _consoleHistory.size())
             {
                 _consoleHistoryIndex++;
                 _consoleCurrentLine = _consoleHistory[_consoleHistoryIndex];
@@ -94,6 +95,7 @@ void InGameConsole::Input(ConsoleInput input)
                 _consoleHistoryIndex = _consoleHistory.size();
                 ClearInput();
             }
+            RefreshCaret(_consoleTextInputSession->SelectionStart);
             break;
         case ConsoleInput::ScrollPrevious:
         {

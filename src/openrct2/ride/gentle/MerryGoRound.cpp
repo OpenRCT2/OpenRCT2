@@ -17,11 +17,11 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 
-static constexpr const uint32_t MerryGoRoundRiderOffsets[] = {
+static constexpr uint32_t MerryGoRoundRiderOffsets[] = {
     0, 32, 64, 96, 16, 48, 80, 112,
 };
 
-static constexpr const uint16_t MerryGoRoundBreakdownVibration[] = {
+static constexpr uint16_t MerryGoRoundBreakdownVibration[] = {
     0, 1, 2, 3, 4, 3, 2, 1, 0, 0,
 };
 

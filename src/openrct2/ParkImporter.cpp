@@ -41,17 +41,16 @@ namespace ParkImporter
 
     bool ExtensionIsOpenRCT2ParkFile(std::string_view extension)
     {
-        return String::Equals(extension, ".park", true);
+        return String::IEquals(extension, ".park");
     }
 
     bool ExtensionIsRCT1(std::string_view extension)
     {
-        return String::Equals(extension, ".sc4", true) || String::Equals(extension, ".sv4", true);
+        return String::IEquals(extension, ".sc4") || String::IEquals(extension, ".sv4");
     }
 
     bool ExtensionIsScenario(std::string_view extension)
     {
-        return String::Equals(extension, ".sc4", true) || String::Equals(extension, ".sc6", true)
-            || String::Equals(extension, ".sea", true);
+        return String::IEquals(extension, ".sc4") || String::IEquals(extension, ".sc6") || String::IEquals(extension, ".sea");
     }
 } // namespace ParkImporter

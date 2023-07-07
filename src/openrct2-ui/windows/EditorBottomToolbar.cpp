@@ -49,7 +49,7 @@ class EditorBottomToolbarWindow final : public Window
 private:
     using FuncPtr = void (EditorBottomToolbarWindow::*)() const;
 
-    static constexpr const StringId _editorStepNames[] = {
+    static constexpr StringId _editorStepNames[] = {
         STR_EDITOR_STEP_OBJECT_SELECTION,       STR_EDITOR_STEP_LANDSCAPE_EDITOR,      STR_EDITOR_STEP_INVENTIONS_LIST_SET_UP,
         STR_EDITOR_STEP_OPTIONS_SELECTION,      STR_EDITOR_STEP_OBJECTIVE_SELECTION,   STR_EDITOR_STEP_SAVE_SCENARIO,
         STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER, STR_EDITOR_STEP_TRACK_DESIGNS_MANAGER,
@@ -374,7 +374,7 @@ private:
         nullptr,
     };
 
-    static constexpr const FuncPtr _nextButtonMouseUp[] = {
+    static constexpr FuncPtr _nextButtonMouseUp[] = {
         &EditorBottomToolbarWindow::JumpForwardFromObjectSelection,
         &EditorBottomToolbarWindow::JumpForwardToInventionListSetUp,
         &EditorBottomToolbarWindow::JumpForwardToOptionsSelection,

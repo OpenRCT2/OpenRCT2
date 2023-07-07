@@ -85,7 +85,7 @@ namespace OpenRCT2::Drawing
     };
 } // namespace OpenRCT2::Drawing
 
-constexpr const GamePalette StandardPalette = { {
+constexpr GamePalette StandardPalette = { {
     // 0 (Unused/Transparent)
     { 0, 0, 0, 255 },
 

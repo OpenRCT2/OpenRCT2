@@ -34,7 +34,7 @@ uint8_t gClipHeight = 128; // Default to middle value
 CoordsXY gClipSelectionA = { 0, 0 };
 CoordsXY gClipSelectionB = { MAXIMUM_TILE_START_XY, MAXIMUM_TILE_START_XY };
 
-static constexpr const uint8_t BoundBoxDebugColours[] = {
+static constexpr uint8_t BoundBoxDebugColours[] = {
     0,   // NONE
     102, // TERRAIN
     114, // SPRITE

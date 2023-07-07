@@ -11,6 +11,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Map.h>
@@ -29,8 +30,6 @@ class PathfindingTestBase : public testing::Test
 public:
     static void SetUpTestCase()
     {
-        Platform::CoreInit();
-
         gOpenRCT2Headless = true;
         gOpenRCT2NoGraphics = true;
         _context = CreateContext();
@@ -59,7 +58,7 @@ protected:
         for (auto& ride : GetRideManager())
         {
             auto thisName = ride.GetName();
-            if (!_strnicmp(thisName.c_str(), name, sizeof(thisName)))
+            if (String::StartsWith(thisName, u8string{ name }, true))
             {
                 return &ride;
             }

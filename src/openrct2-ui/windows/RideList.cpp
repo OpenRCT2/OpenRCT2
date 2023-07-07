@@ -28,9 +28,9 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_NONE;
-static constexpr const int32_t WH = 240;
-static constexpr const int32_t WW = 340;
+static constexpr StringId WINDOW_TITLE = STR_NONE;
+static constexpr int32_t WH = 240;
+static constexpr int32_t WW = 340;
 
 enum
 {
@@ -101,7 +101,7 @@ enum
     DROPDOWN_LIST_COUNT,
 };
 
-static constexpr const StringId ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
+static constexpr StringId ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
     STR_STATUS,
     STR_POPULARITY,
     STR_SATISFACTION,
@@ -122,13 +122,13 @@ static constexpr const StringId ride_info_type_string_mapping[DROPDOWN_LIST_COUN
     STR_RIDE_LIST_NAUSEA,
 };
 
-static constexpr const StringId ride_list_statusbar_count_strings[PAGE_COUNT] = {
+static constexpr StringId ride_list_statusbar_count_strings[PAGE_COUNT] = {
     STR_NUMBER_RIDES,
     STR_NUMBER_SHOPS_AND_STALLS,
     STR_NUMBER_TOILETS_AND_INFORMATION_KIOSKS,
 };
 
-static constexpr const bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
+static constexpr bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
     false, // Status
     false, // Popularity
     false, // Satisfaction
@@ -149,7 +149,7 @@ static constexpr const bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = 
     false, // Nausea
 };
 
-static constexpr const StringId page_names[] = {
+static constexpr StringId page_names[] = {
     STR_RIDES,
     STR_SHOPS_AND_STALLS,
     STR_TOILETS_AND_INFORMATION_KIOSKS,

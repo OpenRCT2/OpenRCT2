@@ -42,8 +42,8 @@ enum {
     WIDX_LOAD_SERVER
 };
 
-static constexpr const int32_t WW = 300;
-static constexpr const int32_t WH = 154;
+static constexpr int32_t WW = 300;
+static constexpr int32_t WH = 154;
 
 static Widget _windowServerStartWidgets[] = {
     MakeWidget({ 0, 0 }, { WW, WH }, WindowWidgetType::Frame, WindowColour::Primary), // panel / background
@@ -73,8 +73,6 @@ public:
         widgets[WIDX_GREETING_INPUT].string = _greeting;
         widgets[WIDX_PASSWORD_INPUT].string = _password;
         InitScrollWidgets();
-        no_list_items = 0;
-        selected_list_item = -1;
         frame_no = 0;
         min_width = width;
         min_height = height;
@@ -134,7 +132,7 @@ public:
                 break;
             case WIDX_START_SERVER:
                 NetworkSetPassword(_password);
-                WindowScenarioselectOpen(ScenarioSelectCallback, false);
+                WindowScenarioselectOpen(ScenarioSelectCallback);
                 break;
             case WIDX_LOAD_SERVER:
                 NetworkSetPassword(_password);

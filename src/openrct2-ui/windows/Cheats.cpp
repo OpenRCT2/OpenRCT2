@@ -50,7 +50,7 @@ static StringId _staffSpeedNames[] =
     STR_FAST,
 };
 
-static constexpr const StringId WeatherTypes[] =
+static constexpr StringId WeatherTypes[] =
 {
     STR_SUNNY,
     STR_PARTIALLY_CLOUDY,
@@ -180,17 +180,17 @@ enum WindowCheatsWidgetIdx
 
 #pragma region MEASUREMENTS
 
-static constexpr const StringId WINDOW_TITLE = STR_CHEAT_TITLE;
-static constexpr const int32_t WW = 249;
-static constexpr const int32_t WH = 300;
+static constexpr StringId WINDOW_TITLE = STR_CHEAT_TITLE;
+static constexpr int32_t WW = 249;
+static constexpr int32_t WH = 300;
 
 static constexpr ScreenSize CHEAT_BUTTON = {110, 17};
 static constexpr ScreenSize CHEAT_CHECK = {221, 12};
 static constexpr ScreenSize CHEAT_SPINNER = {117, 14};
 static constexpr ScreenSize MINMAX_BUTTON = {55, 17};
 
-static constexpr const int32_t TAB_WIDTH = 31;
-static constexpr const int32_t TAB_START = 3;
+static constexpr int32_t TAB_WIDTH = 31;
+static constexpr int32_t TAB_START = 3;
 
 
 #pragma endregion
@@ -641,7 +641,7 @@ private:
 
     void UpdateTabPositions()
     {
-        constexpr const uint16_t tabs[] = {
+        constexpr uint16_t tabs[] = {
             WIDX_TAB_1,
             WIDX_TAB_2,
             WIDX_TAB_3,
@@ -792,7 +792,7 @@ private:
                 CheatsSet(CheatType::SetMoney, _moneySpinnerValue);
                 break;
             case WIDX_CLEAR_LOAN:
-                CheatsSet(CheatType::ClearLoan, CHEATS_MONEY_DEFAULT);
+                CheatsSet(CheatType::ClearLoan);
                 break;
         }
     }

@@ -51,7 +51,7 @@
   <Import Project="..\..\openrct2.common.props" />
   <ItemDefinitionGroup>
     <ClCompile>
-      <PreprocessorDefinitions>__ENABLE_DISCORD__;USE_BENCHMARK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__ENABLE_DISCORD__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Breakpad)'=='true' and ('$(Platform)'=='Win32' or '$(Platform)'=='x64')">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x64'">USE_FRIBIDI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader Condition="'$(UsePCH)'=='true'">Use</PrecompiledHeader>
@@ -351,7 +351,7 @@
     <ClInclude Include="object\WaterEntry.h" />
     <ClInclude Include="object\WaterObject.h" />
     <ClInclude Include="OpenRCT2.h" />
-    <ClInclude Include="openrct2_pch.h" Condition="'$(UsePCH)'=='true'"/>
+    <ClInclude Include="openrct2_pch.h" Condition="'$(UsePCH)'=='true'" />
     <ClInclude Include="paint\Boundbox.h" />
     <ClInclude Include="paint\Paint.Entity.h" />
     <ClInclude Include="paint\Paint.h" />
@@ -515,6 +515,8 @@
     <ClInclude Include="scripting\bindings\game\ScProfiler.hpp" />
     <ClInclude Include="scripting\bindings\network\ScPlayer.hpp" />
     <ClInclude Include="scripting\bindings\network\ScPlayerGroup.hpp" />
+    <ClInclude Include="scripting\bindings\object\ScInstalledObject.hpp" />
+    <ClInclude Include="scripting\bindings\object\ScObjectManager.h" />
     <ClInclude Include="scripting\bindings\ride\ScRideStation.hpp" />
     <ClInclude Include="scripting\bindings\ride\ScTrackIterator.h" />
     <ClInclude Include="scripting\bindings\ride\ScTrackSegment.h" />
@@ -584,6 +586,7 @@
     <ClInclude Include="world\ScenerySelection.h" />
     <ClInclude Include="world\SmallScenery.h" />
     <ClInclude Include="world\Surface.h" />
+    <ClInclude Include="world\SurfaceData.h" />
     <ClInclude Include="world\TileElement.h" />
     <ClInclude Include="world\TileElementsView.h" />
     <ClInclude Include="world\TileInspector.h" />
@@ -688,9 +691,6 @@
     <ClCompile Include="audio\DummyAudioContext.cpp" />
     <ClCompile Include="Cheats.cpp" />
     <ClCompile Include="CommandLineSprite.cpp" />
-    <ClCompile Include="command_line\BenchGfxCommmands.cpp" />
-    <ClCompile Include="command_line\BenchSpriteSort.cpp" />
-    <ClCompile Include="command_line/BenchUpdate.cpp" />
     <ClCompile Include="command_line\CommandLine.cpp" />
     <ClCompile Include="command_line\ConvertCommand.cpp" />
     <ClCompile Include="command_line\ParkInfoCommands.cpp" />
@@ -873,10 +873,10 @@
     <ClCompile Include="PlatformEnvironment.cpp" />
     <ClCompile Include="platform\Crash.cpp" />
     <ClCompile Include="platform\Platform.Android.cpp" />
+    <ClCompile Include="platform\Platform.Common.cpp" />
     <ClCompile Include="platform\Platform.Linux.cpp" />
     <ClCompile Include="platform\Platform.Posix.cpp" />
     <ClCompile Include="platform\Platform.Win32.cpp" />
-    <ClCompile Include="platform\Shared.cpp" />
     <ClCompile Include="profiling\Profiling.cpp" />
     <ClCompile Include="rct12\RCT12.cpp" />
     <ClCompile Include="rct12\SawyerChunk.cpp" />
@@ -997,6 +997,7 @@
     <ClCompile Include="scripting\bindings\network\ScNetwork.cpp" />
     <ClCompile Include="scripting\bindings\network\ScPlayer.cpp" />
     <ClCompile Include="scripting\bindings\network\ScPlayerGroup.cpp" />
+    <ClCompile Include="scripting\bindings\object\ScObjectManager.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScRide.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScRideStation.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScTrackIterator.cpp" />
@@ -1045,13 +1046,15 @@
     <ClCompile Include="world\Scenery.cpp" />
     <ClCompile Include="world\SmallScenery.cpp" />
     <ClCompile Include="world\Surface.cpp" />
+    <ClCompile Include="world\SurfaceData.cpp" />
     <ClCompile Include="world\TileElement.cpp" />
     <ClCompile Include="world/TileElementBase.cpp" />
     <ClCompile Include="world\TileInspector.cpp" />
     <ClCompile Include="world\Wall.cpp" />
     <ClCompile Include="..\thirdparty\duktape\duktape.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <ForcedIncludeFiles></ForcedIncludeFiles>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
   </ItemGroup>

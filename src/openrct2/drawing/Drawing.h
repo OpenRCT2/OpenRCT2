@@ -44,7 +44,7 @@ struct PaletteBGRA
     uint8_t Alpha{};
 };
 
-constexpr const auto PALETTE_SIZE = 256;
+constexpr auto PALETTE_SIZE = 256;
 
 struct GamePalette
 {
@@ -597,9 +597,8 @@ void MaskSse4_1(
 void MaskAvx2(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
-void MaskInit();
 
-extern void (*MaskFn)(
+void MaskFn(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
 

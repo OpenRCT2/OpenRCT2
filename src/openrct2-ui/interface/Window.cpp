@@ -38,6 +38,8 @@ static bool WindowFitsBetweenOthers(const ScreenCoordsXY& loc, int32_t width, in
 {
     for (auto& w : g_window_list)
     {
+        if (w->flags & WF_DEAD)
+            continue;
         if (w->flags & WF_STICK_TO_BACK)
             continue;
 
@@ -131,6 +133,8 @@ static ScreenCoordsXY GetAutoPositionForNewWindow(int32_t width, int32_t height)
     // Place window next to another
     for (auto& w : g_window_list)
     {
+        if (w->flags & WF_DEAD)
+            continue;
         if (w->flags & WF_STICK_TO_BACK)
             continue;
 
@@ -158,6 +162,8 @@ static ScreenCoordsXY GetAutoPositionForNewWindow(int32_t width, int32_t height)
     // Overlap
     for (auto& w : g_window_list)
     {
+        if (w->flags & WF_DEAD)
+            continue;
         if (w->flags & WF_STICK_TO_BACK)
             continue;
 
@@ -222,6 +228,8 @@ WindowBase* WindowCreate(
         // Close least recently used window
         for (auto& w : g_window_list)
         {
+            if (w->flags & WF_DEAD)
+                continue;
             if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
             {
                 WindowClose(*w.get());
@@ -278,33 +286,11 @@ WindowBase* WindowCreate(
 
     w->focus = std::nullopt;
     w->page = 0;
-    w->var_48C = 0;
-    w->var_492 = 0;
 
     ColourSchemeUpdate(w);
     w->Invalidate();
     w->OnOpen();
     return w;
-}
-
-WindowBase* WindowCreate(
-    const ScreenCoordsXY& pos, int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags)
-{
-    auto w = std::make_unique<WindowBase>();
-    w->event_handlers = event_handlers;
-    return WindowCreate(std::move(w), cls, pos, width, height, flags);
-}
-
-WindowBase* WindowCreateAutoPos(int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags)
-{
-    auto pos = GetAutoPositionForNewWindow(width, height);
-    return WindowCreate(pos, width, height, event_handlers, cls, flags);
-}
-
-WindowBase* WindowCreateCentred(int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags)
-{
-    auto pos = GetCentrePositionForNewWindow(width, height);
-    return WindowCreate(pos, width, height, event_handlers, cls, flags);
 }
 
 static int32_t WindowGetWidgetIndex(const WindowBase& w, Widget* widget)
@@ -819,12 +805,19 @@ void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_ta
 
     for (i = start_tab_id; i <= end_tab_id; i++)
     {
+        auto& widget = w->widgets[i];
         if (!WidgetIsDisabled(*w, i))
         {
-            auto& widget = w->widgets[i];
             widget.left = x;
             widget.right = x + tab_width;
             x += tab_width + 1;
+        }
+        else
+        {
+            // Workaround #20535: Avoid disabled widgets from sharing the same space as active ones, otherwise
+            // WindowFindWidgetFromPoint could return the disabled one, causing issues.
+            widget.left = 0;
+            widget.right = 0;
         }
     }
 }

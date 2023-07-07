@@ -38,7 +38,7 @@ enum class CursorID : uint8_t;
 enum class RideConstructionState : uint8_t;
 enum class CloseWindowModifier : uint8_t;
 
-constexpr const uint8_t CloseButtonWidth = 10;
+constexpr uint8_t CloseButtonWidth = 10;
 
 #define SCROLLABLE_ROW_HEIGHT 12
 #define LIST_ROW_HEIGHT 12
@@ -223,79 +223,10 @@ struct Focus
     }
 };
 
-struct WindowEventList
-{
-    void (*close)(struct WindowBase*){};
-    void (*mouse_up)(struct WindowBase*, WidgetIndex){};
-    void (*resize)(struct WindowBase*){};
-    void (*mouse_down)(struct WindowBase*, WidgetIndex, Widget*){};
-    void (*dropdown)(struct WindowBase*, WidgetIndex, int32_t){};
-    void (*unknown_05)(struct WindowBase*){};
-    void (*update)(struct WindowBase*){};
-    void (*periodic_update)(struct WindowBase*){};
-    void (*tool_update)(struct WindowBase*, WidgetIndex, const ScreenCoordsXY&){};
-    void (*tool_down)(struct WindowBase*, WidgetIndex, const ScreenCoordsXY&){};
-    void (*tool_drag)(struct WindowBase*, WidgetIndex, const ScreenCoordsXY&){};
-    void (*tool_up)(struct WindowBase*, WidgetIndex, const ScreenCoordsXY&){};
-    void (*tool_abort)(struct WindowBase*, WidgetIndex){};
-    void (*get_scroll_size)(struct WindowBase*, int32_t, int32_t*, int32_t*){};
-    void (*scroll_mousedown)(struct WindowBase*, int32_t, const ScreenCoordsXY&){};
-    void (*scroll_mousedrag)(struct WindowBase*, int32_t, const ScreenCoordsXY&){};
-    void (*scroll_mouseover)(struct WindowBase*, int32_t, const ScreenCoordsXY&){};
-    void (*text_input)(struct WindowBase*, WidgetIndex, const char*){};
-    void (*viewport_rotate)(struct WindowBase*){};
-    void (*scroll_select)(struct WindowBase*, int32_t, int32_t){};
-    OpenRCT2String (*tooltip)(struct WindowBase*, const WidgetIndex, const StringId){};
-    void (*cursor)(struct WindowBase*, WidgetIndex, const ScreenCoordsXY&, CursorID*){};
-    void (*moved)(struct WindowBase*, const ScreenCoordsXY&){};
-    void (*invalidate)(struct WindowBase*){};
-    void (*paint)(struct WindowBase*, DrawPixelInfo&){};
-    void (*scroll_paint)(struct WindowBase*, DrawPixelInfo&, int32_t){};
-
-    typedef void (*fnEventInitializer)(WindowEventList&);
-    WindowEventList(fnEventInitializer fn)
-    {
-        fn(*this);
-    }
-};
-
-struct CampaignVariables
-{
-    int16_t campaign_type;
-    int16_t no_weeks; // 0x482
-    union
-    {
-        ::RideId RideId;
-        ObjectEntryIndex ShopItemId;
-    };
-    uint32_t Pad486;
-};
-
-struct NewRideVariables
-{
-    RideSelection SelectedRide;    // 0x480
-    RideSelection HighlightedRide; // 0x482
-    uint16_t Pad484;
-    uint16_t Pad486;
-    uint16_t selected_ride_countdown; // 488
-};
-
-struct RideVariables
-{
-    int16_t view;
-    int32_t var_482;
-    int32_t var_486;
-};
-
 struct TrackListVariables
 {
     bool track_list_being_updated;
     bool reload_track_designs;
-};
-
-struct ErrorVariables
-{
-    uint16_t var_480;
 };
 
 struct WindowCloseModifier
@@ -327,6 +258,7 @@ enum WINDOW_FLAGS
     WF_SCROLLING_TO_LOCATION = (1 << 3),
     WF_TRANSPARENT = (1 << 4),
     WF_NO_BACKGROUND = (1 << 5), // Instead of half transparency, completely remove the window background
+    WF_DEAD = (1U << 6),         // Window is closed and will be deleted in the next update.
     WF_7 = (1 << 7),
     WF_RESIZABLE = (1 << 8),
     WF_NO_AUTO_CLOSE = (1 << 9), // Don't auto close this window if too many windows are open
@@ -616,14 +548,8 @@ T* WindowFocusOrCreate(WindowClass cls, int32_t width, int32_t height, uint32_t 
     return static_cast<T*>(w);
 }
 
-WindowBase* WindowCreate(
-    const ScreenCoordsXY& pos, int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags);
-WindowBase* WindowCreateAutoPos(
-    int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags);
-WindowBase* WindowCreateCentred(
-    int32_t width, int32_t height, WindowEventList* event_handlers, WindowClass cls, uint32_t flags);
-
 void WindowClose(WindowBase& window);
+void WindowFlushDead();
 void WindowCloseByClass(WindowClass cls);
 void WindowCloseByNumber(WindowClass cls, rct_windownumber number);
 void WindowCloseByNumber(WindowClass cls, EntityId number);

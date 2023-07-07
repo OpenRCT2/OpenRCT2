@@ -3699,6 +3699,10 @@ STR_6585    :Impossible d’effectuer les changements…
 STR_6586    :OpenRCT2
 STR_6587    :Le thème principal d’OpenRCT2 est une création d’Allister Brimble,{NEWLINE}sous licence CC BY-SA 4.0.
 STR_6588    :Merci à Herman Riddering pour nous avoir permis d’enregistrer le 35er Voigt.
+STR_6589    :Placer les boutons de fenêtre à gauche
+STR_6590    :Place les boutons de fenêtre (par exemple pour fermer la fenêtre) sur la gauche de la barre de titre au lieu de la droite
+STR_6591    :L’employé est en train de réparer une attraction et ne peut pas être licencié.
+STR_6592    :L’employé est en train d’inspecter une attraction et ne peut pas être licencié.
 
 #############
 # Scenarios #

@@ -73,7 +73,6 @@ TEST_P(ReplayTests, RunReplay)
 {
     gOpenRCT2Headless = true;
     gOpenRCT2NoGraphics = true;
-    Platform::CoreInit();
 
     auto testData = GetParam();
     auto replayFile = testData.filePath;

@@ -40,12 +40,12 @@
 
 using namespace OpenRCT2::TrackMetaData;
 
-static constexpr const StringId WindowTitle = STR_NONE;
-static constexpr const int32_t WindowHeight = 382;
-static constexpr const int32_t WindowWidth = 601;
-static constexpr const int32_t RideListItemsMax = 384;
-static constexpr const int32_t RideTabCount = 6;
-static constexpr const int32_t GroupByTrackTypeWidth = 172;
+static constexpr StringId WindowTitle = STR_NONE;
+static constexpr int32_t WindowHeight = 382;
+static constexpr int32_t WindowWidth = 601;
+static constexpr int32_t RideListItemsMax = 384;
+static constexpr int32_t RideTabCount = 6;
+static constexpr int32_t GroupByTrackTypeWidth = 172;
 
 #pragma region Ride type view order
 
@@ -53,7 +53,7 @@ static constexpr const int32_t GroupByTrackTypeWidth = 172;
  * The order of ride types shown in the new ride window so that the order stays consistent across games and rides of the same
  * type are kept together.
  */
-static constexpr const ride_type_t RideTypeViewOrder[] = {
+static constexpr ride_type_t RideTypeViewOrder[] = {
     // Transport rides
     RIDE_TYPE_MINIATURE_RAILWAY,
     RIDE_TYPE_MONORAIL,
@@ -200,8 +200,8 @@ enum
     WIDX_GROUP_BY_TRACK_TYPE,
 };
 
-static constexpr const ScreenCoordsXY GroupByTrackTypeOrigin{ WindowWidth - 8 - GroupByTrackTypeWidth, 47 };
-static constexpr const ScreenSize GroupTrackTypeSize{ GroupByTrackTypeWidth, 14 };
+static constexpr ScreenCoordsXY GroupByTrackTypeOrigin{ WindowWidth - 8 - GroupByTrackTypeWidth, 47 };
+static constexpr ScreenSize GroupTrackTypeSize{ GroupByTrackTypeWidth, 14 };
 
 // clang-format off
 static Widget window_new_ride_widgets[] = {
@@ -228,7 +228,7 @@ static Widget window_new_ride_widgets[] = {
 
 #pragma endregion
 
-static constexpr const StringId RideTitles[] = {
+static constexpr StringId RideTitles[] = {
     STR_NEW_TRANSPORT_RIDES,      // TRANSPORT_TAB
     STR_NEW_GENTLE_RIDES,         // GENTLE_TAB
     STR_NEW_ROLLER_COASTERS,      // ROLLER_COASTER_TAB
@@ -239,7 +239,7 @@ static constexpr const StringId RideTitles[] = {
 };
 static_assert(std::size(RideTitles) == TAB_COUNT);
 
-static constexpr const int32_t TabAnimationLoops[] = {
+static constexpr int32_t TabAnimationLoops[] = {
     20, // TRANSPORT_TAB
     32, // GENTLE_TAB
     10, // ROLLER_COASTER_TAB
@@ -250,7 +250,7 @@ static constexpr const int32_t TabAnimationLoops[] = {
 };
 static_assert(std::size(TabAnimationLoops) == TAB_COUNT);
 
-static constexpr const int32_t TabAnimationDivisor[] = {
+static constexpr int32_t TabAnimationDivisor[] = {
     4, // TRANSPORT_TAB
     8, // GENTLE_TAB
     2, // ROLLER_COASTER_TAB
@@ -261,7 +261,7 @@ static constexpr const int32_t TabAnimationDivisor[] = {
 };
 static_assert(std::size(TabAnimationDivisor) == TAB_COUNT);
 
-static constexpr const int32_t ThrillRidesTabAnimationSequence[] = {
+static constexpr int32_t ThrillRidesTabAnimationSequence[] = {
     5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 0, 0,
 };
 
@@ -275,6 +275,12 @@ private:
     RideSelection _lastTrackDesignCountRideType{};
     int32_t _lastTrackDesignCount{};
     RideSelection _windowNewRideListItems[RideListItemsMax]{};
+    struct NewRideVariables
+    {
+        RideSelection SelectedRide;
+        RideSelection HighlightedRide;
+        uint16_t SelectedRideCountdown;
+    } _newRideVars{};
 
 public:
     static void SetOpeningPage(NewRideTabId tab)
@@ -295,7 +301,7 @@ public:
         _filter.clear();
 
         frame_no = 0;
-        new_ride.SelectedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
+        _newRideVars.SelectedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
         _lastTrackDesignCountRideType.Type = RIDE_TYPE_NULL;
         _lastTrackDesignCountRideType.EntryIndex = OBJECT_ENTRY_INDEX_NULL;
 
@@ -323,7 +329,7 @@ public:
             WidgetInvalidate(*this, WIDX_FILTER_TEXT_BOX);
         }
 
-        if (new_ride.SelectedRide.Type != RIDE_TYPE_NULL && new_ride.selected_ride_countdown-- == 0)
+        if (_newRideVars.SelectedRide.Type != RIDE_TYPE_NULL && _newRideVars.SelectedRideCountdown-- == 0)
         {
             RideSelect();
         }
@@ -337,7 +343,7 @@ public:
             // Remove highlight when mouse leaves rides list
             if (!WidgetIsHighlighted(*this, WIDX_RIDE_LIST))
             {
-                new_ride.HighlightedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
+                _newRideVars.HighlightedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
                 WidgetInvalidate(*this, WIDX_RIDE_LIST);
             }
         }
@@ -415,7 +421,7 @@ public:
 
         if (_currentTab != RESEARCH_TAB)
         {
-            RideSelection item = new_ride.HighlightedRide;
+            RideSelection item = _newRideVars.HighlightedRide;
             if (item.Type != RIDE_TYPE_NULL || item.EntryIndex != OBJECT_ENTRY_INDEX_NULL)
                 DrawRideInformation(dpi, item, windowPos + ScreenCoordsXY{ 3, height - 64 }, width - 6);
         }
@@ -441,12 +447,12 @@ public:
     void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
         RideSelection item = ScrollGetRideListItemAt(screenCoords);
-        if (new_ride.HighlightedRide == item)
+        if (_newRideVars.HighlightedRide == item)
         {
             return;
         }
 
-        new_ride.HighlightedRide = item;
+        _newRideVars.HighlightedRide = item;
         Invalidate();
     }
 
@@ -458,10 +464,10 @@ public:
             return;
         }
 
-        new_ride.SelectedRide = item;
+        _newRideVars.SelectedRide = item;
 
         OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
-        new_ride.selected_ride_countdown = 8;
+        _newRideVars.SelectedRideCountdown = 8;
         Invalidate();
     }
 
@@ -480,9 +486,9 @@ public:
         {
             // Draw flat button rectangle
             int32_t buttonFlags = 0;
-            if (new_ride.SelectedRide == *listItem)
+            if (_newRideVars.SelectedRide == *listItem)
                 buttonFlags |= INSET_RECT_FLAG_BORDER_INSET;
-            if (new_ride.HighlightedRide == *listItem || buttonFlags != 0)
+            if (_newRideVars.HighlightedRide == *listItem || buttonFlags != 0)
                 GfxFillRectInset(
                     dpi, { coords, coords + ScreenCoordsXY{ 115, 115 } }, colours[1],
                     INSET_RECT_FLAG_FILL_MID_LIGHT | buttonFlags);
@@ -531,8 +537,8 @@ public:
     {
         _currentTab = tab;
         frame_no = 0;
-        new_ride.HighlightedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
-        new_ride.selected_ride_countdown = std::numeric_limits<uint16_t>::max();
+        _newRideVars.HighlightedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
+        _newRideVars.SelectedRideCountdown = std::numeric_limits<uint16_t>::max();
         PopulateRideList();
         RefreshWidgetSizing();
         Invalidate();
@@ -546,7 +552,7 @@ public:
 private:
     void RideSelect()
     {
-        RideSelection item = new_ride.SelectedRide;
+        RideSelection item = _newRideVars.SelectedRide;
         if (item.Type == RIDE_TYPE_NULL)
         {
             return;

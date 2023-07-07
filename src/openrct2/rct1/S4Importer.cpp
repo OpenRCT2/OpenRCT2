@@ -75,7 +75,7 @@
 #include <memory>
 #include <vector>
 
-static constexpr const ObjectEntryIndex ObjectEntryIndexIgnore = 254;
+static constexpr ObjectEntryIndex ObjectEntryIndexIgnore = 254;
 
 using namespace OpenRCT2;
 
@@ -129,11 +129,11 @@ namespace RCT1
         ParkLoadResult Load(const u8string& path) override
         {
             const auto extension = Path::GetExtension(path);
-            if (String::Equals(extension, ".sc4", true))
+            if (String::IEquals(extension, ".sc4"))
             {
                 return LoadScenario(path);
             }
-            if (String::Equals(extension, ".sv4", true))
+            if (String::IEquals(extension, ".sv4"))
             {
                 return LoadSavedGame(path);
             }

@@ -14,6 +14,7 @@
 #    include <limits.h>
 #    include <locale.h>
 #    include <pwd.h>
+#    include <unistd.h>
 #    include <vector>
 #    if defined(__FreeBSD__) || defined(__NetBSD__)
 #        include <stddef.h>

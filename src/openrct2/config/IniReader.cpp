@@ -133,7 +133,7 @@ public:
         std::string value;
         if (TryGetString(name, &value))
         {
-            result = String::Equals(value, "true", true);
+            result = String::IEquals(value, "true");
         }
         return result;
     }

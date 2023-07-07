@@ -572,7 +572,7 @@ static bool MapAnimationInvalidateWall(const CoordsXYZ& loc)
  *
  *  rct2: 0x009819DC
  */
-static constexpr const map_animation_invalidate_event_handler _animatedObjectEventHandlers[MAP_ANIMATION_TYPE_COUNT] = {
+static constexpr map_animation_invalidate_event_handler _animatedObjectEventHandlers[MAP_ANIMATION_TYPE_COUNT] = {
     MapAnimationInvalidateRideEntrance,     MapAnimationInvalidateQueueBanner,    MapAnimationInvalidateSmallScenery,
     MapAnimationInvalidateParkEntrance,     MapAnimationInvalidateTrackWaterfall, MapAnimationInvalidateTrackRapids,
     MapAnimationInvalidateTrackOnRidePhoto, MapAnimationInvalidateTrackWhirlpool, MapAnimationInvalidateTrackSpinningTunnel,

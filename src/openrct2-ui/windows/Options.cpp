@@ -213,9 +213,9 @@ enum WindowOptionsWidgetIdx {
     WIDX_ASSET_PACKS,
 };
 
-static constexpr const StringId WINDOW_TITLE = STR_OPTIONS_TITLE;
-static constexpr const int32_t WW = 310;
-static constexpr const int32_t WH = 332;
+static constexpr StringId WINDOW_TITLE = STR_OPTIONS_TITLE;
+static constexpr int32_t WW = 310;
+static constexpr int32_t WH = 332;
 
 #define MAIN_OPTIONS_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \

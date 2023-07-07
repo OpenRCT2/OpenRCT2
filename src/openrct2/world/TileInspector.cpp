@@ -320,7 +320,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActions::Result PasteElementAt(const CoordsXY& loc, TileElement element, bool isExecuting)
+    GameActions::Result PasteElementAt(const CoordsXY& loc, TileElement element, Banner banner, bool isExecuting)
     {
         // Make sure there is enough space for the new element
         if (!MapCheckCapacityAndReorganise(loc))
@@ -330,28 +330,31 @@ namespace OpenRCT2::TileInspector
 
         auto tileLoc = TileCoordsXY(loc);
 
-        auto bannerIndex = element.GetBannerIndex();
-        if (bannerIndex != BannerIndex::GetNull() && GetBanner(bannerIndex) == nullptr)
-        {
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
-        }
-
         if (isExecuting)
         {
-            // Check if the element to be pasted refers to a banner index
-            if (bannerIndex != BannerIndex::GetNull())
+            // Check if the element to be pasted has a banner
+            if (element.GetBannerIndex() != BannerIndex::GetNull())
             {
-                // The element to be pasted refers to a banner index - make a copy of it
+                // The element to be pasted has a banner - make a copy of it from the banner provided
                 auto newBanner = CreateBanner();
                 if (newBanner == nullptr)
                 {
                     LOG_ERROR("No free banners available");
                     return GameActions::Result(GameActions::Status::Unknown, STR_TOO_MANY_BANNERS_IN_GAME, STR_NONE);
                 }
+                auto newId = newBanner->id;
                 // Copy the banners style
-                *newBanner = *GetBanner(bannerIndex);
+                *newBanner = banner;
                 // Reset the location to the paste location
                 newBanner->position = tileLoc;
+                newBanner->id = newId;
+
+                // If the linked ride has been destroyed since copying, unlink the pasted banner
+                if (newBanner->flags & BANNER_FLAG_LINKED_TO_RIDE && GetRide(newBanner->ride_index) == nullptr)
+                {
+                    newBanner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
+                    newBanner->ride_index = RideId::GetNull();
+                }
 
                 // Use the new banner index
                 element.SetBannerIndex(newBanner->id);
@@ -839,7 +842,7 @@ namespace OpenRCT2::TileInspector
 
                 // track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is
                 // for when you decrease the map size.
-                openrct2_assert(MapGetSurfaceElementAt(elem) != nullptr, "No surface at %d,%d", elem.x >> 5, elem.y >> 5);
+                Guard::Assert(MapGetSurfaceElementAt(elem) != nullptr, "No surface at %d,%d", elem.x >> 5, elem.y >> 5);
 
                 MapInvalidateTileFull(elem);
 
@@ -923,7 +926,7 @@ namespace OpenRCT2::TileInspector
 
                 // track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is
                 // for when you decrease the map size.
-                openrct2_assert(MapGetSurfaceElementAt(elem) != nullptr, "No surface at %d,%d", elem.x >> 5, elem.y >> 5);
+                Guard::Assert(MapGetSurfaceElementAt(elem) != nullptr, "No surface at %d,%d", elem.x >> 5, elem.y >> 5);
 
                 MapInvalidateTileFull(elem);
 

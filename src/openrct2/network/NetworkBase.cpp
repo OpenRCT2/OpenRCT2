@@ -43,7 +43,7 @@
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-#define NETWORK_STREAM_VERSION "7"
+#define NETWORK_STREAM_VERSION "12"
 
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
@@ -2113,7 +2113,7 @@ std::string NetworkBase::MakePlayerNameUnique(const std::string& name)
         // Check if there is already a player with this name in the server
         for (const auto& player : player_list)
         {
-            if (String::Equals(player->Name.c_str(), new_name.c_str(), true))
+            if (String::IEquals(player->Name, new_name))
             {
                 unique = false;
                 break;

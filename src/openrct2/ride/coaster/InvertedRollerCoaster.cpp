@@ -76,7 +76,7 @@ static void InvertedRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][3] = {
+    static constexpr uint32_t imageIds[4][3] = {
         { SPR_STATION_BASE_C_SW_NE, 27131, SPR_STATION_INVERTED_BAR_C_SW_NE },
         { SPR_STATION_BASE_C_NW_SE, 27132, SPR_STATION_INVERTED_BAR_C_NW_SE },
         { SPR_STATION_BASE_C_SW_NE, 27131, SPR_STATION_INVERTED_BAR_C_SW_NE },
@@ -9020,7 +9020,7 @@ static void InvertedRCTrackRightLargeHalfLoopUp(
 }
 
 /** rct2: 0x008A9998 */
-static void InvertedRCTrackRightLargeHalfLoopDown(
+static void InvertedRCTrackLeftLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -9028,7 +9028,7 @@ static void InvertedRCTrackRightLargeHalfLoopDown(
 }
 
 /** rct2: 0x008A99A8 */
-static void InvertedRCTrackLeftLargeHalfLoopDown(
+static void InvertedRCTrackRightLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -10781,10 +10781,10 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionInvertedRC(int32_t trackType)
             return InvertedRCTrackLeftLargeHalfLoopUp;
         case TrackElemType::RightLargeHalfLoopUp:
             return InvertedRCTrackRightLargeHalfLoopUp;
-        case TrackElemType::RightLargeHalfLoopDown:
-            return InvertedRCTrackRightLargeHalfLoopDown;
         case TrackElemType::LeftLargeHalfLoopDown:
             return InvertedRCTrackLeftLargeHalfLoopDown;
+        case TrackElemType::RightLargeHalfLoopDown:
+            return InvertedRCTrackRightLargeHalfLoopDown;
         case TrackElemType::BlockBrakes:
             return InvertedRCTrackBlockBrakes;
         case TrackElemType::LeftBankedQuarterTurn3TileUp25:

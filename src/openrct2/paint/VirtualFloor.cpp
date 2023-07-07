@@ -296,7 +296,7 @@ void VirtualFloorPaint(PaintSession& session)
 {
     PROFILED_FUNCTION();
 
-    static constexpr const CoordsXY scenery_half_tile_offsets[4] = {
+    static constexpr CoordsXY scenery_half_tile_offsets[4] = {
         { -COORDS_XY_STEP, 0 },
         { 0, COORDS_XY_STEP },
         { COORDS_XY_STEP, 0 },

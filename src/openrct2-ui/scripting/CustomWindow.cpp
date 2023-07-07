@@ -48,10 +48,8 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static Widget CustomDefaultWidgets[] = {
-        { WindowWidgetType::Frame, 0, 0, 0, 0, 0, 0xFFFFFFFF, STR_NONE },                  // panel / background
-        { WindowWidgetType::Caption, 0, 0, 0, 1, 14, STR_STRING, STR_WINDOW_TITLE_TIP },   // title bar
-        { WindowWidgetType::CloseBox, 0, 0, 0, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP }, // close x button
-        { WindowWidgetType::Resize, 1, 0, 0, 14, 0, 0xFFFFFFFF, STR_NONE },                // content panel
+        WINDOW_SHIM(STR_STRING, 50, 50),
+        MakeWidget({ 0, 14 }, { 50, 36 }, WindowWidgetType::Resize, WindowColour::Secondary), // content panel
     };
 
     struct CustomWidgetDesc

@@ -20,7 +20,7 @@
 
 #include <algorithm>
 
-static constexpr const uint8_t RCT2ToOpenRCT2LanguageId[] = {
+static constexpr uint8_t RCT2ToOpenRCT2LanguageId[] = {
     LANGUAGE_ENGLISH_UK,
     LANGUAGE_ENGLISH_US,
     LANGUAGE_FRENCH,

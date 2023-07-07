@@ -71,7 +71,7 @@ static void SteeplechaseTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][3] = {
+    static constexpr uint32_t imageIds[4][3] = {
         { 28635, SPR_STATION_BASE_B_SW_NE },
         { 28636, SPR_STATION_BASE_B_NW_SE },
         { 28635, SPR_STATION_BASE_B_SW_NE },

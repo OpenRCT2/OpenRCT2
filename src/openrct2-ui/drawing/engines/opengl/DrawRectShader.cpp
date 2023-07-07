@@ -27,7 +27,7 @@ constexpr VDStruct VertexData[4] = {
     { 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f },
 };
 
-constexpr const size_t InitialInstancesBufferSize = 32768;
+constexpr size_t InitialInstancesBufferSize = 32768;
 
 DrawRectShader::DrawRectShader()
     : OpenGLShaderProgram("drawrect")

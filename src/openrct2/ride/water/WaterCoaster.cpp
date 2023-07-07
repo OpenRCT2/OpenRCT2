@@ -211,7 +211,7 @@ static void WaterRCTrackRightQuarterTurn5Tiles25DegUp(
         session, ride, trackSequence, direction, height, trackElement, JuniorRCChainType::None);
 }
 
-static constexpr const uint8_t water_rc_left_quarter_turn_5_tiles_to_right_turn_map[] = {
+static constexpr uint8_t water_rc_left_quarter_turn_5_tiles_to_right_turn_map[] = {
     6, 4, 5, 3, 1, 2, 0,
 };
 
@@ -251,7 +251,7 @@ static void WaterRCTrackRightQuarterTurn3Tiles25DegDown(
         session, ride, trackSequence, direction, height, trackElement, JuniorRCChainType::None);
 }
 
-static constexpr const uint8_t water_rc_left_quarter_turn_3_tiles_to_right_turn_map[] = {
+static constexpr uint8_t water_rc_left_quarter_turn_3_tiles_to_right_turn_map[] = {
     3,
     1,
     2,

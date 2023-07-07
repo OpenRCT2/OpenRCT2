@@ -4138,17 +4138,6 @@ STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
 
-###########
-# Scenery #
-###########
-
-## Start OpenRCT2 Official
-
-[TTPIRF05]
-STR_NAME    :Roof
-
-## End OpenRCT2 Official
-
 ###############################################################################
 ## RCT2 Scenarios
 ###############################################################################

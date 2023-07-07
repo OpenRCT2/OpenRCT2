@@ -305,6 +305,7 @@ namespace OpenRCT2::Title
                     objectManager.LoadObjects(result.RequiredObjects);
 
                     parkImporter->Import();
+                    MapAnimationAutoCreate();
                 }
                 PrepareParkForPlayback();
                 success = true;

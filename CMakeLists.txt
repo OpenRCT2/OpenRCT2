@@ -100,7 +100,8 @@ option(STATIC "Create a static build.")
 option(USE_MMAP "Use mmap to try loading rct2's data segment into memory.")
 
 option(DISABLE_DISCORD_RPC "Disable Discord-RPC support." OFF)
-option(DISABLE_GOOGLE_BENCHMARK "Disable Google Benchmarks support." OFF)
+# Currently unused, disable by default.
+option(DISABLE_GOOGLE_BENCHMARK "Disable Google Benchmarks support." ON)
 option(DISABLE_HTTP "Disable HTTP support.")
 option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
 option(DISABLE_TTF "Disable support for TTF provided by freetype2.")

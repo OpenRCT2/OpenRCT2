@@ -62,7 +62,7 @@ static u8string _rct2DataPath = {};
 static bool _silentBreakpad = false;
 
 // clang-format off
-static constexpr const CommandLineOptionDefinition StandardOptions[]
+static constexpr CommandLineOptionDefinition StandardOptions[]
 {
     { CMDLINE_TYPE_SWITCH,  &_help,             'h', "help",               "show this help message and exit"                            },
     { CMDLINE_TYPE_SWITCH,  &_version,          'v', "version",            "show version information and exit"                          },
@@ -100,7 +100,7 @@ static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator
 
 static bool _removeShell = false;
 
-static constexpr const CommandLineOptionDefinition RegisterShellOptions[]
+static constexpr CommandLineOptionDefinition RegisterShellOptions[]
 {
     { CMDLINE_TYPE_SWITCH, &_removeShell, 'd', "remove", "remove shell integration" },
 };
@@ -140,9 +140,6 @@ const CommandLineCommand CommandLine::RootCommands[]
     // Sub-commands
     DefineSubCommand("screenshot",      CommandLine::ScreenshotCommands       ),
     DefineSubCommand("sprite",          CommandLine::SpriteCommands           ),
-    DefineSubCommand("benchgfx",        CommandLine::BenchGfxCommands         ),
-    DefineSubCommand("benchspritesort", CommandLine::BenchSpriteSortCommands  ),
-    DefineSubCommand("benchsimulate",   CommandLine::BenchUpdateCommands      ),
     DefineSubCommand("simulate",        CommandLine::SimulateCommands         ),
     DefineSubCommand("parkinfo",        CommandLine::ParkInfoCommands         ),
     CommandTableEnd

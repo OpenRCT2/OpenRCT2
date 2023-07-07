@@ -20,7 +20,7 @@
 #include "../Vehicle.h"
 
 /** rct2: 0x01428010 */
-static constexpr const uint32_t SwingingInverterShipBaseSpriteOffset[] = {
+static constexpr uint32_t SwingingInverterShipBaseSpriteOffset[] = {
     0,
     16,
     0,
@@ -28,7 +28,7 @@ static constexpr const uint32_t SwingingInverterShipBaseSpriteOffset[] = {
 };
 
 /** rct2: 0x01428020 */
-static constexpr const uint32_t SwingingInverterShipAnimatingBaseSpriteOffset[] = {
+static constexpr uint32_t SwingingInverterShipAnimatingBaseSpriteOffset[] = {
     32,
     33,
     32,
@@ -36,7 +36,7 @@ static constexpr const uint32_t SwingingInverterShipAnimatingBaseSpriteOffset[] 
 };
 
 /** rct2: 0x01428020 */
-static constexpr const BoundBoxXY SwingingInverterShipBounds[] = {
+static constexpr BoundBoxXY SwingingInverterShipBounds[] = {
     { { 0, 8 }, { 32, 16 } },
     { { 8, 0 }, { 16, 32 } },
     { { 0, 8 }, { 32, 16 } },
@@ -51,7 +51,7 @@ enum
     SPR_SWINGING_INVERTER_SHIP_FRAME_3 = 22001,
 };
 
-static constexpr const uint32_t SwingingInverterShipFrameSprites[] = {
+static constexpr uint32_t SwingingInverterShipFrameSprites[] = {
     SPR_SWINGING_INVERTER_SHIP_FRAME_0,
     SPR_SWINGING_INVERTER_SHIP_FRAME_1,
     SPR_SWINGING_INVERTER_SHIP_FRAME_2,

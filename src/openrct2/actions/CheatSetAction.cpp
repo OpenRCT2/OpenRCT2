@@ -39,9 +39,9 @@
 #include "ParkSetLoanAction.h"
 #include "ParkSetParameterAction.h"
 
-using ParametersRange = std::pair<std::pair<int32_t, int32_t>, std::pair<int32_t, int32_t>>;
+using ParametersRange = std::pair<std::pair<int64_t, int64_t>, std::pair<int64_t, int64_t>>;
 
-CheatSetAction::CheatSetAction(CheatType cheatType, int32_t param1, int32_t param2)
+CheatSetAction::CheatSetAction(CheatType cheatType, int64_t param1, int64_t param2)
     : _cheatType(static_cast<int32_t>(cheatType))
     , _param1(param1)
     , _param2(param2)
@@ -70,18 +70,18 @@ GameActions::Result CheatSetAction::Query() const
 {
     if (static_cast<uint32_t>(_cheatType) >= static_cast<uint32_t>(CheatType::Count))
     {
-        GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     ParametersRange validRange = GetParameterRange(static_cast<CheatType>(_cheatType.id));
 
     if (_param1 < validRange.first.first || _param1 > validRange.first.second)
     {
-        GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
     if (_param2 < validRange.second.first || _param2 > validRange.second.second)
     {
-        GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     return GameActions::Result();
@@ -315,12 +315,20 @@ ParametersRange CheatSetAction::GetParameterRange(CheatType cheatType) const
             [[fallthrough]];
         case CheatType::AllowRegularPathAsQueue:
             [[fallthrough]];
+        case CheatType::UnlockAllPrices:
+            [[fallthrough]];
+        case CheatType::MakeDestructible:
+            [[fallthrough]];
+        case CheatType::AllowSpecialColourSchemes:
+            [[fallthrough]];
+        case CheatType::AllowTrackPlaceInvalidHeights:
+            [[fallthrough]];
         case CheatType::OpenClosePark:
             return { { 0, 1 }, { 0, 0 } };
         case CheatType::AddMoney:
             [[fallthrough]];
         case CheatType::SetMoney:
-            return { { std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max() }, { 0, 0 } };
+            return { { std::numeric_limits<money64>::min(), std::numeric_limits<money64>::max() }, { 0, 0 } };
         case CheatType::SetGuestParameter:
             switch (_param1)
             {
@@ -357,12 +365,45 @@ ParametersRange CheatSetAction::GetParameterRange(CheatType cheatType) const
         case CheatType::ForceWeather:
             return { { 0, EnumValue(WeatherType::Count) - 1 }, { 0, 0 } };
         case CheatType::SetForcedParkRating:
-            return { { 0, 999 }, { 0, 0 } };
+            return { { -1, 999 }, { 0, 0 } };
         case CheatType::CreateDucks:
             return { { 0, 100 }, { 0, 0 } };
-        default:
+        case CheatType::RemoveDucks:
+            [[fallthrough]];
+        case CheatType::ClearLoan:
+            [[fallthrough]];
+        case CheatType::RemoveAllGuests:
+            [[fallthrough]];
+        case CheatType::OwnAllLand:
+            [[fallthrough]];
+        case CheatType::WinScenario:
+            [[fallthrough]];
+        case CheatType::HaveFun:
+            [[fallthrough]];
+        case CheatType::FixVandalism:
+            [[fallthrough]];
+        case CheatType::WaterPlants:
+            [[fallthrough]];
+        case CheatType::FixRides:
+            [[fallthrough]];
+        case CheatType::RenewRides:
+            [[fallthrough]];
+        case CheatType::TenMinuteInspections:
+            [[fallthrough]];
+        case CheatType::ResetCrashStatus:
+            [[fallthrough]];
+        case CheatType::NoCapOnQueueLengthDummy:
+            [[fallthrough]];
+        case CheatType::RemoveLitter:
             return { { 0, 0 }, { 0, 0 } };
+        case CheatType::Count:
+            break;
     }
+
+    // Should be unreachable unless new cheats are added, still have to return something
+    // to avoid compiler warnings.
+    Guard::Assert(false, "Missing validation parameter for cheat: %d", _cheatType.id);
+    return { { 0, 0 }, { 0, 0 } };
 }
 
 void CheatSetAction::SetGrassLength(int32_t length) const

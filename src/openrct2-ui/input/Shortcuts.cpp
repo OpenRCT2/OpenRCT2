@@ -149,10 +149,10 @@ static void ShortcutRemoveTopBottomToolbarToggle()
     {
         if (WindowFindByClass(WindowClass::TitleLogo) != nullptr)
         {
-            WindowClose(*WindowFindByClass(WindowClass::TitleLogo));
-            WindowClose(*WindowFindByClass(WindowClass::TitleOptions));
-            WindowClose(*WindowFindByClass(WindowClass::TitleMenu));
-            WindowClose(*WindowFindByClass(WindowClass::TitleExit));
+            WindowCloseByClass(WindowClass::TitleLogo);
+            WindowCloseByClass(WindowClass::TitleOptions);
+            WindowCloseByClass(WindowClass::TitleMenu);
+            WindowCloseByClass(WindowClass::TitleExit);
             TitleSetHideVersionInfo(true);
         }
         else
@@ -164,9 +164,9 @@ static void ShortcutRemoveTopBottomToolbarToggle()
     {
         if (WindowFindByClass(WindowClass::TopToolbar) != nullptr)
         {
-            WindowClose(*WindowFindByClass(WindowClass::Dropdown));
-            WindowClose(*WindowFindByClass(WindowClass::TopToolbar));
-            WindowClose(*WindowFindByClass(WindowClass::BottomToolbar));
+            WindowCloseByClass(WindowClass::Dropdown);
+            WindowCloseByClass(WindowClass::TopToolbar);
+            WindowCloseByClass(WindowClass::BottomToolbar);
         }
         else
         {
