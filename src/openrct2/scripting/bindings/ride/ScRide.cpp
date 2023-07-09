@@ -574,7 +574,7 @@ namespace OpenRCT2::Scripting
     uint16_t ScRide::totalAirTime_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->total_air_time * 3 : 0; 
+        return ride != nullptr ? ride->total_air_time * 3 : 0;
     }
 
     uint8_t ScRide::drops_get() const
