@@ -84,7 +84,7 @@ validate_global_widx(WC_STAFF, WIDX_PICKUP);
     MakeTab   ({34, 17}, STR_STAFF_OPTIONS_TIP                          ), /* Tab 2 */ \
     MakeTab   ({65, 17}, STR_STAFF_STATS_TIP                            )  /* Tab 3 */
 
-static Widget window_staff_overview_widgets[] = {
+static Widget _staffOverviewWidgets[] = {
     MAIN_STAFF_WIDGETS,
     MakeWidget     ({      3,      47}, {162, 120}, WindowWidgetType::Viewport,      WindowColour::Secondary                                        ), // Viewport
     MakeWidget     ({      3, WH - 13}, {162,  11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                        ), // Label at bottom of viewport
@@ -97,7 +97,7 @@ static Widget window_staff_overview_widgets[] = {
 };
 
 //0x9AF910
-static Widget window_staff_options_widgets[] = {
+static Widget _staffOptionsWidgets[] = {
     MAIN_STAFF_WIDGETS,
     MakeWidget     ({      5,  50}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 1
     MakeWidget     ({      5,  67}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 2
@@ -110,15 +110,15 @@ static Widget window_staff_options_widgets[] = {
 // clang-format on
 
 // 0x9AF9F4
-static Widget window_staff_stats_widgets[] = {
+static Widget _staffStatsWidgets[] = {
     MAIN_STAFF_WIDGETS,
     WIDGETS_END,
 };
 
 static Widget* window_staff_page_widgets[] = {
-    window_staff_overview_widgets,
-    window_staff_options_widgets,
-    window_staff_stats_widgets,
+    _staffOverviewWidgets,
+    _staffOptionsWidgets,
+    _staffStatsWidgets,
 };
 
 class StaffWindow final : public Window

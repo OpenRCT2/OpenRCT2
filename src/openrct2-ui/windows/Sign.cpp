@@ -44,7 +44,7 @@ enum WindowSignWidgetIdx {
 };
 
 // 0x9AEE00
-static Widget window_sign_widgets[] = {
+static Widget _signWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary, STR_VIEWPORT                                 ), // Viewport
     MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_RENAME),   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
@@ -82,7 +82,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_sign_widgets;
+        widgets = _signWidgets;
         WindowInitScrollWidgets(*this);
     }
 
@@ -132,7 +132,7 @@ public:
         }
 
         // Create viewport
-        Widget& viewportWidget = window_sign_widgets[WIDX_VIEWPORT];
+        Widget& viewportWidget = widgets[WIDX_VIEWPORT];
         ViewportCreate(
             this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 }, viewportWidget.width() - 1,
             viewportWidget.height() - 1, Focus(CoordsXYZ{ signViewPosition, viewZ }));
@@ -241,8 +241,8 @@ public:
 
     void OnPrepareDraw() override
     {
-        Widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
-        Widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
+        Widget* main_colour_btn = &widgets[WIDX_MAIN_COLOUR];
+        Widget* text_colour_btn = &widgets[WIDX_TEXT_COLOUR];
 
         if (_isSmall)
         {
@@ -310,7 +310,7 @@ public:
         auto signViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), frame_no };
 
         // Create viewport
-        Widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
+        Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
         ViewportCreate(
             this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 }, viewportWidget->width() - 1,
             viewportWidget->height() - 1, Focus(CoordsXYZ{ signViewPos }));

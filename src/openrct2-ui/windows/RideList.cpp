@@ -60,7 +60,7 @@ enum WindowRideListWidgetIdx
 };
 
 // clang-format off
-static Widget window_ride_list_widgets[] = {
+static Widget _rideListWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {340, 197}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ), // tab page background
     MakeWidget({315, 60}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_TOGGLE_OPEN_CLOSE),      STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
@@ -171,7 +171,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_ride_list_widgets;
+        widgets = _rideListWidgets;
         WindowInitScrollWidgets(*this);
         page = PAGE_RIDES;
         selected_list_item = -1;
