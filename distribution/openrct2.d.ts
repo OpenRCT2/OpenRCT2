@@ -3573,7 +3573,7 @@ declare global {
         /**
          * The objective type.
          */
-        type: ScenarioObjective;
+        type: ScenarioObjectiveType;
 
         /**
          * The required number of guests.
