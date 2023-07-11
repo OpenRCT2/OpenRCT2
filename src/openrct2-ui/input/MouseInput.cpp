@@ -55,6 +55,7 @@ static uint8_t _currentScrollIndex;
 static uint8_t _currentScrollArea;
 
 ScreenCoordsXY gInputDragLast;
+ScreenCoordsXY savedViewPosLast;
 
 uint32_t gTooltipCloseTimeout;
 WidgetRef gTooltipWidget;
@@ -528,6 +529,7 @@ static void InputViewportDragBegin(WindowBase& w)
     _ticksSinceDragStart = gCurrentRealTimeTicks;
     auto cursorPosition = ContextGetCursorPosition();
     gInputDragLast = cursorPosition;
+    savedViewPosLast = w.savedViewPos;
     if (!gConfigGeneral.InvertViewportDrag)
     {
         ContextHideCursor();
@@ -578,7 +580,10 @@ static void InputViewportDragContinue()
             differentialCoords.y = (viewport->zoom + 1).ApplyTo(differentialCoords.y);
             if (gConfigGeneral.InvertViewportDrag)
             {
-                w->savedViewPos -= differentialCoords;
+                auto rescaleFactor = 2 * gConfigGeneral.WindowScale;
+                differentialCoords.x /= rescaleFactor;
+                differentialCoords.y /= rescaleFactor;
+                w->savedViewPos = savedViewPosLast - differentialCoords;
             }
             else
             {
@@ -588,11 +593,11 @@ static void InputViewportDragContinue()
     }
 
     const CursorState* cursorState = ContextGetCursorState();
-    if (cursorState->touch || gConfigGeneral.InvertViewportDrag)
+    if (cursorState->touch && !gConfigGeneral.InvertViewportDrag)
     {
         gInputDragLast = newDragCoords;
     }
-    else
+    else if (!gConfigGeneral.InvertViewportDrag)
     {
         ContextSetCursorPosition(gInputDragLast);
     }
