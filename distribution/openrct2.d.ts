@@ -2183,12 +2183,12 @@ declare global {
         readonly satisfaction: number;
 
         /**
-         * The max speed. (speed * 9) >> 18 = miles per hour.
+         * The max speed in miles per hour.
          */
         readonly maxSpeed: number;
 
         /**
-         * The average speed.
+         * The average speed in miles per hour.
          */
         readonly averageSpeed: number;
 
@@ -2198,36 +2198,43 @@ declare global {
         readonly rideTime: number;
 
         /**
-         * Total length of the ride. Left shift
+         * Total length of the ride in meters.
          */
         readonly rideLength: number;
 
         /**
-         * The max positive vertical Gs in hundredths of a gram.
+         * The max positive vertical Gs in hundredths of a G.
          */
         readonly maxPositiveVerticalGs: number;
 
         /**
-         * The max negative vertical Gs in hundredths of a gram.
+         * The max negative vertical Gs in hundredths of a G.
          */
         readonly maxNegativeVerticalGs: number;
 
         /**
-         * The max lateral Gs in hundredths of a gram.
+         * The max lateral Gs in hundredths of a G.
          */
         readonly maxLateralGs: number;
 
         /**
-         * The total airtime. Multiply by 3 to get hundredths of a second.
+         * The total airtime in hundredths of a second.
          */
         readonly totalAirTime: number;
 
         /**
-         * Formatted as 0b(YYXX XXXX) where YY is the  number of powered lifts and XXXXXX is the number of drops
+         * The number of drops.
          */
         readonly drops: number;
 
-        
+        /**
+         * The number of powered lifts.
+         */
+        readonly poweredLifts: number;
+
+        /**
+         * Highest drop height in meters.
+         */
         readonly highestDropHeight: number;
     }
 

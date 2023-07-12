@@ -639,6 +639,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScRide::maxLateralGs_get, nullptr, "maxLateralGs");
         dukglue_register_property(ctx, &ScRide::totalAirTime_get, nullptr, "totalAirTime");
         dukglue_register_property(ctx, &ScRide::drops_get, nullptr, "drops");
+        dukglue_register_property(ctx, &ScRide::poweredLifts_get, nullptr, "poweredLifts");
         dukglue_register_property(ctx, &ScRide::highestDropHeight_get, nullptr, "highestDropHeight");
     }
 
