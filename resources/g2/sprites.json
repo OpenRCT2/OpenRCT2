@@ -3186,18 +3186,18 @@
     {
         "path": "track/intamin/left_vertical_loop_1_2.png",
         "x_offset": -26,
-        "y_offset": -43,
+        "y_offset": -111,
         "palette": "keep"
     },
     {
         "path": "track/intamin/left_vertical_loop_1_3.png",
-        "x_offset": -47,
-        "y_offset": -91,
+        "x_offset": -22,
+        "y_offset": -84,
         "palette": "keep"
     },
     {
         "path": "track/intamin/left_vertical_loop_1_4.png",
-        "x_offset": -37,
+        "x_offset": -32,
         "y_offset": 9,
         "palette": "keep"
     },
@@ -3246,7 +3246,7 @@
     {
         "path": "track/intamin/left_vertical_loop_3_4.png",
         "x_offset": -22,
-        "y_offset": 5,
+        "y_offset": 3,
         "palette": "keep"
     },
     {
@@ -3264,12 +3264,12 @@
     {
         "path": "track/intamin/left_vertical_loop_4_3.png",
         "x_offset": -4,
-        "y_offset": -95,
+        "y_offset": -87,
         "palette": "keep"
     },
     {
         "path": "track/intamin/left_vertical_loop_4_4.png",
-        "x_offset": 1,
+        "x_offset": -13,
         "y_offset": 17,
         "palette": "keep"
     },
@@ -3287,13 +3287,13 @@
     },
     {
         "path": "track/intamin/right_vertical_loop_1_3.png",
-        "x_offset": -31,
-        "y_offset": -95,
+        "x_offset": -20,
+        "y_offset": -86,
         "palette": "keep"
     },
     {
         "path": "track/intamin/right_vertical_loop_1_4.png",
-        "x_offset": -22,
+        "x_offset": -21,
         "y_offset": 16,
         "palette": "keep"
     },
@@ -3311,13 +3311,13 @@
     },
     {
         "path": "track/intamin/right_vertical_loop_2_3.png",
-        "x_offset": -20,
-        "y_offset": -94,
+        "x_offset": -23,
+        "y_offset": -100,
         "palette": "keep"
     },
     {
         "path": "track/intamin/right_vertical_loop_2_4.png",
-        "x_offset": -21,
+        "x_offset": -16,
         "y_offset": 5,
         "palette": "keep"
     },
@@ -3342,7 +3342,7 @@
     {
         "path": "track/intamin/right_vertical_loop_3_4.png",
         "x_offset": -27,
-        "y_offset": -3,
+        "y_offset": 0,
         "palette": "keep"
     },
     {
@@ -3354,13 +3354,13 @@
     {
         "path": "track/intamin/right_vertical_loop_4_2.png",
         "x_offset": -11,
-        "y_offset": -44,
+        "y_offset": -111,
         "palette": "keep"
     },
     {
         "path": "track/intamin/right_vertical_loop_4_3.png",
         "x_offset": 1,
-        "y_offset": -87,
+        "y_offset": -83,
         "palette": "keep"
     },
     {
