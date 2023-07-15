@@ -13510,14 +13510,14 @@ static void GigaRCTrackRightLargeHalfLoopUp(
     }
 }
 
-static void GigaRCTrackRightLargeHalfLoopDown(
+static void GigaRCTrackLeftLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     GigaRCTrackRightLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement);
 }
 
-static void GigaRCTrackLeftLargeHalfLoopDown(
+static void GigaRCTrackRightLargeHalfLoopDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
