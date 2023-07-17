@@ -684,6 +684,23 @@ namespace String
         return trunc;
     }
 
+    std::string_view UTF8TruncateCodePoints(std::string_view v, size_t size)
+    {
+        size_t i = 0;
+        while (i < v.size() && size > 0)
+        {
+            auto length = UTF8GetCodePointSize(v.substr(i, v.size()));
+            if (!length.has_value())
+            {
+                return v.substr(0, i);
+            }
+            i += length.value();
+            size--;
+        }
+
+        return v.substr(0, i);
+    }
+
     std::string URLEncode(std::string_view value)
     {
         std::ostringstream escaped;

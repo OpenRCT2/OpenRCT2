@@ -108,11 +108,8 @@ public:
 
     void SetText(std::string_view text, size_t maxLength)
     {
+        text = String::UTF8TruncateCodePoints(text, maxLength);
         _buffer = u8string{ text };
-        if (_buffer.size() > maxLength)
-        {
-            _buffer.resize(maxLength);
-        }
         _maxInputLength = maxLength;
         gTextInput = ContextStartTextInput(_buffer, maxLength);
     }
