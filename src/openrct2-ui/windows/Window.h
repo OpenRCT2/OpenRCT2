@@ -148,7 +148,7 @@ void WindowRideMeasurementsDesignCancel();
 extern RideSelection _window_track_list_item;
 WindowBase* WindowTrackListOpen(RideSelection item);
 void WindowTrackDesignListReloadTracks();
-void WindowTrackDesignListSetBeingUpdate(bool beingUpdated);
+void WindowTrackDesignListSetBeingUpdated(bool beingUpdated);
 
 void SetMapTooltip(Formatter& ft);
 const Formatter& GetMapTooltip();

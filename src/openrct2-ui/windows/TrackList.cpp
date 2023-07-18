@@ -204,7 +204,11 @@ public:
     TrackListWindow(const RideSelection item)
     {
         _window_track_list_item = item;
-        LoadDesignsList(item);
+    }
+
+    void OnOpen() override
+    {
+        LoadDesignsList(_window_track_list_item);
 
         String::Set(_filterString, sizeof(_filterString), "");
         _trackListWidgets[WIDX_FILTER_STRING].string = _filterString;
@@ -780,7 +784,7 @@ void WindowTrackDesignListReloadTracks()
     }
 }
 
-void WindowTrackDesignListSetBeingUpdate(const bool beingUpdated)
+void WindowTrackDesignListSetBeingUpdated(const bool beingUpdated)
 {
     auto* trackListWindow = static_cast<TrackListWindow*>(WindowFindByClass(WindowClass::TrackDesignList));
     if (trackListWindow != nullptr)

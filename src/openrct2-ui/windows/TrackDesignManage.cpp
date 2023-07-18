@@ -114,12 +114,12 @@ void TrackDesignManageWindow::OnOpen()
     widgets = _trackManageWidgets;
     WindowInitScrollWidgets(*this);
 
-    WindowTrackDesignListSetBeingUpdate(true);
+    WindowTrackDesignListSetBeingUpdated(true);
 }
 
 void TrackDesignManageWindow::OnClose()
 {
-    WindowTrackDesignListSetBeingUpdate(false);
+    WindowTrackDesignListSetBeingUpdated(false);
 }
 
 void TrackDesignManageWindow::OnMouseUp(WidgetIndex widgetIndex)
