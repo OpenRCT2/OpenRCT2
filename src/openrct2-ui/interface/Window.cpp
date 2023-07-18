@@ -285,7 +285,6 @@ WindowBase* WindowCreate(
     w->max_height = height;
 
     w->focus = std::nullopt;
-    w->page = 0;
 
     ColourSchemeUpdate(w);
     w->Invalidate();

@@ -56,7 +56,7 @@ struct WindowBase
     TrackListVariables track_list;
     union
     {
-        int16_t page;
+        int16_t page{};
         TileInspectorPage tileInspectorPage;
     };
     uint16_t frame_no{};              // updated every tic for motion in windows sprites
