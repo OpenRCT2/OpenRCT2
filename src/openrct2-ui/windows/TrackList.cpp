@@ -78,6 +78,8 @@ private:
     uint16_t _loadedTrackDesignIndex;
     std::unique_ptr<TrackDesign> _loadedTrackDesign;
     std::vector<uint8_t> _trackDesignPreviewPixels;
+    bool _selectedItemIsBeingUpdated;
+    bool _reloadTrackDesigns;
 
     void FilterList()
     {
@@ -199,8 +201,11 @@ private:
     }
 
 public:
-    void OnOpen() override
+    TrackListWindow(const RideSelection item)
     {
+        _window_track_list_item = item;
+        LoadDesignsList(item);
+
         String::Set(_filterString, sizeof(_filterString), "");
         _trackListWidgets[WIDX_FILTER_STRING].string = _filterString;
         widgets = _trackListWidgets;
@@ -215,8 +220,8 @@ public:
         }
 
         WindowInitScrollWidgets(*this);
-        track_list.track_list_being_updated = false;
-        track_list.reload_track_designs = false;
+        _selectedItemIsBeingUpdated = false;
+        _reloadTrackDesigns = false;
         // Start with first track highlighted
         selected_list_item = 0;
         if (_trackDesigns.size() != 0 && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
@@ -319,7 +324,7 @@ public:
 
     void OnScrollMouseDown(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
-        if (!track_list.track_list_being_updated)
+        if (!_selectedItemIsBeingUpdated)
         {
             int32_t i = GetListItemFromPosition(screenCoords);
             if (i != -1)
@@ -331,7 +336,7 @@ public:
 
     void OnScrollMouseOver(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
-        if (!track_list.track_list_being_updated)
+        if (!_selectedItemIsBeingUpdated)
         {
             int32_t i = GetListItemFromPosition(screenCoords);
             if (i != -1 && selected_list_item != i)
@@ -422,12 +427,12 @@ public:
             WidgetInvalidate(*this, WIDX_FILTER_STRING); // TODO Check this
         }
 
-        if (track_list.reload_track_designs)
+        if (_reloadTrackDesigns)
         {
             LoadDesignsList(_window_track_list_item);
             selected_list_item = 0;
             Invalidate();
-            track_list.reload_track_designs = false;
+            _reloadTrackDesigns = false;
         }
     }
 
@@ -733,16 +738,19 @@ public:
         }
     }
 
-    bool SetRideSelection(const RideSelection item)
-    {
-        _window_track_list_item = item;
-        LoadDesignsList(item);
-        return true;
-    }
-
     void OnResize() override
     {
         ResizeFrame();
+    }
+
+    void SetIsBeingUpdated(const bool beingUpdated)
+    {
+        _selectedItemIsBeingUpdated = beingUpdated;
+    }
+
+    void ReloadTrackDesigns()
+    {
+        _reloadTrackDesigns = true;
     }
 };
 
@@ -760,7 +768,23 @@ WindowBase* WindowTrackListOpen(const RideSelection item)
     {
         screenPos = { 0, TOP_TOOLBAR_HEIGHT + 2 };
     }
-    auto* w = WindowCreate<TrackListWindow>(WindowClass::TrackDesignList, WW, WH, 0);
-    w->SetRideSelection(item);
-    return w;
+    return WindowCreate<TrackListWindow>(WindowClass::TrackDesignList, WW, WH, 0, item);
+}
+
+void WindowTrackDesignListReloadTracks()
+{
+    auto* trackListWindow = static_cast<TrackListWindow*>(WindowFindByClass(WindowClass::TrackDesignList));
+    if (trackListWindow != nullptr)
+    {
+        trackListWindow->ReloadTrackDesigns();
+    }
+}
+
+void WindowTrackDesignListSetBeingUpdate(const bool beingUpdated)
+{
+    auto* trackListWindow = static_cast<TrackListWindow*>(WindowFindByClass(WindowClass::TrackDesignList));
+    if (trackListWindow != nullptr)
+    {
+        trackListWindow->SetIsBeingUpdated(beingUpdated);
+    }
 }

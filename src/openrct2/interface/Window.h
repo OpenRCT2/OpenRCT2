@@ -223,12 +223,6 @@ struct Focus
     }
 };
 
-struct TrackListVariables
-{
-    bool track_list_being_updated;
-    bool reload_track_designs;
-};
-
 struct WindowCloseModifier
 {
     WindowIdentifier window;

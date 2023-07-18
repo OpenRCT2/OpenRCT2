@@ -147,6 +147,8 @@ void WindowRideMeasurementsDesignCancel();
 // rct2: 0x00F635EE
 extern RideSelection _window_track_list_item;
 WindowBase* WindowTrackListOpen(RideSelection item);
+void WindowTrackDesignListReloadTracks();
+void WindowTrackDesignListSetBeingUpdate(bool beingUpdated);
 
 void SetMapTooltip(Formatter& ft);
 const Formatter& GetMapTooltip();
