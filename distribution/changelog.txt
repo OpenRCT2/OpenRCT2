@@ -31,6 +31,7 @@
 - Fix: [#20456] Downward large half loops on flying coasters (fly-to-lie) are now correctly named.
 - Fix: [#20484] Console caret not properly updated when using command history.
 - Fix: [#20543] Crash using show segments height from debug paint options.
+- Fix: [#20607] Infinite loop when renaming rides with default names longer than 32 bytes.
 
 0.4.5 (2023-05-08)
 ------------------------------------------------------------------------
