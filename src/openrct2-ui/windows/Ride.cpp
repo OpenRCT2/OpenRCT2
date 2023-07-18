@@ -635,6 +635,10 @@ public:
     RideWindow(const Ride& ride)
     {
         rideId = ride.id;
+    }
+
+    virtual void OnOpen() override
+    {
         widgets = PageWidgets[WINDOW_RIDE_PAGE_MAIN];
         hold_down_widgets = PageHoldDownWidgets[WINDOW_RIDE_PAGE_MAIN];
 
@@ -648,9 +652,15 @@ public:
         max_width = 500;
         max_height = 450;
 
-        UpdateOverallView(ride);
+        auto ride = GetRide(rideId);
+        if (ride == nullptr)
+        {
+            Close();
+            return;
+        }
+        UpdateOverallView(*ride);
 
-        PopulateVehicleTypeDropdown(ride, true);
+        PopulateVehicleTypeDropdown(*ride, true);
     }
 
     virtual void OnClose() override

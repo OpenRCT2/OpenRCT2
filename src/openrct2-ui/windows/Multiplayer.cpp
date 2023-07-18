@@ -161,7 +161,7 @@ private:
     ScreenCoordsXY InformationGetSize();
 
 public:
-    MultiplayerWindow();
+    void OnOpen() override;
 
     void SetPage(int32_t page_number);
 
@@ -193,7 +193,7 @@ WindowBase* WindowMultiplayerOpen()
     return window;
 }
 
-MultiplayerWindow::MultiplayerWindow()
+void MultiplayerWindow::OnOpen()
 {
     SetPage(WINDOW_MULTIPLAYER_PAGE_INFORMATION);
 }
