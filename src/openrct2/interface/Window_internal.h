@@ -53,11 +53,7 @@ struct WindowBase
     uint16_t no_list_items{};     // 0 for no items
     int16_t selected_list_item{}; // -1 for none selected
     std::optional<Focus> focus;
-    union
-    {
-        TrackListVariables track_list;
-        void* custom_info;
-    };
+    TrackListVariables track_list;
     union
     {
         int16_t page;
