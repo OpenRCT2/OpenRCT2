@@ -492,8 +492,8 @@ static u8string OpenSystemFileBrowser(bool isSave)
 class LoadSaveWindow final : public Window
 {
 public:
-    LoadSaveWindow(int32_t _type)
-        : type(_type)
+    LoadSaveWindow(int32_t loadSaveType)
+        : type(loadSaveType)
     {
     }
 
