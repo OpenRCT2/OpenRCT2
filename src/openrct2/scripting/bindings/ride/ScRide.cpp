@@ -598,7 +598,7 @@ namespace OpenRCT2::Scripting
     float_t ScRide::highestDropHeight_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? (ride->highest_drop_height * 0.75f) : 0;
+        return ride != nullptr ? ride->highest_drop_height : 0;
     }
 
     void ScRide::Register(duk_context* ctx)

@@ -2237,7 +2237,7 @@ declare global {
         readonly poweredLifts: number;
 
         /**
-         * Highest drop height in meters.
+         * Highest drop height in height units. Use `formatString()` to convert into metres/feet. Ex: `formatString('{HEIGHT}', ride.highestDropHeight)`.
          */
         readonly highestDropHeight: number;
     }
