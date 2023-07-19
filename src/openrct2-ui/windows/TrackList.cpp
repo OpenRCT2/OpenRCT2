@@ -453,7 +453,7 @@ public:
         int32_t listItemIndex = selected_list_item;
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
-            if (_trackDesigns.empty() || listItemIndex == -1)
+            if (_filteredTrackIds.empty() || listItemIndex == -1)
                 return;
         }
         else
