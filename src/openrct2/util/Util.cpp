@@ -65,6 +65,11 @@ int32_t BaseZToMetres(int16_t baseZ)
 uint8_t MetresToBaseZ(int16_t metres)
 {
     return ((metres / 1.5) + 7) * 2;
+
+int32_t HeightUnitsToMetres(int32_t heightUnit)
+{
+    //1 units = 0.75 metres
+    return (heightUnit >> 2) + (heightUnit >> 1);
 }
 
 /* Case insensitive logical compare */
