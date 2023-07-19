@@ -24,11 +24,10 @@ static constexpr auto SPR_LOOPING_RC_BOOSTER_NW_SE = 15011;
 static constexpr auto SPR_LOOPING_RC_FLAT_CHAINED_SW_NE = 15016;
 static constexpr auto SPR_LOOPING_RC_FLAT_CHAINED_NW_SE = 15017;
 
-static constexpr const uint32_t LoopingRCDiagBrakeImages[NumOrthogonalDirections] = {
-    SPR_G2_LOOPING_DIAG_BRAKES,
-    SPR_G2_LOOPING_DIAG_BRAKES + 1,
-    SPR_G2_LOOPING_DIAG_BRAKES,
-    SPR_G2_LOOPING_DIAG_BRAKES + 1,
+static constexpr const uint32_t LoopingRCDiagBrakeImages[2 * NumOrthogonalDirections] = {
+    SPR_G2_LOOPING_DIAG_BRAKES,     SPR_G2_LOOPING_DIAG_BRAKES + 2, SPR_G2_LOOPING_DIAG_BRAKES,
+    SPR_G2_LOOPING_DIAG_BRAKES + 2, SPR_G2_LOOPING_DIAG_BRAKES + 1, SPR_G2_LOOPING_DIAG_BRAKES + 3,
+    SPR_G2_LOOPING_DIAG_BRAKES + 1, SPR_G2_LOOPING_DIAG_BRAKES + 3,
 };
 
 /** rct2: 0x008A6370 */
@@ -5487,6 +5486,13 @@ static void LoopingRCTrackDiagFlat(
     }
 }
 
+static constexpr CoordsXYZ diagBrakeBoundsOffsets[4] = {
+    { 0, 0, 24 },
+    { 0, 0, 24 },
+    { 0, 0, 24 },
+    { 0, 0, 24 },
+};
+
 static void LoopingRCTrackDiagBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -5495,7 +5501,9 @@ static void LoopingRCTrackDiagBrakes(
         session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], LoopingRCDiagBrakeImages,
         defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
-    // TODO: draw brake sprite layers
+    TrackPaintUtilDiagTilesPaint(
+        session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], LoopingRCDiagBrakeImages + 4,
+        defaultDiagTileOffsets, defaultDiagBoundLengths, diagBrakeBoundsOffsets);
 
     if (trackSequence == 3)
     {

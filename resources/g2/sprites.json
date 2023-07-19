@@ -24730,13 +24730,25 @@
         "palette": "keep"
     },
     {
-        "path": "track/looping/brake_horizontal.png",
+        "path": "track/looping/brake_horizontal_1.png",
         "x_offset": -32,
         "y_offset": 0,
         "palette": "keep"
     },
     {
-        "path": "track/looping/brake_vertical.png",
+        "path": "track/looping/brake_horizontal_2.png",
+        "x_offset": -32,
+        "y_offset": 0,
+        "palette": "keep"
+    },
+    {
+        "path": "track/looping/brake_vertical_1.png",
+        "x_offset": -15,
+        "y_offset": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/looping/brake_vertical_2.png",
         "x_offset": -15,
         "y_offset": -8,
         "palette": "keep"
