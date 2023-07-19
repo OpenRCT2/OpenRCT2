@@ -14498,7 +14498,7 @@ static void GigaRCTrackLeftEighthToDiagUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 15)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, 2, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -14980,7 +14980,7 @@ static void GigaRCTrackRightEighthToOrthogonalUp25(
                         { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalBSupportsPaintSetup(session, MetalSupportType::Tubes, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 1)
             {
                 PaintUtilPushTunnelRotated(session, direction + 1, height + 8, TUNNEL_2);
