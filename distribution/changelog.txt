@@ -32,6 +32,7 @@
 - Fix: [#20484] Console caret not properly updated when using command history.
 - Fix: [#20543] Crash using show segments height from debug paint options.
 - Fix: [#20607] Infinite loop when renaming rides with default names longer than 32 bytes.
+- Fix: [#20642] Track list is sometimes empty due to uninitialized data for the filter string.
 
 0.4.5 (2023-05-08)
 ------------------------------------------------------------------------
