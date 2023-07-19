@@ -451,19 +451,14 @@ public:
         DrawWidgets(dpi);
 
         int32_t listItemIndex = selected_list_item;
-        if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+        if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) == 0)
         {
-            if (_filteredTrackIds.empty() || listItemIndex == -1)
-                return;
-        }
-        else
-        {
-            if (_filteredTrackIds.empty() || listItemIndex == 0)
-                return;
-
             // Because the first item in the list is "Build a custom design", lower the index by one
             listItemIndex--;
         }
+
+        if (_filteredTrackIds.empty() || listItemIndex == -1)
+            return;
 
         int32_t trackIndex = _filteredTrackIds[listItemIndex];
 
