@@ -106,6 +106,12 @@ private:
                 _filteredTrackIds.push_back(i);
             }
         }
+
+        // Ensure that the selected item is still in the list.
+        if (static_cast<size_t>(selected_list_item) >= _filteredTrackIds.size())
+        {
+            selected_list_item = 0;
+        }
     }
 
     void SelectFromList(int32_t listIndex)
@@ -452,7 +458,7 @@ public:
         }
         else
         {
-            if (listItemIndex == 0)
+            if (_filteredTrackIds.empty() || listItemIndex == 0)
                 return;
 
             // Because the first item in the list is "Build a custom design", lower the index by one
