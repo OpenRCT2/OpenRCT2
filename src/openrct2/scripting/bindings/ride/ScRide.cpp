@@ -556,7 +556,7 @@ namespace OpenRCT2::Scripting
     float_t ScRide::maxPositiveVerticalGs_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->max_positive_vertical_g / 100.0f: 0;
+        return ride != nullptr ? ride->max_positive_vertical_g / 100.0f : 0;
     }
 
     float_t ScRide::maxNegativeVerticalGs_get() const
