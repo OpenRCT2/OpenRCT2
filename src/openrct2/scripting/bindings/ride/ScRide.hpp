@@ -194,13 +194,13 @@ namespace OpenRCT2::Scripting
 
         float_t rideLength_get() const;
 
-        int32_t maxPositiveVerticalGs_get() const;
+        float_t maxPositiveVerticalGs_get() const;
 
-        int32_t maxNegativeVerticalGs_get() const;
+        float_t maxNegativeVerticalGs_get() const;
 
-        int32_t maxLateralGs_get() const;
+        float_t maxLateralGs_get() const;
 
-        uint16_t totalAirTime_get() const;
+        float_t totalAirTime_get() const;
 
         uint8_t drops_get() const;
 

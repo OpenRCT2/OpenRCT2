@@ -2163,36 +2163,32 @@ declare global {
         readonly downtime: number;
 
         /**
-         * The currently set chain lift speed in miles per hour. Use `context.formatString()` to convert speed values to a localised value/unit string. Ex: `formatString('{VELOCITY}', ride.liftHillSpeed)`.
+         * The currently set chain lift speed in miles per hour. Use `context.formatString()` to convert into kph. Ex: `formatString('{VELOCITY}', ride.liftHillSpeed)`.
          */
         liftHillSpeed: number;
 
         /**
-         * The max chain lift speed for this ride in miles per hour.
+         * The max chain lift speed for this ride in miles per hour. Use `context.formatString()` to convert into kph. Ex: `formatString('{VELOCITY}', ride.maxLiftHillSpeed)`.
          */
         readonly maxLiftHillSpeed: number;
 
         /**
-         * The min chain lift speed for this ride in miles per hour.
+         * The min chain lift speed for this ride in miles per hour. Use `context.formatString()` to convert into kph. Ex: `formatString('{VELOCITY}', ride.minLiftHillSpeed)`.
          */
         readonly minLiftHillSpeed: number;
 
         /**
-<<<<<<< HEAD
          * The satisfaction rating of the ride from 0 to 100.
          */
         readonly satisfaction: number;
 
         /**
-         * The max speed. (speed * 9) >> 18 = miles per hour.
-=======
-         * The max speed in miles per hour.
->>>>>>> 2bf536f842 (Added poweredLifts to dukglue, modified typings)
+         * The max speed in miles per hour. Use `context.formatString()` to convert into kph. Ex: `formatString('{VELOCITY}', ride.maxSpeed)`.
          */
         readonly maxSpeed: number;
 
         /**
-         * The average speed in miles per hour.
+         * The average speed in miles per hour. Use `context.formatString()` to convert into kph. Ex: `formatString('{VELOCITY}', ride.averageSpeed)`.
          */
         readonly averageSpeed: number;
 
@@ -2202,22 +2198,22 @@ declare global {
         readonly rideTime: number;
 
         /**
-         * Total length of the ride in meters.
+         * Total length of the ride in meters. Use `context.formatString()` to convert into metres/feet. Ex: `formatString('{LENGTH}', ride.rideLength)`.
          */
         readonly rideLength: number;
 
         /**
-         * The max positive vertical Gs in hundredths of a G.
+         * The max positive vertical Gs.
          */
         readonly maxPositiveVerticalGs: number;
 
         /**
-         * The max negative vertical Gs in hundredths of a G.
+         * The max negative vertical Gs.
          */
         readonly maxNegativeVerticalGs: number;
 
         /**
-         * The max lateral Gs in hundredths of a G.
+         * The max lateral Gs.
          */
         readonly maxLateralGs: number;
 
@@ -2237,7 +2233,7 @@ declare global {
         readonly poweredLifts: number;
 
         /**
-         * Highest drop height in height units. Use `formatString()` to convert into metres/feet. Ex: `formatString('{HEIGHT}', ride.highestDropHeight)`.
+         * Highest drop height in height units. Use `context.formatString()` to convert into metres/feet. Ex: `formatString('{HEIGHT}', ride.highestDropHeight)`.
          */
         readonly highestDropHeight: number;
     }
