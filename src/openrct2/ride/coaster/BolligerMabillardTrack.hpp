@@ -13041,7 +13041,6 @@ static void BolligerMabillardTrackDiagBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-
 template<MetalSupportType supportType> TRACK_PAINT_FUNCTION GetTrackPaintFunctionBolligerMabillard(int32_t trackType)
 {
     switch (trackType)
