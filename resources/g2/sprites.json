@@ -24754,39 +24754,39 @@
         "palette": "keep"
     },
     {
-        "path": "track/lim/brake_horizontal.png",
+        "path": "track/bm/brake_horizontal.png",
         "x_offset": -32,
-        "y_offset": 7,
+        "y_offset": 1,
         "palette": "keep"
     },
     {
-        "path": "track/lim/brake_vertical.png",
-        "x_offset": -10,
-        "y_offset": -5,
+        "path": "track/bm/brake_vertical.png",
+        "x_offset": -13,
+        "y_offset": -9,
         "palette": "keep"
     },
     {
-        "path": "track/lim/blockbrake_horizontal_closed.png",
+        "path": "track/bm/blockbrake_horizontal_closed.png",
         "x_offset": -32,
-        "y_offset": 7,
+        "y_offset": 1,
         "palette": "keep"
     },
     {
-        "path": "track/lim/blockbrake_horizontal_open.png",
+        "path": "track/bm/blockbrake_horizontal_open.png",
         "x_offset": -32,
-        "y_offset": 7,
+        "y_offset": 1,
         "palette": "keep"
     },
     {
-        "path": "track/lim/blockbrake_vertical_closed.png",
-        "x_offset": -10,
-        "y_offset": -5,
+        "path": "track/bm/blockbrake_vertical_closed.png",
+        "x_offset": -13,
+        "y_offset": -9,
         "palette": "keep"
     },
     {
-        "path": "track/lim/blockbrake_vertical_open.png",
-        "x_offset": -10,
-        "y_offset": -5,
+        "path": "track/bm/blockbrake_vertical_open.png",
+        "x_offset": -13,
+        "y_offset": -9,
         "palette": "keep"
     },
     {
