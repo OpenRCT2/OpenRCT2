@@ -497,7 +497,7 @@ public:
 
             case INTENT_ACTION_UPDATE_BANNER:
             {
-                uint8_t bannerIndex = static_cast<uint8_t>(intent.GetUIntExtra(INTENT_EXTRA_BANNER_INDEX));
+                rct_windownumber bannerIndex = static_cast<rct_windownumber>(intent.GetUIntExtra(INTENT_EXTRA_BANNER_INDEX));
 
                 WindowBase* w = WindowFindByNumber(WindowClass::Banner, bannerIndex);
                 if (w != nullptr)
