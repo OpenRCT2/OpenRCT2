@@ -1758,6 +1758,11 @@ private:
                 return;
         }
 
+        if (auto* elem = OpenRCT2::TileInspector::GetSelectedElement(); elem != nullptr)
+        {
+            MapInvalidateElement(windowTileInspectorTile.ToCoordsXY(), elem);
+        }
+
         _tileSelected = true;
         _toolMap = mapCoords;
         windowTileInspectorTile = TileCoordsXY(mapCoords);
