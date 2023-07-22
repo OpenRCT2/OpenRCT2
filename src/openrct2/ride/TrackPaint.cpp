@@ -2225,7 +2225,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         session.TrackColours[SCHEME_SUPPORTS] = ImageId(0, ride->track_colour[trackColourScheme].supports);
         session.TrackColours[SCHEME_MISC] = ImageId(0, COLOUR_BLACK);
         session.TrackColours[SCHEME_3] = ImageId(0, COLOUR_DARK_BROWN);
-        if (trackElement.IsHighlighted())
+        if (trackElement.IsHighlighted() || session.SelectedElement == reinterpret_cast<const TileElement*>(&trackElement))
         {
             session.TrackColours[SCHEME_TRACK] = HighlightMarker;
             session.TrackColours[SCHEME_SUPPORTS] = HighlightMarker;
