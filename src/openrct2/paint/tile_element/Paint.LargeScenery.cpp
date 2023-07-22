@@ -362,7 +362,7 @@ void PaintLargeScenery(PaintSession& session, uint8_t direction, uint16_t height
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
         isGhost = true;
     }
-    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&tileElement)))
+    else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&tileElement))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
         isGhost = true;

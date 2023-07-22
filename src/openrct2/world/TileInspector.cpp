@@ -37,7 +37,7 @@
 
 TileCoordsXY windowTileInspectorTile;
 int32_t windowTileInspectorElementCount = 0;
-int32_t windowTileInspectorSelectedIndex;
+int32_t windowTileInspectorSelectedIndex = -1;
 
 using namespace OpenRCT2::TrackMetaData;
 namespace OpenRCT2::TileInspector
@@ -955,17 +955,15 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    // NOTE: The pointer is exclusively used to determine the  current selection,
-    // do not access the data, points to potentially invalid memory.
-    static const TileElement* _highlightedElement = nullptr;
-
-    void SetSelectedElement(const TileElement* elem)
+    TileElement* GetSelectedElement()
     {
-        _highlightedElement = elem;
-    }
-
-    bool IsElementSelected(const TileElement* elem)
-    {
-        return _highlightedElement == elem;
+        if (windowTileInspectorSelectedIndex == -1)
+        {
+            return nullptr;
+        }
+        Guard::Assert(
+            windowTileInspectorSelectedIndex >= 0 && windowTileInspectorSelectedIndex < windowTileInspectorElementCount,
+            "Selected list item out of range");
+        return MapGetNthElementAt(windowTileInspectorTile.ToCoordsXY(), windowTileInspectorSelectedIndex);
     }
 } // namespace OpenRCT2::TileInspector

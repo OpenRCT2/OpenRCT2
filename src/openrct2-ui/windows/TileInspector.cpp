@@ -558,10 +558,7 @@ public:
         if (tileInspectorPage == TileInspectorPage::Default || windowTileInspectorSelectedIndex == -1)
             return;
 
-        const TileElement* const tileElement = GetSelectedElement();
-
-        // Update selection, can be nullptr.
-        OpenRCT2::TileInspector::SetSelectedElement(tileElement);
+        const TileElement* const tileElement = OpenRCT2::TileInspector::GetSelectedElement();
 
         if (tileElement == nullptr)
             return;
@@ -713,12 +710,12 @@ public:
     void OnClose() override
     {
         ToolCancel();
-        TileElement* const elem = GetSelectedElement();
+        TileElement* const elem = OpenRCT2::TileInspector::GetSelectedElement();
         if (elem != nullptr)
         {
             MapInvalidateElement(_toolMap, elem);
         }
-        OpenRCT2::TileInspector::SetSelectedElement(nullptr);
+        windowTileInspectorSelectedIndex = -1;
     }
 
     void OnResize() override
@@ -769,7 +766,7 @@ public:
         if (tileInspectorPage == TileInspectorPage::Default || windowTileInspectorSelectedIndex == -1)
             return;
 
-        const TileElement* tileElement = GetSelectedElement();
+        const TileElement* tileElement = OpenRCT2::TileInspector::GetSelectedElement();
         if (tileElement == nullptr)
             return;
 
@@ -928,7 +925,7 @@ public:
         if (dropdownIndex == -1)
             return;
         // Get selected element
-        const TileElement* const tileElement = GetSelectedElement();
+        const TileElement* const tileElement = OpenRCT2::TileInspector::GetSelectedElement();
         if (tileInspectorPage == TileInspectorPage::Wall)
         {
             Guard::Assert(tileElement->GetType() == TileElementType::Wall, "Element is not a wall");
@@ -1049,7 +1046,7 @@ public:
                 + ScreenCoordsXY{ widgets[WIDX_GROUPBOX_DETAILS].left + 7, widgets[WIDX_GROUPBOX_DETAILS].top + 14 };
 
             // Get map element
-            const TileElement* const tileElement = GetSelectedElement();
+            const TileElement* const tileElement = OpenRCT2::TileInspector::GetSelectedElement();
             if (tileElement == nullptr)
                 return;
 
@@ -1764,7 +1761,6 @@ private:
         _tileSelected = true;
         _toolMap = mapCoords;
         windowTileInspectorTile = TileCoordsXY(mapCoords);
-        OpenRCT2::TileInspector::SetSelectedElement(clickedElement);
         LoadTile(clickedElement);
     }
 
@@ -1773,13 +1769,10 @@ private:
         if (index < 0 || index >= windowTileInspectorElementCount)
         {
             windowTileInspectorSelectedIndex = -1;
-            OpenRCT2::TileInspector::SetSelectedElement(nullptr);
         }
         else
         {
             windowTileInspectorSelectedIndex = index;
-            const TileElement* const tileElement = GetSelectedElement();
-            OpenRCT2::TileInspector::SetSelectedElement(tileElement);
         }
         Invalidate();
     }
@@ -1839,7 +1832,7 @@ private:
 
     void CopyElement()
     {
-        const TileElement* const tileElement = GetSelectedElement();
+        const TileElement* const tileElement = OpenRCT2::TileInspector::GetSelectedElement();
         Guard::Assert(tileElement != nullptr, "Invalid tile element");
         // Copy value, in case the element gets moved
         _copiedElement = *tileElement;
@@ -1992,21 +1985,9 @@ private:
         GameActions::Execute(&modifyTile);
     }
 
-    TileElement* GetSelectedElement()
-    {
-        if (windowTileInspectorSelectedIndex == -1)
-        {
-            return nullptr;
-        }
-        Guard::Assert(
-            windowTileInspectorSelectedIndex >= 0 && windowTileInspectorSelectedIndex < windowTileInspectorElementCount,
-            "Selected list item out of range");
-        return MapGetNthElementAt(_toolMap, windowTileInspectorSelectedIndex);
-    }
-
     void OnPrepareDraw() override
     {
-        const TileElement* const tileElement = GetSelectedElement();
+        const TileElement* const tileElement = OpenRCT2::TileInspector::GetSelectedElement();
 
         // Set the correct page automatically
         TileInspectorPage p = TileInspectorPage::Default;

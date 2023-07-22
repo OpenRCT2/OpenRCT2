@@ -19,8 +19,7 @@ namespace GameActions
 
 namespace OpenRCT2::TileInspector
 {
-    void SetSelectedElement(const TileElement* elem);
-    bool IsElementSelected(const TileElement* elem);
+    TileElement* GetSelectedElement();
 
     GameActions::Result InsertCorruptElementAt(const CoordsXY& loc, int16_t elementIndex, bool isExecuting);
     GameActions::Result RemoveElementAt(const CoordsXY& loc, int16_t elementIndex, bool isExecuting);

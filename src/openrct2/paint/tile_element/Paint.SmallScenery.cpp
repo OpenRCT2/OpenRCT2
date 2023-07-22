@@ -346,7 +346,7 @@ void PaintSmallScenery(PaintSession& session, uint8_t direction, int32_t height,
         session.InteractionType = ViewportInteractionItem::None;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
-    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&sceneryElement)))
+    else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&sceneryElement))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }

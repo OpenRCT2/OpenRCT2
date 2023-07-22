@@ -190,6 +190,7 @@ struct PaintSessionCore
     TileElement* CurrentlyDrawnTileElement;
     const TileElement* PathElementOnSameHeight;
     const TileElement* TrackElementOnSameHeight;
+    const TileElement* SelectedElement;
     PaintStruct* WoodenSupportsPrependTo;
     CoordsXY SpritePosition;
     CoordsXY MapPosition;
