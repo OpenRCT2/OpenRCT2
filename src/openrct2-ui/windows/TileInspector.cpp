@@ -506,8 +506,9 @@ public:
         // Check if the mouse is hovering over the list
         if (!WidgetIsHighlighted(*this, WIDX_LIST))
         {
+            if (_highlightedIndex != -1)
+                InvalidateWidget(WIDX_LIST);
             _highlightedIndex = -1;
-            InvalidateWidget(WIDX_LIST);
         }
         if (gCurrentToolWidget.window_classification != WindowClass::TileInspector)
             Close();
@@ -2040,32 +2041,30 @@ private:
             Invalidate();
         }
         // X and Y spinners
-        SetWidgetDisabled(WIDX_SPINNER_X_INCREASE, !(_tileSelected && ((_toolMap.x / 32) < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
-        SetWidgetDisabled(WIDX_SPINNER_X_DECREASE, !(_tileSelected && ((_toolMap.x / 32) > 0)));
-        SetWidgetDisabled(WIDX_SPINNER_Y_INCREASE, !(_tileSelected && ((_toolMap.y / 32) < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
-        SetWidgetDisabled(WIDX_SPINNER_Y_DECREASE, !(_tileSelected && ((_toolMap.y / 32) > 0)));
+        SetWidgetDisabledAndInvalidate(
+            WIDX_SPINNER_X_INCREASE, !(_tileSelected && ((_toolMap.x / 32) < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
+        SetWidgetDisabledAndInvalidate(WIDX_SPINNER_X_DECREASE, !(_tileSelected && ((_toolMap.x / 32) > 0)));
+        SetWidgetDisabledAndInvalidate(
+            WIDX_SPINNER_Y_INCREASE, !(_tileSelected && ((_toolMap.y / 32) < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
+        SetWidgetDisabledAndInvalidate(WIDX_SPINNER_Y_DECREASE, !(_tileSelected && ((_toolMap.y / 32) > 0)));
 
         // Sort buttons
-        SetWidgetDisabled(WIDX_BUTTON_SORT, !(_tileSelected && windowTileInspectorElementCount > 1));
+        SetWidgetDisabledAndInvalidate(WIDX_BUTTON_SORT, !(_tileSelected && windowTileInspectorElementCount > 1));
 
         // Move Up button
-        SetWidgetDisabled(
+        SetWidgetDisabledAndInvalidate(
             WIDX_BUTTON_MOVE_UP,
             !(windowTileInspectorSelectedIndex != -1
               && windowTileInspectorSelectedIndex < windowTileInspectorElementCount - 1));
-        InvalidateWidget(WIDX_BUTTON_MOVE_UP);
 
         // Move Down button
-        SetWidgetDisabled(WIDX_BUTTON_MOVE_DOWN, !(windowTileInspectorSelectedIndex > 0));
-        InvalidateWidget(WIDX_BUTTON_MOVE_DOWN);
+        SetWidgetDisabledAndInvalidate(WIDX_BUTTON_MOVE_DOWN, !(windowTileInspectorSelectedIndex > 0));
 
         // Copy button
-        SetWidgetDisabled(WIDX_BUTTON_COPY, !(windowTileInspectorSelectedIndex >= 0));
-        InvalidateWidget(WIDX_BUTTON_COPY);
+        SetWidgetDisabledAndInvalidate(WIDX_BUTTON_COPY, !(windowTileInspectorSelectedIndex >= 0));
 
         // Paste button
-        SetWidgetDisabled(WIDX_BUTTON_PASTE, !(_tileSelected && _elementCopied));
-        InvalidateWidget(WIDX_BUTTON_PASTE);
+        SetWidgetDisabledAndInvalidate(WIDX_BUTTON_PASTE, !(_tileSelected && _elementCopied));
 
         widgets[WIDX_BACKGROUND].bottom = height - 1;
 

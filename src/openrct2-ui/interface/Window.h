@@ -24,6 +24,7 @@ struct Window : WindowBase
     bool IsWidgetPressed(WidgetIndex widgetIndex) const;
     void SetWidgetEnabled(WidgetIndex widgetIndex, bool value);
     void SetWidgetDisabled(WidgetIndex widgetIndex, bool value);
+    void SetWidgetDisabledAndInvalidate(WidgetIndex widgetIndex, bool value);
     void SetWidgetPressed(WidgetIndex widgetIndex, bool value);
     void SetCheckboxValue(WidgetIndex widgetIndex, bool value);
     void DrawWidgets(DrawPixelInfo& dpi);
