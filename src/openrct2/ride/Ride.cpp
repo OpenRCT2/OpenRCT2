@@ -3537,6 +3537,11 @@ static void RideCreateVehiclesFindFirstBlock(const Ride& ride, CoordsXYE* outXYE
             }
             case TrackElemType::Up25ToFlat:
             case TrackElemType::Up60ToFlat:
+                if (!trackElement->HasChain())
+                {
+                    break;
+                }
+                [[fallthrough]];
             case TrackElemType::EndStation:
             case TrackElemType::CableLiftHill:
             case TrackElemType::BlockBrakes:
