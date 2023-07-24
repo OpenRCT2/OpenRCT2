@@ -19,10 +19,10 @@
 #include "../TrackPaint.h"
 
 static constexpr const uint32_t InvertedRCDiagBrakeImages[NumOrthogonalDirections] = {
-    SPR_G2_BM_INVERTED_DIAG_BRAKES,
-    SPR_G2_BM_INVERTED_DIAG_BRAKES + 1,
-    SPR_G2_BM_INVERTED_DIAG_BRAKES,
-    SPR_G2_BM_INVERTED_DIAG_BRAKES + 1,
+    SPR_G2_BM_INVERT_DIAG_BRAKES,
+    SPR_G2_BM_INVERT_DIAG_BRAKES + 1,
+    SPR_G2_BM_INVERT_DIAG_BRAKES,
+    SPR_G2_BM_INVERT_DIAG_BRAKES + 1,
 };
 
 /** rct2: 0x008A92E8 */
