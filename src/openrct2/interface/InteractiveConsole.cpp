@@ -1924,6 +1924,67 @@ static int32_t ConsoleCommandProfilerStop(
     return 0;
 }
 
+static int32_t ConsoleCommandGoToEntity([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+{
+    if (argv.size() < 1)
+    {
+        console.WriteLineWarning("Too few arguments");
+        static_assert(EnumValue(EntityType::Count) == 13, "EntityType::Count changed, update console command!");
+        console.WriteLine("get_entity <entity ID> [entity type]");
+        console.WriteLine("entity type is one of:");
+        console.WriteLine("    0 (EntityType::Vehicle)");
+        console.WriteLine("    1 (EntityType::Guest)");
+        console.WriteLine("    2 (EntityType::Staff)");
+        console.WriteLine("    3 (EntityType::Litter)");
+        console.WriteLine("    4 (EntityType::SteamParticle)");
+        console.WriteLine("    5 (EntityType::MoneyEffect)");
+        console.WriteLine("    6 (EntityType::CrashedVehicleParticle)");
+        console.WriteLine("    7 (EntityType::ExplosionCloud)");
+        console.WriteLine("    8 (EntityType::CrashSplash)");
+        console.WriteLine("    9 (EntityType::ExplosionFlare)");
+        console.WriteLine("   10 (EntityType::JumpingFountain)");
+        console.WriteLine("   11 (EntityType::Balloon)");
+        console.WriteLine("   12 (EntityType::Duck)");
+        return 1;
+    }
+
+    EntityType entityType = EntityType::Null;
+    auto entityNumber = atoi(argv[0].c_str());
+    if (entityNumber > MAX_ENTITIES)
+    {
+        console.WriteFormatLine("Entity number out of bounds. Maximum: %d", MAX_ENTITIES);
+        return 1;
+    }
+    if (argv.size() >= 2)
+    {
+        entityType = static_cast<EntityType>(atoi(argv[1].c_str()));
+        if (EnumValue(entityType) >= EnumValue(EntityType::Count) && entityType != EntityType::Null)
+        {
+            console.WriteFormatLine(
+                "Entity type value out of bounds. Minimum: 0, maximum: %d", EnumValue(EntityType::Count) - 1);
+            return 1;
+        }
+    }
+    // This function requires manual updating for new entity types
+    EntityBase* entity = GetEntityByIndex(entityNumber, entityType);
+
+    if (entity == nullptr || entity->Type == EntityType::Null)
+    {
+        console.WriteFormatLine("Could not find entity with ID %d", entityNumber);
+        return 1;
+    }
+
+    CoordsXYZ entityLocation = entity->GetLocation();
+    CoordsXYZ majorGrid = { entityLocation.x / 32, entityLocation.y / 32, entityLocation.z / 8 };
+    CoordsXYZ minorGrid = { entityLocation.x - majorGrid.x * 32, entityLocation.y - majorGrid.y * 32,
+                            entityLocation.z - majorGrid.z * 8 };
+
+    console.WriteFormatLine(
+        "Found entity: Type: %d; Id: %d; Orientation: %d; Location: (%02d.%02d, %02d.%02d, %02d.%02d)", entity->Type,
+        entity->Id, entity->Orientation, majorGrid.x, minorGrid.x, majorGrid.y, minorGrid.y, majorGrid.z, minorGrid.y);
+    return 0;
+}
+
 using console_command_func = int32_t (*)(InteractiveConsole& console, const arguments_t& argv);
 struct ConsoleCommand
 {
@@ -2035,6 +2096,7 @@ static constexpr ConsoleCommand console_command_table[] = {
     { "profiler_stop", ConsoleCommandProfilerStop, "Stops the profiler.", "profiler_stop [<output file>]" },
     { "profiler_exportcsv", ConsoleCommandProfilerExportCSV, "Exports the current profiler data.",
       "profiler_exportcsv <output file>" },
+    { "find_entity", ConsoleCommandGoToEntity, "Finds an entity by index.", "find_entity <entity ID> [entity type] " },
 };
 
 static int32_t ConsoleCommandWindows(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)

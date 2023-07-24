@@ -741,21 +741,35 @@ struct GameStateSnapshots final : public IGameStateSnapshots
                 continue;
 
             const char* typeName = GetEntityTypeName(change.entityType);
+            char positionString[64] = "(null)";
+            uint8_t orientation = 255;
+            EntityBase* entity = GetEntityByIndex(change.spriteIndex, change.entityType);
+            if (entity != nullptr && entity->Type != EntityType::Null)
+            {
+                CoordsXYZ majorGrid = { entity->x / 32, entity->y / 32, entity->z / 8 };
+                CoordsXYZ minorGrid = { entity->x - majorGrid.x * 32, entity->y - majorGrid.y * 32,
+                                        entity->z - majorGrid.z * 8 };
+                orientation = entity->Orientation;
+                snprintf(
+                    positionString, sizeof(positionString), "(%02d.%02d, %02d.%02d, %02d.%02d)", majorGrid.x, minorGrid.x,
+                    majorGrid.y, minorGrid.y, majorGrid.z, minorGrid.z);
+            }
 
             if (change.changeType == GameStateSpriteChange::ADDED)
             {
-                snprintf(tempBuffer, sizeof(tempBuffer), "Sprite added (%s), index: %u\n", typeName, change.spriteIndex);
+                snprintf(tempBuffer, sizeof(tempBuffer), "Entity added (%s), index: %u\n", typeName, change.spriteIndex);
                 outputBuffer += tempBuffer;
             }
             else if (change.changeType == GameStateSpriteChange::REMOVED)
             {
-                snprintf(tempBuffer, sizeof(tempBuffer), "Sprite removed (%s), index: %u\n", typeName, change.spriteIndex);
+                snprintf(tempBuffer, sizeof(tempBuffer), "Entity removed (%s), index: %u\n", typeName, change.spriteIndex);
                 outputBuffer += tempBuffer;
             }
             else if (change.changeType == GameStateSpriteChange::MODIFIED)
             {
                 snprintf(
-                    tempBuffer, sizeof(tempBuffer), "Sprite modifications (%s), index: %u\n", typeName, change.spriteIndex);
+                    tempBuffer, sizeof(tempBuffer), "Entity modifications (%s), index: %u, location: %s, orientation: %02d\n",
+                    typeName, change.spriteIndex, positionString, orientation);
                 outputBuffer += tempBuffer;
                 for (auto& diff : change.diffs)
                 {
