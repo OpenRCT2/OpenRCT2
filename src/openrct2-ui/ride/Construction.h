@@ -19,25 +19,6 @@ enum class RideConstructionState : uint8_t;
  */
 constexpr std::array DropdownOrder = {
     TrackElemType::EndStation,
-<<<<<<< HEAD
-=======
-    TrackElemType::Brakes,
-    TrackElemType::DiagBrakes,
-    TrackElemType::BlockBrakes,
-    TrackElemType::DiagBlockBrakes,
-    TrackElemType::Booster,
-    TrackElemType::RotationControlToggle,
-    TrackElemType::LogFlumeReverser,
-    TrackElemType::BrakeForDrop,
-    TrackElemType::HeartLineTransferUp,
-    TrackElemType::HeartLineTransferDown,
-    TrackElemType::LeftCurvedLiftHill,
-    TrackElemType::RightCurvedLiftHill,
-    TrackElemType::PoweredLift,
-    TrackElemType::CableLiftHill,
-
-    // Simple track elements
->>>>>>> b8810fc4a (Diagonal Brakes and Block Brakes)
     TrackElemType::SBendLeft,
     TrackElemType::SBendRight,
     TrackElemType::LeftVerticalLoop,
@@ -64,6 +45,7 @@ constexpr std::array DropdownOrder = {
     TrackElemType::RightHalfBankedHelixDownLarge,
     TrackElemType::Booster,
     TrackElemType::Brakes,
+    TrackElemType::DiagBrakes,
     TrackElemType::OnRidePhoto,
     TrackElemType::LeftQuarterBankedHelixLargeUp,
     TrackElemType::RightQuarterBankedHelixLargeUp,
@@ -127,6 +109,7 @@ constexpr std::array DropdownOrder = {
     TrackElemType::AirThrustVerticalDown,
     TrackElemType::AirThrustVerticalDownToLevel,
     TrackElemType::BlockBrakes,
+    TrackElemType::DiagBlockBrakes,
     TrackElemType::RotationControlToggle,
     TrackElemType::LeftLargeCorkscrewUp,
     TrackElemType::LeftLargeCorkscrewDown,
@@ -155,13 +138,8 @@ constexpr std::array DropdownOrder = {
 };
 constexpr size_t DropdownLength = DropdownOrder.size();
 
-<<<<<<< HEAD
 // Update the magic number with the current number of track elements to silence
-static_assert(TrackElemType::Count == 337, "Reminder to add new track element to special dropdown list");
-=======
-// Reminder to add your track element to the list, if applicable
-static_assert(TrackElemType::Count == 339);
->>>>>>> b8810fc4a (Diagonal Brakes and Block Brakes)
+static_assert(TrackElemType::Count == 339, "Reminder to add new track element to special dropdown list");
 
 constexpr bool TrackPieceDirectionIsDiagonal(const uint8_t direction)
 {
