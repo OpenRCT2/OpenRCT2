@@ -7437,7 +7437,7 @@ void Vehicle::PopulateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, TrackEle
             BlockBrakeSpeed = output.element->AsTrack()->GetBrakeBoosterSpeed();
             return;
         }
-        if (TrackTypeIsBrakes(output.element->AsTrack()->GetTrackType()))
+        if (!TrackTypeIsBrakes(output.element->AsTrack()->GetTrackType()))
         {
             break;
         }
