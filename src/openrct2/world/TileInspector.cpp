@@ -160,7 +160,6 @@ namespace OpenRCT2::TileInspector
             }
 
             TileElementRemove(tileElement);
-            MapInvalidateTileFull(loc);
 
             if (IsTileSelected(loc))
             {
@@ -189,7 +188,6 @@ namespace OpenRCT2::TileInspector
             {
                 return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
             }
-            MapInvalidateTileFull(loc);
 
             if (IsTileSelected(loc))
             {
@@ -277,8 +275,6 @@ namespace OpenRCT2::TileInspector
                 case TileElementType::LargeScenery:
                     break;
             }
-
-            MapInvalidateTileFull(loc);
         }
 
         return GameActions::Result();
@@ -297,12 +293,6 @@ namespace OpenRCT2::TileInspector
 
         bool currentlyInvisible = tileElement->IsInvisible();
         tileElement->SetInvisible(!currentlyInvisible);
-
-        MapInvalidateTileFull(loc);
-        if (loc == windowTileInspectorTile.ToCoordsXY())
-        {
-            WindowInvalidateByClass(WindowClass::TileInspector);
-        }
 
         return GameActions::Result();
     }
@@ -356,7 +346,6 @@ namespace OpenRCT2::TileInspector
             pastedElement->SetLastForTile(lastForTile);
 
             MapAnimationAutoCreateAtTileElement(tileLoc, pastedElement);
-            MapInvalidateTileFull(loc);
 
             if (IsTileSelected(loc))
             {
@@ -417,8 +406,6 @@ namespace OpenRCT2::TileInspector
                     otherElement--;
                 }
             }
-
-            MapInvalidateTileFull(loc);
 
             if (IsTileSelected(loc))
             {
@@ -491,8 +478,6 @@ namespace OpenRCT2::TileInspector
 
             tileElement->BaseHeight += heightOffset;
             tileElement->ClearanceHeight += heightOffset;
-
-            MapInvalidateTileFull(loc);
         }
 
         return GameActions::Result();
@@ -512,8 +497,6 @@ namespace OpenRCT2::TileInspector
                 surfaceelement->SetParkFences(0);
             else
                 ParkUpdateFences(loc);
-
-            MapInvalidateTileFull(loc);
         }
 
         return GameActions::Result();
@@ -560,8 +543,6 @@ namespace OpenRCT2::TileInspector
             }
 
             surfaceElement->SetSlope(newSlope);
-
-            MapInvalidateTileFull(loc);
         }
 
         return GameActions::Result();
@@ -579,8 +560,6 @@ namespace OpenRCT2::TileInspector
         {
             uint8_t newSlope = surfaceElement->GetSlope() ^ TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
             surfaceElement->SetSlope(newSlope);
-
-            MapInvalidateTileFull(loc);
         }
 
         return GameActions::Result();
@@ -595,8 +574,6 @@ namespace OpenRCT2::TileInspector
         if (isExecuting)
         {
             pathElement->AsPath()->SetSloped(sloped);
-
-            MapInvalidateTileFull(loc);
         }
 
         return GameActions::Result();
@@ -612,8 +589,6 @@ namespace OpenRCT2::TileInspector
         if (isExecuting)
         {
             pathElement->AsPath()->SetJunctionRailings(hasJunctionRailings);
-
-            MapInvalidateTileFull(loc);
         }
 
         return GameActions::Result();
@@ -628,8 +603,6 @@ namespace OpenRCT2::TileInspector
         if (isExecuting)
         {
             pathElement->AsPath()->SetIsBroken(broken);
-
-            MapInvalidateTileFull(loc);
         }
 
         return GameActions::Result();
@@ -645,8 +618,6 @@ namespace OpenRCT2::TileInspector
         {
             uint8_t newEdges = pathElement->AsPath()->GetEdgesAndCorners() ^ (1 << edgeIndex);
             pathElement->AsPath()->SetEdgesAndCorners(newEdges);
-
-            MapInvalidateTileFull(loc);
         }
 
         return GameActions::Result();
@@ -691,8 +662,6 @@ namespace OpenRCT2::TileInspector
         {
             // Set new slope value
             wallElement->AsWall()->SetSlope(slopeValue);
-
-            MapInvalidateTileFull(loc);
         }
 
         return GameActions::Result();
@@ -709,8 +678,6 @@ namespace OpenRCT2::TileInspector
         {
             uint8_t animationFrame = wallElement->AsWall()->GetAnimationFrame();
             wallElement->AsWall()->SetAnimationFrame(animationFrame + animationFrameOffset);
-
-            MapInvalidateTileFull(loc);
         }
 
         return GameActions::Result();
@@ -771,8 +738,6 @@ namespace OpenRCT2::TileInspector
                 // track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is
                 // for when you decrease the map size.
                 Guard::Assert(MapGetSurfaceElementAt(elem) != nullptr, "No surface at %d,%d", elem.x >> 5, elem.y >> 5);
-
-                MapInvalidateTileFull(elem);
 
                 // Keep?
                 // invalidate_test_results(ride);
@@ -851,8 +816,6 @@ namespace OpenRCT2::TileInspector
                 // for when you decrease the map size.
                 Guard::Assert(MapGetSurfaceElementAt(elem) != nullptr, "No surface at %d,%d", elem.x >> 5, elem.y >> 5);
 
-                MapInvalidateTileFull(elem);
-
                 // Keep?
                 // invalidate_test_results(ride);
 
@@ -875,8 +838,6 @@ namespace OpenRCT2::TileInspector
         if (isExecuting)
         {
             trackElement->AsTrack()->SetBrakeClosed(isClosed);
-
-            MapInvalidateTileFull(loc);
         }
 
         return GameActions::Result();
@@ -892,8 +853,6 @@ namespace OpenRCT2::TileInspector
         if (isExecuting)
         {
             trackElement->AsTrack()->SetIsIndestructible(isIndestructible);
-
-            MapInvalidateTileFull(loc);
         }
 
         return GameActions::Result();
@@ -913,8 +872,6 @@ namespace OpenRCT2::TileInspector
 
             // Update collision
             tileElement->SetOccupiedQuadrants(1 << ((quarterIndex + 2) & 3));
-
-            MapInvalidateTileFull(loc);
         }
 
         return GameActions::Result();
@@ -932,8 +889,6 @@ namespace OpenRCT2::TileInspector
             auto occupiedQuadrants = tileElement->GetOccupiedQuadrants();
             occupiedQuadrants ^= 1 << quarterIndex;
             tileElement->SetOccupiedQuadrants(occupiedQuadrants);
-
-            MapInvalidateTileFull(loc);
         }
 
         return GameActions::Result();
