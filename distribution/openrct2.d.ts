@@ -2163,17 +2163,17 @@ declare global {
         readonly downtime: number;
 
         /**
-         * The currently set chain lift speed in miles per hour. Use `context.formatString()` to convert into kph. Ex: `formatString('{VELOCITY}', ride.liftHillSpeed)`.
+         * The currently set chain lift speed in miles per hour. Use `context.formatString()` to convert speed values to a localised value/unit string. Ex: `formatString('{VELOCITY}', ride.liftHillSpeed)`.
          */
         liftHillSpeed: number;
 
         /**
-         * The max chain lift speed for this ride in miles per hour. Use `context.formatString()` to convert into kph. Ex: `formatString('{VELOCITY}', ride.maxLiftHillSpeed)`.
+         * The max chain lift speed for this ride in miles per hour.
          */
         readonly maxLiftHillSpeed: number;
 
         /**
-         * The min chain lift speed for this ride in miles per hour. Use `context.formatString()` to convert into kph. Ex: `formatString('{VELOCITY}', ride.minLiftHillSpeed)`.
+         * The min chain lift speed for this ride in miles per hour.
          */
         readonly minLiftHillSpeed: number;
 
@@ -2183,12 +2183,12 @@ declare global {
         readonly satisfaction: number;
 
         /**
-         * The max speed in miles per hour. Use `context.formatString()` to convert into kph. Ex: `formatString('{VELOCITY}', ride.maxSpeed)`.
+         * The max speed in miles per hour.
          */
         readonly maxSpeed: number;
 
         /**
-         * The average speed in miles per hour. Use `context.formatString()` to convert into kph. Ex: `formatString('{VELOCITY}', ride.averageSpeed)`.
+         * The average speed in miles per hour.
          */
         readonly averageSpeed: number;
 
@@ -2198,7 +2198,7 @@ declare global {
         readonly rideTime: number;
 
         /**
-         * Total length of the ride in meters. Use `context.formatString()` to convert into metres/feet. Ex: `formatString('{LENGTH}', ride.rideLength)`.
+         * Total length of the ride in meters. Use `context.formatString()` to convert into localised value/unit string. Ex: `formatString('{LENGTH}', ride.rideLength)`.
          */
         readonly rideLength: number;
 
