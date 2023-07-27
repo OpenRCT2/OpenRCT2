@@ -117,7 +117,7 @@ static int32_t ScenarioIndexEntryCompareByIndex(const ScenarioIndexEntry& entryA
 
 static void ScenarioHighscoreFree(ScenarioHighscoreEntry* highscore)
 {
-    SafeDelete(highscore);
+    delete highscore;
 }
 
 class ScenarioFileIndex final : public FileIndex<ScenarioIndexEntry>
