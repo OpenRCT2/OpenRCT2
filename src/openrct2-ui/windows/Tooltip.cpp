@@ -152,7 +152,7 @@ void WindowTooltipOpen(WindowBase* widgetWindow, WidgetIndex widgetIndex, const 
         return;
 
     auto widget = &widgetWindow->widgets[widgetIndex];
-    WindowEventInvalidateCall(widgetWindow);
+    WindowEventOnPrepareDrawCall(widgetWindow);
 
     OpenRCT2String result;
     if (widget->flags & WIDGET_FLAGS::TOOLTIP_IS_STRING)

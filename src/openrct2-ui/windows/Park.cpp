@@ -632,7 +632,7 @@ private:
         }
 
         // Call invalidate event
-        WindowEventInvalidateCall(this);
+        WindowEventOnPrepareDrawCall(this);
 
         focus = newFocus;
 
@@ -1193,7 +1193,7 @@ private:
         Invalidate();
 
         WindowEventResizeCall(this);
-        WindowEventInvalidateCall(this);
+        WindowEventOnPrepareDrawCall(this);
         WindowEventUpdateCall(this);
         if (listen && viewport != nullptr)
             viewport->flags |= VIEWPORT_FLAG_SOUND_ON;

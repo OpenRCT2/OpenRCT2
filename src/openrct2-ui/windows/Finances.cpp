@@ -467,7 +467,7 @@ public:
             height = WH_OTHER_TABS;
         }
         WindowEventResizeCall(this);
-        WindowEventInvalidateCall(this);
+        WindowEventOnPrepareDrawCall(this);
 
         WindowInitScrollWidgets(*this);
 

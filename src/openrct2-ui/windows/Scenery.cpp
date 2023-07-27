@@ -304,7 +304,7 @@ public:
             height = min_height;
             Invalidate();
             // HACK: For some reason invalidate has not been called
-            WindowEventInvalidateCall(this);
+            WindowEventOnPrepareDrawCall(this);
             ContentUpdateScroll();
         }
 
@@ -314,7 +314,7 @@ public:
             height = max_height;
             Invalidate();
             // HACK: For some reason invalidate has not been called
-            WindowEventInvalidateCall(this);
+            WindowEventOnPrepareDrawCall(this);
             ContentUpdateScroll();
         }
 

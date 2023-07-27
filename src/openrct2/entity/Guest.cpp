@@ -1429,7 +1429,7 @@ void Guest::CheckCantFindRide()
 
     if (w != nullptr)
     {
-        WindowEventInvalidateCall(w);
+        WindowEventOnPrepareDrawCall(w);
     }
 
     WindowInvalidateByNumber(WindowClass::Peep, Id);
@@ -3112,7 +3112,7 @@ static void PeepLeavePark(Guest* peep)
 
     WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->Id);
     if (w != nullptr)
-        WindowEventInvalidateCall(w);
+        WindowEventOnPrepareDrawCall(w);
     WindowInvalidateByNumber(WindowClass::Peep, peep->Id);
 }
 

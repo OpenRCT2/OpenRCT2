@@ -419,7 +419,7 @@ WindowBase* WindowFindFromPoint(const ScreenCoordsXY& screenCoords)
 WidgetIndex WindowFindWidgetFromPoint(WindowBase& w, const ScreenCoordsXY& screenCoords)
 {
     // Invalidate the window
-    WindowEventInvalidateCall(&w);
+    WindowEventOnPrepareDrawCall(&w);
 
     // Find the widget at point x, y
     WidgetIndex widget_index = -1;
@@ -1233,7 +1233,7 @@ static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, in
 
     // Invalidate modifies the window colours so first get the correct
     // colour before setting the global variables for the string painting
-    WindowEventInvalidateCall(&w);
+    WindowEventOnPrepareDrawCall(&w);
 
     // Text colouring
     gCurrentWindowColours[0] = NOT_TRANSLUCENT(w.colours[0]);
@@ -1241,7 +1241,7 @@ static void WindowDrawSingle(DrawPixelInfo& dpi, WindowBase& w, int32_t left, in
     gCurrentWindowColours[2] = NOT_TRANSLUCENT(w.colours[2]);
     gCurrentWindowColours[3] = NOT_TRANSLUCENT(w.colours[3]);
 
-    WindowEventPaintCall(&w, copy);
+    WindowEventOnDrawCall(&w, copy);
 }
 
 /**
@@ -1293,7 +1293,7 @@ void WindowResize(WindowBase& w, int32_t dw, int32_t dh)
     w.height = std::clamp<int32_t>(w.height + dh, w.min_height, w.max_height);
 
     WindowEventResizeCall(&w);
-    WindowEventInvalidateCall(&w);
+    WindowEventOnPrepareDrawCall(&w);
 
     // Update scroll widgets
     for (auto& scroll : w.scrolls)
@@ -1507,17 +1507,17 @@ void WindowEventMovedCall(WindowBase* w, const ScreenCoordsXY& screenCoords)
     w->OnMoved(screenCoords);
 }
 
-void WindowEventInvalidateCall(WindowBase* w)
+void WindowEventOnPrepareDrawCall(WindowBase* w)
 {
     w->OnPrepareDraw();
 }
 
-void WindowEventPaintCall(WindowBase* w, DrawPixelInfo& dpi)
+void WindowEventOnDrawCall(WindowBase* w, DrawPixelInfo& dpi)
 {
     w->OnDraw(dpi);
 }
 
-void WindowEventScrollPaintCall(WindowBase* w, DrawPixelInfo& dpi, int32_t scrollIndex)
+void WindowEventScrollDrawCall(WindowBase* w, DrawPixelInfo& dpi, int32_t scrollIndex)
 {
     w->OnScrollDraw(scrollIndex, dpi);
 }

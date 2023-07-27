@@ -213,7 +213,7 @@ void MultiplayerWindow::SetPage(int32_t page_number)
     widgets[WIDX_TITLE].text = WindowMultiplayerPageTitles[page];
 
     WindowEventResizeCall(this);
-    WindowEventInvalidateCall(this);
+    WindowEventOnPrepareDrawCall(this);
     InitScrollWidgets();
     Invalidate();
 }
