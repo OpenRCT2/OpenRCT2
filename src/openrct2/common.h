@@ -121,26 +121,6 @@ constexpr int32_t operator"" _mph(long double speedMph)
 
 using StringId = uint16_t;
 
-#define SafeFree(x)                                                                                                            \
-    do                                                                                                                         \
-    {                                                                                                                          \
-        free(x);                                                                                                               \
-        (x) = nullptr;                                                                                                         \
-    } while (false)
-
-#define SafeDelete(x)                                                                                                          \
-    do                                                                                                                         \
-    {                                                                                                                          \
-        delete (x);                                                                                                            \
-        (x) = nullptr;                                                                                                         \
-    } while (false)
-#define SafeDeleteArray(x)                                                                                                     \
-    do                                                                                                                         \
-    {                                                                                                                          \
-        delete[](x);                                                                                                           \
-        (x) = nullptr;                                                                                                         \
-    } while (false)
-
 #define abstract = 0
 
 #if defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))
