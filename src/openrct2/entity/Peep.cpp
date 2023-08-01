@@ -564,7 +564,7 @@ void PeepWindowStateUpdate(Peep* peep)
 {
     WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->Id.ToUnderlying());
     if (w != nullptr)
-        WindowEventInvalidateCall(w);
+        WindowEventOnPrepareDrawCall(w);
 
     if (peep->Is<Guest>())
     {

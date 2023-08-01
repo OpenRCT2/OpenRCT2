@@ -985,7 +985,7 @@ static void InputWidgetOverFlatbuttonInvalidate()
     WindowBase* w = WindowFindByNumber(gHoverWidget.window_classification, gHoverWidget.window_number);
     if (w != nullptr)
     {
-        WindowEventInvalidateCall(w);
+        WindowEventOnPrepareDrawCall(w);
         if (w->widgets[gHoverWidget.widget_index].type == WindowWidgetType::FlatBtn)
         {
             WidgetInvalidateByNumber(gHoverWidget.window_classification, gHoverWidget.window_number, gHoverWidget.widget_index);

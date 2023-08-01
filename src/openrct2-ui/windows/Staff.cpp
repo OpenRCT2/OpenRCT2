@@ -1093,7 +1093,7 @@ private:
 
         Invalidate();
         WindowEventResizeCall(this);
-        WindowEventInvalidateCall(this);
+        WindowEventOnPrepareDrawCall(this);
         InitScrollWidgets();
         ViewportInit();
         Invalidate();
@@ -1156,7 +1156,7 @@ private:
                 viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
         }
 
-        WindowEventInvalidateCall(this);
+        WindowEventOnPrepareDrawCall(this);
 
         focus = tempFocus;
 

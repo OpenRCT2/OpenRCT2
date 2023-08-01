@@ -634,9 +634,9 @@ void WindowEventScrollSelectCall(WindowBase* w, int32_t scrollIndex, int32_t scr
 OpenRCT2String WindowEventTooltipCall(WindowBase* w, const WidgetIndex widgetIndex, const StringId fallback);
 CursorID WindowEventCursorCall(WindowBase* w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
 void WindowEventMovedCall(WindowBase* w, const ScreenCoordsXY& screenCoords);
-void WindowEventInvalidateCall(WindowBase* w);
-void WindowEventPaintCall(WindowBase* w, DrawPixelInfo& dpi);
-void WindowEventScrollPaintCall(WindowBase* w, DrawPixelInfo& dpi, int32_t scrollIndex);
+void WindowEventOnPrepareDrawCall(WindowBase* w);
+void WindowEventOnDrawCall(WindowBase* w, DrawPixelInfo& dpi);
+void WindowEventScrollDrawCall(WindowBase* w, DrawPixelInfo& dpi, int32_t scrollIndex);
 
 void InvalidateAllWindowsAfterInput();
 void TextinputCancel();

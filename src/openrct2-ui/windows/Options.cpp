@@ -2052,7 +2052,7 @@ private:
 
         Invalidate();
         WindowEventResizeCall(this);
-        WindowEventInvalidateCall(this);
+        WindowEventOnPrepareDrawCall(this);
         InitScrollWidgets();
         Invalidate();
     }
