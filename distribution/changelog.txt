@@ -1,6 +1,7 @@
 0.4.6 (in development)
 ------------------------------------------------------------------------
 - Feature: [#15660] Ability to show window buttons on the left.
+- Feature: [#20680] New title sequences (https://github.com/OpenRCT2/title-sequences/releases/tag/v0.4.6).
 - Feature: [OpenMusic#41] Official Title Theme by Allister Brimble.
 - Improved: [#20119, #20243] Add new colour presets to several roller coasters (using the new colours).
 - Improved: [#20393, #20410] Add Cyrillic characters Ґґ, Ѕѕ, Єє, Іі, Її, and Јј to the sprite font. 
