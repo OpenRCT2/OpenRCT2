@@ -82,3 +82,39 @@ void EntityBase::Paint() const
 {
     Guard::Assert(false, "You are not supposed to call this");
 }
+
+static_assert(static_cast<uint8_t>(EntityType::Count) == 13, "Add new entity type to GetEntityTypeName");
+std::string GetEntityTypeName(EntityType type)
+{
+    switch (type)
+    {
+        case EntityType::Vehicle:
+            return "car";
+        case EntityType::Guest:
+            return "guest";
+        case EntityType::Staff:
+            return "staff";
+        case EntityType::SteamParticle:
+            return "steam_particle";
+        case EntityType::MoneyEffect:
+            return "money_effect";
+        case EntityType::CrashedVehicleParticle:
+            return "crashed_vehicle_particle";
+        case EntityType::ExplosionCloud:
+            return "explosion_cloud";
+        case EntityType::CrashSplash:
+            return "crash_splash";
+        case EntityType::ExplosionFlare:
+            return "explosion_flare";
+        case EntityType::Balloon:
+            return "balloon";
+        case EntityType::Duck:
+            return "duck";
+        case EntityType::JumpingFountain:
+            return "jumping_fountain";
+        case EntityType::Litter:
+            return "litter";
+        default:
+            return "unknown";
+    }
+}

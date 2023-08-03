@@ -56,43 +56,12 @@ namespace OpenRCT2::Scripting
             auto entity = GetEntity();
             if (entity != nullptr)
             {
-                switch (entity->Type)
+                if (targetApiVersion <= API_VERSION_33_PEEP_DEPRECATION
+                    && (entity->Type == EntityType::Guest || entity->Type == EntityType::Staff))
                 {
-                    case EntityType::Vehicle:
-                        return "car";
-                    case EntityType::Guest:
-                        if (targetApiVersion <= API_VERSION_33_PEEP_DEPRECATION)
-                            return "peep";
-                        return "guest";
-                    case EntityType::Staff:
-                        if (targetApiVersion <= API_VERSION_33_PEEP_DEPRECATION)
-                            return "peep";
-                        return "staff";
-                    case EntityType::SteamParticle:
-                        return "steam_particle";
-                    case EntityType::MoneyEffect:
-                        return "money_effect";
-                    case EntityType::CrashedVehicleParticle:
-                        return "crashed_vehicle_particle";
-                    case EntityType::ExplosionCloud:
-                        return "explosion_cloud";
-                    case EntityType::CrashSplash:
-                        return "crash_splash";
-                    case EntityType::ExplosionFlare:
-                        return "explosion_flare";
-                    case EntityType::Balloon:
-                        return "balloon";
-                    case EntityType::Duck:
-                        return "duck";
-                    case EntityType::JumpingFountain:
-                        return "jumping_fountain";
-                    case EntityType::Litter:
-                        return "litter";
-                    case EntityType::Null:
-                        return "unknown";
-                    default:
-                        break;
+                    return "peep";
                 }
+                return GetEntityTypeName(entity->Type);
             }
             return "unknown";
         }

@@ -66,5 +66,3 @@ EntitiesChecksum GetAllEntitiesChecksum();
 
 void EntitySetFlashing(EntityBase* entity, bool flashing);
 bool EntityGetFlashing(EntityBase* entity);
-
-EntityBase* GetEntityByIndex(int32_t entityNumber, EntityType entityType);

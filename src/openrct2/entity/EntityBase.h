@@ -79,3 +79,5 @@ struct EntityBase
 
     void Paint() const;
 };
+
+std::string GetEntityTypeName(EntityType type);

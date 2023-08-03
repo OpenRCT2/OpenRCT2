@@ -1930,47 +1930,27 @@ static int32_t ConsoleCommandGoToEntity([[maybe_unused]] InteractiveConsole& con
     {
         console.WriteLineWarning("Too few arguments");
         static_assert(EnumValue(EntityType::Count) == 13, "EntityType::Count changed, update console command!");
-        console.WriteLine("get_entity <entity ID> [entity type]");
-        console.WriteLine("entity type is one of:");
-        console.WriteLine("    0 (EntityType::Vehicle)");
-        console.WriteLine("    1 (EntityType::Guest)");
-        console.WriteLine("    2 (EntityType::Staff)");
-        console.WriteLine("    3 (EntityType::Litter)");
-        console.WriteLine("    4 (EntityType::SteamParticle)");
-        console.WriteLine("    5 (EntityType::MoneyEffect)");
-        console.WriteLine("    6 (EntityType::CrashedVehicleParticle)");
-        console.WriteLine("    7 (EntityType::ExplosionCloud)");
-        console.WriteLine("    8 (EntityType::CrashSplash)");
-        console.WriteLine("    9 (EntityType::ExplosionFlare)");
-        console.WriteLine("   10 (EntityType::JumpingFountain)");
-        console.WriteLine("   11 (EntityType::Balloon)");
-        console.WriteLine("   12 (EntityType::Duck)");
+        console.WriteLine("get_entity <entity ID> [quiet = suppress camera]");
         return 1;
     }
-
-    EntityType entityType = EntityType::Null;
-    auto entityNumber = atoi(argv[0].c_str());
-    if (entityNumber > MAX_ENTITIES)
+    auto entityId = atoi(argv[0].c_str());
+    if (entityId > MAX_ENTITIES || entityId < 0)
     {
         console.WriteFormatLine("Entity number out of bounds. Maximum: %d", MAX_ENTITIES);
         return 1;
     }
+
+    bool quiet = false;
     if (argv.size() >= 2)
     {
-        entityType = static_cast<EntityType>(atoi(argv[1].c_str()));
-        if (EnumValue(entityType) >= EnumValue(EntityType::Count) && entityType != EntityType::Null)
-        {
-            console.WriteFormatLine(
-                "Entity type value out of bounds. Minimum: 0, maximum: %d", EnumValue(EntityType::Count) - 1);
-            return 1;
-        }
+        quiet = true;
     }
-    // This function requires manual updating for new entity types
-    EntityBase* entity = GetEntityByIndex(entityNumber, entityType);
+
+    auto* entity = TryGetEntity(EntityId::FromUnderlying(entityId));
 
     if (entity == nullptr || entity->Type == EntityType::Null)
     {
-        console.WriteFormatLine("Could not find entity with ID %d", entityNumber);
+        console.WriteFormatLine("Could not find entity with ID %d", entityId);
         return 1;
     }
 
@@ -1979,9 +1959,72 @@ static int32_t ConsoleCommandGoToEntity([[maybe_unused]] InteractiveConsole& con
     CoordsXYZ minorGrid = { entityLocation.x - majorGrid.x * 32, entityLocation.y - majorGrid.y * 32,
                             entityLocation.z - majorGrid.z * 8 };
 
+    char vehicleExtraInfo[64] = "";
+    if (entity->Type == EntityType::Vehicle)
+    {
+        auto ride = entity->As<Vehicle>()->GetRide();
+        if (ride != nullptr)
+        {
+            // train and car numbers are 1-index to match UI
+            int8_t trainNumber = 1;
+            int16_t carNumber;
+            bool success = false;
+            for (const EntityId &trainHeadId: ride->vehicles)
+            {
+                carNumber = 1;
+                EntityId currentVehicleId = trainHeadId;
+                while (currentVehicleId != EntityId::GetNull())
+                {
+                    if (currentVehicleId == entity->Id)
+                    {
+                        success = true;
+                        break;
+                    }
+                    Vehicle* vehicle = TryGetEntity<Vehicle>(currentVehicleId);
+                    if (vehicle == nullptr)
+                        break;
+                    currentVehicleId = vehicle->next_vehicle_on_train;
+                    carNumber++;
+                }
+                if (success)
+                {
+                    snprintf(vehicleExtraInfo, sizeof(vehicleExtraInfo), "; Train: %d; Car: %d", trainNumber, carNumber);
+                    break;
+                }
+                trainNumber++;
+            }
+        }
+    }
+
     console.WriteFormatLine(
-        "Found entity: Type: %d; Id: %d; Orientation: %d; Location: (%02d.%02d, %02d.%02d, %02d.%02d)", entity->Type,
-        entity->Id, entity->Orientation, majorGrid.x, minorGrid.x, majorGrid.y, minorGrid.y, majorGrid.z, minorGrid.y);
+        "Found entity: Type: %s; Id: %d; Orientation: %d; Location: (%02d.%02d, %02d.%02d, %02d.%02d)%s",
+        GetEntityTypeName(entity->Type).c_str(), entity->Id, entity->Orientation, majorGrid.x, minorGrid.x, majorGrid.y,
+        minorGrid.y, majorGrid.z, minorGrid.y, vehicleExtraInfo);
+    if (!quiet)
+    {
+        WindowScrollToLocation(*WindowGetMain(), entityLocation);
+        // open the window for the entity
+        switch (entity->Type)
+        {
+            case EntityType::Vehicle:
+            {
+                auto intent = Intent(WD_VEHICLE);
+                intent.PutExtra(INTENT_EXTRA_VEHICLE, entity);
+                ContextOpenIntent(&intent);
+                break;
+            }
+            case EntityType::Guest:
+            case EntityType::Staff:
+            {
+                auto intent = Intent(WindowClass::Peep);
+                intent.PutExtra(INTENT_EXTRA_PEEP, entity);
+                ContextOpenIntent(&intent);
+                break;
+            }
+            default:
+                break;
+        }
+    }
     return 0;
 }
 
@@ -2096,7 +2139,8 @@ static constexpr ConsoleCommand console_command_table[] = {
     { "profiler_stop", ConsoleCommandProfilerStop, "Stops the profiler.", "profiler_stop [<output file>]" },
     { "profiler_exportcsv", ConsoleCommandProfilerExportCSV, "Exports the current profiler data.",
       "profiler_exportcsv <output file>" },
-    { "find_entity", ConsoleCommandGoToEntity, "Finds an entity by index.", "find_entity <entity ID> [entity type] " },
+    { "find_entity", ConsoleCommandGoToEntity, "Finds an entity by index.",
+      "find_entity <entity ID> [quiet = suppress camera]" },
 };
 
 static int32_t ConsoleCommandWindows(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)

@@ -678,44 +678,6 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         return res;
     }
 
-    static const char* GetEntityTypeName(EntityType type)
-    {
-        switch (type)
-        {
-            case EntityType::Null:
-                return "Null";
-            case EntityType::Guest:
-                return "Guest";
-            case EntityType::Staff:
-                return "Staff";
-            case EntityType::Vehicle:
-                return "Vehicle";
-            case EntityType::Litter:
-                return "Litter";
-            case EntityType::SteamParticle:
-                return "Misc: Steam Particle";
-            case EntityType::MoneyEffect:
-                return "Misc: Money effect";
-            case EntityType::CrashedVehicleParticle:
-                return "Misc: Crash Vehicle Particle";
-            case EntityType::ExplosionCloud:
-                return "Misc: Explosion Cloud";
-            case EntityType::CrashSplash:
-                return "Misc: Crash Splash";
-            case EntityType::ExplosionFlare:
-                return "Misc: Explosion Flare";
-            case EntityType::JumpingFountain:
-                return "Misc: Jumping fountain";
-            case EntityType::Balloon:
-                return "Misc: Balloon";
-            case EntityType::Duck:
-                return "Misc: Duck";
-            default:
-                break;
-        }
-        return "Unknown";
-    }
-
     virtual std::string GetCompareDataText(const GameStateCompareData& cmpData) const override
     {
         std::string outputBuffer;
@@ -740,17 +702,18 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             if (change.changeType == GameStateSpriteChange::EQUAL)
                 continue;
 
-            const char* typeName = GetEntityTypeName(change.entityType);
+            EntityBase* entity = TryGetEntity(EntityId::FromUnderlying(change.spriteIndex));
+            auto tName = GetEntityTypeName(change.entityType);
+            const char* typeName = tName.c_str();
             char positionString[64] = "(null)";
             uint8_t orientation = 255;
-            EntityBase* entity = GetEntityByIndex(change.spriteIndex, change.entityType);
             if (entity != nullptr && entity->Type != EntityType::Null)
             {
                 CoordsXYZ majorGrid = { entity->x / 32, entity->y / 32, entity->z / 8 };
                 CoordsXYZ minorGrid = { entity->x - majorGrid.x * 32, entity->y - majorGrid.y * 32,
                                         entity->z - majorGrid.z * 8 };
                 orientation = entity->Orientation;
-                snprintf(
+                std::snprintf(
                     positionString, sizeof(positionString), "(%02d.%02d, %02d.%02d, %02d.%02d)", majorGrid.x, minorGrid.x,
                     majorGrid.y, minorGrid.y, majorGrid.z, minorGrid.z);
             }

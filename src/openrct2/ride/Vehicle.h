@@ -275,6 +275,10 @@ struct Vehicle : EntityBase
     void ApplyMass(int16_t appliedMass);
     void Serialise(DataSerialiser& stream);
     void Paint(PaintSession& session, int32_t imageDirection) const;
+    std::string TypeName() const
+    {
+        return "car";
+    };
     bool IsCableLift() const;
 
     friend void UpdateRotatingDefault(Vehicle& vehicle);
