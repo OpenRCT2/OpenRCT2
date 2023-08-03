@@ -1969,7 +1969,7 @@ static int32_t ConsoleCommandGoToEntity([[maybe_unused]] InteractiveConsole& con
             int8_t trainNumber = 1;
             int16_t carNumber;
             bool success = false;
-            for (const EntityId &trainHeadId: ride->vehicles)
+            for (const EntityId& trainHeadId : ride->vehicles)
             {
                 carNumber = 1;
                 EntityId currentVehicleId = trainHeadId;
