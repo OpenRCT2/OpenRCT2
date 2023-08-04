@@ -1971,6 +1971,8 @@ static int32_t ConsoleCommandGoToEntity([[maybe_unused]] InteractiveConsole& con
             bool success = false;
             for (const EntityId& trainHeadId : ride->vehicles)
             {
+                if (trainHeadId != entity->As<Vehicle>()->GetHead()->Id)
+                    continue;
                 carNumber = 1;
                 EntityId currentVehicleId = trainHeadId;
                 while (currentVehicleId != EntityId::GetNull())
