@@ -1967,33 +1967,29 @@ static int32_t ConsoleCommandGoToEntity([[maybe_unused]] InteractiveConsole& con
         {
             // train and car numbers are 1-index to match UI
             int8_t trainNumber = 1;
-            int16_t carNumber;
-            bool success = false;
+            int16_t carNumber = 1;
+            EntityId entityTrainHeadId = entity->As<Vehicle>()->GetHead()->Id;
             for (const EntityId& trainHeadId : ride->vehicles)
             {
-                if (trainHeadId != entity->As<Vehicle>()->GetHead()->Id)
-                    continue;
-                carNumber = 1;
-                EntityId currentVehicleId = trainHeadId;
-                while (currentVehicleId != EntityId::GetNull())
+                if (trainHeadId == entityTrainHeadId)
                 {
-                    if (currentVehicleId == entity->Id)
-                    {
-                        success = true;
-                        break;
-                    }
-                    Vehicle* vehicle = TryGetEntity<Vehicle>(currentVehicleId);
-                    if (vehicle == nullptr)
-                        break;
-                    currentVehicleId = vehicle->next_vehicle_on_train;
-                    carNumber++;
+                    break;
                 }
-                if (success)
+                trainNumber++;
+            }
+            EntityId currentVehicleId = entityTrainHeadId;
+            while (currentVehicleId != EntityId::GetNull())
+            {
+                if (currentVehicleId == entity->Id)
                 {
                     snprintf(vehicleExtraInfo, sizeof(vehicleExtraInfo), "; Train: %d; Car: %d", trainNumber, carNumber);
                     break;
                 }
-                trainNumber++;
+                Vehicle* vehicle = TryGetEntity<Vehicle>(currentVehicleId);
+                if (vehicle == nullptr)
+                    break;
+                currentVehicleId = vehicle->next_vehicle_on_train;
+                carNumber++;
             }
         }
     }
