@@ -119,7 +119,7 @@ static bool entrance_has_direction(const EntranceElement& entranceElement, int32
     return entranceElement.GetDirections() & (1 << (direction & 3));
 }
 
-TileElement* MapGetFootpathElement(const CoordsXYZ& coords)
+PathElement* MapGetFootpathElement(const CoordsXYZ& coords)
 {
     TileElement* tileElement = MapGetFirstElementAt(coords);
     do
@@ -127,7 +127,7 @@ TileElement* MapGetFootpathElement(const CoordsXYZ& coords)
         if (tileElement == nullptr)
             break;
         if (tileElement->GetType() == TileElementType::Path && tileElement->GetBaseZ() == coords.z)
-            return tileElement;
+            return tileElement->AsPath();
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
