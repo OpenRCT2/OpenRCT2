@@ -35,6 +35,7 @@
 - Fix: [#20607] Infinite loop when renaming rides with default names longer than 32 bytes.
 - Fix: [#20642] Track list is sometimes empty due to uninitialized data for the filter string.
 - Fix: [#20659] Phantom rides remain when closing construction window while paused.
+- Fix: [#20684] Footpath additions getting removed by Miniature railway ghost elements.
 
 0.4.5 (2023-05-08)
 ------------------------------------------------------------------------
