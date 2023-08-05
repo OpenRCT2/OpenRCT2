@@ -258,16 +258,6 @@ GameActions::Result TrackPlaceAction::Query() const
         }
         costs += canBuild.Cost;
 
-        // When building a level crossing, remove any pre-existing path furniture.
-        if (crossingMode == CREATE_CROSSING_MODE_TRACK_OVER_PATH)
-        {
-            auto footpathElement = MapGetFootpathElement(mapLoc);
-            if (footpathElement != nullptr && footpathElement->AsPath()->HasAddition())
-            {
-                footpathElement->AsPath()->SetAddition(0);
-            }
-        }
-
         const auto clearanceData = canBuild.GetData<ConstructClearResult>();
         uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
         if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
@@ -477,6 +467,16 @@ GameActions::Result TrackPlaceAction::Execute() const
             return canBuild;
         }
         costs += canBuild.Cost;
+
+        // When building a level crossing, remove any pre-existing path furniture.
+        if (crossingMode == CREATE_CROSSING_MODE_TRACK_OVER_PATH && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        {
+            auto footpathElement = MapGetFootpathElement(mapLoc);
+            if (footpathElement != nullptr && footpathElement->AsPath()->HasAddition())
+            {
+                footpathElement->AsPath()->SetAddition(0);
+            }
+        }
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsDisableClearanceChecks)
         {
