@@ -472,9 +472,9 @@ GameActions::Result TrackPlaceAction::Execute() const
         if (crossingMode == CREATE_CROSSING_MODE_TRACK_OVER_PATH && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
             auto footpathElement = MapGetFootpathElement(mapLoc);
-            if (footpathElement != nullptr && footpathElement->AsPath()->HasAddition())
+            if (footpathElement != nullptr && footpathElement->HasAddition())
             {
-                footpathElement->AsPath()->SetAddition(0);
+                footpathElement->SetAddition(0);
             }
         }
 

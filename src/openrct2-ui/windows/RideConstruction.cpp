@@ -3330,7 +3330,7 @@ void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords)
     if (_autoRotatingShop && _rideConstructionState == RideConstructionState::Place
         && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
     {
-        TileElement* pathsByDir[NumOrthogonalDirections];
+        PathElement* pathsByDir[NumOrthogonalDirections];
 
         bool keepOrientation = false;
         for (int8_t i = 0; i < NumOrthogonalDirections; i++)
@@ -3344,8 +3344,7 @@ void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords)
 
             pathsByDir[i] = MapGetFootpathElement(testLoc);
 
-            if (pathsByDir[i] != nullptr && (pathsByDir[i])->AsPath()->IsSloped()
-                && (pathsByDir[i])->AsPath()->GetSlopeDirection() != i)
+            if (pathsByDir[i] != nullptr && pathsByDir[i]->IsSloped() && pathsByDir[i]->GetSlopeDirection() != i)
             {
                 pathsByDir[i] = nullptr;
             }
@@ -3356,14 +3355,13 @@ void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords)
                 pathsByDir[i] = MapGetFootpathElement({ *mapCoords + CoordsDirectionDelta[i], z - PATH_HEIGHT_STEP });
 
                 if (pathsByDir[i] != nullptr
-                    && (!(pathsByDir[i])->AsPath()->IsSloped()
-                        || (pathsByDir[i])->AsPath()->GetSlopeDirection() != DirectionReverse(i)))
+                    && (!pathsByDir[i]->IsSloped() || pathsByDir[i]->GetSlopeDirection() != DirectionReverse(i)))
                 {
                     pathsByDir[i] = nullptr;
                 }
             }
 
-            if (pathsByDir[i] != nullptr && (pathsByDir[i])->AsPath()->IsQueue())
+            if (pathsByDir[i] != nullptr && pathsByDir[i]->IsQueue())
             {
                 pathsByDir[i] = nullptr;
             }
