@@ -17,6 +17,7 @@
 class FootpathObject;
 class FootpathSurfaceObject;
 class FootpathRailingsObject;
+struct PathElement;
 
 enum
 {
@@ -184,7 +185,7 @@ extern const std::array<CoordsXY, NumOrthogonalDirections> DirectionOffsets;
 extern const std::array<CoordsXY, NumOrthogonalDirections> BinUseOffsets;
 extern const std::array<CoordsXY, NumOrthogonalDirections * 2> BenchUseOffsets;
 
-TileElement* MapGetFootpathElement(const CoordsXYZ& coords);
+PathElement* MapGetFootpathElement(const CoordsXYZ& coords);
 void FootpathInterruptPeeps(const CoordsXYZ& footpathPos);
 money64 FootpathProvisionalSet(
     ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,

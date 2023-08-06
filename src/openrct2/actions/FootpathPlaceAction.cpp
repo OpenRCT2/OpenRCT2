@@ -493,13 +493,12 @@ void FootpathPlaceAction::RemoveIntersectingWalls(PathElement* pathElement) cons
         WallRemoveIntersectingWalls({ _loc, z, z + (6 * COORDS_Z_STEP) }, DirectionReverse(direction));
         WallRemoveIntersectingWalls({ _loc, z, z + (6 * COORDS_Z_STEP) }, direction);
         // Removing walls may have made the pointer invalid, so find it again
-        auto tileElement = MapGetFootpathElement(CoordsXYZ(_loc, z));
-        if (tileElement == nullptr)
+        pathElement = MapGetFootpathElement(CoordsXYZ(_loc, z));
+        if (pathElement == nullptr)
         {
             LOG_ERROR("Something went wrong. Could not refind footpath.");
             return;
         }
-        pathElement = tileElement->AsPath();
     }
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN))

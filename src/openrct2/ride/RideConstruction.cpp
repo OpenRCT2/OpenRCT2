@@ -357,7 +357,7 @@ void RideClearBlockedTiles(const Ride& ride)
                 if (footpathElement == nullptr)
                     continue;
 
-                footpathElement->AsPath()->SetIsBlockedByVehicle(false);
+                footpathElement->SetIsBlockedByVehicle(false);
             }
         }
     }

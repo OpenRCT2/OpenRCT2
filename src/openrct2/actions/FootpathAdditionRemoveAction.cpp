@@ -91,9 +91,7 @@ GameActions::Result FootpathAdditionRemoveAction::Query() const
 
 GameActions::Result FootpathAdditionRemoveAction::Execute() const
 {
-    auto tileElement = MapGetFootpathElement(_loc);
-    auto pathElement = tileElement->AsPath();
-
+    auto* pathElement = MapGetFootpathElement(_loc);
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
         FootpathInterruptPeeps(_loc);
