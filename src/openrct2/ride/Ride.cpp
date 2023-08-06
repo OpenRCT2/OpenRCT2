@@ -2257,6 +2257,7 @@ void RideCheckAllReachable()
     {
         if (ride.connected_message_throttle != 0)
             ride.connected_message_throttle--;
+
         if (ride.status != RideStatus::Open || ride.connected_message_throttle != 0)
             continue;
 
@@ -2293,6 +2294,7 @@ static void RideEntranceExitConnected(Ride& ride)
 
         if (station_start.IsNull())
             continue;
+
         if (!entrance.IsNull() && !RideEntranceExitIsReachable(entrance))
         {
             // name of ride is parameter of the format string
@@ -2344,9 +2346,7 @@ static void RideShopConnected(const Ride& ride)
     auto track_type = trackElement->GetTrackType();
     auto ride2 = GetRide(trackElement->GetRideIndex());
     if (ride2 == nullptr)
-    {
         return;
-    }
 
     const auto& ted = GetTrackElementDescriptor(track_type);
     uint8_t entrance_directions = std::get<0>(ted.SequenceProperties) & 0xF;
@@ -2432,8 +2432,12 @@ static void RideStationSetMapTooltip(const TrackElement& trackElement)
 
     auto stationIndex = trackElement.GetStationIndex();
     for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
+    {
         if (ride->GetStations()[i].Start.IsNull())
+        {
             stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
+        }
+    }
 
     auto ft = Formatter();
     ft.Add<StringId>(STR_RIDE_MAP_TIP);
@@ -2457,15 +2461,21 @@ static void RideEntranceSetMapTooltip(const EntranceElement& entranceElement)
     // Get the station
     auto stationIndex = entranceElement.GetStationIndex();
     for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
+    {
         if (ride->GetStations()[i].Start.IsNull())
+        {
             stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
+        }
+    }
 
     if (entranceElement.GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
     {
         // Get the queue length
         int32_t queueLength = 0;
         if (!ride->GetStation(stationIndex).Entrance.IsNull())
+        {
             queueLength = ride->GetStation(stationIndex).QueueLength;
+        }
 
         auto ft = Formatter();
         ft.Add<StringId>(STR_RIDE_MAP_TIP);
@@ -2498,8 +2508,12 @@ static void RideEntranceSetMapTooltip(const EntranceElement& entranceElement)
         // Get the station
         stationIndex = entranceElement.GetStationIndex();
         for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
+        {
             if (ride->GetStations()[i].Start.IsNull())
+            {
                 stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
+            }
+        }
 
         auto ft = Formatter();
         ft.Add<StringId>(ride->num_stations <= 1 ? STR_RIDE_EXIT : STR_RIDE_STATION_X_EXIT);
