@@ -126,8 +126,9 @@ PathElement* MapGetFootpathElement(const CoordsXYZ& coords)
     {
         if (tileElement == nullptr)
             break;
-        if (tileElement->GetType() == TileElementType::Path && tileElement->GetBaseZ() == coords.z)
-            return tileElement->AsPath();
+        auto* pathElement = tileElement->AsPath();
+        if (pathElement != nullptr && pathElement->GetBaseZ() == coords.z)
+            return pathElement;
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
