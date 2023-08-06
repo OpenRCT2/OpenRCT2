@@ -2391,9 +2391,9 @@ static void RideShopConnected(const Ride& ride)
 
 #pragma region Interface
 
-static void RideTrackSetMapTooltip(TileElement* tileElement)
+static void RideTrackSetMapTooltip(const TrackElement& trackElement)
 {
-    auto rideIndex = tileElement->AsTrack()->GetRideIndex();
+    auto rideIndex = trackElement.GetRideIndex();
     auto ride = GetRide(rideIndex);
     if (ride != nullptr)
     {
@@ -2407,9 +2407,9 @@ static void RideTrackSetMapTooltip(TileElement* tileElement)
     }
 }
 
-static void RideQueueBannerSetMapTooltip(TileElement* tileElement)
+static void RideQueueBannerSetMapTooltip(const PathElement& pathElement)
 {
-    auto rideIndex = tileElement->AsPath()->GetRideIndex();
+    auto rideIndex = pathElement.GetRideIndex();
     auto ride = GetRide(rideIndex);
     if (ride != nullptr)
     {
@@ -2423,13 +2423,13 @@ static void RideQueueBannerSetMapTooltip(TileElement* tileElement)
     }
 }
 
-static void RideStationSetMapTooltip(TileElement* tileElement)
+static void RideStationSetMapTooltip(const TrackElement& trackElement)
 {
-    auto rideIndex = tileElement->AsTrack()->GetRideIndex();
+    auto rideIndex = trackElement.GetRideIndex();
     auto ride = GetRide(rideIndex);
     if (ride != nullptr)
     {
-        auto stationIndex = tileElement->AsTrack()->GetStationIndex();
+        auto stationIndex = trackElement.GetStationIndex();
         for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
             if (ride->GetStations()[i].Start.IsNull())
                 stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
@@ -2447,19 +2447,19 @@ static void RideStationSetMapTooltip(TileElement* tileElement)
     }
 }
 
-static void RideEntranceSetMapTooltip(TileElement* tileElement)
+static void RideEntranceSetMapTooltip(const EntranceElement& entranceElement)
 {
-    auto rideIndex = tileElement->AsEntrance()->GetRideIndex();
+    auto rideIndex = entranceElement.GetRideIndex();
     auto ride = GetRide(rideIndex);
     if (ride != nullptr)
     {
         // Get the station
-        auto stationIndex = tileElement->AsEntrance()->GetStationIndex();
+        auto stationIndex = entranceElement.GetStationIndex();
         for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
             if (ride->GetStations()[i].Start.IsNull())
                 stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
 
-        if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+        if (entranceElement.GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
         {
             // Get the queue length
             int32_t queueLength = 0;
@@ -2495,7 +2495,7 @@ static void RideEntranceSetMapTooltip(TileElement* tileElement)
         else
         {
             // Get the station
-            stationIndex = tileElement->AsEntrance()->GetStationIndex();
+            stationIndex = entranceElement.GetStationIndex();
             for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
                 if (ride->GetStations()[i].Start.IsNull())
                     stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
@@ -2515,26 +2515,27 @@ static void RideEntranceSetMapTooltip(TileElement* tileElement)
     }
 }
 
-void RideSetMapTooltip(TileElement* tileElement)
+void RideSetMapTooltip(const TileElement& tileElement)
 {
-    if (tileElement->GetType() == TileElementType::Entrance)
+    if (tileElement.GetType() == TileElementType::Entrance)
     {
-        RideEntranceSetMapTooltip(tileElement);
+        RideEntranceSetMapTooltip(*tileElement.AsEntrance());
     }
-    else if (tileElement->GetType() == TileElementType::Track)
+    else if (tileElement.GetType() == TileElementType::Track)
     {
-        if (tileElement->AsTrack()->IsStation())
+        const auto* trackElement = tileElement.AsTrack();
+        if (trackElement->IsStation())
         {
-            RideStationSetMapTooltip(tileElement);
+            RideStationSetMapTooltip(*trackElement);
         }
         else
         {
-            RideTrackSetMapTooltip(tileElement);
+            RideTrackSetMapTooltip(*trackElement);
         }
     }
-    else if (tileElement->GetType() == TileElementType::Path)
+    else if (tileElement.GetType() == TileElementType::Path)
     {
-        RideQueueBannerSetMapTooltip(tileElement);
+        RideQueueBannerSetMapTooltip(*tileElement.AsPath());
     }
 }
 

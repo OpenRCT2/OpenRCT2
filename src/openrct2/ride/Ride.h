@@ -1027,7 +1027,7 @@ void RideMeasurementsUpdate();
 void RideBreakdownAddNewsItem(const Ride& ride);
 Staff* RideFindClosestMechanic(const Ride& ride, int32_t forInspection);
 int32_t RideInitialiseConstructionWindow(Ride& ride);
-void RideSetMapTooltip(TileElement* tileElement);
+void RideSetMapTooltip(const TileElement& tileElement);
 void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason);
 TileElement* RideGetStationStartTrackElement(const Ride& ride, StationIndex stationIndex);
 TileElement* RideGetStationExitElement(const CoordsXYZ& elementPos);

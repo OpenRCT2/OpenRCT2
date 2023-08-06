@@ -126,7 +126,8 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
             }
             break;
         case ViewportInteractionItem::Ride:
-            RideSetMapTooltip(tileElement);
+            Guard::ArgumentNotNull(tileElement);
+            RideSetMapTooltip(*tileElement);
             break;
         case ViewportInteractionItem::ParkEntrance:
         {
