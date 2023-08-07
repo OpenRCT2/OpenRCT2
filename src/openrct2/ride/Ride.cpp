@@ -1038,6 +1038,20 @@ RideStation& Ride::GetStation(StationIndex stationIndex)
     return stations[stationIndex.ToUnderlying()];
 }
 
+StationIndex::UnderlyingType Ride::GetStationNumber(StationIndex in) const
+{
+    StationIndex::UnderlyingType nullStationsSeen{ 0 };
+    for (size_t i = 0; i < in.ToUnderlying(); i++)
+    {
+        if (stations[i].Start.IsNull())
+        {
+            nullStationsSeen++;
+        }
+    }
+
+    return in.ToUnderlying() - nullStationsSeen + 1;
+}
+
 const RideStation& Ride::GetStation(StationIndex stationIndex) const
 {
     return stations[stationIndex.ToUnderlying()];
@@ -2430,21 +2444,15 @@ static void RideStationSetMapTooltip(const TrackElement& trackElement)
     if (ride == nullptr)
         return;
 
-    auto stationIndex = trackElement.GetStationIndex();
-    for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
-    {
-        if (ride->GetStations()[i].Start.IsNull())
-        {
-            stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
-        }
-    }
+    const auto stationIndex = trackElement.GetStationIndex();
+    const auto stationNumber = ride->GetStationNumber(stationIndex);
 
     auto ft = Formatter();
     ft.Add<StringId>(STR_RIDE_MAP_TIP);
     ft.Add<StringId>(ride->num_stations <= 1 ? STR_RIDE_STATION : STR_RIDE_STATION_X);
     ride->FormatNameTo(ft);
     ft.Add<StringId>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.station).capitalised);
-    ft.Add<uint16_t>(stationIndex.ToUnderlying() + 1);
+    ft.Add<uint16_t>(stationNumber);
     ride->FormatStatusTo(ft);
     auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
     intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
@@ -2458,20 +2466,11 @@ static void RideEntranceSetMapTooltip(const EntranceElement& entranceElement)
     if (ride == nullptr)
         return;
 
-    // Get the station
-    auto stationIndex = entranceElement.GetStationIndex();
-    for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
-    {
-        if (ride->GetStations()[i].Start.IsNull())
-        {
-            stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
-        }
-    }
-
     if (entranceElement.GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
     {
         // Get the queue length
         int32_t queueLength = 0;
+        const auto stationIndex = entranceElement.GetStationIndex();
         if (!ride->GetStation(stationIndex).Entrance.IsNull())
         {
             queueLength = ride->GetStation(stationIndex).QueueLength;
@@ -2485,36 +2484,29 @@ static void RideEntranceSetMapTooltip(const EntranceElement& entranceElement)
         // String IDs have an extra pop16 for some reason
         ft.Increment(sizeof(uint16_t));
 
-        ft.Add<uint16_t>(stationIndex.ToUnderlying() + 1);
-        if (queueLength == 0)
+        const auto stationNumber = ride->GetStationNumber(stationIndex);
+        ft.Add<uint16_t>(stationNumber);
+
+        switch (queueLength)
         {
-            ft.Add<StringId>(STR_QUEUE_EMPTY);
-        }
-        else if (queueLength == 1)
-        {
-            ft.Add<StringId>(STR_QUEUE_ONE_PERSON);
-        }
-        else
-        {
-            ft.Add<StringId>(STR_QUEUE_PEOPLE);
+            case 0:
+                ft.Add<StringId>(STR_QUEUE_EMPTY);
+                break;
+            case 1:
+                ft.Add<StringId>(STR_QUEUE_ONE_PERSON);
+                break;
+            default:
+                ft.Add<StringId>(STR_QUEUE_PEOPLE);
+                break;
         }
         ft.Add<uint16_t>(queueLength);
+
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
         intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
         ContextBroadcastIntent(&intent);
     }
     else
     {
-        // Get the station
-        stationIndex = entranceElement.GetStationIndex();
-        for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
-        {
-            if (ride->GetStations()[i].Start.IsNull())
-            {
-                stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
-            }
-        }
-
         auto ft = Formatter();
         ft.Add<StringId>(ride->num_stations <= 1 ? STR_RIDE_EXIT : STR_RIDE_STATION_X_EXIT);
         ride->FormatNameTo(ft);
@@ -2522,7 +2514,9 @@ static void RideEntranceSetMapTooltip(const EntranceElement& entranceElement)
         // String IDs have an extra pop16 for some reason
         ft.Increment(sizeof(uint16_t));
 
-        ft.Add<uint16_t>(stationIndex.ToUnderlying() + 1);
+        const auto stationIndex = entranceElement.GetStationIndex();
+        const auto stationNumber = ride->GetStationNumber(stationIndex);
+        ft.Add<uint16_t>(stationNumber);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
         intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
         ContextBroadcastIntent(&intent);
