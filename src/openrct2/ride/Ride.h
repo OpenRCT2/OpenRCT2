@@ -293,6 +293,10 @@ public:
     const std::array<RideStation, OpenRCT2::Limits::MaxStationsPerRide>& GetStations() const;
     StationIndex GetStationIndex(const RideStation* station) const;
 
+    // Returns the logical station number from the given station. Index 0 = station 1, index 1 = station 2. It accounts for gaps
+    // in the station array. e.g. if only slot 0 and 2 are in use, index 2 returns 2 instead of 3.
+    StationIndex::UnderlyingType GetStationNumber(StationIndex in) const;
+
 public:
     uint16_t inversions;
     uint16_t holes;
@@ -1027,7 +1031,7 @@ void RideMeasurementsUpdate();
 void RideBreakdownAddNewsItem(const Ride& ride);
 Staff* RideFindClosestMechanic(const Ride& ride, int32_t forInspection);
 int32_t RideInitialiseConstructionWindow(Ride& ride);
-void RideSetMapTooltip(TileElement* tileElement);
+void RideSetMapTooltip(const TileElement& tileElement);
 void RidePrepareBreakdown(Ride& ride, int32_t breakdownReason);
 TileElement* RideGetStationStartTrackElement(const Ride& ride, StationIndex stationIndex);
 TileElement* RideGetStationExitElement(const CoordsXYZ& elementPos);

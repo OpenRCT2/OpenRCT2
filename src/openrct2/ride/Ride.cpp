@@ -1038,6 +1038,20 @@ RideStation& Ride::GetStation(StationIndex stationIndex)
     return stations[stationIndex.ToUnderlying()];
 }
 
+StationIndex::UnderlyingType Ride::GetStationNumber(StationIndex in) const
+{
+    StationIndex::UnderlyingType nullStationsSeen{ 0 };
+    for (size_t i = 0; i < in.ToUnderlying(); i++)
+    {
+        if (stations[i].Start.IsNull())
+        {
+            nullStationsSeen++;
+        }
+    }
+
+    return in.ToUnderlying() - nullStationsSeen + 1;
+}
+
 const RideStation& Ride::GetStation(StationIndex stationIndex) const
 {
     return stations[stationIndex.ToUnderlying()];
@@ -2257,6 +2271,7 @@ void RideCheckAllReachable()
     {
         if (ride.connected_message_throttle != 0)
             ride.connected_message_throttle--;
+
         if (ride.status != RideStatus::Open || ride.connected_message_throttle != 0)
             continue;
 
@@ -2293,6 +2308,7 @@ static void RideEntranceExitConnected(Ride& ride)
 
         if (station_start.IsNull())
             continue;
+
         if (!entrance.IsNull() && !RideEntranceExitIsReachable(entrance))
         {
             // name of ride is parameter of the format string
@@ -2344,9 +2360,7 @@ static void RideShopConnected(const Ride& ride)
     auto track_type = trackElement->GetTrackType();
     auto ride2 = GetRide(trackElement->GetRideIndex());
     if (ride2 == nullptr)
-    {
         return;
-    }
 
     const auto& ted = GetTrackElementDescriptor(track_type);
     uint8_t entrance_directions = std::get<0>(ted.SequenceProperties) & 0xF;
@@ -2391,9 +2405,9 @@ static void RideShopConnected(const Ride& ride)
 
 #pragma region Interface
 
-static void RideTrackSetMapTooltip(TileElement* tileElement)
+static void RideTrackSetMapTooltip(const TrackElement& trackElement)
 {
-    auto rideIndex = tileElement->AsTrack()->GetRideIndex();
+    auto rideIndex = trackElement.GetRideIndex();
     auto ride = GetRide(rideIndex);
     if (ride != nullptr)
     {
@@ -2407,134 +2421,129 @@ static void RideTrackSetMapTooltip(TileElement* tileElement)
     }
 }
 
-static void RideQueueBannerSetMapTooltip(TileElement* tileElement)
+static void RideQueueBannerSetMapTooltip(const PathElement& pathElement)
 {
-    auto rideIndex = tileElement->AsPath()->GetRideIndex();
+    auto rideIndex = pathElement.GetRideIndex();
     auto ride = GetRide(rideIndex);
-    if (ride != nullptr)
-    {
-        auto ft = Formatter();
-        ft.Add<StringId>(STR_RIDE_MAP_TIP);
-        ride->FormatNameTo(ft);
-        ride->FormatStatusTo(ft);
-        auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
-        intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
-        ContextBroadcastIntent(&intent);
-    }
+    if (ride == nullptr)
+        return;
+
+    auto ft = Formatter();
+    ft.Add<StringId>(STR_RIDE_MAP_TIP);
+    ride->FormatNameTo(ft);
+    ride->FormatStatusTo(ft);
+    auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
+    intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
+    ContextBroadcastIntent(&intent);
 }
 
-static void RideStationSetMapTooltip(TileElement* tileElement)
+static void RideStationSetMapTooltip(const TrackElement& trackElement)
 {
-    auto rideIndex = tileElement->AsTrack()->GetRideIndex();
+    auto rideIndex = trackElement.GetRideIndex();
     auto ride = GetRide(rideIndex);
-    if (ride != nullptr)
-    {
-        auto stationIndex = tileElement->AsTrack()->GetStationIndex();
-        for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
-            if (ride->GetStations()[i].Start.IsNull())
-                stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
+    if (ride == nullptr)
+        return;
 
-        auto ft = Formatter();
-        ft.Add<StringId>(STR_RIDE_MAP_TIP);
-        ft.Add<StringId>(ride->num_stations <= 1 ? STR_RIDE_STATION : STR_RIDE_STATION_X);
-        ride->FormatNameTo(ft);
-        ft.Add<StringId>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.station).capitalised);
-        ft.Add<uint16_t>(stationIndex.ToUnderlying() + 1);
-        ride->FormatStatusTo(ft);
-        auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
-        intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
-        ContextBroadcastIntent(&intent);
-    }
+    const auto stationIndex = trackElement.GetStationIndex();
+    const auto stationNumber = ride->GetStationNumber(stationIndex);
+
+    auto ft = Formatter();
+    ft.Add<StringId>(STR_RIDE_MAP_TIP);
+    ft.Add<StringId>(ride->num_stations <= 1 ? STR_RIDE_STATION : STR_RIDE_STATION_X);
+    ride->FormatNameTo(ft);
+    ft.Add<StringId>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.station).capitalised);
+    ft.Add<uint16_t>(stationNumber);
+    ride->FormatStatusTo(ft);
+    auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
+    intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
+    ContextBroadcastIntent(&intent);
 }
 
-static void RideEntranceSetMapTooltip(TileElement* tileElement)
+static void RideEntranceSetMapTooltip(const EntranceElement& entranceElement)
 {
-    auto rideIndex = tileElement->AsEntrance()->GetRideIndex();
+    auto rideIndex = entranceElement.GetRideIndex();
     auto ride = GetRide(rideIndex);
-    if (ride != nullptr)
-    {
-        // Get the station
-        auto stationIndex = tileElement->AsEntrance()->GetStationIndex();
-        for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
-            if (ride->GetStations()[i].Start.IsNull())
-                stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
+    if (ride == nullptr)
+        return;
 
-        if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+    if (entranceElement.GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+    {
+        // Get the queue length
+        int32_t queueLength = 0;
+        const auto stationIndex = entranceElement.GetStationIndex();
+        if (!ride->GetStation(stationIndex).Entrance.IsNull())
         {
-            // Get the queue length
-            int32_t queueLength = 0;
-            if (!ride->GetStation(stationIndex).Entrance.IsNull())
-                queueLength = ride->GetStation(stationIndex).QueueLength;
+            queueLength = ride->GetStation(stationIndex).QueueLength;
+        }
 
-            auto ft = Formatter();
-            ft.Add<StringId>(STR_RIDE_MAP_TIP);
-            ft.Add<StringId>(ride->num_stations <= 1 ? STR_RIDE_ENTRANCE : STR_RIDE_STATION_X_ENTRANCE);
-            ride->FormatNameTo(ft);
+        auto ft = Formatter();
+        ft.Add<StringId>(STR_RIDE_MAP_TIP);
+        ft.Add<StringId>(ride->num_stations <= 1 ? STR_RIDE_ENTRANCE : STR_RIDE_STATION_X_ENTRANCE);
+        ride->FormatNameTo(ft);
 
-            // String IDs have an extra pop16 for some reason
-            ft.Increment(sizeof(uint16_t));
+        // String IDs have an extra pop16 for some reason
+        ft.Increment(sizeof(uint16_t));
 
-            ft.Add<uint16_t>(stationIndex.ToUnderlying() + 1);
-            if (queueLength == 0)
-            {
+        const auto stationNumber = ride->GetStationNumber(stationIndex);
+        ft.Add<uint16_t>(stationNumber);
+
+        switch (queueLength)
+        {
+            case 0:
                 ft.Add<StringId>(STR_QUEUE_EMPTY);
-            }
-            else if (queueLength == 1)
-            {
+                break;
+            case 1:
                 ft.Add<StringId>(STR_QUEUE_ONE_PERSON);
-            }
-            else
-            {
+                break;
+            default:
                 ft.Add<StringId>(STR_QUEUE_PEOPLE);
-            }
-            ft.Add<uint16_t>(queueLength);
-            auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
-            intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
-            ContextBroadcastIntent(&intent);
+                break;
         }
-        else
-        {
-            // Get the station
-            stationIndex = tileElement->AsEntrance()->GetStationIndex();
-            for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
-                if (ride->GetStations()[i].Start.IsNull())
-                    stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
+        ft.Add<uint16_t>(queueLength);
 
-            auto ft = Formatter();
-            ft.Add<StringId>(ride->num_stations <= 1 ? STR_RIDE_EXIT : STR_RIDE_STATION_X_EXIT);
-            ride->FormatNameTo(ft);
+        auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
+        intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
+        ContextBroadcastIntent(&intent);
+    }
+    else
+    {
+        auto ft = Formatter();
+        ft.Add<StringId>(ride->num_stations <= 1 ? STR_RIDE_EXIT : STR_RIDE_STATION_X_EXIT);
+        ride->FormatNameTo(ft);
 
-            // String IDs have an extra pop16 for some reason
-            ft.Increment(sizeof(uint16_t));
+        // String IDs have an extra pop16 for some reason
+        ft.Increment(sizeof(uint16_t));
 
-            ft.Add<uint16_t>(stationIndex.ToUnderlying() + 1);
-            auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
-            intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
-            ContextBroadcastIntent(&intent);
-        }
+        const auto stationIndex = entranceElement.GetStationIndex();
+        const auto stationNumber = ride->GetStationNumber(stationIndex);
+        ft.Add<uint16_t>(stationNumber);
+        auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
+        intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
+        ContextBroadcastIntent(&intent);
     }
 }
 
-void RideSetMapTooltip(TileElement* tileElement)
+void RideSetMapTooltip(const TileElement& tileElement)
 {
-    if (tileElement->GetType() == TileElementType::Entrance)
+    if (tileElement.GetType() == TileElementType::Entrance)
     {
-        RideEntranceSetMapTooltip(tileElement);
+        RideEntranceSetMapTooltip(*tileElement.AsEntrance());
     }
-    else if (tileElement->GetType() == TileElementType::Track)
+    else if (tileElement.GetType() == TileElementType::Track)
     {
-        if (tileElement->AsTrack()->IsStation())
+        const auto* trackElement = tileElement.AsTrack();
+        if (trackElement->IsStation())
         {
-            RideStationSetMapTooltip(tileElement);
+            RideStationSetMapTooltip(*trackElement);
         }
         else
         {
-            RideTrackSetMapTooltip(tileElement);
+            RideTrackSetMapTooltip(*trackElement);
         }
     }
-    else if (tileElement->GetType() == TileElementType::Path)
+    else if (tileElement.GetType() == TileElementType::Path)
     {
-        RideQueueBannerSetMapTooltip(tileElement);
+        RideQueueBannerSetMapTooltip(*tileElement.AsPath());
     }
 }
 
