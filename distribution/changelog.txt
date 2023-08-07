@@ -9,6 +9,7 @@
 - Change: [#20550] Change SEK conversion rate from 1 GBP to 0.1 GBP.
 - Fix: [#6152] Camera and UI are no longer locked at 40 Hz, providing a smoother experience.
 - Fix: [#9534] Screams no longer cut-off on steep diagonal drops.
+- Fix: [#17666] Using the mountain tool near the edge of the map with clearance checks disabled causes visual glitches.
 - Fix: [#19450] The correct element is now auto-suggested when building a Medium Half Loop backwards.
 - Fix: [#19822] Tile inspector does not deep copy banners.
 - Fix: [#19823] Parkobj: disallow overriding objects of different object types.
