@@ -11753,7 +11753,7 @@ static void GigaRCTrackRightMediumHalfLoopUp(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 28)),
-                        { 0, 0, height }, { { 29, 0, height }, { 0, 32, 160 } });
+                        { 0, 0, height }, { { 29, 16, height }, { 0, 16, 160 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -11844,7 +11844,7 @@ static void GigaRCTrackLeftZeroGRollUp(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 1)),
-                        { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
+                        { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
                         session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -11854,7 +11854,7 @@ static void GigaRCTrackLeftZeroGRollUp(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 5)),
-                        { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
+                        { 0, 0, height }, { { 0, 31, height }, { 40, 1, 32 } });
                     MetalASupportsPaintSetup(
                         session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -11888,12 +11888,12 @@ static void GigaRCTrackLeftZeroGRollUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 2)),
-                        { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
+                        { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 6)),
-                        { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
+                        { 0, 0, height }, { { 0, 6, height + 32 }, { 40, 20, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -11918,12 +11918,12 @@ static void GigaRCTrackLeftZeroGRollUp(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 3)),
-                        { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
+                        { 0, 0, height }, { { 0, 6, height + 32 }, { 40, 20, 1 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 7)),
-                        { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
+                        { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 1 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -11931,7 +11931,7 @@ static void GigaRCTrackLeftZeroGRollUp(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 11)),
-                        { 0, 0, height }, { { 0, 6, height + 33 }, { 32, 20, 0 } });
+                        { 0, 0, height }, { { 0, 6, height + 36 }, { 32, 20, 0 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -11939,7 +11939,7 @@ static void GigaRCTrackLeftZeroGRollUp(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 15)),
-                        { 0, 0, height }, { { 0, 6, height + 33 }, { 32, 20, 0 } });
+                        { 0, 0, height }, { { 0, 6, height + 36 }, { 32, 20, 0 } });
                     break;
             }
             switch (direction)
@@ -11991,7 +11991,7 @@ static void GigaRCTrackRightZeroGRollUp(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 25)),
-                        { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
+                        { 0, 0, height }, { { 0, 31, height }, { 40, 1, 32 } });
                     MetalASupportsPaintSetup(
                         session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -12001,7 +12001,7 @@ static void GigaRCTrackRightZeroGRollUp(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 29)),
-                        { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
+                        { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 1 } });
                     MetalASupportsPaintSetup(
                         session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -12030,12 +12030,12 @@ static void GigaRCTrackRightZeroGRollUp(
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 26)),
-                        { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
+                        { 0, 0, height }, { { 0, 31, height }, { 44, 1, 32 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 30)),
-                        { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
+                        { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 1 } });
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -12053,25 +12053,25 @@ static void GigaRCTrackRightZeroGRollUp(
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 19)),
-                        { 0, 0, height }, { { 0, 6, height + 33 }, { 32, 20, 0 } });
+                        { 0, 0, height }, { { 0, 6, height + 36 }, { 32, 20, 0 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 22)),
-                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 32 } });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 23)),
-                        { 0, 0, height }, { { 0, 6, height + 33 }, { 32, 20, 0 } });
+                        { 0, 0, height }, { { 0, 6, height + 36 }, { 32, 20, 0 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 27)),
-                        { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
+                        { 0, 0, height }, { { 0, 6, height + 32 }, { 32, 20, 1 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_ZERO_G_ROLL + 31)),
-                        { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
+                        { 0, 0, height }, { { 0, 6, height + 32 }, { 40, 20, 1 } });
                     break;
             }
             switch (direction)
@@ -12240,7 +12240,7 @@ static void GigaRCTrackLeftLargeZeroGRollUp(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 4)),
-                        { 0, 0, height }, { { 0, 26, height }, { 26, 0, 20 } });
+                        { 0, 0, height }, { { 0, 26, height }, { 32, 0, 32 } });
                     MetalASupportsPaintSetup(
                         session, MetalSupportType::Tubes, 7, 0, height + 37, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -12268,7 +12268,7 @@ static void GigaRCTrackLeftLargeZeroGRollUp(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 19)),
-                        { 0, 0, height }, { { 0, 18, height }, { 32, 10, 20 } });
+                        { 0, 0, height }, { { 0, 18, height }, { 32, 1, 32 } });
                     MetalASupportsPaintSetup(
                         session, MetalSupportType::Tubes, 8, 0, height + 37, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -12420,7 +12420,7 @@ static void GigaRCTrackRightLargeZeroGRollUp(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 24)),
-                        { 0, 0, height }, { { 0, 18, height }, { 32, 10, 20 } });
+                        { 0, 0, height }, { { 0, 18, height }, { 32, 1, 32 } });
                     MetalASupportsPaintSetup(
                         session, MetalSupportType::Tubes, 7, 0, height + 37, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -12440,7 +12440,7 @@ static void GigaRCTrackRightLargeZeroGRollUp(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 34)),
-                        { 0, 0, height }, { { 0, 26, height }, { 26, 0, 20 } });
+                        { 0, 0, height }, { { 0, 26, height }, { 32, 0, 32 } });
                     MetalASupportsPaintSetup(
                         session, MetalSupportType::Tubes, 6, 0, height + 37, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -12448,7 +12448,7 @@ static void GigaRCTrackRightLargeZeroGRollUp(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 39)),
-                        { 0, 0, height }, { { 0, 26, height }, { 26, 0, 20 } });
+                        { 0, 0, height }, { { 0, 26, height }, { 40, 0, 32 } });
                     MetalASupportsPaintSetup(
                         session, MetalSupportType::Tubes, 8, 0, height + 37, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
