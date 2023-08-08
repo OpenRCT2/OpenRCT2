@@ -9772,13 +9772,25 @@
         "palette": "keep"
     },
     {
-        "path": "track/rmc/flat_diag_3.png",
+        "path": "track/rmc/brake_diag_1.png",
         "x_offset": -34,
         "y_offset": -8,
         "palette": "keep"
     },
     {
-        "path": "track/rmc/flat_diag_4.png",
+        "path": "track/rmc/brake_diag_2.png",
+        "x_offset": -24,
+        "y_offset": -14,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/block_brake_diag_1.png",
+        "x_offset": -34,
+        "y_offset": -8,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/block_brake_diag_2.png",
         "x_offset": -24,
         "y_offset": -14,
         "palette": "keep"
@@ -16354,14 +16366,28 @@
         "y_offset": -6
     },
     {
-        "path": "track/raptor/flat_diag_3.png",
+        "path": "track/raptor/brake_diag_1.png",
         "x_offset": -32,
-        "y_offset": 9
+        "y_offset": 9,
+        "palette": "keep"
     },
     {
-        "path": "track/raptor/flat_diag_4.png",
+        "path": "track/raptor/brake_diag_2.png",
         "x_offset": -3,
-        "y_offset": -6
+        "y_offset": -6,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/block_brake_diag_1.png",
+        "x_offset": -32,
+        "y_offset": 9,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/block_brake_diag_2.png",
+        "x_offset": -3,
+        "y_offset": -6,
+        "palette": "keep"
     },
     {
         "path": "track/raptor/flat_to_gentle_up_diag_1.png",
