@@ -271,7 +271,7 @@ public:
                 Invalidate();
                 break;
             case WIDX_FILTER_TEXT_BOX:
-                WindowStartTextbox(*this, widgetIndex, STR_STRING, _filteredSceneryTab.Filter.data(), MAX_PATH);
+                WindowStartTextbox(*this, widgetIndex, STR_STRING, _filteredSceneryTab.Filter.data(), TEXT_INPUT_SIZE);
                 break;
             case WIDX_FILTER_CLEAR_BUTTON:
                 _tabEntries[_activeTabIndex].Filter.clear();
