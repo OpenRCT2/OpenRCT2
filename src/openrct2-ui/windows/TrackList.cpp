@@ -470,11 +470,9 @@ public:
         // Show track file path (in debug mode)
         if (gConfigGeneral.DebuggingTools)
         {
-            utf8 pathBuffer[MAX_PATH];
-            const utf8* pathPtr = pathBuffer;
-            ShortenPath(pathBuffer, sizeof(pathBuffer), path.c_str(), width, FontStyle::Medium);
+            const auto shortPath = ShortenPath(path, width, FontStyle::Medium);
             auto ft = Formatter();
-            ft.Add<utf8*>(pathPtr);
+            ft.Add<utf8*>(shortPath.c_str());
             DrawTextBasic(
                 dpi, windowPos + ScreenCoordsXY{ 0, height - DEBUG_PATH_HEIGHT - 3 }, STR_STRING, ft,
                 { colours[1] }); // TODO Check dpi
