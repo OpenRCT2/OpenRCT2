@@ -524,9 +524,7 @@ public:
 
             case WIDX_BUTTON_REMOVE:
             {
-                int32_t nextItemToSelect = windowTileInspectorSelectedIndex - 1;
                 RemoveElement(windowTileInspectorSelectedIndex);
-                SelectElementFromList(nextItemToSelect);
                 break;
             }
 

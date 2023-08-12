@@ -166,13 +166,9 @@ namespace OpenRCT2::TileInspector
                 // Update the window
                 windowTileInspectorElementCount--;
 
-                if (windowTileInspectorSelectedIndex > elementIndex)
+                if (windowTileInspectorSelectedIndex >= elementIndex)
                 {
                     windowTileInspectorSelectedIndex--;
-                }
-                else if (windowTileInspectorSelectedIndex == elementIndex)
-                {
-                    windowTileInspectorSelectedIndex = -1;
                 }
             }
         }
