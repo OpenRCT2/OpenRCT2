@@ -242,7 +242,6 @@ GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
     {
         MapInvalidateTileFull(_loc);
         auto intent = Intent(INTENT_ACTION_TILE_MODIFY);
-        // TODO: add location data to intent.
         ContextBroadcastIntent(&intent);
     }
 

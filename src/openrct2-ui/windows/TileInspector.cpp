@@ -440,10 +440,9 @@ static constexpr TileInspectorGroupboxSettings PageGroupBoxSettings[] = {
 };
 
 static constexpr int32_t ViewportInteractionFlags = EnumsToFlags(
-    ViewportInteractionItem::Terrain, ViewportInteractionItem::Entity, ViewportInteractionItem::Ride,
-    ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::PathAddition,
-    ViewportInteractionItem::ParkEntrance, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
-    ViewportInteractionItem::Banner);
+    ViewportInteractionItem::Terrain, ViewportInteractionItem::Ride, ViewportInteractionItem::Scenery,
+    ViewportInteractionItem::Footpath, ViewportInteractionItem::PathAddition, ViewportInteractionItem::ParkEntrance,
+    ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery, ViewportInteractionItem::Banner);
 // clang-format off
 
 static uint64_t PageHoldDownWidgets[] = {
@@ -1757,6 +1756,7 @@ private:
                 return;
         }
 
+        // Invalidate the previous selection
         if (auto* elem = OpenRCT2::TileInspector::GetSelectedElement(); elem != nullptr)
         {
             MapInvalidateElement(windowTileInspectorTile.ToCoordsXY(), elem);
