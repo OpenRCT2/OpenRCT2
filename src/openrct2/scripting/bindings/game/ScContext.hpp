@@ -45,6 +45,36 @@ namespace OpenRCT2::Scripting
         }
 
     private:
+        std::vector<DukValue> allPlugins_get()
+        {
+            // Get all of the plugins from the script engine
+            OpenRCT2::Scripting::ScriptEngine& scriptEngine = GetContext()->GetScriptEngine();
+            std::vector<std::shared_ptr<OpenRCT2::Scripting::Plugin>> allPlugins = scriptEngine.GetPlugins();
+            auto ctx = scriptEngine.GetContext();
+            std::vector<DukValue> result;
+            // Iterate through all plugins and and cast their data to Duk objects
+            for (std::shared_ptr<OpenRCT2::Scripting::Plugin> plugin_ptr : allPlugins)
+            {
+                // Pull out metadata
+                OpenRCT2::Scripting::Plugin& plugin = *plugin_ptr;
+                OpenRCT2::Scripting::PluginMetadata metadata = plugin.GetMetadata();
+                DukObject dObj(ctx);
+                // Set properties of Duk object
+                dObj.Set("name", metadata.Name);
+                dObj.Set("version", metadata.Version);
+                // Concatenate all authors into one string
+                std::string authors = "";
+                for (std::string s : metadata.Authors)
+                {
+                    authors += s + " ";
+                }
+
+                dObj.Set("authors", authors);
+                result.push_back(dObj.Take());
+            }
+            return result;
+        }
+
         int32_t apiVersion_get()
         {
             return OPENRCT2_PLUGIN_API_VERSION;
@@ -429,6 +459,7 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScContext::apiVersion_get, nullptr, "apiVersion");
+            dukglue_register_method(ctx, &ScContext::allPlugins_get, "allPlugins");
             dukglue_register_property(ctx, &ScContext::configuration_get, nullptr, "configuration");
             dukglue_register_property(ctx, &ScContext::sharedStorage_get, nullptr, "sharedStorage");
             dukglue_register_method(ctx, &ScContext::getParkStorage, "getParkStorage");

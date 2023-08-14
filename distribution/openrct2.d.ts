@@ -172,6 +172,12 @@ declare global {
      * Core APIs for storage and subscriptions.
      */
     interface Context {
+
+        /**
+         * Gets all of the currently registered plugins
+         */
+        allPlugins(): PluginMetadata[];
+
         /**
          * Gets the current version of the plugin api. This is an integer that increments
          * by 1 every time a change to the plugin api is made.
