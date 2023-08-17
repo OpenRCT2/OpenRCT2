@@ -176,7 +176,7 @@ declare global {
         /**
          * Gets all of the currently registered plugins
          */
-        allPlugins(): PluginMetadata[];
+        getPlugins(): PluginMetadata[];
 
         /**
          * Gets the current version of the plugin api. This is an integer that increments

@@ -45,32 +45,39 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        std::vector<DukValue> allPlugins_get()
+        std::vector<DukValue> getPlugins()
         {
             // Get all of the plugins from the script engine
             OpenRCT2::Scripting::ScriptEngine& scriptEngine = GetContext()->GetScriptEngine();
-            std::vector<std::shared_ptr<OpenRCT2::Scripting::Plugin>> allPlugins = scriptEngine.GetPlugins();
+            const auto& allPlugins = scriptEngine.GetPlugins();
             auto ctx = scriptEngine.GetContext();
             std::vector<DukValue> result;
+            duk_idx_t dukIdx = DUK_INVALID_INDEX;
             // Iterate through all plugins and and cast their data to Duk objects
-            for (std::shared_ptr<OpenRCT2::Scripting::Plugin> plugin_ptr : allPlugins)
+            for (const auto& pluginPtr : allPlugins)
             {
                 // Pull out metadata
-                OpenRCT2::Scripting::Plugin& plugin = *plugin_ptr;
+                OpenRCT2::Scripting::Plugin& plugin = *pluginPtr;
                 OpenRCT2::Scripting::PluginMetadata metadata = plugin.GetMetadata();
-                DukObject dObj(ctx);
-                // Set properties of Duk object
-                dObj.Set("name", metadata.Name);
-                dObj.Set("version", metadata.Version);
-                // Concatenate all authors into one string
-                std::string authors = "";
-                for (std::string s : metadata.Authors)
+                // Create object using Duk stack
+                dukIdx = duk_push_object(ctx);
+                // Name and Version
+                duk_push_string(ctx, metadata.Name.c_str());
+                duk_put_prop_string(ctx, dukIdx, "name");
+                duk_push_string(ctx, metadata.Version.c_str());
+                duk_put_prop_string(ctx, dukIdx, "version");
+                // Authors
+                duk_idx_t arrIdx = duk_push_array(ctx);
+                for (auto [s, i] = std::tuple{ metadata.Authors.begin(), 0 }; s != metadata.Authors.end(); s++, i++)
                 {
-                    authors += s + " ";
+                    auto& str = *s;
+                    duk_push_string(ctx, str.c_str());
+                    duk_put_prop_index(ctx, arrIdx, i);
                 }
-
-                dObj.Set("authors", authors);
-                result.push_back(dObj.Take());
+                duk_put_prop_string(ctx, dukIdx, "authors");
+                // Take from Duk stack
+                result.push_back(DukValue::take_from_stack(ctx, dukIdx));
+                dukIdx = DUK_INVALID_INDEX;
             }
             return result;
         }
@@ -459,7 +466,7 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScContext::apiVersion_get, nullptr, "apiVersion");
-            dukglue_register_method(ctx, &ScContext::allPlugins_get, "allPlugins");
+            dukglue_register_method(ctx, &ScContext::getPlugins, "getPlugins");
             dukglue_register_property(ctx, &ScContext::configuration_get, nullptr, "configuration");
             dukglue_register_property(ctx, &ScContext::sharedStorage_get, nullptr, "sharedStorage");
             dukglue_register_method(ctx, &ScContext::getParkStorage, "getParkStorage");
