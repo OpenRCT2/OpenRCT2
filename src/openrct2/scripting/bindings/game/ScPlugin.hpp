@@ -22,17 +22,35 @@ namespace OpenRCT2::Scripting
     public:
         static void Register(duk_context* ctx)
         {
-            dukglue_register_method(ctx, &ScPlugin::getPlugins, "getPlugins");
+            dukglue_register_property(ctx, &ScPlugin::plugins_get, nullptr, "plugins");
         }
 
     private:
-        std::vector<DukValue> getPlugins()
+        std::vector<DukValue> plugins_get()
+        {
+            auto ctx = getContext();
+            auto& allPlugins = getallPlugins();
+            return formatMetadata(ctx, allPlugins);
+        }
+
+        duk_context* getContext()
+        {
+            // Get the context from the script engine
+            OpenRCT2::Scripting::ScriptEngine& scriptEngine = GetContext()->GetScriptEngine();
+            return scriptEngine.GetContext();
+        }
+
+        const std::vector<std::shared_ptr<OpenRCT2::Scripting::Plugin>> getallPlugins()
         {
             // Get all of the plugins from the script engine
             OpenRCT2::Scripting::ScriptEngine& scriptEngine = GetContext()->GetScriptEngine();
-            const auto& allPlugins = scriptEngine.GetPlugins();
-            auto ctx = scriptEngine.GetContext();
-            std::vector<DukValue> result;
+            return scriptEngine.GetPlugins();
+        }
+
+        const std::vector<DukValue> formatMetadata(
+            duk_context* ctx, const std::vector<std::shared_ptr<OpenRCT2::Scripting::Plugin>>& allPlugins)
+        {
+            std::vector<DukValue> formattedMetadata;
             duk_idx_t dukIdx = DUK_INVALID_INDEX;
             // Iterate through all plugins and and cast their data to Duk objects
             for (const auto& pluginPtr : allPlugins)
@@ -49,18 +67,18 @@ namespace OpenRCT2::Scripting
                 duk_put_prop_string(ctx, dukIdx, "version");
                 // Authors
                 duk_idx_t arrIdx = duk_push_array(ctx);
-                for (auto [s, i] = std::tuple{ metadata.Authors.begin(), 0 }; s != metadata.Authors.end(); s++, i++)
+                for (auto [s, idx] = std::tuple{ metadata.Authors.begin(), 0 }; s != metadata.Authors.end(); s++, idx++)
                 {
                     auto& str = *s;
                     duk_push_string(ctx, str.c_str());
-                    duk_put_prop_index(ctx, arrIdx, i);
+                    duk_put_prop_index(ctx, arrIdx, idx);
                 }
                 duk_put_prop_string(ctx, dukIdx, "authors");
                 // Take from Duk stack
-                result.push_back(DukValue::take_from_stack(ctx, dukIdx));
+                formattedMetadata.push_back(DukValue::take_from_stack(ctx, dukIdx));
                 dukIdx = DUK_INVALID_INDEX;
             }
-            return result;
+            return formattedMetadata;
         }
     };
 } // namespace OpenRCT2::Scripting

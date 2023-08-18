@@ -4956,6 +4956,6 @@ declare global {
      * Interface to handle the plugin manager
      */
     interface PluginManager {
-        getPlugins(): PluginMetadata[];
+        readonly plugins: PluginMetadata[];
     }
 }
