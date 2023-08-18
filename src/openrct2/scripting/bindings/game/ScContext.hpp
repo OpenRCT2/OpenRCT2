@@ -45,43 +45,6 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        std::vector<DukValue> getPlugins()
-        {
-            // Get all of the plugins from the script engine
-            OpenRCT2::Scripting::ScriptEngine& scriptEngine = GetContext()->GetScriptEngine();
-            const auto& allPlugins = scriptEngine.GetPlugins();
-            auto ctx = scriptEngine.GetContext();
-            std::vector<DukValue> result;
-            duk_idx_t dukIdx = DUK_INVALID_INDEX;
-            // Iterate through all plugins and and cast their data to Duk objects
-            for (const auto& pluginPtr : allPlugins)
-            {
-                // Pull out metadata
-                OpenRCT2::Scripting::Plugin& plugin = *pluginPtr;
-                OpenRCT2::Scripting::PluginMetadata metadata = plugin.GetMetadata();
-                // Create object using Duk stack
-                dukIdx = duk_push_object(ctx);
-                // Name and Version
-                duk_push_string(ctx, metadata.Name.c_str());
-                duk_put_prop_string(ctx, dukIdx, "name");
-                duk_push_string(ctx, metadata.Version.c_str());
-                duk_put_prop_string(ctx, dukIdx, "version");
-                // Authors
-                duk_idx_t arrIdx = duk_push_array(ctx);
-                for (auto [s, i] = std::tuple{ metadata.Authors.begin(), 0 }; s != metadata.Authors.end(); s++, i++)
-                {
-                    auto& str = *s;
-                    duk_push_string(ctx, str.c_str());
-                    duk_put_prop_index(ctx, arrIdx, i);
-                }
-                duk_put_prop_string(ctx, dukIdx, "authors");
-                // Take from Duk stack
-                result.push_back(DukValue::take_from_stack(ctx, dukIdx));
-                dukIdx = DUK_INVALID_INDEX;
-            }
-            return result;
-        }
-
         int32_t apiVersion_get()
         {
             return OPENRCT2_PLUGIN_API_VERSION;
@@ -466,7 +429,6 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScContext::apiVersion_get, nullptr, "apiVersion");
-            dukglue_register_method(ctx, &ScContext::getPlugins, "getPlugins");
             dukglue_register_property(ctx, &ScContext::configuration_get, nullptr, "configuration");
             dukglue_register_property(ctx, &ScContext::sharedStorage_get, nullptr, "sharedStorage");
             dukglue_register_method(ctx, &ScContext::getParkStorage, "getParkStorage");
