@@ -2158,7 +2158,7 @@ void WindowBase::ResizeSpinner(WidgetIndex widgetIndex, const ScreenCoordsXY& or
     widgets[widgetIndex].right = right;
     widgets[widgetIndex].bottom = bottom;
 
-    widgets[widgetIndex + 1].left = right - size.height;
+    widgets[widgetIndex + 1].left = right - size.height; // subtract height to maintain aspect ratio
     widgets[widgetIndex + 1].top = origin.y + 1;
     widgets[widgetIndex + 1].right = right - 1;
     widgets[widgetIndex + 1].bottom = bottom - 1;
@@ -2167,4 +2167,19 @@ void WindowBase::ResizeSpinner(WidgetIndex widgetIndex, const ScreenCoordsXY& or
     widgets[widgetIndex + 2].top = origin.y + 1;
     widgets[widgetIndex + 2].right = right - size.height - 1;
     widgets[widgetIndex + 2].bottom = bottom - 1;
+}
+
+void WindowBase::ResizeDropdown(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size)
+{
+    auto right = origin.x + size.width - 1;
+    auto bottom = origin.y + size.height - 1;
+    widgets[widgetIndex].left = origin.x;
+    widgets[widgetIndex].top = origin.y;
+    widgets[widgetIndex].right = right;
+    widgets[widgetIndex].bottom = bottom;
+
+    widgets[widgetIndex + 1].left = right - size.height + 1; // subtract height to maintain aspect ratio
+    widgets[widgetIndex + 1].top = origin.y + 1;
+    widgets[widgetIndex + 1].right = right - 1;
+    widgets[widgetIndex + 1].bottom = bottom - 1;
 }

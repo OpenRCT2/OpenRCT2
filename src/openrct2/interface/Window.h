@@ -45,6 +45,7 @@ constexpr uint8_t CloseButtonWidth = 10;
 #define TABLE_CELL_HEIGHT 12
 #define BUTTON_FACE_HEIGHT 12
 #define SPINNER_HEIGHT 12
+#define DROPDOWN_HEIGHT 12
 
 #define TEXT_INPUT_SIZE 1024
 #define TOP_TOOLBAR_HEIGHT 27
