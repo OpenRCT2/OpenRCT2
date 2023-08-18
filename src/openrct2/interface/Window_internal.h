@@ -170,6 +170,8 @@ struct WindowBase
 
     void ResizeFrame();
     void ResizeFrameWithPage();
+
+    void ResizeSpinner(WidgetIndex widgetIndex, const ScreenCoordsXY& origin, const ScreenSize& size);
 };
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

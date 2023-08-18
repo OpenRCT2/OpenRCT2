@@ -1907,22 +1907,13 @@ public:
             widgets[WIDX_SPEED_SETTING_SPINNER].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_VELOCITY;
 
             widgets[WIDX_SPEED_SETTING_SPINNER].type = WindowWidgetType::Spinner;
-            widgets[WIDX_SPEED_SETTING_SPINNER].left = 12;
-            widgets[WIDX_SPEED_SETTING_SPINNER].right = 96;
-            widgets[WIDX_SPEED_SETTING_SPINNER].top = 138;
-            widgets[WIDX_SPEED_SETTING_SPINNER].bottom = 149;
             widgets[WIDX_SPEED_SETTING_SPINNER_UP].type = WindowWidgetType::Button;
             widgets[WIDX_SPEED_SETTING_SPINNER_UP].text = STR_NUMERIC_UP;
-            widgets[WIDX_SPEED_SETTING_SPINNER_UP].left = 84;
-            widgets[WIDX_SPEED_SETTING_SPINNER_UP].right = 95;
-            widgets[WIDX_SPEED_SETTING_SPINNER_UP].top = 139;
-            widgets[WIDX_SPEED_SETTING_SPINNER_UP].bottom = 148;
             widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].type = WindowWidgetType::Button;
             widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].text = STR_NUMERIC_DOWN;
-            widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].left = 72;
-            widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].right = 83;
-            widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].top = 139;
-            widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].bottom = 148;
+
+            ResizeSpinner(WIDX_SPEED_SETTING_SPINNER, { 12, 138 }, { 85, SPINNER_HEIGHT });
+
             hold_down_widgets |= (1uLL << WIDX_SPEED_SETTING_SPINNER_UP) | (1uLL << WIDX_SPEED_SETTING_SPINNER_DOWN);
         }
 
