@@ -11,6 +11,7 @@
 - Fix: [#9534] Screams no longer cut-off on steep diagonal drops.
 - Fix: [#17666] Using the mountain tool near the edge of the map with clearance checks disabled causes visual glitches.
 - Fix: [#19450] The correct element is now auto-suggested when building a Medium Half Loop backwards.
+- Fix: [#19735] Server unable to advertise to master server after a connection loss.
 - Fix: [#19822] Tile inspector does not deep copy banners.
 - Fix: [#19823] Parkobj: disallow overriding objects of different object types.
 - Fix: [#19878] Unresearched scenery can be placed via prebuilt rides.
