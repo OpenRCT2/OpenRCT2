@@ -284,6 +284,7 @@ private:
         else if (status == MasterServerStatus::InvalidToken)
         {
             _status = ADVERTISE_STATUS::UNREGISTERED;
+            _lastAdvertiseTime = 0;
             Console::Error::WriteLine("Master server heartbeat failed: Invalid Token");
         }
     }
