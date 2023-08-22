@@ -268,6 +268,7 @@ public:
         }
         SetWidgetPressed(WIDX_STAFF_LIST_QUICK_FIRE, _quickFireMode);
 
+        ResizeFrameWithPage();
         widgets[WIDX_STAFF_LIST_LIST].right = width - 4;
         widgets[WIDX_STAFF_LIST_LIST].bottom = height - 15;
         widgets[WIDX_STAFF_LIST_QUICK_FIRE].left = width - 77;

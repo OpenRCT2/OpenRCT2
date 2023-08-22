@@ -379,6 +379,7 @@ public:
             _colour_index_2 = -1;
         }
 
+        ResizeFrameWithPage();
         widgets[WIDX_THEMES_LIST].right = width - 4;
         widgets[WIDX_THEMES_LIST].bottom = height - 0x0F;
 

@@ -665,6 +665,7 @@ private:
             y = std::max<int32_t>(y, widget->bottom);
         }
         height = y + 6;
+        ResizeFrameWithPage();
     }
 
     void OnResize() override
