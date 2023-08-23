@@ -8,7 +8,6 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Hielke Morsink (Broxzier)
 * Tulio Paschoalin Leao (tupaschoal)
 * Olivier Wervers (Oli414)
-* Rik Smeets (rik-smeets)
 * Matthias Moninger (ZehMatt)
 
 ## Former development team members
@@ -18,6 +17,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Richard Jenkins (rwjuk)
 * Aaron van Geffen (AaronVanGeffen)
 * Michael Steenbeek (Gymnasiast)
+* Rik Smeets (rik-smeets)
 
 ## Long term contributors
 The following people are not part of the development team, but have been contributing for a long time.
