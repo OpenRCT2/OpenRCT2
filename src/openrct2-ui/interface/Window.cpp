@@ -737,6 +737,16 @@ void Window::SetWidgetDisabled(WidgetIndex widgetIndex, bool value)
     WidgetSetDisabled(*this, widgetIndex, value);
 }
 
+void Window::SetWidgetDisabledAndInvalidate(WidgetIndex widgetIndex, bool value)
+{
+    bool oldState = IsWidgetDisabled(widgetIndex);
+    if (oldState != value)
+    {
+        WidgetSetDisabled(*this, widgetIndex, value);
+        InvalidateWidget(widgetIndex);
+    }
+}
+
 void Window::SetWidgetPressed(WidgetIndex widgetIndex, bool value)
 {
     WidgetSetPressed(*this, widgetIndex, value);

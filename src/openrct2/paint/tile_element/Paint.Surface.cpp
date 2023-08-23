@@ -1138,7 +1138,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             imageId = imageId.WithTransparency(FilterPaletteID::PaletteDarken1);
         }
 
-        if (OpenRCT2::TileInspector::IsElementSelected(elementPtr))
+        if (session.SelectedElement == elementPtr)
         {
             imageId = imageId.WithRemap(FilterPaletteID::PaletteGhost);
         }

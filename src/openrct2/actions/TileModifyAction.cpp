@@ -9,6 +9,8 @@
 
 #include "TileModifyAction.h"
 
+#include "../Context.h"
+#include "../windows/Intent.h"
 #include "../world/TileInspector.h"
 
 using namespace OpenRCT2;
@@ -235,6 +237,13 @@ GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
     res.Position.x = _loc.x;
     res.Position.y = _loc.y;
     res.Position.z = TileElementHeight(_loc);
+
+    if (isExecuting)
+    {
+        MapInvalidateTileFull(_loc);
+        auto intent = Intent(INTENT_ACTION_TILE_MODIFY);
+        ContextBroadcastIntent(&intent);
+    }
 
     return res;
 }

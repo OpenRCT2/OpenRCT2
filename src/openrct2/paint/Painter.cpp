@@ -25,6 +25,7 @@
 #include "../profiling/Profiling.h"
 #include "../title/TitleScreen.h"
 #include "../ui/UiContext.h"
+#include "../world/TileInspector.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -169,6 +170,7 @@ PaintSession* Painter::CreateSession(DrawPixelInfo& dpi, uint32_t viewFlags)
     session->CurrentlyDrawnEntity = nullptr;
     session->CurrentlyDrawnTileElement = nullptr;
     session->Surface = nullptr;
+    session->SelectedElement = OpenRCT2::TileInspector::GetSelectedElement();
 
     return session;
 }

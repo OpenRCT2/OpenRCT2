@@ -789,7 +789,7 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
         session.InteractionType = ViewportInteractionItem::None;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
-    else if (TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&tileElement)))
+    else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&tileElement))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
         sceneryImageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);

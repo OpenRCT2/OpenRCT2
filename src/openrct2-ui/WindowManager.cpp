@@ -529,6 +529,12 @@ public:
                 break;
             }
 
+            case INTENT_ACTION_TILE_MODIFY:
+            {
+                WindowInvalidateByClass(WindowClass::TileInspector);
+                break;
+            }
+
             default:
                 break;
         }

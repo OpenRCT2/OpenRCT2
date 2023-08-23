@@ -440,10 +440,9 @@ static constexpr TileInspectorGroupboxSettings PageGroupBoxSettings[] = {
 };
 
 static constexpr int32_t ViewportInteractionFlags = EnumsToFlags(
-    ViewportInteractionItem::Terrain, ViewportInteractionItem::Entity, ViewportInteractionItem::Ride,
-    ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::PathAddition,
-    ViewportInteractionItem::ParkEntrance, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
-    ViewportInteractionItem::Banner);
+    ViewportInteractionItem::Terrain, ViewportInteractionItem::Ride, ViewportInteractionItem::Scenery,
+    ViewportInteractionItem::Footpath, ViewportInteractionItem::PathAddition, ViewportInteractionItem::ParkEntrance,
+    ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery, ViewportInteractionItem::Banner);
 // clang-format off
 
 static uint64_t PageHoldDownWidgets[] = {
@@ -506,8 +505,9 @@ public:
         // Check if the mouse is hovering over the list
         if (!WidgetIsHighlighted(*this, WIDX_LIST))
         {
+            if (_highlightedIndex != -1)
+                InvalidateWidget(WIDX_LIST);
             _highlightedIndex = -1;
-            InvalidateWidget(WIDX_LIST);
         }
         if (gCurrentToolWidget.window_classification != WindowClass::TileInspector)
             Close();
@@ -518,15 +518,12 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                ToolCancel();
                 Close();
                 return;
 
             case WIDX_BUTTON_REMOVE:
             {
-                int32_t nextItemToSelect = windowTileInspectorSelectedIndex - 1;
                 RemoveElement(windowTileInspectorSelectedIndex);
-                SelectElementFromList(nextItemToSelect);
                 break;
             }
 
@@ -559,10 +556,7 @@ public:
         if (tileInspectorPage == TileInspectorPage::Default || windowTileInspectorSelectedIndex == -1)
             return;
 
-        TileElement* const tileElement = GetSelectedElement();
-
-        // Update selection, can be nullptr.
-        OpenRCT2::TileInspector::SetSelectedElement(tileElement);
+        const TileElement* const tileElement = OpenRCT2::TileInspector::GetSelectedElement();
 
         if (tileElement == nullptr)
             return;
@@ -713,7 +707,13 @@ public:
 
     void OnClose() override
     {
-        OpenRCT2::TileInspector::SetSelectedElement(nullptr);
+        ToolCancel();
+        TileElement* const elem = OpenRCT2::TileInspector::GetSelectedElement();
+        if (elem != nullptr)
+        {
+            MapInvalidateElement(_toolMap, elem);
+        }
+        windowTileInspectorSelectedIndex = -1;
     }
 
     void OnResize() override
@@ -764,7 +764,7 @@ public:
         if (tileInspectorPage == TileInspectorPage::Default || windowTileInspectorSelectedIndex == -1)
             return;
 
-        const TileElement* tileElement = GetSelectedElement();
+        const TileElement* tileElement = OpenRCT2::TileInspector::GetSelectedElement();
         if (tileElement == nullptr)
             return;
 
@@ -923,7 +923,7 @@ public:
         if (dropdownIndex == -1)
             return;
         // Get selected element
-        TileElement* const tileElement = GetSelectedElement();
+        const TileElement* const tileElement = OpenRCT2::TileInspector::GetSelectedElement();
         if (tileInspectorPage == TileInspectorPage::Wall)
         {
             Guard::Assert(tileElement->GetType() == TileElementType::Wall, "Element is not a wall");
@@ -1044,7 +1044,7 @@ public:
                 + ScreenCoordsXY{ widgets[WIDX_GROUPBOX_DETAILS].left + 7, widgets[WIDX_GROUPBOX_DETAILS].top + 14 };
 
             // Get map element
-            TileElement* const tileElement = GetSelectedElement();
+            const TileElement* const tileElement = OpenRCT2::TileInspector::GetSelectedElement();
             if (tileElement == nullptr)
                 return;
 
@@ -1756,10 +1756,15 @@ private:
                 return;
         }
 
+        // Invalidate the previous selection
+        if (auto* elem = OpenRCT2::TileInspector::GetSelectedElement(); elem != nullptr)
+        {
+            MapInvalidateElement(windowTileInspectorTile.ToCoordsXY(), elem);
+        }
+
         _tileSelected = true;
         _toolMap = mapCoords;
         windowTileInspectorTile = TileCoordsXY(mapCoords);
-        OpenRCT2::TileInspector::SetSelectedElement(clickedElement);
         LoadTile(clickedElement);
     }
 
@@ -1768,13 +1773,10 @@ private:
         if (index < 0 || index >= windowTileInspectorElementCount)
         {
             windowTileInspectorSelectedIndex = -1;
-            OpenRCT2::TileInspector::SetSelectedElement(nullptr);
         }
         else
         {
             windowTileInspectorSelectedIndex = index;
-            const TileElement* const tileElement = GetSelectedElement();
-            OpenRCT2::TileInspector::SetSelectedElement(tileElement);
         }
         Invalidate();
     }
@@ -1834,8 +1836,10 @@ private:
 
     void CopyElement()
     {
+        const TileElement* const tileElement = OpenRCT2::TileInspector::GetSelectedElement();
+        Guard::Assert(tileElement != nullptr, "Invalid tile element");
         // Copy value, in case the element gets moved
-        _copiedElement = *GetSelectedElement();
+        _copiedElement = *tileElement;
         _copiedBanner = {};
         auto bannerIndex = _copiedElement.GetBannerIndex();
         if (bannerIndex != BannerIndex::GetNull())
@@ -1985,24 +1989,16 @@ private:
         GameActions::Execute(&modifyTile);
     }
 
-    TileElement* GetSelectedElement()
-    {
-        Guard::Assert(
-            windowTileInspectorSelectedIndex >= 0 && windowTileInspectorSelectedIndex < windowTileInspectorElementCount,
-            "Selected list item out of range");
-        return MapGetFirstElementAt(_toolMap) + windowTileInspectorSelectedIndex;
-    }
-
     void OnPrepareDraw() override
     {
+        const TileElement* const tileElement = OpenRCT2::TileInspector::GetSelectedElement();
+
         // Set the correct page automatically
         TileInspectorPage p = TileInspectorPage::Default;
-        if (windowTileInspectorSelectedIndex != -1)
+        if (tileElement != nullptr)
         {
-            const auto element = GetSelectedElement();
-            switch (element->GetType())
+            switch (tileElement->GetType())
             {
-                default:
                 case TileElementType::Surface:
                     p = TileInspectorPage::Surface;
                     break;
@@ -2043,32 +2039,30 @@ private:
             Invalidate();
         }
         // X and Y spinners
-        SetWidgetDisabled(WIDX_SPINNER_X_INCREASE, !(_tileSelected && ((_toolMap.x / 32) < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
-        SetWidgetDisabled(WIDX_SPINNER_X_DECREASE, !(_tileSelected && ((_toolMap.x / 32) > 0)));
-        SetWidgetDisabled(WIDX_SPINNER_Y_INCREASE, !(_tileSelected && ((_toolMap.y / 32) < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
-        SetWidgetDisabled(WIDX_SPINNER_Y_DECREASE, !(_tileSelected && ((_toolMap.y / 32) > 0)));
+        SetWidgetDisabledAndInvalidate(
+            WIDX_SPINNER_X_INCREASE, !(_tileSelected && ((_toolMap.x / 32) < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
+        SetWidgetDisabledAndInvalidate(WIDX_SPINNER_X_DECREASE, !(_tileSelected && ((_toolMap.x / 32) > 0)));
+        SetWidgetDisabledAndInvalidate(
+            WIDX_SPINNER_Y_INCREASE, !(_tileSelected && ((_toolMap.y / 32) < MAXIMUM_MAP_SIZE_TECHNICAL - 1)));
+        SetWidgetDisabledAndInvalidate(WIDX_SPINNER_Y_DECREASE, !(_tileSelected && ((_toolMap.y / 32) > 0)));
 
         // Sort buttons
-        SetWidgetDisabled(WIDX_BUTTON_SORT, !(_tileSelected && windowTileInspectorElementCount > 1));
+        SetWidgetDisabledAndInvalidate(WIDX_BUTTON_SORT, !(_tileSelected && windowTileInspectorElementCount > 1));
 
         // Move Up button
-        SetWidgetDisabled(
+        SetWidgetDisabledAndInvalidate(
             WIDX_BUTTON_MOVE_UP,
             !(windowTileInspectorSelectedIndex != -1
               && windowTileInspectorSelectedIndex < windowTileInspectorElementCount - 1));
-        InvalidateWidget(WIDX_BUTTON_MOVE_UP);
 
         // Move Down button
-        SetWidgetDisabled(WIDX_BUTTON_MOVE_DOWN, !(windowTileInspectorSelectedIndex > 0));
-        InvalidateWidget(WIDX_BUTTON_MOVE_DOWN);
+        SetWidgetDisabledAndInvalidate(WIDX_BUTTON_MOVE_DOWN, !(windowTileInspectorSelectedIndex > 0));
 
         // Copy button
-        SetWidgetDisabled(WIDX_BUTTON_COPY, !(windowTileInspectorSelectedIndex >= 0));
-        InvalidateWidget(WIDX_BUTTON_COPY);
+        SetWidgetDisabledAndInvalidate(WIDX_BUTTON_COPY, !(windowTileInspectorSelectedIndex >= 0));
 
         // Paste button
-        SetWidgetDisabled(WIDX_BUTTON_PASTE, !(_tileSelected && _elementCopied));
-        InvalidateWidget(WIDX_BUTTON_PASTE);
+        SetWidgetDisabledAndInvalidate(WIDX_BUTTON_PASTE, !(_tileSelected && _elementCopied));
 
         widgets[WIDX_BACKGROUND].bottom = height - 1;
 
@@ -2098,9 +2092,6 @@ private:
         // Using a switch, because I don't think giving each page their own callbacks is
         // needed here, as only the mouseup and invalidate functions are different.
         const int32_t propertiesAnchor = widgets[WIDX_GROUPBOX_PROPERTIES].top;
-        const TileElement* const tileElement = GetSelectedElement();
-        if (tileElement == nullptr)
-            return;
 
         switch (tileElement->GetType())
         {
