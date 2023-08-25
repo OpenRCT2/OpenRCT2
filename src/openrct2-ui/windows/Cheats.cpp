@@ -356,12 +356,13 @@ static StringId window_cheats_page_titles[] = {
 };
 // clang-format on
 
+static int32_t _windowCheatsSelectedStaffSpeed = 1;
+
 class CheatsWindow final : public Window
 {
 private:
     char _moneySpinnerText[MONEY_STRING_MAXLENGTH]{};
     money64 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
-    int32_t _selectedStaffSpeed = 1;
     int32_t _parkRatingSpinnerValue{};
     int32_t _yearSpinnerValue = 1;
     int32_t _monthSpinnerValue = 1;
@@ -509,7 +510,7 @@ public:
         // Current weather
         window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gClimateCurrent.Weather)];
         // Staff speed
-        window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[_selectedStaffSpeed];
+        window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[_windowCheatsSelectedStaffSpeed];
 
         if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         {
@@ -851,7 +852,7 @@ private:
                 WindowDropdownShowTextCustomWidth(
                     { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                     colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
-                Dropdown::SetChecked(_selectedStaffSpeed, true);
+                Dropdown::SetChecked(_windowCheatsSelectedStaffSpeed, true);
             }
         }
     }
@@ -945,7 +946,7 @@ private:
             }
 
             CheatsSet(CheatType::SetStaffSpeed, speed);
-            _selectedStaffSpeed = dropdownIndex;
+            _windowCheatsSelectedStaffSpeed = dropdownIndex;
         }
     }
 
