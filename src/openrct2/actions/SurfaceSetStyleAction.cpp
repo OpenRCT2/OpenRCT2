@@ -113,7 +113,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
 
             if (_surfaceStyle != OBJECT_ENTRY_INDEX_NULL)
             {
-                uint8_t curSurfaceStyle = surfaceElement->GetSurfaceStyle();
+                uint8_t curSurfaceStyle = surfaceElement->GetSurfaceObjectIndex();
 
                 if (_surfaceStyle != curSurfaceStyle)
                 {
@@ -181,7 +181,7 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
 
             if (_surfaceStyle != OBJECT_ENTRY_INDEX_NULL)
             {
-                uint8_t curSurfaceStyle = surfaceElement->GetSurfaceStyle();
+                uint8_t curSurfaceStyle = surfaceElement->GetSurfaceObjectIndex();
 
                 if (_surfaceStyle != curSurfaceStyle)
                 {
@@ -192,7 +192,7 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
                     {
                         surfaceCost += surfaceObject->Price;
 
-                        surfaceElement->SetSurfaceStyle(_surfaceStyle);
+                        surfaceElement->SetSurfaceObjectIndex(_surfaceStyle);
 
                         MapInvalidateTileFull(coords);
                         FootpathRemoveLitter({ coords, TileElementHeight(coords) });

@@ -1029,7 +1029,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     const auto zoomLevel = session.DPI.zoom_level;
     const uint8_t rotation = session.CurrentRotation;
-    const auto terrain_type = tileElement.GetSurfaceStyle();
+    const auto terrain_type = tileElement.GetSurfaceObjectIndex();
     const uint8_t surfaceShape = ViewportSurfacePaintSetupGetRelativeSlope(tileElement, rotation);
     const CoordsXY& base = session.SpritePosition;
     const CornerHeight& cornerHeights = corner_heights[surfaceShape];
@@ -1076,7 +1076,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
         descriptor.tile_coords = TileCoordsXY{ position };
         descriptor.tile_element = reinterpret_cast<TileElement*>(surfaceElement);
-        descriptor.terrain = surfaceElement->GetSurfaceStyle();
+        descriptor.terrain = surfaceElement->GetSurfaceObjectIndex();
         descriptor.slope = surfaceSlope;
         descriptor.corner_heights.top = baseHeight + ch.top;
         descriptor.corner_heights.right = baseHeight + ch.right;

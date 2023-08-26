@@ -150,7 +150,7 @@ void SetupInUseSelectionFlags()
             case TileElementType::Surface:
             {
                 auto surfaceEl = iter.element->AsSurface();
-                auto surfaceIndex = surfaceEl->GetSurfaceStyle();
+                auto surfaceIndex = surfaceEl->GetSurfaceObjectIndex();
                 auto edgeIndex = surfaceEl->GetEdgeStyle();
 
                 Editor::SetSelectedObject(ObjectType::TerrainSurface, surfaceIndex, ObjectSelectionFlags::InUse);

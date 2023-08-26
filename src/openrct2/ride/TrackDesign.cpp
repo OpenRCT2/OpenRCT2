@@ -2228,7 +2228,7 @@ static void TrackDesignPreviewClearMap()
         element->SetLastForTile(true);
         element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
         element->AsSurface()->SetWaterHeight(0);
-        element->AsSurface()->SetSurfaceStyle(0);
+        element->AsSurface()->SetSurfaceObjectIndex(0);
         element->AsSurface()->SetEdgeStyle(0);
         element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
         element->AsSurface()->SetOwnership(OWNERSHIP_OWNED);

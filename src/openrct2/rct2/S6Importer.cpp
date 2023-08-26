@@ -1373,7 +1373,7 @@ namespace RCT2
 
                     dst2->SetSlope(src2->GetSlope());
 
-                    dst2->SetSurfaceStyle(src2->GetSurfaceStyle());
+                    dst2->SetSurfaceObjectIndex(src2->GetSurfaceStyle());
                     dst2->SetEdgeStyle(src2->GetEdgeStyle());
 
                     dst2->SetGrassLength(src2->GetGrassLength());

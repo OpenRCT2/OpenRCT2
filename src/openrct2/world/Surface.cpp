@@ -17,7 +17,7 @@
 #include "Location.hpp"
 #include "Map.h"
 
-ObjectEntryIndex SurfaceElement::GetSurfaceStyle() const
+ObjectEntryIndex SurfaceElement::GetSurfaceObjectIndex() const
 {
     return SurfaceStyle;
 }
@@ -25,7 +25,7 @@ ObjectEntryIndex SurfaceElement::GetSurfaceStyle() const
 TerrainSurfaceObject* SurfaceElement::GetSurfaceStyleObject() const
 {
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-    return static_cast<TerrainSurfaceObject*>(objManager.GetLoadedObject(ObjectType::TerrainSurface, GetSurfaceStyle()));
+    return static_cast<TerrainSurfaceObject*>(objManager.GetLoadedObject(ObjectType::TerrainSurface, GetSurfaceObjectIndex()));
 }
 
 uint32_t SurfaceElement::GetEdgeStyle() const
@@ -39,7 +39,7 @@ TerrainEdgeObject* SurfaceElement::GetEdgeStyleObject() const
     return static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, GetEdgeStyle()));
 }
 
-void SurfaceElement::SetSurfaceStyle(ObjectEntryIndex newStyle)
+void SurfaceElement::SetSurfaceObjectIndex(ObjectEntryIndex newStyle)
 {
     SurfaceStyle = static_cast<ObjectEntryIndex>(newStyle);
 }
@@ -61,7 +61,7 @@ void SurfaceElement::SetWaterHeight(int32_t newWaterHeight)
 
 bool SurfaceElement::CanGrassGrow() const
 {
-    auto surfaceStyle = GetSurfaceStyle();
+    auto surfaceStyle = GetSurfaceObjectIndex();
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(ObjectType::TerrainSurface, surfaceStyle);
     if (obj != nullptr)
