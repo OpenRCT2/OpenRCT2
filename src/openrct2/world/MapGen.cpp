@@ -130,7 +130,7 @@ void MapGenGenerateBlank(MapGenSettings* settings)
             if (surfaceElement != nullptr)
             {
                 surfaceElement->SetSurfaceObjectIndex(settings->floor);
-                surfaceElement->SetEdgeStyle(settings->wall);
+                surfaceElement->SetEdgeObjectIndex(settings->wall);
                 surfaceElement->BaseHeight = settings->height;
                 surfaceElement->ClearanceHeight = settings->height;
             }
@@ -194,7 +194,7 @@ void MapGenGenerate(MapGenSettings* settings)
             if (surfaceElement != nullptr)
             {
                 surfaceElement->SetSurfaceObjectIndex(floorTextureId);
-                surfaceElement->SetEdgeStyle(edgeTextureId);
+                surfaceElement->SetEdgeObjectIndex(edgeTextureId);
                 surfaceElement->BaseHeight = settings->height;
                 surfaceElement->ClearanceHeight = settings->height;
             }

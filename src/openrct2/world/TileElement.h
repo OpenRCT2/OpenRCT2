@@ -209,9 +209,9 @@ public:
     TerrainSurfaceObject* GetSurfaceStyleObject() const;
     void SetSurfaceObjectIndex(ObjectEntryIndex newStyle);
 
-    ObjectEntryIndex GetEdgeStyle() const;
-    TerrainEdgeObject* GetEdgeStyleObject() const;
-    void SetEdgeStyle(ObjectEntryIndex newStyle);
+    ObjectEntryIndex GetEdgeObjectIndex() const;
+    TerrainEdgeObject* GetEdgeObject() const;
+    void SetEdgeObjectIndex(ObjectEntryIndex newStyle);
 
     bool CanGrassGrow() const;
     uint8_t GetGrassLength() const;

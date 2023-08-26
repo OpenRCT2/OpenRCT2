@@ -28,15 +28,15 @@ TerrainSurfaceObject* SurfaceElement::GetSurfaceStyleObject() const
     return static_cast<TerrainSurfaceObject*>(objManager.GetLoadedObject(ObjectType::TerrainSurface, GetSurfaceObjectIndex()));
 }
 
-ObjectEntryIndex SurfaceElement::GetEdgeStyle() const
+ObjectEntryIndex SurfaceElement::GetEdgeObjectIndex() const
 {
     return EdgeObjectIndex;
 }
 
-TerrainEdgeObject* SurfaceElement::GetEdgeStyleObject() const
+TerrainEdgeObject* SurfaceElement::GetEdgeObject() const
 {
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-    return static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, GetEdgeStyle()));
+    return static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, GetEdgeObjectIndex()));
 }
 
 void SurfaceElement::SetSurfaceObjectIndex(ObjectEntryIndex newStyle)
@@ -44,7 +44,7 @@ void SurfaceElement::SetSurfaceObjectIndex(ObjectEntryIndex newStyle)
     SurfaceStyle = static_cast<ObjectEntryIndex>(newStyle);
 }
 
-void SurfaceElement::SetEdgeStyle(ObjectEntryIndex newIndex)
+void SurfaceElement::SetEdgeObjectIndex(ObjectEntryIndex newIndex)
 {
     EdgeObjectIndex = static_cast<ObjectEntryIndex>(newIndex);
 }

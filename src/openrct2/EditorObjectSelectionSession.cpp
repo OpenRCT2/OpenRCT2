@@ -151,7 +151,7 @@ void SetupInUseSelectionFlags()
             {
                 auto surfaceEl = iter.element->AsSurface();
                 auto surfaceIndex = surfaceEl->GetSurfaceObjectIndex();
-                auto edgeIndex = surfaceEl->GetEdgeStyle();
+                auto edgeIndex = surfaceEl->GetEdgeObjectIndex();
 
                 Editor::SetSelectedObject(ObjectType::TerrainSurface, surfaceIndex, ObjectSelectionFlags::InUse);
                 Editor::SetSelectedObject(ObjectType::TerrainEdge, edgeIndex, ObjectSelectionFlags::InUse);

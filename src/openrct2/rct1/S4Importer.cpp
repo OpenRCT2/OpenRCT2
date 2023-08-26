@@ -1580,7 +1580,7 @@ namespace RCT1
 
                     dst2->SetSlope(src2->GetSlope());
                     dst2->SetSurfaceObjectIndex(surfaceStyle);
-                    dst2->SetEdgeStyle(edgeStyle);
+                    dst2->SetEdgeObjectIndex(edgeStyle);
                     dst2->SetGrassLength(src2->GetGrassLength());
                     dst2->SetOwnership(src2->GetOwnership());
                     dst2->SetParkFences(src2->GetParkFences());

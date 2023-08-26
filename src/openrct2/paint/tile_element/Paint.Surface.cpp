@@ -1306,7 +1306,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
     {
-        const auto edgeStyle = tileElement.GetEdgeStyle();
+        const auto edgeStyle = tileElement.GetEdgeObjectIndex();
         if (static_cast<int32_t>(edgeStyle) >= object_entry_group_counts[EnumValue(ObjectType::TerrainEdge)])
         {
             LOG_VERBOSE("edgeStyle: %d", edgeStyle);
@@ -1346,7 +1346,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
         {
             // This wasn't in the original, but the code depended on globals that were only set in a different conditional
-            const uint32_t edgeStyle = tileElement.GetEdgeStyle();
+            const uint32_t edgeStyle = tileElement.GetEdgeObjectIndex();
             // end new code
 
             ViewportSurfaceDrawWaterSideBottom(

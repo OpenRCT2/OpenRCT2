@@ -1064,7 +1064,7 @@ public:
 
                     // Edge texture name
                     StringId terrainEdgeNameId = STR_EMPTY;
-                    auto edgeStyle = tileElement->AsSurface()->GetEdgeStyleObject();
+                    auto edgeStyle = tileElement->AsSurface()->GetEdgeObject();
                     if (edgeStyle != nullptr)
                         terrainEdgeNameId = edgeStyle->NameStringId;
                     ft = Formatter();
