@@ -998,7 +998,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     const CornerHeight& cornerHeights = corner_heights[surfaceShape];
     const TileElement* elementPtr = &reinterpret_cast<const TileElement&>(tileElement);
 
-    const auto* surfaceObject = tileElement.GetSurfaceStyleObject();
+    const auto* surfaceObject = tileElement.GetSurfaceObject();
     const auto* edgeObject = tileElement.GetEdgeObject();
 
     TileDescriptor selfDescriptor = {
@@ -1042,7 +1042,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
         descriptor.tile_coords = TileCoordsXY{ position };
         descriptor.tile_element = reinterpret_cast<TileElement*>(surfaceElement);
-        descriptor.surfaceObject = surfaceElement->GetSurfaceStyleObject();
+        descriptor.surfaceObject = surfaceElement->GetSurfaceObject();
         descriptor.slope = surfaceSlope;
         descriptor.corner_heights.top = baseHeight + ch.top;
         descriptor.corner_heights.right = baseHeight + ch.right;

@@ -1055,7 +1055,7 @@ public:
                     // Details
                     // Terrain texture name
                     StringId terrainNameId = STR_EMPTY;
-                    auto surfaceStyle = tileElement->AsSurface()->GetSurfaceStyleObject();
+                    auto surfaceStyle = tileElement->AsSurface()->GetSurfaceObject();
                     if (surfaceStyle != nullptr)
                         terrainNameId = surfaceStyle->NameStringId;
                     auto ft = Formatter();

@@ -22,7 +22,7 @@ ObjectEntryIndex SurfaceElement::GetSurfaceObjectIndex() const
     return SurfaceStyle;
 }
 
-TerrainSurfaceObject* SurfaceElement::GetSurfaceStyleObject() const
+TerrainSurfaceObject* SurfaceElement::GetSurfaceObject() const
 {
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     return static_cast<TerrainSurfaceObject*>(objManager.GetLoadedObject(ObjectType::TerrainSurface, GetSurfaceObjectIndex()));
