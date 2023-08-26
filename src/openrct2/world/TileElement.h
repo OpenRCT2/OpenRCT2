@@ -205,9 +205,10 @@ public:
     uint8_t GetSlope() const;
     void SetSlope(uint8_t newSlope);
 
-    uint32_t GetSurfaceStyle() const;
+    ObjectEntryIndex GetSurfaceStyle() const;
     TerrainSurfaceObject* GetSurfaceStyleObject() const;
-    void SetSurfaceStyle(uint32_t newStyle);
+    void SetSurfaceStyle(ObjectEntryIndex newStyle);
+
     uint32_t GetEdgeStyle() const;
     TerrainEdgeObject* GetEdgeStyleObject() const;
     void SetEdgeStyle(uint32_t newStyle);

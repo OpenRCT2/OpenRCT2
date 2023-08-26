@@ -217,7 +217,7 @@ struct TileDescriptor
 {
     TileCoordsXY tile_coords;
     const TileElement* tile_element;
-    uint8_t terrain;
+    ObjectEntryIndex terrain;
     uint8_t slope;
     CornerHeight corner_heights;
 };
@@ -1038,7 +1038,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     TileDescriptor selfDescriptor = {
         TileCoordsXY(base),
         elementPtr,
-        static_cast<uint8_t>(terrain_type),
+        terrain_type,
         surfaceShape,
         {
             static_cast<uint8_t>(height / 16 + cornerHeights.top),

@@ -17,7 +17,7 @@
 #include "Location.hpp"
 #include "Map.h"
 
-uint32_t SurfaceElement::GetSurfaceStyle() const
+ObjectEntryIndex SurfaceElement::GetSurfaceStyle() const
 {
     return SurfaceStyle;
 }
@@ -39,9 +39,9 @@ TerrainEdgeObject* SurfaceElement::GetEdgeStyleObject() const
     return static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, GetEdgeStyle()));
 }
 
-void SurfaceElement::SetSurfaceStyle(uint32_t newStyle)
+void SurfaceElement::SetSurfaceStyle(ObjectEntryIndex newStyle)
 {
-    SurfaceStyle = newStyle;
+    SurfaceStyle = static_cast<ObjectEntryIndex>(newStyle);
 }
 
 void SurfaceElement::SetEdgeStyle(uint32_t newStyle)
