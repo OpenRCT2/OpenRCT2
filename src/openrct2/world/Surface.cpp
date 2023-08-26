@@ -28,9 +28,9 @@ TerrainSurfaceObject* SurfaceElement::GetSurfaceStyleObject() const
     return static_cast<TerrainSurfaceObject*>(objManager.GetLoadedObject(ObjectType::TerrainSurface, GetSurfaceObjectIndex()));
 }
 
-uint32_t SurfaceElement::GetEdgeStyle() const
+ObjectEntryIndex SurfaceElement::GetEdgeStyle() const
 {
-    return EdgeStyle;
+    return EdgeObjectIndex;
 }
 
 TerrainEdgeObject* SurfaceElement::GetEdgeStyleObject() const
@@ -44,9 +44,9 @@ void SurfaceElement::SetSurfaceObjectIndex(ObjectEntryIndex newStyle)
     SurfaceStyle = static_cast<ObjectEntryIndex>(newStyle);
 }
 
-void SurfaceElement::SetEdgeStyle(uint32_t newStyle)
+void SurfaceElement::SetEdgeStyle(ObjectEntryIndex newIndex)
 {
-    EdgeStyle = newStyle;
+    EdgeObjectIndex = static_cast<ObjectEntryIndex>(newIndex);
 }
 
 int32_t SurfaceElement::GetWaterHeight() const
