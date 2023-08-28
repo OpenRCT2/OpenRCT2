@@ -5,6 +5,7 @@
 - Feature: [OpenMusic#41] Official Title Theme by Allister Brimble.
 - Improved: [#20119, #20243] Add new colour presets to several roller coasters (using the new colours).
 - Improved: [#20393, #20410] Add Cyrillic characters Ґґ, Ѕѕ, Єє, Іі, Її, and Јј to the sprite font. 
+- Change: [#19785] OpenMusic is now selected by default when opening SC4/SC6 - or creating new - scenarios.
 - Change: [#20110] Fix a few RCT1 build height parity discrepancies.
 - Change: [#20550] Change SEK conversion rate from 1 GBP to 0.1 GBP.
 - Fix: [#6152] Camera and UI are no longer locked at 40 Hz, providing a smoother experience.
