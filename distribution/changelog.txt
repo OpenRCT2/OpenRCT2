@@ -38,6 +38,7 @@
 - Fix: [#20607] Infinite loop when renaming rides with default names longer than 32 bytes.
 - Fix: [#20642] Track list is sometimes empty due to uninitialized data for the filter string.
 - Fix: [#20659] Phantom rides remain when closing construction window while paused.
+- Fix: [#20672] Maze ghost elements incorrectly displayed.
 - Fix: [#20684] Footpath additions getting removed by Miniature railway ghost elements.
 - Fix: [#20693] Incorrect information shown when hovering over station when another station before it was removed.
 - Fix: [#20739] Build version info on title screen leaving stray pixels when the camera is moved.
