@@ -12,6 +12,7 @@
 - Fix: [#20356] Cannot set tertiary colour on small scenery.
 - Fix: [#20679] Android: game crashes at launch.
 - Fix: [#20737] Spent money in player window underflows when getting refunds.
+- Fix: [#20747] Staff speed cheat not applying to newly hired staff, UI not showing the current applied speed.
 - Fix: [#20778] [Plugin] Incorrect target api when executing custom actions.
 - Fix: [#20807] Tertiary colour not copied with small scenery.
 
