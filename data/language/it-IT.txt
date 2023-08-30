@@ -2997,7 +2997,6 @@ STR_5832    :Mostra l’altezza in unità generiche invece del formato impostato
 STR_5833    :Cambia il formato della data utilizzato
 STR_5834    :Seleziona il dispositivo audio utilizzato da OpenRCT2
 STR_5835    :Disattiva l’audio del gioco se la finestra perde il focus
-STR_5836    :Imposta la musica da utilizzare nel menu principale.{NEWLINE}Selezionando RCT1 sarà necessario copiare il file “data/css17.dat” dalla cartella di RCT1 a “data/css50.dat” nella cartella di RCT2, oppure impostare il percorso di RCT1 nella scheda “Altro”.
 STR_5836    :Seleziona la musica da utilizzare nel menu principale.{NEWLINE}Per selezionare il tema di RCT1 è necessario impostare il percorso di RCT1 nella scheda Avanzate.
 STR_5837    :Crea e gestisci i temi dell’interfaccia
 STR_5838    :Mostra un pulsante differente per le finanze nella barra degli strumenti
@@ -3287,8 +3286,8 @@ STR_6133    :Permette di accedere ad attrazioni e scenari non ancora inventati
 STR_6134    :Rimuovi scenario
 STR_6135    :Il client ha inviato una richiesta non valida
 STR_6136    :Il server ha inviato una richiesta non valida
-STR_6137    :OpenRCT2, un clone libero e open-source di Roller Coaster Tycoon 2.
-STR_6138    :OpenRCT2 è frutto del lavoro di molti autori, una lista completa si può trovare nel file “contributors.md”. Per ulteriori informazioni, visitare http://github.com/OpenRCT2/OpenRCT2
+STR_6137    :OpenRCT2, un remake con aggiunte gratuito e open-source di Roller Coaster Tycoon 2.
+STR_6138    :OpenRCT2 è frutto del lavoro di molti autori, una lista completa si può trovare cliccando il pulsante “Collaboratori”. Per ulteriori informazioni, visitare http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Tutti i nomi di prodotti e aziende appartengono ai rispettivi proprietari. Il loro uso non implica alcuna affiliazione o approvazione da parte di essi.
 STR_6140    :Storico delle modifiche…
 STR_6141    :Barra degli strumenti inferiore alla RCT1
@@ -3599,9 +3598,9 @@ STR_6487    :Mostra/nascondi personale
 STR_6488    :{RED}I visitatori si lamentano per la lunghezza delle code nel tuo parco.{NEWLINE}Prendi in considerazione di accorciare quelle problematiche o di aumentare il flusso di visitatori delle attrazioni.
 STR_6489    :Errore: versione parco non compatibile
 STR_6490    :Avviso: versione parco semi-compatibile
-STR_6491    :Questo parco è stato salvato in una versione più recente di OpenRCT2. Il parco è v{INT32} e richiede almeno v{INT32}.
+STR_6491    :Questo parco è stato salvato in una versione più recente di OpenRCT2. Il parco è stato salvato nella v{INT32} e richiede almeno v{INT32}. Si sta usando la v{INT32}.
 STR_6492    :Questo parco è stato salvato in una versione più vecchia di OpenRCT2 e non può essere aperto con questa versione. Il parco è v{INT32}.
-STR_6493    :Questo parco è stato salvato in una versione più recente di OpenRCT2, alcuni dati potrebbero essere persi. Il parco è v{INT32} e richiede almeno v{INT32}.
+STR_6493    :Questo parco è stato salvato in una versione più recente di OpenRCT2, alcuni dati potrebbero essere persi. Il parco è stato salvato nella v{INT32}. Si sta usando la v{INT32}.
 STR_6494    :Raggruppa per tipo attrazione
 STR_6495    :Raggruppa le attrazioni in base al loro tipo anziché mostrare ogni veicolo separatamente.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3623,9 +3622,9 @@ STR_6511    :Zero G Roll (Dx)
 STR_6512    :Zero G Roll Grande (Sx)
 STR_6513    :Zero G Roll Grande (Dx)
 STR_6514    :Altezza non valida!
-STR_6515    :{BLACK}RCT1 non collegato - saranno usate immagini di ripiego.
-STR_6516    :Uno o più oggetti aggiunti necessitano che RCT1 sia collegato per una corretta visualizzazione. Saranno usate immagini di ripiego.
-STR_6517    :Uno o più oggetti di questo parco necessitano che RCT1 sia collegato per una corretta visualizzazione. Saranno usate immagini di ripiego.
+STR_6515    :{BLACK}RollerCoaster Tycoon 1 non collegato - saranno usate immagini di ripiego.
+STR_6516    :Uno o più oggetti aggiunti necessitano che RollerCoaster Tycoon 1 sia collegato per una corretta visualizzazione. Saranno usate immagini di ripiego.
+STR_6517    :Uno o più oggetti di questo parco necessitano che RollerCoaster Tycoon 1 sia collegato per una corretta visualizzazione. Saranno usate immagini di ripiego.
 STR_6518    :{BLACK}Passa il cursore sopra a uno scenario per visualizzare la sua descrizione e il suo obiettivo. Fai clic per iniziare a giocare.
 STR_6519    :Extra
 STR_6520    :Pacchetti di risorse
@@ -3641,6 +3640,66 @@ STR_6529    :Parametro dello schema colore non valido!
 STR_6530    :User Created Expansion Set
 STR_6531    :The Time Machine
 STR_6532    :Katy’s Dreamworld
+STR_6533    :{WINDOW_COLOUR_2}Fattore di divertimento: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Fattore d’intensità: {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}Fattore di nausea: {BLACK}-{COMMA16}%
+STR_6536    :Questo parco è stato salvato in una versione più recente di OpenRCT2. il parco è stato salvato nella v{INT32}, si sta usando la v{INT32}.
+STR_6537    :Permette di usare percorsi regolari come code
+STR_6538    :Mostra i percorsi regolari nel menu a cascata della finestra dei Sentieri.
+STR_6539    :Freno chiuso
+STR_6540    :{WINDOW_COLOUR_2}Un ringraziamento speciale alle seguenti aziende per aver concesso l'utilizzo della loro immagine:
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6542    :Collaboratori
+STR_6543    :Collaboratori…
+STR_6544    :I prestiti non posso essere negativi!
+STR_6545    :Usa il calcolo dell’intersse di RCT1
+STR_6546    :Usa l’algoritmo di calcolo dell’interesse di RollerCoaster Tycoon 1, che usa una percentuale fissa del circa 1.33%.
+STR_6547    :Tutto lo scenario
+STR_6548    :Mostra le ringhiere agli incroci
+STR_6549    :Gli oggetti per la compatibilità non possono essere selezionati!
+STR_6550    :Questa voce è inclusa per retrocompatibilità con oggetti vecchi o danneggiati. Non può essere selezionata, solo deselezionata. 
+STR_6551    :Verde militare
+STR_6552    :Verde pallido
+STR_6553    :Tanno
+STR_6554    :Marrone
+STR_6555    :Rosa corallo
+STR_6556    :Verde foresta
+STR_6557    :Chartreuse
+STR_6558    :Verde cacciatore
+STR_6559    :Celadon
+STR_6560    :Verde lime
+STR_6561    :Seppia
+STR_6562    :Pesca
+STR_6563    :Pervinca
+STR_6564    :Verde viridiano
+STR_6565    :Verde schiuma marina
+STR_6566    :Violetto
+STR_6567    :Lavanda
+STR_6568    :Arancio pastello
+STR_6569    :Acqua Profonda
+STR_6570    :Rosa pastello
+STR_6571    :Terra d’ombra
+STR_6572    :Beige
+STR_6573    :Invisibile
+STR_6574    :Oblio
+STR_6575    :Peremtti combinazioni di colori speciali
+STR_6576    :Aggiunge i colori speciali al menu a cascata dei colori 
+STR_6577    :Velocità freni di blocco
+STR_6578    :Fissa un limite di velocità per i freni di blocco. In modalità sezione a blocchi, freni adiacenti con una velocità inferiore sono collegati con i freni di blocco.
+STR_6579    :I freni di blocco saranno impostati alla velocità predefinita quando salvati come progetto di percorso
+STR_6580    :Ripristina
+STR_6581    :Si è sicuri di voler ripristinare tutte le scorciatorie di questa scheda?
+STR_6582    :Finestra delle scorciatoie da tastiera
+STR_6583    :{WINDOW_COLOUR_2}Treni invertiti
+STR_6584    :Selezionare per far andare i treni al contrario
+STR_6585    :Impossibile effettuare modifiche…
+STR_6586    :OpenRCT2
+STR_6587    :Il tema principale di OpenRCT2 è un lavoro di Allister Brimble,{NEWLINE}con licensa CC BY-SA 4.0.
+STR_6588    :Si ringrazia Herman Riddering per averci permesso di registrare il 35er Voigt.
+STR_6589    :Mostra i pulsanti di controllo della finestra a sinistra
+STR_6590    :Mostra i pulsanti di controllo della finestra a sinistra della barra del titolo invece che a destra.
+STR_6591    :Il dipendente sta riparando un’attrazione e non può essere licenziato.
+STR_6592    :Il dipendente sta ispezionando un’attrazione e non può essere licenziato.
 
 
 #############
@@ -4402,7 +4461,7 @@ STR_DTLS    :Aggiungi più attrazioni per attirare più visitatori in questo par
 <UCES Halloween>
 STR_SCNR    :Cemetery Ridge
 STR_PARK    :Cemetery Ridge
-STR_DTLS    :Questo è Halloween, l'Halloween di UCES, le zucche urlano nel bel mezzo della notte! Questo cimitero è in grossi guai e tocca a te salvarlo, lasciando però i morti riposare in pace! Sarai in grado di tenere i fantasmi all'interno delle loro tombe e far rabbrividire i tuoi visitatori?{NEWLINE}Autore: Squid
+STR_DTLS    :Questo è Halloween, l’Halloween di UCES, le zucche urlano nel bel mezzo della notte! Questo cimitero è in grossi guai e tocca a te salvarlo, lasciando però i morti riposare in pace! Sarai in grado di tenere i fantasmi all’interno delle loro tombe e far rabbrividire i tuoi visitatori?{NEWLINE}Autore: Squid
 
 ###############################################################################
 ## UCES: The Time Machine (2003)
@@ -4484,7 +4543,7 @@ STR_DTLS    :Mamma! Papà! Voglio andare a Choo-Choo Town!{NEWLINE}Autore: Fossi
 <Dragon Islands>
 STR_SCNR    :Dragon Islands
 STR_PARK    :Dragon Islands
-STR_DTLS    :L'isola dei dragoni? Non sono sicuro di volerci andare…{NEWLINE}Autore: Fossil
+STR_DTLS    :L’isola dei dragoni? Non sono sicuro di volerci andare…{NEWLINE}Autore: Fossil
 
 <Kiddy Karnival II>
 STR_SCNR    :Kiddie Karnival II
