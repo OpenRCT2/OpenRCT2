@@ -93,6 +93,17 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
         {
+            if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+            {
+                if (sceneryEntry->HasFlag(LARGE_SCENERY_FLAG_IS_TREE))
+                {
+                    res.Error = GameActions::Status::NoClearance;
+                    res.ErrorTitle = STR_CANT_REMOVE_THIS;
+                    res.ErrorMessage = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
+                    return res;
+                }
+            }
+
             if (!MapIsLocationOwned({ currentTile.x, currentTile.y, currentTile.z }))
             {
                 return GameActions::Result(GameActions::Status::NoClearance, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
