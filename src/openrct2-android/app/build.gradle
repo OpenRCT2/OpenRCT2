@@ -9,7 +9,7 @@ android {
         targetSdkVersion 28
 
         versionCode 2
-        versionName '0.4.5'
+        versionName '0.4.6'
         externalNativeBuild {
             cmake {
                 arguments '-DANDROID_STL=c++_shared'
