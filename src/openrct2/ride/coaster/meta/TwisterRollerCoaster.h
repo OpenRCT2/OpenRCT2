@@ -17,7 +17,7 @@
 #include "../BolligerMabillardTrack.hpp"
 
 // clang-format off
-constexpr const RideTypeDescriptor TwisterRollerCoasterRTD =
+constexpr RideTypeDescriptor TwisterRollerCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
@@ -49,10 +49,10 @@ constexpr const RideTypeDescriptor TwisterRollerCoasterRTD =
     SET_FIELD(BonusValue, 120),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_BORDEAUX_RED },
-        { COLOUR_AQUAMARINE, COLOUR_AQUAMARINE, COLOUR_DARK_PURPLE },
         { COLOUR_WHITE, COLOUR_WHITE, COLOUR_LIGHT_BLUE },
-        { COLOUR_DARK_GREEN, COLOUR_MOSS_GREEN, COLOUR_DARK_BROWN },
         { COLOUR_BORDEAUX_RED, COLOUR_LIGHT_ORANGE, COLOUR_WHITE },
+        { COLOUR_LIGHT_BLUE, COLOUR_YELLOW, COLOUR_DARK_PINK }, // Scream
+        { COLOUR_DARK_ORANGE, COLOUR_DARK_ORANGE, COLOUR_BLACK }, // Rougarou
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_TWISTER_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_TWISTER_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),

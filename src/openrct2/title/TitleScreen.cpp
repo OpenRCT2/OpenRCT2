@@ -448,12 +448,9 @@ void DrawOpenRCT2(DrawPixelInfo& dpi, const ScreenCoordsXY& screenCoords)
 
     // Write name and version information
     buffer += gVersionInfoFull;
-    GfxDrawString(dpi, screenCoords + ScreenCoordsXY(5, 5 - 13), buffer.c_str(), { COLOUR_BLACK });
 
-    // Invalidate screen area
+    GfxDrawString(dpi, screenCoords + ScreenCoordsXY(5, 5 - 13), buffer.c_str(), { COLOUR_BLACK });
     int16_t width = static_cast<int16_t>(GfxGetStringWidth(buffer, FontStyle::Medium));
-    GfxSetDirtyBlocks(
-        { screenCoords, screenCoords + ScreenCoordsXY{ width, 30 } }); // 30 is an arbitrary height to catch both strings
 
     // Write platform information
     buffer.assign("{OUTLINE}{WHITE}");
@@ -461,5 +458,11 @@ void DrawOpenRCT2(DrawPixelInfo& dpi, const ScreenCoordsXY& screenCoords)
     buffer.append(" (");
     buffer.append(OPENRCT2_ARCHITECTURE);
     buffer.append(")");
+
     GfxDrawString(dpi, screenCoords + ScreenCoordsXY(5, 5), buffer.c_str(), { COLOUR_BLACK });
+    width = std::max(width, static_cast<int16_t>(GfxGetStringWidth(buffer, FontStyle::Medium)));
+
+    // Invalidate screen area
+    GfxSetDirtyBlocks({ screenCoords - ScreenCoordsXY(0, 13),
+                        screenCoords + ScreenCoordsXY{ width + 5, 30 } }); // 30 is an arbitrary height to catch both strings
 }

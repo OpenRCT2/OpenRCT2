@@ -29,7 +29,7 @@ int32_t object_entry_group_counts[] = {
     MAX_WALL_SCENERY_OBJECTS,  // walls
     MAX_BANNER_OBJECTS,        // banners
     MAX_PATH_OBJECTS,          // paths
-    MAX_PATH_ADDITION_OBJECTS, // path bits
+    MAX_PATH_ADDITION_OBJECTS, // path additions
     MAX_SCENERY_GROUP_OBJECTS, // scenery sets
     MAX_PARK_ENTRANCE_OBJECTS, // park entrance
     MAX_WATER_OBJECTS,         // water

@@ -157,7 +157,7 @@ public:
                     entryIsNotSeparate = true;
             }
 
-            if (entryIsNotSeparate || String::Equals(item.ObjectEntry, entry, true))
+            if (entryIsNotSeparate || String::IEquals(item.ObjectEntry, entry))
             {
                 count++;
             }
@@ -191,7 +191,7 @@ public:
                     entryIsNotSeparate = true;
             }
 
-            if (entryIsNotSeparate || String::Equals(item.ObjectEntry, entry, true))
+            if (entryIsNotSeparate || String::IEquals(item.ObjectEntry, entry))
             {
                 TrackDesignFileRef ref;
                 ref.name = GetNameFromTrackPath(item.Path);

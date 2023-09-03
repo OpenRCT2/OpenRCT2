@@ -28,12 +28,12 @@
 #include <openrct2/windows/Intent.h>
 #include <vector>
 
-static constexpr const StringId WINDOW_TITLE = STR_SELECT_DESIGN;
-static constexpr const int32_t WH = 441;
-static constexpr const int32_t WW = 600;
-static constexpr const int32_t DEBUG_PATH_HEIGHT = 12;
-static constexpr const int32_t ROTATE_AND_SCENERY_BUTTON_SIZE = 24;
-static constexpr const int32_t WINDOW_PADDING = 5;
+static constexpr StringId WINDOW_TITLE = STR_SELECT_DESIGN;
+static constexpr int32_t WH = 441;
+static constexpr int32_t WW = 600;
+static constexpr int32_t DEBUG_PATH_HEIGHT = 12;
+static constexpr int32_t ROTATE_AND_SCENERY_BUTTON_SIZE = 24;
+static constexpr int32_t WINDOW_PADDING = 5;
 
 // clang-format off
 enum {
@@ -51,7 +51,7 @@ enum {
 
 validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
 
-static Widget window_track_list_widgets[] = {
+static Widget _trackListWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  4,  18}, {218,  13}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_SELECT_OTHER_RIDE                                       ),
     MakeWidget({  4,  32}, {124,  13}, WindowWidgetType::TextBox,     WindowColour::Secondary                                                              ),
@@ -73,11 +73,13 @@ class TrackListWindow final : public Window
 {
 private:
     std::vector<TrackDesignFileRef> _trackDesigns;
-    utf8 _filterString[USER_STRING_MAX_LENGTH];
+    utf8 _filterString[USER_STRING_MAX_LENGTH]{};
     std::vector<uint16_t> _filteredTrackIds;
     uint16_t _loadedTrackDesignIndex;
     std::unique_ptr<TrackDesign> _loadedTrackDesign;
     std::vector<uint8_t> _trackDesignPreviewPixels;
+    bool _selectedItemIsBeingUpdated;
+    bool _reloadTrackDesigns;
 
     void FilterList()
     {
@@ -103,6 +105,12 @@ private:
             {
                 _filteredTrackIds.push_back(i);
             }
+        }
+
+        // Ensure that the selected item is still in the list.
+        if (static_cast<size_t>(selected_list_item) >= _filteredTrackIds.size())
+        {
+            selected_list_item = 0;
         }
     }
 
@@ -199,11 +207,18 @@ private:
     }
 
 public:
+    TrackListWindow(const RideSelection item)
+    {
+        _window_track_list_item = item;
+    }
+
     void OnOpen() override
     {
+        LoadDesignsList(_window_track_list_item);
+
         String::Set(_filterString, sizeof(_filterString), "");
-        window_track_list_widgets[WIDX_FILTER_STRING].string = _filterString;
-        widgets = window_track_list_widgets;
+        _trackListWidgets[WIDX_FILTER_STRING].string = _filterString;
+        widgets = _trackListWidgets;
 
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
@@ -215,8 +230,8 @@ public:
         }
 
         WindowInitScrollWidgets(*this);
-        track_list.track_list_being_updated = false;
-        track_list.reload_track_designs = false;
+        _selectedItemIsBeingUpdated = false;
+        _reloadTrackDesigns = false;
         // Start with first track highlighted
         selected_list_item = 0;
         if (_trackDesigns.size() != 0 && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
@@ -319,7 +334,7 @@ public:
 
     void OnScrollMouseDown(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
-        if (!track_list.track_list_being_updated)
+        if (!_selectedItemIsBeingUpdated)
         {
             int32_t i = GetListItemFromPosition(screenCoords);
             if (i != -1)
@@ -331,7 +346,7 @@ public:
 
     void OnScrollMouseOver(const int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
-        if (!track_list.track_list_being_updated)
+        if (!_selectedItemIsBeingUpdated)
         {
             int32_t i = GetListItemFromPosition(screenCoords);
             if (i != -1 && selected_list_item != i)
@@ -373,21 +388,21 @@ public:
         Formatter::Common().Add<StringId>(stringId);
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
-            window_track_list_widgets[WIDX_TITLE].text = STR_TRACK_DESIGNS;
-            window_track_list_widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_RENAME_OR_DELETE_IT;
+            widgets[WIDX_TITLE].text = STR_TRACK_DESIGNS;
+            widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_RENAME_OR_DELETE_IT;
         }
         else
         {
-            window_track_list_widgets[WIDX_TITLE].text = STR_SELECT_DESIGN;
-            window_track_list_widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP;
+            widgets[WIDX_TITLE].text = STR_SELECT_DESIGN;
+            widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP;
         }
 
         if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) || selected_list_item != 0)
         {
             pressed_widgets |= 1uLL << WIDX_TRACK_PREVIEW;
             disabled_widgets &= ~(1uLL << WIDX_TRACK_PREVIEW);
-            window_track_list_widgets[WIDX_ROTATE].type = WindowWidgetType::FlatBtn;
-            window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::FlatBtn;
+            widgets[WIDX_ROTATE].type = WindowWidgetType::FlatBtn;
+            widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::FlatBtn;
             if (gTrackDesignSceneryToggle)
             {
                 pressed_widgets &= ~(1uLL << WIDX_TOGGLE_SCENERY);
@@ -401,19 +416,17 @@ public:
         {
             pressed_widgets &= ~(1uLL << WIDX_TRACK_PREVIEW);
             disabled_widgets |= (1uLL << WIDX_TRACK_PREVIEW);
-            window_track_list_widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
-            window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::Empty;
+            widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
+            widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::Empty;
         }
 
         // When debugging tools are on, shift everything up a bit to make room for displaying the path.
         const int32_t bottomMargin = gConfigGeneral.DebuggingTools ? (WINDOW_PADDING + DEBUG_PATH_HEIGHT) : WINDOW_PADDING;
-        window_track_list_widgets[WIDX_TRACK_LIST].bottom = height - bottomMargin;
-        window_track_list_widgets[WIDX_ROTATE].bottom = height - bottomMargin;
-        window_track_list_widgets[WIDX_ROTATE].top = window_track_list_widgets[WIDX_ROTATE].bottom
-            - ROTATE_AND_SCENERY_BUTTON_SIZE;
-        window_track_list_widgets[WIDX_TOGGLE_SCENERY].bottom = window_track_list_widgets[WIDX_ROTATE].top;
-        window_track_list_widgets[WIDX_TOGGLE_SCENERY].top = window_track_list_widgets[WIDX_TOGGLE_SCENERY].bottom
-            - ROTATE_AND_SCENERY_BUTTON_SIZE;
+        widgets[WIDX_TRACK_LIST].bottom = height - bottomMargin;
+        widgets[WIDX_ROTATE].bottom = height - bottomMargin;
+        widgets[WIDX_ROTATE].top = widgets[WIDX_ROTATE].bottom - ROTATE_AND_SCENERY_BUTTON_SIZE;
+        widgets[WIDX_TOGGLE_SCENERY].bottom = widgets[WIDX_ROTATE].top;
+        widgets[WIDX_TOGGLE_SCENERY].top = widgets[WIDX_TOGGLE_SCENERY].bottom - ROTATE_AND_SCENERY_BUTTON_SIZE;
     }
 
     void OnUpdate() override
@@ -424,12 +437,12 @@ public:
             WidgetInvalidate(*this, WIDX_FILTER_STRING); // TODO Check this
         }
 
-        if (track_list.reload_track_designs)
+        if (_reloadTrackDesigns)
         {
             LoadDesignsList(_window_track_list_item);
             selected_list_item = 0;
             Invalidate();
-            track_list.reload_track_designs = false;
+            _reloadTrackDesigns = false;
         }
     }
 
@@ -438,19 +451,14 @@ public:
         DrawWidgets(dpi);
 
         int32_t listItemIndex = selected_list_item;
-        if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+        if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) == 0)
         {
-            if (_trackDesigns.empty() || listItemIndex == -1)
-                return;
-        }
-        else
-        {
-            if (listItemIndex == 0)
-                return;
-
             // Because the first item in the list is "Build a custom design", lower the index by one
             listItemIndex--;
         }
+
+        if (_filteredTrackIds.empty() || listItemIndex == -1)
+            return;
 
         int32_t trackIndex = _filteredTrackIds[listItemIndex];
 
@@ -735,11 +743,19 @@ public:
         }
     }
 
-    bool SetRideSelection(const RideSelection item)
+    void OnResize() override
     {
-        _window_track_list_item = item;
-        LoadDesignsList(item);
-        return true;
+        ResizeFrame();
+    }
+
+    void SetIsBeingUpdated(const bool beingUpdated)
+    {
+        _selectedItemIsBeingUpdated = beingUpdated;
+    }
+
+    void ReloadTrackDesigns()
+    {
+        _reloadTrackDesigns = true;
     }
 };
 
@@ -757,7 +773,23 @@ WindowBase* WindowTrackListOpen(const RideSelection item)
     {
         screenPos = { 0, TOP_TOOLBAR_HEIGHT + 2 };
     }
-    auto* w = WindowCreate<TrackListWindow>(WindowClass::TrackDesignList, WW, WH, 0);
-    w->SetRideSelection(item);
-    return w;
+    return WindowCreate<TrackListWindow>(WindowClass::TrackDesignList, WW, WH, 0, item);
+}
+
+void WindowTrackDesignListReloadTracks()
+{
+    auto* trackListWindow = static_cast<TrackListWindow*>(WindowFindByClass(WindowClass::TrackDesignList));
+    if (trackListWindow != nullptr)
+    {
+        trackListWindow->ReloadTrackDesigns();
+    }
+}
+
+void WindowTrackDesignListSetBeingUpdated(const bool beingUpdated)
+{
+    auto* trackListWindow = static_cast<TrackListWindow*>(WindowFindByClass(WindowClass::TrackDesignList));
+    if (trackListWindow != nullptr)
+    {
+        trackListWindow->SetIsBeingUpdated(beingUpdated);
+    }
 }

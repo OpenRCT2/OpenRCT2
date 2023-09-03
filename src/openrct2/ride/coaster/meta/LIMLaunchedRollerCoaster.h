@@ -15,7 +15,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr const RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
+constexpr RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
@@ -49,6 +49,9 @@ constexpr const RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
         { COLOUR_BRIGHT_GREEN, COLOUR_BRIGHT_GREEN, COLOUR_WHITE },
         { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_DARK_BROWN },
         { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_SATURATED_GREEN },
+        { COLOUR_BRIGHT_GREEN, COLOUR_SATURATED_GREEN_LIGHT, COLOUR_SATURATED_PURPLE_DARK}, // Joker's Jinx
+        { COLOUR_SATURATED_GREEN_LIGHT, COLOUR_GRASS_GREEN_LIGHT , COLOUR_AQUA_DARK}, // Poltergeist
+        { COLOUR_GREY, COLOUR_DARK_BROWN , COLOUR_BLACK}, // Flight of Fear
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_LIM_LAUNCHED_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_LIM_LAUNCHED_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),

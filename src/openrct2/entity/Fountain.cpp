@@ -11,7 +11,7 @@
 
 #include "../Game.h"
 #include "../core/DataSerialiser.h"
-#include "../object/FootpathItemEntry.h"
+#include "../object/PathAdditionEntry.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
@@ -33,7 +33,7 @@ enum class PATTERN
     FAST_RANDOM_CHASERS,
 };
 
-static constexpr const std::array _fountainDirectionsNegative = {
+static constexpr std::array _fountainDirectionsNegative = {
     CoordsXY{ -COORDS_XY_STEP, 0 },
     CoordsXY{ -COORDS_XY_STEP, -COORDS_XY_STEP },
     CoordsXY{ 0, 0 },
@@ -44,7 +44,7 @@ static constexpr const std::array _fountainDirectionsNegative = {
     CoordsXY{ -COORDS_XY_STEP, -COORDS_XY_STEP },
 };
 
-static constexpr const std::array _fountainDirectionsPositive = {
+static constexpr std::array _fountainDirectionsPositive = {
     CoordsXY{ COORDS_XY_STEP, 0 },
     CoordsXY{ 0, 0 },
     CoordsXY{ 0, COORDS_XY_STEP },
@@ -249,8 +249,8 @@ void JumpingFountain::AdvanceAnimation()
 
 bool JumpingFountain::IsJumpingFountain(const JumpingFountainType newType, const CoordsXYZ& newLoc)
 {
-    const int32_t pathBitFlagMask = newType == JumpingFountainType::Snow ? PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW
-                                                                         : PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER;
+    const int32_t pathAdditionFlagMask = newType == JumpingFountainType::Snow ? PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW
+                                                                              : PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER;
 
     TileElement* tileElement = MapGetFirstElementAt(newLoc);
     if (tileElement == nullptr)
@@ -266,8 +266,8 @@ bool JumpingFountain::IsJumpingFountain(const JumpingFountainType newType, const
         if (!tileElement->AsPath()->HasAddition())
             continue;
 
-        auto* pathBitEntry = tileElement->AsPath()->GetAdditionEntry();
-        if (pathBitEntry != nullptr && pathBitEntry->flags & pathBitFlagMask)
+        auto* pathAdditionEntry = tileElement->AsPath()->GetAdditionEntry();
+        if (pathAdditionEntry != nullptr && pathAdditionEntry->flags & pathAdditionFlagMask)
         {
             return true;
         }

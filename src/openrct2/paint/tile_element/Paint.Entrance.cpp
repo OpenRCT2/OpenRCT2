@@ -149,7 +149,7 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
         session.InteractionType = ViewportInteractionItem::None;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
-    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&entranceEl)))
+    else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&entranceEl))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
@@ -277,7 +277,7 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
         session.InteractionType = ViewportInteractionItem::None;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
-    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&entranceEl)))
+    else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&entranceEl))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }

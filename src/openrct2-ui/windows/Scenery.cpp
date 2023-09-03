@@ -22,12 +22,12 @@
 #include <openrct2/management/Research.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/BannerSceneryEntry.h>
-#include <openrct2/object/FootpathItemEntry.h>
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
+#include <openrct2/object/PathAdditionEntry.h>
 #include <openrct2/object/SceneryGroupEntry.h>
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/WallSceneryEntry.h>
@@ -37,7 +37,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr const StringId WINDOW_TITLE = STR_NONE;
+static constexpr StringId WINDOW_TITLE = STR_NONE;
 constexpr int32_t WINDOW_SCENERY_MIN_WIDTH = 634;
 constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 195;
 constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
@@ -216,7 +216,7 @@ public:
     {
         SceneryRemoveGhostToolPlacement();
         HideGridlines();
-        ViewportSetVisibility(0);
+        ViewportSetVisibility(ViewportVisibility::Default);
 
         if (gWindowSceneryScatterEnabled)
             WindowCloseByClass(WindowClass::SceneryScatter);
@@ -304,7 +304,7 @@ public:
             height = min_height;
             Invalidate();
             // HACK: For some reason invalidate has not been called
-            WindowEventInvalidateCall(this);
+            WindowEventOnPrepareDrawCall(this);
             ContentUpdateScroll();
         }
 
@@ -314,9 +314,11 @@ public:
             height = max_height;
             Invalidate();
             // HACK: For some reason invalidate has not been called
-            WindowEventInvalidateCall(this);
+            WindowEventOnPrepareDrawCall(this);
             ContentUpdateScroll();
         }
+
+        ResizeFrameWithPage();
     }
 
     void OnMouseDown(WidgetIndex widgetIndex) override
@@ -486,9 +488,9 @@ public:
                         OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(tabSelectedScenery.EntryIndex)->tool_id);
                 }
                 else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_PATH_ITEM)
-                { // path bit
+                {
                     gCurrentToolId = static_cast<Tool>(
-                        OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(tabSelectedScenery.EntryIndex)->tool_id);
+                        OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(tabSelectedScenery.EntryIndex)->tool_id);
                 }
                 else
                 { // small scenery
@@ -739,13 +741,7 @@ public:
             }
         }
 
-        widgets[WIDX_SCENERY_BACKGROUND].right = windowWidth - 1;
-        widgets[WIDX_SCENERY_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_SCENERY_TAB_CONTENT_PANEL].right = windowWidth - 1;
-        widgets[WIDX_SCENERY_TAB_CONTENT_PANEL].bottom = height - 1;
-        widgets[WIDX_SCENERY_TITLE].right = windowWidth - 2;
-        widgets[WIDX_SCENERY_CLOSE].left = windowWidth - 13;
-        widgets[WIDX_SCENERY_CLOSE].right = widgets[WIDX_SCENERY_CLOSE].left + 10;
+        ResizeFrameWithPage();
         widgets[WIDX_SCENERY_LIST].right = windowWidth - 26;
         widgets[WIDX_SCENERY_LIST].bottom = height - 14;
 
@@ -932,10 +928,9 @@ public:
             }
         }
 
-        // path bits
         for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_PATH_ADDITION_OBJECTS; sceneryId++)
         {
-            const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(sceneryId);
+            const auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(sceneryId);
             if (sceneryEntry != nullptr)
             {
                 InitSceneryEntry({ SCENERY_TYPE_PATH_ITEM, sceneryId }, sceneryEntry->scenery_tab_id);
@@ -1114,6 +1109,11 @@ private:
         for (size_t i = 0; i < _tabEntries.size(); i++)
         {
             const auto& tabInfo = _tabEntries[i];
+            if (tabInfo.IsAll())
+            {
+                // The scenery will be always added here so exclude this one.
+                continue;
+            }
             if (tabInfo.Contains(scenery))
             {
                 return i;
@@ -1128,8 +1128,12 @@ private:
 
         if (IsSceneryAvailableToBuild(selection))
         {
-            // Get current tab
-            const auto tabIndex = FindTabWithScenery(selection);
+            // Add scenery to all tab
+            auto* allTabInfo = GetSceneryTabInfoForAll();
+            if (allTabInfo != nullptr)
+            {
+                allTabInfo->AddEntryToBack(selection);
+            }
 
             // Add scenery to primary group (usually trees or path additions)
             if (sceneryGroupIndex != OBJECT_ENTRY_INDEX_NULL)
@@ -1142,7 +1146,8 @@ private:
                 }
             }
 
-            // If scenery is no tab, add it to misc
+            // If scenery has no tab, add it to misc
+            const auto tabIndex = FindTabWithScenery(selection);
             if (!tabIndex.has_value())
             {
                 auto* tabInfo = GetSceneryTabInfoForMisc();
@@ -1150,13 +1155,6 @@ private:
                 {
                     tabInfo->AddEntryToBack(selection);
                 }
-            }
-
-            // Add all scenery to all tab
-            auto tabInfo = GetSceneryTabInfoForAll();
-            if (tabInfo != nullptr)
-            {
-                tabInfo->AddEntryToBack(selection);
             }
         }
     }
@@ -1412,7 +1410,7 @@ private:
                 }
                 case SCENERY_TYPE_PATH_ITEM:
                 {
-                    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(selectedScenery.EntryIndex);
+                    auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(selectedScenery.EntryIndex);
                     if (sceneryEntry != nullptr)
                     {
                         price = sceneryEntry->price;
@@ -1530,8 +1528,8 @@ private:
         }
         else if (scenerySelection.SceneryType == SCENERY_TYPE_PATH_ITEM)
         {
-            auto* pathBitEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(scenerySelection.EntryIndex);
-            auto imageId = ImageId(pathBitEntry->image);
+            auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(scenerySelection.EntryIndex);
+            auto imageId = ImageId(pathAdditionEntry->image);
             GfxDrawSprite(dpi, imageId, { 11, 16 });
         }
         else

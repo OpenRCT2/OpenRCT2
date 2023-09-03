@@ -119,9 +119,9 @@ enum
 
 #pragma region Widgets
 
-static constexpr const StringId WINDOW_TITLE = STR_MAPGEN_WINDOW_TITLE;
-static constexpr const int32_t WW = 250;
-static constexpr const int32_t WH = 273;
+static constexpr StringId WINDOW_TITLE = STR_MAPGEN_WINDOW_TITLE;
+static constexpr int32_t WW = 250;
+static constexpr int32_t WH = 273;
 
 // clang-format off
 #define SHARED_WIDGETS \
@@ -269,19 +269,19 @@ static uint64_t PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
 
 #pragma endregion
 
-static constexpr const int32_t TabAnimationDivisor[WINDOW_MAPGEN_PAGE_COUNT] = {
+static constexpr int32_t TabAnimationDivisor[WINDOW_MAPGEN_PAGE_COUNT] = {
     1,
     1,
     1,
     1,
 };
-static constexpr const int32_t TabAnimationFrames[WINDOW_MAPGEN_PAGE_COUNT] = {
+static constexpr int32_t TabAnimationFrames[WINDOW_MAPGEN_PAGE_COUNT] = {
     1,
     1,
     1,
     1,
 };
-static constexpr const int32_t TabAnimationLoops[WINDOW_MAPGEN_PAGE_COUNT] = {
+static constexpr int32_t TabAnimationLoops[WINDOW_MAPGEN_PAGE_COUNT] = {
     16,
     16,
     16,
@@ -1370,6 +1370,11 @@ public:
 
             HeightmapGenerateMap();
         }
+    }
+
+    void OnResize() override
+    {
+        ResizeFrameWithPage();
     }
 };
 

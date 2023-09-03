@@ -18,12 +18,12 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
-static constexpr const uint32_t MINI_RC_BLOCK_BRAKE_SW_NE_OPEN = 18742;
-static constexpr const uint32_t MINI_RC_BLOCK_BRAKE_NW_SE_OPEN = 18743;
-static constexpr const uint32_t MINI_RC_BLOCK_BRAKE_SW_NE_CLOSED = 18744;
-static constexpr const uint32_t MINI_RC_BLOCK_BRAKE_NW_SE_CLOSED = 18745;
+static constexpr uint32_t MINI_RC_BLOCK_BRAKE_SW_NE_OPEN = 18742;
+static constexpr uint32_t MINI_RC_BLOCK_BRAKE_NW_SE_OPEN = 18743;
+static constexpr uint32_t MINI_RC_BLOCK_BRAKE_SW_NE_CLOSED = 18744;
+static constexpr uint32_t MINI_RC_BLOCK_BRAKE_NW_SE_CLOSED = 18745;
 
-static constexpr const uint32_t _MiniRCBlockBrakeImages[NumOrthogonalDirections][2] = {
+static constexpr uint32_t _MiniRCBlockBrakeImages[NumOrthogonalDirections][2] = {
     { MINI_RC_BLOCK_BRAKE_SW_NE_OPEN, MINI_RC_BLOCK_BRAKE_SW_NE_CLOSED },
     { MINI_RC_BLOCK_BRAKE_NW_SE_OPEN, MINI_RC_BLOCK_BRAKE_NW_SE_CLOSED },
     { MINI_RC_BLOCK_BRAKE_SW_NE_OPEN, MINI_RC_BLOCK_BRAKE_SW_NE_CLOSED },
@@ -119,7 +119,7 @@ static void MiniRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][2] = {
+    static constexpr uint32_t imageIds[4][2] = {
         { 18746, SPR_STATION_BASE_A_SW_NE },
         { 18747, SPR_STATION_BASE_A_NW_SE },
         { 18746, SPR_STATION_BASE_A_SW_NE },

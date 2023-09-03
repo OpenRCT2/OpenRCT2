@@ -177,13 +177,7 @@ GameActions::Result LandSetHeightAction::Execute() const
 
 StringId LandSetHeightAction::CheckParameters() const
 {
-    if (!LocationValid(_coords))
-    {
-        return STR_OFF_EDGE_OF_MAP;
-    }
-
-    auto mapSizeMax = GetMapSizeMaxXY();
-    if (_coords.x > mapSizeMax.x || _coords.y > mapSizeMax.y)
+    if (!LocationValid(_coords) || MapIsEdge(_coords))
     {
         return STR_OFF_EDGE_OF_MAP;
     }

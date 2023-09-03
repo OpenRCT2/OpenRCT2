@@ -127,14 +127,14 @@ constexpr std::array DropdownOrder = {
     TrackElemType::RightLargeZeroGRollDown,
     TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp,
     TrackElemType::LeftFlyerLargeHalfLoopInvertedDown,
-    TrackElemType::RightFlyerLargeHalfLoopUninvertedUp,
-    TrackElemType::RightFlyerLargeHalfLoopInvertedDown,
     TrackElemType::LeftFlyerLargeHalfLoopInvertedUp,
     TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown,
+    TrackElemType::RightFlyerLargeHalfLoopUninvertedUp,
+    TrackElemType::RightFlyerLargeHalfLoopInvertedDown,
     TrackElemType::RightFlyerLargeHalfLoopInvertedUp,
     TrackElemType::RightFlyerLargeHalfLoopUninvertedDown,
 };
-constexpr const size_t DropdownLength = DropdownOrder.size();
+constexpr size_t DropdownLength = DropdownOrder.size();
 
 // Update the magic number with the current number of track elements to silence
 static_assert(TrackElemType::Count == 337, "Reminder to add new track element to special dropdown list");

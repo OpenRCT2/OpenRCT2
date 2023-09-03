@@ -37,13 +37,6 @@ endif ()
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 SET_CHECK_CXX_FLAGS(${PROJECT_NAME})
 
-# GCC / Clang likes us to pass the -lstdc++fs flag to link C++17 filesystem implementation.
-if (NOT MINGW AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD" AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD")
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        target_link_libraries(${PROJECT_NAME} stdc++fs)
-    endif()
-endif()
-
 if (NOT DISABLE_NETWORK OR NOT DISABLE_HTTP)
     if (WIN32)
         target_link_libraries(${PROJECT_NAME} bcrypt)

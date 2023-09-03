@@ -23,10 +23,10 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 
-static constexpr const int32_t WH_DEVELOPMENT = 196;
-static constexpr const int32_t WW_DEVELOPMENT = 300;
-static constexpr const int32_t WH_FUNDING = 207;
-static constexpr const int32_t WW_FUNDING = 320;
+static constexpr int32_t WH_DEVELOPMENT = 196;
+static constexpr int32_t WW_DEVELOPMENT = 300;
+static constexpr int32_t WH_FUNDING = 207;
+static constexpr int32_t WW_FUNDING = 320;
 
 // clang-format off
 enum {
@@ -106,7 +106,7 @@ const int32_t window_research_tab_animation_loops[] = {
     16,
 };
 
-static constexpr const StringId ResearchStageNames[] = {
+static constexpr StringId ResearchStageNames[] = {
     STR_RESEARCH_STAGE_INITIAL_RESEARCH,
     STR_RESEARCH_STAGE_DESIGNING,
     STR_RESEARCH_STAGE_COMPLETING_DESIGN,
@@ -278,6 +278,11 @@ private:
                 break;
             }
         }
+    }
+
+    void OnResize() override
+    {
+        ResizeFrameWithPage();
     }
 
     void DrawTabImage(DrawPixelInfo& dpi, int32_t tabPage, int32_t spriteIndex)

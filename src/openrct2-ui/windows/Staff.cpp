@@ -34,10 +34,10 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_STRINGID;
+static constexpr StringId WINDOW_TITLE = STR_STRINGID;
 
-static constexpr const int32_t WW = 190;
-static constexpr const int32_t WH = 180;
+static constexpr int32_t WW = 190;
+static constexpr int32_t WH = 180;
 
 enum WindowStaffPage
 {
@@ -84,7 +84,7 @@ validate_global_widx(WC_STAFF, WIDX_PICKUP);
     MakeTab   ({34, 17}, STR_STAFF_OPTIONS_TIP                          ), /* Tab 2 */ \
     MakeTab   ({65, 17}, STR_STAFF_STATS_TIP                            )  /* Tab 3 */
 
-static Widget window_staff_overview_widgets[] = {
+static Widget _staffOverviewWidgets[] = {
     MAIN_STAFF_WIDGETS,
     MakeWidget     ({      3,      47}, {162, 120}, WindowWidgetType::Viewport,      WindowColour::Secondary                                        ), // Viewport
     MakeWidget     ({      3, WH - 13}, {162,  11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                        ), // Label at bottom of viewport
@@ -97,7 +97,7 @@ static Widget window_staff_overview_widgets[] = {
 };
 
 //0x9AF910
-static Widget window_staff_options_widgets[] = {
+static Widget _staffOptionsWidgets[] = {
     MAIN_STAFF_WIDGETS,
     MakeWidget     ({      5,  50}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 1
     MakeWidget     ({      5,  67}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 2
@@ -110,15 +110,15 @@ static Widget window_staff_options_widgets[] = {
 // clang-format on
 
 // 0x9AF9F4
-static Widget window_staff_stats_widgets[] = {
+static Widget _staffStatsWidgets[] = {
     MAIN_STAFF_WIDGETS,
     WIDGETS_END,
 };
 
 static Widget* window_staff_page_widgets[] = {
-    window_staff_overview_widgets,
-    window_staff_options_widgets,
-    window_staff_stats_widgets,
+    _staffOverviewWidgets,
+    _staffOptionsWidgets,
+    _staffStatsWidgets,
 };
 
 class StaffWindow final : public Window
@@ -126,6 +126,7 @@ class StaffWindow final : public Window
 private:
     EntertainerCostume _availableCostumes[static_cast<uint8_t>(EntertainerCostume::Count)]{};
     uint16_t _tabAnimationOffset = 0;
+    int32_t _pickedPeepOldX = LOCATION_NULL;
 
 public:
     void Initialise(EntityId entityId)
@@ -361,7 +362,7 @@ private:
         {
             case WIDX_PICKUP:
             {
-                picked_peep_old_x = staff->x;
+                _pickedPeepOldX = staff->x;
                 CoordsXYZ nullLoc{};
                 nullLoc.SetNull();
                 PeepPickupAction pickupAction{ PeepPickupType::Pickup, EntityId::FromUnderlying(number), nullLoc,
@@ -522,7 +523,7 @@ private:
 
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
-                GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
+                GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*this));
             }
         }
 
@@ -633,6 +634,11 @@ private:
     {
         _tabAnimationOffset++;
         _tabAnimationOffset %= 24;
+
+        // Update pickup animation, can only happen in this tab.
+        picked_peep_frame++;
+        picked_peep_frame %= 48;
+
         InvalidateWidget(WIDX_TAB_1);
     }
 
@@ -663,9 +669,6 @@ private:
 
         gPickupPeepX = screenCoords.x - 1;
         gPickupPeepY = screenCoords.y + 16;
-
-        picked_peep_frame++;
-        picked_peep_frame %= 48;
 
         auto staff = GetStaff();
         if (staff == nullptr)
@@ -708,7 +711,7 @@ private:
             return;
 
         PeepPickupAction pickupAction{
-            PeepPickupType::Cancel, EntityId::FromUnderlying(number), { picked_peep_old_x, 0, 0 }, NetworkGetCurrentPlayerId()
+            PeepPickupType::Cancel, EntityId::FromUnderlying(number), { _pickedPeepOldX, 0, 0 }, NetworkGetCurrentPlayerId()
         };
         GameActions::Execute(&pickupAction);
     }
@@ -1055,6 +1058,8 @@ private:
             {
                 SetWidgetDisabled(WIDX_PICKUP, true);
             }
+
+            SetWidgetDisabled(WIDX_FIRE, staff->State == PeepState::Fixing || staff->State == PeepState::Inspecting);
         }
     }
 
@@ -1088,7 +1093,7 @@ private:
 
         Invalidate();
         WindowEventResizeCall(this);
-        WindowEventInvalidateCall(this);
+        WindowEventOnPrepareDrawCall(this);
         InitScrollWidgets();
         ViewportInit();
         Invalidate();
@@ -1151,7 +1156,7 @@ private:
                 viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
         }
 
-        WindowEventInvalidateCall(this);
+        WindowEventOnPrepareDrawCall(this);
 
         focus = tempFocus;
 

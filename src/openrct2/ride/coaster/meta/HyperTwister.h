@@ -16,7 +16,7 @@
 #include "../BolligerMabillardTrack.hpp"
 
 // clang-format off
-constexpr const RideTypeDescriptor HyperTwisterRTD =
+constexpr RideTypeDescriptor HyperTwisterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
@@ -36,7 +36,7 @@ constexpr const RideTypeDescriptor HyperTwisterRTD =
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station}),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_HYPER_TWISTER)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
-    SET_FIELD(Heights, { 54, 24, 8, 9, }),
+    SET_FIELD(Heights, { 61, 24, 8, 9, }),
     SET_FIELD(MaxMass, 31),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftBM, 5, 8 }),
     SET_FIELD(RatingsMultipliers, { 52, 36, 10 }),
@@ -52,6 +52,7 @@ constexpr const RideTypeDescriptor HyperTwisterRTD =
         { COLOUR_WHITE, COLOUR_WHITE, COLOUR_LIGHT_BLUE },
         { COLOUR_DARK_GREEN, COLOUR_MOSS_GREEN, COLOUR_DARK_BROWN },
         { COLOUR_BORDEAUX_RED, COLOUR_LIGHT_ORANGE, COLOUR_WHITE },
+        { COLOUR_DARK_PURPLE, COLOUR_SATURATED_PURPLE_DARK, COLOUR_AQUA_DARK }, // Mako
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_TWISTER_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_TWISTER_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),

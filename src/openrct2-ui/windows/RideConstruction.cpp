@@ -46,13 +46,13 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
-static constexpr const int32_t WH = 394;
-static constexpr const int32_t WW = 166;
+static constexpr StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
+static constexpr int32_t WH = 394;
+static constexpr int32_t WW = 166;
 
-static constexpr const uint16_t ARROW_PULSE_DURATION = 200;
+static constexpr uint16_t ARROW_PULSE_DURATION = 200;
 // Width of the group boxes, e.g. “Banking”
-static constexpr const int32_t GW = WW - 6;
+static constexpr int32_t GW = WW - 6;
 
 using namespace OpenRCT2::TrackMetaData;
 
@@ -112,7 +112,7 @@ validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_EXIT);
 validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_ROTATE);
 
 // clang-format off
-static Widget window_ride_construction_widgets[] = {
+static Widget _rideConstructionWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget        ({  3,  17}, {     GW,  57}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_DIRECTION                                                                       ),
     MakeWidget        ({  3,  76}, {     GW,  41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_SLOPE                                                                           ),
@@ -166,7 +166,7 @@ static StringId _trackPlaceErrorMessage;
 static bool _autoRotatingShop;
 static bool _gotoStartPlacementMode = false;
 
-static constexpr const StringId RideConstructionSeatAngleRotationStrings[] = {
+static constexpr StringId RideConstructionSeatAngleRotationStrings[] = {
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_180, STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_135,
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_90,  STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_45,
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_0,       STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_45,
@@ -213,7 +213,7 @@ public:
             return;
         }
 
-        widgets = window_ride_construction_widgets;
+        widgets = _rideConstructionWidgets;
         number = _currentRideIndex.ToUnderlying();
 
         InitScrollWidgets();
@@ -249,7 +249,7 @@ public:
     void OnClose() override
     {
         RideConstructionInvalidateCurrentTrack();
-        ViewportSetVisibility(0);
+        ViewportSetVisibility(ViewportVisibility::Default);
 
         MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -294,16 +294,15 @@ public:
         }
         else
         {
-            int32_t previousPauseState = gGamePaused;
-            gGamePaused = 0;
             auto gameAction = RideDemolishAction(currentRide->id, RIDE_MODIFY_DEMOLISH);
+            gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
             GameActions::Execute(&gameAction);
-            gGamePaused = previousPauseState;
         }
     }
 
     void OnResize() override
     {
+        ResizeFrame();
         WindowRideConstructionUpdateEnabledTrackPieces();
 
         auto currentRide = GetRide(_currentRideIndex);
@@ -388,6 +387,18 @@ public:
                 // Disable all slopes
                 disabledWidgets |= (1uLL << WIDX_SLOPE_GROUPBOX) | (1uLL << WIDX_SLOPE_DOWN_STEEP) | (1uLL << WIDX_SLOPE_DOWN)
                     | (1uLL << WIDX_LEVEL) | (1uLL << WIDX_SLOPE_UP) | (1uLL << WIDX_SLOPE_UP_STEEP);
+            }
+        }
+        // If ride type does not have access to diagonal sloped turns, disallow simultaneous use of banked and sloped diagonals
+        if (!IsTrackEnabled(TRACK_SLOPE_CURVE_LARGE) && TrackPieceDirectionIsDiagonal(_currentTrackPieceDirection))
+        {
+            if (_currentTrackSlopeEnd != TRACK_SLOPE_NONE)
+            {
+                disabledWidgets |= (1uLL << WIDX_BANK_LEFT) | (1uLL << WIDX_BANK_RIGHT);
+            }
+            else if (_currentTrackBankEnd != TRACK_BANK_NONE)
+            {
+                disabledWidgets |= (1uLL << WIDX_SLOPE_DOWN) | (1uLL << WIDX_SLOPE_UP);
             }
         }
         if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
@@ -1896,27 +1907,18 @@ public:
             widgets[WIDX_SPEED_SETTING_SPINNER].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_VELOCITY;
 
             widgets[WIDX_SPEED_SETTING_SPINNER].type = WindowWidgetType::Spinner;
-            widgets[WIDX_SPEED_SETTING_SPINNER].left = 12;
-            widgets[WIDX_SPEED_SETTING_SPINNER].right = 96;
-            widgets[WIDX_SPEED_SETTING_SPINNER].top = 138;
-            widgets[WIDX_SPEED_SETTING_SPINNER].bottom = 149;
             widgets[WIDX_SPEED_SETTING_SPINNER_UP].type = WindowWidgetType::Button;
             widgets[WIDX_SPEED_SETTING_SPINNER_UP].text = STR_NUMERIC_UP;
-            widgets[WIDX_SPEED_SETTING_SPINNER_UP].left = 84;
-            widgets[WIDX_SPEED_SETTING_SPINNER_UP].right = 95;
-            widgets[WIDX_SPEED_SETTING_SPINNER_UP].top = 139;
-            widgets[WIDX_SPEED_SETTING_SPINNER_UP].bottom = 148;
             widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].type = WindowWidgetType::Button;
             widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].text = STR_NUMERIC_DOWN;
-            widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].left = 72;
-            widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].right = 83;
-            widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].top = 139;
-            widgets[WIDX_SPEED_SETTING_SPINNER_DOWN].bottom = 148;
+
+            ResizeSpinner(WIDX_SPEED_SETTING_SPINNER, { 12, 138 }, { 85, SPINNER_HEIGHT });
+
             hold_down_widgets |= (1uLL << WIDX_SPEED_SETTING_SPINNER_UP) | (1uLL << WIDX_SPEED_SETTING_SPINNER_DOWN);
         }
 
-        static constexpr const int16_t bankingGroupboxRightNoSeatRotation = 162;
-        static constexpr const int16_t bankingGroupboxRightWithSeatRotation = 92;
+        static constexpr int16_t bankingGroupboxRightNoSeatRotation = 162;
+        static constexpr int16_t bankingGroupboxRightWithSeatRotation = 92;
 
         widgets[WIDX_BANKING_GROUPBOX].right = bankingGroupboxRightNoSeatRotation;
         widgets[WIDX_SEAT_ROTATION_GROUPBOX].type = WindowWidgetType::Empty;
@@ -2236,14 +2238,14 @@ private:
         const auto resultData = res.GetData<TrackPlaceActionResult>();
         if (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND)
         {
-            ViewportSetVisibility(1);
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
         }
 
         const bool helixSelected = (_currentTrackCurve & RideConstructionSpecialPieceSelected)
             && TrackTypeIsHelix(_currentTrackCurve & ~RideConstructionSpecialPieceSelected);
         if (helixSelected || (_currentTrackSlopeEnd != TRACK_SLOPE_NONE))
         {
-            ViewportSetVisibility(2);
+            ViewportSetVisibility(ViewportVisibility::TrackHeights);
         }
     }
 
@@ -2528,7 +2530,7 @@ private:
             if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)
             {
                 ToolCancel();
-                if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+                if (!currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
                 {
                     WindowCloseByClass(WindowClass::RideConstruction);
                 }
@@ -3319,7 +3321,7 @@ void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords)
     if (_autoRotatingShop && _rideConstructionState == RideConstructionState::Place
         && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY))
     {
-        TileElement* pathsByDir[NumOrthogonalDirections];
+        PathElement* pathsByDir[NumOrthogonalDirections];
 
         bool keepOrientation = false;
         for (int8_t i = 0; i < NumOrthogonalDirections; i++)
@@ -3333,8 +3335,7 @@ void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords)
 
             pathsByDir[i] = MapGetFootpathElement(testLoc);
 
-            if (pathsByDir[i] != nullptr && (pathsByDir[i])->AsPath()->IsSloped()
-                && (pathsByDir[i])->AsPath()->GetSlopeDirection() != i)
+            if (pathsByDir[i] != nullptr && pathsByDir[i]->IsSloped() && pathsByDir[i]->GetSlopeDirection() != i)
             {
                 pathsByDir[i] = nullptr;
             }
@@ -3345,14 +3346,13 @@ void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords)
                 pathsByDir[i] = MapGetFootpathElement({ *mapCoords + CoordsDirectionDelta[i], z - PATH_HEIGHT_STEP });
 
                 if (pathsByDir[i] != nullptr
-                    && (!(pathsByDir[i])->AsPath()->IsSloped()
-                        || (pathsByDir[i])->AsPath()->GetSlopeDirection() != DirectionReverse(i)))
+                    && (!pathsByDir[i]->IsSloped() || pathsByDir[i]->GetSlopeDirection() != DirectionReverse(i)))
                 {
                     pathsByDir[i] = nullptr;
                 }
             }
 
-            if (pathsByDir[i] != nullptr && (pathsByDir[i])->AsPath()->IsQueue())
+            if (pathsByDir[i] != nullptr && pathsByDir[i]->IsQueue())
             {
                 pathsByDir[i] = nullptr;
             }

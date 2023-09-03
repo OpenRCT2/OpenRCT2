@@ -71,7 +71,7 @@ namespace OpenRCT2::Scripting
         { "water", ViewportInteractionItem::Water },
         { "scenery", ViewportInteractionItem::Scenery },
         { "footpath", ViewportInteractionItem::Footpath },
-        { "footpath_item", ViewportInteractionItem::FootpathItem },
+        { "footpath_item", ViewportInteractionItem::PathAddition },
         { "park_entrance", ViewportInteractionItem::ParkEntrance },
         { "wall", ViewportInteractionItem::Wall },
         { "large_scenery", ViewportInteractionItem::LargeScenery },

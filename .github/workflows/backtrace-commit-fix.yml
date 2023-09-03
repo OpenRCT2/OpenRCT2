@@ -17,7 +17,7 @@ jobs:
           BODY: ${{ github.event.issue.body }}
         id: fix
         run: |
-          changed_body=$(echo "$BODY" | sed '/<strong>commit<\/strong>/,/<\/li>/ s/<code>\([0-9a-f]\{7,\}\)<\/code>/\1/')
+          changed_body=$(echo "$BODY" | sed '/<strong>commit<\/strong>/,/<\/ul>/ s/<code>\([0-9a-f]\{7,\}\)<\/code>/\1/g')
           if [[ "$changed_body" == "$BODY" ]]; then
             echo "Unable to match the Backtrace report format."
             exit 1

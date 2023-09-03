@@ -29,7 +29,7 @@
 #include <set>
 
 /* rct2: 0x009929FC */
-static constexpr const PeepSpriteType spriteTypes[] = {
+static constexpr PeepSpriteType spriteTypes[] = {
     PeepSpriteType::Handyman,
     PeepSpriteType::Mechanic,
     PeepSpriteType::Security,

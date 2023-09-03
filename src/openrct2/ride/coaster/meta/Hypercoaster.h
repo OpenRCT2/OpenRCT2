@@ -14,7 +14,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr const RideTypeDescriptor HypercoasterRTD =
+constexpr RideTypeDescriptor HypercoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
@@ -49,6 +49,8 @@ constexpr const RideTypeDescriptor HypercoasterRTD =
         { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_WHITE },
         { COLOUR_BLACK, COLOUR_BORDEAUX_RED, COLOUR_BLACK },
         { COLOUR_WHITE, COLOUR_WHITE, COLOUR_DARK_GREEN },
+        { COLOUR_DULL_GREEN_LIGHT, COLOUR_DULL_GREEN_LIGHT, COLOUR_BLACK }, // Phantom's Revenge (Old)
+        { COLOUR_SATURATED_PURPLE_DARK, COLOUR_SATURATED_PURPLE_DARK, COLOUR_BLACK }, // Phantom's Revenge (New)
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_CORKSCREW_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_CORKSCREW_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),

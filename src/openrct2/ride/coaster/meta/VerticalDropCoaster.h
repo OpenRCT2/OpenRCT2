@@ -17,7 +17,7 @@
 #include "../BolligerMabillardTrack.hpp"
 
 // clang-format off
-constexpr const RideTypeDescriptor VerticalDropCoasterRTD =
+constexpr RideTypeDescriptor VerticalDropCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
@@ -36,7 +36,7 @@ constexpr const RideTypeDescriptor VerticalDropCoasterRTD =
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
-    SET_FIELD(Heights, { 53, 24, 8, 11, }),
+    SET_FIELD(Heights, { 55, 24, 8, 11, }),
     SET_FIELD(MaxMass, 25),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftBM, 4, 5 }),
     SET_FIELD(RatingsMultipliers, { 52, 38, 10 }),
@@ -49,6 +49,9 @@ constexpr const RideTypeDescriptor VerticalDropCoasterRTD =
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_BLACK, COLOUR_GREY, COLOUR_BLACK },
         { COLOUR_DARK_GREEN, COLOUR_DARK_GREEN, COLOUR_GREY },
+        { COLOUR_DARK_ORANGE, COLOUR_DARK_ORANGE, COLOUR_DULL_GREEN_DARK }, // Yukon Striker
+        { COLOUR_LIGHT_ORANGE, COLOUR_DARK_ORANGE, COLOUR_DARK_BLUE }, // Valravn
+        { COLOUR_GREY, COLOUR_BRIGHT_RED, COLOUR_YELLOW }, // Dr. Diabolical's Cliffhanger
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_VERTICAL_DROP_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_VERTICAL_DROP_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),

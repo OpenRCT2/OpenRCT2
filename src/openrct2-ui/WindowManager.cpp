@@ -285,7 +285,7 @@ public:
             }
             case WindowClass::ScenarioSelect:
                 return WindowScenarioselectOpen(
-                    reinterpret_cast<scenarioselect_callback>(intent->GetPointerExtra(INTENT_EXTRA_CALLBACK)), false);
+                    reinterpret_cast<scenarioselect_callback>(intent->GetPointerExtra(INTENT_EXTRA_CALLBACK)));
 
             case WindowClass::Null:
                 // Intent does not hold a window class
@@ -455,34 +455,17 @@ public:
             case INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW:
             {
                 auto vehicle = static_cast<Vehicle*>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
-                auto* w = WindowFindByNumber(WindowClass::Ride, vehicle->ride.ToUnderlying());
-                if (w == nullptr)
-                    return;
-
-                auto ride = vehicle->GetRide();
-                auto viewVehicleIndex = w->ride.view - 1;
-                if (ride == nullptr || viewVehicleIndex < 0 || viewVehicleIndex >= ride->NumTrains)
-                    return;
-
-                if (vehicle->Id != ride->vehicles[viewVehicleIndex])
-                    return;
-
-                w->Invalidate();
+                if (vehicle != nullptr)
+                {
+                    WindowRideInvalidateVehicle(*vehicle);
+                }
                 break;
             }
 
             case INTENT_ACTION_RIDE_PAINT_RESET_VEHICLE:
             {
                 auto rideIndex = intent.GetUIntExtra(INTENT_EXTRA_RIDE_ID);
-                auto w = WindowFindByNumber(WindowClass::Ride, rideIndex);
-                if (w != nullptr)
-                {
-                    if (w->page == 4) // WINDOW_RIDE_PAGE_COLOUR
-                    {
-                        w->vehicleIndex = 0;
-                    }
-                    w->Invalidate();
-                }
+                WindowRidePaintResetVehicle(RideId::FromUnderlying(rideIndex));
                 break;
             }
 
@@ -514,7 +497,7 @@ public:
 
             case INTENT_ACTION_UPDATE_BANNER:
             {
-                uint8_t bannerIndex = static_cast<uint8_t>(intent.GetUIntExtra(INTENT_EXTRA_BANNER_INDEX));
+                rct_windownumber bannerIndex = static_cast<rct_windownumber>(intent.GetUIntExtra(INTENT_EXTRA_BANNER_INDEX));
 
                 WindowBase* w = WindowFindByNumber(WindowClass::Banner, bannerIndex);
                 if (w != nullptr)
@@ -543,6 +526,12 @@ public:
                 {
                     SetMapTooltip(*ft);
                 }
+                break;
+            }
+
+            case INTENT_ACTION_TILE_MODIFY:
+            {
+                WindowInvalidateByClass(WindowClass::TileInspector);
                 break;
             }
 

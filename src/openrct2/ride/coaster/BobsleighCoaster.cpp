@@ -18,12 +18,12 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
-static constexpr const uint32_t BOBSLEIGH_BLOCK_BRAKE_SW_NE_OPEN = 14586;
-static constexpr const uint32_t BOBSLEIGH_BLOCK_BRAKE_NW_SE_OPEN = 14587;
-static constexpr const uint32_t BOBSLEIGH_BLOCK_BRAKE_SW_NE_CLOSED = 14588;
-static constexpr const uint32_t BOBSLEIGH_BLOCK_BRAKE_NW_SE_CLOSED = 14589;
+static constexpr uint32_t BOBSLEIGH_BLOCK_BRAKE_SW_NE_OPEN = 14586;
+static constexpr uint32_t BOBSLEIGH_BLOCK_BRAKE_NW_SE_OPEN = 14587;
+static constexpr uint32_t BOBSLEIGH_BLOCK_BRAKE_SW_NE_CLOSED = 14588;
+static constexpr uint32_t BOBSLEIGH_BLOCK_BRAKE_NW_SE_CLOSED = 14589;
 
-static constexpr const uint32_t _BobsleighBlockBrakeImages[NumOrthogonalDirections][2] = {
+static constexpr uint32_t _BobsleighBlockBrakeImages[NumOrthogonalDirections][2] = {
     { BOBSLEIGH_BLOCK_BRAKE_SW_NE_OPEN, BOBSLEIGH_BLOCK_BRAKE_SW_NE_CLOSED },
     { BOBSLEIGH_BLOCK_BRAKE_NW_SE_OPEN, BOBSLEIGH_BLOCK_BRAKE_NW_SE_CLOSED },
     { BOBSLEIGH_BLOCK_BRAKE_SW_NE_OPEN, BOBSLEIGH_BLOCK_BRAKE_SW_NE_CLOSED },
@@ -101,7 +101,7 @@ static void BobsleighRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][2] = {
+    static constexpr uint32_t imageIds[4][2] = {
         { 14580, SPR_STATION_BASE_B_SW_NE },
         { 14581, SPR_STATION_BASE_B_NW_SE },
         { 14580, SPR_STATION_BASE_B_SW_NE },

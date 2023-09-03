@@ -79,22 +79,22 @@ uint8_t _vehicleF64E2C;
 Vehicle* _vehicleFrontVehicle;
 CoordsXYZ _vehicleCurPosition;
 
-static constexpr const OpenRCT2::Audio::SoundId _screamSet0[] = {
+static constexpr OpenRCT2::Audio::SoundId _screamSet0[] = {
     OpenRCT2::Audio::SoundId::Scream8,
     OpenRCT2::Audio::SoundId::Scream1,
 };
-static constexpr const OpenRCT2::Audio::SoundId _screamSet1Wooden[] = {
+static constexpr OpenRCT2::Audio::SoundId _screamSet1Wooden[] = {
     OpenRCT2::Audio::SoundId::Scream3, OpenRCT2::Audio::SoundId::Scream1, OpenRCT2::Audio::SoundId::Scream5,
     OpenRCT2::Audio::SoundId::Scream6, OpenRCT2::Audio::SoundId::Scream7, OpenRCT2::Audio::SoundId::Scream2,
     OpenRCT2::Audio::SoundId::Scream4,
 };
-static constexpr const OpenRCT2::Audio::SoundId _screamSet2[] = {
+static constexpr OpenRCT2::Audio::SoundId _screamSet2[] = {
     OpenRCT2::Audio::SoundId::Scream1,
     OpenRCT2::Audio::SoundId::Scream6,
 };
 
 // clang-format off
-static constexpr const uint8_t SpaceRingsTimeToSpriteMap[] =
+static constexpr uint8_t SpaceRingsTimeToSpriteMap[] =
 {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
     1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4,
@@ -229,21 +229,21 @@ static constexpr const uint8_t SpaceRingsTimeToSpriteMap[] =
 };
 // clang-format on
 
-static constexpr const int8_t SwingingTimeToSpriteMap_0[] = {
+static constexpr int8_t SwingingTimeToSpriteMap_0[] = {
     0,  0,  0,  1,  1,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  3,  3,  3,  3,    3,  3,
     3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  3,  2,  2,  2,  2,  2,  2,    2,  2,
     2,  2,  2,  1,  1,  1,  1,  1,  1,  1,  0,  0,  0,  0,  0,  -1, -1, -1, -1, -1, -1, -1, -2, -2, -2,   -2, -2,
     -2, -2, -2, -2, -2, -2, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3,   -3, -3,
     -3, -3, -3, -3, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -1, -1, -1, -1, -1, -1, -1, 0,  0,  -128,
 };
-static constexpr const int8_t SwingingTimeToSpriteMap_1[] = {
+static constexpr int8_t SwingingTimeToSpriteMap_1[] = {
     0,  0,  1,  1,  1,  1,  2,  2,  2,  2,  2,  3,  3,  3,  3,  3,  3,  4,  4,  4,  4,  4,  4,  4,  4,  4,  5,    5,  5,
     5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  5,  4,  4,  4,  4,  4,  4,  4,  4,  4,  3,    3,  3,
     3,  3,  3,  2,  2,  2,  2,  2,  1,  1,  1,  1,  0,  0,  0,  -1, -1, -1, -1, -2, -2, -2, -2, -2, -3, -3, -3,   -3, -3,
     -3, -4, -4, -4, -4, -4, -4, -4, -4, -4, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5,   -5, -5,
     -5, -4, -4, -4, -4, -4, -4, -4, -4, -4, -3, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -1, -1, -1, -1, 0,  -128,
 };
-static constexpr const int8_t SwingingTimeToSpriteMap_2[] = {
+static constexpr int8_t SwingingTimeToSpriteMap_2[] = {
     0,  0,  1,  1,  1,  2,  2,  2,  3,  3,  3,  3,  4,  4,  4,  4,  4,  5,  5,  5,  5,  5,  5,    6,  6,  6,
     6,  6,  6,  6,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  6,  6,  6,    6,  6,  6,
     6,  6,  5,  5,  5,  5,  5,  5,  4,  4,  4,  4,  4,  3,  3,  3,  3,  2,  2,  2,  1,  1,  1,    0,  0,  0,
@@ -251,7 +251,7 @@ static constexpr const int8_t SwingingTimeToSpriteMap_2[] = {
     -6, -6, -6, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -7, -6, -6, -6, -6, -6,   -6, -6, -6,
     -5, -5, -5, -5, -5, -5, -4, -4, -4, -4, -4, -3, -3, -3, -3, -2, -2, -2, -1, -1, -1, 0,  -128,
 };
-static constexpr const int8_t SwingingTimeToSpriteMap_3[] = {
+static constexpr int8_t SwingingTimeToSpriteMap_3[] = {
     0,  1,  1,  2,  2,  3,  3,  4,  4,  4,  5,  5,  5,  5,  6,  6,  6,  6,  6,  7,  7,  7,  7,  7,    7,  8,  8,
     8,  8,  8,  8,  8,  8,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  9,  8,  8,  8,  8,  8,    8,  8,  8,
     7,  7,  7,  7,  7,  7,  6,  6,  6,  6,  6,  5,  5,  5,  5,  4,  4,  4,  3,  3,  2,  2,  1,  1,    0,  0,  -1,
@@ -259,7 +259,7 @@ static constexpr const int8_t SwingingTimeToSpriteMap_3[] = {
     -8, -8, -8, -8, -9, -9, -9, -9, -9, -9, -9, -9, -9, -9, -9, -9, -9, -8, -8, -8, -8, -8, -8, -8,   -8, -7, -7,
     -7, -7, -7, -7, -6, -6, -6, -6, -6, -5, -5, -5, -5, -4, -4, -4, -3, -3, -2, -2, -1, -1, 0,  -128,
 };
-static constexpr const int8_t SwingingTimeToSpriteMap_4[] = {
+static constexpr int8_t SwingingTimeToSpriteMap_4[] = {
     0,  0,  0,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  3,  3,  3,  3,  3,  4,  4,  4,    4,  4,  5,  5,  5,  5,  5,
     5,  5,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  7,  7,  7,  7,  7,  7,  7,    7,  7,  7,  7,  7,  7,  7,
     7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,    6,  6,  5,  5,  5,  5,  5,
@@ -269,7 +269,7 @@ static constexpr const int8_t SwingingTimeToSpriteMap_4[] = {
     -7, -7, -7, -7, -7, -7, -7, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -6, -5, -5,   -5, -5, -5, -5, -5, -4, -4,
     -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -1, -1, -1, -1, -1, 0,  0,  -128,
 };
-static constexpr const int8_t SwingingTimeToSpriteMap_5[] = {
+static constexpr int8_t SwingingTimeToSpriteMap_5[] = {
     0,   0,   1,   1,   1,   1,   2,   2,   2,   2,   3,   3,   3,   3,   4,   4,   4,   4,   5,   5,   5,    5,   6,   6,
     6,   6,   7,   7,   7,   7,   8,   8,   8,   8,   9,   9,   9,   9,   10,  10,  10,  10,  11,  11,  11,   11,  12,  12,
     12,  12,  13,  13,  13,  13,  13,  13,  14,  14,  14,  14,  14,  14,  14,  14,  14,  14,  15,  15,  15,   15,  15,  15,
@@ -284,7 +284,7 @@ static constexpr const int8_t SwingingTimeToSpriteMap_5[] = {
     -11, -11, -10, -10, -10, -10, -9,  -9,  -9,  -9,  -8,  -8,  -8,  -8,  -7,  -7,  -7,  -7,  -6,  -6,  -6,   -6,  -5,  -5,
     -5,  -5,  -4,  -4,  -4,  -4,  -3,  -3,  -3,  -3,  -2,  -2,  -2,  -2,  -1,  -1,  -1,  -1,  0,   0,   -128,
 };
-static constexpr const int8_t SwingingTimeToSpriteMap_6[] = {
+static constexpr int8_t SwingingTimeToSpriteMap_6[] = {
     0,   1,   1,   1,   2,   2,   2,   3,   3,   3,   4,   4,   4,   5,   5,   5,   6,   6,   6,   7,    7,   7,   8,
     8,   8,   9,   9,   9,   10,  10,  10,  11,  11,  11,  12,  12,  12,  13,  13,  13,  14,  14,  14,   15,  15,  15,
     16,  16,  16,  17,  17,  17,  18,  18,  18,  19,  19,  19,  20,  20,  20,  21,  21,  21,  22,  22,   22,  23,  23,
@@ -302,7 +302,7 @@ static constexpr const int8_t SwingingTimeToSpriteMap_6[] = {
     -14, -13, -13, -13, -12, -12, -12, -11, -11, -11, -10, -10, -10, -9,  -9,  -9,  -8,  -8,  -8,  -7,   -7,  -7,  -6,
     -6,  -6,  -5,  -5,  -5,  -4,  -4,  -4,  -3,  -3,  -3,  -2,  -2,  -2,  -1,  -1,  -1,  0,   0,   -128,
 };
-static constexpr const int8_t SwingingTimeToSpriteMap_7[] = {
+static constexpr int8_t SwingingTimeToSpriteMap_7[] = {
     0,   1,   1,   1,   2,   2,   2,   3,   3,   3,   4,   4,   4,   5,   5,   5,   6,   6,   6,    7,   7,   7,
     8,   8,   8,   9,   9,   9,   10,  10,  10,  11,  11,  11,  12,  12,  12,  13,  13,  13,  14,   14,  14,  15,
     15,  15,  16,  16,  16,  17,  17,  17,  18,  18,  18,  19,  19,  19,  20,  20,  20,  21,  21,   21,  22,  22,
@@ -314,7 +314,7 @@ static constexpr const int8_t SwingingTimeToSpriteMap_7[] = {
     -13, -13, -12, -12, -12, -11, -11, -11, -10, -10, -10, -9,  -9,  -9,  -8,  -8,  -8,  -7,  -7,   -7,  -6,  -6,
     -6,  -5,  -5,  -5,  -4,  -4,  -4,  -3,  -3,  -3,  -2,  -2,  -2,  -1,  -1,  -1,  0,   0,   -128,
 };
-static constexpr const int8_t SwingingTimeToSpriteMap_8[] = {
+static constexpr int8_t SwingingTimeToSpriteMap_8[] = {
     0,  0,  0,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  3,  3,  3,  3,  3,  4,  4,  4,    4,  4,  5,  5,  5,  5,  5,
     5,  5,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  7,  7,  7,  7,  7,  7,  7,    7,  7,  7,  7,  7,  7,  7,
     7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,    6,  6,  5,  5,  5,  5,  5,
@@ -324,7 +324,7 @@ static constexpr const int8_t SwingingTimeToSpriteMap_8[] = {
     25, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 27, 27,   27, 27, 27, 27, 27, 28, 28,
     28, 28, 28, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 31, 31, 31, 31, 31, 0,  0,  -128,
 };
-static constexpr const int8_t SwingingTimeToSpriteMap_9[] = {
+static constexpr int8_t SwingingTimeToSpriteMap_9[] = {
     0,  0,  0,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  3,  3,  3,  3,  3,  4,  4,  4,    4,  4,  5,  5,  5,  5,  5,
     5,  5,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,  7,  7,  7,  7,  7,  7,  7,    7,  7,  7,  7,  7,  7,  7,
     7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  6,  6,  6,  6,  6,  6,  6,  6,  6,  6,    6,  6,  5,  5,  5,  5,  5,
@@ -334,7 +334,7 @@ static constexpr const int8_t SwingingTimeToSpriteMap_9[] = {
     25, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 27, 27,   27, 27, 27, 27, 27, 28, 28,
     28, 28, 28, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 31, 31, 31, 31, 31, 0,  0,  -128,
 };
-static constexpr const int8_t SwingingTimeToSpriteMap_10[] = {
+static constexpr int8_t SwingingTimeToSpriteMap_10[] = {
     0,  0,  1,  1,  1,  1,  2,  2,  2,  2,  3,  3,  3,  3,  4,  4,  4,  4,  5,  5,  5,  5,  6,  6,  6,  6,  7,  7,    7,  7,
     8,  8,  8,  8,  9,  9,  9,  9,  10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14,   14, 14,
     15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16,   16, 16,
@@ -348,7 +348,7 @@ static constexpr const int8_t SwingingTimeToSpriteMap_10[] = {
     18, 18, 18, 19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 22, 22, 22, 22, 23, 23, 23, 23, 24, 24, 24, 24, 25,   25, 25,
     25, 26, 26, 26, 26, 27, 27, 27, 27, 28, 28, 28, 28, 29, 29, 29, 29, 30, 30, 30, 30, 31, 31, 31, 31, 0,  0,  -128,
 };
-static constexpr const int8_t SwingingTimeToSpriteMap_11[] = {
+static constexpr int8_t SwingingTimeToSpriteMap_11[] = {
     0,  0,  1,  1,  1,  2,  2,  2,  3,  3,  3,  4,  4,  4,  5,  5,  5,  5,  6,  6,  6,  6,  7,  7,  7,  7,  8,  8,    8,
     8,  9,  9,  9,  9,  10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15,   15,
     16, 16, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18, 19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 22, 22, 22, 22,   23,
@@ -370,7 +370,7 @@ struct Unk9A36C4Struct
 };
 
 /** rct2: 0x009A36C4 */
-static constexpr const Unk9A36C4Struct Unk9A36C4[] = {
+static constexpr Unk9A36C4Struct Unk9A36C4[] = {
     { -1, 0, 8716 }, { -1, 0, 8716 },   { -1, 0, 8716 },  { -1, 1, 12327 },  { -1, 1, 12327 },  { -1, 1, 12327 },
     { 0, 1, 8716 },  { -1, 1, 12327 },  { 0, 1, 8716 },   { 0, 1, 8716 },    { 0, 1, 8716 },    { 1, 1, 12327 },
     { 1, 1, 12327 }, { 1, 1, 12327 },   { 1, 0, 8716 },   { 1, 1, 12327 },   { 1, 0, 8716 },    { 1, 0, 8716 },
@@ -380,7 +380,7 @@ static constexpr const Unk9A36C4Struct Unk9A36C4[] = {
 };
 
 /** rct2: 0x009A37C4 */
-static constexpr const CoordsXY SurroundingTiles[] = {
+static constexpr CoordsXY SurroundingTiles[] = {
     { 0, 0 },
     { 0, +COORDS_XY_STEP },
     { +COORDS_XY_STEP, 0 },
@@ -393,7 +393,7 @@ static constexpr const CoordsXY SurroundingTiles[] = {
 };
 
 /** rct2: 0x009A37E4 */
-static constexpr const int32_t Unk9A37E4[] = {
+static constexpr int32_t Unk9A37E4[] = {
     2147483647,  2106585154,  1985590284,  1636362342,  1127484953,  2106585154,  1985590284,  1636362342,  1127484953,
     58579923,    0,           -555809667,  -1073741824, -1518500249, -1859775391, -2074309916, -2147483647, 58579923,
     0,           -555809667,  -1073741824, -1518500249, -1859775391, -2074309916, 1859775393,  1073741824,  0,
@@ -404,7 +404,7 @@ static constexpr const int32_t Unk9A37E4[] = {
 };
 
 /** rct2: 0x009A38D4 */
-static constexpr const int32_t Unk9A38D4[] = {
+static constexpr int32_t Unk9A38D4[] = {
     0,           417115092,   817995863,   1390684831,  1827693544,  -417115092,  -817995863,  -1390684831, -1827693544,
     2066040965,  2147483647,  2074309916,  1859775393,  1518500249,  1073741824,  555809666,   0,           -2066040965,
     -2147483647, -2074309916, -1859775393, -1518500249, -1073741824, -555809666,  1073741824,  1859775393,  2147483647,
@@ -415,24 +415,24 @@ static constexpr const int32_t Unk9A38D4[] = {
 };
 
 /** rct2: 0x009A39C4 */
-static constexpr const int32_t Unk9A39C4[] = {
+static constexpr int32_t Unk9A39C4[] = {
     2147483647, 2096579710, 1946281152, 2096579710,  1946281152,  1380375879, 555809667,  -372906620, -1231746017, -1859775391,
     1380375879, 555809667,  -372906620, -1231746017, -1859775391, 0,          2096579710, 1946281152, 2096579710,  1946281152,
 };
 
-static constexpr const CoordsXY AvoidCollisionMoveOffset[] = {
+static constexpr CoordsXY AvoidCollisionMoveOffset[] = {
     { -1, 0 },
     { 0, 1 },
     { 1, 0 },
     { 0, -1 },
 };
 
-static constexpr const OpenRCT2::Audio::SoundId DoorOpenSoundIds[] = {
+static constexpr OpenRCT2::Audio::SoundId DoorOpenSoundIds[] = {
     OpenRCT2::Audio::SoundId::DoorOpen,
     OpenRCT2::Audio::SoundId::Portcullis,
 };
 
-static constexpr const OpenRCT2::Audio::SoundId DoorCloseSoundIds[] = {
+static constexpr OpenRCT2::Audio::SoundId DoorCloseSoundIds[] = {
     OpenRCT2::Audio::SoundId::DoorClose,
     OpenRCT2::Audio::SoundId::Portcullis,
 };
@@ -529,7 +529,7 @@ static const VehicleInfo* vehicle_get_move_info(
 
     if (!vehicle_move_info_valid(trackSubposition, type, direction, offset))
     {
-        static constexpr const VehicleInfo zero = {};
+        static constexpr VehicleInfo zero = {};
         return &zero;
     }
     return &gTrackVehicleInfo[static_cast<uint8_t>(trackSubposition)][typeAndDirection]->info[offset];
@@ -860,11 +860,11 @@ static uint8_t vehicle_sounds_update_get_pan_volume(OpenRCT2::Audio::VehicleSoun
     if (pan_y > 0)
     {
         pan_y = (0x400 - pan_y) / 4;
-        vol1 = LOBYTE(pan_y);
-        if (static_cast<int8_t>(HIBYTE(pan_y)) != 0)
+        vol1 = LoByte(pan_y);
+        if (static_cast<int8_t>(HiByte(pan_y)) != 0)
         {
             vol1 = 0xFF;
-            if (static_cast<int8_t>(HIBYTE(pan_y)) < 0)
+            if (static_cast<int8_t>(HiByte(pan_y)) < 0)
             {
                 vol1 = 0;
             }
@@ -878,11 +878,11 @@ static uint8_t vehicle_sounds_update_get_pan_volume(OpenRCT2::Audio::VehicleSoun
     if (pan_x > 0)
     {
         pan_x = (0x400 - pan_x) / 4;
-        vol2 = LOBYTE(pan_x);
-        if (static_cast<int8_t>(HIBYTE(pan_x)) != 0)
+        vol2 = LoByte(pan_x);
+        if (static_cast<int8_t>(HiByte(pan_x)) != 0)
         {
             vol2 = 0xFF;
-            if (static_cast<int8_t>(HIBYTE(pan_x)) < 0)
+            if (static_cast<int8_t>(HiByte(pan_x)) < 0)
             {
                 vol2 = 0;
             }
@@ -3467,7 +3467,7 @@ void Vehicle::UpdateCollisionSetup()
 }
 
 /** rct2: 0x009A3AC4, 0x009A3AC6 */
-static constexpr const CoordsXY stru_9A3AC4[] = {
+static constexpr CoordsXY stru_9A3AC4[] = {
     { -256, 0 }, { -236, 98 }, { -181, 181 }, { -98, 236 }, { 0, 256 },  { 98, 236 },   { 181, 181 },   { 236, 98 },
     { 256, 0 },  { 236, -98 }, { 181, -181 }, { 98, -236 }, { 0, -256 }, { -98, -236 }, { -181, -181 }, { -236, -98 },
 };
@@ -4519,7 +4519,7 @@ void Vehicle::UpdateBoatLocation()
         }
     }
 
-    static constexpr const int8_t rotations[] = { 0, 1, -1, 2 };
+    static constexpr int8_t rotations[] = { 0, 1, -1, 2 };
     for (auto rotation : rotations)
     {
         if (randDirection + rotation == curDirection)
@@ -5529,6 +5529,10 @@ OpenRCT2::Audio::SoundId Vehicle::UpdateScreamSound()
                 continue;
             if (vehicle2->Pitch <= 15)
                 return ProduceScreamSound(totalNumPeeps);
+            // Pitch 52 occurs on steep diagonal backward drops.
+            // (50 and 51 occur on gentle ones.)
+            if (vehicle2->Pitch == 52)
+                return ProduceScreamSound(totalNumPeeps);
         }
         return OpenRCT2::Audio::SoundId::Null;
     }
@@ -5546,6 +5550,10 @@ OpenRCT2::Audio::SoundId Vehicle::UpdateScreamSound()
         if (vehicle2->Pitch < 17)
             continue;
         if (vehicle2->Pitch <= 23)
+            return ProduceScreamSound(totalNumPeeps);
+        // Pitch 55 occurs on steep diagonal drops.
+        // (53 and 54 occur on gentle ones.)
+        if (vehicle2->Pitch == 55)
             return ProduceScreamSound(totalNumPeeps);
     }
     return OpenRCT2::Audio::SoundId::Null;

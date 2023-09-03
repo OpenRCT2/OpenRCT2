@@ -120,13 +120,13 @@ static constexpr StringId WindowMultiplayerPageTitles[] = {
 
 // clang-format on
 
-static constexpr const int32_t window_multiplayer_animation_divisor[] = {
+static constexpr int32_t window_multiplayer_animation_divisor[] = {
     4,
     4,
     2,
     2,
 };
-static constexpr const int32_t window_multiplayer_animation_frames[] = {
+static constexpr int32_t window_multiplayer_animation_frames[] = {
     8,
     8,
     7,
@@ -213,7 +213,7 @@ void MultiplayerWindow::SetPage(int32_t page_number)
     widgets[WIDX_TITLE].text = WindowMultiplayerPageTitles[page];
 
     WindowEventResizeCall(this);
-    WindowEventInvalidateCall(this);
+    WindowEventOnPrepareDrawCall(this);
     InitScrollWidgets();
     Invalidate();
 }
@@ -347,7 +347,6 @@ void MultiplayerWindow::OnResize()
             WindowSetResize(*this, 420, 124, 500, 450);
 
             no_list_items = (IsServerPlayerInvisible() ? NetworkGetNumVisiblePlayers() : NetworkGetNumPlayers());
-            list_item_positions[0] = 0;
 
             widgets[WIDX_HEADER_PING].right = width - 5;
 
@@ -360,7 +359,6 @@ void MultiplayerWindow::OnResize()
             WindowSetResize(*this, 320, 200, 320, 500);
 
             no_list_items = NetworkGetNumActions();
-            list_item_positions[0] = 0;
 
             selected_list_item = -1;
             Invalidate();

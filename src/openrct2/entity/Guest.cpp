@@ -17,6 +17,7 @@
 #include "../core/DataSerialiser.h"
 #include "../core/Guard.hpp"
 #include "../core/Numerics.hpp"
+#include "../core/String.hpp"
 #include "../entity/Balloon.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/MoneyEffect.h"
@@ -29,9 +30,9 @@
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../network/network.h"
-#include "../object/FootpathItemEntry.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/MusicObject.h"
+#include "../object/PathAdditionEntry.h"
 #include "../object/WallSceneryEntry.h"
 #include "../peep/GuestPathfinding.h"
 #include "../peep/RideUseSystem.h"
@@ -68,7 +69,7 @@ using namespace OpenRCT2;
 // entrance of the slide. Up to 4 waypoints for each 4 sides that an ride entrance can be located
 // and 4 different rotations of the ride. 4 * 4 * 4 = 64 locations.
 // clang-format off
-static constexpr const CoordsXY SpiralSlideWalkingPath[64] = {
+static constexpr CoordsXY SpiralSlideWalkingPath[64] = {
     {  56,   8 },
     {   8,   8 },
     {   8,  32 },
@@ -136,7 +137,7 @@ static constexpr const CoordsXY SpiralSlideWalkingPath[64] = {
 };
 
 /** rct2: 0x00981F4C, 0x00981F4E */
-static constexpr const CoordsXY _WatchingPositionOffsets[] = {
+static constexpr CoordsXY _WatchingPositionOffsets[] = {
     {  7,  5 },
     {  5, 25 },
     { 25,  5 },
@@ -171,7 +172,7 @@ static constexpr const CoordsXY _WatchingPositionOffsets[] = {
     {  0,  7 },
 };
 
-static constexpr const ride_rating NauseaMaximumThresholds[] = {
+static constexpr ride_rating NauseaMaximumThresholds[] = {
     300,
     600,
     800,
@@ -179,7 +180,7 @@ static constexpr const ride_rating NauseaMaximumThresholds[] = {
 };
 
 /** rct2: 009823AC */
-static constexpr const PeepThoughtType crowded_thoughts[] = {
+static constexpr PeepThoughtType crowded_thoughts[] = {
     PeepThoughtType::Lost,
     PeepThoughtType::Tired,
     PeepThoughtType::BadLitter,
@@ -418,7 +419,7 @@ static struct
 };
 
 // These arrays contain the base minimum and maximum nausea ratings for peeps, based on their nausea tolerance level.
-static constexpr const ride_rating NauseaMinimumThresholds[] = {
+static constexpr ride_rating NauseaMinimumThresholds[] = {
     0,
     0,
     200,
@@ -587,8 +588,10 @@ int32_t Guest::GetEasterEggNameId() const
     FormatStringLegacy(buffer, sizeof(buffer), STR_STRINGID, ft.Data());
 
     for (uint32_t i = 0; i < std::size(gPeepEasterEggNames); i++)
-        if (_stricmp(buffer, gPeepEasterEggNames[i]) == 0)
+    {
+        if (String::IEquals(buffer, gPeepEasterEggNames[i]))
             return static_cast<int32_t>(i);
+    }
 
     return -1;
 }
@@ -733,7 +736,7 @@ int32_t Guest::CheckEasterEggName(int32_t index) const
     FormatNameTo(ft);
     FormatStringLegacy(buffer, sizeof(buffer), STR_STRINGID, ft.Data());
 
-    return _stricmp(buffer, gPeepEasterEggNames[index]) == 0;
+    return String::IEquals(buffer, gPeepEasterEggNames[index]);
 }
 
 void Guest::Loc68F9F3()
@@ -1169,7 +1172,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                         if (pathElement->HasAddition() && !pathElement->AdditionIsGhost())
                         {
                             auto* pathAddEntry = pathElement->GetAdditionEntry();
-                            if (pathAddEntry != nullptr && (pathAddEntry->flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN))
+                            if (pathAddEntry != nullptr && (pathAddEntry->flags & PATH_ADDITION_FLAG_IS_QUEUE_SCREEN))
                             {
                                 found = true;
                             }
@@ -1300,7 +1303,7 @@ void Guest::UpdateSitting()
 
         if (HasFoodOrDrink())
         {
-            if ((ScenarioRand() & 0xFFFF) > 1310)
+            if ((ScenarioRand() & 0xFFFFU) > 1310U)
             {
                 TryGetUpFromSitting();
                 return;
@@ -1312,8 +1315,8 @@ void Guest::UpdateSitting()
             return;
         }
 
-        int32_t rand = ScenarioRand();
-        if ((rand & 0xFFFF) > 131)
+        const auto rand = ScenarioRand();
+        if ((rand & 0xFFFFU) > 131U)
         {
             TryGetUpFromSitting();
             return;
@@ -1325,12 +1328,12 @@ void Guest::UpdateSitting()
         }
 
         Action = PeepActionType::SittingLookAroundLeft;
-        if (rand & 0x80000000)
+        if (rand & 0x80000000U)
         {
             Action = PeepActionType::SittingLookAroundRight;
         }
 
-        if (rand & 0x40000000)
+        if (rand & 0x40000000U)
         {
             Action = PeepActionType::SittingCheckWatch;
         }
@@ -1426,7 +1429,7 @@ void Guest::CheckCantFindRide()
 
     if (w != nullptr)
     {
-        WindowEventInvalidateCall(w);
+        WindowEventOnPrepareDrawCall(w);
     }
 
     WindowInvalidateByNumber(WindowClass::Peep, Id);
@@ -1466,7 +1469,7 @@ void Guest::CheckCantFindExit()
  *
  *  rct2: 0x0069AF1E
  */
-bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
+bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
 {
     money64 itemValue;
 
@@ -1485,7 +1488,8 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
         return false;
     }
 
-    if (GetShopItemDescriptor(shopItem).IsFoodOrDrink())
+    const auto& shopItemDescriptor = GetShopItemDescriptor(shopItem);
+    if (shopItemDescriptor.IsFoodOrDrink())
     {
         int32_t food = UtilBitScanForward(GetFoodOrDrinkFlags());
         if (food != -1)
@@ -1510,19 +1514,19 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
         return false;
     }
 
-    if (GetShopItemDescriptor(shopItem).IsFood() && (Hunger > 75))
+    if (shopItemDescriptor.IsFood() && (Hunger > 75))
     {
         InsertNewThought(PeepThoughtType::NotHungry);
         return false;
     }
 
-    if (GetShopItemDescriptor(shopItem).IsDrink() && (Thirst > 75))
+    if (shopItemDescriptor.IsDrink() && (Thirst > 75))
     {
         InsertNewThought(PeepThoughtType::NotThirsty);
         return false;
     }
 
-    if (!isRainingAndUmbrella && (shopItem != ShopItem::Map) && GetShopItemDescriptor(shopItem).IsSouvenir() && !hasVoucher)
+    if (!isRainingAndUmbrella && (shopItem != ShopItem::Map) && shopItemDescriptor.IsSouvenir() && !hasVoucher)
     {
         if (((ScenarioRand() & 0x7F) + 0x73) > Happiness || GuestNumRides < 3)
             return false;
@@ -1545,11 +1549,11 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
         }
 
         if (gClimateCurrent.Temperature >= 21)
-            itemValue = GetShopItemDescriptor(shopItem).HotValue;
+            itemValue = shopItemDescriptor.HotValue;
         else if (gClimateCurrent.Temperature <= 11)
-            itemValue = GetShopItemDescriptor(shopItem).ColdValue;
+            itemValue = shopItemDescriptor.ColdValue;
         else
-            itemValue = GetShopItemDescriptor(shopItem).BaseValue;
+            itemValue = shopItemDescriptor.BaseValue;
 
         if (itemValue < price)
         {
@@ -1567,7 +1571,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
                 if (itemValue > (static_cast<money64>(ScenarioRand() & 0x07)))
                 {
                     // "I'm not paying that much for x"
-                    InsertNewThought(GetShopItemDescriptor(shopItem).TooMuchThought, ride.id);
+                    InsertNewThought(shopItemDescriptor.TooMuchThought, ride.id);
                     return false;
                 }
             }
@@ -1582,7 +1586,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
                 if (itemValue >= static_cast<money64>(ScenarioRand() & 0x07))
                 {
                     // "This x is a really good value"
-                    InsertNewThought(GetShopItemDescriptor(shopItem).GoodValueThought, ride.id);
+                    InsertNewThought(shopItemDescriptor.GoodValueThought, ride.id);
                 }
             }
 
@@ -1593,11 +1597,11 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
 
         // reset itemValue for satisfaction calculation
         if (gClimateCurrent.Temperature >= 21)
-            itemValue = GetShopItemDescriptor(shopItem).HotValue;
+            itemValue = shopItemDescriptor.HotValue;
         else if (gClimateCurrent.Temperature <= 11)
-            itemValue = GetShopItemDescriptor(shopItem).ColdValue;
+            itemValue = shopItemDescriptor.ColdValue;
         else
-            itemValue = GetShopItemDescriptor(shopItem).BaseValue;
+            itemValue = shopItemDescriptor.BaseValue;
         itemValue -= price;
         uint8_t satisfaction = 0;
         if (itemValue > -8)
@@ -1633,7 +1637,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
     if (shopItem == ShopItem::Map)
         ResetPathfindGoal();
 
-    uint16_t consumptionTime = GetShopItemDescriptor(shopItem).ConsumptionTime;
+    uint16_t consumptionTime = shopItemDescriptor.ConsumptionTime;
     TimeToConsume = std::min((TimeToConsume + consumptionTime), 255);
 
     if (shopItem == ShopItem::Photo)
@@ -1654,39 +1658,39 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
     {
         auto ft = Formatter();
         FormatNameTo(ft);
-        ft.Add<StringId>(GetShopItemDescriptor(shopItem).Naming.Indefinite);
+        ft.Add<StringId>(shopItemDescriptor.Naming.Indefinite);
         if (gConfigNotifications.GuestBoughtItem)
         {
             News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, Id, ft);
         }
     }
 
-    if (GetShopItemDescriptor(shopItem).IsFood())
+    if (shopItemDescriptor.IsFood())
         AmountOfFood++;
 
-    if (GetShopItemDescriptor(shopItem).IsDrink())
+    if (shopItemDescriptor.IsDrink())
         AmountOfDrinks++;
 
-    if (GetShopItemDescriptor(shopItem).IsSouvenir())
+    if (shopItemDescriptor.IsSouvenir())
         AmountOfSouvenirs++;
 
     money64* expend_type = &PaidOnSouvenirs;
     ExpenditureType expenditure = ExpenditureType::ShopStock;
 
-    if (GetShopItemDescriptor(shopItem).IsFood())
+    if (shopItemDescriptor.IsFood())
     {
         expend_type = &PaidOnFood;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 
-    if (GetShopItemDescriptor(shopItem).IsDrink())
+    if (shopItemDescriptor.IsDrink())
     {
         expend_type = &PaidOnDrink;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-        FinancePayment(GetShopItemDescriptor(shopItem).Cost, expenditure);
+        FinancePayment(shopItemDescriptor.Cost, expenditure);
 
     // Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
     expenditure = static_cast<ExpenditureType>(static_cast<int32_t>(expenditure) - 1);
@@ -1699,7 +1703,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, ShopItem shopItem, money64 price)
     {
         SpendMoney(*expend_type, price, expenditure);
     }
-    ride.total_profit += (price - GetShopItemDescriptor(shopItem).Cost);
+    ride.total_profit += (price - shopItemDescriptor.Cost);
     ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
     ride.cur_num_customers++;
     ride.total_customers++;
@@ -2939,7 +2943,8 @@ static PeepThoughtType PeepAssessSurroundings(int16_t centre_x, int16_t centre_y
                         if (tileElement->AsPath()->AdditionIsGhost())
                             break;
 
-                        if (pathAddEntry->flags & (PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER | PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW))
+                        if (pathAddEntry->flags
+                            & (PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_WATER | PATH_ADDITION_FLAG_JUMPING_FOUNTAIN_SNOW))
                         {
                             num_fountains++;
                             break;
@@ -3107,7 +3112,7 @@ static void PeepLeavePark(Guest* peep)
 
     WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->Id);
     if (w != nullptr)
-        WindowEventInvalidateCall(w);
+        WindowEventOnPrepareDrawCall(w);
     WindowInvalidateByNumber(WindowClass::Peep, peep->Id);
 }
 
@@ -3496,7 +3501,7 @@ void Guest::UpdateRideAtEntrance()
 }
 
 /** rct2: 0x00981FD4, 0x00981FD6 */
-static constexpr const CoordsXY _MazeEntranceStart[] = {
+static constexpr CoordsXY _MazeEntranceStart[] = {
     { 8, 8 },
     { 8, 24 },
     { 24, 24 },
@@ -4685,7 +4690,7 @@ void Guest::UpdateRideApproachSpiralSlide()
 }
 
 /** rct2: 0x00981F0C, 0x00981F0E */
-static constexpr const CoordsXY _SpiralSlideEnd[] = {
+static constexpr CoordsXY _SpiralSlideEnd[] = {
     { 25, 56 },
     { 56, 7 },
     { 7, -24 },
@@ -4693,7 +4698,7 @@ static constexpr const CoordsXY _SpiralSlideEnd[] = {
 };
 
 /** rct2: 0x00981F1C, 0x00981F1E */
-static constexpr const CoordsXY _SpiralSlideEndWaypoint[] = {
+static constexpr CoordsXY _SpiralSlideEndWaypoint[] = {
     { 8, 56 },
     { 56, 24 },
     { 24, -24 },
@@ -4844,7 +4849,7 @@ void Guest::UpdateRideLeaveSpiralSlide()
 }
 
 /** rct2: 0x00981FE4 */
-static constexpr const uint8_t _MazeGetNewDirectionFromEdge[][4] = {
+static constexpr uint8_t _MazeGetNewDirectionFromEdge[][4] = {
     { 15, 7, 15, 7 },
     { 11, 3, 11, 3 },
     { 7, 15, 7, 15 },
@@ -4852,7 +4857,7 @@ static constexpr const uint8_t _MazeGetNewDirectionFromEdge[][4] = {
 };
 
 /** rct2: 0x00981FF4 */
-static constexpr const uint8_t _MazeCurrentDirectionToOpenHedge[][4] = {
+static constexpr uint8_t _MazeCurrentDirectionToOpenHedge[][4] = {
     { 1, 2, 14, 0 },
     { 4, 5, 6, 2 },
     { 6, 8, 9, 10 },
@@ -5312,7 +5317,7 @@ void Guest::UpdateWalking()
         {
             if ((0xFFFF & ScenarioRand()) <= 4096)
             {
-                static constexpr const Litter::Type litter_types[] = {
+                static constexpr Litter::Type litter_types[] = {
                     Litter::Type::EmptyCan,
                     Litter::Type::Rubbish,
                     Litter::Type::BurgerBox,
@@ -5448,7 +5453,7 @@ void Guest::UpdateWalking()
                 return;
             }
 
-            if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BENCH))
+            if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BENCH))
                 positions_free = 9;
         }
     }
@@ -5872,7 +5877,7 @@ void Guest::UpdateUsingBin()
                     break;
 
                 auto* pathAddEntry = pathElement->GetAdditionEntry();
-                if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN))
+                if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN))
                     break;
 
                 if (pathElement->IsBroken())
@@ -5984,7 +5989,7 @@ static PathElement* FindBench(const CoordsXYZ& loc)
             continue;
 
         auto* pathAddEntry = pathElement->GetAdditionEntry();
-        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_BIT_FLAG_IS_BENCH))
+        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BENCH))
             continue;
 
         if (pathElement->IsBroken())
@@ -6073,7 +6078,7 @@ static PathElement* FindBin(const CoordsXYZ& loc)
             continue;
 
         auto* pathAddEntry = pathElement->GetAdditionEntry();
-        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN))
+        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN))
             continue;
 
         if (pathElement->IsBroken())
@@ -6151,7 +6156,7 @@ static PathElement* FindBreakableElement(const CoordsXYZ& loc)
             continue;
 
         auto* pathAddEntry = pathElement->GetAdditionEntry();
-        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_BIT_FLAG_BREAKABLE))
+        if (pathAddEntry == nullptr || !(pathAddEntry->flags & PATH_ADDITION_FLAG_BREAKABLE))
             continue;
 
         if (pathElement->IsBroken())
@@ -6977,7 +6982,7 @@ void Guest::InsertNewThought(PeepThoughtType thoughtType, uint16_t thoughtArgume
 
 // clang-format off
 /** rct2: 0x009823A0 */
-static constexpr const PeepNauseaTolerance nausea_tolerance_distribution[] = {
+static constexpr PeepNauseaTolerance nausea_tolerance_distribution[] = {
     PeepNauseaTolerance::None,
     PeepNauseaTolerance::Low, PeepNauseaTolerance::Low,
     PeepNauseaTolerance::Average, PeepNauseaTolerance::Average, PeepNauseaTolerance::Average,
@@ -6985,7 +6990,7 @@ static constexpr const PeepNauseaTolerance nausea_tolerance_distribution[] = {
 };
 
 /** rct2: 0x009823BC */
-static constexpr const uint8_t trouser_colours[] = {
+static constexpr uint8_t trouser_colours[] = {
     COLOUR_BLACK,
     COLOUR_GREY,
     COLOUR_LIGHT_BROWN,
@@ -7014,7 +7019,7 @@ static constexpr const uint8_t trouser_colours[] = {
 };
 
 /** rct2: 0x009823D5 */
-static constexpr const uint8_t tshirt_colours[] = {
+static constexpr uint8_t tshirt_colours[] = {
     COLOUR_BLACK,
     COLOUR_GREY,
     COLOUR_LIGHT_BROWN,
@@ -7255,7 +7260,7 @@ enum
     PEEP_FACE_OFFSET_VERY_VERY_HAPPY,
 };
 
-static constexpr const int32_t face_sprite_small[] = {
+static constexpr int32_t face_sprite_small[] = {
     SPR_PEEP_SMALL_FACE_ANGRY,
     SPR_PEEP_SMALL_FACE_VERY_VERY_SICK,
     SPR_PEEP_SMALL_FACE_VERY_SICK,
@@ -7271,7 +7276,7 @@ static constexpr const int32_t face_sprite_small[] = {
     SPR_PEEP_SMALL_FACE_VERY_VERY_HAPPY,
 };
 
-static constexpr const int32_t face_sprite_large[] = {
+static constexpr int32_t face_sprite_large[] = {
     SPR_PEEP_LARGE_FACE_ANGRY_0,
     SPR_PEEP_LARGE_FACE_VERY_VERY_SICK_0,
     SPR_PEEP_LARGE_FACE_VERY_SICK_0,

@@ -15,7 +15,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr const RideTypeDescriptor MultiDimensionRollerCoasterRTD =
+constexpr RideTypeDescriptor MultiDimensionRollerCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
@@ -47,9 +47,10 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     SET_FIELD(PhotoItem, ShopItem::Photo2),
     SET_FIELD(BonusValue, 100),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
-        { COLOUR_BRIGHT_PINK, COLOUR_YELLOW, COLOUR_YELLOW },
-        { COLOUR_LIGHT_PURPLE, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED },
-        { COLOUR_BORDEAUX_RED, COLOUR_WHITE, COLOUR_WHITE },
+        { COLOUR_BRIGHT_PINK, COLOUR_YELLOW, COLOUR_YELLOW }, // X
+        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BLACK }, // X2
+        { COLOUR_BORDEAUX_RED_DARK, COLOUR_DARK_YELLOW, COLOUR_OLIVE_DARK }, // Dinoconda
+        { COLOUR_BLACK, COLOUR_BLACK, COLOUR_GREY }, // Eejanaika
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
@@ -83,7 +84,7 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     }),
 };
 
-constexpr const RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
+constexpr RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_NONE),

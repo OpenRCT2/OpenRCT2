@@ -36,43 +36,43 @@ constexpr uint8_t RCT2_STRING_FORMAT_ARG_END = 141;
 constexpr uint8_t RCT2_STRING_FORMAT_COLOUR_START = 142;
 constexpr uint8_t RCT2_STRING_FORMAT_COLOUR_END = 156;
 
-constexpr const uint8_t RCT12_SOUND_ID_NULL = 0xFF;
+constexpr uint8_t RCT12_SOUND_ID_NULL = 0xFF;
 
 using RCT12RideId = uint8_t;
-constexpr const RCT12RideId RCT12_RIDE_ID_NULL = 255;
+constexpr RCT12RideId RCT12_RIDE_ID_NULL = 255;
 
 constexpr uint8_t RCT12_BANNER_INDEX_NULL = std::numeric_limits<uint8_t>::max();
 
-constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK = 0xE0;   // in RCT12TileElement.properties.surface.slope
-constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK = 0x1F; // in RCT12TileElement.properties.surface.terrain
-constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_TERRAIN_MASK = 0xE0;      // in RCT12TileElement.properties.surface.terrain
+constexpr uint8_t RCT12_TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK = 0xE0;   // in RCT12TileElement.properties.surface.slope
+constexpr uint8_t RCT12_TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK = 0x1F; // in RCT12TileElement.properties.surface.terrain
+constexpr uint8_t RCT12_TILE_ELEMENT_SURFACE_TERRAIN_MASK = 0xE0;      // in RCT12TileElement.properties.surface.terrain
 
-constexpr const uint8_t RCT12_SMALL_SCENERY_ELEMENT_NEEDS_SUPPORTS_FLAG = 0x20;
-constexpr const uint8_t RCT12_TILE_ELEMENT_COLOUR_MASK = 0b0001'1111;
+constexpr uint8_t RCT12_SMALL_SCENERY_ELEMENT_NEEDS_SUPPORTS_FLAG = 0x20;
+constexpr uint8_t RCT12_TILE_ELEMENT_COLOUR_MASK = 0b0001'1111;
 
-constexpr const uint16_t RCT12_TILE_ELEMENT_LARGE_TYPE_MASK = 0x3FF;
+constexpr uint16_t RCT12_TILE_ELEMENT_LARGE_TYPE_MASK = 0x3FF;
 
 constexpr uint16_t const RCT12_XY8_UNDEFINED = 0xFFFF;
 
 using RCT12ObjectEntryIndex = uint8_t;
-constexpr const RCT12ObjectEntryIndex RCT12_OBJECT_ENTRY_INDEX_NULL = 255;
+constexpr RCT12ObjectEntryIndex RCT12_OBJECT_ENTRY_INDEX_NULL = 255;
 
 // Everything before this point has been researched
-constexpr const uint32_t RCT12_RESEARCHED_ITEMS_SEPARATOR = 0xFFFFFFFF;
+constexpr uint32_t RCT12_RESEARCHED_ITEMS_SEPARATOR = 0xFFFFFFFF;
 // Everything before this point and after separator still requires research
-constexpr const uint32_t RCT12_RESEARCHED_ITEMS_END = 0xFFFFFFFE;
+constexpr uint32_t RCT12_RESEARCHED_ITEMS_END = 0xFFFFFFFE;
 // Extra end of list entry. Leftover from RCT1.
-constexpr const uint32_t RCT12_RESEARCHED_ITEMS_END_2 = 0xFFFFFFFD;
+constexpr uint32_t RCT12_RESEARCHED_ITEMS_END_2 = 0xFFFFFFFD;
 
-constexpr const uint16_t RCT12_PEEP_SPAWN_UNDEFINED = 0xFFFF;
+constexpr uint16_t RCT12_PEEP_SPAWN_UNDEFINED = 0xFFFF;
 
-constexpr const uint16_t RCT12VehicleTrackDirectionMask = 0b0000000000000011;
-constexpr const uint16_t RCT12VehicleTrackTypeMask = 0b1111111111111100;
+constexpr uint16_t RCT12VehicleTrackDirectionMask = 0b0000000000000011;
+constexpr uint16_t RCT12VehicleTrackTypeMask = 0b1111111111111100;
 
-constexpr const uint8_t RCT12PeepThoughtItemNone = std::numeric_limits<uint8_t>::max();
+constexpr uint8_t RCT12PeepThoughtItemNone = std::numeric_limits<uint8_t>::max();
 
-constexpr const uint8_t RCT12GuestsInParkHistoryFactor = 20;
-constexpr const uint8_t RCT12ParkHistoryUndefined = std::numeric_limits<uint8_t>::max();
+constexpr uint8_t RCT12GuestsInParkHistoryFactor = 20;
+constexpr uint8_t RCT12ParkHistoryUndefined = std::numeric_limits<uint8_t>::max();
 
 enum class RCT12TrackDesignVersion : uint8_t
 {
@@ -870,6 +870,7 @@ uint8_t GetStationStyleFromIdentifier(u8string_view identifier);
 std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier);
 void RCT12AddDefaultObjects(ObjectList& objectList);
 void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const RCT12::EntryList& entryList);
+bool IsUserStringID(StringId stringId);
 
 static constexpr money32 RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x80000001;
 

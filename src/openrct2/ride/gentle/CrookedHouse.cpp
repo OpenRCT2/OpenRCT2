@@ -18,7 +18,7 @@
 #include "../Track.h"
 #include "../TrackPaint.h"
 
-static constexpr const BoundBoxXY CrookedHouseData[] = {
+static constexpr BoundBoxXY CrookedHouseData[] = {
     {
         { 6, 0 },
         { 42, 24 },

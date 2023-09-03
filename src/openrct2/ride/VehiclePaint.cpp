@@ -1036,10 +1036,8 @@ static void VehicleSpritePaintRestraints(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
     int32_t boundingBoxNum = YawTo16(imageDirection);
-    auto restraintFrame = ((vehicle->restraints_position - 64) / 64) * 4;
-    auto spriteNum = (carEntry->SpriteByYaw(imageDirection, SpriteGroupType::RestraintAnimation) + restraintFrame)
-            * carEntry->base_num_frames
-        + carEntry->GroupImageId(SpriteGroupType::RestraintAnimation);
+    auto restraintFrame = ((vehicle->restraints_position - 64) / 64);
+    auto spriteNum = carEntry->SpriteOffset(SpriteGroupType::RestraintAnimation, imageDirection, restraintFrame);
     vehicle_sprite_paint(session, vehicle, spriteNum, VehicleBoundboxes[carEntry->draw_order][boundingBoxNum], z, carEntry);
 }
 
@@ -3354,7 +3352,7 @@ static void VehiclePitchUp16BankedRight45(
 static void VehiclePitchUp16(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    switch (vehicle->bank_rotation)
+    switch (GetPaintBankRotation(vehicle))
     {
         case 0:
             VehiclePitchUp16Unbanked(session, vehicle, imageDirection, z, carEntry);
@@ -3596,7 +3594,7 @@ static void VehiclePitchDown16BankedRight45(
 static void VehiclePitchDown16(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
 {
-    switch (vehicle->bank_rotation)
+    switch (GetPaintBankRotation(vehicle))
     {
         case 0:
             VehiclePitchDown16Unbanked(session, vehicle, imageDirection, z, carEntry);
@@ -3711,7 +3709,7 @@ using vehicle_sprite_func = void (*)(
     PaintSession& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry);
 
 // clang-format off
-static constexpr const vehicle_sprite_func PaintFunctionsByPitch[] = {
+static constexpr vehicle_sprite_func PaintFunctionsByPitch[] = {
     VehiclePitchFlat,
     VehiclePitchUp12,
     VehiclePitchUp25,

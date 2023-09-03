@@ -21,10 +21,10 @@
 
 using namespace OpenRCT2;
 
-static constexpr const int32_t WW = 400;
-static constexpr const int32_t WH = 400;
-static constexpr const StringId WINDOW_TITLE = STR_ABOUT;
-static constexpr const int32_t TABHEIGHT = 50;
+static constexpr int32_t WW = 400;
+static constexpr int32_t WH = 400;
+static constexpr StringId WINDOW_TITLE = STR_ABOUT;
+static constexpr int32_t TABHEIGHT = 50;
 
 // clang-format off
 enum
@@ -74,10 +74,12 @@ static Widget _windowAboutOpenRCT2Widgets[] = {
     MakeWidget({168, 115 + 40}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
     MakeWidget({168, 115 + 60}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
     MakeWidget({10, 250},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION_2), // More info
-    MakeWidget({10, 300},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION_3), // Copyright
-    MakeWidget({10, 350},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_SPECIAL_THANKS_1), // Special Thanks
+    MakeWidget({10, 280},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION_3), // Copyright
+    MakeWidget({10, 360},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_SPECIAL_THANKS_1), // Special Thanks
     MakeWidget({10, 375},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_SPECIAL_THANKS_2), // Company names
     MakeWidget({168, 115 + 80}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CONTRIBUTORS_WINDOW_BUTTON), // "contributors" button
+    MakeWidget({10, 310},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_TITLE), // Title Theme
+    MakeWidget({10, 338},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_FAIRGROUND_ORGAN), // Fairground organ
     WIDGETS_END,
 };
 
@@ -258,6 +260,11 @@ private:
         GfxDrawSprite(dpi, ImageId(SPR_CREDITS_CHRIS_SAWYER_SMALL), { windowPos.x + 92, yPage + 24 });
 
         // Licence
+    }
+
+    void OnResize() override
+    {
+        ResizeFrameWithPage();
     }
 };
 

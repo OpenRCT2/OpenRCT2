@@ -49,8 +49,10 @@
     #include <netdb.h>
     #include <netinet/in.h>
     #include <netinet/tcp.h>
+    #include <unistd.h>
     #include <sys/ioctl.h>
     #include <sys/socket.h>
+    #include <unistd.h>
     #include "../common.h"
     using SOCKET = int32_t;
     #define SOCKET_ERROR -1

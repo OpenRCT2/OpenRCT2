@@ -15,7 +15,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr const RideTypeDescriptor SideFrictionRollerCoasterRTD =
+constexpr RideTypeDescriptor SideFrictionRollerCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
@@ -35,7 +35,7 @@ constexpr const RideTypeDescriptor SideFrictionRollerCoasterRTD =
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
-    SET_FIELD(Heights, { 15, 24, 4, 11, }),
+    SET_FIELD(Heights, { 18, 24, 4, 11, }),
     SET_FIELD(MaxMass, 15),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftWood, 3, 4 }),
     SET_FIELD(RatingsMultipliers, { 48, 28, 7 }),
@@ -49,6 +49,7 @@ constexpr const RideTypeDescriptor SideFrictionRollerCoasterRTD =
         { COLOUR_WHITE, COLOUR_DARK_BROWN, COLOUR_WHITE },
         { COLOUR_SATURATED_BROWN, COLOUR_WHITE, COLOUR_SATURATED_BROWN },
         { COLOUR_DARK_BROWN, COLOUR_LIGHT_BROWN, COLOUR_DARK_BROWN },
+        { COLOUR_WHITE, COLOUR_DULL_GREEN_DARK, COLOUR_WHITE }, // Leap-The-Dips
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_SIDE_FRICTION_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_SIDE_FRICTION_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),

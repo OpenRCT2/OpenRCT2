@@ -477,7 +477,7 @@ constexpr auto R = WeatherType::Rain;
 constexpr auto H = WeatherType::HeavyRain;
 constexpr auto T = WeatherType::Thunder;
 
-static constexpr const WeatherTransition ClimateTransitionsCoolAndWet[] = {
+static constexpr WeatherTransition ClimateTransitionsCoolAndWet[] = {
     { 8, 18, { S, P, P, P, P, P, C, C, C, C, C, C, C, R, R, R, H, H, S, S, S, S, S } },
     { 10, 21, { P, P, P, P, P, C, C, C, C, C, C, C, C, C, R, R, R, H, H, H, T, S, S } },
     { 14, 17, { S, S, S, P, P, P, P, P, P, C, C, C, C, R, R, R, H, S, S, S, S, S, S } },
@@ -487,7 +487,7 @@ static constexpr const WeatherTransition ClimateTransitionsCoolAndWet[] = {
     { 16, 19, { S, S, S, P, P, P, P, P, C, C, C, C, C, C, R, R, H, H, T, S, S, S, S } },
     { 13, 16, { S, S, P, P, P, P, C, C, C, C, C, C, R, R, H, T, S, S, S, S, S, S, S } },
 };
-static constexpr const WeatherTransition ClimateTransitionsWarm[] = {
+static constexpr WeatherTransition ClimateTransitionsWarm[] = {
     { 12, 21, { S, S, S, S, S, P, P, P, P, P, P, P, P, C, C, C, C, C, C, C, H, S, S } },
     { 13, 22, { S, S, S, S, S, P, P, P, P, P, P, C, C, C, C, C, C, C, C, C, R, T, S } },
     { 16, 17, { S, S, S, S, S, S, P, P, P, P, P, P, C, C, C, C, R, S, S, S, S, S, S } },
@@ -497,7 +497,7 @@ static constexpr const WeatherTransition ClimateTransitionsWarm[] = {
     { 19, 17, { S, S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, R, S, S, S, S, S, S } },
     { 16, 17, { S, S, P, P, P, P, P, C, C, C, C, C, C, C, C, C, H, S, S, S, S, S, S } },
 };
-static constexpr const WeatherTransition ClimateTransitionsHotAndDry[] = {
+static constexpr WeatherTransition ClimateTransitionsHotAndDry[] = {
     { 12, 15, { S, S, S, S, P, P, P, P, P, P, P, P, C, C, R, S, S, S, S, S, S, S, S } },
     { 14, 12, { S, S, S, S, S, P, P, P, P, P, C, C, S, S, S, S, S, S, S, S, S, S, S } },
     { 16, 11, { S, S, S, S, S, S, P, P, P, P, C, S, S, S, S, S, S, S, S, S, S, S, S } },
@@ -507,7 +507,7 @@ static constexpr const WeatherTransition ClimateTransitionsHotAndDry[] = {
     { 21, 12, { S, S, S, S, S, S, S, P, P, P, C, T, S, S, S, S, S, S, S, S, S, S, S } },
     { 16, 13, { S, S, S, S, S, S, S, S, P, P, P, C, R, S, S, S, S, S, S, S, S, S, S } },
 };
-static constexpr const WeatherTransition ClimateTransitionsCold[] = {
+static constexpr WeatherTransition ClimateTransitionsCold[] = {
     { 4, 18, { S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, C, R, H, S, S, S, S, S } },
     { 5, 21, { S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, C, C, C, R, H, T, S, S } },
     { 7, 17, { S, S, S, S, P, P, P, P, P, P, P, C, C, C, C, R, H, S, S, S, S, S, S } },

@@ -65,7 +65,6 @@ protected:
         gOpenRCT2Headless = true;
         gOpenRCT2NoGraphics = true;
 
-        Platform::CoreInit();
         auto context = CreateContext();
         bool initialised = context->Initialise();
         ASSERT_TRUE(initialised);
@@ -98,4 +97,9 @@ TEST_F(RideRatings, bpb)
 TEST_F(RideRatings, BigMap)
 {
     TestRatings("BigMapTest.sv6", 100);
+}
+
+TEST_F(RideRatings, EverythingPark)
+{
+    TestRatings("EverythingPark.park", 529);
 }

@@ -11,6 +11,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
@@ -22,7 +23,7 @@ enum {
     WIDX_BACKGROUND
 };
 
-static Widget window_tooltip_widgets[] = {
+static Widget _tooltipWidgets[] = {
     MakeWidget({0, 0}, {200, 32}, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };
@@ -42,8 +43,9 @@ public:
         width = textWidth + 3;
         height = ((_tooltipNumLines + 1) * FontGetLineHeight(FontStyle::Small)) + 4;
 
-        window_tooltip_widgets[WIDX_BACKGROUND].right = width;
-        window_tooltip_widgets[WIDX_BACKGROUND].bottom = height;
+        widgets = _tooltipWidgets;
+        widgets[WIDX_BACKGROUND].right = width;
+        widgets[WIDX_BACKGROUND].bottom = height;
 
         int32_t screenWidth = ContextGetWidth();
         int32_t screenHeight = ContextGetHeight();
@@ -65,7 +67,6 @@ public:
 
     void OnOpen() override
     {
-        widgets = window_tooltip_widgets;
         ResetTooltipNotShown();
     }
 
@@ -126,7 +127,7 @@ private:
 void WindowTooltipReset(const ScreenCoordsXY& screenCoords)
 {
     gTooltipCursor = screenCoords;
-    gTooltipTimeout = 0;
+    gTooltipCloseTimeout = 0;
     gTooltipWidget.window_classification = WindowClass::Null;
     InputSetState(InputState::Normal);
     InputSetFlag(INPUT_FLAG_4, false);
@@ -151,7 +152,7 @@ void WindowTooltipOpen(WindowBase* widgetWindow, WidgetIndex widgetIndex, const 
         return;
 
     auto widget = &widgetWindow->widgets[widgetIndex];
-    WindowEventInvalidateCall(widgetWindow);
+    WindowEventOnPrepareDrawCall(widgetWindow);
 
     OpenRCT2String result;
     if (widget->flags & WIDGET_FLAGS::TOOLTIP_IS_STRING)
@@ -188,6 +189,6 @@ void WindowTooltipOpen(WindowBase* widgetWindow, WidgetIndex widgetIndex, const 
 void WindowTooltipClose()
 {
     WindowCloseByClass(WindowClass::Tooltip);
-    gTooltipTimeout = 0;
+    gTooltipCloseTimeout = 0;
     gTooltipWidget.window_classification = WindowClass::Null;
 }

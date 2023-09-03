@@ -21,12 +21,12 @@ using namespace OpenRCT2::Ui;
 
 WindowBase* ResetShortcutKeysPromptOpen();
 
-static constexpr const StringId WINDOW_TITLE = STR_SHORTCUTS_TITLE;
-static constexpr const int32_t WW = 420;
-static constexpr const int32_t WH = 280;
+static constexpr StringId WINDOW_TITLE = STR_SHORTCUTS_TITLE;
+static constexpr int32_t WW = 420;
+static constexpr int32_t WH = 280;
 
-static constexpr const int32_t WW_SC_MAX = 1200;
-static constexpr const int32_t WH_SC_MAX = 800;
+static constexpr int32_t WW_SC_MAX = 1200;
+static constexpr int32_t WH_SC_MAX = 800;
 
 enum WindowShortcutWidgetIdx
 {
@@ -40,7 +40,7 @@ enum WindowShortcutWidgetIdx
 };
 
 // clang-format off
-static Widget window_shortcut_widgets[] = {
+static Widget _shortcutWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({0,    43}, {350, 287}, WindowWidgetType::Resize, WindowColour::Secondary),
     MakeWidget({4,    47}, {412, 215}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
@@ -49,9 +49,9 @@ static Widget window_shortcut_widgets[] = {
 };
 // clang-format on
 
-static constexpr const StringId CHANGE_WINDOW_TITLE = STR_SHORTCUT_CHANGE_TITLE;
-static constexpr const int32_t CHANGE_WW = 250;
-static constexpr const int32_t CHANGE_WH = 80;
+static constexpr StringId CHANGE_WINDOW_TITLE = STR_SHORTCUT_CHANGE_TITLE;
+static constexpr int32_t CHANGE_WW = 250;
+static constexpr int32_t CHANGE_WH = 80;
 
 enum
 {
@@ -447,7 +447,7 @@ private:
     void InitialiseWidgets()
     {
         _widgets.clear();
-        _widgets.insert(_widgets.begin(), std::begin(window_shortcut_widgets), std::end(window_shortcut_widgets) - 1);
+        _widgets.insert(_widgets.begin(), std::begin(_shortcutWidgets), std::end(_shortcutWidgets) - 1);
 
         int32_t x = 3;
         for (size_t i = 0; i < _tabs.size(); i++)
@@ -562,8 +562,8 @@ WindowBase* WindowShortcutKeysOpen()
 }
 
 #pragma region Reset prompt
-static constexpr const int32_t RESET_PROMPT_WW = 200;
-static constexpr const int32_t RESET_PROMPT_WH = 80;
+static constexpr int32_t RESET_PROMPT_WW = 200;
+static constexpr int32_t RESET_PROMPT_WH = 80;
 
 enum
 {

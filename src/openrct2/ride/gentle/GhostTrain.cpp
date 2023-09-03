@@ -67,42 +67,42 @@ enum
     SprGhostTrainTrackBrakesNwSe = 28882
 };
 
-static constexpr const uint32_t GhostTrainTrackPiecesFlat[4] = {
+static constexpr uint32_t GhostTrainTrackPiecesFlat[4] = {
     SprGhostTrainTrackFlatSwNe,
     SprGhostTrainTrackFlatNwSe,
     SprGhostTrainTrackFlatSwNe,
     SprGhostTrainTrackFlatNwSe,
 };
 
-static constexpr const uint32_t GhostTrainTrackPiecesFlatTo25DegUp[4][2] = {
+static constexpr uint32_t GhostTrainTrackPiecesFlatTo25DegUp[4][2] = {
     { SprGhostTrainTrackFlatTo25DegUpSwNe, SprGhostTrainTrackFlatTo25DegUpFrontSwNe },
     { SprGhostTrainTrackFlatTo25DegUpNwSe, SprGhostTrainTrackFlatTo25DegUpFrontNwSe },
     { SprGhostTrainTrackFlatTo25DegUpNeSw, SprGhostTrainTrackFlatTo25DegUpFrontNeSw },
     { SprGhostTrainTrackFlatTo25DegUpSeNw, SprGhostTrainTrackFlatTo25DegUpFrontSeNw },
 };
 
-static constexpr const uint32_t GhostTrainTrackPieces25DegUpToFlat[4][2] = {
+static constexpr uint32_t GhostTrainTrackPieces25DegUpToFlat[4][2] = {
     { SprGhostTrainTrack25DegUpToFlatSwNe, SprGhostTrainTrack25DegUpToFlatFrontSwNe },
     { SprGhostTrainTrack25DegUpToFlatNwSe, SprGhostTrainTrack25DegUpToFlatFrontNwSe },
     { SprGhostTrainTrack25DegUpToFlatNeSw, SprGhostTrainTrack25DegUpToFlatFrontNeSw },
     { SprGhostTrainTrack25DegUpToFlatSeNw, SprGhostTrainTrack25DegUpToFlatFrontSeNw },
 };
 
-static constexpr const uint32_t GhostTrainTrackPieces25DegUp[4][2] = {
+static constexpr uint32_t GhostTrainTrackPieces25DegUp[4][2] = {
     { SprGhostTrainTrack25DegUpSwNe, SprGhostTrainTrack25DegUpFrontSwNe },
     { SprGhostTrainTrack25DegUpNwSe, SprGhostTrainTrack25DegUpFrontNwSe },
     { SprGhostTrainTrack25DegUpNeSw, SprGhostTrainTrack25DegUpFrontNeSw },
     { SprGhostTrainTrack25DegUpSeNw, SprGhostTrainTrack25DegUpFrontSeNw },
 };
 
-static constexpr const uint32_t GhostTrainTrackPiecesQuarterTurn1Tile[4] = {
+static constexpr uint32_t GhostTrainTrackPiecesQuarterTurn1Tile[4] = {
     SprGhostTrainQuarterTurn1TileSwNw,
     SprGhostTrainQuarterTurn1TileNwNe,
     SprGhostTrainQuarterTurn1TileNeSe,
     SprGhostTrainQuarterTurn1TileSeSw,
 };
 
-static constexpr const uint32_t GhostTrainTrackPiecesQuarterTurn3Tiles[4][3] = {
+static constexpr uint32_t GhostTrainTrackPiecesQuarterTurn3Tiles[4][3] = {
     {
         SprGhostTrainQuarterTurn3TilesSwSePart0,
         SprGhostTrainQuarterTurn3TilesSwSePart1,
@@ -125,21 +125,21 @@ static constexpr const uint32_t GhostTrainTrackPiecesQuarterTurn3Tiles[4][3] = {
     },
 };
 
-static constexpr const uint32_t ghost_train_track_pieces_spinning_tunnel_track[4] = {
+static constexpr uint32_t ghost_train_track_pieces_spinning_tunnel_track[4] = {
     SprGhostTrainSpinningTunnelTrackSwNe,
     SprGhostTrainSpinningTunnelTrackNwSe,
     SprGhostTrainSpinningTunnelTrackSwNe,
     SprGhostTrainSpinningTunnelTrackNwSe,
 };
 
-static constexpr const uint32_t GhostTrainTrackPiecesBrakes[4] = {
+static constexpr uint32_t GhostTrainTrackPiecesBrakes[4] = {
     SprGhostTrainTrackBrakesSwNe,
     SprGhostTrainTrackBrakesNwSe,
     SprGhostTrainTrackBrakesSwNe,
     SprGhostTrainTrackBrakesNwSe,
 };
 
-static constexpr const uint8_t DoorOpeningOutwardsToImage[] = {
+static constexpr uint8_t DoorOpeningOutwardsToImage[] = {
     TUNNEL_DOORS_2, // Closed
     TUNNEL_DOORS_2, // Unused?
     TUNNEL_DOORS_3, // Half open
@@ -149,7 +149,7 @@ static constexpr const uint8_t DoorOpeningOutwardsToImage[] = {
     TUNNEL_DOORS_2, // Unused?
 };
 
-static constexpr const uint8_t DoorOpeningInwardsToImage[] = {
+static constexpr uint8_t DoorOpeningInwardsToImage[] = {
     TUNNEL_DOORS_2, // Closed
     TUNNEL_DOORS_2, // Unused?
     TUNNEL_DOORS_5, // Half open
@@ -373,7 +373,7 @@ static void PaintGhostTrainStation(
 {
     ImageId imageId;
 
-    static constexpr const std::array imageIds = {
+    static constexpr std::array imageIds = {
         SPR_STATION_BASE_B_SW_NE,
         SPR_STATION_BASE_B_NW_SE,
         SPR_STATION_BASE_B_SW_NE,

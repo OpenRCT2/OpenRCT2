@@ -103,7 +103,7 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
         session.InteractionType = ViewportInteractionItem::None;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
-    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&bannerElement)))
+    else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&bannerElement))
     {
         imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }

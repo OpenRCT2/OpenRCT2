@@ -56,9 +56,14 @@ namespace String
     bool IsNullOrEmpty(const utf8* str);
     int32_t Compare(const std::string& a, const std::string& b, bool ignoreCase = false);
     int32_t Compare(const utf8* a, const utf8* b, bool ignoreCase = false);
-    bool Equals(std::string_view a, std::string_view b, bool ignoreCase = false);
-    bool Equals(const std::string& a, const std::string& b, bool ignoreCase = false);
+
+    bool Equals(u8string_view a, u8string_view b);
+    bool Equals(const u8string& a, const u8string& b);
     bool Equals(const utf8* a, const utf8* b, bool ignoreCase = false);
+    bool IEquals(u8string_view a, u8string_view b);
+    bool IEquals(const u8string& a, const u8string& b);
+    bool IEquals(const utf8* a, const utf8* b);
+
     bool StartsWith(std::string_view str, std::string_view match, bool ignoreCase = false);
     bool EndsWith(std::string_view str, std::string_view match, bool ignoreCase = false);
     bool Contains(std::string_view haystack, std::string_view needle, bool ignoreCase = false);
@@ -174,6 +179,12 @@ namespace String
      */
     std::string_view UTF8Truncate(std::string_view v, size_t size);
 
+    /**
+     * Truncates a string to at most `size` codepoints,
+     * making sure not to cut in the middle of a sequence.
+     */
+    std::string_view UTF8TruncateCodePoints(std::string_view v, size_t size);
+
     // Escapes special characters in a string to the percentage equivalent that can be used in URLs.
     std::string URLEncode(std::string_view value);
 } // namespace String
@@ -215,7 +226,7 @@ public:
             {
                 const utf8* nextch;
                 GetNextCodepoint(&_str[_index], &nextch);
-                _index = nextch - _str.data();
+                _index = std::min<size_t>(nextch - _str.data(), _str.size());
             }
             return *this;
         }
@@ -226,7 +237,7 @@ public:
             {
                 const utf8* nextch;
                 GetNextCodepoint(&_str[_index], &nextch);
-                _index = nextch - _str.data();
+                _index = std::min<size_t>(nextch - _str.data(), _str.size());
             }
             return result;
         }
@@ -240,7 +251,7 @@ public:
     };
 
     CodepointView(std::string_view str)
-        : _str(str)
+        : _str(String::UTF8Truncate(str, str.size()))
     {
     }
 

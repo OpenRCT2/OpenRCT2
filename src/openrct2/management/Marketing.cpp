@@ -33,7 +33,7 @@ const money64 AdvertisingCampaignPricePerWeek[] = {
     200.00_GBP, // RIDE
 };
 
-static constexpr const uint16_t AdvertisingCampaignGuestGenerationProbabilities[] = {
+static constexpr uint16_t AdvertisingCampaignGuestGenerationProbabilities[] = {
     400, 300, 200, 200, 250, 200,
 };
 
@@ -93,7 +93,7 @@ static void MarketingRaiseFinishedNotification(const MarketingCampaign& campaign
 }
 
 /**
- * Update status of marketing campaigns and send produce a news item when they have finished.
+ * Update status of marketing campaigns and produce a news item when they have finished.
  *  rct2: 0x0069E0C1
  */
 void MarketingUpdate()
@@ -231,7 +231,7 @@ MarketingCampaign* MarketingGetCampaign(int32_t campaignType)
 
 void MarketingNewCampaign(const MarketingCampaign& campaign)
 {
-    // Do not allow same campaign twice, just overwrite
+    // Do not allow the same campaign twice, just overwrite
     auto currentCampaign = MarketingGetCampaign(campaign.Type);
     if (currentCampaign != nullptr)
     {

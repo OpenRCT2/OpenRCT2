@@ -60,7 +60,7 @@ namespace HybridRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
-        static constexpr const uint32_t imageIds[4][3] = {
+        static constexpr uint32_t imageIds[4][3] = {
             { (SPR_G2_HYBRID_TRACK_BRAKE + 0), (SPR_G2_HYBRID_TRACK_BLOCK_BRAKE + 0), SPR_STATION_BASE_A_SW_NE },
             { (SPR_G2_HYBRID_TRACK_BRAKE + 1), (SPR_G2_HYBRID_TRACK_BLOCK_BRAKE + 1), SPR_STATION_BASE_A_NW_SE },
             { (SPR_G2_HYBRID_TRACK_BRAKE + 0), (SPR_G2_HYBRID_TRACK_BLOCK_BRAKE + 0), SPR_STATION_BASE_A_SW_NE },
@@ -134,7 +134,7 @@ namespace HybridRC
             { 2, 24, 93 },
             { 32, 20, 3 },
         };
-        static constexpr const uint32_t imageIds[2][4] = {
+        static constexpr uint32_t imageIds[2][4] = {
             {
                 SPR_G2_HYBRID_LIFT_TRACK_STEEP + 12,
                 SPR_G2_HYBRID_LIFT_TRACK_STEEP + 13,
@@ -452,7 +452,7 @@ namespace HybridRC
             { 2, 20, 31 },
             { 2, 20, 31 },
         };
-        static constexpr const uint32_t imageIds[4] = {
+        static constexpr uint32_t imageIds[4] = {
             SPR_G2_HYBRID_TRACK_VERTICAL + 8,
             SPR_G2_HYBRID_TRACK_VERTICAL + 9,
             SPR_G2_HYBRID_TRACK_VERTICAL + 10,
@@ -497,7 +497,7 @@ namespace HybridRC
             { 2, 20, 55 },
             { 32, 20, 3 },
         };
-        static constexpr const uint32_t imageIds[4] = {
+        static constexpr uint32_t imageIds[4] = {
             SPR_G2_HYBRID_TRACK_VERTICAL + 0,
             SPR_G2_HYBRID_TRACK_VERTICAL + 1,
             SPR_G2_HYBRID_TRACK_VERTICAL + 2,
@@ -548,7 +548,7 @@ namespace HybridRC
             { 2, 20, 31 },
             { 32, 20, 3 },
         };
-        static constexpr const uint32_t imageIds[4] = {
+        static constexpr uint32_t imageIds[4] = {
             SPR_G2_HYBRID_TRACK_VERTICAL + 4,
             SPR_G2_HYBRID_TRACK_VERTICAL + 5,
             SPR_G2_HYBRID_TRACK_VERTICAL + 6,

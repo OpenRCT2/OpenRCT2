@@ -21,7 +21,7 @@
 
 /** rct2: 0x0097AF20, 0x0097AF21 */
 // clang-format off
-static constexpr const CoordsXY SupportBoundBoxes[] = {
+static constexpr CoordsXY SupportBoundBoxes[] = {
     {  4,  4 },
     { 28,  4 },
     {  4, 28 },
@@ -34,7 +34,7 @@ static constexpr const CoordsXY SupportBoundBoxes[] = {
 };
 
 /** rct2: 0x0097AF32 */
-static constexpr const uint8_t _97AF32[] = {
+static constexpr uint8_t _97AF32[] = {
     5, 2, 5, 2, 5, 2, 5, 2,
     7, 1, 7, 1, 7, 1, 7, 1,
     6, 3, 6, 3, 6, 3, 6, 3,
@@ -77,7 +77,7 @@ static constexpr const uint8_t _97AF32[] = {
 };
 
 /** rct2: 0x0097B052, 0x0097B053 */
-static constexpr const CoordsXY Loc97B052[] = {
+static constexpr CoordsXY Loc97B052[] = {
     { -15,  -1 },
     {   0,  -2 },
     {  -2,  -1 },
@@ -89,7 +89,7 @@ static constexpr const CoordsXY Loc97B052[] = {
 };
 
 /** rct2: 0x0097B062, 0x0097B063 */
-static constexpr const CoordsXY _97B062[] = {
+static constexpr CoordsXY _97B062[] = {
     { 18,  3 },
     {  3, 18 },
     { 18,  3 },
@@ -101,7 +101,7 @@ static constexpr const CoordsXY _97B062[] = {
 };
 
 /** rct2: 0x0097B072 */
-static constexpr const uint32_t _metalSupportTypeToCrossbeamImages[][8] = {
+static constexpr uint32_t _metalSupportTypeToCrossbeamImages[][8] = {
     { 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 }, // MetalSupportType::Tubes
     { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // MetalSupportType::Fork
     { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // MetalSupportType::ForkAlt
@@ -118,7 +118,7 @@ static constexpr const uint32_t _metalSupportTypeToCrossbeamImages[][8] = {
 };
 
 /** rct2: 0x0097B142 */
-static constexpr const uint8_t supportTypeToHeight[] = {
+static constexpr uint8_t supportTypeToHeight[] = {
     6, // MetalSupportType::Tubes
     3, // MetalSupportType::Fork
     3, // MetalSupportType::ForkAlt
@@ -140,7 +140,7 @@ struct MetalSupportsImages {
 };
 
 /** rct2: 0x0097B15C */
-static constexpr const MetalSupportsImages _97B15C[] = {
+static constexpr MetalSupportsImages _97B15C[] = {
     { 3243, 3209 }, // MetalSupportType::Tubes
     { 3279, 3262 }, // MetalSupportType::Fork
     { 3298, 3262 }, // MetalSupportType::ForkAlt
@@ -157,7 +157,7 @@ static constexpr const MetalSupportsImages _97B15C[] = {
 };
 
 /** rct2: 0x0097B190 */
-static constexpr const MetalSupportsImages _97B190[] = {
+static constexpr MetalSupportsImages _97B190[] = {
     { 3243, 3226 }, // 3209
     { 3279, 3262 },
     { 3298, 3262 },
@@ -174,7 +174,7 @@ static constexpr const MetalSupportsImages _97B190[] = {
 };
 
 /** rct2: 0x0097B404 */
-static constexpr const uint8_t metal_supports_slope_image_map[] = {
+static constexpr uint8_t metal_supports_slope_image_map[] = {
      0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14,  0,
      0,  0,  0,  0,  0,  0,  0, 15,  0,  0,  0, 16,  0, 17, 18,  0,
 };
@@ -187,7 +187,7 @@ struct SupportsIdDescriptor {
 };
 
 /* 0x0097B1C4 */
-static constexpr const SupportsIdDescriptor WoodenSupportImageIds[] = {
+static constexpr SupportsIdDescriptor WoodenSupportImageIds[] = {
     { 3392, 3393, 3394, 3536 },
     { 3390, 3391, 3394, 3514 },
     { 3558, 3559, 3560, 3570 },
@@ -202,7 +202,7 @@ static constexpr const SupportsIdDescriptor WoodenSupportImageIds[] = {
     { 3770, 3771, 3772, 3839 },
 };
 
-static constexpr const uint16_t WoodenCurveSupportImageIds0[81] = {
+static constexpr uint16_t WoodenCurveSupportImageIds0[81] = {
     3465,
     3466,
     3467,
@@ -286,7 +286,7 @@ static constexpr const uint16_t WoodenCurveSupportImageIds0[81] = {
     SPR_G2_SUPPORT_BEGIN + 31,
 };
 
-static constexpr const uint16_t WoodenCurveSupportImageIds1[81] = {
+static constexpr uint16_t WoodenCurveSupportImageIds1[81] = {
     3681, 3682, 3683, 3684, 3685, 3686, 3687, 3688, 3689, 3690, 3691, 3692, 3693, 3694, 3695, 3696, 3697,
     3698, 3699, 3700, 3701, 3702, 3703, 3704, 3705, 3706, 3707, 3708, 3709, 3710, 3711, 3712, 3713, 3714,
     3715, 3716, 3717, 3718, 3719, 3720, 3721, 3722, 3723, 3724, 3725, 3726, 3727, 3728, 3729,
@@ -316,7 +316,7 @@ struct UnkSupportsDescriptor {
 };
 
 /* 0x0097B23C */
-static constexpr const UnkSupportsDescriptor Byte97B23C[] = {
+static constexpr UnkSupportsDescriptor Byte97B23C[] = {
     {{{0,  0,  0}, {1,  1,  8}},  0, 1}, // Flat to gentle
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
@@ -401,7 +401,7 @@ static constexpr const UnkSupportsDescriptor Byte97B23C[] = {
 };
 
 /* 0x0098D8D4 */
-static constexpr const UnkSupportsDescriptor Byte98D8D4[] = {
+static constexpr UnkSupportsDescriptor Byte98D8D4[] = {
     {{{0, 0, 0}, {1, 1, 4}}, 0, 1},
     {{{0, 0, 0}, {1, 1, 4}}, 0, 1},
     {{{0, 0, 0}, {1, 1, 4}}, 0, 1},
@@ -409,7 +409,7 @@ static constexpr const UnkSupportsDescriptor Byte98D8D4[] = {
 };
 
 /* 0x0097B3C4 */
-static constexpr const uint16_t word_97B3C4[] = {
+static constexpr uint16_t word_97B3C4[] = {
     0,
     0,
     1,

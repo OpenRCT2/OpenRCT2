@@ -100,7 +100,8 @@ GameActions::Result RideCreateAction::Query() const
     const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
     if (rideEntry == nullptr)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_UNKNOWN_OBJECT_TYPE);
     }
 
     const auto* presetList = rideEntry->vehicle_preset_list;

@@ -49,7 +49,7 @@ namespace OpenRCT2::Ui
 
         bool IsSteamOverlayAttached() override
         {
-            STUB();
+            LOG_WARNING("Function %s at %s:%d is a stub.", __PRETTY_FUNCTION__, __FILE__, __LINE__);
             return false;
         }
 

@@ -49,6 +49,15 @@ GameActions::Result StaffFireAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
+    if (staff->State == PeepState::Fixing)
+    {
+        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_FIRE_STAFF_FIXING, STR_NONE);
+    }
+    else if (staff->State == PeepState::Inspecting)
+    {
+        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_FIRE_STAFF_INSPECTING, STR_NONE);
+    }
+
     return GameActions::Result();
 }
 

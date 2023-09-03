@@ -13,7 +13,7 @@
 #include "Track.h"
 #include "TrackPaint.h"
 
-constexpr const uint8_t MaxSequencesPerPiece = 16;
+constexpr uint8_t MaxSequencesPerPiece = 16;
 
 // 0x009968BB, 0x009968BC, 0x009968BD, 0x009968BF, 0x009968C1, 0x009968C3
 
@@ -61,7 +61,7 @@ struct DodgemsTrackSize
     uint8_t bottom;
 };
 
-constexpr const DodgemsTrackSize GetDodgemsTrackSize(track_type_t type)
+constexpr DodgemsTrackSize GetDodgemsTrackSize(track_type_t type)
 {
     if (type == TrackElemType::FlatTrack2x2)
         return { 4, 4, 59, 59 };

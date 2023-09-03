@@ -187,8 +187,6 @@ TEST(S6ImportExportBasic, all)
     gOpenRCT2Headless = true;
     gOpenRCT2NoGraphics = true;
 
-    Platform::CoreInit();
-
     MemoryStream importBuffer;
     MemoryStream exportBuffer;
     MemoryStream snapshotStream;
@@ -232,8 +230,6 @@ TEST(S6ImportExportAdvanceTicks, all)
 {
     gOpenRCT2Headless = true;
     gOpenRCT2NoGraphics = true;
-
-    Platform::CoreInit();
 
     MemoryStream importBuffer;
     MemoryStream exportBuffer;

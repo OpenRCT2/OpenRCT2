@@ -574,7 +574,7 @@ namespace OpenRCT2
 
             try
             {
-                if (String::Equals(Path::GetExtension(path), ".sea", true))
+                if (String::IEquals(Path::GetExtension(path), ".sea"))
                 {
                     auto data = DecryptSea(fs::u8path(path));
                     auto ms = MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
@@ -1112,11 +1112,11 @@ namespace OpenRCT2
             {
                 Tick();
 
-                // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
-                WindowUpdateAll();
-
                 _ticksAccumulator -= GAME_UPDATE_TIME_MS;
             }
+
+            ContextHandleInput();
+            WindowUpdateAll();
 
             if (ShouldDraw())
             {
@@ -1141,15 +1141,15 @@ namespace OpenRCT2
 
                 Tick();
 
-                // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
-                WindowUpdateAll();
-
                 _ticksAccumulator -= GAME_UPDATE_TIME_MS;
 
                 // Get the next position of each sprite
                 if (shouldDraw)
                     tweener.PostTick();
             }
+
+            ContextHandleInput();
+            WindowUpdateAll();
 
             if (shouldDraw)
             {
@@ -1240,7 +1240,7 @@ namespace OpenRCT2
             for (const auto& dirId : dirIds)
             {
                 auto path = _env->GetDirectoryPath(dirBase, dirId);
-                if (!Platform::EnsureDirectoryExists(path.c_str()))
+                if (!Path::CreateDirectory(path))
                     LOG_ERROR("Unable to create directory '%s'.", path.c_str());
             }
         }
@@ -1274,14 +1274,10 @@ namespace OpenRCT2
                 auto dstDirectory = Path::GetDirectory(dst);
 
                 // Create the directory if necessary
-                if (!Path::DirectoryExists(dstDirectory.c_str()))
+                if (!Path::CreateDirectory(dstDirectory))
                 {
-                    Console::WriteLine("Creating directory '%s'", dstDirectory.c_str());
-                    if (!Platform::EnsureDirectoryExists(dstDirectory.c_str()))
-                    {
-                        Console::Error::WriteLine("Could not create directory %s.", dstDirectory.c_str());
-                        break;
-                    }
+                    Console::Error::WriteLine("Could not create directory %s.", dstDirectory.c_str());
+                    break;
                 }
 
                 // Only copy the file if it doesn't already exist

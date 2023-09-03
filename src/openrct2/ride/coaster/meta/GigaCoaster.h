@@ -15,7 +15,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr const RideTypeDescriptor GigaCoasterRTD =
+constexpr RideTypeDescriptor GigaCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
@@ -50,6 +50,7 @@ constexpr const RideTypeDescriptor GigaCoasterRTD =
         { COLOUR_WHITE, COLOUR_WHITE, COLOUR_YELLOW },
         { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_BORDEAUX_RED },
         { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_BLACK },
+        { COLOUR_BRIGHT_YELLOW, COLOUR_YELLOW, COLOUR_DARK_GREEN }, // Mega-Lite / 蓝月飞车
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_GIGA_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_GIGA_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),

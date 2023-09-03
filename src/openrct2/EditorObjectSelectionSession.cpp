@@ -46,9 +46,7 @@ static void SelectDesignerObjects();
 static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item);
 
 /**
- * Master objects are objects that are not
- * optional / required dependants of an
- * object.
+ * Master objects are objects that are not optional / required dependants of an object.
  */
 static constexpr ResultWithMessage ObjectSelectionError(bool isMasterObject, StringId message)
 {
@@ -179,7 +177,7 @@ void SetupInUseSelectionFlags()
                 if (footpathEl->HasAddition())
                 {
                     auto pathAdditionEntryIndex = footpathEl->GetAdditionEntryIndex();
-                    Editor::SetSelectedObject(ObjectType::PathBits, pathAdditionEntryIndex, ObjectSelectionFlags::InUse);
+                    Editor::SetSelectedObject(ObjectType::PathAdditions, pathAdditionEntryIndex, ObjectSelectionFlags::InUse);
                 }
                 break;
             }

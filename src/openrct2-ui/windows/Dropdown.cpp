@@ -28,7 +28,7 @@ constexpr int32_t DROPDOWN_TEXT_MAX_ROWS = 32;
 
 constexpr int32_t DROPDOWN_ITEM_HEIGHT = 12;
 
-static constexpr const std::array<uint8_t, 57> _appropriateImageDropdownItemsPerRow = {
+static constexpr std::array<uint8_t, 57> _appropriateImageDropdownItemsPerRow = {
     1, 1, 1, 1, 2, 2, 3, 3, 4, 3, // 10
     5, 4, 4, 5, 5, 5, 4, 5, 6, 5, // 20
     5, 7, 4, 5, 6, 5, 6, 6, 6, 6, // 30

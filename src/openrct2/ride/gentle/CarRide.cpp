@@ -69,70 +69,70 @@ enum
     SprCarRideQuarterTurn3TilesSeNePart2 = 28820,
 };
 
-static constexpr const uint32_t CarRideTrackPiecesFlat[4] = {
+static constexpr uint32_t CarRideTrackPiecesFlat[4] = {
     SprCarRideFlatSwNe,
     SprCarRideFlatNwSe,
     SprCarRideFlatSwNe,
     SprCarRideFlatNwSe,
 };
 
-static constexpr const uint32_t CarRideTrackPiecesLogBumps[4] = {
+static constexpr uint32_t CarRideTrackPiecesLogBumps[4] = {
     SprCarRideLogBumpsSwNe,
     SprCarRideLogBumpsNwSe,
     SprCarRideLogBumpsSwNe,
     SprCarRideLogBumpsNwSe,
 };
 
-static constexpr const uint32_t CarRideTrackPieces25DegUp[4] = {
+static constexpr uint32_t CarRideTrackPieces25DegUp[4] = {
     SprCarRide25DegUpSwNe,
     SprCarRide25DegUpNwSe,
     SprCarRide25DegUpNeSw,
     SprCarRide25DegUpSeNw,
 };
 
-static constexpr const uint32_t CarRideTrackPiecesFlatTo25DegUp[4] = {
+static constexpr uint32_t CarRideTrackPiecesFlatTo25DegUp[4] = {
     SprCarRideFlatTo25DegUpSwNe,
     SprCarRideFlatTo25DegUpNwSe,
     SprCarRideFlatTo25DegUpNeSw,
     SprCarRideFlatTo25DegUpSeNw,
 };
 
-static constexpr const uint32_t CarRideTrackPieces25DegUpToFlat[4] = {
+static constexpr uint32_t CarRideTrackPieces25DegUpToFlat[4] = {
     SprCarRideDegUpToFlatSwNe,
     SprCarRideDegUpToFlatNwSe,
     SprCarRideDegUpToFlatNeSw,
     SprCarRideDegUpToFlatSeNw,
 };
 
-static constexpr const uint32_t CarRideTrackPieces60DegUp[4] = {
+static constexpr uint32_t CarRideTrackPieces60DegUp[4] = {
     SprCarRide60DegUpSwNe,
     SprCarRide60DegUpNwSe,
     SprCarRide60DegUpNeSw,
     SprCarRide60DegUpSeNw,
 };
 
-static constexpr const uint32_t CarRideTrackPieces25DegUpTo60DegUp[4][2] = {
+static constexpr uint32_t CarRideTrackPieces25DegUpTo60DegUp[4][2] = {
     { SprCarRide25DegUpTo60DegUpSwNe, 0 },
     { SprCarRide25DegUpTo60DegUpNwSe, SprCarRide25DegUpTo60DegUpFrontNwSe },
     { SprCarRide25DegUpTo60DegUpNeSw, SprCarRide25DegUpTo60DegUpFrontNeSw },
     { SprCarRide25DegUpTo60DegUpSeNw, 0 },
 };
 
-static constexpr const uint32_t CarRideTrackPieces60DegUpTo25DegUp[4][2] = {
+static constexpr uint32_t CarRideTrackPieces60DegUpTo25DegUp[4][2] = {
     { SprCarRide60DegUpTo25DegUpSwNe, 0 },
     { SprCarRide60DegUpTo25DegUpNwSe, SprCarRide60DegUpTo25DegUpFrontNwSe },
     { SprCarRide60DegUpTo25DegUpNeSw, SprCarRide60DegUpTo25DegUpFrontNeSw },
     { SprCarRide60DegUpTo25DegUpSeNw, 0 },
 };
 
-static constexpr const uint32_t CarRideTrackPiecesLeftQuarterTurn1Tile[4] = {
+static constexpr uint32_t CarRideTrackPiecesLeftQuarterTurn1Tile[4] = {
     SprCarRideQuarterTurn1TileSwNw,
     SprCarRideQuarterTurn1TileNwNe,
     SprCarRideQuarterTurn1TileNeSe,
     SprCarRideQuarterTurn1TileSeSw,
 };
 
-static constexpr const uint32_t CarRideTrackPiecesQuarterTurn3Tiles[4][3] = {
+static constexpr uint32_t CarRideTrackPiecesQuarterTurn3Tiles[4][3] = {
     {
         SprCarRideQuarterTurn3TilesSwSePart0,
         SprCarRideQuarterTurn3TilesSwSePart1,

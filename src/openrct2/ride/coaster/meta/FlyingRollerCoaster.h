@@ -16,7 +16,7 @@
 
 // clang-format off
 // Non-inverted variant
-constexpr const RideTypeDescriptor FlyingRollerCoasterRTD =
+constexpr RideTypeDescriptor FlyingRollerCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_FLYING_ROLLER_COASTER_ALT),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
@@ -50,6 +50,7 @@ constexpr const RideTypeDescriptor FlyingRollerCoasterRTD =
         { COLOUR_OLIVE_GREEN, COLOUR_OLIVE_GREEN, COLOUR_TEAL },
         { COLOUR_TEAL, COLOUR_TEAL, COLOUR_BORDEAUX_RED },
         { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_DARK_PURPLE },
+        { COLOUR_DULL_GREEN_DARK, COLOUR_SATURATED_GREEN_LIGHT, COLOUR_AQUA_DARK },
         { COLOUR_BORDEAUX_RED_DARK, COLOUR_BORDEAUX_RED_DARK, COLOUR_SATURATED_BROWN }, // FLY
         { COLOUR_LIGHT_BLUE, COLOUR_DARK_BLUE, COLOUR_ICY_BLUE }, // Manta
         { COLOUR_YELLOW, COLOUR_BRIGHT_RED, COLOUR_LIGHT_ORANGE } // Tatsu
@@ -87,7 +88,7 @@ constexpr const RideTypeDescriptor FlyingRollerCoasterRTD =
 };
 
 // Inverted variant
-constexpr const RideTypeDescriptor FlyingRollerCoasterAltRTD =
+constexpr RideTypeDescriptor FlyingRollerCoasterAltRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_NONE),

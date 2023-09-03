@@ -27,7 +27,7 @@ AndroidClassLoader::~AndroidClassLoader()
 jobject AndroidClassLoader::_classLoader;
 jmethodID AndroidClassLoader::_findClassMethod;
 
-static std::shared_ptr<AndroidClassLoader> acl;
+static std::shared_ptr<AndroidClassLoader> acl = std::make_shared<AndroidClassLoader>();
 
 namespace Platform
 {
@@ -171,11 +171,6 @@ namespace Platform
         env->DeleteLocalRef(activityClass);
 
         return displayScale;
-    }
-
-    void AndroidInitClassLoader()
-    {
-        acl = std::make_shared<AndroidClassLoader>();
     }
 
     jclass AndroidFindClass(JNIEnv* env, std::string_view name)

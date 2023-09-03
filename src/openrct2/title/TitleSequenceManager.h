@@ -33,7 +33,7 @@ namespace TitleSequenceManager
     void Scan();
 } // namespace TitleSequenceManager
 
-constexpr const size_t PREDEFINED_INDEX_CUSTOM = std::numeric_limits<size_t>::max();
+constexpr size_t PREDEFINED_INDEX_CUSTOM = std::numeric_limits<size_t>::max();
 
 size_t TitleSequenceManagerGetCount();
 const utf8* TitleSequenceManagerGetName(size_t index);

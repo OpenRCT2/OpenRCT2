@@ -15,7 +15,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr const RideTypeDescriptor LoopingRollerCoasterRTD =
+constexpr RideTypeDescriptor LoopingRollerCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
@@ -53,6 +53,7 @@ constexpr const RideTypeDescriptor LoopingRollerCoasterRTD =
         { COLOUR_LIGHT_PURPLE, COLOUR_LIGHT_PURPLE, COLOUR_DARK_GREEN },
         { COLOUR_OLIVE_GREEN, COLOUR_OLIVE_GREEN, COLOUR_LIGHT_BROWN },
         { COLOUR_GREY, COLOUR_LIGHT_ORANGE, COLOUR_GREY },
+        { COLOUR_GRASS_GREEN_LIGHT, COLOUR_SATURATED_GREEN_LIGHT, COLOUR_AQUA_DARK }, // Mindbender
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_LOOPING_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_LOOPING_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),

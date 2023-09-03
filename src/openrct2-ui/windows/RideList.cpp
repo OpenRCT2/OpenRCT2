@@ -28,9 +28,9 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_NONE;
-static constexpr const int32_t WH = 240;
-static constexpr const int32_t WW = 340;
+static constexpr StringId WINDOW_TITLE = STR_NONE;
+static constexpr int32_t WH = 240;
+static constexpr int32_t WW = 340;
 
 enum
 {
@@ -60,7 +60,7 @@ enum WindowRideListWidgetIdx
 };
 
 // clang-format off
-static Widget window_ride_list_widgets[] = {
+static Widget _rideListWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {340, 197}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ), // tab page background
     MakeWidget({315, 60}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, ImageId(SPR_TOGGLE_OPEN_CLOSE),      STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
@@ -101,7 +101,7 @@ enum
     DROPDOWN_LIST_COUNT,
 };
 
-static constexpr const StringId ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
+static constexpr StringId ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
     STR_STATUS,
     STR_POPULARITY,
     STR_SATISFACTION,
@@ -122,13 +122,13 @@ static constexpr const StringId ride_info_type_string_mapping[DROPDOWN_LIST_COUN
     STR_RIDE_LIST_NAUSEA,
 };
 
-static constexpr const StringId ride_list_statusbar_count_strings[PAGE_COUNT] = {
+static constexpr StringId ride_list_statusbar_count_strings[PAGE_COUNT] = {
     STR_NUMBER_RIDES,
     STR_NUMBER_SHOPS_AND_STALLS,
     STR_NUMBER_TOILETS_AND_INFORMATION_KIOSKS,
 };
 
-static constexpr const bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
+static constexpr bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
     false, // Status
     false, // Popularity
     false, // Satisfaction
@@ -149,7 +149,7 @@ static constexpr const bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = 
     false, // Nausea
 };
 
-static constexpr const StringId page_names[] = {
+static constexpr StringId page_names[] = {
     STR_RIDES,
     STR_SHOPS_AND_STALLS,
     STR_TOILETS_AND_INFORMATION_KIOSKS,
@@ -160,12 +160,18 @@ class RideListWindow final : public Window
 private:
     bool _quickDemolishMode = false;
     int32_t _windowRideListInformationType = INFORMATION_TYPE_STATUS;
-    std::vector<RideId> _rideList;
+
+    struct RideListEntry
+    {
+        RideId Id;
+        u8string Name;
+    };
+    std::vector<RideListEntry> _rideList;
 
 public:
     void OnOpen() override
     {
-        widgets = window_ride_list_widgets;
+        widgets = _rideListWidgets;
         WindowInitScrollWidgets(*this);
         page = PAGE_RIDES;
         selected_list_item = -1;
@@ -198,6 +204,11 @@ public:
             Invalidate();
             height = min_height;
         }
+
+        widgets[WIDX_SORT].left = width - 60;
+        widgets[WIDX_SORT].right = width - 60 + 54;
+
+        ResizeDropdown(WIDX_CURRENT_INFORMATION_TYPE, { 150, 46 }, { width - 216, DROPDOWN_HEIGHT });
 
         // Refreshing the list can be a very intensive operation
         // owing to its use of ride_has_any_track_elements().
@@ -401,17 +412,17 @@ public:
             return;
 
         // Open ride window
-        const auto rideIndex = _rideList[index];
+        const auto selectedRideId = _rideList[index].Id;
         if (_quickDemolishMode && NetworkGetMode() != NETWORK_MODE_CLIENT)
         {
-            auto gameAction = RideDemolishAction(rideIndex, RIDE_MODIFY_DEMOLISH);
+            auto gameAction = RideDemolishAction(selectedRideId, RIDE_MODIFY_DEMOLISH);
             GameActions::Execute(&gameAction);
             RefreshList();
         }
         else
         {
             auto intent = Intent(WindowClass::Ride);
-            intent.PutExtra(INTENT_EXTRA_RIDE_ID, rideIndex.ToUnderlying());
+            intent.PutExtra(INTENT_EXTRA_RIDE_ID, selectedRideId.ToUnderlying());
             ContextOpenIntent(&intent);
         }
     }
@@ -540,7 +551,7 @@ public:
             }
 
             // Get ride
-            const auto* ridePtr = GetRide(_rideList[i]);
+            const auto* ridePtr = GetRide(_rideList[i].Id);
             if (ridePtr == nullptr)
                 continue;
 
@@ -769,20 +780,26 @@ private:
      * Used in RefreshList() to handle the sorting of the list.
      * Uses a lambda function (predicate) as exit criteria for the algorithm.
      */
-    template<typename TSortPred> int32_t SortList(int32_t currentListPosition, const Ride& thisRide, const TSortPred& pred)
+    template<typename TSortPred> void SortListByPredicate(const TSortPred& pred)
     {
-        while (--currentListPosition >= 0)
-        {
-            const auto* otherRide = GetRide(_rideList[currentListPosition]);
-            if (otherRide != nullptr)
+        std::sort(_rideList.begin(), _rideList.end(), [&pred](const auto& lhs, const auto& rhs) {
+            const Ride* rideLhs = GetRide(lhs.Id);
+            const Ride* rideRhs = GetRide(rhs.Id);
+            if (rideLhs == nullptr || rideRhs == nullptr)
             {
-                if (pred(thisRide, *otherRide))
-                    break;
-                std::swap(_rideList[currentListPosition], _rideList[currentListPosition + 1]);
+                return false;
             }
-        }
-        return currentListPosition;
+            return !pred(*rideLhs, *rideRhs);
+        });
     }
+
+    void SortListByName()
+    {
+        std::sort(_rideList.begin(), _rideList.end(), [](const auto& lhs, const auto& rhs) {
+            return !(0 <= StrLogicalCmp(lhs.Name.c_str(), rhs.Name.c_str()));
+        });
+    }
+
     /**
      *
      *  rct2: 0x006B39A8
@@ -790,133 +807,114 @@ private:
     void RefreshList()
     {
         _rideList.clear();
-
-        size_t listIndex = 0;
         for (auto& rideRef : GetRideManager())
         {
             if (rideRef.GetClassification() != static_cast<RideClassification>(page)
                 || (rideRef.status == RideStatus::Closed && !RideHasAnyTrackElements(rideRef)))
+            {
                 continue;
+            }
 
             if (rideRef.window_invalidate_flags & RIDE_INVALIDATE_RIDE_LIST)
             {
                 rideRef.window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_LIST;
             }
 
-            _rideList.push_back(rideRef.id);
-            auto currentListPosition = static_cast<int32_t>(listIndex);
-            switch (list_information_type)
-            {
-                case INFORMATION_TYPE_STATUS:
-                    currentListPosition = SortList(
-                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return 0 <= StrLogicalCmp(thisRide.GetName().c_str(), otherRide.GetName().c_str());
-                        });
-                    break;
-                case INFORMATION_TYPE_POPULARITY:
-                    currentListPosition = SortList(
-                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return thisRide.popularity * 4 <= otherRide.popularity * 4;
-                        });
-                    break;
-                case INFORMATION_TYPE_SATISFACTION:
-                    currentListPosition = SortList(
-                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return thisRide.satisfaction * 5 <= otherRide.satisfaction * 5;
-                        });
-                    break;
-                case INFORMATION_TYPE_PROFIT:
-                    currentListPosition = SortList(
-                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return thisRide.profit <= otherRide.profit;
-                        });
-                    break;
-                case INFORMATION_TYPE_TOTAL_CUSTOMERS:
-                    currentListPosition = SortList(
-                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return thisRide.total_customers <= otherRide.total_customers;
-                        });
-                    break;
-                case INFORMATION_TYPE_TOTAL_PROFIT:
-                    currentListPosition = SortList(
-                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return thisRide.total_profit <= otherRide.total_profit;
-                        });
-                    break;
-                case INFORMATION_TYPE_CUSTOMERS:
-                    currentListPosition = SortList(
-                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return RideCustomersPerHour(thisRide) <= RideCustomersPerHour(otherRide);
-                        });
-                    break;
-                case INFORMATION_TYPE_AGE:
-                    currentListPosition = SortList(
-                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return thisRide.build_date <= otherRide.build_date;
-                        });
-                    break;
-                case INFORMATION_TYPE_INCOME:
-                    currentListPosition = SortList(
-                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return thisRide.income_per_hour <= otherRide.income_per_hour;
-                        });
-                    break;
-                case INFORMATION_TYPE_RUNNING_COST:
-                    currentListPosition = SortList(
-                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return thisRide.upkeep_cost <= otherRide.upkeep_cost;
-                        });
-                    break;
-                case INFORMATION_TYPE_QUEUE_LENGTH:
-                    currentListPosition = SortList(
-                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return thisRide.GetTotalQueueLength() <= otherRide.GetTotalQueueLength();
-                        });
-                    break;
-                case INFORMATION_TYPE_QUEUE_TIME:
-                    currentListPosition = SortList(
-                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return thisRide.GetMaxQueueTime() <= otherRide.GetMaxQueueTime();
-                        });
-                    break;
-                case INFORMATION_TYPE_RELIABILITY:
-                    currentListPosition = SortList(
-                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return thisRide.reliability_percentage <= otherRide.reliability_percentage;
-                        });
-                    break;
-                case INFORMATION_TYPE_DOWN_TIME:
-                    currentListPosition = SortList(
-                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return thisRide.downtime <= otherRide.downtime;
-                        });
-                    break;
-                case INFORMATION_TYPE_GUESTS_FAVOURITE:
-                    currentListPosition = SortList(
-                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return thisRide.guests_favourite <= otherRide.guests_favourite;
-                        });
-                    break;
-                case INFORMATION_TYPE_EXCITEMENT:
-                    currentListPosition = SortList(
-                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return thisRide.excitement <= otherRide.excitement;
-                        });
-                    break;
-                case INFORMATION_TYPE_INTENSITY:
-                    currentListPosition = SortList(
-                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return thisRide.intensity <= otherRide.intensity;
-                        });
-                    break;
-                case INFORMATION_TYPE_NAUSEA:
-                    currentListPosition = SortList(
-                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
-                            return thisRide.nausea <= otherRide.nausea;
-                        });
-                    break;
-            }
-            listIndex++;
+            RideListEntry entry{};
+            entry.Id = rideRef.id;
+            entry.Name = rideRef.GetName();
+
+            _rideList.push_back(std::move(entry));
+        }
+
+        switch (list_information_type)
+        {
+            case INFORMATION_TYPE_STATUS:
+                SortListByName();
+                break;
+            case INFORMATION_TYPE_POPULARITY:
+                SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                    return thisRide.popularity * 4 <= otherRide.popularity * 4;
+                });
+                break;
+            case INFORMATION_TYPE_SATISFACTION:
+                SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                    return thisRide.satisfaction * 5 <= otherRide.satisfaction * 5;
+                });
+                break;
+            case INFORMATION_TYPE_PROFIT:
+                SortListByPredicate(
+                    [](const Ride& thisRide, const Ride& otherRide) -> bool { return thisRide.profit <= otherRide.profit; });
+                break;
+            case INFORMATION_TYPE_TOTAL_CUSTOMERS:
+                SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                    return thisRide.total_customers <= otherRide.total_customers;
+                });
+                break;
+            case INFORMATION_TYPE_TOTAL_PROFIT:
+                SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                    return thisRide.total_profit <= otherRide.total_profit;
+                });
+                break;
+            case INFORMATION_TYPE_CUSTOMERS:
+                SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                    return RideCustomersPerHour(thisRide) <= RideCustomersPerHour(otherRide);
+                });
+                break;
+            case INFORMATION_TYPE_AGE:
+                SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                    return thisRide.build_date <= otherRide.build_date;
+                });
+                break;
+            case INFORMATION_TYPE_INCOME:
+                SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                    return thisRide.income_per_hour <= otherRide.income_per_hour;
+                });
+                break;
+            case INFORMATION_TYPE_RUNNING_COST:
+                SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                    return thisRide.upkeep_cost <= otherRide.upkeep_cost;
+                });
+                break;
+            case INFORMATION_TYPE_QUEUE_LENGTH:
+                SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                    return thisRide.GetTotalQueueLength() <= otherRide.GetTotalQueueLength();
+                });
+                break;
+            case INFORMATION_TYPE_QUEUE_TIME:
+                SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                    return thisRide.GetMaxQueueTime() <= otherRide.GetMaxQueueTime();
+                });
+                break;
+            case INFORMATION_TYPE_RELIABILITY:
+                SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                    return thisRide.reliability_percentage <= otherRide.reliability_percentage;
+                });
+                break;
+            case INFORMATION_TYPE_DOWN_TIME:
+                SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                    return thisRide.downtime <= otherRide.downtime;
+                });
+                break;
+            case INFORMATION_TYPE_GUESTS_FAVOURITE:
+                SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                    return thisRide.guests_favourite <= otherRide.guests_favourite;
+                });
+                break;
+            case INFORMATION_TYPE_EXCITEMENT:
+                SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                    return thisRide.excitement <= otherRide.excitement;
+                });
+                break;
+            case INFORMATION_TYPE_INTENSITY:
+                SortListByPredicate([](const Ride& thisRide, const Ride& otherRide) -> bool {
+                    return thisRide.intensity <= otherRide.intensity;
+                });
+                break;
+            case INFORMATION_TYPE_NAUSEA:
+                SortListByPredicate(
+                    [](const Ride& thisRide, const Ride& otherRide) -> bool { return thisRide.nausea <= otherRide.nausea; });
+                break;
         }
 
         selected_list_item = -1;

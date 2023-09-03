@@ -90,7 +90,7 @@ static std::optional<uint8_t> GetSceneryType(const ObjectType type)
             return SCENERY_TYPE_WALL;
         case ObjectType::Banners:
             return SCENERY_TYPE_BANNER;
-        case ObjectType::PathBits:
+        case ObjectType::PathAdditions:
             return SCENERY_TYPE_PATH_ITEM;
         default:
             return std::nullopt;
@@ -242,4 +242,9 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(IReadObje
 uint16_t SceneryGroupObject::GetNumIncludedObjects() const
 {
     return static_cast<uint16_t>(_items.size());
+}
+
+const std::vector<ObjectEntryDescriptor>& SceneryGroupObject::GetItems() const
+{
+    return _items;
 }

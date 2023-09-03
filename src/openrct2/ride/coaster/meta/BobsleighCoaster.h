@@ -15,7 +15,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr const RideTypeDescriptor BobsleighCoasterRTD =
+constexpr RideTypeDescriptor BobsleighCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
@@ -48,6 +48,7 @@ constexpr const RideTypeDescriptor BobsleighCoasterRTD =
         { COLOUR_WHITE, COLOUR_BRIGHT_RED, COLOUR_WHITE },
         { COLOUR_LIGHT_BLUE, COLOUR_WHITE, COLOUR_BLACK },
         { COLOUR_YELLOW, COLOUR_BRIGHT_RED, COLOUR_BLACK },
+        { COLOUR_TAN_DARK, COLOUR_DARK_ORANGE, COLOUR_DULL_BROWN_LIGHT }, // Reptilian
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_BOBSLEIGH_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_BOBSLEIGH_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),

@@ -186,7 +186,7 @@ static int32_t BitCountPopcnt(uint32_t source)
 #elif defined(OpenRCT2_CPUID_MSVC_X86)
     return _mm_popcnt_u32(source);
 #else
-    openrct2_assert(false, "bitcount_popcnt() called, without support compiled in");
+    Guard::Fail("bitcount_popcnt() called, without support compiled in");
     return INT_MAX;
 #endif
 }
@@ -194,7 +194,7 @@ static int32_t BitCountPopcnt(uint32_t source)
 static int32_t BitCountLut(uint32_t source)
 {
     // https://graphics.stanford.edu/~seander/bithacks.html
-    static constexpr const uint8_t BitsSetTable256[256] = {
+    static constexpr uint8_t BitsSetTable256[256] = {
 #define B2(n) n, (n) + 1, (n) + 1, (n) + 2
 #define B4(n) B2(n), B2((n) + 1), B2((n) + 1), B2((n) + 2)
 #define B6(n) B4(n), B4((n) + 1), B4((n) + 1), B4((n) + 2)
@@ -204,12 +204,7 @@ static int32_t BitCountLut(uint32_t source)
         + BitsSetTable256[source >> 24];
 }
 
-static int32_t (*BitCountFn)(uint32_t);
-
-void BitCountInit()
-{
-    BitCountFn = BitCountPopcntAvailable() ? BitCountPopcnt : BitCountLut;
-}
+static const auto BitCountFn = BitCountPopcntAvailable() ? BitCountPopcnt : BitCountLut;
 
 int32_t BitCount(uint32_t source)
 {
