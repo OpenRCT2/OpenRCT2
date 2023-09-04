@@ -3413,7 +3413,7 @@ void Vehicle::UpdateDeparting()
 
         if (shouldLaunch)
         {
-            if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3) || _vehicleStationIndex != current_station)
+            if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3) || (_vehicleStationIndex != current_station && _vehicleStationIndex != STATION_INDEX_NULL))
             {
                 FinishDeparting();
                 return;
