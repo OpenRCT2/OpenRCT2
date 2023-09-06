@@ -195,7 +195,7 @@ private:
     uint8_t GrassLength;
     uint8_t Ownership;
     uint8_t SurfaceStyle;
-    uint8_t EdgeStyle;
+    uint8_t EdgeObjectIndex;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t Pad0B[5];
@@ -205,12 +205,13 @@ public:
     uint8_t GetSlope() const;
     void SetSlope(uint8_t newSlope);
 
-    uint32_t GetSurfaceStyle() const;
-    TerrainSurfaceObject* GetSurfaceStyleObject() const;
-    void SetSurfaceStyle(uint32_t newStyle);
-    uint32_t GetEdgeStyle() const;
-    TerrainEdgeObject* GetEdgeStyleObject() const;
-    void SetEdgeStyle(uint32_t newStyle);
+    ObjectEntryIndex GetSurfaceObjectIndex() const;
+    TerrainSurfaceObject* GetSurfaceObject() const;
+    void SetSurfaceObjectIndex(ObjectEntryIndex newStyle);
+
+    ObjectEntryIndex GetEdgeObjectIndex() const;
+    TerrainEdgeObject* GetEdgeObject() const;
+    void SetEdgeObjectIndex(ObjectEntryIndex newStyle);
 
     bool CanGrassGrow() const;
     uint8_t GetGrassLength() const;

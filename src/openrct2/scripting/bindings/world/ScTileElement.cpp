@@ -223,7 +223,7 @@ namespace OpenRCT2::Scripting
         auto* el = _element->AsSurface();
         if (el != nullptr)
         {
-            duk_push_int(ctx, el->GetSurfaceStyle());
+            duk_push_int(ctx, el->GetSurfaceObjectIndex());
         }
         else
         {
@@ -243,7 +243,7 @@ namespace OpenRCT2::Scripting
             return;
         }
 
-        el->SetSurfaceStyle(value);
+        el->SetSurfaceObjectIndex(value);
         Invalidate();
     }
 
@@ -254,7 +254,7 @@ namespace OpenRCT2::Scripting
         auto* el = _element->AsSurface();
         if (el != nullptr)
         {
-            duk_push_int(ctx, el->GetEdgeStyle());
+            duk_push_int(ctx, el->GetEdgeObjectIndex());
         }
         else
         {
@@ -274,7 +274,7 @@ namespace OpenRCT2::Scripting
             return;
         }
 
-        el->SetEdgeStyle(value);
+        el->SetEdgeObjectIndex(value);
         Invalidate();
     }
 

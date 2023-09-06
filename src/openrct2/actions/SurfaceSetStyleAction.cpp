@@ -113,7 +113,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
 
             if (_surfaceStyle != OBJECT_ENTRY_INDEX_NULL)
             {
-                uint8_t curSurfaceStyle = surfaceElement->GetSurfaceStyle();
+                uint8_t curSurfaceStyle = surfaceElement->GetSurfaceObjectIndex();
 
                 if (_surfaceStyle != curSurfaceStyle)
                 {
@@ -128,7 +128,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
 
             if (_edgeStyle != OBJECT_ENTRY_INDEX_NULL)
             {
-                uint8_t curEdgeStyle = surfaceElement->GetEdgeStyle();
+                uint8_t curEdgeStyle = surfaceElement->GetEdgeObjectIndex();
 
                 if (_edgeStyle != curEdgeStyle)
                 {
@@ -181,7 +181,7 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
 
             if (_surfaceStyle != OBJECT_ENTRY_INDEX_NULL)
             {
-                uint8_t curSurfaceStyle = surfaceElement->GetSurfaceStyle();
+                uint8_t curSurfaceStyle = surfaceElement->GetSurfaceObjectIndex();
 
                 if (_surfaceStyle != curSurfaceStyle)
                 {
@@ -192,7 +192,7 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
                     {
                         surfaceCost += surfaceObject->Price;
 
-                        surfaceElement->SetSurfaceStyle(_surfaceStyle);
+                        surfaceElement->SetSurfaceObjectIndex(_surfaceStyle);
 
                         MapInvalidateTileFull(coords);
                         FootpathRemoveLitter({ coords, TileElementHeight(coords) });
@@ -202,13 +202,13 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
 
             if (_edgeStyle != OBJECT_ENTRY_INDEX_NULL)
             {
-                uint8_t curEdgeStyle = surfaceElement->GetEdgeStyle();
+                uint8_t curEdgeStyle = surfaceElement->GetEdgeObjectIndex();
 
                 if (_edgeStyle != curEdgeStyle)
                 {
                     edgeCost += 100;
 
-                    surfaceElement->SetEdgeStyle(_edgeStyle);
+                    surfaceElement->SetEdgeObjectIndex(_edgeStyle);
                     MapInvalidateTileFull(coords);
                 }
             }
