@@ -387,7 +387,8 @@ namespace GameActions
                         playerIndex != -1, "Unable to find player %u for game action %u", playerId, action->GetType());
 
                     NetworkSetPlayerLastAction(playerIndex, action->GetType());
-                    if (result.Cost != 0)
+                    NetworkIncrementPlayerNumCommands(playerIndex);
+                    if (result.Cost > 0)
                     {
                         NetworkAddPlayerMoneySpent(playerIndex, result.Cost);
                     }

@@ -36,10 +36,15 @@ void NetworkPlayer::Write(NetworkPacket& packet)
            << CommandsRan;
 }
 
+void NetworkPlayer::IncrementNumCommands()
+{
+    CommandsRan++;
+    WindowInvalidateByNumber(WindowClass::Player, Id);
+}
+
 void NetworkPlayer::AddMoneySpent(money64 cost)
 {
     MoneySpent += cost;
-    CommandsRan++;
     WindowInvalidateByNumber(WindowClass::Player, Id);
 }
 
