@@ -3352,6 +3352,14 @@ std::string NetworkGetPlayerPublicKeyHash(uint32_t id)
     return {};
 }
 
+void NetworkIncrementPlayerNumCommands(uint32_t playerIndex)
+{
+    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    Guard::IndexInRange(playerIndex, network.player_list);
+
+    network.player_list[playerIndex]->IncrementNumCommands();
+}
+
 void NetworkAddPlayerMoneySpent(uint32_t index, money64 cost)
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
@@ -4089,6 +4097,9 @@ std::string NetworkGetPlayerIPAddress(uint32_t id)
 std::string NetworkGetPlayerPublicKeyHash(uint32_t id)
 {
     return {};
+}
+void NetworkIncrementPlayerNumCommands(uint32_t playerIndex)
+{
 }
 void NetworkAddPlayerMoneySpent(uint32_t index, money64 cost)
 {
