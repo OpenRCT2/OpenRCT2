@@ -116,11 +116,12 @@ static constexpr StringId ResearchStageNames[] = {
 class ResearchWindow final : public Window
 {
 public:
-    ResearchWindow()
+    void OnOpen() override
     {
         widgets = window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT];
         width = WW_DEVELOPMENT;
         height = WH_DEVELOPMENT;
+        ResearchUpdateUncompletedTypes();
     }
 
     void SetPage(int32_t newPageIndex)
@@ -152,11 +153,6 @@ public:
     }
 
 private:
-    void OnOpen() override
-    {
-        ResearchUpdateUncompletedTypes();
-    }
-
     void OnUpdate() override
     {
         // Tab animation

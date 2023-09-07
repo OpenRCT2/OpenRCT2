@@ -492,33 +492,15 @@ static u8string OpenSystemFileBrowser(bool isSave)
 class LoadSaveWindow final : public Window
 {
 public:
-    LoadSaveWindow(int32_t type)
+    LoadSaveWindow(int32_t loadSaveType)
+        : type(loadSaveType)
     {
-        widgets = window_loadsave_widgets;
-
-        const auto uiContext = OpenRCT2::GetContext()->GetUiContext();
-        if (!uiContext->HasFilePicker())
-        {
-            disabled_widgets |= (1uLL << WIDX_BROWSE);
-            window_loadsave_widgets[WIDX_BROWSE].type = WindowWidgetType::Empty;
-        }
-
-        // TODO: Split LOADSAVETYPE_* into two proper enum classes (one for load/save, the other for the type)
-        const bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
-        const auto path = GetDir(type);
-
-        const char* pattern = GetFilterPatternByType(type, isSave);
-        PopulateList(isSave, path, pattern);
-        no_list_items = static_cast<uint16_t>(_listItems.size());
-        selected_list_item = -1;
-
-        InitScrollWidgets();
-        ComputeMaxDateWidth();
     }
 
 private:
     int32_t maxDateWidth{ 0 };
     int32_t maxTimeWidth{ 0 };
+    int32_t type;
 
 public:
     void PopulateList(int32_t includeNewItem, const u8string& directory, std::string_view extensionPattern)
@@ -692,6 +674,26 @@ public:
 public:
     void OnOpen() override
     {
+        widgets = window_loadsave_widgets;
+
+        const auto uiContext = OpenRCT2::GetContext()->GetUiContext();
+        if (!uiContext->HasFilePicker())
+        {
+            disabled_widgets |= (1uLL << WIDX_BROWSE);
+            window_loadsave_widgets[WIDX_BROWSE].type = WindowWidgetType::Empty;
+        }
+
+        // TODO: Split LOADSAVETYPE_* into two proper enum classes (one for load/save, the other for the type)
+        const bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
+        const auto path = GetDir(type);
+
+        const char* pattern = GetFilterPatternByType(type, isSave);
+        PopulateList(isSave, path, pattern);
+        no_list_items = static_cast<uint16_t>(_listItems.size());
+        selected_list_item = -1;
+
+        InitScrollWidgets();
+        ComputeMaxDateWidth();
         min_width = WW;
         min_height = WH / 2;
         max_width = WW * 2;
@@ -1120,6 +1122,10 @@ public:
     OverwritePromptWindow(const std::string_view name, const std::string_view path)
         : _name(name)
         , _path(path)
+    {
+    }
+
+    void OnOpen() override
     {
         widgets = window_overwrite_prompt_widgets;
         colours[0] = TRANSLUCENT(COLOUR_BORDEAUX_RED);
