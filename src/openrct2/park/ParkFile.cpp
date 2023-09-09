@@ -1108,7 +1108,7 @@ namespace OpenRCT2
                                             auto rideIndex = trackElement->GetRideIndex().ToUnderlying();
                                             _hadAChainLiftBefore[rideIndex] = true;
                                         }
-                                        
+
                                         if (RideTypeHasConvertibleRollers(trackElement->GetRideType()))
                                         {
                                             auto rideIndex = trackElement->GetRideIndex().ToUnderlying();
