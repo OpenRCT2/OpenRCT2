@@ -714,3 +714,11 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, track_type_t trackType, 
  * @return
  */
 bool TrackTypeMustBeMadeChained(ride_type_t rideType, track_type_t trackType, int32_t parkFileVersion = -1);
+
+/**
+ * Determine if the ride needs a roller-to-chain conversion.
+ *
+ * @param rideType
+ * @return
+ */
+bool RideTypeHasConvertibleRollers(ride_type_t rideType);
