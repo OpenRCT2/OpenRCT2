@@ -1409,6 +1409,7 @@ namespace OpenRCT2
                     if (version < WaterRidesWithLiftsVersion && _isConvertedWaterRide[ride.id.ToUnderlying()]
                         && !_hadAChainLiftBefore[ride.id.ToUnderlying()])
                     {
+                        cs.Ignore<uint8_t>();
                         ride.lift_hill_speed = 0;
                     }
                     else
