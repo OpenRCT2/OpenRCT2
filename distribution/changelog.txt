@@ -1,6 +1,7 @@
 0.4.7 (in development)
 ------------------------------------------------------------------------
 - Fix: [#20737] Spent money in player window underflows when getting refunds.
+- Fix: [#20778] [Plugin] Incorrect target api when executing custom actions.
 
 0.4.6 (2023-09-03)
 ------------------------------------------------------------------------

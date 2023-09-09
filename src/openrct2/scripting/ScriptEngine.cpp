@@ -1069,7 +1069,7 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAct
         }
 
         std::vector<DukValue> pluginCallArgs;
-        if (GetTargetAPIVersion() <= API_VERSION_68_CUSTOM_ACTION_ARGS)
+        if (customActionInfo.Owner->GetTargetAPIVersion() <= API_VERSION_68_CUSTOM_ACTION_ARGS)
         {
             pluginCallArgs = { *dukArgs };
         }
