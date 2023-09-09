@@ -1101,7 +1101,7 @@ namespace OpenRCT2
                                     {
                                         it.element->SetInvisible(true);
                                     }
-                                    if (os.GetHeader().TargetVersion <= WaterRidesWithLiftsVersion)
+                                    if (os.GetHeader().TargetVersion < WaterRidesWithLiftsVersion)
                                     {
                                         if (trackElement->HasChain())
                                         {
