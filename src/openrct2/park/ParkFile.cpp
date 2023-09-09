@@ -1108,14 +1108,15 @@ namespace OpenRCT2
                                             auto rideIndex = trackElement->GetRideIndex().ToUnderlying();
                                             _hadAChainLiftBefore[rideIndex] = true;
                                         }
-                                    }
-                                    if (RideTypeHasConvertibleRollers(trackElement->GetRideType()))
-                                    {
-                                        auto rideIndex = trackElement->GetRideIndex().ToUnderlying();
-                                        _isConvertedWaterRide[rideIndex] = true;
-                                        if (TrackTypeMustBeMadeChained(trackElement->GetRideType(), trackType))
+                                        
+                                        if (RideTypeHasConvertibleRollers(trackElement->GetRideType()))
                                         {
-                                            trackElement->SetHasChain(true);
+                                            auto rideIndex = trackElement->GetRideIndex().ToUnderlying();
+                                            _isConvertedWaterRide[rideIndex] = true;
+                                            if (TrackTypeMustBeMadeChained(trackElement->GetRideType(), trackType))
+                                            {
+                                                trackElement->SetHasChain(true);
+                                            }
                                         }
                                     }
                                     if (os.GetHeader().TargetVersion < BlockBrakeImprovementsVersion)
