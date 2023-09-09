@@ -728,7 +728,7 @@ namespace RCT2
          */
         void SetConvertedWaterRideSpeed()
         {
-            for (size_t rideIndex = 0; rideIndex < _isConvertedWaterRide.capacity(); rideIndex++)
+            for (uint16_t rideIndex = 0; rideIndex < _isConvertedWaterRide.capacity(); rideIndex++)
             {
                 if (_isConvertedWaterRide[rideIndex] && !_hadAChainLiftBefore[rideIndex])
                 {
