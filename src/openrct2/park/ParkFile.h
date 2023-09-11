@@ -9,7 +9,7 @@ struct ObjectRepositoryItem;
 namespace OpenRCT2
 {
     // Current version that is saved.
-    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 30;
+    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 31;
 
     // The minimum version that is forwards compatible with the current version.
     constexpr uint32_t PARK_FILE_MIN_VERSION = 30;
@@ -21,6 +21,10 @@ namespace OpenRCT2
     constexpr uint32_t PARK_FILE_MAGIC = 0x4B524150; // PARK
 
     struct IStream;
+
+    constexpr uint32_t LogFlumeWithSteepSectionsVersion = 16;
+    constexpr uint32_t BlockBrakeImprovementsVersion = 27;
+    constexpr uint32_t WaterRidesWithLiftsVersion = 31;
 } // namespace OpenRCT2
 
 class ParkFileExporter

@@ -32,6 +32,9 @@ namespace RCT1
         OpenRCT2::MemoryStream _stream;
         std::string _name;
 
+        bool _hadAChainLiftBefore = false;
+        bool _isConvertedWaterRide = false;
+
     public:
         TD4Importer()
         {
@@ -268,8 +271,29 @@ namespace RCT1
                     TrackDesignTrackElement trackElement{};
                     trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.Type, td->type);
                     trackElement.flags = t4TrackElement.Flags;
+                    if (trackElement.flags & RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT)
+                    {
+                        _hadAChainLiftBefore = true;
+                    }
+                    if (RideTypeHasConvertibleRollers(td->type))
+                    {
+                        _isConvertedWaterRide = true;
+                        if (TrackTypeMustBeMadeChained(td->type, trackElement.type))
+                        {
+                            trackElement.flags |= RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+                        }
+                    }
                     td->track_elements.push_back(trackElement);
                 }
+            }
+
+            /*
+             * If a water ride already had a chain lift, it was hacked, and thus we shouldn’t touch the lift speed,
+             * or the behaviour of imported saves would change.
+             */
+            if (_isConvertedWaterRide && !_hadAChainLiftBefore)
+            {
+                td->lift_hill_speed = 0;
             }
 
             td->name = _name;

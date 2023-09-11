@@ -36,6 +36,9 @@ namespace RCT2
         OpenRCT2::MemoryStream _stream;
         std::string _name;
 
+        bool _hadAChainLiftBefore = false;
+        bool _isConvertedWaterRide = false;
+
     public:
         TD6Importer()
         {
@@ -137,6 +140,10 @@ namespace RCT2
 
             td->operation_setting = std::min(td->operation_setting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
 
+            // This needs to be done before importing the track elements, as we need to check the ride type when
+            // importing the track elements.
+            UpdateRideType(td);
+
             const auto& rtd = GetRideTypeDescriptor(td->type);
             if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
             {
@@ -173,6 +180,20 @@ namespace RCT2
 
                     trackElement.type = trackType;
                     trackElement.flags = t6TrackElement.Flags;
+
+                    if (trackElement.flags & RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT)
+                    {
+                        _hadAChainLiftBefore = true;
+                    }
+                    if (RideTypeHasConvertibleRollers(td->type))
+                    {
+                        _isConvertedWaterRide = true;
+                        if (TrackTypeMustBeMadeChained(td->type, trackElement.type))
+                        {
+                            trackElement.flags |= RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+                        }
+                    }
+
                     td->track_elements.push_back(trackElement);
                 }
 
@@ -207,9 +228,16 @@ namespace RCT2
                 td->scenery_elements.push_back(std::move(sceneryElement));
             }
 
-            td->name = _name;
+            /*
+             * If a water ride already had a chain lift, it was hacked, and thus we shouldn’t touch the lift speed,
+             * or the behaviour of imported saves would change.
+             */
+            if (_isConvertedWaterRide && !_hadAChainLiftBefore)
+            {
+                td->lift_hill_speed = 0;
+            }
 
-            UpdateRideType(td);
+            td->name = _name;
 
             return td;
         }
