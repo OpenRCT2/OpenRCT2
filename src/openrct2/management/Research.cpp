@@ -217,11 +217,6 @@ void ResearchFinishItem(const ResearchItem& researchItem)
                 ObjectEntryIndex index = researchItem3.entryIndex;
                 seenRideEntry[index] = true;
             }
-            for (auto const& researchItem3 : gResearchItemsInvented)
-            {
-                ObjectEntryIndex index = researchItem3.entryIndex;
-                seenRideEntry[index] = true;
-            }
 
             // RCT2 made non-separated vehicles available at once, by removing all but one from research.
             // To ensure old files keep working, look for ride entries not in research, and make them available as well.
@@ -237,6 +232,7 @@ void ResearchFinishItem(const ResearchItem& researchItem)
                             if (rideEntry2->ride_type[j] == base_ride_type)
                             {
                                 RideEntrySetInvented(i);
+                                ResearchInsertRideEntry(i, true);
                                 break;
                             }
                         }
@@ -818,12 +814,59 @@ static void ResearchRebuildInventedTables()
 
 static void ResearchAddAllMissingItems(bool isResearched)
 {
+    // Mark base ridetypes as seen if they exist in the invented research list.
+    bool seenBaseEntry[MAX_RIDE_OBJECTS]{};
+    for (auto const& researchItem : gResearchItemsInvented)
+    {
+        ObjectEntryIndex index = researchItem.baseRideType;
+        seenBaseEntry[index] = true;
+    }
+
+    // Unlock and add research entries to the invented list for ride types whose base ridetype has been seen.
     for (ObjectEntryIndex i = 0; i < MAX_RIDE_OBJECTS; i++)
     {
         const auto* rideEntry = GetRideEntryByIndex(i);
         if (rideEntry != nullptr)
         {
-            ResearchInsertRideEntry(i, isResearched);
+            for (uint8_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
+            {
+                if (seenBaseEntry[rideEntry->ride_type[j]])
+                {
+                    RideEntrySetInvented(i);
+                    ResearchInsertRideEntry(i, true);
+                    break;
+                }
+            }
+        }
+    }
+
+    // Mark base ridetypes as seen if they exist in the uninvented research list.
+    for (auto const& researchItem : gResearchItemsUninvented)
+    {
+        ObjectEntryIndex index = researchItem.baseRideType;
+        seenBaseEntry[index] = true;
+    }
+
+    // Only add Rides to uninvented research that haven't had their base ridetype seen.
+    // This prevents rct2 grouped rides from only unlocking the first train.
+    for (ObjectEntryIndex i = 0; i < MAX_RIDE_OBJECTS; i++)
+    {
+        const auto* rideEntry = GetRideEntryByIndex(i);
+        if (rideEntry != nullptr)
+        {
+            bool baseSeen = false;
+            for (uint8_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
+            {
+                if (seenBaseEntry[rideEntry->ride_type[j]])
+                {
+                    baseSeen = true;
+                    break;
+                }
+            }
+            if (!baseSeen)
+            {
+                ResearchInsertRideEntry(i, isResearched);
+            }
         }
     }
 
