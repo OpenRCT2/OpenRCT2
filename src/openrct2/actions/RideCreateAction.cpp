@@ -216,7 +216,7 @@ GameActions::Result RideCreateAction::Execute() const
 
         if (rideEntry->shop_item[0] == ShopItem::None)
         {
-            if (!ParkRidePricesUnlocked())
+            if (!ParkRidePricesUnlocked() || gParkEntranceFee > 0)
             {
                 ride->price[0] = 0;
             }
