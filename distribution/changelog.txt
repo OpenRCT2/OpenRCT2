@@ -1,5 +1,6 @@
 0.4.7 (in development)
 ------------------------------------------------------------------------
+- Change: [#20790] Default ride price set to free if park charges for entry
 - Fix: [#20737] Spent money in player window underflows when getting refunds.
 - Fix: [#20778] [Plugin] Incorrect target api when executing custom actions.
 
