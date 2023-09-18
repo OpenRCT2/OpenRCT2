@@ -8,6 +8,7 @@
  *****************************************************************************/
 #include "MoneyEffect.h"
 
+#include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
 #include "../core/DataSerialiser.h"
@@ -40,7 +41,7 @@ template<> bool EntityBase::Is<MoneyEffect>() const
  */
 void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool guestPurchase)
 {
-    if (value == 0.00_GBP)
+    if (value == 0.00_GBP || GameIsPaused())
         return;
 
     MoneyEffect* moneyEffect = CreateEntity<MoneyEffect>();
