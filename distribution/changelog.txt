@@ -3,7 +3,7 @@
 - Change: [#20790] Default ride price set to free if park charges for entry.
 - Fix: [#20737] Spent money in player window underflows when getting refunds.
 - Fix: [#20778] [Plugin] Incorrect target api when executing custom actions.
-- Fix: [#19722] Forbid removal of large trees if scenario forbids tree removal
+- Fix: [#19722] “Forbid tree removal” restriction doesn't forbid removal of large scenery tree items.
 
 0.4.6 (2023-09-03)
 ------------------------------------------------------------------------
