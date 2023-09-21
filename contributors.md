@@ -1,247 +1,248 @@
 # Contributors to OpenRCT2
-Includes all git commit authors. Aliases are GitHub user names.
+Includes all git commit authors. Aliases are GitHub usernames or Community nicknames.
 
 ## Development team
-* Ted John (IntelOrca) - Owner
 * Duncan Frost (duncanspumpkin)
-* Michał Janiszewski (janisozaur)
 * Hielke Morsink (Broxzier)
-* Tulio Paschoalin Leao (tupaschoal)
-* Olivier Wervers (Oli414)
 * Matthias Moninger (ZehMatt)
+* Michael Bernardi (mrmbernardi)
+* Michał Janiszewski (janisozaur)
+* Olivier Wervers (Oli414)
+* Ted John (IntelOrca) - Owner
+* Tulio Paschoalin Leao (tupaschoal)
 
 ## Former development team members
+* Aaron van Geffen (AaronVanGeffen)
 * Lewis Fox (LRFLEW)
 * Marijn van der Werf (marijnvdwerf)
-* (zsilencer)
-* Richard Jenkins (rwjuk)
-* Aaron van Geffen (AaronVanGeffen)
 * Michael Steenbeek (Gymnasiast)
+* Richard Jenkins (rwjuk)
 * Rik Smeets (rik-smeets)
+* (zsilencer)
 
 ## Long term contributors
 The following people are not part of the development team, but have been contributing for a long time.
 * Edward Calver (X7123M3-256)
 * Karst van Galen Last (AuraSpecs)
-* Matte Andersson (Nubbie)
+* Kelson Blakewood (spacek531)
 * Kenton Boadway (Krutonium)
-* Joe Minor Jr (wolfreak99)
+* (frutiemax)
 
 ## Implementation (RCT2)
-* Ted John (IntelOrca)
-* Duncan Frost (duncanspumpkin)
-* Peter Hill (ZedThree) - String handling, misc.
-* (qcz) - Scenery window, misc.
-* Matthias Lanzinger (lnz) - Climate, finance, scenario, ride reachability
-* (zsilencer) - Audio, multiplayer, misc.
-* (DutchRPW) - peep_update_days_in_queue, misc. money-related functions
 * Adrian Wielgosik (adrian17) - Ride window, top toolbar, map window, misc.
-* (hexdec) - Music credits window, staff window, misc.
-* Dennis Devriendt (ddevrien) - Banner window, map window, options window
-* Maciek Baron (MaciekBaron) - Peep enums, item flags, misc.
-* (Hual) - Minimap window resizing; address identification; sub_6C0C3F.
-* (AngeloG) - Scrollbar input, misc.
-* (jcdavis) - Misc.
-* (marcotc) - Rain drawing, misc.
-* (vanderkleij) - create_sprite, move_sprite_to_list
 * Ben Pye (benpye) - Logo rendering on title screen
-* (JeroenSack) - widget_scroll_get_part, misc.
-* Sijmen Schoon (SijmenSchoon) - redraw_peep_and_rain, misc bugfixes.
+* Dennis Devriendt (ddevrien) - Banner window, map window, options window
+* Duncan Frost (duncanspumpkin)
 * Lewis Fox (LRFLEW) - sub_69A997, OpenGL support, macOS
+* Maciek Baron (MaciekBaron) - Peep enums, item flags, misc.
 * Marijn van der Werf (marijnvdwerf) - Peep functions, drawing and paint code
+* Matthias Lanzinger (lnz) - Climate, finance, scenario, ride reachability
 * Nicolas Espinosa Mooser (Nicolas-EM) - staff window refactor
+* Peter Hill (ZedThree) - String handling, misc.
+* Sijmen Schoon (SijmenSchoon) - redraw_peep_and_rain, misc bugfixes.
+* Ted John (IntelOrca)
+* (AngeloG) - Scrollbar input, misc.
+* (DutchRPW) - peep_update_days_in_queue, misc. money-related functions
+* (hexdec) - Music credits window, staff window, misc.
+* (Hual) - Minimap window resizing; address identification; sub_6C0C3F.
+* (jcdavis) - Misc.
+* (JeroenSack) - widget_scroll_get_part, misc.
+* (marcotc) - Rain drawing, misc.
+* (qcz) - Scenery window, misc.
+* (vanderkleij) - create_sprite, move_sprite_to_list
+* (zsilencer) - Audio, multiplayer, misc.
 
 ## Additional implementation (OpenRCT2)
-* (atmaxinger) - User configuration
-* (anyc) - Housecleaning, cross-platform fixes
-* Michael Steenbeek (Gymnasiast) - Cheats, RCT1 ride style, misc.
-* Miso Zmiric (mzmiric5) - Old Twitch integration, misc.
-* Inseok Lee (dlunch) - Load save files from command line
-* Jørn Lomax (jvlomax) - Configuration parser
-* Alexander Overvoorde (Overv) - OpenGL improvements, Steam overlay detection, various bugfixes.
-* (eezstreet) - Add finances button to toolbar, various bugfixes.
-* Hielke Morsink (Broxzier) - Tile inspector, heightmap loader, misc.
-* Joe Minor Jr (wolfreak99) - Various cheats, bugfixes, new About and Changelog windows.
-* Thomas den Hollander (ThomasdenH) - Dithering in sprite importer, invert viewport dragging, park rating cheats misc.
-* James Robertson (rd3k) - Initial tile inspector, misc changes.
-* Robert Jordan (trigger-death) - UI theming, title sequence editor, misc.
 * Aaron van Geffen (AaronVanGeffen) - scenario select screen, font detection, misc.
-* Michał Janiszewski (janisozaur) - Linux port, crash handling, security, misc.
-* Kelson Blakewood (spacek531) - title sequences, title sequence features, vehicle features
-* Hugo Wallenburg (Goddesen) - Misc.
-* Edward Calver (X7123M3-256) - New Hybrid Coaster track, extended sprite toolchain, more vehicle cheats, misc.
-* Matte Andersson (Nubbie) - Misc, UX
-* Daniel Trujillo Viedma (gDanix) - Custom currency.
-* (zaxcav) - Improvements to original pathfinding algorithm.
-* Jeroen D. Stout (JeroenDStout) - Light effects, train crossings, virtual floor.
-* Matthias Moninger (ZehMatt) - Game actions, multiplayer synchronisation, misc.
-* Joël Troch (JoelTroch) - Keyboard shortcuts for ride construction.
-* Thomas Delebo (delebota) - Server descriptions and greetings.
-* Richard Jenkins (rwjuk) - Path issues overlay, console improvements, bug fixes
-* Brian Callahan (ibara) - OpenBSD port.
-* Jens Heuseveldt (jensj12) - Mountain tool improvements, misc.
-* Park Joon-Kyu (segfault87) - Allow filtering guests by name
-* Harrison Gentry (hgentry) - Date-changing command, misc.
-* Joshua Moerman (Jaxan) - Minimap cleanup, misc.
-* Nicolas Hawrysh (xp4xbox) - Various (ride) sprite improvements.
-* Albert Morgese (Fusxfaranto) - Shop auto-rotation, unicode uppercasing.
-* Olivier Wervers (oli414) - Remove unused objects command, various bugfixes
-* Christian Schubert (Osmodium) - Ensuring custom user content folders, incl. open folder.
-* (Xkeeper0) - Improved banner tooltips; multiplayer status in toolbar.
-* Kevin Strehl (bitman2049) - Tile inspector keybindings
-* Anton Scharnowski (scrapes) - Added Scenery Scatter Options Window.
-* Chad Ian Anderson (pizza2004) - Added New Game option, bug fixes, misc.
-* Peter Ryszkiewicz (pRizz) - Added horizontal grid lines to finance charts.
-* Hudson Oliveira (hdpoliveira) - Misc.
-* Jim Verheijde (Jimver) - Make handymen less likely to get stuck in queue lines, misc.
-* Helio Batimarqui (batimarqui) - Misc.
-* Keith Stellyes (keithstellyes) - Misc.
-* Bas Cantrijn (Basssiiie) - Various plugin additions, misc.
 * Adrian Zdanowicz (CookiePLMonster) - Misc.
-* Andrew Pratt (andrewpratt64) - Added api hook for vehicle crashes, api function to get entities on a tile
-* Karst van Galen Last (AuraSpecs) - Ride paint (bounding boxes, extra track pieces), soundtrack, sound effects, misc.
-* (8street) - Misc.
-* Umar Ahmed (umar-ahmed) - MacOS file watcher
+* Albert Morgese (Fusxfaranto) - Shop auto-rotation, unicode uppercasing.
+* Alexander Overvoorde (Overv) - OpenGL improvements, Steam overlay detection, various bugfixes.
 * Andrew Arnold (fidwell) - Added window support for more scenery groups.
+* Andrew Pratt (andrewpratt64) - Added api hook for vehicle crashes, api function to get entities on a tile
+* Anton Scharnowski (scrapes) - Added Scenery Scatter Options Window.
+* Bas Cantrijn (Basssiiie) - Various plugin additions, misc.
+* Brian Callahan (ibara) - OpenBSD port.
+* Chad Ian Anderson (pizza2004) - Added New Game option, bug fixes, misc.
+* Christian Schubert (Osmodium) - Ensuring custom user content folders, incl. open folder.
+* Daniel Trujillo Viedma (gDanix) - Custom currency.
+* Edward Calver (X7123M3-256) - Hybrid coaster, single rail coaster, alpine coaster, extended sprite toolchain, more vehicle cheats, new track elements, misc.
+* Harrison Gentry (hgentry) - Date-changing command, misc.
+* Helio Batimarqui (batimarqui) - Misc.
+* Hielke Morsink (Broxzier) - Tile inspector, heightmap loader, misc.
+* Hudson Oliveira (hdpoliveira) - Misc.
+* Hugo Wallenburg (Goddesen) - Misc.
+* Inseok Lee (dlunch) - Load save files from command line
+* James Robertson (rd3k) - Initial tile inspector, misc changes.
+* Jens Heuseveldt (jensj12) - Mountain tool improvements, misc.
+* Jeroen D. Stout (JeroenDStout) - Light effects, train crossings, virtual floor.
+* Jim Verheijde (Jimver) - Make handymen less likely to get stuck in queue lines, misc.
+* Joe Minor Jr (wolfreak99) - Various cheats, bugfixes, new About and Changelog windows.
 * Josh Trzebiatowski (trzejos) - Ride and scenery filtering
-* (kyphii) - Extended color selection, reversed ride vehicles, misc.
-* Phumdol Lookthipnapha (beam41) - Misc.
+* Joshua Moerman (Jaxan) - Minimap cleanup, misc.
+* Joël Troch (JoelTroch) - Keyboard shortcuts for ride construction.
+* Jørn Lomax (jvlomax) - Configuration parser
+* Karst van Galen Last (AuraSpecs) - Steep log flume pieces, soundtrack, sound effects, misc.
+* Keith Stellyes (keithstellyes) - Misc.
+* Kelson Blakewood (spacek531) - title sequences, title sequence features, vehicle features
+* Kevin Strehl (bitman2049) - Tile inspector keybindings
+* Matte Andersson (Nubbie) - Misc, UX
+* Matthias Moninger (ZehMatt) - Game actions, multiplayer synchronisation, misc.
+* Michael Steenbeek (Gymnasiast) - Cheats, RCT1 ride style, misc.
+* Michał Janiszewski (janisozaur) - Linux port, crash handling, security, misc.
+* Miso Zmiric (mzmiric5) - Old Twitch integration, misc.
+* Nicolas Hawrysh (xp4xbox) - Various (ride) sprite improvements.
 * Nikolas Parshook (nparshook) - Misc.
-* Wenzhao Qiu (qwzhaox) - Misc.
+* Olivier Wervers (oli414) - Remove unused objects command, various bugfixes
+* Park Joon-Kyu (segfault87) - Allow filtering guests by name
+* Peter Ryszkiewicz (pRizz) - Added horizontal grid lines to finance charts.
+* Phumdol Lookthipnapha (beam41) - Misc.
+* Richard Jenkins (rwjuk) - Path issues overlay, console improvements, bug fixes
+* Robert Jordan (trigger-death) - UI theming, title sequence editor, misc.
+* Thomas Delebo (delebota) - Server descriptions and greetings.
+* Thomas den Hollander (ThomasdenH) - Dithering in sprite importer, invert viewport dragging, park rating cheats misc.
 * Tiago Reul (reul) - Misc.
+* Umar Ahmed (umar-ahmed) - MacOS file watcher
+* Wenzhao Qiu (qwzhaox) - Misc.
+* (8street) - Misc.
+* (Xkeeper0) - Improved banner tooltips; multiplayer status in toolbar.
+* (anyc) - Housecleaning, cross-platform fixes
+* (atmaxinger) - User configuration
+* (eezstreet) - Add finances button to toolbar, various bugfixes.
+* (kyphii) - Extended color selection, reversed ride vehicles, misc.
+* (zaxcav) - Improvements to original pathfinding algorithm.
 
 ## Bug fixes
-* (KirilAngelov)
-* (halfbro)
-* (Myrtle)
-* (nean)
-* Ed Foley (e-foley)
-* Michael Pham (nightroan)
-* Lucas Riutzel (jackinloadup)
-* Youngjae Yu (YJSoft)
-* Chanwoong Kim (kexplo)
-* Josué Acevedo (Wirlie)
-* Martin Černáč (octaroot)
-* (marcovmun)
-* Sven Slootweg (joepie91)
-* Daniel Trujillo Viedma (gDanix)
-* Niels NTG Poldervaart (Niels-NTG) - Screenshot filenames
-* Jonathan Haas (HaasJona)
-* Jake Breen (Haekb)
-* Marco Benzi Tobar (Lisergishnu)
-* (ceeac)
-* Tomas Dittmann (Chaosmeister)
-* William Wallace (Willox)
-* Christian Friedrich Coors (ccoors)
-* Robbin Voortman (rvoortman)
-* Willem J. Lee (telk5093)
-* Ethan Smith (ethanhs) - Refactor MAX_PATH
-* Robert Lewicki (rlewicki)
-* Liam Parker (elInfidel)
-* Tyler Ruckinger (TyPR124)
-* Justin Gottula (jgottula)
-* Seongsik Park (pss9205)
-* (Deurklink)
-* Nathan Zabriskie (NathanZabriskie)
-* Toby Hinloopen (tobyhinloopen)
-* Patrick Martinez (martip23)
-* Andy Ford (AndyTWF)
-* Matthew Beaudin (mattbeaudin)
-* Øystein Dale (oystedal)
-* Christian Schubert (Osmodium)
-* James Lord (RCTMASTA)
-* Brian Massino (Nazey), Lauren Watson (lwatson2016), Jason Myre (jmyre1999), Nicole Wright (nicolewright), Josh Tucker (joshtucker132)
-* Hussein Okasha (Hokasha2016), Brandon Dupree (Bdupree5), Zetao Ye (ZbrettonYe), Jordan Arevalos (Jarevalos2017)
-* Florian Will (w-flo)
-* Trevor Harkness (tharkne), Steve Xu (stevexu-umich)
-* (aw20368)
-* Jim Armstrong (41northstudios)
-* Kenny Castro-Monroy (kennycastro007)
-* Joseph Atkins-Turkish (Spacerat)
-* Denis Khabenkov (kodmord)
-* Kevin Laframboise (klaframboise)
-* Tushar Sariya (TusharSariya)
-* (WantDiscussion)
-* Tomáš Žilínek (TomasZilinek)
-* Mustapha Elghoul (mustaphaelghoul)
-* Tyler Leamon (tylerleamon)
-* Michael Coates (outerwear)
-* Reid Baris (Rdbaris)
-* Deanna Baris (dbaris)
-* Chaitanya Thengdi (chaitanyathengdi)
-* Sidney Kuyateh (autinerd)
-* Łukasz Pękalski (Lukasz-Pe)
-* (quale)
-* Arran Ireland (ion232)
-* Ryan Bello (ryan-bello)
-* Simon Jarrett (mwnciau)
-* Richard Fine (richard-fine)
-* Tom Parsons (tombomp)
-* Stephan Spengler (Sadret)
-* Roger Seekell (rpstester)
-* Ben Johnston (gsckoco)
-* (evilclownattack)
 * Adam Bloom (adam-bloom)
-* Geoff B. (geoff-B)
-* Ryan D. (rctdude2)
-* (zrowny)
-* Emre Aydin (aemreaydin)
-* Daniel Karandikar (DKarandikar)
-* Struan Clark (xtruan)
-* Kane Shaw (seifer7)
-* Saad Rehman (SaadRehmanCS)
-* (ocalhoun6)
-* Sean Payne (seanmajorpayne)
-* Soham Roy (sohamroy19)
-* Gaven Rendell (Rendello)
-* Christian Haase (chrhaase)
-* Cory Sanin (CorySanin)
-* Vinícius Hashimoto (vkhashimoto)
-* Gal B. (GalBr)
-* Rik Smeets (rik-smeets)
-* Charles Machalow (csm10495)
 * Alexander Czarnecki (alcz/zuczek4793)
-* Lawrence De Mol (lawrencedemol)
-* Erik Wouters (EWouters)
-* Hoby R. (hobyr)
-* Huu Kim Nguyen (CoderUndefined)
-* Henry Cheng (jazzysoggy)
-* Dan Stevens (MajeureX)
-* 73 (733737)
-* Raymond Zhao (rzhao271)
-* Xixiang Chen (jacknull1991)
-* (ReticulatingSplines)
+* Andy Ford (AndyTWF)
+* Aram Kazorian (aramk-hub)
+* Arran Ireland (ion232)
+* Ben Johnston (gsckoco)
+* Brian Massino (Nazey), Lauren Watson (lwatson2016), Jason Myre (jmyre1999), Nicole Wright (nicolewright), Josh Tucker (joshtucker132)
+* Chaitanya Thengdi (chaitanyathengdi)
+* Chanwoong Kim (kexplo)
+* Charles Machalow (csm10495)
+* Chase Percy (Chase-Percy)
+* Christian Friedrich Coors (ccoors)
+* Christian Haase (chrhaase)
+* Christian Schubert (Osmodium)
 * Conrad Cash (HouseholdVTuber)
-* Michael Bickerton (mdbckrtn)
-* Nehemiah Negussie (nehemiah-negussie)
-* Severin Paul Höfer (zzril)
+* Cory Sanin (CorySanin)
+* Dan Stevens (MajeureX)
+* Daniel Karandikar (DKarandikar)
+* Daniel Trujillo Viedma (gDanix)
+* Deanna Baris (dbaris)
+* Denis Khabenkov (kodmord)
+* Ed Foley (e-foley)
+* Emre Aydin (aemreaydin)
+* Erik Wouters (EWouters)
 * Ernest Elgin (eaeiv)
 * Ernest Wong (ErnWong)
+* Ethan Smith (ethanhs) - Refactor MAX_PATH
+* Florian Will (w-flo)
+* Gal B. (GalBr)
+* Gaven Rendell (Rendello)
+* Geoff B. (geoff-B)
+* Henry Cheng (jazzysoggy)
+* Hoby R. (hobyr)
+* Hussein Okasha (Hokasha2016), Brandon Dupree (Bdupree5), Zetao Ye (ZbrettonYe), Jordan Arevalos (Jarevalos2017)
+* Huu Kim Nguyen (CoderUndefined)
+* Jake Breen (Haekb)
+* James Lord (RCTMASTA)
+* Jim Armstrong (41northstudios)
 * Joel H. (HtotheTML)
 * John Mulcahy (jayjay300)
-* Chase Percy (Chase-Percy)
-* Wenzhao Qiu (qwzhaox)
+* Jonathan Haas (HaasJona)
+* Joseph Atkins-Turkish (Spacerat)
+* Josué Acevedo (Wirlie)
+* Justin Gottula (jgottula)
+* Kane Shaw (seifer7)
+* Kenny Castro-Monroy (kennycastro007)
+* Kevin Laframboise (klaframboise)
+* Lawrence De Mol (lawrencedemol)
+* Liam Parker (elInfidel)
+* Lucas Riutzel (jackinloadup)
+* Marco Benzi Tobar (Lisergishnu)
+* Martin Černáč (octaroot)
+* Matthew Beaudin (mattbeaudin)
 * Michael Bernardi (mrmbernardi)
-* Aram Kazorian (aramk-hub)
+* Michael Bickerton (mdbckrtn)
+* Michael Coates (outerwear)
+* Michael Pham (nightroan)
+* Mustapha Elghoul (mustaphaelghoul)
+* Nathan Zabriskie (NathanZabriskie)
+* Nehemiah Negussie (nehemiah-negussie)
+* Niels NTG Poldervaart (Niels-NTG) - Screenshot filenames
+* Patrick Martinez (martip23)
+* Raymond Zhao (rzhao271)
+* Reid Baris (Rdbaris)
+* Richard Fine (richard-fine)
+* Rik Smeets (rik-smeets)
+* Robbin Voortman (rvoortman)
+* Robert Lewicki (rlewicki)
+* Roger Seekell (rpstester)
+* Ryan Bello (ryan-bello)
+* Ryan D. (rctdude2)
+* Saad Rehman (SaadRehmanCS)
+* Sean Payne (seanmajorpayne)
+* Seongsik Park (pss9205)
+* Severin Paul Höfer (zzril)
+* Sidney Kuyateh (autinerd)
+* Simon Jarrett (mwnciau)
+* Soham Roy (sohamroy19)
+* Stephan Spengler (Sadret)
+* Struan Clark (xtruan)
+* Sven Slootweg (joepie91)
+* Toby Hinloopen (tobyhinloopen)
+* Tom Parsons (tombomp)
+* Tomas Dittmann (Chaosmeister)
+* Tomáš Žilínek (TomasZilinek)
+* Trevor Harkness (tharkne), Steve Xu (stevexu-umich)
+* Tushar Sariya (TusharSariya)
+* Tyler Leamon (tylerleamon)
+* Tyler Ruckinger (TyPR124)
+* Vinícius Hashimoto (vkhashimoto)
+* Wenzhao Qiu (qwzhaox)
+* Willem J. Lee (telk5093)
+* William Wallace (Willox)
+* Xixiang Chen (jacknull1991)
+* Youngjae Yu (YJSoft)
+* Øystein Dale (oystedal)
+* Łukasz Pękalski (Lukasz-Pe)
+* (733737)
+* (Deurklink)
+* (KirilAngelov)
+* (Myrtle)
+* (ReticulatingSplines)
+* (WantDiscussion)
+* (aw20368)
+* (ceeac)
+* (evilclownattack)
+* (halfbro)
+* (marcovmun)
+* (nean)
+* (ocalhoun6)
+* (quale)
+* (zrowny)
 
 ## Toolchain
-* (Balletie) - macOS
-* Kevin Burke (kevinburke) - macOS, Unix
-* Miso Zmiric (mzmiric5) - Initial macOS toolchain
-* Jarno Veuger (JarnoVgr) - Windows build server
-* Ted John (IntelOrca) - Windows
-* Michał Janiszewski (janisozaur) - Linux, Travis CI
-* Lewis Fox (LRFLEW) - macOS
-* Andrew Rimpici (Andy608) - macOS
 * Adam Bloom (adam-bloom) - macOS, CI
+* Andrew Rimpici (Andy608) - macOS
+* Jarno Veuger (JarnoVgr) - Windows build server
+* Kevin Burke (kevinburke) - macOS, Unix
+* Lewis Fox (LRFLEW) - macOS
+* Michał Janiszewski (janisozaur) - Linux, Travis CI
+* Miso Zmiric (mzmiric5) - Initial macOS toolchain
+* Ted John (IntelOrca) - Windows
+* (Balletie) - macOS
 
 ## Documentation
-* (honzi)
-* Kevin Burke (kevinburke)
 * James Robertson (rd3k)
+* Kevin Burke (kevinburke)
 * Max Boße (MakaHost)
-* (MaxBareiss)
 * Mithun Hunsur (Philpax)
+* (honzi)
+* (MaxBareiss)
 * (RollingStar)
 * (That Human Being)
 
@@ -274,27 +275,33 @@ The following people are not part of the development team, but have been contrib
 * Swedish - (Jinxit), (mharrys), (Slimeyo), Matte Andersson (Nubbie)
 
 ## Graphics
-* OpenRCT2 Logo - Yannic Geurts (xzbobzx)
-* Booster Sprites - Nicolas Hawrysh (xp4xbox)
+* Edward Calver (X7123M3-256) - Hybrid RC track & train, Single Rail RC track & train, Alpine RC track & vehicle, LIM RC extended trackset
+* Karst van Galen Last (AuraSpecs) - Steep log flume, Inverted RC Booster
+* Michael Steenbeek (Gymnasiast) - Extended fontset
+* Nicolas Hawrysh (xp4xbox) - Booster Sprites Twister, Giga, Mini, Woodie
+* Yannic Geurts (xzbobzx) - OpenRCT2 Logo
 
 ## Music
-* Karst "Jalmaan" van Galen Last (AuraSpecs)
-* (Flyxxpy)
-* Jan Büchner (Greyfade)
 * Allister Brimble
 * Herman Riddering
+* Jan Büchner (Greyfade)
+* Karst "Jalmaan" van Galen Last (AuraSpecs)
+* (Flyxxpy)
+* (Skyshard)
 
 ## Sound Effects
 * Karst van Galen Last (AuraSpecs)
 * (ThatGuyYouKnow)
 
 ## RollerCoaster Tycoon 2 credits
-Design and programming by Chris Sawyer
-Graphics by Simon Foster
-Sound and music by Allister Brimble
-Additional sounds recorded by David Ellis
-Representation by Jacqui Lyons at Marjacq Ltd.
+* Allister Brimble - Music & Sound
+* Chris Sawyer - Programming & Implementation
+* David Ellis - Additional Sound
+* Jacqui Lyons (Marjacq Ltd.) - Reprsentation
+* Simon Foster - Graphics
 
 Thanks to: Peter James Adcock, Joe Booth, and John Wardley
 
-Licensed to Infogrames Interactive Inc.
+Licensed to Atari
+
+###### Copyright (c) 2014-2023 OpenRCT2 developers
