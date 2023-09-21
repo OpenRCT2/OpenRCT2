@@ -1,5 +1,6 @@
 0.4.7 (in development)
 ------------------------------------------------------------------------
+- Feature: [#20141] Add additional track pieces to the Giga Coaster.
 - Feature: [OpenMusic#46] Added Mystic ride music style.
 - Change: [#20790] Default ride price set to free if park charges for entry.
 - Fix: [#20737] Spent money in player window underflows when getting refunds.
@@ -10,7 +11,6 @@
 ------------------------------------------------------------------------
 - Feature: [#15660] Ability to show window buttons on the left.
 - Feature: [#20680] New title sequences (https://github.com/OpenRCT2/title-sequences/releases/tag/v0.4.6).
-- Feature: [#20141] New track elements available on the Giga Coaster.
 - Feature: [OpenMusic#41] Official Title Theme by Allister Brimble.
 - Improved: [#20119, #20243] Add new colour presets to several roller coasters (using the new colours).
 - Improved: [#20393, #20410] Add Cyrillic characters Ґґ, Ѕѕ, Єє, Іі, Її, and Јј to the sprite font.
