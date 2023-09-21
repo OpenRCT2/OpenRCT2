@@ -9610,33 +9610,33 @@ static void GigaRCTrackLeftQuarterTurn190DegUp(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 0)), { 0, 0, height },
-                        { { 4, 6, height + 8 }, { 2, 20, 63 } });
+                        { { 4, 6, height + 8 }, { 2, 20, 96 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 1)), { 0, 0, height },
-                        { { 4, 6, height + 8 }, { 2, 20, 63 } });
+                        { { 4, 6, height + 8 }, { 2, 20, 96 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 2)), { 0, 0, height },
-                        { { 24, 6, height + 8 }, { 2, 20, 63 } });
+                        { { 24, 6, height + 8 }, { 2, 20, 96 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 3)), { 0, 0, height },
-                        { { 24, 6, height + 8 }, { 2, 20, 63 } });
+                        { { 24, 6, height + 8 }, { 2, 20, 96 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 4)), { 0, 0, height },
-                        { { 4, 6, height + 8 }, { 2, 20, 63 } });
+                        { { 4, 6, height + 8 }, { 2, 20, 96 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 5)), { 0, 0, height },
-                        { { 24, 6, height + 8 }, { 2, 20, 63 } });
+                        { { 24, 6, height + 8 }, { 2, 20, 96 } });
                     break;
             }
             PaintUtilSetVerticalTunnel(session, height + 96);
@@ -9662,33 +9662,33 @@ static void GigaRCTrackRightQuarterTurn190DegUp(
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 6)), { 0, 0, height },
-                        { { 4, 6, height + 8 }, { 2, 20, 63 } });
+                        { { 4, 6, height + 8 }, { 2, 20, 96 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 7)), { 0, 0, height },
-                        { { 24, 6, height + 8 }, { 2, 20, 63 } });
+                        { { 24, 6, height + 8 }, { 2, 20, 96 } });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 8)), { 0, 0, height },
-                        { { 24, 6, height + 8 }, { 2, 20, 63 } });
+                        { { 24, 6, height + 8 }, { 2, 20, 96 } });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 9)), { 0, 0, height },
-                        { { 4, 6, height + 8 }, { 2, 20, 63 } });
+                        { { 4, 6, height + 8 }, { 2, 20, 96 } });
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 10)), { 0, 0, height },
-                        { { 24, 6, height + 8 }, { 2, 20, 63 } });
+                        { { 24, 6, height + 8 }, { 2, 20, 96 } });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction,
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_VERTICAL_TWIST + 11)), { 0, 0, height },
-                        { { 4, 6, height + 8 }, { 2, 20, 63 } });
+                        { { 4, 6, height + 8 }, { 2, 20, 96 } });
                     break;
             }
             PaintUtilSetVerticalTunnel(session, height + 96);
