@@ -278,11 +278,12 @@ The following people are not part of the development team, but have been contrib
 * Booster Sprites - Nicolas Hawrysh (xp4xbox)
 
 ## Music
+* Allister Brimble
+* Herman Riddering
 * Karst "Jalmaan" van Galen Last (AuraSpecs)
 * (Flyxxpy)
 * Jan Büchner (Greyfade)
-* Allister Brimble
-* Herman Riddering
+* (Skyshard)
 
 ## Sound Effects
 * Karst van Galen Last (AuraSpecs)
