@@ -21,12 +21,17 @@ Includes all git commit authors. Aliases are GitHub usernames or Community nickn
 * (zsilencer)
 
 ## Long term contributors
-The following people are not part of the development team, but have been contributing for a long time.
+Appreciation for long term contributors to the project having provided substantial work.
 * Edward Calver (X7123M3-256)
 * Karst van Galen Last (AuraSpecs)
 * Kelson Blakewood (spacek531)
 * Kenton Boadway (Krutonium)
 * (frutiemax)
+
+## Special Thanks
+Appreciation for contributors who have provided substatial work, but are no longer active.
+* Joe Minor Jr (wolfreak99)
+* Matte Andersson (Nubbie)
 
 ## Implementation (RCT2)
 * Adrian Wielgosik (adrian17) - Ride window, top toolbar, map window, misc.
