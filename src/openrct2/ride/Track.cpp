@@ -574,8 +574,8 @@ void SetBrakeClosed2(TrackElement& trackElement, const CoordsXY& trackLocation, 
         case TrackElemType::DiagBrakes:
         case TrackElemType::DiagBlockBrakes:
             GetTrackElementOriginAndApplyChanges(
-                { trackLocation, trackElement.GetBaseZ(), trackElement.GetDirection() }, trackElement.GetTrackType(), isClosed, nullptr,
-                TRACK_ELEMENT_SET_BRAKE_CLOSED_STATE);
+                { trackLocation, trackElement.GetBaseZ(), trackElement.GetDirection() }, trackElement.GetTrackType(), isClosed,
+                nullptr, TRACK_ELEMENT_SET_BRAKE_CLOSED_STATE);
             break;
         default:
             trackElement.SetBrakeClosed(isClosed);
