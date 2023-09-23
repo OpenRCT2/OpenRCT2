@@ -472,7 +472,6 @@ static u8string OpenSystemFileBrowser(bool isSave)
     desc.Type = isSave ? OpenRCT2::Ui::FileDialogType::Save : OpenRCT2::Ui::FileDialogType::Open;
     desc.DefaultFilename = isSave ? path : u8string();
 
-    // Add 'all files' filter. If the number of filters is increased, this code will need to be adjusted.
     desc.Filters.emplace_back(LanguageGetString(STR_ALL_FILES), "*");
 
     desc.Title = LanguageGetString(title);
