@@ -3048,6 +3048,24 @@ static void RideSetMazeEntranceExitPoints(Ride& ride)
     }
 }
 
+void SetBrakeClosedMultiTile(TrackElement& trackElement, const CoordsXY& trackLocation, bool isClosed)
+{
+    switch (trackElement.GetTrackType())
+    {
+        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::DiagUp60ToFlat:
+        case TrackElemType::CableLiftHill:
+        case TrackElemType::DiagBrakes:
+        case TrackElemType::DiagBlockBrakes:
+            GetTrackElementOriginAndApplyChanges(
+                { trackLocation, trackElement.GetBaseZ(), trackElement.GetDirection() }, trackElement.GetTrackType(), isClosed,
+                nullptr, TRACK_ELEMENT_SET_BRAKE_CLOSED_STATE);
+            break;
+        default:
+            trackElement.SetBrakeClosed(isClosed);
+    }
+}
+
 /**
  * Opens all block brakes of a ride.
  *  rct2: 0x006B4E6B
@@ -3072,7 +3090,7 @@ static void RideOpenBlockBrakes(const CoordsXYE& startElement)
             case TrackElemType::EndStation:
             case TrackElemType::Up25ToFlat:
             case TrackElemType::Up60ToFlat:
-                SetBrakeClosed2(*currentElement.element->AsTrack(), { currentElement.x, currentElement.y }, false);
+                SetBrakeClosedMultiTile(*currentElement.element->AsTrack(), { currentElement.x, currentElement.y }, false);
                 break;
         }
     } while (TrackBlockGetNext(&currentElement, &currentElement, nullptr, nullptr)
@@ -3111,7 +3129,7 @@ void BlockBrakeSetLinkedBrakesClosed(const CoordsXYZ& vehicleTrackLocation, Trac
 
         if (TrackTypeIsBrakes(tileElement->AsTrack()->GetTrackType()))
         {
-            SetBrakeClosed2(
+            SetBrakeClosedMultiTile(
                 *tileElement->AsTrack(), { trackBeginEnd.begin_x, trackBeginEnd.begin_y },
                 (tileElement->AsTrack()->GetBrakeBoosterSpeed() >= brakeSpeed) || isClosed);
         }
@@ -3694,7 +3712,7 @@ void Ride::MoveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackEle
 
         // All vehicles are in position, set the block brake directly before the station one last time and make sure the brakes
         // are set appropriately
-        SetBrakeClosed2(firstBlock, firstBlockPosition, true);
+        SetBrakeClosedMultiTile(firstBlock, firstBlockPosition, true);
         if (TrackTypeIsBlockBrakes(firstBlock.GetTrackType()))
         {
             BlockBrakeSetLinkedBrakesClosed(firstBlockPosition, firstBlock, true);

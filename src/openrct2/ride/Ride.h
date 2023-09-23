@@ -1109,7 +1109,7 @@ int32_t RideGetEntryIndex(int32_t rideType, int32_t rideSubType);
 void DetermineRideEntranceAndExitLocations();
 void RideClearLeftoverEntrances(const Ride& ride);
 
-void SetBrakeClosed2(TrackElement& trackElement, const CoordsXY& trackLocation, bool isClosed);
+void SetBrakeClosedMultiTile(TrackElement& trackElement, const CoordsXY& trackLocation, bool isClosed);
 
 std::vector<RideId> GetTracklessRides();
 

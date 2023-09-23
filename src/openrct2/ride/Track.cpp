@@ -564,24 +564,6 @@ bool TrackElement::IsBlockStart() const
     return false;
 }
 
-void SetBrakeClosed2(TrackElement& trackElement, const CoordsXY& trackLocation, bool isClosed)
-{
-    switch (trackElement.GetTrackType())
-    {
-        case TrackElemType::DiagUp25ToFlat:
-        case TrackElemType::DiagUp60ToFlat:
-        case TrackElemType::CableLiftHill:
-        case TrackElemType::DiagBrakes:
-        case TrackElemType::DiagBlockBrakes:
-            GetTrackElementOriginAndApplyChanges(
-                { trackLocation, trackElement.GetBaseZ(), trackElement.GetDirection() }, trackElement.GetTrackType(), isClosed,
-                nullptr, TRACK_ELEMENT_SET_BRAKE_CLOSED_STATE);
-            break;
-        default:
-            trackElement.SetBrakeClosed(isClosed);
-    }
-}
-
 roll_type_t TrackGetActualBank(TileElement* tileElement, roll_type_t bank)
 {
     auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());

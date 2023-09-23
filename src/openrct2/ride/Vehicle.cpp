@@ -6192,7 +6192,7 @@ static void block_brakes_open_previous_section(
         return;
     }
     auto trackElement = trackOrigin->AsTrack();
-    SetBrakeClosed2(*trackElement, location, false);
+    SetBrakeClosedMultiTile(*trackElement, location, false);
     MapInvalidateElement(location, reinterpret_cast<TileElement*>(trackElement));
 
     auto trackType = trackElement->GetTrackType();
@@ -7473,7 +7473,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
     {
         if (next_vehicle_on_train.IsNull())
         {
-            SetBrakeClosed2(*tileElement->AsTrack(), TrackLocation, true);
+            SetBrakeClosedMultiTile(*tileElement->AsTrack(), TrackLocation, true);
             if (TrackTypeIsBlockBrakes(trackType) || trackType == TrackElemType::EndStation)
             {
                 if (!(rideEntry.Cars[0].flags & CAR_ENTRY_FLAG_POWERED))
