@@ -564,9 +564,9 @@ bool TrackElement::IsBlockStart() const
     return false;
 }
 
-void TrackElement::SetBrakeClosed2(const CoordsXY& trackLocation, bool isClosed)
+void SetBrakeClosed2(TrackElement& trackElement, const CoordsXY& trackLocation, bool isClosed)
 {
-    switch (GetTrackType())
+    switch (trackElement.GetTrackType())
     {
         case TrackElemType::DiagUp25ToFlat:
         case TrackElemType::DiagUp60ToFlat:
@@ -574,11 +574,11 @@ void TrackElement::SetBrakeClosed2(const CoordsXY& trackLocation, bool isClosed)
         case TrackElemType::DiagBrakes:
         case TrackElemType::DiagBlockBrakes:
             GetTrackElementOriginAndApplyChanges(
-                { trackLocation, GetBaseZ(), GetDirection() }, GetTrackType(), isClosed, nullptr,
+                { trackLocation, trackElement.GetBaseZ(), trackElement.GetDirection() }, trackElement.GetTrackType(), isClosed, nullptr,
                 TRACK_ELEMENT_SET_BRAKE_CLOSED_STATE);
             break;
         default:
-            SetBrakeClosed(isClosed);
+            trackElement.SetBrakeClosed(isClosed);
     }
 }
 
