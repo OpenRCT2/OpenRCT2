@@ -3695,6 +3695,10 @@ STR_6589    :Show window buttons on the left
 STR_6590    :Show the window buttons (e.g. to close the window) on the left of the title bar instead of on the right.
 STR_6591    :Staff member is currently fixing a ride and can’t be fired.
 STR_6592    :Staff member is currently inspecting a ride and can’t be fired.
+STR_6593    :LSM Launched Roller Coaster
+STR_6594    :A low to the ground roller coaster propelled by Liniar Synchronous Motors.
+STR_6595    :Multi-Looping Roller Coaster
+STR_6596    :A steel rollercoaster that is known for making multipe inversions through it's lay-out.
 
 #############
 # Scenarios #

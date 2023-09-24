@@ -1,8 +1,10 @@
 0.4.7 (in development)
 ------------------------------------------------------------------------
 - Feature: [#20141] Add additional track pieces to the Giga Coaster.
+- Feature: [#?????] New ride types: LSM Launched Roller Coaster & Multi-Looping Roller Coaster.
 - Feature: [OpenMusic#46] Added Mystic ride music style.
 - Change: [#20790] Default ride price set to free if park charges for entry.
+- Change: [#?????] Giga Roller Coaster boosters are now locked behind cheats.
 - Fix: [#20356] Cannot set tertiary colour on small scenery.
 - Fix: [#20737] Spent money in player window underflows when getting refunds.
 - Fix: [#20778] [Plugin] Incorrect target api when executing custom actions.

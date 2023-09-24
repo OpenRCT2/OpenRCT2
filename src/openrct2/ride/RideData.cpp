@@ -47,6 +47,7 @@
 #include "coaster/meta/InvertedRollerCoaster.h"
 #include "coaster/meta/JuniorRollerCoaster.h"
 #include "coaster/meta/LIMLaunchedRollerCoaster.h"
+#include "coaster/meta/LSMLaunchedRollerCoaster.h"
 #include "coaster/meta/LayDownRollerCoaster.h"
 #include "coaster/meta/LoopingRollerCoaster.h"
 #include "coaster/meta/MineRide.h"
@@ -54,6 +55,7 @@
 #include "coaster/meta/MiniRollerCoaster.h"
 #include "coaster/meta/MiniSuspendedCoaster.h"
 #include "coaster/meta/MultiDimensionRollerCoaster.h"
+#include "coaster/meta/MultiLoopingRollerCoaster.h"
 #include "coaster/meta/ReverseFreefallCoaster.h"
 #include "coaster/meta/ReverserRollerCoaster.h"
 #include "coaster/meta/SideFrictionRollerCoaster.h"
@@ -344,6 +346,8 @@ constexpr RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER         */ SingleRailRollerCoasterRTD,
     /* RIDE_TYPE_ALPINE_COASTER                     */ AlpineCoasterRTD,
     /* RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER      */ ClassicWoodenRollerCoasterRTD,
+    /* RIDE_TYPE_LSM_LAUNCH_ROLLER_COASTER          */ LSMLaunchedRollerCoasterRTD,
+    /* RIDE_TYPE_MULTI_LOOPING_ROLLER_COASTER       */ MultiLoopingRollerCoasterRTD,
 };
 
 bool RideTypeDescriptor::HasFlag(uint64_t flag) const
