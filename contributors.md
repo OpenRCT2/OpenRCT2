@@ -292,8 +292,8 @@ Appreciation for contributors who have provided substatial work, but are no long
 * Swedish - (Jinxit), (mharrys), (Slimeyo), Matte Andersson (Nubbie)
 
 ## Graphics
-* Edward Calver (X7123M3-256) - Hybrid RC track & train, Single Rail RC track & train, Alpine RC track & vehicle, LIM RC extended trackset
-* Karst van Galen Last (AuraSpecs) - Steep log flume, Inverted RC Booster
+* Edward Calver (X7123M3-256) - Hybrid RC track & train, Single Rail RC track & train, Alpine RC track & vehicle, LIM RC extended trackset, Giga RC extended trackset
+* Karst van Galen Last (AuraSpecs) - Steep log flume, Inverted RC Booster, Giga RC powered lift
 * Michael Steenbeek (Gymnasiast) - Extended fontset
 * Nicolas Hawrysh (xp4xbox) - Booster Sprites Twister, Giga, Mini, Woodie
 * Yannic Geurts (xzbobzx) - OpenRCT2 Logo
