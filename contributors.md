@@ -12,9 +12,9 @@ Includes all git commit authors. Aliases are GitHub usernames or Community nickn
 * Tulio Paschoalin Leao (tupaschoal)
 
 ## Support team
+* Aaron van Geffen (AaronVanGeffen)
 * Karst van Galen Last (AuraSpecs) - Lead OpenSoundEffects & OpenMusic
 * Kenton Boadway (Krutonium) - Lead OpenScenarios
-* Aaron van Geffen (AaronVanGeffen)
 
 ## Former development team members
 * Aaron van Geffen (AaronVanGeffen)
