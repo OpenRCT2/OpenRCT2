@@ -11,6 +11,11 @@ Includes all git commit authors. Aliases are GitHub usernames or Community nickn
 * Ted John (IntelOrca) - Owner
 * Tulio Paschoalin Leao (tupaschoal)
 
+## Support team
+* Karst van Galen Last (AuraSpecs) - Lead OpenSoundEffects & OpenMusic
+* Kenton Boadway (Krutonium) - Lead OpenScenarios
+* Aaron van Geffen (AaronVanGeffen)
+
 ## Former development team members
 * Aaron van Geffen (AaronVanGeffen)
 * Lewis Fox (LRFLEW)
@@ -23,9 +28,7 @@ Includes all git commit authors. Aliases are GitHub usernames or Community nickn
 ## Long term contributors
 Appreciation for long term contributors to the project having provided substantial work.
 * Edward Calver (X7123M3-256)
-* Karst van Galen Last (AuraSpecs)
 * Kelson Blakewood (spacek531)
-* Kenton Boadway (Krutonium)
 * (frutiemax)
 
 ## Special Thanks
