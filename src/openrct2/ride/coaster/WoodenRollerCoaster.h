@@ -25,6 +25,14 @@ struct SpriteBoundBox2
     ::BoundBoxXYZ BoundBox;
 };
 
+// Magic number 4 refers to the number of track blocks in a diagonal track element
+static constexpr const int8_t WoodenRCDiagonalSupports[4][NumOrthogonalDirections] = {
+    { -1, -1, -1, -1 }, // sequence 0
+    { 2, 3, 4, 5 },     // sequence 1
+    { 4, 5, 2, 3 },     // sequence 2
+    { -1, -1, -1, -1 }  // sequence 3
+};
+
 template<bool isClassic> ImageId WoodenRCGetTrackColour(const PaintSession& session)
 {
     if (isClassic)
