@@ -51,6 +51,15 @@ static constexpr const uint32_t MinetrainRCDiagBlockBrakeImages[2][NumOrthogonal
         SPR_G2_MINETRAIN_DIAG_BRAKES + 4,
     },
 };
+
+// Magic number 4 refers to the number of track blocks in a diagonal track element
+static constexpr const int32_t MineTrainRCDiagonalSupports[4][NumOrthogonalDirections] = {
+    { -1, -1, -1, -1 },
+    { 8, 9, 10, 11 },
+    { 10, 11, 8, 9 },
+    { -1, -1, -1, -1 },
+};
+
 /** rct2: 0x0071BFA4 */
 static void MineTrainRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -5422,15 +5431,10 @@ static void MineTrainRCTrackDiagBrakes(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], MinetrainRCDiagBrakeImages,
         defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
-    if (trackSequence == 1)
+    if (MineTrainRCDiagonalSupports[trackSequence][direction] != -1)
     {
-        int32_t woodenSupportSegments[] = { 8, 9, 10, 11 };
-        WoodenASupportsPaintSetup(session, woodenSupportSegments[direction], 8, height, session.TrackColours[SCHEME_SUPPORTS]);
-    }
-    if (trackSequence == 2)
-    {
-        int32_t woodenSupportSegments[] = { 10, 11, 8, 9 };
-        WoodenASupportsPaintSetup(session, woodenSupportSegments[direction], 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetup(
+            session, MineTrainRCDiagonalSupports[trackSequence][direction], 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -5446,15 +5450,10 @@ static void MineTrainRCTrackDiagBlockBrakes(
         MinetrainRCDiagBlockBrakeImages[trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths,
         nullptr);
 
-    if (trackSequence == 1)
+    if (MineTrainRCDiagonalSupports[trackSequence][direction] != -1)
     {
-        int32_t woodenSupportSegments[] = { 8, 9, 10, 11 };
-        WoodenASupportsPaintSetup(session, woodenSupportSegments[direction], 8, height, session.TrackColours[SCHEME_SUPPORTS]);
-    }
-    if (trackSequence == 2)
-    {
-        int32_t woodenSupportSegments[] = { 10, 11, 8, 9 };
-        WoodenASupportsPaintSetup(session, woodenSupportSegments[direction], 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetup(
+            session, MineTrainRCDiagonalSupports[trackSequence][direction], 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
