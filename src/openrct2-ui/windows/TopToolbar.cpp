@@ -1551,7 +1551,7 @@ private:
                 {
                     WindowScenerySetSelectedItem(
                         { SCENERY_TYPE_SMALL, entryIndex }, sceneryElement->GetPrimaryColour(),
-                        sceneryElement->GetSecondaryColour(), std::nullopt,
+                        sceneryElement->GetSecondaryColour(), sceneryElement->GetTertiaryColour(),
                         sceneryElement->GetDirectionWithOffset(GetCurrentRotation()));
                 }
                 break;
