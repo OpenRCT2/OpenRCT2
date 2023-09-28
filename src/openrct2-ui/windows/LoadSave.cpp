@@ -106,7 +106,6 @@ static TrackDesign* _trackDesign;
 
 static std::vector<LoadSaveListItem> _listItems;
 static char _directory[MAX_PATH];
-static char _shortenedDirectory[MAX_PATH];
 static char _parentDirectory[MAX_PATH];
 static u8string _extensionPattern;
 static u8string _defaultPath;
@@ -508,7 +507,6 @@ public:
         SafeStrCpy(_directory, absoluteDirectory.c_str(), std::size(_directory));
         // Note: This compares the pointers, not values
         _extensionPattern = extensionPattern;
-        _shortenedDirectory[0] = '\0';
 
         _listItems.clear();
 
@@ -741,18 +739,15 @@ public:
     {
         DrawWidgets(dpi);
 
-        if (_shortenedDirectory[0] == '\0')
-        {
-            ShortenPath(_shortenedDirectory, sizeof(_shortenedDirectory), _directory, width - 8, FontStyle::Medium);
-        }
+        const auto shortPath = ShortenPath(_directory, width - 8, FontStyle::Medium);
 
         // Format text
-        thread_local std::string _buffer;
-        _buffer.assign("{BLACK}");
-        _buffer += _shortenedDirectory;
+        std::string buffer;
+        buffer.assign("{BLACK}");
+        buffer += shortPath;
 
         // Draw path text
-        const auto normalisedPath = Platform::StrDecompToPrecomp(_buffer.data());
+        const auto normalisedPath = Platform::StrDecompToPrecomp(buffer.data());
         const auto* normalisedPathC = normalisedPath.c_str();
         auto ft = Formatter();
         ft.Add<const char*>(normalisedPathC);
