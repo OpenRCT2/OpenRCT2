@@ -12,6 +12,7 @@ jobs:
         with:
           exempt-all-pr-assignees: true
           exempt-all-pr-milestones: true
+          exempt-draft-pr: true
           days-before-issue-stale: -1
           days-before-issue-close: -1
           days-before-pr-stale: 31
