@@ -1422,6 +1422,12 @@ namespace OpenRCT2::Scripting
         auto* ctx = scriptEngine.GetContext();
         switch (_element->GetType())
         {
+            case TileElementType::SmallScenery:
+            {
+                auto* el = _element->AsSmallScenery();
+                duk_push_int(ctx, el->GetTertiaryColour());
+                break;
+            }
             case TileElementType::LargeScenery:
             {
                 auto* el = _element->AsLargeScenery();
@@ -1447,6 +1453,13 @@ namespace OpenRCT2::Scripting
         ThrowIfGameStateNotMutable();
         switch (_element->GetType())
         {
+            case TileElementType::SmallScenery:
+            {
+                auto* el = _element->AsSmallScenery();
+                el->SetTertiaryColour(value);
+                Invalidate();
+                break;
+            }
             case TileElementType::LargeScenery:
             {
                 auto* el = _element->AsLargeScenery();
@@ -2049,6 +2062,8 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScTileElement::primaryColour_get, &ScTileElement::primaryColour_set, "primaryColour");
         dukglue_register_property(
             ctx, &ScTileElement::secondaryColour_get, &ScTileElement::secondaryColour_set, "secondaryColour");
+        dukglue_register_property(
+            ctx, &ScTileElement::tertiaryColour_get, &ScTileElement::tertiaryColour_set, "tertiaryColour");
 
         // Wall | Large Scenery | Banner
         dukglue_register_property(ctx, &ScTileElement::bannerIndex_get, &ScTileElement::bannerIndex_set, "bannerIndex");
@@ -2116,10 +2131,6 @@ namespace OpenRCT2::Scripting
         // Small Scenery only
         dukglue_register_property(ctx, &ScTileElement::age_get, &ScTileElement::age_set, "age");
         dukglue_register_property(ctx, &ScTileElement::quadrant_get, &ScTileElement::quadrant_set, "quadrant");
-
-        // Wall only
-        dukglue_register_property(
-            ctx, &ScTileElement::tertiaryColour_get, &ScTileElement::tertiaryColour_set, "tertiaryColour");
 
         // Entrance only
         dukglue_register_property(
