@@ -6250,6 +6250,12 @@
         "palette": "keep"
     },
     {
+        "path": "track/mini/booster_1.png"
+    },
+    {
+        "path": "track/mini/booster_2.png"
+    },
+    {
         "path": "track/bm/brake_horizontal.png",
         "x_offset": -32,
         "y_offset": 1,
@@ -6284,12 +6290,6 @@
         "x_offset": -13,
         "y_offset": -9,
         "palette": "keep"
-    },
-    {
-        "path": "track/mini/booster_1.png"
-    },
-    {
-        "path": "track/mini/booster_2.png"
     },
     {
         "path": "track/bm/booster_1.png"
