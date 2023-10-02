@@ -100,7 +100,6 @@ void GameResetSpeed()
 {
     auto setSpeedAction = GameSetSpeedAction(1);
     GameActions::Execute(&setSpeedAction);
-    WindowInvalidateByClass(WindowClass::TopToolbar);
 }
 
 void GameIncreaseGameSpeed()
@@ -111,8 +110,6 @@ void GameIncreaseGameSpeed()
 
     auto setSpeedAction = GameSetSpeedAction(newSpeed);
     GameActions::Execute(&setSpeedAction);
-
-    WindowInvalidateByClass(WindowClass::TopToolbar);
 }
 
 void GameReduceGameSpeed()
@@ -123,8 +120,6 @@ void GameReduceGameSpeed()
 
     auto setSpeedAction = GameSetSpeedAction(newSpeed);
     GameActions::Execute(&setSpeedAction);
-
-    WindowInvalidateByClass(WindowClass::TopToolbar);
 }
 
 /**

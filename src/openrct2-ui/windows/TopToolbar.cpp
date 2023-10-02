@@ -3668,8 +3668,6 @@ void TopToolbar::FastforwardMenuDropdown(int16_t dropdownIndex)
 
             auto setSpeedAction = GameSetSpeedAction(newSpeed);
             GameActions::Execute(&setSpeedAction);
-
-            w->Invalidate();
         }
     }
 }
