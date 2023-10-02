@@ -37,7 +37,7 @@ GameActions::Result GameSetSpeedAction::Query() const
 {
     GameActions::Result res = GameActions::Result();
 
-    if (!GameSetSpeedAction::IsValidSpeed(_speed))
+    if (!IsValidSpeed(_speed))
     {
         LOG_WARNING("Invalid game command for speed %u", _speed);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
