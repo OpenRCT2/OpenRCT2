@@ -38,7 +38,7 @@ constexpr RideTypeDescriptor MultiLoopingRollerCoasterRTD =
     SET_FIELD(Heights, { 30, 24, 9, 11, }),
     SET_FIELD(MaxMass, 31),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftClassic, 5, 13 }),
-    SET_FIELD(RatingsMultipliers, { 51, 32, 10 }),
+    SET_FIELD(RatingsMultipliers, { 50, 32, 10 }),
     SET_FIELD(UpkeepCosts, { 10, 20, 80, 12, 3, 40 }),
     SET_FIELD(BuildCosts, { 57.00_GBP, 2.50_GBP, 55, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
