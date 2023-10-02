@@ -8825,8 +8825,8 @@ static void WoodenRCTrackDiagBrakes(
                 // direction 3
                 {
                     WoodenRCDiagBrakeImages[3],
-                    24916,           // diagonal vertical trim image
-                    { -16, -16, 0 }, // todo: rotate these bboxes
+                    24916, // diagonal vertical trim image
+                    { -16, -16, 0 },
                     BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
                 },
                 {},
@@ -8881,8 +8881,8 @@ static void WoodenRCTrackDiagBrakes(
                 // direction 1
                 {
                     WoodenRCDiagBrakeImages[1],
-                    24916,           // diagonal vertical trim image
-                    { -16, -16, 0 }, // todo: rotate these bboxes
+                    24916, // diagonal vertical trim image
+                    { -16, -16, 0 },
                     BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
                 },
                 {},
