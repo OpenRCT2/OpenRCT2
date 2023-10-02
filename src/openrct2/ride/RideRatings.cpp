@@ -113,6 +113,7 @@ static void RideRatingsApplyBonusDuration(RatingTuple& ratings, const Ride& ride
 static void RideRatingsApplyBonusGForces(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusTurns(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusDrops(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
+static void RideRatingsApplyBonusInversions(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusSheltered(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusRotations(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
 static void RideRatingsApplyBonusOperationOption(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier);
@@ -928,6 +929,9 @@ static void RideRatingsCalculate(RideRatingUpdateState& state, Ride& ride)
                 break;
             case RatingsModifierType::BonusDrops:
                 RideRatingsApplyBonusDrops(ratings, ride, modifier);
+                break;
+            case RatingsModifierType::BonusInversions:
+                RideRatingsApplyBonusInversions(ratings, ride, modifier);
                 break;
             case RatingsModifierType::BonusSheltered:
                 RideRatingsApplyBonusSheltered(ratings, ride, modifier);
@@ -1758,6 +1762,23 @@ static RatingTuple ride_ratings_get_drop_ratings(const Ride& ride)
     return result;
 }
 
+static RatingTuple ride_ratings_get_inversion_ratings(const Ride& ride)
+{
+    RatingTuple result = {
+        /* .excitement = */ 0,
+        /* .intensity = */ 0,
+        /* .nausea = */ 0,
+    };
+
+    // Apply number of inversion factor
+    int32_t inversions = ride.inversions & 0x3F;
+    result.Excitement += (std::min(9, inversions) * 728177) >> 16;
+    result.Intensity += (inversions * 928426) >> 16;
+    result.Nausea += (inversions * 655360) >> 16;
+
+    return result;
+}
+
 /**
  * Calculates a score based on the surrounding scenery.
  *  rct2: 0x0065E557
@@ -1895,6 +1916,14 @@ static void RideRatingsApplyBonusTurns(RatingTuple& ratings, const Ride& ride, R
 static void RideRatingsApplyBonusDrops(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
 {
     RatingTuple subRating = ride_ratings_get_drop_ratings(ride);
+    RideRatingsAdd(
+        ratings, (subRating.Excitement * modifier.Excitement) >> 16, (subRating.Intensity * modifier.Intensity) >> 16,
+        (subRating.Nausea * modifier.Nausea) >> 16);
+}
+
+static void RideRatingsApplyBonusInversions(RatingTuple& ratings, const Ride& ride, RatingsModifier modifier)
+{
+    RatingTuple subRating = ride_ratings_get_inversion_ratings(ride);
     RideRatingsAdd(
         ratings, (subRating.Excitement * modifier.Excitement) >> 16, (subRating.Intensity * modifier.Intensity) >> 16,
         (subRating.Nausea * modifier.Nausea) >> 16);

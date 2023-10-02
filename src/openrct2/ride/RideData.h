@@ -114,6 +114,7 @@ enum class RatingsModifierType : uint8_t
     BonusGForces,
     BonusTurns,
     BonusDrops,
+    BonusInversions,
     BonusSheltered,
     BonusProximity,
     BonusScenery,
