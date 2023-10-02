@@ -18,6 +18,8 @@
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/actions/GameSetSpeedAction.h>
+#include <openrct2/actions/GameAction.h>
 #include <openrct2/common.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/Guard.hpp>
@@ -393,7 +395,8 @@ namespace OpenRCT2::Title
             LoadPalette();
             gScreenAge = 0;
             gGamePaused = false;
-            gGameSpeed = 1;
+            auto setSpeedAction = GameSetSpeedAction(1);
+            GameActions::Execute(&setSpeedAction);
         }
 
         void StoreCurrentViewLocation()
