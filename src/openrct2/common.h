@@ -26,12 +26,6 @@
 #include <cstddef>
 #include <cstdint>
 
-// Define MAX_PATH for various headers that don't want to include system headers
-// just for MAX_PATH
-#ifndef MAX_PATH
-#    define MAX_PATH 260
-#endif
-
 using colour_t = uint8_t;
 
 // Gets the name of a symbol as a C string

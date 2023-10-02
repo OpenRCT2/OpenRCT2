@@ -106,7 +106,6 @@ static TrackDesign* _trackDesign;
 
 static std::vector<LoadSaveListItem> _listItems;
 static char _directory[MAX_PATH];
-static char _shortenedDirectory[MAX_PATH];
 static char _parentDirectory[MAX_PATH];
 static u8string _extensionPattern;
 static u8string _defaultPath;
@@ -472,7 +471,6 @@ static u8string OpenSystemFileBrowser(bool isSave)
     desc.Type = isSave ? OpenRCT2::Ui::FileDialogType::Save : OpenRCT2::Ui::FileDialogType::Open;
     desc.DefaultFilename = isSave ? path : u8string();
 
-    // Add 'all files' filter. If the number of filters is increased, this code will need to be adjusted.
     desc.Filters.emplace_back(LanguageGetString(STR_ALL_FILES), "*");
 
     desc.Title = LanguageGetString(title);
@@ -509,7 +507,6 @@ public:
         SafeStrCpy(_directory, absoluteDirectory.c_str(), std::size(_directory));
         // Note: This compares the pointers, not values
         _extensionPattern = extensionPattern;
-        _shortenedDirectory[0] = '\0';
 
         _listItems.clear();
 
@@ -742,18 +739,15 @@ public:
     {
         DrawWidgets(dpi);
 
-        if (_shortenedDirectory[0] == '\0')
-        {
-            ShortenPath(_shortenedDirectory, sizeof(_shortenedDirectory), _directory, width - 8, FontStyle::Medium);
-        }
+        const auto shortPath = ShortenPath(_directory, width - 8, FontStyle::Medium);
 
         // Format text
-        thread_local std::string _buffer;
-        _buffer.assign("{BLACK}");
-        _buffer += _shortenedDirectory;
+        std::string buffer;
+        buffer.assign("{BLACK}");
+        buffer += shortPath;
 
         // Draw path text
-        const auto normalisedPath = Platform::StrDecompToPrecomp(_buffer.data());
+        const auto normalisedPath = Platform::StrDecompToPrecomp(buffer.data());
         const auto* normalisedPathC = normalisedPath.c_str();
         auto ft = Formatter();
         ft.Add<const char*>(normalisedPathC);

@@ -42,7 +42,7 @@ enum class ScenarioSource : uint8_t
 
 struct ScenarioIndexEntry
 {
-    utf8 Path[MAX_PATH];
+    u8string Path;
     uint64_t Timestamp;
 
     // Category / sequence
