@@ -1772,7 +1772,7 @@ static RatingTuple ride_ratings_get_inversion_ratings(const Ride& ride)
 
     // Apply number of inversion factor
     int32_t inversions = ride.inversions & 0x3F;
-    result.Excitement += (std::min(9, inversions) * 728177) >> 16;
+    result.Excitement += (std::min(5, inversions) * 728177) >> 16;
     result.Intensity += (inversions * 928426) >> 16;
     result.Nausea += (inversions * 655360) >> 16;
 
