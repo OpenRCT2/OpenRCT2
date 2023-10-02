@@ -5,7 +5,7 @@
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
- *****************************************************************************/                                                \
+ *****************************************************************************/
 
 #pragma once
 
