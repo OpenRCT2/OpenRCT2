@@ -8827,7 +8827,7 @@ static void WoodenRCTrackDiagBrakes(
                     WoodenRCDiagBrakeImages[3],
                     24916, // diagonal vertical trim image
                     { -16, -16, 0 },
-                    BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
+                    { { -16, -16, 0 }, { 32, 32, 2 } },
                 },
                 {},
             },
@@ -8840,13 +8840,13 @@ static void WoodenRCTrackDiagBrakes(
                     WoodenRCDiagBrakeImages[0],
                     24913, // diagonal horizontal trim image
                     { -16, -16, 0 },
-                    BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
+                    { { -16, -16, 0 }, { 32, 32, 2 } },
                 },
                 {
                     24051, // diagonal horizontal railing image
                     24917, // diagonal horizontal foreground trim image
                     { -16, -16, 0 },
-                    BoundBoxXYZ({ -16, -16, 27 }, { 32, 32, 0 }),
+                    { { -16, -16, 27 }, { 32, 32, 0 } },
                 },
             },
             { {}, {} }, // direction 1
@@ -8863,13 +8863,13 @@ static void WoodenRCTrackDiagBrakes(
                     WoodenRCDiagBrakeImages[2],
                     24913, // diagonal vertical trim image
                     { -16, -16, 0 },
-                    BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
+                    { { -16, -16, 0 }, { 32, 32, 2 } },
                 },
                 {
                     24051, // diagonal vertical railing image
                     24917, // diagonal vertical foreground trim image
                     { -16, -16, 0 },
-                    BoundBoxXYZ({ -16, -16, 27 }, { 32, 32, 0 }),
+                    { { -16, -16, 27 }, { 32, 32, 0 } },
                 },
             },
             { {}, {} }, // direction 3
@@ -8883,7 +8883,7 @@ static void WoodenRCTrackDiagBrakes(
                     WoodenRCDiagBrakeImages[1],
                     24916, // diagonal vertical trim image
                     { -16, -16, 0 },
-                    BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
+                    { { -16, -16, 0 }, { 32, 32, 2 } },
                 },
                 {},
             },
