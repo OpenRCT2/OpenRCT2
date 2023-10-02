@@ -905,6 +905,7 @@
         <ClCompile Include="ride\coaster\InvertedImpulseCoaster.cpp" />
         <ClCompile Include="ride\coaster\InvertedRollerCoaster.cpp" />
         <ClCompile Include="ride\coaster\InMaTriangleTrack.cpp" />
+        <ClCompile Include="ride\coaster\InMaTriangleTrackAlt.cpp" />
         <ClCompile Include="ride\coaster\JuniorRollerCoaster.cpp" />
         <ClCompile Include="ride\coaster\LayDownRollerCoaster.cpp" />
         <ClCompile Include="ride\coaster\LimLaunchedRollerCoaster.cpp" />

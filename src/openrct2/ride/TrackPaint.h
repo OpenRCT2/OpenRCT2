@@ -457,6 +457,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionReverserRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionHeartlineTwisterRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMiniGolf(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionInMaTriangle(int32_t trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionInMaTriangleAlt(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionRotoDrop(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingSaucers(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionCrookedHouse(int32_t trackType);
