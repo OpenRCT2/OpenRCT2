@@ -31,6 +31,7 @@
 #include <openrct2/actions/BannerSetColourAction.h>
 #include <openrct2/actions/ClearAction.h>
 #include <openrct2/actions/FootpathAdditionPlaceAction.h>
+#include <openrct2/actions/GameSetSpeedAction.h>
 #include <openrct2/actions/LandLowerAction.h>
 #include <openrct2/actions/LandRaiseAction.h>
 #include <openrct2/actions/LandSmoothAction.h>
@@ -3661,9 +3662,13 @@ void TopToolbar::FastforwardMenuDropdown(int16_t dropdownIndex)
     {
         if (dropdownIndex >= 0 && dropdownIndex <= 5)
         {
-            gGameSpeed = dropdownIndex + 1;
-            if (gGameSpeed >= 5)
-                gGameSpeed = 8;
+            auto newspeed = dropdownIndex + 1;
+            if (newspeed >= 5)
+                newspeed = 8;
+
+            auto setSpeedAction = GameSetSpeedAction(newspeed);
+            GameActions::Execute(&setSpeedAction);
+
             w->Invalidate();
         }
     }

@@ -23,6 +23,7 @@
 #include "FootpathPlaceAction.h"
 #include "FootpathRemoveAction.h"
 #include "GameAction.h"
+#include "GameSetSpeedAction.h"
 #include "GuestSetFlagsAction.h"
 #include "GuestSetNameAction.h"
 #include "LandBuyRightsAction.h"
@@ -206,6 +207,7 @@ namespace GameActions
         REGISTER_ACTION(ParkSetDateAction);
         REGISTER_ACTION(CheatSetAction);
         REGISTER_ACTION(MapChangeSizeAction);
+        REGISTER_ACTION(GameSetSpeedAction);
 #ifdef ENABLE_SCRIPTING
         REGISTER_ACTION(CustomAction);
 #endif

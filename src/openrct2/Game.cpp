@@ -19,6 +19,7 @@
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
 #include "ReplayManager.h"
+#include "actions/GameSetSpeedAction.h"
 #include "actions/LoadOrQuitAction.h"
 #include "audio/audio.h"
 #include "config/Config.h"
@@ -97,23 +98,32 @@ using namespace OpenRCT2;
 
 void GameResetSpeed()
 {
-    gGameSpeed = 1;
+    auto setSpeedAction = GameSetSpeedAction(1);
+    GameActions::Execute(&setSpeedAction);
     WindowInvalidateByClass(WindowClass::TopToolbar);
 }
 
 void GameIncreaseGameSpeed()
 {
-    gGameSpeed = std::min(gConfigGeneral.DebuggingTools ? 5 : 4, gGameSpeed + 1);
-    if (gGameSpeed == 5)
-        gGameSpeed = 8;
+    auto newSpeed = std::min(gConfigGeneral.DebuggingTools ? 5 : 4, gGameSpeed + 1);
+    if (newSpeed == 5)
+        newSpeed = 8;
+
+    auto setSpeedAction = GameSetSpeedAction(newSpeed);
+    GameActions::Execute(&setSpeedAction);
+
     WindowInvalidateByClass(WindowClass::TopToolbar);
 }
 
 void GameReduceGameSpeed()
 {
-    gGameSpeed = std::max(1, gGameSpeed - 1);
-    if (gGameSpeed == 7)
-        gGameSpeed = 4;
+    auto newSpeed = std::max(1, gGameSpeed - 1);
+    if (newSpeed == 7)
+        newSpeed = 4;
+
+    auto setSpeedAction = GameSetSpeedAction(newSpeed);
+    GameActions::Execute(&setSpeedAction);
+
     WindowInvalidateByClass(WindowClass::TopToolbar);
 }
 
@@ -498,7 +508,7 @@ void GameLoadInit()
     }
 
     OpenRCT2::Audio::StopTitleMusic();
-    gGameSpeed = 1;
+    GameResetSpeed();
 }
 
 void GameLoadScripts()
@@ -777,7 +787,7 @@ void GameLoadOrQuitNoSavePrompt()
             {
                 InputSetFlag(INPUT_FLAG_5, false);
             }
-            gGameSpeed = 1;
+            GameResetSpeed();
             gFirstTimeSaving = true;
             GameNotifyMapChange();
             GameUnloadScripts();
