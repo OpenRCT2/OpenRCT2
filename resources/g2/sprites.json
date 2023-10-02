@@ -2620,10 +2620,19 @@
         "y_offset": 1
     },
     {
-        "path": "track/intamin/booster_1.png"
+        "path": "track/intamin/booster_1.png",
+        "x_offset": -22,
+        "y_offset": -4
     },
     {
-        "path": "track/intamin/booster_2.png"
+        "path": "track/intamin/booster_2.png",
+        "x_offset": -22,
+        "y_offset": -4
+    },
+    {
+        "path": "track/intamin/brake_alt_1.png",
+        "x_offset": -22,
+        "y_offset": -4
     },
     {
         "path": "track/intamin/liftbooster_0.png",

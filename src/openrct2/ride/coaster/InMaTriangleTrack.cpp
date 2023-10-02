@@ -14,6 +14,7 @@
 #include "../../paint/tile_element/Paint.TileElement.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
+#include "../Ride.h"
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
@@ -128,29 +129,52 @@ static void InMaTriangleTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr uint32_t imageIds[4][2] = {
-        { 18084, SPR_STATION_BASE_A_SW_NE },
-        { 18085, SPR_STATION_BASE_A_NW_SE },
-        { 18084, SPR_STATION_BASE_A_SW_NE },
-        { 18085, SPR_STATION_BASE_A_NW_SE },
-    };
+    if (ride.mode == RideMode::PoweredLaunch || ride.mode == RideMode::PoweredLaunchBlockSectioned
+        || ride.mode == RideMode::PoweredLaunchPasstrough)
+    {
+        static constexpr uint32_t imageIds[4][2] = {
+            { SPR_G2_GIGA_RC_BOOSTER_NE_SW, SPR_STATION_BASE_A_SW_NE },
+            { SPR_G2_GIGA_RC_BOOSTER_NW_SE, SPR_STATION_BASE_A_NW_SE },
+            { SPR_G2_GIGA_RC_BOOSTER_NE_SW, SPR_STATION_BASE_A_SW_NE },
+            { SPR_G2_GIGA_RC_BOOSTER_NW_SE, SPR_STATION_BASE_A_NW_SE },
+        };
 
-    if (trackElement.GetTrackType() == TrackElemType::EndStation)
-    {
-        bool isClosed = trackElement.IsBrakeClosed();
-        PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(_GigaCoasterBrakeImages[direction][isClosed][0]),
-            { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
-    }
-    else
-    {
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 0, height },
             { { 0, 6, height + 3 }, { 32, 20, 1 } });
+
+        PaintAddImageAsParentRotated(
+            session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][1]), { 0, 0, height },
+            { 32, 32, 1 });
     }
-    PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][1]), { 0, 0, height },
-        { 32, 32, 1 });
+    else
+    {
+        static constexpr uint32_t imageIds[4][2] = {
+            { 18084, SPR_STATION_BASE_A_SW_NE },
+            { 18085, SPR_STATION_BASE_A_NW_SE },
+            { 18084, SPR_STATION_BASE_A_SW_NE },
+            { 18085, SPR_STATION_BASE_A_NW_SE },
+        };
+        if (trackElement.GetTrackType() == TrackElemType::EndStation)
+        {
+            bool isClosed = trackElement.IsBrakeClosed();
+            PaintAddImageAsParentRotated(
+                session, direction,
+                session.TrackColours[SCHEME_TRACK].WithIndex(_GigaCoasterBrakeImages[direction][isClosed][0]), { 0, 0, height },
+                { { 0, 6, height + 3 }, { 32, 20, 1 } });
+        }
+        else
+        {
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 0, height },
+                { { 0, 6, height + 3 }, { 32, 20, 1 } });
+        }
+
+        PaintAddImageAsParentRotated(
+            session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][1]), { 0, 0, height },
+            { 32, 32, 1 });
+    }
+
     TrackPaintUtilDrawStationMetalSupports2(
         session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Tubes);
     TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
@@ -9356,25 +9380,19 @@ static void InMaTriangleTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    // These offsets could be moved to the g2.dat file when that supports offsets.
-    int8_t ne_sw_offsetX = 7;
-    int8_t ne_sw_offsetY = -15;
-    int8_t nw_se_offsetX = -15;
-    int8_t nw_se_offsetY = 7;
-
     switch (direction)
     {
         case 0:
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_RC_BOOSTER_NE_SW),
-                { ne_sw_offsetX, ne_sw_offsetY, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_RC_BOOSTER_NW_SE),
-                { nw_se_offsetX, nw_se_offsetY, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
