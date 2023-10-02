@@ -3662,11 +3662,11 @@ void TopToolbar::FastforwardMenuDropdown(int16_t dropdownIndex)
     {
         if (dropdownIndex >= 0 && dropdownIndex <= 5)
         {
-            auto newspeed = dropdownIndex + 1;
-            if (newspeed >= 5)
-                newspeed = 8;
+            auto newSpeed = dropdownIndex + 1;
+            if (newSpeed >= 5)
+                newSpeed = 8;
 
-            auto setSpeedAction = GameSetSpeedAction(newspeed);
+            auto setSpeedAction = GameSetSpeedAction(newSpeed);
             GameActions::Execute(&setSpeedAction);
 
             w->Invalidate();
