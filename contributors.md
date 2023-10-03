@@ -1,19 +1,18 @@
 # Contributors to OpenRCT2
-Includes all git commit authors. Aliases are GitHub usernames or Community nicknames.
+Includes all git commit authors. Aliases are GitHub usernames or community nicknames.
 
 ## Development team
-* Ted John (IntelOrca) - Owner
-* Duncan Frost (duncanspumpkin)
-* Michał Janiszewski (janisozaur)
-* Hielke Morsink (Broxzier)
-* Tulio Paschoalin Leao (tupaschoal)
-* Olivier Wervers (Oli414)
-* Matthias Moninger (ZehMatt)
+* Ted John (IntelOrca) - Project Founder - Programming
+* Duncan Frost (duncanspumpkin) - Programming
+* Michał Janiszewski (janisozaur) - Programming
+* Hielke Morsink (Broxzier) - Programming
+* Tulio Paschoalin Leao (tupaschoal) - Programming
+* Olivier Wervers (Oli414) - Lead OpenGraphics - Programming
+* Matthias Moninger (ZehMatt) - Programming
 * Karst van Galen Last (AuraSpecs) - Lead OpenSoundEffects & OpenMusic
-* Michael Bernardi (mrmbernardi)
+* Michael Bernardi (mrmbernardi) - Programming
 
 ## Support team
-* Aaron van Geffen (AaronVanGeffen)
 * Kenton Boadway (Krutonium) - Lead OpenScenarios
 
 ## Former development team members
@@ -30,6 +29,11 @@ Appreciation for long term contributors to the project having provided substanti
 * Edward Calver (X7123M3-256)
 * Kelson Blakewood (spacek531)
 * (frutiemax)
+
+## Special Thanks
+Appreciation for contributors who have provided substantial work, but are no longer active.
+* Joe Minor Jr (wolfreak99)
+* Matte Andersson (Nubbie)
 
 ## Implementation (RCT2)
 * Ted John (IntelOrca)
@@ -56,7 +60,7 @@ Appreciation for long term contributors to the project having provided substanti
 * Nicolas Espinosa Mooser (Nicolas-EM) - staff window refactor
 
 ## Additional implementation (OpenRCT2)
-** (atmaxinger) - User configuration
+* (atmaxinger) - User configuration
 * (anyc) - Housecleaning, cross-platform fixes
 * Michael Steenbeek (Gymnasiast) - Cheats, RCT1 ride style, misc.
 * Miso Zmiric (mzmiric5) - Old Twitch integration, misc.
@@ -284,8 +288,8 @@ Appreciation for long term contributors to the project having provided substanti
 * Olivier Wervers (Oli414) - Several icons
 * Edward Calver (X7123M3-256) - Hybrid RC track & train, Single Rail RC track & train, Alpine RC track & vehicle, LIM RC extended trackset, Giga RC extended trackset
 * Karst van Galen Last (AuraSpecs) - Steep log flume, Inverted RC Booster, Giga RC powered lift
-* Martijn Kroese (MK98) - Vertical brakes project
-* Peter van den Berg (Recurious) - Vertical brakes project
+* Martijn Kroese (MK98) - Diagonal brakes project
+* Peter van den Berg (Recurious) - Diagonal brakes project
 
 ## Music
 * Karst "Jalmaan" van Galen Last (AuraSpecs)
@@ -301,9 +305,9 @@ Appreciation for long term contributors to the project having provided substanti
 
 ## RollerCoaster Tycoon 2 credits
 * Allister Brimble - Music & Sound
-* Chris Sawyer - Programming & Implementation
+* Chris Sawyer - Programming
 * David Ellis - Additional Sound
-* Jacqui Lyons (Marjacq Ltd.) - Reprsentation
+* Jacqui Lyons (Marjacq Ltd.) - Representation
 * Simon Foster - Graphics
 
 Thanks to: Peter James Adcock, Joe Booth, and John Wardley
