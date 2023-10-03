@@ -28,7 +28,7 @@ constexpr RideTypeDescriptor LSMLaunchedRollerCoasterRTD =
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG_ALLOW_CABLE_LIFT_HILL |
                      RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS),
-    SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned, RideMode::PoweredLaunch, RideMode::PoweredLaunchBlockSectioned, RideMode::PoweredLaunchPasstrough)),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned, RideMode::PoweredLaunch, RideMode::PoweredLaunchBlockSectioned)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 2, 10, 30, 17, 68, 1 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_LSM_LAUNCH_ROLLER_COASTER, STR_RIDE_DESCRIPTION_LSM_LAUNCH_ROLLER_COASTER }),
