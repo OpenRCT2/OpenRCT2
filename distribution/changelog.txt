@@ -7,6 +7,7 @@
 - Fix: [#20737] Spent money in player window underflows when getting refunds.
 - Fix: [#20778] [Plugin] Incorrect target api when executing custom actions.
 - Fix: [#19722] “Forbid tree removal” restriction doesn't forbid removal of large scenery tree items.
+- Fix: [#16453] Tile inspector invisibility shortcut does not use a game action.
 
 0.4.6 (2023-09-03)
 ------------------------------------------------------------------------

@@ -517,20 +517,10 @@ static void TileInspectorMouseDown(WidgetIndex widgetIndex)
 
 static void ShortcutToggleVisibility()
 {
-    // TODO: Once the tile inspector window has its own class, move this to its own function
-    if (windowTileInspectorSelectedIndex < 0)
-        return;
-
-    WindowBase* w = WindowFindByClass(WindowClass::TileInspector);
-    if (w == nullptr)
-        return;
-
-    extern TileCoordsXY windowTileInspectorTile;
-    TileElement* tileElement = MapGetNthElementAt(windowTileInspectorTile.ToCoordsXY(), windowTileInspectorSelectedIndex);
-    if (tileElement != nullptr)
+    WindowBase* window = WindowFindByClass(WindowClass::TileInspector);
+    if (window != nullptr)
     {
-        tileElement->SetInvisible(!tileElement->IsInvisible());
-        w->Invalidate();
+        WindowTileInspectorKeyboardShortcutToggleInvisibility();
     }
 }
 
