@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include "../../paint/Boundbox.h"
 #include "../common.h"
+#include "../paint/Boundbox.h"
 #include "../paint/Paint.h"
 #include "../paint/Supports.h"
 #include "../paint/tile_element/Paint.TileElement.h"
