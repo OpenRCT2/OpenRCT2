@@ -284,6 +284,8 @@ Appreciation for long term contributors to the project having provided substanti
 * Olivier Wervers (Oli414) - Several icons
 * Edward Calver (X7123M3-256) - Hybrid RC track & train, Single Rail RC track & train, Alpine RC track & vehicle, LIM RC extended trackset, Giga RC extended trackset
 * Karst van Galen Last (AuraSpecs) - Steep log flume, Inverted RC Booster, Giga RC powered lift
+* Martijn Kroese (MK98) - Vertical brakes project
+* Peter van den Berg (Recurious) - Vertical brakes project
 
 ## Music
 * Karst "Jalmaan" van Galen Last (AuraSpecs)
