@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../paint/Boundbox.h"
 #include "../common.h"
 #include "../paint/Paint.h"
 #include "../paint/Supports.h"
@@ -282,6 +283,14 @@ extern const CoordsXY defaultDiagTileOffsets[4];
 extern const uint8_t mapLeftEighthTurnToOrthogonal[5];
 
 extern const size_t MiniGolfPeepAnimationLengths[];
+
+struct SpriteBoundBox2
+{
+    ImageIndex ImageIdA;
+    ImageIndex ImageIdB;
+    CoordsXYZ offset;
+    ::BoundBoxXYZ BoundBox;
+};
 
 bool TrackPaintUtilHasFence(
     enum edge_t edge, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride, uint8_t rotation);
