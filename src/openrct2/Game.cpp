@@ -503,7 +503,7 @@ void GameLoadInit()
     }
 
     OpenRCT2::Audio::StopTitleMusic();
-    GameResetSpeed();
+    gGameSpeed = 1;
 }
 
 void GameLoadScripts()
