@@ -6425,7 +6425,7 @@
     {
         "path": "track/wooden/brake_vertical.png",
         "x_offset": -25,
-        "y_offset": -13,
+        "y_offset": -14,
         "palette": "keep"
     },
     {
@@ -6443,13 +6443,13 @@
     {
         "path": "track/wooden/blockbrake_vertical_closed.png",
         "x_offset": -25,
-        "y_offset": -13,
+        "y_offset": -14,
         "palette": "keep"
     },
     {
         "path": "track/wooden/blockbrake_vertical_open.png",
         "x_offset": -25,
-        "y_offset": -13,
+        "y_offset": -14,
         "palette": "keep"
     },
     {
