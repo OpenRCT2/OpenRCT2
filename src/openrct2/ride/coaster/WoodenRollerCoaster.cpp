@@ -23,7 +23,8 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
-extern struct SpriteBoundBox2;
+// this redefinition is necessary due to a possible bug in the Linux Bionic compiler
+struct BoundBoxXYZ;
 
 enum
 {

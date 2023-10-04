@@ -18,7 +18,6 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 #include "WoodenRollerCoaster.h"
-
 enum
 {
     SPR_CLASSIC_WOODEN_RC_BRAKE_0 = SPR_CSG_BEGIN + 64985,
