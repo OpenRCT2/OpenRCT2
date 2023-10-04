@@ -155,6 +155,15 @@ protected:
     void Serialise(DataSerialiser& ds, const ScenarioIndexEntry& item) const override
     {
         ds << item.Path;
+        if (ds.IsLoading())
+        {
+            // Field used to be fixed size length, remove the 0 padding.
+            const auto pos = item.Path.find('\0');
+            if (pos != std::string::npos)
+            {
+                const_cast<ScenarioIndexEntry&>(item).Path = item.Path.substr(0, pos);
+            }
+        }
         ds << item.Timestamp;
         ds << item.Category;
         ds << item.SourceGame;
