@@ -23,6 +23,8 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+extern struct SpriteBoundBox2;
+
 enum
 {
     SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_SW_NE = 23497,
