@@ -8818,9 +8818,21 @@ static void WoodenRCTrackDiagBrakes(
     static constexpr SpriteBoundBox2 imageIds[4][NumOrthogonalDirections][2] = {
         {
             // sequence 0
-            { {}, {} }, // direction 0
-            { {}, {} }, // direction 1
-            { {}, {} }, // direction 2
+            {
+                // direction 0
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
+            {
+                // direction 1
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
+            {
+                // direction 2
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
             {
                 // direction 3
                 {
@@ -8829,7 +8841,7 @@ static void WoodenRCTrackDiagBrakes(
                     { -16, -16, 0 },
                     { { -16, -16, 0 }, { 32, 32, 2 } },
                 },
-                {},
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
             },
         },
         {
@@ -8849,14 +8861,34 @@ static void WoodenRCTrackDiagBrakes(
                     { { -16, -16, 27 }, { 32, 32, 0 } },
                 },
             },
-            { {}, {} }, // direction 1
-            { {}, {} }, // direction 2
-            { {}, {} }, // direction 3
+            {
+                // direction 1
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
+            {
+                // direction 2
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
+            {
+                // direction 3
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
         },
         {
             // sequence 2
-            { {}, {} }, // direction 0
-            { {}, {} }, // direction 1
+            {
+                // direction 0
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
+            {
+                // direction 1
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
             {
                 // direction 2
                 {
@@ -8872,11 +8904,18 @@ static void WoodenRCTrackDiagBrakes(
                     { { -16, -16, 27 }, { 32, 32, 0 } },
                 },
             },
-            { {}, {} }, // direction 3
+            {
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            }, // direction 3
         },
         {
             // sequence 3
-            { {}, {} }, // direction 0
+            {
+                // direction 0
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
             {
                 // direction 1
                 {
@@ -8885,10 +8924,18 @@ static void WoodenRCTrackDiagBrakes(
                     { -16, -16, 0 },
                     { { -16, -16, 0 }, { 32, 32, 2 } },
                 },
-                {},
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
             },
-            { {}, {} }, // direction 2
-            { {}, {} }, // direction 3
+            {
+                // direction 2
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
+            {
+                // direction 3
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
         },
     };
 
@@ -9001,17 +9048,25 @@ static void WoodenRCTrackDiagBlockBrakes(
                         BoundBoxXYZ({ -16, -16, 27 }, { 32, 32, 0 }),
                     },
                 },
-                { {}, {} }, // direction 3
+                {
+                    // direction 3
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
             },
             {
                 // sequence 3
-                { {}, {} }, // direction 0
+                {
+                    // direction 0
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
                 {
                     // direction 1
                     {
                         WoodenRCDiagBlockBrakeImages[0][1],
-                        24916,           // diagonal vertical trim image
-                        { -16, -16, 0 }, // todo: rotate these bboxes
+                        24916, // diagonal vertical trim image
+                        { -16, -16, 0 },
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
                     },
                     { 0, 0, {}, BoundBoxXYZ({}, {}) },
@@ -9031,18 +9086,30 @@ static void WoodenRCTrackDiagBlockBrakes(
         {
             {
                 // sequence 0
-                { {}, {} }, // direction 0
-                { {}, {} }, // direction 1
-                { {}, {} }, // direction 2
+                {
+                    // direction 0
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 1
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 2
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
                 {
                     // direction 3
                     {
                         WoodenRCDiagBlockBrakeImages[1][3],
-                        24916,           // diagonal vertical trim image
-                        { -16, -16, 0 }, // todo: rotate these bboxes
+                        24916, // diagonal vertical trim image
+                        { -16, -16, 0 },
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
                     },
-                    {},
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
                 },
             },
             {
@@ -9062,14 +9129,34 @@ static void WoodenRCTrackDiagBlockBrakes(
                         BoundBoxXYZ({ -16, -16, 27 }, { 32, 32, 0 }),
                     },
                 },
-                { {}, {} }, // direction 1
-                { {}, {} }, // direction 2
-                { {}, {} }, // direction 3
+                {
+                    // direction 1
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 2
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 3
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
             },
             {
                 // sequence 2
-                { {}, {} }, // direction 0
-                { {}, {} }, // direction 1
+                {
+                    // direction 0
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 1
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
                 {
                     // direction 2
                     {
@@ -9085,23 +9172,39 @@ static void WoodenRCTrackDiagBlockBrakes(
                         BoundBoxXYZ({ -16, -16, 27 }, { 32, 32, 0 }),
                     },
                 },
-                { {}, {} }, // direction 3
+                {
+                    // direction 3
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
             },
             {
                 // sequence 3
-                { {}, {} }, // direction 0
+                {
+                    // direction 0
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
                 {
                     // direction 1
                     {
                         WoodenRCDiagBlockBrakeImages[1][1],
-                        24916,           // diagonal vertical trim image
-                        { -16, -16, 0 }, // todo: rotate these bboxes
+                        24916, // diagonal vertical trim image
+                        { -16, -16, 0 },
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
                     },
-                    {},
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
                 },
-                { {}, {} }, // direction 2
-                { {}, {} }, // direction 3
+                {
+                    // direction 2
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 3
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
             },
         },
     };
