@@ -17,6 +17,14 @@
 
 #include <cstdint>
 
+struct SpriteBoundBox2
+{
+    ImageIndex ImageIdA;
+    ImageIndex ImageIdB;
+    CoordsXYZ offset;
+    ::BoundBoxXYZ BoundBox;
+};
+
 // Magic number 4 refers to the number of track blocks in a diagonal track element
 static constexpr const int8_t WoodenRCDiagonalSupports[4][NumOrthogonalDirections] = {
     { -1, -1, -1, -1 }, // sequence 0
