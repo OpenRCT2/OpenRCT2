@@ -23,9 +23,6 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
-// this redefinition is necessary due to a possible bug in the Linux Bionic compiler
-struct BoundBoxXYZ;
-
 enum
 {
     SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_SW_NE = 23497,
@@ -8918,9 +8915,21 @@ static void WoodenRCTrackDiagBlockBrakes(
         {
             {
                 // sequence 0
-                { {}, {} }, // direction 0
-                { {}, {} }, // direction 1
-                { {}, {} }, // direction 2
+                {
+                    // direction 0
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 1
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 2
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
                 {
                     // direction 3
                     {
@@ -8929,7 +8938,7 @@ static void WoodenRCTrackDiagBlockBrakes(
                         { -16, -16, 0 }, // todo: rotate these bboxes
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
                     },
-                    {},
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
                 },
             },
             {
@@ -8949,14 +8958,34 @@ static void WoodenRCTrackDiagBlockBrakes(
                         BoundBoxXYZ({ -16, -16, 27 }, { 32, 32, 0 }),
                     },
                 },
-                { {}, {} }, // direction 1
-                { {}, {} }, // direction 2
-                { {}, {} }, // direction 3
+                {
+                    // direction 1
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 2
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 3
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
             },
             {
                 // sequence 2
-                { {}, {} }, // direction 0
-                { {}, {} }, // direction 1
+                {
+                    // direction 0
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 1
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
                 {
                     // direction 2
                     {
@@ -8985,10 +9014,18 @@ static void WoodenRCTrackDiagBlockBrakes(
                         { -16, -16, 0 }, // todo: rotate these bboxes
                         BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
                     },
-                    {},
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
                 },
-                { {}, {} }, // direction 2
-                { {}, {} }, // direction 3
+                {
+                    // direction 2
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 3
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
             },
         },
         {
