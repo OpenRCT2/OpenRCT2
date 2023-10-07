@@ -515,15 +515,6 @@ static void TileInspectorMouseDown(WidgetIndex widgetIndex)
     }
 }
 
-static void ShortcutToggleVisibility()
-{
-    WindowBase* window = WindowFindByClass(WindowClass::TileInspector);
-    if (window != nullptr)
-    {
-        WindowTileInspectorKeyboardShortcutToggleInvisibility();
-    }
-}
-
 static void ShortcutIncreaseElementHeight()
 {
     WindowBase* w = WindowFindByClass(WindowClass::TileInspector);
@@ -868,7 +859,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::WindowRideConstructionNext, STR_SHORTCUT_CONSTRUCTION_NEXT_TRACK, "NUMPAD 9", WindowRideConstructionKeyboardShortcutNextTrack);
     RegisterShortcut(ShortcutId::WindowRideConstructionBuild, STR_SHORTCUT_CONSTRUCTION_BUILD_CURRENT, "NUMPAD 0", ShortcutConstructionBuildCurrent);
     RegisterShortcut(ShortcutId::WindowRideConstructionDemolish, STR_SHORTCUT_CONSTRUCTION_DEMOLISH_CURRENT, "NUMPAD -", ShortcutConstructionDemolishCurrent);
-    RegisterShortcut(ShortcutId::WindowTileInspectorToggleInvisibility, STR_SHORTCUT_TOGGLE_INVISIBILITY, ShortcutToggleVisibility);
+    RegisterShortcut(ShortcutId::WindowTileInspectorToggleInvisibility, STR_SHORTCUT_TOGGLE_INVISIBILITY, WindowTileInspectorKeyboardShortcutToggleInvisibility);
     RegisterShortcut(ShortcutId::WindowTileInspectorCopy, STR_SHORTCUT_COPY_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_COPY));
     RegisterShortcut(ShortcutId::WindowTileInspectorPaste, STR_SHORTCUT_PASTE_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE));
     RegisterShortcut(ShortcutId::WindowTileInspectorRemove, STR_SHORTCUT_REMOVE_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE));
