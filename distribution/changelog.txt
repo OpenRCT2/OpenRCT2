@@ -3,6 +3,7 @@
 - Feature: [#20141] Add additional track pieces to the Giga Coaster.
 - Feature: [OpenMusic#46] Added Mystic ride music style.
 - Feature: [#20825] Made setting the game speed a game action.
+- Feature: [#20853] [Plugin] Add “BaseTileElement.owner” which is saved in the park file.
 - Change: [#20790] Default ride price set to free if park charges for entry.
 - Fix: [#20356] Cannot set tertiary colour on small scenery.
 - Fix: [#20737] Spent money in player window underflows when getting refunds.
