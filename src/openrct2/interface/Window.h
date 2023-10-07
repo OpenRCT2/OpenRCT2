@@ -680,6 +680,8 @@ void WindowFootpathKeyboardShortcutSlopeUp();
 void WindowFootpathKeyboardShortcutBuildCurrent();
 void WindowFootpathKeyboardShortcutDemolishCurrent();
 
+void WindowTileInspectorKeyboardShortcutToggleInvisibility();
+
 void WindowFollowSprite(WindowBase& w, EntityId spriteIndex);
 void WindowUnfollowSprite(WindowBase& w);
 
