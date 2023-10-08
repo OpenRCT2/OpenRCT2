@@ -1472,6 +1472,7 @@ declare global {
         occupiedQuadrants: number;
         isGhost: boolean;
         isHidden: boolean; /** Take caution when changing this field, it may invalidate TileElements you have stored in your script. */
+        owner: number;
     }
 
     interface SurfaceElement extends BaseTileElement {
