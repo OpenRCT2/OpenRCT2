@@ -1914,6 +1914,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
                             continue;
                         }
                         found = true;
+                        guest->z += 4; 
                         break;
                     }
 
@@ -1984,7 +1985,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         guest->Var37 = 1;
         auto destination = guest->GetDestination();
         destination += CoordsDirectionDelta[guest->PeepDirection];
-        guest->SetDestination(destination, 12);
+        guest->SetDestination(destination, 7);
         guest->MoveTo({ coords, guest->z });
     }
     return true;
