@@ -73,7 +73,8 @@ static void InvertedHairpinRCTrackFlat(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::TubesInverted, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+            session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 30,
+            session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -175,19 +176,23 @@ static void InvertedHairpinRCTrack25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 6, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 48,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 8, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 48,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 7, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 48,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 5, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 48,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -339,19 +344,23 @@ static void InvertedHairpinRCTrackFlatTo25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 6, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 40,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 8, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 40,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 7, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 40,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 5, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 40,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -527,19 +536,23 @@ static void InvertedHairpinRCTrack60DegUpTo25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 6, 0, height + 62, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 62,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 8, 0, height + 62, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 62,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 7, 0, height + 62, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 62,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 5, 0, height + 62, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 62,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -621,19 +634,23 @@ static void InvertedHairpinRCTrack25DegUpToFlat(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 6, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 38,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 8, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 38,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 7, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 38,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 5, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 38,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -733,7 +750,8 @@ static void InvertedHairpinRCTrackLeftQuarterTurn3(
                 session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 30,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             if (direction == 0 || direction == 3)
             {
@@ -801,7 +819,8 @@ static void InvertedHairpinRCTrackLeftQuarterTurn3(
                 session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 30,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             switch (direction)
             {
@@ -862,7 +881,8 @@ static void InvertedHairpinRCTrackLeftQuarterTurn325DegUp(
                 session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             if (direction == 0 || direction == 3)
             {
@@ -905,7 +925,8 @@ static void InvertedHairpinRCTrackLeftQuarterTurn325DegUp(
                 session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             switch (direction)
             {
@@ -957,7 +978,8 @@ static void InvertedHairpinRCTrackRightQuarterTurn325DegUp(
                 session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             if (direction == 0 || direction == 3)
             {
@@ -1000,7 +1022,8 @@ static void InvertedHairpinRCTrackRightQuarterTurn325DegUp(
                 session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 38,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             switch (direction)
             {
@@ -1066,7 +1089,8 @@ static void InvertedHairpinRCTrackLeftQuarterTurn1(
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
     MetalASupportsPaintSetup(
-        session, MetalSupportType::TubesInverted, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+        session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 30,
+        session.TrackColours[SCHEME_SUPPORTS]);
 
     switch (direction)
     {
@@ -1250,19 +1274,23 @@ static void InvertedHairpinRCTrack60DegUpToFlat(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 6, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 54,
+                session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 8, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 54,
+                session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 7, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 54,
+                session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 5, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 54,
+                session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -1319,7 +1347,8 @@ static void InvertedHairpinRCTrackBrakes(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::TubesInverted, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+            session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 30,
+            session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -1352,7 +1381,8 @@ static void InvertedHairpinRCTrackBlockBrakes(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::TubesInverted, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+            session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 30,
+            session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);

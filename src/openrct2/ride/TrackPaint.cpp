@@ -117,11 +117,11 @@ const int32_t DiagBlockedSegments[] = {
     SEGMENT_D0 | SEGMENT_C4 | SEGMENT_B8 | SEGMENT_C8,
 };
 
-const uint8_t DiagSupportSegments[] = {
-    1,
-    0,
-    2,
-    3,
+const MetalSupportPlace DiagSupportPlacement[] = {
+    MetalSupportPlace::Corner1,
+    MetalSupportPlace::Corner0,
+    MetalSupportPlace::Corner2,
+    MetalSupportPlace::Corner3,
 };
 
 const uint8_t track_map_1x4[][4] = {
@@ -953,13 +953,13 @@ void TrackPaintUtilDrawStationMetalSupports2(
 {
     if (direction & 1)
     {
-        MetalASupportsPaintSetup(session, type, 6, 0, height, colour);
-        MetalASupportsPaintSetup(session, type, 7, 0, height, colour);
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::Side1, 0, height, colour);
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::Side2, 0, height, colour);
     }
     else
     {
-        MetalASupportsPaintSetup(session, type, 5, 0, height, colour);
-        MetalASupportsPaintSetup(session, type, 8, 0, height, colour);
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::Side0, 0, height, colour);
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::Side3, 0, height, colour);
     }
 }
 
@@ -2173,7 +2173,8 @@ void TrackPaintUtilLeftCorkscrewUpSupports(PaintSession& session, Direction dire
             session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
             0);
     }
-    MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(
+        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     if (direction != 2)
     {
         PaintUtilSetSegmentSupportHeight(

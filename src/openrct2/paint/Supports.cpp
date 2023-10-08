@@ -856,9 +856,10 @@ bool WoodenBSupportsPaintSetupRotated(
  *  rct2: 0x00663105
  */
 bool MetalASupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportTypeMember, uint8_t segment, int32_t special, int32_t height,
+    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate)
 {
+    uint8_t segment = EnumValue(placement);
     auto supportType = EnumValue(supportTypeMember);
     SupportHeight* supportSegments = session.SupportSegments;
 
@@ -1054,9 +1055,10 @@ bool MetalASupportsPaintSetup(
  * @return (Carry Flag)
  */
 bool MetalBSupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportTypeMember, uint8_t segment, int32_t special, int32_t height,
+    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate)
 {
+    uint8_t segment = EnumValue(placement);
     auto supportType = EnumValue(supportTypeMember);
     SupportHeight* supportSegments = session.SupportSegments;
     uint8_t originalSegment = segment;

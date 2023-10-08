@@ -94,6 +94,19 @@ enum class MetalSupportType : uint8_t
     BoxedCoated,
 };
 
+enum class MetalSupportPlace : uint8_t
+{
+    Corner0 = 0,
+    Corner1 = 1,
+    Corner2 = 2,
+    Corner3 = 3,
+    Centre = 4,
+    Side0 = 5,
+    Side1 = 6,
+    Side2 = 7,
+    Side3 = 8,
+};
+
 bool WoodenASupportsPaintSetup(
     PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
 bool WoodenASupportsPaintSetup(
@@ -111,10 +124,10 @@ bool WoodenBSupportsPaintSetupRotated(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, Direction direction, int32_t height,
     ImageId imageTemplate, WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None);
 bool MetalASupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportTypeMember, uint8_t segment, int32_t special, int32_t height,
+    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate);
 bool MetalBSupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportTypeMember, uint8_t segment, int32_t special, int32_t height,
+    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate);
 bool PathASupportsPaintSetup(
     PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,

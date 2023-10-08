@@ -222,13 +222,21 @@ static void PaintMagicCarpet(
         case 2:
             if (direction & 1)
             {
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
             else
             {
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
             const StationObject* stationObject = ride.GetStationObject();
 

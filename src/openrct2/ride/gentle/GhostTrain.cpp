@@ -189,7 +189,8 @@ static void PaintGhostTrainTrackFlat(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -210,7 +211,8 @@ static void PaintGhostTrainTrack25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     switch (direction)
@@ -258,7 +260,8 @@ static void PaintGhostTrainTrackFlatTo25DegUp(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     switch (direction)
@@ -294,7 +297,8 @@ static void PaintGhostTrainTrack25DegUpToFlatShared(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -390,13 +394,17 @@ static void PaintGhostTrainStation(
 
     if (direction == 0 || direction == 2)
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Boxed, MetalSupportPlace::Side0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Boxed, MetalSupportPlace::Side3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     else
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Boxed, MetalSupportPlace::Side1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Boxed, MetalSupportPlace::Side2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
@@ -424,7 +432,8 @@ static void PaintGhostTrainTrackRightQuarterTurn3Tiles(
     {
         case 0:
         case 3:
-            MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -477,7 +486,8 @@ static void PaintGhostTrainTrackLeftQuarterTurn1Tile(
         session, 3, height, 0, direction, session.TrackColours[SCHEME_TRACK], GhostTrainTrackPiecesQuarterTurn1Tile);
     TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, 0, tunnelStartImage, 0, tunnelEndImage);
 
-    MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(
+        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
@@ -524,7 +534,8 @@ static void PaintGhostTrainTrackBrakes(
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
