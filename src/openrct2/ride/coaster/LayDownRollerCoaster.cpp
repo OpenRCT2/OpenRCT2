@@ -17,6 +17,51 @@
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
+static constexpr const uint32_t LaydownDiagBrakeImages[2][NumOrthogonalDirections] = {
+    {
+        SPR_G2_CORKSCREW_DIAG_BRAKES,
+        SPR_G2_CORKSCREW_DIAG_BRAKES + 1,
+        SPR_G2_CORKSCREW_DIAG_BRAKES,
+        SPR_G2_CORKSCREW_DIAG_BRAKES + 1,
+    },
+    {
+        SPR_G2_SLC_DIAG_BRAKES,
+        SPR_G2_SLC_DIAG_BRAKES + 2,
+        SPR_G2_SLC_DIAG_BRAKES,
+        SPR_G2_SLC_DIAG_BRAKES + 2,
+    },
+};
+
+static constexpr const uint32_t LaydownDiagBlockBrakeImages[2][2][NumOrthogonalDirections] = {
+    {
+        {
+            SPR_G2_CORKSCREW_DIAG_BRAKES + 3,
+            SPR_G2_CORKSCREW_DIAG_BRAKES + 5,
+            SPR_G2_CORKSCREW_DIAG_BRAKES + 3,
+            SPR_G2_CORKSCREW_DIAG_BRAKES + 5,
+        },
+        {
+            SPR_G2_CORKSCREW_DIAG_BRAKES + 2,
+            SPR_G2_CORKSCREW_DIAG_BRAKES + 4,
+            SPR_G2_CORKSCREW_DIAG_BRAKES + 2,
+            SPR_G2_CORKSCREW_DIAG_BRAKES + 4,
+        },
+    },
+    {
+        {
+            SPR_G2_SLC_DIAG_BRAKES,
+            SPR_G2_SLC_DIAG_BRAKES + 2,
+            SPR_G2_SLC_DIAG_BRAKES,
+            SPR_G2_SLC_DIAG_BRAKES + 2,
+        },
+        {
+            SPR_G2_SLC_DIAG_BRAKES,
+            SPR_G2_SLC_DIAG_BRAKES + 1,
+            SPR_G2_SLC_DIAG_BRAKES,
+            SPR_G2_SLC_DIAG_BRAKES + 1,
+        },
+    },
+};
 
 /** rct2: 0x0082491C */
 static void LayDownRCTrackFlat(
@@ -4433,6 +4478,86 @@ static void LayDownRCTrackDiagFlat(
     }
 }
 
+static void LayDownRCTrackDiagBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    if (trackElement.IsInverted())
+    {
+        TrackPaintUtilDiagTilesPaint(
+            session, -3, height + 24, direction, trackSequence, session.TrackColours[SCHEME_TRACK], LaydownDiagBrakeImages[1],
+            defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+
+        if (trackSequence == 3)
+        {
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::TubesInverted, DiagSupportSegments[direction], 0, height + 33,
+                session.TrackColours[SCHEME_SUPPORTS]);
+        }
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    }
+    else
+    {
+        TrackPaintUtilDiagTilesPaint(
+            session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], LaydownDiagBrakeImages[0],
+            defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+
+        if (trackSequence == 3)
+        {
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::TubesInverted, DiagSupportSegments[direction], 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
+        }
+
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    }
+}
+
+static void LayDownRCTrackDiagBlockBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    if (trackElement.IsInverted())
+    {
+        TrackPaintUtilDiagTilesPaint(
+            session, -3, height + 24, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
+            LaydownDiagBlockBrakeImages[1][trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths,
+            nullptr);
+
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+
+        if (trackSequence == 3)
+        {
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::TubesInverted, DiagSupportSegments[direction], 0, height + 33,
+                session.TrackColours[SCHEME_SUPPORTS]);
+        }
+        PaintUtilSetGeneralSupportHeight(session, height + 33, 0x20);
+    }
+    else
+    {
+        TrackPaintUtilDiagTilesPaint(
+            session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
+            LaydownDiagBlockBrakeImages[0][trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths,
+            nullptr);
+
+        if (trackSequence == 3)
+        {
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::TubesInverted, DiagSupportSegments[direction], 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
+        }
+
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    }
+}
+
 /** rct2: 0x00824E2C */
 static void LayDownRCTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -8616,6 +8741,10 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLayDownRC(int32_t trackType)
             return LayDownRCTrackDiagRightBank;
         case TrackElemType::BlockBrakes:
             return LayDownRCTrackBlockBrakes;
+        case TrackElemType::DiagBrakes:
+            return LayDownRCTrackDiagBrakes;
+        case TrackElemType::DiagBlockBrakes:
+            return LayDownRCTrackDiagBlockBrakes;
 
         // Inverted only
         case TrackElemType::LeftFlyerTwistDown:

@@ -30,6 +30,36 @@ static constexpr uint32_t _MineTrainBlockBrakeImages[NumOrthogonalDirections][2]
     { MINE_TRAIN_BLOCK_BRAKE_NW_SE_OPEN, MINE_TRAIN_BLOCK_BRAKE_NW_SE_CLOSED },
 };
 
+static constexpr const uint32_t MinetrainRCDiagBrakeImages[NumOrthogonalDirections] = {
+    SPR_G2_MINETRAIN_DIAG_BRAKES,
+    SPR_G2_MINETRAIN_DIAG_BRAKES + 1,
+    SPR_G2_MINETRAIN_DIAG_BRAKES,
+    SPR_G2_MINETRAIN_DIAG_BRAKES + 1,
+};
+
+static constexpr const uint32_t MinetrainRCDiagBlockBrakeImages[2][NumOrthogonalDirections] = {
+    {
+        SPR_G2_MINETRAIN_DIAG_BRAKES + 3,
+        SPR_G2_MINETRAIN_DIAG_BRAKES + 5,
+        SPR_G2_MINETRAIN_DIAG_BRAKES + 3,
+        SPR_G2_MINETRAIN_DIAG_BRAKES + 5,
+    },
+    {
+        SPR_G2_MINETRAIN_DIAG_BRAKES + 2,
+        SPR_G2_MINETRAIN_DIAG_BRAKES + 4,
+        SPR_G2_MINETRAIN_DIAG_BRAKES + 2,
+        SPR_G2_MINETRAIN_DIAG_BRAKES + 4,
+    },
+};
+
+// Magic number 4 refers to the number of track blocks in a diagonal track element
+static constexpr const int32_t MineTrainRCDiagonalSupports[4][NumOrthogonalDirections] = {
+    { -1, -1, -1, -1 },
+    { 8, 9, 10, 11 },
+    { 10, 11, 8, 9 },
+    { -1, -1, -1, -1 },
+};
+
 /** rct2: 0x0071BFA4 */
 static void MineTrainRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -5393,6 +5423,43 @@ static void MineTrainRCTrackDiagFlat(
     }
 }
 
+static void MineTrainRCTrackDiagBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    TrackPaintUtilDiagTilesPaint(
+        session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], MinetrainRCDiagBrakeImages,
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+
+    if (MineTrainRCDiagonalSupports[trackSequence][direction] != -1)
+    {
+        WoodenASupportsPaintSetup(
+            session, MineTrainRCDiagonalSupports[trackSequence][direction], 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+    }
+
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+}
+
+static void MineTrainRCTrackDiagBlockBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    TrackPaintUtilDiagTilesPaint(
+        session, 13, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
+        MinetrainRCDiagBlockBrakeImages[trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths,
+        nullptr);
+
+    if (MineTrainRCDiagonalSupports[trackSequence][direction] != -1)
+    {
+        WoodenASupportsPaintSetup(
+            session, MineTrainRCDiagonalSupports[trackSequence][direction], 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+    }
+
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+}
+
 /** rct2: 0x0071C414 */
 static void MineTrainRCTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -7269,6 +7336,10 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineTrainRC(int32_t trackType)
             return MineTrainRCTrackDiagRightBank;
         case TrackElemType::BlockBrakes:
             return MineTrainRCTrackBlockBrakes;
+        case TrackElemType::DiagBrakes:
+            return MineTrainRCTrackDiagBrakes;
+        case TrackElemType::DiagBlockBrakes:
+            return MineTrainRCTrackDiagBlockBrakes;
     }
     return nullptr;
 }

@@ -33,6 +33,52 @@ static constexpr uint32_t MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_OPEN = 26552;
 static constexpr uint32_t MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED = 26553;
 static constexpr uint32_t MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_CLOSED = 26554;
 
+static constexpr const uint32_t MultidimDiagBrakeImages[2][NumOrthogonalDirections] = {
+    {
+        SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES,
+        SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 1,
+        SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES,
+        SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 1,
+    },
+    {
+        SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES,
+        SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 1,
+        SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES,
+        SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 1,
+    },
+};
+
+static constexpr const uint32_t MultidimDiagBlockBrakeImages[2][2][NumOrthogonalDirections] = {
+    {
+        {
+            SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 3,
+            SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 5,
+            SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 3,
+            SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 5,
+        },
+        {
+            SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 2,
+            SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 4,
+            SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 2,
+            SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 4,
+        },
+    },
+    {
+        {
+            SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 2,
+            SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 4,
+            SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 2,
+            SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 4,
+        },
+        {
+            SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 2,
+            SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 3,
+            SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 2,
+            SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 3,
+        },
+    },
+};
+
 /** rct2: 0x00792D88 */
 static void MultiDimensionRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -7038,6 +7084,86 @@ static void MultiDimensionRCTrackDiagFlat(
     }
 }
 
+static void MultiDimensionRCTrackDiagBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    if (trackElement.IsInverted())
+    {
+        TrackPaintUtilDiagTilesPaint(
+            session, -3, height + 24, direction, trackSequence, session.TrackColours[SCHEME_TRACK], MultidimDiagBrakeImages[1],
+            defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+
+        if (trackSequence == 3)
+        {
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::TubesInverted, DiagSupportSegments[direction], 0, height + 36,
+                session.TrackColours[SCHEME_SUPPORTS]);
+        }
+    }
+    else
+    {
+        TrackPaintUtilDiagTilesPaint(
+            session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], MultidimDiagBrakeImages[0],
+            defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+
+        if (trackSequence == 3)
+        {
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::TubesInverted, DiagSupportSegments[direction], 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
+        }
+
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    }
+}
+
+static void MultiDimensionRCTrackDiagBlockBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    if (trackElement.IsInverted())
+    {
+        TrackPaintUtilDiagTilesPaint(
+            session, -3, height + 24, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
+            MultidimDiagBlockBrakeImages[1][trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths,
+            nullptr);
+
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+
+        if (trackSequence == 3)
+        {
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::TubesInverted, DiagSupportSegments[direction], 0, height + 36,
+                session.TrackColours[SCHEME_SUPPORTS]);
+        }
+    }
+    else
+    {
+        TrackPaintUtilDiagTilesPaint(
+            session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
+            MultidimDiagBlockBrakeImages[0][trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths,
+            nullptr);
+
+        if (trackSequence == 3)
+        {
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::TubesInverted, DiagSupportSegments[direction], 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
+        }
+
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    }
+}
+
 /** rct2: 0x00793158 */
 static void MultiDimensionRCTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -13294,6 +13420,11 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMultiDimensionRC(int32_t trackType)
             return MultiDimensionRCTrackMultidimFlatTo90DegDownQuarterLoop;
         case TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop:
             return MultiDimensionRCTrackMultidimInverted90DegUpToFlatQuarterLoop;
+
+        case TrackElemType::DiagBrakes:
+            return MultiDimensionRCTrackDiagBrakes;
+        case TrackElemType::DiagBlockBrakes:
+            return MultiDimensionRCTrackDiagBlockBrakes;
     }
     return nullptr;
 }

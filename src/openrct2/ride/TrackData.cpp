@@ -355,6 +355,8 @@ static constexpr TrackCoordinates _trackCoordinates[] = {
         { 4, 1, 0, 48, -32, 64 },  // TrackElemType::RightEighthBankToOrthogonalUp25 
         { 4, 0, 0,-48, -64, 32 },  // TrackElemType::LeftEighthBankToOrthogonalDown25
         { 4, 1, 0,-48, -32, 64 },  // TrackElemType::RightEighthBankToOrthogonalDown25     
+        { 4, 4, 0, 0, -32, 32 },    // TrackElemType::DiagBrakes
+        { 4, 4, 0, 0, -32, 32 },    // TrackElemType::DiagBlockBrakes
 };
 static_assert(std::size(_trackCoordinates) == TrackElemType::Count);
 
@@ -698,6 +700,8 @@ static constexpr uint8_t TrackSequenceProperties[][MaxSequencesPerPiece] = {
     { 0 }, // TrackElemType::RightEighthBankToOrthogonalUp25 
     { 0 }, // TrackElemType::LeftEighthBankToOrthogonalDown25
     { 0 }, // TrackElemType::RightEighthBankToOrthogonalDown25
+    /* DiagonalBrakes                        */ { 0 },
+    /* DiagonalBlockBrakes                   */ { 0 },
 };
 static_assert(std::size(TrackSequenceProperties) == TrackElemType::Count);
 
@@ -3344,6 +3348,8 @@ static constexpr std::array<const PreviewTrack*, TrackElemType::Count> TrackBloc
     TrackBlocksRightEighthToOrthogonalUp25,   // TrackElemType::RightEighthBankToOrthogonalUp25 
     TrackBlocksLeftEighthToOrthogonalDown25,  // TrackElemType::LeftEighthBankToOrthogonalDown25
     TrackBlocksRightEighthToOrthogonalDown25, // TrackElemType::RightEighthBankToOrthogonalDown25     
+    TrackBlocks141,                           // TrackElemType::DiagBrakes
+    TrackBlocks141,                           // TrackElemType::DiagBlockBrakes
 };
 
 static constexpr uint8_t TrackPieceLengths[] = {
@@ -3683,7 +3689,9 @@ static constexpr uint8_t TrackPieceLengths[] = {
     92, // TrackElemType::LeftEighthBankToOrthogonalUp25
     92, // TrackElemType::RightEighthBankToOrthogonalUp25 
     92, // TrackElemType::LeftEighthBankToOrthogonalDown25
-    92, // TrackElemType::RightEighthBankToOrthogonalDown25     
+    92, // TrackElemType::RightEighthBankToOrthogonalDown25
+    45, // TrackElemType::DiagBrakes
+    45, // TrackElemType::DiagBlockBrakes
 };
 static_assert(std::size(TrackPieceLengths) == TrackElemType::Count);
 
@@ -4026,6 +4034,8 @@ static constexpr TrackCurveChain gTrackCurveChain[] = {
     { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::RightEighthBankToOrthogonalUp25 
     { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::LeftEighthBankToOrthogonalDown25
     { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::RightEighthBankToOrthogonalDown25     
+    { RideConstructionSpecialPieceSelected | TrackElemType::DiagBrakes, RideConstructionSpecialPieceSelected | TrackElemType::DiagBrakes }, // TrackElemType::DiagBrakes
+    { TRACK_CURVE_NONE, TRACK_CURVE_NONE }, // TrackElemType::DiagBlockBrakes
 };
 static_assert(std::size(gTrackCurveChain) == TrackElemType::Count);
 
@@ -4557,6 +4567,8 @@ static constexpr track_type_t AlternativeTrackTypes[] = {
     TrackElemType::None, // TrackElemType::RightEighthBankToOrthogonalUp25 
     TrackElemType::None, // TrackElemType::LeftEighthBankToOrthogonalDown25
     TrackElemType::None, // TrackElemType::RightEighthBankToOrthogonalDown25
+    TrackElemType::None, // TrackElemType::DiagBrakes
+    TrackElemType::None, // TrackElemType::DiagBlockBrakes
 };
 static_assert(std::size(AlternativeTrackTypes) == TrackElemType::Count);
 
@@ -4899,6 +4911,8 @@ static constexpr money64 TrackPricing[] = {
     233281, // TrackElemType::RightEighthBankToOrthogonalUp25 
     233281, // TrackElemType::LeftEighthBankToOrthogonalDown25
     233281, // TrackElemType::RightEighthBankToOrthogonalDown25
+    123456, // TrackElemType::DiagBrakes
+    123456, // TrackElemType::DiagBlockBrakes
 };
 
 
@@ -5244,6 +5258,8 @@ static constexpr track_type_t TrackElementMirrorMap[] = {
     TrackElemType::LeftEighthBankToOrthogonalUp25,        // TrackElemType::LeftEighthBankToOrthogonalUp25 
     TrackElemType::RightEighthBankToOrthogonalDown25,     // TrackElemType::RightEighthBankToOrthogonalDown25
     TrackElemType::LeftEighthBankToOrthogonalDown25,      // TrackElemType::LeftEighthBankToOrthogonalDown25
+    TrackElemType::DiagBrakes,
+    TrackElemType::DiagBlockBrakes,
 };
 static_assert(std::size(TrackElementMirrorMap) == TrackElemType::Count);
 
@@ -5585,7 +5601,9 @@ static constexpr uint32_t TrackHeightMarkerPositions[] = {
     (1 << 0) | (1 << 4), // TrackElemType::RightEighthBankToOrthogonalUp25
     (1 << 0) | (1 << 4), // TrackElemType::LeftEighthBankToOrthogonalUp25 
     (1 << 0) | (1 << 4), // TrackElemType::RightEighthBankToOrthogonalDown25
-    (1 << 0) | (1 << 4), // TrackElemType::LeftEighthBankToOrthogonalDown25     
+    (1 << 0) | (1 << 4), // TrackElemType::LeftEighthBankToOrthogonalDown25
+    (1 << 0), // TrackElemType::DiagBrakes
+    (1 << 0), // TrackElemType::DiagBlockBrakes
 };
 static_assert(std::size(TrackHeightMarkerPositions) == TrackElemType::Count);
 
@@ -5928,7 +5946,9 @@ static constexpr uint8_t TrackSequenceElementAllowedWallEdges[][MaxSequencesPerP
     {      0, 0b1000, 0b0110, 0b0010, 0b0010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftEighthBankToOrthogonalUp25        
     {      0, 0b0100, 0b1001, 0b0001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightEighthBankToOrthogonalUp25         
     {      0, 0b1000, 0b0110, 0b0010, 0b0010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::LeftEighthBankToOrthogonalDown25      
-    {      0, 0b0100, 0b1001, 0b0001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightEighthBankToOrthogonalDown25       
+    {      0, 0b0100, 0b1001, 0b0001, 0b0001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::RightEighthBankToOrthogonalDown25
+    {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagBrakes
+    {      0, 0b0110, 0b1001,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::DiagBlockBrakes
 };
 
 
@@ -6274,6 +6294,8 @@ static constexpr uint16_t TrackFlags[] = {
     /* TrackElemType::RightEighthBankToOrthogonalUp25        */   TRACK_ELEM_FLAG_TURN_RIGHT | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_UP   | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,  
     /* TrackElemType::LeftEighthBankToOrthogonalDown25       */   TRACK_ELEM_FLAG_TURN_LEFT  | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,  
     /* TrackElemType::RightEighthBankToOrthogonalDown25      */   TRACK_ELEM_FLAG_TURN_RIGHT | TRACK_ELEM_FLAG_TURN_SLOPED | TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT | TRACK_ELEM_FLAG_ALLOW_LIFT_HILL | TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT,  
+    /* TrackElemType::DiagBrakes                                    */   0,
+    /* TrackElemType::DiagBlockBrakes                               */   0,
 };
 static_assert(std::size(TrackFlags) == TrackElemType::Count);
 // clang-format on
@@ -6619,7 +6641,9 @@ static constexpr TrackDefinition TrackDefinitions[] =
     { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_UP_25,   TRACK_SLOPE_UP_25,   TRACK_BANK_LEFT,        TRACK_BANK_LEFT,      16 }, // TrackElemType::LeftEighthBankToOrthogonalUp25
     { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_UP_25,   TRACK_SLOPE_UP_25,   TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,     16 }, // TrackElemType::RightEighthBankToOrthogonalUp25 
     { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_DOWN_25, TRACK_SLOPE_DOWN_25, TRACK_BANK_LEFT,        TRACK_BANK_LEFT,     -16 }, // TrackElemType::LeftEighthBankToOrthogonalDown25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_DOWN_25, TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,    -16 }, // TrackElemType::RightEighthBankToOrthogonalDown25     
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_DOWN_25, TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,    -16 }, // TrackElemType::RightEighthBankToOrthogonalDown25
+    { TRACK_DIAG_BRAKES,            TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0  }, // TrackElemType::DiagBrakes
+    { TRACK_DIAG_BLOCK_BRAKES,      TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0  }, // TrackElemType::DiagBlockBrakes
 };
 static_assert(std::size(TrackDefinitions) == TrackElemType::Count);
 
@@ -6651,7 +6675,8 @@ constexpr static uint8_t TrackTypeToSpinFunction[] = {
     NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L9_SPIN, R9_SPIN, L9_SPIN, R9_SPIN, L9_SPIN, R9_SPIN,
     L9_SPIN, R9_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
     NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L9_SPIN, R9_SPIN, L9_SPIN, R9_SPIN, L9_SPIN, R9_SPIN, L9_SPIN, R9_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L9_SPIN, R9_SPIN, L9_SPIN, R9_SPIN, L9_SPIN, R9_SPIN, L9_SPIN, R9_SPIN, NO_SPIN,
+    NO_SPIN,
 };
 static_assert(std::size(TrackTypeToSpinFunction) == TrackElemType::Count);
 
@@ -7942,6 +7967,8 @@ static constexpr StringId RideConfigurationStringIds[] = {
     STR_EMPTY,                         // TrackElemType::RightEighthBankToOrthogonalUp25
     STR_EMPTY,                         // TrackElemType::LeftEighthBankToOrthogonalDown25
     STR_EMPTY,                         // TrackElemType::RightEighthBankToOrthogonalDown25
+    STR_BRAKES,                        // TrackElemType::DiagBrakes
+    STR_BLOCK_BRAKES                   // TrackElemType::DiagBlockBrakes
 };
 static_assert(std::size(RideConfigurationStringIds) == TrackElemType::Count);
 

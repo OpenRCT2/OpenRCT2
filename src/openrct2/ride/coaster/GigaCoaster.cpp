@@ -39,6 +39,47 @@ static constexpr uint32_t _GigaCoasterBrakeImages[NumOrthogonalDirections][2][2]
       { GIGA_COASTER_BRAKE_NW_SE_CLOSED_1, GIGA_COASTER_BRAKE_NW_SE_CLOSED_2 } },
 };
 
+/* first level : open, closed
+ * second level: background, foreground
+ * third level: direction
+ */
+static constexpr uint32_t GigaDiagBrakeImages[2][2][NumOrthogonalDirections] = {
+    {
+        // Open
+        {
+            // Background
+            SPR_G2_GIGA_RC_DIAG_BRAKES,
+            SPR_G2_GIGA_RC_DIAG_BRAKES + 3,
+            SPR_G2_GIGA_RC_DIAG_BRAKES,
+            SPR_G2_GIGA_RC_DIAG_BRAKES + 3,
+        },
+        {
+            // Foreground
+            SPR_G2_GIGA_RC_DIAG_BRAKES + 2,
+            SPR_G2_GIGA_RC_DIAG_BRAKES + 4,
+            SPR_G2_GIGA_RC_DIAG_BRAKES + 2,
+            SPR_G2_GIGA_RC_DIAG_BRAKES + 4,
+        },
+    },
+    {
+        // Closed
+        {
+            // Background
+            SPR_G2_GIGA_RC_DIAG_BRAKES + 1,
+            SPR_G2_GIGA_RC_DIAG_BRAKES + 3,
+            SPR_G2_GIGA_RC_DIAG_BRAKES + 1,
+            SPR_G2_GIGA_RC_DIAG_BRAKES + 3,
+        },
+        {
+            // Foreground
+            SPR_G2_GIGA_RC_DIAG_BRAKES + 2,
+            SPR_G2_GIGA_RC_DIAG_BRAKES + 5,
+            SPR_G2_GIGA_RC_DIAG_BRAKES + 2,
+            SPR_G2_GIGA_RC_DIAG_BRAKES + 5,
+        },
+    },
+};
+
 /** rct2: 0x008AD674 */
 static void GigaRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -16563,6 +16604,36 @@ static void GigaRCTrackRightEighthBankToOrthogonalDown25(
     GigaRCTrackLeftEighthBankToDiagUp25(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
+static constexpr CoordsXYZ diagBrakeBoundsOffsets[4] = {
+    { 0, 0, 24 },
+    { 0, 0, 24 },
+    { 0, 0, 24 },
+    { 0, 0, 24 },
+};
+
+static void GigaRCTrackDiagBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    TrackPaintUtilDiagTilesPaint(
+        session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
+        GigaDiagBrakeImages[trackElement.IsBrakeClosed()][0], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+
+    TrackPaintUtilDiagTilesPaint(
+        session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
+        GigaDiagBrakeImages[trackElement.IsBrakeClosed()][1], defaultDiagTileOffsets, defaultDiagBoundLengths,
+        diagBrakeBoundsOffsets);
+
+    if (trackSequence == 3)
+    {
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, DiagSupportSegments[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    }
+
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+}
+
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionGigaRC(int32_t trackType)
 {
     switch (trackType)
@@ -17049,6 +17120,9 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionGigaRC(int32_t trackType)
             return GigaRCTrackLeftEighthBankToOrthogonalDown25;
         case TrackElemType::RightEighthBankToOrthogonalDown25:
             return GigaRCTrackRightEighthBankToOrthogonalDown25;
+        case TrackElemType::DiagBlockBrakes:
+        case TrackElemType::DiagBrakes:
+            return GigaRCTrackDiagBrakes;
     }
     return nullptr;
 }

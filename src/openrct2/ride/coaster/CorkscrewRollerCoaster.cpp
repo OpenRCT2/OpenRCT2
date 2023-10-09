@@ -30,6 +30,28 @@ static constexpr uint32_t _CorkscrewRCBlockBrakeImages[NumOrthogonalDirections][
     { CORKSCREW_RC_BLOCK_BRAKE_NW_SE_OPEN, CORKSCREW_RC_BLOCK_BRAKE_NW_SE_CLOSED },
 };
 
+static constexpr const uint32_t CorkscrewRCDiagBrakeImages[NumOrthogonalDirections] = {
+    SPR_G2_CORKSCREW_DIAG_BRAKES,
+    SPR_G2_CORKSCREW_DIAG_BRAKES + 1,
+    SPR_G2_CORKSCREW_DIAG_BRAKES,
+    SPR_G2_CORKSCREW_DIAG_BRAKES + 1,
+};
+
+static constexpr const uint32_t CorkscrewRCDiagBlockBrakeImages[2][NumOrthogonalDirections] = {
+    {
+        SPR_G2_CORKSCREW_DIAG_BRAKES + 3,
+        SPR_G2_CORKSCREW_DIAG_BRAKES + 5,
+        SPR_G2_CORKSCREW_DIAG_BRAKES + 3,
+        SPR_G2_CORKSCREW_DIAG_BRAKES + 5,
+    },
+    {
+        SPR_G2_CORKSCREW_DIAG_BRAKES + 2,
+        SPR_G2_CORKSCREW_DIAG_BRAKES + 4,
+        SPR_G2_CORKSCREW_DIAG_BRAKES + 2,
+        SPR_G2_CORKSCREW_DIAG_BRAKES + 4,
+    },
+};
+
 /** rct2: 0x008A7AF8 */
 static void CorkscrewRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -6055,6 +6077,45 @@ static void CorkscrewRCTrackDiagFlat(
     }
 }
 
+static void CorkscrewRCTrackDiagBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    TrackPaintUtilDiagTilesPaint(
+        session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], CorkscrewRCDiagBrakeImages,
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+
+    if (trackSequence == 3)
+    {
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, DiagSupportSegments[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    }
+
+    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+}
+
+static void CorkscrewRCTrackDiagBlockBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    TrackPaintUtilDiagTilesPaint(
+        session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
+        CorkscrewRCDiagBlockBrakeImages[trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths,
+        nullptr);
+
+    if (trackSequence == 3)
+    {
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, DiagSupportSegments[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    }
+
+    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+}
+
 /** rct2: 0x008A8008 */
 static void CorkscrewRCTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -10280,6 +10341,10 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRC(int32_t trackType)
             return CorkscrewRCTrackDiagRightBank;
         case TrackElemType::BlockBrakes:
             return CorkscrewRCTrackBlockBrakes;
+        case TrackElemType::DiagBrakes:
+            return CorkscrewRCTrackDiagBrakes;
+        case TrackElemType::DiagBlockBrakes:
+            return CorkscrewRCTrackDiagBlockBrakes;
 
         case TrackElemType::Booster:
             return CorkscrewRCTrackBooster;
