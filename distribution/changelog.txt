@@ -1,5 +1,6 @@
 0.4.7 (in development)
 ------------------------------------------------------------------------
+- Feature: [#12078] Add shortcut key for toggling wall slope.
 - Feature: [#20141] Add additional track pieces to the Giga Coaster.
 - Feature: [OpenMusic#46] Added Mystic ride music style.
 - Feature: [#20825] Made setting the game speed a game action.
