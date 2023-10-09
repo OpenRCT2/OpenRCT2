@@ -1914,8 +1914,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
                             continue;
                         }
                         found = true;
-
-                        guest->z += 2; 
+                        guest->z += 2;
                         break;
                     }
 
