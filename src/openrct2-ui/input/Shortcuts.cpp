@@ -24,6 +24,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/CheatSetAction.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
+#include <openrct2/actions/TileModifyAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Chat.h>
@@ -41,7 +42,6 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/TileInspector.h>
-#include <openrct2/actions/TileModifyAction.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
@@ -520,30 +520,28 @@ static void TileInspectorMouseDown(WidgetIndex widgetIndex)
 static void ShortcutToggleWallSlope()
 {
     WindowBase* window = WindowFindByClass(WindowClass::TileInspector);
-    if (window == nullptr) {
+    if (window == nullptr) 
+    {
         return;
     }
 
     const TileElement* tileElement = OpenRCT2::TileInspector::GetSelectedElement();
-    
+
     // Ensure an element is selected and it's a wall
-    if (tileElement == nullptr || tileElement->GetType() != TileElementType::Wall) {
+    if (tileElement == nullptr || tileElement->GetType() != TileElementType::Wall) 
+    {
         return;
     }
 
     int32_t currSlopeValue = tileElement->AsWall()->GetSlope();
     int32_t newSlopeValue = currSlopeValue + 1;
-    if (newSlopeValue > 2) {
+    if (newSlopeValue > 2) 
+    {
         newSlopeValue = 0;
     }
 
     extern TileCoordsXY windowTileInspectorTile;
-    auto modifyTile = TileModifyAction(
-        windowTileInspectorTile.ToCoordsXY(),
-        TileModifyType::WallSetSlope,
-        windowTileInspectorSelectedIndex,
-        newSlopeValue
-    );
+    auto modifyTile = TileModifyAction(windowTileInspectorTile.ToCoordsXY(), TileModifyType::WallSetSlope, windowTileInspectorSelectedIndex, newSlopeValue);
     GameActions::Execute(&modifyTile);
 }
 
