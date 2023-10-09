@@ -515,6 +515,31 @@ static void TileInspectorMouseDown(WidgetIndex widgetIndex)
     }
 }
 
+#include <openrct2/core/Console.hpp>
+static void ShortcutChangeWallSlope()
+{
+    Console::Write("ShortcutChangeWallSlope was called!");
+}
+
+static void ShortcutToggleVisibility()
+{
+    // TODO: Once the tile inspector window has its own class, move this to its own function
+    if (windowTileInspectorSelectedIndex < 0)
+        return;
+
+    WindowBase* w = WindowFindByClass(WindowClass::TileInspector);
+    if (w == nullptr)
+        return;
+
+    extern TileCoordsXY windowTileInspectorTile;
+    TileElement* tileElement = MapGetNthElementAt(windowTileInspectorTile.ToCoordsXY(), windowTileInspectorSelectedIndex);
+    if (tileElement != nullptr)
+    {
+        tileElement->SetInvisible(!tileElement->IsInvisible());
+        w->Invalidate();
+    }
+}
+
 static void ShortcutIncreaseElementHeight()
 {
     WindowBase* w = WindowFindByClass(WindowClass::TileInspector);
@@ -871,6 +896,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::WindowTileInspectorDecreaseY, STR_SHORTCUT_DECREASE_Y_COORD, std::bind(TileInspectorMouseDown, WC_TILE_INSPECTOR__WIDX_SPINNER_Y_DECREASE));
     RegisterShortcut(ShortcutId::WindowTileInspectorIncreaseHeight, STR_SHORTCUT_INCREASE_ELEM_HEIGHT, ShortcutIncreaseElementHeight);
     RegisterShortcut(ShortcutId::WindowTileInspectorDecreaseHeight, STR_SHORTCUT_DECREASE_ELEM_HEIGHT, ShortcutDecreaseElementHeight);
+    RegisterShortcut(ShortcutId::WindowTileInspectorChangeWallSlope, STR_SHORTCUT_CHANGE_WALL_SLOPE, "N" , ShortcutChangeWallSlope);
 
     // Debug
     RegisterShortcut(ShortcutId::DebugToggleConsole, STR_CONSOLE, "`", ShortcutToggleConsole);

@@ -1864,6 +1864,7 @@ STR_2521    :Show staff list
 STR_2522    :Show recent messages
 STR_2523    :Show map
 STR_2524    :Screenshot
+STR_2525    :Change wall slope
 STR_2533    :Backspace
 STR_2534    :Tab
 STR_2537    :Clear
