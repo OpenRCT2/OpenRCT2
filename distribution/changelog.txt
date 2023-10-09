@@ -5,11 +5,12 @@
 - Feature: [#20825] Made setting the game speed a game action.
 - Feature: [#20853] [Plugin] Add “BaseTileElement.owner” which is saved in the park file.
 - Change: [#20790] Default ride price set to free if park charges for entry.
+- Fix: [#16453] Tile inspector invisibility shortcut does not use a game action.
+- Fix: [#19722] “Forbid tree removal” restriction doesn't forbid removal of large scenery tree items.
 - Fix: [#20356] Cannot set tertiary colour on small scenery.
 - Fix: [#20737] Spent money in player window underflows when getting refunds.
 - Fix: [#20778] [Plugin] Incorrect target api when executing custom actions.
-- Fix: [#19722] “Forbid tree removal” restriction doesn't forbid removal of large scenery tree items.
-- Fix: [#16453] Tile inspector invisibility shortcut does not use a game action.
+- Fix: [#20807] Tertiary colour not copied with small scenery.
 
 0.4.6 (2023-09-03)
 ------------------------------------------------------------------------
