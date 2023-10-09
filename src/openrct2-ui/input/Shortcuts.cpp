@@ -520,7 +520,7 @@ static void TileInspectorMouseDown(WidgetIndex widgetIndex)
 static void ShortcutToggleWallSlope()
 {
     WindowBase* window = WindowFindByClass(WindowClass::TileInspector);
-    if (window == nullptr) 
+    if (window == nullptr)
     {
         return;
     }
@@ -528,20 +528,21 @@ static void ShortcutToggleWallSlope()
     const TileElement* tileElement = OpenRCT2::TileInspector::GetSelectedElement();
 
     // Ensure an element is selected and it's a wall
-    if (tileElement == nullptr || tileElement->GetType() != TileElementType::Wall) 
+    if (tileElement == nullptr || tileElement->GetType() != TileElementType::Wall)
     {
         return;
     }
 
     int32_t currSlopeValue = tileElement->AsWall()->GetSlope();
     int32_t newSlopeValue = currSlopeValue + 1;
-    if (newSlopeValue > 2) 
+    if (newSlopeValue > 2)
     {
         newSlopeValue = 0;
     }
 
     extern TileCoordsXY windowTileInspectorTile;
-    auto modifyTile = TileModifyAction(windowTileInspectorTile.ToCoordsXY(), TileModifyType::WallSetSlope, windowTileInspectorSelectedIndex, newSlopeValue);
+    auto modifyTile = TileModifyAction(
+        windowTileInspectorTile.ToCoordsXY(), TileModifyType::WallSetSlope, windowTileInspectorSelectedIndex, newSlopeValue);
     GameActions::Execute(&modifyTile);
 }
 
