@@ -40,6 +40,8 @@
 #include <openrct2/windows/TileInspectorGlobals.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
+#include <openrct2/world/TileInspector.h>
+#include <openrct2/actions/TileModifyAction.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
@@ -515,11 +517,36 @@ static void TileInspectorMouseDown(WidgetIndex widgetIndex)
     }
 }
 
-#include <openrct2/core/Console.hpp>
-static void ShortcutChangeWallSlope()
+static void ShortcutToggleWallSlope()
 {
-    Console::Write("ShortcutChangeWallSlope was called!");
+    WindowBase* window = WindowFindByClass(WindowClass::TileInspector);
+    if (window == nullptr) {
+        return;
+    }
+
+    const TileElement* tileElement = OpenRCT2::TileInspector::GetSelectedElement();
+    
+    // Ensure an element is selected and it's a wall
+    if (tileElement == nullptr || tileElement->GetType() != TileElementType::Wall) {
+        return;
+    }
+
+    int32_t currSlopeValue = tileElement->AsWall()->GetSlope();
+    int32_t newSlopeValue = currSlopeValue + 1;
+    if (newSlopeValue > 2) {
+        newSlopeValue = 0;
+    }
+
+    extern TileCoordsXY windowTileInspectorTile;
+    auto modifyTile = TileModifyAction(
+        windowTileInspectorTile.ToCoordsXY(),
+        TileModifyType::WallSetSlope,
+        windowTileInspectorSelectedIndex,
+        newSlopeValue
+    );
+    GameActions::Execute(&modifyTile);
 }
+
 
 static void ShortcutToggleVisibility()
 {
@@ -896,7 +923,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::WindowTileInspectorDecreaseY, STR_SHORTCUT_DECREASE_Y_COORD, std::bind(TileInspectorMouseDown, WC_TILE_INSPECTOR__WIDX_SPINNER_Y_DECREASE));
     RegisterShortcut(ShortcutId::WindowTileInspectorIncreaseHeight, STR_SHORTCUT_INCREASE_ELEM_HEIGHT, ShortcutIncreaseElementHeight);
     RegisterShortcut(ShortcutId::WindowTileInspectorDecreaseHeight, STR_SHORTCUT_DECREASE_ELEM_HEIGHT, ShortcutDecreaseElementHeight);
-    RegisterShortcut(ShortcutId::WindowTileInspectorChangeWallSlope, STR_SHORTCUT_CHANGE_WALL_SLOPE, "N" , ShortcutChangeWallSlope);
+    RegisterShortcut(ShortcutId::WindowTileInspectorChangeWallSlope, STR_SHORTCUT_TOGGLE_WALL_SLOPE, ShortcutToggleWallSlope);
 
     // Debug
     RegisterShortcut(ShortcutId::DebugToggleConsole, STR_CONSOLE, "`", ShortcutToggleConsole);

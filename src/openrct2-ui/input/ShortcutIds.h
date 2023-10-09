@@ -117,7 +117,7 @@ namespace OpenRCT2::Ui::ShortcutId
     constexpr std::string_view WindowTileInspectorDecreaseY = "window.tileinspector.decrease_y";
     constexpr std::string_view WindowTileInspectorIncreaseHeight = "window.tileinspector.increase_height";
     constexpr std::string_view WindowTileInspectorDecreaseHeight = "window.tileinspector.decrease_height";
-    constexpr std::string_view WindowTileInspectorChangeWallSlope = "window.tileinspector.change_wall_slope";
+    constexpr std::string_view WindowTileInspectorChangeWallSlope = "window.tileinspector.toggle_wall_slope";
 
     // Debug
     constexpr std::string_view DebugToggleConsole = "debug.console";

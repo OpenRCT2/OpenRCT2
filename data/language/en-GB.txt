@@ -1864,7 +1864,6 @@ STR_2521    :Show staff list
 STR_2522    :Show recent messages
 STR_2523    :Show map
 STR_2524    :Screenshot
-STR_2525    :Change wall slope
 STR_2533    :Backspace
 STR_2534    :Tab
 STR_2537    :Clear
@@ -3439,6 +3438,7 @@ STR_6331    :Create ducks
 STR_6332    :Remove ducks
 STR_6333    :Increase scale factor
 STR_6334    :Decrease scale factor
+STR_6335    :Tile Inspector: Toggle wall slope
 STR_6336    :Tile Inspector: Copy element
 STR_6337    :Tile Inspector: Paste element
 STR_6338    :Tile Inspector: Delete element
