@@ -547,26 +547,6 @@ static void ShortcutToggleWallSlope()
     GameActions::Execute(&modifyTile);
 }
 
-
-static void ShortcutToggleVisibility()
-{
-    // TODO: Once the tile inspector window has its own class, move this to its own function
-    if (windowTileInspectorSelectedIndex < 0)
-        return;
-
-    WindowBase* w = WindowFindByClass(WindowClass::TileInspector);
-    if (w == nullptr)
-        return;
-
-    extern TileCoordsXY windowTileInspectorTile;
-    TileElement* tileElement = MapGetNthElementAt(windowTileInspectorTile.ToCoordsXY(), windowTileInspectorSelectedIndex);
-    if (tileElement != nullptr)
-    {
-        tileElement->SetInvisible(!tileElement->IsInvisible());
-        w->Invalidate();
-    }
-}
-
 static void ShortcutIncreaseElementHeight()
 {
     WindowBase* w = WindowFindByClass(WindowClass::TileInspector);
