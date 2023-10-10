@@ -32,6 +32,28 @@ static constexpr uint32_t _BolligerMabillardBlockBrakeImages[NumOrthogonalDirect
     { BM_BLOCK_BRAKE_NW_SE_OPEN, BM_BLOCK_BRAKE_NW_SE_CLOSED },
 };
 
+static constexpr const uint32_t BolligerMabillardDiagBrakeImages[NumOrthogonalDirections] = {
+    SPR_G2_BM_DIAG_BRAKES,
+    SPR_G2_BM_DIAG_BRAKES + 1,
+    SPR_G2_BM_DIAG_BRAKES,
+    SPR_G2_BM_DIAG_BRAKES + 1,
+};
+
+static constexpr const uint32_t BolligerMabillardDiagBlockBrakeImages[2][NumOrthogonalDirections] = {
+    {
+        SPR_G2_BM_DIAG_BRAKES + 3,
+        SPR_G2_BM_DIAG_BRAKES + 5,
+        SPR_G2_BM_DIAG_BRAKES + 3,
+        SPR_G2_BM_DIAG_BRAKES + 5,
+    },
+    {
+        SPR_G2_BM_DIAG_BRAKES + 2,
+        SPR_G2_BM_DIAG_BRAKES + 4,
+        SPR_G2_BM_DIAG_BRAKES + 2,
+        SPR_G2_BM_DIAG_BRAKES + 4,
+    },
+};
+
 template<MetalSupportType supportType>
 static void BolligerMabillardTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -12978,6 +13000,47 @@ static void BolligerMabillardTrackRightTwistUpToDown(
     }
 }
 
+template<MetalSupportType supportType>
+static void BolligerMabillardTrackDiagBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    TrackPaintUtilDiagTilesPaint(
+        session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], BolligerMabillardDiagBrakeImages,
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+
+    if (trackSequence == 3)
+    {
+        MetalASupportsPaintSetup(
+            session, supportType, DiagSupportSegments[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    }
+
+    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+}
+
+template<MetalSupportType supportType>
+static void BolligerMabillardTrackDiagBlockBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    TrackPaintUtilDiagTilesPaint(
+        session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
+        BolligerMabillardDiagBlockBrakeImages[trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths,
+        nullptr);
+
+    if (trackSequence == 3)
+    {
+        MetalASupportsPaintSetup(
+            session, supportType, DiagSupportSegments[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    }
+
+    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+}
+
 template<MetalSupportType supportType> TRACK_PAINT_FUNCTION GetTrackPaintFunctionBolligerMabillard(int32_t trackType)
 {
     switch (trackType)
@@ -13353,6 +13416,10 @@ template<MetalSupportType supportType> TRACK_PAINT_FUNCTION GetTrackPaintFunctio
             return BolligerMabillardTrackLeftTwistUpToDown<supportType>;
         case TrackElemType::RightTwistUpToDown:
             return BolligerMabillardTrackRightTwistUpToDown<supportType>;
+        case TrackElemType::DiagBrakes:
+            return BolligerMabillardTrackDiagBrakes<supportType>;
+        case TrackElemType::DiagBlockBrakes:
+            return BolligerMabillardTrackDiagBlockBrakes<supportType>;
     }
     return nullptr;
 }

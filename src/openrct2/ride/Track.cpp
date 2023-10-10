@@ -549,6 +549,7 @@ bool TrackElement::IsBlockStart() const
         case TrackElemType::EndStation:
         case TrackElemType::CableLiftHill:
         case TrackElemType::BlockBrakes:
+        case TrackElemType::DiagBlockBrakes:
             return true;
         case TrackElemType::Up25ToFlat:
         case TrackElemType::Up60ToFlat:
@@ -624,6 +625,16 @@ bool TrackTypeIsStation(track_type_t trackType)
     }
 }
 
+bool TrackTypeIsBrakes(track_type_t trackType)
+{
+    return (trackType == TrackElemType::Brakes) || (trackType == TrackElemType::DiagBrakes);
+}
+
+bool TrackTypeIsBlockBrakes(track_type_t trackType)
+{
+    return (trackType == TrackElemType::BlockBrakes) || (trackType == TrackElemType::DiagBlockBrakes);
+}
+
 bool TrackElementIsCovered(track_type_t trackElementType)
 {
     switch (trackElementType)
@@ -655,7 +666,7 @@ bool TrackElementIsCovered(track_type_t trackElementType)
 
 bool TrackTypeHasSpeedSetting(track_type_t trackType)
 {
-    return trackType == TrackElemType::Brakes || trackType == TrackElemType::Booster || trackType == TrackElemType::BlockBrakes;
+    return trackType == TrackElemType::Booster || TrackTypeIsBrakes(trackType) || TrackTypeIsBlockBrakes(trackType);
 }
 
 bool TrackTypeIsHelix(track_type_t trackType)

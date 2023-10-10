@@ -1420,6 +1420,7 @@ public:
                 _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
                 break;
             case TrackElemType::BlockBrakes:
+            case TrackElemType::DiagBlockBrakes:
                 _currentBrakeSpeed2 = kRCT2DefaultBlockBrakeSpeed;
         }
         _currentTrackCurve = trackPiece | RideConstructionSpecialPieceSelected;

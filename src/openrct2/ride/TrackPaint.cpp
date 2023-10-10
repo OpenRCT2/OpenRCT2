@@ -110,6 +110,20 @@ const uint8_t edges_4x4[] = {
 };
 // clang-format on
 
+const int32_t DiagBlockedSegments[] = {
+    SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4 | SEGMENT_BC,
+    SEGMENT_C4 | SEGMENT_CC | SEGMENT_C8 | SEGMENT_B4,
+    SEGMENT_D0 | SEGMENT_C4 | SEGMENT_C0 | SEGMENT_D4,
+    SEGMENT_D0 | SEGMENT_C4 | SEGMENT_B8 | SEGMENT_C8,
+};
+
+const uint8_t DiagSupportSegments[] = {
+    1,
+    0,
+    2,
+    3,
+};
+
 const uint8_t track_map_1x4[][4] = {
     { 0, 1, 2, 3 },
     { 2, 3, 0, 1 },

@@ -2021,7 +2021,8 @@ static void RideMeasurementUpdate(Ride& ride, RideMeasurement& measurement)
     auto trackType = vehicle->GetTrackType();
     if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::CableLiftHill
         || trackType == TrackElemType::Up25ToFlat || trackType == TrackElemType::Up60ToFlat
-        || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat)
+        || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat
+        || trackType == TrackElemType::DiagBlockBrakes)
         if (vehicle->velocity == 0)
             return;
 
@@ -2716,7 +2717,7 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
     TrackCircuitIteratorBegin(&it, input);
     while (TrackCircuitIteratorNext(&it))
     {
-        if (it.current.element->AsTrack()->GetTrackType() == TrackElemType::BlockBrakes)
+        if (TrackTypeIsBlockBrakes(it.current.element->AsTrack()->GetTrackType()))
         {
             auto type = it.last.element->AsTrack()->GetTrackType();
             if (type == TrackElemType::EndStation)
@@ -2724,7 +2725,7 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
                 *output = it.current;
                 return { false, STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION };
             }
-            if (type == TrackElemType::BlockBrakes)
+            if (TrackTypeIsBlockBrakes(type))
             {
                 *output = it.current;
                 return { false, STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_EACH_OTHER };
@@ -3047,6 +3048,24 @@ static void RideSetMazeEntranceExitPoints(Ride& ride)
     }
 }
 
+void SetBrakeClosedMultiTile(TrackElement& trackElement, const CoordsXY& trackLocation, bool isClosed)
+{
+    switch (trackElement.GetTrackType())
+    {
+        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::DiagUp60ToFlat:
+        case TrackElemType::CableLiftHill:
+        case TrackElemType::DiagBrakes:
+        case TrackElemType::DiagBlockBrakes:
+            GetTrackElementOriginAndApplyChanges(
+                { trackLocation, trackElement.GetBaseZ(), trackElement.GetDirection() }, trackElement.GetTrackType(), isClosed,
+                nullptr, TRACK_ELEMENT_SET_BRAKE_CLOSED_STATE);
+            break;
+        default:
+            trackElement.SetBrakeClosed(isClosed);
+    }
+}
+
 /**
  * Opens all block brakes of a ride.
  *  rct2: 0x006B4E6B
@@ -3060,17 +3079,18 @@ static void RideOpenBlockBrakes(const CoordsXYE& startElement)
         switch (trackType)
         {
             case TrackElemType::BlockBrakes:
+            case TrackElemType::DiagBlockBrakes:
                 BlockBrakeSetLinkedBrakesClosed(
                     CoordsXYZ(currentElement.x, currentElement.y, currentElement.element->GetBaseZ()),
                     *currentElement.element->AsTrack(), false);
                 [[fallthrough]];
-            case TrackElemType::EndStation:
-            case TrackElemType::CableLiftHill:
-            case TrackElemType::Up25ToFlat:
-            case TrackElemType::Up60ToFlat:
             case TrackElemType::DiagUp25ToFlat:
             case TrackElemType::DiagUp60ToFlat:
-                currentElement.element->AsTrack()->SetBrakeClosed(false);
+            case TrackElemType::CableLiftHill:
+            case TrackElemType::EndStation:
+            case TrackElemType::Up25ToFlat:
+            case TrackElemType::Up60ToFlat:
+                SetBrakeClosedMultiTile(*currentElement.element->AsTrack(), { currentElement.x, currentElement.y }, false);
                 break;
         }
     } while (TrackBlockGetNext(&currentElement, &currentElement, nullptr, nullptr)
@@ -3107,10 +3127,11 @@ void BlockBrakeSetLinkedBrakesClosed(const CoordsXYZ& vehicleTrackLocation, Trac
         location.z = trackBeginEnd.begin_z;
         tileElement = trackBeginEnd.begin_element;
 
-        if (trackBeginEnd.begin_element->AsTrack()->GetTrackType() == TrackElemType::Brakes)
+        if (TrackTypeIsBrakes(tileElement->AsTrack()->GetTrackType()))
         {
-            trackBeginEnd.begin_element->AsTrack()->SetBrakeClosed(
-                (trackBeginEnd.begin_element->AsTrack()->GetBrakeBoosterSpeed() >= brakeSpeed) || isClosed);
+            SetBrakeClosedMultiTile(
+                *tileElement->AsTrack(), { trackBeginEnd.begin_x, trackBeginEnd.begin_y },
+                (tileElement->AsTrack()->GetBrakeBoosterSpeed() >= brakeSpeed) || isClosed);
         }
 
         // prevent infinite loop
@@ -3128,7 +3149,7 @@ void BlockBrakeSetLinkedBrakesClosed(const CoordsXYZ& vehicleTrackLocation, Trac
                 return;
             }
         }
-    } while (trackBeginEnd.begin_element->AsTrack()->GetTrackType() == TrackElemType::Brakes);
+    } while (TrackTypeIsBrakes(trackBeginEnd.begin_element->AsTrack()->GetTrackType()));
 }
 
 /**
@@ -3511,30 +3532,34 @@ static void RideCreateVehiclesFindFirstBlock(const Ride& ride, CoordsXYE* outXYE
         auto trackType = trackElement->GetTrackType();
         switch (trackType)
         {
-            case TrackElemType::Up25ToFlat:
-            case TrackElemType::Up60ToFlat:
-                if (trackElement->HasChain())
+            case TrackElemType::DiagUp25ToFlat:
+            case TrackElemType::DiagUp60ToFlat:
+                if (!trackElement->HasChain())
                 {
-                    *outXYElement = { trackPos, reinterpret_cast<TileElement*>(trackElement) };
+                    break;
+                }
+                [[fallthrough]];
+            case TrackElemType::DiagBlockBrakes:
+            {
+                TileElement* tileElement = MapGetTrackElementAtOfTypeSeq(
+                    { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z }, trackType, 0);
+
+                if (tileElement != nullptr)
+                {
+                    outXYElement->x = trackBeginEnd.begin_x;
+                    outXYElement->y = trackBeginEnd.begin_y;
+                    outXYElement->element = tileElement;
                     return;
                 }
                 break;
-            case TrackElemType::DiagUp25ToFlat:
-            case TrackElemType::DiagUp60ToFlat:
-                if (trackElement->HasChain())
+            }
+            case TrackElemType::Up25ToFlat:
+            case TrackElemType::Up60ToFlat:
+                if (!trackElement->HasChain())
                 {
-                    TileElement* tileElement = MapGetTrackElementAtOfTypeSeq(
-                        { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z }, trackType, 0);
-
-                    if (tileElement != nullptr)
-                    {
-                        outXYElement->x = trackBeginEnd.begin_x;
-                        outXYElement->y = trackBeginEnd.begin_y;
-                        outXYElement->element = tileElement;
-                        return;
-                    }
+                    break;
                 }
-                break;
+                [[fallthrough]];
             case TrackElemType::EndStation:
             case TrackElemType::CableLiftHill:
             case TrackElemType::BlockBrakes:
@@ -3687,8 +3712,8 @@ void Ride::MoveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackEle
 
         // All vehicles are in position, set the block brake directly before the station one last time and make sure the brakes
         // are set appropriately
-        firstBlock.SetBrakeClosed(true);
-        if (firstBlock.GetTrackType() == TrackElemType::BlockBrakes)
+        SetBrakeClosedMultiTile(firstBlock, firstBlockPosition, true);
+        if (TrackTypeIsBlockBrakes(firstBlock.GetTrackType()))
         {
             BlockBrakeSetLinkedBrakesClosed(firstBlockPosition, firstBlock, true);
         }
@@ -4873,9 +4898,11 @@ OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideO
           SpritePrecision::Sprites4 }, // TRACK_FLYING_HALF_LOOP_INVERTED_UP
         { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
           SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90,
-          SpritePrecision::Sprites4 }, // TRACK_FLYING_HALF_LOOP_UNINVERTED_DOWN
-        {},                            // TRACK_SLOPE_CURVE_LARGE
-        {},                            // TRACK_SLOPE_CURVE_LARGE_BANKED
+          SpritePrecision::Sprites4 },                             // TRACK_FLYING_HALF_LOOP_UNINVERTED_DOWN
+        {},                                                        // TRACK_SLOPE_CURVE_LARGE
+        {},                                                        // TRACK_SLOPE_CURVE_LARGE_BANKED
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TRACK_DIAG_BRAKES
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TRACK_DIAG_BLOCK_BRAKES
     };
     static_assert(std::size(trackPieceRequiredSprites) == TRACK_GROUP_COUNT);
 

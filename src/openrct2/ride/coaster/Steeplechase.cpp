@@ -18,6 +18,13 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+static constexpr const uint32_t SteeplechaseRCDiagBrakeImages[NumOrthogonalDirections] = {
+    SPR_G2_STEEPLECHASE_DIAG_BRAKES,
+    SPR_G2_STEEPLECHASE_DIAG_BRAKES + 1,
+    SPR_G2_STEEPLECHASE_DIAG_BRAKES,
+    SPR_G2_STEEPLECHASE_DIAG_BRAKES + 1,
+};
+
 /** rct2: 0x008A59A8 */
 static void SteeplechaseTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -1491,6 +1498,25 @@ static void SteeplechaseTrackDiagFlat(
     }
 }
 
+static void SteeplechaseTrackDiagBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    TrackPaintUtilDiagTilesPaint(
+        session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], SteeplechaseRCDiagBrakeImages,
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+
+    if (trackSequence == 3)
+    {
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Stick, DiagSupportSegments[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    }
+
+    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+}
+
 /** rct2: 0x008A5B38 */
 static void SteeplechaseTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -2451,6 +2477,9 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionSteeplechase(int32_t trackType)
             return SteeplechaseTrackDiag25DegDownToFlat;
         case TrackElemType::BlockBrakes:
             return SteeplechaseTrackBlockBrakes;
+        case TrackElemType::DiagBrakes:
+        case TrackElemType::DiagBlockBrakes:
+            return SteeplechaseTrackDiagBrakes;
     }
     return nullptr;
 }

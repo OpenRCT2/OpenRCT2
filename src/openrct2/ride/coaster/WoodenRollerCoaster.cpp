@@ -449,6 +449,28 @@ static constexpr uint32_t _wooden_rc_station_block_brakes_image_ids[4][2] = {
     { SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_OPEN_NW_SE, SPR_G2_WOODEN_RC_STATION_BLOCK_BRAKE_CLOSED_NW_SE },
 };
 
+static constexpr const uint32_t WoodenRCDiagBrakeImages[NumOrthogonalDirections] = {
+    SPR_G2_WOODEN_RC_DIAG_BRAKES,
+    SPR_G2_WOODEN_RC_DIAG_BRAKES + 1,
+    SPR_G2_WOODEN_RC_DIAG_BRAKES,
+    SPR_G2_WOODEN_RC_DIAG_BRAKES + 1,
+};
+
+static constexpr const uint32_t WoodenRCDiagBlockBrakeImages[2][NumOrthogonalDirections] = {
+    {
+        SPR_G2_WOODEN_RC_DIAG_BRAKES + 3,
+        SPR_G2_WOODEN_RC_DIAG_BRAKES + 5,
+        SPR_G2_WOODEN_RC_DIAG_BRAKES + 3,
+        SPR_G2_WOODEN_RC_DIAG_BRAKES + 5,
+    },
+    {
+        SPR_G2_WOODEN_RC_DIAG_BRAKES + 2,
+        SPR_G2_WOODEN_RC_DIAG_BRAKES + 4,
+        SPR_G2_WOODEN_RC_DIAG_BRAKES + 2,
+        SPR_G2_WOODEN_RC_DIAG_BRAKES + 4,
+    },
+};
+
 ImageId WoodenRCGetRailsColour(PaintSession& session)
 {
     return session.TrackColours[SCHEME_TRACK];
@@ -8788,6 +8810,419 @@ static void WoodenRCTrackRightEighthBankToOrthogonal(
     WoodenRCTrackLeftEighthBankToDiag<isClassic>(session, ride, trackSequence, (direction + 3) & 3, height, trackElement);
 }
 
+template<bool isClassic>
+static void WoodenRCTrackDiagBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    static constexpr SpriteBoundBox2 imageIds[4][NumOrthogonalDirections][2] = {
+        {
+            // sequence 0
+            {
+                // direction 0
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
+            {
+                // direction 1
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
+            {
+                // direction 2
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
+            {
+                // direction 3
+                {
+                    WoodenRCDiagBrakeImages[3],
+                    24916, // diagonal vertical trim image
+                    { -16, -16, 0 },
+                    { { -16, -16, 0 }, { 32, 32, 2 } },
+                },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
+        },
+        {
+            // sequence 1
+            {
+                // direction 0
+                {
+                    WoodenRCDiagBrakeImages[0],
+                    24913, // diagonal horizontal trim image
+                    { -16, -16, 0 },
+                    { { -16, -16, 0 }, { 32, 32, 2 } },
+                },
+                {
+                    24051, // diagonal horizontal railing image
+                    24917, // diagonal horizontal foreground trim image
+                    { -16, -16, 0 },
+                    { { -16, -16, 27 }, { 32, 32, 0 } },
+                },
+            },
+            {
+                // direction 1
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
+            {
+                // direction 2
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
+            {
+                // direction 3
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
+        },
+        {
+            // sequence 2
+            {
+                // direction 0
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
+            {
+                // direction 1
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
+            {
+                // direction 2
+                {
+                    WoodenRCDiagBrakeImages[2],
+                    24913, // diagonal vertical trim image
+                    { -16, -16, 0 },
+                    { { -16, -16, 0 }, { 32, 32, 2 } },
+                },
+                {
+                    24051, // diagonal vertical railing image
+                    24917, // diagonal vertical foreground trim image
+                    { -16, -16, 0 },
+                    { { -16, -16, 27 }, { 32, 32, 0 } },
+                },
+            },
+            {
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            }, // direction 3
+        },
+        {
+            // sequence 3
+            {
+                // direction 0
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
+            {
+                // direction 1
+                {
+                    WoodenRCDiagBrakeImages[1],
+                    24916, // diagonal vertical trim image
+                    { -16, -16, 0 },
+                    { { -16, -16, 0 }, { 32, 32, 2 } },
+                },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
+            {
+                // direction 2
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
+            {
+                // direction 3
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                { 0, 0, {}, BoundBoxXYZ({}, {}) },
+            },
+        },
+    };
+
+    WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackSequence][direction][0], height);
+    WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackSequence][direction][0], height);
+
+    if (WoodenRCDiagonalSupports[trackSequence][direction] != -1)
+    {
+        WoodenASupportsPaintSetup(
+            session, WoodenRCDiagonalSupports[trackSequence][direction], 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+    }
+
+    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+}
+
+template<bool isClassic>
+static void WoodenRCTrackDiagBlockBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    static constexpr SpriteBoundBox2 imageIds[2][4][NumOrthogonalDirections][2] = {
+        {
+            {
+                // sequence 0
+                {
+                    // direction 0
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 1
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 2
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 3
+                    {
+                        WoodenRCDiagBlockBrakeImages[0][3],
+                        24916,           // diagonal vertical trim image
+                        { -16, -16, 0 }, // todo: rotate these bboxes
+                        BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
+                    },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+            },
+            {
+                // sequence 1
+                {
+                    // direction 0
+                    {
+                        WoodenRCDiagBlockBrakeImages[0][0],
+                        24913, // diagonal horizontal trim image
+                        { -16, -16, 0 },
+                        BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
+                    },
+                    {
+                        24051, // diagonal horizontal railing image
+                        24917, // diagonal horizontal foreground trim image
+                        { -16, -16, 0 },
+                        BoundBoxXYZ({ -16, -16, 27 }, { 32, 32, 0 }),
+                    },
+                },
+                {
+                    // direction 1
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 2
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 3
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+            },
+            {
+                // sequence 2
+                {
+                    // direction 0
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 1
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 2
+                    {
+                        WoodenRCDiagBlockBrakeImages[0][2],
+                        24913, // diagonal vertical trim image
+                        { -16, -16, 0 },
+                        BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
+                    },
+                    {
+                        24051, // diagonal vertical railing image
+                        24917, // diagonal vertical foreground trim image
+                        { -16, -16, 0 },
+                        BoundBoxXYZ({ -16, -16, 27 }, { 32, 32, 0 }),
+                    },
+                },
+                {
+                    // direction 3
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+            },
+            {
+                // sequence 3
+                {
+                    // direction 0
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 1
+                    {
+                        WoodenRCDiagBlockBrakeImages[0][1],
+                        24916, // diagonal vertical trim image
+                        { -16, -16, 0 },
+                        BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
+                    },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 2
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 3
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+            },
+        },
+        {
+            {
+                // sequence 0
+                {
+                    // direction 0
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 1
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 2
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 3
+                    {
+                        WoodenRCDiagBlockBrakeImages[1][3],
+                        24916, // diagonal vertical trim image
+                        { -16, -16, 0 },
+                        BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
+                    },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+            },
+            {
+                // sequence 1
+                {
+                    // direction 0
+                    {
+                        WoodenRCDiagBlockBrakeImages[1][0],
+                        24913, // diagonal horizontal trim image
+                        { -16, -16, 0 },
+                        BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
+                    },
+                    {
+                        24051, // diagonal horizontal railing image
+                        24917, // diagonal horizontal foreground trim image
+                        { -16, -16, 0 },
+                        BoundBoxXYZ({ -16, -16, 27 }, { 32, 32, 0 }),
+                    },
+                },
+                {
+                    // direction 1
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 2
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 3
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+            },
+            {
+                // sequence 2
+                {
+                    // direction 0
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 1
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 2
+                    {
+                        WoodenRCDiagBlockBrakeImages[1][2],
+                        24913, // diagonal vertical trim image
+                        { -16, -16, 0 },
+                        BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
+                    },
+                    {
+                        24051, // diagonal vertical railing image
+                        24917, // diagonal vertical foreground trim image
+                        { -16, -16, 0 },
+                        BoundBoxXYZ({ -16, -16, 27 }, { 32, 32, 0 }),
+                    },
+                },
+                {
+                    // direction 3
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+            },
+            {
+                // sequence 3
+                {
+                    // direction 0
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 1
+                    {
+                        WoodenRCDiagBlockBrakeImages[1][1],
+                        24916, // diagonal vertical trim image
+                        { -16, -16, 0 },
+                        BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }),
+                    },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 2
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+                {
+                    // direction 3
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                    { 0, 0, {}, BoundBoxXYZ({}, {}) },
+                },
+            },
+        },
+    };
+
+    WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackElement.IsBrakeClosed()][trackSequence][direction][0], height);
+    WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackElement.IsBrakeClosed()][trackSequence][direction][0], height);
+
+    if (WoodenRCDiagonalSupports[trackSequence][direction] != -1)
+    {
+        WoodenASupportsPaintSetup(
+            session, WoodenRCDiagonalSupports[trackSequence][direction], 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+    }
+
+    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+}
+
 /** rct2: 0x008AC888 */
 template<bool isClassic>
 static void WoodenRCTrackDiagFlat(
@@ -15062,6 +15497,10 @@ template<bool isClassic> TRACK_PAINT_FUNCTION GetTrackPaintFunctionWoodenAndClas
             return WoodenRCTrackRightBanked25DegDownToFlat<isClassic>;
         case TrackElemType::Booster:
             return WoodenRCTrackBooster<isClassic>;
+        case TrackElemType::DiagBrakes:
+            return WoodenRCTrackDiagBrakes<isClassic>;
+        case TrackElemType::DiagBlockBrakes:
+            return WoodenRCTrackDiagBlockBrakes<isClassic>;
     }
     return nullptr;
 }

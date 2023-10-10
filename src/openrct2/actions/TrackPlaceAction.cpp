@@ -574,6 +574,7 @@ GameActions::Result TrackPlaceAction::Execute() const
                 MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
                 break;
             case TrackElemType::Brakes:
+            case TrackElemType::DiagBrakes:
                 trackElement->SetBrakeClosed(true);
                 break;
         }
@@ -666,6 +667,7 @@ GameActions::Result TrackPlaceAction::Execute() const
                 ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
                 ride->CableLiftLoc = originLocation;
                 break;
+            case TrackElemType::DiagBlockBrakes:
             case TrackElemType::BlockBrakes:
             {
                 ride->num_block_brakes++;

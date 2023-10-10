@@ -1590,7 +1590,7 @@ namespace SingleRailRC
                         case 3:
                             PaintAddImageAsParentRotated(
                                 session, direction,
-                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT_DIAGONAL + 3)),
+                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             break;
                     }
@@ -1648,7 +1648,7 @@ namespace SingleRailRC
                         case 2:
                             PaintAddImageAsParentRotated(
                                 session, direction,
-                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT_DIAGONAL + 2)),
+                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT_DIAGONAL + 0)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             break;
                     }
@@ -1709,6 +1709,164 @@ namespace SingleRailRC
                                 session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                break;
+        }
+    }
+
+    static void TrackDiagBrakes(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                switch (direction)
+                {
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BRAKE_DIAGONAL + 1)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                break;
+            case 1:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BRAKE_DIAGONAL + 0)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                break;
+            case 2:
+                switch (direction)
+                {
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BRAKE_DIAGONAL + 0)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                break;
+            case 3:
+                switch (direction)
+                {
+                    case 0:
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BRAKE_DIAGONAL + 1)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        break;
+                    case 2:
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        break;
+                    case 3:
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                break;
+        }
+    }
+
+    static void TrackDiagBlockBrakes(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                switch (direction)
+                {
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE_DIAGONAL + 1)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                break;
+            case 1:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE_DIAGONAL + 0)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                break;
+            case 2:
+                switch (direction)
+                {
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE_DIAGONAL + 0)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                break;
+            case 3:
+                switch (direction)
+                {
+                    case 0:
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE_DIAGONAL + 1)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        break;
+                    case 2:
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        break;
+                    case 3:
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        break;
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -17623,6 +17781,10 @@ namespace SingleRailRC
                 return TrackRightEighthBankToOrthogonal;
             case TrackElemType::DiagFlat:
                 return TrackDiagFlat;
+            case TrackElemType::DiagBrakes:
+                return TrackDiagBrakes;
+            case TrackElemType::DiagBlockBrakes:
+                return TrackDiagBlockBrakes;
             case TrackElemType::DiagUp25:
                 return TrackDiag25DegUp;
             case TrackElemType::DiagUp60:

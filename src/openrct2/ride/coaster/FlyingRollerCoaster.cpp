@@ -19,6 +19,13 @@
 #include "../TrackPaint.h"
 #include "BolligerMabillardTrack.hpp"
 
+static constexpr const uint32_t InvertedRCDiagBrakeImages[NumOrthogonalDirections] = {
+    SPR_G2_BM_INVERT_DIAG_BRAKES,
+    SPR_G2_BM_INVERT_DIAG_BRAKES + 1,
+    SPR_G2_BM_INVERT_DIAG_BRAKES,
+    SPR_G2_BM_INVERT_DIAG_BRAKES + 1,
+};
+
 /** rct2: 0x007C6FF4 */
 static void FlyingRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -9190,6 +9197,51 @@ static void FlyingRCTrackDiagFlat(
                 break;
         }
     }
+}
+
+static void FlyingRCTrackDiagBrakesInverted(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    TrackPaintUtilDiagTilesPaint(
+        session, 1, height + 24, direction, trackSequence, session.TrackColours[SCHEME_TRACK], InvertedRCDiagBrakeImages,
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+
+    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+
+    if (trackSequence == 3)
+    {
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Boxed, DiagSupportSegments[direction], 0, height + 39,
+            session.TrackColours[SCHEME_SUPPORTS]);
+    }
+    PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
+}
+
+static void FlyingRCTrackDiagBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    if (trackElement.IsInverted())
+    {
+        FlyingRCTrackDiagBrakesInverted(session, ride, trackSequence, direction, height, trackElement);
+        return;
+    }
+    BolligerMabillardTrackDiagBrakes<MetalSupportType::Boxed>(session, ride, trackSequence, direction, height, trackElement);
+}
+
+static void FlyingRCTrackDiagBlockBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    if (trackElement.IsInverted())
+    {
+        FlyingRCTrackDiagBrakesInverted(session, ride, trackSequence, direction, height, trackElement);
+        return;
+    }
+    BolligerMabillardTrackDiagBlockBrakes<MetalSupportType::Boxed>(
+        session, ride, trackSequence, direction, height, trackElement);
 }
 
 /** rct2: 0x007C74A4 */
@@ -19043,6 +19095,10 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionFlyingRC(int32_t trackType)
             return FlyingRCTrackLeftFlyingLargeHalfLoopUninvertedDown;
         case TrackElemType::RightFlyerLargeHalfLoopUninvertedDown:
             return FlyingRCTrackRightFlyingLargeHalfLoopUninvertedDown;
+        case TrackElemType::DiagBrakes:
+            return FlyingRCTrackDiagBrakes;
+        case TrackElemType::DiagBlockBrakes:
+            return FlyingRCTrackDiagBlockBrakes;
     }
     return GetTrackPaintFunctionBolligerMabillard<MetalSupportType::Tubes>(trackType);
 }
