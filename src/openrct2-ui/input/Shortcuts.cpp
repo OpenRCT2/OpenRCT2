@@ -534,11 +534,7 @@ static void ShortcutToggleWallSlope()
     }
 
     int32_t currSlopeValue = tileElement->AsWall()->GetSlope();
-    int32_t newSlopeValue = currSlopeValue + 1;
-    if (newSlopeValue > 2)
-    {
-        newSlopeValue = 0;
-    }
+    int32_t newSlopeValue = (currSlopeValue + 1) % 3;
 
     extern TileCoordsXY windowTileInspectorTile;
     auto modifyTile = TileModifyAction(
