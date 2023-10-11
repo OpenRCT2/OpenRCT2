@@ -376,7 +376,7 @@ static void Select(const char* path)
         {
             SetAndSaveConfigPath(gConfigGeneral.LastSaveTrackDirectory, pathBuffer);
 
-            const auto withExtension = Path::WithExtension(pathBuffer, "td6");
+            const auto withExtension = Path::WithExtension(pathBuffer, ".td6");
             String::Set(pathBuffer, sizeof(pathBuffer), withExtension.c_str());
 
             RCT2::T6Exporter t6Export{ _trackDesign };
@@ -407,35 +407,30 @@ static void Select(const char* path)
 static u8string OpenSystemFileBrowser(bool isSave)
 {
     OpenRCT2::Ui::FileDialogDesc desc = {};
-    u8string extension{};
-    auto fileType = FileExtension::Unknown;
+    u8string extension;
     StringId title = STR_NONE;
     switch (_type & 0x0E)
     {
         case LOADSAVETYPE_GAME:
             extension = u8".park";
-            fileType = FileExtension::PARK;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
             desc.Filters.emplace_back(LanguageGetString(STR_OPENRCT2_SAVED_GAME), GetFilterPatternByType(_type, isSave));
             break;
 
         case LOADSAVETYPE_LANDSCAPE:
             extension = u8".park";
-            fileType = FileExtension::PARK;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
             desc.Filters.emplace_back(LanguageGetString(STR_OPENRCT2_LANDSCAPE_FILE), GetFilterPatternByType(_type, isSave));
             break;
 
         case LOADSAVETYPE_SCENARIO:
             extension = u8".park";
-            fileType = FileExtension::PARK;
             title = STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
             desc.Filters.emplace_back(LanguageGetString(STR_OPENRCT2_SCENARIO_FILE), GetFilterPatternByType(_type, isSave));
             break;
 
         case LOADSAVETYPE_TRACK:
             extension = u8".td6";
-            fileType = FileExtension::TD6;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
             desc.Filters.emplace_back(LanguageGetString(STR_OPENRCT2_TRACK_DESIGN_FILE), GetFilterPatternByType(_type, isSave));
             break;
@@ -474,17 +469,7 @@ static u8string OpenSystemFileBrowser(bool isSave)
     desc.Filters.emplace_back(LanguageGetString(STR_ALL_FILES), "*");
 
     desc.Title = LanguageGetString(title);
-
-    u8string outPath = ContextOpenCommonFileDialog(desc);
-    if (!outPath.empty())
-    {
-        // When the given save type was given, Windows still interprets a filename with a dot in its name as a custom
-        // extension, meaning files like "My Coaster v1.2" will not get the .td6 extension by default.
-        if (isSave && GetFileExtensionType(outPath) != fileType)
-            outPath = Path::WithExtension(outPath, extension);
-    }
-
-    return outPath;
+    return ContextOpenCommonFileDialog(desc);
 }
 
 class LoadSaveWindow final : public Window
