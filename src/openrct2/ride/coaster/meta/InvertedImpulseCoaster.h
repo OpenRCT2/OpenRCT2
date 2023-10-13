@@ -46,6 +46,7 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
     SET_FIELD(PhotoItem, ShopItem::Photo2),
     SET_FIELD(BonusValue, 75),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
+        { COLOUR_BRIGHT_YELLOW, COLOUR_BRIGHT_YELLOW, COLOUR_BRIGHT_RED },
         { COLOUR_BLACK, COLOUR_ICY_BLUE, COLOUR_BLACK },
         { COLOUR_WHITE, COLOUR_WHITE, COLOUR_YELLOW },
         { COLOUR_BRIGHT_YELLOW, COLOUR_BRIGHT_YELLOW, COLOUR_BORDEAUX_RED }, // Volcano: The Blast Coaster
