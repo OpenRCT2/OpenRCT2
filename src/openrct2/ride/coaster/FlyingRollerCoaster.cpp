@@ -347,22 +347,22 @@ static void FlyingRCTrack25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -607,22 +607,22 @@ static void FlyingRCTrackFlatTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -833,22 +833,22 @@ static void FlyingRCTrack60DegUpTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 71,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 71,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 71,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 71,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 71,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 71,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 71,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 71,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -1006,22 +1006,22 @@ static void FlyingRCTrack25DegUpToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -2291,22 +2291,22 @@ static void FlyingRCTrackLeftBankTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -2414,22 +2414,22 @@ static void FlyingRCTrackRightBankTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -2537,22 +2537,22 @@ static void FlyingRCTrack25DegUpToLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -2660,22 +2660,22 @@ static void FlyingRCTrack25DegUpToRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -3620,7 +3620,7 @@ static void FlyingRCTrackSBendLeft(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17309), { 0, 0, height },
                             { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -3628,7 +3628,7 @@ static void FlyingRCTrackSBendLeft(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17313), { 0, 0, height },
                             { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 1, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 1, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -3667,7 +3667,7 @@ static void FlyingRCTrackSBendLeft(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17309), { 0, 0, height },
                             { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -3675,7 +3675,7 @@ static void FlyingRCTrackSBendLeft(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17313), { 0, 0, height },
                             { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 1, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 1, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -3803,12 +3803,12 @@ static void FlyingRCTrackSBendLeft(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -3849,12 +3849,12 @@ static void FlyingRCTrackSBendLeft(
                 {
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -3959,7 +3959,7 @@ static void FlyingRCTrackSBendRight(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17317), { 0, 0, height },
                             { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -3967,7 +3967,7 @@ static void FlyingRCTrackSBendRight(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17321), { 0, 0, height },
                             { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -4006,7 +4006,7 @@ static void FlyingRCTrackSBendRight(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17317), { 0, 0, height },
                             { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -4014,7 +4014,7 @@ static void FlyingRCTrackSBendRight(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17321), { 0, 0, height },
                             { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -4142,12 +4142,12 @@ static void FlyingRCTrackSBendRight(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -4188,12 +4188,12 @@ static void FlyingRCTrackSBendRight(
                 {
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -7511,22 +7511,22 @@ static void FlyingRCTrack25DegUpLeftBanked(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -7626,22 +7626,22 @@ static void FlyingRCTrack25DegUpRightBanked(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -7672,10 +7672,10 @@ static void FlyingRCTrackOnRidePhoto(
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height,
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height,
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17146), { 0, 0, height },
@@ -7685,10 +7685,10 @@ static void FlyingRCTrackOnRidePhoto(
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height,
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height,
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17147), { 0, 0, height },
@@ -7698,10 +7698,10 @@ static void FlyingRCTrackOnRidePhoto(
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height,
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height,
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17146), { 0, 0, height },
@@ -7711,10 +7711,10 @@ static void FlyingRCTrackOnRidePhoto(
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height,
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height,
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17147), { 0, 0, height },
@@ -7734,10 +7734,10 @@ static void FlyingRCTrackOnRidePhoto(
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height,
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height,
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27129), { 0, 0, height + 24 },
@@ -7747,10 +7747,10 @@ static void FlyingRCTrackOnRidePhoto(
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height,
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height,
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27130), { 0, 0, height + 24 },
@@ -7760,10 +7760,10 @@ static void FlyingRCTrackOnRidePhoto(
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height,
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height,
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27129), { 0, 0, height + 24 },
@@ -7773,10 +7773,10 @@ static void FlyingRCTrackOnRidePhoto(
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height,
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height,
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height,
                     session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(27130), { 0, 0, height + 24 },
@@ -7923,7 +7923,7 @@ static void FlyingRCTrackLeftEighthToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17549), { 0, 0, height },
                             { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -7931,7 +7931,7 @@ static void FlyingRCTrackLeftEighthToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17553), { 0, 0, height },
                             { { 0, 16, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -7939,7 +7939,7 @@ static void FlyingRCTrackLeftEighthToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17557), { 0, 0, height },
                             { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -7947,7 +7947,7 @@ static void FlyingRCTrackLeftEighthToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17561), { 0, 0, height },
                             { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -8100,22 +8100,22 @@ static void FlyingRCTrackLeftEighthToDiag(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -8243,7 +8243,7 @@ static void FlyingRCTrackRightEighthToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17533), { 0, 0, height },
                             { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -8251,7 +8251,7 @@ static void FlyingRCTrackRightEighthToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17537), { 0, 0, height },
                             { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -8259,7 +8259,7 @@ static void FlyingRCTrackRightEighthToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17541), { 0, 0, height },
                             { { 0, 16, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -8267,7 +8267,7 @@ static void FlyingRCTrackRightEighthToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17545), { 0, 0, height },
                             { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -8420,22 +8420,22 @@ static void FlyingRCTrackRightEighthToDiag(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -8581,7 +8581,7 @@ static void FlyingRCTrackLeftEighthBankToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17581), { 0, 0, height },
                             { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -8589,7 +8589,7 @@ static void FlyingRCTrackLeftEighthBankToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17585), { 0, 0, height },
                             { { 0, 16, height + 27 }, { 16, 18, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -8597,7 +8597,7 @@ static void FlyingRCTrackLeftEighthBankToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17589), { 0, 0, height },
                             { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -8605,7 +8605,7 @@ static void FlyingRCTrackLeftEighthBankToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17593), { 0, 0, height },
                             { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -8758,22 +8758,22 @@ static void FlyingRCTrackLeftEighthBankToDiag(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -8901,7 +8901,7 @@ static void FlyingRCTrackRightEighthBankToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17565), { 0, 0, height },
                             { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -8909,7 +8909,7 @@ static void FlyingRCTrackRightEighthBankToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17569), { 0, 0, height },
                             { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -8917,7 +8917,7 @@ static void FlyingRCTrackRightEighthBankToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17573), { 0, 0, height },
                             { { 0, 16, height + 27 }, { 16, 18, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -8925,7 +8925,7 @@ static void FlyingRCTrackRightEighthBankToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17577), { 0, 0, height },
                             { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -9078,22 +9078,22 @@ static void FlyingRCTrackRightEighthBankToDiag(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -9219,7 +9219,7 @@ static void FlyingRCTrackDiagFlat(
                     {
                         case 0:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -9227,17 +9227,17 @@ static void FlyingRCTrackDiagFlat(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17859), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -9248,7 +9248,7 @@ static void FlyingRCTrackDiagFlat(
                     {
                         case 0:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -9256,17 +9256,17 @@ static void FlyingRCTrackDiagFlat(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17789), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -9392,22 +9392,22 @@ static void FlyingRCTrackDiagFlat(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -9560,7 +9560,7 @@ static void FlyingRCTrackDiag25DegUp(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -9568,17 +9568,17 @@ static void FlyingRCTrackDiag25DegUp(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17871), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -9589,7 +9589,7 @@ static void FlyingRCTrackDiag25DegUp(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -9597,17 +9597,17 @@ static void FlyingRCTrackDiag25DegUp(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17801), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -9733,22 +9733,22 @@ static void FlyingRCTrackDiag25DegUp(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 51,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 51,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 51,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 51,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 51,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 51,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 51,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 51,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -9856,7 +9856,7 @@ static void FlyingRCTrackDiag60DegUp(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 32, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 32, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -9864,17 +9864,17 @@ static void FlyingRCTrackDiag60DegUp(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17883), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 36, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 36, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 32, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 32, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 36, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 36, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -9885,7 +9885,7 @@ static void FlyingRCTrackDiag60DegUp(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 32, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 32, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -9893,17 +9893,17 @@ static void FlyingRCTrackDiag60DegUp(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17813), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 36, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 36, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 32, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 32, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 36, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 36, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -9973,22 +9973,22 @@ static void FlyingRCTrackDiag60DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 32, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 32, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 36, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 36, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 32, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 32, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 36, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 36, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -10096,7 +10096,7 @@ static void FlyingRCTrackDiagFlatTo25DegUp(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -10104,17 +10104,17 @@ static void FlyingRCTrackDiagFlatTo25DegUp(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17863), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -10125,7 +10125,7 @@ static void FlyingRCTrackDiagFlatTo25DegUp(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -10133,17 +10133,17 @@ static void FlyingRCTrackDiagFlatTo25DegUp(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17793), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -10269,22 +10269,22 @@ static void FlyingRCTrackDiagFlatTo25DegUp(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -10392,7 +10392,7 @@ static void FlyingRCTrackDiag25DegUpTo60DegUp(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 16, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 16, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -10400,17 +10400,17 @@ static void FlyingRCTrackDiag25DegUpTo60DegUp(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17875), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 16, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 16, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 16, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 16, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 16, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 16, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -10421,7 +10421,7 @@ static void FlyingRCTrackDiag25DegUpTo60DegUp(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 16, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 16, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -10429,17 +10429,17 @@ static void FlyingRCTrackDiag25DegUpTo60DegUp(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17805), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 16, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 16, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 16, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 16, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 16, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 16, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -10509,22 +10509,22 @@ static void FlyingRCTrackDiag25DegUpTo60DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 16, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 16, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 16, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 16, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 16, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 16, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 16, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 16, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -10632,7 +10632,7 @@ static void FlyingRCTrackDiag60DegUpTo25DegUp(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 21, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 21, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -10640,17 +10640,17 @@ static void FlyingRCTrackDiag60DegUpTo25DegUp(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17879), { -16, -16, height },
                                 { { 0, 0, height }, { 16, 16, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 21, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 21, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 21, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 21, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 21, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 21, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -10661,7 +10661,7 @@ static void FlyingRCTrackDiag60DegUpTo25DegUp(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 21, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 21, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -10669,17 +10669,17 @@ static void FlyingRCTrackDiag60DegUpTo25DegUp(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17809), { -16, -16, height },
                                 { { 0, 0, height }, { 16, 16, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 21, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 21, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 21, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 21, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 21, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 21, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -10749,22 +10749,22 @@ static void FlyingRCTrackDiag60DegUpTo25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 21, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 21, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 21, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 21, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 21, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 21, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 21, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 21, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -10872,7 +10872,7 @@ static void FlyingRCTrackDiag25DegUpToFlat(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 4, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -10880,17 +10880,17 @@ static void FlyingRCTrackDiag25DegUpToFlat(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17867), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 4, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 4, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 4, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -10901,7 +10901,7 @@ static void FlyingRCTrackDiag25DegUpToFlat(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 4, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -10909,17 +10909,17 @@ static void FlyingRCTrackDiag25DegUpToFlat(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17797), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 4, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 4, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 4, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -11045,22 +11045,22 @@ static void FlyingRCTrackDiag25DegUpToFlat(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -11168,7 +11168,7 @@ static void FlyingRCTrackDiag25DegDown(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -11176,17 +11176,17 @@ static void FlyingRCTrackDiag25DegDown(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17873), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -11197,7 +11197,7 @@ static void FlyingRCTrackDiag25DegDown(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -11205,17 +11205,17 @@ static void FlyingRCTrackDiag25DegDown(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17803), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -11285,22 +11285,22 @@ static void FlyingRCTrackDiag25DegDown(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 51,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 51,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 51,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 51,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 51,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 51,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 51,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 51,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -11408,7 +11408,7 @@ static void FlyingRCTrackDiag60DegDown(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 24, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 24, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -11416,17 +11416,17 @@ static void FlyingRCTrackDiag60DegDown(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17885), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 28, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 28, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 24, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 24, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 28, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 28, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -11437,7 +11437,7 @@ static void FlyingRCTrackDiag60DegDown(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 24, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 24, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -11445,17 +11445,17 @@ static void FlyingRCTrackDiag60DegDown(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17815), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 28, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 28, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 24, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 24, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 28, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 28, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -11525,22 +11525,22 @@ static void FlyingRCTrackDiag60DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 24, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 24, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 28, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 28, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 24, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 24, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 28, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 28, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -11645,7 +11645,7 @@ static void FlyingRCTrackDiagFlatTo25DegDown(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 4, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -11653,17 +11653,17 @@ static void FlyingRCTrackDiagFlatTo25DegDown(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17869), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 4, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 4, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 4, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -11674,7 +11674,7 @@ static void FlyingRCTrackDiagFlatTo25DegDown(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 4, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -11682,17 +11682,17 @@ static void FlyingRCTrackDiagFlatTo25DegDown(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17799), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 4, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 4, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 4, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -11758,22 +11758,22 @@ static void FlyingRCTrackDiagFlatTo25DegDown(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -11881,7 +11881,7 @@ static void FlyingRCTrackDiag25DegDownTo60DegDown(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 17, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 17, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -11889,17 +11889,17 @@ static void FlyingRCTrackDiag25DegDownTo60DegDown(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17881), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 17, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 17, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 17, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 17, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 17, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 17, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -11910,7 +11910,7 @@ static void FlyingRCTrackDiag25DegDownTo60DegDown(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 17, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 17, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -11918,17 +11918,17 @@ static void FlyingRCTrackDiag25DegDownTo60DegDown(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17811), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 17, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 17, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 17, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 17, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 17, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 17, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -11998,22 +11998,22 @@ static void FlyingRCTrackDiag25DegDownTo60DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 17, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 17, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 17, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 17, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 17, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 17, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 17, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 17, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -12121,7 +12121,7 @@ static void FlyingRCTrackDiag60DegDownTo25DegDown(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -12129,17 +12129,17 @@ static void FlyingRCTrackDiag60DegDownTo25DegDown(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17877), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -12150,7 +12150,7 @@ static void FlyingRCTrackDiag60DegDownTo25DegDown(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -12158,17 +12158,17 @@ static void FlyingRCTrackDiag60DegDownTo25DegDown(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17807), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 8, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -12238,22 +12238,22 @@ static void FlyingRCTrackDiag60DegDownTo25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 8, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 8, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 8, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 8, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 8, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 8, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 8, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 8, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -12361,7 +12361,7 @@ static void FlyingRCTrackDiag25DegDownToFlat(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -12369,17 +12369,17 @@ static void FlyingRCTrackDiag25DegDownToFlat(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17865), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -12390,7 +12390,7 @@ static void FlyingRCTrackDiag25DegDownToFlat(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -12398,17 +12398,17 @@ static void FlyingRCTrackDiag25DegDownToFlat(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17795), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -12478,22 +12478,22 @@ static void FlyingRCTrackDiag25DegDownToFlat(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -12560,7 +12560,7 @@ static void FlyingRCTrackDiagFlatToLeftBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -12568,17 +12568,17 @@ static void FlyingRCTrackDiagFlatToLeftBank(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17829), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -12648,22 +12648,22 @@ static void FlyingRCTrackDiagFlatToLeftBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -12730,7 +12730,7 @@ static void FlyingRCTrackDiagFlatToRightBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -12738,17 +12738,17 @@ static void FlyingRCTrackDiagFlatToRightBank(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17834), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -12818,22 +12818,22 @@ static void FlyingRCTrackDiagFlatToRightBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -12900,7 +12900,7 @@ static void FlyingRCTrackDiagLeftBankToFlat(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -12908,17 +12908,17 @@ static void FlyingRCTrackDiagLeftBankToFlat(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17836), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -12988,22 +12988,22 @@ static void FlyingRCTrackDiagLeftBankToFlat(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -13070,7 +13070,7 @@ static void FlyingRCTrackDiagRightBankToFlat(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -13078,17 +13078,17 @@ static void FlyingRCTrackDiagRightBankToFlat(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17831), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -13158,22 +13158,22 @@ static void FlyingRCTrackDiagRightBankToFlat(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -13240,7 +13240,7 @@ static void FlyingRCTrackDiagLeftBankTo25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -13248,17 +13248,17 @@ static void FlyingRCTrackDiagLeftBankTo25DegUp(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17849), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -13327,22 +13327,22 @@ static void FlyingRCTrackDiagLeftBankTo25DegUp(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -13409,7 +13409,7 @@ static void FlyingRCTrackDiagRightBankTo25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -13417,17 +13417,17 @@ static void FlyingRCTrackDiagRightBankTo25DegUp(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17854), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -13496,22 +13496,22 @@ static void FlyingRCTrackDiagRightBankTo25DegUp(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -13578,7 +13578,7 @@ static void FlyingRCTrackDiag25DegUpToLeftBank(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 4, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -13586,17 +13586,17 @@ static void FlyingRCTrackDiag25DegUpToLeftBank(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17839), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 4, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 4, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 4, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -13665,22 +13665,22 @@ static void FlyingRCTrackDiag25DegUpToLeftBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -13747,7 +13747,7 @@ static void FlyingRCTrackDiag25DegUpToRightBank(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 4, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -13755,17 +13755,17 @@ static void FlyingRCTrackDiag25DegUpToRightBank(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17844), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 4, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 4, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 4, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -13834,22 +13834,22 @@ static void FlyingRCTrackDiag25DegUpToRightBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -13913,7 +13913,7 @@ static void FlyingRCTrackDiagLeftBankTo25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 4, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -13921,17 +13921,17 @@ static void FlyingRCTrackDiagLeftBankTo25DegDown(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17846), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 4, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 4, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 4, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -13996,22 +13996,22 @@ static void FlyingRCTrackDiagLeftBankTo25DegDown(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -14075,7 +14075,7 @@ static void FlyingRCTrackDiagRightBankTo25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 4, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -14083,17 +14083,17 @@ static void FlyingRCTrackDiagRightBankTo25DegDown(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17841), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 4, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 4, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 4, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -14158,22 +14158,22 @@ static void FlyingRCTrackDiagRightBankTo25DegDown(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 45,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 45,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -14240,7 +14240,7 @@ static void FlyingRCTrackDiag25DegDownToLeftBank(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -14248,17 +14248,17 @@ static void FlyingRCTrackDiag25DegDownToLeftBank(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17856), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -14327,22 +14327,22 @@ static void FlyingRCTrackDiag25DegDownToLeftBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -14409,7 +14409,7 @@ static void FlyingRCTrackDiag25DegDownToRightBank(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -14417,17 +14417,17 @@ static void FlyingRCTrackDiag25DegDownToRightBank(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17851), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -14496,22 +14496,22 @@ static void FlyingRCTrackDiag25DegDownToRightBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 43,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 43,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -14575,7 +14575,7 @@ static void FlyingRCTrackDiagLeftBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -14583,17 +14583,17 @@ static void FlyingRCTrackDiagLeftBank(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17825), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -14663,22 +14663,22 @@ static void FlyingRCTrackDiagLeftBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -14742,7 +14742,7 @@ static void FlyingRCTrackDiagRightBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -14750,17 +14750,17 @@ static void FlyingRCTrackDiagRightBank(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(17827), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -14830,22 +14830,22 @@ static void FlyingRCTrackDiagRightBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner1, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner0, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner2, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, MetalSupportPlace::Corner3, 0, height + 39,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 39,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -16932,22 +16932,22 @@ static void FlyingRCTrack25DegUpToLeftBanked25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -17050,22 +17050,22 @@ static void FlyingRCTrack25DegUpToRightBanked25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -17168,22 +17168,22 @@ static void FlyingRCTrackLeftBanked25DegUpTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -17286,22 +17286,22 @@ static void FlyingRCTrackRightBanked25DegUpTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 57,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 57,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -17433,22 +17433,22 @@ static void FlyingRCTrackLeftBankedFlatToLeftBanked25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -17548,22 +17548,22 @@ static void FlyingRCTrackRightBankedFlatToRightBanked25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -17663,22 +17663,22 @@ static void FlyingRCTrackLeftBanked25DegUpToLeftBankedFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -17778,22 +17778,22 @@ static void FlyingRCTrackRightBanked25DegUpToRightBankedFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -17928,22 +17928,22 @@ static void FlyingRCTrackFlatToLeftBanked25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -18046,22 +18046,22 @@ static void FlyingRCTrackFlatToRightBanked25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 49,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 49,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -18164,22 +18164,22 @@ static void FlyingRCTrackLeftBanked25DegUpToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -18282,22 +18282,22 @@ static void FlyingRCTrackRightBanked25DegUpToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 47,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 47,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -18719,22 +18719,22 @@ static void FlyingRCTrackHalfLoopInvertedUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side1, 0, height + 62,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 62,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side3, 0, height + 62,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 62,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side2, 0, height + 62,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 62,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, MetalSupportPlace::Side0, 0, height + 62,
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 62,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }

@@ -96,15 +96,15 @@ enum class MetalSupportType : uint8_t
 
 enum class MetalSupportPlace : uint8_t
 {
-    Corner0 = 0,
-    Corner1 = 1,
-    Corner2 = 2,
-    Corner3 = 3,
+    TopCorner = 0,
+    LeftCorner = 1,
+    RightCorner = 2,
+    BottomCorner = 3,
     Centre = 4,
-    Side0 = 5,
-    Side1 = 6,
-    Side2 = 7,
-    Side3 = 8,
+    TopLeftSide = 5,
+    TopRightSide = 6,
+    BottomLeftSide = 7,
+    BottomRightSide = 8,
 };
 
 bool WoodenASupportsPaintSetup(

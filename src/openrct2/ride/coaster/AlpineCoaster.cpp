@@ -861,7 +861,7 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 3)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -870,7 +870,7 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 7)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -879,7 +879,7 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 11)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -888,7 +888,7 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 15)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -1029,7 +1029,7 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 19)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -1038,7 +1038,7 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 23)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -1047,7 +1047,7 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 27)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -1056,7 +1056,7 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE + 31)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -1186,7 +1186,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 0, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -1195,17 +1195,17 @@ namespace AlpineRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_LIFT_TRACK_FLAT_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 0, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 0, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 0, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -1216,7 +1216,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 0, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -1225,17 +1225,17 @@ namespace AlpineRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_FLAT_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 0, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 0, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 0, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -1347,7 +1347,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 9, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 9, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -1356,17 +1356,17 @@ namespace AlpineRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 9, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 9, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 9, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 9, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 9, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 9, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -1377,7 +1377,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 9, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 9, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -1386,17 +1386,17 @@ namespace AlpineRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 9, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 9, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 9, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 9, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 9, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 9, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -1508,7 +1508,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 6, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 6, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -1517,17 +1517,17 @@ namespace AlpineRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 5)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 6, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 6, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 6, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 6, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 6, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 6, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -1538,7 +1538,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 6, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 6, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -1547,17 +1547,17 @@ namespace AlpineRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_DIAGONAL + 5)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 6, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 6, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 6, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 6, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 6, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 6, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -1669,7 +1669,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 0, height + 2,
+                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height + 2,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -1678,17 +1678,17 @@ namespace AlpineRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 0, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 0, height + 2,
+                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height + 2,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 0, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -1699,7 +1699,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 2, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 2, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -1708,17 +1708,17 @@ namespace AlpineRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 2, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 2, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 2, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 2, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 2, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 2, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -1830,7 +1830,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 8, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -1839,17 +1839,17 @@ namespace AlpineRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 11)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 8, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 8, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 8, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -1860,7 +1860,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 8, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -1869,17 +1869,17 @@ namespace AlpineRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_DIAGONAL + 11)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 8, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 8, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 8, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 8, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -1988,7 +1988,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 4, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -1997,17 +1997,17 @@ namespace AlpineRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 7)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 4, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 4, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 4, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -2018,7 +2018,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 4, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -2027,17 +2027,17 @@ namespace AlpineRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_DIAGONAL + 7)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 4, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 4, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 4, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 4, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -2150,7 +2150,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 0, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -2159,17 +2159,17 @@ namespace AlpineRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 3)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 0, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 0, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 0, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -2180,7 +2180,7 @@ namespace AlpineRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 0, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
@@ -2189,17 +2189,17 @@ namespace AlpineRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_GENTLE_DIAGONAL + 3)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 0, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 0, height,
+                                session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 0, height,
+                                session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
                                 session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
@@ -2684,7 +2684,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -2693,17 +2693,17 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 2)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -2771,7 +2771,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -2780,17 +2780,17 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 6)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -2858,7 +2858,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -2867,17 +2867,17 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 9)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -2945,7 +2945,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -2954,17 +2954,17 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 4)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -3032,7 +3032,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -3041,17 +3041,17 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 12)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -3119,7 +3119,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -3128,17 +3128,17 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 16)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -3206,7 +3206,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 4, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -3215,17 +3215,17 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 22)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 4, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 4, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 4, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -3293,7 +3293,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 4, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -3302,17 +3302,17 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 26)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 4, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 4, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 4, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -3377,7 +3377,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 4, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -3386,17 +3386,17 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 29)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 4, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 4, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 4, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -3462,7 +3462,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 4, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -3471,17 +3471,17 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 24)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 4, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 4, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 4, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -3550,7 +3550,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -3559,17 +3559,17 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 19)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -3637,7 +3637,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -3646,17 +3646,17 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 14)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -3720,7 +3720,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -3729,17 +3729,17 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 31)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -3803,7 +3803,7 @@ namespace AlpineRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -3812,17 +3812,17 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_BANK_TRANSITION_DIAGONAL + 33)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -4319,7 +4319,7 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 3)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -4328,7 +4328,7 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 7)),
                             { 0, 0, height }, { { 0, 16, height + 27 }, { 16, 18, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -4337,7 +4337,7 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 11)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -4346,7 +4346,7 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 15)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -4487,7 +4487,7 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 19)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -4496,7 +4496,7 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 23)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -4505,7 +4505,7 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 27)),
                             { 0, 0, height }, { { 0, 16, height + 27 }, { 16, 18, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -4514,7 +4514,7 @@ namespace AlpineRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_LARGE_CURVE_BANKED + 31)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5230,7 +5230,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 1)),
                             { 0, 0, height }, { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Side0, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::TopLeftSide, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -5238,7 +5238,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 5)),
                             { 0, 0, height }, { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Side1, 1, height - 1,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopRightSide, 1, height - 1,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -5277,7 +5277,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 1)),
                             { 0, 0, height }, { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Side0, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::TopLeftSide, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -5285,7 +5285,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 5)),
                             { 0, 0, height }, { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Side1, 1, height - 1,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopRightSide, 1, height - 1,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5388,7 +5388,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 9)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Side3, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::BottomRightSide, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -5396,7 +5396,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 13)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Side2, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomLeftSide, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -5435,7 +5435,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 9)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Fork, MetalSupportPlace::Side3, 0, height,
+                            session, MetalSupportType::Fork, MetalSupportPlace::BottomRightSide, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -5443,7 +5443,7 @@ namespace AlpineRC
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_ALPINE_TRACK_S_BEND + 13)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::ForkAlt, MetalSupportPlace::Side2, 0, height,
+                            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomLeftSide, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }

@@ -405,8 +405,8 @@ static void DinghySlideTrackStation(
         session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][1]), { 0, 0, height },
         { 32, 32, 1 });
 
-    const auto support1Place = (direction & 1) ? MetalSupportPlace::Side1 : MetalSupportPlace::Side0;
-    const auto support2Place = (direction & 1) ? MetalSupportPlace::Side2 : MetalSupportPlace::Side3;
+    const auto support1Place = (direction & 1) ? MetalSupportPlace::TopRightSide : MetalSupportPlace::TopLeftSide;
+    const auto support2Place = (direction & 1) ? MetalSupportPlace::BottomLeftSide : MetalSupportPlace::BottomRightSide;
     MetalASupportsPaintSetup(session, MetalSupportType::Tubes, support1Place, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     MetalASupportsPaintSetup(session, MetalSupportType::Tubes, support2Place, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
@@ -897,7 +897,7 @@ static void DinghySlideTrackSBendLeft(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
             if (direction == 0 || direction == 1)
             {
-                const auto supportPlace = (direction & 1) ? MetalSupportPlace::Side1 : MetalSupportPlace::Side0;
+                const auto supportPlace = (direction & 1) ? MetalSupportPlace::TopRightSide : MetalSupportPlace::TopLeftSide;
                 MetalASupportsPaintSetup(
                     session, MetalSupportType::Tubes, supportPlace, (direction & 1), height,
                     session.TrackColours[SCHEME_SUPPORTS]);
@@ -914,7 +914,7 @@ static void DinghySlideTrackSBendLeft(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
             if (direction == 2 || direction == 3)
             {
-                const auto supportPlace = (direction & 1) ? MetalSupportPlace::Side1 : MetalSupportPlace::Side0;
+                const auto supportPlace = (direction & 1) ? MetalSupportPlace::TopRightSide : MetalSupportPlace::TopLeftSide;
                 MetalASupportsPaintSetup(
                     session, MetalSupportType::Tubes, supportPlace, (direction & 1), height,
                     session.TrackColours[SCHEME_SUPPORTS]);
@@ -1006,7 +1006,8 @@ static void DinghySlideTrackSBendRight(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
             if (direction == 0 || direction == 1)
             {
-                const auto supportPlace = (direction & 1) ? MetalSupportPlace::Side2 : MetalSupportPlace::Side3;
+                const auto supportPlace = (direction & 1) ? MetalSupportPlace::BottomLeftSide
+                                                          : MetalSupportPlace::BottomRightSide;
                 MetalASupportsPaintSetup(
                     session, MetalSupportType::Tubes, supportPlace, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
@@ -1022,7 +1023,8 @@ static void DinghySlideTrackSBendRight(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
             if (direction == 2 || direction == 3)
             {
-                const auto supportPlace = (direction & 1) ? MetalSupportPlace::Side2 : MetalSupportPlace::Side3;
+                const auto supportPlace = (direction & 1) ? MetalSupportPlace::BottomLeftSide
+                                                          : MetalSupportPlace::BottomRightSide;
                 MetalASupportsPaintSetup(
                     session, MetalSupportType::Tubes, supportPlace, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
@@ -1625,7 +1627,7 @@ static void DinghySlideTrackSBendLeftCovered(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
             if (direction == 0 || direction == 1)
             {
-                const auto supportPlace = (direction & 1) ? MetalSupportPlace::Side1 : MetalSupportPlace::Side0;
+                const auto supportPlace = (direction & 1) ? MetalSupportPlace::TopRightSide : MetalSupportPlace::TopLeftSide;
                 MetalASupportsPaintSetup(
                     session, MetalSupportType::Tubes, supportPlace, (direction & 1), height,
                     session.TrackColours[SCHEME_SUPPORTS]);
@@ -1642,7 +1644,7 @@ static void DinghySlideTrackSBendLeftCovered(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
             if (direction == 2 || direction == 3)
             {
-                const auto supportPlace = (direction & 1) ? MetalSupportPlace::Side1 : MetalSupportPlace::Side0;
+                const auto supportPlace = (direction & 1) ? MetalSupportPlace::TopRightSide : MetalSupportPlace::TopLeftSide;
                 MetalASupportsPaintSetup(
                     session, MetalSupportType::Tubes, supportPlace, (direction & 1), height,
                     session.TrackColours[SCHEME_SUPPORTS]);
@@ -1734,7 +1736,8 @@ static void DinghySlideTrackSBendRightCovered(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
             if (direction == 0 || direction == 1)
             {
-                const auto supportPlace = (direction & 1) ? MetalSupportPlace::Side2 : MetalSupportPlace::Side3;
+                const auto supportPlace = (direction & 1) ? MetalSupportPlace::BottomLeftSide
+                                                          : MetalSupportPlace::BottomRightSide;
                 MetalASupportsPaintSetup(
                     session, MetalSupportType::Tubes, supportPlace, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
@@ -1750,7 +1753,8 @@ static void DinghySlideTrackSBendRightCovered(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
             if (direction == 2 || direction == 3)
             {
-                const auto supportPlace = (direction & 1) ? MetalSupportPlace::Side2 : MetalSupportPlace::Side3;
+                const auto supportPlace = (direction & 1) ? MetalSupportPlace::BottomLeftSide
+                                                          : MetalSupportPlace::BottomRightSide;
                 MetalASupportsPaintSetup(
                     session, MetalSupportType::Tubes, supportPlace, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             }

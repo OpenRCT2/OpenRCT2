@@ -118,10 +118,10 @@ const int32_t DiagBlockedSegments[] = {
 };
 
 const MetalSupportPlace DiagSupportPlacement[] = {
-    MetalSupportPlace::Corner1,
-    MetalSupportPlace::Corner0,
-    MetalSupportPlace::Corner2,
-    MetalSupportPlace::Corner3,
+    MetalSupportPlace::LeftCorner,
+    MetalSupportPlace::TopCorner,
+    MetalSupportPlace::RightCorner,
+    MetalSupportPlace::BottomCorner,
 };
 
 const uint8_t track_map_1x4[][4] = {
@@ -953,13 +953,13 @@ void TrackPaintUtilDrawStationMetalSupports2(
 {
     if (direction & 1)
     {
-        MetalASupportsPaintSetup(session, type, MetalSupportPlace::Side1, 0, height, colour);
-        MetalASupportsPaintSetup(session, type, MetalSupportPlace::Side2, 0, height, colour);
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::TopRightSide, 0, height, colour);
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::BottomLeftSide, 0, height, colour);
     }
     else
     {
-        MetalASupportsPaintSetup(session, type, MetalSupportPlace::Side0, 0, height, colour);
-        MetalASupportsPaintSetup(session, type, MetalSupportPlace::Side3, 0, height, colour);
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::TopLeftSide, 0, height, colour);
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::BottomRightSide, 0, height, colour);
     }
 }
 

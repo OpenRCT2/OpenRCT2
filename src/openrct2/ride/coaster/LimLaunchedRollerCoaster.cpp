@@ -1912,7 +1912,7 @@ static void LimLaunchedRCTrackLeftBarrelRollUpToDown(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_BARREL_ROLL + 1),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 4, height + 1,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height + 1,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -1925,7 +1925,7 @@ static void LimLaunchedRCTrackLeftBarrelRollUpToDown(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_BARREL_ROLL + 7),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 4, height + 1,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height + 1,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -1938,7 +1938,7 @@ static void LimLaunchedRCTrackLeftBarrelRollUpToDown(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_BARREL_ROLL + 13),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height + 1,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height + 1,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -1951,7 +1951,7 @@ static void LimLaunchedRCTrackLeftBarrelRollUpToDown(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_BARREL_ROLL + 19),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -2094,7 +2094,7 @@ static void LimLaunchedRCTrackRightBarrelRollUpToDown(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_BARREL_ROLL + 25),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -2107,7 +2107,7 @@ static void LimLaunchedRCTrackRightBarrelRollUpToDown(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_BARREL_ROLL + 31),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height + 1,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height + 1,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -2120,7 +2120,7 @@ static void LimLaunchedRCTrackRightBarrelRollUpToDown(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_BARREL_ROLL + 37),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 4, height + 1,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height + 1,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -2133,7 +2133,7 @@ static void LimLaunchedRCTrackRightBarrelRollUpToDown(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_BARREL_ROLL + 43),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 4, height + 1,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height + 1,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -2855,7 +2855,7 @@ static void LimLaunchedRCTrackLeftLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_CORKSCREW + 1),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 34, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 34, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -2864,7 +2864,7 @@ static void LimLaunchedRCTrackLeftLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_CORKSCREW + 6),
                         { 0, 0, height }, { { 0, 29, height }, { 26, 1, 32 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 22, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 22, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -2873,7 +2873,7 @@ static void LimLaunchedRCTrackLeftLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_CORKSCREW + 11),
                         { 0, 0, height }, { { 0, 6, height }, { 20, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 24, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 24, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -2882,7 +2882,7 @@ static void LimLaunchedRCTrackLeftLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_CORKSCREW + 16),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 16, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 16, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -2940,7 +2940,7 @@ static void LimLaunchedRCTrackLeftLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_CORKSCREW + 3),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 0, height + 56,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height + 56,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -2949,7 +2949,7 @@ static void LimLaunchedRCTrackLeftLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_CORKSCREW + 8),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 0, height + 56,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height + 56,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -2958,7 +2958,7 @@ static void LimLaunchedRCTrackLeftLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_CORKSCREW + 13),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 24, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 0, height + 56,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 56,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -2967,7 +2967,7 @@ static void LimLaunchedRCTrackLeftLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_CORKSCREW + 18),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 0, height + 56,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 56,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -3077,7 +3077,7 @@ static void LimLaunchedRCTrackRightLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_CORKSCREW + 21),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 16, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 16, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -3086,7 +3086,7 @@ static void LimLaunchedRCTrackRightLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_CORKSCREW + 26),
                         { 0, 0, height }, { { 0, 6, height }, { 20, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 24, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 24, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -3095,7 +3095,7 @@ static void LimLaunchedRCTrackRightLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_CORKSCREW + 31),
                         { 0, 0, height }, { { 0, 29, height }, { 26, 1, 32 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 22, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 22, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -3104,7 +3104,7 @@ static void LimLaunchedRCTrackRightLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_CORKSCREW + 36),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 34, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 34, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -3162,7 +3162,7 @@ static void LimLaunchedRCTrackRightLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_CORKSCREW + 23),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 0, height + 56,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 56,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -3171,7 +3171,7 @@ static void LimLaunchedRCTrackRightLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_CORKSCREW + 28),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 24, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 0, height + 56,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 56,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -3180,7 +3180,7 @@ static void LimLaunchedRCTrackRightLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_CORKSCREW + 33),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 0, height + 56,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height + 56,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -3189,7 +3189,7 @@ static void LimLaunchedRCTrackRightLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_CORKSCREW + 38),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 0, height + 56,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height + 56,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -3346,7 +3346,7 @@ static void LimLaunchedRCTrackLeftMediumHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_MEDIUM_HALF_LOOP + 2),
                         { 0, 0, height }, { { 0, 0, height + 2 }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 14, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 14, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -3355,7 +3355,7 @@ static void LimLaunchedRCTrackLeftMediumHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_MEDIUM_HALF_LOOP + 7),
                         { 0, 0, height }, { { 29, 0, height }, { 1, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 16, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 16, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -3364,7 +3364,7 @@ static void LimLaunchedRCTrackLeftMediumHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_MEDIUM_HALF_LOOP + 12),
                         { 0, 0, height }, { { 31, 0, height }, { 1, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 18, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 18, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -3373,7 +3373,7 @@ static void LimLaunchedRCTrackLeftMediumHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_MEDIUM_HALF_LOOP + 17),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 14, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 14, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -3546,7 +3546,7 @@ static void LimLaunchedRCTrackRightMediumHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_MEDIUM_HALF_LOOP + 22),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 14, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 14, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -3555,7 +3555,7 @@ static void LimLaunchedRCTrackRightMediumHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_MEDIUM_HALF_LOOP + 27),
                         { 0, 0, height }, { { 30, 0, height }, { 0, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 18, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 18, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -3564,7 +3564,7 @@ static void LimLaunchedRCTrackRightMediumHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_MEDIUM_HALF_LOOP + 32),
                         { 0, 0, height }, { { 29, 0, height }, { 0, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 16, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 16, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -3573,7 +3573,7 @@ static void LimLaunchedRCTrackRightMediumHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_MEDIUM_HALF_LOOP + 37),
                         { 0, 0, height }, { { 0, 0, height + 2 }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 14, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 14, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -4126,7 +4126,7 @@ static void LimLaunchedRCTrackLeftLargeZeroGRollUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_ZERO_G_ROLL + 4),
                         { 0, 0, height }, { { 0, 26, height }, { 26, 0, 20 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 0, height + 28,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 28,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -4135,7 +4135,7 @@ static void LimLaunchedRCTrackLeftLargeZeroGRollUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_ZERO_G_ROLL + 8),
                         { 0, 0, height }, { { 0, 26, height }, { 26, 0, 20 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 0, height + 28,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height + 28,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -4148,7 +4148,7 @@ static void LimLaunchedRCTrackLeftLargeZeroGRollUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_ZERO_G_ROLL + 14),
                         { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 0, height + 28,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height + 28,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -4157,7 +4157,7 @@ static void LimLaunchedRCTrackLeftLargeZeroGRollUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_ZERO_G_ROLL + 19),
                         { 0, 0, height }, { { 0, 18, height }, { 32, 10, 20 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 0, height + 28,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 28,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -4311,7 +4311,7 @@ static void LimLaunchedRCTrackRightLargeZeroGRollUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_ZERO_G_ROLL + 24),
                         { 0, 0, height }, { { 0, 18, height }, { 32, 10, 20 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 0, height + 28,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 28,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -4324,7 +4324,7 @@ static void LimLaunchedRCTrackRightLargeZeroGRollUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_ZERO_G_ROLL + 30),
                         { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 0, height + 28,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height + 28,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -4333,7 +4333,7 @@ static void LimLaunchedRCTrackRightLargeZeroGRollUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_ZERO_G_ROLL + 34),
                         { 0, 0, height }, { { 0, 26, height }, { 26, 0, 20 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 0, height + 28,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height + 28,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -4342,7 +4342,7 @@ static void LimLaunchedRCTrackRightLargeZeroGRollUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_ZERO_G_ROLL + 39),
                         { 0, 0, height }, { { 0, 26, height }, { 26, 0, 20 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 0, height + 28,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 28,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -4909,7 +4909,7 @@ static void LimLaunchedRCTrackLeftLargeHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_HALF_LOOP + 3),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 28, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 28, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -4918,7 +4918,7 @@ static void LimLaunchedRCTrackLeftLargeHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_HALF_LOOP + 10),
                         { 0, 0, height }, { { 0, 0, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 28, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 28, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -4927,7 +4927,7 @@ static void LimLaunchedRCTrackLeftLargeHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_HALF_LOOP + 17),
                         { 0, 0, height }, { { 0, 16, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 0, height + 28,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 28,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -4936,7 +4936,7 @@ static void LimLaunchedRCTrackLeftLargeHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_HALF_LOOP + 24),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 28, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 28, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -5184,7 +5184,7 @@ static void LimLaunchedRCTrackRightLargeHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_HALF_LOOP + 31),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 28, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 28, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -5193,7 +5193,7 @@ static void LimLaunchedRCTrackRightLargeHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_HALF_LOOP + 38),
                         { 0, 0, height }, { { 0, 16, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 0, height + 28,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 28,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -5202,7 +5202,7 @@ static void LimLaunchedRCTrackRightLargeHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_HALF_LOOP + 45),
                         { 0, 0, height }, { { 0, 0, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 28, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 28, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -5211,7 +5211,7 @@ static void LimLaunchedRCTrackRightLargeHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_LARGE_HALF_LOOP + 52),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 28, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 28, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -5525,7 +5525,7 @@ static void LimLaunchedRCTrackDiagFlatTo60DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 7, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 7, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -5534,17 +5534,17 @@ static void LimLaunchedRCTrackDiagFlatTo60DegUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_SMALL_FLAT_TO_STEEP + 13),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 7, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 7, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 7, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 7, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 7, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 7, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -5608,7 +5608,7 @@ static void LimLaunchedRCTrackDiag60DegUpToFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 20, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 20, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -5617,17 +5617,17 @@ static void LimLaunchedRCTrackDiag60DegUpToFlat(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_SMALL_FLAT_TO_STEEP + 17),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 20, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 20, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 20, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 20, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 20, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 20, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -5691,7 +5691,7 @@ static void LimLaunchedRCTrackDiagFlatTo60DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 16, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 16, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -5700,17 +5700,17 @@ static void LimLaunchedRCTrackDiagFlatTo60DegDown(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_SMALL_FLAT_TO_STEEP + 19),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 16, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 16, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 16, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 16, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 16, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 16, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -5774,7 +5774,7 @@ static void LimLaunchedRCTrackDiag60DegDownToFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 5, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 5, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -5783,17 +5783,17 @@ static void LimLaunchedRCTrackDiag60DegDownToFlat(
                         session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_LIM_LAUNCHED_TRACK_SMALL_FLAT_TO_STEEP + 15),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 5, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 5, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 5, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 5, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 5, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 5, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }

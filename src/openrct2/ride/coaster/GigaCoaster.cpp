@@ -2114,7 +2114,7 @@ static void GigaRCTrackSBendLeft(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18239), { 0, 0, height },
                         { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -2122,7 +2122,7 @@ static void GigaRCTrackSBendLeft(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18243), { 0, 0, height },
                         { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 1, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 1, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -2160,7 +2160,7 @@ static void GigaRCTrackSBendLeft(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18239), { 0, 0, height },
                         { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -2168,7 +2168,7 @@ static void GigaRCTrackSBendLeft(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18243), { 0, 0, height },
                         { 32, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 1, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 1, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -2269,7 +2269,7 @@ static void GigaRCTrackSBendRight(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18247), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -2277,7 +2277,7 @@ static void GigaRCTrackSBendRight(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18251), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -2315,7 +2315,7 @@ static void GigaRCTrackSBendRight(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18247), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -2323,7 +2323,7 @@ static void GigaRCTrackSBendRight(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18251), { 0, 0, height },
                         { { 0, 6, height }, { 32, 26, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -4343,9 +4343,11 @@ static void GigaRCTrackOnRidePhoto(
             PaintAddImageAsParentRotated(
                 session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18074), { 0, 0, height },
                 { { 0, 6, height + 3 }, { 32, 20, 0 } });
@@ -4354,9 +4356,11 @@ static void GigaRCTrackOnRidePhoto(
             PaintAddImageAsParentRotated(
                 session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18075), { 0, 0, height },
                 { { 0, 6, height + 3 }, { 32, 20, 0 } });
@@ -4365,9 +4369,11 @@ static void GigaRCTrackOnRidePhoto(
             PaintAddImageAsParentRotated(
                 session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18074), { 0, 0, height },
                 { { 0, 6, height + 3 }, { 32, 20, 0 } });
@@ -4376,9 +4382,11 @@ static void GigaRCTrackOnRidePhoto(
             PaintAddImageAsParentRotated(
                 session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18075), { 0, 0, height },
                 { { 0, 6, height + 3 }, { 32, 20, 0 } });
@@ -5177,7 +5185,7 @@ static void GigaRCTrackLeftEighthToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18417), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -5185,7 +5193,7 @@ static void GigaRCTrackLeftEighthToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18421), { 0, 0, height },
                         { { 0, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -5193,7 +5201,7 @@ static void GigaRCTrackLeftEighthToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18425), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -5201,7 +5209,7 @@ static void GigaRCTrackLeftEighthToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18429), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -5327,7 +5335,7 @@ static void GigaRCTrackRightEighthToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18401), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -5335,7 +5343,7 @@ static void GigaRCTrackRightEighthToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18405), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -5343,7 +5351,7 @@ static void GigaRCTrackRightEighthToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18409), { 0, 0, height },
                         { { 0, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -5351,7 +5359,7 @@ static void GigaRCTrackRightEighthToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18413), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -5495,7 +5503,7 @@ static void GigaRCTrackLeftEighthBankToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18449), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -5503,7 +5511,7 @@ static void GigaRCTrackLeftEighthBankToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18453), { 0, 0, height },
                         { { 0, 16, height + 27 }, { 16, 18, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -5511,7 +5519,7 @@ static void GigaRCTrackLeftEighthBankToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18457), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -5519,7 +5527,7 @@ static void GigaRCTrackLeftEighthBankToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18461), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -5645,7 +5653,7 @@ static void GigaRCTrackRightEighthBankToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18433), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -5653,7 +5661,7 @@ static void GigaRCTrackRightEighthBankToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18437), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -5661,7 +5669,7 @@ static void GigaRCTrackRightEighthBankToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18441), { 0, 0, height },
                         { { 0, 16, height + 27 }, { 16, 18, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -5669,7 +5677,7 @@ static void GigaRCTrackRightEighthBankToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18445), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -5795,7 +5803,7 @@ static void GigaRCTrackDiagFlat(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -5803,17 +5811,17 @@ static void GigaRCTrackDiagFlat(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18525), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5824,7 +5832,7 @@ static void GigaRCTrackDiagFlat(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -5832,17 +5840,17 @@ static void GigaRCTrackDiagFlat(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18463), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5949,7 +5957,7 @@ static void GigaRCTrackDiag25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 8, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 8, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -5957,17 +5965,17 @@ static void GigaRCTrackDiag25DegUp(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18537), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 8, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 8, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 8, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 8, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5978,7 +5986,7 @@ static void GigaRCTrackDiag25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 8, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 8, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -5986,17 +5994,17 @@ static void GigaRCTrackDiag25DegUp(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18475), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 8, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 8, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 8, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 8, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -6059,7 +6067,7 @@ static void GigaRCTrackDiag60DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 32, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 32, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -6067,17 +6075,17 @@ static void GigaRCTrackDiag60DegUp(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18487), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 36, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 36, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 32, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 32, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 36, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 36, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -6183,7 +6191,7 @@ static void GigaRCTrackDiagFlatTo25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -6191,17 +6199,17 @@ static void GigaRCTrackDiagFlatTo25DegUp(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18529), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -6212,7 +6220,7 @@ static void GigaRCTrackDiagFlatTo25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -6220,17 +6228,17 @@ static void GigaRCTrackDiagFlatTo25DegUp(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18467), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -6293,7 +6301,7 @@ static void GigaRCTrackDiag25DegUpTo60DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 16, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 16, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -6301,17 +6309,17 @@ static void GigaRCTrackDiag25DegUpTo60DegUp(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18479), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 16, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 16, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 16, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 16, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 16, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 16, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -6373,7 +6381,7 @@ static void GigaRCTrackDiag60DegUpTo25DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 21, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 21, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -6381,17 +6389,17 @@ static void GigaRCTrackDiag60DegUpTo25DegUp(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18483), { -16, -16, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 21, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 21, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 21, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 21, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 21, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 21, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -6497,7 +6505,7 @@ static void GigaRCTrackDiag25DegUpToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 4, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -6505,17 +6513,17 @@ static void GigaRCTrackDiag25DegUpToFlat(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18533), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 4, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 4, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 4, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -6526,7 +6534,7 @@ static void GigaRCTrackDiag25DegUpToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 4, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -6534,17 +6542,17 @@ static void GigaRCTrackDiag25DegUpToFlat(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18471), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 4, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 4, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 4, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -6651,7 +6659,7 @@ static void GigaRCTrackDiag25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 8, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 8, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -6659,17 +6667,17 @@ static void GigaRCTrackDiag25DegDown(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18539), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 8, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 8, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 8, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 8, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -6680,7 +6688,7 @@ static void GigaRCTrackDiag25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 8, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 8, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -6688,17 +6696,17 @@ static void GigaRCTrackDiag25DegDown(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18477), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 8, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 8, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 8, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 8, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -6761,7 +6769,7 @@ static void GigaRCTrackDiag60DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 24, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 24, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -6769,17 +6777,17 @@ static void GigaRCTrackDiag60DegDown(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18489), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 28, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 28, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 24, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 24, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 28, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 28, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -6882,7 +6890,7 @@ static void GigaRCTrackDiagFlatTo25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 4, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -6890,17 +6898,17 @@ static void GigaRCTrackDiagFlatTo25DegDown(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18535), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 4, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 4, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 4, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -6911,7 +6919,7 @@ static void GigaRCTrackDiagFlatTo25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 4, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -6919,17 +6927,17 @@ static void GigaRCTrackDiagFlatTo25DegDown(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18473), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 4, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 4, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 4, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -6993,7 +7001,7 @@ static void GigaRCTrackDiag25DegDownTo60DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 17, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 17, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -7001,17 +7009,17 @@ static void GigaRCTrackDiag25DegDownTo60DegDown(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18485), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 17, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 17, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 17, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 17, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 17, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 17, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -7073,7 +7081,7 @@ static void GigaRCTrackDiag60DegDownTo25DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 8, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 8, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -7081,17 +7089,17 @@ static void GigaRCTrackDiag60DegDownTo25DegDown(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18481), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 8, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 8, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 8, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 8, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -7197,7 +7205,7 @@ static void GigaRCTrackDiag25DegDownToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -7205,17 +7213,17 @@ static void GigaRCTrackDiag25DegDownToFlat(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18531), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -7226,7 +7234,7 @@ static void GigaRCTrackDiag25DegDownToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -7234,17 +7242,17 @@ static void GigaRCTrackDiag25DegDownToFlat(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18469), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -7310,7 +7318,7 @@ static void GigaRCTrackDiagFlatToLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -7318,17 +7326,17 @@ static void GigaRCTrackDiagFlatToLeftBank(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18495), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -7393,7 +7401,7 @@ static void GigaRCTrackDiagFlatToRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -7401,17 +7409,17 @@ static void GigaRCTrackDiagFlatToRightBank(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18500), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -7476,7 +7484,7 @@ static void GigaRCTrackDiagLeftBankToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -7484,17 +7492,17 @@ static void GigaRCTrackDiagLeftBankToFlat(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18502), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -7559,7 +7567,7 @@ static void GigaRCTrackDiagRightBankToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -7567,17 +7575,17 @@ static void GigaRCTrackDiagRightBankToFlat(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18497), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -7642,7 +7650,7 @@ static void GigaRCTrackDiagLeftBankTo25DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -7650,17 +7658,17 @@ static void GigaRCTrackDiagLeftBankTo25DegUp(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18515), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -7725,7 +7733,7 @@ static void GigaRCTrackDiagRightBankTo25DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -7733,17 +7741,17 @@ static void GigaRCTrackDiagRightBankTo25DegUp(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18520), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -7808,7 +7816,7 @@ static void GigaRCTrackDiag25DegUpToLeftBank(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -7816,17 +7824,17 @@ static void GigaRCTrackDiag25DegUpToLeftBank(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18505), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -7891,7 +7899,7 @@ static void GigaRCTrackDiag25DegUpToRightBank(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -7899,17 +7907,17 @@ static void GigaRCTrackDiag25DegUpToRightBank(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18510), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -7971,7 +7979,7 @@ static void GigaRCTrackDiagLeftBankTo25DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -7979,17 +7987,17 @@ static void GigaRCTrackDiagLeftBankTo25DegDown(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18512), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -8052,7 +8060,7 @@ static void GigaRCTrackDiagRightBankTo25DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -8060,17 +8068,17 @@ static void GigaRCTrackDiagRightBankTo25DegDown(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18507), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -8136,7 +8144,7 @@ static void GigaRCTrackDiag25DegDownToLeftBank(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -8144,17 +8152,17 @@ static void GigaRCTrackDiag25DegDownToLeftBank(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18522), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -8219,7 +8227,7 @@ static void GigaRCTrackDiag25DegDownToRightBank(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -8227,17 +8235,17 @@ static void GigaRCTrackDiag25DegDownToRightBank(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18517), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -8299,7 +8307,7 @@ static void GigaRCTrackDiagLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -8307,17 +8315,17 @@ static void GigaRCTrackDiagLeftBank(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18491), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -8379,7 +8387,7 @@ static void GigaRCTrackDiagRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -8387,17 +8395,17 @@ static void GigaRCTrackDiagRightBank(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(18493), { -16, -16, height },
                         { { -16, -16, height }, { 32, 32, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -10067,7 +10075,7 @@ static void GigaRCTrackLeftBarrelRollUpToDown(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 1)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 4, height - 2,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height - 2,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -10078,7 +10086,7 @@ static void GigaRCTrackLeftBarrelRollUpToDown(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 7)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 4, height - 2,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height - 2,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -10089,7 +10097,7 @@ static void GigaRCTrackLeftBarrelRollUpToDown(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 13)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height + 1,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height + 1,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -10100,7 +10108,7 @@ static void GigaRCTrackLeftBarrelRollUpToDown(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 19)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height + 1,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height + 1,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -10225,7 +10233,7 @@ static void GigaRCTrackRightBarrelRollUpToDown(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 25)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 0, height + 1,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height + 1,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -10236,7 +10244,7 @@ static void GigaRCTrackRightBarrelRollUpToDown(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 31)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height + 1,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height + 1,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -10247,7 +10255,7 @@ static void GigaRCTrackRightBarrelRollUpToDown(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 37)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 4, height - 2,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height - 2,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -10258,7 +10266,7 @@ static void GigaRCTrackRightBarrelRollUpToDown(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_BARREL_ROLL + 43)),
                         { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 4, height - 2,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height - 2,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -11426,7 +11434,7 @@ static void GigaRCTrackLeftLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 1)), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 21, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 21, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -11435,7 +11443,7 @@ static void GigaRCTrackLeftLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 6)), { 0, 0, height },
                         { { 0, 29, height }, { 26, 1, 32 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 19, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 19, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -11444,7 +11452,7 @@ static void GigaRCTrackLeftLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 11)),
                         { 0, 0, height }, { { 0, 6, height }, { 20, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 19, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 19, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -11453,7 +11461,7 @@ static void GigaRCTrackLeftLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 16)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 16, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 16, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -11511,7 +11519,7 @@ static void GigaRCTrackLeftLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 3)), { 0, 0, height },
                         { { 2, 2, height + 50 }, { 28, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 0, height + 65,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height + 65,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -11520,7 +11528,7 @@ static void GigaRCTrackLeftLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 8)), { 0, 0, height },
                         { { 2, 2, height + 50 }, { 28, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 0, height + 65,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height + 65,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -11529,7 +11537,7 @@ static void GigaRCTrackLeftLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 13)),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 24, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 0, height + 65,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 65,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -11538,7 +11546,7 @@ static void GigaRCTrackLeftLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 18)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 0, height + 65,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 65,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -11648,7 +11656,7 @@ static void GigaRCTrackRightLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 21)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 16, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 16, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -11657,7 +11665,7 @@ static void GigaRCTrackRightLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 26)),
                         { 0, 0, height }, { { 0, 6, height }, { 20, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 19, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 19, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -11666,7 +11674,7 @@ static void GigaRCTrackRightLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 31)),
                         { 0, 0, height }, { { 0, 29, height }, { 26, 1, 32 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 19, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 19, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -11675,7 +11683,7 @@ static void GigaRCTrackRightLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 36)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 21, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 21, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -11733,7 +11741,7 @@ static void GigaRCTrackRightLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 23)),
                         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 0, height + 65,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 65,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -11742,7 +11750,7 @@ static void GigaRCTrackRightLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 28)),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 24, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 0, height + 65,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 65,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -11751,7 +11759,7 @@ static void GigaRCTrackRightLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 33)),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 0, height + 65,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height + 65,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -11760,7 +11768,7 @@ static void GigaRCTrackRightLargeCorkscrewUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_CORKSCREW + 38)),
                         { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 0, height + 65,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height + 65,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -11917,7 +11925,7 @@ static void GigaRCTrackLeftMediumHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 2)),
                         { 0, 0, height }, { { 0, 0, height + 2 }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 14, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 14, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -11926,7 +11934,7 @@ static void GigaRCTrackLeftMediumHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 7)),
                         { 0, 0, height }, { { 29, 0, height }, { 1, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 16, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 16, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -11935,7 +11943,7 @@ static void GigaRCTrackLeftMediumHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 12)),
                         { 0, 0, height }, { { 31, 0, height }, { 1, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 18, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 18, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -11944,7 +11952,7 @@ static void GigaRCTrackLeftMediumHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 17)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 14, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 14, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -12117,7 +12125,7 @@ static void GigaRCTrackRightMediumHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 22)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 14, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 14, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -12126,7 +12134,7 @@ static void GigaRCTrackRightMediumHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 27)),
                         { 0, 0, height }, { { 30, 16, height }, { 0, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 18, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 18, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -12135,7 +12143,7 @@ static void GigaRCTrackRightMediumHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 32)),
                         { 0, 0, height }, { { 29, 0, height }, { 0, 32, 96 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 16, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 16, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -12144,7 +12152,7 @@ static void GigaRCTrackRightMediumHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_MEDIUM_HALF_LOOP + 37)),
                         { 0, 0, height }, { { 0, 0, height + 2 }, { 32, 32, 0 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 14, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 14, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -12665,7 +12673,7 @@ static void GigaRCTrackLeftLargeZeroGRollUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 4)),
                         { 0, 0, height }, { { 0, 26, height }, { 32, 0, 32 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 0, height + 37,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 37,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -12674,7 +12682,7 @@ static void GigaRCTrackLeftLargeZeroGRollUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 8)),
                         { 0, 0, height }, { { 0, 26, height }, { 26, 0, 20 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 0, height + 37,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height + 37,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -12687,7 +12695,7 @@ static void GigaRCTrackLeftLargeZeroGRollUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 14)),
                         { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 0, height + 37,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height + 37,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -12696,7 +12704,7 @@ static void GigaRCTrackLeftLargeZeroGRollUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 19)),
                         { 0, 0, height }, { { 0, 18, height }, { 32, 1, 30 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 0, height + 37,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 37,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -12850,7 +12858,7 @@ static void GigaRCTrackRightLargeZeroGRollUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 24)),
                         { 0, 0, height }, { { 0, 18, height }, { 32, 1, 30 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 0, height + 37,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 37,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -12863,7 +12871,7 @@ static void GigaRCTrackRightLargeZeroGRollUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 30)),
                         { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 0, height + 37,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height + 37,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -12872,7 +12880,7 @@ static void GigaRCTrackRightLargeZeroGRollUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 34)),
                         { 0, 0, height }, { { 0, 26, height }, { 32, 0, 30 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 0, height + 37,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height + 37,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -12881,7 +12889,7 @@ static void GigaRCTrackRightLargeZeroGRollUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_ZERO_G_ROLL + 39)),
                         { 0, 0, height }, { { 0, 26, height }, { 40, 0, 32 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 0, height + 37,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 37,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -13552,7 +13560,7 @@ static void GigaRCTrackLeftLargeHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 3)), { 0, 0, height },
                         { { 0, 0, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 14, height + 8,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 14, height + 8,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -13561,7 +13569,7 @@ static void GigaRCTrackLeftLargeHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 10)),
                         { 0, 0, height }, { { 0, 0, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 14, height + 8,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 14, height + 8,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -13570,7 +13578,7 @@ static void GigaRCTrackLeftLargeHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 17)),
                         { 0, 0, height }, { { 0, 16, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 0, height + 21,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 21,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -13579,7 +13587,7 @@ static void GigaRCTrackLeftLargeHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 24)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 22, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 22, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -13827,7 +13835,7 @@ static void GigaRCTrackRightLargeHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 31)),
                         { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side3, 22, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 22, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -13836,7 +13844,7 @@ static void GigaRCTrackRightLargeHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 38)),
                         { 0, 0, height }, { { 0, 16, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side2, 0, height + 21,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 21,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -13845,7 +13853,7 @@ static void GigaRCTrackRightLargeHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 45)),
                         { 0, 0, height }, { { 0, 0, height + 200 }, { 32, 16, 0 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side0, 14, height + 8,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 14, height + 8,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -13854,7 +13862,7 @@ static void GigaRCTrackRightLargeHalfLoopUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_LARGE_HALF_LOOP + 52)),
                         { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Side1, 14, height + 8,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 14, height + 8,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -14148,7 +14156,7 @@ static void GigaRCTrackDiagFlatTo60DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -14157,17 +14165,17 @@ static void GigaRCTrackDiagFlatTo60DegUp(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 13)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -14231,7 +14239,7 @@ static void GigaRCTrackDiag60DegUpToFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 18, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 18, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -14240,17 +14248,17 @@ static void GigaRCTrackDiag60DegUpToFlat(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 17)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 18, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 18, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 18, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 18, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 18, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 18, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -14314,7 +14322,7 @@ static void GigaRCTrackDiagFlatTo60DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 14, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 14, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -14323,17 +14331,17 @@ static void GigaRCTrackDiagFlatTo60DegDown(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 19)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 14, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 14, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 14, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 14, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 14, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 14, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -14397,7 +14405,7 @@ static void GigaRCTrackDiag60DegDownToFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 2, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 2, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -14406,17 +14414,17 @@ static void GigaRCTrackDiag60DegDownToFlat(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_SMALL_FLAT_TO_STEEP + 15)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 2, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 2, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 2, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 2, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 2, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 2, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -14552,7 +14560,7 @@ static void GigaRCTrackLeftEighthToDiagUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 3)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 2, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 2, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -14561,7 +14569,7 @@ static void GigaRCTrackLeftEighthToDiagUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 7)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 3, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 3, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -14570,7 +14578,7 @@ static void GigaRCTrackLeftEighthToDiagUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 11)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 2, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 2, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -14579,7 +14587,7 @@ static void GigaRCTrackLeftEighthToDiagUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 15)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 1, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 1, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -14717,7 +14725,7 @@ static void GigaRCTrackRightEighthToDiagUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 19)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 1, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 1, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -14726,7 +14734,7 @@ static void GigaRCTrackRightEighthToDiagUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 23)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 2, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 2, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -14735,7 +14743,7 @@ static void GigaRCTrackRightEighthToDiagUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 27)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 3, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 3, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -14744,7 +14752,7 @@ static void GigaRCTrackRightEighthToDiagUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 31)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 2, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 2, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -14772,7 +14780,7 @@ static void GigaRCTrackLeftEighthToOrthogonalUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 32)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 5, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 5, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -14781,7 +14789,7 @@ static void GigaRCTrackLeftEighthToOrthogonalUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 36)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 5, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 5, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -14790,7 +14798,7 @@ static void GigaRCTrackLeftEighthToOrthogonalUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 40)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 3, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 3, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -14799,7 +14807,7 @@ static void GigaRCTrackLeftEighthToOrthogonalUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 44)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -14939,7 +14947,7 @@ static void GigaRCTrackRightEighthToOrthogonalUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 48)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 3, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 3, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -14948,7 +14956,7 @@ static void GigaRCTrackRightEighthToOrthogonalUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 52)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 5, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 5, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -14957,7 +14965,7 @@ static void GigaRCTrackRightEighthToOrthogonalUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 56)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 5, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 5, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -14966,7 +14974,7 @@ static void GigaRCTrackRightEighthToOrthogonalUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE + 60)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -15180,7 +15188,7 @@ static void GigaRCTrackDiagUp25ToLeftBankedUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 5, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 5, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -15189,17 +15197,17 @@ static void GigaRCTrackDiagUp25ToLeftBankedUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 2)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 10, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 10, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 10, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 10, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 10, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 10, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -15267,7 +15275,7 @@ static void GigaRCTrackDiagUp25ToRightBankedUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 10, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 10, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -15276,17 +15284,17 @@ static void GigaRCTrackDiagUp25ToRightBankedUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 6)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 10, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 10, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 5, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 5, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 10, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 10, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -15354,7 +15362,7 @@ static void GigaRCTrackDiagLeftBankedUp25ToUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 5, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 5, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -15363,17 +15371,17 @@ static void GigaRCTrackDiagLeftBankedUp25ToUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 12)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 9, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 9, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 9, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 9, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 9, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 9, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -15441,7 +15449,7 @@ static void GigaRCTrackDiagRightBankedUp25ToUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 9, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 9, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -15450,17 +15458,17 @@ static void GigaRCTrackDiagRightBankedUp25ToUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 16)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 9, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 9, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 5, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 5, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 9, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 9, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -15552,7 +15560,7 @@ static void GigaRCTrackDiagLeftBankedFlatToLeftBankedUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -15561,17 +15569,17 @@ static void GigaRCTrackDiagLeftBankedFlatToLeftBankedUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 21)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -15635,7 +15643,7 @@ static void GigaRCTrackDiagRightBankedFlatToRightBankedUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -15644,17 +15652,17 @@ static void GigaRCTrackDiagRightBankedFlatToRightBankedUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 25)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -15718,7 +15726,7 @@ static void GigaRCTrackDiagLeftBankedUp25ToLeftBankedFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -15727,17 +15735,17 @@ static void GigaRCTrackDiagLeftBankedUp25ToLeftBankedFlat(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 29)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 8, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 8, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 8, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 8, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -15801,7 +15809,7 @@ static void GigaRCTrackDiagRightBankedUp25ToRightBankedFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 8, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 8, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -15810,17 +15818,17 @@ static void GigaRCTrackDiagRightBankedUp25ToRightBankedFlat(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 33)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 8, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 8, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -15914,7 +15922,7 @@ static void GigaRCTrackDiagUp25LeftBanked(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 6, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 6, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -15923,17 +15931,17 @@ static void GigaRCTrackDiagUp25LeftBanked(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 37)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 11, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 11, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 11, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 11, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 11, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 11, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -15997,7 +16005,7 @@ static void GigaRCTrackDiagUp25RightBanked(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 11, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 11, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -16006,17 +16014,17 @@ static void GigaRCTrackDiagUp25RightBanked(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 41)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 11, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 11, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 6, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 6, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 11, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 11, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -16098,7 +16106,7 @@ static void GigaRCTrackDiagFlatToLeftBankedUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -16107,17 +16115,17 @@ static void GigaRCTrackDiagFlatToLeftBankedUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 46)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -16185,7 +16193,7 @@ static void GigaRCTrackDiagFlatToRightBankedUp25(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -16194,17 +16202,17 @@ static void GigaRCTrackDiagFlatToRightBankedUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 50)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 0, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -16272,7 +16280,7 @@ static void GigaRCTrackDiagLeftBankedUp25ToFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -16281,17 +16289,17 @@ static void GigaRCTrackDiagLeftBankedUp25ToFlat(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 56)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 6, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 6, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 6, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 6, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 6, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 6, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -16359,7 +16367,7 @@ static void GigaRCTrackDiagRightBankedUp25ToFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 6, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 6, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -16368,17 +16376,17 @@ static void GigaRCTrackDiagRightBankedUp25ToFlat(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 60)),
                         { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 6, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 6, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 6, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 6, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -16552,7 +16560,7 @@ static void GigaRCTrackLeftEighthBankToDiagUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 67)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 7, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 7, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -16561,7 +16569,7 @@ static void GigaRCTrackLeftEighthBankToDiagUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 71)),
                         { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -16570,7 +16578,7 @@ static void GigaRCTrackLeftEighthBankToDiagUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 75)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 7, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 7, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -16579,7 +16587,7 @@ static void GigaRCTrackLeftEighthBankToDiagUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 79)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 7, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 7, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -16727,7 +16735,7 @@ static void GigaRCTrackRightEighthBankToDiagUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 83)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 7, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 7, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -16736,7 +16744,7 @@ static void GigaRCTrackRightEighthBankToDiagUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 87)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 7, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 7, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -16745,7 +16753,7 @@ static void GigaRCTrackRightEighthBankToDiagUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 91)),
                         { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 4, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -16754,7 +16762,7 @@ static void GigaRCTrackRightEighthBankToDiagUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 95)),
                         { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 7, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 7, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -16782,7 +16790,7 @@ static void GigaRCTrackLeftEighthBankToOrthogonalUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 96)),
                         { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 5, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 5, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -16791,7 +16799,7 @@ static void GigaRCTrackLeftEighthBankToOrthogonalUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 100)),
                         { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 7, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 7, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -16800,7 +16808,7 @@ static void GigaRCTrackLeftEighthBankToOrthogonalUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 104)),
                         { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 9, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 9, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -16809,7 +16817,7 @@ static void GigaRCTrackLeftEighthBankToOrthogonalUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 108)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 7, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 7, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -16957,7 +16965,7 @@ static void GigaRCTrackRightEighthBankToOrthogonalUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 112)),
                         { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner2, 9, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 9, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -16966,7 +16974,7 @@ static void GigaRCTrackRightEighthBankToOrthogonalUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 116)),
                         { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner3, 7, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 7, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -16975,7 +16983,7 @@ static void GigaRCTrackRightEighthBankToOrthogonalUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 120)),
                         { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner1, 5, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 5, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -16984,7 +16992,7 @@ static void GigaRCTrackRightEighthBankToOrthogonalUp25(
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_GIGA_TRACK_GENTLE_LARGE_CURVE_BANKED + 124)),
                         { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, MetalSupportPlace::Corner0, 7, height,
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 7, height,
                         session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
