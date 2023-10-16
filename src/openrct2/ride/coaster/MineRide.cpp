@@ -3407,56 +3407,29 @@ static void MineRideTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
+    PaintAddImageAsParentRotated(
+        session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
+    TrackPaintUtilDrawStationMetalSupports2(
+        session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Fork, 6);
+
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(
-                session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::Fork, MetalSupportPlace::TopLeftSide, 6, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::Fork, MetalSupportPlace::BottomRightSide, 6, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(19338), { 0, 0, height },
                 { { 0, 6, height + 3 }, { 32, 20, 0 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::ForkAlt, MetalSupportPlace::TopRightSide, 6, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomLeftSide, 6, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
-            PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(19339), { 0, 0, height },
                 { { 0, 6, height + 3 }, { 32, 20, 0 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::Fork, MetalSupportPlace::TopLeftSide, 6, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::Fork, MetalSupportPlace::BottomRightSide, 6, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
-            PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(19338), { 0, 0, height },
                 { { 0, 6, height + 3 }, { 32, 20, 0 } });
             break;
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::ForkAlt, MetalSupportPlace::TopRightSide, 6, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
-            MetalASupportsPaintSetup(
-                session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomLeftSide, 6, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(19339), { 0, 0, height },
                 { { 0, 6, height + 3 }, { 32, 20, 0 } });

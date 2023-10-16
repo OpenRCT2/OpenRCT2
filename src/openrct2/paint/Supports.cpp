@@ -1539,3 +1539,19 @@ bool PathBSupportsPaintSetup(
 
     return false; // AND
 }
+
+MetalSupportType RotatedMetalSupports[MetalSupportTypeCount][2] = {
+    { MetalSupportType::Tubes, MetalSupportType::Tubes },
+    { MetalSupportType::Fork, MetalSupportType::ForkAlt },
+    { MetalSupportType::ForkAlt, MetalSupportType::Fork },
+    { MetalSupportType::Boxed, MetalSupportType::Boxed },
+    { MetalSupportType::Stick, MetalSupportType::StickAlt },
+    { MetalSupportType::StickAlt, MetalSupportType::Stick },
+    { MetalSupportType::ThickCentred, MetalSupportType::ThickAltCentred },
+    { MetalSupportType::Thick, MetalSupportType::ThickAlt },
+    { MetalSupportType::ThickAlt, MetalSupportType::Thick },
+    { MetalSupportType::ThickAltCentred, MetalSupportType::ThickCentred },
+    { MetalSupportType::Truss, MetalSupportType::Truss },
+    { MetalSupportType::TubesInverted, MetalSupportType::TubesInverted },
+    { MetalSupportType::BoxedCoated, MetalSupportType::BoxedCoated },
+};

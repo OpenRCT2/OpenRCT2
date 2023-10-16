@@ -199,13 +199,6 @@ static void PaintMonorailCyclesStation(
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprMonorailCyclesFlatSwNe);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 20, 1 } });
-
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Boxed, MetalSupportPlace::TopLeftSide, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Boxed, MetalSupportPlace::BottomRightSide, 0, height,
-            session.TrackColours[SCHEME_SUPPORTS]);
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
     else if (direction == 1 || direction == 3)
     {
@@ -214,15 +207,11 @@ static void PaintMonorailCyclesStation(
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprMonorailCyclesFlatNwSe);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 20, 32, 1 } });
-
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Boxed, MetalSupportPlace::TopRightSide, 0, height,
-            session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Boxed, MetalSupportPlace::BottomLeftSide, 0, height,
-            session.TrackColours[SCHEME_SUPPORTS]);
-        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
+
+    TrackPaintUtilDrawStationMetalSupports2(
+        session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Boxed);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 

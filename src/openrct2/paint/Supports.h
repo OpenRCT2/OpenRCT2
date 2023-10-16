@@ -93,6 +93,13 @@ enum class MetalSupportType : uint8_t
      */
     BoxedCoated,
 };
+constexpr uint8_t MetalSupportTypeCount = 13;
+
+/**
+ * Each pair corresponds with a type of metal support. The first entry is for even rotations (0 and 2),
+ * the second entry is for odd rotations (1 and 3).
+ */
+extern MetalSupportType RotatedMetalSupports[MetalSupportTypeCount][2];
 
 /**
  * Tiles are rendered at a 45 degree angle, with the corners on the top, bottom, left and right.

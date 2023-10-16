@@ -405,10 +405,8 @@ static void DinghySlideTrackStation(
         session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][1]), { 0, 0, height },
         { 32, 32, 1 });
 
-    const auto support1Place = (direction & 1) ? MetalSupportPlace::TopRightSide : MetalSupportPlace::TopLeftSide;
-    const auto support2Place = (direction & 1) ? MetalSupportPlace::BottomLeftSide : MetalSupportPlace::BottomRightSide;
-    MetalASupportsPaintSetup(session, MetalSupportType::Tubes, support1Place, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-    MetalASupportsPaintSetup(session, MetalSupportType::Tubes, support2Place, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    TrackPaintUtilDrawStationMetalSupports2(
+        session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Tubes);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 

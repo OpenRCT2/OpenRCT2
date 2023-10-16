@@ -949,17 +949,19 @@ void TrackPaintUtilDrawStationMetalSupports(PaintSession& session, Direction dir
 }
 
 void TrackPaintUtilDrawStationMetalSupports2(
-    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type)
+    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special)
 {
     if (direction & 1)
     {
-        MetalASupportsPaintSetup(session, type, MetalSupportPlace::TopRightSide, 0, height, colour);
-        MetalASupportsPaintSetup(session, type, MetalSupportPlace::BottomLeftSide, 0, height, colour);
+        type = RotatedMetalSupports[EnumValue(type)][1];
+
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::TopRightSide, special, height, colour);
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::BottomLeftSide, special, height, colour);
     }
     else
     {
-        MetalASupportsPaintSetup(session, type, MetalSupportPlace::TopLeftSide, 0, height, colour);
-        MetalASupportsPaintSetup(session, type, MetalSupportPlace::BottomRightSide, 0, height, colour);
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::TopLeftSide, special, height, colour);
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::BottomRightSide, special, height, colour);
     }
 }
 
