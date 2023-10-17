@@ -94,6 +94,18 @@ enum class MetalSupportType : uint8_t
     BoxedCoated,
 };
 
+/**
+ * Tiles are rendered at a 45 degree angle, with the corners on the top, bottom, left and right.
+ * This enum controls where the supports are rendered on the screen.
+ *
+ * The tile is divided into nine parts:
+ *
+ *        0
+ *    5       6
+ * 1      4      2
+ *    7       8
+ *        3
+ */
 enum class MetalSupportPlace : uint8_t
 {
     TopCorner = 0,
