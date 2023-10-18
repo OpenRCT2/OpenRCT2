@@ -94,6 +94,31 @@ enum class MetalSupportType : uint8_t
     BoxedCoated,
 };
 
+/**
+ * Tiles are rendered at a 45 degree angle, with the corners on the top, bottom, left and right.
+ * This enum controls where the supports are rendered on the screen.
+ *
+ * The tile is divided into nine parts:
+ *
+ *        0
+ *    5       6
+ * 1      4      2
+ *    7       8
+ *        3
+ */
+enum class MetalSupportPlace : uint8_t
+{
+    TopCorner = 0,
+    LeftCorner = 1,
+    RightCorner = 2,
+    BottomCorner = 3,
+    Centre = 4,
+    TopLeftSide = 5,
+    TopRightSide = 6,
+    BottomLeftSide = 7,
+    BottomRightSide = 8,
+};
+
 bool WoodenASupportsPaintSetup(
     PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
 bool WoodenASupportsPaintSetup(
@@ -111,10 +136,10 @@ bool WoodenBSupportsPaintSetupRotated(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, Direction direction, int32_t height,
     ImageId imageTemplate, WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None);
 bool MetalASupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportTypeMember, uint8_t segment, int32_t special, int32_t height,
+    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate);
 bool MetalBSupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportTypeMember, uint8_t segment, int32_t special, int32_t height,
+    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate);
 bool PathASupportsPaintSetup(
     PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,

@@ -38,14 +38,17 @@ static void SteeplechaseTrackFlat(
             case 2:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28635), { 0, 6, height }, { 32, 20, 3 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
             case 3:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28636), { 0, 6, height }, { 32, 20, 3 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -57,14 +60,17 @@ static void SteeplechaseTrackFlat(
             case 2:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28633), { 0, 6, height }, { 32, 20, 3 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
             case 3:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28634), { 0, 6, height }, { 32, 20, 3 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -111,24 +117,30 @@ static void SteeplechaseTrack25DegUp(
             case 0:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28649), { 0, 6, height }, { 32, 20, 3 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28655), { 0, 6, height }, { 32, 20, 3 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28651), { 0, 6, height }, { 32, 20, 3 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28656), { 0, 6, height }, { 32, 20, 3 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -139,24 +151,30 @@ static void SteeplechaseTrack25DegUp(
             case 0:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28637), { 0, 6, height }, { 32, 20, 3 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28643), { 0, 6, height }, { 32, 20, 3 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28639), { 0, 6, height }, { 32, 20, 3 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28644), { 0, 6, height }, { 32, 20, 3 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -185,24 +203,30 @@ static void SteeplechaseTrackFlatTo25DegUp(
             case 0:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28650), { 0, 6, height }, { 32, 20, 3 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 3, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28657), { 0, 6, height }, { 32, 20, 3 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 2, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28652), { 0, 6, height }, { 32, 20, 3 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 2, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28658), { 0, 6, height }, { 32, 20, 3 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 2, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -213,24 +237,30 @@ static void SteeplechaseTrackFlatTo25DegUp(
             case 0:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28638), { 0, 6, height }, { 32, 20, 3 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 3, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28645), { 0, 6, height }, { 32, 20, 3 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 2, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28640), { 0, 6, height }, { 32, 20, 3 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 2, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28646), { 0, 6, height }, { 32, 20, 3 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 2, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -259,24 +289,30 @@ static void SteeplechaseTrack25DegUpToFlat(
             case 0:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28654), { 0, 6, height }, { 32, 20, 3 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 6, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28660), { 0, 6, height }, { 32, 20, 3 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 6, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28653), { 0, 6, height }, { 32, 20, 3 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 5, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28659), { 0, 6, height }, { 32, 20, 3 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 5, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -287,24 +323,30 @@ static void SteeplechaseTrack25DegUpToFlat(
             case 0:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28642), { 0, 6, height }, { 32, 20, 3 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 6, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28648), { 0, 6, height }, { 32, 20, 3 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 6, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28641), { 0, 6, height }, { 32, 20, 3 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 5, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28647), { 0, 6, height }, { 32, 20, 3 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 5, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -360,28 +402,32 @@ static void SteeplechaseTrackLeftQuarterTurn5(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28698), { 0, 6, height },
                         { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 1, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28703), { 0, 6, height },
                         { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 1, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28708), { 0, 6, height },
                         { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 0, height - 3, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height - 3,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28693), { 0, 6, height },
                         { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 0, height - 1, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height - 1,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -494,28 +540,32 @@ static void SteeplechaseTrackLeftQuarterTurn5(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28694), { 6, 0, height },
                         { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 0, height - 3, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height - 3,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28699), { 6, 0, height },
                         { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28704), { 6, 0, height },
                         { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 1, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28689), { 6, 0, height },
                         { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 0, height - 2, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height - 2,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             switch (direction)
@@ -558,28 +608,32 @@ static void SteeplechaseTrackSBendLeft(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28665), { 0, 6, height },
                         { 33, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28672), { 0, 6, height },
                         { 33, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28668), { 0, 6, height },
                         { 33, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28669), { 0, 6, height },
                         { 33, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 0, height - 2, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height - 2,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -598,14 +652,16 @@ static void SteeplechaseTrackSBendLeft(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28666), { 0, 0, height },
                         { 33, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::TopLeftSide, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28671), { 0, 0, height },
                         { 33, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::TopRightSide, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -642,14 +698,16 @@ static void SteeplechaseTrackSBendLeft(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28666), { 0, 0, height },
                         { 33, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::TopLeftSide, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28671), { 0, 0, height },
                         { 33, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::TopRightSide, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -666,28 +724,32 @@ static void SteeplechaseTrackSBendLeft(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28668), { 0, 6, height },
                         { 33, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28669), { 0, 6, height },
                         { 33, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 0, height - 2, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height - 2,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28665), { 0, 6, height },
                         { 33, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28672), { 0, 6, height },
                         { 33, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             switch (direction)
@@ -721,28 +783,32 @@ static void SteeplechaseTrackSBendRight(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28661), { 0, 6, height },
                         { 33, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28676), { 0, 6, height },
                         { 33, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28664), { 0, 6, height },
                         { 33, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28673), { 0, 6, height },
                         { 33, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -761,14 +827,16 @@ static void SteeplechaseTrackSBendRight(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28662), { 0, 6, height },
                         { 33, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 8, 0, height - 2, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::BottomRightSide, 0, height - 2,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28675), { 0, 6, height },
                         { 33, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::BottomLeftSide, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -805,14 +873,16 @@ static void SteeplechaseTrackSBendRight(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28662), { 0, 6, height },
                         { 33, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 8, 0, height - 2, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::BottomRightSide, 0, height - 2,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28675), { 0, 6, height },
                         { 33, 26, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::BottomLeftSide, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -829,28 +899,32 @@ static void SteeplechaseTrackSBendRight(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28664), { 0, 6, height },
                         { 33, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28673), { 0, 6, height },
                         { 33, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28661), { 0, 6, height },
                         { 33, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28676), { 0, 6, height },
                         { 33, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             switch (direction)
@@ -884,28 +958,32 @@ static void SteeplechaseTrackLeftQuarterTurn3(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28682), { 0, 6, height },
                         { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 3, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28685), { 0, 6, height },
                         { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 1, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28688), { 0, 6, height },
                         { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28679), { 0, 6, height },
                         { 32, 20, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 0, height - 3, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height - 3,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -955,28 +1033,32 @@ static void SteeplechaseTrackLeftQuarterTurn3(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28680), { 6, 0, height },
                         { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28683), { 6, 0, height },
                         { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 1, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28686), { 6, 0, height },
                         { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 3, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28677), { 6, 0, height },
                         { 20, 32, 3 });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 0, height - 3, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height - 3,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             switch (direction)
@@ -1015,13 +1097,16 @@ static void SteeplechaseTrackBrakes(
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28635), { 0, 6, height }, { 32, 20, 3 });
-            MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28636), { 0, 6, height }, { 32, 20, 3 });
-            MetalASupportsPaintSetup(session, MetalSupportType::StickAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -1045,28 +1130,32 @@ static void SteeplechaseTrackLeftEighthToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28725), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28729), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28733), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28737), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -1149,28 +1238,32 @@ static void SteeplechaseTrackLeftEighthToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28728), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::BottomCorner, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28732), { 0, 0, height },
                         { { 0, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::LeftCorner, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28736), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::TopCorner, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28740), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::RightCorner, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1197,28 +1290,32 @@ static void SteeplechaseTrackRightEighthToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28709), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28713), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28717), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28721), { 0, 0, height },
                         { { 0, 6, height }, { 32, 20, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             if (direction == 0 || direction == 3)
@@ -1301,28 +1398,32 @@ static void SteeplechaseTrackRightEighthToDiag(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28712), { 0, 0, height },
                         { { 16, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::LeftCorner, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28716), { 0, 0, height },
                         { { 0, 0, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::TopCorner, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28720), { 0, 0, height },
                         { { 0, 16, height }, { 16, 18, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Stick, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Stick, MetalSupportPlace::RightCorner, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28724), { 0, 0, height },
                         { { 16, 16, height }, { 16, 16, 3 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::StickAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::StickAlt, MetalSupportPlace::BottomCorner, 0, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(
@@ -1447,22 +1548,26 @@ static void SteeplechaseTrackDiagFlat(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Stick, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28758), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Stick, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -1472,22 +1577,26 @@ static void SteeplechaseTrackDiagFlat(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Stick, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28742), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Stick, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -1509,7 +1618,8 @@ static void SteeplechaseTrackDiagBrakes(
     if (trackSequence == 3)
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::Stick, DiagSupportSegments[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, MetalSupportType::Stick, DiagSupportPlacement[direction], 0, height,
+            session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     int32_t blockedSegments = DiagBlockedSegments[trackSequence];
@@ -1612,22 +1722,26 @@ static void SteeplechaseTrackDiag25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::LeftCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28770), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::TopCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::RightCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::BottomCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -1637,22 +1751,26 @@ static void SteeplechaseTrackDiag25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::LeftCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28754), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::TopCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::RightCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::BottomCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -1758,22 +1876,26 @@ static void SteeplechaseTrackDiagFlatTo25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28762), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -1783,22 +1905,26 @@ static void SteeplechaseTrackDiagFlatTo25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28746), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -1904,22 +2030,26 @@ static void SteeplechaseTrackDiag25DegUpToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::LeftCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28766), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::TopCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::RightCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::BottomCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -1929,22 +2059,26 @@ static void SteeplechaseTrackDiag25DegUpToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::LeftCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28750), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::TopCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::RightCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::BottomCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2050,22 +2184,26 @@ static void SteeplechaseTrackDiag25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::LeftCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28772), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::TopCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::RightCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::BottomCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2075,22 +2213,26 @@ static void SteeplechaseTrackDiag25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::LeftCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28756), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::TopCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::RightCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::BottomCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2193,22 +2335,26 @@ static void SteeplechaseTrackDiagFlatTo25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::LeftCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28768), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::TopCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::RightCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::BottomCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2218,22 +2364,26 @@ static void SteeplechaseTrackDiagFlatTo25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::LeftCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28752), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::TopCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::RightCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::BottomCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2340,22 +2490,26 @@ static void SteeplechaseTrackDiag25DegDownToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28764), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2365,22 +2519,26 @@ static void SteeplechaseTrackDiag25DegDownToFlat(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28748), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Stick, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Stick, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::StickAlt, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::StickAlt, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -2402,13 +2560,16 @@ static void SteeplechaseTrackBlockBrakes(
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28635), { 0, 6, height }, { 32, 20, 3 });
-            MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(28636), { 0, 6, height }, { 32, 20, 3 });
-            MetalASupportsPaintSetup(session, MetalSupportType::StickAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
