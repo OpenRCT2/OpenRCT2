@@ -7666,10 +7666,8 @@ static void FlyingRCTrackOnRidePhoto(
 {
     if (!trackElement.IsInverted())
     {
-        PaintAddImageAsParentRotated(
-            session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-        TrackPaintUtilDrawStationMetalSupports(
-            session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::TubesInverted);
+        TrackPaintUtilOnridePhotoPlatformPaint(session, direction, height, MetalSupportType::TubesInverted);
+
         switch (direction)
         {
             case 0:
@@ -7700,10 +7698,8 @@ static void FlyingRCTrackOnRidePhoto(
     }
     else
     {
-        PaintAddImageAsParentRotated(
-            session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-        TrackPaintUtilDrawStationMetalSupports(
-            session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::TubesInverted);
+        TrackPaintUtilOnridePhotoPlatformPaint(session, direction, height, MetalSupportType::TubesInverted);
+
         switch (direction)
         {
             case 0:

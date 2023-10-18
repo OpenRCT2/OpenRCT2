@@ -2060,6 +2060,13 @@ void TrackPaintUtilSpinningTunnelPaint(PaintSession& session, int8_t thickness, 
     }
 }
 
+void TrackPaintUtilOnridePhotoPlatformPaint(
+    PaintSession& session, Direction direction, int32_t height, MetalSupportType supportType)
+{
+    PaintAddImageAsParent(session, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
+    TrackPaintUtilDrawStationMetalSupports(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], supportType);
+}
+
 void TrackPaintUtilOnridePhotoSmallPaint(
     PaintSession& session, Direction direction, int32_t height, const TrackElement& trackElement)
 {
