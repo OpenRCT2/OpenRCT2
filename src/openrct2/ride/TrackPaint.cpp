@@ -951,10 +951,10 @@ void TrackPaintUtilDrawStationMetalSupports(PaintSession& session, Direction dir
 void TrackPaintUtilDrawStationMetalSupports2(
     PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special)
 {
+    type = RotatedMetalSupports[EnumValue(type)][direction];
+
     if (direction & 1)
     {
-        type = RotatedMetalSupports[EnumValue(type)][1];
-
         MetalASupportsPaintSetup(session, type, MetalSupportPlace::TopRightSide, special, height, colour);
         MetalASupportsPaintSetup(session, type, MetalSupportPlace::BottomLeftSide, special, height, colour);
     }
