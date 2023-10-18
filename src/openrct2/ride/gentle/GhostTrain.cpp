@@ -392,7 +392,7 @@ static void PaintGhostTrainStation(
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
-    TrackPaintUtilDrawStationMetalSupports2(
+    TrackPaintUtilDrawStationMetalSupports(
         session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Boxed);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);

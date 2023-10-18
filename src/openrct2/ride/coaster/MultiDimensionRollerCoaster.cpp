@@ -196,7 +196,7 @@ static void MultiDimensionRCTrackStation(
             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 0, height },
             { { 0, 3, height + 3 }, { 32, 26, 1 } });
     }
-    TrackPaintUtilDrawStationMetalSupports2(
+    TrackPaintUtilDrawStationMetalSupports(
         session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::TubesInverted);
 
     const auto* stationObj = ride.GetStationObject();
@@ -5214,7 +5214,7 @@ static void MultiDimensionRCTrackOnRidePhoto(
     {
         PaintAddImageAsParentRotated(
             session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-        TrackPaintUtilDrawStationMetalSupports2(
+        TrackPaintUtilDrawStationMetalSupports(
             session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::TubesInverted);
 
         switch (direction)

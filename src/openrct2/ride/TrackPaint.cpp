@@ -943,12 +943,7 @@ void TrackPaintUtilDrawPier(
     }
 }
 
-void TrackPaintUtilDrawStationMetalSupports(PaintSession& session, Direction direction, uint16_t height, ImageId colour)
-{
-    TrackPaintUtilDrawStationMetalSupports2(session, direction, height, colour, MetalSupportType::Boxed);
-}
-
-void TrackPaintUtilDrawStationMetalSupports2(
+void TrackPaintUtilDrawStationMetalSupports(
     PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special)
 {
     type = RotatedMetalSupports[EnumValue(type)][direction];

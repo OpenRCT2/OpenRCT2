@@ -102,7 +102,7 @@ static void InvertedHairpinRCTrackStation(
     PaintAddImageAsChildRotated(
         session, direction, session.TrackColours[SCHEME_SUPPORTS].WithIndex(imageIds[direction][2]), { 0, 6, height + 24 },
         { { 0, 6, height + 24 }, { 32, 20, 1 } });
-    TrackPaintUtilDrawStationMetalSupports2(
+    TrackPaintUtilDrawStationMetalSupports(
         session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::TubesInverted);
     TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_1);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);

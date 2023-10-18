@@ -131,7 +131,7 @@ static void BolligerMabillardTrackStation(
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][1]), { 0, 0, height },
         { 32, 32, 1 });
-    TrackPaintUtilDrawStationMetalSupports2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], supportType);
+    TrackPaintUtilDrawStationMetalSupports(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], supportType);
 
     TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 9, trackElement);
 
@@ -4745,7 +4745,7 @@ static void BolligerMabillardTrackOnRidePhoto(
 {
     PaintAddImageAsParentRotated(
         session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-    TrackPaintUtilDrawStationMetalSupports2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], supportType);
+    TrackPaintUtilDrawStationMetalSupports(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], supportType);
 
     switch (direction)
     {

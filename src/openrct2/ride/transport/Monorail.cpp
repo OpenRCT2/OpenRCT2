@@ -462,7 +462,7 @@ static void PaintMonorailStation(
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    TrackPaintUtilDrawStationMetalSupports2(
+    TrackPaintUtilDrawStationMetalSupports(
         session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Boxed);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);

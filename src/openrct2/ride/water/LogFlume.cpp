@@ -200,7 +200,7 @@ static void PaintLogFlumeTrackStation(
     }
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
 
-    TrackPaintUtilDrawStationMetalSupports2(
+    TrackPaintUtilDrawStationMetalSupports(
         session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Boxed);
 
     TrackPaintUtilDrawStation3(session, ride, direction, height + 2, height, trackElement);
@@ -812,7 +812,7 @@ static void PaintLogFlumeTrackOnRidePhoto(
 {
     PaintAddImageAsParent(session, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
 
-    TrackPaintUtilDrawStationMetalSupports2(
+    TrackPaintUtilDrawStationMetalSupports(
         session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Boxed);
 
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(LogFlumeTrackFlatImageIds[direction][0]);
