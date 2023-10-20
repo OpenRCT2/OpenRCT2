@@ -357,6 +357,11 @@ static void FixGuestsHeadingToParkCount()
         }
     }
 
+    if (gNumGuestsHeadingForPark != guestsHeadingToPark)
+    {
+        LOG_WARNING("Corrected bad amount of guests heading to park: %u -> %u", gNumGuestsHeadingForPark, guestsHeadingToPark);
+    }
+
     gNumGuestsHeadingForPark = guestsHeadingToPark;
 }
 
@@ -371,6 +376,11 @@ static void FixGuestCount()
         {
             guestCount++;
         }
+    }
+
+    if (gNumGuestsInPark != guestCount)
+    {
+        LOG_WARNING("Corrected bad amount of guests in park: %u -> %u", gNumGuestsInPark, guestCount);
     }
 
     gNumGuestsInPark = guestCount;
