@@ -364,13 +364,12 @@ static void FixGuestCount()
 {
     // Recalculates peep count after loading a save to fix corrupted files
     uint32_t guestCount = 0;
+
+    for (auto guest : EntityList<Guest>())
     {
-        for (auto guest : EntityList<Guest>())
+        if (!guest->OutsideOfPark)
         {
-            if (!guest->OutsideOfPark)
-            {
-                guestCount++;
-            }
+            guestCount++;
         }
     }
 
