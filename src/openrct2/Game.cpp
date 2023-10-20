@@ -345,6 +345,21 @@ void RCT2StringToUTF8Self(char* buffer, size_t length)
     }
 }
 
+static void FixGuestsHeadingToParkCount()
+{
+    uint32_t guestsHeadingToPark = 0;
+
+    for (auto* peep : EntityList<Guest>())
+    {
+        if (peep->OutsideOfPark && peep->State != PeepState::LeavingPark)
+        {
+            guestsHeadingToPark++;
+        }
+    }
+
+    gNumGuestsHeadingForPark = guestsHeadingToPark;
+}
+
 static void FixGuestCount()
 {
     // Recalculates peep count after loading a save to fix corrupted files
@@ -454,6 +469,8 @@ static void FixInvalidSurfaces()
 // For example recalculate guest count by looking at all the guests instead of trusting the value in the file.
 void GameFixSaveVars()
 {
+    FixGuestsHeadingToParkCount();
+
     FixGuestCount();
 
     FixPeepsWithInvalidRideReference();
