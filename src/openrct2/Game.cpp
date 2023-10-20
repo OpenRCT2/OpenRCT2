@@ -345,9 +345,7 @@ void RCT2StringToUTF8Self(char* buffer, size_t length)
     }
 }
 
-// OpenRCT2 workaround to recalculate some values which are saved redundantly in the save to fix corrupted files.
-// For example recalculate guest count by looking at all the guests instead of trusting the value in the file.
-void GameFixSaveVars()
+static void FixGuestCount()
 {
     // Recalculates peep count after loading a save to fix corrupted files
     uint32_t guestCount = 0;
@@ -362,7 +360,10 @@ void GameFixSaveVars()
     }
 
     gNumGuestsInPark = guestCount;
+}
 
+static void FixPeepsWithInvalidRideReference()
+{
     // Peeps to remove have to be cached here, as removing them from within the loop breaks iteration
     std::vector<Peep*> peepsToRemove;
 
@@ -412,9 +413,13 @@ void GameFixSaveVars()
     {
         ptr->Remove();
     }
+}
 
+static void FixInvalidSurfaces()
+{
     // Fixes broken saves where a surface element could be null
     // and broken saves with incorrect invisible map border tiles
+
     for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
@@ -443,6 +448,17 @@ void GameFixSaveVars()
             }
         }
     }
+}
+
+// OpenRCT2 workaround to recalculate some values which are saved redundantly in the save to fix corrupted files.
+// For example recalculate guest count by looking at all the guests instead of trusting the value in the file.
+void GameFixSaveVars()
+{
+    FixGuestCount();
+
+    FixPeepsWithInvalidRideReference();
+
+    FixInvalidSurfaces();
 
     ResearchFix();
 
