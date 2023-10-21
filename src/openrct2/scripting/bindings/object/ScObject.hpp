@@ -11,6 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
+#    include "../../../core/EnumMap.hpp"
 #    include "../../../Context.h"
 #    include "../../../common.h"
 #    include "../../../object/ObjectManager.h"
@@ -20,6 +21,7 @@
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
 #    include "ScInstalledObject.hpp"
+#    include "../../../ride/RideData.h"
 
 #    include <memory>
 #    include <optional>
@@ -509,6 +511,52 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    const static EnumMap<RatingsModifierType> RatingsModifierTypeToName{
+        { "NoModifier", RatingsModifierType::NoModifier },
+        { "BonusLength", RatingsModifierType::BonusLength },
+        { "BonusSynchronisation", RatingsModifierType::BonusSynchronisation },
+        { "BonusTrainLength", RatingsModifierType::BonusTrainLength },
+        { "BonusMaxSpeed", RatingsModifierType::BonusMaxSpeed },
+        { "BonusAverageSpeed", RatingsModifierType::BonusAverageSpeed },
+        { "BonusDuration", RatingsModifierType::BonusDuration },
+        { "BonusGForces", RatingsModifierType::BonusGForces },
+        { "BonusTurns", RatingsModifierType::BonusTurns },
+        { "BonusDrops", RatingsModifierType::BonusDrops },
+        { "BonusSheltered", RatingsModifierType::BonusSheltered },
+        { "BonusProximity", RatingsModifierType::BonusProximity },
+        { "BonusScenery", RatingsModifierType::BonusScenery },
+        { "BonusRotations", RatingsModifierType::BonusRotations },
+        { "BonusOperationOption", RatingsModifierType::BonusOperationOption },
+        { "BonusReversedTrains", RatingsModifierType::BonusReversedTrains },
+        { "BonusGoKartRace", RatingsModifierType::BonusGoKartRace },
+        { "BonusTowerRide", RatingsModifierType::BonusTowerRide },
+        { "BonusRotoDrop", RatingsModifierType::BonusRotoDrop },
+        { "BonusMazeSize", RatingsModifierType::BonusMazeSize },
+        { "BonusBoatHireNoCircuit", RatingsModifierType::BonusBoatHireNoCircuit },
+        { "BonusSlideUnlimitedRides", RatingsModifierType::BonusSlideUnlimitedRides },
+        { "BonusMotionSimulatorMode", RatingsModifierType::BonusMotionSimulatorMode },
+        { "Bonus3DCinemaMode", RatingsModifierType::Bonus3DCinemaMode },
+        { "BonusTopSpinMode", RatingsModifierType::BonusTopSpinMode },
+        { "BonusReversals", RatingsModifierType::BonusReversals },
+        { "BonusHoles", RatingsModifierType::BonusHoles },
+        { "BonusNumTrains", RatingsModifierType::BonusNumTrains },
+        { "BonusDownwardLaunch", RatingsModifierType::BonusDownwardLaunch },
+        { "BonusLaunchedFreefallSpecial", RatingsModifierType::BonusLaunchedFreefallSpecial },
+        { "RequirementLength", RatingsModifierType::RequirementLength },
+        { "RequirementDropHeight", RatingsModifierType::RequirementDropHeight },
+        { "RequirementNumDrops", RatingsModifierType::RequirementNumDrops },
+        { "RequirementMaxSpeed", RatingsModifierType::RequirementMaxSpeed },
+        { "RequirementNegativeGs", RatingsModifierType::RequirementNegativeGs },
+        { "RequirementLateralGs", RatingsModifierType::RequirementLateralGs },
+        { "RequirementInversions", RatingsModifierType::RequirementInversions },
+        { "RequirementUnsheltered", RatingsModifierType::RequirementUnsheltered },
+        { "RequirementReversals", RatingsModifierType::RequirementReversals },
+        { "RequirementHoles", RatingsModifierType::RequirementHoles },
+        { "RequirementStations", RatingsModifierType::RequirementStations },
+        { "RequirementSplashdown", RatingsModifierType::RequirementSplashdown },
+        { "PenaltyLateralGs", RatingsModifierType::PenaltyLateralGs },
+    };
+
     class ScRideObject : public ScObject
     {
     public:
@@ -542,6 +590,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScRideObject::maxHeight_get, nullptr, "maxHeight");
             dukglue_register_property(ctx, &ScRideObject::shopItem_get, nullptr, "shopItem");
             dukglue_register_property(ctx, &ScRideObject::shopItemSecondary_get, nullptr, "shopItemSecondary");
+            dukglue_register_property(ctx, &ScRideObject::ratingsModifiers_get, nullptr, "ratingsModifiers");
         }
 
     private:
@@ -771,6 +820,22 @@ namespace OpenRCT2::Scripting
                 return EnumValue(entry->shop_item[1]);
             }
             return 0;
+        }
+
+       std::vector<std::string> ratingsModifiers_get() const
+        {
+
+            std::vector<std::string> ratingsModifiersNames;
+            auto entry = GetObject();
+            if (entry != nullptr)
+            {
+                for (auto& modifier : entry->GetRatingsDescriptor().Modifiers)
+                {
+                    auto typeStr = RatingsModifierTypeToName.find(modifier.Type)->first;
+                    ratingsModifiersNames.push_back(std::string{typeStr});
+                }
+            }
+            return ratingsModifiersNames;
         }
 
     protected:
