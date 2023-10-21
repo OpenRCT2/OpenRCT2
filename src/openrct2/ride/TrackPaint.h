@@ -314,8 +314,6 @@ bool TrackPaintUtilShouldPaintSupports(const CoordsXY& position);
 void TrackPaintUtilDrawPier(
     PaintSession& session, const Ride& ride, const StationObject* stationObject, const CoordsXY& position, Direction direction,
     int32_t height, const TrackElement& trackElement, uint8_t rotation);
-void TrackPaintUtilDrawStationMetalSupports(
-    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special = 0);
 
 void TrackPaintUtilRightQuarterTurn5TilesPaint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,

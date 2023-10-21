@@ -943,23 +943,6 @@ void TrackPaintUtilDrawPier(
     }
 }
 
-void TrackPaintUtilDrawStationMetalSupports(
-    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special)
-{
-    type = RotatedMetalSupports[EnumValue(type)][direction];
-
-    if (direction & 1)
-    {
-        MetalASupportsPaintSetup(session, type, MetalSupportPlace::TopRightSide, special, height, colour);
-        MetalASupportsPaintSetup(session, type, MetalSupportPlace::BottomLeftSide, special, height, colour);
-    }
-    else
-    {
-        MetalASupportsPaintSetup(session, type, MetalSupportPlace::TopLeftSide, special, height, colour);
-        MetalASupportsPaintSetup(session, type, MetalSupportPlace::BottomRightSide, special, height, colour);
-    }
-}
-
 constexpr CoordsXY defaultRightHelixUpSmallQuarterBoundLengths[4][3][2] = {
     {
         { { 32, 20 }, { 0, 0 } },
@@ -2064,7 +2047,7 @@ void TrackPaintUtilOnridePhotoPlatformPaint(
     PaintSession& session, Direction direction, int32_t height, MetalSupportType supportType)
 {
     PaintAddImageAsParent(session, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-    TrackPaintUtilDrawStationMetalSupports(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], supportType);
+    DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], supportType);
 }
 
 void TrackPaintUtilOnridePhotoSmallPaint(

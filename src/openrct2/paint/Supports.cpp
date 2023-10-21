@@ -1540,7 +1540,7 @@ bool PathBSupportsPaintSetup(
     return false; // AND
 }
 
-MetalSupportType RotatedMetalSupports[MetalSupportTypeCount][NumOrthogonalDirections] = {
+constexpr MetalSupportType RotatedMetalSupports[MetalSupportTypeCount][NumOrthogonalDirections] = {
     { MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes },
     { MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt },
     { MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork },
@@ -1557,3 +1557,20 @@ MetalSupportType RotatedMetalSupports[MetalSupportTypeCount][NumOrthogonalDirect
     { MetalSupportType::BoxedCoated, MetalSupportType::BoxedCoated, MetalSupportType::BoxedCoated,
       MetalSupportType::BoxedCoated },
 };
+
+void DrawSupportsSideBySide(
+    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special)
+{
+    type = RotatedMetalSupports[EnumValue(type)][direction];
+
+    if (direction & 1)
+    {
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::TopRightSide, special, height, colour);
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::BottomLeftSide, special, height, colour);
+    }
+    else
+    {
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::TopLeftSide, special, height, colour);
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::BottomRightSide, special, height, colour);
+    }
+}

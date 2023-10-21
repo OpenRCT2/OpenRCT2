@@ -200,8 +200,7 @@ static void PaintLogFlumeTrackStation(
     }
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
 
-    TrackPaintUtilDrawStationMetalSupports(
-        session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Boxed);
+    DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Boxed);
 
     TrackPaintUtilDrawStation3(session, ride, direction, height + 2, height, trackElement);
     // Covers shouldn't be offset by +2

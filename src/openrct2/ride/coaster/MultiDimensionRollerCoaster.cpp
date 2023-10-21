@@ -196,8 +196,7 @@ static void MultiDimensionRCTrackStation(
             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 0, height },
             { { 0, 3, height + 3 }, { 32, 26, 1 } });
     }
-    TrackPaintUtilDrawStationMetalSupports(
-        session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::TubesInverted);
+    DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::TubesInverted);
 
     const auto* stationObj = ride.GetStationObject();
     bool hasFence;

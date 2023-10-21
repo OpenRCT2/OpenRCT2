@@ -40,8 +40,7 @@ static void PaintMiniHelicoptersTrackStation(
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 20, 32, 1 } });
     }
 
-    TrackPaintUtilDrawStationMetalSupports(
-        session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Boxed);
+    DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Boxed);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);

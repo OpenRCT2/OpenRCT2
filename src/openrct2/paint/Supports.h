@@ -95,8 +95,6 @@ enum class MetalSupportType : uint8_t
 };
 constexpr uint8_t MetalSupportTypeCount = 13;
 
-extern MetalSupportType RotatedMetalSupports[MetalSupportTypeCount][NumOrthogonalDirections];
-
 /**
  * Tiles are rendered at a 45 degree angle, with the corners on the top, bottom, left and right.
  * This enum controls where the supports are rendered on the screen.
@@ -150,6 +148,8 @@ bool PathASupportsPaintSetup(
 bool PathBSupportsPaintSetup(
     PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo);
+void DrawSupportsSideBySide(
+    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special = 0);
 
 enum
 {

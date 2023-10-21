@@ -1911,8 +1911,7 @@ void JuniorRCPaintStation(
         PaintAddImageAsChild(session, imageId, { 6, 0, height }, { { 0, 0, height }, { 20, 32, 1 } });
     }
 
-    TrackPaintUtilDrawStationMetalSupports(
-        session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Boxed);
+    DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Boxed);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
@@ -5962,7 +5961,7 @@ static void JuniorRCTrackOnRidePhoto(
     constexpr int8_t photoCameraOffset = -1;
     PaintAddImageAsParentRotated(
         session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height + photoCameraOffset }, { 32, 32, 1 });
-    TrackPaintUtilDrawStationMetalSupports(
+    DrawSupportsSideBySide(
         session, direction, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Fork, 6);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });

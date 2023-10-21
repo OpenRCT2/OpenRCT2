@@ -365,8 +365,7 @@ static void PaintCarRideStation(
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    TrackPaintUtilDrawStationMetalSupports(
-        session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Boxed);
+    DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Boxed);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 

@@ -169,7 +169,7 @@ static void FlyingRCTrackStation(
         PaintAddImageAsChildRotated(
             session, direction, session.TrackColours[SCHEME_SUPPORTS].WithIndex(imageIds[direction][2]), { 0, 6, height + 24 },
             { { 0, 6, height + 24 }, { 32, 20, 1 } });
-        TrackPaintUtilDrawStationMetalSupports(
+        DrawSupportsSideBySide(
             session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::TubesInverted);
         TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_1);
     }
@@ -197,7 +197,7 @@ static void FlyingRCTrackStation(
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][2]), { 0, 0, height },
             { 32, 32, 1 });
-        TrackPaintUtilDrawStationMetalSupports(
+        DrawSupportsSideBySide(
             session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::TubesInverted);
         TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
     }

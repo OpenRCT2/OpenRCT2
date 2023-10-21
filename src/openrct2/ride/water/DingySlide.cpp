@@ -405,8 +405,7 @@ static void DinghySlideTrackStation(
         session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][1]), { 0, 0, height },
         { 32, 32, 1 });
 
-    TrackPaintUtilDrawStationMetalSupports(
-        session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Tubes);
+    DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Tubes);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 
