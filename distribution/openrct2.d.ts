@@ -2218,7 +2218,7 @@ declare global {
         readonly maxLateralGs: number;
 
         /**
-         * The total airtime in hundredths of a second.
+         * The total airtime in seconds.
          */
         readonly totalAirTime: number;
 
