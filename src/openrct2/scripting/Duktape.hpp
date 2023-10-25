@@ -15,6 +15,7 @@
 #    include "../core/EnumMap.hpp"
 #    include "../ride/Vehicle.h"
 #    include "../world/Map.h"
+#    include "../ride/RideData.h"
 
 #    include <cstdio>
 #    include <dukglue/dukglue.h>
@@ -202,6 +203,52 @@ namespace OpenRCT2::Scripting
                 _idx = duk_push_object(_ctx);
             }
         }
+    };
+
+    const static EnumMap<RatingsModifierType> RatingsModifierTypeToName{
+        { "NoModifier", RatingsModifierType::NoModifier },
+        { "BonusLength", RatingsModifierType::BonusLength },
+        { "BonusSynchronisation", RatingsModifierType::BonusSynchronisation },
+        { "BonusTrainLength", RatingsModifierType::BonusTrainLength },
+        { "BonusMaxSpeed", RatingsModifierType::BonusMaxSpeed },
+        { "BonusAverageSpeed", RatingsModifierType::BonusAverageSpeed },
+        { "BonusDuration", RatingsModifierType::BonusDuration },
+        { "BonusGForces", RatingsModifierType::BonusGForces },
+        { "BonusTurns", RatingsModifierType::BonusTurns },
+        { "BonusDrops", RatingsModifierType::BonusDrops },
+        { "BonusSheltered", RatingsModifierType::BonusSheltered },
+        { "BonusProximity", RatingsModifierType::BonusProximity },
+        { "BonusScenery", RatingsModifierType::BonusScenery },
+        { "BonusRotations", RatingsModifierType::BonusRotations },
+        { "BonusOperationOption", RatingsModifierType::BonusOperationOption },
+        { "BonusReversedTrains", RatingsModifierType::BonusReversedTrains },
+        { "BonusGoKartRace", RatingsModifierType::BonusGoKartRace },
+        { "BonusTowerRide", RatingsModifierType::BonusTowerRide },
+        { "BonusRotoDrop", RatingsModifierType::BonusRotoDrop },
+        { "BonusMazeSize", RatingsModifierType::BonusMazeSize },
+        { "BonusBoatHireNoCircuit", RatingsModifierType::BonusBoatHireNoCircuit },
+        { "BonusSlideUnlimitedRides", RatingsModifierType::BonusSlideUnlimitedRides },
+        { "BonusMotionSimulatorMode", RatingsModifierType::BonusMotionSimulatorMode },
+        { "Bonus3DCinemaMode", RatingsModifierType::Bonus3DCinemaMode },
+        { "BonusTopSpinMode", RatingsModifierType::BonusTopSpinMode },
+        { "BonusReversals", RatingsModifierType::BonusReversals },
+        { "BonusHoles", RatingsModifierType::BonusHoles },
+        { "BonusNumTrains", RatingsModifierType::BonusNumTrains },
+        { "BonusDownwardLaunch", RatingsModifierType::BonusDownwardLaunch },
+        { "BonusLaunchedFreefallSpecial", RatingsModifierType::BonusLaunchedFreefallSpecial },
+        { "RequirementLength", RatingsModifierType::RequirementLength },
+        { "RequirementDropHeight", RatingsModifierType::RequirementDropHeight },
+        { "RequirementNumDrops", RatingsModifierType::RequirementNumDrops },
+        { "RequirementMaxSpeed", RatingsModifierType::RequirementMaxSpeed },
+        { "RequirementNegativeGs", RatingsModifierType::RequirementNegativeGs },
+        { "RequirementLateralGs", RatingsModifierType::RequirementLateralGs },
+        { "RequirementInversions", RatingsModifierType::RequirementInversions },
+        { "RequirementUnsheltered", RatingsModifierType::RequirementUnsheltered },
+        { "RequirementReversals", RatingsModifierType::RequirementReversals },
+        { "RequirementHoles", RatingsModifierType::RequirementHoles },
+        { "RequirementStations", RatingsModifierType::RequirementStations },
+        { "RequirementSplashdown", RatingsModifierType::RequirementSplashdown },
+        { "PenaltyLateralGs", RatingsModifierType::PenaltyLateralGs },
     };
 
     class DukStackFrame
@@ -466,6 +513,19 @@ namespace OpenRCT2::Scripting
     }
 
     uint32_t ImageFromDuk(const DukValue& d);
+
+    template<> inline DukValue ToDuk(duk_context* ctx, const RatingsModifier& value)
+    {
+        DukObject dukModifier(ctx);
+
+        dukModifier.Set("type", RatingsModifierTypeToName.find(value.Type)->first);
+        dukModifier.Set("threshold", value.Threshold);
+        dukModifier.Set("excitement", value.Excitement);
+        dukModifier.Set("intensity", value.Intensity);
+        dukModifier.Set("nausea", value.Nausea);
+
+        return dukModifier.Take();
+    }
 
 } // namespace OpenRCT2::Scripting
 

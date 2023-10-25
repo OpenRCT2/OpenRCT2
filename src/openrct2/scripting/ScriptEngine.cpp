@@ -443,6 +443,7 @@ void ScriptEngine::Initialise()
     ScScenarioObjective::Register(ctx);
     ScPatrolArea::Register(ctx);
     ScStaff::Register(ctx);
+    ScRideRatings::Register(ctx);
 
     dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
     dukglue_register_global(ctx, std::make_shared<ScClimate>(), "climate");
