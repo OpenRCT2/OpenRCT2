@@ -22,6 +22,7 @@ constexpr uint8_t kRCT2DefaultBlockBrakeSpeed = 2;
 constexpr int32_t kBlockBrakeBaseSpeed = 0x20364;
 constexpr int32_t kBlockBrakeSpeedOffset = kBlockBrakeBaseSpeed - (kRCT2DefaultBlockBrakeSpeed << 16);
 constexpr uint8_t const kLegacyBrakeSpeedMultiplier = 2;
+constexpr uint8_t const kLegacyBrakeSpeedMask = 0b00011110;
 constexpr uint8_t const kMaximumBrakeSpeed = 0b00111111; // 2 high bits reserved for potential future behavior
 
 using track_type_t = uint16_t;

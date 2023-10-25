@@ -234,7 +234,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
             }
 
             // check to ensure the value is serializable. This warning will not apply to new track design format
-            bool tooHigh = trackFlags > 0b00011110;
+            bool tooHigh = trackFlags > kLegacyBrakeSpeedMask;
             bool tooPrecise = trackFlags & 1;
             if (tooPrecise || tooHigh)
             {
@@ -244,7 +244,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
             {
                 trackFlags += 1;
             }
-            trackFlags = std::min<uint8_t>(trackFlags, 0b00011111);
+            trackFlags = std::min<uint8_t>(trackFlags, kLegacyBrakeSpeedMask);
 
             trackFlags /= kLegacyBrakeSpeedMultiplier;
             trackFlags &= 0xF;

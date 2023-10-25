@@ -7400,7 +7400,7 @@ void Vehicle::Sub6DBF3E()
 static uint8_t GetLegacyBoosterSpeed(uint8_t rawSpeed, RideTypeDescriptor& vehicleRTD, RideTypeDescriptor& trackRTD)
 {
     auto relativeSpeed = trackRTD.GetRelativeBoosterSpeed(rawSpeed);
-    relativeSpeed &= 0b00011110; // legacy speeds have only 16 values, offset by 1 bit
+    relativeSpeed &= kLegacyBrakeSpeedMask;
     return vehicleRTD.GetAbsoluteBoosterSpeed(relativeSpeed);
 }
 
