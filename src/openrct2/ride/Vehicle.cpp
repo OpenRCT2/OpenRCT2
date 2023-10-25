@@ -7702,7 +7702,7 @@ Loc6DAEB9:
             && curRide.breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE;
         if (!hasBrakesFailure || curRide.mechanic_status == RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
         {
-            auto brakeSpeed = brake_speed << BrakeSpeedShiftAmount;
+            auto brakeSpeed = ChooseBrakeSpeed() << BrakeSpeedShiftAmount;
             if (brakeSpeed < _vehicleVelocityF64E08)
             {
                 acceleration = -_vehicleVelocityF64E08 * 16;
