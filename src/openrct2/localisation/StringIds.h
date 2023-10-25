@@ -3658,7 +3658,6 @@ enum : uint16_t
     STR_SHORTCUT_SCALE_UP = 6333,
     STR_SHORTCUT_SCALE_DOWN = 6334,
 
-    STR_SHORTCUT_TOGGLE_WALL_SLOPE = 6335,
     STR_SHORTCUT_COPY_ELEMENT = 6336,
     STR_SHORTCUT_PASTE_ELEMENT = 6337,
     STR_SHORTCUT_REMOVE_ELEMENT = 6338,
@@ -4000,6 +3999,9 @@ enum : uint16_t
 
     STR_CANT_FIRE_STAFF_FIXING = 6591,
     STR_CANT_FIRE_STAFF_INSPECTING = 6592,
+
+    STR_SHORTCUT_TOGGLE_WALL_SLOPE = 6593,
+
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
