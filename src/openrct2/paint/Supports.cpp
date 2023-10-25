@@ -1540,6 +1540,7 @@ bool PathBSupportsPaintSetup(
     return false; // AND
 }
 
+constexpr uint8_t MetalSupportTypeCount = 13;
 constexpr MetalSupportType RotatedMetalSupports[MetalSupportTypeCount][NumOrthogonalDirections] = {
     { MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes },
     { MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt },

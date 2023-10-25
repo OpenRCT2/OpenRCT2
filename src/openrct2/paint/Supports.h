@@ -93,7 +93,6 @@ enum class MetalSupportType : uint8_t
      */
     BoxedCoated,
 };
-constexpr uint8_t MetalSupportTypeCount = 13;
 
 /**
  * Tiles are rendered at a 45 degree angle, with the corners on the top, bottom, left and right.
