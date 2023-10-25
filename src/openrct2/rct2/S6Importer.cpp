@@ -2547,7 +2547,7 @@ namespace RCT2
 
         dst->SetFlag(VehicleFlags::LegacyBoosterSpeed);
         if ((dst->GetTrackType() == TrackElemType::PoweredLift)
-            || (dst->GetTrackType() == TrackElemType::Flat && dst->GetRide()->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER))
+            || (dst->GetTrackType() == TrackElemType::Flat && ride.Type == RIDE_TYPE_REVERSE_FREEFALL_COASTER))
         {
             dst->BoosterAcceleration = GetRideTypeDescriptor(ride.Type).OperatingSettings.PoweredLiftAcceleration;
             dst->SetFlag(VehicleFlags::OnPoweredLift);
