@@ -2545,6 +2545,7 @@ namespace RCT2
 
         dst->brake_speed = src->BrakeSpeed * kLegacyBrakeSpeedMultiplier;
 
+        dst->SetFlag(VehicleFlags::LegacyBoosterSpeed);
         if ((dst->GetTrackType() == TrackElemType::PoweredLift)
             || (dst->GetTrackType() == TrackElemType::Flat && dst->GetRide()->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER))
         {

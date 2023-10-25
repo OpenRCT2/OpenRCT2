@@ -2855,7 +2855,9 @@ namespace RCT1
 
         dst->brake_speed = src->BrakeSpeed * kLegacyBrakeSpeedMultiplier;
         dst->BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
+        dst->Flags = src->UpdateFlags;
 
+        dst->SetFlag(VehicleFlags::LegacyBoosterSpeed);
         if ((dst->GetTrackType() == TrackElemType::PoweredLift)
             || (dst->GetTrackType() == TrackElemType::Flat && dst->GetRide()->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER))
         {
@@ -2870,7 +2872,6 @@ namespace RCT1
         dst->track_progress = src->TrackProgress;
         dst->vertical_drop_countdown = src->VerticalDropCountdown;
         dst->sub_state = src->SubState;
-        dst->Flags = src->UpdateFlags;
 
         SetVehicleColours(dst, src);
 
