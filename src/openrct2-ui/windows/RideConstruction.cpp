@@ -222,7 +222,7 @@ public:
         ShowGridlines();
 
         _currentTrackPrice = MONEY64_UNDEFINED;
-        _currentBrakeSpeed = 16;
+        _currentBrakeSpeed = 8;
         _currentSeatRotationAngle = 4;
 
         _currentTrackCurve = currentRide->GetRideTypeDescriptor().StartTrackPiece | RideConstructionSpecialPieceSelected;
