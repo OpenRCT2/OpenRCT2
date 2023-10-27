@@ -196,8 +196,7 @@ static void MultiDimensionRCTrackStation(
             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 0, height },
             { { 0, 3, height + 3 }, { 32, 26, 1 } });
     }
-    TrackPaintUtilDrawStationMetalSupports2(
-        session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::TubesInverted);
+    DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::TubesInverted);
 
     const auto* stationObj = ride.GetStationObject();
     bool hasFence;
@@ -5212,56 +5211,26 @@ static void MultiDimensionRCTrackOnRidePhoto(
 {
     if (!trackElement.IsInverted())
     {
+        TrackPaintUtilOnridePhotoPlatformPaint(session, direction, height, MetalSupportType::TubesInverted);
+
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height,
-                    session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height,
-                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15806), { 0, 0, height },
                     { { 0, 6, height + 3 }, { 32, 20, 0 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height,
-                    session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height,
-                    session.TrackColours[SCHEME_SUPPORTS]);
-                PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15807), { 0, 0, height },
                     { { 0, 6, height + 3 }, { 32, 20, 0 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height,
-                    session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height,
-                    session.TrackColours[SCHEME_SUPPORTS]);
-                PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15806), { 0, 0, height },
                     { { 0, 6, height + 3 }, { 32, 20, 0 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height,
-                    session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height,
-                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15807), { 0, 0, height },
                     { { 0, 6, height + 3 }, { 32, 20, 0 } });

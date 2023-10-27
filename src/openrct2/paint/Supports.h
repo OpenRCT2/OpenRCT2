@@ -147,6 +147,8 @@ bool PathASupportsPaintSetup(
 bool PathBSupportsPaintSetup(
     PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo);
+void DrawSupportsSideBySide(
+    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special = 0);
 
 enum
 {

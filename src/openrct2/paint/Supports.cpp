@@ -1539,3 +1539,39 @@ bool PathBSupportsPaintSetup(
 
     return false; // AND
 }
+
+constexpr uint8_t MetalSupportTypeCount = 13;
+constexpr MetalSupportType RotatedMetalSupports[MetalSupportTypeCount][NumOrthogonalDirections] = {
+    { MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes },
+    { MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt },
+    { MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork },
+    { MetalSupportType::Boxed, MetalSupportType::Boxed, MetalSupportType::Boxed, MetalSupportType::Boxed },
+    { MetalSupportType::Stick, MetalSupportType::StickAlt, MetalSupportType::Stick, MetalSupportType::StickAlt },
+    { MetalSupportType::StickAlt, MetalSupportType::Stick, MetalSupportType::StickAlt, MetalSupportType::Stick },
+    { MetalSupportType::ThickCentred, MetalSupportType::ThickAltCentred, MetalSupportType::Thick, MetalSupportType::ThickAlt },
+    { MetalSupportType::Thick, MetalSupportType::ThickAlt, MetalSupportType::ThickCentred, MetalSupportType::ThickAltCentred },
+    { MetalSupportType::ThickAlt, MetalSupportType::ThickCentred, MetalSupportType::ThickAltCentred, MetalSupportType::Thick },
+    { MetalSupportType::ThickAltCentred, MetalSupportType::Thick, MetalSupportType::ThickAlt, MetalSupportType::ThickCentred },
+    { MetalSupportType::Truss, MetalSupportType::Truss, MetalSupportType::Truss, MetalSupportType::Truss },
+    { MetalSupportType::TubesInverted, MetalSupportType::TubesInverted, MetalSupportType::TubesInverted,
+      MetalSupportType::TubesInverted },
+    { MetalSupportType::BoxedCoated, MetalSupportType::BoxedCoated, MetalSupportType::BoxedCoated,
+      MetalSupportType::BoxedCoated },
+};
+
+void DrawSupportsSideBySide(
+    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special)
+{
+    type = RotatedMetalSupports[EnumValue(type)][direction];
+
+    if (direction & 1)
+    {
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::TopRightSide, special, height, colour);
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::BottomLeftSide, special, height, colour);
+    }
+    else
+    {
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::TopLeftSide, special, height, colour);
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::BottomRightSide, special, height, colour);
+    }
+}

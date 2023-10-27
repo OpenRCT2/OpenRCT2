@@ -200,23 +200,7 @@ static void PaintLogFlumeTrackStation(
     }
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
 
-    if (direction & 1)
-    {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Boxed, MetalSupportPlace::TopRightSide, 0, height,
-            session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Boxed, MetalSupportPlace::BottomLeftSide, 0, height,
-            session.TrackColours[SCHEME_SUPPORTS]);
-    }
-    else
-    {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Boxed, MetalSupportPlace::TopLeftSide, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Boxed, MetalSupportPlace::BottomRightSide, 0, height,
-            session.TrackColours[SCHEME_SUPPORTS]);
-    }
+    DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Boxed);
 
     TrackPaintUtilDrawStation3(session, ride, direction, height + 2, height, trackElement);
     // Covers shouldn't be offset by +2
@@ -825,25 +809,7 @@ static void PaintLogFlumeTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    PaintAddImageAsParent(session, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-
-    if (direction & 1)
-    {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::ForkAlt, MetalSupportPlace::TopRightSide, 6, height,
-            session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomLeftSide, 6, height,
-            session.TrackColours[SCHEME_SUPPORTS]);
-    }
-    else
-    {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Fork, MetalSupportPlace::TopLeftSide, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Fork, MetalSupportPlace::BottomRightSide, 6, height,
-            session.TrackColours[SCHEME_SUPPORTS]);
-    }
+    TrackPaintUtilOnridePhotoPlatformPaint(session, direction, height, MetalSupportType::Boxed);
 
     auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(LogFlumeTrackFlatImageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 0 } });
