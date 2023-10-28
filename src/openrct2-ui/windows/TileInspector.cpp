@@ -1055,7 +1055,7 @@ public:
                     // Details
                     // Terrain texture name
                     StringId terrainNameId = STR_EMPTY;
-                    auto surfaceStyle = tileElement->AsSurface()->GetSurfaceStyleObject();
+                    auto surfaceStyle = tileElement->AsSurface()->GetSurfaceObject();
                     if (surfaceStyle != nullptr)
                         terrainNameId = surfaceStyle->NameStringId;
                     auto ft = Formatter();
@@ -1064,7 +1064,7 @@ public:
 
                     // Edge texture name
                     StringId terrainEdgeNameId = STR_EMPTY;
-                    auto edgeStyle = tileElement->AsSurface()->GetEdgeStyleObject();
+                    auto edgeStyle = tileElement->AsSurface()->GetEdgeObject();
                     if (edgeStyle != nullptr)
                         terrainEdgeNameId = edgeStyle->NameStringId;
                     ft = Formatter();
@@ -1695,6 +1695,14 @@ public:
     void ClearClipboard()
     {
         _elementCopied = false;
+    }
+
+    void ToggleInvisibility()
+    {
+        if (windowTileInspectorSelectedIndex >= 0 && windowTileInspectorSelectedIndex < windowTileInspectorElementCount)
+        {
+            ToggleInvisibility(windowTileInspectorSelectedIndex);
+        }
     }
 
 private:
@@ -2368,4 +2376,11 @@ void WindowTileInspectorClearClipboard()
     auto* window = WindowFindByClass(WindowClass::TileInspector);
     if (window != nullptr)
         static_cast<TileInspector*>(window)->ClearClipboard();
+}
+
+void WindowTileInspectorKeyboardShortcutToggleInvisibility()
+{
+    auto* window = WindowFindByClass(WindowClass::TileInspector);
+    if (window != nullptr)
+        static_cast<TileInspector*>(window)->ToggleInvisibility();
 }

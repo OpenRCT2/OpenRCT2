@@ -1579,8 +1579,8 @@ namespace RCT1
                     auto edgeStyle = _terrainEdgeTypeToEntryMap[src2->GetEdgeStyle()];
 
                     dst2->SetSlope(src2->GetSlope());
-                    dst2->SetSurfaceStyle(surfaceStyle);
-                    dst2->SetEdgeStyle(edgeStyle);
+                    dst2->SetSurfaceObjectIndex(surfaceStyle);
+                    dst2->SetEdgeObjectIndex(edgeStyle);
                     dst2->SetGrassLength(src2->GetGrassLength());
                     dst2->SetOwnership(src2->GetOwnership());
                     dst2->SetParkFences(src2->GetParkFences());
@@ -2911,15 +2911,6 @@ namespace RCT1
         }
 
         dst->SetItemFlags(src->GetItemFlags());
-
-        if (dst->OutsideOfPark && dst->State != PeepState::LeavingPark)
-        {
-            IncrementGuestsHeadingForPark();
-        }
-        else
-        {
-            IncrementGuestsInPark();
-        }
     }
 
     template<> void S4Importer::ImportEntity<Staff>(const RCT12EntityBase& srcBase)

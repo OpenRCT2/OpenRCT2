@@ -1069,7 +1069,7 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAct
         }
 
         std::vector<DukValue> pluginCallArgs;
-        if (GetTargetAPIVersion() <= API_VERSION_68_CUSTOM_ACTION_ARGS)
+        if (customActionInfo.Owner->GetTargetAPIVersion() <= API_VERSION_68_CUSTOM_ACTION_ARGS)
         {
             pluginCallArgs = { *dukArgs };
         }
@@ -1326,6 +1326,7 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "footpathremove", GameCommand::RemovePath },
     { "footpathadditionplace", GameCommand::PlaceFootpathAddition },
     { "footpathadditionremove", GameCommand::RemoveFootpathAddition },
+    { "gamesetspeed", GameCommand::SetGameSpeed },
     { "guestsetflags", GameCommand::GuestSetFlags },
     { "guestsetname", GameCommand::SetGuestName },
     { "landbuyrights", GameCommand::BuyLandRights },

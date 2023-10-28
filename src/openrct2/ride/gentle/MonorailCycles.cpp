@@ -177,7 +177,7 @@ static void PaintMonorailCyclesTrackFlat(
     }
 
     MetalASupportsPaintSetup(
-        session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick, 4, -1, height,
+        session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick, MetalSupportPlace::Centre, -1, height,
         session.TrackColours[SCHEME_SUPPORTS]);
 
     PaintUtilSetSegmentSupportHeight(
@@ -199,10 +199,6 @@ static void PaintMonorailCyclesStation(
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprMonorailCyclesFlatSwNe);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 20, 1 } });
-
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
     else if (direction == 1 || direction == 3)
     {
@@ -211,11 +207,10 @@ static void PaintMonorailCyclesStation(
 
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprMonorailCyclesFlatNwSe);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 20, 32, 1 } });
-
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
+
+    DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Boxed);
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 
@@ -236,7 +231,8 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
     switch (trackSequence)
     {
         case 0:
-            MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Stick, MetalSupportPlace::Centre, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B4, direction), 0xFFFF, 0);
             break;
@@ -245,7 +241,8 @@ static void PaintMonorailCyclesTrackLeftQuarterTurn3Tiles(
                 session, PaintUtilRotateSegments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8, direction), 0xFFFF, 0);
             break;
         case 3:
-            MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Stick, MetalSupportPlace::Centre, -1, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0, direction), 0xFFFF, 0);
             break;
@@ -300,49 +297,49 @@ static void PaintMonorailCyclesTrackRightQuarterTurn5Tiles(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick, 4, supportSpecial,
-                supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
+                session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick, MetalSupportPlace::Centre,
+                supportSpecial, supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             if (direction == 0)
                 MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick, 8, supportSpecial,
-                    supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick,
+                    MetalSupportPlace::BottomRightSide, supportSpecial, supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 1)
                 MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick, 7, supportSpecial,
-                    supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick,
+                    MetalSupportPlace::BottomLeftSide, supportSpecial, supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 2)
                 MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick, 5, supportSpecial,
-                    supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick,
+                    MetalSupportPlace::TopLeftSide, supportSpecial, supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 3)
                 MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick, 6, supportSpecial,
-                    supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick,
+                    MetalSupportPlace::TopRightSide, supportSpecial, supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 5:
             if (direction == 0)
                 MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::Stick : MetalSupportType::StickAlt, 7, supportSpecial,
-                    supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, (direction & 1) ? MetalSupportType::Stick : MetalSupportType::StickAlt,
+                    MetalSupportPlace::BottomLeftSide, supportSpecial, supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 1)
                 MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::Stick : MetalSupportType::StickAlt, 5, supportSpecial,
-                    supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, (direction & 1) ? MetalSupportType::Stick : MetalSupportType::StickAlt,
+                    MetalSupportPlace::TopLeftSide, supportSpecial, supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 2)
                 MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::Stick : MetalSupportType::StickAlt, 6, supportSpecial,
-                    supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, (direction & 1) ? MetalSupportType::Stick : MetalSupportType::StickAlt,
+                    MetalSupportPlace::TopRightSide, supportSpecial, supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 3)
                 MetalASupportsPaintSetup(
-                    session, (direction & 1) ? MetalSupportType::Stick : MetalSupportType::StickAlt, 8, supportSpecial,
-                    supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, (direction & 1) ? MetalSupportType::Stick : MetalSupportType::StickAlt,
+                    MetalSupportPlace::BottomRightSide, supportSpecial, supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
             break;
         case 6:
             MetalASupportsPaintSetup(
-                session, (direction & 1) ? MetalSupportType::Stick : MetalSupportType::StickAlt, 4, supportSpecial,
-                supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
+                session, (direction & 1) ? MetalSupportType::Stick : MetalSupportType::StickAlt, MetalSupportPlace::Centre,
+                supportSpecial, supportHeight, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -444,13 +441,19 @@ static void PaintMonorailCyclesTrackSBendLeft(
         switch (trackSequence)
         {
             case 0:
-                MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                MetalASupportsPaintSetup(session, MetalSupportType::Stick, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Stick, MetalSupportPlace::TopLeftSide, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -465,15 +468,18 @@ static void PaintMonorailCyclesTrackSBendLeft(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::TopRightSide, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 4, 0, height - 2, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height - 2,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -544,14 +550,19 @@ static void PaintMonorailCyclesTrackSBendRight(
         switch (trackSequence)
         {
             case 0:
-                MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Stick, 8, 0, height - 2, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Stick, MetalSupportPlace::BottomRightSide, 0, height - 2,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                MetalASupportsPaintSetup(session, MetalSupportType::Stick, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Stick, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -566,15 +577,18 @@ static void PaintMonorailCyclesTrackSBendRight(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::BottomLeftSide, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::StickAlt, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::StickAlt, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }

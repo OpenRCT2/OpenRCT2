@@ -31,6 +31,7 @@
 #include <openrct2/actions/BannerSetColourAction.h>
 #include <openrct2/actions/ClearAction.h>
 #include <openrct2/actions/FootpathAdditionPlaceAction.h>
+#include <openrct2/actions/GameSetSpeedAction.h>
 #include <openrct2/actions/LandLowerAction.h>
 #include <openrct2/actions/LandRaiseAction.h>
 #include <openrct2/actions/LandSmoothAction.h>
@@ -1550,7 +1551,7 @@ private:
                 {
                     WindowScenerySetSelectedItem(
                         { SCENERY_TYPE_SMALL, entryIndex }, sceneryElement->GetPrimaryColour(),
-                        sceneryElement->GetSecondaryColour(), std::nullopt,
+                        sceneryElement->GetSecondaryColour(), sceneryElement->GetTertiaryColour(),
                         sceneryElement->GetDirectionWithOffset(GetCurrentRotation()));
                 }
                 break;
@@ -3661,10 +3662,12 @@ void TopToolbar::FastforwardMenuDropdown(int16_t dropdownIndex)
     {
         if (dropdownIndex >= 0 && dropdownIndex <= 5)
         {
-            gGameSpeed = dropdownIndex + 1;
-            if (gGameSpeed >= 5)
-                gGameSpeed = 8;
-            w->Invalidate();
+            auto newSpeed = dropdownIndex + 1;
+            if (newSpeed >= 5)
+                newSpeed = 8;
+
+            auto setSpeedAction = GameSetSpeedAction(newSpeed);
+            GameActions::Execute(&setSpeedAction);
         }
     }
 }

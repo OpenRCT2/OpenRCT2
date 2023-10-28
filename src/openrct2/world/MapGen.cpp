@@ -129,8 +129,8 @@ void MapGenGenerateBlank(MapGenSettings* settings)
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement != nullptr)
             {
-                surfaceElement->SetSurfaceStyle(settings->floor);
-                surfaceElement->SetEdgeStyle(settings->wall);
+                surfaceElement->SetSurfaceObjectIndex(settings->floor);
+                surfaceElement->SetEdgeObjectIndex(settings->wall);
                 surfaceElement->BaseHeight = settings->height;
                 surfaceElement->ClearanceHeight = settings->height;
             }
@@ -193,8 +193,8 @@ void MapGenGenerate(MapGenSettings* settings)
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement != nullptr)
             {
-                surfaceElement->SetSurfaceStyle(floorTextureId);
-                surfaceElement->SetEdgeStyle(edgeTextureId);
+                surfaceElement->SetSurfaceObjectIndex(floorTextureId);
+                surfaceElement->SetEdgeObjectIndex(edgeTextureId);
                 surfaceElement->BaseHeight = settings->height;
                 surfaceElement->ClearanceHeight = settings->height;
             }
@@ -243,7 +243,7 @@ void MapGenGenerate(MapGenSettings* settings)
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
 
             if (surfaceElement != nullptr && surfaceElement->BaseHeight < waterLevel + 6)
-                surfaceElement->SetSurfaceStyle(beachTextureId);
+                surfaceElement->SetSurfaceObjectIndex(beachTextureId);
         }
     }
 
@@ -354,7 +354,7 @@ static void MapGenPlaceTrees()
             // vegetation
             float oasisScore = 0.0f;
             ObjectEntryIndex treeObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
-            const auto& surfaceStyleObject = *TerrainSurfaceObject::GetById(surfaceElement->GetSurfaceStyle());
+            const auto& surfaceStyleObject = *TerrainSurfaceObject::GetById(surfaceElement->GetSurfaceObjectIndex());
             if (MapGenSurfaceTakesSandTrees(surfaceStyleObject))
             {
                 oasisScore = -0.5f;

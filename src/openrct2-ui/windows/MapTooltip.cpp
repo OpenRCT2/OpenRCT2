@@ -36,7 +36,7 @@ static Formatter _mapTooltipArgs;
 class MapTooltip final : public Window
 {
 public:
-    MapTooltip()
+    void OnOpen() override
     {
         widgets = window_map_tooltip_widgets;
     }

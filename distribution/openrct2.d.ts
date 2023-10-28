@@ -322,6 +322,7 @@ declare global {
         queryAction(action: "footpathplace", args: FootpathPlaceArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "footpathlayoutplace", args: FootpathLayoutPlaceArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "footpathremove", args: FootpathRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "gamesetspeed", args: GameSetSpeedArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "guestsetflags", args: GuestSetFlagsArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "guestsetname", args: GuestSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "landbuyrights", args: LandBuyRightsArgs, callback?: (result: GameActionResult) => void): void;
@@ -413,6 +414,7 @@ declare global {
         executeAction(action: "footpathplace", args: FootpathPlaceArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "footpathlayoutplace", args: FootpathLayoutPlaceArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "footpathremove", args: FootpathRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "gamesetspeed", args: GameSetSpeedArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "guestsetflags", args: GuestSetFlagsArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "guestsetname", args: GuestSetNameArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "landbuyrights", args: LandBuyRightsArgs, callback?: (result: GameActionResult) => void): void;
@@ -646,6 +648,7 @@ declare global {
         "footpathplace" |
         "footpathlayoutplace" |
         "footpathremove" |
+        "gamesetspeed" |
         "guestsetflags" |
         "guestsetname" |
         "landbuyrights" |
@@ -812,6 +815,10 @@ declare global {
         x: number;
         y: number;
         z: number;
+    }
+
+    interface GameSetSpeedArgs extends GameActionArgs {
+        speed: number;
     }
 
     // recommendation: use Peep.setFlag instead of the GuestSetFlag action
@@ -1465,6 +1472,7 @@ declare global {
         occupiedQuadrants: number;
         isGhost: boolean;
         isHidden: boolean; /** Take caution when changing this field, it may invalidate TileElements you have stored in your script. */
+        owner: number;
     }
 
     interface SurfaceElement extends BaseTileElement {

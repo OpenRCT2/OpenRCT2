@@ -635,6 +635,10 @@ public:
     RideWindow(const Ride& ride)
     {
         rideId = ride.id;
+    }
+
+    virtual void OnOpen() override
+    {
         widgets = PageWidgets[WINDOW_RIDE_PAGE_MAIN];
         hold_down_widgets = PageHoldDownWidgets[WINDOW_RIDE_PAGE_MAIN];
 
@@ -648,9 +652,15 @@ public:
         max_width = 500;
         max_height = 450;
 
-        UpdateOverallView(ride);
+        auto ride = GetRide(rideId);
+        if (ride == nullptr)
+        {
+            Close();
+            return;
+        }
+        UpdateOverallView(*ride);
 
-        PopulateVehicleTypeDropdown(ride, true);
+        PopulateVehicleTypeDropdown(*ride, true);
     }
 
     virtual void OnClose() override
@@ -2317,7 +2327,8 @@ private:
             auto trackType = vehicle->GetTrackType();
             if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::CableLiftHill
                 || trackType == TrackElemType::Up25ToFlat || trackType == TrackElemType::Up60ToFlat
-                || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat)
+                || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat
+                || trackType == TrackElemType::DiagBlockBrakes)
             {
                 if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_BLOCK_BRAKES) && vehicle->velocity == 0)
                 {
