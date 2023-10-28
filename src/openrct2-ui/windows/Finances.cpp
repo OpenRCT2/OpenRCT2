@@ -411,8 +411,10 @@ public:
                 if (expenditure != 0)
                 {
                     profit += expenditure;
-                    const StringId format = expenditure >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE
-                                                             : STR_FINANCES_SUMMARY_EXPENDITURE_VALUE;
+                    const StringId format = expenditure >= 0
+                        ? STR_FINANCES_SUMMARY_INCOME_VALUE
+                        : (gConfigGeneral.RedNegativeFinances ? STR_FINANCES_SUMMARY_LOSS_VALUE
+                                                              : STR_FINANCES_SUMMARY_EXPENDITURE_VALUE);
                     ft = Formatter();
                     ft.Add<money64>(expenditure);
                     DrawTextBasic(
