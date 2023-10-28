@@ -248,6 +248,9 @@ GameActions::Result CheatSetAction::Execute() const
         case CheatType::AllowSpecialColourSchemes:
             gCheatsAllowSpecialColourSchemes = static_cast<bool>(_param1);
             break;
+        case CheatType::RemoveParkFences:
+            RemoveParkFences();
+            break;
         default:
         {
             LOG_ERROR("Unabled cheat: %d", _cheatType.id);
@@ -395,6 +398,8 @@ ParametersRange CheatSetAction::GetParameterRange(CheatType cheatType) const
         case CheatType::NoCapOnQueueLengthDummy:
             [[fallthrough]];
         case CheatType::RemoveLitter:
+            [[fallthrough]];
+        case CheatType::RemoveParkFences:
             return { { 0, 0 }, { 0, 0 } };
         case CheatType::Count:
             break;
@@ -785,4 +790,20 @@ void CheatSetAction::CreateDucks(int count) const
                 break;
         }
     }
+}
+
+void CheatSetAction::RemoveParkFences() const
+{
+    TileElementIterator it;
+    TileElementIteratorBegin(&it);
+    do
+    {
+        if (it.element->GetType() == TileElementType::Surface)
+        {
+            // Remove all park fence flags
+            it.element->AsSurface()->SetParkFences(0);
+        }
+    } while (TileElementIteratorNext(&it));
+
+    GfxInvalidateScreen();
 }
