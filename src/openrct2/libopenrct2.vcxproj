@@ -93,6 +93,7 @@
         <ClInclude Include="actions\FootpathAdditionRemoveAction.h" />
         <ClInclude Include="actions\GameAction.h" />
         <ClInclude Include="actions\GameActionResult.h" />
+        <ClInclude Include="actions\GameSetSpeedAction.h" />
         <ClInclude Include="actions\GuestSetFlagsAction.h" />
         <ClInclude Include="actions\GuestSetNameAction.h" />
         <ClInclude Include="actions\LandBuyRightsAction.h" />
@@ -410,11 +411,13 @@
         <ClInclude Include="ride\coaster\meta\LayDownRollerCoaster.h" />
         <ClInclude Include="ride\coaster\meta\LIMLaunchedRollerCoaster.h" />
         <ClInclude Include="ride\coaster\meta\LoopingRollerCoaster.h" />
+        <ClInclude Include="ride\coaster\meta\LSMLaunchedRollerCoaster.h" />
         <ClInclude Include="ride\coaster\meta\MineRide.h" />
         <ClInclude Include="ride\coaster\meta\MineTrainCoaster.h" />
         <ClInclude Include="ride\coaster\meta\MiniRollerCoaster.h" />
         <ClInclude Include="ride\coaster\meta\MiniSuspendedCoaster.h" />
         <ClInclude Include="ride\coaster\meta\MultiDimensionRollerCoaster.h" />
+        <ClInclude Include="ride\coaster\meta\MultiLoopingRollerCoaster.h" />
         <ClInclude Include="ride\coaster\meta\ReverseFreefallCoaster.h" />
         <ClInclude Include="ride\coaster\meta\ReverserRollerCoaster.h" />
         <ClInclude Include="ride\coaster\meta\SideFrictionRollerCoaster.h" />
@@ -617,6 +620,7 @@
         <ClCompile Include="actions\GameAction.cpp" />
         <ClCompile Include="actions\GameActionRegistry.cpp" />
         <ClCompile Include="actions\GameActionResult.cpp" />
+        <ClCompile Include="actions\GameSetSpeedAction.cpp" />
         <ClCompile Include="actions\GuestSetFlagsAction.cpp" />
         <ClCompile Include="actions\GuestSetNameAction.cpp" />
         <ClCompile Include="actions\LandBuyRightsAction.cpp" />
@@ -899,13 +903,12 @@
         <ClCompile Include="ride\coaster\CompactInvertedCoaster.cpp" />
         <ClCompile Include="ride\coaster\CorkscrewRollerCoaster.cpp" />
         <ClCompile Include="ride\coaster\FlyingRollerCoaster.cpp" />
+        <ClCompile Include="ride\coaster\InMaTriangleTrack.cpp" />
         <ClCompile Include="ride\coaster\HeartlineTwisterCoaster.cpp" />
         <ClCompile Include="ride\coaster\HybridCoaster.cpp" />
         <ClCompile Include="ride\coaster\InvertedHairpinCoaster.cpp" />
         <ClCompile Include="ride\coaster\InvertedImpulseCoaster.cpp" />
         <ClCompile Include="ride\coaster\InvertedRollerCoaster.cpp" />
-        <ClCompile Include="ride\coaster\InMaTriangleTrack.cpp" />
-        <ClCompile Include="ride\coaster\InMaTriangleTrackAlt.cpp" />
         <ClCompile Include="ride\coaster\JuniorRollerCoaster.cpp" />
         <ClCompile Include="ride\coaster\LayDownRollerCoaster.cpp" />
         <ClCompile Include="ride\coaster\LimLaunchedRollerCoaster.cpp" />

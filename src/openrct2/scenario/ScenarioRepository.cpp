@@ -155,6 +155,15 @@ protected:
     void Serialise(DataSerialiser& ds, const ScenarioIndexEntry& item) const override
     {
         ds << item.Path;
+        if (ds.IsLoading())
+        {
+            // Field used to be fixed size length, remove the 0 padding.
+            const auto pos = item.Path.find('\0');
+            if (pos != std::string::npos)
+            {
+                const_cast<ScenarioIndexEntry&>(item).Path = item.Path.substr(0, pos);
+            }
+        }
         ds << item.Timestamp;
         ds << item.Category;
         ds << item.SourceGame;
@@ -204,10 +213,10 @@ private:
                 {
                     auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
                     auto importer = ParkImporter::CreateParkFile(objRepository);
-                    importer->LoadScenario(path.c_str(), true);
+                    importer->LoadScenario(path, true);
                     if (importer->GetDetails(entry))
                     {
-                        String::Set(entry->Path, sizeof(entry->Path), path.c_str());
+                        entry->Path = path;
                         entry->Timestamp = timestamp;
                         result = true;
                     }
@@ -225,10 +234,10 @@ private:
                 try
                 {
                     auto s4Importer = ParkImporter::CreateS4();
-                    s4Importer->LoadScenario(path.c_str(), true);
+                    s4Importer->LoadScenario(path, true);
                     if (s4Importer->GetDetails(entry))
                     {
-                        String::Set(entry->Path, sizeof(entry->Path), path.c_str());
+                        entry->Path = path;
                         entry->Timestamp = timestamp;
                         result = true;
                     }
@@ -273,7 +282,7 @@ private:
         ScenarioIndexEntry entry = {};
 
         // Set new entry
-        String::Set(entry.Path, sizeof(entry.Path), path.c_str());
+        entry.Path = path;
         entry.Timestamp = timestamp;
         entry.Category = s6Info->Category;
         entry.ObjectiveType = s6Info->ObjectiveType;
@@ -562,7 +571,7 @@ private:
                 if (existingEntry->Timestamp > entry.Timestamp)
                 {
                     // Existing entry is more recent
-                    conflictPath = String::ToStd(existingEntry->Path);
+                    conflictPath = existingEntry->Path;
 
                     // Overwrite existing entry with this one
                     *existingEntry = entry;
