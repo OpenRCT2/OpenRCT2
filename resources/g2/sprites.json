@@ -2666,12 +2666,22 @@
         "y_offset": -4
     },
     {
-        "path": "track/intamin/booster_3.png",
+        "path": "track/intamin/booster_alt_1.png",
         "x_offset": -22,
         "y_offset": -4
     },
     {
-        "path": "track/intamin/booster_4.png",
+        "path": "track/intamin/booster_alt_2.png",
+        "x_offset": -22,
+        "y_offset": -4
+    },
+    {
+        "path": "track/intamin/booster_alt_3.png",
+        "x_offset": -22,
+        "y_offset": -4
+    },
+    {
+        "path": "track/intamin/booster_alt_4.png",
         "x_offset": -22,
         "y_offset": -4
     },
