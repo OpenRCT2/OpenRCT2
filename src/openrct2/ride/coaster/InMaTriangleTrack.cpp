@@ -179,8 +179,8 @@ static void InMaTriangleTrackStation(
         static constexpr uint32_t imageIds[4][2] = {
             { SPR_G2_GIGA_RC_BOOSTER_NE_SW, SPR_STATION_BASE_A_SW_NE },
             { SPR_G2_GIGA_RC_BOOSTER_NW_SE, SPR_STATION_BASE_A_NW_SE },
-            { SPR_G2_GIGA_RC_BOOSTER_NE_SW, SPR_STATION_BASE_A_SW_NE },
-            { SPR_G2_GIGA_RC_BOOSTER_NW_SE, SPR_STATION_BASE_A_NW_SE },
+            { SPR_G2_GIGA_RC_BOOSTER_SW_NE, SPR_STATION_BASE_A_SW_NE },
+            { SPR_G2_GIGA_RC_BOOSTER_SE_NW, SPR_STATION_BASE_A_NW_SE },
         };
 
         PaintAddImageAsParentRotated(
@@ -9691,15 +9691,23 @@ static void InMaTriangleTrackBooster(
     switch (direction)
     {
         case 0:
-        case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_RC_BOOSTER_NE_SW),
                 { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
-        case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_RC_BOOSTER_NW_SE),
+                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+            break;
+        case 2:
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_RC_BOOSTER_SW_NE),
+                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+            break;
+        case 3:
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_RC_BOOSTER_SE_NW),
                 { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }

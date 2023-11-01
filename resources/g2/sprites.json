@@ -2666,7 +2666,22 @@
         "y_offset": -4
     },
     {
-        "path": "track/intamin/brake_alt_1.png",
+        "path": "track/intamin/booster_3.png",
+        "x_offset": -22,
+        "y_offset": -4
+    },
+    {
+        "path": "track/intamin/booster_4.png",
+        "x_offset": -22,
+        "y_offset": -4
+    },
+    {
+        "path": "track/intamin/brake_alt_closed_1.png",
+        "x_offset": -22,
+        "y_offset": -4
+    },
+    {
+        "path": "track/intamin/brake_alt_closed_3.png",
         "x_offset": -22,
         "y_offset": -4
     },

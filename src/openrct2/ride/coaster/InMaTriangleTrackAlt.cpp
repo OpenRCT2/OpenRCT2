@@ -46,9 +46,13 @@ static void InMaTriangleTrackAltBrakes(
     switch (direction)
     {
         case 0:
-        case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_RC_BRAKE_ALT_NE_SW),
+                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+            break;
+        case 2:
+            PaintAddImageAsParentRotated(
+                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_RC_BRAKE_ALT_SW_NE),
                 { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
