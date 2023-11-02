@@ -78,6 +78,7 @@ enum class TrackStyle : uint8_t
     shop,
     sideFrictionRollerCoaster,
     singleRailRollerCoaster,
+    spinningRollerCoaster,
     spaceRings,
     spiralSlide,
     splashBoats,
