@@ -342,6 +342,7 @@
 
 0.4.18 (2025-01-08)
 ------------------------------------------------------------------------
+- Improved: [#22633] Add new Spinning Roller Coaster Track.
 - Improved: [#23200] Add banked sloped turns and many other pieces to the Stand-Up and Classic Stand-Up Roller Coaster.
 - Improved: [#23260] Add diagonal (block) brakes to LSM Launched Roller Coaster.
 - Improved: [#23350] Increased the maximum width of the ride graph window.
