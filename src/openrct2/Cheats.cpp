@@ -342,6 +342,8 @@ const char* CheatsGetName(CheatType cheatType)
             return LanguageGetString(STR_CHEAT_ALLOW_PATH_AS_QUEUE);
         case CheatType::AllowSpecialColourSchemes:
             return LanguageGetString(STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES);
+        case CheatType::RemoveParkFences:
+            return LanguageGetString(STR_CHEAT_REMOVE_PARK_FENCES);
         default:
             return "Unknown Cheat";
     }
