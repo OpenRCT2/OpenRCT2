@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor DodgemsRTD =
                      RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::Dodgems)),
     SET_FIELD(DefaultMode, RideMode::Dodgems),
-    SET_FIELD(OperatingSettings, { 20, 180, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 20, 180, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_DODGEMS, STR_RIDE_DESCRIPTION_DODGEMS }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_DODGEMS)),
@@ -71,6 +71,7 @@ constexpr RideTypeDescriptor DodgemsRTD =
             { RatingsModifierType::BonusScenery,         0, 5577, 0, 0 },
         },
     }),
+    SET_FIELD(DeprecatedProperties, {0}),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_BoatHire),
 };

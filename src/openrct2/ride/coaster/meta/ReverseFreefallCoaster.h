@@ -27,7 +27,7 @@ constexpr RideTypeDescriptor ReverseFreefallCoasterRTD =
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::LimPoweredLaunch)),
     SET_FIELD(DefaultMode, RideMode::LimPoweredLaunch),
-    SET_FIELD(OperatingSettings, { 7, 30, 30, 40, 40, 0 }),
+    SET_FIELD(OperatingSettings, { 7, 30, 30, 40, 40 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_REVERSE_FREEFALL_COASTER, STR_RIDE_DESCRIPTION_REVERSE_FREEFALL_COASTER }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_REVERSE_FREEFALL_COASTER)),

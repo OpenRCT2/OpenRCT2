@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor SpaceRingsRTD =
                      RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::SpaceRings)),
     SET_FIELD(DefaultMode, RideMode::SpaceRings),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_SPACE_RINGS, STR_RIDE_DESCRIPTION_SPACE_RINGS }),
     SET_FIELD(NameConvention, { RideComponentType::Ring, RideComponentType::Structure, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_SPACE_RINGS)),
@@ -60,5 +60,6 @@ constexpr RideTypeDescriptor SpaceRingsRTD =
             { RatingsModifierType::BonusScenery,          0,                25098, 0, 0 },
         },
     }),
+    SET_FIELD(DeprecatedProperties, {0}),
 };
 // clang-format on

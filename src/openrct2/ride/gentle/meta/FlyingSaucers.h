@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor FlyingSaucersRTD =
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::Dodgems)),
     SET_FIELD(DefaultMode, RideMode::Dodgems),
-    SET_FIELD(OperatingSettings, { 20, 180, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 20, 180, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_FLYING_SAUCERS, STR_RIDE_DESCRIPTION_FLYING_SAUCERS }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_FLYING_SAUCERS)),

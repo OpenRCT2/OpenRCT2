@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
                      RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ForwardRotation, RideMode::BackwardRotation)),
     SET_FIELD(DefaultMode, RideMode::ForwardRotation),
-    SET_FIELD(OperatingSettings, { 1, 3, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 1, 3, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_FERRIS_WHEEL, STR_RIDE_DESCRIPTION_FERRIS_WHEEL }),
     SET_FIELD(NameConvention, { RideComponentType::Wheel, RideComponentType::Structure, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_FERRIS_WHEEL)),

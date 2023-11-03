@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
                      RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::RotatingLift)),
     SET_FIELD(DefaultMode, RideMode::RotatingLift),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_OBSERVATION_TOWER, STR_RIDE_DESCRIPTION_OBSERVATION_TOWER }),
     SET_FIELD(NameConvention, { RideComponentType::Cabin, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_OBSERVATION_TOWER)),
@@ -67,6 +67,7 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
             { RatingsModifierType::RequirementUnsheltered, 5, 4, 1, 1 },
         },
     }),
+    SET_FIELD(DeprecatedProperties, {0}),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_ObservationTower),
 };

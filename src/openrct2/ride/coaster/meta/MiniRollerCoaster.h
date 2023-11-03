@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor MiniRollerCoasterRTD =
                      RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 68, 1 }),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 68 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MINI_ROLLER_COASTER, STR_RIDE_DESCRIPTION_MINI_ROLLER_COASTER }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_MINI_ROLLER_COASTER)),
@@ -81,5 +81,6 @@ constexpr RideTypeDescriptor MiniRollerCoasterRTD =
             { RatingsModifierType::PenaltyLateralGs,      0,                20480, 23831, 49648 },
         },
     }),
+    SET_FIELD(DeprecatedProperties, { 1 }),
 };
 // clang-format on

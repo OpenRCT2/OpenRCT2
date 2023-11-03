@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
                      RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit, RideMode::Shuttle)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MINIATURE_RAILWAY, STR_RIDE_DESCRIPTION_MINIATURE_RAILWAY }),
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_MINIATURE_RAILWAY)),
@@ -75,6 +75,7 @@ constexpr RideTypeDescriptor MiniatureRailwayRTD =
             { RatingsModifierType::RequirementUnsheltered, 4,        4, 1, 1 },
         },
     }),
+    SET_FIELD(DeprecatedProperties, {0}),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_MiniatureRailway),
 };

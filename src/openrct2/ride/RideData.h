@@ -202,9 +202,14 @@ struct RideOperatingSettings
     uint8_t MaxBrakesSpeed;
     uint8_t PoweredLiftAcceleration;
     uint8_t BoosterAcceleration;
-    int8_t BoosterSpeedFactor = 0; // (Deprecated) The factor to shift the raw booster speed with
-    uint16_t AccelerationFactor = 12;
+    uint16_t AccelerationFactor = 12;       // the amount to right-shift the launch speed for powered launch from a station
     uint8_t OperatingSettingMultiplier = 1; // Used for the Ride window, cosmetic only.
+};
+
+struct RideDeprecatedProperties
+// These are values that must be kept for backwards compatibility and should not be used for new work
+{
+    int8_t BoosterSpeedFactor = 0; // The factor to shift the raw booster speed with
 };
 
 struct RatingsModifier
@@ -314,6 +319,8 @@ struct RideTypeDescriptor
     std::string_view Name;
 
     RideRatingsDescriptor RatingsData;
+
+    RideDeprecatedProperties DeprecatedProperties = { 0 };
 
     UpdateRotatingFunction UpdateRotating = UpdateRotatingDefault;
 
@@ -548,6 +555,7 @@ constexpr RideTypeDescriptor DummyRTD =
             { RatingsModifierType::NoModifier, 0, 0, 0, 0 },
         },
     }),
+    SET_FIELD(DeprecatedProperties, {0}),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),

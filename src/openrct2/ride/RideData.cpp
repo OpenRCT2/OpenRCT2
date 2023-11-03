@@ -416,7 +416,7 @@ void UpdateDisabledRidePieces(const RideTrackGroup& res)
 
 int32_t RideTypeDescriptor::GetRelativeBoosterSpeed(const int32_t& absoluteSpeed) const
 {
-    auto shiftFactor = OperatingSettings.BoosterSpeedFactor;
+    auto shiftFactor = DeprecatedProperties.BoosterSpeedFactor;
     if (shiftFactor == 0)
     {
         return absoluteSpeed;
@@ -432,7 +432,7 @@ int32_t RideTypeDescriptor::GetRelativeBoosterSpeed(const int32_t& absoluteSpeed
 
 int32_t RideTypeDescriptor::GetAbsoluteBoosterSpeed(const int32_t& relativeSpeed) const
 {
-    auto shiftFactor = OperatingSettings.BoosterSpeedFactor;
+    auto shiftFactor = DeprecatedProperties.BoosterSpeedFactor;
     if (shiftFactor == 0)
     {
         return relativeSpeed;

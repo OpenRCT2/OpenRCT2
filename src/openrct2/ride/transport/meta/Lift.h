@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor LiftRTD =
                      RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_TRANSPORT_RIDE | RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::Shuttle)),
     SET_FIELD(DefaultMode, RideMode::Shuttle),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_LIFT, STR_RIDE_DESCRIPTION_LIFT }),
     SET_FIELD(NameConvention, { RideComponentType::Cabin, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_LIFT)),

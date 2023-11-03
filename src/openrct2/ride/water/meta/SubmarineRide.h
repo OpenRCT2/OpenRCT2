@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor SubmarineRideRTD =
                      RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_SUBMARINE_RIDE, STR_RIDE_DESCRIPTION_SUBMARINE_RIDE }),
     SET_FIELD(NameConvention, { RideComponentType::Boat, RideComponentType::Track, RideComponentType::DockingPlatform }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_SUBMARINE_RIDE)),
@@ -66,6 +66,7 @@ constexpr RideTypeDescriptor SubmarineRideRTD =
             { RatingsModifierType::BonusScenery,          0,                22310, 0, 0 },
         },
     }),
+    SET_FIELD(DeprecatedProperties, {0}),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_BoatHire),
 };
