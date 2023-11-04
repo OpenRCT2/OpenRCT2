@@ -466,20 +466,6 @@ constexpr RideComponentName RideComponentNames[] =
 };
 // clang-format on
 
-constexpr std::string_view MUSIC_OBJECT_DODGEMS = "rct2.music.dodgems";
-constexpr std::string_view MUSIC_OBJECT_EGYPTIAN = "rct2.music.egyptian";
-constexpr std::string_view MUSIC_OBJECT_FAIRGROUND = "rct2.music.fairground";
-constexpr std::string_view MUSIC_OBJECT_GENTLE = "rct2.music.gentle";
-constexpr std::string_view MUSIC_OBJECT_HORROR = "rct2.music.horror";
-constexpr std::string_view MUSIC_OBJECT_PIRATE = "rct2.music.pirate";
-constexpr std::string_view MUSIC_OBJECT_ROCK_1 = "rct2.music.rock1";
-constexpr std::string_view MUSIC_OBJECT_ROCK_2 = "rct2.music.rock2";
-constexpr std::string_view MUSIC_OBJECT_ROCK_3 = "rct2.music.rock3";
-constexpr std::string_view MUSIC_OBJECT_SUMMER = "rct2.music.summer";
-constexpr std::string_view MUSIC_OBJECT_TECHNO = "rct2.music.techno";
-constexpr std::string_view MUSIC_OBJECT_WATER = "rct2.music.water";
-constexpr std::string_view MUSIC_OBJECT_WILD_WEST = "rct2.music.wildwest";
-
 constexpr const RideComponentName& GetRideComponentName(const RideComponentType type)
 {
     return RideComponentNames[EnumValue(type)];
@@ -527,7 +513,7 @@ constexpr RideTypeDescriptor DummyRTD =
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 0.00_GBP, 0.00_GBP, 1 }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
+    SET_FIELD(DefaultMusic, "rct2.music.gentle"),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 0),
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),

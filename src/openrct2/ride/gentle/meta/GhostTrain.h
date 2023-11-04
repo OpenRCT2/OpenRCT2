@@ -46,7 +46,7 @@ constexpr RideTypeDescriptor GhostTrainRTD =
     SET_FIELD(UpkeepCosts, { 80, 20, 0, 8, 3, 5 }),
     SET_FIELD(BuildCosts, { 13.00_GBP, 2.50_GBP, 30, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_HORROR),
+    SET_FIELD(DefaultMusic, "rct2.music.horror"),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 50),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

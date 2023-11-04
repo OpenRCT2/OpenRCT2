@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor MineTrainCoasterRTD =
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 41.00_GBP, 3.00_GBP, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_WILD_WEST),
+    SET_FIELD(DefaultMusic, "rct2.music.wildwest"),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 85),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

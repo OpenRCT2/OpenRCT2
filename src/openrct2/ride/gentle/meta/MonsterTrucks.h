@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor MonsterTrucksRTD =
     SET_FIELD(UpkeepCosts, { 70, 20, 0, 8, 3, 5 }),
     SET_FIELD(BuildCosts, { 12.50_GBP, 2.50_GBP, 30, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_SUMMER),
+    SET_FIELD(DefaultMusic, "rct2.music.summer"),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 50),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

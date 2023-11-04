@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor ObservationTowerRTD =
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 10, 0, 0 }),
     SET_FIELD(BuildCosts, { 18.50_GBP, 0.00_GBP, 4, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_SUMMER),
+    SET_FIELD(DefaultMusic, "rct2.music.summer"),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 45),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

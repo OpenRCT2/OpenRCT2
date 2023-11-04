@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor EnterpriseRTD =
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 50.00_GBP, 1.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 20, 0 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_2),
+    SET_FIELD(DefaultMusic, "rct2.music.rock2"),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 45),
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),

@@ -39,7 +39,7 @@ constexpr RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     SET_FIELD(UpkeepCosts, { 90, 20, 0, 0, 0, 10 }),
     SET_FIELD(BuildCosts, { 100.00_GBP, 0.00_GBP, 45, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_2),
+    SET_FIELD(DefaultMusic, "rct2.music.rock2"),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 70),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

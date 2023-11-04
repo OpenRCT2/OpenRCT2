@@ -45,7 +45,7 @@ constexpr RideTypeDescriptor RiverRapidsRTD =
     SET_FIELD(UpkeepCosts, { 82, 20, 0, 10, 0, 10 }),
     SET_FIELD(BuildCosts, { 31.00_GBP, 3.00_GBP, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_WATER),
+    SET_FIELD(DefaultMusic, "rct2.music.water"),
     SET_FIELD(PhotoItem, ShopItem::Photo4),
     SET_FIELD(BonusValue, 70),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

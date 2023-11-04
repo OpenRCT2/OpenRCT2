@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
     SET_FIELD(UpkeepCosts, { 180, 20, 80, 11, 3, 10 }),
     SET_FIELD(BuildCosts, { 62.50_GBP, 2.50_GBP, 25, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
+    SET_FIELD(DefaultMusic, "rct2.music.rock1"),
     SET_FIELD(PhotoItem, ShopItem::Photo2),
     SET_FIELD(BonusValue, 75),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

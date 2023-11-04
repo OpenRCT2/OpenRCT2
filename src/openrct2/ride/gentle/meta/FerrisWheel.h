@@ -43,7 +43,7 @@ constexpr RideTypeDescriptor FerrisWheelRTD =
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 112.50_GBP, 1.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_SUMMER),
+    SET_FIELD(DefaultMusic, "rct2.music.summer"),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 45),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

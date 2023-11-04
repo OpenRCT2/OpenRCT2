@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor AlpineCoasterRTD =
     SET_FIELD(UpkeepCosts, { 35, 20, 80, 8, 3, 10 }),
     SET_FIELD(BuildCosts, { 22.50_GBP, 2.50_GBP, 50}),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
+    SET_FIELD(DefaultMusic, "rct2.music.gentle"),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 65),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

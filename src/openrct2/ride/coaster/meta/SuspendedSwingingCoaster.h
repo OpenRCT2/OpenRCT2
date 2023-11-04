@@ -41,7 +41,7 @@ constexpr RideTypeDescriptor SuspendedSwingingCoasterRTD =
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 20, 3, 10 }),
     SET_FIELD(BuildCosts, { 47.50_GBP, 2.50_GBP, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
+    SET_FIELD(DefaultMusic, "rct2.music.rock1"),
     SET_FIELD(PhotoItem, ShopItem::Photo2),
     SET_FIELD(BonusValue, 90),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

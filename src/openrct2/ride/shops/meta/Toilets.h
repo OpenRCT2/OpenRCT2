@@ -41,7 +41,7 @@ constexpr RideTypeDescriptor ToiletsRTD =
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 225.00_GBP, 0.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 0, 0 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
+    SET_FIELD(DefaultMusic, "rct2.music.gentle"),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 5),
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),

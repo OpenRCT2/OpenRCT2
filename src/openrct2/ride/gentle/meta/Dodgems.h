@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor DodgemsRTD =
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 5, 0, 0 }),
     SET_FIELD(BuildCosts, { 27.50_GBP, 1.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_DODGEMS),
+    SET_FIELD(DefaultMusic, "rct2.music.dodgems"),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 35),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

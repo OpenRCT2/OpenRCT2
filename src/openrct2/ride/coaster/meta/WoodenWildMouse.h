@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor WoodenWildMouseRTD =
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 9, 3, 10 }),
     SET_FIELD(BuildCosts, { 25.00_GBP, 3.00_GBP, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_WILD_WEST),
+    SET_FIELD(DefaultMusic, "rct2.music.wildwest"),
     SET_FIELD(PhotoItem, ShopItem::Photo3),
     SET_FIELD(BonusValue, 55),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(

@@ -44,7 +44,7 @@ constexpr RideTypeDescriptor LogFlumeRTD =
     SET_FIELD(UpkeepCosts, { 80, 20, 0, 9, 0, 10 }),
     SET_FIELD(BuildCosts, { 22.50_GBP, 2.50_GBP, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_WATER),
+    SET_FIELD(DefaultMusic, "rct2.music.water"),
     SET_FIELD(PhotoItem, ShopItem::Photo4),
     SET_FIELD(BonusValue, 65),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
