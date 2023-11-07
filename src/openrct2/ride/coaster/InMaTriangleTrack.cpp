@@ -4225,43 +4225,6 @@ static void InMaTriangleTrackRightQuarterTurn160DegDown(
     InMaTriangleTrackLeftQuarterTurn160DegUp(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
 }
 
-/** rct2: 0x008ADA34 */
-static void InMaTriangleTrackBrakes(
-    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
-{
-    switch (direction)
-    {
-        case 0:
-        case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(GIGA_COASTER_BRAKE_SW_NE_CLOSED_1),
-                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(GIGA_COASTER_BRAKE_SW_NE_CLOSED_2),
-                { 0, 0, height }, { { 0, 27, height + 5 }, { 32, 1, 11 } });
-            break;
-        case 1:
-        case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(GIGA_COASTER_BRAKE_NW_SE_CLOSED_1),
-                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
-            PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(GIGA_COASTER_BRAKE_NW_SE_CLOSED_2),
-                { 0, 0, height }, { { 0, 27, height + 5 }, { 32, 1, 11 } });
-            break;
-    }
-    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
-    {
-        MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-    }
-    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    PaintUtilSetSegmentSupportHeight(
-        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
-}
-
 /** rct2: 0x008ADC84 */
 static void InMaTriangleTrack25DegUpLeftBanked(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -8408,8 +8371,7 @@ static void InMaTriangleTrackDiagRightBank(
     }
 }
 
-/** rct2: 0x008ADEC4 */
-static void InMaTriangleTrackBlockBrakes(
+static void InMaTriangleTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -17302,8 +17264,6 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionInMaTriangle(int32_t trackType)
             return InMaTriangleTrackLeftQuarterTurn160DegDown;
         case TrackElemType::RightQuarterTurn1TileDown60:
             return InMaTriangleTrackRightQuarterTurn160DegDown;
-        case TrackElemType::Brakes:
-            return InMaTriangleTrackBrakes;
         case TrackElemType::Up25LeftBanked:
             return InMaTriangleTrack25DegUpLeftBanked;
         case TrackElemType::Up25RightBanked:
@@ -17394,8 +17354,9 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionInMaTriangle(int32_t trackType)
             return InMaTriangleTrackDiagLeftBank;
         case TrackElemType::DiagRightBank:
             return InMaTriangleTrackDiagRightBank;
+        case TrackElemType::Brakes:
         case TrackElemType::BlockBrakes:
-            return InMaTriangleTrackBlockBrakes;
+            return InMaTriangleTrackBrakes;
         case TrackElemType::LeftBankedQuarterTurn3TileUp25:
             return InMaTriangleTrackLeftBankedQuarterTurn325DegUp;
         case TrackElemType::RightBankedQuarterTurn3TileUp25:
