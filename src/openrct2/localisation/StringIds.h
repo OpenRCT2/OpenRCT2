@@ -4001,7 +4001,7 @@ enum : uint16_t
     STR_CANT_FIRE_STAFF_INSPECTING = 6592,
 
     STR_CHEAT_REMOVE_PARK_FENCES = 6593,
-    
+
     STR_SHORTCUT_TOGGLE_WALL_SLOPE = 6594,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
