@@ -989,7 +989,7 @@ private:
             ft.Add<const char*>(authorsString.c_str());
             DrawTextEllipsised(
                 dpi, screenPos + ScreenCoordsXY{ textWidth, 39 }, WindowWidth - 2, STR_WINDOW_COLOUR_2_STRINGID, ft,
-                 { TextAlignment::RIGHT });
+                { TextAlignment::RIGHT });
         }
     }
 
