@@ -971,6 +971,31 @@ static Widget window_new_ride_widgets[] = {
                 ft.Add<money64>(price);
                 DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ textWidth, 51 }, stringId, ft, { TextAlignment::RIGHT });
             }
+
+            // Draw object author (will be blank space if no author in file or a non JSON object)
+            {
+                auto rideObject = static_cast<RideObject*>(rideEntry->obj);
+                auto repoItem = ObjectRepositoryFindObjectByEntry(&(rideObject->GetObjectEntry()));
+
+                std::string authorsString;
+                authorsString.append("Author(s): ");
+                for (size_t i = 0; i < repoItem->Authors.size(); i++)
+                {
+                    if (i > 0)
+                    {
+                        authorsString.append(", ");
+                    }
+                    authorsString.append(repoItem->Authors[i]);
+                }
+
+                ft = Formatter();
+                ft.Add<StringId>(STR_STRING);
+                ft.Add<const char*>(authorsString.c_str());
+
+                DrawTextEllipsised(
+                    dpi, screenPos + ScreenCoordsXY{ textWidth, 0 }, WindowWidth - 2, STR_WINDOW_COLOUR_2_STRINGID, ft,
+                    { TextAlignment::RIGHT });
+            }
         }
 
         void DrawTabImage(DrawPixelInfo& dpi, NewRideTabId tab, int32_t spriteIndex)
