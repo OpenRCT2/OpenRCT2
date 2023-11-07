@@ -2911,15 +2911,6 @@ namespace RCT1
         }
 
         dst->SetItemFlags(src->GetItemFlags());
-
-        if (dst->OutsideOfPark && dst->State != PeepState::LeavingPark)
-        {
-            IncrementGuestsHeadingForPark();
-        }
-        else
-        {
-            IncrementGuestsInPark();
-        }
     }
 
     template<> void S4Importer::ImportEntity<Staff>(const RCT12EntityBase& srcBase)

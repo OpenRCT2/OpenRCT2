@@ -54,4 +54,5 @@ private:
     void OwnAllLand() const;
     void ParkSetOpen(bool isOpen) const;
     void CreateDucks(int count) const;
+    void RemoveParkFences() const;
 };

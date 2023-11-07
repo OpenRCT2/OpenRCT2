@@ -91,6 +91,7 @@ enum class CheatType : int32_t
     NoCapOnQueueLengthDummy, // Removed; this dummy exists only for deserialisation parks that had it saved
     AllowRegularPathAsQueue,
     AllowSpecialColourSchemes,
+    RemoveParkFences,
     Count,
 };
 
