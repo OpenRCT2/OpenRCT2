@@ -14,6 +14,7 @@
 - Fix: [#20737] Spent money in player window underflows when getting refunds.
 - Fix: [#20778] [Plugin] Incorrect target api when executing custom actions.
 - Fix: [#20807] Tertiary colour not copied with small scenery.
+- Fix: [#20964] Crash when player connects to server with a group assigned that no longer exists.
 
 0.4.6 (2023-09-03)
 ------------------------------------------------------------------------
