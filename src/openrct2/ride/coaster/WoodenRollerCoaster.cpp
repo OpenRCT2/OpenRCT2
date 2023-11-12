@@ -9504,16 +9504,24 @@ static void WoodenRCTrackDiag25DegUp(
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24935), { -16, -16, height },
                             { { -16, -16, height + 43 }, { 32, 32, 0 } });
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -9534,16 +9542,24 @@ static void WoodenRCTrackDiag25DegUp(
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24893), { -16, -16, height },
                             { { -16, -16, height + 43 }, { 32, 32, 0 } });
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -9556,10 +9572,14 @@ static void WoodenRCTrackDiag25DegUp(
                 switch (direction)
                 {
                     case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -9574,10 +9594,14 @@ static void WoodenRCTrackDiag25DegUp(
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24936), { -16, -16, height },
                             { { -16, -16, height + 43 }, { 32, 32, 0 } });
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -9586,10 +9610,14 @@ static void WoodenRCTrackDiag25DegUp(
                 switch (direction)
                 {
                     case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -9604,10 +9632,14 @@ static void WoodenRCTrackDiag25DegUp(
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24894), { -16, -16, height },
                             { { -16, -16, height + 43 }, { 32, 32, 0 } });
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -9688,16 +9720,24 @@ static void WoodenRCTrackDiag60DegUp(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24911), { -16, -16, height },
                         { { -16, -16, height + 91 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -9707,10 +9747,14 @@ static void WoodenRCTrackDiag60DegUp(
             switch (direction)
             {
                 case 0:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -9725,10 +9769,14 @@ static void WoodenRCTrackDiag60DegUp(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24912), { -16, -16, height },
                         { { -16, -16, height + 91 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -9994,16 +10042,24 @@ static void WoodenRCTrackDiag25DegUpTo60DegUp(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24899), { -16, -16, height },
                         { { -16, -16, height + 59 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -10013,10 +10069,14 @@ static void WoodenRCTrackDiag25DegUpTo60DegUp(
             switch (direction)
             {
                 case 0:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -10031,10 +10091,14 @@ static void WoodenRCTrackDiag25DegUpTo60DegUp(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24900), { -16, -16, height },
                         { { -16, -16, height + 59 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -10097,16 +10161,24 @@ static void WoodenRCTrackDiag60DegUpTo25DegUp(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24905), { -16, -16, height },
                         { { -16, -16, height + 59 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -10116,10 +10188,14 @@ static void WoodenRCTrackDiag60DegUpTo25DegUp(
             switch (direction)
             {
                 case 0:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -10134,10 +10210,14 @@ static void WoodenRCTrackDiag60DegUpTo25DegUp(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24906), { -16, -16, height },
                         { { -16, -16, height + 59 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -10219,16 +10299,24 @@ static void WoodenRCTrackDiag25DegUpToFlat(
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24929), { -16, -16, height },
                             { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -10249,16 +10337,24 @@ static void WoodenRCTrackDiag25DegUpToFlat(
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24887), { -16, -16, height },
                             { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -10271,10 +10367,14 @@ static void WoodenRCTrackDiag25DegUpToFlat(
                 switch (direction)
                 {
                     case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -10289,10 +10389,14 @@ static void WoodenRCTrackDiag25DegUpToFlat(
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24930), { -16, -16, height },
                             { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -10301,10 +10405,14 @@ static void WoodenRCTrackDiag25DegUpToFlat(
                 switch (direction)
                 {
                     case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -10319,10 +10427,14 @@ static void WoodenRCTrackDiag25DegUpToFlat(
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24888), { -16, -16, height },
                             { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -10422,16 +10534,24 @@ static void WoodenRCTrackDiag25DegDown(
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24936), { -16, -16, height },
                             { { -16, -16, height + 43 }, { 32, 32, 0 } });
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -10452,16 +10572,24 @@ static void WoodenRCTrackDiag25DegDown(
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24894), { -16, -16, height },
                             { { -16, -16, height + 43 }, { 32, 32, 0 } });
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -10474,10 +10602,14 @@ static void WoodenRCTrackDiag25DegDown(
                 switch (direction)
                 {
                     case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -10492,10 +10624,14 @@ static void WoodenRCTrackDiag25DegDown(
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24935), { -16, -16, height },
                             { { -16, -16, height + 43 }, { 32, 32, 0 } });
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -10504,10 +10640,14 @@ static void WoodenRCTrackDiag25DegDown(
                 switch (direction)
                 {
                     case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -10522,10 +10662,14 @@ static void WoodenRCTrackDiag25DegDown(
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24893), { -16, -16, height },
                             { { -16, -16, height + 43 }, { 32, 32, 0 } });
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -10606,16 +10750,24 @@ static void WoodenRCTrackDiag60DegDown(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24912), { -16, -16, height },
                         { { -16, -16, height + 91 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -10625,10 +10777,14 @@ static void WoodenRCTrackDiag60DegDown(
             switch (direction)
             {
                 case 0:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -10643,10 +10799,14 @@ static void WoodenRCTrackDiag60DegDown(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24911), { -16, -16, height },
                         { { -16, -16, height + 91 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -10726,16 +10886,24 @@ static void WoodenRCTrackDiagFlatTo25DegDown(
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24930), { -16, -16, height },
                             { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -10756,16 +10924,24 @@ static void WoodenRCTrackDiagFlatTo25DegDown(
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24888), { -16, -16, height },
                             { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -10776,10 +10952,14 @@ static void WoodenRCTrackDiagFlatTo25DegDown(
                 switch (direction)
                 {
                     case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -10794,10 +10974,14 @@ static void WoodenRCTrackDiagFlatTo25DegDown(
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24929), { -16, -16, height },
                             { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -10806,10 +10990,14 @@ static void WoodenRCTrackDiagFlatTo25DegDown(
                 switch (direction)
                 {
                     case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -10824,10 +11012,14 @@ static void WoodenRCTrackDiagFlatTo25DegDown(
                         PaintAddImageAsChildRotated(
                             session, direction, WoodenRCGetRailsColour(session).WithIndex(24887), { -16, -16, height },
                             { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                        WoodenBSupportsPaintSetup(
+                            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
             }
@@ -10907,16 +11099,24 @@ static void WoodenRCTrackDiag25DegDownTo60DegDown(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24906), { -16, -16, height },
                         { { -16, -16, height + 59 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -10926,10 +11126,14 @@ static void WoodenRCTrackDiag25DegDownTo60DegDown(
             switch (direction)
             {
                 case 0:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -10944,10 +11148,14 @@ static void WoodenRCTrackDiag25DegDownTo60DegDown(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24905), { -16, -16, height },
                         { { -16, -16, height + 59 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -11010,16 +11218,24 @@ static void WoodenRCTrackDiag60DegDownTo25DegDown(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24900), { -16, -16, height },
                         { { -16, -16, height + 59 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -11029,10 +11245,14 @@ static void WoodenRCTrackDiag60DegDownTo25DegDown(
             switch (direction)
             {
                 case 0:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -11047,10 +11267,14 @@ static void WoodenRCTrackDiag60DegDownTo25DegDown(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24899), { -16, -16, height },
                         { { -16, -16, height + 59 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -11934,16 +12158,24 @@ static void WoodenRCTrackDiag25DegUpToLeftBank(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24959), { -16, -16, height },
                         { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -11953,10 +12185,14 @@ static void WoodenRCTrackDiag25DegUpToLeftBank(
             switch (direction)
             {
                 case 0:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -11971,10 +12207,14 @@ static void WoodenRCTrackDiag25DegUpToLeftBank(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24960), { -16, -16, height },
                         { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -12037,16 +12277,24 @@ static void WoodenRCTrackDiag25DegUpToRightBank(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24965), { -16, -16, height },
                         { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -12056,10 +12304,14 @@ static void WoodenRCTrackDiag25DegUpToRightBank(
             switch (direction)
             {
                 case 0:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -12074,10 +12326,14 @@ static void WoodenRCTrackDiag25DegUpToRightBank(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24966), { -16, -16, height },
                         { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -12138,16 +12394,24 @@ static void WoodenRCTrackDiagLeftBankTo25DegDown(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24966), { -16, -16, height },
                         { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             break;
@@ -12155,10 +12419,14 @@ static void WoodenRCTrackDiagLeftBankTo25DegDown(
             switch (direction)
             {
                 case 0:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -12173,10 +12441,14 @@ static void WoodenRCTrackDiagLeftBankTo25DegDown(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24965), { -16, -16, height },
                         { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             break;
@@ -12236,16 +12508,24 @@ static void WoodenRCTrackDiagRightBankTo25DegDown(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24960), { -16, -16, height },
                         { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             break;
@@ -12253,10 +12533,14 @@ static void WoodenRCTrackDiagRightBankTo25DegDown(
             switch (direction)
             {
                 case 0:
-                    WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -12271,10 +12555,14 @@ static void WoodenRCTrackDiagRightBankTo25DegDown(
                     PaintAddImageAsChildRotated(
                         session, direction, WoodenRCGetRailsColour(session).WithIndex(24959), { -16, -16, height },
                         { { -16, -16, height + 35 }, { 32, 32, 0 } });
-                    WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                    WoodenBSupportsPaintSetup(
+                        session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, height + 16,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             break;
