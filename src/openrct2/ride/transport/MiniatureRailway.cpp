@@ -1846,27 +1846,6 @@ static void MiniatureRailwayTrackDiagFlat(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-enum
-{
-    WOOD_A = 0,
-    WOOD_B = 1,
-};
-
-static bool WoodenSupportsPaintSetup(
-    PaintSession& session, int32_t woodType, int32_t supportType, int32_t special, int32_t height, ImageId imageColourFlags)
-{
-    switch (woodType)
-    {
-        case WOOD_A:
-            return WoodenASupportsPaintSetup(session, supportType, special, height, imageColourFlags);
-
-        case WOOD_B:
-            return WoodenBSupportsPaintSetup(session, supportType, special, height, imageColourFlags);
-    }
-
-    return false;
-}
-
 /** rct2: 0x008AD230 */
 static void MiniatureRailwayTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -1888,19 +1867,21 @@ static void MiniatureRailwayTrackDiag25DegUp(
     auto supportType = _diagSupportTypes[direction][trackSequence];
     if (supportType.has_value())
     {
-        // TODO: The supports are inconsistent for different rotations
-        int8_t supportFunction = WOOD_B;
-        if (supportType == WoodenSupportSubType::NeSw || supportType == WoodenSupportSubType::NwSe)
-        {
-            supportFunction = WOOD_A;
-        }
-
         const auto enumValue = EnumValue(supportType.value());
         floorImage = floors[enumValue].image_id;
         floorBoundSize = floors[enumValue].bound_size;
         floorBoundOffset = floors[enumValue].bound_offset;
-        hasSupports = WoodenSupportsPaintSetup(
-            session, supportFunction, enumValue, 0, height + heightDiff, session.TrackColours[SCHEME_SUPPORTS]);
+
+        if (trackSequence == 3)
+        {
+            hasSupports = WoodenASupportsPaintSetup(
+                session, enumValue, 0, height + heightDiff, session.TrackColours[SCHEME_SUPPORTS]);
+        }
+        else
+        {
+            hasSupports = WoodenBSupportsPaintSetup(
+                session, enumValue, 0, height + heightDiff, session.TrackColours[SCHEME_SUPPORTS]);
+        }
     }
 
     if (direction == 1 && trackSequence == 3)
@@ -2012,12 +1993,6 @@ static void MiniatureRailwayTrackDiag25DegUpToFlat(
         { 0, -8, -8, +8 },
     };
 
-    int8_t supportFunction = WOOD_B;
-    if (trackSequence == 3)
-    {
-        supportFunction = WOOD_A;
-    }
-
     bool hasSupports = false;
     auto supportType = _diagSupportTypes[direction][trackSequence];
 
@@ -2031,9 +2006,18 @@ static void MiniatureRailwayTrackDiag25DegUpToFlat(
         floorImage = floors[enumValue].image_id;
         floorBoundSize = floors[enumValue].bound_size;
         floorBoundOffset = floors[enumValue].bound_offset;
-        hasSupports = WoodenSupportsPaintSetup(
-            session, supportFunction, enumValue, 0, height + supportOffsets[direction][trackSequence],
-            session.TrackColours[SCHEME_SUPPORTS]);
+        if (trackSequence == 3)
+        {
+            hasSupports = WoodenASupportsPaintSetup(
+                session, enumValue, 0, height + supportOffsets[direction][trackSequence],
+                session.TrackColours[SCHEME_SUPPORTS]);
+        }
+        else
+        {
+            hasSupports = WoodenBSupportsPaintSetup(
+                session, enumValue, 0, height + supportOffsets[direction][trackSequence],
+                session.TrackColours[SCHEME_SUPPORTS]);
+        }
     }
 
     if (direction == 1 && trackSequence == 3)
@@ -2089,12 +2073,6 @@ static void MiniatureRailwayTrackDiag25DegDown(
         { 0, -8, -8, -8 },
     };
 
-    int8_t supportFunction = WOOD_B;
-    if (trackSequence == 3)
-    {
-        supportFunction = WOOD_A;
-    }
-
     bool hasSupports = false;
 
     uint32_t floorImage = 0;
@@ -2108,9 +2086,18 @@ static void MiniatureRailwayTrackDiag25DegDown(
         floorImage = floors[enumValue].image_id;
         floorBoundSize = floors[enumValue].bound_size;
         floorBoundOffset = floors[enumValue].bound_offset;
-        hasSupports = WoodenSupportsPaintSetup(
-            session, supportFunction, enumValue, 0, height + supportOffsets[direction][trackSequence],
-            session.TrackColours[SCHEME_SUPPORTS]);
+        if (trackSequence == 3)
+        {
+            hasSupports = WoodenASupportsPaintSetup(
+                session, enumValue, 0, height + supportOffsets[direction][trackSequence],
+                session.TrackColours[SCHEME_SUPPORTS]);
+        }
+        else
+        {
+            hasSupports = WoodenBSupportsPaintSetup(
+                session, enumValue, 0, height + supportOffsets[direction][trackSequence],
+                session.TrackColours[SCHEME_SUPPORTS]);
+        }
     }
 
     if (direction == 1 && trackSequence == 3)
@@ -2165,12 +2152,6 @@ static void MiniatureRailwayTrackDiagFlatTo25DegDown(
         { 0, -8, -8, -8 },
     };
 
-    int8_t supportFunction = WOOD_B;
-    if (trackSequence == 3)
-    {
-        supportFunction = WOOD_A;
-    }
-
     bool hasSupports = false;
     uint32_t floorImage = 0;
     CoordsXY floorBoundSize;
@@ -2183,9 +2164,18 @@ static void MiniatureRailwayTrackDiagFlatTo25DegDown(
         floorImage = floors[enumValue].image_id;
         floorBoundSize = floors[enumValue].bound_size;
         floorBoundOffset = floors[enumValue].bound_offset;
-        hasSupports = WoodenSupportsPaintSetup(
-            session, supportFunction, enumValue, 0, height + supportOffsets[direction][trackSequence],
-            session.TrackColours[SCHEME_SUPPORTS]);
+        if (trackSequence == 3)
+        {
+            hasSupports = WoodenASupportsPaintSetup(
+                session, enumValue, 0, height + supportOffsets[direction][trackSequence],
+                session.TrackColours[SCHEME_SUPPORTS]);
+        }
+        else
+        {
+            hasSupports = WoodenBSupportsPaintSetup(
+                session, enumValue, 0, height + supportOffsets[direction][trackSequence],
+                session.TrackColours[SCHEME_SUPPORTS]);
+        }
     }
 
     if (direction == 1 && trackSequence == 3)
