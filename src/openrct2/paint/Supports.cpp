@@ -730,7 +730,7 @@ bool WoodenASupportsPaintSetupRotated(
  *
  * @return (al) whether supports have been drawn
  */
-bool WoodenBSupportsPaintSetup(
+static bool WoodenBSupportsPaintSetup(
     PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
