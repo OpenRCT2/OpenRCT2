@@ -1880,7 +1880,8 @@ static void MiniatureRailwayTrackDiag25DegUp(
         else
         {
             hasSupports = WoodenBSupportsPaintSetup(
-                session, enumValue, 0, height + heightDiff, session.TrackColours[SCHEME_SUPPORTS]);
+                session, WoodenSupportType::Truss, supportType.value(), height + heightDiff,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
 
@@ -2015,7 +2016,7 @@ static void MiniatureRailwayTrackDiag25DegUpToFlat(
         else
         {
             hasSupports = WoodenBSupportsPaintSetup(
-                session, enumValue, 0, height + supportOffsets[direction][trackSequence],
+                session, WoodenSupportType::Truss, supportType.value(), height + supportOffsets[direction][trackSequence],
                 session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
@@ -2095,7 +2096,7 @@ static void MiniatureRailwayTrackDiag25DegDown(
         else
         {
             hasSupports = WoodenBSupportsPaintSetup(
-                session, enumValue, 0, height + supportOffsets[direction][trackSequence],
+                session, WoodenSupportType::Truss, supportType.value(), height + supportOffsets[direction][trackSequence],
                 session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
@@ -2173,7 +2174,7 @@ static void MiniatureRailwayTrackDiagFlatTo25DegDown(
         else
         {
             hasSupports = WoodenBSupportsPaintSetup(
-                session, enumValue, 0, height + supportOffsets[direction][trackSequence],
+                session, WoodenSupportType::Truss, supportType.value(), height + supportOffsets[direction][trackSequence],
                 session.TrackColours[SCHEME_SUPPORTS]);
         }
     }
