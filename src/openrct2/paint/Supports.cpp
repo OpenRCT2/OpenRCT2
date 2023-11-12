@@ -353,19 +353,19 @@ static constexpr UnkSupportsDescriptor Byte97B23C[] = {
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1}, // ?
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1}, // ?
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1}, // ?
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
-    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
-    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
-    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
-    {{{2,  2,  1}, {28, 28, 2}},  0, 1},
+    {{{2,  2,  1}, {28, 28, 2}},  0, 1}, // Large scenery (all directions)
     {{{0,  0,  0}, {1,  1,  8}},  0, 1}, // Flat to steep large 1
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
@@ -680,16 +680,32 @@ bool WoodenASupportsPaintSetup(
     return hasSupports;
 }
 
+static int32_t GetSpecialOffsetForTransitionType(WoodenSupportTransitionType transitionType, Direction direction)
+{
+    if (transitionType == WoodenSupportTransitionType::None)
+        return 0;
+
+    // "Special" values are an offset into tables like Byte97B23C, plus 1.
+    // Save for WoodenSupportTransitionType::LargeScenery, there are four entries (one per direction) for every
+    // transition type. While these tables will have to be refactored in due course, we can only do so once all
+    // drawing functions use WoodenSupportTransitionType instead of passing the "special" value directly.
+    int32_t specialOffset = 0;
+    if (transitionType < WoodenSupportTransitionType::Scenery)
+        specialOffset = (EnumValue(transitionType) * NumOrthogonalDirections) + direction;
+    else if (transitionType == WoodenSupportTransitionType::Scenery)
+        specialOffset = (EnumValue(transitionType) * NumOrthogonalDirections);
+    else
+        specialOffset = (EnumValue(transitionType) * NumOrthogonalDirections) + direction - 3;
+
+    return specialOffset + 1;
+}
+
 bool WoodenASupportsPaintSetup(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
     WoodenSupportTransitionType transitionType, Direction direction)
 {
     int32_t oldSupportType = (EnumValue(supportType) * 6) + EnumValue(subType);
-    int32_t special = 0;
-    if (transitionType != WoodenSupportTransitionType::None)
-    {
-        special = (EnumValue(transitionType) * NumOrthogonalDirections) + direction + 1;
-    }
+    int32_t special = GetSpecialOffsetForTransitionType(transitionType, direction);
 
     return WoodenASupportsPaintSetup(session, oldSupportType, special, height, imageTemplate);
 }
@@ -829,11 +845,7 @@ bool WoodenBSupportsPaintSetup(
     WoodenSupportTransitionType transitionType, Direction direction)
 {
     int32_t oldSupportType = (EnumValue(supportType) * 6) + EnumValue(subType);
-    int32_t special = 0;
-    if (transitionType != WoodenSupportTransitionType::None)
-    {
-        special = (EnumValue(transitionType) * NumOrthogonalDirections) + direction + 1;
-    }
+    int32_t special = GetSpecialOffsetForTransitionType(transitionType, direction);
 
     return WoodenBSupportsPaintSetup(session, oldSupportType, special, height, imageTemplate);
 }
