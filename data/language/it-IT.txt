@@ -3701,6 +3701,8 @@ STR_6589    :Mostra i pulsanti di controllo della finestra a sinistra
 STR_6590    :Mostra i pulsanti di controllo della finestra (ad es. per chiuderla) a sinistra della barra del titolo invece che a destra.
 STR_6591    :Il dipendente sta riparando un’attrazione e non può essere licenziato.
 STR_6592    :Il dipendente sta ispezionando un’attrazione e non può essere licenziato.
+STR_6593    :Rimuovi recinto del parco
+STR_6594    :Analizzatore celle: Attiva/disattiva inclinazione muro
 
 
 #############
