@@ -1539,6 +1539,7 @@ namespace RCT2
             dst->lift_hill_speed = src->LiftHillSpeed;
             dst->guests_favourite = src->GuestsFavourite;
             dst->lifecycle_flags = src->LifecycleFlags;
+            dst->SetLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTER_SPEED, true);
 
             for (uint8_t i = 0; i < Limits::MaxTrainsPerRide; i++)
             {

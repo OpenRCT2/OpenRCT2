@@ -5208,6 +5208,12 @@ void Ride::SetReversedTrains(bool reverseTrains)
     GameActions::Execute(&rideSetVehicleAction);
 }
 
+void Ride::SetLegacyBoosterSpeed(bool useLegacySpeed)
+{
+    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::LegacyBoosterSpeed, useLegacySpeed);
+    GameActions::Execute(&rideSetVehicleAction);
+}
+
 void Ride::SetToDefaultInspectionInterval()
 {
     uint8_t defaultInspectionInterval = gConfigGeneral.DefaultInspectionInterval;

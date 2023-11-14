@@ -132,6 +132,7 @@ enum {
     WIDX_VEHICLE_CARS_PER_TRAIN,
     WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE,
     WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE,
+    WIDX_VEHICLE_LEGACY_SPEED_CHECKBOX,
 
     WIDX_MODE_TWEAK = 14,
     WIDX_MODE_TWEAK_INCREASE,
@@ -267,6 +268,7 @@ static Widget _vehicleWidgets[] = {
     MakeWidget        ({  7, 154}, {302, 43}, WindowWidgetType::Scroll,   WindowColour::Secondary, STR_EMPTY                                         ),
     MakeSpinnerWidgets({  7, 203}, {145, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_RIDE_VEHICLE_COUNT, STR_MAX_VEHICLES_TIP      ),
     MakeSpinnerWidgets({164, 203}, {145, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_1_CAR_PER_TRAIN,    STR_MAX_CARS_PER_TRAIN_TIP),
+    MakeWidget        ({  310, 137}, {302, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_OPTION_USE_LEGACY_SPEED, STR_OPTION_USE_LEGACY_SPEED_TIP  ),
     WIDGETS_END,
 };
 
@@ -2529,6 +2531,9 @@ private:
                 if (ride->num_cars_per_train > 1)
                     ride->SetNumCarsPerVehicle(ride->num_cars_per_train - 1);
                 break;
+            case WIDX_VEHICLE_LEGACY_SPEED_CHECKBOX:
+                ride->SetLegacyBoosterSpeed(!ride->HasLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTER_SPEED));
+                break;
         }
     }
 
@@ -2681,6 +2686,24 @@ private:
         else
         {
             widgets[WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX].type = WindowWidgetType::Empty;
+        }
+
+        if (ride->HasLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTER_SPEED)
+            || (gCheatsUnlockOperatingLimits && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE)))
+        {
+            widgets[WIDX_VEHICLE_LEGACY_SPEED_CHECKBOX].type = WindowWidgetType::Checkbox;
+            if (ride->HasLifecycleFlag(WIDX_VEHICLE_LEGACY_SPEED_CHECKBOX))
+            {
+                pressed_widgets |= (1uLL << WIDX_VEHICLE_LEGACY_SPEED_CHECKBOX);
+            }
+            else
+            {
+                pressed_widgets &= ~(1uLL << WIDX_VEHICLE_LEGACY_SPEED_CHECKBOX);
+            }
+        }
+        else
+        {
+            widgets[WIDX_VEHICLE_LEGACY_SPEED_CHECKBOX].type = WindowWidgetType::Empty;
         }
 
         auto ft = Formatter::Common();

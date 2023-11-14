@@ -1305,6 +1305,8 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.status);
                     cs.ReadWrite(ride.depart_flags);
                     cs.ReadWrite(ride.lifecycle_flags);
+                    if (version < UnifyBoosterSpeedVersion)
+                        ride.SetLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTER_SPEED, true);
 
                     // Meta
                     cs.ReadWrite(ride.custom_name);

@@ -830,6 +830,7 @@ namespace RCT1
                 dst->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE;
                 dst->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
             }
+            dst->SetLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTER_SPEED, true);
 
             // Station
             if (src->OverallView.IsNull())
