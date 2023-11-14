@@ -125,6 +125,7 @@ enum {
     WIDX_VEHICLE_TYPE = 14,
     WIDX_VEHICLE_TYPE_DROPDOWN,
     WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX,
+    WIDX_VEHICLE_LEGACY_SPEED_CHECKBOX,
     WIDX_VEHICLE_TRAINS_PREVIEW,
     WIDX_VEHICLE_TRAINS,
     WIDX_VEHICLE_TRAINS_INCREASE,
@@ -132,7 +133,6 @@ enum {
     WIDX_VEHICLE_CARS_PER_TRAIN,
     WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE,
     WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE,
-    WIDX_VEHICLE_LEGACY_SPEED_CHECKBOX,
 
     WIDX_MODE_TWEAK = 14,
     WIDX_MODE_TWEAK_INCREASE,
@@ -264,11 +264,11 @@ static Widget _vehicleWidgets[] = {
     MAIN_RIDE_WIDGETS,
     MakeWidget        ({  7,  50}, {302, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                    ),
     MakeWidget        ({297,  51}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                                ),
-    MakeWidget        ({  7, 137}, {302, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_OPTION_REVERSE_TRAINS, STR_OPTION_REVERSE_TRAINS_TIP  ),
+    MakeWidget        ({  7, 137}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_OPTION_REVERSE_TRAINS, STR_OPTION_REVERSE_TRAINS_TIP  ),
+    MakeWidget        ({164, 137}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_OPTION_USE_LEGACY_SPEED, STR_OPTION_USE_LEGACY_SPEED_TIP  ),
     MakeWidget        ({  7, 154}, {302, 43}, WindowWidgetType::Scroll,   WindowColour::Secondary, STR_EMPTY                                         ),
     MakeSpinnerWidgets({  7, 203}, {145, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_RIDE_VEHICLE_COUNT, STR_MAX_VEHICLES_TIP      ),
     MakeSpinnerWidgets({164, 203}, {145, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_1_CAR_PER_TRAIN,    STR_MAX_CARS_PER_TRAIN_TIP),
-    MakeWidget        ({  310, 137}, {302, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_OPTION_USE_LEGACY_SPEED, STR_OPTION_USE_LEGACY_SPEED_TIP  ),
     WIDGETS_END,
 };
 
@@ -2532,6 +2532,10 @@ private:
                     ride->SetNumCarsPerVehicle(ride->num_cars_per_train - 1);
                 break;
             case WIDX_VEHICLE_LEGACY_SPEED_CHECKBOX:
+                if (ride->HasLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTER_SPEED) && !gCheatsDisableTrainLengthLimit)
+                {
+                    widgets[WIDX_VEHICLE_LEGACY_SPEED_CHECKBOX].type = WindowWidgetType::Empty;
+                }
                 ride->SetLegacyBoosterSpeed(!ride->HasLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTER_SPEED));
                 break;
         }
@@ -2688,11 +2692,11 @@ private:
             widgets[WIDX_VEHICLE_REVERSED_TRAINS_CHECKBOX].type = WindowWidgetType::Empty;
         }
 
-        if (ride->HasLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTER_SPEED)
-            || (gCheatsUnlockOperatingLimits && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE)))
+        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE)
+            && (gCheatsDisableTrainLengthLimit || ride->HasLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTER_SPEED)))
         {
             widgets[WIDX_VEHICLE_LEGACY_SPEED_CHECKBOX].type = WindowWidgetType::Checkbox;
-            if (ride->HasLifecycleFlag(WIDX_VEHICLE_LEGACY_SPEED_CHECKBOX))
+            if (ride->HasLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTER_SPEED))
             {
                 pressed_widgets |= (1uLL << WIDX_VEHICLE_LEGACY_SPEED_CHECKBOX);
             }

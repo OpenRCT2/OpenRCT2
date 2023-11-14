@@ -3406,6 +3406,10 @@ static Vehicle* VehicleCreateCar(
             vehicle->SubType = carIndex == (ride.num_cars_per_train - 1) ? Vehicle::Type::Head : Vehicle::Type::Tail;
             vehicle->SetFlag(VehicleFlags::CarIsReversed);
         }
+        if (ride.HasLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTER_SPEED))
+        {
+            vehicle->SetFlag(VehicleFlags::LegacyBoosterSpeed);
+        }
     }
 
     // Loc6DDD5E:

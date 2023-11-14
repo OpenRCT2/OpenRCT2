@@ -200,7 +200,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
             ride->RemovePeeps();
             ride->vehicle_change_timeout = 100;
 
-            ride->SetLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS, _value);
+            ride->SetLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTER_SPEED, _value);
             break;
         }
 
