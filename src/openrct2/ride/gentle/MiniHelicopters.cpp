@@ -321,7 +321,9 @@ static void PaintMiniHelicoptersTrackSpinningTunnel(
     TrackPaintUtilSpinningTunnelPaint(session, 1, height, direction);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, GetStationColourScheme(session, trackElement));
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        GetStationColourScheme(session, trackElement));
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);

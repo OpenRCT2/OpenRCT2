@@ -134,8 +134,6 @@ enum class MetalSupportPlace : uint8_t
 };
 
 bool WoodenASupportsPaintSetup(
-    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
-bool WoodenASupportsPaintSetup(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
     WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None, Direction direction = 0);
 bool WoodenASupportsPaintSetupRotated(

@@ -573,7 +573,7 @@ static bool WoodenABSupportPaintSetupPaintSpecial(
  * @param[out] underground (Carry flag) true if underground.
  * @returns (al) true if any supports have been drawn, otherwise false.
  */
-bool WoodenASupportsPaintSetup(
+static bool WoodenASupportsPaintSetup(
     PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))

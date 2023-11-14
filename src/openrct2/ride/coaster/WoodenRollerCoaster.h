@@ -26,11 +26,13 @@ struct SpriteBoundBox2
 };
 
 // Magic number 4 refers to the number of track blocks in a diagonal track element
-static constexpr const int8_t WoodenRCDiagonalSupports[4][NumOrthogonalDirections] = {
-    { -1, -1, -1, -1 }, // sequence 0
-    { 2, 3, 4, 5 },     // sequence 1
-    { 4, 5, 2, 3 },     // sequence 2
-    { -1, -1, -1, -1 }  // sequence 3
+static constexpr const std::optional<WoodenSupportSubType> WoodenRCDiagonalSupports[4][NumOrthogonalDirections] = {
+    { std::nullopt, std::nullopt, std::nullopt, std::nullopt }, // sequence 0
+    { WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner2,
+      WoodenSupportSubType::Corner3 }, // sequence 1
+    { WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner0,
+      WoodenSupportSubType::Corner1 },                         // sequence 2
+    { std::nullopt, std::nullopt, std::nullopt, std::nullopt } // sequence 3
 };
 
 template<bool isClassic> ImageId WoodenRCGetTrackColour(const PaintSession& session)
