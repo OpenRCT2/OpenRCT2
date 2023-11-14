@@ -1307,7 +1307,10 @@ public:
                 else
                 {
                     // Increase brake speed
-                    if (_currentBrakeSpeed < kMaximumBrakeSpeed)
+                    auto maxBrakeSpeed = gCheatsUnlockOperatingLimits
+                        ? kMaximumBrakeSpeed
+                        : currentRide->GetRideTypeDescriptor().OperatingSettings.MaxBrakesSpeed;
+                    if (_currentBrakeSpeed < maxBrakeSpeed)
                     {
                         if (_rideConstructionState == RideConstructionState::Selected)
                         {

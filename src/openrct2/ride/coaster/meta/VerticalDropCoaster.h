@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor VerticalDropCoasterRTD =
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
-    SET_FIELD(OperatingSettings, { 10, 27, 26, 17, 68 }),
+    SET_FIELD(OperatingSettings, { 10, 27, 30, 17, 68 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_VERTICAL_DROP_ROLLER_COASTER, STR_RIDE_DESCRIPTION_VERTICAL_DROP_ROLLER_COASTER }),
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER)),

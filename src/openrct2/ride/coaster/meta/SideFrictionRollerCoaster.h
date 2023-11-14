@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor SideFrictionRollerCoasterRTD =
                      RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 0, 0, 30, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_SIDE_FRICTION_ROLLER_COASTER, STR_RIDE_DESCRIPTION_SIDE_FRICTION_ROLLER_COASTER }),
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER)),

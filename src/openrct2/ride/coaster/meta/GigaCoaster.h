@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor GigaCoasterRTD =
                      RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
-    SET_FIELD(OperatingSettings, { 10, 27, 30, 17, 68 }),
+    SET_FIELD(OperatingSettings, { 10, 27, 60, 17, 68 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_GIGA_COASTER, STR_RIDE_DESCRIPTION_GIGA_COASTER }),
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_GIGA_COASTER)),

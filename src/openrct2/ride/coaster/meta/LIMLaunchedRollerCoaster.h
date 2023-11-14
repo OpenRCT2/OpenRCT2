@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
                      RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::PoweredLaunchPasstrough, RideMode::PoweredLaunch, RideMode::PoweredLaunchBlockSectioned)),
     SET_FIELD(DefaultMode, RideMode::PoweredLaunchPasstrough),
-    SET_FIELD(OperatingSettings, { 10, 31, 26, 18, 52 }),
+    SET_FIELD(OperatingSettings, { 10, 31, 30, 18, 52 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_LIM_LAUNCHED_ROLLER_COASTER, STR_RIDE_DESCRIPTION_LIM_LAUNCHED_ROLLER_COASTER }),
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER)),

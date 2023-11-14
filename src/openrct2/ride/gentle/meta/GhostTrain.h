@@ -34,7 +34,7 @@ constexpr RideTypeDescriptor GhostTrainRTD =
                      RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 0, 0, 30, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_GHOST_TRAIN, STR_RIDE_DESCRIPTION_GHOST_TRAIN }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_GHOST_TRAIN)),

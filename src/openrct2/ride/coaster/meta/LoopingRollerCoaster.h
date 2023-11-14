@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor LoopingRollerCoasterRTD =
                      RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned, RideMode::ReverseInclineLaunchedShuttle, RideMode::PoweredLaunchPasstrough, RideMode::PoweredLaunch)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
-    SET_FIELD(OperatingSettings, { 10, 27, 26, 18, 18 }),
+    SET_FIELD(OperatingSettings, { 10, 27, 30, 18, 18 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_LOOPING_ROLLER_COASTER, STR_RIDE_DESCRIPTION_LOOPING_ROLLER_COASTER }),
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_LOOPING_ROLLER_COASTER)),
