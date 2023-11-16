@@ -98,12 +98,12 @@ void DrawText(
     if (paint.UnderlineText == TextUnderline::On)
     {
         GfxFillRect(
-            &dpi, { { alignedCoords + ScreenCoordsXY{ 0, 11 } }, { alignedCoords + ScreenCoordsXY{ width, 11 } } },
+            dpi, { { alignedCoords + ScreenCoordsXY{ 0, 11 } }, { alignedCoords + ScreenCoordsXY{ width, 11 } } },
             gTextPalette[1]);
         if (gTextPalette[2] != 0)
         {
             GfxFillRect(
-                &dpi, { { alignedCoords + ScreenCoordsXY{ 1, 12 } }, { alignedCoords + ScreenCoordsXY{ width + 1, 12 } } },
+                dpi, { { alignedCoords + ScreenCoordsXY{ 1, 12 } }, { alignedCoords + ScreenCoordsXY{ width + 1, 12 } } },
                 gTextPalette[2]);
         }
     }

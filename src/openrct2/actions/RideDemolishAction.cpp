@@ -64,8 +64,9 @@ GameActions::Result RideDemolishAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_NONE);
     }
 
-    if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
-        && _modifyType == RIDE_MODIFY_DEMOLISH)
+    if ((ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+         && _modifyType == RIDE_MODIFY_DEMOLISH)
+        && !gCheatsMakeAllDestructible)
     {
         return GameActions::Result(
             GameActions::Status::NoClearance, STR_CANT_DEMOLISH_RIDE,
@@ -238,7 +239,7 @@ money64 RideDemolishAction::DemolishTracks() const
                 }
                 else
                 {
-                    static constexpr const CoordsXY DirOffsets[] = {
+                    static constexpr CoordsXY DirOffsets[] = {
                         { 0, 0 },
                         { 0, 16 },
                         { 16, 16 },

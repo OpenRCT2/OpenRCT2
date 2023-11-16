@@ -304,12 +304,10 @@ namespace OpenRCT2::Scripting
             auto plugin = _scriptEngine.GetExecInfo().GetCurrentPlugin();
             auto callback = desc["callback"];
 
-            WindowScenarioselectOpen(
-                [this, plugin, callback](std::string_view path) {
-                    auto dukValue = GetScenarioFile(path);
-                    _scriptEngine.ExecutePluginCall(plugin, callback, { dukValue }, false);
-                },
-                false, true);
+            WindowScenarioselectOpen([this, plugin, callback](std::string_view path) {
+                auto dukValue = GetScenarioFile(path);
+                _scriptEngine.ExecutePluginCall(plugin, callback, { dukValue }, false);
+            });
         }
 
         void activateTool(const DukValue& desc)

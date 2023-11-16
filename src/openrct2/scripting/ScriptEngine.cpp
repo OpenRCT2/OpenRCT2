@@ -39,7 +39,9 @@
 #    include "bindings/network/ScPlayer.hpp"
 #    include "bindings/network/ScPlayerGroup.hpp"
 #    include "bindings/network/ScSocket.hpp"
+#    include "bindings/object/ScInstalledObject.hpp"
 #    include "bindings/object/ScObject.hpp"
+#    include "bindings/object/ScObjectManager.h"
 #    include "bindings/ride/ScRide.hpp"
 #    include "bindings/ride/ScRideStation.hpp"
 #    include "bindings/world/ScClimate.hpp"
@@ -47,6 +49,7 @@
 #    include "bindings/world/ScMap.hpp"
 #    include "bindings/world/ScPark.hpp"
 #    include "bindings/world/ScParkMessage.hpp"
+#    include "bindings/world/ScResearch.hpp"
 #    include "bindings/world/ScScenario.hpp"
 #    include "bindings/world/ScTile.hpp"
 #    include "bindings/world/ScTileElement.hpp"
@@ -402,13 +405,22 @@ void ScriptEngine::Initialise()
     ScDisposable::Register(ctx);
     ScMap::Register(ctx);
     ScNetwork::Register(ctx);
+    ScObjectManager::Register(ctx);
+    ScInstalledObject::Register(ctx);
     ScObject::Register(ctx);
+    ScSceneryObject::Register(ctx);
     ScSmallSceneryObject::Register(ctx);
+    ScLargeSceneryObject::Register(ctx);
+    ScWallObject::Register(ctx);
+    ScFootpathAdditionObject::Register(ctx);
+    ScBannerObject::Register(ctx);
+    ScSceneryGroupObject::Register(ctx);
     ScPark::Register(ctx);
     ScParkMessage::Register(ctx);
     ScPlayer::Register(ctx);
     ScPlayerGroup::Register(ctx);
     ScProfiler::Register(ctx);
+    ScResearch::Register(ctx);
     ScRide::Register(ctx);
     ScRideStation::Register(ctx);
     ScRideObject::Register(ctx);
@@ -439,9 +451,10 @@ void ScriptEngine::Initialise()
     dukglue_register_global(ctx, std::make_shared<ScDate>(), "date");
     dukglue_register_global(ctx, std::make_shared<ScMap>(ctx), "map");
     dukglue_register_global(ctx, std::make_shared<ScNetwork>(ctx), "network");
-    dukglue_register_global(ctx, std::make_shared<ScPark>(), "park");
+    dukglue_register_global(ctx, std::make_shared<ScPark>(ctx), "park");
     dukglue_register_global(ctx, std::make_shared<ScProfiler>(ctx), "profiler");
     dukglue_register_global(ctx, std::make_shared<ScScenario>(), "scenario");
+    dukglue_register_global(ctx, std::make_shared<ScObjectManager>(), "objectManager");
 
     RegisterConstants();
 
@@ -1056,7 +1069,7 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAct
         }
 
         std::vector<DukValue> pluginCallArgs;
-        if (GetTargetAPIVersion() <= API_VERSION_68_CUSTOM_ACTION_ARGS)
+        if (customActionInfo.Owner->GetTargetAPIVersion() <= API_VERSION_68_CUSTOM_ACTION_ARGS)
         {
             pluginCallArgs = { *dukArgs };
         }
@@ -1089,25 +1102,34 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAct
     auto action = GameActions::Result();
     action.Error = GameActions::Status::Unknown;
     action.ErrorTitle = "Unknown custom action";
+    action.ErrorMessage = customAction.GetPluginName() + ": " + actionz;
     return action;
 }
 
 GameActions::Result ScriptEngine::DukToGameActionResult(const DukValue& d)
 {
     auto result = GameActions::Result();
-    result.Error = static_cast<GameActions::Status>(AsOrDefault<int32_t>(d["error"]));
-    result.ErrorTitle = AsOrDefault<std::string>(d["errorTitle"]);
-    result.ErrorMessage = AsOrDefault<std::string>(d["errorMessage"]);
-    result.Cost = AsOrDefault<int32_t>(d["cost"]);
-
-    auto expenditureType = AsOrDefault<std::string>(d["expenditureType"]);
-    if (!expenditureType.empty())
+    if (d.type() == DUK_TYPE_OBJECT)
     {
-        auto expenditure = StringToExpenditureType(expenditureType);
-        if (expenditure != ExpenditureType::Count)
+        result.Error = static_cast<GameActions::Status>(AsOrDefault<int32_t>(d["error"]));
+        result.ErrorTitle = AsOrDefault<std::string>(d["errorTitle"]);
+        result.ErrorMessage = AsOrDefault<std::string>(d["errorMessage"]);
+        result.Cost = AsOrDefault<int32_t>(d["cost"]);
+        auto expenditureType = AsOrDefault<std::string>(d["expenditureType"]);
+        if (!expenditureType.empty())
         {
-            result.Expenditure = expenditure;
+            auto expenditure = StringToExpenditureType(expenditureType);
+            if (expenditure != ExpenditureType::Count)
+            {
+                result.Expenditure = expenditure;
+            }
         }
+    }
+    else
+    {
+        result.Error = GameActions::Status::Unknown;
+        result.ErrorTitle = "Unknown";
+        result.ErrorMessage = "Unknown";
     }
     return result;
 }
@@ -1304,6 +1326,7 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "footpathremove", GameCommand::RemovePath },
     { "footpathadditionplace", GameCommand::PlaceFootpathAddition },
     { "footpathadditionremove", GameCommand::RemoveFootpathAddition },
+    { "gamesetspeed", GameCommand::SetGameSpeed },
     { "guestsetflags", GameCommand::GuestSetFlags },
     { "guestsetname", GameCommand::SetGuestName },
     { "landbuyrights", GameCommand::BuyLandRights },
@@ -1347,7 +1370,7 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "ridesetstatus", GameCommand::SetRideStatus },
     { "ridesetvehicle", GameCommand::SetRideVehicles },
     { "scenariosetsetting", GameCommand::EditScenarioOptions },
-    { "setcheat", GameCommand::Cheat },
+    { "cheatset", GameCommand::Cheat },
     { "signsetname", GameCommand::SetSignName },
     { "signsetstyle", GameCommand::SetSignStyle },
     { "smallsceneryplace", GameCommand::PlaceScenery },
@@ -1464,7 +1487,8 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, GameActions::Res
     }
 }
 
-std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(const std::string& actionid, const DukValue& args)
+std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(
+    const std::string& actionid, const DukValue& args, const std::string& pluginName)
 {
     auto action = CreateGameActionFromActionId(actionid);
     if (action != nullptr)
@@ -1492,7 +1516,7 @@ std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(const std::string& ac
     auto jsonz = duk_json_encode(ctx, -1);
     auto json = std::string(jsonz);
     duk_pop(ctx);
-    auto customAction = std::make_unique<CustomAction>(actionid, json);
+    auto customAction = std::make_unique<CustomAction>(actionid, json, pluginName);
 
     if (customAction->GetPlayer() == -1 && NetworkGetMode() != NETWORK_MODE_NONE)
     {

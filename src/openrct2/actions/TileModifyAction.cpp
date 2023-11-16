@@ -9,17 +9,20 @@
 
 #include "TileModifyAction.h"
 
+#include "../Context.h"
+#include "../windows/Intent.h"
 #include "../world/TileInspector.h"
 
 using namespace OpenRCT2;
 
 TileModifyAction::TileModifyAction(
-    CoordsXY loc, TileModifyType setting, uint32_t value1, uint32_t value2, TileElement pasteElement)
+    CoordsXY loc, TileModifyType setting, uint32_t value1, uint32_t value2, TileElement pasteElement, Banner pasteBanner)
     : _loc(loc)
     , _setting(setting)
     , _value1(value1)
     , _value2(value2)
     , _pasteElement(pasteElement)
+    , _pasteBanner(pasteBanner)
 {
 }
 
@@ -40,7 +43,8 @@ void TileModifyAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
-    stream << DS_TAG(_loc) << DS_TAG(_setting) << DS_TAG(_value1) << DS_TAG(_value2) << DS_TAG(_pasteElement);
+    stream << DS_TAG(_loc) << DS_TAG(_setting) << DS_TAG(_value1) << DS_TAG(_value2) << DS_TAG(_pasteElement)
+           << DS_TAG(_pasteBanner);
 }
 
 GameActions::Result TileModifyAction::Query() const
@@ -89,7 +93,7 @@ GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
         }
         case TileModifyType::AnyPaste:
         {
-            res = TileInspector::PasteElementAt(_loc, _pasteElement, isExecuting);
+            res = TileInspector::PasteElementAt(_loc, _pasteElement, _pasteBanner, isExecuting);
             break;
         }
         case TileModifyType::AnySort:
@@ -233,6 +237,13 @@ GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
     res.Position.x = _loc.x;
     res.Position.y = _loc.y;
     res.Position.z = TileElementHeight(_loc);
+
+    if (isExecuting)
+    {
+        MapInvalidateTileFull(_loc);
+        auto intent = Intent(INTENT_ACTION_TILE_MODIFY);
+        ContextBroadcastIntent(&intent);
+    }
 
     return res;
 }

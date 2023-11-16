@@ -101,11 +101,11 @@ public:
     {
         std::unique_ptr<Object> object;
         auto extension = Path::GetExtension(path);
-        if (String::Equals(extension, ".json", true))
+        if (String::IEquals(extension, ".json"))
         {
             object = ObjectFactory::CreateObjectFromJsonFile(_objectRepository, path, false);
         }
-        else if (String::Equals(extension, ".parkobj", true))
+        else if (String::IEquals(extension, ".parkobj"))
         {
             object = ObjectFactory::CreateObjectFromZipFile(_objectRepository, path, false);
         }
@@ -126,6 +126,8 @@ public:
             item.Name = object->GetName();
             item.Authors = object->GetAuthors();
             item.Sources = object->GetSourceGames();
+            if (object->IsCompatibilityObject())
+                item.Flags |= ObjectItemFlags::IsCompatibilityObject;
             object->SetRepositoryItem(&item);
             return item;
         }
@@ -144,6 +146,7 @@ protected:
 
         ds << item.Sources;
         ds << item.Authors;
+        ds << item.Flags;
 
         switch (item.Type)
         {
@@ -264,11 +267,11 @@ public:
         Guard::ArgumentNotNull(ori, GUARD_LINE);
 
         auto extension = Path::GetExtension(ori->Path);
-        if (String::Equals(extension, ".json", true))
+        if (String::IEquals(extension, ".json"))
         {
             return ObjectFactory::CreateObjectFromJsonFile(*this, ori->Path, !gOpenRCT2NoGraphics);
         }
-        if (String::Equals(extension, ".parkobj", true))
+        if (String::IEquals(extension, ".parkobj"))
         {
             return ObjectFactory::CreateObjectFromZipFile(*this, ori->Path, !gOpenRCT2NoGraphics);
         }
@@ -685,22 +688,6 @@ std::unique_ptr<Object> ObjectRepositoryLoadObject(const RCTObjectEntry* objectE
         }
     }
     return object;
-}
-
-void ScenarioTranslate(ScenarioIndexEntry* scenarioEntry)
-{
-    StringId localisedStringIds[3];
-    if (LanguageGetLocalisedScenarioStrings(scenarioEntry->Name, localisedStringIds))
-    {
-        if (localisedStringIds[0] != STR_NONE)
-        {
-            String::Set(scenarioEntry->Name, sizeof(scenarioEntry->Name), LanguageGetString(localisedStringIds[0]));
-        }
-        if (localisedStringIds[2] != STR_NONE)
-        {
-            String::Set(scenarioEntry->Details, sizeof(scenarioEntry->Details), LanguageGetString(localisedStringIds[2]));
-        }
-    }
 }
 
 size_t ObjectRepositoryGetItemsCount()

@@ -32,4 +32,4 @@ enum class IntroState : uint8_t
 extern IntroState gIntroState;
 
 void IntroUpdate();
-void IntroDraw(DrawPixelInfo* dpi);
+void IntroDraw(DrawPixelInfo& dpi);

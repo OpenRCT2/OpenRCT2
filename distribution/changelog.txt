@@ -1,7 +1,122 @@
-0.4.5 (in development)
+0.4.7 (in development)
 ------------------------------------------------------------------------
-- Fix: [#17774] Misplaced/missind land and construction rights tiles in RCT1 & RCT2 scenarios.
+- Feature: [#12078] Add shortcut key for toggling wall slope.
+- Feature: [#19919] Add diagonal brakes and diagonal block brakes to most coaster types.
+- Feature: [#20141] Add additional track pieces to the Giga Coaster.
+- Feature: [OpenMusic#46] Added Mystic ride music style.
+- Feature: [#20825] Made setting the game speed a game action.
+- Feature: [#20853] [Plugin] Add “BaseTileElement.owner” which is saved in the park file.
+- Change: [#20790] Default ride price set to free if park charges for entry.
+- Fix: [#16453] Tile inspector invisibility shortcut does not use a game action.
+- Fix: [#18199] Dots in the game save's name no longer get truncated.
+- Fix: [#19722] “Forbid tree removal” restriction doesn't forbid removal of large scenery tree items.
+- Fix: [#20253] Crash when displaying a Lay-Down RC’s half loop.
+- Fix: [#20356] Cannot set tertiary colour on small scenery.
+- Fix: [#20679] Android: game crashes at launch.
+- Fix: [#20737] Spent money in player window underflows when getting refunds.
+- Fix: [#20747] Staff speed cheat not applying to newly hired staff, UI not showing the current applied speed.
+- Fix: [#20778] [Plugin] Incorrect target api when executing custom actions.
+- Fix: [#20807] Tertiary colour not copied with small scenery.
+- Fix: [#20964] Crash when player connects to server with a group assigned that no longer exists.
+
+0.4.6 (2023-09-03)
+------------------------------------------------------------------------
+- Feature: [#15660] Ability to show window buttons on the left.
+- Feature: [#20680] New title sequences (https://github.com/OpenRCT2/title-sequences/releases/tag/v0.4.6).
+- Feature: [OpenMusic#41] Official Title Theme by Allister Brimble.
+- Improved: [#20119, #20243] Add new colour presets to several roller coasters (using the new colours).
+- Improved: [#20393, #20410] Add Cyrillic characters Ґґ, Ѕѕ, Єє, Іі, Її, and Јј to the sprite font.
+- Change: [#19785] OpenMusic is now selected by default when opening SC4/SC6 - or creating new - scenarios.
+- Change: [#20110] Fix a few RCT1 build height parity discrepancies.
+- Change: [#20550] Change SEK conversion rate from 1 GBP to 0.1 GBP.
+- Fix: [#6152] Camera and UI are no longer locked at 40 Hz, providing a smoother experience.
+- Fix: [#9534] Screams no longer cut-off on steep diagonal drops.
+- Fix: [#17666] Using the mountain tool near the edge of the map with clearance checks disabled causes visual glitches.
+- Fix: [#19450] The correct element is now auto-suggested when building a Medium Half Loop backwards.
+- Fix: [#19735] Server unable to advertise to master server after a connection loss.
+- Fix: [#19822] Tile inspector does not deep copy banners.
+- Fix: [#19823] Parkobj: disallow overriding objects of different object types.
+- Fix: [#19878] Unresearched scenery can be placed via prebuilt rides.
+- Fix: [#20083] Cannot use terrain surfaces with ID > 32 and terrain edges with ID > 16.
+- Fix: [#20089] Potential crash when a window is closed from another window.
+- Fix: [#20103] [Plugin] Crash when custom plugin actions fail due to immutable state.
+- Fix: [#20111] All coaster types can access the new diagonal slope pieces.
+- Fix: [#20155] Fairground organ style 2 shows up as regular music, rather than for the merry-go-round.
+- Fix: [#20260] Ride locks up when inspecting/fixing staff member is fired.
+- Fix: [#20262] Title screen music missing when “random” title music is selected and RCT1 is no longer linked.
+- Fix: [#20310] Map animations are not created on the title screen.
+- Fix: [#20342] Large Half Loop (left) now only appears once in the special elements dropdown.
+- Fix: [#20361] Crash when using random map generation.
+- Fix: [#20364] Adding too much money with cheats causes an overflow.
+- Fix: [#20365] Money cheat input does not support negative values.
+- Fix: [#20389] Reversed vehicles are now correctly banked on diagonal slopes.
+- Fix: [#20413] Crash when attempting to navigate an empty console history.
+- Fix: [#20417] Plugin/custom windows are missing the left border in the title bar.
+- Fix: [#20429] Error window tooltip not closing after 8 seconds.
+- Fix: [#20456] Downward large half loops on flying coasters (fly-to-lie) are now correctly named.
+- Fix: [#20484] Console caret not properly updated when using command history.
+- Fix: [#20496] Ride rating requirements for compact inverted coasters is no longer relaxed.
+- Fix: [#20543] Crash using show segments height from debug paint options.
+- Fix: [#20607] Infinite loop when renaming rides with default names longer than 32 bytes.
+- Fix: [#20642] Track list is sometimes empty due to uninitialized data for the filter string.
+- Fix: [#20659] Phantom rides remain when closing construction window while paused.
+- Fix: [#20672] Maze ghost elements incorrectly displayed.
+- Fix: [#20684] Footpath additions getting removed by Miniature railway ghost elements.
+- Fix: [#20693] Incorrect information shown when hovering over station when another station before it was removed.
+- Fix: [#20739] Build version info on title screen leaving stray pixels when the camera is moved.
+
+0.4.5 (2023-05-08)
+------------------------------------------------------------------------
+- Feature: [#18713] Block brakes have speed control and brakes slower than adjacent block brakes copy block brake speed when the block brake is open.
+- Feature: [#19276] Add Powered Lifthill to Giga Coaster.
+- Feature: [#19305] Add new Reversed Trains ride setting to run trains backwards, granting a bonus to ride ratings.
+- Feature: [#19305] [Plugin] Add “Car.isReversed” to allow individual ride vehicles to run backwards.
+- Feature: [#19446] Add new colour options to colour dropdown.
+- Feature: [#19547] Add large sloped turns to hybrid coaster and single rail coaster.
+- Feature: [#19930] Add plugin APIs for research.
+- Feature: [#19979] Add plugin API for scenery groups.
+- Feature: [OpenMusic#25] Added Prehistoric ride music style.
+- Feature: [OpenMusic#26] Fairground Organ style 2 with new recordings from Herman's 35er Voigt (Previously known as Bressingham Voigt).
+- Feature: [OpenMusic#28] Add Ragtime style 2 ride music.
+- Improved: [#17739] Raise water and land height limits to 254 units/182m/600ft.
+- Improved: [#18490] Reduce guests walking through trains on level crossing next to station.
+- Improved: [#18996] When marketing campaigns are disabled, disable the Marketing tab in the Finances window.
+- Improved: [#19764] Miscellaneous scenery tab now grouped next to the all-scenery tab.
+- Improved: [#19830] “Highlight path issues” will now hide wall elements.
+- Improved: [#19905] Add prompt before resetting shortcut keys.
+- Improved: [#19952] Add colour preset to Spiral Slide using the new colour options.
+- Improved: [#19953] Add keyboard shortcut to Keyboard Shortcuts window.
+- Improved: [#20055] Performance improvement for the software renderer.
+- Change: [OpenSFX#17] Update Hybrid RC lifthill loop.
+- Fix: [#12598] Number of holes is not set correctly when saving track designs.
+- Fix: [#13130] Android always defaulting to UK locale for language, currency and temperature.
+- Fix: [#13397] Ride simulation causes strange station behaviour and makes the ride unusable in some cases.
+- Fix: [#16791] Rotodrop top piece replicates when walls are placed around it and clearance checks are disabled (original bug).
+- Fix: [#17774] Misplaced/missing land and construction rights tiles in RCT1 & RCT2 scenarios.
+- Fix: [#18583] Land dropdown is incorrect if there are surface entry index holes.
+- Fix: [#18895] Responding mechanic blocked at level crossing.
+- Fix: [#19231] Crash due to null pointer to previously deleted banner in tile copy/paste functionality.
+- Fix: [#19296] Crash due to a race condition for parallel object loading.
+- Fix: [#19733] Favorite ride of X guests integer overflow.
 - Fix: [#19756] Crash with title sequences containing no commands.
+- Fix: [#19767] No message when path is not connected to ride exit and is therefore unreachable for mechanics.
+- Fix: [#19800] Crash when displaying station stats with more than 62 stations.
+- Fix: [#19801] The in-game load/save window cannot be resized anymore.
+- Fix: [#19832] Some scenery group items missing from all scenery tab.
+- Fix: [#19854] Looping Coaster trains clipping through steep quarter turns down.
+- Fix: [#19858] Issue drawing simulate flag icon on alternate colour palettes.
+- Fix: [#19901] Random shop colours never assigning last colour.
+- Fix: [#19911] Guests stuck at certain railway crossings.
+- Fix: [#19924] Destructible cheat does not allow partial ride modification.
+- Fix: [#19950] Mine train block brake supports drawn incorrectly.
+- Fix: [#19955] Mine Train Roller Coaster has incorrect supports on the sloped left small turn (original bug).
+- Fix: [#19987] [Plugin] ‘SetCheatAction’ has wrong ID in plugin API.
+- Fix: [#20016] The group box for small scenery details in the Tile Inspector window has unused empty space.
+- Fix: [#20018] Shops not calculating up-keep cost.
+- Fix: [#20033] Asset packs cannot reference game data.
+- Fix: [#20104] [Plugin] Some network APIs use player index and group index.
+- Fix: [#20099] Some scrollbar is glitched or have incorrect size when open window for the first time
+- Fix: [#20134] Grass length being updated for tiles in the void, causing unneccesary drawing operations.
 
 0.4.4 (2023-03-28)
 ------------------------------------------------------------------------

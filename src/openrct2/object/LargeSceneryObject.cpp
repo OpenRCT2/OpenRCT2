@@ -15,7 +15,6 @@
 #include "../core/Json.hpp"
 #include "../core/Memory.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "../world/Banner.h"
@@ -114,7 +113,7 @@ void LargeSceneryObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.name = LanguageAllocateObjectString(GetName());
-    _baseImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _baseImageId = LoadImages();
     _legacyType.image = _baseImageId;
 
     _legacyType.tiles = _tiles.data();
@@ -137,7 +136,7 @@ void LargeSceneryObject::Load()
 void LargeSceneryObject::Unload()
 {
     LanguageFreeObjectString(_legacyType.name);
-    GfxObjectFreeImages(_baseImageId, GetImageTable().GetCount());
+    UnloadImages();
 
     _legacyType.name = 0;
     _baseImageId = _legacyType.image = 0;
@@ -155,7 +154,7 @@ void LargeSceneryObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t 
     if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
         image = image.WithTertiary(COLOUR_DARK_BROWN);
 
-    GfxDrawSprite(&dpi, image, screenCoords);
+    GfxDrawSprite(dpi, image, screenCoords);
 }
 
 std::vector<LargeSceneryTile> LargeSceneryObject::ReadTiles(OpenRCT2::IStream* stream)

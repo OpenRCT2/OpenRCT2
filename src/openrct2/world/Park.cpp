@@ -710,7 +710,7 @@ Guest* Park::GenerateGuest()
         peep = Guest::Generate({ spawn->x, spawn->y, spawn->z });
         if (peep != nullptr)
         {
-            peep->sprite_direction = direction << 3;
+            peep->Orientation = direction << 3;
 
             auto destination = peep->GetLocation().ToTileCentre();
             peep->SetDestination(destination, 5);

@@ -26,7 +26,7 @@
 struct ObjectRepositoryItem;
 using ride_type_t = uint16_t;
 
-constexpr const size_t VersionNumFields = 3;
+constexpr size_t VersionNumFields = 3;
 using ObjectVersion = std::tuple<uint16_t, uint16_t, uint16_t>;
 static_assert(std::tuple_size<ObjectVersion>{} == VersionNumFields);
 
@@ -139,9 +139,12 @@ struct ObjectEntryDescriptor
     bool HasValue() const;
     ObjectType GetType() const;
     std::string_view GetName() const;
+    std::string ToString() const;
 
     bool operator==(const ObjectEntryDescriptor& rhs) const;
     bool operator!=(const ObjectEntryDescriptor& rhs) const;
+
+    static ObjectEntryDescriptor Parse(std::string_view identifier);
 };
 
 struct IObjectRepository;
@@ -195,6 +198,8 @@ private:
     std::vector<std::string> _authors;
     ObjectGeneration _generation{};
     bool _usesFallbackImages{};
+    bool _isCompatibilityObject{};
+    ImageIndex _baseImageId{ ImageIndexUndefined };
 
 protected:
     StringTable& GetStringTable()
@@ -218,7 +223,6 @@ protected:
      */
     void PopulateTablesFromJson(IReadObjectContext* context, json_t& root);
 
-    std::string GetOverrideString(uint8_t index) const;
     std::string GetString(ObjectStringID index) const;
     std::string GetString(int32_t language, ObjectStringID index) const;
 
@@ -263,7 +267,7 @@ public:
         return _usesFallbackImages;
     }
 
-    // Legacy data structures
+    // DONOT USE THIS CAN LEAD TO OBJECT COLLISIONS
     std::string_view GetLegacyIdentifier() const
     {
         return _descriptor.GetName();
@@ -310,6 +314,9 @@ public:
         _version = version;
     }
 
+    bool IsCompatibilityObject() const;
+    void SetIsCompatibilityObject(const bool on);
+
     const ImageTable& GetImageTable() const
     {
         return _imageTable;
@@ -322,6 +329,14 @@ public:
     {
         return GetImageTable().GetCount();
     }
+
+    ImageIndex GetBaseImageId() const
+    {
+        return _baseImageId;
+    }
+
+    uint32_t LoadImages();
+    void UnloadImages();
 };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
 #    pragma GCC diagnostic pop

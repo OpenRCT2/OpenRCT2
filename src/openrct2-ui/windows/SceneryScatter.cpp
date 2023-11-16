@@ -35,7 +35,7 @@ uint16_t gWindowSceneryScatterSize;
 ScatterToolDensity gWindowSceneryScatterDensity;
 
 // clang-format off
-static Widget window_scenery_scatter_widgets[] = {
+static Widget _sceneryScatterWidgets[] = {
     MakeWidget     ({ 0,  0}, {86, 100}, WindowWidgetType::Frame,    WindowColour::Secondary                                                                ), // panel / background
     MakeWidget     ({ 1,  1}, {84,  14}, WindowWidgetType::Caption,  WindowColour::Primary  , STR_SCENERY_SCATTER,           STR_WINDOW_TITLE_TIP           ), // title bar
     MakeWidget     ({73,  2}, {11,  12}, WindowWidgetType::CloseBox, WindowColour::Primary  , STR_CLOSE_X,                   STR_CLOSE_WINDOW_TIP           ), // close x button
@@ -57,7 +57,7 @@ class SceneryScatterWindow final : public WindowBase
 public:
     void OnOpen() override
     {
-        widgets = window_scenery_scatter_widgets;
+        widgets = _sceneryScatterWidgets;
         hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
         WindowInitScrollWidgets(*this);
         WindowPushOthersBelow(*this);
@@ -178,7 +178,7 @@ public:
 
     void OnDraw(DrawPixelInfo& dpi) override
     {
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
 
         // Draw area as a number for tool sizes bigger than 7
         if (gWindowSceneryScatterSize > MAX_TOOL_SIZE_WITH_SPRITE)
@@ -190,6 +190,11 @@ public:
             DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
         }
     }
+
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
 };
 
 WindowBase* WindowSceneryScatterOpen()
@@ -198,7 +203,7 @@ WindowBase* WindowSceneryScatterOpen()
     auto* window = WindowFindByClass(WindowClass::SceneryScatter);
     if (window == nullptr)
     {
-        window = WindowCreate<SceneryScatterWindow>(WindowClass::SceneryScatter, 86, 100);
+        window = WindowCreate<SceneryScatterWindow>(WindowClass::SceneryScatter, 86, 100, 0);
     }
 
     return window;

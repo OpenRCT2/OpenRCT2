@@ -13,16 +13,16 @@
 
 class CheatSetAction final : public GameActionBase<GameCommand::Cheat>
 {
-    using ParametersRange = std::pair<std::pair<int32_t, int32_t>, std::pair<int32_t, int32_t>>;
+    using ParametersRange = std::pair<std::pair<int64_t, int64_t>, std::pair<int64_t, int64_t>>;
 
 private:
     NetworkCheatType_t _cheatType{ EnumValue(CheatType::Count) };
-    int32_t _param1{};
-    int32_t _param2{};
+    int64_t _param1{};
+    int64_t _param2{};
 
 public:
     CheatSetAction() = default;
-    CheatSetAction(CheatType cheatType, int32_t param1 = 0, int32_t param2 = 0);
+    CheatSetAction(CheatType cheatType, int64_t param1 = 0, int64_t param2 = 0);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
@@ -40,7 +40,6 @@ private:
     void RemoveLitter() const;
     void FixBrokenRides() const;
     void RenewRides() const;
-    void MakeDestructible() const;
     void ResetRideCrashStatus() const;
     void Set10MinuteInspection() const;
     void SetScenarioNoMoney(bool enabled) const;
@@ -55,4 +54,5 @@ private:
     void OwnAllLand() const;
     void ParkSetOpen(bool isOpen) const;
     void CreateDucks(int count) const;
+    void RemoveParkFences() const;
 };

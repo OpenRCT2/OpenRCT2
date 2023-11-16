@@ -19,11 +19,11 @@
 #include "../ride/RideAudio.h"
 #include "../util/Util.h"
 #include "BannerSceneryEntry.h"
-#include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
 #include "ObjectList.h"
 #include "ObjectRepository.h"
+#include "PathAdditionObject.h"
 #include "RideObject.h"
 #include "SceneryGroupObject.h"
 #include "SmallSceneryObject.h"
@@ -173,6 +173,12 @@ public:
     {
         const ObjectRepositoryItem* ori = _objectRepository.FindObject(descriptor);
         return RepositoryItemToObject(ori);
+    }
+
+    Object* LoadObject(const ObjectEntryDescriptor& descriptor, ObjectEntryIndex slot) override
+    {
+        const ObjectRepositoryItem* ori = _objectRepository.FindObject(descriptor);
+        return RepositoryItemToObject(ori, slot);
     }
 
     void LoadObjects(const ObjectList& objectList) override
@@ -479,7 +485,7 @@ private:
         UpdateSceneryGroupIndexes<LargeSceneryEntry>(ObjectType::LargeScenery);
         UpdateSceneryGroupIndexes<WallSceneryEntry>(ObjectType::Walls);
         UpdateSceneryGroupIndexes<BannerSceneryEntry>(ObjectType::Banners);
-        UpdateSceneryGroupIndexes<PathBitEntry>(ObjectType::PathBits);
+        UpdateSceneryGroupIndexes<PathAdditionEntry>(ObjectType::PathAdditions);
 
         auto& list = GetObjectList(ObjectType::SceneryGroup);
         for (auto* loadedObject : list)
@@ -578,43 +584,66 @@ private:
         std::vector<Object*> newLoadedObjects;
         std::vector<ObjectEntryDescriptor> badObjects;
 
-        // Read objects
-        std::mutex commonMutex;
-        ParallelFor(requiredObjects, [&](size_t i) {
-            auto& otl = requiredObjects[i];
-            auto* requiredObject = otl.RepositoryItem;
-            if (requiredObject != nullptr)
+        // Create a list of objects that are currently not loaded but required.
+        std::vector<const ObjectRepositoryItem*> objectsToLoad;
+        for (auto& requiredObject : requiredObjects)
+        {
+            auto* repositoryItem = requiredObject.RepositoryItem;
+            if (repositoryItem == nullptr)
             {
-                auto* loadedObject = requiredObject->LoadedObject.get();
-                if (loadedObject == nullptr)
-                {
-                    // Object requires to be loaded, if the object successfully loads it will register it
-                    // as a loaded object otherwise placed into the badObjects list.
-                    auto newObject = _objectRepository.LoadObject(requiredObject);
-                    std::lock_guard<std::mutex> guard(commonMutex);
-                    if (newObject == nullptr)
-                    {
-                        badObjects.push_back(ObjectEntryDescriptor(requiredObject->ObjectEntry));
-                        ReportObjectLoadProblem(&requiredObject->ObjectEntry);
-                    }
-                    else
-                    {
-                        otl.LoadedObject = newObject.get();
-                        newLoadedObjects.push_back(otl.LoadedObject);
-                        // Connect the ori to the registered object
-                        _objectRepository.RegisterLoadedObject(requiredObject, std::move(newObject));
-                    }
-                }
-                else
-                {
-                    otl.LoadedObject = loadedObject;
-                }
-                {
-                    std::lock_guard<std::mutex> guard(commonMutex);
-                    objects.push_back(loadedObject);
-                }
+                continue;
+            }
+
+            auto* loadedObject = repositoryItem->LoadedObject.get();
+            if (loadedObject == nullptr)
+            {
+                objectsToLoad.push_back(repositoryItem);
+            }
+        }
+
+        // De-duplicate the list, since loading happens in parallel we can't have it race the repository item.
+        std::sort(objectsToLoad.begin(), objectsToLoad.end());
+        objectsToLoad.erase(std::unique(objectsToLoad.begin(), objectsToLoad.end()), objectsToLoad.end());
+
+        // Load the objects.
+        std::mutex commonMutex;
+        ParallelFor(objectsToLoad, [&](size_t i) {
+            const auto* requiredObject = objectsToLoad[i];
+
+            // Object requires to be loaded, if the object successfully loads it will register it
+            // as a loaded object otherwise placed into the badObjects list.
+            auto newObject = _objectRepository.LoadObject(requiredObject);
+
+            std::lock_guard<std::mutex> guard(commonMutex);
+            if (newObject == nullptr)
+            {
+                badObjects.push_back(ObjectEntryDescriptor(requiredObject->ObjectEntry));
+                ReportObjectLoadProblem(&requiredObject->ObjectEntry);
+            }
+            else
+            {
+                newLoadedObjects.push_back(newObject.get());
+                // Connect the ori to the registered object
+                _objectRepository.RegisterLoadedObject(requiredObject, std::move(newObject));
             }
         });
+
+        // Assign the loaded objects to the required objects
+        for (auto& requiredObject : requiredObjects)
+        {
+            auto* repositoryItem = requiredObject.RepositoryItem;
+            if (repositoryItem == nullptr)
+            {
+                continue;
+            }
+            auto* loadedObject = repositoryItem->LoadedObject.get();
+            if (loadedObject == nullptr)
+            {
+                continue;
+            }
+            requiredObject.LoadedObject = loadedObject;
+            objects.push_back(loadedObject);
+        }
 
         // Load objects
         for (auto* obj : newLoadedObjects)

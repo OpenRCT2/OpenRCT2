@@ -60,25 +60,25 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
-set(TITLE_SEQUENCE_VERSION "0.4.0")
+set(TITLE_SEQUENCE_VERSION "0.4.6")
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v${TITLE_SEQUENCE_VERSION}/title-sequences.zip")
-set(TITLE_SEQUENCE_SHA1 "4ab0065e5a4d9f9c77d94718bbdfcfcd5a389da0")
+set(TITLE_SEQUENCE_SHA1 "80fefc6ebbabc42a6f4703412daa5c62f661420d")
 
-set(OBJECTS_VERSION "1.3.8")
+set(OBJECTS_VERSION "1.3.11")
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
-set(OBJECTS_SHA1 "2888092aab93df15bb78c4c910b13c33b1e318ef")
+set(OBJECTS_SHA1 "02ddf6c685a2da8bac98a57b34be95d63192443d")
 
-set(OPENSFX_VERSION "1.0.2")
+set(OPENSFX_VERSION "1.0.3")
 set(OPENSFX_URL  "https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v${OPENSFX_VERSION}/opensound.zip")
-set(OPENSFX_SHA1 "64EF7E0B7785602C91AEC66F005C035B05A2133B")
+set(OPENSFX_SHA1 "ffec5a97bd5035860c4c9a43fe32cf51886478e3")
 
-set(OPENMSX_VERSION "1.1.0")
+set(OPENMSX_VERSION "1.4")
 set(OPENMSX_URL  "https://github.com/OpenRCT2/OpenMusic/releases/download/v${OPENMSX_VERSION}/openmusic.zip")
-set(OPENMSX_SHA1 "8f0cf6b2fd4727e91b0d4062e7f199a43d15e777")
+set(OPENMSX_SHA1 "aaad314183bc4e875e013d70b655a661db238bf3")
 
-set(REPLAYS_VERSION "0.0.77")
+set(REPLAYS_VERSION "0.0.78")
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
-set(REPLAYS_SHA1 "65CA6D830789C074F575F15E3F9E2C28691C24F8")
+set(REPLAYS_SHA1 "31C5D07EED8481D5C6D57F9E4FE9443AAEDE7739")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
@@ -86,8 +86,8 @@ option(PORTABLE "Create a portable build (-rpath=$ORIGIN)" OFF)
 option(APPIMAGE "Create an appimage build (-rpath=$ORIGIN/../lib)" OFF)
 option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." ON)
 option(DOWNLOAD_OBJECTS "Download objects during installation." ON)
-option(DOWNLOAD_OPENSFX "Download OpenSoundEffects during installation." OFF)
-option(DOWNLOAD_OPENMSX "Download OpenMusic during installation." OFF)
+option(DOWNLOAD_OPENSFX "Download OpenSoundEffects during installation." ON)
+option(DOWNLOAD_OPENMSX "Download OpenMusic during installation." ON)
 CMAKE_DEPENDENT_OPTION(DOWNLOAD_REPLAYS "Download replays during installation." ON
     "WITH_TESTS" OFF)
 CMAKE_DEPENDENT_OPTION(MACOS_USE_DEPENDENCIES "Use OpenRCT2 dependencies instead of system libraries" ON
@@ -100,7 +100,8 @@ option(STATIC "Create a static build.")
 option(USE_MMAP "Use mmap to try loading rct2's data segment into memory.")
 
 option(DISABLE_DISCORD_RPC "Disable Discord-RPC support." OFF)
-option(DISABLE_GOOGLE_BENCHMARK "Disable Google Benchmarks support." OFF)
+# Currently unused, disable by default.
+option(DISABLE_GOOGLE_BENCHMARK "Disable Google Benchmarks support." ON)
 option(DISABLE_HTTP "Disable HTTP support.")
 option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
 option(DISABLE_TTF "Disable support for TTF provided by freetype2.")
@@ -159,12 +160,6 @@ if (MACOS_USE_DEPENDENCIES)
         endif()
     endif ()
 endif ()
-
-# If OS is Linux, import OpenSoundEffects and OpenMusic
-if(UNIX AND NOT APPLE)
-    set(DOWNLOAD_OPENMSX ON)
-    set(DOWNLOAD_OPENSFX ON)
-endif()
 
 # LIST of supported flags, use SET_CHECK_CXX_FLAGS() to apply to target.
 # Use ADD_CHECK_CXX_COMPILER_FLAG() to add to list.
@@ -406,7 +401,7 @@ endif ()
 # Include tests
 if (WITH_TESTS)
     enable_testing()
-    include("${ROOT_DIR}/test/tests/CMakeLists.txt" NO_POLICY_SCOPE)
+    add_subdirectory("test/tests")
 endif ()
 
 # macOS bundle "install" is handled in src/openrct2-ui/CMakeLists.txt

@@ -19,10 +19,10 @@ namespace Dropdown
 {
     struct Item;
 
-    constexpr const StringId SeparatorString = 0;
-    constexpr const StringId FormatColourPicker = 0xFFFE;
-    constexpr const StringId FormatLandPicker = 0xFFFF;
-    constexpr const int32_t ItemsMaxSize = 512;
+    constexpr StringId SeparatorString = 0;
+    constexpr StringId FormatColourPicker = 0xFFFE;
+    constexpr StringId FormatLandPicker = 0xFFFF;
+    constexpr int32_t ItemsMaxSize = 512;
 
     enum Flag
     {
@@ -58,6 +58,8 @@ void WindowDropdownShowColourAvailable(
     WindowBase* w, Widget* widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);
 uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems);
 bool WindowDropDownHasMultipleColumns(size_t numItems);
+
+colour_t ColourDropDownIndexToColour(uint8_t ddidx);
 
 namespace Dropdown
 {
@@ -134,5 +136,4 @@ namespace Dropdown
 
         return true;
     }
-
 } // namespace Dropdown

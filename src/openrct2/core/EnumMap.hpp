@@ -10,6 +10,8 @@
 
 #include <algorithm>
 #include <array>
+#include <cstdint>
+#include <optional>
 #include <string_view>
 #include <vector>
 
@@ -98,6 +100,16 @@ public:
     {
         auto it = find(k);
         return it->second;
+    }
+
+    std::optional<T> TryGet(std::string_view k) const
+    {
+        auto it = find(k);
+        if (it != end())
+        {
+            return it->second;
+        }
+        return std::nullopt;
     }
 
     auto find(const std::string_view k) const

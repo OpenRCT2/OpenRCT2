@@ -141,7 +141,7 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
     max_positive_vertical_g = ride.max_positive_vertical_g / 32;
     max_negative_vertical_g = ride.max_negative_vertical_g / 32;
     max_lateral_g = ride.max_lateral_g / 32;
-    inversions = ride.holes & 0x1F;
+    holes = ride.holes & 0x1F;
     inversions = ride.inversions & 0x1F;
     inversions |= (ride.sheltered_eighths << 5);
     drops = ride.drops;
@@ -181,6 +181,8 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
     {
         return { false, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY };
     }
+
+    StringId warningMessage = STR_NONE;
 
     RideGetStartOfTrack(&trackElement);
 
@@ -222,13 +224,21 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
         track.type = trackElement.element->AsTrack()->GetTrackType();
 
         uint8_t trackFlags;
-        if (TrackTypeHasSpeedSetting(track.type))
+        // This if-else block only applies to td6. New track design format will always encode speed and seat rotation.
+        if (TrackTypeHasSpeedSetting(track.type) && track.type != TrackElemType::BlockBrakes)
         {
             trackFlags = trackElement.element->AsTrack()->GetBrakeBoosterSpeed() >> 1;
         }
         else
         {
             trackFlags = trackElement.element->AsTrack()->GetSeatRotation();
+        }
+
+        // This warning will not apply to new track design format
+        if (track.type == TrackElemType::BlockBrakes
+            && trackElement.element->AsTrack()->GetBrakeBoosterSpeed() != kRCT2DefaultBlockBrakeSpeed)
+        {
+            warningMessage = STR_TRACK_DESIGN_BLOCK_BRAKE_SPEED_RESET;
         }
 
         if (trackElement.element->AsTrack()->HasChain())
@@ -349,7 +359,7 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
 
     space_required_x = ((tds.PreviewMax.x - tds.PreviewMin.x) / 32) + 1;
     space_required_y = ((tds.PreviewMax.y - tds.PreviewMin.y) / 32) + 1;
-    return { true };
+    return { true, warningMessage };
 }
 
 ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ride& ride)
@@ -747,12 +757,17 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
     else
     {
         auto obj = objectMgr.GetLoadedObject(scenery.scenery_object);
+        bool objectUnavailable = obj == nullptr;
         if (obj != nullptr)
         {
             result.Type = obj->GetObjectType();
             result.Index = objectMgr.GetLoadedObjectEntryIndex(obj);
+            if (!gCheatsIgnoreResearchStatus)
+            {
+                objectUnavailable = !ResearchIsInvented(result.Type, result.Index);
+            }
         }
-        else
+        if (objectUnavailable)
         {
             _trackDesignPlaceStateSceneryUnavailable = true;
             return {};
@@ -898,7 +913,7 @@ static void TrackDesignMirrorRide(TrackDesign* td6)
 }
 
 /** rct2: 0x00993EDC */
-static constexpr const uint8_t maze_segment_mirror_map[] = {
+static constexpr uint8_t maze_segment_mirror_map[] = {
     5, 4, 2, 7, 1, 0, 14, 3, 13, 12, 10, 15, 9, 8, 6, 11,
 };
 
@@ -1603,7 +1618,8 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
                 auto trackRemoveAction = TrackRemoveAction(
                     trackType, 0, { newCoords, tempZ, static_cast<Direction>(rotation & 3) });
                 trackRemoveAction.SetFlags(
-                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+                    GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST
+                    | GAME_COMMAND_FLAG_TRACK_DESIGN);
                 GameActions::ExecuteNested(&trackRemoveAction);
                 break;
             }
@@ -1617,7 +1633,17 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
                 // di
                 int16_t tempZ = newCoords.z - trackCoordinates->z_begin;
                 uint32_t trackColour = (track.flags >> 4) & 0x3;
-                uint32_t brakeSpeed = (track.flags & 0x0F) * 2;
+                uint32_t brakeSpeed;
+                // RCT2-created track designs write brake speed to all tracks; block brake speed must be treated as
+                // garbage data.
+                if (trackType == TrackElemType::BlockBrakes)
+                {
+                    brakeSpeed = kRCT2DefaultBlockBrakeSpeed;
+                }
+                else
+                {
+                    brakeSpeed = (track.flags & 0x0F) * 2;
+                }
                 uint32_t seatRotation = track.flags & 0x0F;
 
                 int32_t liftHillAndAlternativeState = 0;
@@ -2172,7 +2198,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
         gCurrentRotation = i;
 
         view.viewPos = Translate3DTo2DWithZ(i, centre) - offset;
-        ViewportPaint(&view, &dpi, { view.viewPos, view.viewPos + ScreenCoordsXY{ size_x, size_y } });
+        ViewportPaint(&view, dpi, { view.viewPos, view.viewPos + ScreenCoordsXY{ size_x, size_y } });
 
         dpi.bits += TRACK_PREVIEW_IMAGE_SIZE;
     }
@@ -2202,8 +2228,8 @@ static void TrackDesignPreviewClearMap()
         element->SetLastForTile(true);
         element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
         element->AsSurface()->SetWaterHeight(0);
-        element->AsSurface()->SetSurfaceStyle(0);
-        element->AsSurface()->SetEdgeStyle(0);
+        element->AsSurface()->SetSurfaceObjectIndex(0);
+        element->AsSurface()->SetEdgeObjectIndex(0);
         element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
         element->AsSurface()->SetOwnership(OWNERSHIP_OWNED);
         element->AsSurface()->SetParkFences(0);

@@ -34,7 +34,7 @@ enum class ExpenditureType : int32_t
 #define EXPENDITURE_TABLE_MONTH_COUNT 16
 #define FINANCE_GRAPH_SIZE 128
 
-constexpr const uint8_t MaxBankLoanInterestRate = 255;
+constexpr uint8_t MaxBankLoanInterestRate = 255;
 
 extern const money64 research_cost_table[RESEARCH_FUNDING_COUNT];
 

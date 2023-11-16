@@ -62,6 +62,7 @@ struct SmallSceneryEntry
     money64 price;
     money64 removal_price;
     uint8_t* frame_offsets;
+    uint16_t FrameOffsetCount;
     uint16_t animation_delay;
     uint16_t animation_mask;
     uint16_t num_frames;

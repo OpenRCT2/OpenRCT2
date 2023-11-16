@@ -36,9 +36,9 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_STRINGID;
-static constexpr const int32_t WH = 157;
-static constexpr const int32_t WW = 192;
+static constexpr StringId WINDOW_TITLE = STR_STRINGID;
+static constexpr int32_t WH = 157;
+static constexpr int32_t WW = 192;
 
 enum WindowGuestPage
 {
@@ -150,7 +150,7 @@ static constexpr std::array _guestWindowPageWidgets = {
 static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
 // clang-format on
 
-static constexpr const std::array _guestWindowPageSizes = {
+static constexpr std::array _guestWindowPageSizes = {
     std::array{ ScreenSize{ 192, 159 }, ScreenSize{ 500, 450 } }, // WINDOW_GUEST_OVERVIEW
     std::array{ ScreenSize{ 192, 180 }, ScreenSize{ 192, 180 } }, // WINDOW_GUEST_STATS
     std::array{ ScreenSize{ 192, 180 }, ScreenSize{ 500, 400 } }, // WINDOW_GUEST_RIDES
@@ -168,6 +168,7 @@ private:
     uint16_t _beingWatchedTimer = 0;
     uint16_t _guestAnimationFrame = 0;
     int16_t _pickedPeepX = LOCATION_NULL; // entity->x gets set to 0x8000 on pickup, this is the old value
+    std::vector<RideId> _riddenRides;
 
 public:
     void OnOpen() override
@@ -181,7 +182,6 @@ public:
         min_height = 157;
         max_width = 500;
         max_height = 450;
-        no_list_items = 0;
         selected_list_item = -1;
     }
 
@@ -493,7 +493,7 @@ private:
 
         page = newPage;
         frame_no = 0;
-        no_list_items = 0;
+        _riddenRides.clear();
         selected_list_item = -1;
 
         RemoveViewport();
@@ -527,7 +527,7 @@ private:
             widgHeight++;
 
         DrawPixelInfo clipDpi;
-        if (!ClipDrawPixelInfo(&clipDpi, &dpi, screenCoords, widgWidth, widgHeight))
+        if (!ClipDrawPixelInfo(clipDpi, dpi, screenCoords, widgWidth, widgHeight))
         {
             return;
         }
@@ -552,7 +552,7 @@ private:
         animationFrame += animationFrameOffset;
 
         auto spriteId = ImageId(animationFrame, peep->TshirtColour, peep->TrousersColour);
-        GfxDrawSprite(&clipDpi, spriteId, screenCoords);
+        GfxDrawSprite(clipDpi, spriteId, screenCoords);
 
         auto* guest = peep->As<Guest>();
         if (guest != nullptr)
@@ -560,19 +560,19 @@ private:
             // If holding a balloon
             if (animationFrame >= 0x2A1D && animationFrame < 0x2A3D)
             {
-                GfxDrawSprite(&clipDpi, ImageId(animationFrame + 32, guest->BalloonColour), screenCoords);
+                GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->BalloonColour), screenCoords);
             }
 
             // If holding umbrella
             if (animationFrame >= 0x2BBD && animationFrame < 0x2BDD)
             {
-                GfxDrawSprite(&clipDpi, ImageId(animationFrame + 32, guest->UmbrellaColour), screenCoords);
+                GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->UmbrellaColour), screenCoords);
             }
 
             // If wearing hat
             if (animationFrame >= 0x29DD && animationFrame < 0x29FD)
             {
-                GfxDrawSprite(&clipDpi, ImageId(animationFrame + 32, guest->HatColour), screenCoords);
+                GfxDrawSprite(clipDpi, ImageId(animationFrame + 32, guest->HatColour), screenCoords);
             }
         }
     }
@@ -752,10 +752,10 @@ private:
         // Draw the viewport no sound sprite
         if (viewport != nullptr)
         {
-            WindowDrawViewport(&dpi, *this);
+            WindowDrawViewport(dpi, *this);
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
-                GfxDrawSprite(&dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
+                GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*this));
             }
         }
 
@@ -783,7 +783,7 @@ private:
         int32_t top = marqueeWidget.top + windowPos.y;
         int32_t marqHeight = marqueeWidget.height();
         DrawPixelInfo dpiMarquee;
-        if (!ClipDrawPixelInfo(&dpiMarquee, &dpi, { left, top }, marqWidth, marqHeight))
+        if (!ClipDrawPixelInfo(dpiMarquee, dpi, { left, top }, marqWidth, marqHeight))
         {
             return;
         }
@@ -850,10 +850,12 @@ private:
 
     void OnUpdateOverview()
     {
-        int32_t newAnimationFrame = _guestAnimationFrame;
-        newAnimationFrame++;
-        newAnimationFrame %= 24;
-        _guestAnimationFrame = newAnimationFrame;
+        _guestAnimationFrame++;
+        _guestAnimationFrame %= 24;
+
+        // Update pickup animation, can only happen in this tab.
+        picked_peep_frame++;
+        picked_peep_frame %= 48;
 
         WidgetInvalidate(*this, WIDX_TAB_1);
         WidgetInvalidate(*this, WIDX_TAB_2);
@@ -930,11 +932,6 @@ private:
 
         gPickupPeepX = screenCoords.x - 1;
         gPickupPeepY = screenCoords.y + 16;
-        picked_peep_frame++;
-        if (picked_peep_frame >= 48)
-        {
-            picked_peep_frame = 0;
-        }
 
         const auto peep = GetGuest();
         if (peep == nullptr)
@@ -1016,7 +1013,7 @@ private:
                     break;
             }
         }
-        GfxDrawSprite(&dpi, ImageId(imageId), screenCoords);
+        GfxDrawSprite(dpi, ImageId(imageId), screenCoords);
     }
 
     void OnUpdateStats()
@@ -1041,7 +1038,7 @@ private:
         }
 
         GfxFillRectInset(
-            &dpi, { coords + ScreenCoordsXY{ 61, 1 }, coords + ScreenCoordsXY{ 61 + 121, 9 } }, colours[1], INSET_RECT_F_30);
+            dpi, { coords + ScreenCoordsXY{ 61, 1 }, coords + ScreenCoordsXY{ 61 + 121, 9 } }, colours[1], INSET_RECT_F_30);
 
         if (!blinkFlag || GameIsPaused() || (gCurrentRealTimeTicks & 8) == 0)
         {
@@ -1052,7 +1049,7 @@ private:
                 return;
 
             GfxFillRectInset(
-                &dpi, { coords + ScreenCoordsXY{ 63, 2 }, coords + ScreenCoordsXY{ 63 + value - 1, 8 } }, colour, 0);
+                dpi, { coords + ScreenCoordsXY{ 63, 2 }, coords + ScreenCoordsXY{ 63 + value - 1, 8 } }, colour, 0);
         }
     }
 
@@ -1157,7 +1154,7 @@ private:
 
         screenCoords.y += LIST_ROW_HEIGHT + 9;
         GfxFillRectInset(
-            &dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
+            dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
             INSET_RECT_FLAG_BORDER_INSET);
 
         // Preferred Ride
@@ -1187,7 +1184,7 @@ private:
 
         // Nausea tolerance
         {
-            static constexpr const StringId _nauseaTolerances[] = {
+            static constexpr StringId _nauseaTolerances[] = {
                 STR_PEEP_STAT_NAUSEA_TOLERANCE_NONE,
                 STR_PEEP_STAT_NAUSEA_TOLERANCE_LOW,
                 STR_PEEP_STAT_NAUSEA_TOLERANCE_AVERAGE,
@@ -1219,7 +1216,7 @@ private:
             imageId += (frame_no / 4) & 0xF;
         }
 
-        GfxDrawSprite(&dpi, ImageId(imageId), screenCoords);
+        GfxDrawSprite(dpi, ImageId(imageId), screenCoords);
     }
 
     void OnUpdateRides()
@@ -1240,20 +1237,19 @@ private:
         if (!(numTicks & 0x7FF))
             Invalidate();
 
-        uint8_t currListPosition = 0;
+        const auto oldSize = _riddenRides.size();
+        _riddenRides.clear();
         for (const auto& r : GetRideManager())
         {
             if (r.IsRide() && guest->HasRidden(r))
             {
-                list_item_positions[currListPosition] = r.id.ToUnderlying();
-                currListPosition++;
+                _riddenRides.push_back(r.id);
             }
         }
 
         // If there are new items
-        if (no_list_items != currListPosition)
+        if (oldSize != _riddenRides.size())
         {
-            no_list_items = currListPosition;
             Invalidate();
         }
     }
@@ -1261,7 +1257,7 @@ private:
     ScreenSize OnScrollGetSizeRides(int32_t scrollIndex)
     {
         ScreenSize newSize;
-        newSize.height = no_list_items * 10;
+        newSize.height = static_cast<int32_t>(_riddenRides.size()) * 10;
 
         if (selected_list_item != -1)
         {
@@ -1285,18 +1281,18 @@ private:
     void OnScrollMouseDownRides(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
     {
         auto index = screenCoords.y / 10;
-        if (index >= no_list_items)
+        if (index >= static_cast<int32_t>(_riddenRides.size()))
             return;
 
         auto intent = Intent(WindowClass::Ride);
-        intent.PutExtra(INTENT_EXTRA_RIDE_ID, list_item_positions[index]);
+        intent.PutExtra(INTENT_EXTRA_RIDE_ID, _riddenRides[index]);
         ContextOpenIntent(&intent);
     }
 
     void OnScrollMouseOverRides(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
     {
         auto index = screenCoords.y / 10;
-        if (index >= no_list_items)
+        if (index >= static_cast<int32_t>(_riddenRides.size()))
             return;
 
         if (index == selected_list_item)
@@ -1354,20 +1350,19 @@ private:
     void OnScrollDrawRides(int32_t scrollIndex, DrawPixelInfo& dpi)
     {
         auto colour = ColourMapA[colours[1]].mid_light;
-        GfxFillRect(&dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
+        GfxFillRect(dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
 
-        for (int32_t listIndex = 0; listIndex < no_list_items; listIndex++)
+        for (int32_t listIndex = 0; listIndex < static_cast<int32_t>(_riddenRides.size()); listIndex++)
         {
-            auto y = listIndex * 10;
+            int32_t y = listIndex * 10;
             StringId stringId = STR_BLACK_STRING;
             if (listIndex == selected_list_item)
             {
-                GfxFilterRect(&dpi, { 0, y, 800, y + 9 }, FilterPaletteID::PaletteDarken1);
+                GfxFilterRect(dpi, { 0, y, 800, y + 9 }, FilterPaletteID::PaletteDarken1);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
             }
 
-            const auto rId = RideId::FromUnderlying(list_item_positions[listIndex]);
-            auto* r = GetRide(rId);
+            auto* r = GetRide(_riddenRides[listIndex]);
             if (r != nullptr)
             {
                 auto ft = Formatter();
@@ -1394,7 +1389,7 @@ private:
             imageId += (frame_no / 2) & 0x7;
         }
 
-        GfxDrawSprite(&dpi, ImageId(imageId), screenCoords);
+        GfxDrawSprite(dpi, ImageId(imageId), screenCoords);
     }
 
     void OnUpdateFinance()
@@ -1443,7 +1438,7 @@ private:
         }
 
         GfxFillRectInset(
-            &dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
+            dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, colours[1],
             INSET_RECT_FLAG_BORDER_INSET);
 
         // Paid to enter
@@ -1532,7 +1527,7 @@ private:
             imageId += (frame_no / 2) & 0x7;
         }
 
-        GfxDrawSprite(&dpi, ImageId(imageId), screenCoords);
+        GfxDrawSprite(dpi, ImageId(imageId), screenCoords);
     }
 
     void OnUpdateThoughts()
@@ -1607,7 +1602,7 @@ private:
         const auto& widget = widgets[WIDX_TAB_6];
         auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.top };
 
-        GfxDrawSprite(&dpi, ImageId(SPR_TAB_GUEST_INVENTORY), screenCoords);
+        GfxDrawSprite(dpi, ImageId(SPR_TAB_GUEST_INVENTORY), screenCoords);
     }
 
     void OnUpdateInventory()
@@ -1802,7 +1797,7 @@ private:
             imageId += (frame_no / 2) & 0x3;
         }
 
-        GfxDrawSprite(&dpi, ImageId(imageId), screenCoords);
+        GfxDrawSprite(dpi, ImageId(imageId), screenCoords);
     }
 
     void OnUpdateDebug()

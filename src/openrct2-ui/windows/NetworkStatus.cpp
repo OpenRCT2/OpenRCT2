@@ -38,8 +38,6 @@ public:
         widgets = window_network_status_widgets;
         WindowInitScrollWidgets(*this);
 
-        no_list_items = 0;
-        selected_list_item = -1;
         frame_no = 0;
         min_width = 320;
         min_height = 90;
@@ -99,7 +97,7 @@ public:
 
     void OnDraw(DrawPixelInfo& dpi) override
     {
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
         thread_local std::string _buffer;
         _buffer.assign("{BLACK}");
         _buffer += _windowNetworkStatusText;

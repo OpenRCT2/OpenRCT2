@@ -47,12 +47,13 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
-    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 70;
+    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 81;
 
     // Versions marking breaking changes.
     static constexpr int32_t API_VERSION_33_PEEP_DEPRECATION = 33;
     static constexpr int32_t API_VERSION_63_G2_REORDER = 63;
     static constexpr int32_t API_VERSION_68_CUSTOM_ACTION_ARGS = 68;
+    static constexpr int32_t API_VERSION_77_NETWORK_IDS = 77;
 
 #    ifndef DISABLE_NETWORK
     class ScSocketBase;
@@ -256,7 +257,8 @@ namespace OpenRCT2::Scripting
         bool RegisterCustomAction(
             const std::shared_ptr<Plugin>& plugin, std::string_view action, const DukValue& query, const DukValue& execute);
         void RunGameActionHooks(const GameAction& action, GameActions::Result& result, bool isExecute);
-        [[nodiscard]] std::unique_ptr<GameAction> CreateGameAction(const std::string& actionid, const DukValue& args);
+        [[nodiscard]] std::unique_ptr<GameAction> CreateGameAction(
+            const std::string& actionid, const DukValue& args, const std::string& pluginName);
         [[nodiscard]] DukValue GameActionResultToDuk(const GameAction& action, const GameActions::Result& result);
 
         void SaveSharedStorage();

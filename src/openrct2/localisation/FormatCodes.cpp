@@ -194,7 +194,7 @@ size_t FormatTokenGetTextColourIndex(FormatToken token)
 
 FormatToken FormatTokenFromTextColour(size_t textColour)
 {
-    static constexpr const FormatToken tokens[] = {
+    static constexpr FormatToken tokens[] = {
         FormatToken::ColourBlack,        FormatToken::ColourGrey,       FormatToken::ColourWhite,
         FormatToken::ColourRed,          FormatToken::ColourGreen,      FormatToken::ColourYellow,
         FormatToken::ColourTopaz,        FormatToken::ColourCeladon,    FormatToken::ColourBabyBlue,

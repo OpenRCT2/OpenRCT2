@@ -1214,8 +1214,8 @@ STR_1838    :%{COMMA16}
 STR_1839    :%{COMMA16}
 STR_1840    :%{COMMA16}
 STR_1841    :saatde {CURRENCY2DP}
-STR_1842    :{COMMA16} kişinin favorisi
-STR_1843    :{COMMA16} kişinin favorisi
+STR_1842    :{COMMA32} kişinin favorisi
+STR_1843    :{COMMA32} kişinin favorisi
 STR_1844    :Informationsart auswÃ¤hlen, die{NEWLINE}in Attraktionsliste angezeigt{NEWLINE}werden soll
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} müşteri
@@ -2184,8 +2184,8 @@ STR_3118    :{BLACK}{STRINGID} bu aletin tamirine geliyor
 STR_3119    :{BLACK}{STRINGID} bu aleti tamir ediyor
 STR_3120    :Bu alete en yakın tamirciyi göster
 STR_3121    :Tamirci bulunamadı veya tüm tamirciler iş başında
-STR_3122    :{WINDOW_COLOUR_2}Favori miktarı: {BLACK}{COMMA16} müşteri
-STR_3123    :{WINDOW_COLOUR_2}Favori miktarı: {BLACK}{COMMA16} müşteri
+STR_3122    :{WINDOW_COLOUR_2}Favori miktarı: {BLACK}{COMMA32} müşteri
+STR_3123    :{WINDOW_COLOUR_2}Favori miktarı: {BLACK}{COMMA32} müşteri
 STR_3124    :Kırık {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Heyecan oranı: {BLACK}+%{COMMA16}
 STR_3126    :{WINDOW_COLOUR_2}Şiddet oranı: {BLACK}+%{COMMA16}

@@ -45,7 +45,7 @@ enum
 static constexpr ScreenSize MenuButtonDims = { 82, 82 };
 static constexpr ScreenSize UpdateButtonDims = { MenuButtonDims.width * 4, 28 };
 
-static Widget window_title_menu_widgets[] = {
+static Widget _titleMenuWidgets[] = {
     MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_MENU_NEW_GAME),       STR_START_NEW_GAME_TIP),
     MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_MENU_LOAD_GAME),      STR_CONTINUE_SAVED_GAME_TIP),
     MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  ImageId(SPR_G2_MENU_MULTIPLAYER), STR_SHOW_MULTIPLAYER_TIP),
@@ -91,7 +91,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_title_menu_widgets;
+        widgets = _titleMenuWidgets;
 
 #ifdef DISABLE_NETWORK
         widgets[WIDX_MULTIPLAYER].type = WindowWidgetType::Empty;
@@ -132,7 +132,7 @@ public:
                 {
                     WindowCloseByClass(WindowClass::Loadsave);
                     WindowCloseByClass(WindowClass::ServerList);
-                    WindowScenarioselectOpen(WindowTitleMenuScenarioselectCallback, false);
+                    WindowScenarioselectOpen(WindowTitleMenuScenarioselectCallback);
                 }
                 break;
             case WIDX_CONTINUE_SAVED_GAME:
@@ -219,6 +219,10 @@ public:
 
     void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
     {
+        if (selectedIndex == -1)
+        {
+            return;
+        }
         if (widgetIndex == WIDX_GAME_TOOLS)
         {
             switch (selectedIndex)
@@ -252,7 +256,7 @@ public:
 
     CursorID OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID cursorId) override
     {
-        gTooltipTimeout = 2000;
+        gTooltipCloseTimeout = gCurrentRealTimeTicks + 2000;
         return cursorId;
     }
 
@@ -269,7 +273,7 @@ public:
 
     void OnDraw(DrawPixelInfo& dpi) override
     {
-        GfxFilterRect(&dpi, _filterRect, FilterPaletteID::Palette51);
+        GfxFilterRect(dpi, _filterRect, FilterPaletteID::Palette51);
         DrawWidgets(dpi);
     }
 };

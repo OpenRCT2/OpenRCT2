@@ -15,9 +15,11 @@
 #    include "../../../common.h"
 #    include "../../../object/ObjectManager.h"
 #    include "../../../object/RideObject.h"
+#    include "../../../object/SceneryGroupObject.h"
 #    include "../../../object/SmallSceneryObject.h"
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
+#    include "ScInstalledObject.hpp"
 
 #    include <memory>
 #    include <optional>
@@ -39,11 +41,14 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context* ctx)
         {
+            dukglue_register_property(ctx, &ScObject::installedObject_get, nullptr, "installedObject");
             dukglue_register_property(ctx, &ScObject::type_get, nullptr, "type");
             dukglue_register_property(ctx, &ScObject::index_get, nullptr, "index");
             dukglue_register_property(ctx, &ScObject::identifier_get, nullptr, "identifier");
             dukglue_register_property(ctx, &ScObject::legacyIdentifier_get, nullptr, "legacyIdentifier");
             dukglue_register_property(ctx, &ScObject::name_get, nullptr, "name");
+            dukglue_register_property(ctx, &ScObject::baseImageId_get, nullptr, "baseImageId");
+            dukglue_register_property(ctx, &ScObject::numImages_get, nullptr, "numImages");
         }
 
         static std::optional<ObjectType> StringToObjectType(std::string_view type)
@@ -56,36 +61,25 @@ namespace OpenRCT2::Scripting
                     return static_cast<ObjectType>(i);
                 }
             }
-            return ObjectType::None;
-        }
-
-        static std::string_view ObjectTypeToString(uint8_t type)
-        {
-            static constexpr std::string_view Types[] = {
-                "ride",
-                "small_scenery",
-                "large_scenery",
-                "wall",
-                "banner",
-                "footpath",
-                "footpath_addition",
-                "scenery_group",
-                "park_entrance",
-                "water",
-                "stex",
-                "terrain_surface",
-                "terrain_edge",
-                "station",
-                "music",
-                "footpath_surface",
-                "footpath_railings",
-            };
-            if (type >= std::size(Types))
-                return "unknown";
-            return Types[type];
+            return std::nullopt;
         }
 
     private:
+        std::shared_ptr<ScInstalledObject> installedObject_get() const
+        {
+            auto obj = GetObject();
+            if (obj != nullptr)
+            {
+                auto& objectRepository = GetContext()->GetObjectRepository();
+                auto installedObject = objectRepository.FindObject(obj->GetDescriptor());
+                if (installedObject != nullptr)
+                {
+                    return std::make_shared<ScInstalledObject>(installedObject->Id);
+                }
+            }
+            return {};
+        }
+
         std::string type_get() const
         {
             return std::string(ObjectTypeToString(EnumValue(_type)));
@@ -101,7 +95,14 @@ namespace OpenRCT2::Scripting
             auto obj = GetObject();
             if (obj != nullptr)
             {
-                return std::string(obj->GetIdentifier());
+                if (obj->GetGeneration() == ObjectGeneration::DAT)
+                {
+                    return obj->GetDescriptor().ToString();
+                }
+                else
+                {
+                    return std::string(obj->GetIdentifier());
+                }
             }
             return {};
         }
@@ -124,6 +125,26 @@ namespace OpenRCT2::Scripting
                 return obj->GetName();
             }
             return {};
+        }
+
+        uint32_t baseImageId_get() const
+        {
+            auto obj = GetObject();
+            if (obj != nullptr)
+            {
+                return obj->GetBaseImageId();
+            }
+            return 0;
+        }
+
+        uint32_t numImages_get() const
+        {
+            auto obj = GetObject();
+            if (obj != nullptr)
+            {
+                return obj->GetNumImages();
+            }
+            return 0;
         }
 
     protected:
@@ -769,17 +790,53 @@ namespace OpenRCT2::Scripting
         }
     };
 
-    class ScSmallSceneryObject : public ScObject
+    class ScSceneryObject : public ScObject
     {
     public:
-        ScSmallSceneryObject(ObjectType type, int32_t index)
+        ScSceneryObject(ObjectType type, int32_t index)
             : ScObject(type, index)
         {
         }
 
         static void Register(duk_context* ctx)
         {
-            dukglue_set_base_class<ScObject, ScSmallSceneryObject>(ctx);
+            dukglue_set_base_class<ScObject, ScSceneryObject>(ctx);
+            dukglue_register_property(ctx, &ScSceneryObject::sceneryGroups_get, nullptr, "sceneryGroups");
+        }
+
+    private:
+        std::vector<std::string> sceneryGroups_get() const
+        {
+            std::vector<std::string> result;
+            auto obj = GetObject();
+            if (obj != nullptr)
+            {
+                auto& scgDescriptor = obj->GetPrimarySceneryGroup();
+                if (scgDescriptor.HasValue())
+                {
+                    result.push_back(scgDescriptor.ToString());
+                }
+            }
+            return result;
+        }
+
+        SceneryObject* GetObject() const
+        {
+            return static_cast<SceneryObject*>(ScObject::GetObject());
+        }
+    };
+
+    class ScSmallSceneryObject : public ScSceneryObject
+    {
+    public:
+        ScSmallSceneryObject(ObjectType type, int32_t index)
+            : ScSceneryObject(type, index)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScSceneryObject, ScSmallSceneryObject>(ctx);
             dukglue_register_property(ctx, &ScSmallSceneryObject::flags_get, nullptr, "flags");
             dukglue_register_property(ctx, &ScSmallSceneryObject::height_get, nullptr, "height");
             dukglue_register_property(ctx, &ScSmallSceneryObject::price_get, nullptr, "price");
@@ -841,6 +898,99 @@ namespace OpenRCT2::Scripting
         SmallSceneryObject* GetObject() const
         {
             return static_cast<SmallSceneryObject*>(ScObject::GetObject());
+        }
+    };
+
+    class ScLargeSceneryObject : public ScSceneryObject
+    {
+    public:
+        ScLargeSceneryObject(ObjectType type, int32_t index)
+            : ScSceneryObject(type, index)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScSceneryObject, ScLargeSceneryObject>(ctx);
+        }
+    };
+
+    class ScWallObject : public ScSceneryObject
+    {
+    public:
+        ScWallObject(ObjectType type, int32_t index)
+            : ScSceneryObject(type, index)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScSceneryObject, ScWallObject>(ctx);
+        }
+    };
+
+    class ScFootpathAdditionObject : public ScSceneryObject
+    {
+    public:
+        ScFootpathAdditionObject(ObjectType type, int32_t index)
+            : ScSceneryObject(type, index)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScSceneryObject, ScFootpathAdditionObject>(ctx);
+        }
+    };
+
+    class ScBannerObject : public ScSceneryObject
+    {
+    public:
+        ScBannerObject(ObjectType type, int32_t index)
+            : ScSceneryObject(type, index)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScSceneryObject, ScBannerObject>(ctx);
+        }
+    };
+
+    class ScSceneryGroupObject : public ScObject
+    {
+    public:
+        ScSceneryGroupObject(ObjectType type, int32_t index)
+            : ScObject(type, index)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScObject, ScSceneryGroupObject>(ctx);
+            dukglue_register_property(ctx, &ScSceneryGroupObject::items_get, nullptr, "items");
+        }
+
+    private:
+        std::vector<std::string> items_get() const
+        {
+            std::vector<std::string> result;
+            auto obj = GetObject();
+            if (obj != nullptr)
+            {
+                auto& items = obj->GetItems();
+                for (const auto& item : items)
+                {
+                    result.push_back(item.ToString());
+                }
+            }
+            return result;
+        }
+
+    protected:
+        SceneryGroupObject* GetObject() const
+        {
+            return static_cast<SceneryGroupObject*>(ScObject::GetObject());
         }
     };
 } // namespace OpenRCT2::Scripting

@@ -15,7 +15,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr const RideTypeDescriptor SpaceRingsRTD =
+constexpr RideTypeDescriptor SpaceRingsRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_GENTLE),
@@ -25,7 +25,7 @@ constexpr const RideTypeDescriptor SpaceRingsRTD =
     SET_FIELD(StartTrackPiece, TrackElemType::FlatTrack3x3),
     SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionSpaceRings),
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE |
-                     RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
+                     RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
                      RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_SINGLE_SESSION |
                      RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::SpaceRings)),
@@ -38,7 +38,6 @@ constexpr const RideTypeDescriptor SpaceRingsRTD =
     SET_FIELD(Heights, { 16, 48, 3, 2, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateSpaceRings),
     SET_FIELD(RatingsMultipliers, { 12, 4, 4 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 36.00_GBP, 1.00_GBP, 1, }),
@@ -50,5 +49,16 @@ constexpr const RideTypeDescriptor SpaceRingsRTD =
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "space_rings"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::FlatRide,
+        { RIDE_RATING(1, 50), RIDE_RATING(2, 10), RIDE_RATING(6, 50) },
+        7,
+        0,
+        false,
+        {
+            { RatingsModifierType::BonusScenery,          0,                25098, 0, 0 },
+        },
+    }),
 };
 // clang-format on

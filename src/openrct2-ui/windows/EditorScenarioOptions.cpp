@@ -29,14 +29,14 @@
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const int32_t WW_FINANCIAL = 280;
-static constexpr const int32_t WH_FINANCIAL = 149;
+static constexpr int32_t WW_FINANCIAL = 280;
+static constexpr int32_t WH_FINANCIAL = 149;
 
-static constexpr const int32_t WW_GUESTS = 380;
-static constexpr const int32_t WH_GUESTS = 149;
+static constexpr int32_t WW_GUESTS = 380;
+static constexpr int32_t WH_GUESTS = 149;
 
-static constexpr const int32_t WW_PARK = 400;
-static constexpr const int32_t WH_PARK = 200;
+static constexpr int32_t WW_PARK = 400;
+static constexpr int32_t WH_PARK = 200;
 
 #pragma region Widgets
 
@@ -48,7 +48,7 @@ enum {
     WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT
 };
 
-static constexpr const StringId ClimateNames[] = {
+static constexpr StringId ClimateNames[] = {
     STR_CLIMATE_COOL_AND_WET,
     STR_CLIMATE_WARM,
     STR_CLIMATE_HOT_AND_DRY,
@@ -333,7 +333,7 @@ private:
         if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL)
             spriteIndex += (frame_no / 2) % 8;
 
-        GfxDrawSprite(&dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+        GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
         // Tab 2
         widget = &widgets[WIDX_TAB_2];
@@ -341,12 +341,12 @@ private:
         if (page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS)
             spriteIndex += (frame_no / 4) % 8;
 
-        GfxDrawSprite(&dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+        GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
         // Tab 3
         widget = &widgets[WIDX_TAB_3];
         spriteIndex = SPR_TAB_PARK;
-        GfxDrawSprite(&dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
+        GfxDrawSprite(dpi, ImageId(spriteIndex), windowPos + ScreenCoordsXY{ widget->left, widget->top });
     }
 
     void SetPage(int32_t newPage)
@@ -356,7 +356,6 @@ private:
 
         page = newPage;
         frame_no = 0;
-        var_492 = 0;
         hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[page];
         widgets = window_editor_scenario_options_widgets[page];
         Invalidate();
@@ -613,7 +612,7 @@ private:
     {
         ScreenCoordsXY screenCoords{};
 
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
         DrawTabImages(dpi);
 
         const auto& initialCashWidget = widgets[WIDX_INITIAL_CASH];
@@ -861,7 +860,7 @@ private:
     {
         ScreenCoordsXY screenCoords{};
 
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
         DrawTabImages(dpi);
 
         const auto& cashPerGuestWidget = widgets[WIDX_CASH_PER_GUEST];
@@ -1180,7 +1179,7 @@ private:
     {
         ScreenCoordsXY screenCoords{};
 
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
         DrawTabImages(dpi);
 
         const auto& landCostWidget = widgets[WIDX_LAND_COST];

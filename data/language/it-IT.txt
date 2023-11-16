@@ -1221,8 +1221,8 @@ STR_1838    :Soddisfazione: {COMMA16}%
 STR_1839    :Affidabilità: {COMMA16}%
 STR_1840    :Tempi morti: {COMMA16}%
 STR_1841    :Profitto: {CURRENCY} all’ora
-STR_1842    :La preferita da: {COMMA16} visitatore
-STR_1843    :La preferita da: {COMMA16} visitatori
+STR_1842    :La preferita da: {COMMA32} visitatore
+STR_1843    :La preferita da: {COMMA32} visitatori
 STR_1844    :Scegli il tipo di informazione da mostrare nella lista delle attrazioni
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} visitatori
@@ -1283,8 +1283,8 @@ STR_1901    :{WINDOW_COLOUR_2}Biglietti d’ingresso
 STR_1902    :{WINDOW_COLOUR_2}Biglietti attrazioni
 STR_1903    :{WINDOW_COLOUR_2}Vendite dei negozi
 STR_1904    :{WINDOW_COLOUR_2}Scorte dei negozi
-STR_1905    :{WINDOW_COLOUR_2}Vendite di cibo/bevande
-STR_1906    :{WINDOW_COLOUR_2}Scorte di cibo/bevande
+STR_1905    :{WINDOW_COLOUR_2}Vendite cibo/bevande
+STR_1906    :{WINDOW_COLOUR_2}Scorte cibo/bevande
 STR_1907    :{WINDOW_COLOUR_2}Stipendi personale
 STR_1908    :{WINDOW_COLOUR_2}Marketing
 STR_1909    :{WINDOW_COLOUR_2}Ricerca
@@ -2192,8 +2192,8 @@ STR_3118    :{BLACK}{STRINGID} si sta dirigendo verso l’attrazione
 STR_3119    :{BLACK}{STRINGID} sta riparando l’attrazione
 STR_3120    :Individua il meccanico disponibile più vicino o il meccanico che sta riparando l’attrazione
 STR_3121    :Impossibile individuare il meccanico o tutti i meccanici nei paraggi sono già impegnati
-STR_3122    :{WINDOW_COLOUR_2}Attrazione preferita di: {BLACK}{COMMA16} visitatore
-STR_3123    :{WINDOW_COLOUR_2}Attrazione preferita di: {BLACK}{COMMA16} visitatori
+STR_3122    :{WINDOW_COLOUR_2}Attrazione preferita di: {BLACK}{COMMA32} visitatore
+STR_3123    :{WINDOW_COLOUR_2}Attrazione preferita di: {BLACK}{COMMA32} visitatori
 STR_3124    :Guasto: {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Fattore di divertimento: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Fattore d’intensità: {BLACK}+{COMMA16}%
@@ -2441,7 +2441,7 @@ STR_5120    :Finanza
 STR_5121    :Ricerca
 STR_5122    :Attrazioni in base al tipo di percorso (come in RCT1)
 STR_5123    :Rinnova attrazioni
-STR_5125    :Tutte distruttibili
+STR_5125    :Tutto è distruttibile
 STR_5126    :Musica iniziale casuale
 STR_5127    :Trascinando, modifica il paesaggio anziché cambiare altezza
 STR_5128    :Dimensione selezione
@@ -2700,19 +2700,19 @@ STR_5486    :{BLACK}{COMMA16}
 STR_5487    :Mostra i messaggi recenti
 STR_5489    :Mostra solo i visitatori seguiti
 STR_5490    :Disabilita audio quando si cambia finestra
-STR_5491    :Lista Invenzioni
-STR_5492    :Opzioni Scenario
-STR_5493    :Mostra Messaggio
-STR_5495    :Lista Giocatore
+STR_5491    :Lista invenzioni
+STR_5492    :Opzioni scenario
+STR_5493    :Mostra messaggio
+STR_5495    :Lista giocatore
 STR_5496    :Giocatore
 STR_5497    :Ping
-STR_5498    :Lista Server
-STR_5499    :Nome Giocatore:
-STR_5500    :Aggiungi Server
-STR_5501    :Avvia Server
+STR_5498    :Lista server
+STR_5499    :Nome giocatore:
+STR_5500    :Aggiungi server
+STR_5501    :Avvia server
 STR_5502    :Multiplayer
 STR_5503    :Inserisci hostname o indirizzo IP:
-STR_5504    :Show multiplayer status
+STR_5504    :Mostra stato multiplayer
 STR_5505    :Impossibile connettersi al server.
 STR_5506    :I visitatori ignorano l’intensità
 STR_5510    :Scheda audio predefinita
@@ -2867,7 +2867,7 @@ STR_5661    :Imposta gruppo giocatori
 STR_5662    :N.D.
 STR_5663    :Pulisci paesaggio
 STR_5664    :Trucchi
-STR_5665    :Toggle Scenery Cluster
+STR_5665    :Attiva/disattiva sparpaglia arredi
 STR_5666    :Accesso senza password
 STR_5701    :{WINDOW_COLOUR_2}Ultima azione: {BLACK}{STRINGID}
 STR_5702    :Localizza l’ultima azione del giocatore
@@ -2889,10 +2889,10 @@ STR_5716    :Non permesso in modalità multigiocatore
 STR_5717    :Versione della rete: {STRING}
 STR_5718    :Versione della rete: {STRING}
 STR_5719    :Soleggiato
-STR_5720    :Parzialmente nuvoloso
+STR_5720    :Parz. nuvoloso
 STR_5721    :Nuvoloso
-STR_5722    :Piovoso
-STR_5723    :Fortemente piovoso
+STR_5722    :Pioggia
+STR_5723    :Pioggia forte
 STR_5724    :Temporale
 STR_5725    :{BLACK}Cambia il meteo a:
 STR_5726    :Imposta il meteo attuale nel parco
@@ -2957,7 +2957,7 @@ STR_5790    :Attiva/disattiva i prezzi di RCT1{NEWLINE}(es. sia prezzo di ingres
 STR_5791    :Imposta l’affidabilità di tutte le attrazioni a 100%{NEWLINE}e reimposta la loro data di costruzione a “quest’anno”
 STR_5792    :Aggiusta tutte le attrazioni rotte
 STR_5793    :Pulisce lo storico degli incidenti di questa attrazione,{NEWLINE}affinché i visitatori non si lamentino che non è sicura
-STR_5794    :Alcuni scenari disattivano la modifica{NEWLINE}dei percorsi già presenti nel parco.{NEWLINE}Questa opzione la riattiva
+STR_5794    :Alcuni scenari disattivano{NEWLINE}la modifica dei percorsi{NEWLINE}già presenti nel parco.{NEWLINE}Questa opzione la riattiva
 STR_5795    :I visitatori salgono su tutte le attrazioni{NEWLINE}a prescindere dal loro livello di intensità
 STR_5796    :Forza il parco a chiudere o riaprire
 STR_5797    :Disattiva modifiche al tempo atmosferico{NEWLINE}e blocca quello attuale
@@ -2997,7 +2997,7 @@ STR_5832    :Mostra l’altezza in unità generiche invece del formato impostato
 STR_5833    :Cambia il formato della data utilizzato
 STR_5834    :Seleziona il dispositivo audio utilizzato da OpenRCT2
 STR_5835    :Disattiva l’audio del gioco se la finestra perde il focus
-STR_5836    :Imposta la musica da utilizzare nel menu principale.{NEWLINE}Selezionando RCT1 sarà necessario copiare il file “data/css17.dat” dalla cartella di RCT1 a “data/css50.dat” nella cartella di RCT2, oppure impostare il percorso di RCT1 nella scheda “Altro”.
+STR_5836    :Seleziona la musica da utilizzare nel menu principale.{NEWLINE}Per selezionare il tema di RCT1 è necessario impostare il percorso di RCT1 nella scheda Avanzate.
 STR_5837    :Crea e gestisci i temi dell’interfaccia
 STR_5838    :Mostra un pulsante differente per le finanze nella barra degli strumenti
 STR_5839    :Mostra un pulsante differente per le ricerche e sviluppo nella barra degli strumenti
@@ -3195,7 +3195,6 @@ STR_6033    :Cartella di RCT1:
 STR_6034    :{BLACK}{STRING}
 STR_6035    :Selezionare la cartella di installazione di RCT1
 STR_6036    :Pulisci
-STR_6037    :Selezionare una cartella di installazione di RCT1 valida
 STR_6037    :La cartella selezionata non contiene un’installazione valida di RollerCoaster Tycoon 1.
 STR_6038    :Se RCT1 è installato, selezionarne la cartella per caricarne gli scenari, la musica, ecc.
 STR_6039    :Demolizione veloce percorso
@@ -3222,7 +3221,7 @@ STR_6060    :Mostra animazione per acquisti dei visitatori
 STR_6061    :Mostra l’effetto dei soldi animato{NEWLINE}quando i visitatori effettuano acquisti.
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
 STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
-STR_6064    :Possiedi tutto il terreno
+STR_6064    :Possiedi intera mappa
 STR_6065    :Registra azioni degli utenti
 STR_6066    :Crea un log di tutte le azioni degli utenti nella propria cartella utente.
 STR_6067    :Server avviato.
@@ -3259,7 +3258,7 @@ STR_6097    :{STRING} ha piazzato un tratto di percorso “{STRING}”.
 STR_6098    :{STRING} ha rimosso un tratto di percorso.
 STR_6099    :Connesso al server.
 STR_6100    :Disconnesso dal server.
-STR_6101    :Le attrazioni non perdono valore con il tempo
+STR_6101    :Il valore delle attrazioni non cala col tempo
 STR_6102    :Il valore delle attrazioni non calerà con il tempo, in modo che i visitatori non pensino improvvisamente che il costo dell’attrazione sia troppo alto.
 STR_6103    :Questa opzione è disabilitata durante il gioco online.
 STR_6105    :Hypercoaster
@@ -3287,8 +3286,8 @@ STR_6133    :Permette di accedere ad attrazioni e scenari non ancora inventati
 STR_6134    :Rimuovi scenario
 STR_6135    :Il client ha inviato una richiesta non valida
 STR_6136    :Il server ha inviato una richiesta non valida
-STR_6137    :OpenRCT2, un clone libero e open-source di Roller Coaster Tycoon 2.
-STR_6138    :OpenRCT2 è frutto del lavoro di molti autori, una lista completa si può trovare nel file “contributors.md”. Per ulteriori informazioni, visitare http://github.com/OpenRCT2/OpenRCT2
+STR_6137    :OpenRCT2, un remake con aggiunte gratuito e open-source di Roller Coaster Tycoon 2.
+STR_6138    :OpenRCT2 è frutto del lavoro di molti autori, una lista completa si può trovare cliccando il pulsante “Collaboratori”. Per ulteriori informazioni, visitare http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Tutti i nomi di prodotti e aziende appartengono ai rispettivi proprietari. Il loro uso non implica alcuna affiliazione o approvazione da parte di essi.
 STR_6140    :Storico delle modifiche…
 STR_6141    :Barra degli strumenti inferiore alla RCT1
@@ -3296,7 +3295,7 @@ STR_6142    :{WINDOW_COLOUR_2}Nome percorso: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Tipo attrazione: {BLACK}{STRINGID}
 STR_6144    :Mostra visuali sporche
 STR_6145    :Imposta limite di velocità per gli acceleratori
-STR_6146    :Abilita tutti i pezzi disegnabili del percorso
+STR_6146    :Abilita tutti i pezzi di percorso possibili
 STR_6147    :Abilita nella finestra di costruzione tutti i pezzi che l’attrazione è in grado di supportare, a prescindere dal fatto che il veicolo li supporti o meno.
 STR_6148    :Connessione al server principale…
 STR_6149    :Impossibile connettersi al server principale
@@ -3432,7 +3431,7 @@ STR_6318    :Network desync rilevato.{NEWLINE}File log: {STRING}
 STR_6319    :Blocco freno chiuso
 STR_6320    :Indistruttibile
 STR_6321    :L’aggiunta è rotta
-STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Id entità: {BLACK}{INT32}
 STR_6323    :Simulazione
 STR_6324    :Simula
 STR_6325    :Simula attrazione
@@ -3478,7 +3477,7 @@ STR_6366    :Veicoli fermi o incastrati
 STR_6364    :{RED}{COMMA16} persona rimasta uccisa in un incidente su {STRINGID}
 STR_6367    :Fotogramma animazione:
 STR_6368    :Per motivi di compatibilità, non è consigliato eseguire OpenRCT2 tramite Wine. OpenRCT2 offre supporto nativo per macOS, Linux, FreeBSD and OpenBSD.
-STR_6369    :Permetti costruzione percorsi ad altezze non valide
+STR_6369    :Permetti percorsi ad altezze non valide
 STR_6370    :Permette di collocare pezzi di percorso a qualsiasi intervallo di altezza
 STR_6371    :La cartella specificata contiene un’installazione di RollerCoaster Tycoon 1, ma non contiene il file “csg1i.dat”. Questo file dev’essere copiato dal CD di Loopy Landscapes o di RCT Deluxe alla cartella “Data” dell’installazione su disco rigido di RollerCoaster Tycoon 1. 
 STR_6372    :La cartella specificata contiene un’installazione di RollerCoaster Tycoon 1, ma la versione non è compatibile. OpenRCT2 necessita di un’installazione di Loopy Landscapes o di RCT Deluxe per poter utilizzare le risorse di RollerCoaster Tycoon 1.
@@ -3599,9 +3598,9 @@ STR_6487    :Mostra/nascondi personale
 STR_6488    :{RED}I visitatori si lamentano per la lunghezza delle code nel tuo parco.{NEWLINE}Prendi in considerazione di accorciare quelle problematiche o di aumentare il flusso di visitatori delle attrazioni.
 STR_6489    :Errore: versione parco non compatibile
 STR_6490    :Avviso: versione parco semi-compatibile
-STR_6491    :Questo parco è stato salvato in una versione più recente di OpenRCT2. Il parco è v{INT32} e richiede almeno v{INT32}.
+STR_6491    :Questo parco è stato salvato in una versione più recente di OpenRCT2. Il parco è stato salvato nella v{INT32} e richiede almeno v{INT32}. Si sta usando la v{INT32}.
 STR_6492    :Questo parco è stato salvato in una versione più vecchia di OpenRCT2 e non può essere aperto con questa versione. Il parco è v{INT32}.
-STR_6493    :Questo parco è stato salvato in una versione più recente di OpenRCT2, alcuni dati potrebbero essere persi. Il parco è v{INT32} e richiede almeno v{INT32}.
+STR_6493    :Questo parco è stato salvato in una versione più recente di OpenRCT2, alcuni dati potrebbero essere persi. Il parco è stato salvato nella v{INT32}. Si sta usando la v{INT32}.
 STR_6494    :Raggruppa per tipo attrazione
 STR_6495    :Raggruppa le attrazioni in base al loro tipo anziché mostrare ogni veicolo separatamente.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
@@ -3623,11 +3622,87 @@ STR_6511    :Zero G Roll (Dx)
 STR_6512    :Zero G Roll Grande (Sx)
 STR_6513    :Zero G Roll Grande (Dx)
 STR_6514    :Altezza non valida!
-STR_6515    :{BLACK}RCT1 non collegato - saranno usate immagini di ripiego.
-STR_6516    :Uno o più oggetti aggiunti necessitano che RCT1 sia collegato per una corretta visualizzazione. Saranno usate immagini di ripiego.
-STR_6517    :Uno o più oggetti di questo parco necessitano che RCT1 sia collegato per una corretta visualizzazione. Saranno usate immagini di ripiego.
+STR_6515    :{BLACK}RollerCoaster Tycoon 1 non collegato - saranno usate immagini di ripiego.
+STR_6516    :Uno o più oggetti aggiunti necessitano che RollerCoaster Tycoon 1 sia collegato per una corretta visualizzazione. Saranno usate immagini di ripiego.
+STR_6517    :Uno o più oggetti di questo parco necessitano che RollerCoaster Tycoon 1 sia collegato per una corretta visualizzazione. Saranno usate immagini di ripiego.
 STR_6518    :{BLACK}Passa il cursore sopra a uno scenario per visualizzare la sua descrizione e il suo obiettivo. Fai clic per iniziare a giocare.
 STR_6519    :Extra
+STR_6520    :Pacchetti di risorse
+STR_6521    :Bassa priorità
+STR_6522    :Alta priorità
+STR_6523    :Abbassa la priorità del pacchetto di risorse selezionato.
+STR_6524    :Aumenta la priorità del pacchetto di risorse selezionato.
+STR_6525    :Ricarica tutte le risorse nel gioco con i pacchetti di risorse attivi.
+STR_6526    :(grafica, musica ed effetti sonori di base)
+STR_6527    :Competizioni
+STR_6528    :Parametri del tracciato non validi!
+STR_6529    :Parametro dello schema colore non valido!
+STR_6530    :User Created Expansion Set
+STR_6531    :The Time Machine
+STR_6532    :Katy’s Dreamworld
+STR_6533    :{WINDOW_COLOUR_2}Fattore di divertimento: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Fattore d’intensità: {BLACK}-{COMMA16}%
+STR_6535    :{WINDOW_COLOUR_2}Fattore di nausea: {BLACK}-{COMMA16}%
+STR_6536    :Questo parco è stato salvato in una versione più recente di OpenRCT2. il parco è stato salvato nella v{INT32}, si sta usando la v{INT32}.
+STR_6537    :Usa sentieri normali come code
+STR_6538    :Mostra i percorsi regolari nel menu a cascata della finestra dei Sentieri.
+STR_6539    :Freno chiuso
+STR_6540    :{WINDOW_COLOUR_2}Un ringraziamento speciale alle seguenti aziende per aver concesso l'utilizzo della loro immagine:
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6542    :Collaboratori
+STR_6543    :Collaboratori…
+STR_6544    :I prestiti non posso essere negativi!
+STR_6545    :Usa il calcolo dell’intersse di RCT1
+STR_6546    :Usa l’algoritmo di calcolo dell’interesse di RollerCoaster Tycoon 1, che usa una percentuale fissa del circa 1.33%.
+STR_6547    :Tutto lo scenario
+STR_6548    :Mostra le ringhiere agli incroci
+STR_6549    :Gli oggetti per la compatibilità non possono essere selezionati!
+STR_6550    :Questa voce è inclusa per retrocompatibilità con oggetti vecchi o danneggiati. Non può essere selezionata, solo deselezionata.
+
+STR_6551    :Verde militare
+STR_6552    :Verde pallido
+STR_6553    :Tanno
+STR_6554    :Marrone
+STR_6555    :Rosa corallo
+STR_6556    :Verde foresta
+STR_6557    :Chartreuse
+STR_6558    :Verde cacciatore
+STR_6559    :Celadon
+STR_6560    :Verde lime
+STR_6561    :Seppia
+STR_6562    :Pesca
+STR_6563    :Pervinca
+STR_6564    :Verde viridiano
+STR_6565    :Verde schiuma marina
+STR_6566    :Violetto
+STR_6567    :Lavanda
+STR_6568    :Arancio pastello
+STR_6569    :Acqua Profonda
+STR_6570    :Rosa pastello
+STR_6571    :Terra d’ombra
+STR_6572    :Beige
+STR_6573    :Invisibile
+STR_6574    :Oblio
+STR_6575    :Permetti schemi di colore speciali
+STR_6576    :Aggiunge colori speciali al menu a tendina dei colori 
+STR_6577    :Velocità freni di blocco
+STR_6578    :Fissa un limite di velocità per i freni di blocco. In modalità sezione a blocchi, freni adiacenti con una velocità inferiore sono collegati con i freni di blocco.
+STR_6579    :I freni di blocco saranno impostati alla velocità predefinita quando salvati come progetto di percorso
+STR_6580    :Ripristina
+STR_6581    :Si è sicuri di voler ripristinare tutte le scorciatorie di questa scheda?
+STR_6582    :Finestra delle scorciatoie da tastiera
+STR_6583    :{WINDOW_COLOUR_2}Treni invertiti
+STR_6584    :Selezionare per far andare i treni al contrario
+STR_6585    :Impossibile effettuare modifiche…
+STR_6586    :OpenRCT2
+STR_6587    :Il tema principale di OpenRCT2 è un lavoro di Allister Brimble,{NEWLINE}con licenza CC BY-SA 4.0.
+STR_6588    :Si ringrazia Herman Riddering per averci permesso di registrare il 35er Voigt.
+STR_6589    :Mostra i pulsanti di controllo della finestra a sinistra
+STR_6590    :Mostra i pulsanti di controllo della finestra (ad es. per chiuderla) a sinistra della barra del titolo invece che a destra.
+STR_6591    :Il dipendente sta riparando un’attrazione e non può essere licenziato.
+STR_6592    :Il dipendente sta ispezionando un’attrazione e non può essere licenziato.
+STR_6593    :Rimuovi recinto del parco
+STR_6594    :Analizzatore celle: Attiva/disattiva inclinazione muro
 
 
 #############
@@ -4384,3 +4459,102 @@ STR_DTLS    :Questo vecchio parco a tema ha vissuto tempi migliori. Aiuta il pro
 STR_SCNR    :Il Mondo dei Panda
 STR_PARK    :Il Mondo dei Panda
 STR_DTLS    :Aggiungi più attrazioni per attirare più visitatori in questo parco a tema sui panda.
+
+###
+<UCES Halloween>
+STR_SCNR    :Cemetery Ridge
+STR_PARK    :Cemetery Ridge
+STR_DTLS    :Questo è Halloween, l’Halloween di UCES, le zucche urlano nel bel mezzo della notte! Questo cimitero è in grossi guai e tocca a te salvarlo, lasciando però i morti riposare in pace! Sarai in grado di tenere i fantasmi all’interno delle loro tombe e far rabbrividire i tuoi visitatori?{NEWLINE}Autore: Squid
+
+###############################################################################
+## UCES: The Time Machine (2003)
+###############################################################################
+<Lighthouse of Alexandria by Katatude for UCES>
+STR_SCNR    :The Lighthouse of Alexandria
+STR_PARK    :The Lighthouse of Alexandria
+STR_DTLS    :Alessandro costruì la città; i greci, i romani e gli egiziani lasciarono le loro tracce. Ma il più grande regalo è una delle Meraviglie del Mondo Antico, il Faro. Visitalo e creaci un parco!{NEWLINE}Autore: Katatude
+
+<Cleveland's Luna Park>
+STR_SCNR    :Luna Park, Cleveland
+STR_PARK    :Luna Park
+STR_DTLS    :Proprio com’era il giorno della sua apertura, il 18 maggio 1905.{NEWLINE}Autore: Aetherwave
+
+<Mount Vesuvius 1700 A.D. by Katatude for UCES>
+STR_SCNR    :Mount Vesuvius
+STR_PARK    :Mount Vesuvius
+STR_DTLS    :Pompei ed Ercolano furono ricoperte dal Vesuvio nel 79 a.C. Visita gli scavi e costruiscici un parco!{NEWLINE}Autore: Katatude
+
+<The Sandbox by Katatude for UCES>
+STR_SCNR    :The Sandbox
+STR_PARK    :The Sandbox
+STR_DTLS    :Quello che tutti desiderano - una sandbox! Quindi prendi secchio e pala e costruisci un parco!{NEWLINE}Autore: Katatude
+
+<Niagara Falls & Gorge by Katatude for UCES>
+STR_SCNR    :Niagara Falls & Gorge
+STR_PARK    :Niagara Falls
+STR_DTLS    :Le American Falls, le Bridal Falls e le Canadian Horseshoe Falls sul confine del Niagara, 1850.{NEWLINE}Autore: Katatude
+
+<Rocky Mountain Miners>
+STR_SCNR    :Rocky Mountain Miners
+STR_PARK    :Rocky Mountain Miners
+STR_DTLS    :Una frana ha danneggiato la tua ferrovia. I tuoi lavoratori sono andati a scavare, ci sarà dell’oro nelle montagne russe?{NEWLINE}Autori: Squid, Buckone, Fossil
+
+<The Time Machine by Katatude for UCES>
+STR_SCNR    :The Time Machine
+STR_PARK    :The Time Machine
+STR_DTLS    :La macchina del tempo. Costruisci e viaggia, dove vuoi, quando vuoi. L’eternità ti aspetta. È tutto relativo.{NEWLINE}Autore: Katatude
+
+<Tower of Babel>
+STR_SCNR    :Tower of Babel
+STR_PARK    :Tower of Babel
+STR_DTLS    :Ehii! Guarda dove ci ha portato adesso la macchina del tempo! Dove sono finiti tutti?{NEWLINE}Autore: Fossil
+
+<Transformation>
+STR_SCNR    :Transformation
+STR_PARK    :Transformation
+STR_DTLS    :Ti stavamo aspettando…{NEWLINE}Autore: Fossil
+
+<Urbis Incognitus>
+STR_SCNR    :Urbis Incognitus
+STR_PARK    :Urbis Incognitus
+STR_DTLS    :I romani sono stanchi delle lotte noiose tra gladiatori. Dagli qualcosa di più eccitante, trasforma la città romana nel più grande parco divertimenti della storia!{NEWLINE}Autore: Kaffe
+
+###############################################################################
+## UCES: Katy’s Dreamworld (2003)
+###############################################################################
+
+<Beneath the Christmas Tree by Katatude for UCES>
+STR_SCNR    :Beneath the Christmas Tree
+STR_PARK    :Winter Wonderland
+STR_DTLS    :La mamma ha costruito questa scena sotto al nostro albero. Ora vuole che ci costruiamo un parco! Puoi aiutarci?{NEWLINE}Autore: Katatude
+
+<Bigrock Blast>
+STR_SCNR    :Bigrock Blast
+STR_PARK    :Bigrock Blast
+STR_DTLS    :Dopo un’esplosione alle Miniere Pietragrossa S.p.A., agli abitanti di Pietragrossa tocca costruire un parco divertimenti per mantenere la loro città viva.{NEWLINE}Autori: rbarclay & buckone
+
+<Camp Mockingbird for UCES by Katatude>
+STR_SCNR    :Camp Mockingbird
+STR_PARK    :Camp Mockingbird
+STR_DTLS    :Solo 500 dollari a settimana per questo campo estivo! Spacca il salvadanaio e divertiti a costruire un parco.{NEWLINE}Autore: Katatude
+
+<Choo Choo Town>
+STR_SCNR    :Choo-Choo Town
+STR_PARK    :Choo-Choo Town
+STR_DTLS    :Mamma! Papà! Voglio andare a Choo-Choo Town!{NEWLINE}Autore: Fossil
+
+<Dragon Islands>
+STR_SCNR    :Dragon Islands
+STR_PARK    :Dragon Islands
+STR_DTLS    :L’isola dei dragoni? Non sono sicuro di volerci andare…{NEWLINE}Autore: Fossil
+
+<Kiddy Karnival II>
+STR_SCNR    :Kiddie Karnival II
+STR_PARK    :Kiddie Karnival
+STR_DTLS    :Ehi bambini! Divertiamoci!{NEWLINE}Autori: Piehead & Fossil
+
+<Sand Dune>
+STR_SCNR    :Sand Dune
+STR_PARK    :Sand Dune
+STR_DTLS    :In veste di proprietario di un piccolo parco, hai acquistato un ampio terreno lungo la costa per espanderti e portare più visitatori tra le dune di sabbia, ma stai attento: non puoi disturbare queste dune così ecologicamente fragili!{NEWLINE}Autore: rbarclay
+

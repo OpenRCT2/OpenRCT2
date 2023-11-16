@@ -13,7 +13,6 @@
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../localisation/Localisation.h"
 
 void EntranceObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
@@ -30,13 +29,13 @@ void EntranceObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.string_idx = LanguageAllocateObjectString(GetName());
-    _legacyType.image_id = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.image_id = LoadImages();
 }
 
 void EntranceObject::Unload()
 {
     LanguageFreeObjectString(_legacyType.string_idx);
-    GfxObjectFreeImages(_legacyType.image_id, GetImageTable().GetCount());
+    UnloadImages();
 
     _legacyType.string_idx = 0;
     _legacyType.image_id = 0;
@@ -46,9 +45,9 @@ void EntranceObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t heig
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
-    GfxDrawSprite(&dpi, ImageId(_legacyType.image_id + 1), screenCoords + ScreenCoordsXY{ -32, 14 });
-    GfxDrawSprite(&dpi, ImageId(_legacyType.image_id + 0), screenCoords + ScreenCoordsXY{ 0, 28 });
-    GfxDrawSprite(&dpi, ImageId(_legacyType.image_id + 2), screenCoords + ScreenCoordsXY{ 32, 44 });
+    GfxDrawSprite(dpi, ImageId(_legacyType.image_id + 1), screenCoords + ScreenCoordsXY{ -32, 14 });
+    GfxDrawSprite(dpi, ImageId(_legacyType.image_id + 0), screenCoords + ScreenCoordsXY{ 0, 28 });
+    GfxDrawSprite(dpi, ImageId(_legacyType.image_id + 2), screenCoords + ScreenCoordsXY{ 32, 44 });
 }
 
 void EntranceObject::ReadJson(IReadObjectContext* context, json_t& root)

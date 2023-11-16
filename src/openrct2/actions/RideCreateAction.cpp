@@ -100,7 +100,8 @@ GameActions::Result RideCreateAction::Query() const
     const auto* rideEntry = GetRideEntryByIndex(rideEntryIndex);
     if (rideEntry == nullptr)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_UNKNOWN_OBJECT_TYPE);
     }
 
     const auto* presetList = rideEntry->vehicle_preset_list;
@@ -215,7 +216,7 @@ GameActions::Result RideCreateAction::Execute() const
 
         if (rideEntry->shop_item[0] == ShopItem::None)
         {
-            if (!ParkRidePricesUnlocked())
+            if (!ParkRidePricesUnlocked() || gParkEntranceFee > 0)
             {
                 ride->price[0] = 0;
             }
@@ -286,7 +287,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->num_riders = 0;
     ride->slide_in_use = 0;
     ride->maze_tiles = 0;
-    ride->build_date = gDateMonthsElapsed;
+    ride->build_date = GetDate().GetMonthsElapsed();
     ride->music_tune_id = TUNE_ID_NULL;
 
     ride->breakdown_reason = 255;

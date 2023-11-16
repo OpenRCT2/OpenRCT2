@@ -49,7 +49,7 @@ class EditorBottomToolbarWindow final : public Window
 private:
     using FuncPtr = void (EditorBottomToolbarWindow::*)() const;
 
-    static constexpr const StringId _editorStepNames[] = {
+    static constexpr StringId _editorStepNames[] = {
         STR_EDITOR_STEP_OBJECT_SELECTION,       STR_EDITOR_STEP_LANDSCAPE_EDITOR,      STR_EDITOR_STEP_INVENTIONS_LIST_SET_UP,
         STR_EDITOR_STEP_OPTIONS_SELECTION,      STR_EDITOR_STEP_OBJECTIVE_SELECTION,   STR_EDITOR_STEP_SAVE_SCENARIO,
         STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER, STR_EDITOR_STEP_TRACK_DESIGNS_MANAGER,
@@ -283,7 +283,7 @@ private:
         auto previousWidget = widgets[WIDX_PREVIOUS_IMAGE];
         auto leftTop = windowPos + ScreenCoordsXY{ previousWidget.left, previousWidget.top };
         auto rightBottom = windowPos + ScreenCoordsXY{ previousWidget.right, previousWidget.bottom };
-        GfxFilterRect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+        GfxFilterRect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
     }
 
     void DrawLeftButton(DrawPixelInfo& dpi)
@@ -292,10 +292,10 @@ private:
             + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 1, widgets[WIDX_PREVIOUS_IMAGE].top + 1 };
         const auto bottomRight = windowPos
             + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].right - 1, widgets[WIDX_PREVIOUS_IMAGE].bottom - 1 };
-        GfxFillRectInset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
 
         GfxDrawSprite(
-            &dpi, ImageId(SPR_PREVIOUS),
+            dpi, ImageId(SPR_PREVIOUS),
             windowPos + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 6, widgets[WIDX_PREVIOUS_IMAGE].top + 6 });
 
         colour_t textColour = NOT_TRANSLUCENT(colours[1]);
@@ -321,7 +321,7 @@ private:
         auto nextWidget = widgets[WIDX_NEXT_IMAGE];
         auto leftTop = windowPos + ScreenCoordsXY{ nextWidget.left, nextWidget.top };
         auto rightBottom = windowPos + ScreenCoordsXY{ nextWidget.right, nextWidget.bottom };
-        GfxFilterRect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+        GfxFilterRect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
     }
 
     void DrawRightButton(DrawPixelInfo& dpi)
@@ -329,10 +329,10 @@ private:
         const auto topLeft = windowPos + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].left + 1, widgets[WIDX_NEXT_IMAGE].top + 1 };
         const auto bottomRight = windowPos
             + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].right - 1, widgets[WIDX_NEXT_IMAGE].bottom - 1 };
-        GfxFillRectInset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
+        GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_30);
 
         GfxDrawSprite(
-            &dpi, ImageId(SPR_NEXT),
+            dpi, ImageId(SPR_NEXT),
             windowPos + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].right - 29, widgets[WIDX_NEXT_IMAGE].top + 6 });
 
         colour_t textColour = NOT_TRANSLUCENT(colours[1]);
@@ -374,7 +374,7 @@ private:
         nullptr,
     };
 
-    static constexpr const FuncPtr _nextButtonMouseUp[] = {
+    static constexpr FuncPtr _nextButtonMouseUp[] = {
         &EditorBottomToolbarWindow::JumpForwardFromObjectSelection,
         &EditorBottomToolbarWindow::JumpForwardToInventionListSetUp,
         &EditorBottomToolbarWindow::JumpForwardToOptionsSelection,

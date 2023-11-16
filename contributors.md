@@ -8,7 +8,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Hielke Morsink (Broxzier)
 * Tulio Paschoalin Leao (tupaschoal)
 * Olivier Wervers (Oli414)
-* Rik Smeets (rik-smeets)
+* Matthias Moninger (ZehMatt)
 
 ## Former development team members
 * Lewis Fox (LRFLEW)
@@ -16,8 +16,8 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (zsilencer)
 * Richard Jenkins (rwjuk)
 * Aaron van Geffen (AaronVanGeffen)
-* Matthias Moninger (ZehMatt)
 * Michael Steenbeek (Gymnasiast)
+* Rik Smeets (rik-smeets)
 
 ## Long term contributors
 The following people are not part of the development team, but have been contributing for a long time.
@@ -102,8 +102,14 @@ The following people are not part of the development team, but have been contrib
 * Karst van Galen Last (AuraSpecs) - Ride paint (bounding boxes, extra track pieces), soundtrack, sound effects, misc.
 * (8street) - Misc.
 * Umar Ahmed (umar-ahmed) - MacOS file watcher
-* Andrew Arnold (fidwell) - Added window support for more scenery groups.
+* Andrew Arnold (fidwell) - Misc.
 * Josh Trzebiatowski (trzejos) - Ride and scenery filtering
+* (kyphii) - Extended color selection, reversed ride vehicles, misc.
+* Phumdol Lookthipnapha (beam41) - Misc.
+* Nikolas Parshook (nparshook) - Misc.
+* Wenzhao Qiu (qwzhaox) - Misc.
+* Tiago Reul (reul) - Misc.
+* Fredrik Tegnell (fredriktegnell) - Misc.
 
 ## Bug fixes
 * (KirilAngelov)
@@ -209,11 +215,15 @@ The following people are not part of the development team, but have been contrib
 * Conrad Cash (HouseholdVTuber)
 * Michael Bickerton (mdbckrtn)
 * Nehemiah Negussie (nehemiah-negussie)
-* (zzril)
+* Severin Paul Höfer (zzril)
 * Ernest Elgin (eaeiv)
 * Ernest Wong (ErnWong)
 * Joel H. (HtotheTML)
 * John Mulcahy (jayjay300)
+* Chase Percy (Chase-Percy)
+* Wenzhao Qiu (qwzhaox)
+* Michael Bernardi (mrmbernardi)
+* Aram Kazorian (aramk-hub)
 
 ## Toolchain
 * (Balletie) - macOS
@@ -253,7 +263,7 @@ The following people are not part of the development team, but have been contrib
 * Esperanto - (tellovishous), Raymond Zhao (rzhao271)
 * Finnish - (DJHasis), (Zode), (TheWing)
 * French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rmnvgr), (AziasYur), Hugo Courtial (s0r00t), David Delobel (incyclum), Nicolas Hawrysh (xp4xbox)
-* German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie)
+* German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie), Gilian Rehm (gr33ndev)
 * Italian - Luca Andrea Rossi (LucaRed), Precious Ugo Abara (48cfu)
 * Japanese - Aaron van Geffen (AaronVanGeffen), Haruna Chinzei, Nick Hall (nickhall), (jhako), Harry Lam (daihakken)
 * Korean - Willem J. Lee (telk5093), (NeverDruid); small fixes: (kexplo)
@@ -269,7 +279,16 @@ The following people are not part of the development team, but have been contrib
 * Booster Sprites - Nicolas Hawrysh (xp4xbox)
 
 ## Music
+* Allister Brimble
+* Herman Riddering
 * Karst "Jalmaan" van Galen Last (AuraSpecs)
+* (Flyxxpy)
+* Jan Büchner (Greyfade)
+* (Skyshard)
+
+## Sound Effects
+* Karst van Galen Last (AuraSpecs)
+* (ThatGuyYouKnow)
 
 ## RollerCoaster Tycoon 2 credits
 Design and programming by Chris Sawyer

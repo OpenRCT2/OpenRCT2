@@ -22,7 +22,7 @@ struct CoordsXY;
 struct LargeSceneryEntry;
 struct SmallSceneryEntry;
 struct WallSceneryEntry;
-struct PathBitEntry;
+struct PathAdditionEntry;
 struct BannerSceneryEntry;
 struct FootpathEntry;
 class LargeSceneryObject;
@@ -33,8 +33,8 @@ class FootpathSurfaceObject;
 class FootpathRailingsObject;
 using track_type_t = uint16_t;
 
-constexpr const uint8_t MAX_ELEMENT_HEIGHT = 255;
-constexpr const uint8_t OWNER_MASK = 0b00001111;
+constexpr uint8_t MAX_ELEMENT_HEIGHT = 255;
+constexpr uint8_t OWNER_MASK = 0b00001111;
 
 #pragma pack(push, 1)
 
@@ -195,7 +195,7 @@ private:
     uint8_t GrassLength;
     uint8_t Ownership;
     uint8_t SurfaceStyle;
-    uint8_t EdgeStyle;
+    uint8_t EdgeObjectIndex;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t Pad0B[5];
@@ -205,12 +205,13 @@ public:
     uint8_t GetSlope() const;
     void SetSlope(uint8_t newSlope);
 
-    uint32_t GetSurfaceStyle() const;
-    TerrainSurfaceObject* GetSurfaceStyleObject() const;
-    void SetSurfaceStyle(uint32_t newStyle);
-    uint32_t GetEdgeStyle() const;
-    TerrainEdgeObject* GetEdgeStyleObject() const;
-    void SetEdgeStyle(uint32_t newStyle);
+    ObjectEntryIndex GetSurfaceObjectIndex() const;
+    TerrainSurfaceObject* GetSurfaceObject() const;
+    void SetSurfaceObjectIndex(ObjectEntryIndex newStyle);
+
+    ObjectEntryIndex GetEdgeObjectIndex() const;
+    TerrainEdgeObject* GetEdgeObject() const;
+    void SetEdgeObjectIndex(ObjectEntryIndex newStyle);
 
     bool CanGrassGrow() const;
     uint8_t GetGrassLength() const;
@@ -309,8 +310,9 @@ public:
     bool HasAddition() const;
     uint8_t GetAddition() const;
     ObjectEntryIndex GetAdditionEntryIndex() const;
-    const PathBitEntry* GetAdditionEntry() const;
+    const PathAdditionEntry* GetAdditionEntry() const;
     void SetAddition(uint8_t newAddition);
+    void SetAdditionEntryIndex(ObjectEntryIndex entryIndex);
 
     bool AdditionIsGhost() const;
     void SetAdditionIsGhost(bool isGhost);
@@ -434,9 +436,10 @@ private:
     ObjectEntryIndex entryIndex; // 5
     uint8_t age;                 // 7
     uint8_t Colour[3];           // 8
+    uint8_t Flags2;              // B
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t Pad0B[5];
+    uint8_t Pad0B[4];
 #pragma clang diagnostic pop
 
 public:
@@ -701,8 +704,6 @@ enum
 #define TILE_ELEMENT_TYPE_MASK 0b00111100
 #define TILE_ELEMENT_DIRECTION_MASK 0b00000011
 #define TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK 0b00001111
-
-#define TILE_ELEMENT_COLOUR_MASK 0b00011111
 
 enum
 {

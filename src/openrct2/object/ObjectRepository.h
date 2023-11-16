@@ -34,6 +34,11 @@ namespace OpenRCT2::Localisation
 
 struct DrawPixelInfo;
 
+enum ObjectItemFlags : uint8_t
+{
+    IsCompatibilityObject = 1,
+};
+
 struct ObjectRepositoryItem
 {
     size_t Id;
@@ -46,6 +51,7 @@ struct ObjectRepositoryItem
     ObjectVersion Version;
     std::vector<std::string> Authors;
     std::vector<ObjectSourceGame> Sources;
+    uint8_t Flags{};
     std::shared_ptr<Object> LoadedObject{};
     struct
     {

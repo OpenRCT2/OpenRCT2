@@ -99,7 +99,7 @@ static void ReverserRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][3] = {
+    static constexpr uint32_t imageIds[4][3] = {
         { 21506, SPR_STATION_BASE_A_SW_NE },
         { 21507, SPR_STATION_BASE_A_NW_SE },
         { 21506, SPR_STATION_BASE_A_SW_NE },

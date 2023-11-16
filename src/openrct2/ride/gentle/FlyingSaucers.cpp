@@ -24,7 +24,7 @@ enum
     SprFlyingSaucersFenceNw = 21924,
 };
 
-static constexpr const uint32_t FlyingSaucersFenceSprites[] = {
+static constexpr uint32_t FlyingSaucersFenceSprites[] = {
     SprFlyingSaucersFenceNe,
     SprFlyingSaucersFenceSe,
     SprFlyingSaucersFenceSw,

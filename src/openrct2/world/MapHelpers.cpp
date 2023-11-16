@@ -16,7 +16,7 @@
 
 static uint8_t GetBaseHeightOrZero(int32_t x, int32_t y)
 {
-    auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
+    auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
     return surfaceElement != nullptr ? surfaceElement->BaseHeight : 0;
 }
 
@@ -31,7 +31,7 @@ int32_t MapSmooth(int32_t l, int32_t t, int32_t r, int32_t b)
     {
         for (x = l; x < r; x++)
         {
-            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y }.ToCoordsXY());
+            auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement == nullptr)
                 continue;
             surfaceElement->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
@@ -146,36 +146,36 @@ int32_t MapSmooth(int32_t l, int32_t t, int32_t r, int32_t b)
             {
                 uint8_t slope = surfaceElement->GetSlope();
                 // Corners
-                auto surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 1, y + 1 }.ToCoordsXY());
+                auto surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 1, y + 1 });
                 if (surfaceElement2 != nullptr && surfaceElement2->BaseHeight > surfaceElement->BaseHeight)
                     slope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
 
-                surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x - 1, y + 1 }.ToCoordsXY());
+                surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x - 1, y + 1 });
                 if (surfaceElement2 != nullptr && surfaceElement2->BaseHeight > surfaceElement->BaseHeight)
                     slope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
 
-                surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 1, y - 1 }.ToCoordsXY());
+                surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 1, y - 1 });
                 if (surfaceElement2 != nullptr && surfaceElement2->BaseHeight > surfaceElement->BaseHeight)
                     slope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
 
-                surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x - 1, y - 1 }.ToCoordsXY());
+                surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x - 1, y - 1 });
                 if (surfaceElement2 != nullptr && surfaceElement2->BaseHeight > surfaceElement->BaseHeight)
                     slope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
 
                 // Sides
-                surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 1, y + 0 }.ToCoordsXY());
+                surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 1, y + 0 });
                 if (surfaceElement2 != nullptr && surfaceElement2->BaseHeight > surfaceElement->BaseHeight)
                     slope |= TILE_ELEMENT_SLOPE_NE_SIDE_UP;
 
-                surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x - 1, y + 0 }.ToCoordsXY());
+                surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x - 1, y + 0 });
                 if (surfaceElement2 != nullptr && surfaceElement2->BaseHeight > surfaceElement->BaseHeight)
                     slope |= TILE_ELEMENT_SLOPE_SW_SIDE_UP;
 
-                surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 0, y - 1 }.ToCoordsXY());
+                surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 0, y - 1 });
                 if (surfaceElement2 != nullptr && surfaceElement2->BaseHeight > surfaceElement->BaseHeight)
                     slope |= TILE_ELEMENT_SLOPE_SE_SIDE_UP;
 
-                surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 0, y + 1 }.ToCoordsXY());
+                surfaceElement2 = MapGetSurfaceElementAt(TileCoordsXY{ x + 0, y + 1 });
                 if (surfaceElement2 != nullptr && surfaceElement2->BaseHeight > surfaceElement->BaseHeight)
                     slope |= TILE_ELEMENT_SLOPE_NW_SIDE_UP;
 
@@ -200,7 +200,7 @@ int32_t MapSmooth(int32_t l, int32_t t, int32_t r, int32_t b)
  */
 int32_t TileSmooth(const TileCoordsXY& tileCoords)
 {
-    auto* const surfaceElement = MapGetSurfaceElementAt(tileCoords.ToCoordsXY());
+    auto* const surfaceElement = MapGetSurfaceElementAt(tileCoords);
     if (surfaceElement == nullptr)
         return 0;
 
@@ -241,8 +241,7 @@ int32_t TileSmooth(const TileCoordsXY& tileCoords)
                 continue;
 
             // Get neighbour height. If the element is not valid (outside of map) assume the same height
-            auto* neighbourSurfaceElement = MapGetSurfaceElementAt(
-                (tileCoords + TileCoordsXY{ x_offset, y_offset }).ToCoordsXY());
+            auto* neighbourSurfaceElement = MapGetSurfaceElementAt(tileCoords + TileCoordsXY{ x_offset, y_offset });
             neighbourHeightOffset.baseheight[index] = neighbourSurfaceElement != nullptr ? neighbourSurfaceElement->BaseHeight
                                                                                          : surfaceElement->BaseHeight;
 

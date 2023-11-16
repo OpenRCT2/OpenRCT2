@@ -19,7 +19,6 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/TrackDesign.h>
@@ -41,9 +40,9 @@ enum {
     WIDX_CANCEL
 };
 
-static constexpr const StringId WINDOW_TITLE = STR_TRACK_DESIGN_INSTALL_WINDOW_TITLE;
-static constexpr const int32_t WW = 380;
-static constexpr const int32_t WH = 460;
+static constexpr StringId WINDOW_TITLE = STR_TRACK_DESIGN_INSTALL_WINDOW_TITLE;
+static constexpr int32_t WW = 380;
+static constexpr int32_t WH = 460;
 constexpr int32_t PREVIEW_BUTTONS_LEFT = WW - 25;
 constexpr int32_t ACTION_BUTTONS_LEFT = WW - 100;
 
@@ -82,7 +81,6 @@ public:
     void OnOpen() override
     {
         widgets = window_install_track_widgets;
-        track_list.track_list_being_updated = false;
 
         WindowInitScrollWidgets(*this);
         WindowPushOthersRight(*this);
@@ -154,7 +152,7 @@ public:
         Widget* widget = &window_install_track_widgets[WIDX_TRACK_PREVIEW];
         auto screenPos = windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
         int32_t colour = ColourMapA[colours[0]].darkest;
-        GfxFillRect(&dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
+        GfxFillRect(dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
 
         G1Element g1temp = {};
         g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
@@ -163,7 +161,7 @@ public:
         g1temp.flags = G1_FLAG_HAS_TRANSPARENCY;
         GfxSetG1Element(SPR_TEMP, &g1temp);
         DrawingEngineInvalidateImage(SPR_TEMP);
-        GfxDrawSprite(&dpi, ImageId(SPR_TEMP), screenPos);
+        GfxDrawSprite(dpi, ImageId(SPR_TEMP), screenPos);
 
         screenPos = windowPos + ScreenCoordsXY{ widget->midX(), widget->bottom - 12 };
 
@@ -360,6 +358,11 @@ public:
         }
     }
 
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
+
 private:
     void UpdatePreview()
     {
@@ -370,7 +373,7 @@ private:
     {
         auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
         auto destPath = env->GetDirectoryPath(OpenRCT2::DIRBASE::USER, OpenRCT2::DIRID::TRACK);
-        if (!Platform::EnsureDirectoryExists(destPath.c_str()))
+        if (!Path::CreateDirectory(destPath))
         {
             LOG_ERROR("Unable to create directory '%s'", destPath.c_str());
             ContextShowError(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});

@@ -44,6 +44,11 @@ namespace OpenRCT2::Scripting
         { "unlockAllPrices", PARK_FLAGS_UNLOCK_ALL_PRICES },
     });
 
+    ScPark::ScPark(duk_context* ctx)
+        : _context(ctx)
+    {
+    }
+
     money64 ScPark::cash_get() const
     {
         return gCash;
@@ -294,6 +299,11 @@ namespace OpenRCT2::Scripting
         GfxInvalidateScreen();
     }
 
+    std::shared_ptr<ScResearch> ScPark::research_get() const
+    {
+        return std::make_shared<ScResearch>(_context);
+    }
+
     std::vector<std::shared_ptr<ScParkMessage>> ScPark::messages_get() const
     {
         std::vector<std::shared_ptr<ScParkMessage>> result;
@@ -405,6 +415,7 @@ namespace OpenRCT2::Scripting
             ctx, &ScPark::constructionRightsPrice_get, &ScPark::constructionRightsPrice_set, "constructionRightsPrice");
         dukglue_register_property(ctx, &ScPark::parkSize_get, nullptr, "parkSize");
         dukglue_register_property(ctx, &ScPark::name_get, &ScPark::name_set, "name");
+        dukglue_register_property(ctx, &ScPark::research_get, nullptr, "research");
         dukglue_register_property(ctx, &ScPark::messages_get, &ScPark::messages_set, "messages");
         dukglue_register_property(ctx, &ScPark::casualtyPenalty_get, &ScPark::casualtyPenalty_set, "casualtyPenalty");
         dukglue_register_method(ctx, &ScPark::getFlag, "getFlag");

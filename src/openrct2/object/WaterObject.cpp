@@ -15,7 +15,6 @@
 #include "../common.h"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
-#include "../drawing/Image.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
@@ -38,7 +37,7 @@ void WaterObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.string_idx = LanguageAllocateObjectString(GetName());
-    _legacyType.image_id = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.image_id = LoadImages();
     _legacyType.palette_index_1 = _legacyType.image_id + 1;
     _legacyType.palette_index_2 = _legacyType.image_id + 4;
 
@@ -47,11 +46,13 @@ void WaterObject::Load()
 
 void WaterObject::Unload()
 {
-    GfxObjectFreeImages(_legacyType.image_id, GetImageTable().GetCount());
+    UnloadImages();
     LanguageFreeObjectString(_legacyType.string_idx);
 
     _legacyType.string_idx = 0;
     _legacyType.image_id = 0;
+    _legacyType.palette_index_1 = 0;
+    _legacyType.palette_index_2 = 0;
 }
 
 void WaterObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const

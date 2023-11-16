@@ -17,11 +17,11 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 
-static constexpr const uint32_t MerryGoRoundRiderOffsets[] = {
+static constexpr uint32_t MerryGoRoundRiderOffsets[] = {
     0, 32, 64, 96, 16, 48, 80, 112,
 };
 
-static constexpr const uint16_t MerryGoRoundBreakdownVibration[] = {
+static constexpr uint16_t MerryGoRoundBreakdownVibration[] = {
     0, 1, 2, 3, 4, 3, 2, 1, 0, 0,
 };
 
@@ -75,7 +75,7 @@ static void PaintCarousel(
     auto rotationOffset = 0;
     if (vehicle != nullptr)
     {
-        auto rotation = ((vehicle->sprite_direction >> 3) + session.CurrentRotation) << 5;
+        auto rotation = ((vehicle->Orientation >> 3) + session.CurrentRotation) << 5;
         rotationOffset = (vehicle->Pitch + rotation) % 128;
     }
 
@@ -92,7 +92,10 @@ static void PaintCarousel(
     auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + imageOffset);
     PaintAddImageAsParent(session, imageId, offset, bb);
 
-    PaintRiders(session, ride, *rideEntry, *vehicle, rotationOffset, offset, bb);
+    if (vehicle != nullptr && vehicle->num_peeps > 0)
+    {
+        PaintRiders(session, ride, *rideEntry, *vehicle, rotationOffset, offset, bb);
+    }
 
     session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::Ride;

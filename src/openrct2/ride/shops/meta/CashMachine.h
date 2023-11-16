@@ -14,7 +14,7 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr const RideTypeDescriptor CashMachineRTD =
+constexpr RideTypeDescriptor CashMachineRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_SHOP),
@@ -23,8 +23,9 @@ constexpr const RideTypeDescriptor CashMachineRTD =
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::FlatTrack1x1A),
     SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionShop),
-    SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES | RIDE_TYPE_FLAG_IS_CASH_MACHINE |
-                     RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
+    SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE |
+                     RIDE_TYPE_FLAG_NO_VEHICLES | RIDE_TYPE_FLAG_IS_CASH_MACHINE | RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY |
+                     RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ShopStall)),
     SET_FIELD(DefaultMode, RideMode::ShopStall),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
@@ -35,7 +36,6 @@ constexpr const RideTypeDescriptor CashMachineRTD =
     SET_FIELD(Heights, { 12, DefaultCashMachineHeight, 0, 0, }),
     SET_FIELD(MaxMass, 255),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsCalculationFunction, RideRatingsCalculateCashMachine),
     SET_FIELD(RatingsMultipliers, { 0, 0, 0 }),
     SET_FIELD(UpkeepCosts, { 40, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 200.00_GBP, 0.00_GBP, 1, }),
@@ -47,6 +47,15 @@ constexpr const RideTypeDescriptor CashMachineRTD =
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::CashMachine),
     SET_FIELD(Name, "cash_machine"),
+    SET_FIELD(RatingsData,
+    {
+        RatingsCalculationType::Stall,
+        { 1, 1, 1 },
+        1,
+        -1,
+        false,
+        { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
+    }),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),

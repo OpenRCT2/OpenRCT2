@@ -46,7 +46,7 @@ namespace OpenRCT2::Scripting
         void monthsElapsed_set(int32_t value)
         {
             ThrowIfGameStateNotMutable();
-            gDateMonthsElapsed = static_cast<int32_t>(value);
+            GetContext()->GetGameState()->SetDate(Date(value, GetDate().GetMonthTicks()));
         }
 
         uint32_t monthProgress_get() const
@@ -58,13 +58,13 @@ namespace OpenRCT2::Scripting
         void monthProgress_set(int32_t value)
         {
             ThrowIfGameStateNotMutable();
-            gDateMonthTicks = value;
+            GetContext()->GetGameState()->SetDate(Date(GetDate().GetMonthsElapsed(), value));
         }
 
         uint32_t yearsElapsed_get() const
         {
             const auto& date = GetDate();
-            return date.GetMonthsElapsed() / 8;
+            return date.GetYear();
         }
 
         uint32_t ticksElapsed_get() const

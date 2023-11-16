@@ -23,10 +23,10 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
-#include "../object/FootpathItemEntry.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
+#include "../object/PathAdditionEntry.h"
 #include "../object/SceneryGroupEntry.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/TerrainSurfaceObject.h"
@@ -265,7 +265,7 @@ void Staff::ResetStats()
 {
     for (auto peep : EntityList<Staff>())
     {
-        peep->SetHireDate(gDateMonthsElapsed);
+        peep->SetHireDate(GetDate().GetMonthsElapsed());
         peep->StaffLawnsMown = 0;
         peep->StaffRidesFixed = 0;
         peep->StaffGardensWatered = 0;
@@ -880,7 +880,7 @@ bool Staff::IsMechanicHeadingToFixRideBlockingPath()
     if (ride == nullptr)
         return false;
 
-    return ride->id == CurrentRide && ride->breakdown_reason == BREAKDOWN_SAFETY_CUT_OUT;
+    return ride->id == CurrentRide;
 }
 
 /**
@@ -1063,7 +1063,7 @@ int32_t StaffGetAvailableEntertainerCostumeList(EntertainerCostume* costumeList)
 }
 
 /** rct2: 0x009929C8 */
-static constexpr const CoordsXY _MowingWaypoints[] = {
+static constexpr CoordsXY _MowingWaypoints[] = {
     { 28, 28 }, { 28, 4 }, { 20, 4 }, { 20, 28 }, { 12, 28 }, { 12, 4 }, { 4, 4 }, { 4, 28 },
 };
 
@@ -1132,7 +1132,7 @@ void Staff::UpdateWatering()
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
-        sprite_direction = (Var37 & 3) << 3;
+        Orientation = (Var37 & 3) << 3;
         Action = PeepActionType::StaffWatering;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
@@ -1196,7 +1196,7 @@ void Staff::UpdateEmptyingBin()
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
-        sprite_direction = (Var37 & 3) << 3;
+        Orientation = (Var37 & 3) << 3;
         Action = PeepActionType::StaffEmptyBin;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
@@ -1243,7 +1243,7 @@ void Staff::UpdateEmptyingBin()
         }
 
         auto* pathAddEntry = tile_element->AsPath()->GetAdditionEntry();
-        if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN) || tile_element->AsPath()->IsBroken()
+        if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN) || tile_element->AsPath()->IsBroken()
             || tile_element->AsPath()->AdditionIsGhost())
         {
             StateReset();
@@ -1375,7 +1375,7 @@ void Staff::UpdateHeadingToInspect()
 
         auto newDestination = CoordsXY{ 16, 16 } + NextLoc + (DirectionOffsets[PeepDirection] * 53);
         SetDestination(newDestination, 2);
-        sprite_direction = PeepDirection << 3;
+        Orientation = PeepDirection << 3;
 
         z = rideEntranceExitElement->BaseHeight * 4;
         SubState = 4;
@@ -1485,7 +1485,7 @@ void Staff::UpdateAnswering()
         int32_t destY = NextLoc.y + 16 + DirectionOffsets[PeepDirection].y * 53;
 
         SetDestination({ destX, destY }, 2);
-        sprite_direction = PeepDirection << 3;
+        Orientation = PeepDirection << 3;
 
         z = rideEntranceExitElement->BaseHeight * 4;
         SubState = 4;
@@ -1510,7 +1510,7 @@ void Staff::UpdateAnswering()
 }
 
 /** rct2: 0x00992A5C */
-static constexpr const CoordsXY _WateringUseOffsets[] = {
+static constexpr CoordsXY _WateringUseOffsets[] = {
     { 3, 16 }, { 16, 29 }, { 29, 16 }, { 16, 3 }, { 3, 29 }, { 29, 29 }, { 29, 3 }, { 3, 3 },
 };
 
@@ -1616,7 +1616,7 @@ bool Staff::UpdatePatrollingFindBin()
     if (pathAddEntry == nullptr)
         return false;
 
-    if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN))
+    if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN))
         return false;
 
     if (tileElement->AsPath()->IsBroken())
@@ -1853,7 +1853,7 @@ enum
  * - index 8 is for inspecting a ride.
  */
 // clang-format off
-static constexpr const uint32_t FixingSubstatesForBreakdown[9] = {
+static constexpr uint32_t FixingSubstatesForBreakdown[9] = {
     ( // BREAKDOWN_SAFETY_CUT_OUT
         (1 << PEEP_FIXING_MOVE_TO_STATION_END) |
         (1 << PEEP_FIXING_FIX_STATION_END) |
@@ -2110,7 +2110,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        sprite_direction = PeepDirection << 3;
+        Orientation = PeepDirection << 3;
 
         Action = (ScenarioRand() & 1) ? PeepActionType::StaffFix2 : PeepActionType::StaffFix;
         ActionSpriteImageOffset = 0;
@@ -2152,7 +2152,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        sprite_direction = PeepDirection << 3;
+        Orientation = PeepDirection << 3;
         Action = PeepActionType::StaffFix3;
         ActionSpriteImageOffset = 0;
         ActionFrame = 0;
@@ -2185,7 +2185,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
 }
 
 /** rct2: 0x00992A3C */
-static constexpr const CoordsXY _StationFixingOffsets[] = {
+static constexpr CoordsXY _StationFixingOffsets[] = {
     { -12, 0 },
     { 0, 12 },
     { 12, 0 },
@@ -2202,7 +2202,8 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION)
+            || !ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
         {
             return true;
         }
@@ -2257,7 +2258,7 @@ bool Staff::UpdateFixingFixStationEnd(bool firstRun)
 {
     if (!firstRun)
     {
-        sprite_direction = PeepDirection << 3;
+        Orientation = PeepDirection << 3;
         Action = PeepActionType::StaffCheckboard;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
@@ -2288,7 +2289,8 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION)
+            || !ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
         {
             return true;
         }
@@ -2364,12 +2366,13 @@ bool Staff::UpdateFixingFixStationStart(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION)
+            || !ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
         {
             return true;
         }
 
-        sprite_direction = PeepDirection << 3;
+        Orientation = PeepDirection << 3;
 
         Action = PeepActionType::StaffFix;
         ActionFrame = 0;
@@ -2397,7 +2400,7 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride& ride)
 {
     if (!firstRun)
     {
-        sprite_direction = PeepDirection << 3;
+        Orientation = PeepDirection << 3;
 
         Action = PeepActionType::StaffFixGround;
         ActionFrame = 0;
@@ -2488,7 +2491,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride& r
         StaffRidesFixed++;
         WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
-        sprite_direction = PeepDirection << 3;
+        Orientation = PeepDirection << 3;
         Action = PeepActionType::StaffAnswerCall2;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;

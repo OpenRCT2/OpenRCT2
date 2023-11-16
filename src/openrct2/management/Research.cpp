@@ -9,6 +9,7 @@
 
 #include "Research.h"
 
+#include "../Date.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../actions/ParkSetResearchFundingAction.h"
@@ -42,7 +43,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr const int32_t _researchRate[] = {
+static constexpr int32_t _researchRate[] = {
     0,
     160,
     250,
@@ -108,16 +109,18 @@ static void ResearchCalculateExpectedDate()
     }
     else
     {
+        auto& date = GetDate();
+
         int32_t progressRemaining = gResearchProgressStage == RESEARCH_STAGE_COMPLETING_DESIGN ? 0x10000 : 0x20000;
         progressRemaining -= gResearchProgress;
         int32_t daysRemaining = (progressRemaining / _researchRate[gResearchFundingLevel]) * 128;
 
-        int32_t expectedDay = gDateMonthTicks + (daysRemaining & 0xFFFF);
+        int32_t expectedDay = date.GetMonthTicks() + (daysRemaining & 0xFFFF);
         int32_t dayQuotient = expectedDay / 0x10000;
         int32_t dayRemainder = expectedDay % 0x10000;
 
-        int32_t expectedMonth = DateGetMonth(gDateMonthsElapsed + dayQuotient + (daysRemaining >> 16));
-        expectedDay = (dayRemainder * days_in_month[expectedMonth]) >> 16;
+        int32_t expectedMonth = DateGetMonth(date.GetMonthsElapsed() + dayQuotient + (daysRemaining >> 16));
+        expectedDay = (dayRemainder * Date::GetDaysInMonth(expectedMonth)) >> 16;
 
         gResearchExpectedDay = expectedDay;
         gResearchExpectedMonth = expectedMonth;
@@ -161,15 +164,23 @@ static void ResearchNextDesign()
         it = gResearchItemsUninvented.begin();
     }
 
-    const ResearchItem researchItem = *it;
-    gResearchNextItem = researchItem;
+    gResearchNextItem = *it;
     gResearchProgress = 0;
     gResearchProgressStage = RESEARCH_STAGE_DESIGNING;
 
-    gResearchItemsUninvented.erase(it);
-    gResearchItemsInvented.push_back(researchItem);
-
     ResearchInvalidateRelatedWindows();
+}
+
+static void MarkResearchItemInvented(const ResearchItem& researchItem)
+{
+    gResearchItemsUninvented.erase(
+        std::remove(gResearchItemsUninvented.begin(), gResearchItemsUninvented.end(), researchItem),
+        gResearchItemsUninvented.end());
+
+    if (std::find(gResearchItemsInvented.begin(), gResearchItemsInvented.end(), researchItem) == gResearchItemsInvented.end())
+    {
+        gResearchItemsInvented.push_back(researchItem);
+    }
 }
 
 /**
@@ -343,6 +354,7 @@ void ResearchUpdate()
                 ResearchInvalidateRelatedWindows();
                 break;
             case RESEARCH_STAGE_COMPLETING_DESIGN:
+                MarkResearchItemInvented(*gResearchNextItem);
                 ResearchFinishItem(*gResearchNextItem);
                 gResearchProgress = 0;
                 gResearchProgressStage = RESEARCH_STAGE_INITIAL_RESEARCH;
@@ -514,6 +526,29 @@ bool ResearchInsertSceneryGroupEntry(ObjectEntryIndex entryIndex, bool researche
         return true;
     }
     return false;
+}
+
+bool ResearchIsInvented(ObjectType objectType, ObjectEntryIndex index)
+{
+    switch (objectType)
+    {
+        case ObjectType::Ride:
+            return RideEntryIsInvented(index);
+        case ObjectType::SceneryGroup:
+            return SceneryGroupIsInvented(index);
+        case ObjectType::SmallScenery:
+            return SceneryIsInvented({ SCENERY_TYPE_SMALL, index });
+        case ObjectType::LargeScenery:
+            return SceneryIsInvented({ SCENERY_TYPE_LARGE, index });
+        case ObjectType::Walls:
+            return SceneryIsInvented({ SCENERY_TYPE_WALL, index });
+        case ObjectType::Banners:
+            return SceneryIsInvented({ SCENERY_TYPE_BANNER, index });
+        case ObjectType::PathAdditions:
+            return SceneryIsInvented({ SCENERY_TYPE_PATH_ITEM, index });
+        default:
+            return true;
+    }
 }
 
 bool RideTypeIsInvented(uint32_t rideType)
@@ -877,7 +912,7 @@ bool ResearchItem::Exists() const
 }
 
 // clang-format off
-static constexpr const StringId _editorInventionsResearchCategories[] = {
+static constexpr StringId _editorInventionsResearchCategories[] = {
     STR_RESEARCH_NEW_TRANSPORT_RIDES,
     STR_RESEARCH_NEW_GENTLE_RIDES,
     STR_RESEARCH_NEW_ROLLER_COASTERS,
@@ -896,7 +931,7 @@ StringId ResearchItem::GetCategoryInventionString() const
 }
 
 // clang-format off
-static constexpr const StringId _researchCategoryNames[] = {
+static constexpr StringId _researchCategoryNames[] = {
     STR_RESEARCH_CATEGORY_TRANSPORT,
     STR_RESEARCH_CATEGORY_GENTLE,
     STR_RESEARCH_CATEGORY_ROLLERCOASTER,

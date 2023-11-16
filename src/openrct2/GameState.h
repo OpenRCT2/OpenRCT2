@@ -21,46 +21,6 @@ namespace OpenRCT2
 {
     class Park;
 
-    // Information regarding various pieces of logic update
-    enum class LogicTimePart
-    {
-        NetworkUpdate,
-        Date,
-        Scenario,
-        Climate,
-        MapTiles,
-        MapStashProvisionalElements,
-        MapPathWideFlags,
-        Peep,
-        MapRestoreProvisionalElements,
-        Vehicle,
-        Misc,
-        Ride,
-        Park,
-        Research,
-        RideRatings,
-        RideMeasurments,
-        News,
-        MapAnimation,
-        Sounds,
-        GameActions,
-        NetworkFlush,
-        Scripts,
-    };
-
-    // ~6.5s at 40Hz
-    constexpr size_t LOGIC_UPDATE_MEASUREMENTS_COUNT = 256;
-
-    // In order not to cause allocations, collect multiple samples into single pre-allocated struct
-    using LogicTimingInfo = std::unordered_map<
-        LogicTimePart, std::array<std::chrono::duration<double>, LOGIC_UPDATE_MEASUREMENTS_COUNT>>;
-
-    struct LogicTimings
-    {
-        LogicTimingInfo TimingInfo;
-        size_t CurrentIdx{};
-    };
-
     /**
      * Class to update the state of the map and park.
      */
@@ -85,7 +45,9 @@ namespace OpenRCT2
 
         void InitAll(const TileCoordsXY& mapSize);
         void Tick();
-        void UpdateLogic(LogicTimings* timings = nullptr);
+        void UpdateLogic();
+        void SetDate(Date newDate);
+        void ResetDate();
 
     private:
         void CreateStateSnapshot();

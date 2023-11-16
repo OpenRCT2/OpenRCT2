@@ -13,9 +13,10 @@
 #    include "../Context.h"
 #    include "../scripting/ScriptEngine.h"
 
-CustomAction::CustomAction(const std::string& id, const std::string& json)
+CustomAction::CustomAction(const std::string& id, const std::string& json, const std::string& pluginName)
     : _id(id)
     , _json(json)
+    , _pluginName(pluginName)
 {
 }
 
@@ -27,6 +28,11 @@ std::string CustomAction::GetId() const
 std::string CustomAction::GetJson() const
 {
     return _json;
+}
+
+std::string CustomAction::GetPluginName() const
+{
+    return _pluginName;
 }
 
 uint16_t CustomAction::GetActionFlags() const

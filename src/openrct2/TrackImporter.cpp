@@ -33,6 +33,6 @@ namespace TrackImporter
 
     bool ExtensionIsRCT1(const std::string& extension)
     {
-        return String::Equals(extension, ".td4", true);
+        return String::IEquals(extension, ".td4");
     }
 } // namespace TrackImporter

@@ -19,7 +19,7 @@ extern "C" {
 #    include <fribidi/fribidi.h>
 }
 
-static constexpr const uint16_t BufferLength = 1024;
+static constexpr uint16_t BufferLength = 1024;
 
 std::string FixRTL(std::string& input)
 {

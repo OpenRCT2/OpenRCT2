@@ -49,11 +49,13 @@ private:
     uint32_t _value1{};
     uint32_t _value2{};
     TileElement _pasteElement{};
+    Banner _pasteBanner{};
 
 public:
     TileModifyAction() = default;
     TileModifyAction(
-        CoordsXY loc, TileModifyType setting, uint32_t value1 = 0, uint32_t value2 = 0, TileElement pasteElement = {});
+        CoordsXY loc, TileModifyType setting, uint32_t value1 = 0, uint32_t value2 = 0, TileElement pasteElement = {},
+        Banner _pasteBanner = {});
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

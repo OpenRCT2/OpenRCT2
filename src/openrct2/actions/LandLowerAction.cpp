@@ -23,6 +23,7 @@
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
+#include "../world/SurfaceData.h"
 
 LandLowerAction::LandLowerAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
     : _coords(coords)
@@ -112,7 +113,7 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
 
             height = surfaceElement->BaseHeight;
             uint8_t currentSlope = surfaceElement->GetSlope();
-            uint8_t newSlope = tile_element_lower_styles[tableRow][currentSlope];
+            uint8_t newSlope = LowerSurfaceCornerFlags(tableRow, currentSlope);
             if (newSlope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT)
                 height -= 2;
 

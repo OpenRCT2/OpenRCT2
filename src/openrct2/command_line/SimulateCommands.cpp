@@ -39,8 +39,6 @@ static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator)
         return EXITCODE_FAIL;
     }
 
-    Platform::CoreInit();
-
     const char* inputPath = argv[0];
     uint32_t ticks = atol(argv[1]);
 

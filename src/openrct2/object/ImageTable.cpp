@@ -416,7 +416,7 @@ std::string ImageTable::FindLegacyObject(const std::string& name)
         while (scanner->Next())
         {
             auto currentName = Path::GetFileName(scanner->GetPathRelative());
-            if (String::Equals(currentName, name, true) || String::Equals(currentName, altName, true))
+            if (String::IEquals(currentName, name) || String::IEquals(currentName, altName))
             {
                 objectPath = scanner->GetPath();
                 break;

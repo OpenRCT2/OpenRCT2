@@ -20,7 +20,7 @@ enum WindowTitleExitWidgetIdx {
     WIDX_EXIT,
 };
 
-static Widget window_title_exit_widgets[] = {
+static Widget _titleExitWidgets[] = {
     MakeWidget({0, 0}, {40, 64}, WindowWidgetType::ImgBtn, WindowColour::Tertiary, ImageId(SPR_MENU_EXIT), STR_EXIT),
     WIDGETS_END,
 };
@@ -30,7 +30,7 @@ class TitleExitWindow final : public Window
 {
     void OnOpen() override
     {
-        widgets = window_title_exit_widgets;
+        widgets = _titleExitWidgets;
         InitScrollWidgets();
     }
 

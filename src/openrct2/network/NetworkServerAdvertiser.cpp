@@ -284,6 +284,7 @@ private:
         else if (status == MasterServerStatus::InvalidToken)
         {
             _status = ADVERTISE_STATUS::UNREGISTERED;
+            _lastAdvertiseTime = 0;
             Console::Error::WriteLine("Master server heartbeat failed: Invalid Token");
         }
     }
@@ -297,9 +298,10 @@ private:
             { "players", numPlayers },
         };
 
+        auto& date = GetDate();
         json_t mapSize = { { "x", gMapSize.x - 2 }, { "y", gMapSize.y - 2 } };
         json_t gameInfo = {
-            { "mapSize", mapSize },         { "day", gDateMonthTicks },  { "month", gDateMonthsElapsed },
+            { "mapSize", mapSize },         { "day", date.GetMonthTicks() }, { "month", date.GetMonthsElapsed() },
             { "guests", gNumGuestsInPark }, { "parkValue", gParkValue },
         };
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))

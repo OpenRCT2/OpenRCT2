@@ -768,7 +768,7 @@ static void TTFProcessFormatCode(DrawPixelInfo& dpi, const FmtString::Token& tok
             {
                 if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
                 {
-                    GfxDrawSprite(&dpi, imageId, { info->x, info->y });
+                    GfxDrawSprite(dpi, imageId, { info->x, info->y });
                 }
                 info->x += g1->width;
             }
@@ -843,14 +843,14 @@ static void TTFProcessStringLiteral(DrawPixelInfo& dpi, std::string_view text, T
                     // Draw the TTF run
                     // This error suppression abomination is here to suppress https://github.com/OpenRCT2/OpenRCT2/issues/17371.
                     // Additionally, we have to suppress the error for the error suppression... :'-(
-                    // TODO: Re-evaluate somewhere in 2023.
-#    ifdef __MINGW32__
+                    // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105937 is fixed in GCC13
+#    if defined(__GNUC__) && !defined(__clang__)
 #        pragma GCC diagnostic push
 #        pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #    endif
                     auto len = it.GetIndex() - ttfRunIndex.value();
                     TTFDrawStringRawTTF(dpi, text.substr(ttfRunIndex.value(), len), info);
-#    ifdef __MINGW32__
+#    if defined(__GNUC__) && !defined(__clang__)
 #        pragma GCC diagnostic pop
 #    endif
                     ttfRunIndex = std::nullopt;
@@ -1075,45 +1075,28 @@ void GfxDrawStringWithYOffsets(
     dpi.lastStringPos = { info.x, info.y };
 }
 
-void ShortenPath(utf8* buffer, size_t bufferSize, const utf8* path, int32_t availableWidth, FontStyle fontStyle)
+u8string ShortenPath(const u8string& path, int32_t availableWidth, FontStyle fontStyle)
 {
-    size_t length = strlen(path);
-
-    // Return full string if it fits
-    if (GfxGetStringWidth(const_cast<char*>(path), fontStyle) <= availableWidth)
+    if (GfxGetStringWidth(path, fontStyle) <= availableWidth)
     {
-        SafeStrCpy(buffer, path, bufferSize);
-        return;
+        return path;
     }
 
-    // Count path separators
-    int32_t path_separators = 0;
-    for (size_t x = 0; x < length; x++)
+    u8string shortenedPath = u8"...";
+
+    size_t begin = 0;
+    while (begin < path.size())
     {
-        if (path[x] == *PATH_SEPARATOR || path[x] == '/')
+        begin = path.find_first_of(*PATH_SEPARATOR, begin + 1);
+        if (begin == path.npos)
+            break;
+
+        shortenedPath = u8"..." + path.substr(begin);
+        if (GfxGetStringWidth(shortenedPath, fontStyle) <= availableWidth)
         {
-            path_separators++;
+            return shortenedPath;
         }
     }
 
-    // TODO: Replace with unicode ellipsis when supported
-    SafeStrCpy(buffer, "...", bufferSize);
-
-    // Abbreviate beginning with xth separator
-    int32_t begin = -1;
-    for (int32_t x = 0; x < path_separators; x++)
-    {
-        do
-        {
-            begin++;
-        } while (path[begin] != *PATH_SEPARATOR && path[begin] != '/');
-
-        SafeStrCpy(buffer + 3, path + begin, bufferSize - 3);
-        if (GfxGetStringWidth(buffer, fontStyle) <= availableWidth)
-        {
-            return;
-        }
-    }
-
-    SafeStrCpy(buffer, path, bufferSize);
+    return shortenedPath;
 }

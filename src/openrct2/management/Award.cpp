@@ -26,7 +26,7 @@
 constexpr uint8_t NEGATIVE = 0;
 constexpr uint8_t POSITIVE = 1;
 
-static constexpr const uint8_t AwardPositiveMap[] = {
+static constexpr uint8_t AwardPositiveMap[] = {
     NEGATIVE, // AwardType::MostUntidy
     POSITIVE, // AwardType::MostTidy
     POSITIVE, // AwardType::BestRollerCoasters
@@ -46,7 +46,7 @@ static constexpr const uint8_t AwardPositiveMap[] = {
     POSITIVE, // AwardType::BestGentleRides
 };
 
-static constexpr const StringId AwardNewsStrings[] = {
+static constexpr StringId AwardNewsStrings[] = {
     STR_NEWS_ITEM_AWARD_MOST_UNTIDY,
     STR_NEWS_ITEM_MOST_TIDY,
     STR_NEWS_ITEM_BEST_ROLLERCOASTERS,
@@ -484,7 +484,7 @@ static bool AwardIsDeservedBestCustomDesignedRides(int32_t activeAwardTypes)
 static bool AwardIsDeservedMostDazzlingRideColours(int32_t activeAwardTypes)
 {
     /** At least 5 colourful rides and more than half of the rides are colourful. */
-    static constexpr const colour_t dazzling_ride_colours[] = {
+    static constexpr colour_t dazzling_ride_colours[] = {
         COLOUR_BRIGHT_PURPLE,
         COLOUR_BRIGHT_GREEN,
         COLOUR_LIGHT_ORANGE,
@@ -566,7 +566,7 @@ static bool AwardIsDeservedBestGentleRides([[maybe_unused]] int32_t activeAwardT
 
 using award_deserved_check = bool (*)(int32_t);
 
-static constexpr const award_deserved_check _awardChecks[] = {
+static constexpr award_deserved_check _awardChecks[] = {
     AwardIsDeservedMostUntidy,
     AwardIsDeservedMostTidy,
     AwardIsDeservedBestRollercoasters,

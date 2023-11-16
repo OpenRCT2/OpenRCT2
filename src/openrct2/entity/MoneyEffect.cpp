@@ -22,7 +22,7 @@
 #include "../world/Map.h"
 #include "EntityRegistry.h"
 
-static constexpr const CoordsXY _moneyEffectMoveOffset[] = {
+static constexpr CoordsXY _moneyEffectMoveOffset[] = {
     { 1, -1 },
     { 1, 1 },
     { -1, 1 },
@@ -49,9 +49,9 @@ void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool guest
 
     moneyEffect->Value = value;
     moneyEffect->GuestPurchase = (guestPurchase ? 1 : 0);
-    moneyEffect->sprite_width = 64;
-    moneyEffect->sprite_height_negative = 20;
-    moneyEffect->sprite_height_positive = 30;
+    moneyEffect->SpriteData.Width = 64;
+    moneyEffect->SpriteData.HeightMin = 20;
+    moneyEffect->SpriteData.HeightMax = 30;
     moneyEffect->MoveTo(effectPos);
     moneyEffect->NumMovements = 0;
     moneyEffect->MoveDelay = 0;
@@ -192,7 +192,7 @@ void MoneyEffect::Paint(PaintSession& session, int32_t imageDirection) const
     }
 
     /** rct2: 0x0097EDA4 */
-    static constexpr const int8_t waveOffset[] = {
+    static constexpr int8_t waveOffset[] = {
         0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1,
         0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1,
     };

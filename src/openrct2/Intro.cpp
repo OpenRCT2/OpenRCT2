@@ -38,7 +38,7 @@ static bool _chainLiftFinished;
 static void ScreenIntroProcessMouseInput();
 static void ScreenIntroProcessKeyboardInput();
 static void ScreenIntroSkipPart();
-static void ScreenIntroDrawLogo(DrawPixelInfo* dpi);
+static void ScreenIntroDrawLogo(DrawPixelInfo& dpi);
 
 // rct2: 0x0068E966
 void IntroUpdate()
@@ -168,7 +168,7 @@ void IntroUpdate()
     }
 }
 
-void IntroDraw(DrawPixelInfo* dpi)
+void IntroDraw(DrawPixelInfo& dpi)
 {
     int32_t screenWidth = ContextGetWidth();
 
@@ -178,10 +178,10 @@ void IntroDraw(DrawPixelInfo* dpi)
         case IntroState::Disclaimer2:
             break;
         case IntroState::PublisherBegin:
-            GfxClear(dpi, BACKROUND_COLOUR_DARK);
+            GfxClear(&dpi, BACKROUND_COLOUR_DARK);
             break;
         case IntroState::PublisherScroll:
-            GfxClear(dpi, BACKROUND_COLOUR_DARK);
+            GfxClear(&dpi, BACKROUND_COLOUR_DARK);
 
             // Draw a white rectangle for the logo background (gives a bit of white margin)
             GfxFillRect(
@@ -197,11 +197,11 @@ void IntroDraw(DrawPixelInfo* dpi)
             GfxDrawSprite(dpi, ImageId(SPR_INTRO_INFOGRAMES_11), { (screenWidth / 2) - 320 + 319, _introStateCounter + 319 });
             break;
         case IntroState::DeveloperBegin:
-            GfxClear(dpi, BACKROUND_COLOUR_DARK);
+            GfxClear(&dpi, BACKROUND_COLOUR_DARK);
             GfxTransposePalette(PALETTE_G1_IDX_DEVELOPER, 255);
             break;
         case IntroState::DeveloperScroll:
-            GfxClear(dpi, BACKROUND_COLOUR_DARK);
+            GfxClear(&dpi, BACKROUND_COLOUR_DARK);
 
             // Draw Chris Sawyer logo
             GfxDrawSprite(dpi, ImageId(SPR_INTRO_CHRIS_SAWYER_00), { (screenWidth / 2) - 320 + 70, _introStateCounter });
@@ -233,7 +233,7 @@ void IntroDraw(DrawPixelInfo* dpi)
             ScreenIntroDrawLogo(dpi);
             break;
         case IntroState::Clear:
-            GfxClear(dpi, BACKROUND_COLOUR_DARK);
+            GfxClear(&dpi, BACKROUND_COLOUR_DARK);
             break;
         default:
             break;
@@ -280,7 +280,7 @@ static void ScreenIntroSkipPart()
     }
 }
 
-static void ScreenIntroDrawLogo(DrawPixelInfo* dpi)
+static void ScreenIntroDrawLogo(DrawPixelInfo& dpi)
 {
     int32_t screenWidth = ContextGetWidth();
     int32_t imageWidth = 640;
@@ -293,7 +293,7 @@ static void ScreenIntroDrawLogo(DrawPixelInfo* dpi)
     DrawingEngineInvalidateImage(SPR_INTRO_LOGO_11);
     DrawingEngineInvalidateImage(SPR_INTRO_LOGO_21);
 
-    GfxClear(dpi, BACKROUND_COLOUR_LOGO);
+    GfxClear(&dpi, BACKROUND_COLOUR_LOGO);
     GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_00), { imageX + 0, 0 });
     GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_10), { imageX + 220, 0 });
     GfxDrawSprite(dpi, ImageId(SPR_INTRO_LOGO_20), { imageX + 440, 0 });

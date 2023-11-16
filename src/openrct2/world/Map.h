@@ -16,30 +16,30 @@
 #include <initializer_list>
 #include <vector>
 
-#define MINIMUM_LAND_HEIGHT 2
-#define MAXIMUM_LAND_HEIGHT 142
-#define MINIMUM_WATER_HEIGHT 2
-#define MAXIMUM_WATER_HEIGHT 142
+constexpr uint8_t MINIMUM_LAND_HEIGHT = 2;
+constexpr uint8_t MAXIMUM_LAND_HEIGHT = 254;
+constexpr uint8_t MINIMUM_WATER_HEIGHT = 2;
+constexpr uint8_t MAXIMUM_WATER_HEIGHT = 254;
 
 #define MINIMUM_MAP_SIZE_TECHNICAL 5
 #define MAXIMUM_MAP_SIZE_TECHNICAL 1001
 #define MINIMUM_MAP_SIZE_PRACTICAL (MINIMUM_MAP_SIZE_TECHNICAL - 2)
 #define MAXIMUM_MAP_SIZE_PRACTICAL (MAXIMUM_MAP_SIZE_TECHNICAL - 2)
 constexpr const int32_t MAXIMUM_MAP_SIZE_BIG = COORDS_XY_STEP * MAXIMUM_MAP_SIZE_TECHNICAL;
-constexpr const int32_t MAXIMUM_TILE_START_XY = MAXIMUM_MAP_SIZE_BIG - COORDS_XY_STEP;
+constexpr int32_t MAXIMUM_TILE_START_XY = MAXIMUM_MAP_SIZE_BIG - COORDS_XY_STEP;
 constexpr const int32_t LAND_HEIGHT_STEP = 2 * COORDS_Z_STEP;
 constexpr const int32_t WATER_HEIGHT_STEP = 2 * COORDS_Z_STEP;
 constexpr const int32_t MINIMUM_LAND_HEIGHT_BIG = MINIMUM_LAND_HEIGHT * COORDS_Z_STEP;
-constexpr const TileCoordsXY DEFAULT_MAP_SIZE = { 150, 150 };
+constexpr TileCoordsXY DEFAULT_MAP_SIZE = { 150, 150 };
 // How high construction has to be off the ground when the player owns construction rights, in tile coords.
-constexpr const uint8_t ConstructionRightsClearanceSmall = 3;
+constexpr uint8_t ConstructionRightsClearanceSmall = 3;
 // Same as previous, but in big coords.
 constexpr const uint8_t ConstructionRightsClearanceBig = 3 * COORDS_Z_STEP;
 
 #define MAP_MINIMUM_X_Y (-MAXIMUM_MAP_SIZE_TECHNICAL)
 
-constexpr const uint32_t MAX_TILE_ELEMENTS_WITH_SPARE_ROOM = 0x1000000;
-constexpr const uint32_t MAX_TILE_ELEMENTS = MAX_TILE_ELEMENTS_WITH_SPARE_ROOM - 512;
+constexpr uint32_t MAX_TILE_ELEMENTS_WITH_SPARE_ROOM = 0x1000000;
+constexpr uint32_t MAX_TILE_ELEMENTS = MAX_TILE_ELEMENTS_WITH_SPARE_ROOM - 512;
 #define MAX_TILE_TILE_ELEMENT_POINTERS (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL)
 
 #define TILE_UNDEFINED_TILE_ELEMENT NULL
@@ -146,10 +146,6 @@ extern uint32_t gLandRemainingConstructionSales;
 
 extern bool gMapLandRightsUpdateSuccess;
 
-constexpr auto SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT = 0x20;
-extern const uint8_t tile_element_lower_styles[9][32];
-extern const uint8_t tile_element_raise_styles[9][32];
-
 void ReorganiseTileElements();
 const std::vector<TileElement>& GetTileElements();
 void SetTileElements(std::vector<TileElement>&& tileElements);
@@ -168,6 +164,7 @@ TileElement* MapGetFirstTileElementWithBaseHeightBetween(const TileCoordsXYRange
 void MapSetTileElement(const TileCoordsXY& tilePos, TileElement* elements);
 int32_t MapHeightFromSlope(const CoordsXY& coords, int32_t slopeDirection, bool isSloped);
 BannerElement* MapGetBannerElementAt(const CoordsXYZ& bannerPos, uint8_t direction);
+SurfaceElement* MapGetSurfaceElementAt(const TileCoordsXY& coords);
 SurfaceElement* MapGetSurfaceElementAt(const CoordsXY& coords);
 PathElement* MapGetPathElementAt(const TileCoordsXYZ& loc);
 WallElement* MapGetWallElementAt(const CoordsXYZD& wallCoords);

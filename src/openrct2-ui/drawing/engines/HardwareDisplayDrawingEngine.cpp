@@ -135,16 +135,22 @@ public:
             char scaleQualityBuffer[4];
             snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%d", static_cast<int32_t>(scaleQuality));
             SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+
             _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
+            Guard::Assert(_screenTexture != nullptr, "Failed to create screen texture: %s", SDL_GetError());
+
             SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
 
             uint32_t scale = std::ceil(gConfigGeneral.WindowScale);
             _scaledScreenTexture = SDL_CreateTexture(
                 _sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_TARGET, width * scale, height * scale);
+
+            Guard::Assert(_scaledScreenTexture != nullptr, "Failed to create scaled screen texture: %s", SDL_GetError());
         }
         else
         {
             _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
+            Guard::Assert(_screenTexture != nullptr, "Failed to create screen texture: %s", SDL_GetError());
         }
 
         uint32_t format;

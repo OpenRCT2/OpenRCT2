@@ -362,7 +362,7 @@ struct Peep : EntityBase
     union
     {
         uint8_t MazeLastEdge;
-        Direction PeepDirection; // Direction ?
+        ::Direction PeepDirection; // Direction ?
     };
     RideId InteractionRideIndex;
     uint32_t PeepId;

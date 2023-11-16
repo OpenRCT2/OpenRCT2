@@ -34,10 +34,10 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_STRINGID;
+static constexpr StringId WINDOW_TITLE = STR_STRINGID;
 
-static constexpr const int32_t WW = 190;
-static constexpr const int32_t WH = 180;
+static constexpr int32_t WW = 190;
+static constexpr int32_t WH = 180;
 
 enum WindowStaffPage
 {
@@ -84,7 +84,7 @@ validate_global_widx(WC_STAFF, WIDX_PICKUP);
     MakeTab   ({34, 17}, STR_STAFF_OPTIONS_TIP                          ), /* Tab 2 */ \
     MakeTab   ({65, 17}, STR_STAFF_STATS_TIP                            )  /* Tab 3 */
 
-static Widget window_staff_overview_widgets[] = {
+static Widget _staffOverviewWidgets[] = {
     MAIN_STAFF_WIDGETS,
     MakeWidget     ({      3,      47}, {162, 120}, WindowWidgetType::Viewport,      WindowColour::Secondary                                        ), // Viewport
     MakeWidget     ({      3, WH - 13}, {162,  11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                        ), // Label at bottom of viewport
@@ -97,7 +97,7 @@ static Widget window_staff_overview_widgets[] = {
 };
 
 //0x9AF910
-static Widget window_staff_options_widgets[] = {
+static Widget _staffOptionsWidgets[] = {
     MAIN_STAFF_WIDGETS,
     MakeWidget     ({      5,  50}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 1
     MakeWidget     ({      5,  67}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 2
@@ -110,15 +110,15 @@ static Widget window_staff_options_widgets[] = {
 // clang-format on
 
 // 0x9AF9F4
-static Widget window_staff_stats_widgets[] = {
+static Widget _staffStatsWidgets[] = {
     MAIN_STAFF_WIDGETS,
     WIDGETS_END,
 };
 
 static Widget* window_staff_page_widgets[] = {
-    window_staff_overview_widgets,
-    window_staff_options_widgets,
-    window_staff_stats_widgets,
+    _staffOverviewWidgets,
+    _staffOptionsWidgets,
+    _staffStatsWidgets,
 };
 
 class StaffWindow final : public Window
@@ -126,6 +126,7 @@ class StaffWindow final : public Window
 private:
     EntertainerCostume _availableCostumes[static_cast<uint8_t>(EntertainerCostume::Count)]{};
     uint16_t _tabAnimationOffset = 0;
+    int32_t _pickedPeepOldX = LOCATION_NULL;
 
 public:
     void Initialise(EntityId entityId)
@@ -206,15 +207,15 @@ public:
     void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
-        DrawTabImages(&dpi);
+        DrawTabImages(dpi);
 
         switch (page)
         {
             case WINDOW_STAFF_OVERVIEW:
-                OverviewDraw(&dpi);
+                OverviewDraw(dpi);
                 break;
             case WINDOW_STAFF_STATISTICS:
-                StatsDraw(&dpi);
+                StatsDraw(dpi);
                 break;
         }
     }
@@ -361,7 +362,7 @@ private:
         {
             case WIDX_PICKUP:
             {
-                picked_peep_old_x = staff->x;
+                _pickedPeepOldX = staff->x;
                 CoordsXYZ nullLoc{};
                 nullLoc.SetNull();
                 PeepPickupAction pickupAction{ PeepPickupType::Pickup, EntityId::FromUnderlying(number), nullLoc,
@@ -513,7 +514,7 @@ private:
         widgets[WIDX_FIRE].right = width - 2;
     }
 
-    void OverviewDraw(DrawPixelInfo* dpi)
+    void OverviewDraw(DrawPixelInfo& dpi)
     {
         // Draw the viewport no sound sprite
         if (viewport != nullptr)
@@ -522,7 +523,7 @@ private:
 
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
-                GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
+                GfxDrawSprite(dpi, ImageId(SPR_HEARING_VIEWPORT), WindowGetViewportSoundIconPos(*this));
             }
         }
 
@@ -537,10 +538,10 @@ private:
         const auto& widget = widgets[WIDX_BTM_LABEL];
         auto screenPos = windowPos + ScreenCoordsXY{ widget.midX(), widget.top };
         int32_t widgetWidth = widget.width();
-        DrawTextEllipsised(*dpi, screenPos, widgetWidth, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
+        DrawTextEllipsised(dpi, screenPos, widgetWidth, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
     }
 
-    void DrawOverviewTabImage(DrawPixelInfo* dpi)
+    void DrawOverviewTabImage(DrawPixelInfo& dpi)
     {
         if (IsWidgetDisabled(WIDX_TAB_1))
             return;
@@ -553,7 +554,7 @@ private:
             widgetHeight++;
 
         DrawPixelInfo clip_dpi;
-        if (!ClipDrawPixelInfo(&clip_dpi, dpi, screenCoords, widgetWidth, widgetHeight))
+        if (!ClipDrawPixelInfo(clip_dpi, dpi, screenCoords, widgetWidth, widgetHeight))
         {
             return;
         }
@@ -580,7 +581,7 @@ private:
         }
         imageIndex += offset;
 
-        GfxDrawSprite(&clip_dpi, ImageId(imageIndex, staff->TshirtColour, staff->TrousersColour), screenCoords);
+        GfxDrawSprite(clip_dpi, ImageId(imageIndex, staff->TshirtColour, staff->TrousersColour), screenCoords);
     }
 
     void OverviewResize()
@@ -633,6 +634,11 @@ private:
     {
         _tabAnimationOffset++;
         _tabAnimationOffset %= 24;
+
+        // Update pickup animation, can only happen in this tab.
+        picked_peep_frame++;
+        picked_peep_frame %= 48;
+
         InvalidateWidget(WIDX_TAB_1);
     }
 
@@ -663,9 +669,6 @@ private:
 
         gPickupPeepX = screenCoords.x - 1;
         gPickupPeepY = screenCoords.y + 16;
-
-        picked_peep_frame++;
-        picked_peep_frame %= 48;
 
         auto staff = GetStaff();
         if (staff == nullptr)
@@ -708,7 +711,7 @@ private:
             return;
 
         PeepPickupAction pickupAction{
-            PeepPickupType::Cancel, EntityId::FromUnderlying(number), { picked_peep_old_x, 0, 0 }, NetworkGetCurrentPlayerId()
+            PeepPickupType::Cancel, EntityId::FromUnderlying(number), { _pickedPeepOldX, 0, 0 }, NetworkGetCurrentPlayerId()
         };
         GameActions::Execute(&pickupAction);
     }
@@ -914,7 +917,7 @@ private:
 #pragma endregion
 
 #pragma region Statistics tab events
-    void StatsDraw(DrawPixelInfo* dpi)
+    void StatsDraw(DrawPixelInfo& dpi)
     {
         auto staff = GetStaff();
         if (staff == nullptr)
@@ -928,13 +931,13 @@ private:
         {
             auto ft = Formatter();
             ft.Add<money64>(GetStaffWage(staff->AssignedStaffType));
-            DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_WAGES, ft);
+            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_WAGES, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
         }
 
         auto ft = Formatter();
         ft.Add<int32_t>(staff->GetHireDate());
-        DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_EMPLOYED_FOR, ft);
+        DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_EMPLOYED_FOR, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
 
         switch (staff->AssignedStaffType)
@@ -942,37 +945,37 @@ private:
             case StaffType::Handyman:
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffLawnsMown);
-                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
+                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
                 screenCoords.y += LIST_ROW_HEIGHT;
 
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffGardensWatered);
-                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_GARDENS_WATERED, ft);
+                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_GARDENS_WATERED, ft);
                 screenCoords.y += LIST_ROW_HEIGHT;
 
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffLitterSwept);
-                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_LITTER_SWEPT, ft);
+                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LITTER_SWEPT, ft);
                 screenCoords.y += LIST_ROW_HEIGHT;
 
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffBinsEmptied);
-                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_BINS_EMPTIED, ft);
+                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_BINS_EMPTIED, ft);
                 break;
             case StaffType::Mechanic:
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffRidesInspected);
-                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
+                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
                 screenCoords.y += LIST_ROW_HEIGHT;
 
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffRidesFixed);
-                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
+                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
                 break;
             case StaffType::Security:
                 ft = Formatter();
                 ft.Add<uint32_t>(staff->StaffVandalsStopped);
-                DrawTextBasic(*dpi, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
+                DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
                 break;
             case StaffType::Entertainer:
             case StaffType::Count:
@@ -1055,6 +1058,8 @@ private:
             {
                 SetWidgetDisabled(WIDX_PICKUP, true);
             }
+
+            SetWidgetDisabled(WIDX_FIRE, staff->State == PeepState::Fixing || staff->State == PeepState::Inspecting);
         }
     }
 
@@ -1088,7 +1093,7 @@ private:
 
         Invalidate();
         WindowEventResizeCall(this);
-        WindowEventInvalidateCall(this);
+        WindowEventOnPrepareDrawCall(this);
         InitScrollWidgets();
         ViewportInit();
         Invalidate();
@@ -1151,7 +1156,7 @@ private:
                 viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
         }
 
-        WindowEventInvalidateCall(this);
+        WindowEventOnPrepareDrawCall(this);
 
         focus = tempFocus;
 
@@ -1192,14 +1197,14 @@ private:
         WindowFollowSprite(*main, EntityId::FromUnderlying(number));
     }
 
-    void DrawTabImages(DrawPixelInfo* dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         DrawOverviewTabImage(dpi);
         DrawTabImage(dpi, WINDOW_STAFF_OPTIONS, SPR_TAB_STAFF_OPTIONS_0);
         DrawTabImage(dpi, WINDOW_STAFF_STATISTICS, SPR_TAB_STATS_0);
     }
 
-    void DrawTabImage(DrawPixelInfo* dpi, int32_t p, int32_t baseImageId)
+    void DrawTabImage(DrawPixelInfo& dpi, int32_t p, int32_t baseImageId)
     {
         WidgetIndex widgetIndex = WIDX_TAB_1 + p;
         Widget* widget = &widgets[widgetIndex];

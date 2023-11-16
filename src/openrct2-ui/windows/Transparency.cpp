@@ -54,16 +54,16 @@ enum WINDOW_TRANSPARENCY_WIDGET_IDX
 
 #pragma region MEASUREMENTS
 
-static constexpr const StringId WINDOW_TITLE = STR_TRANSPARENCY_OPTIONS_TITLE;
-static constexpr const int32_t WW = 204;
-static constexpr const int32_t WH = 57;
+static constexpr StringId WINDOW_TITLE = STR_TRANSPARENCY_OPTIONS_TITLE;
+static constexpr int32_t WW = 204;
+static constexpr int32_t WH = 57;
 
 static constexpr ScreenSize HIDE_SIZE = {24, 24};
 static constexpr ScreenSize INVISIBLE_SIZE = {24, 12};
 
 #pragma endregion
 
-static Widget window_transparency_main_widgets[] =
+static Widget _transparancyWidgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  2, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_BUTTON_HIDE_VEGETATION),  STR_SEE_THROUGH_VEGETATION),
@@ -92,7 +92,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_transparency_main_widgets;
+        widgets = _transparancyWidgets;
         WindowPushOthersBelow(*this);
 
         auto* w = WindowGetMain();
@@ -152,7 +152,7 @@ public:
         const auto& widget = widgets[WIDX_HIDE_STAFF];
         auto screenCoords = windowPos + ScreenCoordsXY{ widget.left, widget.top };
         auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, gStaffMechanicColour);
-        GfxDrawSprite(&dpi, image, screenCoords);
+        GfxDrawSprite(dpi, image, screenCoords);
     }
 
 private:
@@ -241,6 +241,11 @@ private:
         gConfigGeneral.InvisiblePaths = wflags & VIEWPORT_FLAG_INVISIBLE_PATHS;
         gConfigGeneral.InvisibleSupports = wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
         ConfigSaveDefault();
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 };
 

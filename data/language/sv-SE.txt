@@ -1217,8 +1217,8 @@ STR_1838    :Tillfredsställelse: {COMMA16}%
 STR_1839    :Tillförlitlighet: {COMMA16}%
 STR_1840    :Driftstopp: {COMMA16}%
 STR_1841    :Vinst: {CURRENCY} per timme
-STR_1842    :{COMMA16} besökares favorit
-STR_1843    :{COMMA16} besökares favorit
+STR_1842    :{COMMA32} besökares favorit
+STR_1843    :{COMMA32} besökares favorit
 STR_1844    :Välj informationstyp som ska visas i åkturs- och attraktionslistan
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} besökare
@@ -2188,8 +2188,8 @@ STR_3118    :{BLACK}{STRINGID} är på väg till åkturen
 STR_3119    :{BLACK}{STRINGID} fixar åkturen
 STR_3120    :Hitta närmsta tillgängliga mekaniker, eller mekanikern som fixar åkturen
 STR_3121    :Kan inte hitta en mekaniker, eller så är alla i närheten upptagna
-STR_3122    :{BLACK}{COMMA16} besökares {WINDOW_COLOUR_2}favoritåktur
-STR_3123    :{BLACK}{COMMA16} besökares {WINDOW_COLOUR_2}favoritåktur
+STR_3122    :{BLACK}{COMMA32} besökares {WINDOW_COLOUR_2}favoritåktur
+STR_3123    :{BLACK}{COMMA32} besökares {WINDOW_COLOUR_2}favoritåktur
 STR_3124    :Trasig {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Glädjefaktor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensitetsfaktor: {BLACK}+{COMMA16}%

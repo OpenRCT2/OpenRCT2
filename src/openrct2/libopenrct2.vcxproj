@@ -51,9 +51,12 @@
   <Import Project="..\..\openrct2.common.props" />
   <ItemDefinitionGroup>
     <ClCompile>
-      <PreprocessorDefinitions>__ENABLE_DISCORD__;USE_BENCHMARK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__ENABLE_DISCORD__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Breakpad)'=='true' and ('$(Platform)'=='Win32' or '$(Platform)'=='x64')">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x64'">USE_FRIBIDI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader Condition="'$(UsePCH)'=='true'">Use</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(UsePCH)'=='true'">openrct2_pch.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles Condition="'$(UsePCH)'=='true'">openrct2_pch.h</ForcedIncludeFiles>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
@@ -90,6 +93,7 @@
     <ClInclude Include="actions\FootpathAdditionRemoveAction.h" />
     <ClInclude Include="actions\GameAction.h" />
     <ClInclude Include="actions\GameActionResult.h" />
+    <ClInclude Include="actions\GameSetSpeedAction.h" />
     <ClInclude Include="actions\GuestSetFlagsAction.h" />
     <ClInclude Include="actions\GuestSetNameAction.h" />
     <ClInclude Include="actions\LandBuyRightsAction.h" />
@@ -313,8 +317,8 @@
     <ClInclude Include="object\EntranceEntry.h" />
     <ClInclude Include="object\EntranceObject.h" />
     <ClInclude Include="object\FootpathEntry.h" />
-    <ClInclude Include="object\FootpathItemEntry.h" />
-    <ClInclude Include="object\FootpathItemObject.h" />
+    <ClInclude Include="object\PathAdditionEntry.h" />
+    <ClInclude Include="object\PathAdditionObject.h" />
     <ClInclude Include="object\FootpathObject.h" />
     <ClInclude Include="object\FootpathRailingsObject.h" />
     <ClInclude Include="object\FootpathSurfaceObject.h" />
@@ -348,12 +352,14 @@
     <ClInclude Include="object\WaterEntry.h" />
     <ClInclude Include="object\WaterObject.h" />
     <ClInclude Include="OpenRCT2.h" />
+    <ClInclude Include="openrct2_pch.h" Condition="'$(UsePCH)'=='true'" />
     <ClInclude Include="paint\Boundbox.h" />
     <ClInclude Include="paint\Paint.Entity.h" />
     <ClInclude Include="paint\Paint.h" />
     <ClInclude Include="paint\Paint.SessionFlags.h" />
     <ClInclude Include="paint\Painter.h" />
     <ClInclude Include="paint\Supports.h" />
+    <ClInclude Include="paint\tile_element\Paint.PathAddition.h" />
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
     <ClInclude Include="paint\VirtualFloor.h" />
@@ -509,10 +515,13 @@
     <ClInclude Include="scripting\bindings\game\ScProfiler.hpp" />
     <ClInclude Include="scripting\bindings\network\ScPlayer.hpp" />
     <ClInclude Include="scripting\bindings\network\ScPlayerGroup.hpp" />
+    <ClInclude Include="scripting\bindings\object\ScInstalledObject.hpp" />
+    <ClInclude Include="scripting\bindings\object\ScObjectManager.h" />
     <ClInclude Include="scripting\bindings\ride\ScRideStation.hpp" />
     <ClInclude Include="scripting\bindings\ride\ScTrackIterator.h" />
     <ClInclude Include="scripting\bindings\ride\ScTrackSegment.h" />
     <ClInclude Include="scripting\bindings\world\ScParkMessage.hpp" />
+    <ClInclude Include="scripting\bindings\world\ScResearch.hpp" />
     <ClInclude Include="scripting\bindings\world\ScTileElement.hpp" />
     <ClInclude Include="scripting\Duktape.hpp" />
     <ClInclude Include="scripting\IconNames.hpp" />
@@ -577,6 +586,7 @@
     <ClInclude Include="world\ScenerySelection.h" />
     <ClInclude Include="world\SmallScenery.h" />
     <ClInclude Include="world\Surface.h" />
+    <ClInclude Include="world\SurfaceData.h" />
     <ClInclude Include="world\TileElement.h" />
     <ClInclude Include="world\TileElementsView.h" />
     <ClInclude Include="world\TileInspector.h" />
@@ -608,6 +618,7 @@
     <ClCompile Include="actions\GameAction.cpp" />
     <ClCompile Include="actions\GameActionRegistry.cpp" />
     <ClCompile Include="actions\GameActionResult.cpp" />
+    <ClCompile Include="actions\GameSetSpeedAction.cpp" />
     <ClCompile Include="actions\GuestSetFlagsAction.cpp" />
     <ClCompile Include="actions\GuestSetNameAction.cpp" />
     <ClCompile Include="actions\LandBuyRightsAction.cpp" />
@@ -681,9 +692,6 @@
     <ClCompile Include="audio\DummyAudioContext.cpp" />
     <ClCompile Include="Cheats.cpp" />
     <ClCompile Include="CommandLineSprite.cpp" />
-    <ClCompile Include="command_line\BenchGfxCommmands.cpp" />
-    <ClCompile Include="command_line\BenchSpriteSort.cpp" />
-    <ClCompile Include="command_line/BenchUpdate.cpp" />
     <ClCompile Include="command_line\CommandLine.cpp" />
     <ClCompile Include="command_line\ConvertCommand.cpp" />
     <ClCompile Include="command_line\ParkInfoCommands.cpp" />
@@ -814,7 +822,7 @@
     <ClCompile Include="object\BannerObject.cpp" />
     <ClCompile Include="object\DefaultObjects.cpp" />
     <ClCompile Include="object\EntranceObject.cpp" />
-    <ClCompile Include="object\FootpathItemObject.cpp" />
+    <ClCompile Include="object\PathAdditionObject.cpp" />
     <ClCompile Include="object\FootpathObject.cpp" />
     <ClCompile Include="object\FootpathRailingsObject.cpp" />
     <ClCompile Include="object\FootpathSurfaceObject.cpp" />
@@ -839,6 +847,9 @@
     <ClCompile Include="object\WallObject.cpp" />
     <ClCompile Include="object\WaterObject.cpp" />
     <ClCompile Include="OpenRCT2.cpp" />
+    <ClCompile Include="openrct2_pch.cpp" Condition="'$(UsePCH)'=='true'">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="paint\Paint.cpp" />
     <ClCompile Include="paint\Paint.Entity.cpp" />
     <ClCompile Include="paint\Painter.cpp" />
@@ -848,6 +859,7 @@
     <ClCompile Include="paint\tile_element\Paint.Entrance.cpp" />
     <ClCompile Include="paint\tile_element\Paint.LargeScenery.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Path.cpp" />
+    <ClCompile Include="paint\tile_element\Paint.PathAddition.cpp" />
     <ClCompile Include="paint\tile_element\Paint.SmallScenery.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Surface.cpp" />
     <ClCompile Include="paint\tile_element\Paint.TileElement.cpp" />
@@ -862,10 +874,10 @@
     <ClCompile Include="PlatformEnvironment.cpp" />
     <ClCompile Include="platform\Crash.cpp" />
     <ClCompile Include="platform\Platform.Android.cpp" />
+    <ClCompile Include="platform\Platform.Common.cpp" />
     <ClCompile Include="platform\Platform.Linux.cpp" />
     <ClCompile Include="platform\Platform.Posix.cpp" />
     <ClCompile Include="platform\Platform.Win32.cpp" />
-    <ClCompile Include="platform\Shared.cpp" />
     <ClCompile Include="profiling\Profiling.cpp" />
     <ClCompile Include="rct12\RCT12.cpp" />
     <ClCompile Include="rct12\SawyerChunk.cpp" />
@@ -985,6 +997,7 @@
     <ClCompile Include="scripting\bindings\network\ScNetwork.cpp" />
     <ClCompile Include="scripting\bindings\network\ScPlayer.cpp" />
     <ClCompile Include="scripting\bindings\network\ScPlayerGroup.cpp" />
+    <ClCompile Include="scripting\bindings\object\ScObjectManager.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScRide.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScRideStation.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScTrackIterator.cpp" />
@@ -992,6 +1005,7 @@
     <ClCompile Include="scripting\bindings\world\ScMap.cpp" />
     <ClCompile Include="scripting\bindings\world\ScPark.cpp" />
     <ClCompile Include="scripting\bindings\world\ScParkMessage.cpp" />
+    <ClCompile Include="scripting\bindings\world\ScResearch.cpp" />
     <ClCompile Include="scripting\bindings\world\ScTile.cpp" />
     <ClCompile Include="scripting\bindings\world\ScTileElement.cpp" />
     <ClCompile Include="scripting\HookEngine.cpp" />
@@ -1032,11 +1046,15 @@
     <ClCompile Include="world\Scenery.cpp" />
     <ClCompile Include="world\SmallScenery.cpp" />
     <ClCompile Include="world\Surface.cpp" />
+    <ClCompile Include="world\SurfaceData.cpp" />
     <ClCompile Include="world\TileElement.cpp" />
     <ClCompile Include="world/TileElementBase.cpp" />
     <ClCompile Include="world\TileInspector.cpp" />
     <ClCompile Include="world\Wall.cpp" />
     <ClCompile Include="..\thirdparty\duktape\duktape.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
   </ItemGroup>

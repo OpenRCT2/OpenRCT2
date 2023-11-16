@@ -17,7 +17,7 @@
 #include "../windows/Intent.h"
 
 /** rct2: 0x00982134 */
-constexpr const bool peep_slow_walking_types[] = {
+constexpr bool peep_slow_walking_types[] = {
     false, // PeepSpriteType::Normal
     false, // PeepSpriteType::Handyman
     false, // PeepSpriteType::Mechanic

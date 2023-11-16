@@ -134,35 +134,35 @@ enum
     SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_S_N = 23452,
 };
 
-static constexpr const uint32_t miniature_railway_track_floor[4] = {
+static constexpr uint32_t miniature_railway_track_floor[4] = {
     SPR_FLOOR_PLANKS,
     SPR_FLOOR_PLANKS_90_DEG,
     SPR_FLOOR_PLANKS,
     SPR_FLOOR_PLANKS_90_DEG,
 };
 
-static constexpr const uint32_t miniature_railway_track_pieces_flat[4] = {
+static constexpr uint32_t miniature_railway_track_pieces_flat[4] = {
     SPR_MINIATURE_RAILWAY_FLAT_SW_NE,
     SPR_MINIATURE_RAILWAY_FLAT_NW_SE,
     SPR_MINIATURE_RAILWAY_FLAT_SW_NE,
     SPR_MINIATURE_RAILWAY_FLAT_NW_SE,
 };
 
-static constexpr const uint32_t miniature_railway_station_floor[4] = {
+static constexpr uint32_t miniature_railway_station_floor[4] = {
     SPR_STATION_BASE_A_SW_NE,
     SPR_STATION_BASE_A_NW_SE,
     SPR_STATION_BASE_A_SW_NE,
     SPR_STATION_BASE_A_NW_SE,
 };
 
-static constexpr const uint32_t miniature_railway_track_pieces_flat_station[4] = {
+static constexpr uint32_t miniature_railway_track_pieces_flat_station[4] = {
     SPR_MINIATURE_RAILWAY_FLAT_NO_BASE_SW_NE,
     SPR_MINIATURE_RAILWAY_FLAT_NO_BASE_NW_SE,
     SPR_MINIATURE_RAILWAY_FLAT_NO_BASE_SW_NE,
     SPR_MINIATURE_RAILWAY_FLAT_NO_BASE_NW_SE,
 };
 
-static constexpr const uint32_t miniature_railway_track_pieces_flat_quarter_turn_5_tiles[4][5] = {
+static constexpr uint32_t miniature_railway_track_pieces_flat_quarter_turn_5_tiles[4][5] = {
     {
         SPR_MINIATURE_RAILWAY_QUARTER_TURN_5_TILES_SW_SE_PART_0,
         SPR_MINIATURE_RAILWAY_QUARTER_TURN_5_TILES_SW_SE_PART_1,
@@ -193,28 +193,28 @@ static constexpr const uint32_t miniature_railway_track_pieces_flat_quarter_turn
     },
 };
 
-static constexpr const uint32_t miniature_railway_track_pieces_25_deg_up[4] = {
+static constexpr uint32_t miniature_railway_track_pieces_25_deg_up[4] = {
     SPR_MINIATURE_RAILWAY_25_DEG_UP_SW_NE,
     SPR_MINIATURE_RAILWAY_25_DEG_UP_NW_SE,
     SPR_MINIATURE_RAILWAY_25_DEG_UP_NE_SW,
     SPR_MINIATURE_RAILWAY_25_DEG_UP_SE_NW,
 };
 
-static constexpr const uint32_t miniature_railway_track_pieces_flat_to_25_deg_up[4] = {
+static constexpr uint32_t miniature_railway_track_pieces_flat_to_25_deg_up[4] = {
     SPR_MINIATURE_RAILWAY_FLAT_TO_25_DEG_UP_SW_NE,
     SPR_MINIATURE_RAILWAY_FLAT_TO_25_DEG_UP_NW_SE,
     SPR_MINIATURE_RAILWAY_FLAT_TO_25_DEG_UP_NE_SW,
     SPR_MINIATURE_RAILWAY_FLAT_TO_25_DEG_UP_SE_NW,
 };
 
-static constexpr const uint32_t miniature_railway_track_pieces_25_deg_up_to_flat[4] = {
+static constexpr uint32_t miniature_railway_track_pieces_25_deg_up_to_flat[4] = {
     SPR_MINIATURE_RAILWAY_25_DEG_UP_TO_FLAT_SW_NE,
     SPR_MINIATURE_RAILWAY_25_DEG_UP_TO_FLAT_NW_SE,
     SPR_MINIATURE_RAILWAY_25_DEG_UP_TO_FLAT_NE_SW,
     SPR_MINIATURE_RAILWAY_25_DEG_UP_TO_FLAT_SE_NW,
 };
 
-static constexpr const uint32_t miniature_railway_track_pieces_s_bend_left[2][4] = {
+static constexpr uint32_t miniature_railway_track_pieces_s_bend_left[2][4] = {
     {
         SPR_MINIATURE_RAILWAY_S_BEND_LEFT_SW_NE_PART_0,
         SPR_MINIATURE_RAILWAY_S_BEND_LEFT_SW_NE_PART_1,
@@ -229,7 +229,7 @@ static constexpr const uint32_t miniature_railway_track_pieces_s_bend_left[2][4]
     },
 };
 
-static constexpr const uint32_t miniature_railway_track_pieces_s_bend_right[2][4] = {
+static constexpr uint32_t miniature_railway_track_pieces_s_bend_right[2][4] = {
     {
         SPR_MINIATURE_RAILWAY_S_BEND_RIGHT_SW_NE_PART_0,
         SPR_MINIATURE_RAILWAY_S_BEND_RIGHT_SW_NE_PART_1,
@@ -244,7 +244,7 @@ static constexpr const uint32_t miniature_railway_track_pieces_s_bend_right[2][4
     },
 };
 
-static constexpr const uint32_t miniature_railway_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
+static constexpr uint32_t miniature_railway_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
     {
         SPR_MINIATURE_RAILWAY_QUARTER_TURN_3_TILES_SW_SE_PART_0,
         SPR_MINIATURE_RAILWAY_QUARTER_TURN_3_TILES_SW_SE_PART_1,
@@ -267,7 +267,7 @@ static constexpr const uint32_t miniature_railway_track_pieces_flat_quarter_turn
     },
 };
 
-static constexpr const uint32_t miniature_railway_track_pieces_right_eight_to_diag[4][4] = {
+static constexpr uint32_t miniature_railway_track_pieces_right_eight_to_diag[4][4] = {
     {
         SPR_MINIATURE_RAILWAY_EIGHT_TO_DIAG_SW_E_PART_0,
         SPR_MINIATURE_RAILWAY_EIGHT_TO_DIAG_SW_E_PART_1,
@@ -294,7 +294,7 @@ static constexpr const uint32_t miniature_railway_track_pieces_right_eight_to_di
     },
 };
 
-static constexpr const CoordsXYZ miniature_railway_track_pieces_right_eight_to_diag_bounds[4][4] = {
+static constexpr CoordsXYZ miniature_railway_track_pieces_right_eight_to_diag_bounds[4][4] = {
     {
         { 32, 32, 2 },
         { 32, 16, 2 },
@@ -321,7 +321,7 @@ static constexpr const CoordsXYZ miniature_railway_track_pieces_right_eight_to_d
     },
 };
 
-static constexpr const CoordsXY miniature_railway_track_pieces_right_eight_to_diag_offset[4][4] = {
+static constexpr CoordsXY miniature_railway_track_pieces_right_eight_to_diag_offset[4][4] = {
     {
         { 0, 0 },
         { 0, 16 },
@@ -348,7 +348,7 @@ static constexpr const CoordsXY miniature_railway_track_pieces_right_eight_to_di
     },
 };
 
-static constexpr const uint32_t miniature_railway_track_pieces_left_eight_to_diag[4][4] = {
+static constexpr uint32_t miniature_railway_track_pieces_left_eight_to_diag[4][4] = {
     {
         SPR_MINIATURE_RAILWAY_EIGHT_TO_DIAG_SW_N_PART_0,
         SPR_MINIATURE_RAILWAY_EIGHT_TO_DIAG_SW_N_PART_1,
@@ -375,7 +375,7 @@ static constexpr const uint32_t miniature_railway_track_pieces_left_eight_to_dia
     },
 };
 
-static constexpr const CoordsXYZ miniature_railway_track_pieces_left_eight_to_diag_bounds[4][4] = {
+static constexpr CoordsXYZ miniature_railway_track_pieces_left_eight_to_diag_bounds[4][4] = {
     {
         { 32, 32, 2 },
         { 32, 16, 2 },
@@ -402,7 +402,7 @@ static constexpr const CoordsXYZ miniature_railway_track_pieces_left_eight_to_di
     },
 };
 
-static constexpr const CoordsXY miniature_railway_track_pieces_left_eight_to_diag_offset[4][4] = {
+static constexpr CoordsXY miniature_railway_track_pieces_left_eight_to_diag_offset[4][4] = {
     {
         { 0, 0 },
         { 0, 0 },
@@ -429,7 +429,7 @@ static constexpr const CoordsXY miniature_railway_track_pieces_left_eight_to_dia
     },
 };
 
-static constexpr const CoordsXYZ miniature_railway_track_pieces_right_eight_to_orthog_bounds[4][4] = {
+static constexpr CoordsXYZ miniature_railway_track_pieces_right_eight_to_orthog_bounds[4][4] = {
     {
         { 32, 32, 2 },
         { 32, 16, 2 },
@@ -456,7 +456,7 @@ static constexpr const CoordsXYZ miniature_railway_track_pieces_right_eight_to_o
     },
 };
 
-static constexpr const CoordsXY miniature_railway_track_pieces_right_eight_to_orthog_offset[4][4] = {
+static constexpr CoordsXY miniature_railway_track_pieces_right_eight_to_orthog_offset[4][4] = {
     {
         { 0, 0 },
         { 0, 0 },
@@ -483,7 +483,7 @@ static constexpr const CoordsXY miniature_railway_track_pieces_right_eight_to_or
     },
 };
 
-static constexpr const CoordsXYZ miniature_railway_track_pieces_left_eight_to_orthog_bounds[4][4] = {
+static constexpr CoordsXYZ miniature_railway_track_pieces_left_eight_to_orthog_bounds[4][4] = {
     {
         { 32, 32, 2 },
         { 32, 16, 2 },
@@ -510,7 +510,7 @@ static constexpr const CoordsXYZ miniature_railway_track_pieces_left_eight_to_or
     },
 };
 
-static constexpr const CoordsXY miniature_railway_track_pieces_left_eight_to_orthog_offset[4][4] = {
+static constexpr CoordsXY miniature_railway_track_pieces_left_eight_to_orthog_offset[4][4] = {
     {
         { 0, 0 },
         { 0, 16 },
@@ -537,28 +537,28 @@ static constexpr const CoordsXY miniature_railway_track_pieces_left_eight_to_ort
     },
 };
 
-static constexpr const uint32_t miniature_railway_track_pieces_diag_flat[4] = {
+static constexpr uint32_t miniature_railway_track_pieces_diag_flat[4] = {
     SPR_MINIATURE_RAILWAY_DIAG_FLAT_W_E,
     SPR_MINIATURE_RAILWAY_DIAG_FLAT_N_S,
     SPR_MINIATURE_RAILWAY_DIAG_FLAT_E_W,
     SPR_MINIATURE_RAILWAY_DIAG_FLAT_S_N,
 };
 
-static constexpr const uint32_t miniature_railway_track_pieces_diag_flat_to_25_deg_up[4] = {
+static constexpr uint32_t miniature_railway_track_pieces_diag_flat_to_25_deg_up[4] = {
     SPR_MINIATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_W_E,
     SPR_MINIATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_N_S,
     SPR_MINIATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_E_W,
     SPR_MINIATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_S_N,
 };
 
-static constexpr const uint32_t miniature_railway_track_pieces_diag_25_deg_up_to_flat[4] = {
+static constexpr uint32_t miniature_railway_track_pieces_diag_25_deg_up_to_flat[4] = {
     SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_W_E,
     SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_N_S,
     SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_E_W,
     SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_S_N,
 };
 
-static constexpr const uint32_t miniature_railway_track_pieces_diag_25_deg_up[4] = {
+static constexpr uint32_t miniature_railway_track_pieces_diag_25_deg_up[4] = {
     SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_W_E,
     SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_N_S,
     SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_E_W,
@@ -839,7 +839,7 @@ static void PaintMiniatureRailwayTrack25DegDownToFlat(
     PaintMiniatureRailwayTrackFlatTo25DegUp(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
 }
 
-static constexpr const CoordsXY miniature_railway_right_quarter_turn_5_tiles_offsets[4][5] = {
+static constexpr CoordsXY miniature_railway_right_quarter_turn_5_tiles_offsets[4][5] = {
     {
         { 0, 2 },
         { 0, 16 },
@@ -870,7 +870,7 @@ static constexpr const CoordsXY miniature_railway_right_quarter_turn_5_tiles_off
     },
 };
 
-static constexpr const CoordsXYZ miniature_railway_right_quarter_turn_5_tiles_bound_offsets[4][5] = {
+static constexpr CoordsXYZ miniature_railway_right_quarter_turn_5_tiles_bound_offsets[4][5] = {
     {
         { 0, 2, 0 },
         { 0, 16, 0 },
@@ -901,7 +901,7 @@ static constexpr const CoordsXYZ miniature_railway_right_quarter_turn_5_tiles_bo
     },
 };
 
-static constexpr const CoordsXY miniature_railway_right_quarter_turn_5_tiles_bound_lengths[4][5] = {
+static constexpr CoordsXY miniature_railway_right_quarter_turn_5_tiles_bound_lengths[4][5] = {
     {
         { 32, 32 },
         { 32, 16 },
@@ -932,7 +932,7 @@ static constexpr const CoordsXY miniature_railway_right_quarter_turn_5_tiles_bou
     },
 };
 
-static constexpr const uint32_t miniature_railway_right_quarter_turn_5_tiles_track_floor[4][5] = {
+static constexpr uint32_t miniature_railway_right_quarter_turn_5_tiles_track_floor[4][5] = {
     {
         SPR_FLOOR_PLANKS,
         SPR_FLOOR_PLANKS_S_SEGMENT,
@@ -963,14 +963,14 @@ static constexpr const uint32_t miniature_railway_right_quarter_turn_5_tiles_tra
     },
 };
 
-static constexpr const int8_t right_quarter_turn_5_supports_type[4][7] = {
+static constexpr int8_t right_quarter_turn_5_supports_type[4][7] = {
     { 0, -1, 4, 2, -1, 4, 1 },
     { 1, -1, 5, 3, -1, 5, 0 },
     { 0, -1, 2, 4, -1, 2, 1 },
     { 1, -1, 3, 5, -1, 3, 0 },
 };
 
-static constexpr const int8_t miniature_railway_right_quarter_turn_5_tiles_sprite_map[] = {
+static constexpr int8_t miniature_railway_right_quarter_turn_5_tiles_sprite_map[] = {
     0, -1, 1, 2, -1, 3, 4,
 };
 
@@ -1072,14 +1072,14 @@ static void PaintMiniatureRailwayTrackLeftQuarterTurn5Tiles(
     PaintMiniatureRailwayTrackRightQuarterTurn5Tiles(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 
-static constexpr const int8_t s_bend_left_supports_type[4][4] = {
+static constexpr int8_t s_bend_left_supports_type[4][4] = {
     { 0, 5, 3, 0 },
     { 1, 2, 4, 1 },
     { 0, 5, 3, 0 },
     { 1, 2, 4, 1 },
 };
 
-static constexpr const uint32_t miniature_railway_s_bend_left_tiles_track_floor[2][4] = {
+static constexpr uint32_t miniature_railway_s_bend_left_tiles_track_floor[2][4] = {
     {
         SPR_FLOOR_PLANKS,
         SPR_FLOOR_PLANKS_W_SEGMENT,
@@ -1107,14 +1107,14 @@ static void PaintMiniatureRailwayTrackSBendLeft(
     bool isSupported = WoodenASupportsPaintSetup(
         session, s_bend_left_supports_type[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
-    static constexpr const CoordsXY offsetList[] = {
+    static constexpr CoordsXY offsetList[] = {
         { 0, 2 },
         { 0, 0 },
         { 0, 6 },
         { 0, 2 },
     };
 
-    static constexpr const CoordsXY boundsList[] = {
+    static constexpr CoordsXY boundsList[] = {
         { 32, 27 },
         { 32, 26 },
         { 32, 26 },
@@ -1181,14 +1181,14 @@ static void PaintMiniatureRailwayTrackSBendLeft(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static constexpr const int8_t s_bend_right_supports_type[4][4] = {
+static constexpr int8_t s_bend_right_supports_type[4][4] = {
     { 0, 4, 2, 0 },
     { 1, 5, 3, 1 },
     { 0, 4, 2, 0 },
     { 1, 5, 3, 1 },
 };
 
-static constexpr const uint32_t miniature_railway_s_bend_right_tiles_track_floor[2][4] = {
+static constexpr uint32_t miniature_railway_s_bend_right_tiles_track_floor[2][4] = {
     {
         SPR_FLOOR_PLANKS,
         SPR_FLOOR_PLANKS_S_SEGMENT,
@@ -1216,14 +1216,14 @@ static void PaintMiniatureRailwayTrackSBendRight(
     bool isSupported = WoodenASupportsPaintSetup(
         session, s_bend_right_supports_type[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
-    static constexpr const CoordsXY offsetList[] = {
+    static constexpr CoordsXY offsetList[] = {
         { 0, 2 },
         { 0, 6 },
         { 0, 0 },
         { 0, 2 },
     };
 
-    static constexpr const CoordsXY boundsList[] = {
+    static constexpr CoordsXY boundsList[] = {
         { 32, 27 },
         { 32, 26 },
         { 32, 26 },
@@ -1290,7 +1290,7 @@ static void PaintMiniatureRailwayTrackSBendRight(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static constexpr const uint32_t miniature_railway_right_quarter_turn_3_tile_track_floor[4][3] = {
+static constexpr uint32_t miniature_railway_right_quarter_turn_3_tile_track_floor[4][3] = {
     {
         SPR_FLOOR_PLANKS_S_SEGMENT,
         0,
@@ -1313,7 +1313,7 @@ static constexpr const uint32_t miniature_railway_right_quarter_turn_3_tile_trac
     },
 };
 
-static constexpr const CoordsXYZ miniature_railway_right_quarter_turn_3_tile_bound_offsets[4][3] = {
+static constexpr CoordsXYZ miniature_railway_right_quarter_turn_3_tile_bound_offsets[4][3] = {
     {
         { 0, 6, 0 },
         { 16, 16, 0 },
@@ -1344,7 +1344,7 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn3Tiles(
     bool isSupported = false;
     if (trackSequence != 1 && trackSequence != 2)
     {
-        static constexpr const uint8_t supportType[] = { 4, 5, 2, 3 };
+        static constexpr uint8_t supportType[] = { 4, 5, 2, 3 };
         isSupported = WoodenASupportsPaintSetup(
             session, supportType[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
@@ -1370,7 +1370,7 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn3Tiles(
             miniature_railway_right_quarter_turn_3_tile_track_floor, nullptr, defaultRightQuarterTurn3TilesBoundLengths,
             miniature_railway_right_quarter_turn_3_tile_bound_offsets);
 
-        static constexpr const int8_t _right_quarter_turn_3_tiles_sprite_map[] = { 0, -1, 1, 2 };
+        static constexpr int8_t _right_quarter_turn_3_tiles_sprite_map[] = { 0, -1, 1, 2 };
 
         int32_t index = _right_quarter_turn_3_tiles_sprite_map[trackSequence];
 
@@ -1412,11 +1412,11 @@ static void PaintMiniatureRailwayTrackLeftQuarterTurn3Tiles(
     PaintMiniatureRailwayTrackRightQuarterTurn3Tiles(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 
-static constexpr const int8_t paint_miniature_railway_eighth_to_diag_index[] = {
+static constexpr int8_t paint_miniature_railway_eighth_to_diag_index[] = {
     0, 1, 2, -1, 3,
 };
 
-static constexpr const uint32_t miniature_railway_floor_track_pieces_left_eight_to_diag[4][5] = {
+static constexpr uint32_t miniature_railway_floor_track_pieces_left_eight_to_diag[4][5] = {
     {
         SPR_FLOOR_PLANKS,
         SPR_FLOOR_PLANKS,
@@ -1447,7 +1447,7 @@ static constexpr const uint32_t miniature_railway_floor_track_pieces_left_eight_
     },
 };
 
-static constexpr const CoordsXYZ miniature_railway_track_floor_pieces_left_eight_to_diag_bounds[4][5] = {
+static constexpr CoordsXYZ miniature_railway_track_floor_pieces_left_eight_to_diag_bounds[4][5] = {
     {
         { 32, 32, 2 },
         { 32, 16, 2 },
@@ -1478,7 +1478,7 @@ static constexpr const CoordsXYZ miniature_railway_track_floor_pieces_left_eight
     },
 };
 
-static constexpr const CoordsXY miniature_railway_track_floor_pieces_left_eight_to_diag_offset[4][5] = {
+static constexpr CoordsXY miniature_railway_track_floor_pieces_left_eight_to_diag_offset[4][5] = {
     {
         { 0, 0 },
         { 0, 0 },
@@ -1580,7 +1580,7 @@ static void PaintMiniatureRailwayTrackLeftEighthToDiag(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static constexpr const uint32_t miniature_railway_floor_track_pieces_right_eight_to_diag[4][5] = {
+static constexpr uint32_t miniature_railway_floor_track_pieces_right_eight_to_diag[4][5] = {
     {
         SPR_FLOOR_PLANKS_90_DEG,
         SPR_FLOOR_PLANKS_90_DEG,
@@ -1611,7 +1611,7 @@ static constexpr const uint32_t miniature_railway_floor_track_pieces_right_eight
     },
 };
 
-static constexpr const CoordsXYZ miniature_railway_track_floor_pieces_right_eight_to_diag_bounds[4][5] = {
+static constexpr CoordsXYZ miniature_railway_track_floor_pieces_right_eight_to_diag_bounds[4][5] = {
     {
         { 32, 32, 2 },
         { 32, 16, 2 },
@@ -1642,7 +1642,7 @@ static constexpr const CoordsXYZ miniature_railway_track_floor_pieces_right_eigh
     },
 };
 
-static constexpr const CoordsXY miniature_railway_track_floor_pieces_right_eight_to_diag_offset[4][5] = {
+static constexpr CoordsXY miniature_railway_track_floor_pieces_right_eight_to_diag_offset[4][5] = {
     {
         { 0, 0 },
         { 0, 16 },
@@ -1763,28 +1763,18 @@ static void PaintMiniatureRailwayTrackRightEighthToOrthogonal(
     PaintMiniatureRailwayTrackLeftEighthToDiag(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
-static constexpr const bool miniature_railway_diag_image_segment[][4] = {
+static constexpr bool miniature_railway_diag_image_segment[][4] = {
     { false, true, false, false },
     { false, false, false, true },
     { false, false, true, false },
     { true, false, false, false },
 };
 
-enum
-{
-    SUPPORT_PLAIN = 0,
-    SUPPORT_PLAIN_90_DEG = 1,
-    SUPPORT_PLAIN_N = 2,
-    SUPPORT_PLAIN_E = 3,
-    SUPPORT_PLAIN_S = 4,
-    SUPPORT_PLAIN_W = 5,
-};
-
-static constexpr const int16_t monorail_diag_support_types[][4] = {
-    { -1, SUPPORT_PLAIN_N, SUPPORT_PLAIN_S, SUPPORT_PLAIN },
-    { -1, SUPPORT_PLAIN_E, SUPPORT_PLAIN_W, SUPPORT_PLAIN_90_DEG },
-    { -1, SUPPORT_PLAIN_S, SUPPORT_PLAIN_N, SUPPORT_PLAIN },
-    { -1, SUPPORT_PLAIN_W, SUPPORT_PLAIN_E, SUPPORT_PLAIN_90_DEG },
+static constexpr std::optional<WoodenSupportSubType> _diagSupportTypes[NumOrthogonalDirections][4] = {
+    { std::nullopt, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2, WoodenSupportSubType::NeSw },
+    { std::nullopt, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3, WoodenSupportSubType::NwSe },
+    { std::nullopt, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0, WoodenSupportSubType::NeSw },
+    { std::nullopt, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1, WoodenSupportSubType::NwSe },
 };
 
 struct FloorDescriptor
@@ -1794,7 +1784,7 @@ struct FloorDescriptor
     CoordsXY bound_offset;
 };
 
-static constexpr const FloorDescriptor floors[] = {
+static constexpr FloorDescriptor floors[] = {
     { SPR_FLOOR_PLANKS, { 32, 32 }, { 0, 0 } },
     { SPR_FLOOR_PLANKS_90_DEG, { 32, 32 }, { 0, 0 } }, // -16,-16(1:3)
     { SPR_FLOOR_PLANKS_N_SEGMENT, { 32, 32 }, { -16, -16 } },
@@ -1809,18 +1799,20 @@ static void MiniatureRailwayTrackDiagFlat(
     const TrackElement& trackElement)
 {
     bool isSupported = false;
-    int16_t supportType = monorail_diag_support_types[direction][trackSequence];
+    auto supportType = _diagSupportTypes[direction][trackSequence];
 
     uint32_t floorImage = 0;
     CoordsXY floorBoundSize;
     CoordsXY floorBoundOffset;
 
-    if (supportType != -1)
+    if (supportType.has_value())
     {
-        floorImage = floors[supportType].image_id;
-        floorBoundSize = floors[supportType].bound_size;
-        floorBoundOffset = floors[supportType].bound_offset;
-        isSupported = WoodenASupportsPaintSetup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        const auto enumValue = EnumValue(supportType.value());
+        floorImage = floors[enumValue].image_id;
+        floorBoundSize = floors[enumValue].bound_size;
+        floorBoundOffset = floors[enumValue].bound_offset;
+        isSupported = WoodenASupportsPaintSetup(
+            session, WoodenSupportType::Truss, supportType.value(), height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 1 && trackSequence == 3)
@@ -1880,15 +1872,6 @@ static void MiniatureRailwayTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    // TODO: The supports are inconsistent for different rotations
-
-    int8_t supportFunction = WOOD_B;
-    int16_t supportType = monorail_diag_support_types[direction][trackSequence];
-    if (supportType == SUPPORT_PLAIN || supportType == SUPPORT_PLAIN_90_DEG)
-    {
-        supportFunction = WOOD_A;
-    }
-
     static constexpr int8_t heightDiffs[] = { +8, -8, +8, -8 };
     int8_t heightDiff = heightDiffs[direction];
     if (trackSequence == 3)
@@ -1902,13 +1885,22 @@ static void MiniatureRailwayTrackDiag25DegUp(
     CoordsXY floorBoundSize;
     CoordsXY floorBoundOffset;
 
-    if (supportType != -1)
+    auto supportType = _diagSupportTypes[direction][trackSequence];
+    if (supportType.has_value())
     {
-        floorImage = floors[supportType].image_id;
-        floorBoundSize = floors[supportType].bound_size;
-        floorBoundOffset = floors[supportType].bound_offset;
+        // TODO: The supports are inconsistent for different rotations
+        int8_t supportFunction = WOOD_B;
+        if (supportType == WoodenSupportSubType::NeSw || supportType == WoodenSupportSubType::NwSe)
+        {
+            supportFunction = WOOD_A;
+        }
+
+        const auto enumValue = EnumValue(supportType.value());
+        floorImage = floors[enumValue].image_id;
+        floorBoundSize = floors[enumValue].bound_size;
+        floorBoundOffset = floors[enumValue].bound_offset;
         hasSupports = WoodenSupportsPaintSetup(
-            session, supportFunction, supportType, 0, height + heightDiff, session.TrackColours[SCHEME_SUPPORTS]);
+            session, supportFunction, enumValue, 0, height + heightDiff, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 1 && trackSequence == 3)
@@ -1916,7 +1908,7 @@ static void MiniatureRailwayTrackDiag25DegUp(
         floorBoundOffset = { -16, -16 };
     }
 
-    static constexpr const int8_t offsetsB[4][4][2] = {
+    static constexpr int8_t offsetsB[4][4][2] = {
         { { 0, 0 }, { +8, +16 }, { +8, +8 }, { +8, +8 } },
         { { 0, 0 }, { -8, -8 }, { -8, -8 }, { +8, +8 } },
         { { 0, 0 }, { +8, +8 }, { +8, +16 }, { +8, +8 } },
@@ -1930,7 +1922,7 @@ static void MiniatureRailwayTrackDiag25DegUp(
 
     uint32_t imageId = miniature_railway_track_pieces_diag_25_deg_up[direction];
     bool drawRail = miniature_railway_diag_image_segment[direction][trackSequence];
-    static constexpr const int8_t offsetB[] = { +8, 0, +8, +8 };
+    static constexpr int8_t offsetB[] = { +8, 0, +8, +8 };
     if (hasSupports)
     {
         PaintAddImageAsParent(
@@ -1966,13 +1958,15 @@ static void MiniatureRailwayTrackDiagFlatTo25DegUp(
     CoordsXY floorBoundSize;
     CoordsXY floorBoundOffset;
 
-    int16_t supportType = monorail_diag_support_types[direction][trackSequence];
-    if (supportType != -1)
+    auto supportType = _diagSupportTypes[direction][trackSequence];
+    if (supportType.has_value())
     {
-        floorImage = floors[supportType].image_id;
-        floorBoundSize = floors[supportType].bound_size;
-        floorBoundOffset = floors[supportType].bound_offset;
-        hasSupports = WoodenASupportsPaintSetup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        const auto enumValue = EnumValue(supportType.value());
+        floorImage = floors[enumValue].image_id;
+        floorBoundSize = floors[enumValue].bound_size;
+        floorBoundOffset = floors[enumValue].bound_offset;
+        hasSupports = WoodenASupportsPaintSetup(
+            session, WoodenSupportType::Truss, supportType.value(), height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 1 && trackSequence == 3)
@@ -2025,19 +2019,20 @@ static void MiniatureRailwayTrackDiag25DegUpToFlat(
     }
 
     bool hasSupports = false;
-    int16_t supportType = monorail_diag_support_types[direction][trackSequence];
+    auto supportType = _diagSupportTypes[direction][trackSequence];
 
     uint32_t floorImage = 0;
     CoordsXY floorBoundSize;
     CoordsXY floorBoundOffset;
 
-    if (supportType != -1)
+    if (supportType.has_value())
     {
-        floorImage = floors[supportType].image_id;
-        floorBoundSize = floors[supportType].bound_size;
-        floorBoundOffset = floors[supportType].bound_offset;
+        const auto enumValue = EnumValue(supportType.value());
+        floorImage = floors[enumValue].image_id;
+        floorBoundSize = floors[enumValue].bound_size;
+        floorBoundOffset = floors[enumValue].bound_offset;
         hasSupports = WoodenSupportsPaintSetup(
-            session, supportFunction, supportType, 0, height + supportOffsets[direction][trackSequence],
+            session, supportFunction, enumValue, 0, height + supportOffsets[direction][trackSequence],
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -2105,15 +2100,16 @@ static void MiniatureRailwayTrackDiag25DegDown(
     uint32_t floorImage = 0;
     CoordsXY floorBoundSize;
     CoordsXY floorBoundOffset;
-    int16_t supportType = monorail_diag_support_types[direction][trackSequence];
+    auto supportType = _diagSupportTypes[direction][trackSequence];
 
-    if (supportType != -1)
+    if (supportType.has_value())
     {
-        floorImage = floors[supportType].image_id;
-        floorBoundSize = floors[supportType].bound_size;
-        floorBoundOffset = floors[supportType].bound_offset;
+        const auto enumValue = EnumValue(supportType.value());
+        floorImage = floors[enumValue].image_id;
+        floorBoundSize = floors[enumValue].bound_size;
+        floorBoundOffset = floors[enumValue].bound_offset;
         hasSupports = WoodenSupportsPaintSetup(
-            session, supportFunction, supportType, 0, height + supportOffsets[direction][trackSequence],
+            session, supportFunction, enumValue, 0, height + supportOffsets[direction][trackSequence],
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -2179,15 +2175,16 @@ static void MiniatureRailwayTrackDiagFlatTo25DegDown(
     uint32_t floorImage = 0;
     CoordsXY floorBoundSize;
     CoordsXY floorBoundOffset;
-    int16_t supportType = monorail_diag_support_types[direction][trackSequence];
+    auto supportType = _diagSupportTypes[direction][trackSequence];
 
-    if (supportType != -1)
+    if (supportType.has_value())
     {
-        floorImage = floors[supportType].image_id;
-        floorBoundSize = floors[supportType].bound_size;
-        floorBoundOffset = floors[supportType].bound_offset;
+        const auto enumValue = EnumValue(supportType.value());
+        floorImage = floors[enumValue].image_id;
+        floorBoundSize = floors[enumValue].bound_size;
+        floorBoundOffset = floors[enumValue].bound_offset;
         hasSupports = WoodenSupportsPaintSetup(
-            session, supportFunction, supportType, 0, height + supportOffsets[direction][trackSequence],
+            session, supportFunction, enumValue, 0, height + supportOffsets[direction][trackSequence],
             session.TrackColours[SCHEME_SUPPORTS]);
     }
 
@@ -2239,14 +2236,16 @@ static void MiniatureRailwayTrackDiag25DegDownToFlat(
     uint32_t floorImage = 0;
     CoordsXY floorBoundSize;
     CoordsXY floorBoundOffset;
-    int16_t supportType = monorail_diag_support_types[direction][trackSequence];
+    auto supportType = _diagSupportTypes[direction][trackSequence];
 
-    if (supportType != -1)
+    if (supportType.has_value())
     {
-        floorImage = floors[supportType].image_id;
-        floorBoundSize = floors[supportType].bound_size;
-        floorBoundOffset = floors[supportType].bound_offset;
-        hasSupports = WoodenASupportsPaintSetup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        const auto enumValue = EnumValue(supportType.value());
+        floorImage = floors[enumValue].image_id;
+        floorBoundSize = floors[enumValue].bound_size;
+        floorBoundOffset = floors[enumValue].bound_offset;
+        hasSupports = WoodenASupportsPaintSetup(
+            session, WoodenSupportType::Truss, supportType.value(), height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 1 && trackSequence == 3)

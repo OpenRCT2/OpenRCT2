@@ -11,10 +11,10 @@
 
 #    include "Platform.h"
 
+#    include "../Date.h"
 #    include "../core/Memory.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
-#    include "../localisation/Date.h"
 #    include "../util/Util.h"
 
 #    include <cerrno>
@@ -29,11 +29,10 @@
 #    include <pwd.h>
 #    include <sys/stat.h>
 #    include <sys/time.h>
+#    include <unistd.h>
 
 // The name of the mutex used to prevent multiple instances of the game from running
-static constexpr u8string_view SINGLE_INSTANCE_MUTEX_NAME = u8"openrct2.lock";
-
-static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
+static constexpr const utf8* SINGLE_INSTANCE_MUTEX_NAME = u8"openrct2.lock";
 
 namespace Platform
 {
@@ -224,7 +223,7 @@ namespace Platform
                 // Find a file which matches by name (case insensitive)
                 for (int32_t i = 0; i < count; i++)
                 {
-                    if (String::Equals(files[i]->d_name, fileName.c_str(), true))
+                    if (String::IEquals(files[i]->d_name, fileName.c_str()))
                     {
                         result = Path::Combine(directory, std::string(files[i]->d_name));
                         break;
@@ -307,64 +306,13 @@ namespace Platform
 #    endif // __EMSCRIPTEN__
     }
 
-    // Implement our own version of getumask(), as it is documented being
-    // "a vaporware GNU extension".
-    static mode_t openrct2_getumask()
-    {
-        mode_t mask = umask(0);
-        umask(mask);
-        return 0777 & ~mask; // Keep in mind 0777 is octal
-    }
-
-    bool EnsureDirectoryExists(u8string_view path)
-    {
-        mode_t mask = openrct2_getumask();
-        char buffer[MAX_PATH];
-        SafeStrCpy(buffer, u8string(path).c_str(), sizeof(buffer));
-
-        LOG_VERBOSE("Create directory: %s", buffer);
-        for (char* p = buffer + 1; *p != '\0'; p++)
-        {
-            if (*p == '/')
-            {
-                // Temporarily truncate
-                *p = '\0';
-
-                LOG_VERBOSE("mkdir(%s)", buffer);
-                if (mkdir(buffer, mask) != 0)
-                {
-                    if (errno != EEXIST)
-                    {
-                        return false;
-                    }
-                }
-
-                // Restore truncation
-                *p = '/';
-            }
-        }
-
-        LOG_VERBOSE("mkdir(%s)", buffer);
-        if (mkdir(buffer, mask) != 0)
-        {
-            if (errno != EEXIST)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     bool LockSingleInstance()
     {
-        auto pidFilePath = Path::Combine(_userDataDirectoryPath, SINGLE_INSTANCE_MUTEX_NAME);
-
         // We will never close this file manually. The operating system will
         // take care of that, because flock keeps the lock as long as the
         // file is open and closes it automatically on file close.
         // This is intentional.
-        int32_t pidFile = open(pidFilePath.c_str(), O_CREAT | O_RDWR, 0666);
+        int32_t pidFile = open(SINGLE_INSTANCE_MUTEX_NAME, O_CREAT | O_RDWR, 0666);
 
         if (pidFile == -1)
         {
@@ -432,25 +380,6 @@ namespace Platform
         return u8"app_285330" PATH_SEPARATOR u8"depot_285331";
     }
 
-    void Sleep(uint32_t ms)
-    {
-        usleep(ms * 1000);
-    }
-
-    void InitTicks()
-    {
-    }
-
-    uint32_t GetTicks()
-    {
-        struct timespec ts;
-        if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0)
-        {
-            LOG_FATAL("clock_gettime failed");
-            exit(-1);
-        }
-        return static_cast<uint32_t>(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
-    }
 } // namespace Platform
 
 #endif

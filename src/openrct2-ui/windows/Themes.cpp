@@ -66,12 +66,12 @@ enum WindowThemesWidgetIdx
     WIDX_THEMES_RCT1_BOTTOM_TOOLBAR
 };
 
-static constexpr const StringId WINDOW_TITLE = STR_THEMES_TITLE;
-static constexpr const int32_t WW = 320;
-static constexpr const int32_t WH = 107;
+static constexpr StringId WINDOW_TITLE = STR_THEMES_TITLE;
+static constexpr int32_t WW = 320;
+static constexpr int32_t WH = 107;
 
 // clang-format off
-static Widget window_themes_widgets[] = {
+static Widget _themesWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {320,  64}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                                     ), // tab content panel
     MakeTab   ({  3, 17},                                                                                                        STR_THEMES_TAB_SETTINGS_TIP        ), // settings tab
@@ -250,7 +250,7 @@ public:
 
     void OnOpen() override
     {
-        widgets = window_themes_widgets;
+        widgets = _themesWidgets;
 
         WindowThemesInitVars();
 
@@ -350,6 +350,8 @@ public:
                 Invalidate();
             }
         }
+
+        ResizeFrameWithPage();
     }
 
     void OnUpdate() override
@@ -377,47 +379,41 @@ public:
             _colour_index_2 = -1;
         }
 
-        window_themes_widgets[WIDX_THEMES_BACKGROUND].right = width - 1;
-        window_themes_widgets[WIDX_THEMES_BACKGROUND].bottom = height - 1;
-        window_themes_widgets[WIDX_THEMES_TAB_CONTENT_PANEL].right = width - 1;
-        window_themes_widgets[WIDX_THEMES_TAB_CONTENT_PANEL].bottom = height - 1;
-        window_themes_widgets[WIDX_THEMES_TITLE].right = width - 2;
-        window_themes_widgets[WIDX_THEMES_CLOSE].left = width - 2 - 0x0B;
-        window_themes_widgets[WIDX_THEMES_CLOSE].right = width - 2 - 0x0B + 0x0A;
-        window_themes_widgets[WIDX_THEMES_LIST].right = width - 4;
-        window_themes_widgets[WIDX_THEMES_LIST].bottom = height - 0x0F;
+        ResizeFrameWithPage();
+        widgets[WIDX_THEMES_LIST].right = width - 4;
+        widgets[WIDX_THEMES_LIST].bottom = height - 0x0F;
 
         if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
         {
-            window_themes_widgets[WIDX_THEMES_HEADER_WINDOW].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_HEADER_PALETTE].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_LIST].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WindowWidgetType::Button;
-            window_themes_widgets[WIDX_THEMES_DELETE_BUTTON].type = WindowWidgetType::Button;
-            window_themes_widgets[WIDX_THEMES_RENAME_BUTTON].type = WindowWidgetType::Button;
-            window_themes_widgets[WIDX_THEMES_PRESETS].type = WindowWidgetType::DropdownMenu;
-            window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WindowWidgetType::Button;
-            window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_HEADER_WINDOW].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_HEADER_PALETTE].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_LIST].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WindowWidgetType::Button;
+            widgets[WIDX_THEMES_DELETE_BUTTON].type = WindowWidgetType::Button;
+            widgets[WIDX_THEMES_RENAME_BUTTON].type = WindowWidgetType::Button;
+            widgets[WIDX_THEMES_PRESETS].type = WindowWidgetType::DropdownMenu;
+            widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WindowWidgetType::Button;
+            widgets[WIDX_THEMES_COLOURBTN_MASK].type = WindowWidgetType::Empty;
         }
         else if (_selected_tab == WINDOW_THEMES_TAB_FEATURES)
         {
-            window_themes_widgets[WIDX_THEMES_HEADER_WINDOW].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_HEADER_PALETTE].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_LIST].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WindowWidgetType::Checkbox;
-            window_themes_widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WindowWidgetType::Checkbox;
-            window_themes_widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WindowWidgetType::Checkbox;
-            window_themes_widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WindowWidgetType::Checkbox;
-            window_themes_widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_DELETE_BUTTON].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_RENAME_BUTTON].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_PRESETS].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_HEADER_WINDOW].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_HEADER_PALETTE].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_LIST].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WindowWidgetType::Checkbox;
+            widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WindowWidgetType::Checkbox;
+            widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WindowWidgetType::Checkbox;
+            widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WindowWidgetType::Checkbox;
+            widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_DELETE_BUTTON].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_RENAME_BUTTON].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_PRESETS].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_COLOURBTN_MASK].type = WindowWidgetType::Empty;
 
             WidgetSetCheckboxValue(*this, WIDX_THEMES_RCT1_RIDE_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE);
             WidgetSetCheckboxValue(*this, WIDX_THEMES_RCT1_PARK_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK);
@@ -428,33 +424,33 @@ public:
         }
         else
         {
-            window_themes_widgets[WIDX_THEMES_HEADER_WINDOW].type = WindowWidgetType::TableHeader;
-            window_themes_widgets[WIDX_THEMES_HEADER_PALETTE].type = WindowWidgetType::TableHeader;
-            window_themes_widgets[WIDX_THEMES_LIST].type = WindowWidgetType::Scroll;
-            window_themes_widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_DELETE_BUTTON].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_RENAME_BUTTON].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_PRESETS].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WindowWidgetType::Empty;
-            window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_HEADER_WINDOW].type = WindowWidgetType::TableHeader;
+            widgets[WIDX_THEMES_HEADER_PALETTE].type = WindowWidgetType::TableHeader;
+            widgets[WIDX_THEMES_LIST].type = WindowWidgetType::Scroll;
+            widgets[WIDX_THEMES_RCT1_RIDE_LIGHTS].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_RCT1_PARK_LIGHTS].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_RCT1_SCENARIO_FONT].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_RCT1_BOTTOM_TOOLBAR].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_DUPLICATE_BUTTON].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_DELETE_BUTTON].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_RENAME_BUTTON].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_PRESETS].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WindowWidgetType::Empty;
+            widgets[WIDX_THEMES_COLOURBTN_MASK].type = WindowWidgetType::Empty;
         }
     }
 
     void OnDraw(DrawPixelInfo& dpi) override
     {
         // Widgets
-        WindowDrawWidgets(*this, &dpi);
-        WindowThemesDrawTabImages(&dpi);
+        WindowDrawWidgets(*this, dpi);
+        WindowThemesDrawTabImages(dpi);
 
         if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
         {
             DrawTextBasic(
-                dpi, windowPos + ScreenCoordsXY{ 10, window_themes_widgets[WIDX_THEMES_PRESETS].top + 1 },
-                STR_THEMES_LABEL_CURRENT_THEME, {}, { colours[1] });
+                dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_THEMES_PRESETS].top + 1 }, STR_THEMES_LABEL_CURRENT_THEME, {},
+                { colours[1] });
 
             size_t activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
             const utf8* activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
@@ -462,10 +458,8 @@ public:
             ft.Add<const utf8*>(activeThemeName);
 
             auto screenPos = windowPos
-                + ScreenCoordsXY{ window_themes_widgets[WIDX_THEMES_PRESETS].left + 1,
-                                  window_themes_widgets[WIDX_THEMES_PRESETS].top };
-            auto newWidth = windowPos.x + window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].left
-                - window_themes_widgets[WIDX_THEMES_PRESETS].left - 4;
+                + ScreenCoordsXY{ widgets[WIDX_THEMES_PRESETS].left + 1, widgets[WIDX_THEMES_PRESETS].top };
+            auto newWidth = windowPos.x + widgets[WIDX_THEMES_PRESETS_DROPDOWN].left - widgets[WIDX_THEMES_PRESETS].left - 4;
 
             DrawTextEllipsised(dpi, screenPos, newWidth, STR_STRING, ft, { colours[1] });
         }
@@ -615,9 +609,10 @@ public:
             case WIDX_THEMES_LIST:
                 if (selectedIndex != -1)
                 {
+                    const auto newColour = ThemeOverrideExtendedColour(ColourDropDownIndexToColour(selectedIndex));
                     WindowClass wc = GetWindowClassTabIndex(_colour_index_1);
                     uint8_t colour = ThemeGetColour(wc, _colour_index_2);
-                    colour = (colour & COLOUR_FLAG_TRANSLUCENT) | selectedIndex;
+                    colour = (colour & COLOUR_FLAG_TRANSLUCENT) | newColour;
                     ThemeSetColour(wc, _colour_index_2, colour);
                     ColourSchemeUpdateAll();
                     WindowInvalidateAll();
@@ -676,8 +671,7 @@ public:
             return {};
 
         int32_t scrollHeight = GetColourSchemeTabCount() * _row_height;
-        int32_t i = scrollHeight - window_themes_widgets[WIDX_THEMES_LIST].bottom + window_themes_widgets[WIDX_THEMES_LIST].top
-            + 21;
+        int32_t i = scrollHeight - widgets[WIDX_THEMES_LIST].bottom + widgets[WIDX_THEMES_LIST].top + 21;
         if (i < 0)
             i = 0;
         if (i < scrolls[0].v_top)
@@ -710,23 +704,16 @@ public:
                     }
                     else
                     {
-                        window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].type = WindowWidgetType::ColourBtn;
-                        window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].left = _button_offset_x + _colour_index_2 * 12
-                            + window_themes_widgets[WIDX_THEMES_LIST].left;
-                        window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].top = _colour_index_1 * _row_height + _button_offset_y
-                            - scrolls[0].v_top + window_themes_widgets[WIDX_THEMES_LIST].top;
-                        window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].right = window_themes_widgets
-                                                                                      [WIDX_THEMES_COLOURBTN_MASK]
-                                                                                          .left
-                            + 12;
-                        window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].bottom = window_themes_widgets
-                                                                                       [WIDX_THEMES_COLOURBTN_MASK]
-                                                                                           .top
-                            + 12;
+                        widgets[WIDX_THEMES_COLOURBTN_MASK].type = WindowWidgetType::ColourBtn;
+                        widgets[WIDX_THEMES_COLOURBTN_MASK].left = _button_offset_x + _colour_index_2 * 12
+                            + widgets[WIDX_THEMES_LIST].left;
+                        widgets[WIDX_THEMES_COLOURBTN_MASK].top = _colour_index_1 * _row_height + _button_offset_y
+                            - scrolls[0].v_top + widgets[WIDX_THEMES_LIST].top;
+                        widgets[WIDX_THEMES_COLOURBTN_MASK].right = widgets[WIDX_THEMES_COLOURBTN_MASK].left + 12;
+                        widgets[WIDX_THEMES_COLOURBTN_MASK].bottom = widgets[WIDX_THEMES_COLOURBTN_MASK].top + 12;
 
                         uint8_t colour = ThemeGetColour(wc, _colour_index_2);
-                        WindowDropdownShowColour(
-                            this, &(window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK]), colours[1], colour);
+                        WindowDropdownShowColour(this, &(widgets[WIDX_THEMES_COLOURBTN_MASK]), colours[1], colour);
                         WidgetInvalidate(*this, WIDX_THEMES_LIST);
                     }
                 }
@@ -783,24 +770,23 @@ public:
                     int32_t colour = colours[1];
 
                     auto leftTop = ScreenCoordsXY{ 0, screenCoords.y + _row_height - 2 };
-                    auto rightBottom = ScreenCoordsXY{ window_themes_widgets[WIDX_THEMES_LIST].right,
-                                                       screenCoords.y + _row_height - 2 };
+                    auto rightBottom = ScreenCoordsXY{ widgets[WIDX_THEMES_LIST].right, screenCoords.y + _row_height - 2 };
                     auto yPixelOffset = ScreenCoordsXY{ 0, 1 };
 
                     if (colour & COLOUR_FLAG_TRANSLUCENT)
                     {
                         TranslucentWindowPalette windowPalette = TranslucentWindowPalettes[BASE_COLOUR(colour)];
 
-                        GfxFilterRect(&dpi, { leftTop, rightBottom }, windowPalette.highlight);
-                        GfxFilterRect(&dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);
+                        GfxFilterRect(dpi, { leftTop, rightBottom }, windowPalette.highlight);
+                        GfxFilterRect(dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, windowPalette.shadow);
                     }
                     else
                     {
                         colour = ColourMapA[colours[1]].mid_dark;
-                        GfxFillRect(&dpi, { leftTop, rightBottom }, colour);
+                        GfxFillRect(dpi, { leftTop, rightBottom }, colour);
 
                         colour = ColourMapA[colours[1]].lightest;
-                        GfxFillRect(&dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour);
+                        GfxFillRect(dpi, { leftTop + yPixelOffset, rightBottom + yPixelOffset }, colour);
                     }
                 }
 
@@ -814,11 +800,11 @@ public:
                     const bool isPressed = (i == _colour_index_1 && j == _colour_index_2);
                     auto image = ImageId(
                         isPressed ? SPR_PALETTE_BTN_PRESSED : SPR_PALETTE_BTN, colour & ~COLOUR_FLAG_TRANSLUCENT);
-                    GfxDrawSprite(&dpi, image, { _button_offset_x + 12 * j, screenCoords.y + _button_offset_y });
+                    GfxDrawSprite(dpi, image, { _button_offset_x + 12 * j, screenCoords.y + _button_offset_y });
 
                     ScreenCoordsXY topLeft{ _button_offset_x + 12 * j, screenCoords.y + _check_offset_y };
                     ScreenCoordsXY bottomRight{ _button_offset_x + 12 * j + 9, screenCoords.y + _check_offset_y + 10 };
-                    GfxFillRectInset(&dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
+                    GfxFillRectInset(dpi, { topLeft, bottomRight }, colours[1], INSET_RECT_F_E0);
                     if (colour & COLOUR_FLAG_TRANSLUCENT)
                     {
                         GfxDrawString(
@@ -867,7 +853,7 @@ public:
         return 0;
     }
 
-    void WindowThemesDrawTabImages(DrawPixelInfo* dpi)
+    void WindowThemesDrawTabImages(DrawPixelInfo& dpi)
     {
         for (int32_t i = 0; i < WINDOW_THEMES_TAB_COUNT; i++)
         {

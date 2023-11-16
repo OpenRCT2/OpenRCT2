@@ -44,11 +44,11 @@ enum class DisplayType {
 
 #pragma region Widgets
 
-static constexpr const StringId WINDOW_TITLE = STR_VIEW_CLIPPING_TITLE;
-static constexpr const int32_t WW = 180;
-static constexpr const int32_t WH = 155;
+static constexpr StringId WINDOW_TITLE = STR_VIEW_CLIPPING_TITLE;
+static constexpr int32_t WW = 180;
+static constexpr int32_t WH = 155;
 
-static Widget window_view_clipping_widgets[] = {
+static Widget _viewClippingWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget        ({     11,  19}, {    159,  11}, WindowWidgetType::Checkbox, WindowColour::Primary, STR_VIEW_CLIPPING_HEIGHT_ENABLE,       STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP  ), // clip enable/disable check box
     MakeWidget        ({      5,  36}, {WW - 10,  48}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING                                         ),
@@ -274,7 +274,7 @@ public:
 
     void OnDraw(DrawPixelInfo& dpi) override
     {
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
 
         // Clip height value
         auto screenCoords = this->windowPos + ScreenCoordsXY{ 8, this->widgets[WIDX_CLIP_HEIGHT_VALUE].top };
@@ -343,7 +343,7 @@ public:
 
     void OnOpen() override
     {
-        this->widgets = window_view_clipping_widgets;
+        this->widgets = _viewClippingWidgets;
         this->hold_down_widgets = (1uLL << WIDX_CLIP_HEIGHT_INCREASE) | (1uL << WIDX_CLIP_HEIGHT_DECREASE);
         WindowInitScrollWidgets(*this);
 
@@ -363,6 +363,11 @@ public:
             mainWindow->viewport->flags |= VIEWPORT_FLAG_CLIP_VIEW;
             mainWindow->Invalidate();
         }
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 
 private:

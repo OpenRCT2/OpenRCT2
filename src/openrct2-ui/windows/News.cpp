@@ -21,9 +21,9 @@
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/sprites.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_RECENT_MESSAGES;
-static constexpr const int32_t WH = 300;
-static constexpr const int32_t WW = 400;
+static constexpr StringId WINDOW_TITLE = STR_RECENT_MESSAGES;
+static constexpr int32_t WH = 300;
+static constexpr int32_t WW = 400;
 
 // clang-format off
 enum WindowNewsWidgetIdx {
@@ -191,7 +191,7 @@ public:
 
             // Background
             GfxFillRectInset(
-                &dpi, { -1, y, 383, y + itemHeight - 1 }, colours[1],
+                dpi, { -1, y, 383, y + itemHeight - 1 }, colours[1],
                 (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
 
             // Date text
@@ -221,18 +221,18 @@ public:
                         press = INSET_RECT_FLAG_BORDER_INSET;
                     }
                 }
-                GfxFillRectInset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
+                GfxFillRectInset(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
 
                 switch (newsItem.Type)
                 {
                     case News::ItemType::Ride:
-                        GfxDrawSprite(&dpi, ImageId(SPR_RIDE), screenCoords);
+                        GfxDrawSprite(dpi, ImageId(SPR_RIDE), screenCoords);
                         break;
                     case News::ItemType::Peep:
                     case News::ItemType::PeepOnRide:
                     {
                         DrawPixelInfo cliped_dpi;
-                        if (!ClipDrawPixelInfo(&cliped_dpi, &dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
+                        if (!ClipDrawPixelInfo(cliped_dpi, dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
                         {
                             break;
                         }
@@ -260,24 +260,24 @@ public:
 
                         ImageIndex imageId = GetPeepAnimation(spriteType).base_image + 1;
                         auto image = ImageId(imageId, peep->TshirtColour, peep->TrousersColour);
-                        GfxDrawSprite(&cliped_dpi, image, clipCoords);
+                        GfxDrawSprite(cliped_dpi, image, clipCoords);
                         break;
                     }
                     case News::ItemType::Money:
                     case News::ItemType::Campaign:
-                        GfxDrawSprite(&dpi, ImageId(SPR_FINANCE), screenCoords);
+                        GfxDrawSprite(dpi, ImageId(SPR_FINANCE), screenCoords);
                         break;
                     case News::ItemType::Research:
-                        GfxDrawSprite(&dpi, ImageId(newsItem.Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
+                        GfxDrawSprite(dpi, ImageId(newsItem.Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
                         break;
                     case News::ItemType::Peeps:
-                        GfxDrawSprite(&dpi, ImageId(SPR_GUESTS), screenCoords);
+                        GfxDrawSprite(dpi, ImageId(SPR_GUESTS), screenCoords);
                         break;
                     case News::ItemType::Award:
-                        GfxDrawSprite(&dpi, ImageId(SPR_AWARD), screenCoords);
+                        GfxDrawSprite(dpi, ImageId(SPR_AWARD), screenCoords);
                         break;
                     case News::ItemType::Graph:
-                        GfxDrawSprite(&dpi, ImageId(SPR_GRAPH), screenCoords);
+                        GfxDrawSprite(dpi, ImageId(SPR_GRAPH), screenCoords);
                         break;
                     case News::ItemType::Null:
                     case News::ItemType::Blank:
@@ -298,13 +298,18 @@ public:
                     if (i == _pressedNewsItemIndex && _pressedButtonIndex == 2)
                         press = 0x20;
                 }
-                GfxFillRectInset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
-                GfxDrawSprite(&dpi, ImageId(SPR_LOCATE), screenCoords);
+                GfxFillRectInset(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
+                GfxDrawSprite(dpi, ImageId(SPR_LOCATE), screenCoords);
             }
 
             y += itemHeight;
             i++;
         }
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 };
 

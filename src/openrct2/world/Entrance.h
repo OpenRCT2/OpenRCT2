@@ -25,9 +25,9 @@ enum
 
 namespace EntranceSequence
 {
-    constexpr const uint8_t Centre = 0;
-    constexpr const uint8_t Left = 1;
-    constexpr const uint8_t Right = 2;
+    constexpr uint8_t Centre = 0;
+    constexpr uint8_t Left = 1;
+    constexpr uint8_t Right = 2;
 }; // namespace EntranceSequence
 
 constexpr const uint8_t ParkEntranceHeight = 12 * COORDS_Z_STEP;

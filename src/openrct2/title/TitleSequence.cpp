@@ -307,8 +307,7 @@ namespace OpenRCT2::Title
         auto scanner = Path::ScanDirectory(pattern, true);
         while (scanner->Next())
         {
-            const utf8* path = scanner->GetPathRelative();
-            saves.push_back(path);
+            saves.push_back(scanner->GetPathRelative());
         }
         return saves;
     }
@@ -321,7 +320,7 @@ namespace OpenRCT2::Title
         {
             auto name = zip->GetFileName(i);
             auto ext = Path::GetExtension(name);
-            if (String::Equals(ext, ".sv6", true) || String::Equals(ext, ".sc6", true) || String::Equals(ext, ".park", true))
+            if (String::IEquals(ext, ".sv6") || String::IEquals(ext, ".sc6") || String::IEquals(ext, ".park"))
             {
                 saves.push_back(std::move(name));
             }
@@ -343,13 +342,13 @@ namespace OpenRCT2::Title
 
             if (token[0] != 0)
             {
-                if (_stricmp(token, "LOAD") == 0)
+                if (String::IEquals(token, "LOAD"))
                 {
                     auto saveIndex = SAVE_INDEX_INVALID;
                     const std::string relativePath = parts[1].data();
                     for (size_t i = 0; i < saves.size(); i++)
                     {
-                        if (String::Equals(relativePath, saves[i], true))
+                        if (String::IEquals(relativePath, saves[i]))
                         {
                             saveIndex = static_cast<uint8_t>(i);
                             break;
@@ -357,48 +356,48 @@ namespace OpenRCT2::Title
                     }
                     command = LoadParkCommand{ saveIndex };
                 }
-                else if (_stricmp(token, "LOCATION") == 0)
+                else if (String::IEquals(token, "LOCATION"))
                 {
                     uint8_t locationX = atoi(parts[1].data()) & 0xFF;
                     uint8_t locationY = atoi(parts[2].data()) & 0xFF;
                     command = SetLocationCommand{ locationX, locationY };
                 }
-                else if (_stricmp(token, "ROTATE") == 0)
+                else if (String::IEquals(token, "ROTATE"))
                 {
                     uint8_t rotations = atoi(parts[1].data()) & 0xFF;
                     command = RotateViewCommand{ rotations };
                 }
-                else if (_stricmp(token, "ZOOM") == 0)
+                else if (String::IEquals(token, "ZOOM"))
                 {
                     uint8_t zoom = atoi(parts[1].data()) & 0xFF;
                     command = SetZoomCommand{ zoom };
                 }
-                else if (_stricmp(token, "SPEED") == 0)
+                else if (String::IEquals(token, "SPEED"))
                 {
                     uint8_t speed = std::max(1, std::min(4, atoi(parts[1].data()) & 0xFF));
                     command = SetSpeedCommand{ speed };
                 }
-                else if (_stricmp(token, "FOLLOW") == 0)
+                else if (String::IEquals(token, "FOLLOW"))
                 {
                     auto entityID = EntityId::FromUnderlying(atoi(parts[1].data()) & 0xFFFF);
                     auto followCommand = FollowEntityCommand{ entityID };
                     SafeStrCpy(followCommand.Follow.SpriteName, parts[2].data(), USER_STRING_MAX_LENGTH);
                     command = followCommand;
                 }
-                else if (_stricmp(token, "WAIT") == 0)
+                else if (String::IEquals(token, "WAIT"))
                 {
                     uint16_t milliseconds = atoi(parts[1].data()) & 0xFFFF;
                     command = WaitCommand{ milliseconds };
                 }
-                else if (_stricmp(token, "RESTART") == 0)
+                else if (String::IEquals(token, "RESTART"))
                 {
                     command = RestartCommand{};
                 }
-                else if (_stricmp(token, "END") == 0)
+                else if (String::IEquals(token, "END"))
                 {
                     command = EndCommand{};
                 }
-                else if (_stricmp(token, "LOADSC") == 0)
+                else if (String::IEquals(token, "LOADSC"))
                 {
                     auto loadScenarioCommand = LoadScenarioCommand{};
                     SafeStrCpy(loadScenarioCommand.Scenario, parts[1].data(), sizeof(loadScenarioCommand.Scenario));
@@ -447,12 +446,12 @@ namespace OpenRCT2::Title
                 if (!whitespace)
                 {
                     if (part == 0
-                        && ((cindex == 4 && _strnicmp(parts[0].data(), "LOAD", 4) == 0)
-                            || (cindex == 6 && _strnicmp(parts[0].data(), "LOADSC", 6) == 0)))
+                        && ((cindex == 4 && String::StartsWith(parts[0].data(), "LOAD", true))
+                            || (cindex == 6 && String::StartsWith(parts[0].data(), "LOADSC", true))))
                     {
                         load = true;
                     }
-                    else if (part == 0 && cindex == 6 && _strnicmp(parts[0].data(), "FOLLOW", 6) == 0)
+                    else if (part == 0 && cindex == 6 && String::StartsWith(parts[0].data(), "FOLLOW", true))
                     {
                         sprite = true;
                     }
