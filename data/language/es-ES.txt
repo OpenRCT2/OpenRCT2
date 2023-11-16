@@ -2161,7 +2161,7 @@ STR_3075    :{RED}ADVERTENCIA: ¡La valoración del parque ha caído por debajo 
 STR_3076    :{RED}ADVERTENCIA FINAL: ¡La valoración del parque ha caído por debajo de 700!{NEWLINE}En 7 días tu parque estará cerrado a menos que subas la valoración.
 STR_3077    :{RED}CLAUSURA: ¡Tu parque ha sido cerrado!
 STR_3090    :Seleccionar estilo de la entrada, salida y estación
-STR_3091    :¡No estas autorizado para remover esta sección!
+STR_3091    :¡No estas autorizado para eliminar esta sección!
 STR_3092    :¡No estas autorizado para modificar la estación de esta atracción!
 STR_3093    :{WINDOW_COLOUR_2}Favorita: {BLACK}{STRINGID}
 STR_3094    :Ninguna
@@ -2845,7 +2845,7 @@ STR_5640    :Administrar grupos
 STR_5641    :Grupo por defecto:
 STR_5642    :Grupo
 STR_5643    :Añadir Grupo
-STR_5644    :Remover Grupo
+STR_5644    :Eliminar Grupo
 STR_5645    :Chat
 STR_5646    :Ajustar terreno
 STR_5647    :Alternar pausa
@@ -3439,7 +3439,7 @@ STR_6328    :Con esta opción activada, las capturas gigantes tendrán un fondo 
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Descargando [{STRING}] desde {STRING} ({COMMA16} / {COMMA16})
 STR_6331    :Crear patos
-STR_6332    :Remover patos
+STR_6332    :Eliminar patos
 STR_6333    :Incrementar factor de escala
 STR_6334    :Disminuir factor de escala
 STR_6336    :Inspector de cuadrícula: Copiar elemento
