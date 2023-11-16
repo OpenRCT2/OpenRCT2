@@ -27,9 +27,9 @@
 
 #pragma region Widgets
 
-static constexpr const int32_t WW = 600;
-static constexpr const int32_t WH = 400;
-static constexpr const StringId WINDOW_TITLE = STR_INVENTION_LIST;
+static constexpr int32_t WW = 600;
+static constexpr int32_t WH = 400;
+static constexpr StringId WINDOW_TITLE = STR_INVENTION_LIST;
 
 // clang-format off
 enum {

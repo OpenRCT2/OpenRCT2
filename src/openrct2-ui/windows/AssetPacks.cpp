@@ -20,9 +20,9 @@
 
 using namespace OpenRCT2;
 
-static constexpr const StringId WINDOW_TITLE = STR_ASSET_PACKS;
-static constexpr const int32_t WW = 400;
-static constexpr const int32_t WH = 200;
+static constexpr StringId WINDOW_TITLE = STR_ASSET_PACKS;
+static constexpr int32_t WW = 400;
+static constexpr int32_t WH = 200;
 
 // clang-format off
 enum WindowAssetPacksWidgetIdx {
@@ -39,12 +39,12 @@ enum WindowAssetPacksWidgetIdx {
 
 static Widget WindowAssetPacksWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_HIGH_PRIORITY),
-    MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL),
-    MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_LOW_PRIORITY),
-    MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_ARROW_UP), STR_INCREASE_PRIOTITY_TIP),
-    MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_ARROW_DOWN), STR_DECREASE_PRIOTITY_TIP),
-    MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_RELOAD), STR_RELOAD_ASSET_PACKS_TIP),
+    MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_HIGH_PRIORITY),
+    MakeWidget({ 0, 0 }, { 0, 147 }, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL),
+    MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_LOW_PRIORITY),
+    MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_ARROW_UP), STR_INCREASE_PRIOTITY_TIP),
+    MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_ARROW_DOWN), STR_DECREASE_PRIOTITY_TIP),
+    MakeWidget({ 0, 0 }, { 0,   0 }, WindowWidgetType::FlatBtn, WindowColour::Secondary, ImageId(SPR_G2_RELOAD), STR_RELOAD_ASSET_PACKS_TIP),
     WIDGETS_END,
 };
 // clang-format on

@@ -20,14 +20,14 @@
 #include "../Vehicle.h"
 
 // 1 2 0 3 4
-static constexpr const uint8_t track_map_1x5[][5] = {
+static constexpr uint8_t track_map_1x5[][5] = {
     { 0, 1, 2, 3, 4 },
     { 0, 4, 3, 2, 1 },
     { 0, 4, 3, 2, 1 },
     { 0, 1, 2, 3, 4 },
 };
 /** rct2: 0x008A83B0 */
-static constexpr const uint32_t SwingingShipBaseSpriteOffset[] = {
+static constexpr uint32_t SwingingShipBaseSpriteOffset[] = {
     0,
     9,
     0,
@@ -35,7 +35,7 @@ static constexpr const uint32_t SwingingShipBaseSpriteOffset[] = {
 };
 
 /** rct2: 0x008A83C0 */
-static constexpr const BoundBoxXY SwingingShipData[] = {
+static constexpr BoundBoxXY SwingingShipData[] = {
     { { 1, 8 }, { 31, 16 } },
     { { 8, 1 }, { 16, 31 } },
     { { 1, 8 }, { 31, 16 } },
@@ -50,7 +50,7 @@ enum
     SPR_SWINGING_SHIP_FRAME_FRONT_NW_SE = 21997,
 };
 
-static constexpr const uint32_t SwingingShipFrameSprites[][2] = {
+static constexpr uint32_t SwingingShipFrameSprites[][2] = {
     { SPR_SWINGING_SHIP_FRAME_SW_NE, SPR_SWINGING_SHIP_FRAME_FRONT_SW_NE },
     { SPR_SWINGING_SHIP_FRAME_NW_SE, SPR_SWINGING_SHIP_FRAME_FRONT_NW_SE },
 };
@@ -167,8 +167,12 @@ static void PaintSwingingShip(
     }
     else if (direction & 1)
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height,
+            session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height,
+            session.TrackColours[SCHEME_SUPPORTS]);
 
         if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
         {
@@ -178,8 +182,11 @@ static void PaintSwingingShip(
     }
     else
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height,
+            session.TrackColours[SCHEME_SUPPORTS]);
 
         if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
         {

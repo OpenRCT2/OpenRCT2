@@ -303,7 +303,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         return;
     }
 
-    static constexpr const int32_t segmentPositions[][3] = {
+    static constexpr int32_t segmentPositions[][3] = {
         { 0, 6, 2 },
         { 5, 4, 8 },
         { 1, 7, 3 },
@@ -314,7 +314,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         for (std::size_t sx = 0; sx < std::size(segmentPositions[sy]); sx++)
         {
             uint16_t segmentHeight = session.SupportSegments[segmentPositions[sy][sx]].height;
-            auto imageColourFlats = ImageId(SPR_LAND_TOOL_SIZE_1).WithTransparency(FilterPaletteID::PaletteDarken3);
+            auto imageColourFlats = ImageId(SPR_LAND_TOOL_SIZE_1).WithTransparency(FilterPaletteID::PaletteGlassBlack);
             if (segmentHeight == 0xFFFF)
             {
                 segmentHeight = session.Support.height;
@@ -329,13 +329,9 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
 
             int32_t xOffset = static_cast<int32_t>(sy) * 10;
             int32_t yOffset = -22 + static_cast<int32_t>(sx) * 10;
-            PaintStruct* ps = PaintAddImageAsParent(
+            PaintAddImageAsParent(
                 session, imageColourFlats, { xOffset, yOffset, segmentHeight },
                 { { xOffset + 1, yOffset + 16, segmentHeight }, { 10, 10, 1 } });
-            if (ps != nullptr)
-            {
-                ps->image_id = ps->image_id.WithTertiary(COLOUR_BORDEAUX_RED);
-            }
         }
     }
 }

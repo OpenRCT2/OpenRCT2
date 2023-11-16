@@ -21,6 +21,7 @@
 #include "../core/File.h"
 #include "../core/Imaging.h"
 #include "../core/Path.hpp"
+#include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Formatter.h"
@@ -134,7 +135,7 @@ static std::string ScreenshotGetFormattedDateTime()
 static std::optional<std::string> ScreenshotGetNextPath()
 {
     auto screenshotDirectory = ScreenshotGetDirectory();
-    if (!Platform::EnsureDirectoryExists(screenshotDirectory.c_str()))
+    if (!Path::CreateDirectory(screenshotDirectory))
     {
         LOG_ERROR("Unable to save screenshots in OpenRCT2 screenshot directory.");
         return std::nullopt;
@@ -390,130 +391,6 @@ void ScreenshotGiant()
     ReleaseDPI(dpi);
 }
 
-// TODO: Move this at some point into a more appropriate place.
-template<typename FN> static inline double MeasureFunctionTime(const FN& fn)
-{
-    const auto startTime = std::chrono::high_resolution_clock::now();
-    fn();
-    const auto endTime = std::chrono::high_resolution_clock::now();
-    return std::chrono::duration<double>(endTime - startTime).count();
-}
-
-static void BenchgfxRenderScreenshots(const char* inputPath, std::unique_ptr<IContext>& context, uint32_t iterationCount)
-{
-    if (!context->LoadParkFromFile(inputPath))
-    {
-        return;
-    }
-
-    gIntroState = IntroState::None;
-    gScreenFlags = SCREEN_FLAGS_PLAYING;
-
-    // Create Viewport and DPI for every rotation and zoom.
-    // We iterate from the default zoom level to the max zoomed out zoom level, then run GetGiantViewport once for each
-    // rotation.
-    constexpr int32_t NUM_ROTATIONS = 4;
-    constexpr auto NUM_ZOOM_LEVELS = static_cast<int8_t>(ZoomLevel::max());
-    std::array<DrawPixelInfo, NUM_ROTATIONS * NUM_ZOOM_LEVELS> dpis;
-    std::array<Viewport, NUM_ROTATIONS * NUM_ZOOM_LEVELS> viewports;
-
-    for (ZoomLevel zoom{ 0 }; zoom < ZoomLevel::max(); zoom++)
-    {
-        int32_t zoomIndex{ static_cast<int8_t>(zoom) };
-        for (int32_t rotation = 0; rotation < NUM_ROTATIONS; rotation++)
-        {
-            auto& viewport = viewports[zoomIndex * NUM_ZOOM_LEVELS + rotation];
-            auto& dpi = dpis[zoomIndex * NUM_ZOOM_LEVELS + rotation];
-            viewport = GetGiantViewport(rotation, zoom);
-            dpi = CreateDPI(viewport);
-        }
-    }
-
-    const uint32_t totalRenderCount = iterationCount * NUM_ROTATIONS * NUM_ZOOM_LEVELS;
-
-    try
-    {
-        double totalTime = 0.0;
-
-        std::array<double, NUM_ZOOM_LEVELS> zoomAverages;
-
-        // Render at every zoom.
-        for (int32_t zoom = 0; zoom < NUM_ZOOM_LEVELS; zoom++)
-        {
-            double zoomLevelTime = 0.0;
-
-            // Render at every rotation.
-            for (int32_t rotation = 0; rotation < NUM_ROTATIONS; rotation++)
-            {
-                // N iterations.
-                for (uint32_t i = 0; i < iterationCount; i++)
-                {
-                    auto& dpi = dpis[zoom * NUM_ZOOM_LEVELS + rotation];
-                    auto& viewport = viewports[zoom * NUM_ZOOM_LEVELS + rotation];
-                    double elapsed = MeasureFunctionTime([&viewport, &dpi]() { RenderViewport(nullptr, viewport, dpi); });
-                    totalTime += elapsed;
-                    zoomLevelTime += elapsed;
-                }
-            }
-
-            zoomAverages[zoom] = zoomLevelTime / static_cast<double>(NUM_ROTATIONS * iterationCount);
-        }
-
-        const double average = totalTime / static_cast<double>(totalRenderCount);
-        const auto engineStringId = DrawingEngineStringIds[EnumValue(DrawingEngine::Software)];
-        const auto engineName = FormatStringID(engineStringId, nullptr);
-        std::printf("Engine: %s\n", engineName.c_str());
-        std::printf("Render Count: %u\n", totalRenderCount);
-        for (ZoomLevel zoom{ 0 }; zoom < ZoomLevel::max(); zoom++)
-        {
-            int32_t zoomIndex{ static_cast<int8_t>(zoom) };
-            const auto zoomAverage = zoomAverages[zoomIndex];
-            std::printf("Zoom[%d] average: %.06fs, %.f FPS\n", zoomIndex, zoomAverage, 1.0 / zoomAverage);
-        }
-        std::printf("Total average: %.06fs, %.f FPS\n", average, 1.0 / average);
-        std::printf("Time: %.05fs\n", totalTime);
-    }
-    catch (const std::exception& e)
-    {
-        Console::Error::WriteLine("%s", e.what());
-    }
-
-    for (auto& dpi : dpis)
-        ReleaseDPI(dpi);
-}
-
-int32_t CommandLineForGfxbench(const char** argv, int32_t argc)
-{
-    if (argc != 1 && argc != 2)
-    {
-        printf("Usage: openrct2 benchgfx <file> [<iteration_count>]\n");
-        return -1;
-    }
-
-    Platform::CoreInit();
-    int32_t iterationCount = 5;
-    if (argc == 2)
-    {
-        iterationCount = atoi(argv[1]);
-    }
-
-    const char* inputPath = argv[0];
-
-    gOpenRCT2Headless = true;
-
-    std::unique_ptr<IContext> context(CreateContext());
-    if (context->Initialise())
-    {
-        DrawingEngineInit();
-
-        BenchgfxRenderScreenshots(inputPath, context, iterationCount);
-
-        DrawingEngineDispose();
-    }
-
-    return 1;
-}
-
 static void ApplyOptions(const ScreenshotOptions* options, Viewport& viewport)
 {
     if (options->weather != WeatherType::Sunny && options->weather != WeatherType::Count)
@@ -575,7 +452,7 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
         }
     }
 
-    bool giantScreenshot = (argc == 5) && _stricmp(argv[2], "giant") == 0;
+    bool giantScreenshot = (argc == 5) && String::IEquals(argv[2], "giant");
     if (argc != 4 && argc != 8 && !giantScreenshot)
     {
         std::printf("Usage: openrct2 screenshot <file> <output_image> <width> <height> [<x> <y> <zoom> <rotation>]\n");
@@ -587,7 +464,6 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
     DrawPixelInfo dpi;
     try
     {
-        Platform::CoreInit();
         bool customLocation = false;
         bool centreMapX = false;
         bool centreMapY = false;

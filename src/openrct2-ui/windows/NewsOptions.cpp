@@ -14,9 +14,9 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/sprites.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_NOTIFICATION_SETTINGS;
-static constexpr const int32_t WH = 300;
-static constexpr const int32_t WW = 400;
+static constexpr StringId WINDOW_TITLE = STR_NOTIFICATION_SETTINGS;
+static constexpr int32_t WH = 300;
+static constexpr int32_t WW = 400;
 
 // clang-format off
 enum
@@ -34,7 +34,7 @@ struct NotificationDef
     size_t config_offset;
 };
 
-static constexpr const NotificationDef NewsItemOptionDefinitions[] = {
+static constexpr NotificationDef NewsItemOptionDefinitions[] = {
     { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_AWARD,                        offsetof(NotificationConfiguration, ParkAward)                          },
     { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_MARKETING_CAMPAIGN_FINISHED,  offsetof(NotificationConfiguration, ParkMarketingCampaignFinished)      },
     { NOTIFICATION_CATEGORY_PARK,   STR_NOTIFICATION_PARK_WARNINGS,                     offsetof(NotificationConfiguration, ParkWarnings)                       },
@@ -257,6 +257,11 @@ private:
     {
         bool* configValue = reinterpret_cast<bool*>(reinterpret_cast<size_t>(&gConfigNotifications) + ndef->config_offset);
         return configValue;
+    }
+
+    void OnResize() override
+    {
+        ResizeFrameWithPage();
     }
 
     static constexpr int32_t TabAnimationDivisor[3] = {

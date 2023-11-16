@@ -27,6 +27,8 @@ AndroidClassLoader::~AndroidClassLoader()
 jobject AndroidClassLoader::_classLoader;
 jmethodID AndroidClassLoader::_findClassMethod;
 
+// Initialized in JNI_OnLoad. Cannot be initialized here as JVM is not
+// available until after JNI_OnLoad is called.
 static std::shared_ptr<AndroidClassLoader> acl;
 
 namespace Platform
@@ -173,11 +175,6 @@ namespace Platform
         return displayScale;
     }
 
-    void AndroidInitClassLoader()
-    {
-        acl = std::make_shared<AndroidClassLoader>();
-    }
-
     jclass AndroidFindClass(JNIEnv* env, std::string_view name)
     {
         return static_cast<jclass>(env->CallObjectMethod(
@@ -185,6 +182,19 @@ namespace Platform
             env->NewStringUTF(std::string(name).c_str())));
     }
 } // namespace Platform
+
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* pjvm, void* reserved)
+{
+    // Due to an issue where JNI_OnLoad could be called multiple times, we need
+    // to make sure it is only initialized once.
+    // https://issuetracker.google.com/issues/220523932
+    // Otherwise JVM complains about jobject-s having incorrect serial numbers.
+    if (!acl)
+    {
+        acl = std::make_shared<AndroidClassLoader>();
+    }
+    return JNI_VERSION_1_6;
+}
 
 AndroidClassLoader::AndroidClassLoader()
 {

@@ -86,7 +86,7 @@ static constexpr const char* SnowTrees[] = {
 #pragma endregion
 
 // Randomly chosen base terrains. We rarely want a whole map made out of chequerboard or rock.
-static constexpr const std::string_view BaseTerrain[] = {
+static constexpr std::string_view BaseTerrain[] = {
     "rct2.terrain_surface.grass", "rct2.terrain_surface.sand", "rct2.terrain_surface.sand_brown",
     "rct2.terrain_surface.dirt",  "rct2.terrain_surface.ice",
 };
@@ -129,8 +129,8 @@ void MapGenGenerateBlank(MapGenSettings* settings)
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement != nullptr)
             {
-                surfaceElement->SetSurfaceStyle(settings->floor);
-                surfaceElement->SetEdgeStyle(settings->wall);
+                surfaceElement->SetSurfaceObjectIndex(settings->floor);
+                surfaceElement->SetEdgeObjectIndex(settings->wall);
                 surfaceElement->BaseHeight = settings->height;
                 surfaceElement->ClearanceHeight = settings->height;
             }
@@ -193,8 +193,8 @@ void MapGenGenerate(MapGenSettings* settings)
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement != nullptr)
             {
-                surfaceElement->SetSurfaceStyle(floorTextureId);
-                surfaceElement->SetEdgeStyle(edgeTextureId);
+                surfaceElement->SetSurfaceObjectIndex(floorTextureId);
+                surfaceElement->SetEdgeObjectIndex(edgeTextureId);
                 surfaceElement->BaseHeight = settings->height;
                 surfaceElement->ClearanceHeight = settings->height;
             }
@@ -243,7 +243,7 @@ void MapGenGenerate(MapGenSettings* settings)
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
 
             if (surfaceElement != nullptr && surfaceElement->BaseHeight < waterLevel + 6)
-                surfaceElement->SetSurfaceStyle(beachTextureId);
+                surfaceElement->SetSurfaceObjectIndex(beachTextureId);
         }
     }
 
@@ -354,7 +354,7 @@ static void MapGenPlaceTrees()
             // vegetation
             float oasisScore = 0.0f;
             ObjectEntryIndex treeObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
-            const auto& surfaceStyleObject = *TerrainSurfaceObject::GetById(surfaceElement->GetSurfaceStyle());
+            const auto& surfaceStyleObject = *TerrainSurfaceObject::GetById(surfaceElement->GetSurfaceObjectIndex());
             if (MapGenSurfaceTakesSandTrees(surfaceStyleObject))
             {
                 oasisScore = -0.5f;
@@ -370,7 +370,7 @@ static void MapGenPlaceTrees()
                         neighbourPos.y = std::clamp(neighbourPos.y, COORDS_XY_STEP, COORDS_XY_STEP * (gMapSize.y - 1));
 
                         const auto neighboutSurface = MapGetSurfaceElementAt(neighbourPos);
-                        if (neighboutSurface->GetWaterHeight() > 0)
+                        if (neighboutSurface != nullptr && neighboutSurface->GetWaterHeight() > 0)
                         {
                             float distance = std::sqrt(offsetX * offsetX + offsetY * offsetY);
                             oasisScore += 0.5f / (maxOasisDistance * distance);
@@ -794,8 +794,8 @@ static void MapGenSmoothHeightmap(std::vector<uint8_t>& src, int32_t strength)
 
 void MapGenGenerateFromHeightmap(MapGenSettings* settings)
 {
-    openrct2_assert(!_heightMapData.mono_bitmap.empty(), "No height map loaded");
-    openrct2_assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");
+    Guard::Assert(!_heightMapData.mono_bitmap.empty(), "No height map loaded");
+    Guard::Assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");
 
     // Make a copy of the original height map that we can edit
     auto dest = _heightMapData.mono_bitmap;
@@ -835,8 +835,8 @@ void MapGenGenerateFromHeightmap(MapGenSettings* settings)
         }
     }
 
-    openrct2_assert(maxValue > minValue, "Input range is invalid");
-    openrct2_assert(settings->simplex_high > settings->simplex_low, "Output range is invalid");
+    Guard::Assert(maxValue > minValue, "Input range is invalid");
+    Guard::Assert(settings->simplex_high > settings->simplex_low, "Output range is invalid");
 
     const uint8_t rangeIn = maxValue - minValue;
     const uint8_t rangeOut = settings->simplex_high - settings->simplex_low;

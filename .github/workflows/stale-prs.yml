@@ -8,8 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository == 'OpenRCT2/OpenRCT2'
     steps:
-      - uses: actions/stale@v7
+      - uses: actions/stale@v8
         with:
+          exempt-all-pr-assignees: true
+          exempt-all-pr-milestones: true
+          exempt-draft-pr: true
           days-before-issue-stale: -1
           days-before-issue-close: -1
           days-before-pr-stale: 31

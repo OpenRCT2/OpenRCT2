@@ -100,7 +100,7 @@ static void HeartlineTwisterRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][3] = {
+    static constexpr uint32_t imageIds[4][3] = {
         { 19732, SPR_STATION_BASE_B_SW_NE },
         { 19733, SPR_STATION_BASE_B_NW_SE },
         { 19732, SPR_STATION_BASE_B_SW_NE },
@@ -113,8 +113,7 @@ static void HeartlineTwisterRCTrackStation(
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][1]), { 0, 0, height },
         { 32, 32, 1 });
-    TrackPaintUtilDrawStationMetalSupports2(
-        session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Tubes);
+    DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Tubes);
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);

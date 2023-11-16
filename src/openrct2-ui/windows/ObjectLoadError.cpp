@@ -266,10 +266,10 @@ enum WindowObjectLoadErrorWidgetIdx {
     WIDX_DOWNLOAD_ALL
 };
 
-static constexpr const StringId WINDOW_TITLE = STR_OBJECT_LOAD_ERROR_TITLE;
-static constexpr const int32_t WW = 450;
-static constexpr const int32_t WH = 400;
-static constexpr const int32_t WW_LESS_PADDING = WW - 5;
+static constexpr StringId WINDOW_TITLE = STR_OBJECT_LOAD_ERROR_TITLE;
+static constexpr int32_t WW = 450;
+static constexpr int32_t WH = 400;
+static constexpr int32_t WW_LESS_PADDING = WW - 5;
 constexpr int32_t NAME_COL_LEFT = 4;
 constexpr int32_t SOURCE_COL_LEFT = (WW_LESS_PADDING / 4) + 1;
 constexpr int32_t TYPE_COL_LEFT = 5 * WW_LESS_PADDING / 8 + 1;
@@ -311,7 +311,7 @@ static constexpr StringId GetStringFromObjectType(const ObjectType type)
             return STR_OBJECT_SELECTION_PATH_SIGNS;
         case ObjectType::Paths:
             return STR_OBJECT_SELECTION_FOOTPATHS;
-        case ObjectType::PathBits:
+        case ObjectType::PathAdditions:
             return STR_OBJECT_SELECTION_PATH_EXTRAS;
         case ObjectType::SceneryGroup:
             return STR_OBJECT_SELECTION_SCENERY_GROUPS;
@@ -549,6 +549,11 @@ public:
             const auto type = GetStringFromObjectType(entry.GetType());
             DrawTextBasic(dpi, { TYPE_COL_LEFT - 3, screenCoords.y }, type, {}, { COLOUR_DARK_GREEN });
         }
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 
     void Initialise(utf8* path, const size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)

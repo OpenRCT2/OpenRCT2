@@ -94,7 +94,14 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
             {
                 if (height > maxHeight)
                     continue;
-                height += 2;
+                if (height + 2 > UINT8_MAX)
+                {
+                    height = UINT8_MAX;
+                }
+                else
+                {
+                    height += 2;
+                }
             }
             else
             {

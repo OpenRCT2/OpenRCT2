@@ -381,11 +381,11 @@ void LightFXPrepareLightList()
                 continue;
             }
 
-            entry->LightIntensity = std::min<uint32_t>(
-                0xFF, (entry->LightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100));
+            entry->LightIntensity = static_cast<uint8_t>(
+                std::min<uint32_t>(0xFF, (entry->LightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100)));
         }
-        entry->LightIntensity = std::max<uint32_t>(
-            0x00, entry->LightIntensity - static_cast<int8_t>(_current_view_zoom_front) * 5);
+        entry->LightIntensity = static_cast<uint8_t>(
+            std::max<uint32_t>(0x00, entry->LightIntensity - static_cast<int8_t>(_current_view_zoom_front) * 5));
 
         if (_current_view_zoom_front > ZoomLevel{ 0 })
         {
@@ -695,7 +695,7 @@ uint32_t LightFXGetLightPolution()
     return _lightPolution_front;
 }
 
-static constexpr const int16_t offsetLookup[] = {
+static constexpr int16_t offsetLookup[] = {
     10, 10, 9, 8, 7, 6, 4, 2, 0, -2, -4, -6, -7, -8, -9, -10, -10, -10, -9, -8, -7, -6, -4, -2, 0, 2, 4, 6, 7, 8, 9, 10,
 };
 void LightFxAddLightsMagicVehicle_ObservationTower(const Vehicle* vehicle)
@@ -1012,7 +1012,7 @@ static uint8_t MixLight(uint32_t a, uint32_t b, uint32_t intensity)
     intensity = intensity * 6;
     uint32_t bMul = (b * intensity) >> 8;
     uint32_t ab = a + bMul;
-    uint8_t result = std::min<uint32_t>(255, ab);
+    uint8_t result = static_cast<uint8_t>(std::min<uint32_t>(255, ab));
     return result;
 }
 

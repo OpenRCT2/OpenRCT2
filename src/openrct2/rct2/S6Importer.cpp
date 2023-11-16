@@ -110,11 +110,11 @@ namespace RCT2
         ParkLoadResult Load(const u8string& path) override
         {
             const auto extension = Path::GetExtension(path);
-            if (String::Equals(extension, ".sc6", true))
+            if (String::IEquals(extension, ".sc6"))
             {
                 return LoadScenario(path);
             }
-            if (String::Equals(extension, ".sv6", true))
+            if (String::IEquals(extension, ".sv6"))
             {
                 return LoadSavedGame(path);
             }
@@ -172,7 +172,7 @@ namespace RCT2
             if (!path.empty())
             {
                 auto extension = Path::GetExtension(path);
-                _isSV7 = _stricmp(extension.c_str(), ".sv7") == 0;
+                _isSV7 = String::IEquals(extension, ".sv7");
             }
 
             chunkReader.ReadChunk(&_s6.Objects, sizeof(_s6.Objects));
@@ -933,8 +933,8 @@ namespace RCT2
                 // clang-format on
             }
             else if (
-                String::Equals(gScenarioFileName, "N America - Extreme Hawaiian Island.SC6", true)
-                || String::Equals(gScenarioFileName, "n america - extreme hawaiian island.sea", true))
+                String::IEquals(gScenarioFileName, "N America - Extreme Hawaiian Island.SC6")
+                || String::IEquals(gScenarioFileName, "n america - extreme hawaiian island.sea"))
             {
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
@@ -1104,8 +1104,8 @@ namespace RCT2
             {
                 return;
             }
-            if (String::Equals(_s6.ScenarioFilename, "Infernal Views.SC6", true)
-                || String::Equals(_s6.ScenarioFilename, "infernal views.sea", true))
+            if (String::IEquals(_s6.ScenarioFilename, "Infernal Views.SC6")
+                || String::IEquals(_s6.ScenarioFilename, "infernal views.sea"))
             {
                 auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ 45, 62 });
 
@@ -1830,8 +1830,8 @@ namespace RCT2
 
                     dst2->SetSlope(src2->GetSlope());
 
-                    dst2->SetSurfaceStyle(src2->GetSurfaceStyle());
-                    dst2->SetEdgeStyle(src2->GetEdgeStyle());
+                    dst2->SetSurfaceObjectIndex(src2->GetSurfaceStyle());
+                    dst2->SetEdgeObjectIndex(src2->GetEdgeStyle());
 
                     dst2->SetGrassLength(src2->GetGrassLength());
                     dst2->SetOwnership(src2->GetOwnership());

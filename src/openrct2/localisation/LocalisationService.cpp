@@ -153,15 +153,6 @@ std::tuple<StringId, StringId, StringId> LocalisationService::GetLocalisedScenar
     return std::make_tuple(result0, result1, result2);
 }
 
-StringId LocalisationService::GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) const
-{
-    if (_loadedLanguages.empty())
-    {
-        return STR_NONE;
-    }
-    return _loadedLanguages[0]->GetObjectOverrideStringId(legacyIdentifier, index);
-}
-
 StringId LocalisationService::AllocateObjectString(const std::string& target)
 {
     if (_availableObjectStringIds.empty())

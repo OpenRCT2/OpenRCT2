@@ -414,14 +414,10 @@ money64 StringToMoney(const char* string_to_monetise)
     if (numNumbers == 0)
         return MONEY64_UNDEFINED;
 
-    int64_t sign = 1;
-    if (hasMinus)
+    if (hasMinus && processedString[0] != '-')
     {
         // If there is a minus sign, it has to be at position 0 in order to be valid.
-        if (processedString[0] == '-')
-            sign = -1;
-        else
-            return MONEY64_UNDEFINED;
+        return MONEY64_UNDEFINED;
     }
 
     // Due to the nature of strstr and strtok, decimals at the very beginning will be ignored, causing
@@ -436,7 +432,7 @@ money64 StringToMoney(const char* string_to_monetise)
     auto number = std::stod(processedString, nullptr);
     number /= (currencyDesc->rate / 10.0);
 
-    return ToMoney64FromGBP(number) * sign;
+    return ToMoney64FromGBP(number);
 }
 
 /**

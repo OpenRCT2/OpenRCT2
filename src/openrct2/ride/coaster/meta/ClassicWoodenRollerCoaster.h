@@ -15,11 +15,11 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr const RideTypeDescriptor ClassicWoodenRollerCoasterRTD =
+constexpr RideTypeDescriptor ClassicWoodenRollerCoasterRTD =
 {
    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
    SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
-   SET_FIELD(EnabledTrackPieces, {TRACK_FLAT, TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_VERTICAL_LOOP, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_WATER_SPLASH, TRACK_BLOCK_BRAKES}),
+   SET_FIELD(EnabledTrackPieces, {TRACK_FLAT, TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_VERTICAL_LOOP, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_WATER_SPLASH, TRACK_BLOCK_BRAKES, TRACK_DIAG_BRAKES, TRACK_DIAG_BLOCK_BRAKES}),
    SET_FIELD(ExtraTrackPieces, {}),
    SET_FIELD(CoveredTrackPieces, 0),
    SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
@@ -35,7 +35,7 @@ constexpr const RideTypeDescriptor ClassicWoodenRollerCoasterRTD =
    SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
    SET_FIELD(EnumName, nameof(RIDE_TYPE_CLASSIC_WOODEN_ROLLER_COASTER)),
    SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
-   SET_FIELD(Heights, { 41, 24, 8, 11, }),
+   SET_FIELD(Heights, { 24, 24, 8, 11, }),
    SET_FIELD(MaxMass, 19),
    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftWood, 3, 5 }),
    SET_FIELD(RatingsMultipliers, { 52, 33, 4 }),
@@ -71,6 +71,7 @@ constexpr const RideTypeDescriptor ClassicWoodenRollerCoasterRTD =
             { RatingsModifierType::BonusTurns,            0,                26749, 43458, 45749 },
             { RatingsModifierType::BonusDrops,            0,                40777, 46811, 49152 },
             { RatingsModifierType::BonusSheltered,        0,                16705, 30583, 35108 },
+            { RatingsModifierType::BonusReversedTrains,   0,                2, 12, 22 },
             { RatingsModifierType::BonusProximity,        0,                22367, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 12,               2, 1, 2 },

@@ -29,7 +29,7 @@
 #include <set>
 
 /* rct2: 0x009929FC */
-static constexpr const PeepSpriteType spriteTypes[] = {
+static constexpr PeepSpriteType spriteTypes[] = {
     PeepSpriteType::Handyman,
     PeepSpriteType::Mechanic,
     PeepSpriteType::Security,
@@ -201,10 +201,25 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->TrousersColour = colour;
 
         // Staff energy determines their walking speed
-        newPeep->Energy = 0x60;
-        newPeep->EnergyTarget = 0x60;
-        newPeep->StaffMowingTimeout = 0;
+        switch (gCheatsSelectedStaffSpeed)
+        {
+            case StaffSpeedCheat::None:
+                newPeep->Energy = CHEATS_STAFF_NORMAL_SPEED;
+                newPeep->EnergyTarget = CHEATS_STAFF_NORMAL_SPEED;
+                break;
 
+            case StaffSpeedCheat::Frozen:
+                newPeep->Energy = CHEATS_STAFF_FREEZE_SPEED;
+                newPeep->EnergyTarget = CHEATS_STAFF_FREEZE_SPEED;
+                break;
+
+            case StaffSpeedCheat::Fast:
+                newPeep->Energy = CHEATS_STAFF_FAST_SPEED;
+                newPeep->EnergyTarget = CHEATS_STAFF_FAST_SPEED;
+                break;
+        }
+
+        newPeep->StaffMowingTimeout = 0;
         newPeep->PatrolInfo = nullptr;
 
         res.SetData(StaffHireNewActionResult{ newPeep->Id });

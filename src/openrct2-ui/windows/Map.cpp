@@ -53,9 +53,9 @@ static constexpr uint16_t MapColourUnowned(uint16_t colour)
 
 constexpr int32_t MAP_WINDOW_MAP_SIZE = MAXIMUM_MAP_SIZE_TECHNICAL * 2;
 
-static constexpr const StringId WINDOW_TITLE = STR_MAP_LABEL;
-static constexpr const int32_t WH = 259;
-static constexpr const int32_t WW = 245;
+static constexpr StringId WINDOW_TITLE = STR_MAP_LABEL;
+static constexpr int32_t WH = 259;
+static constexpr int32_t WW = 245;
 
 // Some functions manipulate coordinates on the map. These are the coordinates of the pixels in the
 // minimap. In order to distinguish those from actual coordinates, we use a separate name.
@@ -126,7 +126,7 @@ static Widget window_map_widgets[] = {
 
 // used in transforming viewport view coordinates to minimap coordinates
 // rct2: 0x00981BBC
-static constexpr const ScreenCoordsXY MiniMapOffsets[] = {
+static constexpr ScreenCoordsXY MiniMapOffsets[] = {
     {     MAXIMUM_MAP_SIZE_TECHNICAL - 8,                              0 },
     { 2 * MAXIMUM_MAP_SIZE_TECHNICAL - 8,     MAXIMUM_MAP_SIZE_TECHNICAL },
     {     MAXIMUM_MAP_SIZE_TECHNICAL - 8, 2 * MAXIMUM_MAP_SIZE_TECHNICAL },
@@ -152,6 +152,7 @@ public:
             | (1uLL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_X_DOWN) | (1uLL << WIDX_LAND_TOOL_LARGER)
             | (1uLL << WIDX_LAND_TOOL_SMALLER);
 
+        ResizeMap();
         InitScrollWidgets();
 
         _rotation = GetCurrentRotation();
@@ -753,14 +754,7 @@ public:
 
         // Resize widgets to window size
         ResizeFrameWithPage();
-        widgets[WIDX_MAP].right = width - 4;
-
-        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
-            widgets[WIDX_MAP].bottom = height - 1 - 72;
-        else if (selected_tab == PAGE_RIDES)
-            widgets[WIDX_MAP].bottom = height - 1 - (4 * LIST_ROW_HEIGHT + 4);
-        else
-            widgets[WIDX_MAP].bottom = height - 1 - 14;
+        ResizeMap();
 
         widgets[WIDX_MAP_SIZE_SPINNER_Y].top = height - 15;
         widgets[WIDX_MAP_SIZE_SPINNER_Y].bottom = height - 4;
@@ -1065,7 +1059,7 @@ private:
             return 0;
 
         uint16_t colour = MapColour(PALETTE_INDEX_0);
-        const auto* surfaceObject = surfaceElement->GetSurfaceStyleObject();
+        const auto* surfaceObject = surfaceElement->GetSurfaceObject();
         if (surfaceObject != nullptr)
             colour = MapColour2(surfaceObject->MapColours[0], surfaceObject->MapColours[1]);
 
@@ -1387,6 +1381,18 @@ private:
         return { -x + y + MAXIMUM_MAP_SIZE_TECHNICAL - 8, x + y - 8 };
     }
 
+    void ResizeMap()
+    {
+        widgets[WIDX_MAP].right = width - 4;
+
+        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
+            widgets[WIDX_MAP].bottom = height - 1 - 72;
+        else if (selected_tab == PAGE_RIDES)
+            widgets[WIDX_MAP].bottom = height - 1 - (4 * LIST_ROW_HEIGHT + 4);
+        else
+            widgets[WIDX_MAP].bottom = height - 1 - 14;
+    }
+
     uint8_t _activeTool;
     uint32_t _currentLine;
     uint16_t _landRightsToolSize;
@@ -1399,7 +1405,7 @@ private:
         Y,
     } _resizeDirection{ ResizeDirection::Both };
 
-    static constexpr const uint16_t RideKeyColours[] = {
+    static constexpr uint16_t RideKeyColours[] = {
         MapColour(PALETTE_INDEX_61),  // COLOUR_KEY_RIDE
         MapColour(PALETTE_INDEX_42),  // COLOUR_KEY_FOOD
         MapColour(PALETTE_INDEX_20),  // COLOUR_KEY_DRINK
@@ -1410,15 +1416,15 @@ private:
         MapColour(PALETTE_INDEX_161), // COLOUR_KEY_TOILETS
     };
 
-    static constexpr const uint8_t DefaultPeepMapColour = PALETTE_INDEX_20;
-    static constexpr const uint8_t GuestMapColour = PALETTE_INDEX_172;
-    static constexpr const uint8_t GuestMapColourAlternate = PALETTE_INDEX_21;
-    static constexpr const uint8_t StaffMapColour = PALETTE_INDEX_138;
-    static constexpr const uint8_t StaffMapColourAlternate = PALETTE_INDEX_10;
+    static constexpr uint8_t DefaultPeepMapColour = PALETTE_INDEX_20;
+    static constexpr uint8_t GuestMapColour = PALETTE_INDEX_172;
+    static constexpr uint8_t GuestMapColourAlternate = PALETTE_INDEX_21;
+    static constexpr uint8_t StaffMapColour = PALETTE_INDEX_138;
+    static constexpr uint8_t StaffMapColourAlternate = PALETTE_INDEX_10;
 
-    static constexpr const uint16_t WaterColour = MapColour(PALETTE_INDEX_195);
+    static constexpr uint16_t WaterColour = MapColour(PALETTE_INDEX_195);
 
-    static constexpr const uint16_t ElementTypeMaskColour[] = {
+    static constexpr uint16_t ElementTypeMaskColour[] = {
         0xFFFF, // TILE_ELEMENT_TYPE_SURFACE
         0x0000, // TILE_ELEMENT_TYPE_PATH
         0x00FF, // TILE_ELEMENT_TYPE_TRACK
@@ -1429,7 +1435,7 @@ private:
         0xFFFF, // TILE_ELEMENT_TYPE_BANNER
     };
 
-    static constexpr const uint16_t ElementTypeAddColour[] = {
+    static constexpr uint16_t ElementTypeAddColour[] = {
         MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_SURFACE
         MapColour(PALETTE_INDEX_17),                    // TILE_ELEMENT_TYPE_PATH
         MapColour2(PALETTE_INDEX_183, PALETTE_INDEX_0), // TILE_ELEMENT_TYPE_TRACK

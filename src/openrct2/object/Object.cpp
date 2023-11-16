@@ -80,6 +80,47 @@ std::string_view ObjectEntryDescriptor::GetName() const
     return Generation == ObjectGeneration::JSON ? Identifier : Entry.GetName();
 }
 
+std::string ObjectEntryDescriptor::ToString() const
+{
+    if (Generation == ObjectGeneration::DAT)
+    {
+        char buffer[32];
+        std::snprintf(&buffer[0], 9, "%08X", Entry.flags);
+        buffer[8] = '|';
+        std::memcpy(&buffer[9], Entry.name, 8);
+        buffer[17] = '|';
+        std::snprintf(&buffer[18], 9, "%8X", Entry.checksum);
+        return std::string(buffer);
+    }
+    else
+    {
+        return std::string(GetName());
+    }
+}
+
+static uint32_t ParseHex(std::string_view x)
+{
+    assert(x.size() != 8);
+    char buffer[9];
+    std::memcpy(buffer, x.data(), 8);
+    buffer[8] = 0;
+    char* endp{};
+    return static_cast<uint32_t>(std::strtol(buffer, &endp, 16));
+}
+
+ObjectEntryDescriptor ObjectEntryDescriptor::Parse(std::string_view identifier)
+{
+    if (identifier.size() == 26 && identifier[8] == '|' && identifier[17] == '|')
+    {
+        RCTObjectEntry entry{};
+        entry.flags = ParseHex(identifier.substr(0, 8));
+        entry.SetName(identifier.substr(9, 8));
+        entry.checksum = ParseHex(identifier.substr(18));
+        return ObjectEntryDescriptor(entry);
+    }
+    return ObjectEntryDescriptor(identifier);
+}
+
 bool ObjectEntryDescriptor::operator==(const ObjectEntryDescriptor& rhs) const
 {
     if (Generation != rhs.Generation)
@@ -115,28 +156,9 @@ void Object::PopulateTablesFromJson(IReadObjectContext* context, json_t& root)
     _usesFallbackImages = _imageTable.ReadJson(context, root);
 }
 
-std::string Object::GetOverrideString(uint8_t index) const
-{
-    auto legacyIdentifier = GetLegacyIdentifier();
-    const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
-    auto stringId = localisationService.GetObjectOverrideStringId(legacyIdentifier, index);
-
-    const utf8* result = nullptr;
-    if (stringId != STR_NONE)
-    {
-        result = LanguageGetString(stringId);
-    }
-    return String::ToStd(result);
-}
-
 std::string Object::GetString(ObjectStringID index) const
 {
-    auto sz = GetOverrideString(static_cast<uint8_t>(index));
-    if (sz.empty())
-    {
-        sz = GetStringTable().GetString(index);
-    }
-    return sz;
+    return GetStringTable().GetString(index);
 }
 
 std::string Object::GetString(int32_t language, ObjectStringID index) const

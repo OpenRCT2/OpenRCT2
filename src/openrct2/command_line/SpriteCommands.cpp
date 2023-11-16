@@ -23,7 +23,7 @@ ImportMode gSpriteMode = ImportMode::Default;
 static const char* _mode;
 
 // clang-format off
-static constexpr const CommandLineOptionDefinition SpriteOptions[]
+static constexpr CommandLineOptionDefinition SpriteOptions[]
 {
     { CMDLINE_TYPE_STRING, &_mode, 'm', "mode", "the type of sprite conversion <" SZ_DEFAULT "|" SZ_CLOSEST "|" SZ_DITHERING ">" },
     OptionTableEnd
@@ -49,9 +49,9 @@ const CommandLineCommand CommandLine::SpriteCommands[]
 
 static exitcode_t HandleSprite(CommandLineArgEnumerator* argEnumerator)
 {
-    if (String::Equals(_mode, SZ_CLOSEST, true))
+    if (String::IEquals(_mode, SZ_CLOSEST))
         gSpriteMode = ImportMode::Closest;
-    else if (String::Equals(_mode, SZ_DITHERING, true))
+    else if (String::IEquals(_mode, SZ_DITHERING))
         gSpriteMode = ImportMode::Dithering;
     Memory::Free(_mode);
 

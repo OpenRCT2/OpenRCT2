@@ -239,7 +239,7 @@ money64 RideDemolishAction::DemolishTracks() const
                 }
                 else
                 {
-                    static constexpr const CoordsXY DirOffsets[] = {
+                    static constexpr CoordsXY DirOffsets[] = {
                         { 0, 0 },
                         { 0, 16 },
                         { 16, 16 },

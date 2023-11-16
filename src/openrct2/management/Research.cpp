@@ -43,7 +43,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr const int32_t _researchRate[] = {
+static constexpr int32_t _researchRate[] = {
     0,
     160,
     250,
@@ -537,11 +537,15 @@ bool ResearchIsInvented(ObjectType objectType, ObjectEntryIndex index)
         case ObjectType::SceneryGroup:
             return SceneryGroupIsInvented(index);
         case ObjectType::SmallScenery:
+            return SceneryIsInvented({ SCENERY_TYPE_SMALL, index });
         case ObjectType::LargeScenery:
+            return SceneryIsInvented({ SCENERY_TYPE_LARGE, index });
         case ObjectType::Walls:
+            return SceneryIsInvented({ SCENERY_TYPE_WALL, index });
         case ObjectType::Banners:
-        case ObjectType::PathBits:
-            return SceneryIsInvented({ static_cast<uint8_t>(objectType), index });
+            return SceneryIsInvented({ SCENERY_TYPE_BANNER, index });
+        case ObjectType::PathAdditions:
+            return SceneryIsInvented({ SCENERY_TYPE_PATH_ITEM, index });
         default:
             return true;
     }
@@ -908,7 +912,7 @@ bool ResearchItem::Exists() const
 }
 
 // clang-format off
-static constexpr const StringId _editorInventionsResearchCategories[] = {
+static constexpr StringId _editorInventionsResearchCategories[] = {
     STR_RESEARCH_NEW_TRANSPORT_RIDES,
     STR_RESEARCH_NEW_GENTLE_RIDES,
     STR_RESEARCH_NEW_ROLLER_COASTERS,
@@ -927,7 +931,7 @@ StringId ResearchItem::GetCategoryInventionString() const
 }
 
 // clang-format off
-static constexpr const StringId _researchCategoryNames[] = {
+static constexpr StringId _researchCategoryNames[] = {
     STR_RESEARCH_CATEGORY_TRANSPORT,
     STR_RESEARCH_CATEGORY_GENTLE,
     STR_RESEARCH_CATEGORY_ROLLERCOASTER,

@@ -14,11 +14,11 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr const RideTypeDescriptor HypercoasterRTD =
+constexpr RideTypeDescriptor HypercoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
-    SET_FIELD(EnabledTrackPieces, {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_SLOPE_CURVE_STEEP, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_SMALL, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_BLOCK_BRAKES, TRACK_SLOPE_STEEP_LONG}),
+    SET_FIELD(EnabledTrackPieces, {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_SLOPE_CURVE_STEEP, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_DOWN_BANKED_HALF, TRACK_HELIX_UP_BANKED_HALF, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_BLOCK_BRAKES, TRACK_SLOPE_STEEP_LONG, TRACK_DIAG_BRAKES, TRACK_DIAG_BLOCK_BRAKES}),
     SET_FIELD(ExtraTrackPieces, {TRACK_VERTICAL_LOOP, TRACK_HALF_LOOP, TRACK_CORKSCREW, TRACK_BOOSTER}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
@@ -49,6 +49,8 @@ constexpr const RideTypeDescriptor HypercoasterRTD =
         { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_WHITE },
         { COLOUR_BLACK, COLOUR_BORDEAUX_RED, COLOUR_BLACK },
         { COLOUR_WHITE, COLOUR_WHITE, COLOUR_DARK_GREEN },
+        { COLOUR_DULL_GREEN_LIGHT, COLOUR_DULL_GREEN_LIGHT, COLOUR_BLACK }, // Phantom's Revenge (Old)
+        { COLOUR_SATURATED_PURPLE_DARK, COLOUR_SATURATED_PURPLE_DARK, COLOUR_BLACK }, // Phantom's Revenge (New)
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_CORKSCREW_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_CORKSCREW_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
@@ -71,6 +73,7 @@ constexpr const RideTypeDescriptor HypercoasterRTD =
             { RatingsModifierType::BonusTurns,            0,                26749, 34767, 45749 },
             { RatingsModifierType::BonusDrops,            0,                29127, 46811, 49152 },
             { RatingsModifierType::BonusSheltered,        0,                15420, 32768, 35108 },
+            { RatingsModifierType::BonusReversedTrains,   0,                2, 20, 30 },
             { RatingsModifierType::BonusProximity,        0,                20130, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                6693, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 12,               2, 2, 2 },

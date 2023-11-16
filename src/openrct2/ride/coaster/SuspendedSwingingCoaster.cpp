@@ -64,7 +64,8 @@ static void SuspendedSwingingRCTrackFlat(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
@@ -76,7 +77,7 @@ static void SuspendedSwingingRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][3] = {
+    static constexpr uint32_t imageIds[4][3] = {
         { SPR_STATION_BASE_C_SW_NE, 25963, SPR_STATION_INVERTED_BAR_D_SW_NE },
         { SPR_STATION_BASE_C_NW_SE, 25964, SPR_STATION_INVERTED_BAR_D_NW_SE },
         { SPR_STATION_BASE_C_SW_NE, 25963, SPR_STATION_INVERTED_BAR_D_SW_NE },
@@ -92,8 +93,7 @@ static void SuspendedSwingingRCTrackStation(
     PaintAddImageAsChildRotated(
         session, direction, session.TrackColours[SCHEME_SUPPORTS].WithIndex(imageIds[direction][2]), { 0, 6, height + 29 },
         { { 0, 6, height + 29 }, { 32, 20, 3 } });
-    TrackPaintUtilDrawStationMetalSupports2(
-        session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Tubes);
+    DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Tubes);
     TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_TALL);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -166,19 +166,23 @@ static void SuspendedSwingingRCTrack25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 6, 0, height + 62, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height + 62,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 8, 0, height + 62, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 62,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 7, 0, height + 62, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 62,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 5, 0, height + 62, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height + 62,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -301,19 +305,23 @@ static void SuspendedSwingingRCTrackFlatTo25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 6, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height + 54,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 8, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 54,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 7, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 54,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 5, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height + 54,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -454,19 +462,23 @@ static void SuspendedSwingingRCTrack60DegUpTo25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 6, 0, height + 76, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height + 76,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 8, 0, height + 76, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 76,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 7, 0, height + 76, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 76,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 5, 0, height + 76, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height + 76,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -548,19 +560,23 @@ static void SuspendedSwingingRCTrack25DegUpToFlat(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 6, 0, height + 52, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height + 52,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 8, 0, height + 52, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 52,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 7, 0, height + 52, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 52,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 5, 0, height + 52, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height + 52,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -660,7 +676,8 @@ static void SuspendedSwingingRCTrackLeftQuarterTurn5(
                 session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 44,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             if (direction == 0 || direction == 3)
             {
@@ -791,7 +808,8 @@ static void SuspendedSwingingRCTrackLeftQuarterTurn5(
                 session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 44,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             switch (direction)
             {
@@ -852,7 +870,8 @@ static void SuspendedSwingingRCTrackLeftQuarterTurn525DegUp(
                 session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 54,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             if (direction == 0 || direction == 3)
             {
@@ -983,7 +1002,8 @@ static void SuspendedSwingingRCTrackLeftQuarterTurn525DegUp(
                 session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 54,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             switch (direction)
             {
@@ -1035,7 +1055,8 @@ static void SuspendedSwingingRCTrackRightQuarterTurn525DegUp(
                 session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 54,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             if (direction == 0 || direction == 3)
             {
@@ -1166,7 +1187,8 @@ static void SuspendedSwingingRCTrackRightQuarterTurn525DegUp(
                 session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 54,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             switch (direction)
             {
@@ -1235,7 +1257,8 @@ static void SuspendedSwingingRCTrackSBendLeft(
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 44,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             if (direction == 0 || direction == 3)
             {
@@ -1276,11 +1299,13 @@ static void SuspendedSwingingRCTrackSBendLeft(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 5, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 6, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -1319,11 +1344,13 @@ static void SuspendedSwingingRCTrackSBendLeft(
             {
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 5, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 6, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -1357,7 +1384,8 @@ static void SuspendedSwingingRCTrackSBendLeft(
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 44,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             switch (direction)
             {
@@ -1408,7 +1436,8 @@ static void SuspendedSwingingRCTrackSBendRight(
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 44,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             if (direction == 0 || direction == 3)
             {
@@ -1449,11 +1478,13 @@ static void SuspendedSwingingRCTrackSBendRight(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 8, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 7, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -1492,11 +1523,13 @@ static void SuspendedSwingingRCTrackSBendRight(
             {
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 8, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 7, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -1530,7 +1563,8 @@ static void SuspendedSwingingRCTrackSBendRight(
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 44,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             switch (direction)
             {
@@ -1582,7 +1616,8 @@ static void SuspendedSwingingRCTrackLeftQuarterTurn3(
                 session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 44,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             if (direction == 0 || direction == 3)
             {
@@ -1650,7 +1685,8 @@ static void SuspendedSwingingRCTrackLeftQuarterTurn3(
                 session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 44,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             switch (direction)
             {
@@ -1711,7 +1747,8 @@ static void SuspendedSwingingRCTrackLeftQuarterTurn325DegUp(
                 session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 54,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             if (direction == 0 || direction == 3)
             {
@@ -1754,7 +1791,8 @@ static void SuspendedSwingingRCTrackLeftQuarterTurn325DegUp(
                 session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 54,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             switch (direction)
             {
@@ -1806,7 +1844,8 @@ static void SuspendedSwingingRCTrackRightQuarterTurn325DegUp(
                 session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 54,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             if (direction == 0 || direction == 3)
             {
@@ -1849,7 +1888,8 @@ static void SuspendedSwingingRCTrackRightQuarterTurn325DegUp(
                 session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 54,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             switch (direction)
             {
@@ -1908,7 +1948,8 @@ static void SuspendedSwingingRCTrackBrakes(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);
@@ -1951,7 +1992,8 @@ static void SuspendedSwingingRCTrackLeftQuarterHelixLargeUp(
                 session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 46, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 46,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             if (direction == 0 || direction == 3)
             {
@@ -2082,7 +2124,8 @@ static void SuspendedSwingingRCTrackLeftQuarterHelixLargeUp(
                 session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 58, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 58,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             switch (direction)
             {
@@ -2134,7 +2177,8 @@ static void SuspendedSwingingRCTrackRightQuarterHelixLargeUp(
                 session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 46, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 46,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             if (direction == 0 || direction == 3)
             {
@@ -2265,7 +2309,8 @@ static void SuspendedSwingingRCTrackRightQuarterHelixLargeUp(
                 session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 58, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 58,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             switch (direction)
             {
@@ -2317,7 +2362,8 @@ static void SuspendedSwingingRCTrackLeftQuarterHelixLargeDown(
                 session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 58, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 58,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             if (direction == 0 || direction == 3)
             {
@@ -2448,7 +2494,8 @@ static void SuspendedSwingingRCTrackLeftQuarterHelixLargeDown(
                 session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 46, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 46,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             switch (direction)
             {
@@ -2500,7 +2547,8 @@ static void SuspendedSwingingRCTrackRightQuarterHelixLargeDown(
                 session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 58, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 58,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             if (direction == 0 || direction == 3)
             {
@@ -2631,7 +2679,8 @@ static void SuspendedSwingingRCTrackRightQuarterHelixLargeDown(
                 session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 46, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 46,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             switch (direction)
             {
@@ -2682,7 +2731,8 @@ static void SuspendedSwingingRCTrackLeftEighthToDiag(
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 44,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             if (direction == 0 || direction == 3)
             {
@@ -2788,19 +2838,23 @@ static void SuspendedSwingingRCTrackLeftEighthToDiag(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 3, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 1, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 0, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 2, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -2844,7 +2898,8 @@ static void SuspendedSwingingRCTrackRightEighthToDiag(
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 44,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             if (direction == 0 || direction == 3)
             {
@@ -2950,19 +3005,23 @@ static void SuspendedSwingingRCTrackRightEighthToDiag(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 1, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 0, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 2, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 3, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -3107,19 +3166,23 @@ static void SuspendedSwingingRCTrackDiagFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 1, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 0, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 2, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 3, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -3246,19 +3309,23 @@ static void SuspendedSwingingRCTrackDiag25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 1, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height + 56,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 0, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height + 56,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 2, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height + 56,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 3, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height + 56,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -3329,19 +3396,23 @@ static void SuspendedSwingingRCTrackDiag60DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 1, 32, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 32, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 0, 36, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 36, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 2, 32, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 32, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 3, 36, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 36, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -3468,19 +3539,23 @@ static void SuspendedSwingingRCTrackDiagFlatTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 1, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height + 48,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 0, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height + 48,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 2, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height + 48,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 3, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height + 48,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -3551,19 +3626,23 @@ static void SuspendedSwingingRCTrackDiag25DegUpTo60DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 1, 16, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 16, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 0, 16, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 16, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 2, 16, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 16, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 3, 16, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 16, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -3634,19 +3713,23 @@ static void SuspendedSwingingRCTrackDiag60DegUpTo25DegUp(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 1, 21, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 21, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 0, 21, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 21, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 2, 21, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 21, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 3, 21, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 21, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -3773,19 +3856,23 @@ static void SuspendedSwingingRCTrackDiag25DegUpToFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 1, 0, height + 50, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height + 50,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 0, 0, height + 50, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height + 50,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 2, 0, height + 50, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height + 50,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 3, 0, height + 50, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height + 50,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -3912,19 +3999,23 @@ static void SuspendedSwingingRCTrackDiag25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 1, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height + 56,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 0, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height + 56,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 2, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height + 56,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 3, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height + 56,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -4110,19 +4201,23 @@ static void SuspendedSwingingRCTrackDiagFlatTo25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 1, 0, height + 50, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height + 50,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 0, 0, height + 50, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height + 50,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 2, 0, height + 50, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height + 50,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 3, 0, height + 50, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height + 50,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             break;
@@ -4193,19 +4288,23 @@ static void SuspendedSwingingRCTrackDiag25DegDownTo60DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 1, 17, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 17, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 0, 17, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 17, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 2, 17, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 17, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 3, 17, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 17, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -4276,19 +4375,23 @@ static void SuspendedSwingingRCTrackDiag60DegDownTo25DegDown(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 1, 8, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 8, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 0, 8, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 2, 8, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 8, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 3, 8, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -4415,19 +4518,23 @@ static void SuspendedSwingingRCTrackDiag25DegDownToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 1, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height + 48,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 0, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height + 48,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 2, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height + 48,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 3, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height + 48,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -4461,7 +4568,8 @@ static void SuspendedSwingingRCTrackBlockBrakes(
         session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_INVERTED_3);

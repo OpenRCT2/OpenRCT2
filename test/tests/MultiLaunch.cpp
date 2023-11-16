@@ -34,7 +34,6 @@ TEST(MultiLaunchTest, all)
     gOpenRCT2Headless = true;
     gOpenRCT2NoGraphics = true;
 
-    Platform::CoreInit();
     for (int i = 0; i < 3; i++)
     {
         auto context = CreateContext();

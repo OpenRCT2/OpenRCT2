@@ -58,7 +58,7 @@ static const uint8_t SpriteGroupMultiplier[EnumValue(SpriteGroupType::Count)] = 
 };
 static_assert(std::size(SpriteGroupMultiplier) == EnumValue(SpriteGroupType::Count));
 
-constexpr const uint8_t DefaultSteamSpawnPosition[] = { 11, 22 };
+constexpr uint8_t DefaultSteamSpawnPosition[] = { 11, 22 };
 
 static const EnumMap<CarEntryAnimation> AnimationNameLookup{
     { "none", CarEntryAnimation::None },
@@ -71,7 +71,7 @@ static const EnumMap<CarEntryAnimation> AnimationNameLookup{
     { "animalFlying", CarEntryAnimation::AnimalFlying },
 };
 
-constexpr const auto NumLegacyAnimationTypes = 11;
+constexpr auto NumLegacyAnimationTypes = 11;
 
 struct LegacyAnimationParameters
 {
@@ -80,7 +80,7 @@ struct LegacyAnimationParameters
     CarEntryAnimation Alias;
 };
 
-constexpr const LegacyAnimationParameters VehicleEntryDefaultAnimation[] = {
+constexpr LegacyAnimationParameters VehicleEntryDefaultAnimation[] = {
     { 0, 1, CarEntryAnimation::None },                  // None
     { 1 << 12, 4, CarEntryAnimation::SteamLocomotive }, // Miniature Railway Locomotive
     { 1 << 10, 2, CarEntryAnimation::SwanBoat },        // Swan Boat

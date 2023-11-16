@@ -16,11 +16,11 @@
 #include "../BolligerMabillardTrack.hpp"
 
 // clang-format off
-constexpr const RideTypeDescriptor HyperTwisterRTD =
+constexpr RideTypeDescriptor HyperTwisterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
-    SET_FIELD(EnabledTrackPieces, { TRACK_FLAT, TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_SLOPE_CURVE_STEEP, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_SMALL, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_SLOPE_CURVE_BANKED, TRACK_BLOCK_BRAKES, TRACK_SLOPE_ROLL_BANKING, TRACK_SLOPE_STEEP_LONG, TRACK_SLOPE_VERTICAL, TRACK_CURVE_VERTICAL }),
+    SET_FIELD(EnabledTrackPieces, { TRACK_FLAT, TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_SLOPE_CURVE_STEEP, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_DOWN_BANKED_HALF, TRACK_HELIX_UP_BANKED_HALF, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_SLOPE_CURVE_BANKED, TRACK_BLOCK_BRAKES, TRACK_SLOPE_ROLL_BANKING, TRACK_SLOPE_STEEP_LONG, TRACK_SLOPE_VERTICAL, TRACK_CURVE_VERTICAL, TRACK_DIAG_BRAKES, TRACK_DIAG_BLOCK_BRAKES}),
     SET_FIELD(ExtraTrackPieces, { TRACK_LIFT_HILL_STEEP, TRACK_BRAKE_FOR_DROP, TRACK_BOOSTER, TRACK_POWERED_LIFT }),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
@@ -36,7 +36,7 @@ constexpr const RideTypeDescriptor HyperTwisterRTD =
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station}),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_HYPER_TWISTER)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
-    SET_FIELD(Heights, { 54, 24, 8, 9, }),
+    SET_FIELD(Heights, { 61, 24, 8, 9, }),
     SET_FIELD(MaxMass, 31),
     SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftBM, 5, 8 }),
     SET_FIELD(RatingsMultipliers, { 52, 36, 10 }),
@@ -52,6 +52,7 @@ constexpr const RideTypeDescriptor HyperTwisterRTD =
         { COLOUR_WHITE, COLOUR_WHITE, COLOUR_LIGHT_BLUE },
         { COLOUR_DARK_GREEN, COLOUR_MOSS_GREEN, COLOUR_DARK_BROWN },
         { COLOUR_BORDEAUX_RED, COLOUR_LIGHT_ORANGE, COLOUR_WHITE },
+        { COLOUR_DARK_PURPLE, COLOUR_SATURATED_PURPLE_DARK, COLOUR_AQUA_DARK }, // Mako
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_TWISTER_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_TWISTER_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
@@ -74,6 +75,7 @@ constexpr const RideTypeDescriptor HyperTwisterRTD =
             { RatingsModifierType::BonusTurns,            0,                26749, 34767, 45749 },
             { RatingsModifierType::BonusDrops,            0,                29127, 46811, 49152 },
             { RatingsModifierType::BonusSheltered,        0,                15420, 32768, 35108 },
+            { RatingsModifierType::BonusReversedTrains,   0,                2, 20, 30 },
             { RatingsModifierType::BonusProximity,        0,                20130, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                6693, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 12,               2, 2, 2 },

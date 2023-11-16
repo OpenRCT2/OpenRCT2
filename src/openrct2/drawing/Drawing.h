@@ -44,7 +44,7 @@ struct PaletteBGRA
     uint8_t Alpha{};
 };
 
-constexpr const auto PALETTE_SIZE = 256;
+constexpr auto PALETTE_SIZE = 256;
 
 struct GamePalette
 {
@@ -572,7 +572,7 @@ int32_t GfxGetStringWidthNewLined(std::string_view text, FontStyle fontStyle);
 int32_t GfxGetStringWidthNoFormatting(std::string_view text, FontStyle fontStyle);
 int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle);
 int32_t GfxClipString(char* buffer, int32_t width, FontStyle fontStyle);
-void ShortenPath(utf8* buffer, size_t bufferSize, const utf8* path, int32_t availableWidth, FontStyle fontStyle);
+u8string ShortenPath(const u8string& path, int32_t availableWidth, FontStyle fontStyle);
 void TTFDrawString(
     DrawPixelInfo& dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords, bool noFormatting,
     FontStyle fontStyle, TextDarkness darkness);
@@ -597,9 +597,8 @@ void MaskSse4_1(
 void MaskAvx2(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
-void MaskInit();
 
-extern void (*MaskFn)(
+void MaskFn(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
 

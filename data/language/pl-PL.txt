@@ -970,7 +970,7 @@ STR_1581    :
 STR_1582    :
 STR_1583    :
 STR_1584    :“To zdjęcie z przejażdżki na {STRINGID} było naprawdę opłacalne”
-STR_1585    :“To zdjęcie z przejażdżki na {STRINGID} było naprawdę opłacalneENDQUOTES}
+STR_1585    :“To zdjęcie z przejażdżki na {STRINGID} było naprawdę opłacalne”
 STR_1586    :“To zdjęcie z przejażdżki na {STRINGID} było naprawdę opłacalne”
 STR_1587    :“Ten precel z {STRINGID} był naprawdę opłacalny”
 STR_1588    :“Ta gorąca czekolada z {STRINGID} była naprawdę opłacalna”

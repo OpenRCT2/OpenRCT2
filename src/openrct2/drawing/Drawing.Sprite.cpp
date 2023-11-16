@@ -699,7 +699,7 @@ const G1Element* GfxGetG1Element(const ImageId imageId)
 
 const G1Element* GfxGetG1Element(ImageIndex image_id)
 {
-    openrct2_assert(!gOpenRCT2NoGraphics, "GfxGetG1Element called on headless instance");
+    Guard::Assert(!gOpenRCT2NoGraphics, "GfxGetG1Element called on headless instance");
 
     auto offset = static_cast<size_t>(image_id);
     if (offset == 0x7FFFF || offset == ImageIndexUndefined)
@@ -768,9 +768,9 @@ void GfxSetG1Element(ImageIndex imageId, const G1Element* g1)
         || (imageId >= SPR_SCROLLING_TEXT_START && imageId < SPR_SCROLLING_TEXT_END);
 
 #ifdef DEBUG
-    openrct2_assert(!gOpenRCT2NoGraphics, "GfxSetG1Element called on headless instance");
-    openrct2_assert(isValid || isTemp, "GfxSetG1Element called with unexpected image id");
-    openrct2_assert(g1 != nullptr, "g1 was nullptr");
+    Guard::Assert(!gOpenRCT2NoGraphics, "GfxSetG1Element called on headless instance");
+    Guard::Assert(isValid || isTemp, "GfxSetG1Element called with unexpected image id");
+    Guard::Assert(g1 != nullptr, "g1 was nullptr");
 #endif
 
     if (g1 != nullptr)

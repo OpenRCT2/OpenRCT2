@@ -34,7 +34,7 @@ enum EDGE_SLOPE
 };
 
 /** rct2: 0x009A3FEC */
-constexpr const uint8_t LandSlopeToWallSlope[][NumOrthogonalDirections] = {
+constexpr uint8_t LandSlopeToWallSlope[][NumOrthogonalDirections] = {
     //  Top right                        Bottom right                   Bottom left                       Top left
     { 0,                             0,                             0,                             0                             },
     { 0,                             EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_DOWNWARDS,          0                             },

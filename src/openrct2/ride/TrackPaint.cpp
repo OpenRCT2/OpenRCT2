@@ -110,6 +110,20 @@ const uint8_t edges_4x4[] = {
 };
 // clang-format on
 
+const int32_t DiagBlockedSegments[] = {
+    SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4 | SEGMENT_BC,
+    SEGMENT_C4 | SEGMENT_CC | SEGMENT_C8 | SEGMENT_B4,
+    SEGMENT_D0 | SEGMENT_C4 | SEGMENT_C0 | SEGMENT_D4,
+    SEGMENT_D0 | SEGMENT_C4 | SEGMENT_B8 | SEGMENT_C8,
+};
+
+const MetalSupportPlace DiagSupportPlacement[] = {
+    MetalSupportPlace::LeftCorner,
+    MetalSupportPlace::TopCorner,
+    MetalSupportPlace::RightCorner,
+    MetalSupportPlace::BottomCorner,
+};
+
 const uint8_t track_map_1x4[][4] = {
     { 0, 1, 2, 3 },
     { 2, 3, 0, 1 },
@@ -189,7 +203,7 @@ const uint32_t trackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile[4] = {
     SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SE_SW,
 };
 
-static constexpr const uint32_t trackSpritesGhostTrainSpinningTunnel[2][2][4] = {
+static constexpr uint32_t trackSpritesGhostTrainSpinningTunnel[2][2][4] = {
     {
         {
             SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_SW_NE_FRAME_0,
@@ -783,7 +797,7 @@ bool TrackPaintUtilDrawStationCovers2(
     if (baseImageIndex == ImageIndexUndefined)
         return false;
 
-    static constexpr const int16_t heights[][2] = {
+    static constexpr int16_t heights[][2] = {
         { 22, 0 },
         { 30, 0 },
         { 46, 0 },
@@ -929,26 +943,6 @@ void TrackPaintUtilDrawPier(
     }
 }
 
-void TrackPaintUtilDrawStationMetalSupports(PaintSession& session, Direction direction, uint16_t height, ImageId colour)
-{
-    TrackPaintUtilDrawStationMetalSupports2(session, direction, height, colour, MetalSupportType::Boxed);
-}
-
-void TrackPaintUtilDrawStationMetalSupports2(
-    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type)
-{
-    if (direction & 1)
-    {
-        MetalASupportsPaintSetup(session, type, 6, 0, height, colour);
-        MetalASupportsPaintSetup(session, type, 7, 0, height, colour);
-    }
-    else
-    {
-        MetalASupportsPaintSetup(session, type, 5, 0, height, colour);
-        MetalASupportsPaintSetup(session, type, 8, 0, height, colour);
-    }
-}
-
 constexpr CoordsXY defaultRightHelixUpSmallQuarterBoundLengths[4][3][2] = {
     {
         { { 32, 20 }, { 0, 0 } },
@@ -995,7 +989,7 @@ constexpr CoordsXYZ defaultRightHelixUpSmallQuarterBoundOffsets[4][3][2] = {
     },
 };
 
-static constexpr const int8_t right_helix_up_small_quarter_tiles_sprite_map[] = {
+static constexpr int8_t right_helix_up_small_quarter_tiles_sprite_map[] = {
     0,
     -1,
     1,
@@ -1099,7 +1093,7 @@ constexpr CoordsXY defaultRightHelixUpLargeQuarterBoundLengths[4][5][2] = {
     },
 };
 
-static constexpr const int8_t right_helix_up_large_quarter_sprite_map[] = {
+static constexpr int8_t right_helix_up_large_quarter_sprite_map[] = {
     0, -1, 1, 2, -1, 3, 4,
 };
 void TrackPaintUtilRightHelixUpLargeQuarterTilesPaint(
@@ -1276,7 +1270,7 @@ const uint8_t mapLeftEighthTurnToOrthogonal[] = {
     4, 2, 3, 1, 0,
 };
 
-static constexpr const int8_t eighth_to_diag_sprite_map[] = {
+static constexpr int8_t eighth_to_diag_sprite_map[] = {
     0, 1, 2, -1, 3,
 };
 void TrackPaintUtilEighthToDiagTilesPaint(
@@ -1315,7 +1309,7 @@ constexpr CoordsXY defaultDiagBoundLengths[4] = {
     { 32, 32 },
 };
 
-static constexpr const int8_t diag_sprite_map[4][4] = {
+static constexpr int8_t diag_sprite_map[4][4] = {
     { -1, 0, -1, -1 },
     { -1, -1, -1, 0 },
     { -1, -1, 0, -1 },
@@ -1440,7 +1434,7 @@ constexpr CoordsXY defaultRightQuarterTurn5TilesBoundLengths[4][5] = {
     },
 };
 
-static constexpr const int8_t right_quarter_turn_5_tiles_sprite_map[] = {
+static constexpr int8_t right_quarter_turn_5_tiles_sprite_map[] = {
     0, -1, 1, 2, -1, 3, 4,
 };
 
@@ -1526,7 +1520,7 @@ void TrackPaintUtilRightQuarterTurn5TilesWoodenSupports(
 {
     if (trackSequence != 1 && trackSequence != 4)
     {
-        static constexpr const uint8_t supportTypes[][7] = {
+        static constexpr uint8_t supportTypes[][7] = {
             { 0, 0xFF, 4, 2, 0xFF, 4, 1 },
             { 1, 0xFF, 5, 3, 0xFF, 5, 0 },
             { 0, 0xFF, 2, 4, 0xFF, 2, 1 },
@@ -1613,7 +1607,7 @@ constexpr CoordsXY defaultRightQuarterTurn3TilesBoundLengths[4][3] = {
     },
 };
 
-static constexpr const int8_t right_quarter_turn_3_tiles_sprite_map[] = {
+static constexpr int8_t right_quarter_turn_3_tiles_sprite_map[] = {
     0,
     -1,
     1,
@@ -1836,7 +1830,7 @@ void TrackPaintUtilRightQuarterTurn3Tiles25DegDownTunnel(
     }
 }
 
-static constexpr const int8_t left_quarter_turn_3_tiles_sprite_map[] = {
+static constexpr int8_t left_quarter_turn_3_tiles_sprite_map[] = {
     2,
     -1,
     1,
@@ -2049,10 +2043,17 @@ void TrackPaintUtilSpinningTunnelPaint(PaintSession& session, int8_t thickness, 
     }
 }
 
+void TrackPaintUtilOnridePhotoPlatformPaint(
+    PaintSession& session, Direction direction, int32_t height, MetalSupportType supportType)
+{
+    PaintAddImageAsParent(session, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
+    DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], supportType);
+}
+
 void TrackPaintUtilOnridePhotoSmallPaint(
     PaintSession& session, Direction direction, int32_t height, const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][3] = {
+    static constexpr uint32_t imageIds[4][3] = {
         { SPR_ON_RIDE_PHOTO_SIGN_SMALL_SW_NE, SPR_ON_RIDE_PHOTO_CAMERA_SMALL_S, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_S },
         { SPR_ON_RIDE_PHOTO_SIGN_SMALL_NW_SE, SPR_ON_RIDE_PHOTO_CAMERA_SMALL_W, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_W },
         { SPR_ON_RIDE_PHOTO_SIGN_SMALL_NE_SW, SPR_ON_RIDE_PHOTO_CAMERA_SMALL_N, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_N },
@@ -2090,7 +2091,7 @@ void TrackPaintUtilOnridePhotoSmallPaint(
 void TrackPaintUtilOnridePhotoPaint(
     PaintSession& session, Direction direction, int32_t height, const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][3] = {
+    static constexpr uint32_t imageIds[4][3] = {
         { SPR_ON_RIDE_PHOTO_SIGN_SW_NE, SPR_ON_RIDE_PHOTO_CAMERA_S, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_S },
         { SPR_ON_RIDE_PHOTO_SIGN_NW_SE, SPR_ON_RIDE_PHOTO_CAMERA_W, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_W },
         { SPR_ON_RIDE_PHOTO_SIGN_NE_SW, SPR_ON_RIDE_PHOTO_CAMERA_N, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_N },
@@ -2125,7 +2126,7 @@ void TrackPaintUtilOnridePhotoPaint(
     }
 }
 
-static constexpr const uint16_t RightVerticalLoopSegments[] = {
+static constexpr uint16_t RightVerticalLoopSegments[] = {
     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
     SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4,
@@ -2159,7 +2160,8 @@ void TrackPaintUtilLeftCorkscrewUpSupports(PaintSession& session, Direction dire
             session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
             0);
     }
-    MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(
+        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     if (direction != 2)
     {
         PaintUtilSetSegmentSupportHeight(
@@ -2225,7 +2227,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         session.TrackColours[SCHEME_SUPPORTS] = ImageId(0, ride->track_colour[trackColourScheme].supports);
         session.TrackColours[SCHEME_MISC] = ImageId(0, COLOUR_BLACK);
         session.TrackColours[SCHEME_3] = ImageId(0, COLOUR_DARK_BROWN);
-        if (trackElement.IsHighlighted())
+        if (trackElement.IsHighlighted() || session.SelectedElement == reinterpret_cast<const TileElement*>(&trackElement))
         {
             session.TrackColours[SCHEME_TRACK] = HighlightMarker;
             session.TrackColours[SCHEME_SUPPORTS] = HighlightMarker;

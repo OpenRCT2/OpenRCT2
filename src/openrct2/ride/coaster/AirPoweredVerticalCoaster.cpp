@@ -180,7 +180,7 @@ static void AirPoweredVerticalRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4] = {
+    static constexpr uint32_t imageIds[4] = {
         SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE,
         SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE,
         SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE,
@@ -202,7 +202,7 @@ static void AirPoweredVerticalRCTrackStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][2] = {
+    static constexpr uint32_t imageIds[4][2] = {
         { SPR_AIR_POWERED_VERTICAL_RC_STATION_SW_NE, SPR_STATION_BASE_B_SW_NE },
         { SPR_AIR_POWERED_VERTICAL_RC_STATION_NW_SE, SPR_STATION_BASE_B_NW_SE },
         { SPR_AIR_POWERED_VERTICAL_RC_STATION_SW_NE, SPR_STATION_BASE_B_SW_NE },
@@ -230,7 +230,7 @@ static void AirPoweredVerticalRCTrackRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBb imageIds[4][5] = {
+    static constexpr SpriteBb imageIds[4][5] = {
         {
             { SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SW_SE_PART_0, { 0, 2, 0 }, { 0, 0, 0 }, { 32, 32, 2 } },
             { SPR_AIR_POWERED_VERTICAL_RC_QUARTER_TURN_5_SW_SE_PART_1, { 0, 16, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
@@ -320,7 +320,7 @@ static void AirPoweredVerticalRCTrackFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][2] = {
+    static constexpr uint32_t imageIds[4][2] = {
         { SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_SW_NE, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_SW_NE },
         { SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_NW_SE, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_NW_SE },
         { SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_NE_SW, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_NE_SW },
@@ -349,7 +349,7 @@ static void AirPoweredVerticalRCTrackFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][2] = {
+    static constexpr uint32_t imageIds[4][2] = {
         { SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_RIGHT_BANK_SW_NE, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_SW_NE },
         { SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_RIGHT_BANK_NW_SE, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_NW_SE },
         { SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_RIGHT_BANK_NE_SW, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_NE_SW },
@@ -392,7 +392,7 @@ static void AirPoweredVerticalRCTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBb imageIds[4][5] = {
+    static constexpr SpriteBb imageIds[4][5] = {
         {
             { SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_SW_SE_PART_0, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 3 } },
             { SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_SW_SE_PART_1, { 0, 0, 0 }, { 0, 16, 0 }, { 32, 16, 3 } },
@@ -496,7 +496,7 @@ static void AirPoweredVerticalRCTrackLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4] = {
+    static constexpr uint32_t imageIds[4] = {
         SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_SW_NE,
         SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_NW_SE,
         SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_NE_SW,
@@ -532,7 +532,7 @@ static void AirPoweredVerticalRCTrackBrakes(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4] = {
+    static constexpr uint32_t imageIds[4] = {
         SPR_AIR_POWERED_VERTICAL_RC_BRAKES_NW_SE,
         SPR_AIR_POWERED_VERTICAL_RC_BRAKES_SW_NE,
         SPR_AIR_POWERED_VERTICAL_RC_BRAKES_NW_SE,
@@ -554,7 +554,7 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t trackImageIds[7][4] = {
+    static constexpr uint32_t trackImageIds[7][4] = {
         {
             SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SW_NE_0,
             SPR_AIR_POWERED_VERTICAL_RC_SLOPE_NW_SE_0,
@@ -594,7 +594,7 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
         },
     };
 
-    static constexpr const uint32_t supportImageIds[7][4] = {
+    static constexpr uint32_t supportImageIds[7][4] = {
         {
             22264,
             SPR_AIR_POWERED_VERTICAL_RC_SLOPE_SUPPORTS_NW_SE_0,
@@ -639,13 +639,13 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
         },
     };
 
-    static constexpr const int8_t bbHeights03[] = {
+    static constexpr int8_t bbHeights03[] = {
         1, 6, 14, 37, 76,
     };
-    static constexpr const int8_t bbHeights12[] = {
+    static constexpr int8_t bbHeights12[] = {
         1, 6, 14, 27, 59,
     };
-    static constexpr const int32_t supportHeights[] = {
+    static constexpr int32_t supportHeights[] = {
         48, 64, 128, 176, 208, 240, 240,
     };
 
@@ -775,7 +775,7 @@ static void AirPoweredVerticalRCTrackVerticalUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][2] = {
+    static constexpr uint32_t imageIds[4][2] = {
         { SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_UP_SW_NE_SEQ_0, SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_UP_SW_NE_SEQ_1 },
         { SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_UP_NW_SE_SEQ_0, SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_UP_NW_SE_SEQ_1 },
         { SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_UP_NE_SW_SEQ_0, SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_UP_NE_SW_SEQ_1 },
@@ -820,7 +820,7 @@ static void AirPoweredVerticalRCTrackVerticalTop(
         return;
     }
 
-    static constexpr const uint32_t imageIds[4][6] = {
+    static constexpr uint32_t imageIds[4][6] = {
         {
             SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_TOP_SUPPORT_SW_NE,
             SPR_AIR_POWERED_VERTICAL_RC_VERTICAL_TOP_TRACK_SW_NE_SEQ_0,
@@ -960,7 +960,7 @@ static void AirPoweredVerticalRCTrackOnridePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4] = {
+    static constexpr uint32_t imageIds[4] = {
         SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE,
         SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE,
         SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE,

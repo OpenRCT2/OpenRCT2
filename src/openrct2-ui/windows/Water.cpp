@@ -17,9 +17,9 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_WATER;
-static constexpr const int32_t WH = 77;
-static constexpr const int32_t WW = 76;
+static constexpr StringId WINDOW_TITLE = STR_WATER;
+static constexpr int32_t WH = 77;
+static constexpr int32_t WW = 76;
 
 // clang-format off
 enum WindowWaterWidgetIdx {
@@ -31,7 +31,7 @@ enum WindowWaterWidgetIdx {
     WIDX_INCREMENT
 };
 
-static Widget window_water_widgets[] = {
+static Widget _waterWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget     ({16, 17}, {44, 32}, WindowWidgetType::ImgBtn, WindowColour::Primary , ImageId(SPR_LAND_TOOL_SIZE_0),   STR_NONE),                     // preview box
     MakeRemapWidget({17, 18}, {16, 16}, WindowWidgetType::TrnBtn, WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_WATER_TIP), // decrement size
@@ -45,7 +45,7 @@ class WaterWindow final : public Window
 public:
     void OnOpen() override
     {
-        widgets = window_water_widgets;
+        widgets = _waterWidgets;
         hold_down_widgets = (1uLL << WIDX_INCREMENT) | (1uLL << WIDX_DECREMENT);
         WindowInitScrollWidgets(*this);
         WindowPushOthersBelow(*this);
@@ -140,8 +140,8 @@ public:
 
     void OnDraw(DrawPixelInfo& dpi) override
     {
-        auto screenCoords = ScreenCoordsXY{ windowPos.x + window_water_widgets[WIDX_PREVIEW].midX(),
-                                            windowPos.y + window_water_widgets[WIDX_PREVIEW].midY() };
+        auto screenCoords = ScreenCoordsXY{ windowPos.x + widgets[WIDX_PREVIEW].midX(),
+                                            windowPos.y + widgets[WIDX_PREVIEW].midY() };
 
         DrawWidgets(dpi);
         // Draw number for tool sizes bigger than 7
@@ -155,8 +155,7 @@ public:
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
             // Draw raise cost amount
-            screenCoords = { window_water_widgets[WIDX_PREVIEW].midX() + windowPos.x,
-                             window_water_widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 };
+            screenCoords = { widgets[WIDX_PREVIEW].midX() + windowPos.x, widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 };
             if (gWaterToolRaiseCost != MONEY64_UNDEFINED && gWaterToolRaiseCost != 0)
             {
                 auto ft = Formatter();
@@ -173,6 +172,11 @@ public:
                 DrawTextBasic(dpi, screenCoords, STR_LOWER_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
         }
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 
 private:

@@ -61,7 +61,9 @@ namespace SingleRailRC
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -83,7 +85,9 @@ namespace SingleRailRC
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -96,7 +100,7 @@ namespace SingleRailRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
-        static constexpr const uint32_t imageIds[4][3] = {
+        static constexpr uint32_t imageIds[4][3] = {
             { (SPR_G2_SINGLE_RAIL_TRACK_BRAKE + 0), (SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE + 0), SPR_STATION_BASE_B_SW_NE },
             { (SPR_G2_SINGLE_RAIL_TRACK_BRAKE + 1), (SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE + 1), SPR_STATION_BASE_B_NW_SE },
             { (SPR_G2_SINGLE_RAIL_TRACK_BRAKE + 0), (SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE + 0), SPR_STATION_BASE_B_SW_NE },
@@ -118,8 +122,7 @@ namespace SingleRailRC
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][2]), { 0, 0, height - 2 },
             { { 0, 2, height }, { 32, 28, 2 } });
-        TrackPaintUtilDrawStationMetalSupports2(
-            session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Tubes);
+        DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Tubes);
         TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 4, 7);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -161,7 +164,9 @@ namespace SingleRailRC
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -193,7 +198,9 @@ namespace SingleRailRC
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -245,7 +252,8 @@ namespace SingleRailRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 32, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -276,7 +284,8 @@ namespace SingleRailRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 32, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -327,7 +336,9 @@ namespace SingleRailRC
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -357,7 +368,9 @@ namespace SingleRailRC
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -417,7 +430,8 @@ namespace SingleRailRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 12, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -454,7 +468,8 @@ namespace SingleRailRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 12, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -514,7 +529,8 @@ namespace SingleRailRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 20, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -551,7 +567,8 @@ namespace SingleRailRC
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 20, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -602,7 +619,9 @@ namespace SingleRailRC
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -632,7 +651,9 @@ namespace SingleRailRC
             }
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -778,7 +799,8 @@ namespace SingleRailRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 36, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 if (direction == 0 || direction == 3)
                 {
@@ -923,7 +945,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -995,7 +1019,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -1054,7 +1080,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -1199,7 +1227,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -1258,7 +1288,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -1349,7 +1381,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE + 3)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -1357,7 +1390,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE + 7)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -1365,7 +1399,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE + 11)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -1373,7 +1408,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE + 15)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -1420,7 +1456,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -1511,7 +1549,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE + 19)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -1519,7 +1558,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE + 23)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -1527,7 +1567,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE + 27)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -1535,7 +1576,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE + 31)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -1590,7 +1632,7 @@ namespace SingleRailRC
                         case 3:
                             PaintAddImageAsParentRotated(
                                 session, direction,
-                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT_DIAGONAL + 3)),
+                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             break;
                     }
@@ -1648,7 +1690,7 @@ namespace SingleRailRC
                         case 2:
                             PaintAddImageAsParentRotated(
                                 session, direction,
-                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT_DIAGONAL + 2)),
+                                session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT_DIAGONAL + 0)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             break;
                     }
@@ -1664,7 +1706,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1672,15 +1715,18 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_LIFT_TRACK_FLAT_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -1690,7 +1736,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1698,17 +1745,186 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                break;
+        }
+    }
+
+    static void TrackDiagBrakes(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                switch (direction)
+                {
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BRAKE_DIAGONAL + 1)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                break;
+            case 1:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BRAKE_DIAGONAL + 0)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                break;
+            case 2:
+                switch (direction)
+                {
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BRAKE_DIAGONAL + 0)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                break;
+            case 3:
+                switch (direction)
+                {
+                    case 0:
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BRAKE_DIAGONAL + 1)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
+                        break;
+                    case 2:
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
+                        break;
+                    case 3:
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                break;
+        }
+    }
+
+    static void TrackDiagBlockBrakes(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                switch (direction)
+                {
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE_DIAGONAL + 1)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                break;
+            case 1:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE_DIAGONAL + 0)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                break;
+            case 2:
+                switch (direction)
+                {
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE_DIAGONAL + 0)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        break;
+                }
+                PaintUtilSetSegmentSupportHeight(
+                    session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+                break;
+            case 3:
+                switch (direction)
+                {
+                    case 0:
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BLOCK_BRAKE_DIAGONAL + 1)),
+                            { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
+                        break;
+                    case 2:
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
+                        break;
+                    case 3:
+                        MetalASupportsPaintSetup(
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
+                        break;
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -1820,7 +2036,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 9, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1829,15 +2046,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 9, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 9, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 9, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -1847,7 +2067,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 9, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1855,15 +2076,18 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 9, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 9, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 9, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -1977,7 +2201,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 6, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -1986,15 +2211,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_GENTLE_DIAGONAL + 5)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 6, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 6, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 6, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2004,7 +2232,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 6, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2012,15 +2241,18 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_DIAGONAL + 5)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 6, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 6, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 6, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2134,7 +2366,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 0, height + 2, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height + 2,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2143,15 +2376,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 0, height + 2, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height + 2,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2161,7 +2397,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 2, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2169,15 +2406,18 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 2, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 2, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 2, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2291,7 +2531,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2300,15 +2541,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_GENTLE_DIAGONAL + 11)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2318,7 +2562,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2326,15 +2571,18 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_DIAGONAL + 11)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2445,7 +2693,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2454,15 +2703,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_GENTLE_DIAGONAL + 7)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2472,7 +2724,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2480,15 +2733,18 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_DIAGONAL + 7)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2603,7 +2859,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2612,15 +2869,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_GENTLE_DIAGONAL + 3)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2630,7 +2890,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2638,15 +2899,18 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_DIAGONAL + 3)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2760,7 +3024,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 38, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 38, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2769,15 +3034,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_STEEP_DIAGONAL + 9)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 36, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 38, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 38, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 36, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2787,7 +3055,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 38, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 38, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2795,15 +3064,18 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_STEEP_DIAGONAL + 9)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 36, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 38, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 38, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 36, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2917,7 +3189,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 16, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2926,15 +3199,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_STEEP_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 16, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 16, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 16, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -2944,7 +3220,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 16, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -2952,15 +3229,18 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_STEEP_DIAGONAL + 1)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 16, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 16, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 16, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -3074,7 +3354,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 21, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -3083,15 +3364,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_STEEP_DIAGONAL + 5)),
                                 { -16, -16, height }, { { 0, 0, height }, { 16, 16, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 21, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 21, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 21, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -3101,7 +3385,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 21, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -3109,15 +3394,18 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_STEEP_DIAGONAL + 5)),
                                 { -16, -16, height }, { { 0, 0, height }, { 16, 16, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 21, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 21, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 21, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -3231,7 +3519,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 24, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -3240,15 +3529,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_STEEP_DIAGONAL + 11)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 28, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 24, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 28, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -3258,7 +3550,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 24, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -3266,15 +3559,18 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_STEEP_DIAGONAL + 11)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 28, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 24, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 28, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -3388,7 +3684,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 17, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -3397,15 +3694,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_STEEP_DIAGONAL + 7)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 17, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 17, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 17, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -3415,7 +3715,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 17, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -3423,15 +3724,18 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_STEEP_DIAGONAL + 7)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 17, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 17, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 17, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -3545,7 +3849,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -3554,15 +3859,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_STEEP_DIAGONAL + 3)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -3572,7 +3880,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -3580,15 +3889,18 @@ namespace SingleRailRC
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_STEEP_DIAGONAL + 3)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -3640,7 +3952,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -3689,7 +4002,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -3752,7 +4066,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -3808,7 +4123,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -3864,7 +4180,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -3920,7 +4237,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -3996,7 +4314,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -4072,7 +4391,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4081,15 +4401,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 2)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4160,7 +4483,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4169,15 +4493,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 6)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4248,7 +4575,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4257,15 +4585,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 9)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4336,7 +4667,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4345,15 +4677,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 4)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4424,7 +4759,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4433,15 +4769,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 12)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4512,7 +4851,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4521,15 +4861,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 16)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4600,7 +4943,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4609,15 +4953,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 22)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4688,7 +5035,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4697,15 +5045,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 26)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4773,7 +5124,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4782,15 +5134,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 29)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4859,7 +5214,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4868,15 +5224,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 24)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -4948,7 +5307,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -4957,15 +5317,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 19)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5036,7 +5399,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5045,15 +5409,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 14)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5119,7 +5486,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5128,15 +5496,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 31)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5202,7 +5573,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5211,15 +5583,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_BANK_TRANSITION_DIAGONAL + 33)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5267,7 +5642,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 2, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -5343,7 +5720,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 2, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -5406,7 +5785,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 1, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -5555,7 +5936,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 1, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -5614,7 +5997,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -5705,7 +6090,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE_BANKED + 3)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5713,7 +6099,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE_BANKED + 7)),
                             { 0, 0, height }, { { 0, 16, height + 27 }, { 16, 18, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -5721,7 +6108,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE_BANKED + 11)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -5729,7 +6117,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE_BANKED + 15)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5776,7 +6165,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -5867,7 +6258,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE_BANKED + 19)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -5875,7 +6267,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE_BANKED + 23)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -5883,7 +6276,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE_BANKED + 27)),
                             { 0, 0, height }, { { 0, 16, height + 27 }, { 16, 18, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -5891,7 +6285,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CURVE_BANKED + 31)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -5954,7 +6349,9 @@ namespace SingleRailRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -5997,7 +6394,9 @@ namespace SingleRailRC
                             { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -6048,7 +6447,9 @@ namespace SingleRailRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -6072,7 +6473,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 9)),
                             { 6, 0, height }, { 20, 32, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -6080,7 +6482,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 11)),
                             { 6, 0, height }, { 20, 32, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -6088,7 +6491,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 13)),
                             { 6, 0, height }, { 20, 32, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 10, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -6096,7 +6500,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 15)),
                             { 6, 0, height }, { 20, 32, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 switch (direction)
@@ -6165,7 +6570,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -6310,7 +6717,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -6361,7 +6770,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -6506,7 +6917,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -6812,7 +7225,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -6864,7 +7278,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -6916,7 +7331,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -6968,7 +7384,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7044,7 +7461,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7092,7 +7510,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7140,7 +7559,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7188,7 +7608,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7264,7 +7685,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7312,7 +7734,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7378,7 +7801,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7430,7 +7854,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7482,7 +7907,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7534,7 +7960,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -7615,7 +8042,9 @@ namespace SingleRailRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -7662,7 +8091,9 @@ namespace SingleRailRC
                             { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -7717,7 +8148,9 @@ namespace SingleRailRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -7742,7 +8175,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 9)),
                             { 6, 0, height }, { 20, 32, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -7751,7 +8185,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 11)),
                             { 6, 0, height }, { { 27, 0, height }, { 1, 32, 34 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -7760,7 +8195,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 13)),
                             { 6, 0, height }, { { 27, 0, height }, { 1, 32, 34 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 10, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -7769,7 +8205,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 15)),
                             { 6, 0, height }, { 20, 32, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 switch (direction)
@@ -7842,7 +8279,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -8003,7 +8442,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -8058,7 +8499,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -8219,7 +8662,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -8286,7 +8731,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -8304,7 +8751,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 1)),
                             { 0, 0, height }, { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -8312,7 +8760,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 5)),
                             { 0, 0, height }, { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 1, height - 1, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 1, height - 1,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -8355,7 +8804,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 1)),
                             { 0, 0, height }, { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -8363,7 +8813,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 5)),
                             { 0, 0, height }, { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 1, height - 1, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 1, height - 1,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -8401,7 +8852,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 1:
@@ -8452,7 +8905,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -8470,7 +8925,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 9)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -8478,7 +8934,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 13)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -8521,7 +8978,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 9)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -8529,7 +8987,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 13)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -8567,7 +9026,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 1:
@@ -8622,7 +9083,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 2, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -8699,7 +9162,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 6, 0, height + 8 }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -8746,7 +9211,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 2, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -8828,7 +9295,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
@@ -8879,7 +9348,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 2, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -8956,7 +9427,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -9003,7 +9476,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 2, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -9085,7 +9560,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
@@ -9162,7 +9639,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 1, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -9312,7 +9791,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 6, 0, height + 8 }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 7, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -9359,7 +9840,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 1, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -9514,7 +9997,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 7, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_0);
@@ -9564,7 +10049,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 1, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -9691,7 +10178,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 26)),
                             { 0, 0, height }, { { 6, 0, height + 8 }, { 20, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 7, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -9703,7 +10191,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 32)),
                             { 0, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -9711,7 +10200,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 37)),
                             { 0, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 7, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -9719,7 +10209,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 43)),
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 7, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 switch (direction)
@@ -9768,7 +10259,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 1, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -9904,7 +10397,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 32)),
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -9912,7 +10406,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 37)),
                             { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 7, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -9920,7 +10415,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 43)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 7, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -9928,7 +10424,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 26)),
                             { 0, 0, height }, { { 0, 6, height + 8 }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 7, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -9988,7 +10485,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 1)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 4, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height + 1,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -10000,7 +10498,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 7)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height + 1,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -10012,7 +10511,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 13)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 0, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height + 1,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -10024,7 +10524,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 19)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -10167,7 +10668,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 25)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -10179,7 +10681,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 31)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 0, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 0, height + 1,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -10191,7 +10694,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 37)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height + 1,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -10203,7 +10707,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 43)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 4, height + 1, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height + 1,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -10375,7 +10880,9 @@ namespace SingleRailRC
                             { 0, 6, height }, { 32, 20, 7 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -10393,7 +10900,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_HALF_LOOP + 1)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 20, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -10401,7 +10909,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_HALF_LOOP + 5)),
                             { 0, 14, height }, { { 28, 6, height }, { 3, 20, 63 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 15, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -10409,7 +10918,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_HALF_LOOP + 9)),
                             { 0, 6, height }, { { 28, 6, height }, { 3, 20, 63 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 16, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -10417,7 +10927,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_HALF_LOOP + 13)),
                             { 0, 6, height }, { 32, 20, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 16, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -10525,7 +11036,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -10537,40 +11049,26 @@ namespace SingleRailRC
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
+        TrackPaintUtilOnridePhotoPlatformPaint(session, direction, height, MetalSupportType::Tubes);
+
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT + 0)),
                     { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 0 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT + 1)),
                     { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 0 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT + 0)),
                     { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 0 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_FLAT + 1)),
                     { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 0 } });
@@ -10619,7 +11117,8 @@ namespace SingleRailRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 if (direction == 0 || direction == 3)
                 {
@@ -10660,7 +11159,8 @@ namespace SingleRailRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 9, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -10697,7 +11197,8 @@ namespace SingleRailRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 10, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -10734,7 +11235,8 @@ namespace SingleRailRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 19, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 19, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 switch (direction)
                 {
@@ -10788,7 +11290,8 @@ namespace SingleRailRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 24, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 if (direction == 0 || direction == 3)
                 {
@@ -10829,7 +11332,8 @@ namespace SingleRailRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 18, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -10866,7 +11370,8 @@ namespace SingleRailRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 13, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -10903,7 +11408,8 @@ namespace SingleRailRC
                 if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
                 {
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 5, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                 }
                 switch (direction)
                 {
@@ -10958,7 +11464,8 @@ namespace SingleRailRC
         }
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
         PaintUtilSetSegmentSupportHeight(
@@ -11001,7 +11508,9 @@ namespace SingleRailRC
                         break;
                 }
 
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 2, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -11076,7 +11585,8 @@ namespace SingleRailRC
                     session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 0, height + 33, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 33,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 switch (direction)
                 {
@@ -11126,7 +11636,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height + 4 }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 2, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -11200,7 +11712,8 @@ namespace SingleRailRC
                     session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 0, height + 33, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 33,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 switch (direction)
                 {
@@ -11265,7 +11778,9 @@ namespace SingleRailRC
                         break;
                 }
 
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 2, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -11285,7 +11800,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 1)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 34, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 34, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -11293,7 +11809,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 6)),
                             { 0, 0, height }, { { 0, 29, height }, { 26, 1, 32 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 22, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 22, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -11301,7 +11818,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 11)),
                             { 0, 0, height }, { { 0, 6, height }, { 20, 20, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 24, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -11309,7 +11827,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 16)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 16, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -11368,7 +11887,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 3)),
                             { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height + 56,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -11376,7 +11896,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 8)),
                             { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height + 56,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -11384,7 +11905,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 13)),
                             { 0, 0, height }, { { 2, 2, height + 50 }, { 24, 28, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 56,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -11392,7 +11914,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 18)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 56,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -11481,7 +12004,9 @@ namespace SingleRailRC
                         break;
                 }
 
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 2, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -11501,7 +12026,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 21)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 16, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -11509,7 +12035,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 26)),
                             { 0, 0, height }, { { 0, 6, height }, { 20, 20, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 24, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -11517,7 +12044,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 31)),
                             { 0, 0, height }, { { 0, 29, height }, { 26, 1, 32 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 22, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 22, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -11525,7 +12053,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 36)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 34, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 34, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -11584,7 +12113,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 23)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 56,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -11592,7 +12122,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 28)),
                             { 0, 0, height }, { { 2, 2, height + 50 }, { 24, 28, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 56,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -11600,7 +12131,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 33)),
                             { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height + 56,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -11608,7 +12140,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_CORKSCREW + 38)),
                             { 0, 0, height }, { { 2, 2, height + 50 }, { 28, 28, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 0, height + 56, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height + 56,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
@@ -11710,7 +12243,9 @@ namespace SingleRailRC
                         break;
                 }
 
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 7, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -11765,7 +12300,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_MEDIUM_HALF_LOOP + 2)),
                             { 0, 0, height }, { { 0, 0, height + 2 }, { 32, 32, 0 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 14, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -11773,7 +12309,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_MEDIUM_HALF_LOOP + 7)),
                             { 0, 0, height }, { { 29, 0, height }, { 1, 32, 96 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 16, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -11781,7 +12318,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_MEDIUM_HALF_LOOP + 12)),
                             { 0, 0, height }, { { 31, 0, height }, { 1, 32, 96 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 18, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -11789,7 +12327,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_MEDIUM_HALF_LOOP + 17)),
                             { 0, 0, height }, { { 0, 0, height }, { 32, 32, 0 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 14, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -11907,7 +12446,9 @@ namespace SingleRailRC
                         break;
                 }
 
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 7, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -11962,7 +12503,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_MEDIUM_HALF_LOOP + 22)),
                             { 0, 0, height }, { { 0, 0, height }, { 32, 32, 0 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 14, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -11970,7 +12512,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_MEDIUM_HALF_LOOP + 27)),
                             { 0, 0, height }, { { 30, 0, height }, { 0, 32, 96 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 18, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 18, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -11978,7 +12521,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_MEDIUM_HALF_LOOP + 32)),
                             { 0, 0, height }, { { 29, 0, height }, { 0, 32, 96 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 16, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -11986,7 +12530,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_MEDIUM_HALF_LOOP + 37)),
                             { 0, 0, height }, { { 0, 0, height + 2 }, { 32, 32, 0 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 14, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -12102,7 +12647,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_ZERO_G_ROLL + 1)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -12114,7 +12660,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_ZERO_G_ROLL + 5)),
                             { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -12122,7 +12669,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_ZERO_G_ROLL + 8)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -12130,7 +12678,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_ZERO_G_ROLL + 12)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 14, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -12228,7 +12777,8 @@ namespace SingleRailRC
                         SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 38,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
                 break;
         }
@@ -12249,7 +12799,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_ZERO_G_ROLL + 16)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 14, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 14, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -12257,7 +12808,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_ZERO_G_ROLL + 20)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -12269,7 +12821,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_ZERO_G_ROLL + 25)),
                             { 0, 0, height }, { { 0, 31, height }, { 32, 1, 32 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -12281,7 +12834,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_ZERO_G_ROLL + 29)),
                             { 0, 0, height }, { { 0, 6, height + 28 }, { 32, 20, 1 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -12378,7 +12932,8 @@ namespace SingleRailRC
                         SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 38,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
                 break;
         }
@@ -12437,7 +12992,8 @@ namespace SingleRailRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 25, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 25, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -12535,7 +13091,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_ZERO_G_ROLL + 4)),
                             { 0, 0, height }, { { 0, 26, height }, { 26, 0, 20 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 28,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -12543,7 +13100,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_ZERO_G_ROLL + 8)),
                             { 0, 0, height }, { { 0, 26, height }, { 26, 0, 20 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height + 28,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -12555,7 +13113,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_ZERO_G_ROLL + 14)),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height + 28,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -12563,7 +13122,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_ZERO_G_ROLL + 19)),
                             { 0, 0, height }, { { 0, 18, height }, { 32, 10, 20 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 28,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 switch (direction)
@@ -12619,7 +13179,8 @@ namespace SingleRailRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 25, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 25, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -12718,7 +13279,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_ZERO_G_ROLL + 24)),
                             { 0, 0, height }, { { 0, 18, height }, { 32, 10, 20 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 28,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -12730,7 +13292,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_ZERO_G_ROLL + 30)),
                             { 0, 0, height }, { { 0, 6, height + 40 }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height + 28,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -12738,7 +13301,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_ZERO_G_ROLL + 34)),
                             { 0, 0, height }, { { 0, 26, height }, { 26, 0, 20 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height + 28,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -12746,7 +13310,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_ZERO_G_ROLL + 39)),
                             { 0, 0, height }, { { 0, 26, height }, { 26, 0, 20 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 28,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 switch (direction)
@@ -12931,7 +13496,9 @@ namespace SingleRailRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -12975,7 +13542,8 @@ namespace SingleRailRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 8, height - 6, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height - 6,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -13030,7 +13598,9 @@ namespace SingleRailRC
                             { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -13074,7 +13644,8 @@ namespace SingleRailRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 8, height - 6, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height - 6,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -13126,7 +13697,8 @@ namespace SingleRailRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 8, height - 6, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height - 6,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
@@ -13173,7 +13745,9 @@ namespace SingleRailRC
                             { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -13225,7 +13799,8 @@ namespace SingleRailRC
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, 4, 8, height - 6, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height - 6,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_2);
@@ -13272,7 +13847,9 @@ namespace SingleRailRC
                             { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 0:
@@ -13323,7 +13900,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -13341,7 +13920,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 1)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 15, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -13349,7 +13929,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 8)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 9 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -13357,7 +13938,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 15)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -13365,7 +13947,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 22)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -13416,7 +13999,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 3)),
                             { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 28, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -13424,7 +14008,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 10)),
                             { 0, 0, height }, { { 0, 0, height + 200 }, { 32, 16, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 28, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -13432,7 +14017,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 17)),
                             { 0, 0, height }, { { 0, 16, height + 200 }, { 32, 16, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height + 28,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -13440,7 +14026,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 24)),
                             { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 28, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -13593,7 +14180,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -13611,7 +14200,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 29)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -13619,7 +14209,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 36)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -13627,7 +14218,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 43)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 9 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -13635,7 +14227,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 50)),
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 4, 15, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 15, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -13686,7 +14279,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 31)),
                             { 0, 0, height }, { { 0, 16, height }, { 32, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 8, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 28, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -13694,7 +14288,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 38)),
                             { 0, 0, height }, { { 0, 16, height + 200 }, { 32, 16, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 7, 0, height + 28, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height + 28,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -13702,7 +14297,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 45)),
                             { 0, 0, height }, { { 0, 0, height + 200 }, { 32, 16, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 5, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 28, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -13710,7 +14306,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_LARGE_HALF_LOOP + 52)),
                             { 0, 0, height }, { { 0, 0, height }, { 32, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 6, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 28, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -13829,14 +14426,14 @@ namespace SingleRailRC
         }
     }
 
-    static void TrackRightLargeHalfLoopDown(
+    static void TrackLeftLargeHalfLoopDown(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
         TrackRightLargeHalfLoopUp(session, ride, 6 - trackSequence, direction, height, trackElement);
     }
 
-    static void TrackLeftLargeHalfLoopDown(
+    static void TrackRightLargeHalfLoopDown(
         PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
@@ -13857,7 +14454,8 @@ namespace SingleRailRC
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 0)),
                         { 0, 0, height }, { { 0, 2, height }, { 32, 27, 4 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -13869,7 +14467,8 @@ namespace SingleRailRC
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 1)),
                         { 0, 0, height }, { { 0, 4, height }, { 32, 2, 43 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 0, height + 4, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 4,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -13881,7 +14480,8 @@ namespace SingleRailRC
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 3)),
                         { 0, 0, height }, { { 0, 4, height }, { 32, 2, 43 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 0, height + 4, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 4,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -13889,7 +14489,8 @@ namespace SingleRailRC
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 5)),
                         { 0, 0, height }, { { 0, 2, height }, { 32, 27, 4 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
         }
@@ -13903,7 +14504,8 @@ namespace SingleRailRC
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 0)),
                         { 0, 0, height }, { { 0, 2, height }, { 32, 27, 4 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -13915,7 +14517,8 @@ namespace SingleRailRC
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 1)),
                         { 0, 0, height }, { { 0, 4, height }, { 32, 2, 43 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 0, height + 4, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 4,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -13927,7 +14530,8 @@ namespace SingleRailRC
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 3)),
                         { 0, 0, height }, { { 0, 4, height }, { 32, 2, 43 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 0, height + 4, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height + 4,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -13935,7 +14539,8 @@ namespace SingleRailRC
                         session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 5)),
                         { 0, 0, height }, { { 0, 2, height }, { 32, 27, 4 } });
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Tubes, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
         }
@@ -13993,7 +14598,8 @@ namespace SingleRailRC
                         { 0, 0, height }, { { 0, 2, height }, { 32, 27, 4 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         else
         {
@@ -14032,7 +14638,8 @@ namespace SingleRailRC
                         { 0, 0, height }, { { 0, 2, height }, { 32, 27, 4 } });
                     break;
             }
-            MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -14167,7 +14774,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 7, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -14176,15 +14784,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 13)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 7, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 7, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 7, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -14194,7 +14805,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 7, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -14203,15 +14815,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 13)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 7, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 7, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 7, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -14328,7 +14943,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 20, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -14337,15 +14953,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 17)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 20, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 20, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 20, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -14355,7 +14974,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 20, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -14364,15 +14984,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 17)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 20, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 20, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 20, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -14489,7 +15112,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 16, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -14498,15 +15122,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 19)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 16, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 16, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 16, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -14516,7 +15143,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 16, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -14525,15 +15153,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 19)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 16, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 16, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 16, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -14650,7 +15281,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 5, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -14659,15 +15291,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 15)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 5, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 5, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 5, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -14677,7 +15312,8 @@ namespace SingleRailRC
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 1, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 5, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
@@ -14686,15 +15322,18 @@ namespace SingleRailRC
                                     (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 15)),
                                 { -16, -16, height }, { { -16, -16, height }, { 32, 32, 4 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 5, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 2, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 5, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::Tubes, 3, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 5, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -14755,7 +15394,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -14846,7 +15487,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE + 3)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -14854,7 +15496,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE + 7)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -14862,7 +15505,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE + 11)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -14870,7 +15514,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE + 15)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -14917,7 +15562,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -15008,7 +15655,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE + 19)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -15016,7 +15664,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE + 23)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -15024,7 +15673,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE + 27)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -15032,7 +15682,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE + 31)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -15060,7 +15711,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE + 32)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -15068,7 +15720,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE + 36)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -15076,7 +15729,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE + 40)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -15084,7 +15738,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE + 44)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -15195,7 +15850,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 1 || direction == 2)
                 {
@@ -15224,7 +15881,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE + 48)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -15232,7 +15890,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE + 52)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -15240,7 +15899,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE + 56)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -15248,7 +15908,8 @@ namespace SingleRailRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE + 60)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -15359,7 +16020,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 1)
                 {
                     PaintUtilPushTunnelRotated(session, direction + 1, height + 8, TUNNEL_2);
@@ -15466,7 +16129,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -15475,15 +16139,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 2)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -15554,7 +16221,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -15563,15 +16231,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 6)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -15642,7 +16313,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -15651,15 +16323,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 12)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -15730,7 +16405,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -15739,15 +16415,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 16)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 9, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -15841,7 +16520,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -15850,15 +16530,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 21)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -15924,7 +16607,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -15933,15 +16617,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 25)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16007,7 +16694,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -16016,15 +16704,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 29)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16090,7 +16781,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -16099,15 +16791,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 33)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16201,7 +16896,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 11, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -16210,15 +16906,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 37)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 11, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 11, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 11, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16284,7 +16983,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 11, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -16293,15 +16993,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 41)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 11, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 11, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 11, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16386,7 +17089,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -16395,15 +17099,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 46)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16474,7 +17181,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -16483,15 +17191,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 50)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16562,7 +17273,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -16571,15 +17283,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 56)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16650,7 +17365,8 @@ namespace SingleRailRC
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -16659,15 +17375,18 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 60)),
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 6, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16743,7 +17462,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -16843,7 +17564,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 67)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -16852,7 +17574,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 71)),
                             { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -16861,7 +17584,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 75)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -16870,7 +17594,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 79)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -16921,7 +17646,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_1);
@@ -17021,7 +17748,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 83)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -17030,7 +17758,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 87)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -17039,7 +17768,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 91)),
                             { 0, 0, height }, { { 0, 0, height + 48 }, { 32, 32, 1 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -17048,7 +17778,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 95)),
                             { 0, 0, height }, { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -17077,7 +17808,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 96)),
                             { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -17086,7 +17818,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 100)),
                             { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -17095,7 +17828,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 104)),
                             { 0, 0, height }, { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -17104,7 +17838,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 108)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -17227,7 +17962,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 1 || direction == 2)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_2);
@@ -17255,7 +17992,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 112)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::RightCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -17264,7 +18002,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 116)),
                             { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::BottomCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -17273,7 +18012,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 120)),
                             { 0, 0, height }, { { 0, 0, height + 32 }, { 32, 32, 1 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -17282,7 +18022,8 @@ namespace SingleRailRC
                                 (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_LARGE_CURVE_BANKED + 124)),
                             { 0, 0, height }, { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::Tubes, MetalSupportPlace::TopCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -17405,7 +18146,9 @@ namespace SingleRailRC
                             { 0, 0, height }, { { 6, 0, height }, { 20, 32, 3 } });
                         break;
                 }
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 1)
                 {
                     PaintUtilPushTunnelRotated(session, direction + 1, height + 8, TUNNEL_2);
@@ -17623,6 +18366,10 @@ namespace SingleRailRC
                 return TrackRightEighthBankToOrthogonal;
             case TrackElemType::DiagFlat:
                 return TrackDiagFlat;
+            case TrackElemType::DiagBrakes:
+                return TrackDiagBrakes;
+            case TrackElemType::DiagBlockBrakes:
+                return TrackDiagBlockBrakes;
             case TrackElemType::DiagUp25:
                 return TrackDiag25DegUp;
             case TrackElemType::DiagUp60:
@@ -17817,10 +18564,10 @@ namespace SingleRailRC
                 return TrackLeftLargeHalfLoopUp;
             case TrackElemType::RightLargeHalfLoopUp:
                 return TrackRightLargeHalfLoopUp;
-            case TrackElemType::RightLargeHalfLoopDown:
-                return TrackRightLargeHalfLoopDown;
             case TrackElemType::LeftLargeHalfLoopDown:
                 return TrackLeftLargeHalfLoopDown;
+            case TrackElemType::RightLargeHalfLoopDown:
+                return TrackRightLargeHalfLoopDown;
             case TrackElemType::FlatToUp60:
                 return TrackFlatTo60DegUp;
             case TrackElemType::Up60ToFlat:

@@ -357,7 +357,7 @@ void RideClearBlockedTiles(const Ride& ride)
                 if (footpathElement == nullptr)
                     continue;
 
-                footpathElement->AsPath()->SetIsBlockedByVehicle(false);
+                footpathElement->SetIsBlockedByVehicle(false);
             }
         }
     }
@@ -451,6 +451,14 @@ std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
         if (flags & TRACK_ELEMENT_SET_HAS_CABLE_LIFT_FALSE)
         {
             trackElement->SetHasCableLift(false);
+        }
+        if (flags & TRACK_ELEMENT_SET_BRAKE_CLOSED_STATE)
+        {
+            trackElement->SetBrakeClosed(extra_params != 0);
+        }
+        if (flags & TRACK_ELEMENT_SET_BRAKE_BOOSTER_SPEED)
+        {
+            trackElement->SetBrakeBoosterSpeed(static_cast<uint8_t>(extra_params & 0xFF));
         }
     }
     return retCoordsXYZ;
@@ -595,7 +603,7 @@ static void ride_construction_reset_current_piece()
 
     const auto& rtd = ride->GetRideTypeDescriptor();
 
-    if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK) || ride->num_stations == 0)
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK) || ride->num_stations == 0)
     {
         _currentTrackCurve = rtd.StartTrackPiece | RideConstructionSpecialPieceSelected;
         _currentTrackSlopeEnd = 0;
@@ -648,7 +656,7 @@ void RideConstructionSetDefaultNextPiece()
             tileElement = trackBeginEnd.begin_element;
             trackType = tileElement->AsTrack()->GetTrackType();
 
-            if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+            if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
             {
                 ride_construction_reset_current_piece();
                 return;
@@ -1055,7 +1063,7 @@ bool RideModify(const CoordsXYE& input)
     _rideConstructionNextArrowPulse = 0;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
     {
         WindowRideConstructionUpdateActiveElements();
         return true;

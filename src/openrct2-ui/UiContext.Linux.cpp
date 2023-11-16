@@ -22,6 +22,7 @@
 #    include <openrct2/ui/UiContext.h>
 #    include <sstream>
 #    include <stdexcept>
+#    include <unistd.h>
 
 namespace OpenRCT2::Ui
 {

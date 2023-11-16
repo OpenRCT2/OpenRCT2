@@ -41,7 +41,7 @@ enum class WindowWidgetType : uint8_t
     Last = 26,
 };
 
-constexpr const auto WIDGETS_END = Widget{ WindowWidgetType::Last, 0, 0, 0, 0, 0, 0, 0 };
+constexpr auto WIDGETS_END = Widget{ WindowWidgetType::Last, 0, 0, 0, 0, 0, 0, 0 };
 #define BAR_BLINK (1u << 31)
 
 enum
@@ -61,7 +61,7 @@ enum class WindowColour : uint8_t
 
 constexpr uint8_t SCROLLBAR_WIDTH = 10;
 
-constexpr const ScreenSize TAB_SIZE = { 31, 27 };
+constexpr ScreenSize TAB_SIZE = { 31, 27 };
 
 constexpr Widget MakeWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour,

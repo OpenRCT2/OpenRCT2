@@ -874,7 +874,7 @@ STR_1483    :“Eu me sinto muito mal”
 STR_1484    :“Eu quero ir em algo mais emocionante do que {STRINGID}”
 STR_1485    :“{STRINGID} parece muito intenso para mim”
 STR_1486    :“Eu não terminei meu {STRINGID} ainda”
-STR_1487    :“Só de olhar para {STRINGID} já me sento mal”
+STR_1487    :“Só de olhar para {STRINGID} já me sinto mal”
 STR_1488    :“Eu não vou pagar tudo isso para ir em {STRINGID}”
 STR_1489    :“Eu quero ir para casa”
 STR_1490    :“{STRINGID} tem um preço bom”
@@ -3687,6 +3687,15 @@ STR_6582    :Abrir janela de atalhos do teclado
 STR_6583    :{WINDOW_COLOUR_2}Trens Invertidos
 STR_6584    :Selecione para que os trens operem de costas
 STR_6585    :Não é possível fazer alterações…
+STR_6586    :OpenRCT2
+STR_6587    :A música tema do OpenRCT2 é uma criação de Allister Brimble,{NEWLINE}licenciada com CC BY-SA 4.0.
+STR_6588    :Agradecemos a Herman Riddering por nos deixar gravar a 35er Voigt.
+STR_6589    :Mostrar botões de janela à esquerda
+STR_6590    :Mostra os botões de janela (como o de fechar a janela) à esquerda do topo, em vez de à direita.
+STR_6591    :O funcionário está atualmente consertando uma atração e não pode ser demitido.
+STR_6592    :O funcionário está atualmente inspecionando uma atração e não pode ser demitido.
+STR_6593    :Remover cercas do parque
+STR_6594    :Inspetor de azulejo: Mudar inclinação da parede
 
 #############
 # Scenarios #

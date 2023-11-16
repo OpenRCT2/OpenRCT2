@@ -23,51 +23,51 @@ constexpr uint32_t UsefulModifiers = KMOD_SHIFT | KMOD_CTRL | KMOD_ALT | KMOD_GU
 
 static uint32_t ParseModifier(std::string_view text)
 {
-    if (String::Equals(text, "CTRL", true))
+    if (String::IEquals(text, "CTRL"))
     {
         return KMOD_CTRL;
     }
-    if (String::Equals(text, "LCTRL", true))
+    if (String::IEquals(text, "LCTRL"))
     {
         return KMOD_LCTRL;
     }
-    if (String::Equals(text, "RCTRL", true))
+    if (String::IEquals(text, "RCTRL"))
     {
         return KMOD_RCTRL;
     }
-    if (String::Equals(text, "SHIFT", true))
+    if (String::IEquals(text, "SHIFT"))
     {
         return KMOD_SHIFT;
     }
-    if (String::Equals(text, "LSHIFT", true))
+    if (String::IEquals(text, "LSHIFT"))
     {
         return KMOD_LSHIFT;
     }
-    if (String::Equals(text, "RSHIFT", true))
+    if (String::IEquals(text, "RSHIFT"))
     {
         return KMOD_RSHIFT;
     }
-    if (String::Equals(text, "ALT", true))
+    if (String::IEquals(text, "ALT"))
     {
         return KMOD_ALT;
     }
-    if (String::Equals(text, "LALT", true))
+    if (String::IEquals(text, "LALT"))
     {
         return KMOD_LALT;
     }
-    if (String::Equals(text, "RALT", true))
+    if (String::IEquals(text, "RALT"))
     {
         return KMOD_RALT;
     }
-    if (String::Equals(text, "GUI", true))
+    if (String::IEquals(text, "GUI"))
     {
         return KMOD_GUI;
     }
-    if (String::Equals(text, "LCTRL", true))
+    if (String::IEquals(text, "LCTRL"))
     {
         return KMOD_LGUI;
     }
-    if (String::Equals(text, "RGUI", true))
+    if (String::IEquals(text, "RGUI"))
     {
         return KMOD_RGUI;
     }
@@ -167,13 +167,13 @@ ShortcutInput::ShortcutInput(std::string_view value)
             Button = *number - 1;
         }
     }
-    else if (String::Equals(rem, "LMB", true))
+    else if (String::IEquals(rem, "LMB"))
     {
         Kind = InputDeviceKind::Mouse;
         Modifiers = modifiers;
         Button = 0;
     }
-    else if (String::Equals(rem, "RMB", true))
+    else if (String::IEquals(rem, "RMB"))
     {
         Kind = InputDeviceKind::Mouse;
         Modifiers = modifiers;

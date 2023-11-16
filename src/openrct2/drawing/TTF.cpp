@@ -35,7 +35,7 @@ struct ttf_cache_entry
 {
     TTFSurface* surface;
     TTF_Font* font;
-    utf8* text;
+    u8string text;
     uint32_t lastUseTick;
 };
 
@@ -43,7 +43,7 @@ struct ttf_getwidth_cache_entry
 {
     uint32_t width;
     TTF_Font* font;
-    utf8* text;
+    u8string text;
     uint32_t lastUseTick;
 };
 
@@ -197,11 +197,9 @@ static void TTFSurfaceCacheDispose(ttf_cache_entry* entry)
     if (entry->surface != nullptr)
     {
         TTFFreeSurface(entry->surface);
-        free(entry->text);
-
+        entry->text.clear();
         entry->surface = nullptr;
         entry->font = nullptr;
-        entry->text = nullptr;
     }
 }
 
@@ -270,21 +268,19 @@ TTFSurface* TTFSurfaceCacheGetOrAdd(TTF_Font* font, std::string_view text)
     _ttfSurfaceCacheCount++;
     entry->surface = surface;
     entry->font = font;
-    entry->text = strndup(text.data(), text.size());
+    entry->text = text;
     entry->lastUseTick = gCurrentDrawCount;
     return entry->surface;
 }
 
 static void TTFGetWidthCacheDispose(ttf_getwidth_cache_entry* entry)
 {
-    if (entry->text != nullptr)
-    {
-        free(entry->text);
+    if (entry->text.empty())
+        return;
 
-        entry->width = 0;
-        entry->font = nullptr;
-        entry->text = nullptr;
-    }
+    entry->text.clear();
+    entry->width = 0;
+    entry->font = nullptr;
 }
 
 static void TTFGetWidthCacheDisposeAll()
@@ -310,7 +306,7 @@ uint32_t TTFGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text)
         entry = &_ttfGetWidthCache[index];
 
         // Check if entry is a hit
-        if (entry->text == nullptr)
+        if (entry->text.empty())
             break;
         if (entry->font == font && String::Equals(entry->text, text))
         {
@@ -342,7 +338,7 @@ uint32_t TTFGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text)
     _ttfGetWidthCacheCount++;
     entry->width = width;
     entry->font = font;
-    entry->text = strndup(text.data(), text.size());
+    entry->text = text;
     entry->lastUseTick = gCurrentDrawCount;
     return entry->width;
 }

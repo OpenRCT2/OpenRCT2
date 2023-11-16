@@ -39,7 +39,7 @@ struct GForces
 };
 
 // How many valid pitch values are currently in the game. Eventually pitch will be enumerated.
-constexpr const uint8_t NumVehiclePitches = 60;
+constexpr uint8_t NumVehiclePitches = 60;
 
 // Size: 0x09
 struct VehicleInfo
@@ -54,8 +54,8 @@ struct VehicleInfo
 
 struct SoundIdVolume;
 
-constexpr const uint16_t VehicleTrackDirectionMask = 0b0000000000000011;
-constexpr const uint16_t VehicleTrackTypeMask = 0b1111111111111100;
+constexpr uint16_t VehicleTrackDirectionMask = 0b0000000000000011;
+constexpr uint16_t VehicleTrackTypeMask = 0b1111111111111100;
 
 enum class MiniGolfAnimation : uint8_t;
 

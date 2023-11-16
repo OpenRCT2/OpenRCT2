@@ -28,17 +28,17 @@
 #include <openrct2/util/Util.h>
 #include <vector>
 
-static constexpr const StringId WINDOW_TITLE = STR_SELECT_SCENARIO;
-static constexpr const int32_t WW = 734;
-static constexpr const int32_t WH = 384;
-static constexpr const int32_t SidebarWidth = 180;
-static constexpr const int32_t TabWidth = 92;
-static constexpr const int32_t TabHeight = 34;
-static constexpr const int32_t TrueFontSize = 24;
-static constexpr const int32_t WidgetsStart = 17;
-static constexpr const int32_t TabsStart = WidgetsStart;
-static constexpr const int32_t InitialNumUnlockedScenarios = 5;
-constexpr const uint8_t NumTabs = 10;
+static constexpr StringId WINDOW_TITLE = STR_SELECT_SCENARIO;
+static constexpr int32_t WW = 734;
+static constexpr int32_t WH = 384;
+static constexpr int32_t SidebarWidth = 180;
+static constexpr int32_t TabWidth = 92;
+static constexpr int32_t TabHeight = 34;
+static constexpr int32_t TrueFontSize = 24;
+static constexpr int32_t WidgetsStart = 17;
+static constexpr int32_t TabsStart = WidgetsStart;
+static constexpr int32_t InitialNumUnlockedScenarios = 5;
+constexpr uint8_t NumTabs = 10;
 
 enum class ListItemType : uint8_t
 {
@@ -82,7 +82,7 @@ enum
     WIDX_SCENARIOLIST
 };
 
-static constexpr const StringId kScenarioOriginStringIds[] = {
+static constexpr StringId kScenarioOriginStringIds[] = {
     STR_SCENARIO_CATEGORY_RCT1,        STR_SCENARIO_CATEGORY_RCT1_AA,    STR_SCENARIO_CATEGORY_RCT1_LL,
     STR_SCENARIO_CATEGORY_RCT2,        STR_SCENARIO_CATEGORY_RCT2_WW,    STR_SCENARIO_CATEGORY_RCT2_TT,
     STR_SCENARIO_CATEGORY_UCES,        STR_SCENARIO_CATEGORY_REAL_PARKS, STR_SCENARIO_CATEGORY_EXTRAS_PARKS,
@@ -103,7 +103,7 @@ static Widget _scenarioSelectWidgets[] = {
     MakeRemapWidget({ 3, TabsStart + (TabHeight * 7) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 08
     MakeRemapWidget({ 3, TabsStart + (TabHeight * 8) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 09
     MakeRemapWidget({ 3, TabsStart + (TabHeight * 8) }, { TabWidth, TabHeight}, WindowWidgetType::Tab, WindowColour::Secondary, SPR_G2_SIDEWAYS_TAB), // tab 10
-    MakeWidget({ TabWidth + 3, WidgetsStart + 1 }, { WW - SidebarWidth, 276 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), // level list
+    MakeWidget({ TabWidth + 3, WidgetsStart + 1 }, { WW - SidebarWidth, 362 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), // level list
     WIDGETS_END,
 };
 // clang-format on
@@ -112,14 +112,13 @@ class ScenarioSelectWindow final : public Window
 {
 private:
     bool _showLockedInformation = false;
-    bool _titleEditor = false;
     std::function<void(std::string_view)> _callback;
     std::vector<ScenarioListItem> _listItems;
+    const ScenarioIndexEntry* _highlightedScenario = nullptr;
 
 public:
-    ScenarioSelectWindow(std::function<void(std::string_view)> callback, bool isTitleEditor)
-        : _titleEditor(isTitleEditor)
-        , _callback(callback)
+    ScenarioSelectWindow(std::function<void(std::string_view)> callback)
+        : _callback(callback)
     {
     }
 
@@ -129,15 +128,10 @@ public:
         ScenarioRepositoryScan();
 
         widgets = _scenarioSelectWidgets;
-        highlighted_scenario = nullptr;
+        _highlightedScenario = nullptr;
         InitTabs();
         InitialiseListItems();
         InitScrollWidgets();
-    }
-
-    bool IsTitleEditor() const
-    {
-        return _titleEditor;
     }
 
     void OnMouseUp(WidgetIndex widgetIndex) override
@@ -153,7 +147,7 @@ public:
         if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB10)
         {
             selected_tab = widgetIndex - 4;
-            highlighted_scenario = nullptr;
+            _highlightedScenario = nullptr;
             gConfigInterface.ScenarioselectLastTab = selected_tab;
             ConfigSaveDefault();
             InitialiseListItems();
@@ -183,7 +177,7 @@ public:
                 continue;
 
             auto ft = Formatter();
-            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || IsTitleEditor())
+            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
             {
                 ft.Add<StringId>(kScenarioOriginStringIds[i]);
             }
@@ -197,7 +191,7 @@ public:
         }
 
         // Return if no scenario highlighted
-        scenario = highlighted_scenario;
+        scenario = _highlightedScenario;
         if (scenario == nullptr)
         {
             if (_showLockedInformation)
@@ -224,13 +218,10 @@ public:
         // Scenario path
         if (gConfigGeneral.DebuggingTools)
         {
-            utf8 path[MAX_PATH];
+            const auto shortPath = ShortenPath(scenario->Path, width - 6 - TabWidth, FontStyle::Medium);
 
-            ShortenPath(path, sizeof(path), scenario->Path, width - 6 - TabWidth, FontStyle::Medium);
-
-            const utf8* pathPtr = path;
             auto ft = Formatter();
-            ft.Add<const char*>(pathPtr);
+            ft.Add<utf8*>(shortPath.c_str());
             DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ TabWidth + 3, height - 3 - 11 }, STR_STRING, ft, { colours[1] });
         }
 
@@ -362,9 +353,9 @@ public:
             }
         }
 
-        if (highlighted_scenario != selected)
+        if (_highlightedScenario != selected)
         {
-            highlighted_scenario = selected;
+            _highlightedScenario = selected;
             Invalidate();
         }
         else if (_showLockedInformation != originalShowLockedInformation)
@@ -391,12 +382,9 @@ public:
                     {
                         OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
                         gFirstTimeSaving = true;
+                        // Callback will likely close this window! So should always return after it.
                         _callback(listItem.scenario.scenario->Path);
-                        if (IsTitleEditor())
-                        {
-                            Close();
-                            return;
-                        }
+                        return;
                     }
                     break;
             }
@@ -445,7 +433,7 @@ public:
                 {
                     // Draw hover highlight
                     const ScenarioIndexEntry* scenario = listItem.scenario.scenario;
-                    bool isHighlighted = highlighted_scenario == scenario;
+                    bool isHighlighted = _highlightedScenario == scenario;
                     if (isHighlighted)
                     {
                         GfxFilterRect(dpi, { 0, y, width, y + scenarioItemHeight - 1 }, FilterPaletteID::PaletteDarken1);
@@ -556,12 +544,10 @@ private:
 
             if (!IsScenarioVisible(*scenario))
                 continue;
-            if (IsTitleEditor() && scenario->SourceGame == ScenarioSource::Other)
-                continue;
 
             // Category heading
             StringId headingStringId = STR_NONE;
-            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || IsTitleEditor())
+            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
             {
                 if (selected_tab != static_cast<uint8_t>(ScenarioSource::Real) && currentHeading != scenario->Category)
                 {
@@ -666,7 +652,7 @@ private:
 
     bool IsScenarioVisible(const ScenarioIndexEntry& scenario) const
     {
-        if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || IsTitleEditor())
+        if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
         {
             if (static_cast<uint8_t>(scenario.SourceGame) != selected_tab)
             {
@@ -696,8 +682,6 @@ private:
             return false;
         if (selected_tab >= 6)
             return false;
-        if (IsTitleEditor())
-            return false;
 
         return true;
     }
@@ -709,10 +693,8 @@ private:
         for (size_t i = 0; i < numScenarios; i++)
         {
             const ScenarioIndexEntry* scenario = ScenarioRepositoryGetByIndex(i);
-            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN || IsTitleEditor())
+            if (gConfigGeneral.ScenarioSelectMode == SCENARIO_SELECT_MODE_ORIGIN)
             {
-                if (IsTitleEditor() && scenario->SourceGame == ScenarioSource::Other)
-                    continue;
                 showPages |= 1 << static_cast<uint8_t>(scenario->SourceGame);
             }
             else
@@ -776,30 +758,22 @@ private:
     }
 };
 
-WindowBase* WindowScenarioselectOpen(scenarioselect_callback callback, bool titleEditor)
+WindowBase* WindowScenarioselectOpen(scenarioselect_callback callback)
 {
-    return WindowScenarioselectOpen(
-        [callback](std::string_view scenario) { callback(std::string(scenario).c_str()); }, titleEditor);
+    return WindowScenarioselectOpen([callback](std::string_view scenario) { callback(std::string(scenario).c_str()); });
 }
 
-WindowBase* WindowScenarioselectOpen(std::function<void(std::string_view)> callback, bool titleEditor)
+WindowBase* WindowScenarioselectOpen(std::function<void(std::string_view)> callback)
 {
     auto* window = static_cast<ScenarioSelectWindow*>(WindowBringToFrontByClass(WindowClass::ScenarioSelect));
     if (window != nullptr)
     {
-        if (window->IsTitleEditor() != titleEditor)
-        {
-            WindowCloseByClass(WindowClass::ScenarioSelect);
-        }
-        else
-        {
-            return window;
-        }
+        return window;
     }
 
     int32_t screenWidth = ContextGetWidth();
     int32_t screenHeight = ContextGetHeight();
     ScreenCoordsXY screenPos = { (screenWidth - WW) / 2, std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - WH) / 2) };
-    window = WindowCreate<ScenarioSelectWindow>(WindowClass::ScenarioSelect, screenPos, WW, WH, 0, callback, titleEditor);
+    window = WindowCreate<ScenarioSelectWindow>(WindowClass::ScenarioSelect, screenPos, WW, WH, 0, callback);
     return window;
 }

@@ -11,8 +11,8 @@
 
 #include "../common.h"
 
-constexpr const StringId STR_NONE = 0xFFFF;
-constexpr const StringId STR_VIEWPORT = 0xFFFE;
+constexpr StringId STR_NONE = 0xFFFF;
+constexpr StringId STR_VIEWPORT = 0xFFFE;
 
 enum : uint16_t
 {
@@ -3989,6 +3989,20 @@ enum : uint16_t
     STR_OPTION_REVERSE_TRAINS = 6583,
     STR_OPTION_REVERSE_TRAINS_TIP = 6584,
     STR_RIDE_SET_VEHICLE_REVERSED_FAIL = 6585,
+
+    STR_OPENRCT2_DROPDOWN = 6586,
+    STR_ABOUT_OPENRCT2_TITLE = 6587,
+    STR_ABOUT_FAIRGROUND_ORGAN = 6588,
+
+    STR_WINDOW_BUTTONS_ON_THE_LEFT = 6589,
+    STR_WINDOW_BUTTONS_ON_THE_LEFT_TIP = 6590,
+
+    STR_CANT_FIRE_STAFF_FIXING = 6591,
+    STR_CANT_FIRE_STAFF_INSPECTING = 6592,
+
+    STR_CHEAT_REMOVE_PARK_FENCES = 6593,
+
+    STR_SHORTCUT_TOGGLE_WALL_SLOPE = 6594,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

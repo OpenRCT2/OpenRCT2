@@ -113,6 +113,15 @@ const std::string_view DefaultSelectedObjects[] = {
     "rct2.music.pirate",
     "rct2.music.rock3",
     "rct2.music.candy",
+    "openrct2.music.galaxy",
+    "openrct2.music.acid",
+    "openrct2.music.dodgems",
+    "openrct2.music.blizzard",
+    "openrct2.music.extraterrestrial",
+    "openrct2.music.fairground2",
+    "openrct2.music.ragtime2",
+    "openrct2.music.prehistoric",
+    "openrct2.music.mystic",
 
     // Footpath surfaces
     "rct2.footpath_surface.tarmac",

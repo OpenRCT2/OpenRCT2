@@ -45,12 +45,12 @@ enum
 
 static StringId _staffSpeedNames[] =
 {
-    STR_FROZEN,
     STR_NORMAL,
+    STR_FROZEN,
     STR_FAST,
 };
 
-static constexpr const StringId WeatherTypes[] =
+static constexpr StringId WeatherTypes[] =
 {
     STR_SUNNY,
     STR_PARTIALLY_CLOUDY,
@@ -180,17 +180,17 @@ enum WindowCheatsWidgetIdx
 
 #pragma region MEASUREMENTS
 
-static constexpr const StringId WINDOW_TITLE = STR_CHEAT_TITLE;
-static constexpr const int32_t WW = 249;
-static constexpr const int32_t WH = 300;
+static constexpr StringId WINDOW_TITLE = STR_CHEAT_TITLE;
+static constexpr int32_t WW = 249;
+static constexpr int32_t WH = 300;
 
 static constexpr ScreenSize CHEAT_BUTTON = {110, 17};
 static constexpr ScreenSize CHEAT_CHECK = {221, 12};
 static constexpr ScreenSize CHEAT_SPINNER = {117, 14};
 static constexpr ScreenSize MINMAX_BUTTON = {55, 17};
 
-static constexpr const int32_t TAB_WIDTH = 31;
-static constexpr const int32_t TAB_START = 3;
+static constexpr int32_t TAB_WIDTH = 31;
+static constexpr int32_t TAB_START = 3;
 
 
 #pragma endregion
@@ -361,7 +361,6 @@ class CheatsWindow final : public Window
 private:
     char _moneySpinnerText[MONEY_STRING_MAXLENGTH]{};
     money64 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
-    int32_t _selectedStaffSpeed = 1;
     int32_t _parkRatingSpinnerValue{};
     int32_t _yearSpinnerValue = 1;
     int32_t _monthSpinnerValue = 1;
@@ -509,7 +508,7 @@ public:
         // Current weather
         window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gClimateCurrent.Weather)];
         // Staff speed
-        window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[_selectedStaffSpeed];
+        window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(gCheatsSelectedStaffSpeed)];
 
         if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         {
@@ -641,7 +640,7 @@ private:
 
     void UpdateTabPositions()
     {
-        constexpr const uint16_t tabs[] = {
+        constexpr uint16_t tabs[] = {
             WIDX_TAB_1,
             WIDX_TAB_2,
             WIDX_TAB_3,
@@ -792,7 +791,7 @@ private:
                 CheatsSet(CheatType::SetMoney, _moneySpinnerValue);
                 break;
             case WIDX_CLEAR_LOAN:
-                CheatsSet(CheatType::ClearLoan, CHEATS_MONEY_DEFAULT);
+                CheatsSet(CheatType::ClearLoan);
                 break;
         }
     }
@@ -851,7 +850,7 @@ private:
                 WindowDropdownShowTextCustomWidth(
                     { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                     colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
-                Dropdown::SetChecked(_selectedStaffSpeed, true);
+                Dropdown::SetChecked(EnumValue(gCheatsSelectedStaffSpeed), true);
             }
         }
     }
@@ -934,18 +933,24 @@ private:
         }
         if (widgetIndex == WIDX_STAFF_SPEED_DROPDOWN_BUTTON)
         {
-            int32_t speed = CHEATS_STAFF_FAST_SPEED;
+            int32_t speed = CHEATS_STAFF_NORMAL_SPEED;
             switch (dropdownIndex)
             {
                 case 0:
+                    gCheatsSelectedStaffSpeed = StaffSpeedCheat::None;
+                    speed = CHEATS_STAFF_NORMAL_SPEED;
+                    break;
+
+                case 1:
+                    gCheatsSelectedStaffSpeed = StaffSpeedCheat::Frozen;
                     speed = CHEATS_STAFF_FREEZE_SPEED;
                     break;
-                case 1:
-                    speed = CHEATS_STAFF_NORMAL_SPEED;
-            }
 
+                case 2:
+                    gCheatsSelectedStaffSpeed = StaffSpeedCheat::Fast;
+                    speed = CHEATS_STAFF_FAST_SPEED;
+            }
             CheatsSet(CheatType::SetStaffSpeed, speed);
-            _selectedStaffSpeed = dropdownIndex;
         }
     }
 
@@ -1120,6 +1125,11 @@ private:
             }
             break;
         }
+    }
+
+    void OnResize() override
+    {
+        ResizeFrameWithPage();
     }
 };
 

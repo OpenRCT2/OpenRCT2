@@ -806,8 +806,7 @@ void ViewportUpdateSmartFollowVehicle(WindowBase* window)
  *  edi: dpi
  *  ebp: bottom
  */
-void ViewportRender(
-    DrawPixelInfo& dpi, const Viewport* viewport, const ScreenRect& screenRect, std::vector<RecordedPaintSession>* sessions)
+void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport, const ScreenRect& screenRect)
 {
     auto [topLeft, bottomRight] = screenRect;
 
@@ -837,7 +836,7 @@ void ViewportRender(
         viewport->zoom.ApplyTo(std::min(bottomRight.y, viewport->height)),
     } + viewport->viewPos;
 
-    ViewportPaint(viewport, dpi, { topLeft, bottomRight }, sessions);
+    ViewportPaint(viewport, dpi, { topLeft, bottomRight });
 
 #ifdef DEBUG_SHOW_DIRTY_BOX
     // FIXME g_viewport_list doesn't exist anymore
@@ -846,75 +845,11 @@ void ViewportRender(
 #endif
 }
 
-static void RecordSession(
-    const PaintSession& session, std::vector<RecordedPaintSession>* recorded_sessions, size_t record_index)
-{
-    // Perform a deep copy of the paint session, use relative offsets.
-    // This is done to extract the session for benchmark.
-    // Place the copied session at provided record_index, so the caller can decide which columns/paint sessions to copy;
-    // there is no column information embedded in the session itself.
-    auto& recordedSession = recorded_sessions->at(record_index);
-    recordedSession.Session = session;
-    recordedSession.Entries.resize(session.PaintEntryChain.GetCount());
-
-    // Mind the offset needs to be calculated against the original `session`, not `session_copy`
-    std::unordered_map<PaintStruct*, PaintStruct*> entryRemap;
-
-    // Copy all entries
-    auto paintIndex = 0;
-    auto chain = session.PaintEntryChain.Head;
-    while (chain != nullptr)
-    {
-        for (size_t i = 0; i < chain->Count; i++)
-        {
-            auto& src = chain->PaintStructs[i];
-            auto& dst = recordedSession.Entries[paintIndex++];
-            dst = src;
-            entryRemap[src.AsBasic()] = reinterpret_cast<PaintStruct*>(i * sizeof(PaintEntry));
-        }
-        chain = chain->Next;
-    }
-    entryRemap[nullptr] = reinterpret_cast<PaintStruct*>(-1);
-
-    // Remap all entries
-    for (auto& ps : recordedSession.Entries)
-    {
-        auto& ptr = ps.AsBasic()->NextQuadrantEntry;
-        auto it = entryRemap.find(ptr);
-        if (it == entryRemap.end())
-        {
-            assert(false);
-            ptr = nullptr;
-        }
-        else
-        {
-            ptr = it->second;
-        }
-    }
-    for (auto& ptr : recordedSession.Session.Quadrants)
-    {
-        auto it = entryRemap.find(ptr);
-        if (it == entryRemap.end())
-        {
-            assert(false);
-            ptr = nullptr;
-        }
-        else
-        {
-            ptr = it->second;
-        }
-    }
-}
-
-static void ViewportFillColumn(PaintSession& session, std::vector<RecordedPaintSession>* recorded_sessions, size_t record_index)
+static void ViewportFillColumn(PaintSession& session)
 {
     PROFILED_FUNCTION();
 
     PaintSessionGenerate(session);
-    if (recorded_sessions != nullptr)
-    {
-        RecordSession(session, recorded_sessions, record_index);
-    }
     PaintSessionArrange(session);
 }
 
@@ -959,9 +894,7 @@ static void ViewportPaintColumn(PaintSession& session)
  *  edi: dpi
  *  ebp: bottom
  */
-void ViewportPaint(
-    const Viewport* viewport, DrawPixelInfo& dpi, const ScreenRect& screenRect,
-    std::vector<RecordedPaintSession>* recorded_sessions)
+void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const ScreenRect& screenRect)
 {
     PROFILED_FUNCTION();
 
@@ -1019,17 +952,8 @@ void ViewportPaint(
         useParallelDrawing = true;
     }
 
-    // Create space to record sessions and keep track which index is being drawn
-    size_t index = 0;
-    if (recorded_sessions != nullptr)
-    {
-        auto columnSize = rightBorder - alignedX;
-        auto columnCount = (columnSize + 31) / 32;
-        recorded_sessions->resize(columnCount);
-    }
-
     // Generate and sort columns.
-    for (x = alignedX; x < rightBorder; x += 32, index++)
+    for (x = alignedX; x < rightBorder; x += 32)
     {
         PaintSession* session = PaintSessionAlloc(dpi1, viewFlags);
         _paintColumns.push_back(session);
@@ -1055,12 +979,11 @@ void ViewportPaint(
 
         if (useMultithreading)
         {
-            _paintJobs->AddTask(
-                [session, recorded_sessions, index]() -> void { ViewportFillColumn(*session, recorded_sessions, index); });
+            _paintJobs->AddTask([session]() -> void { ViewportFillColumn(*session); });
         }
         else
         {
-            ViewportFillColumn(*session, recorded_sessions, index);
+            ViewportFillColumn(*session);
         }
     }
 
@@ -1315,7 +1238,7 @@ void HideConstructionRights()
  *
  *  rct2: 0x006CB70A
  */
-void ViewportSetVisibility(uint8_t mode)
+void ViewportSetVisibility(ViewportVisibility mode)
 {
     WindowBase* window = WindowGetMain();
 
@@ -1326,7 +1249,7 @@ void ViewportSetVisibility(uint8_t mode)
 
         switch (mode)
         {
-            case 0:
+            case ViewportVisibility::Default:
             { // Set all these flags to 0, and invalidate if any were active
                 uint32_t mask = VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_RIDES | VIEWPORT_FLAG_HIDE_SCENERY
                     | VIEWPORT_FLAG_HIDE_PATHS | VIEWPORT_FLAG_LAND_HEIGHTS | VIEWPORT_FLAG_TRACK_HEIGHTS
@@ -1338,19 +1261,19 @@ void ViewportSetVisibility(uint8_t mode)
                 vp->flags &= ~mask;
                 break;
             }
-            case 1: // 6CB79D
-            case 4: // 6CB7C4
+            case ViewportVisibility::UndergroundViewOn:      // 6CB79D
+            case ViewportVisibility::UndergroundViewGhostOn: // 6CB7C4
                 // Set underground on, invalidate if it was off
                 invalidate += !(vp->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
                 vp->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
                 break;
-            case 2: // 6CB7EB
+            case ViewportVisibility::TrackHeights: // 6CB7EB
                 // Set track heights on, invalidate if off
                 invalidate += !(vp->flags & VIEWPORT_FLAG_TRACK_HEIGHTS);
                 vp->flags |= VIEWPORT_FLAG_TRACK_HEIGHTS;
                 break;
-            case 3: // 6CB7B1
-            case 5: // 6CB7D8
+            case ViewportVisibility::UndergroundViewOff:      // 6CB7B1
+            case ViewportVisibility::UndergroundViewGhostOff: // 6CB7D8
                 // Set underground off, invalidate if it was on
                 invalidate += vp->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE;
                 vp->flags &= ~(static_cast<uint16_t>(VIEWPORT_FLAG_UNDERGROUND_INSIDE));
@@ -1439,7 +1362,7 @@ VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlag
                                 break;
 
                             auto ride = vehicle->GetRide();
-                            if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+                            if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
                             {
                                 return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::Hidden
                                                                                    : VisibilityKind::Partial;
@@ -1471,7 +1394,7 @@ VisibilityKind GetPaintStructVisibility(const PaintStruct* ps, uint32_t viewFlag
             }
             break;
         case ViewportInteractionItem::Footpath:
-        case ViewportInteractionItem::FootpathItem:
+        case ViewportInteractionItem::PathAddition:
         case ViewportInteractionItem::Banner:
             if (viewFlags & VIEWPORT_FLAG_HIDE_PATHS)
             {

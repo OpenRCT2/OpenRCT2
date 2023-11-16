@@ -61,7 +61,7 @@ public:
     {
         for (const auto& entry : _entries)
         {
-            if (String::Equals(entry.Key, key, true))
+            if (String::IEquals(entry.Key, key))
             {
                 return entry.Value;
             }

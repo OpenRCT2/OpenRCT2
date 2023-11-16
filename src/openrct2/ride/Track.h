@@ -16,11 +16,11 @@
 
 #include <optional>
 
-constexpr const uint32_t RideConstructionSpecialPieceSelected = 0x10000;
+constexpr uint32_t RideConstructionSpecialPieceSelected = 0x10000;
 
-constexpr const uint8_t kRCT2DefaultBlockBrakeSpeed = 2;
-constexpr const int32_t kBlockBrakeBaseSpeed = 0x20364;
-constexpr const int32_t kBlockBrakeSpeedOffset = kBlockBrakeBaseSpeed - (kRCT2DefaultBlockBrakeSpeed << 16);
+constexpr uint8_t kRCT2DefaultBlockBrakeSpeed = 2;
+constexpr int32_t kBlockBrakeBaseSpeed = 0x20364;
+constexpr int32_t kBlockBrakeSpeedOffset = kBlockBrakeBaseSpeed - (kRCT2DefaultBlockBrakeSpeed << 16);
 
 using track_type_t = uint16_t;
 using roll_type_t = uint8_t;
@@ -140,9 +140,12 @@ enum
     TRACK_HALF_LOOP,
     TRACK_CORKSCREW,
     TRACK_TOWER_BASE,
-    TRACK_HELIX_SMALL,
-    TRACK_HELIX_LARGE,
-    TRACK_HELIX_LARGE_UNBANKED,
+    TRACK_HELIX_UP_BANKED_HALF,
+    TRACK_HELIX_DOWN_BANKED_HALF,
+    TRACK_HELIX_UP_BANKED_QUARTER,
+    TRACK_HELIX_DOWN_BANKED_QUARTER,
+    TRACK_HELIX_UP_UNBANKED_QUARTER,
+    TRACK_HELIX_DOWN_UNBANKED_QUARTER,
     TRACK_BRAKES,
     TRACK_ON_RIDE_PHOTO,
     TRACK_WATER_SPLASH,
@@ -202,6 +205,9 @@ enum
 
     TRACK_SLOPE_CURVE_LARGE,
     TRACK_SLOPE_CURVE_LARGE_BANKED,
+
+    TRACK_DIAG_BRAKES,
+    TRACK_DIAG_BLOCK_BRAKES,
 
     TRACK_GROUP_COUNT,
 };
@@ -451,8 +457,8 @@ namespace TrackElemType
     constexpr track_type_t PoweredLift = 182;
     constexpr track_type_t LeftLargeHalfLoopUp = 183;
     constexpr track_type_t RightLargeHalfLoopUp = 184;
-    constexpr track_type_t RightLargeHalfLoopDown = 185;
-    constexpr track_type_t LeftLargeHalfLoopDown = 186;
+    constexpr track_type_t LeftLargeHalfLoopDown = 185;
+    constexpr track_type_t RightLargeHalfLoopDown = 186;
     constexpr track_type_t LeftFlyerTwistUp = 187;
     constexpr track_type_t RightFlyerTwistUp = 188;
     constexpr track_type_t LeftFlyerTwistDown = 189;
@@ -571,12 +577,12 @@ namespace TrackElemType
 
     constexpr track_type_t LeftFlyerLargeHalfLoopUninvertedUp = 283;
     constexpr track_type_t RightFlyerLargeHalfLoopUninvertedUp = 284;
-    constexpr track_type_t RightFlyerLargeHalfLoopInvertedDown = 285;
-    constexpr track_type_t LeftFlyerLargeHalfLoopInvertedDown = 286;
+    constexpr track_type_t LeftFlyerLargeHalfLoopInvertedDown = 285;
+    constexpr track_type_t RightFlyerLargeHalfLoopInvertedDown = 286;
     constexpr track_type_t LeftFlyerLargeHalfLoopInvertedUp = 287;
     constexpr track_type_t RightFlyerLargeHalfLoopInvertedUp = 288;
-    constexpr track_type_t RightFlyerLargeHalfLoopUninvertedDown = 289;
-    constexpr track_type_t LeftFlyerLargeHalfLoopUninvertedDown = 290;
+    constexpr track_type_t LeftFlyerLargeHalfLoopUninvertedDown = 289;
+    constexpr track_type_t RightFlyerLargeHalfLoopUninvertedDown = 290;
 
     constexpr track_type_t FlyerHalfLoopInvertedUp = 291;
     constexpr track_type_t FlyerHalfLoopUninvertedDown = 292;
@@ -628,7 +634,10 @@ namespace TrackElemType
     constexpr track_type_t LeftEighthBankToOrthogonalDown25 = 335;
     constexpr track_type_t RightEighthBankToOrthogonalDown25 = 336;
 
-    constexpr track_type_t Count = 337;
+    constexpr track_type_t DiagBrakes = 337;
+    constexpr track_type_t DiagBlockBrakes = 338;
+
+    constexpr track_type_t Count = 339;
     constexpr track_type_t None = 65535;
 
 }; // namespace TrackElemType
@@ -677,6 +686,11 @@ void TrackGetFront(const CoordsXYE& input, CoordsXYE* output);
 
 bool TrackElementIsCovered(track_type_t trackElementType);
 bool TrackTypeIsStation(track_type_t trackType);
+bool TrackTypeIsBrakes(track_type_t trackType);
+bool TrackTypeIsBlockBrakes(track_type_t trackType);
+
+std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
+    const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);
 
 roll_type_t TrackGetActualBank(TileElement* tileElement, roll_type_t bank);
 roll_type_t TrackGetActualBank2(int32_t rideType, bool isInverted, roll_type_t bank);

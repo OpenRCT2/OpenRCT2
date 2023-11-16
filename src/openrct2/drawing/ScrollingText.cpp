@@ -163,7 +163,7 @@ extern bool TempForScrollText;
 #define SCROLL_POS(x, y) (((y)*64) + (x))
 
 // clang-format off
-static constexpr const int16_t _scrollpos0[] = {
+static constexpr int16_t _scrollpos0[] = {
     SCROLL_POS( 35, 12 ),
     SCROLL_POS( 36, 12 ),
     SCROLL_POS( 37, 11 ),
@@ -190,7 +190,7 @@ static constexpr const int16_t _scrollpos0[] = {
     SCROLL_POS( 58,  1 ),
     -1,
 };
-static constexpr const int16_t _scrollpos1[] = {
+static constexpr int16_t _scrollpos1[] = {
     SCROLL_POS(  5,  1 ),
     SCROLL_POS(  6,  1 ),
     SCROLL_POS(  7,  2 ),
@@ -217,7 +217,7 @@ static constexpr const int16_t _scrollpos1[] = {
     SCROLL_POS( 28, 12 ),
     -1,
 };
-static constexpr const int16_t _scrollpos2[] = {
+static constexpr int16_t _scrollpos2[] = {
     SCROLL_POS( 12,  1 ),
     SCROLL_POS( 13,  1 ),
     SCROLL_POS( 14,  2 ),
@@ -259,7 +259,7 @@ static constexpr const int16_t _scrollpos2[] = {
     SCROLL_POS( 50,  1 ),
     -1,
 };
-static constexpr const int16_t _scrollpos3[] = {
+static constexpr int16_t _scrollpos3[] = {
     SCROLL_POS( 16,  0 ),
     SCROLL_POS( 17,  1 ),
     SCROLL_POS( 18,  1 ),
@@ -295,7 +295,7 @@ static constexpr const int16_t _scrollpos3[] = {
     SCROLL_POS( 48, 16 ),
     -1,
 };
-static constexpr const int16_t _scrollpos4[] = {
+static constexpr int16_t _scrollpos4[] = {
     SCROLL_POS( 15, 17 ),
     SCROLL_POS( 16, 17 ),
     SCROLL_POS( 17, 16 ),
@@ -332,7 +332,7 @@ static constexpr const int16_t _scrollpos4[] = {
     SCROLL_POS( 48,  0 ),
     -1,
 };
-static constexpr const int16_t _scrollpos5[] = {
+static constexpr int16_t _scrollpos5[] = {
     SCROLL_POS(  4, 12 ),
     SCROLL_POS(  5, 12 ),
     SCROLL_POS(  6, 11 ),
@@ -359,7 +359,7 @@ static constexpr const int16_t _scrollpos5[] = {
     SCROLL_POS( 27,  1 ),
     -1,
 };
-static constexpr const int16_t _scrollpos6[] = {
+static constexpr int16_t _scrollpos6[] = {
     SCROLL_POS( 36,  1 ),
     SCROLL_POS( 37,  1 ),
     SCROLL_POS( 38,  2 ),
@@ -386,7 +386,7 @@ static constexpr const int16_t _scrollpos6[] = {
     SCROLL_POS( 59, 12 ),
     -1,
 };
-static constexpr const int16_t _scrollpos7[] = {
+static constexpr int16_t _scrollpos7[] = {
     SCROLL_POS(  8, 11 ),
     SCROLL_POS(  9, 11 ),
     SCROLL_POS( 10, 10 ),
@@ -411,7 +411,7 @@ static constexpr const int16_t _scrollpos7[] = {
     SCROLL_POS( 29,  1 ),
     -1,
 };
-static constexpr const int16_t _scrollpos8[] = {
+static constexpr int16_t _scrollpos8[] = {
     SCROLL_POS( 36,  2 ),
     SCROLL_POS( 37,  2 ),
     SCROLL_POS( 38,  3 ),
@@ -434,7 +434,7 @@ static constexpr const int16_t _scrollpos8[] = {
     SCROLL_POS( 55, 11 ),
     -1,
 };
-static constexpr const int16_t _scrollpos9[] = {
+static constexpr int16_t _scrollpos9[] = {
     SCROLL_POS( 11,  9 ),
     SCROLL_POS( 12,  9 ),
     SCROLL_POS( 13,  9 ),
@@ -456,7 +456,7 @@ static constexpr const int16_t _scrollpos9[] = {
     SCROLL_POS( 29,  1 ),
     -1,
 };
-static constexpr const int16_t _scrollpos10[] = {
+static constexpr int16_t _scrollpos10[] = {
     SCROLL_POS( 34,  1 ),
     SCROLL_POS( 35,  2 ),
     SCROLL_POS( 36,  3 ),
@@ -478,7 +478,7 @@ static constexpr const int16_t _scrollpos10[] = {
     SCROLL_POS( 52,  9 ),
     -1,
 };
-static constexpr const int16_t _scrollpos11[] = {
+static constexpr int16_t _scrollpos11[] = {
     SCROLL_POS( 14, 10 ),
     SCROLL_POS( 15,  9 ),
     SCROLL_POS( 16,  9 ),
@@ -502,7 +502,7 @@ static constexpr const int16_t _scrollpos11[] = {
     SCROLL_POS( 34,  0 ),
     -1,
 };
-static constexpr const int16_t _scrollpos12[] = {
+static constexpr int16_t _scrollpos12[] = {
     SCROLL_POS( 33,  1 ),
     SCROLL_POS( 34,  2 ),
     SCROLL_POS( 35,  2 ),
@@ -526,7 +526,7 @@ static constexpr const int16_t _scrollpos12[] = {
     SCROLL_POS( 53, 11 ),
     -1,
 };
-static constexpr const int16_t _scrollpos13[] = {
+static constexpr int16_t _scrollpos13[] = {
     SCROLL_POS( 12, 11 ),
     SCROLL_POS( 13, 10 ),
     SCROLL_POS( 14, 10 ),
@@ -549,7 +549,7 @@ static constexpr const int16_t _scrollpos13[] = {
     SCROLL_POS( 31,  1 ),
     -1,
 };
-static constexpr const int16_t _scrollpos14[] = {
+static constexpr int16_t _scrollpos14[] = {
     SCROLL_POS( 33,  1 ),
     SCROLL_POS( 34,  2 ),
     SCROLL_POS( 35,  2 ),
@@ -573,7 +573,7 @@ static constexpr const int16_t _scrollpos14[] = {
     SCROLL_POS( 53, 11 ),
     -1,
 };
-static constexpr const int16_t _scrollpos15[] = {
+static constexpr int16_t _scrollpos15[] = {
     SCROLL_POS( 10, 10 ),
     SCROLL_POS( 11, 10 ),
     SCROLL_POS( 12,  9 ),
@@ -598,7 +598,7 @@ static constexpr const int16_t _scrollpos15[] = {
     SCROLL_POS( 31,  0 ),
     -1,
 };
-static constexpr const int16_t _scrollpos16[] = {
+static constexpr int16_t _scrollpos16[] = {
     SCROLL_POS( 33,  0 ),
     SCROLL_POS( 34,  0 ),
     SCROLL_POS( 35,  1 ),
@@ -623,7 +623,7 @@ static constexpr const int16_t _scrollpos16[] = {
     SCROLL_POS( 54, 10 ),
     -1,
 };
-static constexpr const int16_t _scrollpos17[] = {
+static constexpr int16_t _scrollpos17[] = {
     SCROLL_POS(  6, 11 ),
     SCROLL_POS(  7, 11 ),
     SCROLL_POS(  8, 10 ),
@@ -650,7 +650,7 @@ static constexpr const int16_t _scrollpos17[] = {
     SCROLL_POS( 29,  0 ),
     -1,
 };
-static constexpr const int16_t _scrollpos18[] = {
+static constexpr int16_t _scrollpos18[] = {
     SCROLL_POS( 34,  0 ),
     SCROLL_POS( 35,  0 ),
     SCROLL_POS( 36,  1 ),
@@ -677,7 +677,7 @@ static constexpr const int16_t _scrollpos18[] = {
     SCROLL_POS( 57, 11 ),
     -1,
 };
-static constexpr const int16_t _scrollpos19[] = {
+static constexpr int16_t _scrollpos19[] = {
     SCROLL_POS( 13,  1 ),
     SCROLL_POS( 14,  1 ),
     SCROLL_POS( 15,  2 ),
@@ -719,7 +719,7 @@ static constexpr const int16_t _scrollpos19[] = {
     SCROLL_POS( 51,  1 ),
     -1,
 };
-static constexpr const int16_t _scrollpos20[] = {
+static constexpr int16_t _scrollpos20[] = {
     SCROLL_POS( 12,  1 ),
     SCROLL_POS( 13,  3 ),
     SCROLL_POS( 14,  4 ),
@@ -760,7 +760,7 @@ static constexpr const int16_t _scrollpos20[] = {
     SCROLL_POS( 49,  3 ),
     -1,
 };
-static constexpr const int16_t _scrollpos21[] = {
+static constexpr int16_t _scrollpos21[] = {
     SCROLL_POS( 12,  1 ),
     SCROLL_POS( 13,  1 ),
     SCROLL_POS( 14,  2 ),
@@ -801,7 +801,7 @@ static constexpr const int16_t _scrollpos21[] = {
     SCROLL_POS( 49,  1 ),
     -1,
 };
-static constexpr const int16_t _scrollpos22[] = {
+static constexpr int16_t _scrollpos22[] = {
     SCROLL_POS( 16,  1 ),
     SCROLL_POS( 17,  1 ),
     SCROLL_POS( 18,  2 ),
@@ -837,7 +837,7 @@ static constexpr const int16_t _scrollpos22[] = {
     SCROLL_POS( 48,  1 ),
     -1,
 };
-static constexpr const int16_t _scrollpos23[] = {
+static constexpr int16_t _scrollpos23[] = {
     SCROLL_POS( 15,  1 ),
     SCROLL_POS( 16,  2 ),
     SCROLL_POS( 17,  2 ),
@@ -874,7 +874,7 @@ static constexpr const int16_t _scrollpos23[] = {
     SCROLL_POS( 48,  1 ),
     -1,
 };
-static constexpr const int16_t _scrollpos24[] = {
+static constexpr int16_t _scrollpos24[] = {
     SCROLL_POS(  8,  9 ),
     SCROLL_POS(  9,  9 ),
     SCROLL_POS( 10,  8 ),
@@ -897,7 +897,7 @@ static constexpr const int16_t _scrollpos24[] = {
     SCROLL_POS( 27,  0 ),
     -1,
 };
-static constexpr const int16_t _scrollpos25[] = {
+static constexpr int16_t _scrollpos25[] = {
     SCROLL_POS( 36,  0 ),
     SCROLL_POS( 37,  0 ),
     SCROLL_POS( 38,  1 ),
@@ -920,7 +920,7 @@ static constexpr const int16_t _scrollpos25[] = {
     SCROLL_POS( 55,  9 ),
     -1,
 };
-static constexpr const int16_t _scrollpos26[] = {
+static constexpr int16_t _scrollpos26[] = {
     SCROLL_POS(  4, 13 ),
     SCROLL_POS(  5, 13 ),
     SCROLL_POS(  6, 12 ),
@@ -951,7 +951,7 @@ static constexpr const int16_t _scrollpos26[] = {
     SCROLL_POS( 31,  0 ),
     -1,
 };
-static constexpr const int16_t _scrollpos27[] = {
+static constexpr int16_t _scrollpos27[] = {
     SCROLL_POS( 32,  0 ),
     SCROLL_POS( 33,  0 ),
     SCROLL_POS( 34,  1 ),
@@ -982,7 +982,7 @@ static constexpr const int16_t _scrollpos27[] = {
     SCROLL_POS( 59, 13 ),
     -1,
 };
-static constexpr const int16_t _scrollpos28[] = {
+static constexpr int16_t _scrollpos28[] = {
     SCROLL_POS(  6, 13 ),
     SCROLL_POS(  7, 13 ),
     SCROLL_POS(  8, 12 ),
@@ -1013,7 +1013,7 @@ static constexpr const int16_t _scrollpos28[] = {
     SCROLL_POS( 33,  0 ),
     -1,
 };
-static constexpr const int16_t _scrollpos29[] = {
+static constexpr int16_t _scrollpos29[] = {
     SCROLL_POS( 30,  0 ),
     SCROLL_POS( 31,  0 ),
     SCROLL_POS( 32,  1 ),
@@ -1044,7 +1044,7 @@ static constexpr const int16_t _scrollpos29[] = {
     SCROLL_POS( 57, 13 ),
     -1,
 };
-static constexpr const int16_t _scrollpos30[] = {
+static constexpr int16_t _scrollpos30[] = {
     SCROLL_POS(  2, 30 ),
     SCROLL_POS(  3, 30 ),
     SCROLL_POS(  4, 29 ),
@@ -1108,7 +1108,7 @@ static constexpr const int16_t _scrollpos30[] = {
     SCROLL_POS( 62,  0 ),
     -1,
 };
-static constexpr const int16_t _scrollpos31[] = {
+static constexpr int16_t _scrollpos31[] = {
     SCROLL_POS(  1,  0 ),
     SCROLL_POS(  2,  1 ),
     SCROLL_POS(  3,  1 ),
@@ -1172,7 +1172,7 @@ static constexpr const int16_t _scrollpos31[] = {
     SCROLL_POS( 61, 30 ),
     -1,
 };
-static constexpr const int16_t _scrollpos32[] = {
+static constexpr int16_t _scrollpos32[] = {
     SCROLL_POS( 12,  0 ),
     SCROLL_POS( 13,  1 ),
     SCROLL_POS( 14,  1 ),
@@ -1214,7 +1214,7 @@ static constexpr const int16_t _scrollpos32[] = {
     SCROLL_POS( 50, 19 ),
     -1,
 };
-static constexpr const int16_t _scrollpos33[] = {
+static constexpr int16_t _scrollpos33[] = {
     SCROLL_POS( 12, 20 ),
     SCROLL_POS( 13, 20 ),
     SCROLL_POS( 14, 19 ),
@@ -1257,7 +1257,7 @@ static constexpr const int16_t _scrollpos33[] = {
     SCROLL_POS( 51,  1 ),
     -1,
 };
-static constexpr const int16_t _scrollpos34[] = {
+static constexpr int16_t _scrollpos34[] = {
     SCROLL_POS(  2, 14 ),
     SCROLL_POS(  3, 14 ),
     SCROLL_POS(  4, 13 ),
@@ -1289,7 +1289,7 @@ static constexpr const int16_t _scrollpos34[] = {
     SCROLL_POS( 30,  0 ),
     -1,
 };
-static constexpr const int16_t _scrollpos35[] = {
+static constexpr int16_t _scrollpos35[] = {
     SCROLL_POS( 33,  0 ),
     SCROLL_POS( 34,  0 ),
     SCROLL_POS( 35,  1 ),
@@ -1321,7 +1321,7 @@ static constexpr const int16_t _scrollpos35[] = {
     SCROLL_POS( 61, 14 ),
     -1,
 };
-static constexpr const int16_t _scrollpos36[] = {
+static constexpr int16_t _scrollpos36[] = {
     SCROLL_POS(  4,  0 ),
     SCROLL_POS(  5,  1 ),
     SCROLL_POS(  6,  2 ),
@@ -1351,7 +1351,7 @@ static constexpr const int16_t _scrollpos36[] = {
     SCROLL_POS( 30, 12 ),
     -1,
 };
-static constexpr const int16_t _scrollpos37[] = {
+static constexpr int16_t _scrollpos37[] = {
     SCROLL_POS( 32, 13 ),
     SCROLL_POS( 33, 12 ),
     SCROLL_POS( 34, 12 ),

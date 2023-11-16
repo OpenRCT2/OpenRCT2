@@ -14,6 +14,8 @@
 #include <cstdint>
 #include <vector>
 
+struct TileElement;
+
 struct MapAnimation
 {
     uint8_t type{};
@@ -43,3 +45,4 @@ void MapAnimationCreate(int32_t type, const CoordsXYZ& loc);
 void MapAnimationInvalidateAll();
 const std::vector<MapAnimation>& GetMapAnimations();
 void MapAnimationAutoCreate();
+void MapAnimationAutoCreateAtTileElement(TileCoordsXY coords, TileElement* el);

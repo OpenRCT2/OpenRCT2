@@ -149,13 +149,13 @@ private:
             auto scanner = Path::ScanDirectory(pattern, true);
             while (scanner->Next())
             {
-                auto fileInfo = scanner->GetFileInfo();
-                auto path = std::string(scanner->GetPath());
+                const auto& fileInfo = scanner->GetFileInfo();
+                auto path = scanner->GetPath();
 
                 stats.TotalFiles++;
-                stats.TotalFileSize += fileInfo->Size;
-                stats.FileDateModifiedChecksum ^= static_cast<uint32_t>(fileInfo->LastModified >> 32)
-                    ^ static_cast<uint32_t>(fileInfo->LastModified & 0xFFFFFFFF);
+                stats.TotalFileSize += fileInfo.Size;
+                stats.FileDateModifiedChecksum ^= static_cast<uint32_t>(fileInfo.LastModified >> 32)
+                    ^ static_cast<uint32_t>(fileInfo.LastModified & 0xFFFFFFFF);
                 stats.FileDateModifiedChecksum = Numerics::ror32(stats.FileDateModifiedChecksum, 5);
                 stats.PathChecksum += GetPathChecksum(path);
 

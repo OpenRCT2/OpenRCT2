@@ -57,7 +57,7 @@ static std::vector<ReplayTestData> GetReplayFiles()
     while (scanner->Next())
     {
         ReplayTestData test;
-        test.name = sanitizeTestName(scanner->GetFileInfo()->Name);
+        test.name = sanitizeTestName(scanner->GetFileInfo().Name);
         test.filePath = scanner->GetPath();
         res.push_back(std::move(test));
     }
@@ -73,7 +73,6 @@ TEST_P(ReplayTests, RunReplay)
 {
     gOpenRCT2Headless = true;
     gOpenRCT2NoGraphics = true;
-    Platform::CoreInit();
 
     auto testData = GetParam();
     auto replayFile = testData.filePath;

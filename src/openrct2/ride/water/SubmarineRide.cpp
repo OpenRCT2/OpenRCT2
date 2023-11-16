@@ -118,8 +118,8 @@ static void SubmarineRidePaintTrackFlat(
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick, 4, -1, heightLower,
-            session.TrackColours[SCHEME_SUPPORTS]);
+            session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick, MetalSupportPlace::Centre, -1,
+            heightLower, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -140,7 +140,8 @@ static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Stick, 4, -1, height - 16, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Stick, MetalSupportPlace::Centre, -1, height - 16,
+                session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B4, direction), 0xFFFF, 0);
             break;
@@ -150,7 +151,8 @@ static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
             break;
         case 3:
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Stick, 4, -1, height - 16, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Stick, MetalSupportPlace::Centre, -1, height - 16,
+                session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0, direction), 0xFFFF, 0);
             break;
@@ -159,7 +161,7 @@ static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
     PaintUtilSetGeneralSupportHeight(session, height + 16, 0x20);
 }
 
-static constexpr const uint8_t submarine_ride_right_quarter_turn_3_tiles_to_left_turn_map[] = {
+static constexpr uint8_t submarine_ride_right_quarter_turn_3_tiles_to_left_turn_map[] = {
     3,
     1,
     2,

@@ -757,12 +757,17 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
     else
     {
         auto obj = objectMgr.GetLoadedObject(scenery.scenery_object);
+        bool objectUnavailable = obj == nullptr;
         if (obj != nullptr)
         {
             result.Type = obj->GetObjectType();
             result.Index = objectMgr.GetLoadedObjectEntryIndex(obj);
+            if (!gCheatsIgnoreResearchStatus)
+            {
+                objectUnavailable = !ResearchIsInvented(result.Type, result.Index);
+            }
         }
-        else
+        if (objectUnavailable)
         {
             _trackDesignPlaceStateSceneryUnavailable = true;
             return {};
@@ -908,7 +913,7 @@ static void TrackDesignMirrorRide(TrackDesign* td6)
 }
 
 /** rct2: 0x00993EDC */
-static constexpr const uint8_t maze_segment_mirror_map[] = {
+static constexpr uint8_t maze_segment_mirror_map[] = {
     5, 4, 2, 7, 1, 0, 14, 3, 13, 12, 10, 15, 9, 8, 6, 11,
 };
 
@@ -2223,8 +2228,8 @@ static void TrackDesignPreviewClearMap()
         element->SetLastForTile(true);
         element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
         element->AsSurface()->SetWaterHeight(0);
-        element->AsSurface()->SetSurfaceStyle(0);
-        element->AsSurface()->SetEdgeStyle(0);
+        element->AsSurface()->SetSurfaceObjectIndex(0);
+        element->AsSurface()->SetEdgeObjectIndex(0);
         element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
         element->AsSurface()->SetOwnership(OWNERSHIP_OWNED);
         element->AsSurface()->SetParkFences(0);

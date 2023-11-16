@@ -186,7 +186,7 @@ enum
     SprMiniGolfHoleETrimPart3SwNw = 14556,
 };
 
-static constexpr const uint32_t MiniGolfTrackSprites25DegUp[][3] = {
+static constexpr uint32_t MiniGolfTrackSprites25DegUp[][3] = {
     {
         SprMiniGolf25DegUpSwNe,
         SprMiniGolf25DegUpFenceBackSwNe,
@@ -209,7 +209,7 @@ static constexpr const uint32_t MiniGolfTrackSprites25DegUp[][3] = {
     },
 };
 
-static constexpr const uint32_t MiniGolfTrackSpritesFlatTo25DegUp[][3] = {
+static constexpr uint32_t MiniGolfTrackSpritesFlatTo25DegUp[][3] = {
     {
         SprMiniGolfFlatTo25DegUpSwNe,
         SprMiniGolfFlatTo25DegUpFenceBackSwNe,
@@ -232,7 +232,7 @@ static constexpr const uint32_t MiniGolfTrackSpritesFlatTo25DegUp[][3] = {
     },
 };
 
-static constexpr const uint32_t MiniGolfTrackSprites25DegUpToFlat[][3] = {
+static constexpr uint32_t MiniGolfTrackSprites25DegUpToFlat[][3] = {
     {
         SprMiniGolf25DegUpToFlatSwNe,
         SprMiniGolf25DegUpToFlatFenceBackSwNe,
@@ -255,21 +255,21 @@ static constexpr const uint32_t MiniGolfTrackSprites25DegUpToFlat[][3] = {
     },
 };
 
-static constexpr const uint32_t MiniGolfTrackSpritesQuarterTurn1Tile[] = {
+static constexpr uint32_t MiniGolfTrackSpritesQuarterTurn1Tile[] = {
     SprMiniGolfQuarterTurn1TileSwNw,
     SprMiniGolfQuarterTurn1TileNwNe,
     SprMiniGolfQuarterTurn1TileNeSe,
     SprMiniGolfQuarterTurn1TileSeSw,
 };
 
-static constexpr const uint32_t MiniGolfTrackSpritesQuarterTurn1TileFenceFront[] = {
+static constexpr uint32_t MiniGolfTrackSpritesQuarterTurn1TileFenceFront[] = {
     SprMiniGolfQuarterTurn1TileFenceFrontSwNw,
     SprMiniGolfQuarterTurn1TileFenceFrontNwNe,
     SprMiniGolfQuarterTurn1TileFenceFrontNeSe,
     SprMiniGolfQuarterTurn1TileFenceFrontSeSw,
 };
 
-static constexpr const uint32_t MiniGolfTrackSpritesHoleA[4][2][2] = {
+static constexpr uint32_t MiniGolfTrackSpritesHoleA[4][2][2] = {
     {
         { SprMiniGolfHoleABasePart1SwNe, SprMiniGolfHoleATrimPart1SwNe },
         { SprMiniGolfHoleABasePart2SwNe, SprMiniGolfHoleATrimPart2SwNe },
@@ -288,7 +288,7 @@ static constexpr const uint32_t MiniGolfTrackSpritesHoleA[4][2][2] = {
     },
 };
 
-static constexpr const uint32_t MiniGolfTrackSpritesHoleB[4][2][2] = {
+static constexpr uint32_t MiniGolfTrackSpritesHoleB[4][2][2] = {
     {
         { SprMiniGolfHoleBBasePart1SwNe, SprMiniGolfHoleBTrimPart1SwNe },
         { SprMiniGolfHoleBBasePart2SwNe, SprMiniGolfHoleBTrimPart2SwNe },
@@ -307,7 +307,7 @@ static constexpr const uint32_t MiniGolfTrackSpritesHoleB[4][2][2] = {
     },
 };
 
-static constexpr const uint32_t MiniGolfTrackSpritesHoleC[][2][2] = {
+static constexpr uint32_t MiniGolfTrackSpritesHoleC[][2][2] = {
     {
         { SprMiniGolfHoleCBasePart1SwNe, SprMiniGolfHoleCTrimPart1SwNe },
         { SprMiniGolfHoleCBasePart2SwNe, SprMiniGolfHoleCTrimPart2SwNe },
@@ -326,7 +326,7 @@ static constexpr const uint32_t MiniGolfTrackSpritesHoleC[][2][2] = {
     },
 };
 
-static constexpr const uint32_t MiniGolfTrackSpritesHoleD[][3][2] = {
+static constexpr uint32_t MiniGolfTrackSpritesHoleD[][3][2] = {
     {
         { SprMiniGolfHoleDBasePart1SwSe, SprMiniGolfHoleDTrimPart1SwSe },
         { SprMiniGolfHoleDBasePart2SwSe, SprMiniGolfHoleDTrimPart2SwSe },
@@ -349,7 +349,7 @@ static constexpr const uint32_t MiniGolfTrackSpritesHoleD[][3][2] = {
     },
 };
 
-static constexpr const uint32_t MiniGolfTrackSpritesHoleE[][3][2] = {
+static constexpr uint32_t MiniGolfTrackSpritesHoleE[][3][2] = {
     {
         { SprMiniGolfHoleEBasePart1SwNw, SprMiniGolfHoleETrimPart1SwNw },
         { SprMiniGolfHoleEBasePart2SwNw, SprMiniGolfHoleETrimPart2SwNw },
@@ -374,47 +374,47 @@ static constexpr const uint32_t MiniGolfTrackSpritesHoleE[][3][2] = {
 
 /** rct2: 0x00933471 */
 // clang-format off
-static constexpr const uint8_t MiniGolfPeepAnimationFramesWalk[] = {
+static constexpr uint8_t MiniGolfPeepAnimationFramesWalk[] = {
     0, 1, 2, 3, 4, 5,
 };
 
 /** rct2: 0x00933478 */
-static constexpr const uint8_t MiniGolfPeepAnimationFramesPlaceBallDownwards[] = {
+static constexpr uint8_t MiniGolfPeepAnimationFramesPlaceBallDownwards[] = {
     12, 13, 14, 15,
 };
 
 /** rct2: 0x009334B5 */
-static constexpr const uint8_t MiniGolfPeepAnimationFramesSwing[] = {
+static constexpr uint8_t MiniGolfPeepAnimationFramesSwing[] = {
     31, 31, 31, 31, 31, 31, 31, 31, 31, 32, 33, 33, 33, 33, 34,
 };
 
 /** rct2: 0x0093347D */
-static constexpr const uint8_t MiniGolfPeepAnimationFramesSwingLeft[] = {
+static constexpr uint8_t MiniGolfPeepAnimationFramesSwingLeft[] = {
     6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 8, 8, 8, 8, 9,
 };
 
 /** rct2: 0x0093348D */
-static constexpr const uint8_t MiniGolfPeepAnimationFramesPickupBall[] = {
+static constexpr uint8_t MiniGolfPeepAnimationFramesPickupBall[] = {
     12, 13, 14, 15, 14, 13, 12,
 };
 
 /** rct2: 0x00933495 */
-static constexpr const uint8_t MiniGolfPeepAnimationFramesJump[] = {
+static constexpr uint8_t MiniGolfPeepAnimationFramesJump[] = {
     16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
 };
 
 /** rct2: 0x009334A5 */
-static constexpr const uint8_t MiniGolfPeepAnimationFramesPlaceBallUpwards[] = {
+static constexpr uint8_t MiniGolfPeepAnimationFramesPlaceBallUpwards[] = {
     15, 14, 13, 12,
 };
 
 /** rct2: 0x009334C5 */
-static constexpr const uint8_t MiniGolfPeepAnimationFramesPutt[] = {
+static constexpr uint8_t MiniGolfPeepAnimationFramesPutt[] = {
     35, 36, 36, 36, 36, 36, 35, 35, 35, 35,
 };
 
 /** rct2: 0x009334AA */
-static constexpr const uint8_t MiniGolfPeepAnimationFramesPuttLeft[] = {
+static constexpr uint8_t MiniGolfPeepAnimationFramesPuttLeft[] = {
     10, 11, 11, 11, 11, 11, 10, 10, 10, 10,
 };
 
@@ -486,7 +486,8 @@ static void PaintMiniGolfTrackFlat(
         PaintUtilPushTunnelLeft(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
 
-    MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(
+        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 
@@ -523,7 +524,8 @@ static void PaintMiniGolfTrack25DegUp(
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(MiniGolfTrackSprites25DegUp[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 1 });
 
-    MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(
+        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 
@@ -562,7 +564,8 @@ static void PaintMiniGolfTrackFlatTo25DegUp(
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(MiniGolfTrackSpritesFlatTo25DegUp[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
-    MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(
+        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 
@@ -601,7 +604,8 @@ static void PaintMiniGolfTrack25DegUpToFlat(
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(MiniGolfTrackSprites25DegUpToFlat[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
-    MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(
+        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 
@@ -726,7 +730,8 @@ static void PaintMiniGolfTrackLeftQuarterTurn1Tile(
     TrackPaintUtilLeftQuarterTurn1TilePaint(
         session, 1, height, 0, direction, session.TrackColours[SCHEME_TRACK], MiniGolfTrackSpritesQuarterTurn1Tile);
 
-    MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(
+        session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     PaintUtilSetSegmentSupportHeight(
         session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0, direction), 0xFFFF, 0);

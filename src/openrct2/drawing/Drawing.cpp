@@ -709,28 +709,32 @@ ImageCatalogue ImageId::GetCatalogue() const
     return ImageCatalogue::UNKNOWN;
 }
 
-void (*MaskFn)(
-    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
-    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
-    = nullptr;
-
-void MaskInit()
+static auto GetMaskFunction()
 {
     if (AVX2Available())
     {
         LOG_VERBOSE("registering AVX2 mask function");
-        MaskFn = MaskAvx2;
+        return MaskAvx2;
     }
     else if (SSE41Available())
     {
         LOG_VERBOSE("registering SSE4.1 mask function");
-        MaskFn = MaskSse4_1;
+        return MaskSse4_1;
     }
     else
     {
         LOG_VERBOSE("registering scalar mask function");
-        MaskFn = MaskScalar;
+        return MaskScalar;
     }
+}
+
+static const auto MaskFunc = GetMaskFunction();
+
+void MaskFn(
+    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
+    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
+{
+    MaskFunc(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
 }
 
 void GfxFilterPixel(DrawPixelInfo& dpi, const ScreenCoordsXY& coords, FilterPaletteID palette)
@@ -783,7 +787,7 @@ void LoadPalette()
 
     if (water_type != nullptr)
     {
-        openrct2_assert(water_type->image_id != 0xFFFFFFFF, "Failed to load water palette");
+        Guard::Assert(water_type->image_id != 0xFFFFFFFF, "Failed to load water palette");
         palette = water_type->image_id;
     }
 

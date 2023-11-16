@@ -115,9 +115,9 @@ static char _filter_string[MAX_PATH];
 #define _FILTER_SELECTED (_filter_flags & FILTER_SELECTED)
 #define _FILTER_NONSELECTED (_filter_flags & FILTER_NONSELECTED)
 
-static constexpr const StringId WINDOW_TITLE = STR_OBJECT_SELECTION;
-static constexpr const int32_t WH = 400;
-static constexpr const int32_t WW = 755;
+static constexpr StringId WINDOW_TITLE = STR_OBJECT_SELECTION;
+static constexpr int32_t WH = 400;
+static constexpr int32_t WW = 755;
 
 struct ObjectPageDesc
 {
@@ -128,7 +128,7 @@ struct ObjectPageDesc
 
 // clang-format off
 // Order of which the object tabs are displayed.
-static constexpr const ObjectPageDesc ObjectSelectionPages[] = {
+static constexpr ObjectPageDesc ObjectSelectionPages[] = {
     { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS, SPR_TAB_RIDE_16,            false },
     { STR_OBJECT_SELECTION_STATIONS,                  SPR_G2_RIDE_STATION_TAB,    true  },
     { STR_OBJECT_SELECTION_MUSIC,                     SPR_TAB_MUSIC_0,            true  },
@@ -153,7 +153,7 @@ ObjectType static TabOrder[] = {
     ObjectType::Ride,         ObjectType::Station,         ObjectType::Music,
     ObjectType::SceneryGroup, ObjectType::SmallScenery,    ObjectType::LargeScenery,
     ObjectType::Walls,        ObjectType::FootpathSurface, ObjectType::FootpathRailings,
-    ObjectType::Paths,        ObjectType::PathBits,        ObjectType::Banners,
+    ObjectType::Paths,        ObjectType::PathAdditions,   ObjectType::Banners,
     ObjectType::ParkEntrance, ObjectType::TerrainSurface,  ObjectType::TerrainEdge,
     ObjectType::Water,
 };
@@ -195,7 +195,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
     MakeWidget({470, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_OBJECT_SELECTION_ADVANCED, STR_OBJECT_SELECTION_ADVANCED_TIP),
-    MakeWidget({  4, 60}, {288, 327}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
+    MakeWidget({  4, 60}, {288, 277}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
     MakeWidget({391, 45}, {114, 114}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                                  ),
     MakeWidget({470, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
     MakeWidget({350, 22}, {114,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_OBJECT_FILTER,             STR_OBJECT_FILTER_TIP            ),
@@ -221,7 +221,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
 
 #pragma endregion
 
-static constexpr const int32_t window_editor_object_selection_animation_loops[] = {
+static constexpr int32_t window_editor_object_selection_animation_loops[] = {
     20, // All
     32, // Transport
     10, // Gentle
@@ -230,7 +230,7 @@ static constexpr const int32_t window_editor_object_selection_animation_loops[] 
     28, // Water
     16, // Stall
 };
-static constexpr const int32_t window_editor_object_selection_animation_divisor[] = {
+static constexpr int32_t window_editor_object_selection_animation_divisor[] = {
     4, // All
     8, // Transport
     2, // Gentle

@@ -61,14 +61,14 @@ enum WindowStaffListWidgetIdx
     WIDX_STAFF_LIST_MAP,
 };
 
-static constexpr const StringId WINDOW_TITLE = STR_STAFF;
-static constexpr const int32_t WW = 320;
-static constexpr const int32_t WH = 270;
+static constexpr StringId WINDOW_TITLE = STR_STAFF;
+static constexpr int32_t WW = 320;
+static constexpr int32_t WH = 270;
 constexpr int32_t MAX_WW = 500;
 constexpr int32_t MAX_WH = 450;
 
 // clang-format off
-static Widget window_staff_list_widgets[] = {
+static Widget _staffListWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {    WW, WH - 43}, WindowWidgetType::Resize,    WindowColour::Secondary                                                 ), // tab content panel
     MakeTab   ({  3, 17},                                                                             STR_STAFF_HANDYMEN_TAB_TIP    ), // handymen tab
@@ -110,7 +110,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_staff_list_widgets;
+        widgets = _staffListWidgets;
         WindowInitScrollWidgets(*this);
 
         widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::Empty;
@@ -177,6 +177,7 @@ public:
             height = min_height;
             Invalidate();
         }
+        ResizeFrameWithPage();
     }
 
     void OnUpdate() override
@@ -237,6 +238,10 @@ public:
 
     void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
+        if (dropdownIndex == -1)
+        {
+            return;
+        }
         if (widgetIndex == WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER)
         {
             auto action = StaffSetColourAction(GetSelectedStaffType(), ColourDropDownIndexToColour(dropdownIndex));
@@ -263,13 +268,7 @@ public:
         }
         SetWidgetPressed(WIDX_STAFF_LIST_QUICK_FIRE, _quickFireMode);
 
-        widgets[WIDX_STAFF_LIST_BACKGROUND].right = width - 1;
-        widgets[WIDX_STAFF_LIST_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_STAFF_LIST_TAB_CONTENT_PANEL].right = width - 1;
-        widgets[WIDX_STAFF_LIST_TAB_CONTENT_PANEL].bottom = height - 1;
-        widgets[WIDX_STAFF_LIST_TITLE].right = width - 2;
-        widgets[WIDX_STAFF_LIST_CLOSE].left = width - 2 - 11;
-        widgets[WIDX_STAFF_LIST_CLOSE].right = width - 2 - 11 + 10;
+        ResizeFrameWithPage();
         widgets[WIDX_STAFF_LIST_LIST].right = width - 4;
         widgets[WIDX_STAFF_LIST_LIST].bottom = height - 15;
         widgets[WIDX_STAFF_LIST_QUICK_FIRE].left = width - 77;
@@ -547,7 +546,6 @@ private:
             // If autoposition of staff is disabled, pickup peep and then open the staff window
             if (staff->State == PeepState::Picked)
             {
-                picked_peep_old_x = staff->x;
                 CoordsXYZ nullLoc{};
                 nullLoc.SetNull();
 

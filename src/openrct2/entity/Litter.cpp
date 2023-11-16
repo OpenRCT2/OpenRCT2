@@ -155,7 +155,7 @@ struct LitterSprite
 };
 
 /** rct2: 0x0097EF6C */
-static constexpr const LitterSprite _litterSprites[] = {
+static constexpr LitterSprite _litterSprites[] = {
     { SPR_LITTER_SICK, 0x1 },
     { SPR_LITTER_SICK_ALT, 0x1 },
     { SPR_LITTER_EMPTY_CAN, 0x1 },

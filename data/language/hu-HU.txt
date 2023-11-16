@@ -2087,7 +2087,7 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :A fájl betöltése sikertelen…
 STR_3011    :A fájl érvénytelen adatod tartalmaz
-STR_3012    :Dodzsem beat stílus
+STR_3012    :Dodzsem stílus
 STR_3013    :Vásári orgona stílus
 STR_3014    :Római harsona stílus
 STR_3015    :Keleti stílus
@@ -3629,6 +3629,52 @@ STR_6545    :RCT1 kamatszámítás használata
 STR_6546    :A RollerCoaster Tycoon 1 kamatszámítási algoritmusának használata, amely egy rögzített százalékot használ, ami körülbelül 1,33%.
 STR_6547    :Minden díszlet
 STR_6548    :Korlátok megjelenítése csomópontoknál
+STR_6549    :A kompatibilitási objektumok nem választhatóak ki!
+STR_6550    :Ez az elem visszafelé kompatibilitási céllal szerepel, régi vagy sérült objektumokhoz. Nem lehet kiválasztani, csak eltávolítani.
+STR_6551    :Katonaszín
+STR_6552    :Dinnyesárga
+STR_6553    :Cser
+STR_6554    :Marrone
+STR_6555    :Korallrózsaszín
+STR_6556    :Erdőzöld
+STR_6557    :Chartreuse-szín
+STR_6558    :Vadászzöld
+STR_6559    :Szeladon
+STR_6560    :Limezöld
+STR_6561    :Szépia
+STR_6562    :Barack
+STR_6563    :Periwinkle
+STR_6564    :Viridián
+STR_6565    :Tengerzöld
+STR_6566    :Ibolya
+STR_6567    :Levendula
+STR_6568    :Pasztellnarancs
+STR_6569    :Mélyvíz
+STR_6570    :Pasztellrózsaszín
+STR_6571    :Umbra
+STR_6572    :Bézs
+STR_6573    :Láthatatlan
+STR_6574    :Üresség
+STR_6575    :Speciális színsémák engedélyezése
+STR_6576    :Speciális színek hozzáadása a színkiválasztó listához
+STR_6577    :Blokkfék sebessége
+STR_6578    :A blokkfékek sebességkorlátjának beállítása. A blokkszakasz üzemmódban a lassabb sebességű szomszédos fékek a blokkfékhez kapcsolódnak.
+STR_6579    :A blokkfékek alapértelmezett sebességre lesznek beállítva, amikor pályatervként elmentésre kerül
+STR_6580    :Visszaállítás
+STR_6581    :Biztosan vissza szeretnéd állítani az összes gyorsbillentyűt ezen a fülön?
+STR_6582    :Gyorsbillentyűk ablak megnyitása
+STR_6583    :{WINDOW_COLOUR_2}Fordított vonatok
+STR_6584    :Válassza ki, hogy a vonatok fordítva közlekedjenek
+STR_6585    :Nem lehet a változtatásokat végrehajtani…
+STR_6586    :OpenRCT2
+STR_6587    :Az OpenRCT2 főcímzenéje Allister Brimble műve,{NEWLINE}CC BY-SA 4.0 licenccel.
+STR_6588    :Köszönet Herman Ridderingnek, hogy lehetővé tette számunkra a 35er Voigt rögzítését.
+STR_6589    :Ablak gombok mutatása a bal oldalon
+STR_6590    :Az ablak gombok (pl. az ablak bezárása) mutatása az ablak címsorának bal oldalán, ahelyett hogy a jobb oldalon lennének.
+STR_6591    :Az alkalmazott jelenleg egy játékot javít, és nem lehet kirúgni.
+STR_6592    :Az alkalmazott jelenleg egy játékot ellenőriz, és nem lehet kirúgni.
+STR_6593    :Park kerítések eltávolítása
+STR_6594    :Mezővizsgáló: Fal lejtésének változtatása
 
 #############
 # Scenarios #

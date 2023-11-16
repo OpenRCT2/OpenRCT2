@@ -45,5 +45,6 @@ public:
 
     void Read(NetworkPacket& packet);
     void Write(NetworkPacket& packet);
+    void IncrementNumCommands();
     void AddMoneySpent(money64 cost);
 };

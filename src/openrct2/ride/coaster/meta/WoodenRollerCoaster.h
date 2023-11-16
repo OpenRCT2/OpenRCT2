@@ -15,11 +15,11 @@
 #include "../../Track.h"
 
 // clang-format off
-constexpr const RideTypeDescriptor WoodenRollerCoasterRTD =
+constexpr RideTypeDescriptor WoodenRollerCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
-    SET_FIELD(EnabledTrackPieces, {TRACK_FLAT, TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_VERTICAL_LOOP, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_SLOPE_CURVE_STEEP, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_SMALL, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_WATER_SPLASH, TRACK_SLOPE_CURVE_BANKED, TRACK_BLOCK_BRAKES, TRACK_SLOPE_ROLL_BANKING}),
+    SET_FIELD(EnabledTrackPieces, {TRACK_FLAT, TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_FLAT_ROLL_BANKING, TRACK_VERTICAL_LOOP, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_CURVE, TRACK_SLOPE_CURVE_STEEP, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_CURVE_LARGE, TRACK_HELIX_DOWN_BANKED_HALF, TRACK_HELIX_UP_BANKED_HALF, TRACK_BRAKES, TRACK_ON_RIDE_PHOTO, TRACK_WATER_SPLASH, TRACK_SLOPE_CURVE_BANKED, TRACK_BLOCK_BRAKES, TRACK_SLOPE_ROLL_BANKING, TRACK_DIAG_BRAKES, TRACK_DIAG_BLOCK_BRAKES}),
     SET_FIELD(ExtraTrackPieces, {TRACK_BOOSTER}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
@@ -50,7 +50,9 @@ constexpr const RideTypeDescriptor WoodenRollerCoasterRTD =
         { COLOUR_BRIGHT_RED, COLOUR_BLACK, COLOUR_GREY },
         { COLOUR_YELLOW, COLOUR_DARK_BROWN, COLOUR_DARK_BROWN },
         { COLOUR_TEAL, COLOUR_BORDEAUX_RED, COLOUR_WHITE },
-        { COLOUR_LIGHT_BLUE, COLOUR_BLACK, COLOUR_BLACK },
+        { COLOUR_LIGHT_BLUE, COLOUR_BLACK, COLOUR_DARK_BROWN },
+        { COLOUR_SATURATED_BROWN_LIGHT, COLOUR_TAN_DARK, COLOUR_LIGHT_BROWN }, // Generic GCI 
+        { COLOUR_TAN_DARK, COLOUR_DULL_BROWN_DARK, COLOUR_GREY }, // The Voyage /* Change supports to "minetrain" if possible in the future. */
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_WOODEN_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_WOODEN_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
@@ -73,6 +75,7 @@ constexpr const RideTypeDescriptor WoodenRollerCoasterRTD =
             { RatingsModifierType::BonusTurns,            0,                26749, 43458, 45749 },
             { RatingsModifierType::BonusDrops,            0,                40777, 46811, 49152 },
             { RatingsModifierType::BonusSheltered,        0,                16705, 30583, 35108 },
+            { RatingsModifierType::BonusReversedTrains,   0,                2, 10, 15 },
             { RatingsModifierType::BonusProximity,        0,                22367, 0, 0 },
             { RatingsModifierType::BonusScenery,          0,                11155, 0, 0 },
             { RatingsModifierType::RequirementDropHeight, 12,               2, 2, 2 },

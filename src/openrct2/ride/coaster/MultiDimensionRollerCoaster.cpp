@@ -18,20 +18,66 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
-static constexpr const uint32_t MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_OPEN = 15812;
-static constexpr const uint32_t MULTI_DIM_STATION_BLOCK_BRAKE_NW_SE_OPEN = 15813;
-static constexpr const uint32_t MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_CLOSED = 15814;
-static constexpr const uint32_t MULTI_DIM_STATION_BLOCK_BRAKE_NW_SE_CLOSED = 15815;
+static constexpr uint32_t MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_OPEN = 15812;
+static constexpr uint32_t MULTI_DIM_STATION_BLOCK_BRAKE_NW_SE_OPEN = 15813;
+static constexpr uint32_t MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_CLOSED = 15814;
+static constexpr uint32_t MULTI_DIM_STATION_BLOCK_BRAKE_NW_SE_CLOSED = 15815;
 
-static constexpr const uint32_t MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_SW_NE_OPEN = 16220;
-static constexpr const uint32_t MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_NW_SE_OPEN = 16221;
-static constexpr const uint32_t MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED = 16222;
-static constexpr const uint32_t MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_NW_SE_CLOSED = 16223;
+static constexpr uint32_t MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_SW_NE_OPEN = 16220;
+static constexpr uint32_t MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_NW_SE_OPEN = 16221;
+static constexpr uint32_t MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED = 16222;
+static constexpr uint32_t MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_NW_SE_CLOSED = 16223;
 
-static constexpr const uint32_t MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_OPEN = 26551;
-static constexpr const uint32_t MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_OPEN = 26552;
-static constexpr const uint32_t MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED = 26553;
-static constexpr const uint32_t MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_CLOSED = 26554;
+static constexpr uint32_t MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_OPEN = 26551;
+static constexpr uint32_t MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_OPEN = 26552;
+static constexpr uint32_t MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED = 26553;
+static constexpr uint32_t MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_CLOSED = 26554;
+
+static constexpr const uint32_t MultidimDiagBrakeImages[2][NumOrthogonalDirections] = {
+    {
+        SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES,
+        SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 1,
+        SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES,
+        SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 1,
+    },
+    {
+        SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES,
+        SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 1,
+        SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES,
+        SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 1,
+    },
+};
+
+static constexpr const uint32_t MultidimDiagBlockBrakeImages[2][2][NumOrthogonalDirections] = {
+    {
+        {
+            SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 3,
+            SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 5,
+            SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 3,
+            SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 5,
+        },
+        {
+            SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 2,
+            SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 4,
+            SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 2,
+            SPR_G2_MULTIDIM_UPRIGHT_DIAG_BRAKES + 4,
+        },
+    },
+    {
+        {
+            SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 2,
+            SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 4,
+            SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 2,
+            SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 4,
+        },
+        {
+            SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 2,
+            SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 3,
+            SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 2,
+            SPR_G2_MULTIDIM_INVERTED_DIAG_BRAKES + 3,
+        },
+    },
+};
 
 /** rct2: 0x00792D88 */
 static void MultiDimensionRCTrackFlat(
@@ -60,7 +106,8 @@ static void MultiDimensionRCTrackFlat(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -83,7 +130,8 @@ static void MultiDimensionRCTrackFlat(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -113,7 +161,8 @@ static void MultiDimensionRCTrackFlat(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -126,7 +175,7 @@ static void MultiDimensionRCTrackStation(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[NumOrthogonalDirections][3] = {
+    static constexpr uint32_t imageIds[NumOrthogonalDirections][3] = {
         { 15810, MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_CLOSED },
         { 15811, MULTI_DIM_STATION_BLOCK_BRAKE_NW_SE_OPEN, MULTI_DIM_STATION_BLOCK_BRAKE_NW_SE_CLOSED },
         { 15810, MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_CLOSED },
@@ -147,8 +196,7 @@ static void MultiDimensionRCTrackStation(
             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 0, height },
             { { 0, 3, height + 3 }, { 32, 26, 1 } });
     }
-    TrackPaintUtilDrawStationMetalSupports2(
-        session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::TubesInverted);
+    DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::TubesInverted);
 
     const auto* stationObj = ride.GetStationObject();
     bool hasFence;
@@ -214,7 +262,8 @@ static void MultiDimensionRCTrack25DegUp(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -245,7 +294,8 @@ static void MultiDimensionRCTrack25DegUp(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 8, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -293,19 +343,23 @@ static void MultiDimensionRCTrack25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 6, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 54,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 8, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 54,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 7, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 54,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 5, 0, height + 54, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 54,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
         }
@@ -355,7 +409,8 @@ static void MultiDimensionRCTrack60DegUp(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 24, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -442,7 +497,8 @@ static void MultiDimensionRCTrackFlatTo25DegUp(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 3, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -473,7 +529,8 @@ static void MultiDimensionRCTrackFlatTo25DegUp(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 3, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -521,19 +578,23 @@ static void MultiDimensionRCTrackFlatTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 6, 0, height + 46, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 46,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 8, 0, height + 46, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 46,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 7, 0, height + 46, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 46,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 5, 0, height + 46, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 46,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
         }
@@ -589,7 +650,8 @@ static void MultiDimensionRCTrack25DegUpTo60DegUp(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 8, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -686,7 +748,8 @@ static void MultiDimensionRCTrack60DegUpTo25DegUp(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 16, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -739,19 +802,23 @@ static void MultiDimensionRCTrack60DegUpTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 6, 0, height + 68, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 68,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 8, 0, height + 68, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 68,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 7, 0, height + 68, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 68,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 5, 0, height + 68, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 68,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
         }
@@ -803,7 +870,8 @@ static void MultiDimensionRCTrack25DegUpToFlat(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 6, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         else
@@ -834,7 +902,8 @@ static void MultiDimensionRCTrack25DegUpToFlat(
             if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 6, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
             }
         }
         if (direction == 0 || direction == 3)
@@ -882,19 +951,23 @@ static void MultiDimensionRCTrack25DegUpToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 6, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 8, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 7, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 5, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
         }
@@ -993,7 +1066,8 @@ static void MultiDimensionRCTrackLeftQuarterTurn5(
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -1122,7 +1196,8 @@ static void MultiDimensionRCTrackLeftQuarterTurn5(
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -1171,7 +1246,8 @@ static void MultiDimensionRCTrackLeftQuarterTurn5(
                     session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -1304,7 +1380,8 @@ static void MultiDimensionRCTrackLeftQuarterTurn5(
                     session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 switch (direction)
                 {
@@ -1369,7 +1446,8 @@ static void MultiDimensionRCTrackFlatToLeftBank(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1408,7 +1486,8 @@ static void MultiDimensionRCTrackFlatToLeftBank(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -1455,7 +1534,8 @@ static void MultiDimensionRCTrackFlatToRightBank(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1494,7 +1574,8 @@ static void MultiDimensionRCTrackFlatToRightBank(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -1541,7 +1622,8 @@ static void MultiDimensionRCTrackLeftBankToFlat(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1580,7 +1662,8 @@ static void MultiDimensionRCTrackLeftBankToFlat(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -1627,7 +1710,8 @@ static void MultiDimensionRCTrackRightBankToFlat(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1666,7 +1750,8 @@ static void MultiDimensionRCTrackRightBankToFlat(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -1711,7 +1796,8 @@ static void MultiDimensionRCTrackBankedLeftQuarterTurn5(
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -1843,7 +1929,8 @@ static void MultiDimensionRCTrackBankedLeftQuarterTurn5(
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -1892,7 +1979,8 @@ static void MultiDimensionRCTrackBankedLeftQuarterTurn5(
                     session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -2025,7 +2113,8 @@ static void MultiDimensionRCTrackBankedLeftQuarterTurn5(
                     session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 switch (direction)
                 {
@@ -2090,7 +2179,8 @@ static void MultiDimensionRCTrackLeftBankTo25DegUp(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 3, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -2139,19 +2229,23 @@ static void MultiDimensionRCTrackLeftBankTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 6, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 8, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 7, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 5, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
         }
@@ -2207,7 +2301,8 @@ static void MultiDimensionRCTrackRightBankTo25DegUp(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 3, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -2256,19 +2351,23 @@ static void MultiDimensionRCTrackRightBankTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 6, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 8, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 7, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 5, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
         }
@@ -2324,7 +2423,8 @@ static void MultiDimensionRCTrack25DegUpToLeftBank(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 6, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -2373,19 +2473,23 @@ static void MultiDimensionRCTrack25DegUpToLeftBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 6, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 8, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 7, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 5, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
         }
@@ -2441,7 +2545,8 @@ static void MultiDimensionRCTrack25DegUpToRightBank(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 6, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
         if (direction == 0 || direction == 3)
         {
@@ -2490,19 +2595,23 @@ static void MultiDimensionRCTrack25DegUpToRightBank(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 6, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 8, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 7, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::TubesInverted, 5, 0, height + 44, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 44,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
         }
@@ -2584,7 +2693,8 @@ static void MultiDimensionRCTrackLeftBank(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -2623,7 +2733,8 @@ static void MultiDimensionRCTrackLeftBank(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -2673,7 +2784,8 @@ static void MultiDimensionRCTrackSBendLeft(
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -2689,14 +2801,16 @@ static void MultiDimensionRCTrackSBendLeft(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15817), { 0, 0, height },
                             { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15821), { 0, 0, height },
                             { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 6, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 1, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -2730,14 +2844,16 @@ static void MultiDimensionRCTrackSBendLeft(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15817), { 0, 0, height },
                             { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15821), { 0, 0, height },
                             { 32, 26, 3 });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 6, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 1, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -2768,7 +2884,8 @@ static void MultiDimensionRCTrackSBendLeft(
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 1:
@@ -2815,7 +2932,8 @@ static void MultiDimensionRCTrackSBendLeft(
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -2857,11 +2975,13 @@ static void MultiDimensionRCTrackSBendLeft(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 5, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 6, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -2901,11 +3021,13 @@ static void MultiDimensionRCTrackSBendLeft(
                 {
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 5, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 6, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -2939,7 +3061,8 @@ static void MultiDimensionRCTrackSBendLeft(
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 switch (direction)
                 {
@@ -2990,7 +3113,8 @@ static void MultiDimensionRCTrackSBendRight(
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -3006,14 +3130,16 @@ static void MultiDimensionRCTrackSBendRight(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15825), { 0, 0, height },
                             { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15829), { 0, 0, height },
                             { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -3047,14 +3173,16 @@ static void MultiDimensionRCTrackSBendRight(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15825), { 0, 0, height },
                             { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15829), { 0, 0, height },
                             { { 0, 6, height }, { 32, 26, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -3085,7 +3213,8 @@ static void MultiDimensionRCTrackSBendRight(
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 1:
@@ -3132,7 +3261,8 @@ static void MultiDimensionRCTrackSBendRight(
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -3174,11 +3304,13 @@ static void MultiDimensionRCTrackSBendRight(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 8, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 7, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -3218,11 +3350,13 @@ static void MultiDimensionRCTrackSBendRight(
                 {
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 8, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 7, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -3256,7 +3390,8 @@ static void MultiDimensionRCTrackSBendRight(
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 switch (direction)
                 {
@@ -3307,7 +3442,8 @@ static void MultiDimensionRCTrackLeftQuarterTurn3(
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -3371,7 +3507,8 @@ static void MultiDimensionRCTrackLeftQuarterTurn3(
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -3420,7 +3557,8 @@ static void MultiDimensionRCTrackLeftQuarterTurn3(
                     session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -3488,7 +3626,8 @@ static void MultiDimensionRCTrackLeftQuarterTurn3(
                     session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 switch (direction)
                 {
@@ -3551,7 +3690,8 @@ static void MultiDimensionRCTrackLeftQuarterTurn3Bank(
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -3618,7 +3758,8 @@ static void MultiDimensionRCTrackLeftQuarterTurn3Bank(
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 switch (direction)
                 {
                     case 2:
@@ -3667,7 +3808,8 @@ static void MultiDimensionRCTrackLeftQuarterTurn3Bank(
                     session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -3735,7 +3877,8 @@ static void MultiDimensionRCTrackLeftQuarterTurn3Bank(
                     session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction),
                     0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 switch (direction)
                 {
@@ -3796,7 +3939,8 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpSmall(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 2, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -3863,7 +4007,8 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpSmall(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 6, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
@@ -3906,7 +4051,8 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpSmall(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 2, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 0:
@@ -3978,7 +4124,8 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpSmall(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 6, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
@@ -4024,7 +4171,8 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpSmall(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 2, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -4091,7 +4239,8 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpSmall(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 6, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 0:
@@ -4132,7 +4281,8 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpSmall(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 2, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
@@ -4206,7 +4356,8 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpSmall(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 6, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
@@ -4280,7 +4431,8 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpLarge(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 1, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -4410,7 +4562,8 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpLarge(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 7, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
@@ -4453,7 +4606,8 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpLarge(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 1, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 0:
@@ -4588,7 +4742,8 @@ static void MultiDimensionRCTrackLeftHalfBankedHelixUpLarge(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 7, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
@@ -4634,7 +4789,8 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpLarge(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 1, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -4764,7 +4920,8 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpLarge(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 7, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 0:
@@ -4805,7 +4962,8 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpLarge(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 1, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 2:
@@ -4942,7 +5100,8 @@ static void MultiDimensionRCTrackRightHalfBankedHelixUpLarge(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 7, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
@@ -5006,7 +5165,8 @@ static void MultiDimensionRCTrackBrakes(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -5035,7 +5195,8 @@ static void MultiDimensionRCTrackBrakes(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -5050,48 +5211,26 @@ static void MultiDimensionRCTrackOnRidePhoto(
 {
     if (!trackElement.IsInverted())
     {
+        TrackPaintUtilOnridePhotoPlatformPaint(session, direction, height, MetalSupportType::TubesInverted);
+
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(
-                    session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15806), { 0, 0, height },
                     { { 0, 6, height + 3 }, { 32, 20, 0 } });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15807), { 0, 0, height },
                     { { 0, 6, height + 3 }, { 32, 20, 0 } });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15806), { 0, 0, height },
                     { { 0, 6, height + 3 }, { 32, 20, 0 } });
                 break;
             case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15807), { 0, 0, height },
                     { { 0, 6, height + 3 }, { 32, 20, 0 } });
@@ -5110,9 +5249,11 @@ static void MultiDimensionRCTrackOnRidePhoto(
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(26227), { 0, 0, height + 24 },
                     { { 0, 6, height + 24 }, { 32, 20, 3 } });
@@ -5121,9 +5262,11 @@ static void MultiDimensionRCTrackOnRidePhoto(
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(26228), { 0, 0, height + 24 },
                     { { 0, 6, height + 24 }, { 32, 20, 3 } });
@@ -5132,9 +5275,11 @@ static void MultiDimensionRCTrackOnRidePhoto(
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopLeftSide, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomRightSide, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(26227), { 0, 0, height + 24 },
                     { { 0, 6, height + 24 }, { 32, 20, 3 } });
@@ -5143,9 +5288,11 @@ static void MultiDimensionRCTrackOnRidePhoto(
                 PaintAddImageAsParentRotated(
                     session, direction, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::TopRightSide, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomLeftSide, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintAddImageAsParentRotated(
                     session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(26228), { 0, 0, height + 24 },
                     { { 0, 6, height + 24 }, { 32, 20, 3 } });
@@ -5548,7 +5695,8 @@ static void MultiDimensionRCTrackLeftEighthToDiag(
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -5625,28 +5773,32 @@ static void MultiDimensionRCTrackLeftEighthToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15999), { 0, 0, height },
                             { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16003), { 0, 0, height },
                             { { 0, 16, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16007), { 0, 0, height },
                             { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16011), { 0, 0, height },
                             { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -5686,7 +5838,8 @@ static void MultiDimensionRCTrackLeftEighthToDiag(
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -5793,19 +5946,23 @@ static void MultiDimensionRCTrackLeftEighthToDiag(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -5849,7 +6006,8 @@ static void MultiDimensionRCTrackRightEighthToDiag(
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -5926,28 +6084,32 @@ static void MultiDimensionRCTrackRightEighthToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15983), { 0, 0, height },
                             { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15987), { 0, 0, height },
                             { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15991), { 0, 0, height },
                             { { 0, 16, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(15995), { 0, 0, height },
                             { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -5987,7 +6149,8 @@ static void MultiDimensionRCTrackRightEighthToDiag(
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -6094,19 +6257,23 @@ static void MultiDimensionRCTrackRightEighthToDiag(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -6168,7 +6335,8 @@ static void MultiDimensionRCTrackLeftEighthBankToDiag(
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -6245,28 +6413,32 @@ static void MultiDimensionRCTrackLeftEighthBankToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16031), { 0, 0, height },
                             { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16035), { 0, 0, height },
                             { { 0, 16, height + 27 }, { 16, 18, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16039), { 0, 0, height },
                             { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16043), { 0, 0, height },
                             { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -6306,7 +6478,8 @@ static void MultiDimensionRCTrackLeftEighthBankToDiag(
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -6413,19 +6586,23 @@ static void MultiDimensionRCTrackLeftEighthBankToDiag(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -6469,7 +6646,8 @@ static void MultiDimensionRCTrackRightEighthBankToDiag(
                         break;
                 }
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -6546,28 +6724,32 @@ static void MultiDimensionRCTrackRightEighthBankToDiag(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16015), { 0, 0, height },
                             { { 16, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16019), { 0, 0, height },
                             { { 0, 0, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16023), { 0, 0, height },
                             { { 0, 16, height + 27 }, { 16, 18, 0 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16027), { 0, 0, height },
                             { { 16, 16, height }, { 16, 16, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -6607,7 +6789,8 @@ static void MultiDimensionRCTrackRightEighthBankToDiag(
                 PaintUtilSetSegmentSupportHeight(
                     session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                    session.TrackColours[SCHEME_SUPPORTS]);
 
                 if (direction == 0 || direction == 3)
                 {
@@ -6714,19 +6897,23 @@ static void MultiDimensionRCTrackRightEighthBankToDiag(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -6851,22 +7038,26 @@ static void MultiDimensionRCTrackDiagFlat(
                     {
                         case 0:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16107), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -6876,22 +7067,26 @@ static void MultiDimensionRCTrackDiagFlat(
                     {
                         case 0:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16045), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalASupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -7016,25 +7211,109 @@ static void MultiDimensionRCTrackDiagFlat(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
         }
+    }
+}
+
+static void MultiDimensionRCTrackDiagBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    if (trackElement.IsInverted())
+    {
+        TrackPaintUtilDiagTilesPaint(
+            session, -3, height + 24, direction, trackSequence, session.TrackColours[SCHEME_TRACK], MultidimDiagBrakeImages[1],
+            defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+
+        if (trackSequence == 3)
+        {
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::TubesInverted, DiagSupportPlacement[direction], 0, height + 36,
+                session.TrackColours[SCHEME_SUPPORTS]);
+        }
+    }
+    else
+    {
+        TrackPaintUtilDiagTilesPaint(
+            session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], MultidimDiagBrakeImages[0],
+            defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+
+        if (trackSequence == 3)
+        {
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::TubesInverted, DiagSupportPlacement[direction], 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
+        }
+
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    }
+}
+
+static void MultiDimensionRCTrackDiagBlockBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    if (trackElement.IsInverted())
+    {
+        TrackPaintUtilDiagTilesPaint(
+            session, -3, height + 24, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
+            MultidimDiagBlockBrakeImages[1][trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths,
+            nullptr);
+
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+
+        if (trackSequence == 3)
+        {
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::TubesInverted, DiagSupportPlacement[direction], 0, height + 36,
+                session.TrackColours[SCHEME_SUPPORTS]);
+        }
+    }
+    else
+    {
+        TrackPaintUtilDiagTilesPaint(
+            session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
+            MultidimDiagBlockBrakeImages[0][trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths,
+            nullptr);
+
+        if (trackSequence == 3)
+        {
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::TubesInverted, DiagSupportPlacement[direction], 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
+        }
+
+        PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
 }
 
@@ -7135,22 +7414,26 @@ static void MultiDimensionRCTrackDiag25DegUp(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16119), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -7160,22 +7443,26 @@ static void MultiDimensionRCTrackDiag25DegUp(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16057), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -7300,19 +7587,23 @@ static void MultiDimensionRCTrackDiag25DegUp(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 48,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 48,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 48,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 48,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -7375,22 +7666,26 @@ static void MultiDimensionRCTrackDiag60DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 32, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16069), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 36, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 32, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 36, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 36, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -7458,22 +7753,22 @@ static void MultiDimensionRCTrackDiag60DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 32, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 32, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 36, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 36, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 32, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 32, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 36, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 36, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -7581,22 +7876,26 @@ static void MultiDimensionRCTrackDiagFlatTo25DegUp(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16111), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -7606,22 +7905,26 @@ static void MultiDimensionRCTrackDiagFlatTo25DegUp(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16049), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -7746,19 +8049,23 @@ static void MultiDimensionRCTrackDiagFlatTo25DegUp(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -7821,22 +8128,26 @@ static void MultiDimensionRCTrackDiag25DegUpTo60DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 16, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16061), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 16, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 16, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 16, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -7904,22 +8215,22 @@ static void MultiDimensionRCTrackDiag25DegUpTo60DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 16, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 16, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 16, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 16, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 16, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 16, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 16, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 16, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -7983,22 +8294,26 @@ static void MultiDimensionRCTrackDiag60DegUpTo25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 21, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16065), { -16, -16, height },
                             { { 0, 0, height }, { 16, 16, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 21, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 21, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 21, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 21, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -8066,22 +8381,22 @@ static void MultiDimensionRCTrackDiag60DegUpTo25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 21, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 21, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 21, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 21, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 21, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 21, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 21, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 21, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -8189,22 +8504,26 @@ static void MultiDimensionRCTrackDiag25DegUpToFlat(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16115), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -8214,22 +8533,26 @@ static void MultiDimensionRCTrackDiag25DegUpToFlat(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16053), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -8354,19 +8677,23 @@ static void MultiDimensionRCTrackDiag25DegUpToFlat(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -8473,22 +8800,26 @@ static void MultiDimensionRCTrackDiag25DegDown(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16121), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -8498,22 +8829,26 @@ static void MultiDimensionRCTrackDiag25DegDown(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16059), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 8, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -8582,19 +8917,23 @@ static void MultiDimensionRCTrackDiag25DegDown(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 48,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 48,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 48,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 48, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 48,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -8657,22 +8996,26 @@ static void MultiDimensionRCTrackDiag60DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 24, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16071), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 28, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 24, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 24, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 28, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 28, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -8740,22 +9083,22 @@ static void MultiDimensionRCTrackDiag60DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 24, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 24, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 28, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 28, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 24, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 24, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 28, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 28, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -8860,22 +9203,26 @@ static void MultiDimensionRCTrackDiagFlatTo25DegDown(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16117), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -8885,22 +9232,26 @@ static void MultiDimensionRCTrackDiagFlatTo25DegDown(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16055), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 4, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -8968,19 +9319,23 @@ static void MultiDimensionRCTrackDiagFlatTo25DegDown(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 break;
@@ -9043,22 +9398,26 @@ static void MultiDimensionRCTrackDiag25DegDownTo60DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 17, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16067), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 17, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 17, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 17, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 17, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -9126,22 +9485,22 @@ static void MultiDimensionRCTrackDiag25DegDownTo60DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 17, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 17, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 17, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 17, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 17, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 17, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 17, height + 36,
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 17, height + 36,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -9205,22 +9564,26 @@ static void MultiDimensionRCTrackDiag60DegDownTo25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16063), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 8, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -9288,19 +9651,23 @@ static void MultiDimensionRCTrackDiag60DegDownTo25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 8, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 8, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 8, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 8, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 8, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 8, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 8, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 8, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -9407,22 +9774,26 @@ static void MultiDimensionRCTrackDiag25DegDownToFlat(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16113), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -9432,22 +9803,26 @@ static void MultiDimensionRCTrackDiag25DegDownToFlat(
                     {
                         case 0:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 1:
                             PaintAddImageAsParentRotated(
                                 session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16051), { -16, -16, height },
                                 { { -16, -16, height }, { 32, 32, 3 } });
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 2:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                         case 3:
                             MetalBSupportsPaintSetup(
-                                session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                                session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                                session.TrackColours[SCHEME_SUPPORTS]);
                             break;
                     }
                 }
@@ -9516,19 +9891,23 @@ static void MultiDimensionRCTrackDiag25DegDownToFlat(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -9594,22 +9973,26 @@ static void MultiDimensionRCTrackDiagFlatToLeftBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16077), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -9678,19 +10061,23 @@ static void MultiDimensionRCTrackDiagFlatToLeftBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -9756,22 +10143,26 @@ static void MultiDimensionRCTrackDiagFlatToRightBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16082), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -9840,19 +10231,23 @@ static void MultiDimensionRCTrackDiagFlatToRightBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -9918,22 +10313,26 @@ static void MultiDimensionRCTrackDiagLeftBankToFlat(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16084), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -10002,19 +10401,23 @@ static void MultiDimensionRCTrackDiagLeftBankToFlat(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -10080,22 +10483,26 @@ static void MultiDimensionRCTrackDiagRightBankToFlat(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16079), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -10164,19 +10571,23 @@ static void MultiDimensionRCTrackDiagRightBankToFlat(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -10242,22 +10653,26 @@ static void MultiDimensionRCTrackDiagLeftBankTo25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16097), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -10325,19 +10740,23 @@ static void MultiDimensionRCTrackDiagLeftBankTo25DegUp(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -10403,22 +10822,26 @@ static void MultiDimensionRCTrackDiagRightBankTo25DegUp(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16102), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -10486,19 +10909,23 @@ static void MultiDimensionRCTrackDiagRightBankTo25DegUp(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -10564,22 +10991,26 @@ static void MultiDimensionRCTrackDiag25DegUpToLeftBank(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16087), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -10647,19 +11078,23 @@ static void MultiDimensionRCTrackDiag25DegUpToLeftBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -10725,22 +11160,26 @@ static void MultiDimensionRCTrackDiag25DegUpToRightBank(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16092), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -10808,19 +11247,23 @@ static void MultiDimensionRCTrackDiag25DegUpToRightBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -10883,22 +11326,26 @@ static void MultiDimensionRCTrackDiagLeftBankTo25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16094), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -10962,19 +11409,23 @@ static void MultiDimensionRCTrackDiagLeftBankTo25DegDown(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 break;
@@ -11037,22 +11488,26 @@ static void MultiDimensionRCTrackDiagRightBankTo25DegDown(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16089), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 4, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -11116,19 +11571,23 @@ static void MultiDimensionRCTrackDiagRightBankTo25DegDown(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 42,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 break;
@@ -11194,22 +11653,26 @@ static void MultiDimensionRCTrackDiag25DegDownToLeftBank(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16104), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -11277,19 +11740,23 @@ static void MultiDimensionRCTrackDiag25DegDownToLeftBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -11355,22 +11822,26 @@ static void MultiDimensionRCTrackDiag25DegDownToRightBank(
                 {
                     case 0:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16099), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalBSupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -11438,19 +11909,23 @@ static void MultiDimensionRCTrackDiag25DegDownToRightBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 40, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 40,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -11513,22 +11988,26 @@ static void MultiDimensionRCTrackDiagLeftBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16073), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -11597,19 +12076,23 @@ static void MultiDimensionRCTrackDiagLeftBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -11672,22 +12155,26 @@ static void MultiDimensionRCTrackDiagRightBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(16075), { -16, -16, height },
                             { { -16, -16, height }, { 32, 32, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 PaintUtilSetSegmentSupportHeight(
@@ -11756,19 +12243,23 @@ static void MultiDimensionRCTrackDiagRightBank(
                 {
                     case 0:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 1, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::LeftCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 0, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::TopCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 2, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::RightCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::TubesInverted, 3, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                            session, MetalSupportType::TubesInverted, MetalSupportPlace::BottomCorner, 0, height + 36,
+                            session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -11810,7 +12301,8 @@ static void MultiDimensionRCTrackLeftFlyerTwistUp(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -11881,7 +12373,8 @@ static void MultiDimensionRCTrackLeftFlyerTwistUp(
                 PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             switch (direction)
             {
@@ -11929,7 +12422,8 @@ static void MultiDimensionRCTrackRightFlyerTwistUp(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
                 PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -12000,7 +12494,8 @@ static void MultiDimensionRCTrackRightFlyerTwistUp(
                 PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             switch (direction)
             {
@@ -12053,7 +12548,8 @@ static void MultiDimensionRCTrackLeftFlyerTwistDown(
                 PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             if (direction == 0 || direction == 3)
             {
@@ -12116,7 +12612,8 @@ static void MultiDimensionRCTrackLeftFlyerTwistDown(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 1:
@@ -12172,7 +12669,8 @@ static void MultiDimensionRCTrackRightFlyerTwistDown(
                 PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
                 0xFFFF, 0);
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                session.TrackColours[SCHEME_SUPPORTS]);
 
             if (direction == 0 || direction == 3)
             {
@@ -12235,7 +12733,8 @@ static void MultiDimensionRCTrackRightFlyerTwistDown(
                     break;
             }
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+                session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
                 case 1:
@@ -12462,7 +12961,7 @@ static void MultiDimensionRCTrackBlockBrakes(
 
     if (!trackElement.IsInverted())
     {
-        static constexpr const uint32_t imageIds[NumOrthogonalDirections][2] = {
+        static constexpr uint32_t imageIds[NumOrthogonalDirections][2] = {
             { MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED },
             { MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_NW_SE_OPEN, MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_NW_SE_CLOSED },
             { MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED },
@@ -12472,14 +12971,16 @@ static void MultiDimensionRCTrackBlockBrakes(
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][isClosed]), { 0, 0, height },
             { { 0, 6, height }, { 32, 20, 3 } });
-        MetalASupportsPaintSetup(session, MetalSupportType::TubesInverted, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height,
+            session.TrackColours[SCHEME_SUPPORTS]);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
         PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
     }
     else
     {
-        static constexpr const uint32_t imageIds[NumOrthogonalDirections][2] = {
+        static constexpr uint32_t imageIds[NumOrthogonalDirections][2] = {
             { MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED },
             { MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_OPEN, MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_CLOSED },
             { MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED },
@@ -12495,7 +12996,8 @@ static void MultiDimensionRCTrackBlockBrakes(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::TubesInverted, 4, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::TubesInverted, MetalSupportPlace::Centre, 0, height + 36,
+                session.TrackColours[SCHEME_SUPPORTS]);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -13294,6 +13796,11 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionMultiDimensionRC(int32_t trackType)
             return MultiDimensionRCTrackMultidimFlatTo90DegDownQuarterLoop;
         case TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop:
             return MultiDimensionRCTrackMultidimInverted90DegUpToFlatQuarterLoop;
+
+        case TrackElemType::DiagBrakes:
+            return MultiDimensionRCTrackDiagBrakes;
+        case TrackElemType::DiagBlockBrakes:
+            return MultiDimensionRCTrackDiagBlockBrakes;
     }
     return nullptr;
 }

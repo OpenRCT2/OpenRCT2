@@ -1396,18 +1396,8 @@ static int32_t ConsoleCommandRemoveFloatingObjects(InteractiveConsole& console, 
 
 static int32_t ConsoleCommandRemoveParkFences(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    TileElementIterator it;
-    TileElementIteratorBegin(&it);
-    do
-    {
-        if (it.element->GetType() == TileElementType::Surface)
-        {
-            // Remove all park fence flags
-            it.element->AsSurface()->SetParkFences(0);
-        }
-    } while (TileElementIteratorNext(&it));
-
-    GfxInvalidateScreen();
+    auto action = CheatSetAction(CheatType::RemoveParkFences);
+    GameActions::Execute(&action);
 
     console.WriteFormatLine("Park fences have been removed.");
     return 0;
@@ -1984,7 +1974,7 @@ static constexpr const utf8* console_window_table[] = {
 };
 // clang-format on
 
-static constexpr const ConsoleCommand console_command_table[] = {
+static constexpr ConsoleCommand console_command_table[] = {
     { "abort", ConsoleCommandAbort, "Calls std::abort(), for testing purposes only.", "abort" },
     { "add_news_item", ConsoleCommandAddNewsItem, "Inserts a news item", "add_news_item [<type> <message> <assoc>]" },
     { "assert", ConsoleCommandAssert, "Triggers assertion failure, for testing purposes only", "assert" },

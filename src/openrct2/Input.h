@@ -80,7 +80,7 @@ extern ScreenCoordsXY gInputDragLast;
 extern WidgetRef gHoverWidget;
 extern WidgetRef gPressedWidget;
 
-extern uint16_t gTooltipTimeout;
+extern uint32_t gTooltipCloseTimeout;
 extern WidgetRef gTooltipWidget;
 extern ScreenCoordsXY gTooltipCursor;
 
@@ -90,7 +90,7 @@ extern WidgetRef gCurrentToolWidget;
 // TODO: Move to openrct2-ui and make static again
 extern InputState _inputState;
 extern uint8_t _inputFlags;
-extern uint16_t _tooltipNotShownTicks;
+extern uint32_t _tooltipNotShownTimeout;
 
 void InputWindowPositionBegin(WindowBase& w, WidgetIndex widgetIndex, const ScreenCoordsXY& screenCoords);
 

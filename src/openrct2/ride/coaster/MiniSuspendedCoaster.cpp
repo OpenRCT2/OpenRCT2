@@ -69,12 +69,14 @@ static void MiniSuspendedRCTrackFlat(
             case 0:
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Fork, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Fork, MetalSupportPlace::Centre, 0, height + 30,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 0, height + 30,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -88,7 +90,7 @@ static void MiniSuspendedRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][3] = {
+    static constexpr uint32_t imageIds[4][3] = {
         { SPR_STATION_BASE_C_SW_NE, 28433, SPR_STATION_INVERTED_BAR_E_SW_NE },
         { SPR_STATION_BASE_C_NW_SE, 28434, SPR_STATION_INVERTED_BAR_E_NW_SE },
         { SPR_STATION_BASE_C_SW_NE, 28433, SPR_STATION_INVERTED_BAR_E_SW_NE },
@@ -104,8 +106,7 @@ static void MiniSuspendedRCTrackStation(
     PaintAddImageAsChildRotated(
         session, direction, session.TrackColours[SCHEME_SUPPORTS].WithIndex(imageIds[direction][2]), { 0, 6, height + 24 },
         { { 0, 2, height }, { 32, 20, 1 } });
-    TrackPaintUtilDrawStationMetalSupports2(
-        session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Boxed);
+    DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Boxed);
     TrackPaintUtilDrawStationInverted(session, ride, direction, height, trackElement, STATION_VARIANT_1);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -178,19 +179,23 @@ static void MiniSuspendedRCTrack25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Fork, 6, 0, height + 46, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Fork, MetalSupportPlace::TopRightSide, 0, height + 46,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, 8, 0, height + 46, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomRightSide, 0, height + 46,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Fork, 7, 0, height + 46, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Fork, MetalSupportPlace::BottomLeftSide, 0, height + 46,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, 5, 0, height + 46, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::ForkAlt, MetalSupportPlace::TopLeftSide, 0, height + 46,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -272,19 +277,23 @@ static void MiniSuspendedRCTrackFlatTo25DegUp(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Fork, 6, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Fork, MetalSupportPlace::TopRightSide, 0, height + 38,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, 8, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomRightSide, 0, height + 38,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Fork, 7, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Fork, MetalSupportPlace::BottomLeftSide, 0, height + 38,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, 5, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::ForkAlt, MetalSupportPlace::TopLeftSide, 0, height + 38,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -366,19 +375,23 @@ static void MiniSuspendedRCTrack25DegUpToFlat(
         {
             case 0:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Fork, 6, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Fork, MetalSupportPlace::TopRightSide, 0, height + 38,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, 8, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomRightSide, 0, height + 38,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Fork, 7, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Fork, MetalSupportPlace::BottomLeftSide, 0, height + 38,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::ForkAlt, 5, 0, height + 38, session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::ForkAlt, MetalSupportPlace::TopLeftSide, 0, height + 38,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 break;
         }
     }
@@ -458,12 +471,14 @@ static void MiniSuspendedRCTrackLeftQuarterTurn5(
                 case 0:
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -600,12 +615,14 @@ static void MiniSuspendedRCTrackLeftQuarterTurn5(
                 case 0:
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -671,12 +688,14 @@ static void MiniSuspendedRCTrackSBendLeft(
                 case 0:
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -719,11 +738,13 @@ static void MiniSuspendedRCTrackSBendLeft(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 5, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::TopLeftSide, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 6, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopRightSide, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -762,11 +783,13 @@ static void MiniSuspendedRCTrackSBendLeft(
             {
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 5, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::TopLeftSide, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 6, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopRightSide, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -804,12 +827,14 @@ static void MiniSuspendedRCTrackSBendLeft(
                 case 0:
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -866,12 +891,14 @@ static void MiniSuspendedRCTrackSBendRight(
                 case 0:
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -914,11 +941,13 @@ static void MiniSuspendedRCTrackSBendRight(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 8, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::BottomRightSide, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 7, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomLeftSide, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -957,11 +986,13 @@ static void MiniSuspendedRCTrackSBendRight(
             {
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 8, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::BottomRightSide, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 7, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomLeftSide, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -999,12 +1030,14 @@ static void MiniSuspendedRCTrackSBendRight(
                 case 0:
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -1062,12 +1095,14 @@ static void MiniSuspendedRCTrackLeftQuarterTurn3(
                 case 0:
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -1141,12 +1176,14 @@ static void MiniSuspendedRCTrackLeftQuarterTurn3(
                 case 0:
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -1212,12 +1249,14 @@ static void MiniSuspendedRCTrackLeftEighthToDiag(
                 case 0:
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -1325,19 +1364,23 @@ static void MiniSuspendedRCTrackLeftEighthToDiag(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 3, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::BottomCorner, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 1, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::LeftCorner, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 0, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::TopCorner, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 2, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::RightCorner, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -1385,12 +1428,14 @@ static void MiniSuspendedRCTrackRightEighthToDiag(
                 case 0:
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 4, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::Centre, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -1498,19 +1543,23 @@ static void MiniSuspendedRCTrackRightEighthToDiag(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 1, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 0, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 2, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 3, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -1655,19 +1704,23 @@ static void MiniSuspendedRCTrackDiagFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 1, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 0, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 2, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 3, 0, height + 30, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height + 30,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -1794,19 +1847,23 @@ static void MiniSuspendedRCTrackDiag25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 1, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height + 42,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 0, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height + 42,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 2, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height + 42,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 3, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height + 42,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -1933,19 +1990,23 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegUp(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 1, 0, height + 34, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height + 34,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 0, 0, height + 34, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height + 34,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 2, 0, height + 34, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height + 34,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 3, 0, height + 34, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height + 34,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -2072,19 +2133,23 @@ static void MiniSuspendedRCTrackDiag25DegUpToFlat(
             {
                 case 0:
                     MetalBSupportsPaintSetup(
-                        session, MetalSupportType::Fork, 1, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height + 36,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 0, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height + 36,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 2, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height + 36,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 3, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height + 36,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -2211,19 +2276,23 @@ static void MiniSuspendedRCTrackDiag25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 1, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height + 42,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 0, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height + 42,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 2, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height + 42,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 3, 0, height + 42, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height + 42,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 
@@ -2347,19 +2416,23 @@ static void MiniSuspendedRCTrackDiagFlatTo25DegDown(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 1, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height + 36,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 0, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height + 36,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 2, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height + 36,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 3, 0, height + 36, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height + 36,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
             break;
@@ -2486,19 +2559,23 @@ static void MiniSuspendedRCTrackDiag25DegDownToFlat(
             {
                 case 0:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 1, 0, height + 34, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::LeftCorner, 0, height + 34,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 0, 0, height + 34, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::TopCorner, 0, height + 34,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::Fork, 2, 0, height + 34, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::Fork, MetalSupportPlace::RightCorner, 0, height + 34,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     MetalASupportsPaintSetup(
-                        session, MetalSupportType::ForkAlt, 3, 0, height + 34, session.TrackColours[SCHEME_SUPPORTS]);
+                        session, MetalSupportType::ForkAlt, MetalSupportPlace::BottomCorner, 0, height + 34,
+                        session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
 

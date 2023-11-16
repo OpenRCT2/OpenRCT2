@@ -125,7 +125,7 @@ static void WoodenWildMouseTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4] = {
+    static constexpr uint32_t imageIds[4] = {
         SPR_WOODEN_WILD_MOUSE_FLAT_SW_NE,
         SPR_WOODEN_WILD_MOUSE_FLAT_NW_SE,
         SPR_WOODEN_WILD_MOUSE_FLAT_SW_NE,
@@ -149,7 +149,7 @@ static void WoodenWildMouseTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4][2] = {
+    static constexpr uint32_t imageIds[4][2] = {
         { SPR_WOODEN_WILD_MOUSE_FLAT_SW_NE, SPR_STATION_BASE_B_SW_NE },
         { SPR_WOODEN_WILD_MOUSE_FLAT_NW_SE, SPR_STATION_BASE_B_NW_SE },
         { SPR_WOODEN_WILD_MOUSE_FLAT_SW_NE, SPR_STATION_BASE_B_SW_NE },
@@ -174,7 +174,7 @@ static void WoodenWildMouseTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[2][4] = {
+    static constexpr uint32_t imageIds[2][4] = {
         {
             SPR_WOODEN_WILD_MOUSE_25_DEG_SW_NE,
             SPR_WOODEN_WILD_MOUSE_25_DEG_NW_SE,
@@ -213,7 +213,7 @@ static void WoodenWildMouseTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[2][4] = {
+    static constexpr uint32_t imageIds[2][4] = {
         {
             SPR_WOODEN_WILD_MOUSE_60_DEG_SW_NE,
             SPR_WOODEN_WILD_MOUSE_60_DEG_NW_SE,
@@ -260,7 +260,7 @@ static void WoodenWildMouseTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[2][4] = {
+    static constexpr uint32_t imageIds[2][4] = {
         {
             SPR_WOODEN_WILD_MOUSE_FLAT_TO_25_DEG_SW_NE,
             SPR_WOODEN_WILD_MOUSE_FLAT_TO_25_DEG_NW_SE,
@@ -299,7 +299,7 @@ static void WoodenWildMouseTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[2][4][2] = {
+    static constexpr uint32_t imageIds[2][4][2] = {
         {
             { SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_SW_NE, 0 },
             { SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_NW_SE, SPR_WOODEN_WILD_MOUSE_25_DEG_TO_60_DEG_FRONT_NW_SE },
@@ -349,7 +349,7 @@ static void WoodenWildMouseTrack60DegTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[2][4][2] = {
+    static constexpr uint32_t imageIds[2][4][2] = {
         {
             { SPR_WOODEN_WILD_MOUSE_60_DEG_TO_25_DEG_SW_NE, 0 },
             { SPR_WOODEN_WILD_MOUSE_60_DEG_TO_25_DEG_NW_SE, SPR_WOODEN_WILD_MOUSE_60_DEG_TO_25_DEG_FRONT_NW_SE },
@@ -400,7 +400,7 @@ static void WoodenWildMouseTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[2][4] = {
+    static constexpr uint32_t imageIds[2][4] = {
         {
             SPR_WOODEN_WILD_MOUSE_25_DEG_TO_FLAT_SW_NE,
             SPR_WOODEN_WILD_MOUSE_25_DEG_TO_FLAT_NW_SE,
@@ -486,7 +486,7 @@ static void WoodenWildMouseTrackRightQuarterTurn3(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBb imageIds[4][3] = {
+    static constexpr SpriteBb imageIds[4][3] = {
         {
             { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_SW_SE_PART_0, { 0, 6, 0 }, { 0, 0, 0 }, { 32, 20, 1 } },
             { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_SW_SE_PART_1, { 16, 16, 0 }, { 0, 0, 0 }, { 16, 16, 1 } },
@@ -551,7 +551,7 @@ static void WoodenWildMouseTrackLeftQuarterTurn1(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[4] = {
+    static constexpr uint32_t imageIds[4] = {
         SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_1_SW_NE,
         SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_1_NW_SE,
         SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_1_NE_SW,
@@ -594,7 +594,7 @@ static void WoodenWildMouseTrackFlatTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[2][4][2] = {
+    static constexpr uint32_t imageIds[2][4][2] = {
         {
             { SPR_WOODEN_WILD_MOUSE_FLAT_TO_60_DEG_SW_NE, 0 },
             { SPR_WOODEN_WILD_MOUSE_FLAT_TO_60_DEG_NW_SE, SPR_WOODEN_WILD_MOUSE_FLAT_TO_60_DEG_FRONT_NW_SE },
@@ -644,7 +644,7 @@ static void WoodenWildMouseTrack60DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const uint32_t imageIds[2][4][2] = {
+    static constexpr uint32_t imageIds[2][4][2] = {
         {
             { SPR_WOODEN_WILD_MOUSE_60_DEG_TO_FLAT_SW_NE, 0 },
             { SPR_WOODEN_WILD_MOUSE_60_DEG_TO_FLAT_NW_SE, SPR_WOODEN_WILD_MOUSE_60_DEG_TO_FLAT_FRONT_NW_SE },

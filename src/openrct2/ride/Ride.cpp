@@ -91,7 +91,7 @@ RideMode& operator++(RideMode& d, int)
     return d = (d == RideMode::Count) ? RideMode::Normal : static_cast<RideMode>(static_cast<uint8_t>(d) + 1);
 }
 
-static constexpr const int32_t RideInspectionInterval[] = {
+static constexpr int32_t RideInspectionInterval[] = {
     10, 20, 30, 45, 60, 120, 0, 0,
 };
 
@@ -1038,6 +1038,20 @@ RideStation& Ride::GetStation(StationIndex stationIndex)
     return stations[stationIndex.ToUnderlying()];
 }
 
+StationIndex::UnderlyingType Ride::GetStationNumber(StationIndex in) const
+{
+    StationIndex::UnderlyingType nullStationsSeen{ 0 };
+    for (size_t i = 0; i < in.ToUnderlying(); i++)
+    {
+        if (stations[i].Start.IsNull())
+        {
+            nullStationsSeen++;
+        }
+    }
+
+    return in.ToUnderlying() - nullStationsSeen + 1;
+}
+
 const RideStation& Ride::GetStation(StationIndex stationIndex) const
 {
     return stations[stationIndex.ToUnderlying()];
@@ -1204,7 +1218,7 @@ void Ride::UpdatePopularity(const uint8_t pop_amount)
 }
 
 /** rct2: 0x0098DDB8, 0x0098DDBA */
-static constexpr const CoordsXY ride_spiral_slide_main_tile_offset[][4] = {
+static constexpr CoordsXY ride_spiral_slide_main_tile_offset[][4] = {
     {
         { 32, 32 },
         { 0, 32 },
@@ -2007,7 +2021,8 @@ static void RideMeasurementUpdate(Ride& ride, RideMeasurement& measurement)
     auto trackType = vehicle->GetTrackType();
     if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::CableLiftHill
         || trackType == TrackElemType::Up25ToFlat || trackType == TrackElemType::Up60ToFlat
-        || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat)
+        || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat
+        || trackType == TrackElemType::DiagBlockBrakes)
         if (vehicle->velocity == 0)
             return;
 
@@ -2257,6 +2272,7 @@ void RideCheckAllReachable()
     {
         if (ride.connected_message_throttle != 0)
             ride.connected_message_throttle--;
+
         if (ride.status != RideStatus::Open || ride.connected_message_throttle != 0)
             continue;
 
@@ -2293,6 +2309,7 @@ static void RideEntranceExitConnected(Ride& ride)
 
         if (station_start.IsNull())
             continue;
+
         if (!entrance.IsNull() && !RideEntranceExitIsReachable(entrance))
         {
             // name of ride is parameter of the format string
@@ -2344,9 +2361,7 @@ static void RideShopConnected(const Ride& ride)
     auto track_type = trackElement->GetTrackType();
     auto ride2 = GetRide(trackElement->GetRideIndex());
     if (ride2 == nullptr)
-    {
         return;
-    }
 
     const auto& ted = GetTrackElementDescriptor(track_type);
     uint8_t entrance_directions = std::get<0>(ted.SequenceProperties) & 0xF;
@@ -2391,9 +2406,9 @@ static void RideShopConnected(const Ride& ride)
 
 #pragma region Interface
 
-static void RideTrackSetMapTooltip(TileElement* tileElement)
+static void RideTrackSetMapTooltip(const TrackElement& trackElement)
 {
-    auto rideIndex = tileElement->AsTrack()->GetRideIndex();
+    auto rideIndex = trackElement.GetRideIndex();
     auto ride = GetRide(rideIndex);
     if (ride != nullptr)
     {
@@ -2407,134 +2422,129 @@ static void RideTrackSetMapTooltip(TileElement* tileElement)
     }
 }
 
-static void RideQueueBannerSetMapTooltip(TileElement* tileElement)
+static void RideQueueBannerSetMapTooltip(const PathElement& pathElement)
 {
-    auto rideIndex = tileElement->AsPath()->GetRideIndex();
+    auto rideIndex = pathElement.GetRideIndex();
     auto ride = GetRide(rideIndex);
-    if (ride != nullptr)
-    {
-        auto ft = Formatter();
-        ft.Add<StringId>(STR_RIDE_MAP_TIP);
-        ride->FormatNameTo(ft);
-        ride->FormatStatusTo(ft);
-        auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
-        intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
-        ContextBroadcastIntent(&intent);
-    }
+    if (ride == nullptr)
+        return;
+
+    auto ft = Formatter();
+    ft.Add<StringId>(STR_RIDE_MAP_TIP);
+    ride->FormatNameTo(ft);
+    ride->FormatStatusTo(ft);
+    auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
+    intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
+    ContextBroadcastIntent(&intent);
 }
 
-static void RideStationSetMapTooltip(TileElement* tileElement)
+static void RideStationSetMapTooltip(const TrackElement& trackElement)
 {
-    auto rideIndex = tileElement->AsTrack()->GetRideIndex();
+    auto rideIndex = trackElement.GetRideIndex();
     auto ride = GetRide(rideIndex);
-    if (ride != nullptr)
-    {
-        auto stationIndex = tileElement->AsTrack()->GetStationIndex();
-        for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
-            if (ride->GetStations()[i].Start.IsNull())
-                stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
+    if (ride == nullptr)
+        return;
 
-        auto ft = Formatter();
-        ft.Add<StringId>(STR_RIDE_MAP_TIP);
-        ft.Add<StringId>(ride->num_stations <= 1 ? STR_RIDE_STATION : STR_RIDE_STATION_X);
-        ride->FormatNameTo(ft);
-        ft.Add<StringId>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.station).capitalised);
-        ft.Add<uint16_t>(stationIndex.ToUnderlying() + 1);
-        ride->FormatStatusTo(ft);
-        auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
-        intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
-        ContextBroadcastIntent(&intent);
-    }
+    const auto stationIndex = trackElement.GetStationIndex();
+    const auto stationNumber = ride->GetStationNumber(stationIndex);
+
+    auto ft = Formatter();
+    ft.Add<StringId>(STR_RIDE_MAP_TIP);
+    ft.Add<StringId>(ride->num_stations <= 1 ? STR_RIDE_STATION : STR_RIDE_STATION_X);
+    ride->FormatNameTo(ft);
+    ft.Add<StringId>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.station).capitalised);
+    ft.Add<uint16_t>(stationNumber);
+    ride->FormatStatusTo(ft);
+    auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
+    intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
+    ContextBroadcastIntent(&intent);
 }
 
-static void RideEntranceSetMapTooltip(TileElement* tileElement)
+static void RideEntranceSetMapTooltip(const EntranceElement& entranceElement)
 {
-    auto rideIndex = tileElement->AsEntrance()->GetRideIndex();
+    auto rideIndex = entranceElement.GetRideIndex();
     auto ride = GetRide(rideIndex);
-    if (ride != nullptr)
-    {
-        // Get the station
-        auto stationIndex = tileElement->AsEntrance()->GetStationIndex();
-        for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
-            if (ride->GetStations()[i].Start.IsNull())
-                stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
+    if (ride == nullptr)
+        return;
 
-        if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+    if (entranceElement.GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
+    {
+        // Get the queue length
+        int32_t queueLength = 0;
+        const auto stationIndex = entranceElement.GetStationIndex();
+        if (!ride->GetStation(stationIndex).Entrance.IsNull())
         {
-            // Get the queue length
-            int32_t queueLength = 0;
-            if (!ride->GetStation(stationIndex).Entrance.IsNull())
-                queueLength = ride->GetStation(stationIndex).QueueLength;
+            queueLength = ride->GetStation(stationIndex).QueueLength;
+        }
 
-            auto ft = Formatter();
-            ft.Add<StringId>(STR_RIDE_MAP_TIP);
-            ft.Add<StringId>(ride->num_stations <= 1 ? STR_RIDE_ENTRANCE : STR_RIDE_STATION_X_ENTRANCE);
-            ride->FormatNameTo(ft);
+        auto ft = Formatter();
+        ft.Add<StringId>(STR_RIDE_MAP_TIP);
+        ft.Add<StringId>(ride->num_stations <= 1 ? STR_RIDE_ENTRANCE : STR_RIDE_STATION_X_ENTRANCE);
+        ride->FormatNameTo(ft);
 
-            // String IDs have an extra pop16 for some reason
-            ft.Increment(sizeof(uint16_t));
+        // String IDs have an extra pop16 for some reason
+        ft.Increment(sizeof(uint16_t));
 
-            ft.Add<uint16_t>(stationIndex.ToUnderlying() + 1);
-            if (queueLength == 0)
-            {
+        const auto stationNumber = ride->GetStationNumber(stationIndex);
+        ft.Add<uint16_t>(stationNumber);
+
+        switch (queueLength)
+        {
+            case 0:
                 ft.Add<StringId>(STR_QUEUE_EMPTY);
-            }
-            else if (queueLength == 1)
-            {
+                break;
+            case 1:
                 ft.Add<StringId>(STR_QUEUE_ONE_PERSON);
-            }
-            else
-            {
+                break;
+            default:
                 ft.Add<StringId>(STR_QUEUE_PEOPLE);
-            }
-            ft.Add<uint16_t>(queueLength);
-            auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
-            intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
-            ContextBroadcastIntent(&intent);
+                break;
         }
-        else
-        {
-            // Get the station
-            stationIndex = tileElement->AsEntrance()->GetStationIndex();
-            for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
-                if (ride->GetStations()[i].Start.IsNull())
-                    stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
+        ft.Add<uint16_t>(queueLength);
 
-            auto ft = Formatter();
-            ft.Add<StringId>(ride->num_stations <= 1 ? STR_RIDE_EXIT : STR_RIDE_STATION_X_EXIT);
-            ride->FormatNameTo(ft);
+        auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
+        intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
+        ContextBroadcastIntent(&intent);
+    }
+    else
+    {
+        auto ft = Formatter();
+        ft.Add<StringId>(ride->num_stations <= 1 ? STR_RIDE_EXIT : STR_RIDE_STATION_X_EXIT);
+        ride->FormatNameTo(ft);
 
-            // String IDs have an extra pop16 for some reason
-            ft.Increment(sizeof(uint16_t));
+        // String IDs have an extra pop16 for some reason
+        ft.Increment(sizeof(uint16_t));
 
-            ft.Add<uint16_t>(stationIndex.ToUnderlying() + 1);
-            auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
-            intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
-            ContextBroadcastIntent(&intent);
-        }
+        const auto stationIndex = entranceElement.GetStationIndex();
+        const auto stationNumber = ride->GetStationNumber(stationIndex);
+        ft.Add<uint16_t>(stationNumber);
+        auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
+        intent.PutExtra(INTENT_EXTRA_FORMATTER, &ft);
+        ContextBroadcastIntent(&intent);
     }
 }
 
-void RideSetMapTooltip(TileElement* tileElement)
+void RideSetMapTooltip(const TileElement& tileElement)
 {
-    if (tileElement->GetType() == TileElementType::Entrance)
+    if (tileElement.GetType() == TileElementType::Entrance)
     {
-        RideEntranceSetMapTooltip(tileElement);
+        RideEntranceSetMapTooltip(*tileElement.AsEntrance());
     }
-    else if (tileElement->GetType() == TileElementType::Track)
+    else if (tileElement.GetType() == TileElementType::Track)
     {
-        if (tileElement->AsTrack()->IsStation())
+        const auto* trackElement = tileElement.AsTrack();
+        if (trackElement->IsStation())
         {
-            RideStationSetMapTooltip(tileElement);
+            RideStationSetMapTooltip(*trackElement);
         }
         else
         {
-            RideTrackSetMapTooltip(tileElement);
+            RideTrackSetMapTooltip(*trackElement);
         }
     }
-    else if (tileElement->GetType() == TileElementType::Path)
+    else if (tileElement.GetType() == TileElementType::Path)
     {
-        RideQueueBannerSetMapTooltip(tileElement);
+        RideQueueBannerSetMapTooltip(*tileElement.AsPath());
     }
 }
 
@@ -2593,7 +2603,7 @@ static StationIndexWithMessage RideModeCheckStationPresent(const Ride& ride)
     if (stationIndex.IsNull())
     {
         const auto& rtd = ride.GetRideTypeDescriptor();
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
             return { StationIndex::GetNull(), STR_NOT_YET_CONSTRUCTED };
 
         if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
@@ -2707,7 +2717,7 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
     TrackCircuitIteratorBegin(&it, input);
     while (TrackCircuitIteratorNext(&it))
     {
-        if (it.current.element->AsTrack()->GetTrackType() == TrackElemType::BlockBrakes)
+        if (TrackTypeIsBlockBrakes(it.current.element->AsTrack()->GetTrackType()))
         {
             auto type = it.last.element->AsTrack()->GetTrackType();
             if (type == TrackElemType::EndStation)
@@ -2715,7 +2725,7 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
                 *output = it.current;
                 return { false, STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION };
             }
-            if (type == TrackElemType::BlockBrakes)
+            if (TrackTypeIsBlockBrakes(type))
             {
                 *output = it.current;
                 return { false, STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_EACH_OTHER };
@@ -3038,6 +3048,24 @@ static void RideSetMazeEntranceExitPoints(Ride& ride)
     }
 }
 
+void SetBrakeClosedMultiTile(TrackElement& trackElement, const CoordsXY& trackLocation, bool isClosed)
+{
+    switch (trackElement.GetTrackType())
+    {
+        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::DiagUp60ToFlat:
+        case TrackElemType::CableLiftHill:
+        case TrackElemType::DiagBrakes:
+        case TrackElemType::DiagBlockBrakes:
+            GetTrackElementOriginAndApplyChanges(
+                { trackLocation, trackElement.GetBaseZ(), trackElement.GetDirection() }, trackElement.GetTrackType(), isClosed,
+                nullptr, TRACK_ELEMENT_SET_BRAKE_CLOSED_STATE);
+            break;
+        default:
+            trackElement.SetBrakeClosed(isClosed);
+    }
+}
+
 /**
  * Opens all block brakes of a ride.
  *  rct2: 0x006B4E6B
@@ -3051,17 +3079,18 @@ static void RideOpenBlockBrakes(const CoordsXYE& startElement)
         switch (trackType)
         {
             case TrackElemType::BlockBrakes:
+            case TrackElemType::DiagBlockBrakes:
                 BlockBrakeSetLinkedBrakesClosed(
                     CoordsXYZ(currentElement.x, currentElement.y, currentElement.element->GetBaseZ()),
                     *currentElement.element->AsTrack(), false);
                 [[fallthrough]];
-            case TrackElemType::EndStation:
-            case TrackElemType::CableLiftHill:
-            case TrackElemType::Up25ToFlat:
-            case TrackElemType::Up60ToFlat:
             case TrackElemType::DiagUp25ToFlat:
             case TrackElemType::DiagUp60ToFlat:
-                currentElement.element->AsTrack()->SetBrakeClosed(false);
+            case TrackElemType::CableLiftHill:
+            case TrackElemType::EndStation:
+            case TrackElemType::Up25ToFlat:
+            case TrackElemType::Up60ToFlat:
+                SetBrakeClosedMultiTile(*currentElement.element->AsTrack(), { currentElement.x, currentElement.y }, false);
                 break;
         }
     } while (TrackBlockGetNext(&currentElement, &currentElement, nullptr, nullptr)
@@ -3098,10 +3127,11 @@ void BlockBrakeSetLinkedBrakesClosed(const CoordsXYZ& vehicleTrackLocation, Trac
         location.z = trackBeginEnd.begin_z;
         tileElement = trackBeginEnd.begin_element;
 
-        if (trackBeginEnd.begin_element->AsTrack()->GetTrackType() == TrackElemType::Brakes)
+        if (TrackTypeIsBrakes(tileElement->AsTrack()->GetTrackType()))
         {
-            trackBeginEnd.begin_element->AsTrack()->SetBrakeClosed(
-                (trackBeginEnd.begin_element->AsTrack()->GetBrakeBoosterSpeed() >= brakeSpeed) || isClosed);
+            SetBrakeClosedMultiTile(
+                *tileElement->AsTrack(), { trackBeginEnd.begin_x, trackBeginEnd.begin_y },
+                (tileElement->AsTrack()->GetBrakeBoosterSpeed() >= brakeSpeed) || isClosed);
         }
 
         // prevent infinite loop
@@ -3119,7 +3149,7 @@ void BlockBrakeSetLinkedBrakesClosed(const CoordsXYZ& vehicleTrackLocation, Trac
                 return;
             }
         }
-    } while (trackBeginEnd.begin_element->AsTrack()->GetTrackType() == TrackElemType::Brakes);
+    } while (TrackTypeIsBrakes(trackBeginEnd.begin_element->AsTrack()->GetTrackType()));
 }
 
 /**
@@ -3155,7 +3185,7 @@ static int32_t count_free_misc_sprite_slots()
     return std::max(0, miscSpriteCount + remainingSpriteCount - 300);
 }
 
-static constexpr const CoordsXY word_9A3AB4[4] = {
+static constexpr CoordsXY word_9A3AB4[4] = {
     { 0, 0 },
     { 0, -96 },
     { -96, -96 },
@@ -3163,7 +3193,7 @@ static constexpr const CoordsXY word_9A3AB4[4] = {
 };
 
 // clang-format off
-static constexpr const CoordsXY word_9A2A60[] = {
+static constexpr CoordsXY word_9A2A60[] = {
     { 0, 16 },
     { 16, 31 },
     { 31, 16 },
@@ -3502,30 +3532,34 @@ static void RideCreateVehiclesFindFirstBlock(const Ride& ride, CoordsXYE* outXYE
         auto trackType = trackElement->GetTrackType();
         switch (trackType)
         {
-            case TrackElemType::Up25ToFlat:
-            case TrackElemType::Up60ToFlat:
-                if (trackElement->HasChain())
+            case TrackElemType::DiagUp25ToFlat:
+            case TrackElemType::DiagUp60ToFlat:
+                if (!trackElement->HasChain())
                 {
-                    *outXYElement = { trackPos, reinterpret_cast<TileElement*>(trackElement) };
+                    break;
+                }
+                [[fallthrough]];
+            case TrackElemType::DiagBlockBrakes:
+            {
+                TileElement* tileElement = MapGetTrackElementAtOfTypeSeq(
+                    { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z }, trackType, 0);
+
+                if (tileElement != nullptr)
+                {
+                    outXYElement->x = trackBeginEnd.begin_x;
+                    outXYElement->y = trackBeginEnd.begin_y;
+                    outXYElement->element = tileElement;
                     return;
                 }
                 break;
-            case TrackElemType::DiagUp25ToFlat:
-            case TrackElemType::DiagUp60ToFlat:
-                if (trackElement->HasChain())
+            }
+            case TrackElemType::Up25ToFlat:
+            case TrackElemType::Up60ToFlat:
+                if (!trackElement->HasChain())
                 {
-                    TileElement* tileElement = MapGetTrackElementAtOfTypeSeq(
-                        { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z }, trackType, 0);
-
-                    if (tileElement != nullptr)
-                    {
-                        outXYElement->x = trackBeginEnd.begin_x;
-                        outXYElement->y = trackBeginEnd.begin_y;
-                        outXYElement->element = tileElement;
-                        return;
-                    }
+                    break;
                 }
-                break;
+                [[fallthrough]];
             case TrackElemType::EndStation:
             case TrackElemType::CableLiftHill:
             case TrackElemType::BlockBrakes:
@@ -3678,8 +3712,8 @@ void Ride::MoveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackEle
 
         // All vehicles are in position, set the block brake directly before the station one last time and make sure the brakes
         // are set appropriately
-        firstBlock.SetBrakeClosed(true);
-        if (firstBlock.GetTrackType() == TrackElemType::BlockBrakes)
+        SetBrakeClosedMultiTile(firstBlock, firstBlockPosition, true);
+        if (TrackTypeIsBlockBrakes(firstBlock.GetTrackType()))
         {
             BlockBrakeSetLinkedBrakesClosed(firstBlockPosition, firstBlock, true);
         }
@@ -4758,9 +4792,12 @@ OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideO
         { SpriteGroupType::Corkscrews, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
           SpritePrecision::Sprites4 },                                 // TRACK_CORKSCREW
         { SpriteGroupType::SlopeFlat, SpritePrecision::None },         // TRACK_TOWER_BASE
-        { SpriteGroupType::FlatBanked45, SpritePrecision::Sprites16 }, // TRACK_HELIX_SMALL
-        { SpriteGroupType::FlatBanked45, SpritePrecision::Sprites16 }, // TRACK_HELIX_LARGE
-        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 },    // TRACK_HELIX_LARGE_UNBANKED
+        { SpriteGroupType::FlatBanked45, SpritePrecision::Sprites16 }, // TRACK_HELIX_UP_BANKED_HALF
+        { SpriteGroupType::FlatBanked45, SpritePrecision::Sprites16 }, // TRACK_HELIX_DOWN_BANKED_HALF
+        { SpriteGroupType::FlatBanked45, SpritePrecision::Sprites16 }, // TRACK_HELIX_UP_BANKED_QUARTER
+        { SpriteGroupType::FlatBanked45, SpritePrecision::Sprites16 }, // TRACK_HELIX_DOWN_BANKED_QUARTER
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 },    // TRACK_HELIX_UP_UNBANKED_QUARTER
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 },    // TRACK_HELIX_DOWN_UNBANKED_QUARTER
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 },     // TRACK_BRAKES
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 },     // TRACK_ON_RIDE_PHOTO
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4, SpriteGroupType::Slopes12,
@@ -4861,9 +4898,11 @@ OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideO
           SpritePrecision::Sprites4 }, // TRACK_FLYING_HALF_LOOP_INVERTED_UP
         { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
           SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90,
-          SpritePrecision::Sprites4 }, // TRACK_FLYING_HALF_LOOP_UNINVERTED_DOWN
-        {},                            // TRACK_SLOPE_CURVE_LARGE
-        {},                            // TRACK_SLOPE_CURVE_LARGE_BANKED
+          SpritePrecision::Sprites4 },                             // TRACK_FLYING_HALF_LOOP_UNINVERTED_DOWN
+        {},                                                        // TRACK_SLOPE_CURVE_LARGE
+        {},                                                        // TRACK_SLOPE_CURVE_LARGE_BANKED
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TRACK_DIAG_BRAKES
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TRACK_DIAG_BLOCK_BRAKES
     };
     static_assert(std::size(trackPieceRequiredSprites) == TRACK_GROUP_COUNT);
 

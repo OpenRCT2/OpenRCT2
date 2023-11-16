@@ -23,10 +23,10 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
-#include "../object/FootpathItemEntry.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
+#include "../object/PathAdditionEntry.h"
 #include "../object/SceneryGroupEntry.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/TerrainSurfaceObject.h"
@@ -1063,7 +1063,7 @@ int32_t StaffGetAvailableEntertainerCostumeList(EntertainerCostume* costumeList)
 }
 
 /** rct2: 0x009929C8 */
-static constexpr const CoordsXY _MowingWaypoints[] = {
+static constexpr CoordsXY _MowingWaypoints[] = {
     { 28, 28 }, { 28, 4 }, { 20, 4 }, { 20, 28 }, { 12, 28 }, { 12, 4 }, { 4, 4 }, { 4, 28 },
 };
 
@@ -1243,7 +1243,7 @@ void Staff::UpdateEmptyingBin()
         }
 
         auto* pathAddEntry = tile_element->AsPath()->GetAdditionEntry();
-        if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN) || tile_element->AsPath()->IsBroken()
+        if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN) || tile_element->AsPath()->IsBroken()
             || tile_element->AsPath()->AdditionIsGhost())
         {
             StateReset();
@@ -1510,7 +1510,7 @@ void Staff::UpdateAnswering()
 }
 
 /** rct2: 0x00992A5C */
-static constexpr const CoordsXY _WateringUseOffsets[] = {
+static constexpr CoordsXY _WateringUseOffsets[] = {
     { 3, 16 }, { 16, 29 }, { 29, 16 }, { 16, 3 }, { 3, 29 }, { 29, 29 }, { 29, 3 }, { 3, 3 },
 };
 
@@ -1616,7 +1616,7 @@ bool Staff::UpdatePatrollingFindBin()
     if (pathAddEntry == nullptr)
         return false;
 
-    if (!(pathAddEntry->flags & PATH_BIT_FLAG_IS_BIN))
+    if (!(pathAddEntry->flags & PATH_ADDITION_FLAG_IS_BIN))
         return false;
 
     if (tileElement->AsPath()->IsBroken())
@@ -1853,7 +1853,7 @@ enum
  * - index 8 is for inspecting a ride.
  */
 // clang-format off
-static constexpr const uint32_t FixingSubstatesForBreakdown[9] = {
+static constexpr uint32_t FixingSubstatesForBreakdown[9] = {
     ( // BREAKDOWN_SAFETY_CUT_OUT
         (1 << PEEP_FIXING_MOVE_TO_STATION_END) |
         (1 << PEEP_FIXING_FIX_STATION_END) |
@@ -2185,7 +2185,7 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride& ride)
 }
 
 /** rct2: 0x00992A3C */
-static constexpr const CoordsXY _StationFixingOffsets[] = {
+static constexpr CoordsXY _StationFixingOffsets[] = {
     { -12, 0 },
     { 0, 12 },
     { 12, 0 },
@@ -2202,7 +2202,8 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION)
+            || !ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
         {
             return true;
         }
@@ -2288,7 +2289,8 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION)
+            || !ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
         {
             return true;
         }
@@ -2364,7 +2366,8 @@ bool Staff::UpdateFixingFixStationStart(bool firstRun, const Ride& ride)
 {
     if (!firstRun)
     {
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION)
+            || !ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
         {
             return true;
         }

@@ -31,6 +31,7 @@
 #include <openrct2/actions/BannerSetColourAction.h>
 #include <openrct2/actions/ClearAction.h>
 #include <openrct2/actions/FootpathAdditionPlaceAction.h>
+#include <openrct2/actions/GameSetSpeedAction.h>
 #include <openrct2/actions/LandLowerAction.h>
 #include <openrct2/actions/LandRaiseAction.h>
 #include <openrct2/actions/LandSmoothAction.h>
@@ -54,9 +55,9 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/BannerSceneryEntry.h>
-#include <openrct2/object/FootpathItemEntry.h>
 #include <openrct2/object/LargeSceneryEntry.h>
 #include <openrct2/object/ObjectEntryManager.h>
+#include <openrct2/object/PathAdditionEntry.h>
 #include <openrct2/object/SmallSceneryEntry.h>
 #include <openrct2/object/WallSceneryEntry.h>
 #include <openrct2/paint/VirtualFloor.h>
@@ -209,7 +210,7 @@ enum
 
 // clang-format off
 // from left to right
-static constexpr const int32_t left_aligned_widgets_order[] = {
+static constexpr int32_t left_aligned_widgets_order[] = {
     WIDX_PAUSE,
     WIDX_FASTFORWARD,
     WIDX_FILE_MENU,
@@ -229,7 +230,7 @@ static constexpr const int32_t left_aligned_widgets_order[] = {
 };
 
 // from right to left
-static constexpr const int32_t right_aligned_widgets_order[] = {
+static constexpr int32_t right_aligned_widgets_order[] = {
     WIDX_NEWS,
     WIDX_GUESTS,
     WIDX_STAFF,
@@ -250,7 +251,7 @@ static constexpr const int32_t right_aligned_widgets_order[] = {
 
 #pragma endregion
 
-static Widget window_top_toolbar_widgets[] = {
+static Widget _topToolbarWidgets[] = {
     MakeRemapWidget({  0, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TOOLBAR_PAUSE,          STR_PAUSE_GAME_TIP                ), // Pause
     MakeRemapWidget({ 60, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TOOLBAR_FILE,           STR_DISC_AND_GAME_OPTIONS_TIP     ), // File menu
     MakeRemapWidget({250, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_G2_TOOLBAR_MUTE,        STR_TOOLBAR_MUTE_TIP              ), // Mute
@@ -1338,12 +1339,12 @@ private:
         if (placementData.GroundFlags & ELEMENT_IS_UNDERGROUND)
         {
             // Set underground on
-            ViewportSetVisibility(4);
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewGhostOn);
         }
         else
         {
             // Set underground off
-            ViewportSetVisibility(5);
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewGhostOff);
         }
 
         gSceneryGhostType |= SCENERY_GHOST_FLAG_0;
@@ -1355,7 +1356,7 @@ private:
         SceneryRemoveGhostToolPlacement();
 
         // 6e265b
-        auto footpathAdditionPlaceAction = FootpathAdditionPlaceAction(loc, entryIndex + 1);
+        auto footpathAdditionPlaceAction = FootpathAdditionPlaceAction(loc, entryIndex);
         footpathAdditionPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         footpathAdditionPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
             if (result->Error != GameActions::Status::Ok)
@@ -1420,12 +1421,12 @@ private:
         if (placementData.GroundFlags & ELEMENT_IS_UNDERGROUND)
         {
             // Set underground on
-            ViewportSetVisibility(4);
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewGhostOn);
         }
         else
         {
             // Set underground off
-            ViewportSetVisibility(5);
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewGhostOff);
         }
 
         gSceneryGhostType |= SCENERY_GHOST_FLAG_3;
@@ -1537,7 +1538,7 @@ private:
     {
         auto flag = EnumsToFlags(
             ViewportInteractionItem::Scenery, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
-            ViewportInteractionItem::Banner, ViewportInteractionItem::FootpathItem);
+            ViewportInteractionItem::Banner, ViewportInteractionItem::PathAddition);
         auto info = GetMapCoordinatesFromPos(screenCoords, flag);
         switch (info.SpriteType)
         {
@@ -1550,7 +1551,7 @@ private:
                 {
                     WindowScenerySetSelectedItem(
                         { SCENERY_TYPE_SMALL, entryIndex }, sceneryElement->GetPrimaryColour(),
-                        sceneryElement->GetSecondaryColour(), std::nullopt,
+                        sceneryElement->GetSecondaryColour(), sceneryElement->GetTertiaryColour(),
                         sceneryElement->GetDirectionWithOffset(GetCurrentRotation()));
                 }
                 break;
@@ -1595,11 +1596,11 @@ private:
                 }
                 break;
             }
-            case ViewportInteractionItem::FootpathItem:
+            case ViewportInteractionItem::PathAddition:
             {
                 auto entryIndex = info.Element->AsPath()->GetAdditionEntryIndex();
-                auto* pathBitEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(entryIndex);
-                if (pathBitEntry != nullptr)
+                auto* pathAdditionEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(entryIndex);
+                if (pathAdditionEntry != nullptr)
                 {
                     WindowScenerySetSelectedItem(
                         { SCENERY_TYPE_PATH_ITEM, entryIndex }, std::nullopt, std::nullopt, std::nullopt, std::nullopt);
@@ -1897,7 +1898,7 @@ private:
         Sub6E1F34UpdateScreenCoordsAndButtonsPressed(false, screenPos);
 
         // Path bits
-        constexpr auto flag = EnumsToFlags(ViewportInteractionItem::Footpath, ViewportInteractionItem::FootpathItem);
+        constexpr auto flag = EnumsToFlags(ViewportInteractionItem::Footpath, ViewportInteractionItem::PathAddition);
         auto info = GetMapCoordinatesFromPos(screenPos, flag);
         gridPos = info.Loc;
 
@@ -2121,7 +2122,7 @@ private:
         Sub6E1F34UpdateScreenCoordsAndButtonsPressed(false, screenPos);
 
         // Banner
-        constexpr auto flag = EnumsToFlags(ViewportInteractionItem::Footpath, ViewportInteractionItem::FootpathItem);
+        constexpr auto flag = EnumsToFlags(ViewportInteractionItem::Footpath, ViewportInteractionItem::PathAddition);
         auto info = GetMapCoordinatesFromPos(screenPos, flag);
         gridPos = info.Loc;
 
@@ -2308,7 +2309,7 @@ private:
                 if (gridPos.IsNull())
                     return;
 
-                auto footpathAdditionPlaceAction = FootpathAdditionPlaceAction({ gridPos, z }, selectedScenery + 1);
+                auto footpathAdditionPlaceAction = FootpathAdditionPlaceAction({ gridPos, z }, selectedScenery);
 
                 footpathAdditionPlaceAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error != GameActions::Status::Ok)
@@ -2653,6 +2654,10 @@ public:
 
     void OnDropdown(WidgetIndex widgetIndex, int32_t selectedIndex) override
     {
+        if (selectedIndex == -1)
+        {
+            return;
+        }
         switch (widgetIndex)
         {
             case WIDX_FILE_MENU:
@@ -3185,7 +3190,7 @@ public:
 
         ScreenCoordsXY screenPos{};
         // Draw staff button image (setting masks to the staff colours)
-        if (window_top_toolbar_widgets[WIDX_STAFF].type != WindowWidgetType::Empty)
+        if (widgets[WIDX_STAFF].type != WindowWidgetType::Empty)
         {
             screenPos = { windowPos.x + widgets[WIDX_STAFF].left, windowPos.y + widgets[WIDX_STAFF].top };
             imgId = SPR_TOOLBAR_STAFF;
@@ -3195,7 +3200,7 @@ public:
         }
 
         // Draw fast forward button
-        if (window_top_toolbar_widgets[WIDX_FASTFORWARD].type != WindowWidgetType::Empty)
+        if (widgets[WIDX_FASTFORWARD].type != WindowWidgetType::Empty)
         {
             screenPos = { windowPos.x + widgets[WIDX_FASTFORWARD].left + 0, windowPos.y + widgets[WIDX_FASTFORWARD].top + 0 };
             if (WidgetIsPressed(*this, WIDX_FASTFORWARD))
@@ -3213,7 +3218,7 @@ public:
         }
 
         // Draw cheats button
-        if (window_top_toolbar_widgets[WIDX_CHEATS].type != WindowWidgetType::Empty)
+        if (widgets[WIDX_CHEATS].type != WindowWidgetType::Empty)
         {
             screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_CHEATS].left - 1, widgets[WIDX_CHEATS].top - 1 };
             if (WidgetIsPressed(*this, WIDX_CHEATS))
@@ -3314,7 +3319,7 @@ WindowBase* WindowTopToolbarOpen()
         WindowClass::TopToolbar, ScreenCoordsXY(0, 0), ContextGetWidth(), TOP_TOOLBAR_HEIGHT + 1,
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
 
-    window->widgets = window_top_toolbar_widgets;
+    window->widgets = _topToolbarWidgets;
 
     WindowInitScrollWidgets(*window);
 
@@ -3657,10 +3662,12 @@ void TopToolbar::FastforwardMenuDropdown(int16_t dropdownIndex)
     {
         if (dropdownIndex >= 0 && dropdownIndex <= 5)
         {
-            gGameSpeed = dropdownIndex + 1;
-            if (gGameSpeed >= 5)
-                gGameSpeed = 8;
-            w->Invalidate();
+            auto newSpeed = dropdownIndex + 1;
+            if (newSpeed >= 5)
+                newSpeed = 8;
+
+            auto setSpeedAction = GameSetSpeedAction(newSpeed);
+            GameActions::Execute(&setSpeedAction);
         }
     }
 }

@@ -362,7 +362,7 @@ PeepActionSpriteType Peep::GetActionSpriteType()
         return PeepActionToSpriteTypeMap[EnumValue(Action)];
     }
 
-    openrct2_assert(
+    Guard::Assert(
         EnumValue(Action) >= std::size(PeepActionToSpriteTypeMap) && Action < PeepActionType::Idle, "Invalid peep action %u",
         EnumValue(Action));
     return PeepActionSpriteType::None;
@@ -416,7 +416,7 @@ void Peep::StateReset()
 }
 
 /** rct2: 0x00981D7C, 0x00981D7E */
-static constexpr const CoordsXY word_981D7C[4] = {
+static constexpr CoordsXY word_981D7C[4] = {
     { -2, 0 },
     { 0, 2 },
     { 2, 0 },
@@ -564,7 +564,7 @@ void PeepWindowStateUpdate(Peep* peep)
 {
     WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->Id.ToUnderlying());
     if (w != nullptr)
-        WindowEventInvalidateCall(w);
+        WindowEventOnPrepareDrawCall(w);
 
     if (peep->Is<Guest>())
     {
@@ -1551,7 +1551,7 @@ void Peep::FormatActionTo(Formatter& ft) const
     }
 }
 
-static constexpr const StringId _staffNames[] = {
+static constexpr StringId _staffNames[] = {
     STR_HANDYMAN_X,
     STR_MECHANIC_X,
     STR_SECURITY_GUARD_X,
@@ -2640,7 +2640,7 @@ void IncrementGuestsInPark()
     }
     else
     {
-        openrct2_assert(false, "Attempt to increment guests in park above max value (65535).");
+        Guard::Fail("Attempt to increment guests in park above max value (65535).");
     }
 }
 
@@ -2652,7 +2652,7 @@ void IncrementGuestsHeadingForPark()
     }
     else
     {
-        openrct2_assert(false, "Attempt to increment guests heading for park above max value (65535).");
+        Guard::Fail("Attempt to increment guests heading for park above max value (65535).");
     }
 }
 

@@ -115,7 +115,7 @@ struct WindowThemeDesc
 
 #define TWINDOW(window_class, window_name, window_string_id, theme) { window_class, window_name, window_string_id, theme }
 
-static constexpr const WindowThemeDesc WindowThemeDescriptors[] =
+static constexpr WindowThemeDesc WindowThemeDescriptors[] =
 {
     // WindowClass                              WindowClassSZ                        WindowName                                        NumColours, DefaultTheme
     { WindowClass::TopToolbar,                  "WC_TOP_TOOLBAR",                    STR_THEMES_WINDOW_TOP_TOOLBAR,                    COLOURS_4(COLOUR_LIGHT_BLUE,               COLOUR_DARK_GREEN,               COLOUR_DARK_BROWN,             COLOUR_GREY         ) },
@@ -191,7 +191,7 @@ static constexpr const WindowThemeDesc WindowThemeDescriptors[] =
 
 #define COLOURS_RCT1(c0, c1, c2, c3, c4, c5) { { (c0), (c1), (c2), (c3), (c4), (c5) } }
 
-static constexpr const UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
+static constexpr UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
 {
     { WindowClass::TopToolbar,             COLOURS_RCT1(COLOUR_GREY,               COLOUR_GREY,                COLOUR_GREY,                COLOUR_GREY,     COLOUR_BLACK,    COLOUR_BLACK)    },
     { WindowClass::BottomToolbar,          COLOURS_RCT1(TRANSLUCENT(COLOUR_GREY),  TRANSLUCENT(COLOUR_GREY),   COLOUR_BLACK,               COLOUR_YELLOW,   COLOUR_BLACK,    COLOUR_BLACK)    },
@@ -219,7 +219,7 @@ static constexpr const UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
 };
 // clang-format on
 
-static constexpr const UIThemeWindowEntry PredefinedThemeRCT2_Entries[] = {
+static constexpr UIThemeWindowEntry PredefinedThemeRCT2_Entries[] = {
     THEME_DEF_END,
 };
 
@@ -236,7 +236,7 @@ struct PredefinedTheme
     StringId Name;
 };
 
-static constexpr const PredefinedTheme PredefinedThemes[] = {
+static constexpr PredefinedTheme PredefinedThemes[] = {
     { &PredefinedThemeRCT1, STR_TITLE_SEQUENCE_RCT1 },
     { &PredefinedThemeRCT2, STR_TITLE_SEQUENCE_RCT2 },
 };
@@ -537,12 +537,12 @@ namespace ThemeManager
         auto scanner = Path::ScanDirectory(themesPattern, true);
         while (scanner->Next())
         {
-            auto fileInfo = scanner->GetFileInfo();
-            auto name = Path::GetFileNameWithoutExtension(std::string(fileInfo->Name));
+            const auto& fileInfo = scanner->GetFileInfo();
+            auto name = Path::GetFileNameWithoutExtension(fileInfo.Name);
 
             AvailableTheme theme{};
             theme.Name = name;
-            theme.Path = GetThemeFileName(theme.Name);
+            theme.Path = GetThemeFileName(name);
             outThemes->push_back(std::move(theme));
 
             if (Path::Equals(CurrentThemePath, scanner->GetPath()))
@@ -721,7 +721,7 @@ size_t ThemeGetIndexForName(const utf8* name)
     for (size_t i = 0; i < count; i++)
     {
         const utf8* tn = ThemeManagerGetAvailableThemeName(i);
-        if (String::Equals(tn, name, true))
+        if (String::IEquals(tn, name))
         {
             return i;
         }

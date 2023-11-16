@@ -106,7 +106,7 @@ void* Intent::GetPointerExtra(uint32_t key) const
     }
 
     auto data = _Data.at(key);
-    openrct2_assert(data.type == IntentData::DataType::Pointer, "Actual type doesn't match requested type");
+    Guard::Assert(data.type == IntentData::DataType::Pointer, "Actual type doesn't match requested type");
     return static_cast<void*>(data.pointerVal);
 }
 
@@ -118,7 +118,7 @@ uint32_t Intent::GetUIntExtra(uint32_t key) const
     }
 
     auto data = _Data.at(key);
-    openrct2_assert(data.type == IntentData::DataType::Int, "Actual type doesn't match requested type");
+    Guard::Assert(data.type == IntentData::DataType::Int, "Actual type doesn't match requested type");
     return data.intVal.unsignedInt;
 }
 
@@ -130,7 +130,7 @@ int32_t Intent::GetSIntExtra(uint32_t key) const
     }
 
     auto data = _Data.at(key);
-    openrct2_assert(data.type == IntentData::DataType::Int, "Actual type doesn't match requested type");
+    Guard::Assert(data.type == IntentData::DataType::Int, "Actual type doesn't match requested type");
     return data.intVal.signedInt;
 }
 
@@ -142,7 +142,7 @@ std::string Intent::GetStringExtra(uint32_t key) const
     }
 
     auto data = _Data.at(key);
-    openrct2_assert(data.type == IntentData::DataType::String, "Actual type doesn't match requested type");
+    Guard::Assert(data.type == IntentData::DataType::String, "Actual type doesn't match requested type");
     return data.stringVal;
 }
 
@@ -154,6 +154,6 @@ close_callback Intent::GetCloseCallbackExtra(uint32_t key) const
     }
 
     auto data = _Data.at(key);
-    openrct2_assert(data.type == IntentData::DataType::CloseCallback, "Actual type doesn't match requested type");
+    Guard::Assert(data.type == IntentData::DataType::CloseCallback, "Actual type doesn't match requested type");
     return data.closeCallbackVal;
 }
