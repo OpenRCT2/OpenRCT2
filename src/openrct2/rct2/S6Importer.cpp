@@ -996,7 +996,6 @@ namespace RCT2
                     },
                     OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED, true);
                 // clang-format on
-                
             }
             else if (String::Equals(_s6.ScenarioFilename, "Mythological - Animatronic Film Set.SC6"))
             {
