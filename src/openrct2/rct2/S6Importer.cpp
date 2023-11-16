@@ -991,7 +991,13 @@ namespace RCT2
                         { 59, 18 }, { 60, 18 }, { 60, 17 }, { 61, 17 }, 
                     },
                     OWNERSHIP_OWNED);
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 86, 69 }, { 86, 70 }
+                    },
+                    OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED, true);
                 // clang-format on
+                
             }
             else if (String::Equals(_s6.ScenarioFilename, "Mythological - Animatronic Film Set.SC6"))
             {
