@@ -567,7 +567,7 @@ namespace RCT2
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
                     {
-                        { 115, 63 }, /*{ 118, 67 }*/
+                        { 115, 63 }, { 105, 66 }, { 109, 66 }, /*{ 118, 67 }*/
                     },
                     OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
                  FixLandOwnershipTilesWithOwnership(

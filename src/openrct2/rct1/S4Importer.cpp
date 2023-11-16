@@ -2494,7 +2494,8 @@ namespace RCT1
                     break;
                 case SC_KATIES_DREAMLAND:
                     FixLandOwnershipTiles({ { 74, 70 }, { 75, 70 }, { 76, 70 }, { 77, 73 }, { 80, 77 } });
-                    FixLandOwnershipTilesWithOwnership({ { 115, 63 }, { 118, 67 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                    FixLandOwnershipTilesWithOwnership(
+                        { { 115, 63 }, { 105, 66 }, { 109, 66 }, { 118, 67 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
                     FixLandOwnershipTilesWithOwnership({ { 45, 69 }, { 59, 74 } }, OWNERSHIP_OWNED);
                     break;
                 case SC_POKEY_PARK:
