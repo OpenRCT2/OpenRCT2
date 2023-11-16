@@ -719,8 +719,8 @@ namespace RCT2
                 // clang-format on
             }
             else if (
-                String::Equals(gScenarioFileName, "Six Flags Magic Mountain.SC6", true)
-                || String::Equals(gScenarioFileName, "six flags magic mountain.sea", true))
+                String::IEquals(gScenarioFileName, "Six Flags Magic Mountain.SC6")
+                || String::IEquals(gScenarioFileName, "six flags magic mountain.sea"))
             {
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
@@ -737,8 +737,8 @@ namespace RCT2
                 // clang-format on
             }
             else if (
-                String::Equals(gScenarioFileName, "Build your own Six Flags Magic Mountain.SC6", true)
-                || String::Equals(gScenarioFileName, "build your own six flags magic mountain.sea", true))
+                String::IEquals(gScenarioFileName, "Build your own Six Flags Magic Mountain.SC6")
+                || String::IEquals(gScenarioFileName, "build your own six flags magic mountain.sea"))
             {
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
@@ -807,8 +807,8 @@ namespace RCT2
                 // clang-format on
             }
             else if (
-                String::Equals(gScenarioFileName, "Asia - Maharaja Palace.SC6", true)
-                || String::Equals(gScenarioFileName, "asia - maharaja palace.sea", true))
+                String::IEquals(gScenarioFileName, "Asia - Maharaja Palace.SC6")
+                || String::IEquals(gScenarioFileName, "asia - maharaja palace.sea"))
             {
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
@@ -829,8 +829,8 @@ namespace RCT2
                 // clang-format on
             }
             else if (
-                String::Equals(gScenarioFileName, "South America - Inca Lost City.SC6", true)
-                || String::Equals(gScenarioFileName, "south america - inca lost city.sea", true))
+                String::IEquals(gScenarioFileName, "South America - Inca Lost City.SC6")
+                || String::IEquals(gScenarioFileName, "south america - inca lost city.sea"))
             {
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
@@ -863,8 +863,8 @@ namespace RCT2
                 // clang-format on
             }
             else if (
-                String::Equals(gScenarioFileName, "Antarctic - Ecological Salvage.SC6", true)
-                || String::Equals(gScenarioFileName, "antarctic - ecological salvage.sea", true))
+                String::IEquals(gScenarioFileName, "Antarctic - Ecological Salvage.SC6")
+                || String::IEquals(gScenarioFileName, "antarctic - ecological salvage.sea"))
             {
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
@@ -975,8 +975,8 @@ namespace RCT2
                 // clang-format on
             }
             else if (
-                String::Equals(gScenarioFileName, "Dark Age - Castle.SC6", true)
-                || String::Equals(gScenarioFileName, "dark age - castle.sea", true))
+                String::IEquals(gScenarioFileName, "Dark Age - Castle.SC6")
+                || String::IEquals(gScenarioFileName, "dark age - castle.sea"))
             {
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
@@ -1021,8 +1021,8 @@ namespace RCT2
                 // clang-format on
             }
             else if (
-                String::Equals(gScenarioFileName, "Roaring Twenties - Schneider Cup.SC6", true)
-                || String::Equals(gScenarioFileName, "roaring twenties - schneider cup.sea", true))
+                String::IEquals(gScenarioFileName, "Roaring Twenties - Schneider Cup.SC6")
+                || String::IEquals(gScenarioFileName, "roaring twenties - schneider cup.sea"))
             {
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
@@ -1074,8 +1074,8 @@ namespace RCT2
                 // clang-format on
             }
             else if (
-                String::Equals(gScenarioFileName, "Prehistoric - Stone Age.SC6", true)
-                || String::Equals(gScenarioFileName, "prehistoric - stone age.sea", true))
+                String::IEquals(gScenarioFileName, "Prehistoric - Stone Age.SC6")
+                || String::IEquals(gScenarioFileName, "prehistoric - stone age.sea"))
             {
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
