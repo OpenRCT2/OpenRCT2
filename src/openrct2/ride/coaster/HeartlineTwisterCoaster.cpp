@@ -1239,14 +1239,6 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-
-            WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
-
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
             switch (direction)
@@ -1284,13 +1276,6 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-
-            WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
-
-            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -1328,13 +1313,6 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-
-            WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
-
-            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
             switch (direction)
@@ -1372,13 +1350,6 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-
-            WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
-
-            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 4:
             switch (direction)
@@ -1416,13 +1387,6 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-
-            WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
-
-            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 5:
             switch (direction)
@@ -1460,16 +1424,15 @@ static void HeartlineTwisterRCTrackLeftHeartlineRoll(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-
-            WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
-
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
+
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height, session.TrackColours[SCHEME_SUPPORTS]);
+
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 /** rct2: 0x00876A5C */
@@ -1515,14 +1478,6 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-
-            WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
-
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 1:
             switch (direction)
@@ -1560,13 +1515,6 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-
-            WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
-
-            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 2:
             switch (direction)
@@ -1604,13 +1552,6 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-
-            WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
-
-            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 3:
             switch (direction)
@@ -1648,13 +1589,6 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-
-            WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
-
-            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 4:
             switch (direction)
@@ -1692,13 +1626,6 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-
-            WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
-
-            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
         case 5:
             switch (direction)
@@ -1736,16 +1663,15 @@ static void HeartlineTwisterRCTrackRightHeartlineRoll(
                         { { 0, 27, height }, { 32, 1, 26 } });
                     break;
             }
-
-            WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
-
-            PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
-            PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
-            PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
             break;
     }
+
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Mine, WoodenSupportSubType::NeSw, direction, height, session.TrackColours[SCHEME_SUPPORTS]);
+
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
+    PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionHeartlineTwisterRC(int32_t trackType)
