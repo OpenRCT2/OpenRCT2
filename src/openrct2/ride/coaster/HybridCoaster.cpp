@@ -1651,21 +1651,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -1693,21 +1681,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -1798,21 +1774,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -1840,21 +1804,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -1945,21 +1897,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -1987,21 +1927,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -2092,21 +2020,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -2134,21 +2050,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -2238,21 +2142,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 break;
             case 2:
@@ -2279,21 +2171,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 break;
             case 3:
@@ -2384,21 +2264,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -2426,21 +2294,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -2531,21 +2387,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
                 break;
@@ -2573,21 +2417,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
                 break;
@@ -2678,21 +2510,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
@@ -2720,21 +2540,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
@@ -2825,21 +2633,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
@@ -2867,21 +2663,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
@@ -2972,21 +2756,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
                 break;
@@ -3014,21 +2786,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 104, 0x20);
                 break;
@@ -3119,21 +2879,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
@@ -3161,21 +2909,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
@@ -3266,21 +3002,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
@@ -3308,21 +3032,9 @@ namespace HybridRC
                             break;
                     }
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
@@ -3739,21 +3451,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 28 }, { 32, 32, 0 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -3767,21 +3467,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -3830,21 +3518,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -3862,21 +3538,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 28 }, { 32, 32, 0 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -3929,21 +3593,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 28 }, { 32, 32, 0 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -3957,21 +3609,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -4020,21 +3660,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -4052,21 +3680,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 28 }, { 32, 32, 0 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -4119,21 +3735,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -4147,21 +3751,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -4210,21 +3802,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -4242,21 +3822,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 35 }, { 32, 32, 0 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -4309,21 +3877,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 36 }, { 32, 32, 0 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -4337,21 +3893,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -4400,21 +3944,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -4432,21 +3964,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 36 }, { 32, 32, 0 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -4498,21 +4018,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 36 }, { 32, 32, 0 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 break;
             case 2:
@@ -4525,21 +4033,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 break;
             case 3:
@@ -4587,21 +4083,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 break;
             case 2:
@@ -4618,21 +4102,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 36 }, { 32, 32, 0 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 break;
             case 3:
@@ -4685,21 +4157,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 28 }, { 32, 32, 0 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -4713,21 +4173,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -4776,21 +4224,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -4808,21 +4244,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 28 }, { 32, 32, 0 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -4875,21 +4299,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 28 }, { 32, 32, 0 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -4903,21 +4315,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -4966,21 +4366,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -4998,21 +4386,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 28 }, { 32, 32, 0 } });
                         break;
                 }
-                switch (direction)
-                {
-                    case 0:
-                        WoodenBSupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 1:
-                        WoodenBSupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 2:
-                        WoodenBSupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                    case 3:
-                        WoodenBSupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                        break;
-                }
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
                 break;
@@ -12425,7 +11801,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(session, 2 + direction, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
@@ -12439,8 +11817,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(
-                    session, 2 + (direction + 2) % 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
@@ -12495,7 +11874,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(session, 2 + direction, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
@@ -12513,8 +11894,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(
-                    session, 2 + (direction + 2) % 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 72, 0x20);
                 break;
@@ -12573,7 +11955,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(session, 2 + direction, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -12587,8 +11971,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(
-                    session, 2 + (direction + 2) % 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -12643,7 +12028,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(session, 2 + direction, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -12661,8 +12048,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(
-                    session, 2 + (direction + 2) % 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -12749,7 +12137,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(session, 2 + direction, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -12763,7 +12153,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(session, 2 + (direction + 2) % 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -12818,7 +12210,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(session, 2 + direction, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -12836,7 +12230,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(session, 2 + (direction + 2) % 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -12895,7 +12291,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(session, 2 + direction, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -12909,8 +12307,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(
-                    session, 2 + (direction + 2) % 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -12965,7 +12364,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(session, 2 + direction, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -12983,8 +12384,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(
-                    session, 2 + (direction + 2) % 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -13071,7 +12473,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(session, 2 + direction, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -13085,8 +12489,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(
-                    session, 2 + (direction + 2) % 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -13141,7 +12546,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(session, 2 + direction, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -13159,8 +12566,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 48 }, { 32, 32, 0 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(
-                    session, 2 + (direction + 2) % 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -13233,7 +12641,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(session, 2 + direction, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -13247,7 +12657,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(session, 2 + (direction + 2) % 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -13302,7 +12714,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(session, 2 + direction, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -13320,7 +12734,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(session, 2 + (direction + 2) % 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
                 break;
@@ -13379,7 +12795,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(session, 2 + direction, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -13393,8 +12811,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(
-                    session, 2 + (direction + 2) % 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -13449,7 +12868,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height }, { 32, 32, 3 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(session, 2 + direction, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
@@ -13467,8 +12888,9 @@ namespace HybridRC
                             { -16, -16, height }, { { -16, -16, height + 27 }, { 32, 32, 0 } });
                         break;
                 }
-                WoodenBSupportsPaintSetup(
-                    session, 2 + (direction + 2) % 4, 0, height + 16, session.TrackColours[SCHEME_SUPPORTS]);
+                WoodenBSupportsPaintSetupRotated(
+                    session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height + 16,
+                    session.TrackColours[SCHEME_SUPPORTS]);
                 PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
                 break;
