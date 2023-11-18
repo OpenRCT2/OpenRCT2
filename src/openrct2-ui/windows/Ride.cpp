@@ -345,8 +345,8 @@ static Widget _musicWidgets[] = {
     MakeWidget({  7, 47}, {302, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_PLAY_MUSIC,     STR_SELECT_MUSIC_TIP      ),
     MakeWidget({  7, 62}, {302, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_EMPTY                                     ),
     MakeWidget({297, 63}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_MUSIC_STYLE_TIP),
-    MakeWidget({150, 88}, {114, 114}, WindowWidgetType::FlatBtn,     WindowColour::Secondary),
-    MakeWidget({7, 88}, { 364, 114}, WindowWidgetType::Scroll,    WindowColour::Secondary,  SCROLL_BOTH  ),
+    MakeWidget({154, 62}, {114, 114}, WindowWidgetType::FlatBtn,     WindowColour::Secondary),
+    MakeWidget({7, 90}, { 500, 450}, WindowWidgetType::Scroll,    WindowColour::Secondary,  SCROLL_BOTH  ),
     kWidgetsEnd,
 };
 
@@ -4835,7 +4835,7 @@ static_assert(std::size(RatingNames) == 6);
                 int32_t activateMusic = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) ? 0 : 1;
                 SetOperatingSetting(rideId, RideSetSetting::Music, activateMusic);
                 // set height before auto window resize to prevent scroll bar drawing issue
-                height = 220;
+                height = 207;
             }
         }
 
@@ -4873,7 +4873,8 @@ static_assert(std::size(RatingNames) == 6);
                 auto isMusicActivated = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) != 0;
                 if (isMusicActivated)
                 {
-                    WindowSetResize(*this, 316, 220, 500, 450);
+                    // make sure to also change the min height value in the ToggleMusic() function when modifying this
+                    WindowSetResize(*this, 316, 207, 500, 450);
                 }
                 else
                 {
@@ -5016,9 +5017,9 @@ static_assert(std::size(RatingNames) == 6);
                             newWidth = rowLength;
                         }
                     }
-                    newWidth = newWidth * SCROLLABLE_ROW_HEIGHT / 2 + 15;
+                    newWidth = newWidth * (SCROLLABLE_ROW_HEIGHT - 6) + 10;
 
-                    auto left = newWidth - widgets[WIDX_MUSIC_DATA].right + widgets[WIDX_MUSIC_DATA].left + 17;
+                    auto left = newWidth - widgets[WIDX_MUSIC_DATA].right + widgets[WIDX_MUSIC_DATA].left + 13;
                     if (left < 0)
                         left = 0;
                     if (left < scrolls[0].h_left)
@@ -5029,7 +5030,7 @@ static_assert(std::size(RatingNames) == 6);
 
                     // scroll height (based on number of rows)
                     const auto newHeight = static_cast<int32_t>(musicObj->GetTrackCount() * SCROLLABLE_ROW_HEIGHT);
-                    auto top = newHeight - widgets[WIDX_MUSIC_DATA].bottom + widgets[WIDX_MUSIC_DATA].top + 21;
+                    auto top = newHeight - widgets[WIDX_MUSIC_DATA].bottom + widgets[WIDX_MUSIC_DATA].top + 13;
                     if (top < 0)
                         top = 0;
                     if (top < scrolls[0].v_top)
@@ -5077,23 +5078,20 @@ static_assert(std::size(RatingNames) == 6);
             if (isMusicActivated)
             {
                 // resize widgets
-                widgets[WIDX_MUSIC_DATA].bottom = height - 50;
+                widgets[WIDX_MUSIC_DATA].bottom = height - 32;
 
                 bool hasPreview = musicObj->HasPreview();
                 if (hasPreview)
                 {
                     WidgetSetVisible(*this, WIDX_MUSIC_IMAGE, true);
-                    widgets[WIDX_MUSIC_DATA].right = width - 135;
-                    widgets[WIDX_MUSIC_IMAGE].left = width - 125;
-                    widgets[WIDX_MUSIC_IMAGE].right = width - 11;
-
-                    // center image to scroll menu
-                    widgets[WIDX_MUSIC_IMAGE].top = height / 2 - 37;
-                    widgets[WIDX_MUSIC_IMAGE].bottom = height / 2 + 77;
+                    widgets[WIDX_MUSIC_DATA].right = width - 129;
+                    widgets[WIDX_MUSIC_IMAGE].left = width - 122;
+                    widgets[WIDX_MUSIC_IMAGE].right = width - 8;
                 }
                 else
                 {
-                    widgets[WIDX_MUSIC_DATA].right = width - 7;
+                    widgets[WIDX_MUSIC_DATA].right = width - 8;
+                    WidgetSetVisible(*this, WIDX_MUSIC_IMAGE, false);
                 }
                 // enable window resize
                 flags |= WF_RESIZABLE;
@@ -5103,6 +5101,7 @@ static_assert(std::size(RatingNames) == 6);
                 widgets[WIDX_MUSIC_DROPDOWN].left = widgets[WIDX_MUSIC_DATA].right - 11;
 
                 pressed_widgets |= (1uLL << WIDX_PLAY_MUSIC);
+                pressed_widgets |= (1uLL << WIDX_MUSIC_IMAGE);
                 disabled_widgets &= ~(1uLL << WIDX_MUSIC);
                 disabled_widgets &= ~(1uLL << WIDX_MUSIC_DROPDOWN);
                 disabled_widgets |= (1uLL << WIDX_MUSIC_IMAGE);
@@ -5119,11 +5118,12 @@ static_assert(std::size(RatingNames) == 6);
                 // disable resizing
                 flags &= ~WF_RESIZABLE;
 
-                widgets[WIDX_MUSIC].right = width - 7;
-                widgets[WIDX_MUSIC_DROPDOWN].right = width - 8;
-                widgets[WIDX_MUSIC_DROPDOWN].left = width - 18;
+                widgets[WIDX_MUSIC].right = width - 8;
+                widgets[WIDX_MUSIC_DROPDOWN].right = width - 9;
+                widgets[WIDX_MUSIC_DROPDOWN].left = width - 19;
 
                 pressed_widgets &= ~(1uLL << WIDX_PLAY_MUSIC);
+                pressed_widgets |= (1uLL << WIDX_MUSIC_IMAGE);
                 disabled_widgets |= (1uLL << WIDX_MUSIC);
                 disabled_widgets |= (1uLL << WIDX_MUSIC_DROPDOWN);
                 disabled_widgets |= (1uLL << WIDX_MUSIC_IMAGE);
@@ -5147,10 +5147,10 @@ static_assert(std::size(RatingNames) == 6);
             if (isMusicActivated)
             {
                 auto screenPos = windowPos
-                    + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 1, widgets[WIDX_PAGE_BACKGROUND].top + 1 };
+                    + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left, widgets[WIDX_PAGE_BACKGROUND].top + 1 };
                 screenPos.y += DrawTextWrapped(
-                                dpi, screenPos + ScreenCoordsXY{ widgets[WIDX_MUSIC_DATA].left, 33 }, width,
-                                STR_MUSIC_OBJECT_TRACK_HEADER)
+                                   dpi, screenPos + ScreenCoordsXY{ widgets[WIDX_MUSIC_DATA].left, 33 }, width,
+                                   STR_MUSIC_OBJECT_TRACK_HEADER)
                     + 2;
 
                 auto musicObj = ride->GetMusicObject();
@@ -5198,8 +5198,11 @@ static_assert(std::size(RatingNames) == 6);
                         + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 1, widgets[WIDX_PAGE_BACKGROUND].top + 1 };
 
                     DrawTextEllipsised(
-                        dpi, { windowPos.x + width - 12, screenPos.y + height - 74 }, 308, STR_WINDOW_COLOUR_2_STRINGID, ft,
-                        { TextAlignment::RIGHT });
+                        dpi,
+                        { windowPos.x + widgets[WIDX_PAGE_BACKGROUND].left + widgets[WIDX_MUSIC_DATA].left,
+                          screenPos.y + height - 72 },
+                        widgets[WIDX_MUSIC_DATA].right - widgets[WIDX_MUSIC_DATA].left + 127, STR_WINDOW_COLOUR_2_STRINGID, ft,
+                        { TextAlignment::LEFT });
                 }
             }
         }
@@ -5235,7 +5238,7 @@ static_assert(std::size(RatingNames) == 6);
                     ft.Add<const char*>(track->Name.c_str());
                     ft.Add<const char*>(track->Composer.c_str());
 
-                    DrawTextBasic(dpi, { 0, y - 1 }, stringId, ft);
+                    DrawTextBasic(dpi, { 0, y }, stringId, ft);
 
                     y += SCROLLABLE_ROW_HEIGHT;
                 }
