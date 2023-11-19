@@ -59,7 +59,7 @@ static void PaintFerrisWheelRiders(
 }
 
 static void PaintFerrisWheelStructure(
-    PaintSession& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height, ImageId stationColour)
 {
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -78,10 +78,9 @@ static void PaintFerrisWheelStructure(
 
     auto supportsImageTemplate = session.TrackColours[SCHEME_TRACK];
     auto wheelImageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    auto wheelImageFlags = session.TrackColours[SCHEME_MISC];
-    if (wheelImageFlags != TrackGhost)
+    if (stationColour != TrackStationColour)
     {
-        wheelImageTemplate = wheelImageFlags;
+        wheelImageTemplate = stationColour;
     }
 
     auto imageOffset = vehicle != nullptr ? vehicle->Pitch % 8 : 0;
@@ -117,7 +116,8 @@ static void PaintFerrisWheel(
         edges = Edges1X4NeSw[relativeTrackSequence];
     }
 
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
+    auto stationColour = GetStationColourScheme(session, trackElement);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, stationColour);
 
     const StationObject* stationObject = ride.GetStationObject();
 
@@ -125,43 +125,42 @@ static void PaintFerrisWheel(
 
     ImageId imageId;
     uint8_t rotation = session.CurrentRotation;
-    auto colourFlags = session.TrackColours[SCHEME_MISC];
 
     if (edges & EDGE_NW && TrackPaintUtilHasFence(EDGE_NW, session.MapPosition, trackElement, ride, rotation))
     {
-        imageId = colourFlags.WithIndex(SPR_FENCE_ROPE_NW);
+        imageId = stationColour.WithIndex(SPR_FENCE_ROPE_NW);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 2, height + 2 }, { 32, 1, 7 } });
     }
     if (edges & EDGE_NE && TrackPaintUtilHasFence(EDGE_NE, session.MapPosition, trackElement, ride, rotation))
     {
-        imageId = colourFlags.WithIndex(SPR_FENCE_ROPE_NE);
+        imageId = stationColour.WithIndex(SPR_FENCE_ROPE_NE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 0, height + 2 }, { 1, 32, 7 } });
     }
     if (edges & EDGE_SE && TrackPaintUtilHasFence(EDGE_SE, session.MapPosition, trackElement, ride, rotation))
     {
         // Bound box is slightly different from TrackPaintUtilPaintFences
-        imageId = colourFlags.WithIndex(SPR_FENCE_ROPE_SE);
+        imageId = stationColour.WithIndex(SPR_FENCE_ROPE_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 3 }, { 28, 1, 7 } });
     }
     if (edges & EDGE_SW && TrackPaintUtilHasFence(EDGE_SW, session.MapPosition, trackElement, ride, rotation))
     {
-        imageId = colourFlags.WithIndex(SPR_FENCE_ROPE_SW);
+        imageId = stationColour.WithIndex(SPR_FENCE_ROPE_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 0, height + 2 }, { 1, 32, 7 } });
     }
 
     switch (relativeTrackSequence)
     {
         case 1:
-            PaintFerrisWheelStructure(session, ride, direction, 48, height);
+            PaintFerrisWheelStructure(session, ride, direction, 48, height, stationColour);
             break;
         case 2:
-            PaintFerrisWheelStructure(session, ride, direction, 16, height);
+            PaintFerrisWheelStructure(session, ride, direction, 16, height, stationColour);
             break;
         case 0:
-            PaintFerrisWheelStructure(session, ride, direction, -16, height);
+            PaintFerrisWheelStructure(session, ride, direction, -16, height, stationColour);
             break;
         case 3:
-            PaintFerrisWheelStructure(session, ride, direction, -48, height);
+            PaintFerrisWheelStructure(session, ride, direction, -48, height, stationColour);
             break;
     }
 

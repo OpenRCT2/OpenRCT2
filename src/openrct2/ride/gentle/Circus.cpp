@@ -17,7 +17,8 @@
 #include "../Track.h"
 #include "../TrackPaint.h"
 
-static void PaintCircusTent(PaintSession& session, const Ride& ride, uint8_t direction, int8_t al, int8_t cl, uint16_t height)
+static void PaintCircusTent(
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t al, int8_t cl, uint16_t height, ImageId stationColour)
 {
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -31,10 +32,9 @@ static void PaintCircusTent(PaintSession& session, const Ride& ride, uint8_t dir
     }
 
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != TrackGhost)
+    if (stationColour != TrackStationColour)
     {
-        imageTemplate = imageFlags;
+        imageTemplate = stationColour;
     }
     auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
 
@@ -54,7 +54,7 @@ static void PaintCircus(
 
     int32_t edges = edges_3x3[trackSequence];
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.GetStationObject();
 
@@ -64,25 +64,26 @@ static void PaintCircus(
         session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_SUPPORTS], height,
         fenceSpritesRope, session.CurrentRotation);
 
+    auto stationColour = GetStationColourScheme(session, trackElement);
     switch (trackSequence)
     {
         case 1:
-            PaintCircusTent(session, ride, direction, 32, 32, height);
+            PaintCircusTent(session, ride, direction, 32, 32, height, stationColour);
             break;
         case 3:
-            PaintCircusTent(session, ride, direction, 32, -32, height);
+            PaintCircusTent(session, ride, direction, 32, -32, height, stationColour);
             break;
         case 5:
-            PaintCircusTent(session, ride, direction, 0, -32, height);
+            PaintCircusTent(session, ride, direction, 0, -32, height, stationColour);
             break;
         case 6:
-            PaintCircusTent(session, ride, direction, -32, 32, height);
+            PaintCircusTent(session, ride, direction, -32, 32, height, stationColour);
             break;
         case 7:
-            PaintCircusTent(session, ride, direction, -32, -32, height);
+            PaintCircusTent(session, ride, direction, -32, -32, height, stationColour);
             break;
         case 8:
-            PaintCircusTent(session, ride, direction, -32, 0, height);
+            PaintCircusTent(session, ride, direction, -32, 0, height, stationColour);
             break;
     }
 

@@ -32,7 +32,7 @@ enum
 
 static void PaintMotionSimulatorVehicle(
     PaintSession& session, const Ride& ride, int8_t offsetX, int8_t offsetY, uint8_t direction, int32_t height,
-    const TrackElement& trackElement)
+    ImageId stationColour)
 {
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -65,10 +65,9 @@ static void PaintMotionSimulatorVehicle(
     }
 
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != TrackGhost)
+    if (stationColour != TrackStationColour)
     {
-        imageTemplate = imageFlags;
+        imageTemplate = stationColour;
     }
     auto simulatorImageId = imageTemplate.WithIndex(imageIndex);
     auto stairsImageId = imageTemplate.WithIndex(SPR_MOTION_SIMULATOR_STAIRS_R0 + direction);
@@ -109,8 +108,9 @@ static void PaintMotionSimulator(
 
     int32_t edges = edges_2x2[trackSequence];
 
+    auto stationColour = GetStationColourScheme(session, trackElement);
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.TrackColours[SCHEME_MISC]);
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
 
     const StationObject* stationObject = ride.GetStationObject();
 
@@ -123,13 +123,13 @@ static void PaintMotionSimulator(
     switch (trackSequence)
     {
         case 1:
-            PaintMotionSimulatorVehicle(session, ride, 16, -16, direction, height, trackElement);
+            PaintMotionSimulatorVehicle(session, ride, 16, -16, direction, height, stationColour);
             break;
         case 2:
-            PaintMotionSimulatorVehicle(session, ride, -16, 16, direction, height, trackElement);
+            PaintMotionSimulatorVehicle(session, ride, -16, 16, direction, height, stationColour);
             break;
         case 3:
-            PaintMotionSimulatorVehicle(session, ride, -16, -16, direction, height, trackElement);
+            PaintMotionSimulatorVehicle(session, ride, -16, -16, direction, height, stationColour);
             break;
     }
 

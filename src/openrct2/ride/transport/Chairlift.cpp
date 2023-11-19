@@ -193,8 +193,8 @@ static void ChairliftPaintStationNeSw(
     bool isEnd = ChairliftPaintUtilIsLastTrack(ride, trackElement, pos, trackType);
 
     const auto* stationObj = ride.GetStationObject();
-
-    WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_MISC]);
+    auto stationColour = GetStationColourScheme(session, trackElement);
+    WoodenASupportsPaintSetup(session, 0, 0, height, stationColour);
 
     if (!isStart && !isEnd)
     {
@@ -211,7 +211,7 @@ static void ChairliftPaintStationNeSw(
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_FENCE_METAL_NW);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 2, height + 2 }, { 32, 1, 7 } });
     }
-    TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height);
+    TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height, stationColour);
 
     if ((direction == 2 && isStart) || (direction == 0 && isEnd))
     {
@@ -225,7 +225,7 @@ static void ChairliftPaintStationNeSw(
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_FENCE_METAL_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 30, height + 2 }, { 32, 1, 27 } });
     }
-    TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, height);
+    TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, height, stationColour);
 
     bool drawFrontColumn = true;
     bool drawBackColumn = true;
@@ -285,8 +285,9 @@ static void ChairliftPaintStationSeNw(
     bool isEnd = ChairliftPaintUtilIsLastTrack(ride, trackElement, pos, trackType);
 
     const auto* stationObj = ride.GetStationObject();
+    auto stationColour = GetStationColourScheme(session, trackElement);
 
-    WoodenASupportsPaintSetup(session, 1, 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, 1, 0, height, GetStationColourScheme(session, trackElement));
 
     if (!isStart && !isEnd)
     {
@@ -303,7 +304,7 @@ static void ChairliftPaintStationSeNw(
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_FENCE_METAL_NE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 2, 0, height + 2 }, { 1, 32, 7 } });
     }
-    TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, height);
+    TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, height, stationColour);
 
     if ((direction == 1 && isStart) || (direction == 3 && isEnd))
     {
@@ -317,7 +318,7 @@ static void ChairliftPaintStationSeNw(
         imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_FENCE_METAL_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 30, 0, height + 2 }, { 1, 32, 27 } });
     }
-    TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height);
+    TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height, stationColour);
 
     bool drawRightColumn = true;
     bool drawLeftColumn = true;

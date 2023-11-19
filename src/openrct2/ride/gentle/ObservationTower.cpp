@@ -88,7 +88,7 @@ static void PaintObservationTowerBase(
     int32_t edges = edges_3x3[trackSequence];
     CoordsXY position = session.MapPosition;
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.GetStationObject();
 

@@ -161,8 +161,8 @@ static void FlyingRCTrackStation(
             { SPR_STATION_BASE_C_NW_SE, 27132, SPR_STATION_INVERTED_BAR_C_NW_SE },
         };
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][0]), { 0, 0, height },
-            { { 0, 2, height }, { 32, 28, 1 } });
+            session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][0]),
+            { 0, 0, height }, { { 0, 2, height }, { 32, 28, 1 } });
         PaintAddImageAsParentRotated(
             session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]), { 0, 0, height + 24 },
             { { 0, 6, height + 24 }, { 32, 20, 3 } });
@@ -195,8 +195,8 @@ static void FlyingRCTrackStation(
                 { { 0, 6, height + 3 }, { 32, 20, 1 } });
         }
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][2]), { 0, 0, height },
-            { 32, 32, 1 });
+            session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][2]),
+            { 0, 0, height }, { 32, 32, 1 });
         DrawSupportsSideBySide(
             session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::TubesInverted);
         TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
