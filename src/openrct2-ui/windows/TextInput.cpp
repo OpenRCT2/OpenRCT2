@@ -288,7 +288,7 @@ public:
             //cursorY = screenCoords.y - 10;
         }
 
-        // ** This feature has been deativated due to not working correctly. Code has been left for future implementation/fix. 
+        // This feature has been deativated due to not working correctly. Code has been left for future implementation/fix. 
         // IME composition
         // if (!String::IsNullOrEmpty(gTextInput->ImeBuffer))
         // {
