@@ -235,7 +235,7 @@ public:
         uint8_t cur_drawn = 0;
 
         int32_t cursorX = 0;
-        int32_t cursorY = 0;
+        //int32_t cursorY = 0;
         for (int32_t line = 0; line <= no_lines; line++)
         {
             screenCoords.x = windowPos.x + 12;
@@ -249,7 +249,7 @@ public:
                 cursorX = windowPos.x + 13
                     + GfxGetStringWidthNoFormatting(
                               u8string_view{ wrapPointer, gTextInput->SelectionStart - char_count }, FontStyle::Medium);
-                cursorY = screenCoords.y;
+                //cursorY = screenCoords.y;
 
                 int32_t textWidth = 6;
                 if (gTextInput->SelectionStart < strlen(_buffer.data()))
@@ -285,14 +285,15 @@ public:
         if (!cur_drawn)
         {
             cursorX = dpi.lastStringPos.x;
-            cursorY = screenCoords.y - 10;
+            //cursorY = screenCoords.y - 10;
         }
 
+        // ** This feature has been deativated due to not working correctly. Code has been left for future implementation/fix. 
         // IME composition
-        if (!String::IsNullOrEmpty(gTextInput->ImeBuffer))
-        {
-            DrawIMEComposition(dpi, cursorX, cursorY);
-        }
+        // if (!String::IsNullOrEmpty(gTextInput->ImeBuffer))
+        // {
+        //     //DrawIMEComposition(dpi, cursorX, cursorY);
+        // }
     }
 
     void OnReturnPressed()
