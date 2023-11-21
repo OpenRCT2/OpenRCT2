@@ -76,7 +76,7 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 * [Latest release](https://flathub.org/apps/details/io.openrct2.OpenRCT2)
 
 Some Linux distributions offer native packages already. These packages are usually third-party, but we're trying to resolve issues they are facing.
-* ArchLinux: [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) (AUR) and [openrct2](https://archlinux.org/packages/community/x86_64/openrct2/) (Community)
+* Arch Linux: [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) (AUR) and [openrct2](https://archlinux.org/packages/extra/x86_64/openrct2/) ([extra] repository)
 * Ubuntu PPA: [`develop` branch](https://launchpad.net/~openrct2/+archive/ubuntu/nightly) (nightly builds)
 * openSUSE OBS: [games/openrct2](https://software.opensuse.org/download.html?project=games&package=openrct2)
 * Gentoo (main portage tree): [games-simulation/openrct2](https://packages.gentoo.org/packages/games-simulation/openrct2)
