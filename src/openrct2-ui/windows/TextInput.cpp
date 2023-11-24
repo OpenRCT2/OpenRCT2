@@ -21,7 +21,6 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
 
-
 static constexpr int32_t WW = 250;
 static constexpr int32_t WH = 90;
 
