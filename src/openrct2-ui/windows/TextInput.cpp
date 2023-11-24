@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <SDL.h>
 #include <SDL_keycode.h>
 #include <algorithm>
 #include <iterator>
@@ -19,6 +20,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
+
 
 static constexpr int32_t WW = 250;
 static constexpr int32_t WH = 90;
@@ -235,7 +237,7 @@ public:
         uint8_t cur_drawn = 0;
 
         int32_t cursorX = 0;
-        // int32_t cursorY = 0;
+        int32_t cursorY = 0;
         for (int32_t line = 0; line <= no_lines; line++)
         {
             screenCoords.x = windowPos.x + 12;
@@ -249,7 +251,7 @@ public:
                 cursorX = windowPos.x + 13
                     + GfxGetStringWidthNoFormatting(
                               u8string_view{ wrapPointer, gTextInput->SelectionStart - char_count }, FontStyle::Medium);
-                // cursorY = screenCoords.y;
+                cursorY = screenCoords.y;
 
                 int32_t textWidth = 6;
                 if (gTextInput->SelectionStart < strlen(_buffer.data()))
@@ -285,15 +287,14 @@ public:
         if (!cur_drawn)
         {
             cursorX = dpi.lastStringPos.x;
-            // cursorY = screenCoords.y - 10;
+            cursorY = screenCoords.y - 10;
         }
 
-        // This feature has been deativated due to not working correctly. Code has been left for future implementation/fix.
         // IME composition
-        // if (!String::IsNullOrEmpty(gTextInput->ImeBuffer))
-        // {
-        //     //DrawIMEComposition(dpi, cursorX, cursorY);
-        // }
+        if (!String::IsNullOrEmpty(gTextInput->ImeBuffer))
+        {
+            IMEComposition(cursorX, cursorY);
+        }
     }
 
     void OnReturnPressed()
@@ -317,18 +318,11 @@ public:
     }
 
 private:
-    static void DrawIMEComposition(DrawPixelInfo& dpi, int32_t cursorX, int32_t cursorY)
+    static void IMEComposition(int32_t cursorX, int32_t cursorY)
     {
-        int compositionWidth = GfxGetStringWidth(gTextInput->ImeBuffer, FontStyle::Medium);
-        ScreenCoordsXY screenCoords(cursorX - (compositionWidth / 2), cursorY + 13);
-        int width = compositionWidth;
-        int height = 10;
-
-        GfxFillRect(
-            dpi, { screenCoords - ScreenCoordsXY{ 1, 1 }, screenCoords + ScreenCoordsXY{ width + 1, height + 1 } },
-            PALETTE_INDEX_12);
-        GfxFillRect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ width, height } }, PALETTE_INDEX_0);
-        GfxDrawString(dpi, screenCoords, static_cast<const char*>(gTextInput->ImeBuffer), { COLOUR_DARK_GREEN });
+        SDL_Rect rect = { cursorX, cursorY, 100, 100 };
+        SDL_SetTextInputRect(&rect);
+        SDL_StartTextInput();
     }
 
     void ExecuteCallback(bool hasValue)
