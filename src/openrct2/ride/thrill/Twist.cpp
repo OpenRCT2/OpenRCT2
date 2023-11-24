@@ -91,7 +91,8 @@ static void PaintTwist(
 
     ImageId imageId;
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_MISC], height, floorSpritesCork, stationObject);
