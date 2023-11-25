@@ -19,6 +19,7 @@
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
 #include "ReplayManager.h"
+#include "actions/GameSetSpeedAction.h"
 #include "actions/LoadOrQuitAction.h"
 #include "audio/audio.h"
 #include "config/Config.h"
@@ -97,24 +98,28 @@ using namespace OpenRCT2;
 
 void GameResetSpeed()
 {
-    gGameSpeed = 1;
-    WindowInvalidateByClass(WindowClass::TopToolbar);
+    auto setSpeedAction = GameSetSpeedAction(1);
+    GameActions::Execute(&setSpeedAction);
 }
 
 void GameIncreaseGameSpeed()
 {
-    gGameSpeed = std::min(gConfigGeneral.DebuggingTools ? 5 : 4, gGameSpeed + 1);
-    if (gGameSpeed == 5)
-        gGameSpeed = 8;
-    WindowInvalidateByClass(WindowClass::TopToolbar);
+    auto newSpeed = std::min(gConfigGeneral.DebuggingTools ? 5 : 4, gGameSpeed + 1);
+    if (newSpeed == 5)
+        newSpeed = 8;
+
+    auto setSpeedAction = GameSetSpeedAction(newSpeed);
+    GameActions::Execute(&setSpeedAction);
 }
 
 void GameReduceGameSpeed()
 {
-    gGameSpeed = std::max(1, gGameSpeed - 1);
-    if (gGameSpeed == 7)
-        gGameSpeed = 4;
-    WindowInvalidateByClass(WindowClass::TopToolbar);
+    auto newSpeed = std::max(1, gGameSpeed - 1);
+    if (newSpeed == 7)
+        newSpeed = 4;
+
+    auto setSpeedAction = GameSetSpeedAction(newSpeed);
+    GameActions::Execute(&setSpeedAction);
 }
 
 /**
@@ -340,24 +345,49 @@ void RCT2StringToUTF8Self(char* buffer, size_t length)
     }
 }
 
-// OpenRCT2 workaround to recalculate some values which are saved redundantly in the save to fix corrupted files.
-// For example recalculate guest count by looking at all the guests instead of trusting the value in the file.
-void GameFixSaveVars()
+static void FixGuestsHeadingToParkCount()
 {
-    // Recalculates peep count after loading a save to fix corrupted files
-    uint32_t guestCount = 0;
+    uint32_t guestsHeadingToPark = 0;
+
+    for (auto* peep : EntityList<Guest>())
     {
-        for (auto guest : EntityList<Guest>())
+        if (peep->OutsideOfPark && peep->State != PeepState::LeavingPark)
         {
-            if (!guest->OutsideOfPark)
-            {
-                guestCount++;
-            }
+            guestsHeadingToPark++;
         }
     }
 
-    gNumGuestsInPark = guestCount;
+    if (gNumGuestsHeadingForPark != guestsHeadingToPark)
+    {
+        LOG_WARNING("Corrected bad amount of guests heading to park: %u -> %u", gNumGuestsHeadingForPark, guestsHeadingToPark);
+    }
 
+    gNumGuestsHeadingForPark = guestsHeadingToPark;
+}
+
+static void FixGuestCount()
+{
+    // Recalculates peep count after loading a save to fix corrupted files
+    uint32_t guestCount = 0;
+
+    for (auto guest : EntityList<Guest>())
+    {
+        if (!guest->OutsideOfPark)
+        {
+            guestCount++;
+        }
+    }
+
+    if (gNumGuestsInPark != guestCount)
+    {
+        LOG_WARNING("Corrected bad amount of guests in park: %u -> %u", gNumGuestsInPark, guestCount);
+    }
+
+    gNumGuestsInPark = guestCount;
+}
+
+static void FixPeepsWithInvalidRideReference()
+{
     // Peeps to remove have to be cached here, as removing them from within the loop breaks iteration
     std::vector<Peep*> peepsToRemove;
 
@@ -407,9 +437,13 @@ void GameFixSaveVars()
     {
         ptr->Remove();
     }
+}
 
+static void FixInvalidSurfaces()
+{
     // Fixes broken saves where a surface element could be null
     // and broken saves with incorrect invisible map border tiles
+
     for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
@@ -438,6 +472,19 @@ void GameFixSaveVars()
             }
         }
     }
+}
+
+// OpenRCT2 workaround to recalculate some values which are saved redundantly in the save to fix corrupted files.
+// For example recalculate guest count by looking at all the guests instead of trusting the value in the file.
+void GameFixSaveVars()
+{
+    FixGuestsHeadingToParkCount();
+
+    FixGuestCount();
+
+    FixPeepsWithInvalidRideReference();
+
+    FixInvalidSurfaces();
 
     ResearchFix();
 
@@ -777,7 +824,7 @@ void GameLoadOrQuitNoSavePrompt()
             {
                 InputSetFlag(INPUT_FLAG_5, false);
             }
-            gGameSpeed = 1;
+            GameResetSpeed();
             gFirstTimeSaving = true;
             GameNotifyMapChange();
             GameUnloadScripts();

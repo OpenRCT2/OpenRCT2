@@ -42,6 +42,12 @@ enum class WoodenSupportTransitionType : uint8_t
     Up25DegToUp60Deg = 3,
     Up60DegToUp25Deg = 4,
     Up60Deg = 5,
+    FlatToUp60Deg = 7,
+    Up60DegToFlat = 8,
+    FlatToUp25DegRailway = 9,
+    Up25DegToFlatRailway = 10,
+    Up25DegRailway = 11,
+    Scenery = 12,
 };
 
 // There are 13 types of metal supports. A graphic showing all of them is available here:
@@ -94,6 +100,31 @@ enum class MetalSupportType : uint8_t
     BoxedCoated,
 };
 
+/**
+ * Tiles are rendered at a 45 degree angle, with the corners on the top, bottom, left and right.
+ * This enum controls where the supports are rendered on the screen.
+ *
+ * The tile is divided into nine parts:
+ *
+ *        0
+ *    5       6
+ * 1      4      2
+ *    7       8
+ *        3
+ */
+enum class MetalSupportPlace : uint8_t
+{
+    TopCorner = 0,
+    LeftCorner = 1,
+    RightCorner = 2,
+    BottomCorner = 3,
+    Centre = 4,
+    TopLeftSide = 5,
+    TopRightSide = 6,
+    BottomLeftSide = 7,
+    BottomRightSide = 8,
+};
+
 bool WoodenASupportsPaintSetup(
     PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
 bool WoodenASupportsPaintSetup(
@@ -103,18 +134,16 @@ bool WoodenASupportsPaintSetupRotated(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, Direction direction, int32_t height,
     ImageId imageTemplate, WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None);
 bool WoodenBSupportsPaintSetup(
-    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
-bool WoodenBSupportsPaintSetup(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
     WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None, Direction direction = 0);
 bool WoodenBSupportsPaintSetupRotated(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, Direction direction, int32_t height,
     ImageId imageTemplate, WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None);
 bool MetalASupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportTypeMember, uint8_t segment, int32_t special, int32_t height,
+    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate);
 bool MetalBSupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportTypeMember, uint8_t segment, int32_t special, int32_t height,
+    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate);
 bool PathASupportsPaintSetup(
     PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
@@ -122,6 +151,8 @@ bool PathASupportsPaintSetup(
 bool PathBSupportsPaintSetup(
     PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo);
+void DrawSupportsSideBySide(
+    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special = 0);
 
 enum
 {

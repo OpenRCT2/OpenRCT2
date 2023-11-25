@@ -292,11 +292,14 @@ namespace GameActions
         uint16_t actionFlags = action->GetActionFlags();
         uint32_t flags = action->GetFlags();
 
+        // Some actions are not recorded in the replay.
+        const auto ignoreForReplays = (actionFlags & GameActions::Flags::IgnoreForReplays) != 0;
+
         auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
         if (replayManager != nullptr && (replayManager->IsReplaying() || replayManager->IsNormalising()))
         {
             // We only accept replay commands as long the replay is active.
-            if ((flags & GAME_COMMAND_FLAG_REPLAY) == 0)
+            if ((flags & GAME_COMMAND_FLAG_REPLAY) == 0 && !ignoreForReplays)
             {
                 // TODO: Introduce proper error.
                 auto result = GameActions::Result();
@@ -403,7 +406,7 @@ namespace GameActions
                     bool commandExecutes = (flags & GAME_COMMAND_FLAG_GHOST) == 0 && (flags & GAME_COMMAND_FLAG_NO_SPEND) == 0;
 
                     bool recordAction = false;
-                    if (replayManager != nullptr)
+                    if (replayManager != nullptr && !ignoreForReplays)
                     {
                         if (replayManager->IsRecording() && commandExecutes)
                             recordAction = true;

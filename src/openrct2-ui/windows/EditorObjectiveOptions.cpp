@@ -33,8 +33,30 @@ static constexpr StringId WINDOW_TITLE = STR_OBJECTIVE_SELECTION;
 static constexpr int32_t WH = 229;
 static constexpr int32_t WW = 450;
 
+static constexpr money64 ObjectiveCurrencyLoanAndValueMax = 2000000.00_GBP;
+static constexpr money64 ObjectiveCurrencyLoanAndValueMin = 1000.00_GBP;
+static constexpr money64 ObjectiveCurrencyLoanAndValueAdjustment = 1000.00_GBP;
+
+static constexpr money64 ObjectiveCurrencyFoodMax = 2000000.00_GBP;
+static constexpr money64 ObjectiveCurrencyFoodMin = 1000.00_GBP;
+static constexpr money64 ObjectiveCurrencyFoodAdjustment = 100.00_GBP;
+
+static constexpr uint16_t ObjectiveLengthMax = 5000;
+static constexpr uint16_t ObjectiveLengthMin = 1000;
+static constexpr uint16_t ObjectiveLengthAdjustment = 100;
+
+static constexpr uint16_t ObjectiveExcitementMax = FIXED_2DP(9, 90);
+static constexpr uint16_t ObjectiveExcitementMin = FIXED_2DP(4, 00);
+static constexpr uint16_t ObjectiveExcitementAdjustment = FIXED_2DP(0, 10);
+
 // The number has to leave a bit of room for other entities like vehicles, litter and balloons.
-static constexpr uint16_t MaxObjectiveGuests = 50000;
+static constexpr uint16_t ObjectiveGuestsMax = 50000;
+static constexpr uint16_t ObjectiveGuestsMin = 250;
+static constexpr uint16_t ObjectiveGuestsAdjustment = 50;
+
+static constexpr uint8_t ObjectiveYearMax = 25;
+static constexpr uint8_t ObjectiveYearMin = 1;
+static constexpr uint8_t ObjectiveYearAdjustment = 1;
 
 #pragma region Widgets
 
@@ -471,57 +493,57 @@ private:
             case OBJECTIVE_PARK_VALUE_BY:
             case OBJECTIVE_MONTHLY_RIDE_INCOME:
             case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-                if (gScenarioObjective.Currency >= 2000000.00_GBP)
+                if (gScenarioObjective.Currency >= ObjectiveCurrencyLoanAndValueMax)
                 {
                     ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.Currency += 1000.00_GBP;
+                    gScenarioObjective.Currency += ObjectiveCurrencyLoanAndValueAdjustment;
                     Invalidate();
                 }
                 break;
             case OBJECTIVE_MONTHLY_FOOD_INCOME:
-                if (gScenarioObjective.Currency >= 2000000.00_GBP)
+                if (gScenarioObjective.Currency >= ObjectiveCurrencyFoodMax)
                 {
                     ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.Currency += 100.00_GBP;
+                    gScenarioObjective.Currency += ObjectiveCurrencyFoodAdjustment;
                     Invalidate();
                 }
                 break;
             case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-                if (gScenarioObjective.MinimumLength >= 5000)
+                if (gScenarioObjective.MinimumLength >= ObjectiveLengthMax)
                 {
                     ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.MinimumLength += 100;
+                    gScenarioObjective.MinimumLength += ObjectiveLengthAdjustment;
                     Invalidate();
                 }
                 break;
             case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-                if (gScenarioObjective.MinimumExcitement >= FIXED_2DP(9, 90))
+                if (gScenarioObjective.MinimumExcitement >= ObjectiveExcitementMax)
                 {
                     ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.MinimumExcitement += FIXED_2DP(0, 10);
+                    gScenarioObjective.MinimumExcitement += ObjectiveExcitementAdjustment;
                     Invalidate();
                 }
                 break;
             default:
-                if (gScenarioObjective.NumGuests >= MaxObjectiveGuests)
+                if (gScenarioObjective.NumGuests >= ObjectiveGuestsMax)
                 {
                     ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.NumGuests += 50;
+                    gScenarioObjective.NumGuests += ObjectiveGuestsAdjustment;
                     Invalidate();
                 }
                 break;
@@ -535,57 +557,57 @@ private:
             case OBJECTIVE_PARK_VALUE_BY:
             case OBJECTIVE_MONTHLY_RIDE_INCOME:
             case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-                if (gScenarioObjective.Currency <= 1000.00_GBP)
+                if (gScenarioObjective.Currency <= ObjectiveCurrencyLoanAndValueMin)
                 {
                     ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.Currency -= 1000.00_GBP;
+                    gScenarioObjective.Currency -= ObjectiveCurrencyLoanAndValueAdjustment;
                     Invalidate();
                 }
                 break;
             case OBJECTIVE_MONTHLY_FOOD_INCOME:
-                if (gScenarioObjective.Currency <= 1000.00_GBP)
+                if (gScenarioObjective.Currency <= ObjectiveCurrencyFoodMin)
                 {
                     ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.Currency -= 100.00_GBP;
+                    gScenarioObjective.Currency -= ObjectiveCurrencyFoodAdjustment;
                     Invalidate();
                 }
                 break;
             case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-                if (gScenarioObjective.MinimumLength <= 1000)
+                if (gScenarioObjective.MinimumLength <= ObjectiveLengthMin)
                 {
                     ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.MinimumLength -= 100;
+                    gScenarioObjective.MinimumLength -= ObjectiveLengthAdjustment;
                     Invalidate();
                 }
                 break;
             case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-                if (gScenarioObjective.MinimumExcitement <= FIXED_2DP(4, 00))
+                if (gScenarioObjective.MinimumExcitement <= ObjectiveExcitementMin)
                 {
                     ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.MinimumExcitement -= FIXED_2DP(0, 10);
+                    gScenarioObjective.MinimumExcitement -= ObjectiveExcitementAdjustment;
                     Invalidate();
                 }
                 break;
             default:
-                if (gScenarioObjective.NumGuests <= 250)
+                if (gScenarioObjective.NumGuests <= ObjectiveGuestsMin)
                 {
                     ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.NumGuests -= 50;
+                    gScenarioObjective.NumGuests -= ObjectiveGuestsAdjustment;
                     Invalidate();
                 }
                 break;
@@ -594,26 +616,26 @@ private:
 
     void Arg2Increase()
     {
-        if (gScenarioObjective.Year >= 25)
+        if (gScenarioObjective.Year >= ObjectiveYearMax)
         {
             ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
         }
         else
         {
-            gScenarioObjective.Year++;
+            gScenarioObjective.Year += ObjectiveYearAdjustment;
             Invalidate();
         }
     }
 
     void Arg2Decrease()
     {
-        if (gScenarioObjective.Year <= 1)
+        if (gScenarioObjective.Year <= ObjectiveYearMin)
         {
             ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
         }
         else
         {
-            gScenarioObjective.Year--;
+            gScenarioObjective.Year -= ObjectiveYearAdjustment;
             Invalidate();
         }
     }

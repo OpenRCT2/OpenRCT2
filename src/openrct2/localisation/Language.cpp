@@ -83,6 +83,7 @@ bool LanguageOpen(int32_t id)
         localisationService.OpenLanguage(id);
         // Objects and their localised strings need to be refreshed
         objectManager.ResetObjects();
+        ScrollingTextInvalidate();
         return true;
     }
     catch (const std::exception&)

@@ -1697,6 +1697,14 @@ public:
         _elementCopied = false;
     }
 
+    void ToggleInvisibility()
+    {
+        if (windowTileInspectorSelectedIndex >= 0 && windowTileInspectorSelectedIndex < windowTileInspectorElementCount)
+        {
+            ToggleInvisibility(windowTileInspectorSelectedIndex);
+        }
+    }
+
 private:
     void SetPage(const TileInspectorPage p)
     {
@@ -2368,4 +2376,11 @@ void WindowTileInspectorClearClipboard()
     auto* window = WindowFindByClass(WindowClass::TileInspector);
     if (window != nullptr)
         static_cast<TileInspector*>(window)->ClearClipboard();
+}
+
+void WindowTileInspectorKeyboardShortcutToggleInvisibility()
+{
+    auto* window = WindowFindByClass(WindowClass::TileInspector);
+    if (window != nullptr)
+        static_cast<TileInspector*>(window)->ToggleInvisibility();
 }

@@ -353,19 +353,19 @@ static constexpr UnkSupportsDescriptor Byte97B23C[] = {
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1}, // ?
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1}, // ?
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
+    {{{0,  0,  0}, {1,  1,  8}},  0, 1}, // ?
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
-    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
-    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
-    {{{0,  0,  0}, {1,  1,  8}},  0, 1},
-    {{{2,  2,  1}, {28, 28, 2}},  0, 1},
+    {{{2,  2,  1}, {28, 28, 2}},  0, 1}, // Large scenery (all directions)
     {{{0,  0,  0}, {1,  1,  8}},  0, 1}, // Flat to steep large 1
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
@@ -680,16 +680,32 @@ bool WoodenASupportsPaintSetup(
     return hasSupports;
 }
 
+static int32_t GetSpecialOffsetForTransitionType(WoodenSupportTransitionType transitionType, Direction direction)
+{
+    if (transitionType == WoodenSupportTransitionType::None)
+        return 0;
+
+    // "Special" values are an offset into tables like Byte97B23C, plus 1.
+    // Save for WoodenSupportTransitionType::LargeScenery, there are four entries (one per direction) for every
+    // transition type. While these tables will have to be refactored in due course, we can only do so once all
+    // drawing functions use WoodenSupportTransitionType instead of passing the "special" value directly.
+    int32_t specialOffset = 0;
+    if (transitionType < WoodenSupportTransitionType::Scenery)
+        specialOffset = (EnumValue(transitionType) * NumOrthogonalDirections) + direction;
+    else if (transitionType == WoodenSupportTransitionType::Scenery)
+        specialOffset = (EnumValue(transitionType) * NumOrthogonalDirections);
+    else
+        specialOffset = (EnumValue(transitionType) * NumOrthogonalDirections) + direction - 3;
+
+    return specialOffset + 1;
+}
+
 bool WoodenASupportsPaintSetup(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
     WoodenSupportTransitionType transitionType, Direction direction)
 {
     int32_t oldSupportType = (EnumValue(supportType) * 6) + EnumValue(subType);
-    int32_t special = 0;
-    if (transitionType != WoodenSupportTransitionType::None)
-    {
-        special = (EnumValue(transitionType) * NumOrthogonalDirections) + direction + 1;
-    }
+    int32_t special = GetSpecialOffsetForTransitionType(transitionType, direction);
 
     return WoodenASupportsPaintSetup(session, oldSupportType, special, height, imageTemplate);
 }
@@ -714,7 +730,7 @@ bool WoodenASupportsPaintSetupRotated(
  *
  * @return (al) whether supports have been drawn
  */
-bool WoodenBSupportsPaintSetup(
+static bool WoodenBSupportsPaintSetup(
     PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
@@ -829,11 +845,7 @@ bool WoodenBSupportsPaintSetup(
     WoodenSupportTransitionType transitionType, Direction direction)
 {
     int32_t oldSupportType = (EnumValue(supportType) * 6) + EnumValue(subType);
-    int32_t special = 0;
-    if (transitionType != WoodenSupportTransitionType::None)
-    {
-        special = (EnumValue(transitionType) * NumOrthogonalDirections) + direction + 1;
-    }
+    int32_t special = GetSpecialOffsetForTransitionType(transitionType, direction);
 
     return WoodenBSupportsPaintSetup(session, oldSupportType, special, height, imageTemplate);
 }
@@ -856,9 +868,10 @@ bool WoodenBSupportsPaintSetupRotated(
  *  rct2: 0x00663105
  */
 bool MetalASupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportTypeMember, uint8_t segment, int32_t special, int32_t height,
+    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate)
 {
+    uint8_t segment = EnumValue(placement);
     auto supportType = EnumValue(supportTypeMember);
     SupportHeight* supportSegments = session.SupportSegments;
 
@@ -1054,9 +1067,10 @@ bool MetalASupportsPaintSetup(
  * @return (Carry Flag)
  */
 bool MetalBSupportsPaintSetup(
-    PaintSession& session, MetalSupportType supportTypeMember, uint8_t segment, int32_t special, int32_t height,
+    PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate)
 {
+    uint8_t segment = EnumValue(placement);
     auto supportType = EnumValue(supportTypeMember);
     SupportHeight* supportSegments = session.SupportSegments;
     uint8_t originalSegment = segment;
@@ -1536,4 +1550,40 @@ bool PathBSupportsPaintSetup(
     }
 
     return false; // AND
+}
+
+constexpr uint8_t MetalSupportTypeCount = 13;
+constexpr MetalSupportType RotatedMetalSupports[MetalSupportTypeCount][NumOrthogonalDirections] = {
+    { MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes, MetalSupportType::Tubes },
+    { MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt },
+    { MetalSupportType::ForkAlt, MetalSupportType::Fork, MetalSupportType::ForkAlt, MetalSupportType::Fork },
+    { MetalSupportType::Boxed, MetalSupportType::Boxed, MetalSupportType::Boxed, MetalSupportType::Boxed },
+    { MetalSupportType::Stick, MetalSupportType::StickAlt, MetalSupportType::Stick, MetalSupportType::StickAlt },
+    { MetalSupportType::StickAlt, MetalSupportType::Stick, MetalSupportType::StickAlt, MetalSupportType::Stick },
+    { MetalSupportType::ThickCentred, MetalSupportType::ThickAltCentred, MetalSupportType::Thick, MetalSupportType::ThickAlt },
+    { MetalSupportType::Thick, MetalSupportType::ThickAlt, MetalSupportType::ThickCentred, MetalSupportType::ThickAltCentred },
+    { MetalSupportType::ThickAlt, MetalSupportType::ThickCentred, MetalSupportType::ThickAltCentred, MetalSupportType::Thick },
+    { MetalSupportType::ThickAltCentred, MetalSupportType::Thick, MetalSupportType::ThickAlt, MetalSupportType::ThickCentred },
+    { MetalSupportType::Truss, MetalSupportType::Truss, MetalSupportType::Truss, MetalSupportType::Truss },
+    { MetalSupportType::TubesInverted, MetalSupportType::TubesInverted, MetalSupportType::TubesInverted,
+      MetalSupportType::TubesInverted },
+    { MetalSupportType::BoxedCoated, MetalSupportType::BoxedCoated, MetalSupportType::BoxedCoated,
+      MetalSupportType::BoxedCoated },
+};
+
+void DrawSupportsSideBySide(
+    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special)
+{
+    type = RotatedMetalSupports[EnumValue(type)][direction];
+
+    if (direction & 1)
+    {
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::TopRightSide, special, height, colour);
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::BottomLeftSide, special, height, colour);
+    }
+    else
+    {
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::TopLeftSide, special, height, colour);
+        MetalASupportsPaintSetup(session, type, MetalSupportPlace::BottomRightSide, special, height, colour);
+    }
 }

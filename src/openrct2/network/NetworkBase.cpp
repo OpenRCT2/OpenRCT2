@@ -43,7 +43,7 @@
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-#define NETWORK_STREAM_VERSION "5"
+#define NETWORK_STREAM_VERSION "9"
 
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
@@ -2643,7 +2643,10 @@ void NetworkBase::ServerHandleAuth(NetworkConnection& connection, NetworkPacket&
         if (connection.AuthStatus == NetworkAuth::Verified)
         {
             const NetworkGroup* group = GetGroupByID(GetGroupIDByHash(connection.Key.PublicKeyHash()));
-            passwordless = group->CanPerformAction(NetworkPermission::PasswordlessLogin);
+            if (group != nullptr)
+            {
+                passwordless = group->CanPerformAction(NetworkPermission::PasswordlessLogin);
+            }
         }
         if (gameversion != NetworkGetVersion())
         {
@@ -3649,6 +3652,11 @@ GameActions::Result NetworkModifyGroups(
         case ModifyGroupType::SetName:
         {
             NetworkGroup* group = network.GetGroupByID(groupId);
+            if (group == nullptr)
+            {
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_GROUP, STR_NONE);
+            }
+
             const char* oldName = group->GetName().c_str();
 
             if (strcmp(oldName, name.c_str()) == 0)

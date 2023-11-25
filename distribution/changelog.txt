@@ -1,13 +1,26 @@
 0.4.7 (in development)
 ------------------------------------------------------------------------
+- Feature: [#12078] Add shortcut key for toggling wall slope.
+- Feature: [#19919] Add diagonal brakes and diagonal block brakes to most coaster types.
 - Feature: [#20141] Add additional track pieces to the Giga Coaster.
 - Feature: [OpenMusic#46] Added Mystic ride music style.
+- Feature: [#20825] Made setting the game speed a game action.
+- Feature: [#20853] [Plugin] Add “BaseTileElement.owner” which is saved in the park file.
 - Change: [#20790] Default ride price set to free if park charges for entry.
 - Change: [#20796] Money effect is no longer created when building in pause mode with money enabled.
-- Fix: [#20356] Cannot set tertiary colour on small scenery.
-- Fix: [#20737] Spent money in player window underflows when getting refunds.
-- Fix: [#20778] [Plugin] Incorrect target api when executing custom actions.
+- Fix: [#16453] Tile inspector invisibility shortcut does not use a game action.
+- Fix: [#17774] Misplaced/missing land and construction rights tiles in RCT1 & RCT2 scenarios.
+- Fix: [#18199] Dots in the game save's name no longer get truncated.
 - Fix: [#19722] “Forbid tree removal” restriction doesn't forbid removal of large scenery tree items.
+- Fix: [#20253] Crash when displaying a Lay-Down RC’s half loop.
+- Fix: [#20356] Cannot set tertiary colour on small scenery.
+- Fix: [#20679] Android: game crashes at launch.
+- Fix: [#20737] Spent money in player window underflows when getting refunds.
+- Fix: [#20747] Staff speed cheat not applying to newly hired staff, UI not showing the current applied speed.
+- Fix: [#20778] [Plugin] Incorrect target api when executing custom actions.
+- Fix: [#20807] Tertiary colour not copied with small scenery.
+- Fix: [#20964] Crash when player connects to server with a group assigned that no longer exists.
+- Fix: [#20624] Scrolling text glitches after language is changed.
 
 0.4.6 (2023-09-03)
 ------------------------------------------------------------------------
