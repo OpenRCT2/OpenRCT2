@@ -111,13 +111,14 @@ namespace RCT2
         {
             for (const auto& trackElement : _trackDesign->track_elements)
             {
-                auto trackType = OpenRCT2TrackTypeToRCT2(trackElement.type);
+                auto trackType = OpenRCT2TrackTypeToRCT2(trackElement.Type);
                 if (trackType == TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop)
                 {
                     trackType = TrackElemType::InvertedUp90ToFlatQuarterLoopAlias;
                 }
                 tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(trackType));
-                tempStream.WriteValue<uint8_t>(trackElement.flags);
+                auto flags = ConvertToTD46Flags(trackElement);
+                tempStream.WriteValue<uint8_t>(flags);
             }
 
             tempStream.WriteValue<uint8_t>(0xFF);

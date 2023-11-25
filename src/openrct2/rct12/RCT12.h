@@ -74,6 +74,8 @@ constexpr uint8_t RCT12PeepThoughtItemNone = std::numeric_limits<uint8_t>::max()
 constexpr uint8_t RCT12GuestsInParkHistoryFactor = 20;
 constexpr uint8_t RCT12ParkHistoryUndefined = std::numeric_limits<uint8_t>::max();
 
+struct TrackDesignTrackElement;
+
 enum class RCT12TrackDesignVersion : uint8_t
 {
     TD4,
@@ -900,3 +902,15 @@ template<typename T> std::vector<RideId> RCT12GetRidesBeenOn(T* srcPeep)
     }
     return ridesBeenOn;
 }
+
+enum class TD46Flags : uint8_t
+{
+    StationId = 0b00000011,
+    SpeedOrSeatRotation = 0b00001111,
+    ColourScheme = 0b00110000,
+    IsInverted = 0b01000000,
+    HasChain = 0b10000000,
+};
+
+void ConvertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags);
+uint8_t ConvertToTD46Flags(const TrackDesignTrackElement& source);
