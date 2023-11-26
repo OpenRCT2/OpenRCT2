@@ -18,6 +18,65 @@
 
 using namespace OpenRCT2;
 
+static constexpr const char* DirectoryNamesRCT2[] = {
+    "Data",        // DATA
+    "Landscapes",  // LANDSCAPE
+    nullptr,       // LANGUAGE
+    nullptr,       // LOG_CHAT
+    nullptr,       // LOG_SERVER
+    nullptr,       // NETWORK_KEY
+    "ObjData",     // OBJECT
+    nullptr,       // PLUGIN
+    "Saved Games", // SAVE
+    "Scenarios",   // SCENARIO
+    nullptr,       // SCREENSHOT
+    nullptr,       // SEQUENCE
+    nullptr,       // SHADER
+    nullptr,       // THEME
+    "Tracks",      // TRACK
+};
+
+static constexpr u8string_view DirectoryNamesOpenRCT2[] = {
+    u8"data",       // DATA
+    u8"landscape",  // LANDSCAPE
+    u8"language",   // LANGUAGE
+    u8"chatlogs",   // LOG_CHAT
+    u8"serverlogs", // LOG_SERVER
+    u8"keys",       // NETWORK_KEY
+    u8"object",     // OBJECT
+    u8"plugin",     // PLUGIN
+    u8"save",       // SAVE
+    u8"scenario",   // SCENARIO
+    u8"screenshot", // SCREENSHOT
+    u8"sequence",   // SEQUENCE
+    u8"shaders",    // SHADER
+    u8"themes",     // THEME
+    u8"track",      // TRACK
+    u8"heightmap",  // HEIGHTMAP
+    u8"replay",     // REPLAY
+    u8"desyncs",    // DESYNCS
+    u8"crash",      // CRASH
+    u8"assetpack",  // ASSET_PACK
+};
+
+static constexpr u8string_view FileNames[] = {
+    u8"config.ini",                              // CONFIG
+    u8"hotkeys.dat",                             // CONFIG_SHORTCUTS_LEGACY
+    u8"shortcuts.json",                          // CONFIG_SHORTCUTS
+    u8"objects.idx",                             // CACHE_OBJECTS
+    u8"tracks.idx",                              // CACHE_TRACKS
+    u8"scenarios.idx",                           // CACHE_SCENARIOS
+    u8"groups.json",                             // NETWORK_GROUPS
+    u8"servers.cfg",                             // NETWORK_SERVERS
+    u8"users.json",                              // NETWORK_USERS
+    u8"highscores.dat",                          // SCORES
+    u8"scores.dat",                              // SCORES (LEGACY)
+    u8"Saved Games" PATH_SEPARATOR "scores.dat", // SCORES (RCT2)
+    u8"changelog.txt",                           // CHANGELOG
+    u8"plugin.store.json",                       // PLUGIN_STORE
+    u8"contributors.md",                         // CONTRIBUTORS
+};
+
 class PlatformEnvironment final : public IPlatformEnvironment
 {
 private:
@@ -116,10 +175,6 @@ public:
     }
 
 private:
-    static const char* DirectoryNamesRCT2[];
-    static const u8string DirectoryNamesOpenRCT2[];
-    static const u8string FileNames[];
-
     static DIRBASE GetDefaultBaseDirectory(PATHID pathid)
     {
         switch (pathid)
@@ -230,62 +285,3 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
 
     return env;
 }
-
-const char* PlatformEnvironment::DirectoryNamesRCT2[] = {
-    "Data",        // DATA
-    "Landscapes",  // LANDSCAPE
-    nullptr,       // LANGUAGE
-    nullptr,       // LOG_CHAT
-    nullptr,       // LOG_SERVER
-    nullptr,       // NETWORK_KEY
-    "ObjData",     // OBJECT
-    nullptr,       // PLUGIN
-    "Saved Games", // SAVE
-    "Scenarios",   // SCENARIO
-    nullptr,       // SCREENSHOT
-    nullptr,       // SEQUENCE
-    nullptr,       // SHADER
-    nullptr,       // THEME
-    "Tracks",      // TRACK
-};
-
-const u8string PlatformEnvironment::DirectoryNamesOpenRCT2[] = {
-    u8"data",       // DATA
-    u8"landscape",  // LANDSCAPE
-    u8"language",   // LANGUAGE
-    u8"chatlogs",   // LOG_CHAT
-    u8"serverlogs", // LOG_SERVER
-    u8"keys",       // NETWORK_KEY
-    u8"object",     // OBJECT
-    u8"plugin",     // PLUGIN
-    u8"save",       // SAVE
-    u8"scenario",   // SCENARIO
-    u8"screenshot", // SCREENSHOT
-    u8"sequence",   // SEQUENCE
-    u8"shaders",    // SHADER
-    u8"themes",     // THEME
-    u8"track",      // TRACK
-    u8"heightmap",  // HEIGHTMAP
-    u8"replay",     // REPLAY
-    u8"desyncs",    // DESYNCS
-    u8"crash",      // CRASH
-    u8"assetpack",  // ASSET_PACK
-};
-
-const u8string PlatformEnvironment::FileNames[] = {
-    u8"config.ini",                              // CONFIG
-    u8"hotkeys.dat",                             // CONFIG_SHORTCUTS_LEGACY
-    u8"shortcuts.json",                          // CONFIG_SHORTCUTS
-    u8"objects.idx",                             // CACHE_OBJECTS
-    u8"tracks.idx",                              // CACHE_TRACKS
-    u8"scenarios.idx",                           // CACHE_SCENARIOS
-    u8"groups.json",                             // NETWORK_GROUPS
-    u8"servers.cfg",                             // NETWORK_SERVERS
-    u8"users.json",                              // NETWORK_USERS
-    u8"highscores.dat",                          // SCORES
-    u8"scores.dat",                              // SCORES (LEGACY)
-    u8"Saved Games" PATH_SEPARATOR "scores.dat", // SCORES (RCT2)
-    u8"changelog.txt",                           // CHANGELOG
-    u8"plugin.store.json",                       // PLUGIN_STORE
-    u8"contributors.md",                         // CONTRIBUTORS
-};
