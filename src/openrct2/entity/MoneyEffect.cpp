@@ -186,8 +186,7 @@ void MoneyEffect::Paint(PaintSession& session, int32_t imageDirection) const
         return;
     }
 
-    if (!GuestPurchase && !gConfigGeneral.ShowBuildCostIfPaused &&
-            NumMovements == 0 && GameIsPaused())
+    if (!GuestPurchase && !gConfigGeneral.ShowBuildCostIfPaused && NumMovements == 0 && GameIsPaused())
     {
         // Don't show the money effect for new build costs while the game is paused.
         return;
