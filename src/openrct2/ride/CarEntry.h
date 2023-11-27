@@ -153,7 +153,7 @@ enum class SpriteGroupType : uint8_t
     Count
 };
 
-static const std::string SpriteGroupNames[] = {
+static constexpr const char* SpriteGroupNames[] = {
     "slopeFlat",          "slopes12",         "slopes25",           "slopes42",
     "slopes60",           "slopes75",         "slopes90",           "slopesLoop",
     "slopeInverted",      "slopes8",          "slopes16",           "slopes50",
