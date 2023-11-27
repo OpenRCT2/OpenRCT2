@@ -2765,7 +2765,38 @@ declare global {
          * The list of thoughts this guest has.
          */
         readonly thoughts: Thought[];
+
+        /**
+         * Triggers an action/animation of the selected guest.
+         */
+        action: GuestAction;
     }
+
+    type GuestAction =
+        "checkTime" |
+        "eatFood" |
+        "shakeHead" |
+        "emptyPockets" |
+        "sitEatFood" |
+        "sitCheckWatch" |
+        "sitLookLeft" |
+        "sitLookRight" |
+        "wow" |
+        "throwUp" |
+        "jump" |
+        "drown" |
+        "joy" |
+        "readMap" |
+        "wave" |
+        "wave2" |
+        "takePhoto" |
+        "clap" |
+        "disgust" |
+        "drawPicture" |
+        "beWatched" |
+        "withdrawMoney" |
+        "idle" |
+        "walk";
 
     /**
      * Represents a guest's thought. This is a copy of a thought at a given time
@@ -2955,6 +2986,27 @@ declare global {
          * Gets the patrol area for the staff member.
          */
         readonly patrolArea: PatrolArea;
+
+        /**
+         * Triggers an action/animation of the selected staff member.
+         */
+        action: StaffAction;
+    }
+
+    type StaffAction =
+        "sweep" |
+        "drown" |
+        "answer" |
+        "answer2" |
+        "inspect" |
+        "fix" |
+        "fix2" |
+        "fixGround" |
+        "fix3" |
+        "water" |
+        "emptyBin" |
+        "idle" |
+        "walk";
     }
 
     type StaffType = "handyman" | "mechanic" | "security" | "entertainer";

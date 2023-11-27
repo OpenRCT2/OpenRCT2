@@ -95,6 +95,9 @@ namespace OpenRCT2::Scripting
         int32_t cash_get() const;
         void cash_set(int32_t value);
 
+        std::string action_get() const;
+        void action_set(std::string value);
+
         bool isInPark_get() const;
 
         bool isLost_get() const;

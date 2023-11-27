@@ -21,22 +21,20 @@ namespace OpenRCT2::Scripting
     {
     }
 
-    static const DukEnumMap<PeepActionType> StaffActionMap({
-          { "sweep", PeepActionType::StaffSweep },
-          { "drown", PeepActionType::Drowning },
-          { "answer", PeepActionType::StaffAnswerCall },
-          { "answer2", PeepActionType::StaffAnswerCall2 },
-          { "inspect", PeepActionType::StaffCheckboard },
-          { "fix", PeepActionType::StaffFix },
-          { "fix2", PeepActionType::StaffFix2 },
-          { "fixGround", PeepActionType::StaffFixGround },
-          { "fix3", PeepActionType::StaffFix3 },
-          { "water", PeepActionType::StaffWatering },
-          { "emptyBin", PeepActionType::StaffEmptyBin },
+    static const DukEnumMap<PeepActionType> StaffActionMap({ { "sweep", PeepActionType::StaffSweep },
+                                                             { "drown", PeepActionType::Drowning },
+                                                             { "answer", PeepActionType::StaffAnswerCall },
+                                                             { "answer2", PeepActionType::StaffAnswerCall2 },
+                                                             { "inspect", PeepActionType::StaffCheckboard },
+                                                             { "fix", PeepActionType::StaffFix },
+                                                             { "fix2", PeepActionType::StaffFix2 },
+                                                             { "fixGround", PeepActionType::StaffFixGround },
+                                                             { "fix3", PeepActionType::StaffFix3 },
+                                                             { "water", PeepActionType::StaffWatering },
+                                                             { "emptyBin", PeepActionType::StaffEmptyBin },
 
-          { "idle", PeepActionType::Idle },
-          { "walk", PeepActionType::Walking }
-});
+                                                             { "idle", PeepActionType::Idle },
+                                                             { "walk", PeepActionType::Walking } });
 
     void ScStaff::Register(duk_context* ctx)
     {
@@ -183,11 +181,11 @@ namespace OpenRCT2::Scripting
             {
                 return;
             }
-                peep->Action = StaffActionMap[value];
-                peep->ActionFrame = 0;
-                peep->ActionSpriteImageOffset = 0;
-                peep->UpdateCurrentActionSpriteType();
-                peep->Invalidate();
+            peep->Action = StaffActionMap[value];
+            peep->ActionFrame = 0;
+            peep->ActionSpriteImageOffset = 0;
+            peep->UpdateCurrentActionSpriteType();
+            peep->Invalidate();
         }
     }
 

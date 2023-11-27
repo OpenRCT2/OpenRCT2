@@ -144,6 +144,32 @@ namespace OpenRCT2::Scripting
         { "here_we_are", PeepThoughtType::HereWeAre },
     });
 
+    static const DukEnumMap<PeepActionType> GuestActionMap({ { "checkTime", PeepActionType::CheckTime },
+                                                             { "eatFood", PeepActionType::EatFood },
+                                                             { "shakeHead", PeepActionType::ShakeHead },
+                                                             { "emptyPockets", PeepActionType::EmptyPockets },
+                                                             { "sitEatFood", PeepActionType::SittingEatFood },
+                                                             { "sitCheckWatch", PeepActionType::SittingCheckWatch },
+                                                             { "sitLookLeft", PeepActionType::SittingLookAroundLeft },
+                                                             { "sitLookRight", PeepActionType::SittingLookAroundRight },
+                                                             { "wow", PeepActionType::Wow },
+                                                             { "throwUp", PeepActionType::ThrowUp },
+                                                             { "jump", PeepActionType::Jump },
+                                                             { "drown", PeepActionType::Drowning },
+                                                             { "joy", PeepActionType::Joy },
+                                                             { "readMap", PeepActionType::ReadMap },
+                                                             { "wave", PeepActionType::Wave },
+                                                             { "wave2", PeepActionType::Wave2 },
+                                                             { "takePhoto", PeepActionType::TakePhoto },
+                                                             { "clap", PeepActionType::Clap },
+                                                             { "disgust", PeepActionType::Disgust },
+                                                             { "drawPicture", PeepActionType::DrawPicture },
+                                                             { "beWatched", PeepActionType::BeingWatched },
+                                                             { "withdrawMoney", PeepActionType::WithdrawMoney },
+
+                                                             { "idle", PeepActionType::Idle },
+                                                             { "walk", PeepActionType::Walking } });
+
     ScGuest::ScGuest(EntityId id)
         : ScPeep(id)
     {
@@ -169,6 +195,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScGuest::maxIntensity_get, &ScGuest::maxIntensity_set, "maxIntensity");
         dukglue_register_property(ctx, &ScGuest::nauseaTolerance_get, &ScGuest::nauseaTolerance_set, "nauseaTolerance");
         dukglue_register_property(ctx, &ScGuest::cash_get, &ScGuest::cash_set, "cash");
+        dukglue_register_property(ctx, &ScGuest::action_get, &ScGuest::action_set, "action");
         dukglue_register_property(ctx, &ScGuest::isInPark_get, nullptr, "isInPark");
         dukglue_register_property(ctx, &ScGuest::isLost_get, nullptr, "isLost");
         dukglue_register_property(ctx, &ScGuest::lostCountdown_get, &ScGuest::lostCountdown_set, "lostCountdown");
@@ -437,6 +464,34 @@ namespace OpenRCT2::Scripting
         if (peep != nullptr)
         {
             peep->CashInPocket = std::max(0, value);
+        }
+    }
+
+    std::string ScGuest::action_get() const
+    {
+        auto peep = GetGuest();
+        if (peep != nullptr)
+        {
+            return std::string(GuestActionMap[peep->Action]);
+        }
+        return {};
+    }
+
+    void ScGuest::action_set(const std::string value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto peep = GetGuest();
+        if (peep != nullptr)
+        {
+            if (!GuestActionMap.TryGet(value))
+            {
+                return;
+            }
+            peep->Action = GuestActionMap[value];
+            peep->ActionFrame = 0;
+            peep->ActionSpriteImageOffset = 0;
+            peep->UpdateCurrentActionSpriteType();
+            peep->Invalidate();
         }
     }
 
