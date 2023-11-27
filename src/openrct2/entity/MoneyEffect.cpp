@@ -41,7 +41,7 @@ template<> bool EntityBase::Is<MoneyEffect>() const
  */
 void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool guestPurchase)
 {
-    if (value == 0.00_GBP || GameIsPaused())
+    if (value == 0.00_GBP)
         return;
 
     MoneyEffect* moneyEffect = CreateEntity<MoneyEffect>();
@@ -183,6 +183,13 @@ void MoneyEffect::Paint(PaintSession& session, int32_t imageDirection) const
     if (GuestPurchase && !gConfigGeneral.ShowGuestPurchases)
     {
         // Don't show the money effect for guest purchases when the option is disabled.
+        return;
+    }
+
+    if (!GuestPurchase && !gConfigGeneral.ShowBuildCostIfPaused &&
+            NumMovements == 0 && GameIsPaused())
+    {
+        // Don't show the money effect for new build costs while the game is paused.
         return;
     }
 

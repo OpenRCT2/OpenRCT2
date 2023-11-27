@@ -6,8 +6,8 @@
 - Feature: [OpenMusic#46] Added Mystic ride music style.
 - Feature: [#20825] Made setting the game speed a game action.
 - Feature: [#20853] [Plugin] Add “BaseTileElement.owner” which is saved in the park file.
+- Feature: [#20796] Add setting to show/hide building costs when the game is paused.
 - Change: [#20790] Default ride price set to free if park charges for entry.
-- Change: [#20796] Money effect is no longer created when building in pause mode with money enabled.
 - Fix: [#16453] Tile inspector invisibility shortcut does not use a game action.
 - Fix: [#17774] Misplaced/missing land and construction rights tiles in RCT1 & RCT2 scenarios.
 - Fix: [#18199] Dots in the game save's name no longer get truncated.

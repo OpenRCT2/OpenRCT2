@@ -222,6 +222,7 @@ namespace Config
             model->RenderWeatherEffects = reader->GetBoolean("render_weather_effects", true);
             model->RenderWeatherGloom = reader->GetBoolean("render_weather_gloom", true);
             model->ShowGuestPurchases = reader->GetBoolean("show_guest_purchases", false);
+            model->ShowBuildCostIfPaused = reader->GetBoolean("show_build_cost_if_paused", false);
             model->ShowRealNamesOfGuests = reader->GetBoolean("show_real_names_of_guests", true);
             model->AllowEarlyCompletion = reader->GetBoolean("allow_early_completion", false);
             model->AssetPackOrder = reader->GetString("asset_pack_order", "");
@@ -307,6 +308,7 @@ namespace Config
         writer->WriteBoolean("render_weather_effects", model->RenderWeatherEffects);
         writer->WriteBoolean("render_weather_gloom", model->RenderWeatherGloom);
         writer->WriteBoolean("show_guest_purchases", model->ShowGuestPurchases);
+        writer->WriteBoolean("show_build_cost_if_paused", model->ShowBuildCostIfPaused);
         writer->WriteBoolean("show_real_names_of_guests", model->ShowRealNamesOfGuests);
         writer->WriteBoolean("allow_early_completion", model->AllowEarlyCompletion);
         writer->WriteString("asset_pack_order", model->AssetPackOrder);
