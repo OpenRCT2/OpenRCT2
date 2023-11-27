@@ -110,6 +110,7 @@ The following people are not part of the development team, but have been contrib
 * Wenzhao Qiu (qwzhaox) - Misc.
 * Tiago Reul (reul) - Misc.
 * Fredrik Tegnell (fredriktegnell) - Misc.
+* Arjan van Dijk (Manticore-007) - Exposed actions/animations for guests and staff members to the plugin API.
 
 ## Bug fixes
 * (KirilAngelov)
