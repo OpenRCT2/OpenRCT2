@@ -63,6 +63,9 @@ namespace OpenRCT2::Scripting
 
         uint8_t orders_get() const;
         void orders_set(uint8_t value);
+
+        std::string action_get() const;
+        void action_set(std::string value);
     };
 
 } // namespace OpenRCT2::Scripting

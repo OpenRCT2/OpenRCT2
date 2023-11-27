@@ -21,6 +21,23 @@ namespace OpenRCT2::Scripting
     {
     }
 
+    static const DukEnumMap<PeepActionType> StaffActionMap({
+          { "sweeping", PeepActionType::StaffSweep },
+          { "drowning", PeepActionType::Drowning },
+          { "answering", PeepActionType::StaffAnswerCall },
+          { "answering_2", PeepActionType::StaffAnswerCall2 },
+          { "inspecting", PeepActionType::StaffCheckboard },
+          { "fixing", PeepActionType::StaffFix },
+          { "fixing_2", PeepActionType::StaffFix2 },
+          { "fixing_ground", PeepActionType::StaffFixGround },
+          { "fixing_3", PeepActionType::StaffFix3 },
+          { "watering", PeepActionType::StaffWatering },
+          { "emptying_bin", PeepActionType::StaffEmptyBin },
+
+          { "idle", PeepActionType::Idle },
+          { "walking", PeepActionType::Walking }
+});
+
     void ScStaff::Register(duk_context* ctx)
     {
         dukglue_set_base_class<ScPeep, ScStaff>(ctx);
@@ -29,6 +46,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScStaff::costume_get, &ScStaff::costume_set, "costume");
         dukglue_register_property(ctx, &ScStaff::patrolArea_get, nullptr, "patrolArea");
         dukglue_register_property(ctx, &ScStaff::orders_get, &ScStaff::orders_set, "orders");
+        dukglue_register_property(ctx, &ScStaff::action_get, &ScStaff::action_set, "action");
     }
 
     Staff* ScStaff::GetStaff() const
@@ -142,6 +160,34 @@ namespace OpenRCT2::Scripting
         if (peep != nullptr)
         {
             peep->StaffOrders = value;
+        }
+    }
+
+    std::string ScStaff::action_get() const
+    {
+        auto peep = GetStaff();
+        if (peep != nullptr)
+        {
+            return std::string(StaffActionMap[peep->Action]);
+        }
+        return {};
+    }
+
+    void ScStaff::action_set(const std::string value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto peep = GetStaff();
+        if (peep != nullptr)
+        {
+            if (!StaffActionMap.TryGet(value))
+            {
+                return;
+            }
+                peep->Action = StaffActionMap[value];
+                peep->ActionFrame = 0;
+                peep->ActionSpriteImageOffset = 0;
+                peep->UpdateCurrentActionSpriteType();
+                peep->Invalidate();
         }
     }
 
