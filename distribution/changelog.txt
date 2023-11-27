@@ -7,7 +7,7 @@
 - Feature: [OpenMusic#50] Added Rock style 4 ride music.
 - Feature: [#20825] Made setting the game speed a game action.
 - Feature: [#20853] [Plugin] Add “BaseTileElement.owner” which is saved in the park file.
-- Feature: [#21020] [Plugin] Exposed triggerable actions/animations for guests and staff members to the API.
+- Feature: [#21020] [Plugin] Add triggerable actions/animations for guests and staff members to the API.
 - Change: [#20790] Default ride price set to free if park charges for entry.
 - Fix: [#16453] Tile inspector invisibility shortcut does not use a game action.
 - Fix: [#17774] Misplaced/missing land and construction rights tiles in RCT1 & RCT2 scenarios.
