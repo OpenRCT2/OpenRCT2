@@ -3007,7 +3007,6 @@ declare global {
         "emptyBin" |
         "idle" |
         "walk";
-    }
 
     type StaffType = "handyman" | "mechanic" | "security" | "entertainer";
 
