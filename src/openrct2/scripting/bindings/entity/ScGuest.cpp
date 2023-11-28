@@ -480,12 +480,13 @@ namespace OpenRCT2::Scripting
     void ScGuest::action_set(const std::string value)
     {
         ThrowIfGameStateNotMutable();
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto peep = GetGuest();
         if (peep != nullptr)
         {
             if (!GuestActionMap.TryGet(value))
             {
-                printf("ERROR: '%s' is not a valid guest action\n\n", value.c_str());
+                duk_error(ctx, DUK_ERR_ERROR, "Invalid guest action");
             }
             else
             {

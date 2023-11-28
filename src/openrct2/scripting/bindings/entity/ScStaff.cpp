@@ -174,12 +174,13 @@ namespace OpenRCT2::Scripting
     void ScStaff::action_set(const std::string value)
     {
         ThrowIfGameStateNotMutable();
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto peep = GetStaff();
         if (peep != nullptr)
         {
             if (!StaffActionMap.TryGet(value))
             {
-                printf("ERROR: '%s' is not a valid staff member action\n\n", value.c_str());
+                duk_error(ctx, DUK_ERR_ERROR, "Invalid staff member action");
             }
             else
             {
