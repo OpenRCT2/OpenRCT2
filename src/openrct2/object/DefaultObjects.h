@@ -12,5 +12,5 @@
 #include "Object.h"
 
 extern const std::string_view MinimumRequiredObjects[2];
-extern const std::string_view DefaultSelectedObjects[112];
+extern const std::string_view DefaultSelectedObjects[113];
 extern const std::string_view DesignerSelectedObjects[39];

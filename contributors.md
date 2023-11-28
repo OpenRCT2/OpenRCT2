@@ -285,6 +285,7 @@ The following people are not part of the development team, but have been contrib
 * (Flyxxpy)
 * Jan Büchner (Greyfade)
 * (Skyshard)
+* (Blackend Blue)
 
 ## Sound Effects
 * Karst van Galen Last (AuraSpecs)
