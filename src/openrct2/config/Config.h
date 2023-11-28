@@ -58,7 +58,7 @@ struct GeneralConfiguration
     bool RenderWeatherGloom;
     bool DisableLightningEffect;
     bool ShowGuestPurchases;
-    bool ShowBuildCostIfPaused;
+    bool ShowMoneyEffectIfPaused;
     bool TransparentScreenshot;
     bool TransparentWater;
 

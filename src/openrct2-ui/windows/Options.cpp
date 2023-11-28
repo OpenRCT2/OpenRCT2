@@ -108,7 +108,7 @@ enum WindowOptionsWidgetIdx {
     WIDX_GRIDLINES_CHECKBOX,
     WIDX_UPPER_CASE_BANNERS_CHECKBOX,
     WIDX_SHOW_GUEST_PURCHASES_CHECKBOX,
-    WIDX_SHOW_BUILD_COST_IF_PAUSED_CHECKBOX,
+    WIDX_SHOW_MONEY_EFFECT_IF_PAUSED_CHECKBOX,
     WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX,
     WIDX_VIRTUAL_FLOOR_LABEL,
     WIDX_VIRTUAL_FLOOR,
@@ -256,16 +256,16 @@ static Widget window_options_display_widgets[] = {
 static Widget window_options_rendering_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define FRAME_RENDERING_START 53
-    MakeWidget({  5, FRAME_RENDERING_START +   0}, {300, 123}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_RENDERING_GROUP                                             ), // Rendering group
-    MakeWidget({ 10, FRAME_RENDERING_START +  15}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_TILE_SMOOTHING,            STR_TILE_SMOOTHING_TIP           ), // Landscape smoothing
-    MakeWidget({ 10, FRAME_RENDERING_START +  30}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_GRIDLINES,                 STR_GRIDLINES_TIP                ), // Gridlines
-    MakeWidget({ 10, FRAME_RENDERING_START +  45}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_UPPERCASE_BANNERS,         STR_UPPERCASE_BANNERS_TIP        ), // Uppercase banners
-    MakeWidget({ 10, FRAME_RENDERING_START +  60}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_GUEST_PURCHASES,      STR_SHOW_GUEST_PURCHASES_TIP     ), // Guest purchases
-    MakeWidget({ 10, FRAME_RENDERING_START +  75}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_BUILD_COST_IF_PAUSED, STR_SHOW_BUILD_COST_IF_PAUSED_TIP), // Build cost if paused
-    MakeWidget({ 10, FRAME_RENDERING_START +  90}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_TRANSPARENT_SCREENSHOT,    STR_TRANSPARENT_SCREENSHOT_TIP   ), // Transparent screenshot
-    MakeWidget({ 10, FRAME_RENDERING_START + 105}, {281,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_VIRTUAL_FLOOR_STYLE,       STR_VIRTUAL_FLOOR_STYLE_TIP      ), // Virtual floor
-    MakeWidget({155, FRAME_RENDERING_START + 105}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,                      STR_VIRTUAL_FLOOR_STYLE_TIP      ), // Virtual floor dropdown
-    MakeWidget({288, FRAME_RENDERING_START + 106}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,            STR_VIRTUAL_FLOOR_STYLE_TIP      ), // Virtual floor dropdown
+    MakeWidget({  5, FRAME_RENDERING_START +   0}, {300, 123}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_RENDERING_GROUP                                                 ), // Rendering group
+    MakeWidget({ 10, FRAME_RENDERING_START +  15}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_TILE_SMOOTHING,              STR_TILE_SMOOTHING_TIP             ), // Landscape smoothing
+    MakeWidget({ 10, FRAME_RENDERING_START +  30}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_GRIDLINES,                   STR_GRIDLINES_TIP                  ), // Gridlines
+    MakeWidget({ 10, FRAME_RENDERING_START +  45}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_UPPERCASE_BANNERS,           STR_UPPERCASE_BANNERS_TIP          ), // Uppercase banners
+    MakeWidget({ 10, FRAME_RENDERING_START +  60}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_GUEST_PURCHASES,        STR_SHOW_GUEST_PURCHASES_TIP       ), // Guest purchases
+    MakeWidget({ 10, FRAME_RENDERING_START +  75}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_MONEY_EFFECT_IF_PAUSED, STR_SHOW_MONEY_EFFECT_IF_PAUSED_TIP), // Money effect if paused
+    MakeWidget({ 10, FRAME_RENDERING_START +  90}, {281,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_TRANSPARENT_SCREENSHOT,      STR_TRANSPARENT_SCREENSHOT_TIP     ), // Transparent screenshot
+    MakeWidget({ 10, FRAME_RENDERING_START + 105}, {281,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_VIRTUAL_FLOOR_STYLE,         STR_VIRTUAL_FLOOR_STYLE_TIP        ), // Virtual floor
+    MakeWidget({155, FRAME_RENDERING_START + 105}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,                        STR_VIRTUAL_FLOOR_STYLE_TIP        ), // Virtual floor dropdown
+    MakeWidget({288, FRAME_RENDERING_START + 106}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,              STR_VIRTUAL_FLOOR_STYLE_TIP        ), // Virtual floor dropdown
 #undef FRAME_RENDERING_START
 #define FRAME_EFFECTS_START 178
     MakeWidget({ 5,  FRAME_EFFECTS_START + 0}, {300, 94}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_EFFECTS_GROUP                                             ), // Rendering group
@@ -990,8 +990,8 @@ private:
                 ConfigSaveDefault();
                 Invalidate();
                 break;
-            case WIDX_SHOW_BUILD_COST_IF_PAUSED_CHECKBOX:
-                gConfigGeneral.ShowBuildCostIfPaused ^= 1;
+            case WIDX_SHOW_MONEY_EFFECT_IF_PAUSED_CHECKBOX:
+                gConfigGeneral.ShowMoneyEffectIfPaused ^= 1;
                 ConfigSaveDefault();
                 Invalidate();
                 break;
@@ -1040,7 +1040,7 @@ private:
         SetCheckboxValue(WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.AlwaysShowGridlines);
         SetCheckboxValue(WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.DayNightCycle);
         SetCheckboxValue(WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.ShowGuestPurchases);
-        SetCheckboxValue(WIDX_SHOW_BUILD_COST_IF_PAUSED_CHECKBOX, gConfigGeneral.ShowBuildCostIfPaused);
+        SetCheckboxValue(WIDX_SHOW_MONEY_EFFECT_IF_PAUSED_CHECKBOX, gConfigGeneral.ShowMoneyEffectIfPaused);
         SetCheckboxValue(WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.TransparentScreenshot);
         SetCheckboxValue(WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.UpperCaseBanners);
 
