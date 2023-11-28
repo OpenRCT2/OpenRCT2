@@ -837,12 +837,15 @@ void Guest::Loc68FA89()
     }
     else
     {
-        newEnergy = std::min(PEEP_MAX_ENERGY_TARGET, newEnergy + 4);
+        if (newEnergy != 0)
+        {
+            newEnergy = std::min(PEEP_MAX_ENERGY_TARGET, newEnergy + 4);
+        }
         if (newEnergy > newTargetEnergy)
             newEnergy = newTargetEnergy;
     }
 
-    if (newEnergy < PEEP_MIN_ENERGY)
+    if (newEnergy < PEEP_MIN_ENERGY && newEnergy > 0)
         newEnergy = PEEP_MIN_ENERGY;
 
     /* Previous code here suggested maximum energy is 128. */
@@ -6857,13 +6860,13 @@ void Guest::UpdateSpriteType()
         return;
     }
 
-    if (Energy <= 64 && Happiness < 128)
+    if (Energy <= 64 && Energy > 0 && Happiness < 128)
     {
         SetSpriteType(PeepSpriteType::HeadDown);
         return;
     }
 
-    if (Energy <= 80 && Happiness < 128)
+    if (Energy <= 80 && Energy > 0 && Happiness < 128)
     {
         SetSpriteType(PeepSpriteType::ArmsCrossed);
         return;
