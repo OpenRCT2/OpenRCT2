@@ -179,8 +179,9 @@ namespace OpenRCT2::Scripting
         {
             if (!StaffActionMap.TryGet(value))
             {
-                return;
+                printf("ERROR: '%s' is not a valid staff member action\n\n", value.c_str());
             }
+            else
             peep->Action = StaffActionMap[value];
             peep->ActionFrame = 0;
             peep->ActionSpriteImageOffset = 0;

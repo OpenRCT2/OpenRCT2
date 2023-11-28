@@ -485,8 +485,9 @@ namespace OpenRCT2::Scripting
         {
             if (!GuestActionMap.TryGet(value))
             {
-                return;
+                printf("ERROR: '%s' is not a valid guest action\n\n", value.c_str());
             }
+            else
             peep->Action = GuestActionMap[value];
             peep->ActionFrame = 0;
             peep->ActionSpriteImageOffset = 0;
