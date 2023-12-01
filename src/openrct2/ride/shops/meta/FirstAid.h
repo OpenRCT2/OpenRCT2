@@ -29,7 +29,7 @@ constexpr RideTypeDescriptor FirstAidRTD =
                      RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ShopStall)),
     SET_FIELD(DefaultMode, RideMode::ShopStall),
-    SET_FIELD(OperatingSettings, { 8, 8, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 8, 8, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_FIRST_AID, STR_RIDE_DESCRIPTION_FIRST_AID }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_FIRST_AID)),
@@ -57,6 +57,7 @@ constexpr RideTypeDescriptor FirstAidRTD =
         false,
         { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
     }),
+    SET_FIELD(DeprecatedProperties, {0}),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),

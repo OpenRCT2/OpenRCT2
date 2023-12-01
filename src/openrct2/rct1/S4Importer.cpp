@@ -830,6 +830,7 @@ namespace RCT1
                 dst->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE;
                 dst->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
             }
+            dst->SetLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTER_SPEED, true);
 
             // Station
             if (src->OverallView.IsNull())
@@ -1678,7 +1679,15 @@ namespace RCT1
                     dst2->SetBrakeClosed(trackType == TrackElemType::Brakes);
                     if (TrackTypeHasSpeedSetting(trackType))
                     {
-                        dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
+                        auto brakeSpeed = src2->GetBrakeBoosterSpeed() * kLegacyBrakeSpeedMultiplier;
+                        if (dst2->GetTrackType() != TrackElemType::Booster)
+                        {
+                            dst2->SetBrakeBoosterSpeed(brakeSpeed);
+                        }
+                        else
+                        {
+                            dst2->SetBrakeBoosterSpeed(GetAbsoluteBoosterSpeed(rideType, brakeSpeed));
+                        }
                     }
                     else if (trackType == TrackElemType::OnRidePhoto)
                     {
@@ -2780,7 +2789,6 @@ namespace RCT1
         dst->num_seats = src->NumSeats;
         dst->speed = src->Speed;
         dst->powered_acceleration = src->PoweredAcceleration;
-        dst->brake_speed = src->BrakeSpeed;
 
         dst->velocity = src->Velocity;
         dst->acceleration = src->Acceleration;
@@ -2845,10 +2853,26 @@ namespace RCT1
             dst->SetTrackDirection(0);
             dst->SetTrackType(0);
         }
+
+        dst->brake_speed = src->BrakeSpeed * kLegacyBrakeSpeedMultiplier;
+        dst->BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
+        dst->Flags = src->UpdateFlags;
+
+        dst->SetFlag(VehicleFlags::LegacyBoosterSpeed);
+        if ((dst->GetTrackType() == TrackElemType::PoweredLift)
+            || (dst->GetTrackType() == TrackElemType::Flat && ride->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER))
+        {
+            dst->BoosterAcceleration = ride->GetRideTypeDescriptor().OperatingSettings.PoweredLiftAcceleration;
+            dst->SetFlag(VehicleFlags::OnPoweredLift);
+        }
+        else if (dst->GetTrackType() == TrackElemType::Booster)
+        {
+            dst->brake_speed = ride->GetRideTypeDescriptor().GetAbsoluteBoosterSpeed(dst->brake_speed);
+            dst->BoosterAcceleration = ride->GetRideTypeDescriptor().OperatingSettings.BoosterAcceleration;
+        }
         dst->track_progress = src->TrackProgress;
         dst->vertical_drop_countdown = src->VerticalDropCountdown;
         dst->sub_state = src->SubState;
-        dst->Flags = src->UpdateFlags;
 
         SetVehicleColours(dst, src);
 

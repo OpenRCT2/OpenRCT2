@@ -345,7 +345,7 @@ private:
                 // - Bits 1 and 2 are set when a vehicle triggers the on-ride photo and act like a countdown from 3.
                 // - If any of the bits 1-4 are set, the game counts it as a photo being taken.
                 uint8_t OnridePhotoBits;
-                // Contains the brake/booster speed, divided by 2.
+                // Contains the brake/booster speed
                 uint8_t BrakeBoosterSpeed;
             };
             StationIndex stationIndex;

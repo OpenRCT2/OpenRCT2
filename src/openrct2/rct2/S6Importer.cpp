@@ -1539,6 +1539,7 @@ namespace RCT2
             dst->lift_hill_speed = src->LiftHillSpeed;
             dst->guests_favourite = src->GuestsFavourite;
             dst->lifecycle_flags = src->LifecycleFlags;
+            dst->SetLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTER_SPEED, true);
 
             for (uint8_t i = 0; i < Limits::MaxTrainsPerRide; i++)
             {
@@ -1914,7 +1915,15 @@ namespace RCT2
                     }
                     else if (TrackTypeHasSpeedSetting(trackType))
                     {
-                        dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
+                        auto brakeSpeed = src2->GetBrakeBoosterSpeed() * kLegacyBrakeSpeedMultiplier;
+                        if (dst2->GetTrackType() == TrackElemType::Booster)
+                        {
+                            dst2->SetBrakeBoosterSpeed(GetAbsoluteBoosterSpeed(rideType, brakeSpeed));
+                        }
+                        else
+                        {
+                            dst2->SetBrakeBoosterSpeed(brakeSpeed);
+                        }
                     }
                     else if (trackType == TrackElemType::OnRidePhoto)
                     {
@@ -2534,7 +2543,22 @@ namespace RCT2
         dst->scream_sound_id = static_cast<OpenRCT2::Audio::SoundId>(src->ScreamSoundId);
         dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
         dst->NumLaps = src->NumLaps;
-        dst->brake_speed = src->BrakeSpeed;
+
+        dst->brake_speed = src->BrakeSpeed * kLegacyBrakeSpeedMultiplier;
+
+        dst->SetFlag(VehicleFlags::LegacyBoosterSpeed);
+        if ((dst->GetTrackType() == TrackElemType::PoweredLift)
+            || (dst->GetTrackType() == TrackElemType::Flat && ride.Type == RIDE_TYPE_REVERSE_FREEFALL_COASTER))
+        {
+            dst->BoosterAcceleration = GetRideTypeDescriptor(ride.Type).OperatingSettings.PoweredLiftAcceleration;
+            dst->SetFlag(VehicleFlags::OnPoweredLift);
+        }
+        else if (dst->GetTrackType() == TrackElemType::Booster)
+        {
+            dst->brake_speed = GetRideTypeDescriptor(ride.Type).GetAbsoluteBoosterSpeed(dst->brake_speed);
+            dst->BoosterAcceleration = GetRideTypeDescriptor(ride.Type).OperatingSettings.BoosterAcceleration;
+        }
+
         dst->lost_time_out = src->LostTimeOut;
         dst->vertical_drop_countdown = src->VerticalDropCountdown;
         dst->var_D3 = src->VarD3;

@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor MonorailCyclesRTD =
                      RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MONORAIL_CYCLES, STR_RIDE_DESCRIPTION_MONORAIL_CYCLES }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_MONORAIL_CYCLES)),
@@ -76,6 +76,7 @@ constexpr RideTypeDescriptor MonorailCyclesRTD =
             { RatingsModifierType::RequirementLength,     0x8C0000,         2, 2, 2 },
         },
     }),
+    SET_FIELD(DeprecatedProperties, {0}),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_BoatHire),
 };

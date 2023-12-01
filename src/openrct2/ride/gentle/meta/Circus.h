@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor CircusRTD =
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::Circus)),
     SET_FIELD(DefaultMode, RideMode::Circus),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_CIRCUS, STR_RIDE_DESCRIPTION_CIRCUS }),
     SET_FIELD(NameConvention, { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_CIRCUS)),
@@ -59,6 +59,7 @@ constexpr RideTypeDescriptor CircusRTD =
         false,
         { { RatingsModifierType::NoModifier, 0, 0, 0, 0 } }
     }),
+    SET_FIELD(DeprecatedProperties, {0}),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::CircusStartRideMusicChannel),

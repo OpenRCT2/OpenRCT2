@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor WoodenWildMouseRTD =
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 0, 0, 30, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_WOODEN_WILD_MOUSE, STR_RIDE_DESCRIPTION_WOODEN_WILD_MOUSE }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_WOODEN_WILD_MOUSE)),

@@ -3406,6 +3406,10 @@ static Vehicle* VehicleCreateCar(
             vehicle->SubType = carIndex == (ride.num_cars_per_train - 1) ? Vehicle::Type::Head : Vehicle::Type::Tail;
             vehicle->SetFlag(VehicleFlags::CarIsReversed);
         }
+        if (ride.HasLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTER_SPEED))
+        {
+            vehicle->SetFlag(VehicleFlags::LegacyBoosterSpeed);
+        }
     }
 
     // Loc6DDD5E:
@@ -5208,6 +5212,12 @@ void Ride::SetReversedTrains(bool reverseTrains)
     GameActions::Execute(&rideSetVehicleAction);
 }
 
+void Ride::SetLegacyBoosterSpeed(bool useLegacySpeed)
+{
+    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::LegacyBoosterSpeed, useLegacySpeed);
+    GameActions::Execute(&rideSetVehicleAction);
+}
+
 void Ride::SetToDefaultInspectionInterval()
 {
     uint8_t defaultInspectionInterval = gConfigGeneral.DefaultInspectionInterval;
@@ -5431,21 +5441,9 @@ bool RideHasRatings(const Ride& ride)
     return ride.excitement != RIDE_RATING_UNDEFINED;
 }
 
-int32_t GetBoosterSpeed(ride_type_t rideType, int32_t rawSpeed)
+int32_t GetAbsoluteBoosterSpeed(ride_type_t rideType, int32_t rawSpeed)
 {
-    int8_t shiftFactor = GetRideTypeDescriptor(rideType).OperatingSettings.BoosterSpeedFactor;
-    if (shiftFactor == 0)
-    {
-        return rawSpeed;
-    }
-    if (shiftFactor > 0)
-    {
-        return (rawSpeed << shiftFactor);
-    }
-
-    // Workaround for an issue with older compilers (GCC 6, Clang 4) which would fail the build
-    int8_t shiftFactorAbs = std::abs(shiftFactor);
-    return (rawSpeed >> shiftFactorAbs);
+    return GetRideTypeDescriptor(rideType).GetAbsoluteBoosterSpeed(rawSpeed);
 }
 
 void FixInvalidVehicleSpriteSizes()

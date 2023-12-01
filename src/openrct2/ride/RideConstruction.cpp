@@ -75,7 +75,7 @@ uint8_t _previousTrackSlopeEnd;
 
 CoordsXYZ _previousTrackPiece;
 
-uint8_t _currentBrakeSpeed2;
+int8_t _currentBrakeSpeed;
 uint8_t _currentSeatRotationAngle;
 
 CoordsXYZD _unkF440C5;

@@ -32,7 +32,7 @@ constexpr RideTypeDescriptor SwingingShipRTD =
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::Swing)),
     SET_FIELD(DefaultMode, RideMode::Swing),
-    SET_FIELD(OperatingSettings, { 7, 25, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 7, 25, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_SWINGING_SHIP, STR_RIDE_DESCRIPTION_SWINGING_SHIP }),
     SET_FIELD(NameConvention, { RideComponentType::Ship, RideComponentType::Structure, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_SWINGING_SHIP)),

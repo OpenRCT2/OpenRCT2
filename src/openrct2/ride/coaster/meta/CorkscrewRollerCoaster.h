@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor CorkscrewRollerCoasterRTD =
                      RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned, RideMode::PoweredLaunchPasstrough, RideMode::PoweredLaunch, RideMode::ReverseInclineLaunchedShuttle)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
-    SET_FIELD(OperatingSettings, { 10, 27, 30, 25, 25, 0 }),
+    SET_FIELD(OperatingSettings, { 10, 27, 30, 25, 25 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_CORKSCREW_ROLLER_COASTER, STR_RIDE_DESCRIPTION_CORKSCREW_ROLLER_COASTER }),
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_CORKSCREW_ROLLER_COASTER)),

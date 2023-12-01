@@ -3697,6 +3697,10 @@ STR_6591    :Staff member is currently fixing a ride and can’t be fired.
 STR_6592    :Staff member is currently inspecting a ride and can’t be fired.
 STR_6593    :Remove park fences
 STR_6594    :Tile Inspector: Toggle wall slope
+STR_6595    :Track speed too high.
+STR_6596    :Track's speed is un-savable in current track design format. Speeds too high are capped to maximum, speeds at invalid intervals are rounded up.
+STR_6597    :Legacy booster speeds
+STR_6598    :Use old methods of getting brake and booster speeds. Not recommended for new work.
 
 #############
 # Scenarios #

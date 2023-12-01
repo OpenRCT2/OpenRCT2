@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor TopSpinRTD =
                      RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::Beginners, RideMode::Intense, RideMode::Berserk)),
     SET_FIELD(DefaultMode, RideMode::Beginners),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_TOP_SPIN, STR_RIDE_DESCRIPTION_TOP_SPIN }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_TOP_SPIN)),

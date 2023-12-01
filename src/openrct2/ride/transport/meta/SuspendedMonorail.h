@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor SuspendedMonorailRTD =
                      RIDE_TYPE_FLAG_IS_SUSPENDED),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit, RideMode::Shuttle)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_SUSPENDED_MONORAIL, STR_RIDE_DESCRIPTION_SUSPENDED_MONORAIL }),
     SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_SUSPENDED_MONORAIL)),

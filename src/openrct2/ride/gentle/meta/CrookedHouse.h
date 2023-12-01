@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor CrookedHouseRTD =
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::CrookedHouse)),
     SET_FIELD(DefaultMode, RideMode::CrookedHouse),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_CROOKED_HOUSE, STR_RIDE_DESCRIPTION_CROOKED_HOUSE }),
     SET_FIELD(NameConvention, { RideComponentType::Building, RideComponentType::Structure, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_CROOKED_HOUSE)),

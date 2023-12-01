@@ -222,7 +222,7 @@ public:
         ShowGridlines();
 
         _currentTrackPrice = MONEY64_UNDEFINED;
-        _currentBrakeSpeed2 = 8;
+        _currentBrakeSpeed = 8;
         _currentSeatRotationAngle = 4;
 
         _currentTrackCurve = currentRide->GetRideTypeDescriptor().StartTrackPiece | RideConstructionSpecialPieceSelected;
@@ -1296,7 +1296,7 @@ public:
                     WindowRideConstructionUpdateActiveElements();
                 }
                 break;
-            case WIDX_BANK_STRAIGHT:
+            case WIDX_SPEED_SETTING_SPINNER_UP:
                 RideConstructionInvalidateCurrentTrack();
                 if (!_currentlyShowingBrakeOrBoosterSpeed)
                 {
@@ -1306,24 +1306,25 @@ public:
                 }
                 else
                 {
-                    uint8_t* brakesSpeedPtr = &_currentBrakeSpeed2;
-                    uint8_t maxBrakesSpeed = 30;
-                    uint8_t brakesSpeed = *brakesSpeedPtr + 2;
-                    if (brakesSpeed <= maxBrakesSpeed)
+                    // Increase brake speed
+                    auto maxBrakeSpeed = gCheatsUnlockOperatingLimits
+                        ? kMaximumBrakeSpeed
+                        : currentRide->GetRideTypeDescriptor().OperatingSettings.MaxBrakesSpeed;
+                    if (_currentBrakeSpeed < maxBrakeSpeed)
                     {
                         if (_rideConstructionState == RideConstructionState::Selected)
                         {
-                            SetBrakeSpeed(brakesSpeed);
+                            SetBrakeSpeed(++_currentBrakeSpeed);
                         }
                         else
                         {
-                            *brakesSpeedPtr = brakesSpeed;
+                            _currentBrakeSpeed++;
                             WindowRideConstructionUpdateActiveElements();
                         }
                     }
                 }
                 break;
-            case WIDX_BANK_RIGHT:
+            case WIDX_SPEED_SETTING_SPINNER_DOWN:
                 RideConstructionInvalidateCurrentTrack();
                 if (!_currentlyShowingBrakeOrBoosterSpeed)
                 {
@@ -1333,17 +1334,16 @@ public:
                 }
                 else
                 {
-                    uint8_t* brakesSpeedPtr = &_currentBrakeSpeed2;
-                    uint8_t brakesSpeed = *brakesSpeedPtr - 2;
-                    if (brakesSpeed >= 2)
+                    // Decrease brake speed
+                    if (_currentBrakeSpeed - 1 > 0)
                     {
                         if (_rideConstructionState == RideConstructionState::Selected)
                         {
-                            SetBrakeSpeed(brakesSpeed);
+                            SetBrakeSpeed(--_currentBrakeSpeed);
                         }
                         else
                         {
-                            *brakesSpeedPtr = brakesSpeed;
+                            _currentBrakeSpeed--;
                             WindowRideConstructionUpdateActiveElements();
                         }
                     }
@@ -1421,7 +1421,7 @@ public:
                 break;
             case TrackElemType::BlockBrakes:
             case TrackElemType::DiagBlockBrakes:
-                _currentBrakeSpeed2 = kRCT2DefaultBlockBrakeSpeed;
+                _currentBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
         }
         _currentTrackCurve = trackPiece | RideConstructionSpecialPieceSelected;
         WindowRideConstructionUpdateActiveElements();
@@ -1479,12 +1479,7 @@ public:
 
         if (_currentlyShowingBrakeOrBoosterSpeed)
         {
-            uint16_t brakeSpeed2 = ((_currentBrakeSpeed2 * 9) >> 2) & 0xFFFF;
-            if (_selectedTrackType == TrackElemType::Booster
-                || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::Booster))
-            {
-                brakeSpeed2 = GetBoosterSpeed(currentRide->type, brakeSpeed2);
-            }
+            uint16_t brakeSpeed2 = ((_currentBrakeSpeed * 9) >> 2) & 0xFFFF;
             ft.Add<uint16_t>(brakeSpeed2);
         }
 
@@ -2686,7 +2681,7 @@ static void WindowRideConstructionUpdateDisabledPieces(ObjectEntryIndex rideType
     const auto& rtd = GetRideTypeDescriptor(rideType);
     if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
     {
-        // Set all pieces as “disabled”. When looping over the ride entries,
+        // Set all pieces as disabled When looping over the ride entries,
         // pieces will be re-enabled as soon as a single entry supports it.
         disabledPieces.flip();
 
@@ -3019,7 +3014,9 @@ void WindowRideConstructionUpdateActiveElementsImpl()
         {
             _selectedTrackType = tileElement->AsTrack()->GetTrackType();
             if (TrackTypeHasSpeedSetting(tileElement->AsTrack()->GetTrackType()))
-                _currentBrakeSpeed2 = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+            {
+                _currentBrakeSpeed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+            }
             _currentSeatRotationAngle = tileElement->AsTrack()->GetSeatRotation();
         }
     }

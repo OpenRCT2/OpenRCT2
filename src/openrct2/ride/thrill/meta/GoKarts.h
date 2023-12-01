@@ -30,7 +30,7 @@ constexpr RideTypeDescriptor GoKartsRTD =
                      RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::Race, RideMode::ContinuousCircuit)),
     SET_FIELD(DefaultMode, RideMode::Race),
-    SET_FIELD(OperatingSettings, { 1, 10, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 1, 10, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_GO_KARTS, STR_RIDE_DESCRIPTION_GO_KARTS }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_GO_KARTS)),
@@ -72,6 +72,7 @@ constexpr RideTypeDescriptor GoKartsRTD =
             { RatingsModifierType::RequirementUnsheltered, 6,   2, 1, 1 },
         },
     }),
+    SET_FIELD(DeprecatedProperties, {0}),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_BoatHire),
 };

@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor SwingingInverterShipRTD =
                      RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::Swing)),
     SET_FIELD(DefaultMode, RideMode::Swing),
-    SET_FIELD(OperatingSettings, { 7, 15, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 7, 15, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_SWINGING_INVERTER_SHIP, STR_RIDE_DESCRIPTION_SWINGING_INVERTER_SHIP }),
     SET_FIELD(NameConvention, { RideComponentType::Ship, RideComponentType::Structure, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_SWINGING_INVERTER_SHIP)),

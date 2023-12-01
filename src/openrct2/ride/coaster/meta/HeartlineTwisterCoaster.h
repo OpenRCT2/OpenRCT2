@@ -29,7 +29,7 @@ constexpr RideTypeDescriptor HeartlineTwisterCoasterRTD =
                      RIDE_TYPE_FLAG_ALLOW_REVERSED_TRAINS),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
-    SET_FIELD(OperatingSettings, { 10, 27, 30, 25, 25, 0 }),
+    SET_FIELD(OperatingSettings, { 10, 27, 30, 25, 25 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_HEARTLINE_TWISTER_COASTER, STR_RIDE_DESCRIPTION_HEARTLINE_TWISTER_COASTER }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_HEARTLINE_TWISTER_COASTER)),

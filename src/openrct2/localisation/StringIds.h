@@ -4004,6 +4004,12 @@ enum : uint16_t
 
     STR_SHORTCUT_TOGGLE_WALL_SLOPE = 6594,
 
+    STR_SPEED_TOO_HIGH = 6595,
+    STR_TRACK_DESIGN_SPEED_UNSERIALIZABLE = 6596,
+    STR_RIDE_SET_VEHICLE_LEGACY_SPEED_FAIL = 6597,
+    STR_OPTION_USE_LEGACY_SPEED = 6598,
+    STR_OPTION_USE_LEGACY_SPEED_TIP = 6599,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

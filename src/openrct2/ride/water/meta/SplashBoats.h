@@ -33,7 +33,7 @@ constexpr RideTypeDescriptor SplashBoatsRTD =
                      RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 0, 0, 30, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_SPLASH_BOATS, STR_RIDE_DESCRIPTION_SPLASH_BOATS }),
     SET_FIELD(NameConvention, { RideComponentType::Boat, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_SPLASH_BOATS)),
@@ -75,6 +75,7 @@ constexpr RideTypeDescriptor SplashBoatsRTD =
             { RatingsModifierType::RequirementDropHeight, 6,                2, 2, 2 },
         },
     }),
+    SET_FIELD(DeprecatedProperties, {0}),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_BoatHire),
 };

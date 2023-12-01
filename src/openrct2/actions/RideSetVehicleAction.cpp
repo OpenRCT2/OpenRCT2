@@ -26,9 +26,8 @@
 #include "../world/Park.h"
 
 constexpr static StringId SetVehicleTypeErrorTitle[] = {
-    STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL,
-    STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL,
-    STR_RIDE_SET_VEHICLE_TYPE_FAIL,
+    STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL, STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL,
+    STR_RIDE_SET_VEHICLE_TYPE_FAIL,           STR_RIDE_SET_VEHICLE_REVERSED_FAIL,
     STR_RIDE_SET_VEHICLE_REVERSED_FAIL,
 };
 
@@ -89,6 +88,7 @@ GameActions::Result RideSetVehicleAction::Query() const
         case RideSetVehicleType::NumTrains:
         case RideSetVehicleType::NumCarsPerTrain:
         case RideSetVehicleType::TrainsReversed:
+        case RideSetVehicleType::LegacyBoosterSpeed:
             break;
         case RideSetVehicleType::RideEntry:
         {
@@ -193,6 +193,15 @@ GameActions::Result RideSetVehicleAction::Execute() const
             ride->vehicle_change_timeout = 100;
 
             ride->SetLifecycleFlag(RIDE_LIFECYCLE_REVERSED_TRAINS, _value);
+            break;
+        }
+        case RideSetVehicleType::LegacyBoosterSpeed:
+        {
+            RideClearForConstruction(*ride);
+            ride->RemovePeeps();
+            ride->vehicle_change_timeout = 100;
+
+            ride->SetLifecycleFlag(RIDE_LIFECYCLE_LEGACY_BOOSTER_SPEED, _value);
             break;
         }
 

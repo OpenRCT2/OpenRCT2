@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor RotoDropRTD =
                      RIDE_TYPE_FLAG_SINGLE_SESSION | RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::FreefallDrop)),
     SET_FIELD(DefaultMode, RideMode::FreefallDrop),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_ROTO_DROP, STR_RIDE_DESCRIPTION_ROTO_DROP }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_ROTO_DROP)),

@@ -31,7 +31,7 @@ constexpr RideTypeDescriptor MerryGoRoundRTD =
                      RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::Rotation)),
     SET_FIELD(DefaultMode, RideMode::Rotation),
-    SET_FIELD(OperatingSettings, { 4, 25, 0, 0, 0, 0 }),
+    SET_FIELD(OperatingSettings, { 4, 25, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MERRY_GO_ROUND, STR_RIDE_DESCRIPTION_MERRY_GO_ROUND }),
     SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_MERRY_GO_ROUND)),
