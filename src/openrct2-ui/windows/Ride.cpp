@@ -342,11 +342,11 @@ static Widget _colourWidgets[] = {
 // 0x009AE4C8
 static Widget _musicWidgets[] = {
     MAIN_RIDE_WIDGETS,
-    MakeWidget({  7, 47}, {302, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_PLAY_MUSIC,     STR_SELECT_MUSIC_TIP      ),
-    MakeWidget({  7, 62}, {302, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_EMPTY                                     ),
-    MakeWidget({297, 63}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_MUSIC_STYLE_TIP),
-    MakeWidget({154, 62}, {114, 114}, WindowWidgetType::FlatBtn,     WindowColour::Secondary),
-    MakeWidget({7, 90}, { 500, 450}, WindowWidgetType::Scroll,    WindowColour::Secondary,  SCROLL_BOTH  ),
+    MakeWidget({  7, 47}, {302,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_PLAY_MUSIC,     STR_SELECT_MUSIC_TIP      ),
+    MakeWidget({  7, 62}, {302,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_EMPTY                                     ),
+    MakeWidget({297, 63}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_MUSIC_STYLE_TIP),
+    MakeWidget({154, 62}, {114, 114}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                ),
+    MakeWidget({  7, 90}, {500, 450}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_BOTH                                   ),
     kWidgetsEnd,
 };
 
@@ -4834,8 +4834,7 @@ static_assert(std::size(RatingNames) == 6);
             {
                 int32_t activateMusic = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) ? 0 : 1;
                 SetOperatingSetting(rideId, RideSetSetting::Music, activateMusic);
-                // set height before auto window resize to prevent scroll bar drawing issue
-                height = 207;
+                ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MUSIC;
             }
         }
 
@@ -4866,19 +4865,19 @@ static_assert(std::size(RatingNames) == 6);
 
         void MusicResize()
         {
-            auto ride = GetRide(rideId);
-            if (ride != nullptr)
+            if (auto ride = GetRide(rideId); ride != nullptr)
             {
                 // Expand the window when music is playing
                 auto isMusicActivated = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) != 0;
                 if (isMusicActivated)
                 {
-                    // make sure to also change the min height value in the ToggleMusic() function when modifying this
                     WindowSetResize(*this, 316, 207, 500, 450);
                 }
                 else
                 {
-                    WindowSetResize(*this, 316, 81, 316, 81);
+                    height = 81;
+                    width = 316;
+                    WindowSetResize(*this, 316, 81, 500, 450);
                 }
             }
         }
@@ -4984,6 +4983,16 @@ static_assert(std::size(RatingNames) == 6);
             frame_no++;
             OnPrepareDraw();
             WidgetInvalidate(*this, WIDX_TAB_6);
+
+            if (auto ride = GetRide(rideId); ride != nullptr && ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MUSIC)
+            {
+                ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_MUSIC;
+                Invalidate();
+                OnResize();
+                OnPrepareDraw();
+                Invalidate();
+            }
+
             WidgetScrollUpdateThumbs(*this, WIDX_MUSIC_DATA);
         }
 
