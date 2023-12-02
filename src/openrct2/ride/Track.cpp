@@ -635,6 +635,11 @@ bool TrackTypeIsBlockBrakes(track_type_t trackType)
     return (trackType == TrackElemType::BlockBrakes) || (trackType == TrackElemType::DiagBlockBrakes);
 }
 
+bool TrackTypeIsBooster(track_type_t trackType)
+{
+    return trackType == TrackElemType::Booster;
+}
+
 bool TrackElementIsCovered(track_type_t trackElementType)
 {
     switch (trackElementType)
@@ -666,7 +671,7 @@ bool TrackElementIsCovered(track_type_t trackElementType)
 
 bool TrackTypeHasSpeedSetting(track_type_t trackType)
 {
-    return trackType == TrackElemType::Booster || TrackTypeIsBrakes(trackType) || TrackTypeIsBlockBrakes(trackType);
+    return TrackTypeIsBooster(trackType) || TrackTypeIsBrakes(trackType) || TrackTypeIsBlockBrakes(trackType);
 }
 
 bool TrackTypeIsHelix(track_type_t trackType)

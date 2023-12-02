@@ -682,6 +682,7 @@ bool TrackElementIsCovered(track_type_t trackElementType);
 bool TrackTypeIsStation(track_type_t trackType);
 bool TrackTypeIsBrakes(track_type_t trackType);
 bool TrackTypeIsBlockBrakes(track_type_t trackType);
+bool TrackTypeIsBooster(track_type_t trackType);
 
 std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
     const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);
