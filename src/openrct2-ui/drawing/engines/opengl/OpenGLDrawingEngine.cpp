@@ -23,6 +23,7 @@
 
 #    include <SDL.h>
 #    include <algorithm>
+#    include <array>
 #    include <cmath>
 #    include <openrct2-ui/interface/Window.h>
 #    include <openrct2/Intro.h>
@@ -109,8 +110,9 @@ public:
         DrawPixelInfo* dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage) override;
     void DrawSpriteSolid(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
     void DrawGlyph(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette) override;
-    void DrawBitmap(
-        DrawPixelInfo* dpi, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x, int32_t y) override;
+    void DrawTTFBitmap(
+        DrawPixelInfo* dpi, TextDrawInfo* info, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x,
+        int32_t y) override;
 
     void FlushCommandBuffers();
 
@@ -906,8 +908,9 @@ void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo* dpi, const ImageId image, in
     command.depth = _drawCount++;
 }
 
-void OpenGLDrawingContext::DrawBitmap(
-    DrawPixelInfo* dpi, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x, int32_t y)
+void OpenGLDrawingContext::DrawTTFBitmap(
+    DrawPixelInfo* dpi, TextDrawInfo* info, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x,
+    int32_t y)
 {
     CalculcateClipping(dpi);
 
@@ -937,16 +940,53 @@ void OpenGLDrawingContext::DrawBitmap(
     right += _offsetX;
     bottom += _offsetY;
 
-    DrawRectCommand& command = _commandBuffers.rects.allocate();
+    if (info->flags & TEXT_DRAW_FLAG_OUTLINE)
+    {
+        std::array<ivec4, 4> boundsArr = { {
+            { left + 1, top, right + 1, bottom },
+            { left - 1, top, right - 1, bottom },
+            { left, top + 1, right, bottom + 1 },
+            { left, top - 1, right, bottom - 1 },
+        } };
+        for (auto b : boundsArr)
+        {
+            DrawRectCommand& command = _commandBuffers.rects.allocate();
+            command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
+            command.texColourAtlas = texture.index;
+            command.texColourBounds = texture.normalizedBounds;
+            command.texMaskAtlas = 0;
+            command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
+            command.palettes = { 0, 0, 0 };
+            command.flags = DrawRectCommand::FLAG_TTF_TEXT;
+            command.colour = info->palette[3];
+            command.bounds = b;
+            command.depth = _drawCount++;
+        }
+    }
+    if (info->flags & TEXT_DRAW_FLAG_INSET)
+    {
+        DrawRectCommand& command = _commandBuffers.rects.allocate();
+        command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
+        command.texColourAtlas = texture.index;
+        command.texColourBounds = texture.normalizedBounds;
+        command.texMaskAtlas = 0;
+        command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
+        command.palettes = { 0, 0, 0 };
+        command.flags = DrawRectCommand::FLAG_TTF_TEXT;
+        command.colour = info->palette[3];
+        command.bounds = { left + 1, top + 1, right + 1, bottom + 1 };
+        command.depth = _drawCount++;
+    }
 
+    DrawRectCommand& command = _commandBuffers.rects.allocate();
     command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
     command.texColourAtlas = texture.index;
     command.texColourBounds = texture.normalizedBounds;
     command.texMaskAtlas = 0;
     command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.palettes = { 0, 0, 0 };
-    command.flags = 0;
-    command.colour = 0;
+    command.flags = DrawRectCommand::FLAG_TTF_TEXT;
+    command.colour = info->palette[1];
     command.bounds = { left, top, right, bottom };
     command.depth = _drawCount++;
 }

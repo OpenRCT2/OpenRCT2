@@ -118,6 +118,7 @@ struct DrawRectCommand
         FLAG_NO_TEXTURE = (1u << 2u),
         FLAG_MASK = (1u << 3u),
         FLAG_CROSS_HATCH = (1u << 4u),
+        FLAG_TTF_TEXT = (1u << 5u),
     };
 };
 

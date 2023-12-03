@@ -147,9 +147,9 @@ namespace OpenRCT2
             void DrawSpriteSolid(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
             void DrawGlyph(
                 DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap) override;
-            void DrawBitmap(
-                DrawPixelInfo* dpi, uint32_t image, const void* pixels, int32_t width, int32_t height, int32_t x,
-                int32_t y) override
+            void DrawTTFBitmap(
+                DrawPixelInfo* dpi, TextDrawInfo* info, uint32_t image, const void* pixels, int32_t width, int32_t height,
+                int32_t x, int32_t y) override
             {
             }
         };

@@ -28,18 +28,6 @@
 
 using namespace OpenRCT2;
 
-enum : uint32_t
-{
-    TEXT_DRAW_FLAG_INSET = 1 << 0,
-    TEXT_DRAW_FLAG_OUTLINE = 1 << 1,
-    TEXT_DRAW_FLAG_DARK = 1 << 2,
-    TEXT_DRAW_FLAG_EXTRA_DARK = 1 << 3,
-    TEXT_DRAW_FLAG_NO_FORMATTING = 1 << 28,
-    TEXT_DRAW_FLAG_Y_OFFSET_EFFECT = 1 << 29,
-    TEXT_DRAW_FLAG_TTF = 1 << 30,
-    TEXT_DRAW_FLAG_NO_DRAW = 1u << 31
-};
-
 static int32_t TTFGetStringWidth(std::string_view text, FontStyle fontStyle, bool noFormatting);
 
 /**
@@ -490,20 +478,6 @@ void DrawNewsTicker(
     }
 }
 
-struct TextDrawInfo
-{
-    int32_t startX;
-    int32_t startY;
-    int32_t x;
-    int32_t y;
-    int32_t maxX;
-    int32_t maxY;
-    int32_t flags;
-    uint8_t palette[8];
-    ::FontStyle FontStyle;
-    const int8_t* y_offset;
-};
-
 static void TTFDrawCharacterSprite(DrawPixelInfo& dpi, int32_t codepoint, TextDrawInfo* info)
 {
     int32_t characterWidth = FontSpriteGetCodepointWidth(info->FontStyle, codepoint);
@@ -563,29 +537,17 @@ static void TTFDrawStringRawTTF(DrawPixelInfo& dpi, std::string_view text, TextD
     int32_t drawY = info->y + fontDesc->offset_y;
     int32_t width = surface->w;
     int32_t height = surface->h;
+    bool use_hinting = gConfigFonts.EnableHinting && fontDesc->hinting_threshold > 0;
 
     if (OpenRCT2::GetContext()->GetDrawingEngineType() == DrawingEngine::OpenGL)
     {
-        auto pixels = reinterpret_cast<uint8_t*>(const_cast<void*>(surface->pixels));
-        auto pixelsLen = static_cast<size_t>(surface->pitch) * surface->h;
-        for (size_t pp = 0; pp < pixelsLen; pp++)
-        {
-            if (pixels[pp] != 0)
-            {
-                pixels[pp] = colour;
-            }
-            else
-            {
-                pixels[pp] = PALETTE_INDEX_0;
-            }
-        }
-
+        // if(use_hinting) return; // Not implemented yet.
         auto baseId = uint32_t(0x7FFFF) - 1024;
         auto imageId = baseId + _ttfGlId;
         auto drawingEngine = dpi.DrawingEngine;
         auto drawingContext = drawingEngine->GetDrawingContext();
         drawingEngine->InvalidateImage(imageId);
-        drawingContext->DrawBitmap(&dpi, imageId, surface->pixels, surface->pitch, surface->h, drawX, drawY);
+        drawingContext->DrawTTFBitmap(&dpi, info, imageId, surface->pixels, surface->pitch, surface->h, drawX, drawY);
 
         _ttfGlId++;
         if (_ttfGlId >= 1023)
@@ -670,7 +632,6 @@ static void TTFDrawStringRawTTF(DrawPixelInfo& dpi, std::string_view text, TextD
 
     dst = dst_orig;
     src = src_orig;
-    bool use_hinting = gConfigFonts.EnableHinting && fontDesc->hinting_threshold > 0;
     for (int32_t yy = 0; yy < height; yy++)
     {
         for (int32_t xx = 0; xx < width; xx++)
@@ -692,9 +653,7 @@ static void TTFDrawStringRawTTF(DrawPixelInfo& dpi, std::string_view text, TextD
                     // Simulate font hinting by shading the background colour instead.
                     if (info->flags & TEXT_DRAW_FLAG_OUTLINE)
                     {
-                        // As outlines are black, these texts should always use a darker shade
-                        // of the foreground colour for font hinting.
-                        *dst = BlendColours(colour, PALETTE_INDEX_0);
+                        *dst = BlendColours(colour, info->palette[3]);
                     }
                     else
                     {
