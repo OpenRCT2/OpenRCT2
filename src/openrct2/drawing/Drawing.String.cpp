@@ -541,19 +541,21 @@ static void TTFDrawStringRawTTF(DrawPixelInfo& dpi, std::string_view text, TextD
 
     if (OpenRCT2::GetContext()->GetDrawingEngineType() == DrawingEngine::OpenGL)
     {
-        // if(use_hinting) return; // Not implemented yet.
         auto baseId = uint32_t(0x7FFFF) - 1024;
         auto imageId = baseId + _ttfGlId;
         auto drawingEngine = dpi.DrawingEngine;
         auto drawingContext = drawingEngine->GetDrawingContext();
+        uint8_t hint_thresh = use_hinting ? fontDesc->hinting_threshold : 0;
         drawingEngine->InvalidateImage(imageId);
-        drawingContext->DrawTTFBitmap(&dpi, info, imageId, surface->pixels, surface->pitch, surface->h, drawX, drawY);
+        drawingContext->DrawTTFBitmap(
+            &dpi, info, imageId, surface->pixels, surface->pitch, surface->h, drawX, drawY, hint_thresh);
 
         _ttfGlId++;
         if (_ttfGlId >= 1023)
         {
             _ttfGlId = 0;
         }
+        info->x += width;
         return;
     }
 

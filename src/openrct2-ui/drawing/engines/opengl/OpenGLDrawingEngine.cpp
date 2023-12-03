@@ -23,7 +23,6 @@
 
 #    include <SDL.h>
 #    include <algorithm>
-#    include <array>
 #    include <cmath>
 #    include <openrct2-ui/interface/Window.h>
 #    include <openrct2/Intro.h>
@@ -112,7 +111,7 @@ public:
     void DrawGlyph(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette) override;
     void DrawTTFBitmap(
         DrawPixelInfo* dpi, TextDrawInfo* info, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x,
-        int32_t y) override;
+        int32_t y, uint8_t hinting_threshold) override;
 
     void FlushCommandBuffers();
 
@@ -910,7 +909,7 @@ void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo* dpi, const ImageId image, in
 
 void OpenGLDrawingContext::DrawTTFBitmap(
     DrawPixelInfo* dpi, TextDrawInfo* info, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x,
-    int32_t y)
+    int32_t y, uint8_t hinting_threshold)
 {
     CalculcateClipping(dpi);
 
@@ -977,15 +976,15 @@ void OpenGLDrawingContext::DrawTTFBitmap(
         command.bounds = { left + 1, top + 1, right + 1, bottom + 1 };
         command.depth = _drawCount++;
     }
-
-    DrawRectCommand& command = _commandBuffers.rects.allocate();
+    auto& cmdBuf = hinting_threshold > 0 ? _commandBuffers.transparent : _commandBuffers.rects;
+    DrawRectCommand& command = cmdBuf.allocate();
     command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
     command.texColourAtlas = texture.index;
     command.texColourBounds = texture.normalizedBounds;
     command.texMaskAtlas = 0;
     command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.palettes = { 0, 0, 0 };
-    command.flags = DrawRectCommand::FLAG_TTF_TEXT;
+    command.flags = DrawRectCommand::FLAG_TTF_TEXT | (hinting_threshold << 8);
     command.colour = info->palette[1];
     command.bounds = { left, top, right, bottom };
     command.depth = _drawCount++;
@@ -1061,7 +1060,8 @@ void OpenGLDrawingContext::HandleTransparency()
 
         _drawRectShader->Use();
         _drawRectShader->DrawInstances();
-        _swapFramebuffer->ApplyTransparency(*_applyTransparencyShader, _textureCache->GetPaletteTexture());
+        _swapFramebuffer->ApplyTransparency(
+            *_applyTransparencyShader, _textureCache->GetPaletteTexture(), _textureCache->GetBlendPaletteTexture());
     }
 
     _commandBuffers.transparent.clear();

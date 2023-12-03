@@ -34,7 +34,7 @@ namespace OpenRCT2::Drawing
             DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette) abstract;
         virtual void DrawTTFBitmap(
             DrawPixelInfo* dpi, TextDrawInfo* info, ImageIndex image, const void* pixels, int32_t width, int32_t height,
-            int32_t x, int32_t y) abstract;
+            int32_t x, int32_t y, uint8_t hinting_threshold) abstract;
     };
 
 } // namespace OpenRCT2::Drawing

@@ -48,7 +48,21 @@ void main()
         }
         else
         {
-            texel = fColour;
+            uint hint_thresh = uint(fFlags & 0xff00) >> 8;
+            if(hint_thresh > 0u)
+            {
+                bool solidColor = texel > 180u;
+                texel = (texel > hint_thresh) ? fColour : 0u;
+                texel = texel << 8;
+                if(solidColor) 
+                {
+                    texel += 1u;
+                }
+            }
+            else 
+            {
+                texel = fColour;
+            }
         }
     }
     else
