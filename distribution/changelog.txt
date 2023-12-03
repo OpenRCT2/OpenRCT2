@@ -30,6 +30,7 @@
 - Improved: [objects#329] Add RCT1AA lay-down coaster trains (for import only).
 - Change: [#7248] Small mini-maps are now centred in the map window.
 - Change: [#20240] Heavy snow and blizzards now make guests buy and use umbrellas.
+- Change: [#21043] The new music styles are no longer added to old parks automatically.
 - Change: [#21214] Wacky Worlds and Time Twister’s scenario names now match their park names.
 - Change: [#21991] UI themes JSON now use colour names and a translucency bool, instead of a number (old themes still work).
 - Change: [#22057] Reorder Time Twister’s scenarios and adjust their difficulty classification.
