@@ -5094,7 +5094,7 @@ static_assert(std::size(RatingNames) == 6);
                 {
                     WidgetSetVisible(*this, WIDX_MUSIC_IMAGE, true);
                     widgets[WIDX_MUSIC_DATA].right = width - 129;
-                    widgets[WIDX_MUSIC_IMAGE].left = width - 122;
+                    widgets[WIDX_MUSIC_IMAGE].left = width - 121;
                     widgets[WIDX_MUSIC_IMAGE].right = width - 8;
                 }
                 else
