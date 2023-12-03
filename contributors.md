@@ -290,6 +290,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Karst van Galen Last (AuraSpecs) - Steep log flume, Inverted RC Booster, Giga RC powered lift
 * Martijn Kroese (MK98) - Diagonal brakes project
 * Peter van den Berg (Recurious) - Diagonal brakes project
+* Joshua Jacobs - OpenGraphics Spooky Theme
 
 ## Music
 * Karst "Jalmaan" van Galen Last (AuraSpecs)
