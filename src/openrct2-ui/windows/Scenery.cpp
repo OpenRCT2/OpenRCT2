@@ -811,7 +811,8 @@ public:
             }
             ft = Formatter();
             ft.Add<const char*>(authorsString.c_str());
-            DrawTextEllipsised(dpi, { windowPos.x + 3, windowPos.y + height - 13 }, width - 19, 
+            DrawTextEllipsised(
+                dpi, { windowPos.x + 3, windowPos.y + height - 13 }, width - 19, 
                 (sceneryObject->GetAuthors().size() == 1 ? STR_AUTHOR : STR_AUTHOR_PLURAL), ft);
         }
     }
