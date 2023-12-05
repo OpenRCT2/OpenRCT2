@@ -4,6 +4,7 @@
 - Improved: [#18632] Land ownership and construction rights are now shown on top of the water.
 - Improved: [#20951] Activate OpenRCT2 window after using native file dialog on macOS.
 - Change: [#21225] Raise maximum allowed misc entities to 1600.
+- Fix: [#20196] New scenarios start with an incorrect temperature.
 - Fix: [#20255] Images from the last hovered-over coaster in the object selection are not freed.
 - Fix: [#20616] Confirmation button in the track designer’s quit prompt has the wrong text.
 - Fix: [#20628] Moving caret using Ctrl+left can move too far when using a multibyte grapheme.

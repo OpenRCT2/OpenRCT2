@@ -45,7 +45,7 @@ GameActions::Result ClimateSetAction::Query() const
 
 GameActions::Result ClimateSetAction::Execute() const
 {
-    OpenRCT2::GetGameState().Climate = ClimateType{ _climate };
+    ClimateReset(_climate);
 
     GfxInvalidateScreen();
 
