@@ -6862,6 +6862,10 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
         door->SetAnimationIsBackwards(isBackwards);
         door->SetAnimationFrame(6);
         play_scenery_door_close_sound(trackLocation, door);
+        if (isBackwards)
+        {
+            door->SetAnimationFrame(0);
+        }
     }
 }
 
