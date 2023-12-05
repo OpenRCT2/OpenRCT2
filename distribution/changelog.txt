@@ -1,5 +1,6 @@
 0.4.7 (in development)
 ------------------------------------------------------------------------
+- Feature: [#20830] Display author field on scenery window.
 - Feature: [#12078] Add shortcut key for toggling wall slope.
 - Feature: [#19919] Add diagonal brakes and diagonal block brakes to most coaster types.
 - Feature: [#20141] Add additional track pieces to the Giga Coaster.
