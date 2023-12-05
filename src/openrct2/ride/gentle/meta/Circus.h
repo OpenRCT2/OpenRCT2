@@ -42,7 +42,7 @@ constexpr RideTypeDescriptor CircusRTD =
     SET_FIELD(RatingsMultipliers, { 20, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
     SET_FIELD(BuildCosts, { 62.50_GBP, 1.00_GBP, 1, }),
-    SET_FIELD(DefaultPrices, { 15, 0 }),
+    SET_FIELD(DefaultPrices, { 12, 0 }),
     SET_FIELD(DefaultMusic, {}),
     SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 39),
