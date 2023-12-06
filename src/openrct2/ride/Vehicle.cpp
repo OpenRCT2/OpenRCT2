@@ -7679,7 +7679,7 @@ Loc6DAEB9:
             }
         }
     }
-    else if (trackType == TrackElemType::Booster)
+    else if (TrackTypeIsBooster(trackType))
     {
         auto boosterSpeed = GetBoosterSpeed(curRide.type, (brake_speed << 16));
         if (boosterSpeed > _vehicleVelocityF64E08)
