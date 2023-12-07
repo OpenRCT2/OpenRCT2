@@ -2687,6 +2687,41 @@ declare global {
         umbrellaColour: number;
 
         /**
+         * Id of the ride for the first on-ride photo category.
+         */
+        photo1RideId: number;
+
+        /**
+         * Id of the ride for the second on-ride photo category.
+         */
+        photo2RideId: number;
+
+        /**
+         * Id of the ride for the third on-ride photo category.
+         */
+        photo3RideId: number;
+
+        /**
+         * Id of the ride for the fourth on-ride photo category.
+         */
+        photo4RideId: number;
+
+        /**
+         * The type of voucher a guest has. See openrct2/management/Marketing.h.
+         */
+        voucherType: number;
+
+        /**
+         * Id of the ride for the free ride voucher.
+         */
+        voucherRideId: number;
+
+        /**
+         * The type of food or drink for the free food or drink voucher. See ShopItem in openrct2/ride/ShopItem.h
+         */
+        voucherFoodOrDrink: number;
+
+        /**
          * How happy the guest is between 0 and 255.
          */
         happiness: number;
@@ -2765,6 +2800,30 @@ declare global {
          * The list of thoughts this guest has.
          */
         readonly thoughts: Thought[];
+
+        /**
+         * Checks whether this guest has a certain item.
+         * NOTE: Guests can only have one item of a given type.
+         * @param item The type of item to check.
+         */
+        hasItem(item: GuestItem): boolean;
+
+        /**
+         * Gives an item to the guest.
+         * @param item The type of item to give.
+         */
+        giveItem(item: GuestItem): void;
+
+        /**
+         * Removes an item from the guest's posession.
+         * @param item The type of item to remove.
+         */
+        removeItem(item: GuestItem): void;
+
+        /**
+         * Removes all items from the guest's posession.
+         */
+        removeAllItems(): void;
     }
 
     /**
@@ -2926,6 +2985,58 @@ declare global {
         "nice_ride_deprecated" |
         "excited_deprecated" |
         "here_we_are";
+
+    type GuestItem =
+        "balloon" |
+        "hat" |
+        "map" |
+        "sunglasses" |
+        "toy" |
+        "tshirt" |
+        "umbrella" |
+        "photo1" |
+        "photo2" |
+        "photo3" |
+        "photo4" |
+        "voucher" |
+        "beefnoodles" |
+        "burger" |
+        "candyfloss" |
+        "chicken" |
+        "chips" |
+        "chocolate" |
+        "cookie" |
+        "doughnut" |
+        "hotdog" |
+        "friedricenoodles" |
+        "funnelcake" |
+        "icecream" |
+        "meatballsoup" |
+        "pizza" |
+        "popcorn" |
+        "pretzel" |
+        "roastsausage" |
+        "subsandwich" |
+        "tentacle" |
+        "toffeeapple" |
+        "wontonsoup" |
+        "coffee" |
+        "drink" |
+        "fruitjuice" |
+        "icedtea" |
+        "lemonade" |
+        "soybeanmilk" |
+        "sujeonggwa" |
+        "emptybottle" |
+        "emptybowlblue" |
+        "emptybowlred" |
+        "emptybox" |
+        "emptyburgerbox" |
+        "emptycan" |
+        "emptycup" |
+        "emptydrinkcarton" |
+        "emptyjuicecup" |
+        "rubbish";
 
     /**
      * Represents a staff member.
