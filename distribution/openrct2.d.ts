@@ -2687,41 +2687,6 @@ declare global {
         umbrellaColour: number;
 
         /**
-         * Id of the ride for the first on-ride photo category.
-         */
-        photo1RideId: number;
-
-        /**
-         * Id of the ride for the second on-ride photo category.
-         */
-        photo2RideId: number;
-
-        /**
-         * Id of the ride for the third on-ride photo category.
-         */
-        photo3RideId: number;
-
-        /**
-         * Id of the ride for the fourth on-ride photo category.
-         */
-        photo4RideId: number;
-
-        /**
-         * The type of voucher a guest has. See openrct2/management/Marketing.h.
-         */
-        voucherType: number;
-
-        /**
-         * Id of the ride for the free ride voucher.
-         */
-        voucherRideId: number;
-
-        /**
-         * The type of food or drink for the free food or drink voucher. See ShopItem in openrct2/ride/ShopItem.h
-         */
-        voucherFoodOrDrink: number;
-
-        /**
          * How happy the guest is between 0 and 255.
          */
         happiness: number;
@@ -2802,26 +2767,31 @@ declare global {
         readonly thoughts: Thought[];
 
         /**
+         * The list of items this guest has.
+         */
+        readonly items: GuestItem[];
+
+        /**
          * Checks whether this guest has a certain item.
-         * NOTE: Guests can only have one item of a given type.
-         * @param item The type of item to check.
+         * @param item The item to check.
          */
         hasItem(item: GuestItem): boolean;
 
         /**
-         * Gives an item to the guest.
-         * @param item The type of item to give.
+         * Gives an item to the guest. Guests can only have one item of a given type.
+         * If this guest already has an item of the same type, this will override the current item.
+         * @param item The item to give.
          */
         giveItem(item: GuestItem): void;
 
         /**
-         * Removes an item from the guest's posession.
-         * @param item The type of item to remove.
+         * Removes an item from the guest's possession.
+         * @param item The item to remove.
          */
         removeItem(item: GuestItem): void;
 
         /**
-         * Removes all items from the guest's posession.
+         * Removes all items from the guest's possession.
          */
         removeAllItems(): void;
     }
@@ -2986,7 +2956,38 @@ declare global {
         "excited_deprecated" |
         "here_we_are";
 
-    type GuestItem =
+    type FoodDrinkType =
+        "beef_noodles" |
+        "burger" |
+        "candyfloss" |
+        "chicken" |
+        "chips" |
+        "chocolate" |
+        "cookie" |
+        "doughnut" |
+        "hot_dog" |
+        "fried_rice_noodles" |
+        "funnel_cake" |
+        "ice_cream" |
+        "meatball_soup" |
+        "pizza" |
+        "popcorn" |
+        "pretzel" |
+        "roast_sausage" |
+        "sub_sandwich" |
+        "tentacle" |
+        "toffee_apple" |
+        "wonton_soup" |
+        "coffee" |
+        "drink" |
+        "fruit_juice" |
+        "iced_tea" |
+        "lemonade" |
+        "soybean_milk" |
+        "sujeonggwa";
+
+    type GuestItemType =
+        FoodDrinkType |
         "balloon" |
         "hat" |
         "map" |
@@ -2999,44 +3000,46 @@ declare global {
         "photo3" |
         "photo4" |
         "voucher" |
-        "beefnoodles" |
-        "burger" |
-        "candyfloss" |
-        "chicken" |
-        "chips" |
-        "chocolate" |
-        "cookie" |
-        "doughnut" |
-        "hotdog" |
-        "friedricenoodles" |
-        "funnelcake" |
-        "icecream" |
-        "meatballsoup" |
-        "pizza" |
-        "popcorn" |
-        "pretzel" |
-        "roastsausage" |
-        "subsandwich" |
-        "tentacle" |
-        "toffeeapple" |
-        "wontonsoup" |
-        "coffee" |
-        "drink" |
-        "fruitjuice" |
-        "icedtea" |
-        "lemonade" |
-        "soybeanmilk" |
-        "sujeonggwa" |
-        "emptybottle" |
-        "emptybowlblue" |
-        "emptybowlred" |
-        "emptybox" |
-        "emptyburgerbox" |
-        "emptycan" |
-        "emptycup" |
-        "emptydrinkcarton" |
-        "emptyjuicecup" |
+        "empty_bottle" |
+        "empty_bowl_blue" |
+        "empty_bowl_red" |
+        "empty_box" |
+        "empty_burger_box" |
+        "empty_can" |
+        "empty_cup" |
+        "empty_drink_carton" |
+        "empty_juice_cup" |
         "rubbish";
+
+    type VoucherType =
+        "entry_free" |
+        "entry_half_price" |
+        "ride_free" |
+        "food_drink_free";
+
+    interface GuestItem {
+        type: GuestItemType;
+    }
+
+    interface GuestPhoto extends GuestItem {
+        type: "photo1" | "photo2" | "photo3" | "photo4";
+        rideId: number;
+    }
+
+    interface Voucher extends GuestItem {
+        type: "voucher";
+        voucherType: VoucherType;
+    }
+
+    interface RideVoucher extends Voucher {
+        voucherType: "ride_free";
+        rideId: number;
+    }
+
+    interface FoodDrinkVoucher extends Voucher {
+        voucherType: "food_drink_free";
+        item: FoodDrinkType;
+    }
 
     /**
      * Represents a staff member.
