@@ -5,6 +5,7 @@ const float DEPTH_INCREMENT = 1.0 / float(1u << 22u);
 
 uniform ivec2 uScreenSize;
 
+// clang-format off
 in ivec4 vClip;
 in int   vTexColourAtlas;
 in vec4  vTexColourBounds;
@@ -26,11 +27,13 @@ flat out uint  fColour;
 out vec3       fTexColour;
 out vec3       fTexMask;
 flat out vec3  fPalettes;
+// clang-format on
 
 void main()
 {
     // Clamp position by vClip, correcting interpolated values for the clipping
-    vec2 m = clamp(((vVertMat * vec4(vClip)) - (vVertMat * vec4(vBounds)))/vec2(vBounds.zw - vBounds.xy) + vVertVec, 0.0, 1.0);
+    vec2 m = clamp(
+        ((vVertMat * vec4(vClip)) - (vVertMat * vec4(vBounds))) / vec2(vBounds.zw - vBounds.xy) + vVertVec, 0.0, 1.0);
     vec2 pos = mix(vec2(vBounds.xy), vec2(vBounds.zw), m);
     fTexColour = vec3(mix(vTexColourBounds.xy, vTexColourBounds.zw, m), vTexColourAtlas);
     fTexMask = vec3(mix(vTexMaskBounds.xy, vTexMaskBounds.zw, m), vTexMaskAtlas);
