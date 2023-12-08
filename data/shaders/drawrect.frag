@@ -4,6 +4,7 @@ const int MASK_REMAP_COUNT          = 3;
 const int FLAG_NO_TEXTURE           = (1 << 2);
 const int FLAG_MASK                 = (1 << 3);
 const int FLAG_CROSS_HATCH          = (1 << 4);
+const int FLAG_TTF_TEXT             = (1 << 5);
 
 uniform usampler2DArray uTexture;
 uniform usampler2D      uPaletteTex;
@@ -41,7 +42,28 @@ void main()
         {
             discard;
         }
-        texel += fColour;
+        if ((fFlags & FLAG_TTF_TEXT) == 0)
+        {
+            texel += fColour;
+        }
+        else
+        {
+            uint hint_thresh = uint(fFlags & 0xff00) >> 8;
+            if(hint_thresh > 0u)
+            {
+                bool solidColor = texel > 180u;
+                texel = (texel > hint_thresh) ? fColour : 0u;
+                texel = texel << 8;
+                if(solidColor) 
+                {
+                    texel += 1u;
+                }
+            }
+            else 
+            {
+                texel = fColour;
+            }
+        }
     }
     else
     {

@@ -132,6 +132,32 @@ struct DrawPixelInfo
     DrawPixelInfo Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const;
 };
 
+struct TextDrawInfo
+{
+    int32_t startX;
+    int32_t startY;
+    int32_t x;
+    int32_t y;
+    int32_t maxX;
+    int32_t maxY;
+    int32_t flags;
+    uint8_t palette[8];
+    ::FontStyle FontStyle;
+    const int8_t* y_offset;
+};
+
+enum : uint32_t
+{
+    TEXT_DRAW_FLAG_INSET = 1 << 0,
+    TEXT_DRAW_FLAG_OUTLINE = 1 << 1,
+    TEXT_DRAW_FLAG_DARK = 1 << 2,
+    TEXT_DRAW_FLAG_EXTRA_DARK = 1 << 3,
+    TEXT_DRAW_FLAG_NO_FORMATTING = 1 << 28,
+    TEXT_DRAW_FLAG_Y_OFFSET_EFFECT = 1 << 29,
+    TEXT_DRAW_FLAG_TTF = 1 << 30,
+    TEXT_DRAW_FLAG_NO_DRAW = 1u << 31
+};
+
 struct RCTG1Element
 {
     uint32_t offset;        // 0x00 note: uint32_t always!
