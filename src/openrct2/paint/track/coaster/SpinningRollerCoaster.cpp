@@ -1,4 +1,5 @@
-#pragma region Copyright(c) 2014 - 2017 OpenRCT2 Developers
+#pragma region Copyright(c) 2014 - 2017 OpenRCT2 Developersturn
+
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -1512,7 +1513,7 @@ namespace SpinningRC
                             session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SPINNING_TRACK_LARGE_CURVE + 7)),
                             { 0, 0, height }, { { 0, 16, height }, { 16, 18, 3 } });
                         MetalASupportsPaintSetup(
-                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 0, height,
+                            session, MetalSupportType::Tubes, MetalSupportPlace::LeftCorner, 1, height,
                             session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
