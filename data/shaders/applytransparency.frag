@@ -7,7 +7,7 @@ uniform usampler2D      uTransparentTex;
 uniform sampler2D       uTransparentDepth;
 uniform usampler2D      uPaletteTex;
 uniform usampler2D      uBlendPaletteTex;
-// clang-format off
+// clang-format on
 
 in vec2 fTextureCoordinate;
 
