@@ -182,11 +182,10 @@ namespace RCT2
                     _stream.SetPosition(_stream.GetPosition() - 1);
                     _stream.Read(&t6EntranceElement, sizeof(TD6EntranceElement));
                     TrackDesignEntranceElement entranceElement{};
-                    entranceElement.z = (t6EntranceElement.z == -128) ? -1 : t6EntranceElement.z;
-                    entranceElement.direction = t6EntranceElement.direction & 0x7F;
-                    entranceElement.x = t6EntranceElement.x;
-                    entranceElement.y = t6EntranceElement.y;
-                    entranceElement.isExit = t6EntranceElement.direction >> 7;
+                    auto xy = CoordsXY(t6EntranceElement.x, t6EntranceElement.y);
+                    auto z = (t6EntranceElement.z == -128) ? -1 : t6EntranceElement.z;
+                    entranceElement.Location = TileCoordsXYZD(TileCoordsXY(xy), z, t6EntranceElement.GetDirection());
+                    entranceElement.IsExit = t6EntranceElement.IsExit();
                     td->entrance_elements.push_back(entranceElement);
                 }
             }

@@ -41,11 +41,8 @@ struct TrackDesignState
 /* Track Entrance entry */
 struct TrackDesignEntranceElement
 {
-    int8_t z;
-    uint8_t direction;
-    int16_t x;
-    int16_t y;
-    bool isExit;
+    TileCoordsXYZD Location{};
+    bool IsExit{};
 };
 
 struct TrackDesignSceneryElement

@@ -298,6 +298,16 @@ namespace RCT2
         uint8_t direction; // 0x01
         int16_t x;         // 0x02
         int16_t y;         // 0x04
+
+        constexpr Direction GetDirection() const
+        {
+            return (direction & 0b00001111);
+        }
+
+        constexpr bool IsExit() const
+        {
+            return !!(direction >> 7);
+        }
     };
     assert_struct_size(TD6EntranceElement, 0x06);
 
