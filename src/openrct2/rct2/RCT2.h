@@ -1048,12 +1048,6 @@ namespace RCT2
     track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, ride_type_t rideType, bool convertFlat);
     RCT12TrackType OpenRCT2TrackTypeToRCT2(track_type_t origTrackType);
 
-    /**
-     * Iterates an RCT2 string buffer and returns the length of the string in bytes.
-     * Handles single and multi-byte strings.
-     */
-    size_t GetRCT2StringBufferLen(const char* buffer, size_t maxBufferLen);
-
     struct FootpathMapping
     {
         std::string_view Original;

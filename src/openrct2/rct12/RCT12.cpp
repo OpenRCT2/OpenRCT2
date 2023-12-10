@@ -924,3 +924,35 @@ uint8_t ConvertToTD46Flags(const TrackDesignTrackElement& source)
 
     return trackFlags;
 }
+
+namespace RCT12
+{
+    size_t GetRCTStringBufferLen(const char* buffer, size_t maxBufferLen)
+    {
+        constexpr char MULTIBYTE = static_cast<char>(255);
+        size_t len = 0;
+        for (size_t i = 0; i < maxBufferLen; i++)
+        {
+            auto ch = buffer[i];
+            if (ch == MULTIBYTE)
+            {
+                i += 2;
+
+                // Check if reading two more bytes exceeds max buffer len
+                if (i < maxBufferLen)
+                {
+                    len += 3;
+                }
+            }
+            else if (ch == '\0')
+            {
+                break;
+            }
+            else
+            {
+                len++;
+            }
+        }
+        return len;
+    }
+} // namespace RCT12
