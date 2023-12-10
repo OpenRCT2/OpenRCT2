@@ -16,6 +16,7 @@
 #include "../object/ObjectRepository.h"
 #include "../object/RideObject.h"
 #include "../rct12/SawyerChunkReader.h"
+#include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/TrackDesign.h"
@@ -79,7 +80,7 @@ namespace RCT2
             td->ride_mode = static_cast<RideMode>(td6.RideMode);
             td->track_flags = 0;
             td->colour_scheme = td6.VersionAndColourScheme & 0x3;
-            for (auto i = 0; i < Limits::MaxTrainsPerRide; ++i)
+            for (auto i = 0; i < Limits::MaxVehicleColours; ++i)
             {
                 td->vehicle_colours[i].Body = td6.VehicleColours[i].BodyColour;
                 td->vehicle_colours[i].Trim = td6.VehicleColours[i].TrimColour;

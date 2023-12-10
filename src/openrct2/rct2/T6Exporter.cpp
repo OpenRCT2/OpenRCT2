@@ -16,6 +16,7 @@
 #include "../localisation/StringIds.h"
 #include "../object/ObjectList.h"
 #include "../rct12/SawyerChunkWriter.h"
+#include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
@@ -56,10 +57,10 @@ namespace RCT2
         tempStream.WriteValue<uint32_t>(_trackDesign->flags);
         tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign->ride_mode));
         tempStream.WriteValue<uint8_t>((_trackDesign->colour_scheme & 0x3) | (2 << 2));
-        for (auto& colour : _trackDesign->vehicle_colours)
+        for (auto i = 0; i < RCT2::Limits::MaxVehicleColours; i++)
         {
-            tempStream.WriteValue<uint8_t>(colour.Body);
-            tempStream.WriteValue<uint8_t>(colour.Trim);
+            tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_colours[i].Body);
+            tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_colours[i].Trim);
         }
         tempStream.WriteValue<uint8_t>(0);
         tempStream.WriteValue<uint8_t>(_trackDesign->entrance_style);
@@ -91,9 +92,9 @@ namespace RCT2
         tempStream.Write(&_trackDesign->vehicle_object.Entry, sizeof(RCTObjectEntry));
         tempStream.WriteValue<uint8_t>(_trackDesign->space_required_x);
         tempStream.WriteValue<uint8_t>(_trackDesign->space_required_y);
-        for (auto& colour : _trackDesign->vehicle_colours)
+        for (auto i = 0; i < RCT2::Limits::MaxVehicleColours; i++)
         {
-            tempStream.WriteValue<uint8_t>(colour.Tertiary);
+            tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_colours[i].Tertiary);
         }
         tempStream.WriteValue<uint8_t>(_trackDesign->lift_hill_speed | (_trackDesign->num_circuits << 5));
 

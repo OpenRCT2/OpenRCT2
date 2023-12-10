@@ -14,7 +14,6 @@
 #include "../management/Research.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
-#include "../rct12/RCT12.h"
 #include "../ride/RideConstruction.h"
 #include "../ride/TrackDesign.h"
 #include "RideCreateAction.h"
@@ -249,17 +248,16 @@ GameActions::Result TrackDesignAction::Execute() const
         ride->entrance_style = gLastEntranceStyle;
     }
 
-    for (int32_t i = 0; i < RCT12::Limits::NumColourSchemes; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::NumColourSchemes; i++)
     {
         ride->track_colour[i].main = _td.track_spine_colour[i];
         ride->track_colour[i].additional = _td.track_rail_colour[i];
         ride->track_colour[i].supports = _td.track_support_colour[i];
     }
 
-    for (size_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
+    for (size_t i = 0; i < OpenRCT2::Limits::MaxVehicleColours; i++)
     {
-        auto tdIndex = i % std::size(_td.vehicle_colours);
-        ride->vehicle_colours[i] = _td.vehicle_colours[tdIndex];
+        ride->vehicle_colours[i] = _td.vehicle_colours[i];
     }
 
     for (int32_t count = 1; count == 1 || r.Error != GameActions::Status::Ok; ++count)

@@ -30,6 +30,7 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/park/ParkFile.h>
 #include <openrct2/platform/Platform.h>
+#include <openrct2/rct2/RCT2.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/world/MapAnimation.h>

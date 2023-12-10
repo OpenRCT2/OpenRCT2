@@ -47,8 +47,7 @@
 #include "../object/ObjectRepository.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/StationObject.h"
-#include "../rct1/RCT1.h"
-#include "../rct1/Tables.h"
+#include "../rct2/RCT2.h"
 #include "../ride/RideConstruction.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
@@ -102,12 +101,12 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
     ride_mode = ride.mode;
     colour_scheme = ride.colour_scheme_type & 3;
 
-    for (int32_t i = 0; i < RCT2::Limits::MaxTrainsPerRide; i++)
+    for (size_t i = 0; i < std::size(vehicle_colours); i++)
     {
         vehicle_colours[i] = ride.vehicle_colours[i];
     }
 
-    for (int32_t i = 0; i < RCT12::Limits::NumColourSchemes; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::NumColourSchemes; i++)
     {
         track_spine_colour[i] = ride.track_colour[i].main;
         track_rail_colour[i] = ride.track_colour[i].additional;
@@ -1998,7 +1997,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
         ride->entrance_style = gLastEntranceStyle;
     }
 
-    for (int32_t i = 0; i < RCT12::Limits::NumColourSchemes; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::NumColourSchemes; i++)
     {
         ride->track_colour[i].main = td6->track_spine_colour[i];
         ride->track_colour[i].additional = td6->track_rail_colour[i];
@@ -2009,7 +2008,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     // in the preview window
     if (!GetRideTypeDescriptor(td6->type).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
     {
-        for (int32_t i = 0; i < RCT12::Limits::MaxVehicleColours; i++)
+        for (size_t i = 0; i < std::size(ride->vehicle_colours); i++)
         {
             ride->vehicle_colours[i] = td6->vehicle_colours[i];
         }
