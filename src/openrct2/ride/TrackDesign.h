@@ -126,7 +126,7 @@ struct TrackDesign
     uint8_t track_flags;
     uint8_t colour_scheme;
     std::array<VehicleColour, OpenRCT2::Limits::MaxVehicleColours> vehicle_colours;
-    uint8_t entrance_style;
+    u8string StationObjectIdentifier{};
     uint8_t total_air_time;
     uint8_t depart_flags;
     uint8_t number_of_trains;

@@ -82,6 +82,15 @@ static bool _trackDesignPlaceStateEntranceExitPlaced{};
 
 static void TrackDesignPreviewClearMap();
 
+static u8string_view TrackDesignGetStationObjectIdentifier(const Ride& ride)
+{
+    const auto* stationObject = ride.GetStationObject();
+    if (stationObject == nullptr)
+        return "";
+
+    return stationObject->GetIdentifier();
+}
+
 ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& ride)
 {
     type = ride.type;
@@ -122,7 +131,7 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
     lift_hill_speed = ride.lift_hill_speed;
     num_circuits = ride.num_circuits;
 
-    entrance_style = ride.GetEntranceStyle();
+    StationObjectIdentifier = TrackDesignGetStationObjectIdentifier(ride);
     max_speed = static_cast<int8_t>(ride.max_speed / 65536);
     average_speed = static_cast<int8_t>(ride.average_speed / 65536);
     ride_length = ride.GetTotalLength() / 65536;
@@ -564,7 +573,7 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(track_flags);
     stream << DS_TAG(colour_scheme);
     stream << DS_TAG(vehicle_colours);
-    stream << DS_TAG(entrance_style);
+    stream << DS_TAG(StationObjectIdentifier);
     stream << DS_TAG(total_air_time);
     stream << DS_TAG(depart_flags);
     stream << DS_TAG(number_of_trains);
@@ -1990,8 +1999,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
 
     ride->custom_name = {};
 
-    auto stationIdentifier = GetStationIdentifierFromStyle(td6->entrance_style);
-    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(stationIdentifier);
+    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(td6->StationObjectIdentifier);
     if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
     {
         ride->entrance_style = gLastEntranceStyle;

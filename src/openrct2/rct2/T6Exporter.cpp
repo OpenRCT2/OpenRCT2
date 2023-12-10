@@ -63,7 +63,8 @@ namespace RCT2
             tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_colours[i].Trim);
         }
         tempStream.WriteValue<uint8_t>(0);
-        tempStream.WriteValue<uint8_t>(_trackDesign->entrance_style);
+        auto entranceStyle = GetStationStyleFromIdentifier(_trackDesign->StationObjectIdentifier);
+        tempStream.WriteValue<uint8_t>(entranceStyle);
         tempStream.WriteValue<uint8_t>(_trackDesign->total_air_time);
         tempStream.WriteValue<uint8_t>(_trackDesign->depart_flags);
         tempStream.WriteValue<uint8_t>(_trackDesign->number_of_trains);

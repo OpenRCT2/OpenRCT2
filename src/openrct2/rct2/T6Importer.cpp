@@ -86,7 +86,7 @@ namespace RCT2
                 td->vehicle_colours[i].Trim = td6.VehicleColours[i].TrimColour;
                 td->vehicle_colours[i].Tertiary = td6.VehicleAdditionalColour[i];
             }
-            td->entrance_style = td6.EntranceStyle;
+            td->StationObjectIdentifier = GetStationIdentifierFromStyle(td6.EntranceStyle);
             td->total_air_time = td6.TotalAirTime;
             td->depart_flags = td6.DepartFlags;
             td->number_of_trains = td6.NumberOfTrains;

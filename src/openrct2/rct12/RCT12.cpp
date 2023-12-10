@@ -769,7 +769,7 @@ std::string_view GetStationIdentifierFromStyle(uint8_t style)
     {
         return _stationStyles[style];
     }
-    return {};
+    return _stationStyles[RCT12_STATION_STYLE_INVISIBLE];
 }
 
 uint8_t GetStationStyleFromIdentifier(u8string_view identifier)

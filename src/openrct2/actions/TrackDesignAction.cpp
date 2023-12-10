@@ -241,8 +241,7 @@ GameActions::Result TrackDesignAction::Execute() const
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
     ride->colour_scheme_type = _td.colour_scheme;
 
-    auto stationIdentifier = GetStationIdentifierFromStyle(_td.entrance_style);
-    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(stationIdentifier);
+    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(_td.StationObjectIdentifier);
     if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
     {
         ride->entrance_style = gLastEntranceStyle;
