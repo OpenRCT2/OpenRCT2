@@ -22,7 +22,8 @@ static void PaintFacility(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bool hasSupports = WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_3]);
+    bool hasSupports = WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.TrackColours[SCHEME_3]);
 
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)

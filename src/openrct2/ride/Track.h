@@ -84,12 +84,6 @@ enum
 
 enum
 {
-    TRACK_ELEMENT_FLAG_TERMINAL_STATION = 1 << 3,
-    TD6_TRACK_ELEMENT_FLAG_INVERTED = 1 << 6,
-};
-
-enum
-{
     TRACK_ELEMENT_FLAGS2_CHAIN_LIFT = 1 << 0,
     TRACK_ELEMENT_FLAGS2_INVERTED = 1 << 1,
     // Used for giga coaster
@@ -688,6 +682,7 @@ bool TrackElementIsCovered(track_type_t trackElementType);
 bool TrackTypeIsStation(track_type_t trackType);
 bool TrackTypeIsBrakes(track_type_t trackType);
 bool TrackTypeIsBlockBrakes(track_type_t trackType);
+bool TrackTypeIsBooster(track_type_t trackType);
 
 std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
     const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);

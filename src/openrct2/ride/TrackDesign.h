@@ -62,15 +62,36 @@ struct TrackDesignSceneryElement
     }
 };
 
-/**
- * Track design structure.
- */
+enum class TrackDesignTrackElementFlag : uint8_t
+{
+    HasChain = (1 << 0),
+    IsInverted = (1 << 1),
+    IsCovered = (1 << 2), // Reserved
+};
 
-/* Track Element entry  size: 0x03 */
 struct TrackDesignTrackElement
 {
-    track_type_t type; // 0x00
-    uint8_t flags;     // 0x02
+    track_type_t Type = 0;
+    uint8_t Flags = 0;
+    uint8_t ColourScheme = 0;
+    ::StationIndex StationIndex = StationIndex::FromUnderlying(0);
+    uint8_t BrakeBoosterSpeed = 0;
+    uint8_t SeatRotation = 4;
+
+    constexpr bool HasFlag(const TrackDesignTrackElementFlag flag) const
+    {
+        return Flags & EnumValue(flag);
+    }
+
+    constexpr void SetFlag(const TrackDesignTrackElementFlag flag)
+    {
+        Flags |= EnumValue(flag);
+    }
+
+    constexpr void ClearFlag(const TrackDesignTrackElementFlag flag)
+    {
+        Flags &= ~EnumValue(flag);
+    }
 };
 
 /* Maze Element entry   size: 0x04 */

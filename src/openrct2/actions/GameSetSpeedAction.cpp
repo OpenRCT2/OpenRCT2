@@ -23,7 +23,7 @@ void GameSetSpeedAction::AcceptParameters(GameActionParameterVisitor& visitor)
 
 uint16_t GameSetSpeedAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused | GameActions::Flags::IgnoreForReplays;
 }
 
 void GameSetSpeedAction::Serialise(DataSerialiser& stream)

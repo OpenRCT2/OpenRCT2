@@ -3694,6 +3694,8 @@ STR_6589    :Montri fenestro-butonojn maldekstre
 STR_6590    :Montri la fenestro-butonojn (ekz. fermi la fenestron) maldekstre de la titola breto anstataŭ dekstre.
 STR_6591    :Dungito nune estas riparanta atrakcion kaj ne povas esti maldungita.
 STR_6592    :Dungito nune estas inspektanta atrakcion kaj ne povas esti maldungita.
+STR_6593    :Forigi parkobarilojn
+STR_6594    :Inspektilo de Bloko: Baskuligi deklivecon de muro
 
 #############
 # Scenarios #

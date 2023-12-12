@@ -117,11 +117,11 @@ const int32_t DiagBlockedSegments[] = {
     SEGMENT_D0 | SEGMENT_C4 | SEGMENT_B8 | SEGMENT_C8,
 };
 
-const uint8_t DiagSupportSegments[] = {
-    1,
-    0,
-    2,
-    3,
+const MetalSupportPlace DiagSupportPlacement[] = {
+    MetalSupportPlace::LeftCorner,
+    MetalSupportPlace::TopCorner,
+    MetalSupportPlace::RightCorner,
+    MetalSupportPlace::BottomCorner,
 };
 
 const uint8_t track_map_1x4[][4] = {
@@ -943,26 +943,6 @@ void TrackPaintUtilDrawPier(
     }
 }
 
-void TrackPaintUtilDrawStationMetalSupports(PaintSession& session, Direction direction, uint16_t height, ImageId colour)
-{
-    TrackPaintUtilDrawStationMetalSupports2(session, direction, height, colour, MetalSupportType::Boxed);
-}
-
-void TrackPaintUtilDrawStationMetalSupports2(
-    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type)
-{
-    if (direction & 1)
-    {
-        MetalASupportsPaintSetup(session, type, 6, 0, height, colour);
-        MetalASupportsPaintSetup(session, type, 7, 0, height, colour);
-    }
-    else
-    {
-        MetalASupportsPaintSetup(session, type, 5, 0, height, colour);
-        MetalASupportsPaintSetup(session, type, 8, 0, height, colour);
-    }
-}
-
 constexpr CoordsXY defaultRightHelixUpSmallQuarterBoundLengths[4][3][2] = {
     {
         { { 32, 20 }, { 0, 0 } },
@@ -1540,14 +1520,19 @@ void TrackPaintUtilRightQuarterTurn5TilesWoodenSupports(
 {
     if (trackSequence != 1 && trackSequence != 4)
     {
-        static constexpr uint8_t supportTypes[][7] = {
-            { 0, 0xFF, 4, 2, 0xFF, 4, 1 },
-            { 1, 0xFF, 5, 3, 0xFF, 5, 0 },
-            { 0, 0xFF, 2, 4, 0xFF, 2, 1 },
-            { 1, 0xFF, 3, 5, 0xFF, 3, 0 },
+        static constexpr std::optional<WoodenSupportSubType> supportTypes[][7] = {
+            { WoodenSupportSubType::NeSw, std::nullopt, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
+              std::nullopt, WoodenSupportSubType::Corner2, WoodenSupportSubType::NwSe },
+            { WoodenSupportSubType::NwSe, std::nullopt, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1,
+              std::nullopt, WoodenSupportSubType::Corner3, WoodenSupportSubType::NeSw },
+            { WoodenSupportSubType::NeSw, std::nullopt, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2,
+              std::nullopt, WoodenSupportSubType::Corner0, WoodenSupportSubType::NwSe },
+            { WoodenSupportSubType::NwSe, std::nullopt, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3,
+              std::nullopt, WoodenSupportSubType::Corner1, WoodenSupportSubType::NeSw },
         };
-        uint8_t supportType = supportTypes[direction][trackSequence];
-        WoodenASupportsPaintSetup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        auto supportType = supportTypes[direction][trackSequence].value();
+        WoodenASupportsPaintSetup(
+            session, WoodenSupportType::Truss, supportType, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 }
 
@@ -2063,6 +2048,13 @@ void TrackPaintUtilSpinningTunnelPaint(PaintSession& session, int8_t thickness, 
     }
 }
 
+void TrackPaintUtilOnridePhotoPlatformPaint(
+    PaintSession& session, Direction direction, int32_t height, MetalSupportType supportType)
+{
+    PaintAddImageAsParent(session, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
+    DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], supportType);
+}
+
 void TrackPaintUtilOnridePhotoSmallPaint(
     PaintSession& session, Direction direction, int32_t height, const TrackElement& trackElement)
 {
@@ -2173,7 +2165,8 @@ void TrackPaintUtilLeftCorkscrewUpSupports(PaintSession& session, Direction dire
             session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
             0);
     }
-    MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(
+        session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     if (direction != 2)
     {
         PaintUtilSetSegmentSupportHeight(

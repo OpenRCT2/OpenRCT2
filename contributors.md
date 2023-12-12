@@ -109,6 +109,7 @@ The following people are not part of the development team, but have been contrib
 * Nikolas Parshook (nparshook) - Misc.
 * Wenzhao Qiu (qwzhaox) - Misc.
 * Tiago Reul (reul) - Misc.
+* Fredrik Tegnell (fredriktegnell) - Misc.
 
 ## Bug fixes
 * (KirilAngelov)
@@ -284,6 +285,7 @@ The following people are not part of the development team, but have been contrib
 * (Flyxxpy)
 * Jan Büchner (Greyfade)
 * (Skyshard)
+* (Blackend Blue)
 
 ## Sound Effects
 * Karst van Galen Last (AuraSpecs)

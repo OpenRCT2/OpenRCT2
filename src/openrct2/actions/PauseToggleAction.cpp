@@ -11,7 +11,7 @@
 
 uint16_t PauseToggleAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused | GameActions::Flags::IgnoreForReplays;
 }
 
 GameActions::Result PauseToggleAction::Query() const
