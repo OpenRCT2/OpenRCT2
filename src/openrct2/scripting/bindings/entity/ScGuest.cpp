@@ -173,6 +173,11 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScGuest::isLost_get, nullptr, "isLost");
         dukglue_register_property(ctx, &ScGuest::lostCountdown_get, &ScGuest::lostCountdown_set, "lostCountdown");
         dukglue_register_property(ctx, &ScGuest::thoughts_get, nullptr, "thoughts");
+        dukglue_register_property(ctx, &ScGuest::items_get, nullptr, "items");
+        dukglue_register_method(ctx, &ScGuest::has_item, "hasItem");
+        dukglue_register_method(ctx, &ScGuest::give_item, "giveItem");
+        dukglue_register_method(ctx, &ScGuest::remove_item, "removeItem");
+        dukglue_register_method(ctx, &ScGuest::remove_all_items, "removeAllItems");
     }
 
     Guest* ScGuest::GetGuest() const
@@ -492,6 +497,100 @@ namespace OpenRCT2::Scripting
         }
 
         return DukValue::take_from_stack(ctx, -1);
+    }
+
+    DukValue ScGuest::items_get() const
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+
+        duk_push_array(ctx);
+
+        auto peep = GetGuest();
+        if (peep != nullptr)
+        {
+            duk_uarridx_t index = 0;
+            for (const auto& itemEnumPair : ShopItemMap)
+            {
+                auto shopItem = itemEnumPair.second;
+                if (!peep->HasItem(shopItem))
+                {
+                    continue;
+                }
+
+                // GuestItem
+                auto obj = OpenRCT2::Scripting::DukObject(ctx);
+                obj.Set("type", itemEnumPair.first);
+
+                if (shopItem == ShopItem::Voucher)
+                {
+                    // Voucher
+                    obj.Set("voucherType", VoucherTypeMap[peep->VoucherType]);
+                    if (peep->VoucherType == VOUCHER_TYPE_RIDE_FREE)
+                    {
+                        // RideVoucher
+                        obj.Set("rideId", peep->VoucherRideId.ToUnderlying());
+                    }
+                    if (peep->VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
+                    {
+                        // FoodDrinkVoucher
+                        obj.Set("item", ShopItemMap[peep->VoucherShopItem]);
+                    }
+                }
+                else if (GetShopItemDescriptor(shopItem).IsPhoto())
+                {
+                    // GuestPhoto
+                    switch (shopItem)
+                    {
+                        case ShopItem::Photo:
+                            obj.Set("rideId", peep->Photo1RideRef.ToUnderlying());
+                            break;
+                        case ShopItem::Photo2:
+                            obj.Set("rideId", peep->Photo2RideRef.ToUnderlying());
+                            break;
+                        case ShopItem::Photo3:
+                            obj.Set("rideId", peep->Photo3RideRef.ToUnderlying());
+                            break;
+                        case ShopItem::Photo4:
+                            obj.Set("rideId", peep->Photo4RideRef.ToUnderlying());
+                            break;
+                        default:
+                            // This should not be possible
+                            throw DukErrorException(ctx, -1) << "Item is photo without a ride ref.";
+                    }
+                }
+
+                auto dukItem = obj.Take();
+                dukItem.push();
+                duk_put_prop_index(ctx, -2, index);
+                index++;
+            }
+        }
+
+        return DukValue::take_from_stack(ctx, -1);
+    }
+
+    bool ScGuest::has_item(const DukValue& item) const
+    {
+        // TODO
+        throw new DukException();
+    }
+
+    void ScGuest::give_item(const DukValue& item) const
+    {
+        // TODO
+        throw new DukException();
+    }
+
+    void ScGuest::remove_item(const DukValue& item) const
+    {
+        // TODO
+        throw new DukException();
+    }
+
+    void ScGuest::remove_all_items() const
+    {
+        // TODO
+        throw new DukException();
     }
 
     ScThought::ScThought(PeepThought backing)
