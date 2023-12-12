@@ -3017,28 +3017,60 @@ declare global {
         "ride_free" |
         "food_drink_free";
 
+    /**
+     * Represents an item in a guest's possession.
+     * If giving a guest a photo or voucher, use the other interfaces instead.
+     */
     interface GuestItem {
-        type: GuestItemType;
+        /**
+         * The type of item.
+         */
+        readonly type: GuestItemType;
     }
 
+    /**
+     * Represents an on-ride photo in a guest's possession.
+     */
     interface GuestPhoto extends GuestItem {
-        type: "photo1" | "photo2" | "photo3" | "photo4";
-        rideId: number;
+        readonly type: "photo1" | "photo2" | "photo3" | "photo4";
+        /**
+         * The id of the ride the on-ride photo is for.
+         */
+        readonly rideId: number;
     }
 
+    /**
+     * Represents a voucher in a guest's possession. If giving a guest a voucher for free rides
+     * or free food/drink, use the other interfaces instead.
+     */
     interface Voucher extends GuestItem {
-        type: "voucher";
-        voucherType: VoucherType;
+        readonly type: "voucher";
+        /**
+         * The type of voucher.
+         */
+        readonly voucherType: VoucherType;
     }
 
+    /**
+     * Represents a voucher for a free ride in a guest's possession.
+     */
     interface RideVoucher extends Voucher {
-        voucherType: "ride_free";
-        rideId: number;
+        readonly voucherType: "ride_free";
+        /**
+         * The id of the ride the voucher is for.
+         */
+        readonly rideId: number;
     }
 
+    /**
+     * Represents a voucher for free food or drink in a guest's possession.
+     */
     interface FoodDrinkVoucher extends Voucher {
-        voucherType: "food_drink_free";
-        item: FoodDrinkType;
+        readonly voucherType: "food_drink_free";
+        /**
+         * The type of food or drink the voucher is for.
+         */
+        readonly item: FoodDrinkType;
     }
 
     /**
