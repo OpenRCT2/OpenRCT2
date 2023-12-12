@@ -50,6 +50,7 @@ constexpr RideTypeDescriptor WoodenRollerCoasterRTD =
         { COLOUR_BRIGHT_RED, COLOUR_BLACK, COLOUR_GREY },
         { COLOUR_YELLOW, COLOUR_DARK_BROWN, COLOUR_DARK_BROWN },
         { COLOUR_TEAL, COLOUR_BORDEAUX_RED, COLOUR_WHITE },
+        { COLOUR_LIGHT_BLUE, COLOUR_BLACK, COLOUR_BLACK },
         { COLOUR_LIGHT_BLUE, COLOUR_BLACK, COLOUR_DARK_BROWN },
         { COLOUR_SATURATED_BROWN_LIGHT, COLOUR_TAN_DARK, COLOUR_LIGHT_BROWN }, // Generic GCI 
         { COLOUR_TAN_DARK, COLOUR_DULL_BROWN_DARK, COLOUR_GREY }, // The Voyage /* Change supports to "minetrain" if possible in the future. */
