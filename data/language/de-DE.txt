@@ -3691,6 +3691,8 @@ STR_6589    :Schaltflächen auf der linken Seite anzeigen
 STR_6590    :Schaltflächen (z.B. zum Schließen des Fensters) auf der linken anstatt auf der rechten Seite der Titelleiste anzeigen.
 STR_6591    :Der Mitarbeiter repariert gerade ein Fahrgeschäft und kann deshalb nicht entlassen werden.
 STR_6592    :Der Mitarbeiter inspiziert gerade ein Fahrgeschäft und kann deshalb nicht entlassen werden.
+STR_6593    :Parkzäune entfernen
+STR_6594    :Kachelinspektor: Wandneigung umschalten
 
 #############
 # Scenarios #
