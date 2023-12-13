@@ -2956,7 +2956,19 @@ declare global {
         "excited_deprecated" |
         "here_we_are";
 
-    type FoodDrinkType =
+    type GuestItemType =
+        "balloon" |
+        "hat" |
+        "map" |
+        "sunglasses" |
+        "toy" |
+        "tshirt" |
+        "umbrella" |
+        "photo1" |
+        "photo2" |
+        "photo3" |
+        "photo4" |
+        "voucher" |
         "beef_noodles" |
         "burger" |
         "candyfloss" |
@@ -2984,22 +2996,7 @@ declare global {
         "iced_tea" |
         "lemonade" |
         "soybean_milk" |
-        "sujeonggwa";
-
-    type GuestItemType =
-        FoodDrinkType |
-        "balloon" |
-        "hat" |
-        "map" |
-        "sunglasses" |
-        "toy" |
-        "tshirt" |
-        "umbrella" |
-        "photo1" |
-        "photo2" |
-        "photo3" |
-        "photo4" |
-        "voucher" |
+        "sujeonggwa" |
         "empty_bottle" |
         "empty_bowl_blue" |
         "empty_bowl_red" |
@@ -3070,7 +3067,7 @@ declare global {
         /**
          * The type of food or drink the voucher is for.
          */
-        readonly item: FoodDrinkType;
+        readonly item: GuestItemType;
     }
 
     /**
