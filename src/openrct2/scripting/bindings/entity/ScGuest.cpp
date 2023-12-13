@@ -584,40 +584,41 @@ namespace OpenRCT2::Scripting
         }
 
         // GuestItem
-        auto shopItem = ShopItemMap[item["type"].as_string()];
-        if (!peep->HasItem(shopItem))
+        auto shopItem = ShopItemMap.TryGet(item["type"].as_string());
+        if (!shopItem || !peep->HasItem(*shopItem))
         {
             return false;
         }
 
-        if (shopItem == ShopItem::Voucher)
+        if (*shopItem == ShopItem::Voucher)
         {
             if (item["voucherType"].type() == DukValue::Type::STRING)
             {
                 // Voucher
-                auto voucher = VoucherTypeMap[item["voucherType"].as_string()];
-                if (voucher != peep->VoucherType)
+                auto voucher = VoucherTypeMap.TryGet(item["voucherType"].as_string());
+                if (!voucher || *voucher != peep->VoucherType)
                 {
                     return false;
                 }
 
-                // RideVoucher
-                if (voucher == VOUCHER_TYPE_RIDE_FREE)
+                if (*voucher == VOUCHER_TYPE_RIDE_FREE)
                 {
                     if (item["rideId"].type() == DukValue::Type::NUMBER)
                     {
+                        // RideVoucher
                         if (item["rideId"].as_uint() != peep->VoucherRideId.ToUnderlying())
                         {
                             return false;
                         }
                     }
                 }
-                // FoodDrinkVoucher
-                else if (voucher == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
+                else if (*voucher == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
                 {
                     if (item["item"].type() == DukValue::Type::STRING)
                     {
-                        if (ShopItemMap[item["item"].as_string()] != peep->VoucherShopItem)
+                        // FoodDrinkVoucher
+                        auto voucherItem = ShopItemMap.TryGet(item["item"].as_string());
+                        if (!voucherItem || *voucherItem != peep->VoucherShopItem)
                         {
                             return false;
                         }
@@ -625,12 +626,12 @@ namespace OpenRCT2::Scripting
                 }
             }
         }
-        // GuestPhoto
-        else if (GetShopItemDescriptor(shopItem).IsPhoto())
+        else if (GetShopItemDescriptor(*shopItem).IsPhoto())
         {
+            // GuestPhoto
             if (item["rideId"].type() == DukValue::Type::NUMBER)
             {
-                switch (shopItem)
+                switch (*shopItem)
                 {
                     case ShopItem::Photo:
                         if (item["rideId"].as_uint() != peep->Photo1RideRef.ToUnderlying())
@@ -674,14 +675,19 @@ namespace OpenRCT2::Scripting
             return;
         }
 
+        // GuestItem
         if (item["type"].type() != DukValue::Type::STRING)
         {
             return;
         }
 
-        // GuestItem
-        auto shopItem = ShopItemMap[item["type"].as_string()];
-        if (shopItem == ShopItem::Voucher)
+        auto shopItem = ShopItemMap.TryGet(item["type"].as_string());
+        if (!shopItem)
+        {
+            return;
+        }
+
+        if (*shopItem == ShopItem::Voucher)
         {
             // Voucher
             if (item["voucherType"].type() != DukValue::Type::STRING)
@@ -689,10 +695,15 @@ namespace OpenRCT2::Scripting
                 return;
             }
 
-            // RideVoucher
-            auto voucherType = VoucherTypeMap[item["voucherType"].as_string()];
-            if (voucherType == VOUCHER_TYPE_RIDE_FREE)
+            auto voucherType = VoucherTypeMap.TryGet(item["voucherType"].as_string());
+            if (!voucherType)
             {
+                return;
+            }
+
+            if (*voucherType == VOUCHER_TYPE_RIDE_FREE)
+            {
+                // RideVoucher
                 if (item["rideId"].type() != DukValue::Type::NUMBER)
                 {
                     return;
@@ -700,28 +711,34 @@ namespace OpenRCT2::Scripting
 
                 peep->VoucherRideId = RideId::FromUnderlying(item["rideId"].as_uint());
             }
-            // FoodDrinkVoucher
-            else if (voucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
+            else if (*voucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
             {
+                // FoodDrinkVoucher
                 if (item["item"].type() != DukValue::Type::STRING)
                 {
                     return;
                 }
 
-                peep->VoucherShopItem = ShopItemMap[item["item"].as_string()];
+                auto voucherItem = ShopItemMap.TryGet(item["item"].as_string());
+                if (!voucherItem)
+                {
+                    return;
+                }
+
+                peep->VoucherShopItem = *voucherItem;
             }
-            
-            peep->VoucherType = voucherType;
+
+            peep->VoucherType = *voucherType;
         }
-        // GuestPhoto
-        else if (GetShopItemDescriptor(shopItem).IsPhoto())
+        else if (GetShopItemDescriptor(*shopItem).IsPhoto())
         {
+            // GuestPhoto
             if (item["rideId"].type() != DukValue::Type::NUMBER)
             {
                 return;
             }
 
-            switch (shopItem)
+            switch (*shopItem)
             {
                 case ShopItem::Photo:
                     peep->Photo1RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
@@ -740,7 +757,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        peep->GiveItem(shopItem);
+        peep->GiveItem(*shopItem);
         peep->UpdateSpriteType();
     }
 
