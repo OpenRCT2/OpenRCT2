@@ -5,10 +5,12 @@ const float DEPTH_INCREMENT = 1.0 / float(1u << 22u);
 
 uniform ivec2 uScreenSize;
 
+// clang-format off
 in ivec4 vBounds;
 in ivec4 vClip;
 in uint  vColour;
 in int   vDepth;
+// clang-format on
 
 in mat4x2 vVertMat;
 

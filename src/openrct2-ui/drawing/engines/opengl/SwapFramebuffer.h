@@ -52,6 +52,6 @@ public:
         _transparentFramebuffer.Bind();
     }
 
-    void ApplyTransparency(ApplyTransparencyShader& shader, GLuint paletteTex);
+    void ApplyTransparency(ApplyTransparencyShader& shader, GLuint paletteTex, GLuint blendPaletteTex);
     void Clear();
 };

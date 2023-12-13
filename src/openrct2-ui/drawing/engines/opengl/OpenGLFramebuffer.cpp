@@ -26,7 +26,7 @@ OpenGLFramebuffer::OpenGLFramebuffer(SDL_Window* window)
     SDL_GL_GetDrawableSize(window, &_width, &_height);
 }
 
-OpenGLFramebuffer::OpenGLFramebuffer(int32_t width, int32_t height, bool depth, bool integer)
+OpenGLFramebuffer::OpenGLFramebuffer(int32_t width, int32_t height, bool depth, bool integer, bool word)
 {
     _width = width;
     _height = height;
@@ -35,7 +35,9 @@ OpenGLFramebuffer::OpenGLFramebuffer(int32_t width, int32_t height, bool depth, 
     glBindTexture(GL_TEXTURE_2D, _texture);
     if (integer)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_R8UI, width, height, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, nullptr);
+        int internalFormat = word ? GL_R16UI : GL_R8UI;
+        int type = word ? GL_UNSIGNED_SHORT : GL_UNSIGNED_BYTE;
+        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, GL_RED_INTEGER, type, nullptr);
     }
     else
     {

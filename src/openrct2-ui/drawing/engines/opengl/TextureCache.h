@@ -206,6 +206,7 @@ private:
     std::array<uint32_t, SPR_IMAGE_LIST_END> _indexMap;
 
     GLuint _paletteTexture = 0;
+    GLuint _blendPaletteTexture = 0;
 
 #ifndef __MACOSX__
     std::shared_mutex _mutex;
@@ -227,6 +228,7 @@ public:
 
     GLuint GetAtlasesTexture();
     GLuint GetPaletteTexture();
+    GLuint GetBlendPaletteTexture();
     static GLint PaletteToY(FilterPaletteID palette);
 
 private:
