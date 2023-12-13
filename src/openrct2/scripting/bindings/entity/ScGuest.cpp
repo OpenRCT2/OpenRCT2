@@ -583,6 +583,7 @@ namespace OpenRCT2::Scripting
             return false;
         }
 
+        // GuestItem
         auto shopItem = ShopItemMap[item["type"].as_string()];
         if (!peep->HasItem(shopItem))
         {
@@ -593,12 +594,14 @@ namespace OpenRCT2::Scripting
         {
             if (item["voucherType"].type() == DukValue::Type::STRING)
             {
+                // Voucher
                 auto voucher = VoucherTypeMap[item["voucherType"].as_string()];
                 if (voucher != peep->VoucherType)
                 {
                     return false;
                 }
 
+                // RideVoucher
                 if (voucher == VOUCHER_TYPE_RIDE_FREE)
                 {
                     if (item["rideId"].type() == DukValue::Type::NUMBER)
@@ -609,6 +612,7 @@ namespace OpenRCT2::Scripting
                         }
                     }
                 }
+                // FoodDrinkVoucher
                 else if (voucher == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
                 {
                     if (item["item"].type() == DukValue::Type::STRING)
@@ -621,6 +625,7 @@ namespace OpenRCT2::Scripting
                 }
             }
         }
+        // GuestPhoto
         else if (GetShopItemDescriptor(shopItem).IsPhoto())
         {
             if (item["rideId"].type() == DukValue::Type::NUMBER)
@@ -652,7 +657,7 @@ namespace OpenRCT2::Scripting
                         }
                         break;
                     default:
-                        break;
+                        return false;
                 }
             }
         }
@@ -662,8 +667,81 @@ namespace OpenRCT2::Scripting
 
     void ScGuest::give_item(const DukValue& item) const
     {
-        // TODO
-        throw new DukException();
+        ThrowIfGameStateNotMutable();
+        auto peep = GetGuest();
+        if (peep == nullptr)
+        {
+            return;
+        }
+
+        if (item["type"].type() != DukValue::Type::STRING)
+        {
+            return;
+        }
+
+        // GuestItem
+        auto shopItem = ShopItemMap[item["type"].as_string()];
+        if (shopItem == ShopItem::Voucher)
+        {
+            // Voucher
+            if (item["voucherType"].type() != DukValue::Type::STRING)
+            {
+                return;
+            }
+
+            // RideVoucher
+            auto voucherType = VoucherTypeMap[item["voucherType"].as_string()];
+            if (voucherType == VOUCHER_TYPE_RIDE_FREE)
+            {
+                if (item["rideId"].type() != DukValue::Type::NUMBER)
+                {
+                    return;
+                }
+
+                peep->VoucherRideId = RideId::FromUnderlying(item["rideId"].as_uint());
+            }
+            // FoodDrinkVoucher
+            else if (voucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
+            {
+                if (item["item"].type() != DukValue::Type::STRING)
+                {
+                    return;
+                }
+
+                peep->VoucherShopItem = ShopItemMap[item["item"].as_string()];
+            }
+            
+            peep->VoucherType = voucherType;
+        }
+        // GuestPhoto
+        else if (GetShopItemDescriptor(shopItem).IsPhoto())
+        {
+            if (item["rideId"].type() != DukValue::Type::NUMBER)
+            {
+                return;
+            }
+
+            switch (shopItem)
+            {
+                case ShopItem::Photo:
+                    peep->Photo1RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
+                    break;
+                case ShopItem::Photo2:
+                    peep->Photo2RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
+                    break;
+                case ShopItem::Photo3:
+                    peep->Photo3RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
+                    break;
+                case ShopItem::Photo4:
+                    peep->Photo4RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
+                    break;
+                default:
+                    return;
+            }
+        }
+
+        peep->GiveItem(shopItem);
+        peep->UpdateSpriteType();
     }
 
     void ScGuest::remove_item(const DukValue& item) const
