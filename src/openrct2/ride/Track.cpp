@@ -669,6 +669,53 @@ bool TrackElementIsCovered(track_type_t trackElementType)
     }
 }
 
+track_type_t UncoverTrackElement(track_type_t trackElementType)
+{
+    switch (trackElementType)
+    {
+        case TrackElemType::FlatCovered:
+            return TrackElemType::Flat;
+        case TrackElemType::Up25Covered:
+            return TrackElemType::Up25;
+        case TrackElemType::Up60Covered:
+            return TrackElemType::Up60;
+        case TrackElemType::FlatToUp25Covered:
+            return TrackElemType::FlatToUp25;
+        case TrackElemType::Up25ToUp60Covered:
+            return TrackElemType::Up25ToUp60;
+        case TrackElemType::Up60ToUp25Covered:
+            return TrackElemType::Up60ToUp25;
+        case TrackElemType::Up25ToFlatCovered:
+            return TrackElemType::Up25ToFlat;
+        case TrackElemType::Down25Covered:
+            return TrackElemType::Down25;
+        case TrackElemType::Down60Covered:
+            return TrackElemType::Down60;
+        case TrackElemType::FlatToDown25Covered:
+            return TrackElemType::FlatToDown25;
+        case TrackElemType::Down25ToDown60Covered:
+            return TrackElemType::Down25ToDown60;
+        case TrackElemType::Down60ToDown25Covered:
+            return TrackElemType::Down60ToDown25;
+        case TrackElemType::Down25ToFlatCovered:
+            return TrackElemType::Down25ToFlat;
+        case TrackElemType::LeftQuarterTurn5TilesCovered:
+            return TrackElemType::LeftQuarterTurn5Tiles;
+        case TrackElemType::RightQuarterTurn5TilesCovered:
+            return TrackElemType::RightQuarterTurn5Tiles;
+        case TrackElemType::SBendLeftCovered:
+            return TrackElemType::SBendLeft;
+        case TrackElemType::SBendRightCovered:
+            return TrackElemType::SBendRight;
+        case TrackElemType::LeftQuarterTurn3TilesCovered:
+            return TrackElemType::LeftQuarterTurn3Tiles;
+        case TrackElemType::RightQuarterTurn3TilesCovered:
+            return TrackElemType::RightQuarterTurn3Tiles;
+        default:
+            return trackElementType;
+    }
+}
+
 bool TrackTypeHasSpeedSetting(track_type_t trackType)
 {
     return TrackTypeIsBooster(trackType) || TrackTypeIsBrakes(trackType) || TrackTypeIsBlockBrakes(trackType);

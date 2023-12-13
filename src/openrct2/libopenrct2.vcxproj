@@ -981,7 +981,8 @@
     <ClCompile Include="ride\VehicleRiderControl.cpp" />
     <ClCompile Include="ride\VehicleSubpositionData.cpp" />
     <ClCompile Include="ride\water\BoatHire.cpp" />
-    <ClCompile Include="ride\water\DingySlide.cpp" />
+    <ClCompile Include="ride\water\DinghySlide.cpp" />
+    <ClCompile Include="ride\water\DinghySlideCovered.cpp" />
     <ClCompile Include="ride\water\LogFlume.cpp" />
     <ClCompile Include="ride\water\RiverRapids.cpp" />
     <ClCompile Include="ride\water\SplashBoats.cpp" />
