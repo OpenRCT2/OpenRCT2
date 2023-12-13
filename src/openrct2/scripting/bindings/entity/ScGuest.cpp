@@ -601,16 +601,22 @@ namespace OpenRCT2::Scripting
 
                 if (voucher == VOUCHER_TYPE_RIDE_FREE)
                 {
-                    if (item["rideId"].type() == DukValue::Type::NUMBER && item["rideId"].as_uint() != peep->VoucherRideId.ToUnderlying())
+                    if (item["rideId"].type() == DukValue::Type::NUMBER)
                     {
-                        return false;
+                        if (item["rideId"].as_uint() != peep->VoucherRideId.ToUnderlying())
+                        {
+                            return false;
+                        }
                     }
                 }
                 else if (voucher == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
                 {
-                    if (item["item"].type() == DukValue::Type::STRING && ShopItemMap[item["item"].as_string()] != peep->VoucherShopItem)
+                    if (item["item"].type() == DukValue::Type::STRING)
                     {
-                        return false;
+                        if (ShopItemMap[item["item"].as_string()] != peep->VoucherShopItem)
+                        {
+                            return false;
+                        }
                     }
                 }
             }
@@ -662,14 +668,25 @@ namespace OpenRCT2::Scripting
 
     void ScGuest::remove_item(const DukValue& item) const
     {
-        // TODO
-        throw new DukException();
+        ThrowIfGameStateNotMutable();
+        if (has_item(item))
+        {
+            // Since guests can only have one item of a type and this item matches, remove it.
+            auto peep = GetGuest();
+            peep->RemoveItem(ShopItemMap[item["type"].as_string()]);
+            peep->UpdateSpriteType();
+        }
     }
 
     void ScGuest::remove_all_items() const
     {
-        // TODO
-        throw new DukException();
+        ThrowIfGameStateNotMutable();
+        auto peep = GetGuest();
+        if (peep != nullptr)
+        {
+            peep->RemoveAllItems();
+            peep->UpdateSpriteType();
+        }
     }
 
     ScThought::ScThought(PeepThought backing)
