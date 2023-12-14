@@ -801,19 +801,20 @@ public:
         if (sceneryObject != nullptr && sceneryObject->GetAuthors().size() > 0)
         {
             std::string authorsString;
-            for (size_t i = 0; i < sceneryObject->GetAuthors().size(); i++)
+            const auto& authors = sceneryObject->GetAuthors();
+            for (size_t i = 0; i < authors.size(); ++i)
             {
                 if (i > 0)
                 {
                     authorsString.append(", ");
                 }
-                authorsString.append(sceneryObject->GetAuthors()[i]);
+                authorsString.append(authors[i]);
             }
             ft = Formatter();
             ft.Add<const char*>(authorsString.c_str());
             DrawTextEllipsised(
-                dpi, { windowPos.x + 3, windowPos.y + height - 13 }, width - 19,
-                (sceneryObject->GetAuthors().size() == 1 ? STR_AUTHOR : STR_AUTHOR_PLURAL), ft);
+                dpi, windowPos + ScreenCoordsXY{ 3, height - 13 }, width - 19,
+                (sceneryObject->GetAuthors().size() == 1 ? STR_SCENERY_AUTHOR : STR_SCENERY_AUTHOR_PLURAL), ft);
         }
     }
 

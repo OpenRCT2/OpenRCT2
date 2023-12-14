@@ -1,12 +1,12 @@
 0.4.7 (in development)
 ------------------------------------------------------------------------
-- Feature: [#20830] Display author field on scenery window.
 - Feature: [#12078] Add shortcut key for toggling wall slope.
 - Feature: [#19919] Add diagonal brakes and diagonal block brakes to most coaster types.
 - Feature: [#20141] Add additional track pieces to the Giga Coaster.
 - Feature: [OpenMusic#46] Added Mystic ride music style.
 - Feature: [OpenMusic#50] Added Rock style 4 ride music.
 - Feature: [#20825] Made setting the game speed a game action.
+- Feature: [#20830] Display author field on scenery window.
 - Feature: [#20853] [Plugin] Add “BaseTileElement.owner” which is saved in the park file.
 - Change: [#20790] Default ride price set to free if park charges for entry.
 - Fix: [#16453] Tile inspector invisibility shortcut does not use a game action.

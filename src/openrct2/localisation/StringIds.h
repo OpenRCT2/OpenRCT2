@@ -4004,8 +4004,8 @@ enum : uint16_t
 
     STR_SHORTCUT_TOGGLE_WALL_SLOPE = 6594,
 
-    STR_AUTHOR = 6595,
-    STR_AUTHOR_PLURAL = 6596,
+    STR_SCENERY_AUTHOR = 6595,
+    STR_SCENERY_AUTHOR_PLURAL = 6596,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
