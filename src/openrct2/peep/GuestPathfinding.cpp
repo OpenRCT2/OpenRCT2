@@ -2287,7 +2287,8 @@ bool GuestPathfinding::IsValidPathZAndDirection(TileElement* tileElement, int32_
     }
     else
     {
-        if (currentZ != tileElement->BaseHeight)
+        if (currentZ != tileElement->BaseHeight && currentZ - 1 != tileElement->BaseHeight
+            && currentZ + 1 != tileElement->BaseHeight)
             return false;
     }
     return true;
