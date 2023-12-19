@@ -214,43 +214,35 @@ ResultWithMessage TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, con
 
     do
     {
+        const auto& element = trackElement.element->AsTrack();
+
         // Remove this check for new track design format
-        if (trackElement.element->AsTrack()->GetTrackType() > TrackElemType::HighestAlias)
+        if (element->GetTrackType() > TrackElemType::HighestAlias)
         {
             return { false, STR_TRACK_ELEM_UNSUPPORTED_TD6 };
         }
 
         TrackDesignTrackElement track{};
-        track.type = trackElement.element->AsTrack()->GetTrackType();
-
-        uint8_t trackFlags;
-        // This if-else block only applies to td6. New track design format will always encode speed and seat rotation.
-        if (TrackTypeHasSpeedSetting(track.type) && track.type != TrackElemType::BlockBrakes)
-        {
-            trackFlags = trackElement.element->AsTrack()->GetBrakeBoosterSpeed() >> 1;
-        }
-        else
-        {
-            trackFlags = trackElement.element->AsTrack()->GetSeatRotation();
-        }
+        track.Type = element->GetTrackType();
+        track.ColourScheme = element->GetColourScheme();
+        track.StationIndex = element->GetStationIndex();
+        track.BrakeBoosterSpeed = element->GetBrakeBoosterSpeed();
+        track.SeatRotation = element->GetSeatRotation();
 
         // This warning will not apply to new track design format
-        if (track.type == TrackElemType::BlockBrakes
-            && trackElement.element->AsTrack()->GetBrakeBoosterSpeed() != kRCT2DefaultBlockBrakeSpeed)
+        if (track.Type == TrackElemType::BlockBrakes && element->GetBrakeBoosterSpeed() != kRCT2DefaultBlockBrakeSpeed)
         {
             warningMessage = STR_TRACK_DESIGN_BLOCK_BRAKE_SPEED_RESET;
         }
 
-        if (trackElement.element->AsTrack()->HasChain())
-            trackFlags |= RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
-        trackFlags |= trackElement.element->AsTrack()->GetColourScheme() << 4;
-        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
-            && trackElement.element->AsTrack()->IsInverted())
+        if (element->HasChain())
+            track.SetFlag(TrackDesignTrackElementFlag::HasChain);
+
+        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE) && element->IsInverted())
         {
-            trackFlags |= TD6_TRACK_ELEMENT_FLAG_INVERTED;
+            track.SetFlag(TrackDesignTrackElementFlag::IsInverted);
         }
 
-        track.flags = trackFlags;
         track_elements.push_back(track);
 
         if (!TrackBlockGetNext(&trackElement, &trackElement, nullptr, nullptr))
@@ -898,8 +890,8 @@ static void TrackDesignMirrorRide(TrackDesign* td6)
 {
     for (auto& track : td6->track_elements)
     {
-        const auto& ted = GetTrackElementDescriptor(track.type);
-        track.type = ted.MirrorElement;
+        const auto& ted = GetTrackElementDescriptor(track.Type);
+        track.Type = ted.MirrorElement;
     }
 
     for (auto& entrance : td6->entrance_elements)
@@ -1595,7 +1587,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
     auto newCoords = origin;
     for (const auto& track : td6->track_elements)
     {
-        auto trackType = track.type;
+        auto trackType = track.Type;
         const auto& ted = GetTrackElementDescriptor(trackType);
 
         TrackDesignUpdatePreviewBounds(tds, newCoords);
@@ -1632,26 +1624,13 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
 
                 // di
                 int16_t tempZ = newCoords.z - trackCoordinates->z_begin;
-                uint32_t trackColour = (track.flags >> 4) & 0x3;
-                uint32_t brakeSpeed;
-                // RCT2-created track designs write brake speed to all tracks; block brake speed must be treated as
-                // garbage data.
-                if (trackType == TrackElemType::BlockBrakes)
-                {
-                    brakeSpeed = kRCT2DefaultBlockBrakeSpeed;
-                }
-                else
-                {
-                    brakeSpeed = (track.flags & 0x0F) * 2;
-                }
-                uint32_t seatRotation = track.flags & 0x0F;
 
                 int32_t liftHillAndAlternativeState = 0;
-                if (track.flags & RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT)
+                if (track.HasFlag(TrackDesignTrackElementFlag::HasChain))
                 {
                     liftHillAndAlternativeState |= 1;
                 }
-                if (track.flags & TD6_TRACK_ELEMENT_FLAG_INVERTED)
+                if (track.HasFlag(TrackDesignTrackElementFlag::IsInverted))
                 {
                     liftHillAndAlternativeState |= 2;
                 }
@@ -1678,8 +1657,8 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
                 }
 
                 auto trackPlaceAction = TrackPlaceAction(
-                    ride.id, trackType, ride.type, { newCoords, tempZ, static_cast<uint8_t>(rotation) }, brakeSpeed,
-                    trackColour, seatRotation, liftHillAndAlternativeState, true);
+                    ride.id, trackType, ride.type, { newCoords, tempZ, static_cast<uint8_t>(rotation) },
+                    track.BrakeBoosterSpeed, track.ColourScheme, track.SeatRotation, liftHillAndAlternativeState, true);
                 trackPlaceAction.SetFlags(flags);
 
                 auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&trackPlaceAction)

@@ -441,14 +441,8 @@ private:
         uint8_t curTrackRotation = rotation;
         for (const auto& trackElement : td6->track_elements)
         {
-            int32_t trackType = trackElement.type;
-            if (trackType == TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
-            {
-                trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;
-            }
-
             // Follow a single track piece shape
-            const auto& ted = GetTrackElementDescriptor(trackType);
+            const auto& ted = GetTrackElementDescriptor(trackElement.Type);
             const PreviewTrack* trackBlock = ted.Block;
             while (trackBlock->index != 255)
             {

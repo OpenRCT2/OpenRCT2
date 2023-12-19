@@ -430,6 +430,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionBobsleighRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionObservationTower(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionLoopingRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlide(int32_t trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlideCovered(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineTrainRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionChairlift(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRC(int32_t trackType);

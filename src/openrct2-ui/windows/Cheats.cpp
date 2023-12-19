@@ -45,8 +45,8 @@ enum
 
 static StringId _staffSpeedNames[] =
 {
-    STR_FROZEN,
     STR_NORMAL,
+    STR_FROZEN,
     STR_FAST,
 };
 
@@ -361,7 +361,6 @@ class CheatsWindow final : public Window
 private:
     char _moneySpinnerText[MONEY_STRING_MAXLENGTH]{};
     money64 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
-    int32_t _selectedStaffSpeed = 1;
     int32_t _parkRatingSpinnerValue{};
     int32_t _yearSpinnerValue = 1;
     int32_t _monthSpinnerValue = 1;
@@ -509,7 +508,7 @@ public:
         // Current weather
         window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gClimateCurrent.Weather)];
         // Staff speed
-        window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[_selectedStaffSpeed];
+        window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(gCheatsSelectedStaffSpeed)];
 
         if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         {
@@ -851,7 +850,7 @@ private:
                 WindowDropdownShowTextCustomWidth(
                     { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                     colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
-                Dropdown::SetChecked(_selectedStaffSpeed, true);
+                Dropdown::SetChecked(EnumValue(gCheatsSelectedStaffSpeed), true);
             }
         }
     }
@@ -934,18 +933,24 @@ private:
         }
         if (widgetIndex == WIDX_STAFF_SPEED_DROPDOWN_BUTTON)
         {
-            int32_t speed = CHEATS_STAFF_FAST_SPEED;
+            int32_t speed = CHEATS_STAFF_NORMAL_SPEED;
             switch (dropdownIndex)
             {
                 case 0:
+                    gCheatsSelectedStaffSpeed = StaffSpeedCheat::None;
+                    speed = CHEATS_STAFF_NORMAL_SPEED;
+                    break;
+
+                case 1:
+                    gCheatsSelectedStaffSpeed = StaffSpeedCheat::Frozen;
                     speed = CHEATS_STAFF_FREEZE_SPEED;
                     break;
-                case 1:
-                    speed = CHEATS_STAFF_NORMAL_SPEED;
-            }
 
+                case 2:
+                    gCheatsSelectedStaffSpeed = StaffSpeedCheat::Fast;
+                    speed = CHEATS_STAFF_FAST_SPEED;
+            }
             CheatsSet(CheatType::SetStaffSpeed, speed);
-            _selectedStaffSpeed = dropdownIndex;
         }
     }
 

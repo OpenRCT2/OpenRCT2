@@ -268,6 +268,24 @@ enum class RideConstructionWindowContext : uint8_t
     Maze,
 };
 
+struct TrackDrawerDescriptor
+{
+    TRACK_PAINT_FUNCTION_GETTER Regular;
+    TRACK_PAINT_FUNCTION_GETTER Covered;
+
+    constexpr TrackDrawerDescriptor(TRACK_PAINT_FUNCTION_GETTER function)
+        : Regular(function)
+        , Covered(nullptr)
+    {
+    }
+
+    constexpr TrackDrawerDescriptor(TRACK_PAINT_FUNCTION_GETTER functionRegular, TRACK_PAINT_FUNCTION_GETTER functionCovered)
+        : Regular(functionRegular)
+        , Covered(functionCovered)
+    {
+    }
+};
+
 struct RideTypeDescriptor
 {
     uint8_t AlternateType;
@@ -280,7 +298,7 @@ struct RideTypeDescriptor
     RideTrackGroup CoveredTrackPieces;
     /** rct2: 0x0097CC68 */
     track_type_t StartTrackPiece;
-    TRACK_PAINT_FUNCTION_GETTER TrackPaintFunction;
+    TrackDrawerDescriptor TrackPaintFunctions;
     uint64_t Flags;
     /** rct2: 0x0097C8AC */
     uint64_t RideModes;
@@ -514,7 +532,7 @@ constexpr RideTypeDescriptor DummyRTD =
     SET_FIELD(ExtraTrackPieces, {}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, nullptr),
+    SET_FIELD(TrackPaintFunctions, TrackDrawerDescriptor(nullptr)),
     SET_FIELD(Flags, 0),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),

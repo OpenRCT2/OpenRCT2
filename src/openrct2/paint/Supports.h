@@ -42,6 +42,12 @@ enum class WoodenSupportTransitionType : uint8_t
     Up25DegToUp60Deg = 3,
     Up60DegToUp25Deg = 4,
     Up60Deg = 5,
+    FlatToUp60Deg = 7,
+    Up60DegToFlat = 8,
+    FlatToUp25DegRailway = 9,
+    Up25DegToFlatRailway = 10,
+    Up25DegRailway = 11,
+    Scenery = 12,
 };
 
 // There are 13 types of metal supports. A graphic showing all of them is available here:
@@ -127,8 +133,6 @@ bool WoodenASupportsPaintSetup(
 bool WoodenASupportsPaintSetupRotated(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, Direction direction, int32_t height,
     ImageId imageTemplate, WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None);
-bool WoodenBSupportsPaintSetup(
-    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
 bool WoodenBSupportsPaintSetup(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
     WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None, Direction direction = 0);

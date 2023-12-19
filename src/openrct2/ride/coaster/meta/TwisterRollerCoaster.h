@@ -25,7 +25,7 @@ constexpr RideTypeDescriptor TwisterRollerCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {TRACK_LIFT_HILL_STEEP, TRACK_BRAKE_FOR_DROP}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionBolligerMabillard<MetalSupportType::Tubes>),
+    SET_FIELD(TrackPaintFunctions, TrackDrawerDescriptor(GetTrackPaintFunctionBolligerMabillard<MetalSupportType::Tubes>)),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS |
@@ -49,7 +49,9 @@ constexpr RideTypeDescriptor TwisterRollerCoasterRTD =
     SET_FIELD(BonusValue, 120),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_BORDEAUX_RED },
+        { COLOUR_AQUAMARINE, COLOUR_AQUAMARINE, COLOUR_DARK_PURPLE },
         { COLOUR_WHITE, COLOUR_WHITE, COLOUR_LIGHT_BLUE },
+        { COLOUR_DARK_GREEN, COLOUR_MOSS_GREEN, COLOUR_DARK_BROWN },
         { COLOUR_BORDEAUX_RED, COLOUR_LIGHT_ORANGE, COLOUR_WHITE },
         { COLOUR_LIGHT_BLUE, COLOUR_YELLOW, COLOUR_DARK_PINK }, // Scream
         { COLOUR_DARK_ORANGE, COLOUR_DARK_ORANGE, COLOUR_BLACK }, // Rougarou

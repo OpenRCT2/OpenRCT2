@@ -1283,8 +1283,8 @@ STR_1901    :{WINDOW_COLOUR_2}Biglietti d’ingresso
 STR_1902    :{WINDOW_COLOUR_2}Biglietti attrazioni
 STR_1903    :{WINDOW_COLOUR_2}Vendite dei negozi
 STR_1904    :{WINDOW_COLOUR_2}Scorte dei negozi
-STR_1905    :{WINDOW_COLOUR_2}Vendite di cibo/bevande
-STR_1906    :{WINDOW_COLOUR_2}Scorte di cibo/bevande
+STR_1905    :{WINDOW_COLOUR_2}Vendite cibo/bevande
+STR_1906    :{WINDOW_COLOUR_2}Scorte cibo/bevande
 STR_1907    :{WINDOW_COLOUR_2}Stipendi personale
 STR_1908    :{WINDOW_COLOUR_2}Marketing
 STR_1909    :{WINDOW_COLOUR_2}Ricerca
@@ -2441,7 +2441,7 @@ STR_5120    :Finanza
 STR_5121    :Ricerca
 STR_5122    :Attrazioni in base al tipo di percorso (come in RCT1)
 STR_5123    :Rinnova attrazioni
-STR_5125    :Tutte distruttibili
+STR_5125    :Tutto è distruttibile
 STR_5126    :Musica iniziale casuale
 STR_5127    :Trascinando, modifica il paesaggio anziché cambiare altezza
 STR_5128    :Dimensione selezione
@@ -2700,19 +2700,19 @@ STR_5486    :{BLACK}{COMMA16}
 STR_5487    :Mostra i messaggi recenti
 STR_5489    :Mostra solo i visitatori seguiti
 STR_5490    :Disabilita audio quando si cambia finestra
-STR_5491    :Lista Invenzioni
-STR_5492    :Opzioni Scenario
-STR_5493    :Mostra Messaggio
-STR_5495    :Lista Giocatore
+STR_5491    :Lista invenzioni
+STR_5492    :Opzioni scenario
+STR_5493    :Mostra messaggio
+STR_5495    :Lista giocatore
 STR_5496    :Giocatore
 STR_5497    :Ping
-STR_5498    :Lista Server
-STR_5499    :Nome Giocatore:
-STR_5500    :Aggiungi Server
-STR_5501    :Avvia Server
+STR_5498    :Lista server
+STR_5499    :Nome giocatore:
+STR_5500    :Aggiungi server
+STR_5501    :Avvia server
 STR_5502    :Multiplayer
 STR_5503    :Inserisci hostname o indirizzo IP:
-STR_5504    :Show multiplayer status
+STR_5504    :Mostra stato multiplayer
 STR_5505    :Impossibile connettersi al server.
 STR_5506    :I visitatori ignorano l’intensità
 STR_5510    :Scheda audio predefinita
@@ -2867,7 +2867,7 @@ STR_5661    :Imposta gruppo giocatori
 STR_5662    :N.D.
 STR_5663    :Pulisci paesaggio
 STR_5664    :Trucchi
-STR_5665    :Toggle Scenery Cluster
+STR_5665    :Attiva/disattiva sparpaglia arredi
 STR_5666    :Accesso senza password
 STR_5701    :{WINDOW_COLOUR_2}Ultima azione: {BLACK}{STRINGID}
 STR_5702    :Localizza l’ultima azione del giocatore
@@ -2889,10 +2889,10 @@ STR_5716    :Non permesso in modalità multigiocatore
 STR_5717    :Versione della rete: {STRING}
 STR_5718    :Versione della rete: {STRING}
 STR_5719    :Soleggiato
-STR_5720    :Parzialmente nuvoloso
+STR_5720    :Parz. nuvoloso
 STR_5721    :Nuvoloso
-STR_5722    :Piovoso
-STR_5723    :Fortemente piovoso
+STR_5722    :Pioggia
+STR_5723    :Pioggia forte
 STR_5724    :Temporale
 STR_5725    :{BLACK}Cambia il meteo a:
 STR_5726    :Imposta il meteo attuale nel parco
@@ -2957,7 +2957,7 @@ STR_5790    :Attiva/disattiva i prezzi di RCT1{NEWLINE}(es. sia prezzo di ingres
 STR_5791    :Imposta l’affidabilità di tutte le attrazioni a 100%{NEWLINE}e reimposta la loro data di costruzione a “quest’anno”
 STR_5792    :Aggiusta tutte le attrazioni rotte
 STR_5793    :Pulisce lo storico degli incidenti di questa attrazione,{NEWLINE}affinché i visitatori non si lamentino che non è sicura
-STR_5794    :Alcuni scenari disattivano la modifica{NEWLINE}dei percorsi già presenti nel parco.{NEWLINE}Questa opzione la riattiva
+STR_5794    :Alcuni scenari disattivano{NEWLINE}la modifica dei percorsi{NEWLINE}già presenti nel parco.{NEWLINE}Questa opzione la riattiva
 STR_5795    :I visitatori salgono su tutte le attrazioni{NEWLINE}a prescindere dal loro livello di intensità
 STR_5796    :Forza il parco a chiudere o riaprire
 STR_5797    :Disattiva modifiche al tempo atmosferico{NEWLINE}e blocca quello attuale
@@ -3221,7 +3221,7 @@ STR_6060    :Mostra animazione per acquisti dei visitatori
 STR_6061    :Mostra l’effetto dei soldi animato{NEWLINE}quando i visitatori effettuano acquisti.
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
 STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
-STR_6064    :Possiedi tutto il terreno
+STR_6064    :Possiedi intera mappa
 STR_6065    :Registra azioni degli utenti
 STR_6066    :Crea un log di tutte le azioni degli utenti nella propria cartella utente.
 STR_6067    :Server avviato.
@@ -3258,7 +3258,7 @@ STR_6097    :{STRING} ha piazzato un tratto di percorso “{STRING}”.
 STR_6098    :{STRING} ha rimosso un tratto di percorso.
 STR_6099    :Connesso al server.
 STR_6100    :Disconnesso dal server.
-STR_6101    :Le attrazioni non perdono valore con il tempo
+STR_6101    :Il valore delle attrazioni non cala col tempo
 STR_6102    :Il valore delle attrazioni non calerà con il tempo, in modo che i visitatori non pensino improvvisamente che il costo dell’attrazione sia troppo alto.
 STR_6103    :Questa opzione è disabilitata durante il gioco online.
 STR_6105    :Hypercoaster
@@ -3295,7 +3295,7 @@ STR_6142    :{WINDOW_COLOUR_2}Nome percorso: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Tipo attrazione: {BLACK}{STRINGID}
 STR_6144    :Mostra visuali sporche
 STR_6145    :Imposta limite di velocità per gli acceleratori
-STR_6146    :Abilita tutti i pezzi disegnabili del percorso
+STR_6146    :Abilita tutti i pezzi di percorso possibili
 STR_6147    :Abilita nella finestra di costruzione tutti i pezzi che l’attrazione è in grado di supportare, a prescindere dal fatto che il veicolo li supporti o meno.
 STR_6148    :Connessione al server principale…
 STR_6149    :Impossibile connettersi al server principale
@@ -3477,7 +3477,7 @@ STR_6366    :Veicoli fermi o incastrati
 STR_6364    :{RED}{COMMA16} persona rimasta uccisa in un incidente su {STRINGID}
 STR_6367    :Fotogramma animazione:
 STR_6368    :Per motivi di compatibilità, non è consigliato eseguire OpenRCT2 tramite Wine. OpenRCT2 offre supporto nativo per macOS, Linux, FreeBSD and OpenBSD.
-STR_6369    :Permetti costruzione percorsi ad altezze non valide
+STR_6369    :Permetti percorsi ad altezze non valide
 STR_6370    :Permette di collocare pezzi di percorso a qualsiasi intervallo di altezza
 STR_6371    :La cartella specificata contiene un’installazione di RollerCoaster Tycoon 1, ma non contiene il file “csg1i.dat”. Questo file dev’essere copiato dal CD di Loopy Landscapes o di RCT Deluxe alla cartella “Data” dell’installazione su disco rigido di RollerCoaster Tycoon 1. 
 STR_6372    :La cartella specificata contiene un’installazione di RollerCoaster Tycoon 1, ma la versione non è compatibile. OpenRCT2 necessita di un’installazione di Loopy Landscapes o di RCT Deluxe per poter utilizzare le risorse di RollerCoaster Tycoon 1.
@@ -3644,7 +3644,7 @@ STR_6533    :{WINDOW_COLOUR_2}Fattore di divertimento: {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}Fattore d’intensità: {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Fattore di nausea: {BLACK}-{COMMA16}%
 STR_6536    :Questo parco è stato salvato in una versione più recente di OpenRCT2. il parco è stato salvato nella v{INT32}, si sta usando la v{INT32}.
-STR_6537    :Permette di usare percorsi regolari come code
+STR_6537    :Usa sentieri normali come code
 STR_6538    :Mostra i percorsi regolari nel menu a cascata della finestra dei Sentieri.
 STR_6539    :Freno chiuso
 STR_6540    :{WINDOW_COLOUR_2}Un ringraziamento speciale alle seguenti aziende per aver concesso l'utilizzo della loro immagine:
@@ -3657,7 +3657,8 @@ STR_6546    :Usa l’algoritmo di calcolo dell’interesse di RollerCoaster Tyco
 STR_6547    :Tutto lo scenario
 STR_6548    :Mostra le ringhiere agli incroci
 STR_6549    :Gli oggetti per la compatibilità non possono essere selezionati!
-STR_6550    :Questa voce è inclusa per retrocompatibilità con oggetti vecchi o danneggiati. Non può essere selezionata, solo deselezionata. 
+STR_6550    :Questa voce è inclusa per retrocompatibilità con oggetti vecchi o danneggiati. Non può essere selezionata, solo deselezionata.
+
 STR_6551    :Verde militare
 STR_6552    :Verde pallido
 STR_6553    :Tanno
@@ -3682,8 +3683,8 @@ STR_6571    :Terra d’ombra
 STR_6572    :Beige
 STR_6573    :Invisibile
 STR_6574    :Oblio
-STR_6575    :Peremtti combinazioni di colori speciali
-STR_6576    :Aggiunge i colori speciali al menu a cascata dei colori 
+STR_6575    :Permetti schemi di colore speciali
+STR_6576    :Aggiunge colori speciali al menu a tendina dei colori 
 STR_6577    :Velocità freni di blocco
 STR_6578    :Fissa un limite di velocità per i freni di blocco. In modalità sezione a blocchi, freni adiacenti con una velocità inferiore sono collegati con i freni di blocco.
 STR_6579    :I freni di blocco saranno impostati alla velocità predefinita quando salvati come progetto di percorso
@@ -3694,12 +3695,14 @@ STR_6583    :{WINDOW_COLOUR_2}Treni invertiti
 STR_6584    :Selezionare per far andare i treni al contrario
 STR_6585    :Impossibile effettuare modifiche…
 STR_6586    :OpenRCT2
-STR_6587    :Il tema principale di OpenRCT2 è un lavoro di Allister Brimble,{NEWLINE}con licensa CC BY-SA 4.0.
+STR_6587    :Il tema principale di OpenRCT2 è un lavoro di Allister Brimble,{NEWLINE}con licenza CC BY-SA 4.0.
 STR_6588    :Si ringrazia Herman Riddering per averci permesso di registrare il 35er Voigt.
 STR_6589    :Mostra i pulsanti di controllo della finestra a sinistra
-STR_6590    :Mostra i pulsanti di controllo della finestra a sinistra della barra del titolo invece che a destra.
+STR_6590    :Mostra i pulsanti di controllo della finestra (ad es. per chiuderla) a sinistra della barra del titolo invece che a destra.
 STR_6591    :Il dipendente sta riparando un’attrazione e non può essere licenziato.
 STR_6592    :Il dipendente sta ispezionando un’attrazione e non può essere licenziato.
+STR_6593    :Rimuovi recinto del parco
+STR_6594    :Analizzatore celle: Attiva/disattiva inclinazione muro
 
 
 #############

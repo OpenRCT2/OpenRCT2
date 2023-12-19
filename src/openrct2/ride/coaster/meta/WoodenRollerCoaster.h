@@ -23,7 +23,7 @@ constexpr RideTypeDescriptor WoodenRollerCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {TRACK_BOOSTER}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionWoodenRC),
+    SET_FIELD(TrackPaintFunctions, TrackDrawerDescriptor(GetTrackPaintFunctionWoodenRC)),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS |
@@ -50,6 +50,7 @@ constexpr RideTypeDescriptor WoodenRollerCoasterRTD =
         { COLOUR_BRIGHT_RED, COLOUR_BLACK, COLOUR_GREY },
         { COLOUR_YELLOW, COLOUR_DARK_BROWN, COLOUR_DARK_BROWN },
         { COLOUR_TEAL, COLOUR_BORDEAUX_RED, COLOUR_WHITE },
+        { COLOUR_LIGHT_BLUE, COLOUR_BLACK, COLOUR_BLACK },
         { COLOUR_LIGHT_BLUE, COLOUR_BLACK, COLOUR_DARK_BROWN },
         { COLOUR_SATURATED_BROWN_LIGHT, COLOUR_TAN_DARK, COLOUR_LIGHT_BROWN }, // Generic GCI 
         { COLOUR_TAN_DARK, COLOUR_DULL_BROWN_DARK, COLOUR_GREY }, // The Voyage /* Change supports to "minetrain" if possible in the future. */
