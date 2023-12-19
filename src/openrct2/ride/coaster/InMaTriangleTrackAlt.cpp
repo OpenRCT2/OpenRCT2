@@ -35,6 +35,13 @@ static constexpr uint32_t _InMaTriangleAltBrakeImages[NumOrthogonalDirections][2
     { GIGA_COASTER_BRAKE_NW_SE_OPEN_1, GIGA_COASTER_BRAKE_NW_SE_CLOSED_1 },
 };
 
+static constexpr uint32_t _InMaTriangleAltBlockBrakeImages[NumOrthogonalDirections][2] = {
+    { SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_OPEN_NE_SW, SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_CLOSED_NE_SW },
+    { GIGA_COASTER_BRAKE_NW_SE_OPEN_1, GIGA_COASTER_BRAKE_NW_SE_CLOSED_1 },
+    { SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_OPEN_SW_NE, SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_CLOSED_SW_NE },
+    { GIGA_COASTER_BRAKE_NW_SE_OPEN_1, GIGA_COASTER_BRAKE_NW_SE_CLOSED_1 },
+};
+
 static void InMaTriangleTrackAltStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -60,9 +67,9 @@ static void InMaTriangleTrackAltStation(
     else
     {
         static constexpr uint32_t imageIds[4][2] = {
-            { 18084, SPR_STATION_BASE_A_SW_NE },
+            { SPR_G2_GIGA_RC_DRIVE_TYRE_NE_SW, SPR_STATION_BASE_A_SW_NE },
             { 18085, SPR_STATION_BASE_A_NW_SE },
-            { 18084, SPR_STATION_BASE_A_SW_NE },
+            { SPR_G2_GIGA_RC_DRIVE_TYRE_SW_NE, SPR_STATION_BASE_A_SW_NE },
             { 18085, SPR_STATION_BASE_A_NW_SE },
         };
         if (trackElement.GetTrackType() == TrackElemType::EndStation)
@@ -70,7 +77,7 @@ static void InMaTriangleTrackAltStation(
             bool isClosed = trackElement.IsBrakeClosed();
             PaintAddImageAsParentRotated(
                 session, direction,
-                session.TrackColours[SCHEME_TRACK].WithIndex(_InMaTriangleAltBrakeImages[direction][isClosed]),
+                session.TrackColours[SCHEME_TRACK].WithIndex(_InMaTriangleAltBlockBrakeImages[direction][isClosed]),
                 { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
         }
         else
@@ -98,6 +105,26 @@ static void InMaTriangleTrackAltBrakes(
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(_InMaTriangleAltBrakeImages[direction][isClosed]),
+        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    }
+    PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+}
+
+static void InMaTriangleTrackAltBlockBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    bool isClosed = trackElement.IsBrakeClosed();
+    PaintAddImageAsParentRotated(
+        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(_InMaTriangleAltBlockBrakeImages[direction][isClosed]),
         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
@@ -158,8 +185,9 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionInMaTriangleAlt(int32_t trackType)
         case TrackElemType::MiddleStation:
             return InMaTriangleTrackAltStation;
         case TrackElemType::Brakes:
-        case TrackElemType::BlockBrakes:
             return InMaTriangleTrackAltBrakes;
+        case TrackElemType::BlockBrakes:
+            return InMaTriangleTrackAltBlockBrakes;
         case TrackElemType::Booster:
             return InMaTriangleTrackAltBooster;
     }

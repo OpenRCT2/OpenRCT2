@@ -2686,6 +2686,26 @@
         "y_offset": -4
     },
     {
+        "path": "track/intamin/block_brake_alt_closed_1.png",
+        "x_offset": -22,
+        "y_offset": -4
+    },
+    {
+        "path": "track/intamin/block_brake_alt_closed_3.png",
+        "x_offset": -22,
+        "y_offset": -4
+    },
+    {
+        "path": "track/intamin/block_brake_alt_open_1.png",
+        "x_offset": -22,
+        "y_offset": -4
+    },
+    {
+        "path": "track/intamin/block_brake_alt_open_3.png",
+        "x_offset": -22,
+        "y_offset": -4
+    },
+    {
         "path": "track/intamin/brake_alt_closed_1.png",
         "x_offset": -22,
         "y_offset": -4
@@ -2740,6 +2760,16 @@
         "x_offset": -13,
         "y_offset": -9,
         "palette": "keep"
+    },
+    {
+        "path": "track/intamin/drive_tyre_1.png",
+        "x_offset": -22,
+        "y_offset": -4
+    },
+    {
+        "path": "track/intamin/drive_tyre_3.png",
+        "x_offset": -22,
+        "y_offset": -4
     },
     {
         "path": "track/intamin/liftbooster_0.png",
