@@ -17,7 +17,7 @@ To read our Code of Conduct please refer to [Code of Conduct](CODE_OF_CONDUCT.md
  
 ## Team rules
 
-On top of the community rules the development and moderation team has to keep themselves to a specific set of rules.
+On top of the community rules, the development and moderation team has to keep themselves to a specific set of rules.
 
 ### Behavioural rules
 
