@@ -58,3 +58,4 @@ When finding a message on our social media the following signatures refer to the
 | Matthias (ZehMatt) | ~/z |
 | Karst (AuraSpecs)  | ~/a |
 | Michael (mrmbernardi) | ~/m |
+| Michael (Gymnasiast) | ~/g |
