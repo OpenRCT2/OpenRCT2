@@ -6,6 +6,7 @@
 - Feature: [OpenMusic#46] Added Mystic ride music style.
 - Feature: [OpenMusic#50] Added Rock style 4 ride music.
 - Feature: [#20825] Made setting the game speed a game action.
+- Feature: [#20830] Display author field on scenery window.
 - Feature: [#20853] [Plugin] Add “BaseTileElement.owner” which is saved in the park file.
 - Change: [#20790] Default ride price set to free if park charges for entry.
 - Change: [#20880] Restore removed default coaster colours.

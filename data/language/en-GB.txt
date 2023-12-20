@@ -3697,6 +3697,8 @@ STR_6591    :Staff member is currently fixing a ride and can’t be fired.
 STR_6592    :Staff member is currently inspecting a ride and can’t be fired.
 STR_6593    :Remove park fences
 STR_6594    :Tile Inspector: Toggle wall slope
+STR_6595    :{WINDOW_COLOUR_2}Author: {BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}Authors: {BLACK}{STRING}
 
 #############
 # Scenarios #
