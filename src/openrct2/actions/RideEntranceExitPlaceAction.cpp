@@ -162,7 +162,8 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     }
 
     auto z = station.GetBaseZ();
-    if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+    if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
+        && !gCheatsDisableClearanceChecks)
     {
         FootpathRemoveLitter({ _loc, z });
         WallRemoveAtZ({ _loc, z });
