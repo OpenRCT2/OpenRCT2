@@ -9,6 +9,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Tulio Paschoalin Leao (tupaschoal)
 * Olivier Wervers (Oli414)
 * Matthias Moninger (ZehMatt)
+* Michael Steenbeek (Gymnasiast)
 
 ## Former development team members
 * Lewis Fox (LRFLEW)
@@ -16,7 +17,6 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (zsilencer)
 * Richard Jenkins (rwjuk)
 * Aaron van Geffen (AaronVanGeffen)
-* Michael Steenbeek (Gymnasiast)
 * Rik Smeets (rik-smeets)
 
 ## Long term contributors
