@@ -390,7 +390,6 @@
     <ClInclude Include="ReplayManager.h" />
     <ClInclude Include="ride\CableLift.h" />
     <ClInclude Include="ride\coaster\BolligerMabillardTrack.hpp" />
-    <ClInclude Include="ride\coaster\JuniorRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\AirPoweredVerticalCoaster.h" />
     <ClInclude Include="ride\coaster\meta\AlpineCoaster.h" />
     <ClInclude Include="ride\coaster\meta\BobsleighCoaster.h" />
@@ -987,7 +986,6 @@
     <ClCompile Include="ride\water\RiverRapids.cpp" />
     <ClCompile Include="ride\water\SplashBoats.cpp" />
     <ClCompile Include="ride\water\SubmarineRide.cpp" />
-    <ClCompile Include="ride\water\WaterCoaster.cpp" />
     <ClCompile Include="scenario\Scenario.cpp" />
     <ClCompile Include="scenario\ScenarioRepository.cpp" />
     <ClCompile Include="scenario\ScenarioSources.cpp" />
