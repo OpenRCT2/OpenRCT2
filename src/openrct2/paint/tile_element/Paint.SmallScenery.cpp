@@ -42,12 +42,12 @@ static void PaintSmallScenerySupports(
     if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_NO_SUPPORTS))
         return;
 
-    auto special = 0;
+    auto transitionType = WoodenSupportTransitionType::None;
     auto supportHeight = height;
     if (supportHeight & 0xF)
     {
         supportHeight &= ~0xF;
-        special = 49;
+        transitionType = WoodenSupportTransitionType::Scenery;
     }
 
     auto supportImageTemplate = ImageId().WithRemap(0);
@@ -60,8 +60,9 @@ static void PaintSmallScenerySupports(
         supportImageTemplate = imageTemplate;
     }
 
-    auto supportType = (direction & 1) ? 1 : 0;
-    WoodenBSupportsPaintSetup(session, supportType, special, supportHeight, supportImageTemplate);
+    WoodenBSupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, supportHeight, supportImageTemplate,
+        transitionType);
 }
 
 static void SetSupportHeights(

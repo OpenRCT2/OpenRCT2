@@ -202,6 +202,9 @@ namespace OpenRCT2::Scripting
         DukValue direction_get() const;
         void direction_set(uint8_t value);
 
+        DukValue owner_get() const;
+        void owner_set(uint8_t value);
+
         void Invalidate();
 
     public:

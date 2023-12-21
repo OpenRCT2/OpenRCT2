@@ -21,7 +21,7 @@ constexpr RideTypeDescriptor AlpineCoasterRTD =
     SET_FIELD(ExtraTrackPieces,  {TRACK_HELIX_UP_BANKED_HALF}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, AlpineRC::GetTrackPaintFunction),
+    SET_FIELD(TrackPaintFunctions, TrackDrawerDescriptor(AlpineRC::GetTrackPaintFunction)),
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS |
                       RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN
     | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK

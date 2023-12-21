@@ -11,6 +11,7 @@ Includes all git commit authors. Aliases are GitHub usernames or community nickn
 * Matthias Moninger (ZehMatt) - Programming
 * Karst van Galen Last (AuraSpecs) - Lead OpenSoundEffects & OpenMusic
 * Michael Bernardi (mrmbernardi) - Programming
+* Michael Steenbeek (Gymnasiast) - Lead Localisation - Programming
 
 ## Support team
 * Kenton Boadway (Krutonium) - Lead OpenScenarios
@@ -21,7 +22,6 @@ Includes all git commit authors. Aliases are GitHub usernames or community nickn
 * (zsilencer)
 * Richard Jenkins (rwjuk)
 * Aaron van Geffen (AaronVanGeffen)
-* Michael Steenbeek (Gymnasiast)
 * Rik Smeets (rik-smeets)
 
 ## Long term contributors
@@ -110,13 +110,14 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Karst van Galen Last (AuraSpecs) - Ride paint (bounding boxes, extra track pieces), soundtrack, sound effects, misc.
 * (8street) - Misc.
 * Umar Ahmed (umar-ahmed) - MacOS file watcher
-* Andrew Arnold (fidwell) - Added window support for more scenery groups.
+* Andrew Arnold (fidwell) - Misc.
 * Josh Trzebiatowski (trzejos) - Ride and scenery filtering
 * (kyphii) - Extended color selection, reversed ride vehicles, misc.
 * Phumdol Lookthipnapha (beam41) - Misc.
 * Nikolas Parshook (nparshook) - Misc.
 * Wenzhao Qiu (qwzhaox) - Misc.
 * Tiago Reul (reul) - Misc.
+* Fredrik Tegnell (fredriktegnell) - Misc.
 
 ## Bug fixes & Refactors
 * (KirilAngelov)
@@ -266,7 +267,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Chinese (Traditional) - Harry Lam (daihakken)
 * Czech - Martin Černáč (octaroot), (Clonewayx), Tomáš Pazdiora (Aroidzap)
 * Danish - Lars P. Sørensen (LPSGizmo)
-* Dutch - Michael Steenbeek (Gymnasiast), Yannic Geurts (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute),  Marijn van der Werf (marijnvdwerf), Tom Kroes (ThePsionic); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (SijmenSchoon).
+* Dutch - Michael Steenbeek (Gymnasiast), Yannic Geurts (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute),  Marijn van der Werf (marijnvdwerf), Tom Kroes (ThePsionic), Karst van Galen Last (AuraSpecs); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (SijmenSchoon)
 * Esperanto - (tellovishous), Raymond Zhao (rzhao271)
 * Finnish - (DJHasis), (Zode), (TheWing)
 * French - (fbourigault), Joël Troch (JoelTroch), Michael Steenbeek (Gymnasiast), Romain Vigier (rmnvgr), (AziasYur), Hugo Courtial (s0r00t), David Delobel (incyclum), Nicolas Hawrysh (xp4xbox)
@@ -299,6 +300,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Allister Brimble
 * Herman Riddering
 * (Skyshard)
+* (Blackend Blue)
 
 ## Sound Effects
 * Karst van Galen Last (AuraSpecs)

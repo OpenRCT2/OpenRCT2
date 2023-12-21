@@ -1420,6 +1420,7 @@ public:
                 _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
                 break;
             case TrackElemType::BlockBrakes:
+            case TrackElemType::DiagBlockBrakes:
                 _currentBrakeSpeed2 = kRCT2DefaultBlockBrakeSpeed;
         }
         _currentTrackCurve = trackPiece | RideConstructionSpecialPieceSelected;
@@ -1479,8 +1480,8 @@ public:
         if (_currentlyShowingBrakeOrBoosterSpeed)
         {
             uint16_t brakeSpeed2 = ((_currentBrakeSpeed2 * 9) >> 2) & 0xFFFF;
-            if (_selectedTrackType == TrackElemType::Booster
-                || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::Booster))
+            if (TrackTypeIsBooster(_selectedTrackType)
+                || TrackTypeIsBooster(_currentTrackCurve & ~RideConstructionSpecialPieceSelected))
             {
                 brakeSpeed2 = GetBoosterSpeed(currentRide->type, brakeSpeed2);
             }
@@ -1836,8 +1837,8 @@ public:
 
         bool trackHasSpeedSetting = TrackTypeHasSpeedSetting(_selectedTrackType)
             || TrackTypeHasSpeedSetting(_currentTrackCurve & ~RideConstructionSpecialPieceSelected);
-        bool boosterTrackSelected = _selectedTrackType == TrackElemType::Booster
-            || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::Booster);
+        bool boosterTrackSelected = TrackTypeIsBooster(_selectedTrackType)
+            || TrackTypeIsBooster(_currentTrackCurve & ~RideConstructionSpecialPieceSelected);
 
         // Only necessary because TD6 writes speed and seat rotation to the same bits. Remove for new track design format.
         bool trackHasSpeedAndSeatRotation = _selectedTrackType == TrackElemType::BlockBrakes

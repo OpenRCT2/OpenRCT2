@@ -69,7 +69,9 @@ GameActions::Result TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting) con
 
     if (isExecuting)
     {
-        tileElement->AsTrack()->SetBrakeBoosterSpeed(_brakeSpeed);
+        GetTrackElementOriginAndApplyChanges(
+            { _loc, tileElement->GetDirection() }, tileElement->AsTrack()->GetTrackType(), _brakeSpeed, nullptr,
+            TRACK_ELEMENT_SET_BRAKE_BOOSTER_SPEED);
     }
     return res;
 }

@@ -1422,6 +1422,12 @@ namespace OpenRCT2::Scripting
         auto* ctx = scriptEngine.GetContext();
         switch (_element->GetType())
         {
+            case TileElementType::SmallScenery:
+            {
+                auto* el = _element->AsSmallScenery();
+                duk_push_int(ctx, el->GetTertiaryColour());
+                break;
+            }
             case TileElementType::LargeScenery:
             {
                 auto* el = _element->AsLargeScenery();
@@ -1447,6 +1453,13 @@ namespace OpenRCT2::Scripting
         ThrowIfGameStateNotMutable();
         switch (_element->GetType())
         {
+            case TileElementType::SmallScenery:
+            {
+                auto* el = _element->AsSmallScenery();
+                el->SetTertiaryColour(value);
+                Invalidate();
+                break;
+            }
             case TileElementType::LargeScenery:
             {
                 auto* el = _element->AsLargeScenery();
@@ -2020,6 +2033,20 @@ namespace OpenRCT2::Scripting
         }
     }
 
+    DukValue ScTileElement::owner_get() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine.GetContext();
+        duk_push_uint(ctx, _element->GetOwner());
+        return DukValue::take_from_stack(ctx);
+    }
+
+    void ScTileElement::owner_set(uint8_t value)
+    {
+        ThrowIfGameStateNotMutable();
+        _element->SetOwner(value);
+    }
+
     void ScTileElement::Invalidate()
     {
         MapInvalidateTileFull(_coords);
@@ -2038,6 +2065,7 @@ namespace OpenRCT2::Scripting
             ctx, &ScTileElement::occupiedQuadrants_get, &ScTileElement::occupiedQuadrants_set, "occupiedQuadrants");
         dukglue_register_property(ctx, &ScTileElement::isGhost_get, &ScTileElement::isGhost_set, "isGhost");
         dukglue_register_property(ctx, &ScTileElement::isHidden_get, &ScTileElement::isHidden_set, "isHidden");
+        dukglue_register_property(ctx, &ScTileElement::owner_get, &ScTileElement::owner_set, "owner");
 
         // Track | Small Scenery | Wall | Entrance | Large Scenery | Banner
         dukglue_register_property(ctx, &ScTileElement::direction_get, &ScTileElement::direction_set, "direction");
@@ -2049,6 +2077,8 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScTileElement::primaryColour_get, &ScTileElement::primaryColour_set, "primaryColour");
         dukglue_register_property(
             ctx, &ScTileElement::secondaryColour_get, &ScTileElement::secondaryColour_set, "secondaryColour");
+        dukglue_register_property(
+            ctx, &ScTileElement::tertiaryColour_get, &ScTileElement::tertiaryColour_set, "tertiaryColour");
 
         // Wall | Large Scenery | Banner
         dukglue_register_property(ctx, &ScTileElement::bannerIndex_get, &ScTileElement::bannerIndex_set, "bannerIndex");
@@ -2116,10 +2146,6 @@ namespace OpenRCT2::Scripting
         // Small Scenery only
         dukglue_register_property(ctx, &ScTileElement::age_get, &ScTileElement::age_set, "age");
         dukglue_register_property(ctx, &ScTileElement::quadrant_get, &ScTileElement::quadrant_set, "quadrant");
-
-        // Wall only
-        dukglue_register_property(
-            ctx, &ScTileElement::tertiaryColour_get, &ScTileElement::tertiaryColour_set, "tertiaryColour");
 
         // Entrance only
         dukglue_register_property(

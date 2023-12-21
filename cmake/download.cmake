@@ -29,7 +29,7 @@ function(download_openrct2_zip)
     endforeach(check_exist_file_or_dir)
 
     if (DOWNLOAD_ZIP)
-        message("Downloading ${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}")
+        message("Downloading ${DOWNLOAD_OPENRCT2_ZIP_URL} to ${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}")
         file(DOWNLOAD
             "${DOWNLOAD_OPENRCT2_ZIP_URL}" "${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}/${ZIP_FILE_NAME}"
             EXPECTED_HASH SHA1=${DOWNLOAD_OPENRCT2_SHA1} SHOW_PROGRESS)
