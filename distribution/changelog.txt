@@ -10,6 +10,7 @@
 - Feature: [OpenMusic#50] Added Rock style 4 ride music.
 - Change: [#20790] Default ride price set to free if park charges for entry.
 - Change: [#20880] Restore removed default coaster colours.
+- Fix: [#12299] Placing ride entrances/exits ignores the Disable Clearance Checks cheat.
 - Fix: [#13473] Guests complain that the default Circus price is too high.
 - Fix: [#15293] TTF fonts don’t format correctly with OpenGL.
 - Fix: [#16453] Tile inspector invisibility shortcut does not use a game action.
@@ -26,7 +27,6 @@
 - Fix: [#20807] Tertiary colour not copied with small scenery.
 - Fix: [#20964] Crash when player connects to server with a group assigned that no longer exists.
 - Fix: [#20995] TTF fonts don’t support hinting, outlines, or insets with OpenGL.
-- Fix: [#12299] Placing ride entrances/exits ignores the Disable Clearance Checks cheat.
 
 0.4.6 (2023-09-03)
 ------------------------------------------------------------------------
