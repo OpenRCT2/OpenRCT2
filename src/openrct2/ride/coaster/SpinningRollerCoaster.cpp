@@ -757,13 +757,13 @@ namespace SpinningRC
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SPINNING_LIFT_TRACK_VERTICAL + 9)),
-                                { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
+                                { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
                             break;
                         case 2:
                             PaintAddImageAsParentRotated(
                                 session, direction,
                                 session.TrackColours[SCHEME_TRACK].WithIndex((SPR_G2_SPINNING_LIFT_TRACK_VERTICAL + 10)),
-                                { 0, 0, height }, { { 4, 6, height + 8 }, { 2, 20, 31 } });
+                                { 0, 0, height }, { { 24, 6, height + 8 }, { 2, 20, 31 } });
                             break;
                         case 3:
                             PaintAddImageAsParentRotated(

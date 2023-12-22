@@ -37,7 +37,7 @@ constexpr const RideTypeDescriptor SpinningRollerCoasterRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(Heights, { 17, 24, 9, 11,}),
     SET_FIELD(MaxMass, 18),
-      SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftClassic, 4, 6 }),
+    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftWildMouse, 4, 6 }),
     SET_FIELD(RatingsMultipliers, { 56, 33, 10 }),
     SET_FIELD(UpkeepCosts, { 35, 20, 80, 8, 3, 10 }),
     SET_FIELD(BuildCosts, { 32.50_GBP, 2.00_GBP, 40, }),
