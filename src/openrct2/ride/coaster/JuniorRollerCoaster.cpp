@@ -21,7 +21,7 @@
 
 #include <algorithm>
 
-enum class JuniorRCSubType : uint8_t
+enum class TJuniorRCSubType : uint8_t
 {
     Junior = 1,
     WaterCoaster = 2,
@@ -1844,12 +1844,12 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_blockbrakes[2][4] = 
     },
 };
 
-template<JuniorRCSubType subType> constexpr uint8_t JuniorRCGetSubTypeOffset(const TrackElement& trackElement)
+template<TJuniorRCSubType subType> constexpr uint8_t JuniorRCGetSubTypeOffset(const TrackElement& trackElement)
 {
     return trackElement.HasChain() ? EnumValue(subType) : 0;
 }
 
-template<JuniorRCSubType subType>
+template<TJuniorRCSubType subType>
 static void JuniorRCPaintTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1871,7 +1871,7 @@ static void JuniorRCPaintTrackFlat(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-template<JuniorRCSubType subType>
+template<TJuniorRCSubType subType>
 static void JuniorRCPaintStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1891,7 +1891,7 @@ static void JuniorRCPaintStation(
         }
 
         // height += 2 (height)
-        if (trackElement.GetTrackType() == TrackElemType::EndStation && subType == JuniorRCSubType::WaterCoaster)
+        if (trackElement.GetTrackType() == TrackElemType::EndStation && subType == TJuniorRCSubType::WaterCoaster)
         {
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_block_brake[isBraked][direction]);
         }
@@ -1911,7 +1911,7 @@ static void JuniorRCPaintStation(
         }
 
         // height += 2 (height)
-        if (trackElement.GetTrackType() == TrackElemType::EndStation && subType == JuniorRCSubType::WaterCoaster)
+        if (trackElement.GetTrackType() == TrackElemType::EndStation && subType == TJuniorRCSubType::WaterCoaster)
         {
             imageId = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_block_brake[isBraked][direction]);
         }
@@ -1931,7 +1931,7 @@ static void JuniorRCPaintStation(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-template<JuniorRCSubType subType>
+template<TJuniorRCSubType subType>
 static void JuniorRCPaintTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1956,7 +1956,7 @@ static void JuniorRCPaintTrack25DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-template<JuniorRCSubType subType>
+template<TJuniorRCSubType subType>
 static void JuniorRCPaintTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -1988,7 +1988,7 @@ static void JuniorRCPaintTrackFlatTo25DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-template<JuniorRCSubType subType>
+template<TJuniorRCSubType subType>
 static void JuniorRCPaintTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -2751,7 +2751,7 @@ static void JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<TJuniorRCSubType::Junior>(trackElement);
     TrackPaintUtilRightQuarterTurn5TilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_left_quarter_turn_5_tiles_25_deg_up[subTypeOffset],
@@ -2830,7 +2830,7 @@ static void JuniorRCPaintTrackRightQuarterTurn5Tiles25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<TJuniorRCSubType::Junior>(trackElement);
     TrackPaintUtilRightQuarterTurn5TilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_right_quarter_turn_5_tiles_25_deg_up[subTypeOffset], defaultRightQuarterTurn5TilesOffsets,
@@ -3300,7 +3300,7 @@ static void JuniorRCPaintTrackRightQuarterTurn3Tiles25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<TJuniorRCSubType::Junior>(trackElement);
     auto imageId = ImageId(0);
     CoordsXY offset;
     BoundBoxXY bb;
@@ -3383,7 +3383,7 @@ static void JuniorRCPaintTrackRightQuarterTurn3Tiles25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<TJuniorRCSubType::Junior>(trackElement);
     auto imageId = ImageId(0);
     CoordsXY offset;
     BoundBoxXY bb;
@@ -4414,7 +4414,7 @@ static void JuniorRCRightEighthToOrthogonalBankPaintSetup(
     JuniorRCLeftEighthToDiagBankPaintSetup(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
-template<JuniorRCSubType subType>
+template<TJuniorRCSubType subType>
 static void JuniorRCPaintTrackDiagFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4477,7 +4477,7 @@ static void JuniorRCTrackDiagBlockBrakes(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-template<JuniorRCSubType subType>
+template<TJuniorRCSubType subType>
 static void JuniorRCPaintTrackDiag25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4499,7 +4499,7 @@ static void JuniorRCPaintTrackDiag25DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-template<JuniorRCSubType subType>
+template<TJuniorRCSubType subType>
 static void JuniorRCPaintTrackDiagFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4526,7 +4526,7 @@ static void JuniorRCPaintTrackDiagFlatTo60DegUp(
     const TrackElement& trackElement)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<TJuniorRCSubType::Junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
@@ -4544,7 +4544,7 @@ static void JuniorRCPaintTrackDiagFlatTo60DegUp(
     PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
 }
 
-template<JuniorRCSubType subType>
+template<TJuniorRCSubType subType>
 static void JuniorRCPaintTrackDiag25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4571,7 +4571,7 @@ static void JuniorRCPaintTrackDiag60DegUpToFlat(
     const TrackElement& trackElement)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<TJuniorRCSubType::Junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
@@ -4589,7 +4589,7 @@ static void JuniorRCPaintTrackDiag60DegUpToFlat(
     PaintUtilSetGeneralSupportHeight(session, height + 64, 0x20);
 }
 
-template<JuniorRCSubType subType>
+template<TJuniorRCSubType subType>
 static void JuniorRCPaintTrackDiag25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4611,7 +4611,7 @@ static void JuniorRCPaintTrackDiag25DegDown(
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
 }
 
-template<JuniorRCSubType subType>
+template<TJuniorRCSubType subType>
 static void JuniorRCPaintTrackDiagFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4639,7 +4639,7 @@ static void JuniorRCPaintTrackDiagFlatTo60DegDown(
     const TrackElement& trackElement)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<TJuniorRCSubType::Junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
@@ -4658,7 +4658,7 @@ static void JuniorRCPaintTrackDiagFlatTo60DegDown(
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
 }
 
-template<JuniorRCSubType subType>
+template<TJuniorRCSubType subType>
 static void JuniorRCPaintTrackDiag25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -4686,7 +4686,7 @@ static void JuniorRCPaintTrackDiag60DegDownToFlat(
     const TrackElement& trackElement)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<TJuniorRCSubType::Junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
@@ -5122,7 +5122,7 @@ static void JuniorRCPaintTrack60DegUp(
     const TrackElement& trackElement)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<TJuniorRCSubType::Junior>(trackElement);
 
     auto image_id = session.TrackColours[SCHEME_TRACK].WithIndex(junior_rc_track_pieces_60_deg_up[subTypeOffset][direction]);
 
@@ -5193,7 +5193,7 @@ static void JuniorRCPaintTrack25DegUpTo60DegUp(
     const TrackElement& trackElement)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<TJuniorRCSubType::Junior>(trackElement);
 
     auto image_id = session.TrackColours[SCHEME_TRACK].WithIndex(
         junior_rc_track_pieces_25_deg_up_to_60_deg_up[subTypeOffset][direction][0]);
@@ -5257,7 +5257,7 @@ static void JuniorRCPaintTrack60DegUpTo25DegUp(
     const TrackElement& trackElement)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<TJuniorRCSubType::Junior>(trackElement);
 
     auto image_id = session.TrackColours[SCHEME_TRACK].WithIndex(
         junior_rc_track_pieces_60_deg_up_to_25_deg_up[subTypeOffset][direction][0]);
@@ -5320,7 +5320,7 @@ static void JuniorRCPaintTrackDiag60DegUp(
     const TrackElement& trackElement)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<TJuniorRCSubType::Junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
@@ -5343,7 +5343,7 @@ static void JuniorRCPaintTrackDiag60DegDown(
     const TrackElement& trackElement)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<TJuniorRCSubType::Junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
@@ -5366,7 +5366,7 @@ static void JuniorRCPaintTrackDiag25DegUpTo60DegUp(
     const TrackElement& trackElement)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<TJuniorRCSubType::Junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
@@ -5390,7 +5390,7 @@ static void JuniorRCPaintTrackDiag60DegUpTo25DegUp(
     const TrackElement& trackElement)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<TJuniorRCSubType::Junior>(trackElement);
 
     if (direction == 1 && trackSequence == 3)
     {
@@ -5425,7 +5425,7 @@ static void JuniorRCPaintTrackDiag25DegDownTo60DegDown(
     const TrackElement& trackElement)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<TJuniorRCSubType::Junior>(trackElement);
 
     if (direction == 3 && trackSequence == 0)
     {
@@ -5460,7 +5460,7 @@ static void JuniorRCPaintTrackDiag60DegDownTo25DegDown(
     const TrackElement& trackElement)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
-    auto subTypeOffset = JuniorRCGetSubTypeOffset<JuniorRCSubType::Junior>(trackElement);
+    auto subTypeOffset = JuniorRCGetSubTypeOffset<TJuniorRCSubType::Junior>(trackElement);
 
     TrackPaintUtilDiagTilesPaint(
         session, 1, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
@@ -5638,7 +5638,7 @@ static void JuniorRCFlatTo60DegDownPaintSetup(
 }
 
 /* rct2: 0x005189B0 */
-template<JuniorRCSubType subType>
+template<TJuniorRCSubType subType>
 static void JuniorRC25DegDownPaintSetup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -5647,7 +5647,7 @@ static void JuniorRC25DegDownPaintSetup(
 }
 
 /* rct2: 0x00518FE8 */
-template<JuniorRCSubType subType>
+template<TJuniorRCSubType subType>
 static void JuniorRCFlatTo25DegDownPaintSetup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -5656,7 +5656,7 @@ static void JuniorRCFlatTo25DegDownPaintSetup(
 }
 
 /* rct2: 0x00518CCC */
-template<JuniorRCSubType subType>
+template<TJuniorRCSubType subType>
 static void JuniorRC25DegDownToFlatPaintSetup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -5717,7 +5717,7 @@ static void JuniorRCTrackOnRidePhoto(
 }
 
 /* 0x008AAA0C */
-template<JuniorRCSubType subType> TRACK_PAINT_FUNCTION GetTrackPaintFunctionJuniorRCTemplate(int32_t trackType)
+template<TJuniorRCSubType subType> TRACK_PAINT_FUNCTION GetTrackPaintFunctionJuniorRCTemplate(int32_t trackType)
 {
     switch (trackType)
     {
@@ -5947,10 +5947,10 @@ template<JuniorRCSubType subType> TRACK_PAINT_FUNCTION GetTrackPaintFunctionJuni
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionJuniorRC(int32_t trackType)
 {
-    return GetTrackPaintFunctionJuniorRCTemplate<JuniorRCSubType::Junior>(trackType);
+    return GetTrackPaintFunctionJuniorRCTemplate<TJuniorRCSubType::Junior>(trackType);
 }
 
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionWaterRC(int32_t trackType)
 {
-    return GetTrackPaintFunctionJuniorRCTemplate<JuniorRCSubType::WaterCoaster>(trackType);
+    return GetTrackPaintFunctionJuniorRCTemplate<TJuniorRCSubType::WaterCoaster>(trackType);
 }
