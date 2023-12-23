@@ -120,8 +120,8 @@ namespace SingleRailRC
                 { { 0, 6, height + 3 }, { 32, 20, 1 } });
         }
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][2]), { 0, 0, height - 2 },
-            { { 0, 2, height }, { 32, 28, 2 } });
+            session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][2]),
+            { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 2 } });
         DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Tubes);
         TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 4, 7);
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);

@@ -60,7 +60,7 @@ static void PaintTopSpinRiders(
 
 static void PaintTopSpinSeat(
     PaintSession& session, const Ride& ride, const RideObjectEntry& rideEntry, const Vehicle* vehicle, Direction direction,
-    uint32_t armRotation, uint32_t seatRotation, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
+    uint32_t armRotation, uint32_t seatRotation, const CoordsXYZ& offset, const BoundBoxXYZ& bb, ImageId stationColour)
 {
     if (armRotation >= std::size(TopSpinSeatHeightOffset))
         return;
@@ -101,11 +101,10 @@ static void PaintTopSpinSeat(
             break;
     }
 
-    auto imageFlags = session.TrackColours[SCHEME_MISC];
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    if (imageFlags != TrackGhost)
+    if (stationColour != TrackStationColour)
     {
-        imageTemplate = imageFlags;
+        imageTemplate = stationColour;
     }
 
     PaintAddImageAsChild(session, imageTemplate.WithIndex(seatImageIndex), seatCoords, bb);
@@ -116,8 +115,7 @@ static void PaintTopSpinSeat(
 }
 
 static void PaintTopSpinVehicle(
-    PaintSession& session, int32_t al, int32_t cl, const Ride& ride, uint8_t direction, int32_t height,
-    const TrackElement& tileElement)
+    PaintSession& session, int32_t al, int32_t cl, const Ride& ride, uint8_t direction, int32_t height, ImageId stationColour)
 {
     const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
     if (rideEntry == nullptr)
@@ -149,12 +147,11 @@ static void PaintTopSpinVehicle(
     CoordsXYZ offset = { al, cl, height };
     BoundBoxXYZ bb = { { al + 16, cl + 16, height }, { 24, 24, 90 } };
 
-    auto imageFlags = session.TrackColours[SCHEME_MISC];
     auto supportImageTemplate = ImageId(0, ride.track_colour[0].main, ride.track_colour[0].supports);
     auto armImageTemplate = ImageId(0, ride.track_colour[0].main, ride.track_colour[0].additional);
-    if (imageFlags != TrackGhost)
+    if (stationColour != TrackStationColour)
     {
-        supportImageTemplate = imageFlags;
+        supportImageTemplate = stationColour;
         armImageTemplate = supportImageTemplate;
     }
 
@@ -167,7 +164,7 @@ static void PaintTopSpinVehicle(
     PaintAddImageAsChild(session, armImageTemplate.WithIndex(imageIndex), offset, bb);
 
     // Seat
-    PaintTopSpinSeat(session, ride, *rideEntry, vehicle, direction, armRotation, seatRotation, offset, bb);
+    PaintTopSpinSeat(session, ride, *rideEntry, vehicle, direction, armRotation, seatRotation, offset, bb, stationColour);
 
     // Right hand arm
     imageIndex = carEntry.base_image_id + 476 + armImageOffset + ((direction & 1) * 48);
@@ -189,36 +186,37 @@ static void PaintTopSpin(
 
     int32_t edges = edges_3x3[trackSequence];
 
+    auto stationColour = GetStationColourScheme(session, trackElement);
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.TrackColours[SCHEME_MISC]);
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
 
     const StationObject* stationObject = ride.GetStationObject();
 
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_MISC], height, fenceSpritesRope,
+        session, edges, session.MapPosition, trackElement, ride, stationColour, height, fenceSpritesRope,
         session.CurrentRotation);
 
     switch (trackSequence)
     {
         case 1:
-            PaintTopSpinVehicle(session, 32, 32, ride, direction, height, trackElement);
+            PaintTopSpinVehicle(session, 32, 32, ride, direction, height, stationColour);
             break;
         case 3:
-            PaintTopSpinVehicle(session, 32, -32, ride, direction, height, trackElement);
+            PaintTopSpinVehicle(session, 32, -32, ride, direction, height, stationColour);
             break;
         case 5:
-            PaintTopSpinVehicle(session, 0, -32, ride, direction, height, trackElement);
+            PaintTopSpinVehicle(session, 0, -32, ride, direction, height, stationColour);
             break;
         case 6:
-            PaintTopSpinVehicle(session, -32, 32, ride, direction, height, trackElement);
+            PaintTopSpinVehicle(session, -32, 32, ride, direction, height, stationColour);
             break;
         case 7:
-            PaintTopSpinVehicle(session, -32, -32, ride, direction, height, trackElement);
+            PaintTopSpinVehicle(session, -32, -32, ride, direction, height, stationColour);
             break;
         case 8:
-            PaintTopSpinVehicle(session, -32, 0, ride, direction, height, trackElement);
+            PaintTopSpinVehicle(session, -32, 0, ride, direction, height, stationColour);
             break;
     }
 

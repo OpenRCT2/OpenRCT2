@@ -23,7 +23,8 @@ static void PaintFacility(
     const TrackElement& trackElement)
 {
     bool hasSupports = WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.TrackColours[SCHEME_3]);
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        GetShopSupportColourScheme(session, trackElement));
 
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -44,7 +45,7 @@ static void PaintFacility(
     auto imageId = imageTemplate.WithIndex(imageIndex);
     if (hasSupports)
     {
-        auto foundationImageTemplate = session.TrackColours[SCHEME_3];
+        auto foundationImageTemplate = GetShopSupportColourScheme(session, trackElement);
         auto foundationImageIndex = (direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS;
         auto foundationImageId = foundationImageTemplate.WithIndex(foundationImageIndex);
         PaintAddImageAsParent(session, foundationImageId, offset, bb);

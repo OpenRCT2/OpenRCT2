@@ -384,7 +384,7 @@ static void PaintGhostTrainStation(
         SPR_STATION_BASE_B_NW_SE,
     };
 
-    imageId = session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction]);
+    imageId = GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 3 } });
 
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(GhostTrainTrackPiecesFlat[direction]);
@@ -501,7 +501,7 @@ static void PaintGhostTrainTrackSpinningTunnel(
     auto tunnelImage = GetTunnelDoorsImageStraightFlat(trackElement, direction);
     PaintUtilPushTunnelRotated(session, direction, height, tunnelImage);
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, GetStationColourScheme(session, trackElement));
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);

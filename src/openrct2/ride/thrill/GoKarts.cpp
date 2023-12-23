@@ -372,15 +372,16 @@ static void PaintGoKartsStation(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
     }
 
+    auto stationColour = GetStationColourScheme(session, trackElement);
     if (direction == 0 || direction == 2)
     {
         hasFence = TrackPaintUtilHasFence(EDGE_NW, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height);
+        TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height, stationColour);
     }
     else
     {
         hasFence = TrackPaintUtilHasFence(EDGE_NE, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, height);
+        TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, height, stationColour);
     }
 
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
@@ -400,12 +401,12 @@ static void PaintGoKartsStation(
     if (direction == 0 || direction == 2)
     {
         hasFence = TrackPaintUtilHasFence(EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, height);
+        TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, height, stationColour);
     }
     else
     {
         hasFence = TrackPaintUtilHasFence(EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height);
+        TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height, stationColour);
     }
 
     if (trackElement.GetTrackType() == TrackElemType::EndStation)

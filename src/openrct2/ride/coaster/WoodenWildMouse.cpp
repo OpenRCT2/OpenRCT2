@@ -157,8 +157,8 @@ static void WoodenWildMouseTrackStation(
     };
 
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][1]), { 0, 0, height - 2 },
-        { { 0, 2, height }, { 32, 28, 1 } });
+        session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]),
+        { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 1 } });
     PaintAddImageAsChildRotated(
         session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 6, height },
         { { 0, 0, height }, { 32, 20, 1 } });

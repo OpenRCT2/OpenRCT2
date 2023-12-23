@@ -59,7 +59,7 @@ static constexpr uint32_t SwingingInverterShipFrameSprites[] = {
 };
 
 static void PaintSwingingInverterShipStructure(
-    PaintSession& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height, ImageId stationColour)
 {
     const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
     if (rideEntry == nullptr)
@@ -100,10 +100,9 @@ static void PaintSwingingInverterShipStructure(
     }
 
     auto vehicleImageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != TrackGhost)
+    if (stationColour != TrackStationColour)
     {
-        vehicleImageTemplate = imageFlags;
+        vehicleImageTemplate = stationColour;
     }
     auto frameImageTemplate = session.TrackColours[SCHEME_TRACK];
     auto vehicleImageId = vehicleImageTemplate.WithIndex(vehicleImageIndex);
@@ -181,19 +180,20 @@ static void PaintSwingingInverterShip(
         }
     }
 
+    auto stationColour = GetStationColourScheme(session, trackElement);
     switch (relativeTrackSequence)
     {
         case 1:
-            PaintSwingingInverterShipStructure(session, ride, direction, 48, height + 7);
+            PaintSwingingInverterShipStructure(session, ride, direction, 48, height + 7, stationColour);
             break;
         case 2:
-            PaintSwingingInverterShipStructure(session, ride, direction, 16, height + 7);
+            PaintSwingingInverterShipStructure(session, ride, direction, 16, height + 7, stationColour);
             break;
         case 0:
-            PaintSwingingInverterShipStructure(session, ride, direction, -16, height + 7);
+            PaintSwingingInverterShipStructure(session, ride, direction, -16, height + 7, stationColour);
             break;
         case 3:
-            PaintSwingingInverterShipStructure(session, ride, direction, -48, height + 7);
+            PaintSwingingInverterShipStructure(session, ride, direction, -48, height + 7, stationColour);
             break;
     }
 
