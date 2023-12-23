@@ -478,14 +478,14 @@ static void PaintSplashBoatsTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegUpImageId[direction]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegUpFrontImageId[direction]);
+    auto imageId = session.TrackColours.WithIndex(SplashBoats25DegUpImageId[direction]);
+    auto frontImageId = session.TrackColours.WithIndex(SplashBoats25DegUpFrontImageId[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 50 } });
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.TrackColours[SCHEME_SUPPORTS],
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::Up25Deg);
 
     if (direction == 0 || direction == 3)
@@ -504,15 +504,15 @@ static void PaintSplashBoatsTrack60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats60DegUpImageId[direction]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats60DegUpFrontImageId[direction]);
+    auto imageId = session.TrackColours.WithIndex(SplashBoats60DegUpImageId[direction]);
+    auto frontImageId = session.TrackColours.WithIndex(SplashBoats60DegUpFrontImageId[direction]);
 
     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
         session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 98 } });
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.TrackColours[SCHEME_SUPPORTS],
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::Up60Deg);
 
     if (direction == 0 || direction == 3)
@@ -531,14 +531,14 @@ static void PaintSplashBoatsTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoatsFlatTo25DegUpImageId[direction]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoatsFlatTo25DegUpFrontImageId[direction]);
+    auto imageId = session.TrackColours.WithIndex(SplashBoatsFlatTo25DegUpImageId[direction]);
+    auto frontImageId = session.TrackColours.WithIndex(SplashBoatsFlatTo25DegUpFrontImageId[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 42 } });
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.TrackColours[SCHEME_SUPPORTS],
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::FlatToUp25Deg);
 
     if (direction == 0 || direction == 3)
@@ -557,14 +557,14 @@ static void PaintSplashBoatsTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegUpToFlatImageId[direction]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegUpToFlatFrontImageId[direction]);
+    auto imageId = session.TrackColours.WithIndex(SplashBoats25DegUpToFlatImageId[direction]);
+    auto frontImageId = session.TrackColours.WithIndex(SplashBoats25DegUpToFlatFrontImageId[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.TrackColours[SCHEME_SUPPORTS],
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::Up25DegToFlat);
 
     if (direction == 0 || direction == 3)
@@ -583,15 +583,15 @@ static void PaintSplashBoatsTrack25DegUpTo60DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegUpTo60DegUpImageId[direction]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegUpTo60DegUpFrontImageId[direction]);
+    auto imageId = session.TrackColours.WithIndex(SplashBoats25DegUpTo60DegUpImageId[direction]);
+    auto frontImageId = session.TrackColours.WithIndex(SplashBoats25DegUpTo60DegUpFrontImageId[direction]);
 
     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
         session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.TrackColours[SCHEME_SUPPORTS],
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::Up25DegToUp60Deg);
 
     if (direction == 0 || direction == 3)
@@ -610,15 +610,15 @@ static void PaintSplashBoatsTrack60DegUpTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats60DegUpTo25DegUpImageId[direction]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats60DegUpTo25DegUpFrontImageId[direction]);
+    auto imageId = session.TrackColours.WithIndex(SplashBoats60DegUpTo25DegUpImageId[direction]);
+    auto frontImageId = session.TrackColours.WithIndex(SplashBoats60DegUpTo25DegUpFrontImageId[direction]);
 
     session.WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
         session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.TrackColours[SCHEME_SUPPORTS],
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
         WoodenSupportTransitionType::Up60DegToUp25Deg);
 
     if (direction == 0 || direction == 3)
@@ -637,15 +637,15 @@ static void PaintSplashBoatsTrack25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegDownImageId[direction]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegDownFrontImageId[direction]);
+    auto imageId = session.TrackColours.WithIndex(SplashBoats25DegDownImageId[direction]);
+    auto frontImageId = session.TrackColours.WithIndex(SplashBoats25DegDownFrontImageId[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 50 } });
 
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, (direction + 2) % NumOrthogonalDirections, height,
-        session.TrackColours[SCHEME_SUPPORTS], WoodenSupportTransitionType::Up25Deg);
+        session.SupportColours, WoodenSupportTransitionType::Up25Deg);
 
     if (direction == 0 || direction == 3)
     {
@@ -670,15 +670,15 @@ static void PaintSplashBoatsTrackFlatTo25DegDown(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoatsFlatTo25DegDownImageId[direction]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoatsFlatTo25DegDownFrontImageId[direction]);
+    auto imageId = session.TrackColours.WithIndex(SplashBoatsFlatTo25DegDownImageId[direction]);
+    auto frontImageId = session.TrackColours.WithIndex(SplashBoatsFlatTo25DegDownFrontImageId[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
 
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, (direction + 2) % NumOrthogonalDirections, height,
-        session.TrackColours[SCHEME_SUPPORTS], WoodenSupportTransitionType::Up25DegToFlat);
+        session.SupportColours, WoodenSupportTransitionType::Up25DegToFlat);
 
     if (direction == 0 || direction == 3)
     {
@@ -710,15 +710,15 @@ static void PaintSplashBoatsTrack25DegDownToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegDownToFlatImageId[direction]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(SplashBoats25DegDownToFlatFrontImageId[direction]);
+    auto imageId = session.TrackColours.WithIndex(SplashBoats25DegDownToFlatImageId[direction]);
+    auto frontImageId = session.TrackColours.WithIndex(SplashBoats25DegDownToFlatFrontImageId[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 42 } });
 
     WoodenASupportsPaintSetupRotated(
         session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, (direction + 2) % NumOrthogonalDirections, height,
-        session.TrackColours[SCHEME_SUPPORTS], WoodenSupportTransitionType::FlatToUp25Deg);
+        session.SupportColours, WoodenSupportTransitionType::FlatToUp25Deg);
 
     if (direction == 0 || direction == 3)
     {
@@ -742,28 +742,27 @@ static void PaintSplashBoatsTrackFlat(
 
     if (direction & 1)
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        imageId = session.TrackColours.WithIndex(
             (direction == 1 ? SPR_SPLASH_BOATS_FLAT_TOP_NW_SE : SPR_SPLASH_BOATS_FLAT_TOP_SE_NW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height }, { 20, 32, 2 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        imageId = session.TrackColours.WithIndex(
             (direction == 1 ? SPR_SPLASH_BOATS_FLAT_SIDE_NW_SE : SPR_SPLASH_BOATS_FLAT_SIDE_SE_NW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
     }
     else
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        imageId = session.TrackColours.WithIndex(
             (direction == 0 ? SPR_SPLASH_BOATS_FLAT_TOP_SW_NE : SPR_SPLASH_BOATS_FLAT_TOP_NE_SW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        imageId = session.TrackColours.WithIndex(
             (direction == 0 ? SPR_SPLASH_BOATS_FLAT_SIDE_SW_NE : SPR_SPLASH_BOATS_FLAT_SIDE_NE_SW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
     }
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
-        session.TrackColours[SCHEME_SUPPORTS]);
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     if (direction & 1)
     {
@@ -785,7 +784,7 @@ static void PaintSplashBoatsStation(
 {
     if (direction & 1)
     {
-        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        auto imageId = session.TrackColours.WithIndex(
             (direction == 1 ? SPR_SPLASH_BOATS_FLAT_TOP_NW_SE : SPR_SPLASH_BOATS_FLAT_TOP_SE_NW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 6, 0, height + 3 }, { 20, 32, 1 } });
 
@@ -794,7 +793,7 @@ static void PaintSplashBoatsStation(
     }
     else
     {
-        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        auto imageId = session.TrackColours.WithIndex(
             (direction == 0 ? SPR_SPLASH_BOATS_FLAT_TOP_SW_NE : SPR_SPLASH_BOATS_FLAT_TOP_NE_SW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
 
@@ -803,8 +802,7 @@ static void PaintSplashBoatsStation(
     }
 
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
-        session.TrackColours[SCHEME_SUPPORTS]);
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 7, trackElement);
 
@@ -820,9 +818,9 @@ static void PaintSplashBoatsTrackLeftQuarterTurn5Tiles(
     const TrackElement& trackElement)
 {
     TrackPaintUtilRightQuarterTurn5TilesPaint2(
-        session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], RiverRaftsLeftQuarterTurn5_Top);
+        session, height, direction, trackSequence, session.TrackColours, RiverRaftsLeftQuarterTurn5_Top);
     TrackPaintUtilRightQuarterTurn5TilesPaint2(
-        session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], RiverRaftsLeftQuarterTurn5_Side);
+        session, height, direction, trackSequence, session.TrackColours, RiverRaftsLeftQuarterTurn5_Side);
 
     if (trackSequence != 1 && trackSequence != 4)
     {
@@ -866,8 +864,7 @@ static void PaintSplashBoatsTrackLeftQuarterTurn5Tiles(
         };
 
         WoodenASupportsPaintSetup(
-            session, WoodenSupportType::Truss, supportTypes[direction][trackSequence], height,
-            session.TrackColours[SCHEME_SUPPORTS]);
+            session, WoodenSupportType::Truss, supportTypes[direction][trackSequence], height, session.SupportColours);
     }
 
     switch (trackSequence)
@@ -933,9 +930,9 @@ static void PaintSplashBoatsTrackRightQuarterTurn5Tiles(
     const TrackElement& trackElement)
 {
     TrackPaintUtilRightQuarterTurn5TilesPaint2(
-        session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], RiverRaftsRightQuarterTurn5_Top);
+        session, height, direction, trackSequence, session.TrackColours, RiverRaftsRightQuarterTurn5_Top);
     TrackPaintUtilRightQuarterTurn5TilesPaint2(
-        session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], RiverRaftsRightQuarterTurn5_Side);
+        session, height, direction, trackSequence, session.TrackColours, RiverRaftsRightQuarterTurn5_Side);
 
     if (trackSequence != 1 && trackSequence != 4)
     {
@@ -979,8 +976,7 @@ static void PaintSplashBoatsTrackRightQuarterTurn5Tiles(
         };
 
         WoodenASupportsPaintSetup(
-            session, WoodenSupportType::Truss, supportTypes[direction][trackSequence], height,
-            session.TrackColours[SCHEME_SUPPORTS]);
+            session, WoodenSupportType::Truss, supportTypes[direction][trackSequence], height, session.SupportColours);
     }
 
     switch (trackSequence)
@@ -1072,8 +1068,8 @@ static void PaintSplashBoatsTrackSBendLeft(
         },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][1]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][trackSequence][0]);
+    auto frontImageId = session.TrackColours.WithIndex(imageIds[direction][trackSequence][1]);
     int16_t bboy;
 
     switch (trackSequence)
@@ -1083,8 +1079,7 @@ static void PaintSplashBoatsTrackSBendLeft(
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
             WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
+                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
         case 1:
@@ -1094,8 +1089,7 @@ static void PaintSplashBoatsTrackSBendLeft(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
 
             WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
+                session, WoodenSupportType::Truss, WoodenSupportSubType::Corner3, direction, height, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1109,8 +1103,7 @@ static void PaintSplashBoatsTrackSBendLeft(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
 
             WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
+                session, WoodenSupportType::Truss, WoodenSupportSubType::Corner1, direction, height, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1122,8 +1115,7 @@ static void PaintSplashBoatsTrackSBendLeft(
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
             WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
+                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
     }
@@ -1178,8 +1170,8 @@ static void PaintSplashBoatsTrackSBendRight(
         },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][1]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][trackSequence][0]);
+    auto frontImageId = session.TrackColours.WithIndex(imageIds[direction][trackSequence][1]);
     int16_t bboy;
 
     switch (trackSequence)
@@ -1189,8 +1181,7 @@ static void PaintSplashBoatsTrackSBendRight(
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
             WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
+                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
         case 1:
@@ -1200,8 +1191,7 @@ static void PaintSplashBoatsTrackSBendRight(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
 
             WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
+                session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1215,8 +1205,7 @@ static void PaintSplashBoatsTrackSBendRight(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
 
             WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
+                session, WoodenSupportType::Truss, WoodenSupportSubType::Corner0, direction, height, session.SupportColours);
 
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -1228,8 +1217,7 @@ static void PaintSplashBoatsTrackSBendRight(
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
             WoodenASupportsPaintSetupRotated(
-                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
-                session.TrackColours[SCHEME_SUPPORTS]);
+                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             break;
     }

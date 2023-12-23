@@ -166,8 +166,8 @@ enum
 
 static ImageId AirPoweredVerticalRCGetSupportColour(PaintSession& session)
 {
-    auto colourFlags = session.TrackColours[SCHEME_SUPPORTS];
-    auto trackColour = session.TrackColours[SCHEME_TRACK];
+    auto colourFlags = session.SupportColours;
+    auto trackColour = session.TrackColours;
     if (trackColour.HasSecondary())
     {
         colourFlags = colourFlags.WithSecondary(trackColour.GetSecondary());
@@ -187,10 +187,10 @@ static void AirPoweredVerticalRCTrackFlat(
         SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE,
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
@@ -213,10 +213,10 @@ static void AirPoweredVerticalRCTrackStation(
         session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]),
         { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 1 } });
     PaintAddImageAsChildRotated(
-        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 0, height },
+        session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
         { { 0, 6, height }, { 32, 20, 1 } });
 
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
 
     TrackPaintUtilDrawNarrowStationPlatform(session, ride, direction, height, 5, trackElement);
 
@@ -261,8 +261,7 @@ static void AirPoweredVerticalRCTrackRightQuarterTurn5(
         },
     };
 
-    TrackPaintUtilRightQuarterTurn5TilesPaint3(
-        session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], imageIds);
+    TrackPaintUtilRightQuarterTurn5TilesPaint3(session, height, direction, trackSequence, session.TrackColours, imageIds);
     TrackPaintUtilRightQuarterTurn5TilesWoodenSupports(session, height, direction, trackSequence);
     TrackPaintUtilRightQuarterTurn5TilesTunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
 
@@ -327,16 +326,16 @@ static void AirPoweredVerticalRCTrackFlatToLeftBank(
         { SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_SE_NW, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_SE_NW },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
     if (direction == 0 || direction == 1)
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+        imageId = session.TrackColours.WithIndex(imageIds[direction][1]);
         PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
     }
 
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
@@ -356,16 +355,16 @@ static void AirPoweredVerticalRCTrackFlatToRightBank(
         { SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_RIGHT_BANK_SE_NW, SPR_AIR_POWERED_VERTICAL_RC_FLAT_TO_LEFT_BANK_FRONT_SE_NW },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
     if (direction == 2 || direction == 3)
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+        imageId = session.TrackColours.WithIndex(imageIds[direction][1]);
         PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
     }
 
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
@@ -423,19 +422,16 @@ static void AirPoweredVerticalRCTrackBankedRightQuarterTurn5(
         },
     };
 
-    TrackPaintUtilRightQuarterTurn5TilesPaint2(
-        session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], imageIds);
+    TrackPaintUtilRightQuarterTurn5TilesPaint2(session, height, direction, trackSequence, session.TrackColours, imageIds);
 
     if (direction == 1 && trackSequence == 6)
     {
-        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
-            SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_FRONT_NW_SW_PART_4);
+        auto imageId = session.TrackColours.WithIndex(SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_FRONT_NW_SW_PART_4);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
     }
     else if (direction == 3 && trackSequence == 0)
     {
-        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
-            SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_FRONT_SE_NE_PART_0);
+        auto imageId = session.TrackColours.WithIndex(SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_FRONT_SE_NE_PART_0);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height }, { 1, 32, 26 } });
     }
 
@@ -503,7 +499,7 @@ static void AirPoweredVerticalRCTrackLeftBank(
         SPR_AIR_POWERED_VERTICAL_RC_LEFT_BANK_SE_NW,
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction]);
     if (direction == 0 || direction == 1)
     {
         PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
@@ -513,7 +509,7 @@ static void AirPoweredVerticalRCTrackLeftBank(
         PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
     }
 
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
@@ -539,10 +535,10 @@ static void AirPoweredVerticalRCTrackBrakes(
         SPR_AIR_POWERED_VERTICAL_RC_BRAKES_SW_NE,
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
@@ -650,7 +646,7 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
     };
 
     auto supportsImageId = AirPoweredVerticalRCGetSupportColour(session).WithIndex(supportImageIds[trackSequence][direction]);
-    auto trackImageId = session.TrackColours[SCHEME_TRACK].WithIndex(trackImageIds[trackSequence][direction]);
+    auto trackImageId = session.TrackColours.WithIndex(trackImageIds[trackSequence][direction]);
     int8_t bbHeight;
     bool isDirection03 = (direction == 0 || direction == 3);
     switch (trackSequence)
@@ -662,7 +658,7 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
             PaintAddImageAsChildRotated(
                 session, direction, trackImageId, { 0, 0, height }, { { 0, 6, height }, { 20, 32, bbHeight } });
 
-            WoodenASupportsPaintSetup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 0, 0, height, session.SupportColours);
 
             PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
@@ -690,7 +686,7 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
                     session, direction, trackImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
             }
 
-            WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
 
             if (trackSequence == 0)
             {
@@ -718,21 +714,21 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
                     session, direction, supportsImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, bbHeight } });
             }
 
-            WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
             PaintUtilSetGeneralSupportHeight(session, height + supportHeights[trackSequence], 0x20);
             break;
         case 5:
-            if (WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]))
+            if (WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours))
             {
                 ImageId floorImageId;
                 if (direction & 1)
                 {
-                    floorImageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_FLOOR_PLANKS_90_DEG);
+                    floorImageId = session.SupportColours.WithIndex(SPR_FLOOR_PLANKS_90_DEG);
                 }
                 else
                 {
-                    floorImageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_FLOOR_PLANKS);
+                    floorImageId = session.SupportColours.WithIndex(SPR_FLOOR_PLANKS);
                 }
                 PaintAddImageAsParent(session, floorImageId, { 0, 0, height }, { { 3, 3, height }, { 26, 26, 126 } });
                 PaintAddImageAsChildRotated(
@@ -761,7 +757,7 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
                 PaintAddImageAsChildRotated(
                     session, direction, supportsImageId, { 0, 0, height }, { { 27, 6, height }, { 1, 20, 126 } });
             }
-            WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
 
             PaintUtilSetVerticalTunnel(session, height + 240);
 
@@ -790,7 +786,7 @@ static void AirPoweredVerticalRCTrackVerticalUp(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 3, 3, height }, { 26, 26, 79 } });
             break;
         case 1:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+            imageId = session.TrackColours.WithIndex(imageIds[direction][1]);
             if (direction == 0 || direction == 3)
             {
                 PaintAddImageAsParentRotated(
@@ -844,7 +840,7 @@ static void AirPoweredVerticalRCTrackVerticalTop(
     {
         case 0:
             imageIdS = AirPoweredVerticalRCGetSupportColour(session).WithIndex(imageIds[direction][0]);
-            imageIdT = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+            imageIdT = session.TrackColours.WithIndex(imageIds[direction][1]);
             if (direction == 0)
             {
                 PaintAddImageAsParentRotated(
@@ -861,7 +857,7 @@ static void AirPoweredVerticalRCTrackVerticalTop(
             }
             break;
         case 1:
-            imageIdT = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][2]);
+            imageIdT = session.TrackColours.WithIndex(imageIds[direction][2]);
             if (direction == 0)
             {
                 PaintAddImageAsParentRotated(
@@ -875,7 +871,7 @@ static void AirPoweredVerticalRCTrackVerticalTop(
             PaintUtilSetVerticalTunnel(session, height + 80);
             break;
         case 2:
-            imageIdT = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][3]);
+            imageIdT = session.TrackColours.WithIndex(imageIds[direction][3]);
             if (direction == 0)
             {
                 PaintAddImageAsParentRotated(
@@ -890,7 +886,7 @@ static void AirPoweredVerticalRCTrackVerticalTop(
             break;
         case 3:
             imageIdS = AirPoweredVerticalRCGetSupportColour(session).WithIndex(imageIds[direction][4]);
-            imageIdT = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][5]);
+            imageIdT = session.TrackColours.WithIndex(imageIds[direction][5]);
             if (direction == 0)
             {
                 PaintAddImageAsParentRotated(
@@ -932,7 +928,7 @@ static void AirPoweredVerticalRCTrackBooster(
 {
     // The booster piece is borrowed from the Reverse Freefall Colour.
     // It has two track colours, instead of the one that the APVC has.
-    auto colour = session.TrackColours[SCHEME_TRACK];
+    auto colour = session.TrackColours;
     if (!trackElement.IsGhost() && !trackElement.IsHighlighted())
     {
         colour = colour.WithSecondary(colour.GetPrimary());
@@ -951,7 +947,7 @@ static void AirPoweredVerticalRCTrackBooster(
         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    WoodenASupportsPaintSetup(session, (direction & 1) ? 1 : 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, (direction & 1) ? 1 : 0, 0, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
@@ -967,10 +963,10 @@ static void AirPoweredVerticalRCTrackOnridePhoto(
         SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE,
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 1 } });
 
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
 
     TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);

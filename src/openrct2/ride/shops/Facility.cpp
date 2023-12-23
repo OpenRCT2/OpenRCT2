@@ -40,7 +40,7 @@ static void PaintFacility(
     BoundBoxXYZ bb = { { direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height },
                        { lengthX, lengthY, trackElement.GetClearanceZ() - trackElement.GetBaseZ() - 3 } };
 
-    auto imageTemplate = session.TrackColours[SCHEME_TRACK];
+    auto imageTemplate = session.TrackColours;
     auto imageIndex = firstCarEntry->base_image_id + ((direction + 2) & 3);
     auto imageId = imageTemplate.WithIndex(imageIndex);
     if (hasSupports)

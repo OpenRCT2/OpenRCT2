@@ -98,7 +98,7 @@ static void PaintSpaceRings(
     WoodenASupportsPaintSetup(session, (direction & 1), 0, height, stationColour);
 
     const StationObject* stationObject = ride.GetStationObject();
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, floorSpritesCork, stationObject);
 
     switch (trackSequence)
     {

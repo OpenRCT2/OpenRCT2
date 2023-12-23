@@ -36,11 +36,10 @@ static constexpr const int8_t WoodenRCDiagonalSupports[4][NumOrthogonalDirection
 template<bool isClassic> ImageId WoodenRCGetTrackColour(const PaintSession& session)
 {
     if (isClassic)
-        return session.TrackColours[SCHEME_TRACK];
+        return session.TrackColours;
     else
-        return session.TrackColours[SCHEME_TRACK].IsRemap()
-            ? session.TrackColours[SCHEME_TRACK]
-            : session.TrackColours[SCHEME_TRACK].WithPrimary(session.TrackColours[SCHEME_SUPPORTS].GetPrimary());
+        return session.TrackColours.IsRemap() ? session.TrackColours
+                                              : session.TrackColours.WithPrimary(session.SupportColours.GetPrimary());
 }
 
 ImageId WoodenRCGetRailsColour(PaintSession& session);
