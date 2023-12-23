@@ -216,6 +216,7 @@ namespace RCT2
           "rct2.footpath_railings.concrete" },
         { "PATHCRZY", "rct1ll.footpath_surface.tiles_green", "rct1aa.footpath_surface.queue_green",
           "rct2.footpath_railings.concrete" },
+        { "ROAD    ", "rct1.footpath_surface.road", "rct1.footpath_surface.queue_blue", "rct2.footpath_railings.wood" },
 
         // Custom path mapping
         { "PATHINVS", "openrct2.footpath_surface.invisible", "openrct2.footpath_surface.queue_invisible",
