@@ -19117,7 +19117,7 @@ namespace SpinningRC
         TrackRightTwistDownToUp(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
-    TRACK_PAINT_FUNCTION GetTrackPaintFunction(int32_t trackType)
+    TRACK_PAINT_FUNCTION GetTrackPaintFunctionSpinningRC(int32_t trackType)
     {
         switch (trackType)
         {
