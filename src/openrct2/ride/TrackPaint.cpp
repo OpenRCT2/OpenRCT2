@@ -2256,7 +2256,8 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
         session.InteractionType = ViewportInteractionItem::Ride;
         session.TrackColours = ImageId(
             0, ride->track_colour[trackColourScheme].main, ride->track_colour[trackColourScheme].additional);
-        session.SupportColours = ImageId(0, ride->track_colour[trackColourScheme].supports);
+        session.SupportColours = ImageId(
+            0, ride->track_colour[trackColourScheme].supports, ride->track_colour[trackColourScheme].additional);
         if (trackElement.IsHighlighted() || session.SelectedElement == reinterpret_cast<const TileElement*>(&trackElement))
         {
             session.TrackColours = HighlightMarker;

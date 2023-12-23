@@ -164,17 +164,6 @@ enum
     SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_FRONT_SE_NE_PART_0 = 22333,
 };
 
-static ImageId AirPoweredVerticalRCGetSupportColour(PaintSession& session)
-{
-    auto colourFlags = session.SupportColours;
-    auto trackColour = session.TrackColours;
-    if (trackColour.HasSecondary())
-    {
-        colourFlags = colourFlags.WithSecondary(trackColour.GetSecondary());
-    }
-    return colourFlags;
-}
-
 /** rct2: 0x008AFAD4 */
 static void AirPoweredVerticalRCTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -645,7 +634,7 @@ static void AirPoweredVerticalRCTrackVerticalSlopeUp(
         48, 64, 128, 176, 208, 240, 240,
     };
 
-    auto supportsImageId = AirPoweredVerticalRCGetSupportColour(session).WithIndex(supportImageIds[trackSequence][direction]);
+    auto supportsImageId = session.SupportColours.WithIndex(supportImageIds[trackSequence][direction]);
     auto trackImageId = session.TrackColours.WithIndex(trackImageIds[trackSequence][direction]);
     int8_t bbHeight;
     bool isDirection03 = (direction == 0 || direction == 3);
@@ -782,7 +771,7 @@ static void AirPoweredVerticalRCTrackVerticalUp(
     switch (trackSequence)
     {
         case 0:
-            imageId = AirPoweredVerticalRCGetSupportColour(session).WithIndex(imageIds[direction][0]);
+            imageId = session.SupportColours.WithIndex(imageIds[direction][0]);
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 3, 3, height }, { 26, 26, 79 } });
             break;
         case 1:
@@ -839,7 +828,7 @@ static void AirPoweredVerticalRCTrackVerticalTop(
     switch (trackSequence)
     {
         case 0:
-            imageIdS = AirPoweredVerticalRCGetSupportColour(session).WithIndex(imageIds[direction][0]);
+            imageIdS = session.SupportColours.WithIndex(imageIds[direction][0]);
             imageIdT = session.TrackColours.WithIndex(imageIds[direction][1]);
             if (direction == 0)
             {
@@ -885,7 +874,7 @@ static void AirPoweredVerticalRCTrackVerticalTop(
             PaintUtilSetVerticalTunnel(session, height + 80);
             break;
         case 3:
-            imageIdS = AirPoweredVerticalRCGetSupportColour(session).WithIndex(imageIds[direction][4]);
+            imageIdS = session.SupportColours.WithIndex(imageIds[direction][4]);
             imageIdT = session.TrackColours.WithIndex(imageIds[direction][5]);
             if (direction == 0)
             {

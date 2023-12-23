@@ -38,8 +38,7 @@ template<bool isClassic> ImageId WoodenRCGetTrackColour(const PaintSession& sess
     if (isClassic)
         return session.TrackColours;
     else
-        return session.TrackColours.IsRemap() ? session.TrackColours
-                                              : session.TrackColours.WithPrimary(session.SupportColours.GetPrimary());
+        return session.SupportColours;
 }
 
 ImageId WoodenRCGetRailsColour(PaintSession& session);
