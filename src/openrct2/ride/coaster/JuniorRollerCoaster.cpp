@@ -2915,6 +2915,16 @@ static void JuniorRCLeftQuarterTurn5Tiles25DegDownPaintSetup(
         trackElement);
 }
 
+/* rct2: 0x008AAE40, 0x0051AAD4, 0x0051AE04, 0x0051B10E, 0x0051B3F4 */
+static void JuniorRCRightQuarterTurn5Tiles25DegDownPaintSetup(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp(
+        session, ride, junior_rc_left_quarter_turn_5_tiles_to_right_turn_map[trackSequence], (direction - 1) & 3, height,
+        trackElement);
+}
+
 /* rct2: 0x008AAE50, 0x0051B6FE, 0x0051B946, 0x0051BB8E, 0x0051BBA8 */
 static void JuniorRCSBendLeftPaintSetup(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -5796,7 +5806,7 @@ template<JuniorRCSubType TSubType> TRACK_PAINT_FUNCTION GetTrackPaintFunctionJun
         case TrackElemType::LeftQuarterTurn5TilesDown25:
             return JuniorRCLeftQuarterTurn5Tiles25DegDownPaintSetup;
         case TrackElemType::RightQuarterTurn5TilesDown25:
-            return JuniorRCPaintTrackLeftQuarterTurn5Tiles25DegUp;
+            return JuniorRCRightQuarterTurn5Tiles25DegDownPaintSetup;
         case TrackElemType::SBendLeft:
             return JuniorRCSBendLeftPaintSetup;
         case TrackElemType::SBendRight:
