@@ -205,6 +205,8 @@ namespace OpenRCT2::Scripting
 
         uint8_t drops_get() const;
 
+        uint8_t poweredLifts_get() const;
+
         uint8_t highestDropHeight_get() const;
 >>>>>>> 39b3547c4b (Added additional stats to ride scripts)
 

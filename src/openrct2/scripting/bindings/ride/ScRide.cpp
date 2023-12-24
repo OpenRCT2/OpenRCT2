@@ -532,13 +532,13 @@ namespace OpenRCT2::Scripting
     int32_t ScRide::maxSpeed_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? (ride->max_speed) : 0;
+        return ride != nullptr ? ((ride->max_speed) * 9) >> 18 : 0;
     }
 
     int32_t ScRide::averageSpeed_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->average_speed : 0;
+        return ride != nullptr ? ((ride->average_speed) * 9) >> 18 : 0;
     }
 
     int32_t ScRide::rideTime_get() const
@@ -550,7 +550,7 @@ namespace OpenRCT2::Scripting
     int32_t ScRide::rideLength_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->GetTotalLength() : 0;
+        return ride != nullptr ? ride->GetTotalLength() >> 16 : 0;
     }
 
     int32_t ScRide::maxPositiveVerticalGs_get() const
@@ -574,13 +574,19 @@ namespace OpenRCT2::Scripting
     uint16_t ScRide::totalAirTime_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->total_air_time  : 0; 
+        return ride != nullptr ? ride->total_air_time * 3 : 0; 
     }
 
     uint8_t ScRide::drops_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->drops : 0;
+        return ride != nullptr ? ride->drops & 0b00111111 : 0;
+    }
+
+    uint8_t ScRide::poweredLifts_get() const
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? ride->drops & 0b11000000 : 0;
     }
 
     uint8_t ScRide::poweredLifts_get() const
@@ -592,7 +598,7 @@ namespace OpenRCT2::Scripting
     uint8_t ScRide::highestDropHeight_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->highest_drop_height : 0;
+        return ride != nullptr ? (ride->highest_drop_height >> 1) + (ride->highest_drop_height >> 2) : 0;
     }
 
     void ScRide::Register(duk_context* ctx)
