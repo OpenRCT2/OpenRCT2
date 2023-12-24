@@ -556,7 +556,6 @@ namespace OpenRCT2::Scripting
                         default:
                             // This should not be possible
                             duk_error(ctx, DUK_ERR_TYPE_ERROR, "Item is photo without a ride ref.");
-                            break;
                     }
                 }
 
@@ -678,13 +677,15 @@ namespace OpenRCT2::Scripting
         // GuestItem
         if (item["type"].type() != DukValue::Type::STRING)
         {
-            return;
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            duk_error(ctx, DUK_ERR_ERROR, "Invalid 'type'.");
         }
 
         auto shopItem = ShopItemMap.TryGet(item["type"].as_string());
         if (!shopItem)
         {
-            return;
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            duk_error(ctx, DUK_ERR_ERROR, "Invalid 'type'.");
         }
 
         if (*shopItem == ShopItem::Voucher)
@@ -692,13 +693,15 @@ namespace OpenRCT2::Scripting
             // Voucher
             if (item["voucherType"].type() != DukValue::Type::STRING)
             {
-                return;
+                auto ctx = GetContext()->GetScriptEngine().GetContext();
+                duk_error(ctx, DUK_ERR_ERROR, "Invalid 'voucherType'.");
             }
 
             auto voucherType = VoucherTypeMap.TryGet(item["voucherType"].as_string());
             if (!voucherType)
             {
-                return;
+                auto ctx = GetContext()->GetScriptEngine().GetContext();
+                duk_error(ctx, DUK_ERR_ERROR, "Invalid 'voucherType'.");
             }
 
             if (*voucherType == VOUCHER_TYPE_RIDE_FREE)
@@ -706,7 +709,8 @@ namespace OpenRCT2::Scripting
                 // RideVoucher
                 if (item["rideId"].type() != DukValue::Type::NUMBER)
                 {
-                    return;
+                    auto ctx = GetContext()->GetScriptEngine().GetContext();
+                    duk_error(ctx, DUK_ERR_ERROR, "Invalid 'rideId'.");
                 }
 
                 peep->VoucherRideId = RideId::FromUnderlying(item["rideId"].as_uint());
@@ -716,13 +720,15 @@ namespace OpenRCT2::Scripting
                 // FoodDrinkVoucher
                 if (item["item"].type() != DukValue::Type::STRING)
                 {
-                    return;
+                    auto ctx = GetContext()->GetScriptEngine().GetContext();
+                    duk_error(ctx, DUK_ERR_ERROR, "Invalid 'item' (for food/drink voucher).");
                 }
 
                 auto voucherItem = ShopItemMap.TryGet(item["item"].as_string());
                 if (!voucherItem)
                 {
-                    return;
+                    auto ctx = GetContext()->GetScriptEngine().GetContext();
+                    duk_error(ctx, DUK_ERR_ERROR, "Invalid 'item' (for food/drink voucher).");
                 }
 
                 peep->VoucherShopItem = *voucherItem;
@@ -735,7 +741,8 @@ namespace OpenRCT2::Scripting
             // GuestPhoto
             if (item["rideId"].type() != DukValue::Type::NUMBER)
             {
-                return;
+                auto ctx = GetContext()->GetScriptEngine().GetContext();
+                duk_error(ctx, DUK_ERR_ERROR, "Invalid 'rideId'.");
             }
 
             switch (*shopItem)
