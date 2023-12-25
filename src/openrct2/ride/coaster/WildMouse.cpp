@@ -202,8 +202,8 @@ static void WildMouseTrackStation(
 
     int32_t trackType = trackElement.GetTrackType();
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours[SCHEME_MISC].WithIndex(baseImageIds[direction]), { 0, 0, height - 2 },
-        { { 0, 2, height }, { 32, 28, 2 } });
+        session, direction, GetStationColourScheme(session, trackElement).WithIndex(baseImageIds[direction]),
+        { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 2 } });
     if (trackType == TrackElemType::EndStation)
     {
         bool isClosed = trackElement.IsBrakeClosed();

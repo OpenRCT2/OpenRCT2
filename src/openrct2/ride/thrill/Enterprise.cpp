@@ -70,8 +70,8 @@ static void PaintEnterpriseStructure(
     }
 
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != TrackGhost)
+    auto imageFlags = GetStationColourScheme(session, trackElement);
+    if (imageFlags != TrackStationColour)
     {
         imageTemplate = imageFlags;
     }
@@ -95,7 +95,9 @@ static void PaintEnterprise(
 
     int32_t edges = edges_4x4[trackSequence];
 
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.GetStationObject();
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);

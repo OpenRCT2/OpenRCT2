@@ -3703,6 +3703,8 @@ STR_6591    :Il dipendente sta riparando un’attrazione e non può essere licen
 STR_6592    :Il dipendente sta ispezionando un’attrazione e non può essere licenziato.
 STR_6593    :Rimuovi recinto del parco
 STR_6594    :Analizzatore celle: Attiva/disattiva inclinazione muro
+STR_6595    :{WINDOW_COLOUR_2}Autore: {BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}Autori: {BLACK}{STRING}
 
 
 #############

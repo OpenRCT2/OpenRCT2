@@ -95,7 +95,9 @@ static void PaintLaunchedFreefallBase(
 
     int32_t edges = edges_3x3[trackSequence];
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.GetStationObject();
 

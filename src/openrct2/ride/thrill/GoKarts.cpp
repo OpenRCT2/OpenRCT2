@@ -151,7 +151,9 @@ static void PaintGoKartsTrackFlat(
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        session.TrackColours[SCHEME_SUPPORTS]);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -187,22 +189,22 @@ static void PaintGoKartsTrack25DegUp(
 
     session.WoodenSupportsPrependTo = ps;
 
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.TrackColours[SCHEME_SUPPORTS],
+        WoodenSupportTransitionType::Up25Deg);
+
     switch (direction)
     {
         case 0:
-            WoodenASupportsPaintSetup(session, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_SQUARE_7);
             break;
         case 1:
-            WoodenASupportsPaintSetup(session, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_8);
             break;
         case 2:
-            WoodenASupportsPaintSetup(session, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_8);
             break;
         case 3:
-            WoodenASupportsPaintSetup(session, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilPushTunnelRight(session, height - 8, TUNNEL_SQUARE_7);
             break;
     }
@@ -241,22 +243,22 @@ static void PaintGoKartsTrackFlatTo25DegUp(
 
     session.WoodenSupportsPrependTo = ps;
 
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.TrackColours[SCHEME_SUPPORTS],
+        WoodenSupportTransitionType::FlatToUp25Deg);
+
     switch (direction)
     {
         case 0:
-            WoodenASupportsPaintSetup(session, 0, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
             break;
         case 1:
-            WoodenASupportsPaintSetup(session, 1, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_8);
             break;
         case 2:
-            WoodenASupportsPaintSetup(session, 0, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_8);
             break;
         case 3:
-            WoodenASupportsPaintSetup(session, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
             break;
     }
@@ -295,22 +297,23 @@ static void PaintGoKartsTrack25DegUpToFlat(
 
     session.WoodenSupportsPrependTo = ps;
 
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.TrackColours[SCHEME_SUPPORTS],
+        WoodenSupportTransitionType::Up25DegToFlat);
+
     switch (direction)
     {
         case 0:
-            WoodenASupportsPaintSetup(session, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+
             PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_SQUARE_FLAT);
             break;
         case 1:
-            WoodenASupportsPaintSetup(session, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilPushTunnelRight(session, height + 8, TUNNEL_14);
             break;
         case 2:
-            WoodenASupportsPaintSetup(session, 0, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_14);
             break;
         case 3:
-            WoodenASupportsPaintSetup(session, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
             PaintUtilPushTunnelRight(session, height - 8, TUNNEL_SQUARE_FLAT);
             break;
     }
@@ -369,15 +372,16 @@ static void PaintGoKartsStation(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 28, 32, 1 } });
     }
 
+    auto stationColour = GetStationColourScheme(session, trackElement);
     if (direction == 0 || direction == 2)
     {
         hasFence = TrackPaintUtilHasFence(EDGE_NW, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height);
+        TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height, stationColour);
     }
     else
     {
         hasFence = TrackPaintUtilHasFence(EDGE_NE, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, height);
+        TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, height, stationColour);
     }
 
     imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
@@ -397,12 +401,12 @@ static void PaintGoKartsStation(
     if (direction == 0 || direction == 2)
     {
         hasFence = TrackPaintUtilHasFence(EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, height);
+        TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, height, stationColour);
     }
     else
     {
         hasFence = TrackPaintUtilHasFence(EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height);
+        TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height, stationColour);
     }
 
     if (trackElement.GetTrackType() == TrackElemType::EndStation)
@@ -446,7 +450,9 @@ static void PaintGoKartsStation(
         }
     }
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        session.TrackColours[SCHEME_SUPPORTS]);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -516,7 +522,9 @@ static void PaintGoKartsTrackLeftQuarterTurn1Tile(
             break;
     }
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        session.TrackColours[SCHEME_SUPPORTS]);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);

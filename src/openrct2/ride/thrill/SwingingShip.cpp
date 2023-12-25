@@ -84,7 +84,7 @@ static void PaintSwingingShipRiders(
 }
 
 static void PaintSwingingShipStructure(
-    PaintSession& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height, ImageId stationColour)
 {
     const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
     if (rideEntry == nullptr)
@@ -123,10 +123,9 @@ static void PaintSwingingShipStructure(
 
     auto supportsImageTemplate = session.TrackColours[SCHEME_TRACK];
     auto vehicleImageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != TrackGhost)
+    if (stationColour != TrackStationColour)
     {
-        vehicleImageTemplate = imageFlags;
+        vehicleImageTemplate = stationColour;
     }
 
     // Supports (back)
@@ -163,7 +162,9 @@ static void PaintSwingingShip(
 
     if (relativeTrackSequence == 1 || relativeTrackSequence == 4)
     {
-        WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetupRotated(
+            session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+            session.TrackColours[SCHEME_SUPPORTS]);
     }
     else if (direction & 1)
     {
@@ -290,22 +291,23 @@ static void PaintSwingingShip(
             }
         }
     }
+    auto stationColour = GetStationColourScheme(session, trackElement);
     switch (relativeTrackSequence)
     {
         case 1:
-            PaintSwingingShipStructure(session, ride, direction, 64, height);
+            PaintSwingingShipStructure(session, ride, direction, 64, height, stationColour);
             break;
         case 2:
-            PaintSwingingShipStructure(session, ride, direction, 32, height);
+            PaintSwingingShipStructure(session, ride, direction, 32, height, stationColour);
             break;
         case 0:
-            PaintSwingingShipStructure(session, ride, direction, 0, height);
+            PaintSwingingShipStructure(session, ride, direction, 0, height, stationColour);
             break;
         case 3:
-            PaintSwingingShipStructure(session, ride, direction, -32, height);
+            PaintSwingingShipStructure(session, ride, direction, -32, height, stationColour);
             break;
         case 4:
-            PaintSwingingShipStructure(session, ride, direction, -64, height);
+            PaintSwingingShipStructure(session, ride, direction, -64, height, stationColour);
             break;
     }
 

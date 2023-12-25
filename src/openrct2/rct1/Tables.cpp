@@ -1278,7 +1278,7 @@ namespace RCT1
             "",
             "",
 
-            "rct2.footpath_surface.road",           // RCT1_FOOTPATH_TYPE_ROAD
+            "rct1.footpath_surface.road",           // RCT1_FOOTPATH_TYPE_ROAD
             "",
             "",
             "",

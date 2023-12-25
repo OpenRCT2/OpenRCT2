@@ -24,7 +24,8 @@ static constexpr BoundBoxXY HauntedHouseData[] = {
 };
 
 static void PaintHauntedHouseStructure(
-    PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint8_t part, uint16_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint8_t part, uint16_t height,
+    ImageId stationColour)
 {
     uint8_t frameNum = 0;
 
@@ -41,18 +42,17 @@ static void PaintHauntedHouseStructure(
     }
 
     const auto& boundBox = HauntedHouseData[part];
-    auto imageTemplate = session.TrackColours[SCHEME_MISC];
     auto baseImageIndex = rideEntry->Cars[0].base_image_id;
     auto imageIndex = baseImageIndex + direction;
 
     auto bb = BoundBoxXYZ{ { boundBox.offset, height }, { boundBox.length, 127 } };
-    PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), { xOffset, yOffset, height }, bb);
+    PaintAddImageAsParent(session, stationColour.WithIndex(imageIndex), { xOffset, yOffset, height }, bb);
 
     if (session.DPI.zoom_level <= ZoomLevel{ 0 } && frameNum != 0)
     {
         imageIndex = baseImageIndex + 3 + ((direction & 3) * 18) + frameNum;
         PaintAddImageAsChild(
-            session, imageTemplate.WithIndex(imageIndex), { xOffset, yOffset, height },
+            session, stationColour.WithIndex(imageIndex), { xOffset, yOffset, height },
             { { boundBox.offset, height }, { boundBox.length, 127 } });
     }
 
@@ -68,26 +68,27 @@ static void PaintHauntedHouse(
 
     int32_t edges = edges_3x3[trackSequence];
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.GetStationObject();
 
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_MISC], height, fenceSpritesRope,
-        session.CurrentRotation);
+        session, edges, session.MapPosition, trackElement, ride, GetStationColourScheme(session, trackElement), height,
+        fenceSpritesRope, session.CurrentRotation);
 
+    auto stationColour = GetStationColourScheme(session, trackElement);
     switch (trackSequence)
     {
         case 3:
-            PaintHauntedHouseStructure(session, ride, direction, 32, -32, 0, height + 3);
+            PaintHauntedHouseStructure(session, ride, direction, 32, -32, 0, height + 3, stationColour);
             break;
         case 6:
-            PaintHauntedHouseStructure(session, ride, direction, -32, 32, 4, height + 3);
+            PaintHauntedHouseStructure(session, ride, direction, -32, 32, 4, height + 3, stationColour);
             break;
         case 7:
-            PaintHauntedHouseStructure(session, ride, direction, -32, -32, 2, height + 3);
+            PaintHauntedHouseStructure(session, ride, direction, -32, -32, 2, height + 3, stationColour);
             break;
     }
 

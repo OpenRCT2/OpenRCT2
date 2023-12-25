@@ -137,7 +137,7 @@ static void StandUpRCTrackStation(
             { { 0, 6, height + 3 }, { 32, 20, 1 } });
     }
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][1]), { 0, 0, height },
+        session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]), { 0, 0, height },
         { 32, 32, 1 });
     DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Tubes);
     TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);

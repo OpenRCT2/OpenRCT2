@@ -679,6 +679,7 @@ void TrackGetBack(const CoordsXYE& input, CoordsXYE* output);
 void TrackGetFront(const CoordsXYE& input, CoordsXYE* output);
 
 bool TrackElementIsCovered(track_type_t trackElementType);
+track_type_t UncoverTrackElement(track_type_t trackElementType);
 bool TrackTypeIsStation(track_type_t trackType);
 bool TrackTypeIsBrakes(track_type_t trackType);
 bool TrackTypeIsBlockBrakes(track_type_t trackType);

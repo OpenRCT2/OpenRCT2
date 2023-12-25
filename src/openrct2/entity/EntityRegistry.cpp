@@ -409,6 +409,11 @@ void UpdateAllMiscEntities()
         Balloon, Duck>();
 }
 
+void UpdateMoneyEffect()
+{
+    MiscUpdateAllTypes<MoneyEffect>();
+}
+
 // Performs a search to ensure that insert keeps next_in_quadrant in sprite_index order
 static void EntitySpatialInsert(EntityBase* entity, const CoordsXY& newLoc)
 {

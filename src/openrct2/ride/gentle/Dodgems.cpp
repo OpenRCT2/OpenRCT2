@@ -51,7 +51,7 @@ static void PaintDodgems(
 
     int32_t edges = edges_4x4[relativeTrackSequence];
 
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.GetStationObject();
 

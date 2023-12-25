@@ -198,28 +198,29 @@ static void MultiDimensionRCTrackStation(
     }
     DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::TubesInverted);
 
+    auto stationColour = GetStationColourScheme(session, trackElement);
     const auto* stationObj = ride.GetStationObject();
     bool hasFence;
     if (direction == 0 || direction == 2)
     {
         hasFence = TrackPaintUtilHasFence(EDGE_NW, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height);
+        TrackPaintUtilDrawStationCovers(session, EDGE_NW, hasFence, stationObj, height, stationColour);
     }
     else
     {
         hasFence = TrackPaintUtilHasFence(EDGE_NE, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, height);
+        TrackPaintUtilDrawStationCovers(session, EDGE_NE, hasFence, stationObj, height, stationColour);
     }
 
     if (direction == 0 || direction == 2)
     {
         hasFence = TrackPaintUtilHasFence(EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, height);
+        TrackPaintUtilDrawStationCovers(session, EDGE_SE, hasFence, stationObj, height, stationColour);
     }
     else
     {
         hasFence = TrackPaintUtilHasFence(EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation);
-        TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height);
+        TrackPaintUtilDrawStationCovers(session, EDGE_SW, hasFence, stationObj, height, stationColour);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);

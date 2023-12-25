@@ -422,12 +422,12 @@ public:
                     else
                     {
                         const auto& listWidget = widgets[WIDX_SCENERY_LIST];
-                        const auto nonListHeight = height - listWidget.height() + 2;
+                        const auto nonListHeight = height - listWidget.height() + 12;
 
                         const auto numRows = static_cast<int32_t>(CountRows());
                         const auto maxContentHeight = numRows * SCENERY_BUTTON_HEIGHT;
                         const auto maxWindowHeight = maxContentHeight + nonListHeight;
-                        const auto windowHeight = std::clamp(maxWindowHeight, _actualMinHeight, 463);
+                        const auto windowHeight = std::clamp(maxWindowHeight, _actualMinHeight, 473);
 
                         min_height = windowHeight;
                         max_height = windowHeight;
@@ -743,7 +743,7 @@ public:
 
         ResizeFrameWithPage();
         widgets[WIDX_SCENERY_LIST].right = windowWidth - 26;
-        widgets[WIDX_SCENERY_LIST].bottom = height - 14;
+        widgets[WIDX_SCENERY_LIST].bottom = height - 24;
 
         widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].left = windowWidth - 25;
         widgets[WIDX_SCENERY_REPAINT_SCENERY_BUTTON].left = windowWidth - 25;
@@ -793,7 +793,29 @@ public:
 
         auto ft = Formatter();
         ft.Add<StringId>(name);
-        DrawTextEllipsised(dpi, { windowPos.x + 3, windowPos.y + height - 13 }, width - 19, STR_BLACK_STRING, ft);
+        DrawTextEllipsised(dpi, { windowPos.x + 3, windowPos.y + height - 23 }, width - 19, STR_BLACK_STRING, ft);
+
+        auto sceneryObjectType = GetObjectTypeFromSceneryType(selectedSceneryEntry.SceneryType);
+        auto& objManager = GetContext()->GetObjectManager();
+        auto sceneryObject = objManager.GetLoadedObject(sceneryObjectType, selectedSceneryEntry.EntryIndex);
+        if (sceneryObject != nullptr && sceneryObject->GetAuthors().size() > 0)
+        {
+            std::string authorsString;
+            const auto& authors = sceneryObject->GetAuthors();
+            for (size_t i = 0; i < authors.size(); ++i)
+            {
+                if (i > 0)
+                {
+                    authorsString.append(", ");
+                }
+                authorsString.append(authors[i]);
+            }
+            ft = Formatter();
+            ft.Add<const char*>(authorsString.c_str());
+            DrawTextEllipsised(
+                dpi, windowPos + ScreenCoordsXY{ 3, height - 13 }, width - 19,
+                (sceneryObject->GetAuthors().size() == 1 ? STR_SCENERY_AUTHOR : STR_SCENERY_AUTHOR_PLURAL), ft);
+        }
     }
 
     void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
