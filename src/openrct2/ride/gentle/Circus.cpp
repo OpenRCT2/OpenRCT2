@@ -58,11 +58,11 @@ static void PaintCircus(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, floorSpritesCork, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_SUPPORTS], height,
-        fenceSpritesRope, session.CurrentRotation);
+        session, edges, session.MapPosition, trackElement, ride, session.SupportColours, height, fenceSpritesRope,
+        session.CurrentRotation);
 
     auto stationColour = GetStationColourScheme(session, trackElement);
     switch (trackSequence)
