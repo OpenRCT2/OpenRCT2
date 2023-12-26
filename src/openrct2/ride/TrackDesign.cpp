@@ -83,17 +83,6 @@ static bool _trackDesignPlaceStateEntranceExitPlaced{};
 
 static void TrackDesignPreviewClearMap();
 
-static uint8_t TrackDesignGetEntranceStyle(const Ride& ride)
-{
-    const auto* stationObject = ride.GetStationObject();
-    if (stationObject == nullptr)
-        return RCT12_STATION_STYLE_PLAIN;
-
-    const auto objectName = stationObject->GetIdentifier();
-
-    return GetStationStyleFromIdentifier(objectName);
-}
-
 ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& ride)
 {
     type = ride.type;
@@ -134,7 +123,7 @@ ResultWithMessage TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ri
     lift_hill_speed = ride.lift_hill_speed;
     num_circuits = ride.num_circuits;
 
-    entrance_style = TrackDesignGetEntranceStyle(ride);
+    entrance_style = ride.GetEntranceStyle();
     max_speed = static_cast<int8_t>(ride.max_speed / 65536);
     average_speed = static_cast<int8_t>(ride.average_speed / 65536);
     ride_length = ride.GetTotalLength() / 65536;

@@ -411,6 +411,8 @@ public:
     bool HasStation() const;
 
     bool FindTrackGap(const CoordsXYE& input, CoordsXYE* output) const;
+
+    uint8_t GetEntranceStyle() const;
 };
 void UpdateSpiralSlide(Ride& ride);
 void UpdateChairlift(Ride& ride);
