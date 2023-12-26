@@ -223,16 +223,16 @@ static void DinghySlideTrackFlat(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[isChained][direction][0]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
 
-    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[isChained][direction][1]);
+    imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -254,13 +254,13 @@ static void DinghySlideTrackStation(
     };
 
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 0, height },
+        session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
         { { 0, 6, height + 3 }, { 32, 20, 1 } });
     PaintAddImageAsParentRotated(
         session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]), { 0, 0, height },
         { 32, 32, 1 });
 
-    DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Tubes);
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
 
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 
@@ -290,16 +290,16 @@ static void DinghySlideTrack25DegUp(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[isChained][direction][0]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
 
-    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[isChained][direction][1]);
+    imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 50 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -327,16 +327,16 @@ static void DinghySlideTrack60DegUp(
         { SPR_DINGHY_SLIDE_60_DEG_SE_NW, SPR_DINGHY_SLIDE_60_DEG_FRONT_SE_NW },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
 
-    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+    imageId = session.TrackColours.WithIndex(imageIds[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 98 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 32, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 32, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -373,16 +373,16 @@ static void DinghySlideTrackFlatTo25DegUp(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[isChained][direction][0]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
 
-    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[isChained][direction][1]);
+    imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 42 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 3, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -410,16 +410,16 @@ static void DinghySlideTrack25DegUpTo60DegUp(
         { SPR_DINGHY_SLIDE_25_DEG_TO_60_DEG_SE_NW, SPR_DINGHY_SLIDE_25_DEG_TO_60_DEG_FRONT_SE_NW },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
 
-    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+    imageId = session.TrackColours.WithIndex(imageIds[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 12, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -447,16 +447,16 @@ static void DinghySlideTrack60DegUpTo25DegUp(
         { SPR_DINGHY_SLIDE_60_DEG_TO_25_DEG_SE_NW, SPR_DINGHY_SLIDE_60_DEG_TO_25_DEG_FRONT_SE_NW },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
 
-    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+    imageId = session.TrackColours.WithIndex(imageIds[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 66 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 20, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 20, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -493,16 +493,16 @@ static void DinghySlideTrack25DegUpToFlat(
     };
 
     uint8_t isChained = trackElement.HasChain() ? 1 : 0;
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[isChained][direction][0]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
 
-    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[isChained][direction][1]);
+    imageId = session.TrackColours.WithIndex(imageIds[isChained][direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 6, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -619,17 +619,15 @@ static void DinghySlideTrackRightQuarterTurn5(
         },
     };
 
-    TrackPaintUtilRightQuarterTurn5TilesPaint2(
-        session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], imageIds);
-    TrackPaintUtilRightQuarterTurn5TilesPaint2(
-        session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], frontImageIds);
+    TrackPaintUtilRightQuarterTurn5TilesPaint2(session, height, direction, trackSequence, session.TrackColours, imageIds);
+    TrackPaintUtilRightQuarterTurn5TilesPaint2(session, height, direction, trackSequence, session.TrackColours, frontImageIds);
 
     switch (trackSequence)
     {
         case 0:
         case 6:
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
     }
 
@@ -727,8 +725,8 @@ static void DinghySlideTrackSBendLeft(
         },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][1]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][trackSequence][0]);
+    auto frontImageId = session.TrackColours.WithIndex(imageIds[direction][trackSequence][1]);
     int16_t bboy;
 
     switch (trackSequence)
@@ -738,7 +736,7 @@ static void DinghySlideTrackSBendLeft(
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
@@ -751,8 +749,7 @@ static void DinghySlideTrackSBendLeft(
             {
                 const auto supportPlace = (direction & 1) ? MetalSupportPlace::TopRightSide : MetalSupportPlace::TopLeftSide;
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, supportPlace, (direction & 1), height,
-                    session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, supportPlace, (direction & 1), height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -768,8 +765,7 @@ static void DinghySlideTrackSBendLeft(
             {
                 const auto supportPlace = (direction & 1) ? MetalSupportPlace::TopRightSide : MetalSupportPlace::TopLeftSide;
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, supportPlace, (direction & 1), height,
-                    session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, supportPlace, (direction & 1), height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -781,7 +777,7 @@ static void DinghySlideTrackSBendLeft(
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
@@ -836,8 +832,8 @@ static void DinghySlideTrackSBendRight(
         },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][1]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][trackSequence][0]);
+    auto frontImageId = session.TrackColours.WithIndex(imageIds[direction][trackSequence][1]);
     int16_t bboy;
 
     switch (trackSequence)
@@ -847,7 +843,7 @@ static void DinghySlideTrackSBendRight(
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
@@ -860,8 +856,7 @@ static void DinghySlideTrackSBendRight(
             {
                 const auto supportPlace = (direction & 1) ? MetalSupportPlace::BottomLeftSide
                                                           : MetalSupportPlace::BottomRightSide;
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, supportPlace, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, supportPlace, 0, height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -877,8 +872,7 @@ static void DinghySlideTrackSBendRight(
             {
                 const auto supportPlace = (direction & 1) ? MetalSupportPlace::BottomLeftSide
                                                           : MetalSupportPlace::BottomRightSide;
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, supportPlace, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, supportPlace, 0, height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -890,7 +884,7 @@ static void DinghySlideTrackSBendRight(
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
@@ -963,10 +957,8 @@ static void DinghySlideTrackRightQuarterTurn3(
         },
     };
 
-    TrackPaintUtilRightQuarterTurn3TilesPaint3(
-        session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], imageIds);
-    TrackPaintUtilRightQuarterTurn3TilesPaint3(
-        session, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], frontImageIds);
+    TrackPaintUtilRightQuarterTurn3TilesPaint3(session, height, direction, trackSequence, session.TrackColours, imageIds);
+    TrackPaintUtilRightQuarterTurn3TilesPaint3(session, height, direction, trackSequence, session.TrackColours, frontImageIds);
     TrackPaintUtilRightQuarterTurn3TilesTunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     switch (trackSequence)
@@ -974,7 +966,7 @@ static void DinghySlideTrackRightQuarterTurn3(
         case 0:
         case 3:
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             break;
     }
 

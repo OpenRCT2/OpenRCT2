@@ -100,10 +100,10 @@ static void PaintEnterprise(
         GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.GetStationObject();
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, floorSpritesCork, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height, fenceSpritesRope,
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, fenceSpritesRope,
         session.CurrentRotation);
 
     switch (trackSequence)

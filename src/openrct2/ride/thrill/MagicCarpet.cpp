@@ -117,7 +117,7 @@ static void PaintMagicCarpetFrame(
     PaintSession& session, Plane plane, Direction direction, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     auto imageIndex = GetMagicCarpetFrameImage(plane, direction);
-    auto imageTemplate = session.TrackColours[SCHEME_TRACK];
+    auto imageTemplate = session.TrackColours;
     auto imageId = imageTemplate.WithIndex(imageIndex);
     if (plane == Plane::Back)
     {
@@ -133,7 +133,7 @@ static void PaintMagicCarpetPendulum(
     PaintSession& session, Plane plane, int32_t swing, Direction direction, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     auto imageIndex = GetMagicCarpetPendulumImage(plane, direction, swing);
-    auto imageTemplate = session.TrackColours[SCHEME_TRACK];
+    auto imageTemplate = session.TrackColours;
     auto imageId = imageTemplate.WithIndex(imageIndex);
     PaintAddImageAsChild(session, imageId, offset, bb);
 }
@@ -223,26 +223,22 @@ static void PaintMagicCarpet(
             if (direction & 1)
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height,
-                    session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height, session.SupportColours);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height,
-                    session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height, session.SupportColours);
             }
             else
             {
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height,
-                    session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height,
-                    session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height, session.SupportColours);
             }
             const StationObject* stationObject = ride.GetStationObject();
 
             if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
             {
-                auto imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_BASE_D);
+                auto imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_D);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
             }
             break;

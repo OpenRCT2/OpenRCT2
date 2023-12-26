@@ -76,7 +76,7 @@ static void PaintFerrisWheelStructure(
     CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height + 7);
     BoundBoxXYZ bb = { { boundBox.offset, height + 7 }, { boundBox.length, 127 } };
 
-    auto supportsImageTemplate = session.TrackColours[SCHEME_TRACK];
+    auto supportsImageTemplate = session.TrackColours;
     auto wheelImageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     if (stationColour != TrackStationColour)
     {
@@ -121,7 +121,7 @@ static void PaintFerrisWheel(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, floorSpritesCork, stationObject);
 
     ImageId imageId;
     uint8_t rotation = session.CurrentRotation;

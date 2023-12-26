@@ -113,7 +113,7 @@ static void PaintMerryGoRound(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, floorSpritesCork, stationObject);
 
     TrackPaintUtilPaintFences(
         session, edges, session.MapPosition, trackElement, ride, GetStationColourScheme(session, trackElement), height,

@@ -635,17 +635,17 @@ static void PaintMiniatureRailwayTrackFlat(
         paintGrooved = true;
     }
 
-    bool isSupported = WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    bool isSupported = WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
     ImageId imageId, imageIdAlt;
 
     // In the following 3 calls to PaintAddImageAsParentRotated/PaintAddImageAsChildRotated, we add 1 to the
     //  bound_box_offset_z argument to make straight tracks draw above footpaths
     if (isSupported)
     {
-        imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(miniature_railway_track_floor[direction]);
+        imageId = session.SupportColours.WithIndex(miniature_railway_track_floor[direction]);
         PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(miniature_railway_track_pieces_flat[direction]);
+        imageId = session.TrackColours.WithIndex(miniature_railway_track_pieces_flat[direction]);
         if (!paintAsGravel)
         {
             PaintAddImageAsChildRotated(session, direction, imageId, { 0, 6, height }, { { 0, 6, height }, { 32, 20, 2 } });
@@ -669,7 +669,7 @@ static void PaintMiniatureRailwayTrackFlat(
     }
     else
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(miniature_railway_track_pieces_flat[direction]);
+        imageId = session.TrackColours.WithIndex(miniature_railway_track_pieces_flat[direction]);
         if (!paintAsGravel)
         {
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { { 0, 6, height }, { 32, 20, 2 } });
@@ -705,12 +705,12 @@ static void PaintMiniatureRailwayStation(
 {
     ImageId imageId;
 
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
 
     imageId = GetStationColourScheme(session, trackElement).WithIndex(miniature_railway_station_floor[direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 2 } });
 
-    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(miniature_railway_track_pieces_flat_station[direction]);
+    imageId = session.TrackColours.WithIndex(miniature_railway_track_pieces_flat_station[direction]);
     PaintAddImageAsChildRotated(session, direction, imageId, { 0, 6, height }, { { 0, 0, height }, { 32, 20, 2 } });
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -727,7 +727,7 @@ static void PaintMiniatureRailwayTrack25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(miniature_railway_track_pieces_25_deg_up[direction]);
+    auto imageId = session.TrackColours.WithIndex(miniature_railway_track_pieces_25_deg_up[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 2, height }, { { 0, 3, height }, { 32, 25, 2 } });
 
@@ -747,7 +747,7 @@ static void PaintMiniatureRailwayTrack25DegUp(
             break;
     }
 
-    WoodenASupportsPaintSetup(session, direction & 1, 45 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 45 + direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
@@ -758,7 +758,7 @@ static void PaintMiniatureRailwayTrackFlatTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(miniature_railway_track_pieces_flat_to_25_deg_up[direction]);
+    auto imageId = session.TrackColours.WithIndex(miniature_railway_track_pieces_flat_to_25_deg_up[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 2, height }, { { 0, 3, height }, { 32, 25, 2 } });
 
@@ -778,7 +778,7 @@ static void PaintMiniatureRailwayTrackFlatTo25DegUp(
             break;
     }
 
-    WoodenASupportsPaintSetup(session, direction & 1, 37 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 37 + direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
@@ -789,7 +789,7 @@ static void PaintMiniatureRailwayTrack25DegUpToFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(miniature_railway_track_pieces_25_deg_up_to_flat[direction]);
+    auto imageId = session.TrackColours.WithIndex(miniature_railway_track_pieces_25_deg_up_to_flat[direction]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 2, height }, { { 0, 3, height }, { 32, 25, 2 } });
 
@@ -809,7 +809,7 @@ static void PaintMiniatureRailwayTrack25DegUpToFlat(
             break;
     }
 
-    WoodenASupportsPaintSetup(session, direction & 1, 41 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 41 + direction, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
@@ -982,26 +982,25 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn5Tiles(
     if (right_quarter_turn_5_supports_type[direction][trackSequence] != -1)
     {
         bool isSupported = WoodenASupportsPaintSetup(
-            session, right_quarter_turn_5_supports_type[direction][trackSequence], 0, height,
-            session.TrackColours[SCHEME_SUPPORTS]);
+            session, right_quarter_turn_5_supports_type[direction][trackSequence], 0, height, session.SupportColours);
 
         if (!isSupported || (trackSequence == 3 && direction == 2))
         {
             TrackPaintUtilRightQuarterTurn5TilesPaint(
-                session, 2, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
+                session, 2, height, direction, trackSequence, session.TrackColours,
                 miniature_railway_track_pieces_flat_quarter_turn_5_tiles, miniature_railway_right_quarter_turn_5_tiles_offsets,
                 miniature_railway_right_quarter_turn_5_tiles_bound_lengths, nullptr);
         }
         else
         {
             TrackPaintUtilRightQuarterTurn5TilesPaint(
-                session, 2, height, direction, trackSequence, session.TrackColours[SCHEME_SUPPORTS],
+                session, 2, height, direction, trackSequence, session.SupportColours,
                 miniature_railway_right_quarter_turn_5_tiles_track_floor, nullptr,
                 miniature_railway_right_quarter_turn_5_tiles_bound_lengths,
                 miniature_railway_right_quarter_turn_5_tiles_bound_offsets);
 
             int32_t index = miniature_railway_right_quarter_turn_5_tiles_sprite_map[trackSequence];
-            auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+            auto imageId = session.TrackColours.WithIndex(
                 miniature_railway_track_pieces_flat_quarter_turn_5_tiles[direction][index]);
             CoordsXY offset = miniature_railway_right_quarter_turn_5_tiles_offsets[direction][index];
             CoordsXY boundsLength = miniature_railway_right_quarter_turn_5_tiles_bound_lengths[direction][index];
@@ -1105,7 +1104,7 @@ static void PaintMiniatureRailwayTrackSBendLeft(
     }
 
     bool isSupported = WoodenASupportsPaintSetup(
-        session, s_bend_left_supports_type[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        session, s_bend_left_supports_type[direction][trackSequence], 0, height, session.SupportColours);
 
     static constexpr CoordsXY offsetList[] = {
         { 0, 2 },
@@ -1121,8 +1120,7 @@ static void PaintMiniatureRailwayTrackSBendLeft(
         { 32, 27 },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
-        miniature_railway_track_pieces_s_bend_left[direction & 1][trackSequence]);
+    auto imageId = session.TrackColours.WithIndex(miniature_railway_track_pieces_s_bend_left[direction & 1][trackSequence]);
     CoordsXY offset = offsetList[trackSequence];
     CoordsXY bounds = boundsList[trackSequence];
 
@@ -1134,13 +1132,12 @@ static void PaintMiniatureRailwayTrackSBendLeft(
     }
     else
     {
-        imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+        imageId = session.SupportColours.WithIndex(
             miniature_railway_s_bend_left_tiles_track_floor[direction & 1][trackSequence]);
         PaintAddImageAsParentRotated(
             session, direction, imageId, { 0, 0, height }, { { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
-            miniature_railway_track_pieces_s_bend_left[direction & 1][trackSequence]);
+        imageId = session.TrackColours.WithIndex(miniature_railway_track_pieces_s_bend_left[direction & 1][trackSequence]);
         PaintAddImageAsChildRotated(
             session, direction, imageId, { offset.x, offset.y, height },
             { { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 } });
@@ -1214,7 +1211,7 @@ static void PaintMiniatureRailwayTrackSBendRight(
     }
 
     bool isSupported = WoodenASupportsPaintSetup(
-        session, s_bend_right_supports_type[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        session, s_bend_right_supports_type[direction][trackSequence], 0, height, session.SupportColours);
 
     static constexpr CoordsXY offsetList[] = {
         { 0, 2 },
@@ -1230,8 +1227,7 @@ static void PaintMiniatureRailwayTrackSBendRight(
         { 32, 27 },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
-        miniature_railway_track_pieces_s_bend_right[direction & 1][trackSequence]);
+    auto imageId = session.TrackColours.WithIndex(miniature_railway_track_pieces_s_bend_right[direction & 1][trackSequence]);
     CoordsXY offset = offsetList[trackSequence];
     CoordsXY bounds = boundsList[trackSequence];
     if (!isSupported)
@@ -1242,13 +1238,12 @@ static void PaintMiniatureRailwayTrackSBendRight(
     }
     else
     {
-        imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+        imageId = session.SupportColours.WithIndex(
             miniature_railway_s_bend_right_tiles_track_floor[direction & 1][trackSequence]);
         PaintAddImageAsParentRotated(
             session, direction, imageId, { 0, 0, height }, { { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
-            miniature_railway_track_pieces_s_bend_right[direction & 1][trackSequence]);
+        imageId = session.TrackColours.WithIndex(miniature_railway_track_pieces_s_bend_right[direction & 1][trackSequence]);
         PaintAddImageAsChildRotated(
             session, direction, imageId, { offset.x, offset.y, height },
             { { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 } });
@@ -1345,28 +1340,26 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn3Tiles(
     if (trackSequence != 1 && trackSequence != 2)
     {
         static constexpr uint8_t supportType[] = { 4, 5, 2, 3 };
-        isSupported = WoodenASupportsPaintSetup(
-            session, supportType[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        isSupported = WoodenASupportsPaintSetup(session, supportType[direction], 0, height, session.SupportColours);
     }
     if (!isSupported)
     {
         TrackPaintUtilRightQuarterTurn3TilesPaint(
-            session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
+            session, 3, height, direction, trackSequence, session.TrackColours,
             miniature_railway_track_pieces_flat_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets,
             defaultRightQuarterTurn3TilesBoundLengths, nullptr);
 
         // The following piece was missing in vanilla RCT2
         if (trackSequence == 1 && direction == 0)
         {
-            auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
-                SPR_G2_MINIATURE_RAILWAY_QUARTER_TURN_3_TILES_SW_SE_PART_3);
+            auto imageId = session.TrackColours.WithIndex(SPR_G2_MINIATURE_RAILWAY_QUARTER_TURN_3_TILES_SW_SE_PART_3);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 8, 8, 2 } });
         }
     }
     else
     {
         TrackPaintUtilRightQuarterTurn3TilesPaint(
-            session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_SUPPORTS],
+            session, 3, height, direction, trackSequence, session.SupportColours,
             miniature_railway_right_quarter_turn_3_tile_track_floor, nullptr, defaultRightQuarterTurn3TilesBoundLengths,
             miniature_railway_right_quarter_turn_3_tile_bound_offsets);
 
@@ -1374,7 +1367,7 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn3Tiles(
 
         int32_t index = _right_quarter_turn_3_tiles_sprite_map[trackSequence];
 
-        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        auto imageId = session.TrackColours.WithIndex(
             miniature_railway_track_pieces_flat_quarter_turn_3_tiles[direction][index]);
         CoordsXY offset = defaultRightQuarterTurn3TilesOffsets[direction][index];
         CoordsXY boundsLength = defaultRightQuarterTurn3TilesBoundLengths[direction][index];
@@ -1528,7 +1521,7 @@ static void PaintMiniatureRailwayTrackLeftEighthToDiag(
     if (trackSequence != 4 || !isRightEighthToOrthog)
     {
         isSupported = WoodenASupportsPaintSetup(
-            session, supportType[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, supportType[direction][trackSequence], 0, height, session.SupportColours);
     }
     ImageId imageId;
     if (!isSupported)
@@ -1536,8 +1529,7 @@ static void PaintMiniatureRailwayTrackLeftEighthToDiag(
         int8_t index = paint_miniature_railway_eighth_to_diag_index[trackSequence];
         if (index >= 0)
         {
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
-                miniature_railway_track_pieces_left_eight_to_diag[direction][index]);
+            imageId = session.TrackColours.WithIndex(miniature_railway_track_pieces_left_eight_to_diag[direction][index]);
             CoordsXY offset = miniature_railway_track_pieces_left_eight_to_diag_offset[direction][index];
             CoordsXYZ bounds = miniature_railway_track_pieces_left_eight_to_diag_bounds[direction][index];
             if (isRightEighthToOrthog)
@@ -1550,7 +1542,7 @@ static void PaintMiniatureRailwayTrackLeftEighthToDiag(
     }
     else
     {
-        imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+        imageId = session.SupportColours.WithIndex(
             miniature_railway_floor_track_pieces_left_eight_to_diag[direction][trackSequence]);
         CoordsXY offset = miniature_railway_track_floor_pieces_left_eight_to_diag_offset[direction][trackSequence];
         CoordsXYZ bounds = miniature_railway_track_floor_pieces_left_eight_to_diag_bounds[direction][trackSequence];
@@ -1559,8 +1551,7 @@ static void PaintMiniatureRailwayTrackLeftEighthToDiag(
         int8_t index = paint_miniature_railway_eighth_to_diag_index[trackSequence];
         if (index >= 0)
         {
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
-                miniature_railway_track_pieces_left_eight_to_diag[direction][index]);
+            imageId = session.TrackColours.WithIndex(miniature_railway_track_pieces_left_eight_to_diag[direction][index]);
             offset = miniature_railway_track_pieces_left_eight_to_diag_offset[direction][index];
             bounds = miniature_railway_track_pieces_left_eight_to_diag_bounds[direction][index];
             PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { offset, height }, bounds });
@@ -1692,7 +1683,7 @@ static void PaintMiniatureRailwayTrackRightEighthToDiag(
     if (trackSequence != 4 || !isLeftEighthToOrthog)
     {
         isSupported = WoodenASupportsPaintSetup(
-            session, supportType[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, supportType[direction][trackSequence], 0, height, session.SupportColours);
     }
 
     ImageId imageId;
@@ -1701,8 +1692,7 @@ static void PaintMiniatureRailwayTrackRightEighthToDiag(
         int8_t index = paint_miniature_railway_eighth_to_diag_index[trackSequence];
         if (index >= 0)
         {
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
-                miniature_railway_track_pieces_right_eight_to_diag[direction][index]);
+            imageId = session.TrackColours.WithIndex(miniature_railway_track_pieces_right_eight_to_diag[direction][index]);
             CoordsXY offset = miniature_railway_track_pieces_right_eight_to_diag_offset[direction][index];
             CoordsXYZ bounds = miniature_railway_track_pieces_right_eight_to_diag_bounds[direction][index];
             if (isLeftEighthToOrthog)
@@ -1715,7 +1705,7 @@ static void PaintMiniatureRailwayTrackRightEighthToDiag(
     }
     else
     {
-        imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(
+        imageId = session.SupportColours.WithIndex(
             miniature_railway_floor_track_pieces_right_eight_to_diag[direction][trackSequence]);
         CoordsXY offset = miniature_railway_track_floor_pieces_right_eight_to_diag_offset[direction][trackSequence];
         CoordsXYZ bounds = miniature_railway_track_floor_pieces_right_eight_to_diag_bounds[direction][trackSequence];
@@ -1724,8 +1714,7 @@ static void PaintMiniatureRailwayTrackRightEighthToDiag(
         int8_t index = paint_miniature_railway_eighth_to_diag_index[trackSequence];
         if (index >= 0)
         {
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
-                miniature_railway_track_pieces_right_eight_to_diag[direction][index]);
+            imageId = session.TrackColours.WithIndex(miniature_railway_track_pieces_right_eight_to_diag[direction][index]);
             offset = miniature_railway_track_pieces_right_eight_to_diag_offset[direction][index];
             bounds = miniature_railway_track_pieces_right_eight_to_diag_bounds[direction][index];
             PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { offset, height }, bounds });
@@ -1812,7 +1801,7 @@ static void MiniatureRailwayTrackDiagFlat(
         floorBoundSize = floors[enumValue].bound_size;
         floorBoundOffset = floors[enumValue].bound_offset;
         isSupported = WoodenASupportsPaintSetup(
-            session, WoodenSupportType::Truss, supportType.value(), height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, WoodenSupportType::Truss, supportType.value(), height, session.SupportColours);
     }
 
     if (direction == 1 && trackSequence == 3)
@@ -1826,20 +1815,19 @@ static void MiniatureRailwayTrackDiagFlat(
     if (isSupported)
     {
         PaintAddImageAsParent(
-            session, session.TrackColours[SCHEME_SUPPORTS].WithIndex(floorImage), { 0, 0, height },
+            session, session.SupportColours.WithIndex(floorImage), { 0, 0, height },
             { { floorBoundOffset, height }, { floorBoundSize, (drawRail ? 2 : 0) } });
         if (drawRail)
         {
             PaintAddImageAsChild(
-                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+                session, session.TrackColours.WithIndex(imageId), { -16, -16, height },
                 { { -16, -16, height }, { 32, 32, 2 } });
         }
     }
     else if (drawRail)
     {
         PaintAddImageAsParent(
-            session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
-            { { -16, -16, height }, { 32, 32, 2 } });
+            session, session.TrackColours.WithIndex(imageId), { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
     }
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -1874,14 +1862,12 @@ static void MiniatureRailwayTrackDiag25DegUp(
 
         if (trackSequence == 3)
         {
-            hasSupports = WoodenASupportsPaintSetup(
-                session, enumValue, 0, height + heightDiff, session.TrackColours[SCHEME_SUPPORTS]);
+            hasSupports = WoodenASupportsPaintSetup(session, enumValue, 0, height + heightDiff, session.SupportColours);
         }
         else
         {
             hasSupports = WoodenBSupportsPaintSetup(
-                session, WoodenSupportType::Truss, supportType.value(), height + heightDiff,
-                session.TrackColours[SCHEME_SUPPORTS]);
+                session, WoodenSupportType::Truss, supportType.value(), height + heightDiff, session.SupportColours);
         }
     }
 
@@ -1908,20 +1894,19 @@ static void MiniatureRailwayTrackDiag25DegUp(
     if (hasSupports)
     {
         PaintAddImageAsParent(
-            session, session.TrackColours[SCHEME_SUPPORTS].WithIndex(floorImage),
-            { 0, 0, height + offsetsB[direction][trackSequence][0] },
+            session, session.SupportColours.WithIndex(floorImage), { 0, 0, height + offsetsB[direction][trackSequence][0] },
             { { floorBoundOffset, height + offsetsB[direction][trackSequence][1] }, { floorBoundSize, (drawRail ? 2 : 0) } });
         if (drawRail)
         {
             PaintAddImageAsChild(
-                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+                session, session.TrackColours.WithIndex(imageId), { -16, -16, height },
                 { { -16, -16, height + offsetB[direction] }, { 32, 32, 2 } });
         }
     }
     else if (drawRail)
     {
         PaintAddImageAsParent(
-            session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+            session, session.TrackColours.WithIndex(imageId), { -16, -16, height },
             { { -16, -16, height + offsetB[direction] }, { 32, 32, 2 } });
     }
 
@@ -1948,7 +1933,7 @@ static void MiniatureRailwayTrackDiagFlatTo25DegUp(
         floorBoundSize = floors[enumValue].bound_size;
         floorBoundOffset = floors[enumValue].bound_offset;
         hasSupports = WoodenASupportsPaintSetup(
-            session, WoodenSupportType::Truss, supportType.value(), height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, WoodenSupportType::Truss, supportType.value(), height, session.SupportColours);
     }
 
     if (direction == 1 && trackSequence == 3)
@@ -1962,20 +1947,19 @@ static void MiniatureRailwayTrackDiagFlatTo25DegUp(
     if (hasSupports)
     {
         PaintAddImageAsParent(
-            session, session.TrackColours[SCHEME_SUPPORTS].WithIndex(floorImage), { 0, 0, height },
+            session, session.SupportColours.WithIndex(floorImage), { 0, 0, height },
             { { floorBoundOffset, height }, { floorBoundSize, (drawRail ? 2 : 0) } });
         if (drawRail)
         {
             PaintAddImageAsChild(
-                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+                session, session.TrackColours.WithIndex(imageId), { -16, -16, height },
                 { { -16, -16, height }, { 32, 32, 2 } });
         }
     }
     else if (drawRail)
     {
         PaintAddImageAsParent(
-            session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
-            { { -16, -16, height }, { 32, 32, 2 } });
+            session, session.TrackColours.WithIndex(imageId), { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
     }
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -2010,14 +1994,13 @@ static void MiniatureRailwayTrackDiag25DegUpToFlat(
         if (trackSequence == 3)
         {
             hasSupports = WoodenASupportsPaintSetup(
-                session, enumValue, 0, height + supportOffsets[direction][trackSequence],
-                session.TrackColours[SCHEME_SUPPORTS]);
+                session, enumValue, 0, height + supportOffsets[direction][trackSequence], session.SupportColours);
         }
         else
         {
             hasSupports = WoodenBSupportsPaintSetup(
                 session, WoodenSupportType::Truss, supportType.value(), height + supportOffsets[direction][trackSequence],
-                session.TrackColours[SCHEME_SUPPORTS]);
+                session.SupportColours);
         }
     }
 
@@ -2041,20 +2024,19 @@ static void MiniatureRailwayTrackDiag25DegUpToFlat(
     if (hasSupports)
     {
         PaintAddImageAsParent(
-            session, session.TrackColours[SCHEME_SUPPORTS].WithIndex(floorImage),
-            { 0, 0, height + offsetsB[direction][trackSequence][0] },
+            session, session.SupportColours.WithIndex(floorImage), { 0, 0, height + offsetsB[direction][trackSequence][0] },
             { { floorBoundOffset, height + offsetsB[direction][trackSequence][1] }, { floorBoundSize, (drawRail ? 2 : 0) } });
         if (drawRail)
         {
             PaintAddImageAsChild(
-                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+                session, session.TrackColours.WithIndex(imageId), { -16, -16, height },
                 { { -16, -16, height + railOffsets[direction] }, { 32, 32, 2 } });
         }
     }
     else if (drawRail)
     {
         PaintAddImageAsParent(
-            session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+            session, session.TrackColours.WithIndex(imageId), { -16, -16, height },
             { { -16, -16, height + railOffsets[direction] }, { 32, 32, 2 } });
     }
 
@@ -2090,14 +2072,13 @@ static void MiniatureRailwayTrackDiag25DegDown(
         if (trackSequence == 3)
         {
             hasSupports = WoodenASupportsPaintSetup(
-                session, enumValue, 0, height + supportOffsets[direction][trackSequence],
-                session.TrackColours[SCHEME_SUPPORTS]);
+                session, enumValue, 0, height + supportOffsets[direction][trackSequence], session.SupportColours);
         }
         else
         {
             hasSupports = WoodenBSupportsPaintSetup(
                 session, WoodenSupportType::Truss, supportType.value(), height + supportOffsets[direction][trackSequence],
-                session.TrackColours[SCHEME_SUPPORTS]);
+                session.SupportColours);
         }
     }
 
@@ -2120,20 +2101,19 @@ static void MiniatureRailwayTrackDiag25DegDown(
     if (hasSupports)
     {
         PaintAddImageAsParent(
-            session, session.TrackColours[SCHEME_SUPPORTS].WithIndex(floorImage),
-            { 0, 0, height + offsetsB[direction][trackSequence][0] },
+            session, session.SupportColours.WithIndex(floorImage), { 0, 0, height + offsetsB[direction][trackSequence][0] },
             { { floorBoundOffset, height + offsetsB[direction][trackSequence][1] }, { floorBoundSize, (drawRail ? 2 : 0) } });
         if (drawRail)
         {
             PaintAddImageAsChild(
-                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+                session, session.TrackColours.WithIndex(imageId), { -16, -16, height },
                 { { -16, -16, height + railOffsets[direction] }, { 32, 32, 2 } });
         }
     }
     else if (drawRail)
     {
         PaintAddImageAsParent(
-            session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+            session, session.TrackColours.WithIndex(imageId), { -16, -16, height },
             { { -16, -16, height + railOffsets[direction] }, { 32, 32, 2 } });
     }
 
@@ -2168,14 +2148,13 @@ static void MiniatureRailwayTrackDiagFlatTo25DegDown(
         if (trackSequence == 3)
         {
             hasSupports = WoodenASupportsPaintSetup(
-                session, enumValue, 0, height + supportOffsets[direction][trackSequence],
-                session.TrackColours[SCHEME_SUPPORTS]);
+                session, enumValue, 0, height + supportOffsets[direction][trackSequence], session.SupportColours);
         }
         else
         {
             hasSupports = WoodenBSupportsPaintSetup(
                 session, WoodenSupportType::Truss, supportType.value(), height + supportOffsets[direction][trackSequence],
-                session.TrackColours[SCHEME_SUPPORTS]);
+                session.SupportColours);
         }
     }
 
@@ -2198,20 +2177,19 @@ static void MiniatureRailwayTrackDiagFlatTo25DegDown(
     if (hasSupports)
     {
         PaintAddImageAsParent(
-            session, session.TrackColours[SCHEME_SUPPORTS].WithIndex(floorImage),
-            { 0, 0, height + offsetsB[direction][trackSequence][0] },
+            session, session.SupportColours.WithIndex(floorImage), { 0, 0, height + offsetsB[direction][trackSequence][0] },
             { { floorBoundOffset, height + offsetsB[direction][trackSequence][1] }, { floorBoundSize, (drawRail ? 2 : 0) } });
         if (drawRail)
         {
             PaintAddImageAsChild(
-                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+                session, session.TrackColours.WithIndex(imageId), { -16, -16, height },
                 { { -16, -16, height + railOffsets[direction] }, { 32, 32, 2 } });
         }
     }
     else if (drawRail)
     {
         PaintAddImageAsParent(
-            session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+            session, session.TrackColours.WithIndex(imageId), { -16, -16, height },
             { { -16, -16, height + railOffsets[direction] }, { 32, 32, 2 } });
     }
 
@@ -2236,7 +2214,7 @@ static void MiniatureRailwayTrackDiag25DegDownToFlat(
         floorBoundSize = floors[enumValue].bound_size;
         floorBoundOffset = floors[enumValue].bound_offset;
         hasSupports = WoodenASupportsPaintSetup(
-            session, WoodenSupportType::Truss, supportType.value(), height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, WoodenSupportType::Truss, supportType.value(), height, session.SupportColours);
     }
 
     if (direction == 1 && trackSequence == 3)
@@ -2250,20 +2228,19 @@ static void MiniatureRailwayTrackDiag25DegDownToFlat(
     if (hasSupports)
     {
         PaintAddImageAsParent(
-            session, session.TrackColours[SCHEME_SUPPORTS].WithIndex(floorImage), { 0, 0, height },
+            session, session.SupportColours.WithIndex(floorImage), { 0, 0, height },
             { { floorBoundOffset, height }, { floorBoundSize, (drawRail ? 2 : 0) } });
         if (drawRail)
         {
             PaintAddImageAsChild(
-                session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
+                session, session.TrackColours.WithIndex(imageId), { -16, -16, height },
                 { { -16, -16, height }, { 32, 32, 2 } });
         }
     }
     else if (drawRail)
     {
         PaintAddImageAsParent(
-            session, session.TrackColours[SCHEME_TRACK].WithIndex(imageId), { -16, -16, height },
-            { { -16, -16, height }, { 32, 32, 2 } });
+            session, session.TrackColours.WithIndex(imageId), { -16, -16, height }, { { -16, -16, height }, { 32, 32, 2 } });
     }
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);

@@ -92,21 +92,21 @@ static void PaintObservationTowerBase(
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_SUPPORTS], height, floorSpritesMetalB, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, floorSpritesMetalB, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, position, trackElement, ride, session.TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB,
+        session, edges, position, trackElement, ride, session.TrackColours, height, fenceSpritesMetalB,
         session.CurrentRotation);
 
     if (trackSequence == 0)
     {
-        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprObservationTowerSegmentBase);
+        auto imageId = session.TrackColours.WithIndex(SprObservationTowerSegmentBase);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height + 3 }, { 2, 2, 27 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprObservationTowerSegment);
+        imageId = session.TrackColours.WithIndex(SprObservationTowerSegment);
         PaintAddImageAsParent(session, imageId, { 0, 0, height + 32 }, { { 8, 8, height + 32 }, { 2, 2, 30 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprObservationTowerSegment);
+        imageId = session.TrackColours.WithIndex(SprObservationTowerSegment);
         PaintAddImageAsParent(session, imageId, { 0, 0, height + 64 }, { { 8, 8, height + 64 }, { 2, 2, 30 } });
 
         PaintUtilSetVerticalTunnel(session, height + 96);
@@ -160,13 +160,13 @@ static void PaintObservationTowerSection(
         return;
     }
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprObservationTowerSegment);
+    auto imageId = session.TrackColours.WithIndex(SprObservationTowerSegment);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
 
     const TileElement* nextTileElement = reinterpret_cast<const TileElement*>(&trackElement) + 1;
     if (trackElement.IsLastForTile() || trackElement.GetClearanceZ() != nextTileElement->GetBaseZ())
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprObservationTowerSegmentTop);
+        imageId = session.TrackColours.WithIndex(SprObservationTowerSegmentTop);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
     }
 
