@@ -54,12 +54,10 @@ static GameState_t _gameState{};
 
 namespace OpenRCT2
 {
-
     GameState_t& GetGameState()
     {
         return _gameState;
     }
-
 } // namespace OpenRCT2
 
 GameState::GameState()
