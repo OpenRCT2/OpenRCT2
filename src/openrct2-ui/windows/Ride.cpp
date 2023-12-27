@@ -21,6 +21,7 @@
 #include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/Limits.h>
 #include <openrct2/OpenRCT2.h>
@@ -4661,7 +4662,7 @@ private:
             {
                 colour_t spriteColour = COLOUR_BLACK;
                 // Limit update rate of preview to avoid making people dizzy.
-                if ((gCurrentTicks % 64) == 0)
+                if ((GetGameState().CurrentTicks % 64) == 0)
                 {
                     spriteColour++;
                     if (spriteColour >= COLOUR_NUM_NORMAL)

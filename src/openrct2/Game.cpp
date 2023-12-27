@@ -87,7 +87,6 @@ bool gIsAutosaveLoaded = false;
 
 bool gLoadKeepWindowsOpen = false;
 
-uint32_t gCurrentTicks;
 uint32_t gCurrentRealTimeTicks;
 
 #ifdef ENABLE_SCRIPTING

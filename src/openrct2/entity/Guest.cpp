@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
@@ -899,7 +900,9 @@ void Guest::Loc68FA89()
 
 void Guest::Tick128UpdateGuest(int32_t index)
 {
-    if (static_cast<uint32_t>(index & 0x1FF) == (gCurrentTicks & 0x1FF))
+    const auto currentTicks = GetGameState().CurrentTicks;
+
+    if (static_cast<uint32_t>(index & 0x1FF) == (currentTicks & 0x1FF))
     {
         /* Effect of masking with 0x1FF here vs mask 0x7F,
          * which is the condition for calling this function, is
@@ -1009,7 +1012,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         if (State == PeepState::Walking && !OutsideOfPark && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && GuestNumRides == 0
             && GuestHeadingToRideId.IsNull())
         {
-            uint32_t time_duration = gCurrentTicks - ParkEntryTime;
+            uint32_t time_duration = currentTicks - ParkEntryTime;
             time_duration /= 2048;
 
             if (time_duration >= 5)
@@ -1033,7 +1036,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             PickRideToGoOn();
         }
 
-        if (static_cast<uint32_t>(index & 0x3FF) == (gCurrentTicks & 0x3FF))
+        if (static_cast<uint32_t>(index & 0x3FF) == (currentTicks & 0x3FF))
         {
             /* Effect of masking with 0x3FF here vs mask 0x1FF,
              * which is used in the encompassing conditional, is
@@ -3559,12 +3562,14 @@ void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride& ride, CoordsXYZD&
 
 void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride& ride, CoordsXYZD& entrance_loc)
 {
+    const auto currentTicks = GetGameState().CurrentTicks;
+
     // If the ride type was changed guests will become stuck.
     // Inform the player about this if its a new issue or hasn't been addressed within 120 seconds.
-    if ((ride.current_issues & RIDE_ISSUE_GUESTS_STUCK) == 0 || gCurrentTicks - ride.last_issue_time > 3000)
+    if ((ride.current_issues & RIDE_ISSUE_GUESTS_STUCK) == 0 || currentTicks - ride.last_issue_time > 3000)
     {
         ride.current_issues |= RIDE_ISSUE_GUESTS_STUCK;
-        ride.last_issue_time = gCurrentTicks;
+        ride.last_issue_time = currentTicks;
 
         auto ft = Formatter();
         ride.FormatNameTo(ft);
@@ -5281,6 +5286,8 @@ void Guest::UpdateWalking()
     if (!CheckForPath())
         return;
 
+    const auto currentTicks = GetGameState().CurrentTicks;
+
     if (!IsOnLevelCrossing())
     {
         if (PeepFlags & PEEP_FLAGS_WAVING && IsActionInterruptable() && (0xFFFF & ScenarioRand()) < 936)
@@ -5335,7 +5342,7 @@ void Guest::UpdateWalking()
     }
     else if (HasEmptyContainer())
     {
-        if ((!GetNextIsSurface()) && (static_cast<uint32_t>(Id.ToUnderlying() & 0x1FF) == (gCurrentTicks & 0x1FF))
+        if ((!GetNextIsSurface()) && (static_cast<uint32_t>(Id.ToUnderlying() & 0x1FF) == (currentTicks & 0x1FF))
             && ((0xFFFF & ScenarioRand()) <= 4096))
         {
             int32_t container = UtilBitScanForward(GetEmptyContainerFlags());
@@ -5699,7 +5706,7 @@ void Guest::UpdateEnteringPark()
     SetState(PeepState::Falling);
 
     OutsideOfPark = false;
-    ParkEntryTime = gCurrentTicks;
+    ParkEntryTime = GetGameState().CurrentTicks;
     IncrementGuestsInPark();
     DecrementGuestsHeadingForPark();
     auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);

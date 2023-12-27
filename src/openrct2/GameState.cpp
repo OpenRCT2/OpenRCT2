@@ -52,10 +52,15 @@ using namespace OpenRCT2::Scripting;
 
 static GameState_t _gameState{};
 
-GameState_t& GetGameState()
+namespace OpenRCT2
 {
-    return _gameState;
-}
+
+    GameState_t& GetGameState()
+    {
+        return _gameState;
+    }
+
+} // namespace OpenRCT2
 
 GameState::GameState()
 {
@@ -70,7 +75,7 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     PROFILED_FUNCTION();
 
     gInMapInitCode = true;
-    gCurrentTicks = 0;
+    GetGameState().CurrentTicks = 0;
 
     MapInit(mapSize);
     _park->Initialise();
@@ -137,7 +142,7 @@ void GameState::Tick()
     if (NetworkGetMode() == NETWORK_MODE_CLIENT && NetworkGetStatus() == NETWORK_STATUS_CONNECTED
         && NetworkGetAuthstatus() == NetworkAuth::Ok)
     {
-        numUpdates = std::clamp<uint32_t>(NetworkGetServerTick() - gCurrentTicks, 0, 10);
+        numUpdates = std::clamp<uint32_t>(NetworkGetServerTick() - GetGameState().CurrentTicks, 0, 10);
     }
     else
     {
@@ -287,7 +292,7 @@ void GameState::UpdateLogic()
     else if (NetworkGetMode() == NETWORK_MODE_CLIENT)
     {
         // Don't run past the server, this condition can happen during map changes.
-        if (NetworkGetServerTick() == gCurrentTicks)
+        if (NetworkGetServerTick() == GetGameState().CurrentTicks)
         {
             gInUpdateCode = false;
             return;
@@ -359,7 +364,7 @@ void GameState::UpdateLogic()
     NetworkProcessPending();
     NetworkFlush();
 
-    gCurrentTicks++;
+    GetGameState().CurrentTicks++;
     gSavedAge++;
 
 #ifdef ENABLE_SCRIPTING
@@ -383,7 +388,7 @@ void GameState::CreateStateSnapshot()
 
     auto& snapshot = snapshots->CreateSnapshot();
     snapshots->Capture(snapshot);
-    snapshots->LinkSnapshot(snapshot, gCurrentTicks, ScenarioRandState().s0);
+    snapshots->LinkSnapshot(snapshot, GetGameState().CurrentTicks, ScenarioRandState().s0);
 }
 
 void GameState::SetDate(Date newDate)

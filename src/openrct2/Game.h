@@ -134,7 +134,6 @@ enum
     ERROR_TYPE_FILE_LOAD = 255
 };
 
-extern uint32_t gCurrentTicks;
 extern uint32_t gCurrentRealTimeTicks;
 
 extern uint16_t gCurrentDeltaTime;

@@ -2121,7 +2121,7 @@ namespace RCT1
         void ImportParkFlags()
         {
             // Date and srand
-            gCurrentTicks = _s4.Ticks;
+            GetGameState().CurrentTicks = _s4.Ticks;
             ScenarioRandSeed(_s4.RandomA, _s4.RandomB);
             GetContext()->GetGameState()->SetDate(Date(_s4.Month, _s4.Day));
 

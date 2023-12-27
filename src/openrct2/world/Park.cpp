@@ -313,8 +313,10 @@ void Park::Update(const Date& date)
         UpdateHistories();
     }
 
+    const auto currentTicks = GetGameState().CurrentTicks;
+
     // Every ~13 seconds
-    if (gCurrentTicks % 512 == 0)
+    if (currentTicks % 512 == 0)
     {
         gParkRating = CalculateParkRating();
         gParkValue = CalculateParkValue();
@@ -329,7 +331,7 @@ void Park::Update(const Date& date)
     }
 
     // Every ~102 seconds
-    if (gCurrentTicks % 4096 == 0)
+    if (currentTicks % 4096 == 0)
     {
         gParkSize = CalculateParkSize();
         WindowInvalidateByClass(WindowClass::ParkInformation);

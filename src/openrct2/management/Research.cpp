@@ -11,6 +11,7 @@
 
 #include "../Date.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/ParkSetResearchFundingAction.h"
 #include "../config/Config.h"
@@ -315,7 +316,7 @@ void ResearchUpdate()
         return;
     }
 
-    if (gCurrentTicks % 32 != 0)
+    if (GetGameState().CurrentTicks % 32 != 0)
     {
         return;
     }

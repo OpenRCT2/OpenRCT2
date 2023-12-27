@@ -23,6 +23,7 @@ namespace OpenRCT2
 
     struct GameState_t
     {
+        uint32_t CurrentTicks{};
     };
 
     GameState_t& GetGameState();

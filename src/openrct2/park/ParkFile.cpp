@@ -480,7 +480,7 @@ namespace OpenRCT2
                     const uint8_t isPaused = (gGamePaused & GAME_PAUSED_NORMAL);
                     cs.Write(isPaused);
                 }
-                cs.ReadWrite(gCurrentTicks);
+                cs.ReadWrite(GetGameState().CurrentTicks);
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
                     uint16_t monthTicks;
