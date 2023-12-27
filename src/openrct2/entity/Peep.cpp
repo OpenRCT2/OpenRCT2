@@ -63,7 +63,6 @@
 #include <memory>
 #include <optional>
 
-using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
 uint8_t gGuestChangeModifier;
@@ -213,7 +212,7 @@ void PeepUpdateAll()
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return;
 
-    const auto currentTicks = GetGameState().CurrentTicks;
+    const auto currentTicks = OpenRCT2::GetGameState().CurrentTicks;
 
     int32_t i = 0;
     // Warning this loop can delete peeps
@@ -892,7 +891,7 @@ void Peep::SetState(PeepState new_state)
  */
 void Peep::UpdatePicked()
 {
-    if (GetGameState().CurrentTicks & 0x1F)
+    if (OpenRCT2::GetGameState().CurrentTicks & 0x1F)
         return;
     SubState++;
     auto* guest = As<Guest>();
