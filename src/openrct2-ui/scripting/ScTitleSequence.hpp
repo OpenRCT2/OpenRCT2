@@ -14,6 +14,7 @@
 #    include <memory>
 #    include <openrct2/Context.h>
 #    include <openrct2/Game.h>
+#    include <openrct2/GameState.h>
 #    include <openrct2/OpenRCT2.h>
 #    include <openrct2/ParkImporter.h>
 #    include <openrct2/core/String.hpp>
@@ -253,7 +254,10 @@ namespace OpenRCT2::Scripting
                         auto parkImporter = ParkImporter::Create(handle->HintPath);
                         auto result = parkImporter->LoadFromStream(handle->Stream.get(), isScenario);
                         objectMgr.LoadObjects(result.RequiredObjects);
-                        parkImporter->Import();
+
+                        // TODO: Have a separate GameState and exchange once loaded.
+                        auto& gameState = GetGameState();
+                        parkImporter->Import(gameState);
 
                         auto old = gLoadKeepWindowsOpen;
 

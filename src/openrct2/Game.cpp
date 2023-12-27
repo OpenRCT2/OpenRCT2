@@ -13,6 +13,7 @@
 #include "Context.h"
 #include "Editor.h"
 #include "FileClassifier.h"
+#include "GameState.h"
 #include "GameStateSnapshots.h"
 #include "Input.h"
 #include "OpenRCT2.h"
@@ -73,6 +74,8 @@
 #include <cstdio>
 #include <iterator>
 #include <memory>
+
+using namespace OpenRCT2;
 
 uint16_t gCurrentDeltaTime;
 uint8_t gGamePaused = 0;
@@ -638,7 +641,9 @@ void SaveGameCmd(u8string_view name /* = {} */)
 void SaveGameWithName(u8string_view name)
 {
     LOG_VERBOSE("Saving to %s", u8string(name).c_str());
-    if (ScenarioSave(name, gConfigGeneral.SavePluginData ? 1 : 0))
+
+    auto& gameState = GetGameState();
+    if (ScenarioSave(gameState, name, gConfigGeneral.SavePluginData ? 1 : 0))
     {
         LOG_VERBOSE("Saved to %s", u8string(name).c_str());
         gCurrentLoadedPath = name;
@@ -760,7 +765,9 @@ void GameAutosave()
         File::Copy(path, backupPath, true);
     }
 
-    if (!ScenarioSave(path, saveFlags))
+    auto& gameState = GetGameState();
+
+    if (!ScenarioSave(gameState, path, saveFlags))
         Console::Error::WriteLine("Could not autosave the scenario. Is the save folder writeable?");
 }
 

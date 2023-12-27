@@ -252,9 +252,10 @@ namespace OpenRCT2
             auto& objManager = context->GetObjectManager();
             auto objects = objManager.GetPackableObjects();
 
+            auto& gameState = GetGameState();
             auto exporter = std::make_unique<ParkFileExporter>();
             exporter->ExportObjectsList = objects;
-            exporter->Export(replayData->parkData);
+            exporter->Export(gameState, replayData->parkData);
 
             replayData->timeRecorded = std::chrono::seconds(std::time(nullptr)).count();
 
@@ -535,7 +536,9 @@ namespace OpenRCT2
                 auto loadResult = importer->LoadFromStream(&data.parkData, false);
                 objManager.LoadObjects(loadResult.RequiredObjects);
 
-                importer->Import();
+                // TODO: Have a separate GameState and exchange once loaded.
+                auto& gameState = GetGameState();
+                importer->Import(gameState);
 
                 EntityTweener::Get().Reset();
 

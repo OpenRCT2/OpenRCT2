@@ -282,7 +282,10 @@ namespace Editor
             auto importer = ParkImporter::CreateParkFile(context->GetObjectRepository());
             auto loadResult = importer->Load(path);
             objManager.LoadObjects(loadResult.RequiredObjects);
-            importer->Import();
+
+            // TODO: Have a separate GameState and exchange once loaded.
+            auto& gameState = GetGameState();
+            importer->Import(gameState);
 
             AfterLoadCleanup(true);
             return true;

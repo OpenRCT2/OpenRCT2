@@ -2797,7 +2797,10 @@ bool NetworkBase::LoadMap(IStream* stream)
         auto importer = ParkImporter::CreateParkFile(context.GetObjectRepository());
         auto loadResult = importer->LoadFromStream(stream, false);
         objManager.LoadObjects(loadResult.RequiredObjects);
-        importer->Import();
+
+        // TODO: Have a separate GameState and exchange once loaded.
+        auto& gameState = GetGameState();
+        importer->Import(gameState);
 
         EntityTweener::Get().Reset();
         MapAnimationAutoCreate();
@@ -2820,7 +2823,9 @@ bool NetworkBase::SaveMap(IStream* stream, const std::vector<const ObjectReposit
     {
         auto exporter = std::make_unique<ParkFileExporter>();
         exporter->ExportObjectsList = objects;
-        exporter->Export(*stream);
+
+        auto& gameState = GetGameState();
+        exporter->Export(gameState, *stream);
         result = true;
     }
     catch (const std::exception& e)
