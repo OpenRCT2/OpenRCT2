@@ -21,6 +21,12 @@ namespace OpenRCT2
 {
     class Park;
 
+    struct GameState_t
+    {
+    };
+
+    GameState_t& GetGameState();
+
     /**
      * Class to update the state of the map and park.
      */
@@ -52,4 +58,5 @@ namespace OpenRCT2
     private:
         void CreateStateSnapshot();
     };
+
 } // namespace OpenRCT2

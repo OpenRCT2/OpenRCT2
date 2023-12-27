@@ -50,6 +50,13 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
 
+static GameState_t _gameState{};
+
+GameState_t& GetGameState()
+{
+    return _gameState;
+}
+
 GameState::GameState()
 {
     _park = std::make_unique<Park>();
