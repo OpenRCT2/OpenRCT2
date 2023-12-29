@@ -29,6 +29,7 @@
 - Fix: [#20807] Tertiary colour not copied with small scenery.
 - Fix: [#20964] Crash when player connects to server with a group assigned that no longer exists.
 - Fix: [#20995] TTF fonts don’t support hinting, outlines, or insets with OpenGL.
+- Fix: [#21042] Peeps don’t render properly in S4 parks.
 
 0.4.6 (2023-09-03)
 ------------------------------------------------------------------------

@@ -1275,8 +1275,8 @@ namespace RCT1
 
             const SpriteBounds* spriteBounds = &GetSpriteBounds(dst->SpriteType, dst->ActionSpriteType);
             dst->SpriteData.Width = spriteBounds->sprite_width;
-            dst->SpriteData.HeightMax = spriteBounds->sprite_height_negative;
-            dst->SpriteData.HeightMin = spriteBounds->sprite_height_positive;
+            dst->SpriteData.HeightMin = spriteBounds->sprite_height_negative;
+            dst->SpriteData.HeightMax = spriteBounds->sprite_height_positive;
 
             dst->MoveTo({ src->x, src->y, src->z });
 
