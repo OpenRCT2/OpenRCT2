@@ -6,11 +6,15 @@
 - Feature: [#20825] Made setting the game speed a game action.
 - Feature: [#20830] Display author field on scenery window.
 - Feature: [#20853] [Plugin] Add “BaseTileElement.owner” which is saved in the park file.
+- Feature: [objects#257] Re-introduce the RCT1 road, which does not have handrails.
 - Feature: [OpenMusic#46] Added Mystic ride music style.
 - Feature: [OpenMusic#50] Added Rock style 4 ride music.
+- Improved: [objects#261] Add composer credits on all RCT2 music objects.
 - Change: [#20790] Default ride price set to free if park charges for entry.
 - Change: [#20880] Restore removed default coaster colours.
 - Change: [#21102] The money effect will now update even when the game is paused.
+- Change: [objects#244] Update sort priorities for expansion scenery groups.
+- Change: [objects#256] Use recoloured RCT2 artwork on the Fruity Ices Stall, rather than the (slightly different) RCT1 artwork.
 - Fix: [#5677] Balloons pass through the ground and objects.
 - Fix: [#12299] Placing ride entrances/exits ignores the Disable Clearance Checks cheat.
 - Fix: [#13473] Guests complain that the default Circus price is too high.
@@ -31,6 +35,8 @@
 - Fix: [#20964] Crash when player connects to server with a group assigned that no longer exists.
 - Fix: [#20995] TTF fonts don’t support hinting, outlines, or insets with OpenGL.
 - Fix: [#21042] Peeps don’t render properly in S4 parks.
+- Fix: [objects#246, objects#248] Some objects are incorrectly marked as originating from RCT1.
+- Fix: [objects#260] Submarine Ride has its capacity listed incorrectly.
 
 0.4.6 (2023-09-03)
 ------------------------------------------------------------------------
