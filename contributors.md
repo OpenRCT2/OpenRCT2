@@ -298,7 +298,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * (Flyxxpy)
 * Jan Büchner (Greyfade)
 * Allister Brimble - OpenRCT2 Main Theme
-* Herman Riddering - Owner of the 35er Voigt, which provided new recordigns for the Fairground organ styles.
+* Herman Riddering - Owner of the 35er Voigt, which provided new recordings for the Fairground organ styles.
 * (Skyshard)
 * (Blackend Blue)
 
