@@ -297,8 +297,8 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Karst "Jalmaan" van Galen Last (AuraSpecs)
 * (Flyxxpy)
 * Jan Büchner (Greyfade)
-* Allister Brimble
-* Herman Riddering
+* Allister Brimble - OpenRCT2 Main Theme
+* Herman Riddering - Owner of the 35er Voigt, which provided new recordigns for the Fairground organ styles.
 * (Skyshard)
 * (Blackend Blue)
 
@@ -307,14 +307,12 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * (ThatGuyYouKnow)
 
 ## RollerCoaster Tycoon 2 credits
-* Allister Brimble - Music & Sound
+* Allister Brimble - Music and sound effects
 * Chris Sawyer - Programming
-* David Ellis - Additional Sound
+* David Ellis - Additional sound effects
 * Jacqui Lyons (Marjacq Ltd.) - Representation
 * Simon Foster - Graphics
 
 Thanks to: Peter James Adcock, Joe Booth, and John Wardley
 
-Licensed to Atari
-
-###### Copyright (c) 2014-2023 OpenRCT2 developers
+Licensed to Infogrames Interactive Inc.
