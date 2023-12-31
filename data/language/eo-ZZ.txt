@@ -3696,6 +3696,8 @@ STR_6591    :Dungito nune estas riparanta atrakcion kaj ne povas esti maldungita
 STR_6592    :Dungito nune estas inspektanta atrakcion kaj ne povas esti maldungita.
 STR_6593    :Forigi parkobarilojn
 STR_6594    :Inspektilo de Bloko: Baskuligi deklivecon de muro
+STR_6595    :{WINDOW_COLOUR_2}Aŭtoro: {BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}Aŭtoroj: {BLACK}{STRING}
 
 #############
 # Scenarios #
