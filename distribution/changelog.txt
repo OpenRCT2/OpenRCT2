@@ -1,4 +1,4 @@
-0.4.7 (in development)
+0.4.7 (2023-12-31)
 ------------------------------------------------------------------------
 - Feature: [#12078] Add shortcut key for toggling wall slope.
 - Feature: [#19919] Add diagonal brakes and diagonal block brakes to most coaster types.
