@@ -411,6 +411,8 @@ public:
     bool HasStation() const;
 
     bool FindTrackGap(const CoordsXYE& input, CoordsXYE* output) const;
+
+    uint8_t GetEntranceStyle() const;
 };
 void UpdateSpiralSlide(Ride& ride);
 void UpdateChairlift(Ride& ride);
@@ -895,7 +897,9 @@ enum
     TRACK_ELEMENT_SET_COLOUR_SCHEME = (1 << 2),
     TRACK_ELEMENT_SET_HAS_CABLE_LIFT_TRUE = (1 << 3),
     TRACK_ELEMENT_SET_HAS_CABLE_LIFT_FALSE = (1 << 4),
-    TRACK_ELEMENT_SET_SEAT_ROTATION = (1 << 5)
+    TRACK_ELEMENT_SET_SEAT_ROTATION = (1 << 5),
+    TRACK_ELEMENT_SET_BRAKE_CLOSED_STATE = (1 << 6),
+    TRACK_ELEMENT_SET_BRAKE_BOOSTER_SPEED = (1 << 7)
 };
 
 #define MAX_RIDE_MEASUREMENTS 8
@@ -1106,6 +1110,8 @@ int32_t RideGetEntryIndex(int32_t rideType, int32_t rideSubType);
 
 void DetermineRideEntranceAndExitLocations();
 void RideClearLeftoverEntrances(const Ride& ride);
+
+void SetBrakeClosedMultiTile(TrackElement& trackElement, const CoordsXY& trackLocation, bool isClosed);
 
 std::vector<RideId> GetTracklessRides();
 

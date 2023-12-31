@@ -252,3 +252,6 @@ namespace Colour
 #ifndef NO_TTF
 uint8_t BlendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2);
 #endif
+
+typedef uint8_t BlendColourMapType[PALETTE_COUNT][PALETTE_COUNT];
+BlendColourMapType* GetBlendColourMap();

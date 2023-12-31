@@ -3695,6 +3695,10 @@ STR_6589    :Show window buttons on the left
 STR_6590    :Show the window buttons (e.g. to close the window) on the left of the title bar instead of on the right.
 STR_6591    :Staff member is currently fixing a ride and can’t be fired.
 STR_6592    :Staff member is currently inspecting a ride and can’t be fired.
+STR_6593    :Remove park fences
+STR_6594    :Tile Inspector: Toggle wall slope
+STR_6595    :{WINDOW_COLOUR_2}Author: {BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}Authors: {BLACK}{STRING}
 
 #############
 # Scenarios #

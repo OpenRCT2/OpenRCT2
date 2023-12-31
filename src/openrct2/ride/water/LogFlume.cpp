@@ -165,15 +165,16 @@ static void PaintLogFlumeTrackFlat(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(LogFlumeTrackFlatImageIds[direction][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(LogFlumeTrackFlatImageIds[direction][1]);
+    auto imageId = session.TrackColours.WithIndex(LogFlumeTrackFlatImageIds[direction][0]);
+    auto frontImageId = session.TrackColours.WithIndex(LogFlumeTrackFlatImageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
@@ -186,29 +187,20 @@ static void PaintLogFlumeTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(LogFlumeTrackFlatImageIds[direction][0]);
+    auto imageId = session.TrackColours.WithIndex(LogFlumeTrackFlatImageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
 
     if (direction & 1)
     {
-        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
+        imageId = GetStationColourScheme(session, trackElement).WithIndex(SPR_STATION_BASE_B_NW_SE);
     }
     else
     {
-        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
+        imageId = GetStationColourScheme(session, trackElement).WithIndex(SPR_STATION_BASE_B_SW_NE);
     }
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
 
-    if (direction & 1)
-    {
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-    }
-    else
-    {
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-    }
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Boxed);
 
     TrackPaintUtilDrawStation3(session, ride, direction, height + 2, height, trackElement);
     // Covers shouldn't be offset by +2
@@ -230,15 +222,16 @@ static void PaintLogFlumeTrack25DegUp(
         { SPR_LOG_FLUME_25_DEG_UP_SE_NW, SPR_LOG_FLUME_25_DEG_UP_FRONT_SE_NW },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours.WithIndex(imageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 50 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -265,15 +258,16 @@ static void PaintLogFlumeTrackFlatTo25DegUp(
         { SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_SE_NW, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_SE_NW },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours.WithIndex(imageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 42 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 3, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -300,15 +294,16 @@ static void PaintLogFlumeTrack25DegUpToFlat(
         { SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_SE_NW, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_SE_NW },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours.WithIndex(imageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 6, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -335,15 +330,16 @@ static void PaintLogFlumeTrack25DegDown(
         { SPR_LOG_FLUME_25_DEG_DOWN_SE_NW, SPR_LOG_FLUME_25_DEG_UP_FRONT_NW_SE },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours.WithIndex(imageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 50 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -370,15 +366,16 @@ static void PaintLogFlumeTrackFlatTo25DegDown(
         { SPR_LOG_FLUME_FLAT_TO_25_DEG_DOWN_SE_NW, SPR_LOG_FLUME_25_DEG_UP_TO_FLAT_FRONT_NW_SE },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours.WithIndex(imageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 34 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 6, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -405,15 +402,16 @@ static void PaintLogFlumeTrack25DegDownToFlat(
         { SPR_LOG_FLUME_25_DEG_DOWN_TO_FLAT_SE_NW, SPR_LOG_FLUME_FLAT_TO_25_DEG_UP_FRONT_NW_SE },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours.WithIndex(imageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 42 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 3, height, session.SupportColours);
     }
 
     if (direction == 0 || direction == 3)
@@ -460,8 +458,8 @@ static void PaintLogFlumeTrackSBendLeft(
         },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][1]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][trackSequence][0]);
+    auto frontImageId = session.TrackColours.WithIndex(imageIds[direction][trackSequence][1]);
     int16_t bboy;
 
     switch (trackSequence)
@@ -470,7 +468,8 @@ static void PaintLogFlumeTrackSBendLeft(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
@@ -481,9 +480,9 @@ static void PaintLogFlumeTrackSBendLeft(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
             if (direction == 0 || direction == 1)
             {
+                const auto supportPlace = (direction & 1) ? MetalSupportPlace::TopRightSide : MetalSupportPlace::TopLeftSide;
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Boxed, 5 + (direction & 1), (direction & 1), height,
-                    session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Boxed, supportPlace, (direction & 1), height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -497,9 +496,9 @@ static void PaintLogFlumeTrackSBendLeft(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
             if (direction == 2 || direction == 3)
             {
+                const auto supportPlace = (direction & 1) ? MetalSupportPlace::TopRightSide : MetalSupportPlace::TopLeftSide;
                 MetalASupportsPaintSetup(
-                    session, MetalSupportType::Boxed, 5 + (direction & 1), (direction & 1), height,
-                    session.TrackColours[SCHEME_SUPPORTS]);
+                    session, MetalSupportType::Boxed, supportPlace, (direction & 1), height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -510,7 +509,8 @@ static void PaintLogFlumeTrackSBendLeft(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
@@ -565,8 +565,8 @@ static void PaintLogFlumeTrackSBendRight(
         },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][trackSequence][1]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][trackSequence][0]);
+    auto frontImageId = session.TrackColours.WithIndex(imageIds[direction][trackSequence][1]);
     int16_t bboy;
 
     switch (trackSequence)
@@ -575,7 +575,8 @@ static void PaintLogFlumeTrackSBendRight(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
@@ -586,8 +587,9 @@ static void PaintLogFlumeTrackSBendRight(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
             if (direction == 0 || direction == 1)
             {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::Boxed, 8 - (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                const auto supportPlace = (direction & 1) ? MetalSupportPlace::BottomLeftSide
+                                                          : MetalSupportPlace::BottomRightSide;
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, supportPlace, 0, height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -601,8 +603,9 @@ static void PaintLogFlumeTrackSBendRight(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, bboy, height + 27 }, { 32, 26, 0 } });
             if (direction == 2 || direction == 3)
             {
-                MetalASupportsPaintSetup(
-                    session, MetalSupportType::Boxed, 8 - (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                const auto supportPlace = (direction & 1) ? MetalSupportPlace::BottomLeftSide
+                                                          : MetalSupportPlace::BottomRightSide;
+                MetalASupportsPaintSetup(session, MetalSupportType::Boxed, supportPlace, 0, height, session.SupportColours);
             }
             PaintUtilSetSegmentSupportHeight(
                 session,
@@ -613,7 +616,8 @@ static void PaintLogFlumeTrackSBendRight(
             PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             PaintAddImageAsParentRotated(
                 session, direction, frontImageId, { 0, 0, height }, { { 0, 2, height + 27 }, { 32, 27, 0 } });
-            MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
@@ -671,14 +675,14 @@ static void PaintLogFlumeTrackLeftQuarterTurn3Tiles(
         },
     };
 
-    TrackPaintUtilLeftQuarterTurn3TilesPaint(
-        session, 2, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], imageIds);
+    TrackPaintUtilLeftQuarterTurn3TilesPaint(session, 2, height, direction, trackSequence, session.TrackColours, imageIds);
     TrackPaintUtilLeftQuarterTurn3TilesPaintWithHeightOffset(
-        session, 0, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], imageIdsFront, 27);
+        session, 0, height, direction, trackSequence, session.TrackColours, imageIdsFront, 27);
 
     if (trackSequence != 1 && trackSequence != 2)
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
 
     switch (trackSequence)
@@ -750,14 +754,14 @@ static void PaintLogFlumeTrackRightQuarterTurn3Tiles(
         },
     };
 
-    TrackPaintUtilRightQuarterTurn3TilesPaint2(
-        session, 2, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], imageIds);
+    TrackPaintUtilRightQuarterTurn3TilesPaint2(session, 2, height, direction, trackSequence, session.TrackColours, imageIds);
     TrackPaintUtilRightQuarterTurn3TilesPaint2WithHeightOffset(
-        session, 0, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], imageIdsFront, 27);
+        session, 0, height, direction, trackSequence, session.TrackColours, imageIdsFront, 27);
 
     if (trackSequence != 1 && trackSequence != 2)
     {
-        MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
 
     switch (trackSequence)
@@ -799,23 +803,12 @@ static void PaintLogFlumeTrackOnRidePhoto(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    PaintAddImageAsParent(session, ImageId(SPR_STATION_BASE_D, COLOUR_BLACK), { 0, 0, height }, { 32, 32, 1 });
+    TrackPaintUtilOnridePhotoPlatformPaint(session, direction, height, MetalSupportType::Boxed);
 
-    if (direction & 1)
-    {
-        MetalASupportsPaintSetup(session, MetalSupportType::ForkAlt, 6, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(session, MetalSupportType::ForkAlt, 7, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
-    }
-    else
-    {
-        MetalASupportsPaintSetup(session, MetalSupportType::Fork, 5, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
-        MetalASupportsPaintSetup(session, MetalSupportType::Fork, 8, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
-    }
-
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(LogFlumeTrackFlatImageIds[direction][0]);
+    auto imageId = session.TrackColours.WithIndex(LogFlumeTrackFlatImageIds[direction][0]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 0 } });
 
-    imageId = session.TrackColours[SCHEME_TRACK].WithIndex(LogFlumeTrackFlatImageIds[direction][1]);
+    imageId = session.TrackColours.WithIndex(LogFlumeTrackFlatImageIds[direction][1]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height + 5 }, { 32, 1, 21 } });
 
     TrackPaintUtilOnridePhotoPaint(session, direction, height + 3, trackElement);
@@ -836,13 +829,13 @@ static void PaintLogFlumeTrackReverser(
         { SPR_LOG_FLUME_REVERSER_SE_NW, SPR_LOG_FLUME_REVERSER_FRONT_SE_NW },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours.WithIndex(imageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 26 } });
 
-    MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    MetalASupportsPaintSetup(session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 0, height, session.SupportColours);
 
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_0);
     PaintUtilSetSegmentSupportHeight(
@@ -863,8 +856,8 @@ static void LogFlumeTrack25Down60(
         { SPR_G2_FLUME_25_60_NE_SW_BACK, SPR_G2_FLUME_25_60_NE_SW_BACK_WATER },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours.WithIndex(imageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height + 4 }, { 32, 1, 42 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 0 } });
@@ -873,7 +866,8 @@ static void LogFlumeTrack25Down60(
     {
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_14);
@@ -883,7 +877,7 @@ static void LogFlumeTrack25Down60(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Boxed, 4, 8, height + 12, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height + 12, session.SupportColours);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height + 24, TUNNEL_2);
@@ -904,8 +898,8 @@ static void LogFlumeTrack60Down(
         { SPR_G2_FLUME_60_NE_SW_BACK, SPR_G2_EMPTY },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours.WithIndex(imageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height + 4 }, { 32, 1, 98 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 2 } });
@@ -914,7 +908,8 @@ static void LogFlumeTrack60Down(
     {
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
@@ -924,7 +919,7 @@ static void LogFlumeTrack60Down(
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Boxed, 4, 8, height + 12, session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height + 12, session.SupportColours);
         }
 
         PaintUtilPushTunnelRotated(session, direction, height + 56, TUNNEL_SQUARE_8);
@@ -945,8 +940,8 @@ static void LogFlumeTrack60Down25(
         { SPR_G2_FLUME_60_25_NE_SW_BACK, SPR_G2_FLUME_60_25_NE_SW_BACK_WATER },
     };
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]);
-    auto frontImageId = session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][1]);
+    auto imageId = session.TrackColours.WithIndex(imageIds[direction][0]);
+    auto frontImageId = session.TrackColours.WithIndex(imageIds[direction][1]);
 
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { { 0, 27, height + 4 }, { 32, 1, 42 } });
     PaintAddImageAsParentRotated(session, direction, frontImageId, { 0, 0, height }, { { 0, 6, height }, { 32, 20, 0 } });
@@ -957,7 +952,8 @@ static void LogFlumeTrack60Down25(
 
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height, session.SupportColours);
         }
     }
     else
@@ -966,7 +962,8 @@ static void LogFlumeTrack60Down25(
 
         if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
         {
-            MetalASupportsPaintSetup(session, MetalSupportType::Boxed, 4, 8, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
+            MetalASupportsPaintSetup(
+                session, MetalSupportType::Boxed, MetalSupportPlace::Centre, 8, height + 8, session.SupportColours);
         }
     }
     PaintUtilSetSegmentSupportHeight(

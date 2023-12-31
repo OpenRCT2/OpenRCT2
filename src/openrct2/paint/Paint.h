@@ -197,7 +197,8 @@ struct PaintSessionCore
     uint32_t ViewFlags;
     uint32_t QuadrantBackIndex;
     uint32_t QuadrantFrontIndex;
-    ImageId TrackColours[4];
+    ImageId TrackColours;
+    ImageId SupportColours;
     SupportHeight SupportSegments[9];
     SupportHeight Support;
     uint16_t WaterHeight;
@@ -281,7 +282,8 @@ extern CoordsXY gClipSelectionB;
 /** rct2: 0x00993CC4. The white ghost that indicates not-yet-built elements. */
 constexpr ImageId ConstructionMarker = ImageId(0).WithRemap(FilterPaletteID::PaletteGhost);
 constexpr ImageId HighlightMarker = ImageId(0).WithRemap(FilterPaletteID::PaletteGhost);
-constexpr ImageId TrackGhost = ImageId(0, FilterPaletteID::PaletteNull);
+constexpr ImageId TrackStationColour = ImageId(0, COLOUR_BLACK);
+constexpr ImageId ShopSupportColour = ImageId(0, COLOUR_DARK_BROWN);
 
 extern bool gShowDirtyVisuals;
 extern bool gPaintBoundingBoxes;

@@ -549,6 +549,7 @@ bool TrackElement::IsBlockStart() const
         case TrackElemType::EndStation:
         case TrackElemType::CableLiftHill:
         case TrackElemType::BlockBrakes:
+        case TrackElemType::DiagBlockBrakes:
             return true;
         case TrackElemType::Up25ToFlat:
         case TrackElemType::Up60ToFlat:
@@ -624,6 +625,21 @@ bool TrackTypeIsStation(track_type_t trackType)
     }
 }
 
+bool TrackTypeIsBrakes(track_type_t trackType)
+{
+    return (trackType == TrackElemType::Brakes) || (trackType == TrackElemType::DiagBrakes);
+}
+
+bool TrackTypeIsBlockBrakes(track_type_t trackType)
+{
+    return (trackType == TrackElemType::BlockBrakes) || (trackType == TrackElemType::DiagBlockBrakes);
+}
+
+bool TrackTypeIsBooster(track_type_t trackType)
+{
+    return trackType == TrackElemType::Booster;
+}
+
 bool TrackElementIsCovered(track_type_t trackElementType)
 {
     switch (trackElementType)
@@ -653,9 +669,56 @@ bool TrackElementIsCovered(track_type_t trackElementType)
     }
 }
 
+track_type_t UncoverTrackElement(track_type_t trackElementType)
+{
+    switch (trackElementType)
+    {
+        case TrackElemType::FlatCovered:
+            return TrackElemType::Flat;
+        case TrackElemType::Up25Covered:
+            return TrackElemType::Up25;
+        case TrackElemType::Up60Covered:
+            return TrackElemType::Up60;
+        case TrackElemType::FlatToUp25Covered:
+            return TrackElemType::FlatToUp25;
+        case TrackElemType::Up25ToUp60Covered:
+            return TrackElemType::Up25ToUp60;
+        case TrackElemType::Up60ToUp25Covered:
+            return TrackElemType::Up60ToUp25;
+        case TrackElemType::Up25ToFlatCovered:
+            return TrackElemType::Up25ToFlat;
+        case TrackElemType::Down25Covered:
+            return TrackElemType::Down25;
+        case TrackElemType::Down60Covered:
+            return TrackElemType::Down60;
+        case TrackElemType::FlatToDown25Covered:
+            return TrackElemType::FlatToDown25;
+        case TrackElemType::Down25ToDown60Covered:
+            return TrackElemType::Down25ToDown60;
+        case TrackElemType::Down60ToDown25Covered:
+            return TrackElemType::Down60ToDown25;
+        case TrackElemType::Down25ToFlatCovered:
+            return TrackElemType::Down25ToFlat;
+        case TrackElemType::LeftQuarterTurn5TilesCovered:
+            return TrackElemType::LeftQuarterTurn5Tiles;
+        case TrackElemType::RightQuarterTurn5TilesCovered:
+            return TrackElemType::RightQuarterTurn5Tiles;
+        case TrackElemType::SBendLeftCovered:
+            return TrackElemType::SBendLeft;
+        case TrackElemType::SBendRightCovered:
+            return TrackElemType::SBendRight;
+        case TrackElemType::LeftQuarterTurn3TilesCovered:
+            return TrackElemType::LeftQuarterTurn3Tiles;
+        case TrackElemType::RightQuarterTurn3TilesCovered:
+            return TrackElemType::RightQuarterTurn3Tiles;
+        default:
+            return trackElementType;
+    }
+}
+
 bool TrackTypeHasSpeedSetting(track_type_t trackType)
 {
-    return trackType == TrackElemType::Brakes || trackType == TrackElemType::Booster || trackType == TrackElemType::BlockBrakes;
+    return TrackTypeIsBooster(trackType) || TrackTypeIsBrakes(trackType) || TrackTypeIsBlockBrakes(trackType);
 }
 
 bool TrackTypeIsHelix(track_type_t trackType)
@@ -944,6 +1007,113 @@ bool TrackTypeMustBeMadeInvisible(ride_type_t rideType, track_type_t trackType, 
             || trackType == TrackElemType::Down60ToDown25)
         {
             return true;
+        }
+    }
+    else if (rideType == RIDE_TYPE_GIGA_COASTER && parkFileVersion <= 30)
+    {
+        switch (trackType)
+        {
+            case TrackElemType::Up90:
+            case TrackElemType::Down90:
+            case TrackElemType::Up60ToUp90:
+            case TrackElemType::Down90ToDown60:
+            case TrackElemType::Up90ToUp60:
+            case TrackElemType::Down60ToDown90:
+            case TrackElemType::LeftQuarterTurn1TileUp90:
+            case TrackElemType::RightQuarterTurn1TileUp90:
+            case TrackElemType::LeftQuarterTurn1TileDown90:
+            case TrackElemType::RightQuarterTurn1TileDown90:
+            case TrackElemType::LeftBarrelRollUpToDown:
+            case TrackElemType::RightBarrelRollUpToDown:
+            case TrackElemType::LeftBarrelRollDownToUp:
+            case TrackElemType::RightBarrelRollDownToUp:
+            case TrackElemType::HalfLoopUp:
+            case TrackElemType::HalfLoopDown:
+            case TrackElemType::LeftVerticalLoop:
+            case TrackElemType::RightVerticalLoop:
+            case TrackElemType::LeftCorkscrewUp:
+            case TrackElemType::RightCorkscrewUp:
+            case TrackElemType::LeftCorkscrewDown:
+            case TrackElemType::RightCorkscrewDown:
+            case TrackElemType::LeftLargeCorkscrewUp:
+            case TrackElemType::RightLargeCorkscrewUp:
+            case TrackElemType::LeftLargeCorkscrewDown:
+            case TrackElemType::RightLargeCorkscrewDown:
+            case TrackElemType::LeftZeroGRollUp:
+            case TrackElemType::RightZeroGRollUp:
+            case TrackElemType::LeftZeroGRollDown:
+            case TrackElemType::RightZeroGRollDown:
+            case TrackElemType::LeftLargeZeroGRollUp:
+            case TrackElemType::RightLargeZeroGRollUp:
+            case TrackElemType::LeftLargeZeroGRollDown:
+            case TrackElemType::RightLargeZeroGRollDown:
+            case TrackElemType::Up90ToInvertedFlatQuarterLoop:
+            case TrackElemType::InvertedFlatToDown90QuarterLoop:
+            case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
+            case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
+            case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
+            case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
+            case TrackElemType::LeftMediumHalfLoopUp:
+            case TrackElemType::RightMediumHalfLoopUp:
+            case TrackElemType::LeftMediumHalfLoopDown:
+            case TrackElemType::RightMediumHalfLoopDown:
+            case TrackElemType::LeftLargeHalfLoopUp:
+            case TrackElemType::RightLargeHalfLoopUp:
+            case TrackElemType::RightLargeHalfLoopDown:
+            case TrackElemType::LeftLargeHalfLoopDown:
+            case TrackElemType::FlatToUp60:
+            case TrackElemType::Up60ToFlat:
+            case TrackElemType::FlatToDown60:
+            case TrackElemType::Down60ToFlat:
+            case TrackElemType::DiagFlatToUp60:
+            case TrackElemType::DiagUp60ToFlat:
+            case TrackElemType::DiagFlatToDown60:
+            case TrackElemType::DiagDown60ToFlat:
+            case TrackElemType::LeftEighthToDiagUp25:
+            case TrackElemType::RightEighthToDiagUp25:
+            case TrackElemType::LeftEighthToDiagDown25:
+            case TrackElemType::RightEighthToDiagDown25:
+            case TrackElemType::LeftEighthToOrthogonalUp25:
+            case TrackElemType::RightEighthToOrthogonalUp25:
+            case TrackElemType::LeftEighthToOrthogonalDown25:
+            case TrackElemType::RightEighthToOrthogonalDown25:
+            case TrackElemType::DiagUp25ToLeftBankedUp25:
+            case TrackElemType::DiagUp25ToRightBankedUp25:
+            case TrackElemType::DiagLeftBankedUp25ToUp25:
+            case TrackElemType::DiagRightBankedUp25ToUp25:
+            case TrackElemType::DiagDown25ToLeftBankedDown25:
+            case TrackElemType::DiagDown25ToRightBankedDown25:
+            case TrackElemType::DiagLeftBankedDown25ToDown25:
+            case TrackElemType::DiagRightBankedDown25ToDown25:
+            case TrackElemType::DiagLeftBankedFlatToLeftBankedUp25:
+            case TrackElemType::DiagRightBankedFlatToRightBankedUp25:
+            case TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat:
+            case TrackElemType::DiagRightBankedUp25ToRightBankedFlat:
+            case TrackElemType::DiagLeftBankedFlatToLeftBankedDown25:
+            case TrackElemType::DiagRightBankedFlatToRightBankedDown25:
+            case TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat:
+            case TrackElemType::DiagRightBankedDown25ToRightBankedFlat:
+            case TrackElemType::DiagUp25LeftBanked:
+            case TrackElemType::DiagUp25RightBanked:
+            case TrackElemType::DiagDown25LeftBanked:
+            case TrackElemType::DiagDown25RightBanked:
+            case TrackElemType::DiagFlatToLeftBankedUp25:
+            case TrackElemType::DiagFlatToRightBankedUp25:
+            case TrackElemType::DiagLeftBankedUp25ToFlat:
+            case TrackElemType::DiagRightBankedUp25ToFlat:
+            case TrackElemType::DiagFlatToLeftBankedDown25:
+            case TrackElemType::DiagFlatToRightBankedDown25:
+            case TrackElemType::DiagLeftBankedDown25ToFlat:
+            case TrackElemType::DiagRightBankedDown25ToFlat:
+            case TrackElemType::LeftEighthBankToDiagUp25:
+            case TrackElemType::RightEighthBankToDiagUp25:
+            case TrackElemType::LeftEighthBankToDiagDown25:
+            case TrackElemType::RightEighthBankToDiagDown25:
+            case TrackElemType::LeftEighthBankToOrthogonalUp25:
+            case TrackElemType::RightEighthBankToOrthogonalUp25:
+            case TrackElemType::LeftEighthBankToOrthogonalDown25:
+            case TrackElemType::RightEighthBankToOrthogonalDown25:
+                return true;
         }
     }
 

@@ -17,36 +17,36 @@
 #include "Location.hpp"
 #include "Map.h"
 
-uint32_t SurfaceElement::GetSurfaceStyle() const
+ObjectEntryIndex SurfaceElement::GetSurfaceObjectIndex() const
 {
     return SurfaceStyle;
 }
 
-TerrainSurfaceObject* SurfaceElement::GetSurfaceStyleObject() const
+TerrainSurfaceObject* SurfaceElement::GetSurfaceObject() const
 {
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-    return static_cast<TerrainSurfaceObject*>(objManager.GetLoadedObject(ObjectType::TerrainSurface, GetSurfaceStyle()));
+    return static_cast<TerrainSurfaceObject*>(objManager.GetLoadedObject(ObjectType::TerrainSurface, GetSurfaceObjectIndex()));
 }
 
-uint32_t SurfaceElement::GetEdgeStyle() const
+ObjectEntryIndex SurfaceElement::GetEdgeObjectIndex() const
 {
-    return EdgeStyle;
+    return EdgeObjectIndex;
 }
 
-TerrainEdgeObject* SurfaceElement::GetEdgeStyleObject() const
+TerrainEdgeObject* SurfaceElement::GetEdgeObject() const
 {
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-    return static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, GetEdgeStyle()));
+    return static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, GetEdgeObjectIndex()));
 }
 
-void SurfaceElement::SetSurfaceStyle(uint32_t newStyle)
+void SurfaceElement::SetSurfaceObjectIndex(ObjectEntryIndex newStyle)
 {
-    SurfaceStyle = newStyle;
+    SurfaceStyle = static_cast<ObjectEntryIndex>(newStyle);
 }
 
-void SurfaceElement::SetEdgeStyle(uint32_t newStyle)
+void SurfaceElement::SetEdgeObjectIndex(ObjectEntryIndex newIndex)
 {
-    EdgeStyle = newStyle;
+    EdgeObjectIndex = static_cast<ObjectEntryIndex>(newIndex);
 }
 
 int32_t SurfaceElement::GetWaterHeight() const
@@ -61,7 +61,7 @@ void SurfaceElement::SetWaterHeight(int32_t newWaterHeight)
 
 bool SurfaceElement::CanGrassGrow() const
 {
-    auto surfaceStyle = GetSurfaceStyle();
+    auto surfaceStyle = GetSurfaceObjectIndex();
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(ObjectType::TerrainSurface, surfaceStyle);
     if (obj != nullptr)

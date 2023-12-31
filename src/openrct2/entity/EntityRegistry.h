@@ -50,6 +50,7 @@ template<typename T> T* CreateEntityAt(const EntityId index)
 void ResetAllEntities();
 void ResetEntitySpatialIndices();
 void UpdateAllMiscEntities();
+void UpdateMoneyEffect();
 void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity);
 void EntityRemove(EntityBase* entity);
 uint16_t RemoveFloatingEntities();

@@ -24,8 +24,9 @@ struct Balloon : EntityBase
     uint8_t colour;
     static void Create(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped);
     void Update();
-    void Pop();
+    void Pop(bool playSound);
     void Press();
     void Serialise(DataSerialiser& stream);
     void Paint(PaintSession& session, int32_t imageDirection) const;
+    bool Collides() const;
 };

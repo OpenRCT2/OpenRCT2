@@ -173,6 +173,9 @@ void GameState::Tick()
                 NetworkSendTick();
             }
 
+            // Keep updating the money effect even when paused.
+            UpdateMoneyEffect();
+
             // Update the animation list. Note this does not
             // increment the map animation.
             MapAnimationInvalidateAll();

@@ -55,6 +55,7 @@ bool gCheatsAllowTrackPlaceInvalidHeights = false;
 bool gCheatsAllowRegularPathAsQueue = false;
 bool gCheatsAllowSpecialColourSchemes = false;
 bool gCheatsMakeAllDestructible = false;
+StaffSpeedCheat gCheatsSelectedStaffSpeed = StaffSpeedCheat::None;
 
 void CheatsReset()
 {
@@ -83,6 +84,7 @@ void CheatsReset()
     gCheatsAllowRegularPathAsQueue = false;
     gCheatsAllowSpecialColourSchemes = false;
     gCheatsMakeAllDestructible = false;
+    gCheatsSelectedStaffSpeed = StaffSpeedCheat::None;
 }
 
 void CheatsSet(CheatType cheatType, int64_t param1 /* = 0*/, int64_t param2 /* = 0*/)
@@ -134,6 +136,7 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::AllowRegularPathAsQueue, gCheatsAllowRegularPathAsQueue, count);
         CheatEntrySerialise(ds, CheatType::AllowSpecialColourSchemes, gCheatsAllowSpecialColourSchemes, count);
         CheatEntrySerialise(ds, CheatType::MakeDestructible, gCheatsMakeAllDestructible, count);
+        CheatEntrySerialise(ds, CheatType::SetStaffSpeed, gCheatsSelectedStaffSpeed, count);
 
         // Remember current position and update count.
         uint64_t endOffset = stream.GetPosition();
@@ -234,6 +237,9 @@ void CheatsSerialise(DataSerialiser& ds)
                     break;
                 case CheatType::MakeDestructible:
                     ds << gCheatsMakeAllDestructible;
+                    break;
+                case CheatType::SetStaffSpeed:
+                    ds << gCheatsSelectedStaffSpeed;
                     break;
                 default:
                     break;
@@ -342,6 +348,8 @@ const char* CheatsGetName(CheatType cheatType)
             return LanguageGetString(STR_CHEAT_ALLOW_PATH_AS_QUEUE);
         case CheatType::AllowSpecialColourSchemes:
             return LanguageGetString(STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES);
+        case CheatType::RemoveParkFences:
+            return LanguageGetString(STR_CHEAT_REMOVE_PARK_FENCES);
         default:
             return "Unknown Cheat";
     }

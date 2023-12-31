@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# Run the script and capture the output
+output=$(node scripts/format-changelog.js distribution/changelog.txt)
+
+# Check if the script ran successfully
+if [ $? -eq 0 ]; then
+    echo "Script ran successfully. Running diff..."
+    # Run diff on the original file and the output
+    diff --color=always -b <(echo "$output") distribution/changelog.txt
+    # If diff finds differences, exit with a non-zero status
+    if [ $? -ne 0 ]; then
+        echo "Differences found. Exiting with status 1."
+        exit 1
+    else
+        echo "No differences found. Exiting with status 0."
+        exit 0
+    fi
+else
+    echo "Script encountered an error:"
+    echo "$output"
+    exit 1
+fi

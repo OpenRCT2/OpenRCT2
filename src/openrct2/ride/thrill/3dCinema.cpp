@@ -18,7 +18,8 @@
 #include "../Vehicle.h"
 
 static void Paint3dCinemaDome(
-    PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height,
+    ImageId stationColour)
 {
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -31,10 +32,9 @@ static void Paint3dCinemaDome(
     }
 
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != TrackGhost)
+    if (stationColour != TrackStationColour)
     {
-        imageTemplate = imageFlags;
+        imageTemplate = stationColour;
     }
 
     auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + direction);
@@ -56,35 +56,37 @@ static void Paint3dCinema(
 
     int32_t edges = edges_3x3[trackSequence];
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    auto stationColour = GetStationColourScheme(session, trackElement);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, floorSpritesCork, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_MISC], height, fenceSpritesRope,
+        session, edges, session.MapPosition, trackElement, ride, stationColour, height, fenceSpritesRope,
         session.CurrentRotation);
 
     switch (trackSequence)
     {
         case 1:
-            Paint3dCinemaDome(session, ride, direction, 32, 32, height);
+            Paint3dCinemaDome(session, ride, direction, 32, 32, height, stationColour);
             break;
         case 3:
-            Paint3dCinemaDome(session, ride, direction, 32, -32, height);
+            Paint3dCinemaDome(session, ride, direction, 32, -32, height, stationColour);
             break;
         case 5:
-            Paint3dCinemaDome(session, ride, direction, 0, -32, height);
+            Paint3dCinemaDome(session, ride, direction, 0, -32, height, stationColour);
             break;
         case 6:
-            Paint3dCinemaDome(session, ride, direction, -32, 32, height);
+            Paint3dCinemaDome(session, ride, direction, -32, 32, height, stationColour);
             break;
         case 7:
-            Paint3dCinemaDome(session, ride, direction, -32, -32, height);
+            Paint3dCinemaDome(session, ride, direction, -32, -32, height, stationColour);
             break;
         case 8:
-            Paint3dCinemaDome(session, ride, direction, -32, 0, height);
+            Paint3dCinemaDome(session, ride, direction, -32, 0, height, stationColour);
             break;
     }
 

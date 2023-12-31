@@ -1059,7 +1059,7 @@ private:
             return 0;
 
         uint16_t colour = MapColour(PALETTE_INDEX_0);
-        const auto* surfaceObject = surfaceElement->GetSurfaceStyleObject();
+        const auto* surfaceObject = surfaceElement->GetSurfaceObject();
         if (surfaceObject != nullptr)
             colour = MapColour2(surfaceObject->MapColours[0], surfaceObject->MapColours[1]);
 

@@ -391,27 +391,31 @@ namespace OpenRCT2::Ui::Windows
         CustomWindow(std::shared_ptr<Plugin> owner, const CustomWindowDesc& desc)
             : _info(owner, desc)
         {
+        }
+
+        void OnOpen() override
+        {
             number = GetNewWindowNumber();
 
             // Set window tab
-            page = desc.TabIndex.value_or(0);
+            page = _info.Desc.TabIndex.value_or(0);
 
             // Set window colours
             colours[0] = COLOUR_GREY;
             colours[1] = COLOUR_GREY;
             colours[2] = COLOUR_GREY;
-            auto numColours = std::min(std::size(colours), std::size(desc.Colours));
+            auto numColours = std::min(std::size(colours), std::size(_info.Desc.Colours));
             for (size_t i = 0; i < numColours; i++)
             {
-                colours[i] = desc.Colours[i];
+                colours[i] = _info.Desc.Colours[i];
             }
 
-            if (desc.IsResizable())
+            if (_info.Desc.IsResizable())
             {
-                min_width = desc.MinWidth.value_or(0);
-                min_height = desc.MinHeight.value_or(0);
-                max_width = desc.MaxWidth.value_or(std::numeric_limits<uint16_t>::max());
-                max_height = desc.MaxHeight.value_or(std::numeric_limits<uint16_t>::max());
+                min_width = _info.Desc.MinWidth.value_or(0);
+                min_height = _info.Desc.MinHeight.value_or(0);
+                max_width = _info.Desc.MaxWidth.value_or(std::numeric_limits<uint16_t>::max());
+                max_height = _info.Desc.MaxHeight.value_or(std::numeric_limits<uint16_t>::max());
             }
             RefreshWidgets();
         }

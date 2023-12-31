@@ -43,7 +43,7 @@
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-#define NETWORK_STREAM_VERSION "0"
+#define NETWORK_STREAM_VERSION "13"
 
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
@@ -2643,7 +2643,10 @@ void NetworkBase::ServerHandleAuth(NetworkConnection& connection, NetworkPacket&
         if (connection.AuthStatus == NetworkAuth::Verified)
         {
             const NetworkGroup* group = GetGroupByID(GetGroupIDByHash(connection.Key.PublicKeyHash()));
-            passwordless = group->CanPerformAction(NetworkPermission::PasswordlessLogin);
+            if (group != nullptr)
+            {
+                passwordless = group->CanPerformAction(NetworkPermission::PasswordlessLogin);
+            }
         }
         if (gameversion != NetworkGetVersion())
         {
@@ -3352,6 +3355,14 @@ std::string NetworkGetPlayerPublicKeyHash(uint32_t id)
     return {};
 }
 
+void NetworkIncrementPlayerNumCommands(uint32_t playerIndex)
+{
+    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    Guard::IndexInRange(playerIndex, network.player_list);
+
+    network.player_list[playerIndex]->IncrementNumCommands();
+}
+
 void NetworkAddPlayerMoneySpent(uint32_t index, money64 cost)
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
@@ -3641,6 +3652,11 @@ GameActions::Result NetworkModifyGroups(
         case ModifyGroupType::SetName:
         {
             NetworkGroup* group = network.GetGroupByID(groupId);
+            if (group == nullptr)
+            {
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_GROUP, STR_NONE);
+            }
+
             const char* oldName = group->GetName().c_str();
 
             if (strcmp(oldName, name.c_str()) == 0)
@@ -4089,6 +4105,9 @@ std::string NetworkGetPlayerIPAddress(uint32_t id)
 std::string NetworkGetPlayerPublicKeyHash(uint32_t id)
 {
     return {};
+}
+void NetworkIncrementPlayerNumCommands(uint32_t playerIndex)
+{
 }
 void NetworkAddPlayerMoneySpent(uint32_t index, money64 cost)
 {

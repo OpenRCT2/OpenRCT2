@@ -20,6 +20,7 @@ private:
     GLuint uTransparentTex;
     GLuint uTransparentDepth;
     GLuint uPaletteTex;
+    GLuint uBlendPaletteTex;
 
     GLuint vPosition;
     GLuint vTextureCoordinate;
@@ -32,7 +33,8 @@ public:
     ~ApplyTransparencyShader() override;
 
     static void SetTextures(
-        GLuint opaqueTex, GLuint opaqueDepth, GLuint transparentTex, GLuint transparentDepth, GLuint paletteTex);
+        GLuint opaqueTex, GLuint opaqueDepth, GLuint transparentTex, GLuint transparentDepth, GLuint paletteTex,
+        GLuint blendPaletteTex);
     void Draw();
 
 private:

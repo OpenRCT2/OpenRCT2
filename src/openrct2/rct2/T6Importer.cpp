@@ -171,8 +171,8 @@ namespace RCT2
                         trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;
                     }
 
-                    trackElement.type = trackType;
-                    trackElement.flags = t6TrackElement.Flags;
+                    trackElement.Type = trackType;
+                    ConvertFromTD46Flags(trackElement, t6TrackElement.Flags);
                     td->track_elements.push_back(trackElement);
                 }
 

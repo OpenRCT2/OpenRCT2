@@ -42,19 +42,19 @@ static void PaintFlyingSaucers(
 
     int32_t edges = edges_4x4[relativeTrackSequence];
 
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.GetStationObject();
 
     if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
     {
-        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SprFlyingSaucersFloor);
+        auto imageId = session.TrackColours.WithIndex(SprFlyingSaucersFloor);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height }, { 30, 30, 1 } });
     }
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height,
-        FlyingSaucersFenceSprites, session.CurrentRotation);
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, FlyingSaucersFenceSprites,
+        session.CurrentRotation);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);

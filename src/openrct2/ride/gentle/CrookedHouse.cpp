@@ -46,7 +46,8 @@ static constexpr BoundBoxXY CrookedHouseData[] = {
  *  rct2: 0x0088ABA4
  */
 static void PaintCrookedHouseStructure(
-    PaintSession& session, uint8_t direction, int32_t x_offset, int32_t y_offset, uint32_t segment, int32_t height)
+    PaintSession& session, uint8_t direction, int32_t x_offset, int32_t y_offset, uint32_t segment, int32_t height,
+    ImageId stationColour)
 {
     const auto* tileElement = session.CurrentlyDrawnTileElement;
     if (tileElement == nullptr)
@@ -71,10 +72,9 @@ static void PaintCrookedHouseStructure(
     }
 
     const auto& boundBox = CrookedHouseData[segment];
-    auto imageTemplate = session.TrackColours[SCHEME_MISC];
     auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
     PaintAddImageAsParent(
-        session, imageTemplate.WithIndex(imageIndex), { x_offset, y_offset, height + 3 },
+        session, stationColour.WithIndex(imageIndex), { x_offset, y_offset, height + 3 },
         { { boundBox.offset, height + 3 }, { boundBox.length, 127 } });
 
     session.CurrentlyDrawnEntity = nullptr;
@@ -88,26 +88,27 @@ static void PaintCrookedHouse(
 
     int32_t edges = edges_3x3[trackSequence];
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, floorSpritesCork, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_MISC], height, fenceSpritesRope,
-        session.CurrentRotation);
+        session, edges, session.MapPosition, trackElement, ride, GetStationColourScheme(session, trackElement), height,
+        fenceSpritesRope, session.CurrentRotation);
 
+    auto stationColour = GetStationColourScheme(session, trackElement);
     switch (trackSequence)
     {
         case 3:
-            PaintCrookedHouseStructure(session, direction, 32, -32, 0, height);
+            PaintCrookedHouseStructure(session, direction, 32, -32, 0, height, stationColour);
             break;
         case 6:
-            PaintCrookedHouseStructure(session, direction, -32, 32, 4, height);
+            PaintCrookedHouseStructure(session, direction, -32, 32, 4, height, stationColour);
             break;
         case 7:
-            PaintCrookedHouseStructure(session, direction, -32, -32, 2, height);
+            PaintCrookedHouseStructure(session, direction, -32, -32, 2, height, stationColour);
             break;
     }
 

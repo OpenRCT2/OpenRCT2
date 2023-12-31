@@ -28,6 +28,7 @@ namespace GameActions
         constexpr uint16_t AllowWhilePaused = 1 << 0;
         constexpr uint16_t ClientOnly = 1 << 1;
         constexpr uint16_t EditorOnly = 1 << 2;
+        constexpr uint16_t IgnoreForReplays = 1 << 3;
     } // namespace Flags
 
 } // namespace GameActions

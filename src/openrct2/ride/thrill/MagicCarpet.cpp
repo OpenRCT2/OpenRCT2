@@ -117,7 +117,7 @@ static void PaintMagicCarpetFrame(
     PaintSession& session, Plane plane, Direction direction, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     auto imageIndex = GetMagicCarpetFrameImage(plane, direction);
-    auto imageTemplate = session.TrackColours[SCHEME_TRACK];
+    auto imageTemplate = session.TrackColours;
     auto imageId = imageTemplate.WithIndex(imageIndex);
     if (plane == Plane::Back)
     {
@@ -133,13 +133,14 @@ static void PaintMagicCarpetPendulum(
     PaintSession& session, Plane plane, int32_t swing, Direction direction, const CoordsXYZ& offset, const BoundBoxXYZ& bb)
 {
     auto imageIndex = GetMagicCarpetPendulumImage(plane, direction, swing);
-    auto imageTemplate = session.TrackColours[SCHEME_TRACK];
+    auto imageTemplate = session.TrackColours;
     auto imageId = imageTemplate.WithIndex(imageIndex);
     PaintAddImageAsChild(session, imageId, offset, bb);
 }
 
 static void PaintMagicCarpetVehicle(
-    PaintSession& session, const Ride& ride, uint8_t direction, int32_t swing, CoordsXYZ offset, const BoundBoxXYZ& bb)
+    PaintSession& session, const Ride& ride, uint8_t direction, int32_t swing, CoordsXYZ offset, const BoundBoxXYZ& bb,
+    ImageId stationColour)
 {
     const auto* rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -165,10 +166,9 @@ static void PaintMagicCarpetVehicle(
 
     // Vehicle
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != TrackGhost)
+    if (stationColour != TrackStationColour)
     {
-        imageTemplate = imageFlags;
+        imageTemplate = stationColour;
     }
     auto vehicleImageIndex = rideEntry->Cars[0].base_image_id + direction;
     PaintAddImageAsChild(session, imageTemplate.WithIndex(vehicleImageIndex), offset, bb);
@@ -181,7 +181,7 @@ static void PaintMagicCarpetVehicle(
 }
 
 static void PaintMagicCarpetStructure(
-    PaintSession& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height, ImageId stationColour)
 {
     auto swing = 0;
     auto* vehicle = GetFirstVehicle(ride);
@@ -201,7 +201,7 @@ static void PaintMagicCarpetStructure(
 
     PaintMagicCarpetFrame(session, Plane::Back, direction, offset, bb);
     PaintMagicCarpetPendulum(session, Plane::Back, swing, direction, offset, bb);
-    PaintMagicCarpetVehicle(session, ride, direction, swing, offset, bb);
+    PaintMagicCarpetVehicle(session, ride, direction, swing, offset, bb, stationColour);
     PaintMagicCarpetPendulum(session, Plane::Front, swing, direction, offset, bb);
     PaintMagicCarpetFrame(session, Plane::Front, direction, offset, bb);
 
@@ -222,37 +222,41 @@ static void PaintMagicCarpet(
         case 2:
             if (direction & 1)
             {
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::TopRightSide, 0, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::BottomLeftSide, 0, height, session.SupportColours);
             }
             else
             {
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
-                MetalASupportsPaintSetup(session, MetalSupportType::Tubes, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::TopLeftSide, 0, height, session.SupportColours);
+                MetalASupportsPaintSetup(
+                    session, MetalSupportType::Tubes, MetalSupportPlace::BottomRightSide, 0, height, session.SupportColours);
             }
             const StationObject* stationObject = ride.GetStationObject();
 
             if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
             {
-                auto imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_STATION_BASE_D);
+                auto imageId = session.SupportColours.WithIndex(SPR_STATION_BASE_D);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
             }
             break;
     }
-
+    auto stationColour = GetStationColourScheme(session, trackElement);
     switch (relativeTrackSequence)
     {
         case 3:
-            PaintMagicCarpetStructure(session, ride, direction, -48, height);
+            PaintMagicCarpetStructure(session, ride, direction, -48, height, stationColour);
             break;
         case 0:
-            PaintMagicCarpetStructure(session, ride, direction, -16, height);
+            PaintMagicCarpetStructure(session, ride, direction, -16, height, stationColour);
             break;
         case 2:
-            PaintMagicCarpetStructure(session, ride, direction, 16, height);
+            PaintMagicCarpetStructure(session, ride, direction, 16, height, stationColour);
             break;
         case 1:
-            PaintMagicCarpetStructure(session, ride, direction, 48, height);
+            PaintMagicCarpetStructure(session, ride, direction, 48, height, stationColour);
             break;
     }
 

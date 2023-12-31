@@ -34,7 +34,7 @@ static constexpr uint32_t SpaceRingsFenceSprites[] = {
 
 /** rct2: 0x00768A3B */
 static void PaintSpaceRingsStructure(
-    PaintSession& session, const Ride& ride, uint8_t direction, uint32_t segment, int32_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, uint32_t segment, int32_t height, ImageId stationColour)
 {
     uint32_t vehicleIndex = (segment - direction) & 0x3;
 
@@ -53,18 +53,17 @@ static void PaintSpaceRingsStructure(
             frameNum += static_cast<int8_t>(vehicle->Pitch) * 4;
         }
 
-        auto imageColourFlags = session.TrackColours[SCHEME_MISC];
         if ((ride.colour_scheme_type & 3) != RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN)
         {
             vehicleIndex = 0;
         }
 
-        if (imageColourFlags == TrackGhost)
+        if (stationColour == TrackStationColour)
         {
-            imageColourFlags = ImageId(0, ride.vehicle_colours[vehicleIndex].Body, ride.vehicle_colours[vehicleIndex].Trim);
+            stationColour = ImageId(0, ride.vehicle_colours[vehicleIndex].Body, ride.vehicle_colours[vehicleIndex].Trim);
         }
 
-        auto imageId = imageColourFlags.WithIndex(baseImageId + frameNum);
+        auto imageId = stationColour.WithIndex(baseImageId + frameNum);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { -10, -10, height }, { 20, 20, 23 } });
 
         if (vehicle != nullptr && vehicle->num_peeps > 0)
@@ -72,8 +71,8 @@ static void PaintSpaceRingsStructure(
             auto* rider = GetEntity<Guest>(vehicle->peep[0]);
             if (rider != nullptr)
             {
-                imageColourFlags = ImageId(0, rider->TshirtColour, rider->TrousersColour);
-                imageId = imageColourFlags.WithIndex(baseImageId + 352 + frameNum);
+                stationColour = ImageId(0, rider->TshirtColour, rider->TrousersColour);
+                imageId = stationColour.WithIndex(baseImageId + 352 + frameNum);
                 PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { -10, -10, height }, { 20, 20, 23 } });
             }
         }
@@ -95,28 +94,29 @@ static void PaintSpaceRings(
 
     ImageId imageId;
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    auto stationColour = GetStationColourScheme(session, trackElement);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, stationColour);
 
     const StationObject* stationObject = ride.GetStationObject();
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, floorSpritesCork, stationObject);
 
     switch (trackSequence)
     {
         case 7:
             if (TrackPaintUtilHasFence(EDGE_SW, position, trackElement, ride, session.CurrentRotation))
             {
-                imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprSpaceRingsFenceSw);
+                imageId = stationColour.WithIndex(SprSpaceRingsFenceSw);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 2 }, { 1, 28, 7 } });
             }
             if (TrackPaintUtilHasFence(EDGE_SE, position, trackElement, ride, session.CurrentRotation))
             {
-                imageId = session.TrackColours[SCHEME_MISC].WithIndex(SprSpaceRingsFenceSe);
+                imageId = stationColour.WithIndex(SprSpaceRingsFenceSe);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 2 }, { 28, 1, 7 } });
             }
             break;
         default:
             TrackPaintUtilPaintFences(
-                session, edges, position, trackElement, ride, session.TrackColours[SCHEME_MISC], height, SpaceRingsFenceSprites,
+                session, edges, position, trackElement, ride, stationColour, height, SpaceRingsFenceSprites,
                 session.CurrentRotation);
             break;
     }
@@ -124,16 +124,16 @@ static void PaintSpaceRings(
     switch (trackSequence)
     {
         case 0:
-            PaintSpaceRingsStructure(session, ride, direction, 0, height + 3);
+            PaintSpaceRingsStructure(session, ride, direction, 0, height + 3, stationColour);
             break;
         case 5:
-            PaintSpaceRingsStructure(session, ride, direction, 1, height + 3);
+            PaintSpaceRingsStructure(session, ride, direction, 1, height + 3, stationColour);
             break;
         case 7:
-            PaintSpaceRingsStructure(session, ride, direction, 2, height + 3);
+            PaintSpaceRingsStructure(session, ride, direction, 2, height + 3, stationColour);
             break;
         case 8:
-            PaintSpaceRingsStructure(session, ride, direction, 3, height + 3);
+            PaintSpaceRingsStructure(session, ride, direction, 3, height + 3, stationColour);
             break;
     }
 

@@ -16,6 +16,7 @@
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
+#include "../ride/TrackDesign.h"
 #include "../scenario/Scenario.h"
 #include "../world/Banner.h"
 #include "../world/Footpath.h"
@@ -758,6 +759,8 @@ static constexpr std::string_view _musicStyles[] = {
     "openrct2.music.fairground2",
     "openrct2.music.ragtime2",
     "openrct2.music.prehistoric",
+    "openrct2.music.mystic",
+    "openrct2.music.rock4",
 };
 
 std::string_view GetStationIdentifierFromStyle(uint8_t style)
@@ -866,4 +869,58 @@ ResearchItem RCT12ResearchItem::ToResearchItem() const
     }
 
     return newResearchItem;
+}
+
+void ConvertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags)
+{
+    target.BrakeBoosterSpeed = kRCT2DefaultBlockBrakeSpeed;
+    if (TrackTypeIsStation(target.Type))
+    {
+        auto stationIndex = flags & EnumValue(TD46Flags::StationId);
+        target.StationIndex = StationIndex::FromUnderlying(stationIndex);
+    }
+    else
+    {
+        auto speedOrSeatRotation = flags & EnumValue(TD46Flags::SpeedOrSeatRotation);
+        if (TrackTypeHasSpeedSetting(target.Type) && target.Type != TrackElemType::BlockBrakes)
+        {
+            target.BrakeBoosterSpeed = speedOrSeatRotation << 1;
+        }
+        else
+        {
+            target.SeatRotation = speedOrSeatRotation;
+        }
+    }
+
+    target.ColourScheme = (flags & EnumValue(TD46Flags::ColourScheme)) >> 4;
+    if (flags & EnumValue(TD46Flags::IsInverted))
+        target.SetFlag(TrackDesignTrackElementFlag::IsInverted);
+    if (flags & EnumValue(TD46Flags::HasChain))
+        target.SetFlag(TrackDesignTrackElementFlag::HasChain);
+}
+
+uint8_t ConvertToTD46Flags(const TrackDesignTrackElement& source)
+{
+    uint8_t trackFlags = 0;
+    if (TrackTypeIsStation(source.Type))
+    {
+        trackFlags = (source.StationIndex.ToUnderlying() & EnumValue(TD46Flags::StationId));
+    }
+    else if (TrackTypeHasSpeedSetting(source.Type) && source.Type != TrackElemType::BlockBrakes)
+    {
+        trackFlags = (source.BrakeBoosterSpeed >> 1);
+    }
+    else
+    {
+        trackFlags = source.SeatRotation;
+    }
+
+    trackFlags |= source.ColourScheme << 4;
+
+    if (source.HasFlag(TrackDesignTrackElementFlag::HasChain))
+        trackFlags |= EnumValue(TD46Flags::HasChain);
+    if (source.HasFlag(TrackDesignTrackElementFlag::IsInverted))
+        trackFlags |= EnumValue(TD46Flags::IsInverted);
+
+    return trackFlags;
 }

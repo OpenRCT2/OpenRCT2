@@ -28,6 +28,9 @@ extern const uint8_t edges_4x4[];
 
 extern const uint8_t track_map_1x4[][4];
 
+extern const int32_t DiagBlockedSegments[];
+extern const MetalSupportPlace DiagSupportPlacement[];
+
 enum
 {
     SPR_FLOOR_PLANKS = 3395,
@@ -207,14 +210,6 @@ enum
 
 enum
 {
-    SCHEME_TRACK = 0,
-    SCHEME_SUPPORTS = 1,
-    SCHEME_MISC = 2,
-    SCHEME_3 = 3,
-};
-
-enum
-{
     STATION_VARIANT_BASIC,
     STATION_VARIANT_1,
     STATION_VARIANT_TALL,
@@ -280,6 +275,9 @@ extern const uint8_t mapLeftEighthTurnToOrthogonal[5];
 
 extern const size_t MiniGolfPeepAnimationLengths[];
 
+ImageId GetStationColourScheme(PaintSession& session, const TrackElement& trackElement);
+ImageId GetShopSupportColourScheme(PaintSession& session, const TrackElement& trackElement);
+
 bool TrackPaintUtilHasFence(
     enum edge_t edge, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride, uint8_t rotation);
 void TrackPaintUtilPaintFloor(
@@ -289,10 +287,11 @@ void TrackPaintUtilPaintFences(
     PaintSession& session, uint8_t edges, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride,
     const ImageId colourFlags, uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation);
 bool TrackPaintUtilDrawStationCovers(
-    PaintSession& session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height);
+    PaintSession& session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height,
+    ImageId colour);
 bool TrackPaintUtilDrawStationCovers2(
     PaintSession& session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height,
-    uint8_t stationVariant);
+    uint8_t stationVariant, ImageId colour);
 void TrackPaintUtilDrawNarrowStationPlatform(
     PaintSession& session, const Ride& ride, Direction direction, int32_t height, int32_t zOffset,
     const TrackElement& trackElement);
@@ -311,9 +310,6 @@ bool TrackPaintUtilShouldPaintSupports(const CoordsXY& position);
 void TrackPaintUtilDrawPier(
     PaintSession& session, const Ride& ride, const StationObject* stationObject, const CoordsXY& position, Direction direction,
     int32_t height, const TrackElement& trackElement, uint8_t rotation);
-void TrackPaintUtilDrawStationMetalSupports(PaintSession& session, Direction direction, uint16_t height, ImageId colour);
-void TrackPaintUtilDrawStationMetalSupports2(
-    PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type);
 
 void TrackPaintUtilRightQuarterTurn5TilesPaint(
     PaintSession& session, int8_t thickness, int16_t height, Direction direction, uint8_t trackSequence,
@@ -365,6 +361,18 @@ void TrackPaintUtilLeftQuarterTurn1TilePaint(
     PaintSession& session, int8_t thickness, int16_t height, int16_t boundBoxZOffset, Direction direction,
     const ImageId colourFlags, const uint32_t* sprites);
 void TrackPaintUtilSpinningTunnelPaint(PaintSession& session, int8_t thickness, int16_t height, Direction direction);
+
+/**
+ * Renders the black metal platform and the supports of the on-ride photo section.
+ *
+ * @param session
+ * @param direction
+ * @param height
+ * @param supportType
+ */
+void TrackPaintUtilOnridePhotoPlatformPaint(
+    PaintSession& session, Direction direction, int32_t height, MetalSupportType supportType);
+
 void TrackPaintUtilOnridePhotoSmallPaint(
     PaintSession& session, Direction direction, int32_t height, const TrackElement& trackElement);
 void TrackPaintUtilOnridePhotoPaint(
@@ -418,6 +426,7 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionBobsleighRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionObservationTower(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionLoopingRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlide(int32_t trackType);
+TRACK_PAINT_FUNCTION GetTrackPaintFunctionDinghySlideCovered(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionMineTrainRC(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionChairlift(int32_t trackType);
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionCorkscrewRC(int32_t trackType);

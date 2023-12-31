@@ -158,8 +158,8 @@ static TileElement GetDefaultSurfaceElement()
     el.AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
     el.AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
     el.AsSurface()->SetParkFences(0);
-    el.AsSurface()->SetSurfaceStyle(0);
-    el.AsSurface()->SetEdgeStyle(0);
+    el.AsSurface()->SetSurfaceObjectIndex(0);
+    el.AsSurface()->SetEdgeObjectIndex(0);
     return el;
 }
 
@@ -1352,8 +1352,8 @@ void MapRemoveOutOfRangeElements()
 
 static void MapExtendBoundarySurfaceExtendTile(const SurfaceElement& sourceTile, SurfaceElement& destTile)
 {
-    destTile.SetSurfaceStyle(sourceTile.GetSurfaceStyle());
-    destTile.SetEdgeStyle(sourceTile.GetEdgeStyle());
+    destTile.SetSurfaceObjectIndex(sourceTile.GetSurfaceObjectIndex());
+    destTile.SetEdgeObjectIndex(sourceTile.GetEdgeObjectIndex());
     destTile.SetGrassLength(sourceTile.GetGrassLength());
     destTile.SetOwnership(OWNERSHIP_UNOWNED);
     destTile.SetWaterHeight(sourceTile.GetWaterHeight());
@@ -1439,8 +1439,8 @@ static void ClearElementAt(const CoordsXY& loc, TileElement** elementPtr)
             element->ClearanceHeight = MINIMUM_LAND_HEIGHT;
             element->Owner = 0;
             element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
-            element->AsSurface()->SetSurfaceStyle(0);
-            element->AsSurface()->SetEdgeStyle(0);
+            element->AsSurface()->SetSurfaceObjectIndex(0);
+            element->AsSurface()->SetEdgeObjectIndex(0);
             element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
             element->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
             element->AsSurface()->SetParkFences(0);
