@@ -144,6 +144,8 @@ void TitleScreen::Load()
 
     if (_sequencePlayer != nullptr)
     {
+        _sequencePlayer->Begin(_currentSequence);
+
         // Force the title sequence to load / update so we
         // don't see a blank screen for a split second.
         TryLoadSequence();
