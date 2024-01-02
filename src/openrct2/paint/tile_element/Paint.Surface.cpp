@@ -980,6 +980,75 @@ static void PaintPatrolArea(PaintSession& session, const SurfaceElement& element
     }
 }
 
+static void PaintSurfaceLandOwnership(
+    PaintSession& session, const SurfaceElement& tileElement, uint16_t height, uint8_t surfaceShape)
+{
+    auto [aboveWaterHeight, aboveWaterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
+
+    // Loc660E9A:
+    if (tileElement.GetOwnership() & OWNERSHIP_OWNED)
+    {
+        assert(static_cast<size_t>(surfaceShape) < std::size(Byte97B444));
+        assert(static_cast<size_t>(aboveWaterSurfaceShape) < std::size(Byte97B444));
+
+        // Paint outline on top of surface (can be underwater)
+        PaintAttachToPreviousPS(session, ImageId(SPR_TERRAIN_SELECTION_SQUARE + Byte97B444[surfaceShape]), 0, 0);
+
+        const auto tileIsUnderWater = height != aboveWaterHeight || surfaceShape != aboveWaterSurfaceShape;
+        if (tileIsUnderWater)
+        {
+            PaintStruct* backup = session.LastPS;
+            PaintAddImageAsParent(
+                session, ImageId(SPR_TERRAIN_SELECTION_SQUARE + Byte97B444[aboveWaterSurfaceShape]), { 0, 0, aboveWaterHeight },
+                { 32, 32, 1 });
+            session.LastPS = backup;
+        }
+    }
+    else if (tileElement.GetOwnership() & OWNERSHIP_AVAILABLE)
+    {
+        const auto pos = CoordsXYZ(session.MapPosition.x + 16, session.MapPosition.y + 16, aboveWaterHeight);
+        const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape);
+
+        PaintStruct* backup = session.LastPS;
+        PaintAddImageAsParent(session, ImageId(SPR_LAND_OWNERSHIP_AVAILABLE), { 16, 16, height2 }, { 1, 1, 0 });
+        session.LastPS = backup;
+    }
+}
+
+static void PaintSurfaceConstructionRights(
+    PaintSession& session, const SurfaceElement& tileElement, uint16_t height, uint8_t surfaceShape)
+{
+    auto [aboveWaterHeight, aboveWaterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
+
+    if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
+    {
+        assert(static_cast<size_t>(surfaceShape) < std::size(Byte97B444));
+        assert(static_cast<size_t>(aboveWaterSurfaceShape) < std::size(Byte97B444));
+
+        // Paint outline on top of surface (can be underwater)
+        PaintAttachToPreviousPS(session, ImageId(SPR_TERRAIN_SELECTION_DOTTED + Byte97B444[surfaceShape]), 0, 0);
+
+        const auto tileIsUnderWater = height != aboveWaterHeight || surfaceShape != aboveWaterSurfaceShape;
+        if (tileIsUnderWater)
+        {
+            PaintStruct* backup = session.LastPS;
+            PaintAddImageAsParent(
+                session, ImageId(SPR_TERRAIN_SELECTION_DOTTED + Byte97B444[aboveWaterSurfaceShape]), { 0, 0, aboveWaterHeight },
+                { 32, 32, 1 });
+            session.LastPS = backup;
+        }
+    }
+    else if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
+    {
+        const auto pos = CoordsXYZ(session.MapPosition.x + 16, session.MapPosition.y + 16, aboveWaterHeight);
+        const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape);
+
+        PaintStruct* backup = session.LastPS;
+        PaintAddImageAsParent(session, ImageId(SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE), { 16, 16, height2 }, { 1, 1, 0 });
+        session.LastPS = backup;
+    }
+}
+
 /**
  *  rct2: 0x0066062C
  */
@@ -1135,38 +1204,12 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     if (session.ViewFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
     {
-        // Loc660E9A:
-        if (tileElement.GetOwnership() & OWNERSHIP_OWNED)
-        {
-            assert(surfaceShape < std::size(Byte97B444));
-            PaintAttachToPreviousPS(session, ImageId(SPR_TERRAIN_SELECTION_SQUARE + Byte97B444[surfaceShape]), 0, 0);
-        }
-        else if (tileElement.GetOwnership() & OWNERSHIP_AVAILABLE)
-        {
-            const CoordsXY& pos = session.MapPosition;
-            const int32_t height2 = (TileElementHeight({ pos.x + 16, pos.y + 16 })) + 3;
-            PaintStruct* backup = session.LastPS;
-            PaintAddImageAsParent(session, ImageId(SPR_LAND_OWNERSHIP_AVAILABLE), { 16, 16, height2 }, { 1, 1, 0 });
-            session.LastPS = backup;
-        }
+        PaintSurfaceLandOwnership(session, tileElement, height, surfaceShape);
     }
 
     if (session.ViewFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS && !(tileElement.GetOwnership() & OWNERSHIP_OWNED))
     {
-        if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
-        {
-            assert(surfaceShape < std::size(Byte97B444));
-            PaintAttachToPreviousPS(session, ImageId(SPR_TERRAIN_SELECTION_DOTTED + Byte97B444[surfaceShape]), 0, 0);
-        }
-        else if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
-        {
-            const CoordsXY& pos = session.MapPosition;
-            const int32_t height2 = TileElementHeight({ pos.x + 16, pos.y + 16 });
-            PaintStruct* backup = session.LastPS;
-            PaintAddImageAsParent(
-                session, ImageId(SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE), { 16, 16, height2 + 3 }, { 1, 1, 0 });
-            session.LastPS = backup;
-        }
+        PaintSurfaceConstructionRights(session, tileElement, height, surfaceShape);
     }
 
     // ebx[0] = esi;
@@ -1220,7 +1263,9 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 // The water tool should draw its grid _on_ the water, rather than on the surface under water.
                 auto [local_height, local_surfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
-                const auto fpId = FilterPaletteID::PaletteWaterMarker;
+                const auto fpId = (mapSelectionType == MAP_SELECT_TYPE_FULL_LAND_RIGHTS)
+                    ? FilterPaletteID::PaletteGlassLightPurple
+                    : FilterPaletteID::PaletteWaterMarker;
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[local_surfaceShape], fpId);
 
                 PaintStruct* backup = session.LastPS;
