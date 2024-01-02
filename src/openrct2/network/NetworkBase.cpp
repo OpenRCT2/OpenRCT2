@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -43,7 +43,7 @@
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-#define NETWORK_STREAM_VERSION "14"
+#define NETWORK_STREAM_VERSION "1"
 
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 

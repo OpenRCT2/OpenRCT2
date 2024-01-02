@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1275,8 +1275,8 @@ namespace RCT1
 
             const SpriteBounds* spriteBounds = &GetSpriteBounds(dst->SpriteType, dst->ActionSpriteType);
             dst->SpriteData.Width = spriteBounds->sprite_width;
-            dst->SpriteData.HeightMax = spriteBounds->sprite_height_negative;
-            dst->SpriteData.HeightMin = spriteBounds->sprite_height_positive;
+            dst->SpriteData.HeightMin = spriteBounds->sprite_height_negative;
+            dst->SpriteData.HeightMax = spriteBounds->sprite_height_positive;
 
             dst->MoveTo({ src->x, src->y, src->z });
 
