@@ -146,7 +146,8 @@ namespace SpinningRC
                 { { 0, 6, height + 3 }, { 32, 20, 1 } });
         }
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours.WithIndex(imageIds[direction][2]), { 0, 0, height + 2 },
+            session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][2]),
+            { 0, 0, height + 2 },
             { { 0, 2, height }, { 32, 28, 2 } });
         DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
         TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
