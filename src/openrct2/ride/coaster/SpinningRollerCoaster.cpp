@@ -19117,6 +19117,53 @@ namespace SpinningRC
         TrackRightTwistDownToUp(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
+    static void TrackLeftQuarterTurn1(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
+    {
+        switch (direction)
+        {
+            case 0:
+                PaintAddImageAsParentRotated(
+                    session, direction,
+                    session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_SPINNING_TRACK_CURVE_VERY_SMALL + 0), { 0, 0, height },
+                    { { 6, 2, height }, { 26, 24, 2 } });
+                break;
+            case 1:
+                PaintAddImageAsParentRotated(
+                    session, direction,
+                    session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_SPINNING_TRACK_CURVE_VERY_SMALL + 1), { 0, 0, height },
+                    { 26, 26, 2 });
+                break;
+            case 2:
+                PaintAddImageAsParentRotated(
+                    session, direction,
+                    session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_SPINNING_TRACK_CURVE_VERY_SMALL + 2), { 0, 0, height },
+                    { { 2, 6, height }, { 24, 26, 2 } });
+                break;
+            case 3:
+                PaintAddImageAsParentRotated(
+                    session, direction,
+                    session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_SPINNING_TRACK_CURVE_VERY_SMALL + 3), { 0, 0, height },
+                    { { 6, 6, height }, { 24, 24, 2 } });
+                break;
+        }
+
+        TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
+        PaintUtilSetSegmentSupportHeight(
+            session, PaintUtilRotateSegments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+        PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+    }
+
+    /** rct2: 0x0078B3A4 */
+
+    static void TrackRightQuarterTurn1(
+        PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
+    {
+        TrackLeftQuarterTurn1(session, ride, trackSequence, (direction - 1) & 3, height, trackElement);
+    }
+
     TRACK_PAINT_FUNCTION GetTrackPaintFunctionSpinningRC(int32_t trackType)
     {
         switch (trackType)
@@ -19617,6 +19664,11 @@ namespace SpinningRC
                 return TrackLeftTwistDownToUp;
             case TrackElemType::RightTwistDownToUp:
                 return TrackRightTwistDownToUp;
+
+            case TrackElemType::LeftQuarterTurn1Tile:
+                return TrackLeftQuarterTurn1;
+            case TrackElemType::RightQuarterTurn1Tile:
+                return TrackRightQuarterTurn1;
         }
         return nullptr;
     }

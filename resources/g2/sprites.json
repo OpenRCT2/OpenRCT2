@@ -25317,6 +25317,30 @@
         "palette": "keep"
     },
     {
+        "path": "track/steelspinning/very_small_turn_1.png",
+        "x_offset": -22,
+        "y_offset": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/steelspinning/very_small_turn_2.png",
+        "x_offset": -22,
+        "y_offset": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/steelspinning/very_small_turn_3.png",
+        "x_offset": 2,
+        "y_offset": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/steelspinning/very_small_turn_4.png",
+        "x_offset": -22,
+        "y_offset": 8,
+        "palette": "keep"
+    },
+    {
         "path": "track/steelspinning/small_turn_left_1_1.png",
         "x_offset": -22,
         "y_offset": -3,
