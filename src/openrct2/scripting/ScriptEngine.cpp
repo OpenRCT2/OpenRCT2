@@ -1597,44 +1597,48 @@ void ScriptEngine::SetParkStorageFromJSON(std::string_view value)
 
 IntervalHandle ScriptEngine::AllocateHandle()
 {
-    for (size_t i = 0; i < _intervals.size(); i++)
+    auto res = _nextIntervalHandle;
+    _nextIntervalHandle++;
+
+    // In case of overflow start from 1 again
+    if (_nextIntervalHandle == 0)
     {
-        if (!_intervals[i].IsValid())
-        {
-            return static_cast<IntervalHandle>(i + 1);
-        }
+        _nextIntervalHandle = 1;
     }
-    _intervals.emplace_back();
-    return static_cast<IntervalHandle>(_intervals.size());
+
+    return res;
 }
 
 IntervalHandle ScriptEngine::AddInterval(const std::shared_ptr<Plugin>& plugin, int32_t delay, bool repeat, DukValue&& callback)
 {
     auto handle = AllocateHandle();
-    if (handle != 0)
-    {
-        auto& interval = _intervals[static_cast<size_t>(handle) - 1];
-        interval.Owner = plugin;
-        interval.Handle = handle;
-        interval.Delay = delay;
-        interval.LastTimestamp = _lastIntervalTimestamp;
-        interval.Callback = std::move(callback);
-        interval.Repeat = repeat;
-    }
+    assert(handle != 0);
+
+    auto& interval = _intervals[handle];
+    interval.Owner = plugin;
+    interval.Delay = delay;
+    interval.LastTimestamp = _lastIntervalTimestamp;
+    interval.Callback = std::move(callback);
+    interval.Repeat = repeat;
+
     return handle;
 }
 
 void ScriptEngine::RemoveInterval(const std::shared_ptr<Plugin>& plugin, IntervalHandle handle)
 {
-    if (handle > 0 && static_cast<size_t>(handle) <= _intervals.size())
-    {
-        auto& interval = _intervals[static_cast<size_t>(handle) - 1];
+    if (handle == 0)
+        return;
 
-        // Only allow owner or REPL (nullptr) to remove intervals
-        if (plugin == nullptr || interval.Owner == plugin)
-        {
-            interval = {};
-        }
+    auto it = _intervals.find(handle);
+    if (it == _intervals.end())
+        return;
+
+    auto& interval = it->second;
+
+    // Only allow owner or REPL (nullptr) to remove intervals
+    if (plugin == nullptr || interval.Owner == plugin)
+    {
+        _intervals.erase(it);
     }
 }
 
@@ -1645,29 +1649,29 @@ void ScriptEngine::UpdateIntervals()
     {
         // timestamp has wrapped, subtract all intervals by the remaining amount before wrap
         auto delta = static_cast<int64_t>(std::numeric_limits<uint32_t>::max() - _lastIntervalTimestamp);
-        for (auto& interval : _intervals)
+        for (auto& entry : _intervals)
         {
-            if (interval.IsValid())
-            {
-                interval.LastTimestamp = -delta;
-            }
+            auto& interval = entry.second;
+            interval.LastTimestamp = -delta;
         }
     }
     _lastIntervalTimestamp = timestamp;
 
-    for (auto& interval : _intervals)
+    // This loop needs to account for removal and insertions during iteration.
+    for (auto it = _intervals.begin(), itNext = it; it != _intervals.end(); it = itNext)
     {
-        if (interval.IsValid())
-        {
-            if (timestamp >= interval.LastTimestamp + interval.Delay)
-            {
-                ExecutePluginCall(interval.Owner, interval.Callback, {}, false);
+        itNext++;
 
-                interval.LastTimestamp = timestamp;
-                if (!interval.Repeat)
-                {
-                    RemoveInterval(nullptr, interval.Handle);
-                }
+        auto& interval = it->second;
+
+        if (timestamp >= interval.LastTimestamp + interval.Delay)
+        {
+            ExecutePluginCall(interval.Owner, interval.Callback, {}, false);
+
+            interval.LastTimestamp = timestamp;
+            if (!interval.Repeat)
+            {
+                _intervals.erase(it);
             }
         }
     }
@@ -1675,12 +1679,17 @@ void ScriptEngine::UpdateIntervals()
 
 void ScriptEngine::RemoveIntervals(const std::shared_ptr<Plugin>& plugin)
 {
-    for (auto& interval : _intervals)
+    for (auto it = _intervals.begin(); it != _intervals.end();)
     {
+        auto& interval = it->second;
+
         if (interval.Owner == plugin)
         {
-            interval = {};
+            it = _intervals.erase(it);
+            continue;
         }
+
+        it++;
     }
 }
 
