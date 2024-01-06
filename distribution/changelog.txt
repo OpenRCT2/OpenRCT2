@@ -1,5 +1,7 @@
 0.4.8 (in development)
 ------------------------------------------------------------------------
+- Fix: [#21145] [Plugin] setInterval/setTimeout handle conflict.
+- Fix: [#21158] [Plugin] Potential crash using setInterval/setTimeout within the callback.
 
 0.4.7 (2023-12-31)
 ------------------------------------------------------------------------
