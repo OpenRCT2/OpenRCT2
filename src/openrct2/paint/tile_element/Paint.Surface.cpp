@@ -1258,14 +1258,29 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
+            else if (mapSelectionType == MAP_SELECT_TYPE_FULL_LAND_RIGHTS)
+            {
+                auto [waterHeight, waterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
+
+                const auto fpId = FilterPaletteID::PaletteGlassLightPurple;
+                const auto imageId1 = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
+                PaintAttachToPreviousPS(session, imageId1, 0, 0);
+
+                const bool isUnderWater = (surfaceShape != waterSurfaceShape || height != waterHeight);
+                if (isUnderWater)
+                {
+                    const auto imageId2 = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[waterSurfaceShape], fpId);
+                    PaintStruct* backup = session.LastPS;
+                    PaintAddImageAsParent(session, imageId2, { 0, 0, waterHeight }, { 32, 32, 1 });
+                    session.LastPS = backup;
+                }
+            }
             else
             {
                 // The water tool should draw its grid _on_ the water, rather than on the surface under water.
                 auto [local_height, local_surfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
-                const auto fpId = (mapSelectionType == MAP_SELECT_TYPE_FULL_LAND_RIGHTS)
-                    ? FilterPaletteID::PaletteGlassLightPurple
-                    : FilterPaletteID::PaletteWaterMarker;
+                const auto fpId = FilterPaletteID::PaletteWaterMarker;
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[local_surfaceShape], fpId);
 
                 PaintStruct* backup = session.LastPS;
