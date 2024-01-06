@@ -158,12 +158,8 @@ bool Balloon::Collides() const
             }
             else
             {
-                // all station platforms besides the plain and invisible ones are covered
-                auto style = GetRide(trackElement->GetRideIndex())->GetEntranceStyle();
-                if (style != RCT12_STATION_STYLE_PLAIN && style != RCT12_STATION_STYLE_INVISIBLE)
-                {
-                    check_ceiling = true;
-                }
+                auto* ride = GetRide(trackElement->GetRideIndex());
+                check_ceiling = (ride != nullptr) ? RideHasStationShelter(*ride) : false;
             }
         }
 
