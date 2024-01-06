@@ -61,6 +61,7 @@
 #include "platform/Crash.h"
 #include "platform/Platform.h"
 #include "profiling/Profiling.h"
+#include "rct2/RCT2.h"
 #include "ride/TrackData.h"
 #include "ride/TrackDesignRepository.h"
 #include "scenario/Scenario.h"

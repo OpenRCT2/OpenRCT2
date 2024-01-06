@@ -16,6 +16,7 @@
 #include "../object/ObjectRepository.h"
 #include "../object/RideObject.h"
 #include "../rct12/SawyerChunkReader.h"
+#include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/TrackDesign.h"
@@ -79,13 +80,13 @@ namespace RCT2
             td->ride_mode = static_cast<RideMode>(td6.RideMode);
             td->track_flags = 0;
             td->colour_scheme = td6.VersionAndColourScheme & 0x3;
-            for (auto i = 0; i < Limits::MaxTrainsPerRide; ++i)
+            for (auto i = 0; i < Limits::MaxVehicleColours; ++i)
             {
                 td->vehicle_colours[i].Body = td6.VehicleColours[i].BodyColour;
                 td->vehicle_colours[i].Trim = td6.VehicleColours[i].TrimColour;
                 td->vehicle_colours[i].Tertiary = td6.VehicleAdditionalColour[i];
             }
-            td->entrance_style = td6.EntranceStyle;
+            td->StationObjectIdentifier = GetStationIdentifierFromStyle(td6.EntranceStyle);
             td->total_air_time = td6.TotalAirTime;
             td->depart_flags = td6.DepartFlags;
             td->number_of_trains = td6.NumberOfTrains;
@@ -182,11 +183,10 @@ namespace RCT2
                     _stream.SetPosition(_stream.GetPosition() - 1);
                     _stream.Read(&t6EntranceElement, sizeof(TD6EntranceElement));
                     TrackDesignEntranceElement entranceElement{};
-                    entranceElement.z = (t6EntranceElement.z == -128) ? -1 : t6EntranceElement.z;
-                    entranceElement.direction = t6EntranceElement.direction & 0x7F;
-                    entranceElement.x = t6EntranceElement.x;
-                    entranceElement.y = t6EntranceElement.y;
-                    entranceElement.isExit = t6EntranceElement.direction >> 7;
+                    auto xy = CoordsXY(t6EntranceElement.x, t6EntranceElement.y);
+                    auto z = (t6EntranceElement.z == -128) ? -1 : t6EntranceElement.z;
+                    entranceElement.Location = TileCoordsXYZD(TileCoordsXY(xy), z, t6EntranceElement.GetDirection());
+                    entranceElement.IsExit = t6EntranceElement.IsExit();
                     td->entrance_elements.push_back(entranceElement);
                 }
             }

@@ -9,11 +9,10 @@
 
 #pragma once
 
+#include "../Limits.h"
 #include "../actions/GameActionResult.h"
 #include "../common.h"
 #include "../object/Object.h"
-#include "../rct12/RCT12.h"
-#include "../rct2/RCT2.h"
 #include "../world/Map.h"
 #include "VehicleColour.h"
 
@@ -41,11 +40,8 @@ struct TrackDesignState
 /* Track Entrance entry */
 struct TrackDesignEntranceElement
 {
-    int8_t z;
-    uint8_t direction;
-    int16_t x;
-    int16_t y;
-    bool isExit;
+    TileCoordsXYZD Location{};
+    bool IsExit{};
 };
 
 struct TrackDesignSceneryElement
@@ -129,8 +125,8 @@ struct TrackDesign
     RideMode ride_mode;
     uint8_t track_flags;
     uint8_t colour_scheme;
-    std::array<VehicleColour, RCT2::Limits::MaxTrainsPerRide> vehicle_colours;
-    uint8_t entrance_style;
+    std::array<VehicleColour, OpenRCT2::Limits::MaxVehicleColours> vehicle_colours;
+    u8string StationObjectIdentifier{};
     uint8_t total_air_time;
     uint8_t depart_flags;
     uint8_t number_of_trains;
@@ -152,9 +148,9 @@ struct TrackDesign
     uint8_t intensity;
     uint8_t nausea;
     money64 upkeep_cost;
-    uint8_t track_spine_colour[RCT12::Limits::NumColourSchemes];
-    uint8_t track_rail_colour[RCT12::Limits::NumColourSchemes];
-    uint8_t track_support_colour[RCT12::Limits::NumColourSchemes];
+    uint8_t track_spine_colour[OpenRCT2::Limits::NumColourSchemes];
+    uint8_t track_rail_colour[OpenRCT2::Limits::NumColourSchemes];
+    uint8_t track_support_colour[OpenRCT2::Limits::NumColourSchemes];
     uint32_t flags2;
     ObjectEntryDescriptor vehicle_object;
     uint8_t space_required_x;

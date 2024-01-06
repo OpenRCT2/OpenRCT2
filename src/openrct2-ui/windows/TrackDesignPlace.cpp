@@ -506,7 +506,7 @@ private:
         // Draw entrance and exit preview.
         for (const auto& entrance : td6->entrance_elements)
         {
-            auto rotatedAndOffsetEntrance = origin + CoordsXY{ entrance.x, entrance.y }.Rotate(rotation);
+            auto rotatedAndOffsetEntrance = origin + entrance.Location.ToCoordsXY().Rotate(rotation);
 
             if (pass == 0)
             {
@@ -521,7 +521,7 @@ private:
                 if (DrawMiniPreviewIsPixelInBounds(pixelPosition))
                 {
                     uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
-                    uint8_t colour = entrance.isExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
+                    uint8_t colour = entrance.IsExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
                     for (int32_t i = 0; i < 4; i++)
                     {
                         pixel[338 + i] = colour; // x + 2, y + 2

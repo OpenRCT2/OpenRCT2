@@ -204,6 +204,7 @@ namespace RCT1
                 td->vehicle_colours[i] = td->vehicle_colours[0];
             }
 
+            td->StationObjectIdentifier = GetStationIdentifierFromStyle(RCT12_STATION_STYLE_PLAIN);
             td->depart_flags = td4Base.DepartFlags;
             td->number_of_trains = td4Base.NumberOfTrains;
             td->number_of_cars_per_train = td4Base.NumberOfCarsPerTrain;

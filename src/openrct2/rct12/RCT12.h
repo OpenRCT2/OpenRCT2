@@ -914,3 +914,12 @@ enum class TD46Flags : uint8_t
 
 void ConvertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags);
 uint8_t ConvertToTD46Flags(const TrackDesignTrackElement& source);
+
+namespace RCT12
+{
+    /**
+     * Iterates an RCT string buffer and returns the length of the string in bytes.
+     * Handles single and multi-byte strings.
+     */
+    size_t GetRCTStringBufferLen(const char* buffer, size_t maxBufferLen);
+} // namespace RCT12
