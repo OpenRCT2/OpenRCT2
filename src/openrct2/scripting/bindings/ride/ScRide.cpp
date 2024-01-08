@@ -586,7 +586,7 @@ namespace OpenRCT2::Scripting
     uint8_t ScRide::poweredLifts_get() const
     {
         auto ride = GetRide();
-        return ride != nullptr ? ride->drops & 0b11000000 : 0;
+        return ride != nullptr ? ride->drops >> 6 : 0;
     }
 
     uint8_t ScRide::poweredLifts_get() const
