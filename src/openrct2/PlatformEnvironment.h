@@ -26,9 +26,10 @@ namespace OpenRCT2
         CONFIG,        // Base directory for OpenRCT2 configuration.
         CACHE,         // Base directory for OpenRCT2 cache files.
         DOCUMENTATION, // Base directory for OpenRCT2 doc files.
+
+        SIZE
     };
-    constexpr size_t DIRBASE_COUNT = 7;
-    using DIRBASE_VALUES = u8string[DIRBASE_COUNT];
+    constexpr size_t DIRBASE_COUNT = static_cast<size_t>(DIRBASE::SIZE);
 
     enum class DIRID
     {
@@ -88,7 +89,6 @@ namespace OpenRCT2
         virtual bool IsUsingClassic() const abstract;
     };
 
-    [[nodiscard]] std::unique_ptr<IPlatformEnvironment> CreatePlatformEnvironment(DIRBASE_VALUES basePaths);
     [[nodiscard]] std::unique_ptr<IPlatformEnvironment> CreatePlatformEnvironment();
 
 } // namespace OpenRCT2
