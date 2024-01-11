@@ -833,10 +833,16 @@ namespace RCT2
                 || String::IEquals(gScenarioFileName, "south america - inca lost city.sea"))
             {
                 // clang-format off
+                 FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 15, 59 },
+                    },
+                    OWNERSHIP_UNOWNED);
                 FixLandOwnershipTilesWithOwnership(
                     {
                         { 13, 68 }, { 13, 69 },
                         { 14, 69 },
+                        { 15, 59 },
                         { 55, 60 },
                         { 61, 6 },
                         { 86, 63 },
