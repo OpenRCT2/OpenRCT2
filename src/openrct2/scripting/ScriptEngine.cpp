@@ -1597,16 +1597,10 @@ void ScriptEngine::SetParkStorageFromJSON(std::string_view value)
 
 IntervalHandle ScriptEngine::AllocateHandle()
 {
-    auto res = _nextIntervalHandle;
-    _nextIntervalHandle++;
-
     // In case of overflow start from 1 again
-    if (_nextIntervalHandle == 0)
-    {
-        _nextIntervalHandle = 1;
-    }
+    _nextIntervalHandle = std::max(_nextIntervalHandle++, 1U);
 
-    return res;
+    return _nextIntervalHandle;
 }
 
 IntervalHandle ScriptEngine::AddInterval(const std::shared_ptr<Plugin>& plugin, int32_t delay, bool repeat, DukValue&& callback)
@@ -1657,7 +1651,6 @@ void ScriptEngine::UpdateIntervals()
     }
     _lastIntervalTimestamp = timestamp;
 
-    // This loop needs to account for removal and insertions during iteration.
     for (auto it = _intervals.begin(), itNext = it; it != _intervals.end(); it = itNext)
     {
         itNext++;
@@ -1686,10 +1679,11 @@ void ScriptEngine::RemoveIntervals(const std::shared_ptr<Plugin>& plugin)
         if (interval.Owner == plugin)
         {
             it = _intervals.erase(it);
-            continue;
         }
-
-        it++;
+        else
+        {
+            it++;
+        }
     }
 }
 
