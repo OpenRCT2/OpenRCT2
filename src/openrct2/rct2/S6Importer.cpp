@@ -835,6 +835,8 @@ namespace RCT2
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
                     {
+                        { 13, 68 }, { 13, 69 },
+                        { 14, 69 },
                         { 55, 60 },
                         { 61, 6 },
                         { 86, 63 },
@@ -931,6 +933,16 @@ namespace RCT2
                       },
                       OWNERSHIP_AVAILABLE, true);
                 // clang-format on
+            }
+            else if (String::Equals(_s6.ScenarioFilename, "Europe - Renovation.SC6"))
+            {
+                  // clang-format off
+                  FixLandOwnershipTilesWithOwnership(
+                      {
+                          { 12, 21 },
+                      },
+                      OWNERSHIP_OWNED);
+                  // clang-format on
             }
             else if (
                 String::IEquals(gScenarioFileName, "N America - Extreme Hawaiian Island.SC6")
