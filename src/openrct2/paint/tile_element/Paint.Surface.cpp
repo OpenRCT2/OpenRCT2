@@ -1001,7 +1001,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     const auto* surfaceObject = tileElement.GetSurfaceObject();
     const auto* edgeObject = tileElement.GetEdgeObject();
 
-    TileDescriptor selfDescriptor = {
+    const auto selfDescriptor = TileDescriptor{
         TileCoordsXY(base),
         elementPtr,
         surfaceObject,
@@ -1014,15 +1014,14 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         },
     };
 
-    TileDescriptor tileDescriptors[5];
-    tileDescriptors[0] = selfDescriptor;
+    TileDescriptor tileDescriptors[4];
 
     for (std::size_t i = 0; i < std::size(viewport_surface_paint_data); i++)
     {
         const CoordsXY& offset = viewport_surface_paint_data[i][rotation];
         const CoordsXY position = base + offset;
 
-        TileDescriptor& descriptor = tileDescriptors[i + 1];
+        TileDescriptor& descriptor = tileDescriptors[i];
 
         descriptor.tile_element = nullptr;
         if (!MapIsLocationValid(position))
@@ -1256,10 +1255,10 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     if (zoomLevel <= ZoomLevel{ 0 } && has_surface && !(session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
         && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_BASE) && gConfigGeneral.LandscapeSmoothing)
     {
-        ViewportSurfaceSmoothenEdge(session, EDGE_TOPLEFT, tileDescriptors[0], tileDescriptors[3]);
-        ViewportSurfaceSmoothenEdge(session, EDGE_TOPRIGHT, tileDescriptors[0], tileDescriptors[4]);
-        ViewportSurfaceSmoothenEdge(session, EDGE_BOTTOMLEFT, tileDescriptors[0], tileDescriptors[1]);
-        ViewportSurfaceSmoothenEdge(session, EDGE_BOTTOMRIGHT, tileDescriptors[0], tileDescriptors[2]);
+        ViewportSurfaceSmoothenEdge(session, EDGE_TOPLEFT, selfDescriptor, tileDescriptors[2]);
+        ViewportSurfaceSmoothenEdge(session, EDGE_TOPRIGHT, selfDescriptor, tileDescriptors[3]);
+        ViewportSurfaceSmoothenEdge(session, EDGE_BOTTOMLEFT, selfDescriptor, tileDescriptors[0]);
+        ViewportSurfaceSmoothenEdge(session, EDGE_BOTTOMRIGHT, selfDescriptor, tileDescriptors[1]);
     }
 
     if ((session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_BASE)
@@ -1272,11 +1271,10 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
     {
-        ViewportSurfaceDrawLandSideTop(session, EDGE_TOPLEFT, height, edgeObject, tileDescriptors[0], tileDescriptors[3]);
-        ViewportSurfaceDrawLandSideTop(session, EDGE_TOPRIGHT, height, edgeObject, tileDescriptors[0], tileDescriptors[4]);
-        ViewportSurfaceDrawLandSideBottom(session, EDGE_BOTTOMLEFT, height, edgeObject, tileDescriptors[0], tileDescriptors[1]);
-        ViewportSurfaceDrawLandSideBottom(
-            session, EDGE_BOTTOMRIGHT, height, edgeObject, tileDescriptors[0], tileDescriptors[2]);
+        ViewportSurfaceDrawLandSideTop(session, EDGE_TOPLEFT, height, edgeObject, selfDescriptor, tileDescriptors[2]);
+        ViewportSurfaceDrawLandSideTop(session, EDGE_TOPRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[3]);
+        ViewportSurfaceDrawLandSideBottom(session, EDGE_BOTTOMLEFT, height, edgeObject, selfDescriptor, tileDescriptors[0]);
+        ViewportSurfaceDrawLandSideBottom(session, EDGE_BOTTOMRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[1]);
     }
 
     const uint16_t waterHeight = tileElement.GetWaterHeight();
@@ -1307,13 +1305,12 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
         {
             ViewportSurfaceDrawWaterSideBottom(
-                session, EDGE_BOTTOMLEFT, waterHeight, edgeObject, tileDescriptors[0], tileDescriptors[1]);
+                session, EDGE_BOTTOMLEFT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[0]);
             ViewportSurfaceDrawWaterSideBottom(
-                session, EDGE_BOTTOMRIGHT, waterHeight, edgeObject, tileDescriptors[0], tileDescriptors[2]);
+                session, EDGE_BOTTOMRIGHT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[1]);
+            ViewportSurfaceDrawWaterSideTop(session, EDGE_TOPLEFT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[2]);
             ViewportSurfaceDrawWaterSideTop(
-                session, EDGE_TOPLEFT, waterHeight, edgeObject, tileDescriptors[0], tileDescriptors[3]);
-            ViewportSurfaceDrawWaterSideTop(
-                session, EDGE_TOPRIGHT, waterHeight, edgeObject, tileDescriptors[0], tileDescriptors[4]);
+                session, EDGE_TOPRIGHT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[3]);
         }
     }
 
