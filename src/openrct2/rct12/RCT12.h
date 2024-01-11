@@ -74,6 +74,7 @@ constexpr uint8_t RCT12PeepThoughtItemNone = std::numeric_limits<uint8_t>::max()
 constexpr uint8_t RCT12GuestsInParkHistoryFactor = 20;
 constexpr uint8_t RCT12ParkHistoryUndefined = std::numeric_limits<uint8_t>::max();
 
+struct TrackDesign;
 struct TrackDesignTrackElement;
 
 enum class RCT12TrackDesignVersion : uint8_t
@@ -213,6 +214,12 @@ struct RCT12xy8
 };
 assert_struct_size(RCT12xy8, 2);
 
+enum class TD46MazeElementType : uint8_t
+{
+    Entrance = (1 << 3),
+    Exit = (1 << 7)
+};
+
 /* Maze Element entry   size: 0x04 */
 struct TD46MazeElement
 {
@@ -234,6 +241,16 @@ struct TD46MazeElement
             };
         };
     };
+
+    constexpr bool IsEntrance() const
+    {
+        return Type == EnumValue(TD46MazeElementType::Entrance);
+    }
+
+    constexpr bool IsExit() const
+    {
+        return Type == EnumValue(TD46MazeElementType::Exit);
+    }
 };
 assert_struct_size(TD46MazeElement, 0x04);
 
@@ -933,6 +950,7 @@ enum class TD46Flags : uint8_t
 
 void ConvertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags);
 uint8_t ConvertToTD46Flags(const TrackDesignTrackElement& source);
+void ImportMazeElement(TrackDesign& td, const TD46MazeElement& td46MazeElement);
 
 namespace RCT12
 {
