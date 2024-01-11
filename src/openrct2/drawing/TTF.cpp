@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,7 +35,7 @@ struct ttf_cache_entry
 {
     TTFSurface* surface;
     TTF_Font* font;
-    utf8* text;
+    u8string text;
     uint32_t lastUseTick;
 };
 
@@ -43,7 +43,7 @@ struct ttf_getwidth_cache_entry
 {
     uint32_t width;
     TTF_Font* font;
-    utf8* text;
+    u8string text;
     uint32_t lastUseTick;
 };
 
@@ -197,11 +197,9 @@ static void TTFSurfaceCacheDispose(ttf_cache_entry* entry)
     if (entry->surface != nullptr)
     {
         TTFFreeSurface(entry->surface);
-        free(entry->text);
-
+        entry->text.clear();
         entry->surface = nullptr;
         entry->font = nullptr;
-        entry->text = nullptr;
     }
 }
 
@@ -270,21 +268,19 @@ TTFSurface* TTFSurfaceCacheGetOrAdd(TTF_Font* font, std::string_view text)
     _ttfSurfaceCacheCount++;
     entry->surface = surface;
     entry->font = font;
-    entry->text = strndup(text.data(), text.size());
+    entry->text = text;
     entry->lastUseTick = gCurrentDrawCount;
     return entry->surface;
 }
 
 static void TTFGetWidthCacheDispose(ttf_getwidth_cache_entry* entry)
 {
-    if (entry->text != nullptr)
-    {
-        free(entry->text);
+    if (entry->text.empty())
+        return;
 
-        entry->width = 0;
-        entry->font = nullptr;
-        entry->text = nullptr;
-    }
+    entry->text.clear();
+    entry->width = 0;
+    entry->font = nullptr;
 }
 
 static void TTFGetWidthCacheDisposeAll()
@@ -310,7 +306,7 @@ uint32_t TTFGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text)
         entry = &_ttfGetWidthCache[index];
 
         // Check if entry is a hit
-        if (entry->text == nullptr)
+        if (entry->text.empty())
             break;
         if (entry->font == font && String::Equals(entry->text, text))
         {
@@ -342,7 +338,7 @@ uint32_t TTFGetWidthCacheGetOrAdd(TTF_Font* font, std::string_view text)
     _ttfGetWidthCacheCount++;
     entry->width = width;
     entry->font = font;
-    entry->text = strndup(text.data(), text.size());
+    entry->text = text;
     entry->lastUseTick = gCurrentDrawCount;
     return entry->width;
 }
@@ -369,12 +365,7 @@ static TTFSurface* TTFRender(TTF_Font* font, std::string_view text)
 {
     thread_local std::string buffer;
     buffer.assign(text);
-    if (TTF_GetFontHinting(font) != 0)
-    {
-        return TTF_RenderUTF8_Shaded(font, buffer.c_str(), 0x000000FF, 0x000000FF);
-    }
-
-    return TTF_RenderUTF8_Solid(font, buffer.c_str(), 0x000000FF);
+    return TTF_RenderUTF8(font, buffer.c_str(), TTF_GetFontHinting(font) != 0);
 }
 
 void TTFFreeSurface(TTFSurface* surface)

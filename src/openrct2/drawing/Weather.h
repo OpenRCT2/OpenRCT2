@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,7 @@ namespace OpenRCT2::Drawing
 }
 
 // clang-format off
-static constexpr const uint8_t RainPattern[] =
+static constexpr uint8_t RainPattern[] =
 {
     32, 32, 0, 12, 0, 14, 0, 16, 255, 0, 255, 0, 255, 0, 255, 0, 255,
     0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
@@ -27,7 +27,7 @@ static constexpr const uint8_t RainPattern[] =
     0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 0, 0
 };
 
-static constexpr const uint8_t SnowPattern[] =
+static constexpr uint8_t SnowPattern[] =
 {
     32, 32, 0, 32, 0, 32, 0, 16, 255, 0, 255, 0, 255, 0, 255, 0, 255,
     0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
@@ -37,4 +37,4 @@ static constexpr const uint8_t SnowPattern[] =
 
 // clang-format on
 
-void DrawWeather(DrawPixelInfo* dpi, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer);
+void DrawWeather(DrawPixelInfo& dpi, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer);

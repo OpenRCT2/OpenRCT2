@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -69,7 +69,9 @@ GameActions::Result TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting) con
 
     if (isExecuting)
     {
-        tileElement->AsTrack()->SetBrakeBoosterSpeed(_brakeSpeed);
+        GetTrackElementOriginAndApplyChanges(
+            { _loc, tileElement->GetDirection() }, tileElement->AsTrack()->GetTrackType(), _brakeSpeed, nullptr,
+            TRACK_ELEMENT_SET_BRAKE_BOOSTER_SPEED);
     }
     return res;
 }

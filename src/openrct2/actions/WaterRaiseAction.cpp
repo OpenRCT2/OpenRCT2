@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -94,7 +94,14 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
             {
                 if (height > maxHeight)
                     continue;
-                height += 2;
+                if (height + 2 > UINT8_MAX)
+                {
+                    height = UINT8_MAX;
+                }
+                else
+                {
+                    height += 2;
+                }
             }
             else
             {

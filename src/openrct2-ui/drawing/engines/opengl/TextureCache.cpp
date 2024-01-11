@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 
 #    include <algorithm>
 #    include <openrct2/drawing/Drawing.h>
+#    include <openrct2/interface/Colour.h>
 #    include <openrct2/util/Util.h>
 #    include <openrct2/world/Location.hpp>
 #    include <stdexcept>
@@ -193,6 +194,18 @@ void TextureCache::CreateTextures()
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         GeneratePaletteTexture();
 
+        auto blendArray = GetBlendColourMap();
+        if (blendArray != nullptr)
+        {
+            glGenTextures(1, &_blendPaletteTexture);
+            glBindTexture(GL_TEXTURE_2D, _blendPaletteTexture);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+            glTexImage2D(
+                GL_TEXTURE_2D, 0, GL_R8UI, PALETTE_SIZE, PALETTE_SIZE, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, blendArray);
+        }
+
         _initialized = true;
         _atlasesTextureIndices = 0;
         _atlasesTextureCapacity = 0;
@@ -201,7 +214,7 @@ void TextureCache::CreateTextures()
 
 void TextureCache::GeneratePaletteTexture()
 {
-    static_assert(PALETTE_TO_G1_OFFSET_COUNT + 5 < 256, "Height of palette too large!");
+    static_assert(PALETTE_TOTAL_OFFSETS + 5 < 256, "Height of palette too large!");
     constexpr int32_t height = 256;
     constexpr int32_t width = height;
     DrawPixelInfo dpi = CreateDPI(width, height);
@@ -212,15 +225,18 @@ void TextureCache::GeneratePaletteTexture()
         dpi.bits[i] = i;
     }
 
-    for (int i = 0; i < PALETTE_TO_G1_OFFSET_COUNT; ++i)
+    for (int i = 0; i < PALETTE_TOTAL_OFFSETS; ++i)
     {
         GLint y = PaletteToY(static_cast<FilterPaletteID>(i));
 
         auto g1Index = GetPaletteG1Index(i);
         if (g1Index.has_value())
         {
-            auto element = GfxGetG1Element(g1Index.value());
-            GfxDrawSpriteSoftware(&dpi, ImageId(g1Index.value()), { -element->x_offset, y - element->y_offset });
+            const auto* element = GfxGetG1Element(g1Index.value());
+            if (element != nullptr)
+            {
+                GfxDrawSpriteSoftware(dpi, ImageId(g1Index.value()), { -element->x_offset, y - element->y_offset });
+            }
         }
     }
 
@@ -354,7 +370,7 @@ DrawPixelInfo TextureCache::GetImageAsDPI(const ImageId imageId)
     int32_t height = g1Element->height;
 
     DrawPixelInfo dpi = CreateDPI(width, height);
-    GfxDrawSpriteSoftware(&dpi, imageId, { -g1Element->x_offset, -g1Element->y_offset });
+    GfxDrawSpriteSoftware(dpi, imageId, { -g1Element->x_offset, -g1Element->y_offset });
     return dpi;
 }
 
@@ -367,7 +383,7 @@ DrawPixelInfo TextureCache::GetGlyphAsDPI(const ImageId imageId, const PaletteMa
     DrawPixelInfo dpi = CreateDPI(width, height);
 
     const auto glyphCoords = ScreenCoordsXY{ -g1Element->x_offset, -g1Element->y_offset };
-    GfxDrawSpritePaletteSetSoftware(&dpi, imageId, glyphCoords, palette);
+    GfxDrawSpritePaletteSetSoftware(dpi, imageId, glyphCoords, palette);
     return dpi;
 }
 
@@ -409,6 +425,11 @@ GLuint TextureCache::GetAtlasesTexture()
 GLuint TextureCache::GetPaletteTexture()
 {
     return _paletteTexture;
+}
+
+GLuint TextureCache::GetBlendPaletteTexture()
+{
+    return _blendPaletteTexture;
 }
 
 GLint TextureCache::PaletteToY(FilterPaletteID palette)

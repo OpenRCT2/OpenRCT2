@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,7 +15,7 @@
 
 #include <array>
 
-constexpr const uint16_t FONT_SPRITE_GLYPH_COUNT = 224;
+constexpr uint16_t FONT_SPRITE_GLYPH_COUNT = 224;
 
 enum class FontStyle : uint8_t
 {
@@ -24,8 +24,8 @@ enum class FontStyle : uint8_t
     Tiny = 2,
 };
 
-constexpr const uint8_t FontStyleCount = 3;
-constexpr const std::array<FontStyle, FontStyleCount> FontStyles = { FontStyle::Small, FontStyle::Medium, FontStyle::Tiny };
+constexpr uint8_t FontStyleCount = 3;
+constexpr std::array<FontStyle, FontStyleCount> FontStyles = { FontStyle::Small, FontStyle::Medium, FontStyle::Tiny };
 
 #ifndef NO_TTF
 

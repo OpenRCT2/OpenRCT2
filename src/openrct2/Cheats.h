@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,13 @@
 #pragma once
 
 #include "common.h"
+
+enum class StaffSpeedCheat
+{
+    None,
+    Frozen,
+    Fast,
+};
 
 extern bool gCheatsSandboxMode;
 extern bool gCheatsDisableClearanceChecks;
@@ -34,6 +41,9 @@ extern bool gCheatsIgnoreResearchStatus;
 extern bool gCheatsEnableAllDrawableTrackPieces;
 extern bool gCheatsAllowTrackPlaceInvalidHeights;
 extern bool gCheatsAllowRegularPathAsQueue;
+extern bool gCheatsAllowSpecialColourSchemes;
+extern bool gCheatsMakeAllDestructible;
+extern StaffSpeedCheat gCheatsSelectedStaffSpeed;
 
 enum class CheatType : int32_t
 {
@@ -88,6 +98,8 @@ enum class CheatType : int32_t
     AllowTrackPlaceInvalidHeights,
     NoCapOnQueueLengthDummy, // Removed; this dummy exists only for deserialisation parks that had it saved
     AllowRegularPathAsQueue,
+    AllowSpecialColourSchemes,
+    RemoveParkFences,
     Count,
 };
 
@@ -120,5 +132,5 @@ constexpr auto CHEATS_GIVE_GUESTS_MONEY = 1000.00_GBP;
 
 void CheatsReset();
 const char* CheatsGetName(CheatType cheatType);
-void CheatsSet(CheatType cheatType, int32_t param1 = 0, int32_t param2 = 0);
+void CheatsSet(CheatType cheatType, int64_t param1 = 0, int64_t param2 = 0);
 void CheatsSerialise(class DataSerialiser& ds);

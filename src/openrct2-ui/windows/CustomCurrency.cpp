@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,9 +18,9 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_CUSTOM_CURRENCY_WINDOW_TITLE;
-static constexpr const int32_t WH = 100;
-static constexpr const int32_t WW = 400;
+static constexpr StringId WINDOW_TITLE = STR_CUSTOM_CURRENCY_WINDOW_TITLE;
+static constexpr int32_t WH = 100;
+static constexpr int32_t WW = 400;
 
 // clang-format off
 enum WindowCustomCurrencyWidgetIdx {
@@ -217,6 +217,11 @@ public:
             ? STR_PREFIX
             : STR_SUFFIX;
         DrawTextBasic(dpi, drawPos, stringId, {}, { colours[1] });
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 };
 

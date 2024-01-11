@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -60,7 +60,7 @@ void CarEntrySetImageMaxSizes(CarEntry& carEntry, int32_t numImages)
 
     for (int32_t i = 0; i < numImages; ++i)
     {
-        GfxDrawSpriteSoftware(&dpi, ImageId(carEntry.base_image_id + i), { 0, 0 });
+        GfxDrawSpriteSoftware(dpi, ImageId(carEntry.base_image_id + i), { 0, 0 });
     }
     int32_t spriteWidth = -1;
     for (int32_t i = 99; i != 0; --i)

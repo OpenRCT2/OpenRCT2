@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,6 +24,7 @@ struct Window : WindowBase
     bool IsWidgetPressed(WidgetIndex widgetIndex) const;
     void SetWidgetEnabled(WidgetIndex widgetIndex, bool value);
     void SetWidgetDisabled(WidgetIndex widgetIndex, bool value);
+    void SetWidgetDisabledAndInvalidate(WidgetIndex widgetIndex, bool value);
     void SetWidgetPressed(WidgetIndex widgetIndex, bool value);
     void SetCheckboxValue(WidgetIndex widgetIndex, bool value);
     void DrawWidgets(DrawPixelInfo& dpi);
@@ -39,3 +40,4 @@ struct Window : WindowBase
 void WindowAllWheelInput();
 void ApplyScreenSaverLockSetting();
 void WindowAlignTabs(WindowBase* w, WidgetIndex start_tab_id, WidgetIndex end_tab_id);
+ScreenCoordsXY WindowGetViewportSoundIconPos(WindowBase& w);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -99,7 +99,8 @@ GameActions::Result BannerPlaceAction::Query() const
     if (bannerEntry == nullptr)
     {
         LOG_ERROR("Invalid banner object type. bannerType = ", _bannerType);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
     res.Cost = bannerEntry->price;
 
@@ -126,7 +127,8 @@ GameActions::Result BannerPlaceAction::Execute() const
     if (bannerEntry == nullptr)
     {
         LOG_ERROR("Invalid banner object type. bannerType = ", _bannerType);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
 
     auto banner = CreateBanner();

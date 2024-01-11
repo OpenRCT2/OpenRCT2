@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,9 +36,9 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
-static constexpr const StringId WINDOW_TITLE = STR_STRING;
-static constexpr const int32_t WH = 124;
-static constexpr const int32_t WW = 200;
+static constexpr StringId WINDOW_TITLE = STR_STRING;
+static constexpr int32_t WH = 124;
+static constexpr int32_t WW = 200;
 constexpr int16_t TRACK_MINI_PREVIEW_WIDTH = 168;
 constexpr int16_t TRACK_MINI_PREVIEW_HEIGHT = 78;
 constexpr uint16_t TRACK_MINI_PREVIEW_SIZE = TRACK_MINI_PREVIEW_WIDTH * TRACK_MINI_PREVIEW_HEIGHT;
@@ -61,7 +61,7 @@ enum {
 
 validate_global_widx(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
 
-static Widget window_track_place_widgets[] = {
+static Widget _trackPlaceWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({173,  83}, { 24, 24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_ROTATE_ARROW),              STR_ROTATE_90_TIP                         ),
     MakeWidget({173,  59}, { 24, 24}, WindowWidgetType::FlatBtn, WindowColour::Primary, ImageId(SPR_MIRROR_ARROW),              STR_MIRROR_IMAGE_TIP                      ),
@@ -77,7 +77,7 @@ class TrackDesignPlaceWindow final : public Window
 public:
     void OnOpen() override
     {
-        widgets = window_track_place_widgets;
+        widgets = _trackPlaceWidgets;
         WindowInitScrollWidgets(*this);
         ToolSet(*this, WIDX_PRICE, Tool::Crosshair);
         InputSetFlag(INPUT_FLAG_6, true);
@@ -92,7 +92,7 @@ public:
     void OnClose() override
     {
         ClearProvisional();
-        ViewportSetVisibility(0);
+        ViewportSetVisibility(ViewportVisibility::Default);
         MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -288,11 +288,11 @@ public:
     {
         auto ft = Formatter::Common();
         ft.Add<char*>(_trackDesign->name.c_str());
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
 
         // Draw mini tile preview
         DrawPixelInfo clippedDpi;
-        if (ClipDrawPixelInfo(&clippedDpi, &dpi, this->windowPos + ScreenCoordsXY{ 4, 18 }, 168, 78))
+        if (ClipDrawPixelInfo(clippedDpi, dpi, this->windowPos + ScreenCoordsXY{ 4, 18 }, 168, 78))
         {
             G1Element g1temp = {};
             g1temp.offset = _miniPreview.data();
@@ -300,7 +300,7 @@ public:
             g1temp.height = TRACK_MINI_PREVIEW_HEIGHT;
             GfxSetG1Element(SPR_TEMP, &g1temp);
             DrawingEngineInvalidateImage(SPR_TEMP);
-            GfxDrawSprite(&clippedDpi, ImageId(SPR_TEMP, NOT_TRANSLUCENT(this->colours[0])), { 0, 0 });
+            GfxDrawSprite(clippedDpi, ImageId(SPR_TEMP, NOT_TRANSLUCENT(this->colours[0])), { 0, 0 });
         }
 
         // Price
@@ -310,6 +310,11 @@ public:
             ft.Add<money64>(_placementCost);
             DrawTextBasic(dpi, this->windowPos + ScreenCoordsXY{ 88, 94 }, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
         }
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 
     void ClearProvisionalTemporarily()
@@ -436,14 +441,8 @@ private:
         uint8_t curTrackRotation = rotation;
         for (const auto& trackElement : td6->track_elements)
         {
-            int32_t trackType = trackElement.type;
-            if (trackType == TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
-            {
-                trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;
-            }
-
             // Follow a single track piece shape
-            const auto& ted = GetTrackElementDescriptor(trackType);
+            const auto& ted = GetTrackElementDescriptor(trackElement.Type);
             const PreviewTrack* trackBlock = ted.Block;
             while (trackBlock->index != 255)
             {
@@ -507,7 +506,7 @@ private:
         // Draw entrance and exit preview.
         for (const auto& entrance : td6->entrance_elements)
         {
-            auto rotatedAndOffsetEntrance = origin + CoordsXY{ entrance.x, entrance.y }.Rotate(rotation);
+            auto rotatedAndOffsetEntrance = origin + entrance.Location.ToCoordsXY().Rotate(rotation);
 
             if (pass == 0)
             {
@@ -522,7 +521,7 @@ private:
                 if (DrawMiniPreviewIsPixelInBounds(pixelPosition))
                 {
                     uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
-                    uint8_t colour = entrance.isExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
+                    uint8_t colour = entrance.IsExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
                     for (int32_t i = 0; i < 4; i++)
                     {
                         pixel[338 + i] = colour; // x + 2, y + 2

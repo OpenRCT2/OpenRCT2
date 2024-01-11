@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "../../drawing/ImageId.hpp"
+#include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
 #include "../../world/Location.hpp"
 #include "../TrackPaint.h"
@@ -17,21 +19,26 @@
 
 struct SpriteBoundBox2
 {
-    uint32_t sprite_id_a;
-    uint32_t sprite_id_b;
+    ImageIndex ImageIdA;
+    ImageIndex ImageIdB;
     CoordsXYZ offset;
-    CoordsXYZ bb_offset;
-    CoordsXYZ bb_size;
+    ::BoundBoxXYZ BoundBox;
+};
+
+// Magic number 4 refers to the number of track blocks in a diagonal track element
+static constexpr const int8_t WoodenRCDiagonalSupports[4][NumOrthogonalDirections] = {
+    { -1, -1, -1, -1 }, // sequence 0
+    { 2, 3, 4, 5 },     // sequence 1
+    { 4, 5, 2, 3 },     // sequence 2
+    { -1, -1, -1, -1 }  // sequence 3
 };
 
 template<bool isClassic> ImageId WoodenRCGetTrackColour(const PaintSession& session)
 {
     if (isClassic)
-        return session.TrackColours[SCHEME_TRACK];
+        return session.TrackColours;
     else
-        return session.TrackColours[SCHEME_TRACK].IsRemap()
-            ? session.TrackColours[SCHEME_TRACK]
-            : session.TrackColours[SCHEME_TRACK].WithPrimary(session.TrackColours[SCHEME_SUPPORTS].GetPrimary());
+        return session.SupportColours;
 }
 
 ImageId WoodenRCGetRailsColour(PaintSession& session);
@@ -50,19 +57,19 @@ PaintStruct* WoodenRCTrackPaint(
 
 template<bool isClassic> void WoodenRCTrackPaintBb(PaintSession& session, const SpriteBoundBox2* bb, int16_t height)
 {
-    if (bb->sprite_id_a == 0)
+    if (bb->ImageIdA == 0)
         return;
 
-    ImageId imageId = WoodenRCGetTrackColour<isClassic>(session).WithIndex(bb->sprite_id_a);
+    ImageId imageId = WoodenRCGetTrackColour<isClassic>(session).WithIndex(bb->ImageIdA);
     PaintAddImageAsParent(
         session, imageId, { bb->offset.x, bb->offset.y, height + bb->offset.z },
-        { { bb->bb_offset.x, bb->bb_offset.y, height + bb->bb_offset.z }, bb->bb_size });
-    if (bb->sprite_id_b != 0)
+        { { bb->BoundBox.offset.x, bb->BoundBox.offset.y, height + bb->BoundBox.offset.z }, bb->BoundBox.length });
+    if (bb->ImageIdB != 0)
     {
-        ImageId railsImageId = WoodenRCGetRailsColour(session).WithIndex(bb->sprite_id_b);
+        ImageId railsImageId = WoodenRCGetRailsColour(session).WithIndex(bb->ImageIdB);
         PaintAddImageAsChild(
             session, railsImageId, { bb->offset.x, bb->offset.y, height + bb->offset.z },
-            { { bb->bb_offset, height + bb->bb_offset.z }, bb->bb_size });
+            { { bb->BoundBox.offset, height + bb->BoundBox.offset.z }, bb->BoundBox.length });
     }
 }
 

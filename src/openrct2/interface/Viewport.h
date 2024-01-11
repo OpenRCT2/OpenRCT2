@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,7 +17,6 @@
 #include <vector>
 
 struct PaintSession;
-struct RecordedPaintSession;
 struct PaintStruct;
 struct DrawPixelInfo;
 struct TileElement;
@@ -81,12 +80,22 @@ enum class ViewportInteractionItem : uint8_t
     Water,
     Scenery,
     Footpath,
-    FootpathItem,
+    PathAddition,
     ParkEntrance,
     Wall,
     LargeScenery,
     Label,
     Banner
+};
+
+enum class ViewportVisibility : uint8_t
+{
+    Default = 0,
+    UndergroundViewOn = 1,
+    TrackHeights = 2,
+    UndergroundViewOff = 3,
+    UndergroundViewGhostOn = 4,
+    UndergroundViewGhostOff = 5,
 };
 
 constexpr uint16_t ViewportInteractionItemAll = std::numeric_limits<uint16_t>::max();
@@ -130,12 +139,8 @@ void ViewportUpdateSmartFollowEntity(WindowBase* window);
 void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest* peep);
 void ViewportUpdateSmartFollowStaff(WindowBase* window, const Staff* peep);
 void ViewportUpdateSmartFollowVehicle(WindowBase* window);
-void ViewportRender(
-    DrawPixelInfo* dpi, const Viewport* viewport, const ScreenRect& screenRect,
-    std::vector<RecordedPaintSession>* sessions = nullptr);
-void ViewportPaint(
-    const Viewport* viewport, DrawPixelInfo* dpi, const ScreenRect& screenRect,
-    std::vector<RecordedPaintSession>* sessions = nullptr);
+void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport, const ScreenRect& screenRect);
+void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const ScreenRect& screenRect);
 
 CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords);
 
@@ -148,7 +153,7 @@ void ShowLandRights();
 void HideLandRights();
 void ShowConstructionRights();
 void HideConstructionRights();
-void ViewportSetVisibility(uint8_t mode);
+void ViewportSetVisibility(ViewportVisibility mode);
 
 InteractionInfo GetMapCoordinatesFromPos(const ScreenCoordsXY& screenCoords, int32_t flags);
 InteractionInfo GetMapCoordinatesFromPosWindow(WindowBase* window, const ScreenCoordsXY& screenCoords, int32_t flags);

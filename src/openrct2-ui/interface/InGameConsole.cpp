@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -80,9 +80,10 @@ void InGameConsole::Input(ConsoleInput input)
             }
             _consoleTextInputSession->Length = UTF8Length(_consoleCurrentLine.c_str());
             _consoleTextInputSession->SelectionStart = _consoleCurrentLine.size();
+            RefreshCaret(_consoleTextInputSession->SelectionStart);
             break;
         case ConsoleInput::HistoryNext:
-            if (_consoleHistoryIndex < _consoleHistory.size() - 1)
+            if (_consoleHistoryIndex + 1 < _consoleHistory.size())
             {
                 _consoleHistoryIndex++;
                 _consoleCurrentLine = _consoleHistory[_consoleHistoryIndex];
@@ -94,6 +95,7 @@ void InGameConsole::Input(ConsoleInput input)
                 _consoleHistoryIndex = _consoleHistory.size();
                 ClearInput();
             }
+            RefreshCaret(_consoleTextInputSession->SelectionStart);
             break;
         case ConsoleInput::ScrollPrevious:
         {
@@ -264,7 +266,7 @@ void InGameConsole::Update()
     _consoleCaretTicks = (_consoleCaretTicks + 1) % 30;
 }
 
-void InGameConsole::Draw(DrawPixelInfo* dpi) const
+void InGameConsole::Draw(DrawPixelInfo& dpi) const
 {
     if (!_isOpen)
         return;
@@ -314,7 +316,7 @@ void InGameConsole::Draw(DrawPixelInfo* dpi) const
     {
         const size_t index = i + _consoleScrollPos;
         lineBuffer = _colourFormatStr + _consoleLines[index];
-        GfxDrawString(*dpi, screenCoords, lineBuffer.c_str(), { textColour, InGameConsoleGetFontStyle() });
+        GfxDrawString(dpi, screenCoords, lineBuffer.c_str(), { textColour, InGameConsoleGetFontStyle() });
         screenCoords.y += lineHeight;
     }
 
@@ -322,7 +324,7 @@ void InGameConsole::Draw(DrawPixelInfo* dpi) const
 
     // Draw current line
     lineBuffer = _colourFormatStr + _consoleCurrentLine;
-    DrawText(*dpi, screenCoords, { TEXT_COLOUR_255, InGameConsoleGetFontStyle() }, lineBuffer.c_str(), true);
+    DrawText(dpi, screenCoords, { TEXT_COLOUR_255, InGameConsoleGetFontStyle() }, lineBuffer.c_str(), true);
 
     // Draw caret
     if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD)

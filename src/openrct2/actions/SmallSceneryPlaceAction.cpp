@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -49,6 +49,7 @@ void SmallSceneryPlaceAction::AcceptParameters(GameActionParameterVisitor& visit
     visitor.Visit("object", _sceneryType);
     visitor.Visit("primaryColour", _primaryColour);
     visitor.Visit("secondaryColour", _secondaryColour);
+    visitor.Visit("tertiaryColour", _tertiaryColour);
 }
 
 uint32_t SmallSceneryPlaceAction::GetCooldownTime() const
@@ -65,7 +66,8 @@ void SmallSceneryPlaceAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
-    stream << DS_TAG(_loc) << DS_TAG(_quadrant) << DS_TAG(_sceneryType) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour);
+    stream << DS_TAG(_loc) << DS_TAG(_quadrant) << DS_TAG(_sceneryType) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour)
+           << DS_TAG(_tertiaryColour);
 }
 
 GameActions::Result SmallSceneryPlaceAction::Query() const
@@ -116,7 +118,8 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
     if (sceneryEntry == nullptr)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
 
     auto quadrant = _quadrant;
@@ -308,7 +311,8 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);
     if (sceneryEntry == nullptr)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
 
     auto quadrant = _quadrant;

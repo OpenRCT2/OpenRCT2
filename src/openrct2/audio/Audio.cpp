@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -269,21 +269,44 @@ namespace OpenRCT2::Audio
         }
     }
 
-    static ObjectEntryDescriptor GetTitleMusicDescriptor()
+    static bool IsRCT1TitleMusicAvailable()
     {
-        switch (gConfigSound.TitleMusic)
+        auto env = GetContext()->GetPlatformEnvironment();
+        auto rct1path = env->GetDirectoryPath(DIRBASE::RCT1);
+        return !rct1path.empty();
+    }
+
+    static std::map<TitleMusicKind, std::string_view> GetAvailableMusicMap()
+    {
+        auto musicMap = std::map<TitleMusicKind, std::string_view>{
+            { TitleMusicKind::OpenRCT2, AudioObjectIdentifiers::OpenRCT2Title },
+            { TitleMusicKind::RCT2, AudioObjectIdentifiers::RCT2Title },
+        };
+
+        if (IsRCT1TitleMusicAvailable())
         {
-            default:
-                return {};
-            case TitleMusicKind::RCT1:
-                return ObjectEntryDescriptor(ObjectType::Audio, AudioObjectIdentifiers::RCT1Title);
-            case TitleMusicKind::RCT2:
-                return ObjectEntryDescriptor(ObjectType::Audio, AudioObjectIdentifiers::RCT2Title);
-            case TitleMusicKind::Random:
-                return ObjectEntryDescriptor(
-                    ObjectType::Audio,
-                    (UtilRand() & 1) ? AudioObjectIdentifiers::RCT1Title : AudioObjectIdentifiers::RCT2Title);
+            musicMap.emplace(TitleMusicKind::RCT1, AudioObjectIdentifiers::RCT1Title);
         }
+
+        return musicMap;
+    }
+
+    static ObjectEntryDescriptor GetTitleMusicDescriptor(TitleMusicKind musicKind)
+    {
+        auto musicMap = GetAvailableMusicMap();
+        auto it = musicMap.find(musicKind);
+        if (musicKind == TitleMusicKind::Random)
+        {
+            it = std::next(musicMap.begin(), UtilRand() % musicMap.size());
+        }
+
+        if (it != musicMap.end())
+        {
+            return ObjectEntryDescriptor(ObjectType::Audio, it->second);
+        }
+
+        // No music descriptor for the current setting, intentional for TitleMusicKind::None
+        return {};
     }
 
     void PlayTitleMusic()
@@ -300,7 +323,7 @@ namespace OpenRCT2::Audio
         }
 
         // Load title sequence audio object
-        auto descriptor = GetTitleMusicDescriptor();
+        auto descriptor = GetTitleMusicDescriptor(gConfigSound.TitleMusic);
         auto& objManager = GetContext()->GetObjectManager();
         auto* audioObject = static_cast<AudioObject*>(objManager.LoadObject(descriptor));
         if (audioObject != nullptr)

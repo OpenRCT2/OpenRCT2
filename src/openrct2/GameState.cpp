@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include "./peep/GuestPathfinding.h"
 #include "Context.h"
+#include "Date.h"
 #include "Editor.h"
 #include "Game.h"
 #include "GameState.h"
@@ -21,6 +22,7 @@
 #include "actions/GameAction.h"
 #include "config/Config.h"
 #include "entity/EntityRegistry.h"
+#include "entity/EntityTweener.h"
 #include "entity/PatrolArea.h"
 #include "entity/Staff.h"
 #include "interface/Screenshot.h"
@@ -70,7 +72,7 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     RideInitAll();
     ResetAllEntities();
     UpdateConsolidatedPatrolAreas();
-    DateReset();
+    ResetDate();
     ClimateReset(ClimateType::CoolAndWet);
     News::InitQueue();
 
@@ -93,6 +95,8 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     auto& scriptEngine = GetContext()->GetScriptEngine();
     scriptEngine.ClearParkStorage();
 #endif
+
+    EntityTweener::Get().Reset();
 }
 
 /**
@@ -104,8 +108,6 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
 void GameState::Tick()
 {
     PROFILED_FUNCTION();
-
-    gInUpdateCode = true;
 
     // Normal game play will update only once every GAME_UPDATE_TIME_MS
     uint32_t numUpdates = 1;
@@ -171,6 +173,9 @@ void GameState::Tick()
                 NetworkSendTick();
             }
 
+            // Keep updating the money effect even when paused.
+            UpdateMoneyEffect();
+
             // Update the animation list. Note this does not
             // increment the map animation.
             MapAnimationInvalidateAll();
@@ -229,8 +234,6 @@ void GameState::Tick()
         gWindowMapFlashingFlags &= ~MapFlashingFlags::StaffListOpen;
 
         ContextUpdateMapTooltip();
-
-        ContextHandleInput();
     }
 
     // Always perform autosave check, even when paused
@@ -248,21 +251,13 @@ void GameState::Tick()
     }
 
     gDoSingleUpdate = false;
-    gInUpdateCode = false;
 }
 
-void GameState::UpdateLogic(LogicTimings* timings)
+void GameState::UpdateLogic()
 {
     PROFILED_FUNCTION();
 
-    auto start_time = std::chrono::high_resolution_clock::now();
-
-    auto report_time = [timings, start_time](LogicTimePart part) {
-        if (timings != nullptr)
-        {
-            timings->TimingInfo[part][timings->CurrentIdx] = std::chrono::high_resolution_clock::now() - start_time;
-        }
-    };
+    gInUpdateCode = true;
 
     gScreenAge++;
     if (gScreenAge == 0)
@@ -271,7 +266,6 @@ void GameState::UpdateLogic(LogicTimings* timings)
     GetContext()->GetReplayManager()->Update();
 
     NetworkUpdate();
-    report_time(LogicTimePart::NetworkUpdate);
 
     if (NetworkGetMode() == NETWORK_MODE_SERVER)
     {
@@ -288,6 +282,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
         // Don't run past the server, this condition can happen during map changes.
         if (NetworkGetServerTick() == gCurrentTicks)
         {
+            gInUpdateCode = false;
             return;
         }
 
@@ -313,53 +308,34 @@ void GameState::UpdateLogic(LogicTimings* timings)
     auto day = _date.GetDay();
 #endif
 
-    DateUpdate();
-    _date = Date(static_cast<uint32_t>(gDateMonthsElapsed), gDateMonthTicks);
-    report_time(LogicTimePart::Date);
+    _date.Update();
 
     ScenarioUpdate();
-    report_time(LogicTimePart::Scenario);
     ClimateUpdate();
-    report_time(LogicTimePart::Climate);
     MapUpdateTiles();
-    report_time(LogicTimePart::MapTiles);
     // Temporarily remove provisional paths to prevent peep from interacting with them
     MapRemoveProvisionalElements();
-    report_time(LogicTimePart::MapStashProvisionalElements);
     MapUpdatePathWideFlags();
-    report_time(LogicTimePart::MapPathWideFlags);
     PeepUpdateAll();
-    report_time(LogicTimePart::Peep);
     MapRestoreProvisionalElements();
-    report_time(LogicTimePart::MapRestoreProvisionalElements);
     VehicleUpdateAll();
-    report_time(LogicTimePart::Vehicle);
     UpdateAllMiscEntities();
-    report_time(LogicTimePart::Misc);
     Ride::UpdateAll();
-    report_time(LogicTimePart::Ride);
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
         _park->Update(_date);
     }
-    report_time(LogicTimePart::Park);
 
     ResearchUpdate();
-    report_time(LogicTimePart::Research);
     RideRatingsUpdateAll();
-    report_time(LogicTimePart::RideRatings);
     RideMeasurementsUpdate();
-    report_time(LogicTimePart::RideMeasurments);
     News::UpdateCurrentItem();
-    report_time(LogicTimePart::News);
 
     MapAnimationInvalidateAll();
-    report_time(LogicTimePart::MapAnimation);
     VehicleSoundsUpdate();
     PeepUpdateCrowdNoise();
     ClimateUpdateSound();
-    report_time(LogicTimePart::Sounds);
     EditorOpenWindowsForCurrentStep();
 
     // Update windows
@@ -372,11 +348,9 @@ void GameState::UpdateLogic(LogicTimings* timings)
     }
 
     GameActions::ProcessQueue();
-    report_time(LogicTimePart::GameActions);
 
     NetworkProcessPending();
     NetworkFlush();
-    report_time(LogicTimePart::NetworkFlush);
 
     gCurrentTicks++;
     gSavedAge++;
@@ -389,13 +363,9 @@ void GameState::UpdateLogic(LogicTimings* timings)
     {
         hookEngine.Call(HOOK_TYPE::INTERVAL_DAY, true);
     }
-    report_time(LogicTimePart::Scripts);
 #endif
 
-    if (timings != nullptr)
-    {
-        timings->CurrentIdx = (timings->CurrentIdx + 1) % LOGIC_UPDATE_MEASUREMENTS_COUNT;
-    }
+    gInUpdateCode = false;
 }
 
 void GameState::CreateStateSnapshot()
@@ -407,4 +377,19 @@ void GameState::CreateStateSnapshot()
     auto& snapshot = snapshots->CreateSnapshot();
     snapshots->Capture(snapshot);
     snapshots->LinkSnapshot(snapshot, gCurrentTicks, ScenarioRandState().s0);
+}
+
+void GameState::SetDate(Date newDate)
+{
+    _date = newDate;
+}
+
+/**
+ *
+ *  rct2: 0x006C4494
+ */
+void GameState::ResetDate()
+{
+    _date = OpenRCT2::Date();
+    gCurrentRealTimeTicks = 0;
 }

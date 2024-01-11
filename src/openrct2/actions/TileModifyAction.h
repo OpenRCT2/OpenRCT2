@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,6 +26,7 @@ enum class TileModifyType : uint8_t
     PathSetSlope,
     PathSetBroken,
     PathToggleEdge,
+    PathSetJunctionRailings,
     EntranceMakeUsable,
     WallSetSlope,
     WallSetAnimationFrame,
@@ -48,11 +49,13 @@ private:
     uint32_t _value1{};
     uint32_t _value2{};
     TileElement _pasteElement{};
+    Banner _pasteBanner{};
 
 public:
     TileModifyAction() = default;
     TileModifyAction(
-        CoordsXY loc, TileModifyType setting, uint32_t value1 = 0, uint32_t value2 = 0, TileElement pasteElement = {});
+        CoordsXY loc, TileModifyType setting, uint32_t value1 = 0, uint32_t value2 = 0, TileElement pasteElement = {},
+        Banner _pasteBanner = {});
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

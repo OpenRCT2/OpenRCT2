@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -118,6 +118,9 @@ struct DrawRectCommand
         FLAG_NO_TEXTURE = (1u << 2u),
         FLAG_MASK = (1u << 3u),
         FLAG_CROSS_HATCH = (1u << 4u),
+        FLAG_TTF_TEXT = (1u << 5u),
+        // bits 8 to 16 used to store hinting threshold.
+        FLAG_TTF_HINTING_THRESHOLD_MASK = 0xff00
     };
 };
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -28,6 +28,7 @@
 #include "../platform/Platform.h"
 #include "../rct12/RCT12.h"
 #include "../rct12/SawyerChunkReader.h"
+#include "../rct2/RCT2.h"
 #include "Scenario.h"
 #include "ScenarioSources.h"
 
@@ -117,7 +118,7 @@ static int32_t ScenarioIndexEntryCompareByIndex(const ScenarioIndexEntry& entryA
 
 static void ScenarioHighscoreFree(ScenarioHighscoreEntry* highscore)
 {
-    SafeDelete(highscore);
+    delete highscore;
 }
 
 class ScenarioFileIndex final : public FileIndex<ScenarioIndexEntry>
@@ -155,6 +156,15 @@ protected:
     void Serialise(DataSerialiser& ds, const ScenarioIndexEntry& item) const override
     {
         ds << item.Path;
+        if (ds.IsLoading())
+        {
+            // Field used to be fixed size length, remove the 0 padding.
+            const auto pos = item.Path.find('\0');
+            if (pos != std::string::npos)
+            {
+                const_cast<ScenarioIndexEntry&>(item).Path = item.Path.substr(0, pos);
+            }
+        }
         ds << item.Timestamp;
         ds << item.Category;
         ds << item.SourceGame;
@@ -173,7 +183,7 @@ protected:
 private:
     static std::unique_ptr<IStream> GetStreamFromRCT2Scenario(const std::string& path)
     {
-        if (String::Equals(Path::GetExtension(path), ".sea", true))
+        if (String::IEquals(Path::GetExtension(path), ".sea"))
         {
             auto data = DecryptSea(fs::u8path(path));
             auto ms = std::make_unique<MemoryStream>();
@@ -196,7 +206,7 @@ private:
         try
         {
             std::string extension = Path::GetExtension(path);
-            if (String::Equals(extension, ".park", true))
+            if (String::IEquals(extension, ".park"))
             {
                 // OpenRCT2 park
                 bool result = false;
@@ -204,10 +214,10 @@ private:
                 {
                     auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
                     auto importer = ParkImporter::CreateParkFile(objRepository);
-                    importer->LoadScenario(path.c_str(), true);
+                    importer->LoadScenario(path, true);
                     if (importer->GetDetails(entry))
                     {
-                        String::Set(entry->Path, sizeof(entry->Path), path.c_str());
+                        entry->Path = path;
                         entry->Timestamp = timestamp;
                         result = true;
                     }
@@ -218,17 +228,17 @@ private:
                 return result;
             }
 
-            if (String::Equals(extension, ".sc4", true))
+            if (String::IEquals(extension, ".sc4"))
             {
                 // RCT1 scenario
                 bool result = false;
                 try
                 {
                     auto s4Importer = ParkImporter::CreateS4();
-                    s4Importer->LoadScenario(path.c_str(), true);
+                    s4Importer->LoadScenario(path, true);
                     if (s4Importer->GetDetails(entry))
                     {
-                        String::Set(entry->Path, sizeof(entry->Path), path.c_str());
+                        entry->Path = path;
                         entry->Timestamp = timestamp;
                         result = true;
                     }
@@ -273,7 +283,7 @@ private:
         ScenarioIndexEntry entry = {};
 
         // Set new entry
-        String::Set(entry.Path, sizeof(entry.Path), path.c_str());
+        entry.Path = path;
         entry.Timestamp = timestamp;
         entry.Category = s6Info->Category;
         entry.ObjectiveType = s6Info->ObjectiveType;
@@ -389,7 +399,7 @@ public:
             const auto scenarioFilename = Path::GetFileName(scenario.Path);
 
             // Note: this is always case insensitive search for cross platform consistency
-            if (String::Equals(filename, scenarioFilename, true))
+            if (String::IEquals(filename, scenarioFilename))
             {
                 return &scenario;
             }
@@ -407,7 +417,7 @@ public:
                 continue;
 
             // Note: this is always case insensitive search for cross platform consistency
-            if (String::Equals(name, scenario->InternalName, true))
+            if (String::IEquals(name, scenario->InternalName))
             {
                 return &_scenarios[i];
             }
@@ -441,18 +451,18 @@ public:
             const std::string scenarioExtension = Path::GetExtension(scenarioFileName);
 
             // Check if this is an RCTC scenario that corresponds to a known RCT1/2 scenario or vice versa, see #12626
-            if (String::Equals(scenarioExtension, ".sea", true))
+            if (String::IEquals(scenarioExtension, ".sea"))
             {
                 // Get scenario using RCT2 style name of RCTC scenario
                 scenario = GetByFilename((scenarioBaseName + ".sc6").c_str());
             }
-            else if (String::Equals(scenarioExtension, ".sc6", true))
+            else if (String::IEquals(scenarioExtension, ".sc6"))
             {
                 // Get scenario using RCTC style name of RCT2 scenario
                 scenario = GetByFilename((scenarioBaseName + ".sea").c_str());
             }
             // gScenarioFileName .Park scenarios is the full file path instead of just <scenarioName.park>, so need to convert
-            else if (String::Equals(scenarioExtension, ".park", true))
+            else if (String::IEquals(scenarioExtension, ".park"))
             {
                 scenario = GetByFilename((scenarioBaseName + ".park").c_str());
             }
@@ -496,7 +506,7 @@ private:
             const auto scenarioFilename = Path::GetFileName(scenario.Path);
 
             // Note: this is always case insensitive search for cross platform consistency
-            if (String::Equals(filename, scenarioFilename, true))
+            if (String::IEquals(filename, scenarioFilename))
             {
                 return &scenario;
             }
@@ -536,8 +546,7 @@ private:
      */
     void ConvertMegaPark(const std::string& srcPath, const std::string& dstPath)
     {
-        auto directory = Path::GetDirectory(dstPath);
-        Platform::EnsureDirectoryExists(directory.c_str());
+        Path::CreateDirectory(Path::GetDirectory(dstPath));
 
         auto mpdat = File::ReadAllBytes(srcPath);
 
@@ -563,7 +572,7 @@ private:
                 if (existingEntry->Timestamp > entry.Timestamp)
                 {
                     // Existing entry is more recent
-                    conflictPath = String::ToStd(existingEntry->Path);
+                    conflictPath = existingEntry->Path;
 
                     // Overwrite existing entry with this one
                     *existingEntry = entry;
@@ -682,7 +691,7 @@ private:
                     bool notFound = true;
                     for (auto& highscore : _highscores)
                     {
-                        if (String::Equals(scBasic.Path, highscore->fileName, true))
+                        if (String::IEquals(scBasic.Path, highscore->fileName))
                         {
                             notFound = false;
 
@@ -804,4 +813,20 @@ bool ScenarioRepositoryTryRecordHighscore(const utf8* scenarioFileName, money64 
 {
     IScenarioRepository* repo = GetScenarioRepository();
     return repo->TryRecordHighscore(LocalisationService_GetCurrentLanguage(), scenarioFileName, companyValue, name);
+}
+
+void ScenarioTranslate(ScenarioIndexEntry* scenarioEntry)
+{
+    StringId localisedStringIds[3];
+    if (LanguageGetLocalisedScenarioStrings(scenarioEntry->Name, localisedStringIds))
+    {
+        if (localisedStringIds[0] != STR_NONE)
+        {
+            String::Set(scenarioEntry->Name, sizeof(scenarioEntry->Name), LanguageGetString(localisedStringIds[0]));
+        }
+        if (localisedStringIds[2] != STR_NONE)
+        {
+            String::Set(scenarioEntry->Details, sizeof(scenarioEntry->Details), LanguageGetString(localisedStringIds[2]));
+        }
+    }
 }

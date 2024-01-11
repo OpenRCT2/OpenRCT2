@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -123,7 +123,15 @@ void Plugin::ThrowIfStopping() const
 
 void Plugin::Unload()
 {
+// https://gcc.gnu.org/bugzilla/show_bug.cgi?id=105937, fixed in GCC13
+#    if defined(__GNUC__) && !defined(__clang__)
+#        pragma GCC diagnostic push
+#        pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#    endif
     _metadata.Main = {};
+#    if defined(__GNUC__) && !defined(__clang__)
+#        pragma GCC diagnostic pop
+#    endif
     _hasLoaded = false;
 }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -118,7 +118,7 @@ void ServerList::Sort()
             [](const ServerListEntry& a, const ServerListEntry& b) {
                 if (a.Favourite == b.Favourite)
                 {
-                    return String::Equals(a.Address, b.Address, true);
+                    return String::IEquals(a.Address, b.Address);
                 }
                 return false;
             }),

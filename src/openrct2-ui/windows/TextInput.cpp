@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,8 +20,8 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
 
-static constexpr const int32_t WW = 250;
-static constexpr const int32_t WH = 90;
+static constexpr int32_t WW = 250;
+static constexpr int32_t WH = 90;
 
 enum WindowTextInputWidgetIdx
 {
@@ -32,7 +32,7 @@ enum WindowTextInputWidgetIdx
     WIDX_OKAY
 };
 
-static Widget window_text_input_widgets[] = {
+static Widget _textInputWidgets[] = {
     WINDOW_SHIM(STR_NONE, WW, WH),
     MakeWidget({ 170, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_CANCEL),
     MakeWidget({ 10, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_OK),
@@ -61,7 +61,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_text_input_widgets;
+        widgets = _textInputWidgets;
         WindowInitScrollWidgets(*this);
         SetParentWindow(nullptr, 0);
     }
@@ -108,11 +108,8 @@ public:
 
     void SetText(std::string_view text, size_t maxLength)
     {
+        text = String::UTF8TruncateCodePoints(text, maxLength);
         _buffer = u8string{ text };
-        if (_buffer.size() > maxLength)
-        {
-            _buffer.resize(maxLength);
-        }
         _maxInputLength = maxLength;
         gTextInput = ContextStartTextInput(_buffer, maxLength);
     }
@@ -130,7 +127,7 @@ public:
         ContextStopTextInput();
     }
 
-    void OnPeriodicUpdate() override
+    void OnUpdate() override
     {
         if (HasParentWindow())
         {
@@ -228,7 +225,7 @@ public:
             u8string_view{ _buffer.data(), _buffer.size() }, WW - (24 + 13), FontStyle::Medium, &wrappedString, &no_lines);
 
         GfxFillRectInset(
-            &dpi, { { windowPos.x + 10, screenCoords.y }, { windowPos.x + WW - 10, screenCoords.y + 10 * (no_lines + 1) + 3 } },
+            dpi, { { windowPos.x + 10, screenCoords.y }, { windowPos.x + WW - 10, screenCoords.y + 10 * (no_lines + 1) + 3 } },
             colours[1], INSET_RECT_F_60);
 
         screenCoords.y += 1;
@@ -270,7 +267,7 @@ public:
                     uint8_t colour = ColourMapA[colours[1]].mid_light;
                     // TODO: palette index addition
                     GfxFillRect(
-                        &dpi, { { cursorX, screenCoords.y + 9 }, { cursorX + textWidth, screenCoords.y + 9 } }, colour + 5);
+                        dpi, { { cursorX, screenCoords.y + 9 }, { cursorX + textWidth, screenCoords.y + 9 } }, colour + 5);
                 }
 
                 cur_drawn++;
@@ -313,6 +310,11 @@ public:
         return numLines * 10 + WH;
     }
 
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
+
 private:
     static void DrawIMEComposition(DrawPixelInfo& dpi, int32_t cursorX, int32_t cursorY)
     {
@@ -322,9 +324,9 @@ private:
         int height = 10;
 
         GfxFillRect(
-            &dpi, { screenCoords - ScreenCoordsXY{ 1, 1 }, screenCoords + ScreenCoordsXY{ width + 1, height + 1 } },
+            dpi, { screenCoords - ScreenCoordsXY{ 1, 1 }, screenCoords + ScreenCoordsXY{ width + 1, height + 1 } },
             PALETTE_INDEX_12);
-        GfxFillRect(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ width, height } }, PALETTE_INDEX_0);
+        GfxFillRect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ width, height } }, PALETTE_INDEX_0);
         GfxDrawString(dpi, screenCoords, static_cast<const char*>(gTextInput->ImeBuffer), { COLOUR_DARK_GREEN });
     }
 

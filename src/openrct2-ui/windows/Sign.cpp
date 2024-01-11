@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,9 +27,9 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Wall.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_SIGN;
-static constexpr const int32_t WW = 113;
-static constexpr const int32_t WH = 96;
+static constexpr StringId WINDOW_TITLE = STR_SIGN;
+static constexpr int32_t WW = 113;
+static constexpr int32_t WH = 96;
 
 // clang-format off
 enum WindowSignWidgetIdx {
@@ -44,7 +44,7 @@ enum WindowSignWidgetIdx {
 };
 
 // 0x9AEE00
-static Widget window_sign_widgets[] = {
+static Widget _signWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary, STR_VIEWPORT                                 ), // Viewport
     MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, ImageId(SPR_RENAME),   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
@@ -82,7 +82,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_sign_widgets;
+        widgets = _signWidgets;
         WindowInitScrollWidgets(*this);
     }
 
@@ -132,7 +132,7 @@ public:
         }
 
         // Create viewport
-        Widget& viewportWidget = window_sign_widgets[WIDX_VIEWPORT];
+        Widget& viewportWidget = widgets[WIDX_VIEWPORT];
         ViewportCreate(
             this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 }, viewportWidget.width() - 1,
             viewportWidget.height() - 1, Focus(CoordsXYZ{ signViewPosition, viewZ }));
@@ -209,8 +209,8 @@ public:
             {
                 if (dropdownIndex == -1)
                     return;
-                _mainColour = dropdownIndex;
-                auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), dropdownIndex, _textColour, !_isSmall);
+                _mainColour = ColourDropDownIndexToColour(dropdownIndex);
+                auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), _mainColour, _textColour, !_isSmall);
                 GameActions::Execute(&signSetStyleAction);
                 break;
             }
@@ -218,8 +218,8 @@ public:
             {
                 if (dropdownIndex == -1)
                     return;
-                _textColour = dropdownIndex;
-                auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), _mainColour, dropdownIndex, !_isSmall);
+                _textColour = ColourDropDownIndexToColour(dropdownIndex);
+                auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), _mainColour, _textColour, !_isSmall);
                 GameActions::Execute(&signSetStyleAction);
                 break;
             }
@@ -241,8 +241,8 @@ public:
 
     void OnPrepareDraw() override
     {
-        Widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
-        Widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
+        Widget* main_colour_btn = &widgets[WIDX_MAIN_COLOUR];
+        Widget* text_colour_btn = &widgets[WIDX_TEXT_COLOUR];
 
         if (_isSmall)
         {
@@ -250,7 +250,10 @@ public:
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;
-
+            if (wallEntry == nullptr)
+            {
+                return;
+            }
             if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
             {
                 main_colour_btn->type = WindowWidgetType::ColourBtn;
@@ -266,7 +269,10 @@ public:
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;
-
+            if (sceneryEntry == nullptr)
+            {
+                return;
+            }
             if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
             {
                 main_colour_btn->type = WindowWidgetType::ColourBtn;
@@ -287,7 +293,7 @@ public:
 
         if (viewport != nullptr)
         {
-            WindowDrawViewport(&dpi, *this);
+            WindowDrawViewport(dpi, *this);
         }
     }
 
@@ -304,13 +310,18 @@ public:
         auto signViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), frame_no };
 
         // Create viewport
-        Widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
+        Widget* viewportWidget = &widgets[WIDX_VIEWPORT];
         ViewportCreate(
             this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 }, viewportWidget->width() - 1,
             viewportWidget->height() - 1, Focus(CoordsXYZ{ signViewPos }));
         if (viewport != nullptr)
             viewport->flags = gConfigGeneral.AlwaysShowGridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
         Invalidate();
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 };
 

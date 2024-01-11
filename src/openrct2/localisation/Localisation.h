@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,7 +20,6 @@
 
 std::string FormatStringID(StringId format, const void* args);
 void FormatStringToUpper(char* dest, size_t size, StringId format, const void* args);
-void generate_string_file();
 
 /**
  * Formats sizeBytes into buf as a human readable text, e.x.: "1024 MB"
@@ -40,17 +39,14 @@ size_t GetStringSize(const utf8* text);
 money64 StringToMoney(const char* string_to_monetise);
 void MoneyToString(money64 amount, char* buffer_to_put_value_to, size_t buffer_len, bool forceDecimals);
 
-bool IsUserStringID(StringId stringId);
-
 #define MAX_USER_STRINGS 1024
 #define USER_STRING_MAX_LENGTH 32
 
-#define USER_STRING_START 0x8000
 #define USER_STRING_END 0x8FFF
 #define REAL_NAME_START 0xA000
 #define REAL_NAME_END 0xDFFF
 
-constexpr const size_t CommonTextBufferSize = 512;
+constexpr size_t CommonTextBufferSize = 512;
 
 // Real name data
 extern const char real_name_initials[16];
@@ -64,6 +60,3 @@ extern const StringId ResearchFundingLevelNames[4];
 extern const StringId MarketingCampaignNames[ADVERTISING_CAMPAIGN_COUNT][3];
 extern const StringId RideInspectionIntervalNames[];
 extern const StringId PeepThoughts[174];
-extern const StringId DateDayNames[31];
-extern const StringId DateGameMonthNames[MONTH_COUNT];
-extern const StringId DateGameShortMonthNames[MONTH_COUNT];

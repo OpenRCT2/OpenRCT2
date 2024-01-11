@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,12 +15,12 @@
 #include "core/Imaging.h"
 #include "core/Json.hpp"
 #include "core/Path.hpp"
+#include "core/String.hpp"
 #include "drawing/Drawing.h"
 #include "drawing/ImageImporter.h"
 #include "object/ObjectLimits.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
-#include "platform/Platform.h"
 #include "util/Util.h"
 
 #include <cmath>
@@ -271,7 +271,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
     if (argc == 0)
         return -1;
 
-    if (_strcmpi(argv[0], "details") == 0)
+    if (String::IEquals(argv[0], "details"))
     {
         if (argc < 2)
         {
@@ -318,7 +318,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (_strcmpi(argv[0], "export") == 0)
+    if (String::IEquals(argv[0], "export"))
     {
         if (argc < 4)
         {
@@ -352,7 +352,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (_strcmpi(argv[0], "exportall") == 0)
+    if (String::IEquals(argv[0], "exportall"))
     {
         if (argc < 3)
         {
@@ -370,7 +370,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        if (!Platform::EnsureDirectoryExists(outputPath))
+        if (!Path::CreateDirectory(outputPath))
         {
             fprintf(stderr, "Unable to create directory.\n");
             return -1;
@@ -397,7 +397,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (_strcmpi(argv[0], "exportalldat") == 0)
+    if (String::IEquals(argv[0], "exportalldat"))
     {
         if (argc < 3)
         {
@@ -430,7 +430,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         auto& objManager = context->GetObjectManager();
         const auto* const metaObject = objManager.GetLoadedObject(objectType, entryIndex);
 
-        if (!Platform::EnsureDirectoryExists(outputPath))
+        if (!Path::CreateDirectory(outputPath))
         {
             fprintf(stderr, "Unable to create directory.\n");
             return -1;
@@ -458,7 +458,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (_strcmpi(argv[0], "create") == 0)
+    if (String::IEquals(argv[0], "create"))
     {
         if (argc < 2)
         {
@@ -473,7 +473,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (_strcmpi(argv[0], "append") == 0)
+    if (String::IEquals(argv[0], "append"))
     {
         if (argc != 3 && argc != 5)
         {
@@ -525,7 +525,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (_strcmpi(argv[0], "build") == 0)
+    if (String::IEquals(argv[0], "build"))
     {
         if (argc < 3)
         {
@@ -613,7 +613,7 @@ int32_t CommandLineForSprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    if (_strcmpi(argv[0], "combine") == 0)
+    if (String::IEquals(argv[0], "combine"))
     {
         return CommandLineForSpriteCombine(argv, argc);
     }

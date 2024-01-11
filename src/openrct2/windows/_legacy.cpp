@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -60,9 +60,9 @@ money64 PlaceProvisionalTrackPiece(
 
         _unkF440C5 = { trackPos, static_cast<Direction>(trackDirection) };
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
-        ViewportSetVisibility(3);
+        ViewportSetVisibility(ViewportVisibility::UndergroundViewOff);
         if (_currentTrackSlopeEnd != 0)
-            ViewportSetVisibility(2);
+            ViewportSetVisibility(ViewportVisibility::TrackHeights);
 
         // Invalidate previous track piece (we may not be changing height!)
         VirtualFloorInvalidate();
@@ -88,7 +88,7 @@ money64 PlaceProvisionalTrackPiece(
     int16_t z_begin, z_end;
     const auto& ted = GetTrackElementDescriptor(trackType);
     const TrackCoordinates& coords = ted.Coordinates;
-    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
     {
         z_begin = coords.z_begin;
         z_end = coords.z_end;
@@ -102,9 +102,11 @@ money64 PlaceProvisionalTrackPiece(
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
 
     const auto resultData = res.GetData<TrackPlaceActionResult>();
-    ViewportSetVisibility((resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? 1 : 3);
+    const auto visiblity = (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? ViewportVisibility::UndergroundViewOn
+                                                                             : ViewportVisibility::UndergroundViewOff;
+    ViewportSetVisibility(visiblity);
     if (_currentTrackSlopeEnd != 0)
-        ViewportSetVisibility(2);
+        ViewportSetVisibility(ViewportVisibility::TrackHeights);
 
     // Invalidate previous track piece (we may not be changing height!)
     VirtualFloorInvalidate();

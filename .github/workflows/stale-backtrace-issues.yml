@@ -6,8 +6,9 @@ on:
 jobs:
   stale:
     runs-on: ubuntu-latest
+    if: github.repository == 'OpenRCT2/OpenRCT2'
     steps:
-      - uses: actions/stale@v7
+      - uses: actions/stale@v8
         with:
           days-before-issue-stale: 60
           days-before-issue-close: 1

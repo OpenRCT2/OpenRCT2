@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,7 +21,7 @@
 
 #ifndef NO_VEHICLES
 // 0x0099279E:
-static constexpr const VehicleBoundBox _riverRapidsBoundbox[] = {
+static constexpr VehicleBoundBox _riverRapidsBoundbox[] = {
     { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 },
     { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 },
     { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 },
@@ -131,41 +131,41 @@ enum
     SPR_RIVER_RAPIDS_RAPIDS_WHIRLPOOL_FRAME_0 = 21278,
 };
 
-static constexpr const uint32_t river_rapids_track_pieces_25_deg_up[][2] = {
+static constexpr uint32_t river_rapids_track_pieces_25_deg_up[][2] = {
     { SPR_RIVER_RAPIDS_25_DEG_UP_SW_NE, SPR_RIVER_RAPIDS_25_DEG_UP_FRONT_SW_NE },
     { SPR_RIVER_RAPIDS_25_DEG_UP_NW_SE, SPR_RIVER_RAPIDS_25_DEG_UP_FRONT_NW_SE },
     { SPR_RIVER_RAPIDS_25_DEG_UP_NE_SW, SPR_RIVER_RAPIDS_25_DEG_UP_FRONT_NE_SW },
     { SPR_RIVER_RAPIDS_25_DEG_UP_SE_NW, SPR_RIVER_RAPIDS_25_DEG_UP_FRONT_SE_NW },
 };
-static constexpr const uint32_t river_rapids_track_pieces_flat_to_25_deg_up[][2] = {
+static constexpr uint32_t river_rapids_track_pieces_flat_to_25_deg_up[][2] = {
     { SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_UP_SW_NE, SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_UP_FRONT_SW_NE },
     { SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_UP_NW_SE, SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_UP_FRONT_NW_SE },
     { SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_UP_NE_SW, SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_UP_FRONT_NE_SW },
     { SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_UP_SE_NW, SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_UP_FRONT_SE_NW },
 };
 
-static constexpr const uint32_t river_rapids_track_pieces_25_deg_up_to_flat[][2] = {
+static constexpr uint32_t river_rapids_track_pieces_25_deg_up_to_flat[][2] = {
     { SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_SW_NE, SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_SW_NE },
     { SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_NW_SE, SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_NW_SE },
     { SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_NE_SW, SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_NE_SW },
     { SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_SE_NW, SPR_RIVER_RAPIDS_25_DEG_UP_TO_FLAT_FRONT_SE_NW },
 };
 
-static constexpr const uint32_t river_rapids_track_pieces_25_deg_down[][2] = {
+static constexpr uint32_t river_rapids_track_pieces_25_deg_down[][2] = {
     { SPR_RIVER_RAPIDS_25_DEG_DOWN_SW_NE, SPR_RIVER_RAPIDS_25_DEG_DOWN_FRONT_SW_NE },
     { SPR_RIVER_RAPIDS_25_DEG_DOWN_NW_SE, SPR_RIVER_RAPIDS_25_DEG_DOWN_FRONT_NW_SE },
     { SPR_RIVER_RAPIDS_25_DEG_DOWN_NE_SW, SPR_RIVER_RAPIDS_25_DEG_DOWN_FRONT_NE_SW },
     { SPR_RIVER_RAPIDS_25_DEG_DOWN_SE_NW, SPR_RIVER_RAPIDS_25_DEG_DOWN_FRONT_SE_NW },
 };
 
-static constexpr const uint32_t river_rapids_track_pieces_flat_to_25_deg_down[][2] = {
+static constexpr uint32_t river_rapids_track_pieces_flat_to_25_deg_down[][2] = {
     { SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_SW_NE, SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_FRONT_SW_NE },
     { SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_NW_SE, SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_FRONT_NW_SE },
     { SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_NE_SW, SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_FRONT_NE_SW },
     { SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_SE_NW, SPR_RIVER_RAPIDS_FLAT_TO_25_DEG_DOWN_FRONT_SE_NW },
 };
 
-static constexpr const uint32_t river_rapids_track_pieces_25_deg_down_to_flat[][2] = {
+static constexpr uint32_t river_rapids_track_pieces_25_deg_down_to_flat[][2] = {
     { SPR_RIVER_RAPIDS_25_DEG_DOWN_TO_FLAT_SW_NE, SPR_RIVER_RAPIDS_25_DEG_DOWN_TO_FLAT_FRONT_SW_NE },
     { SPR_RIVER_RAPIDS_25_DEG_DOWN_TO_FLAT_NW_SE, SPR_RIVER_RAPIDS_25_DEG_DOWN_TO_FLAT_FRONT_NW_SE },
     { SPR_RIVER_RAPIDS_25_DEG_DOWN_TO_FLAT_NE_SW, SPR_RIVER_RAPIDS_25_DEG_DOWN_TO_FLAT_FRONT_NE_SW },
@@ -276,26 +276,25 @@ static void PaintRiverRapidsTrackFlat(
 
     if (direction & 1)
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
-            (direction == 1 ? SPR_RIVER_RAPIDS_FLAT_NW_SE : SPR_RIVER_RAPIDS_FLAT_SE_NW));
+        imageId = session.TrackColours.WithIndex((direction == 1 ? SPR_RIVER_RAPIDS_FLAT_NW_SE : SPR_RIVER_RAPIDS_FLAT_SE_NW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        imageId = session.TrackColours.WithIndex(
             (direction == 1 ? SPR_RIVER_RAPIDS_FLAT_FRONT_NW_SE : SPR_RIVER_RAPIDS_FLAT_FRONT_SE_NW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 10, 10, height }, { 1, 2, 5 } });
     }
     else
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
-            (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_SW_NE : SPR_RIVER_RAPIDS_FLAT_NE_SW));
+        imageId = session.TrackColours.WithIndex((direction == 0 ? SPR_RIVER_RAPIDS_FLAT_SW_NE : SPR_RIVER_RAPIDS_FLAT_NE_SW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 11 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        imageId = session.TrackColours.WithIndex(
             (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_FRONT_SW_NE : SPR_RIVER_RAPIDS_FLAT_FRONT_NE_SW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 10, 10, height }, { 1, 2, 5 } });
     }
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     if (direction & 1)
     {
@@ -328,48 +327,56 @@ static void PaintRiverRapidsTrack25Deg(PaintSession& session, uint8_t direction,
     switch (direction)
     {
         case 0:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][0]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 4 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height + 16 }, { 32, 1, 34 } });
 
-            WoodenASupportsPaintSetup(session, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetupRotated(
+                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::Up25Deg);
             PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_SQUARE_7);
             break;
 
         case 1:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][0]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
             ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 4 } });
             session.WoodenSupportsPrependTo = ps;
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 34 } });
 
-            WoodenASupportsPaintSetup(session, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetupRotated(
+                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::Up25Deg);
             PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_8);
             break;
 
         case 2:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][0]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
             ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 4 } });
             session.WoodenSupportsPrependTo = ps;
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height + 16 }, { 32, 1, 34 } });
 
-            WoodenASupportsPaintSetup(session, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetupRotated(
+                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::Up25Deg);
             PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_8);
             break;
 
         case 3:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][0]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 4 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 34 } });
 
-            WoodenASupportsPaintSetup(session, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetupRotated(
+                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::Up25Deg);
             PaintUtilPushTunnelRight(session, height - 8, TUNNEL_SQUARE_7);
             break;
     }
@@ -387,49 +394,57 @@ static void PaintRiverRapidsTrack25DegToFlatA(
     switch (direction)
     {
         case 0:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][0]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 4 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height + 16 }, { 32, 1, 18 } });
 
-            WoodenASupportsPaintSetup(session, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetupRotated(
+                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::Up25DegToFlat);
             PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_SQUARE_FLAT);
             break;
 
         case 1:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][0]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
             ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 4 } });
             session.WoodenSupportsPrependTo = ps;
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 18 } });
 
-            WoodenASupportsPaintSetup(session, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetupRotated(
+                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::Up25DegToFlat);
             PaintUtilPushTunnelRight(session, height + 8, TUNNEL_14);
             break;
 
         case 2:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][0]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
             ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 4 } });
             session.WoodenSupportsPrependTo = ps;
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
 
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height }, { 32, 1, 18 } });
 
-            WoodenASupportsPaintSetup(session, 0, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetupRotated(
+                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::Up25DegToFlat);
             PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_14);
             break;
 
         case 3:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][0]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 4 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 18 } });
 
-            WoodenASupportsPaintSetup(session, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetupRotated(
+                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::Up25DegToFlat);
             PaintUtilPushTunnelRight(session, height - 8, TUNNEL_SQUARE_FLAT);
             break;
     }
@@ -447,48 +462,56 @@ static void PaintRiverRapidsTrack25DegToFlatB(
     switch (direction)
     {
         case 0:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][0]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 11 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height + 16 }, { 32, 1, 26 } });
 
-            WoodenASupportsPaintSetup(session, 0, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetupRotated(
+                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::FlatToUp25Deg);
             PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
             break;
 
         case 1:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][0]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
             ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
             session.WoodenSupportsPrependTo = ps;
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 26 } });
 
-            WoodenASupportsPaintSetup(session, 1, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetupRotated(
+                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::FlatToUp25Deg);
             PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_8);
             break;
 
         case 2:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][0]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
             ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 11 } });
             session.WoodenSupportsPrependTo = ps;
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height + 16 }, { 32, 1, 26 } });
 
-            WoodenASupportsPaintSetup(session, 0, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetupRotated(
+                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::FlatToUp25Deg);
             PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_8);
             break;
 
         case 3:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][0]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][0]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction][1]);
+            imageId = session.TrackColours.WithIndex(sprites[direction][1]);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 16 }, { 1, 32, 26 } });
 
-            WoodenASupportsPaintSetup(session, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetupRotated(
+                session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+                WoodenSupportTransitionType::FlatToUp25Deg);
             PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
             break;
     }
@@ -554,41 +577,41 @@ static void PaintRiverRapidsTrackLeftQuarterTurn1Tile(
     switch (direction)
     {
         case 0:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_SW_NW);
+            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_SW_NW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 2, height }, { 28, 26, 11 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_SW_NW);
+            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_SW_NW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 27, height }, { 2, 1, 7 } });
 
             PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
             break;
 
         case 1:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_NW_NE);
+            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_NW_NE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 25, 25, 5 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_LEFT_NW_NE);
+            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_LEFT_NW_NE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 1, height }, { 1, 30, 7 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_RIGHT_NW_NE);
+            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_RIGHT_NW_NE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 27, height }, { 30, 1, 7 } });
             break;
 
         case 2:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_NE_SE);
+            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_NE_SE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 4, height }, { 26, 28, 11 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_NE_SE);
+            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_NE_SE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 10, 10, height }, { 1, 2, 5 } });
 
             PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
             break;
 
         case 3:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_SE_SW);
+            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_SE_SW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 4, height }, { 28, 28, 11 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_SE_SW);
+            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_SE_SW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 28, height }, { 1, 1, 7 } });
 
             PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
@@ -596,7 +619,8 @@ static void PaintRiverRapidsTrackLeftQuarterTurn1Tile(
             break;
     }
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
@@ -611,10 +635,10 @@ static void PaintRiverRapidsTrackRightQuarterTurn1Tile(
     switch (direction)
     {
         case 0:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_SW_SE);
+            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_SW_SE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 4, height }, { 28, 28, 11 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_SW_SE);
+            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_SW_SE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 28, height + 2 }, { 1, 1, 7 } });
 
             PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
@@ -622,38 +646,39 @@ static void PaintRiverRapidsTrackRightQuarterTurn1Tile(
             break;
 
         case 1:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_SE_NE);
+            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_SE_NE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 2, height }, { 28, 26, 11 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_SE_NE);
+            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_SE_NE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 28, 27, height }, { 2, 1, 7 } });
 
             PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
             break;
 
         case 2:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_NE_NW);
+            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_NE_NW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 28, 28, 11 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_LEFT_NW_NE);
+            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_LEFT_NW_NE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 1, height }, { 1, 22, 7 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_RIGHT_NW_NE);
+            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_RIGHT_NW_NE);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 27, height }, { 22, 1, 7 } });
             break;
 
         case 3:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_NW_SW);
+            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_NW_SW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 4, height }, { 26, 28, 11 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_NW_SW);
+            imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_NW_SW);
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 2, height }, { 1, 28, 7 } });
 
             PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
             break;
     }
 
-    WoodenASupportsPaintSetup(session, 1 - (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NwSe, direction, height, session.SupportColours);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
@@ -669,51 +694,52 @@ static void PaintRiverRapidsTrackWaterfall(
 
     if (direction & 1)
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        imageId = session.TrackColours.WithIndex(
             (direction == 1 ? SPR_RIVER_RAPIDS_WATERFALL_NW_SE : SPR_RIVER_RAPIDS_WATERFALL_SE_NW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex((SPR_RIVER_RAPIDS_WATERFALL_BASE_NE_FRAME_0 + frameNum));
+        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_WATERFALL_BASE_NE_FRAME_0 + frameNum));
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex((SPR_RIVER_RAPIDS_WATERFALL_TOP_NE_FRAME_0 + frameNum));
+        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_WATERFALL_TOP_NE_FRAME_0 + frameNum));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height + 17 }, { 1, 32, 27 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        imageId = session.TrackColours.WithIndex(
             (direction == 1 ? SPR_RIVER_RAPIDS_WATERFALL_FRONT_NW_SE : SPR_RIVER_RAPIDS_WATERFALL_FRONT_SE_NW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 17 }, { 1, 32, 27 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex((SPR_RIVER_RAPIDS_WATERFALL_SIDE_SW_FRAME_0 + frameNum));
+        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_WATERFALL_SIDE_SW_FRAME_0 + frameNum));
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 27, 0, height + 17 }, { 1, 32, 27 } });
     }
     else
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        imageId = session.TrackColours.WithIndex(
             (direction == 0 ? SPR_RIVER_RAPIDS_WATERFALL_SW_NE : SPR_RIVER_RAPIDS_WATERFALL_NE_SW));
 
         auto bb = BoundBoxXYZ{ { 0, 4, height }, { 32, 24, 11 } };
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex((SPR_RIVER_RAPIDS_WATERFALL_BASE_NW_FRAME_0 + frameNum));
+        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_WATERFALL_BASE_NW_FRAME_0 + frameNum));
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, bb);
 
         bb.offset = { 0, 4, height + 17 };
         bb.length = { 32, 1, 27 };
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex((SPR_RIVER_RAPIDS_WATERFALL_TOP_NW_FRAME_0 + frameNum));
+        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_WATERFALL_TOP_NW_FRAME_0 + frameNum));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
 
         bb.offset = { 0, 27, height + 17 };
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        imageId = session.TrackColours.WithIndex(
             (direction == 0 ? SPR_RIVER_RAPIDS_WATERFALL_FRONT_SW_NE : SPR_RIVER_RAPIDS_WATERFALL_FRONT_NE_SW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex((SPR_RIVER_RAPIDS_WATERFALL_SIDE_SE_FRAME_0 + frameNum));
+        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_WATERFALL_SIDE_SE_FRAME_0 + frameNum));
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, bb);
     }
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     if (direction & 1)
     {
@@ -739,22 +765,23 @@ static void PaintRiverRapidsTrackRapids(
 
     if (direction & 1)
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex((SPR_RIVER_RAPIDS_RAPIDS_NW_SE_FRAME_0 + frameNum));
+        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_RAPIDS_NW_SE_FRAME_0 + frameNum));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 4, 0, height }, { 24, 32, 11 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_RAPIDS_FRONT_NW_SE);
+        imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_RAPIDS_FRONT_NW_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 27, 0, height + 17 }, { 1, 32, 11 } });
     }
     else
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex((SPR_RIVER_RAPIDS_RAPIDS_SW_NE_FRAME_0 + frameNum));
+        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_RAPIDS_SW_NE_FRAME_0 + frameNum));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 4, height }, { 32, 24, 11 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_RIVER_RAPIDS_RAPIDS_FRONT_SW_NE);
+        imageId = session.TrackColours.WithIndex(SPR_RIVER_RAPIDS_RAPIDS_FRONT_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 27, height + 17 }, { 32, 1, 11 } });
     }
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     if (direction & 1)
     {
@@ -790,42 +817,41 @@ static void PaintRiverRapidsTrackWhirlpool(
 
     if (direction & 1)
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
-            (direction == 1 ? SPR_RIVER_RAPIDS_FLAT_NW_SE : SPR_RIVER_RAPIDS_FLAT_SE_NW));
+        imageId = session.TrackColours.WithIndex((direction == 1 ? SPR_RIVER_RAPIDS_FLAT_NW_SE : SPR_RIVER_RAPIDS_FLAT_SE_NW));
 
         auto bb = BoundBoxXYZ{ { 4, 0, height }, { 24, 32, 11 } };
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex((SPR_RIVER_RAPIDS_RAPIDS_WHIRLPOOL_FRAME_0 + frameNum));
+        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_RAPIDS_WHIRLPOOL_FRAME_0 + frameNum));
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, bb);
 
         bb.offset = { 10, 10, height };
         bb.length = { 1, 2, 5 };
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        imageId = session.TrackColours.WithIndex(
             (direction == 1 ? SPR_RIVER_RAPIDS_FLAT_FRONT_NW_SE : SPR_RIVER_RAPIDS_FLAT_FRONT_SE_NW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
     }
     else
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
-            (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_SW_NE : SPR_RIVER_RAPIDS_FLAT_NE_SW));
+        imageId = session.TrackColours.WithIndex((direction == 0 ? SPR_RIVER_RAPIDS_FLAT_SW_NE : SPR_RIVER_RAPIDS_FLAT_NE_SW));
 
         auto bb = BoundBoxXYZ{ { 0, 4, height }, { 32, 24, 11 } };
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex((SPR_RIVER_RAPIDS_RAPIDS_WHIRLPOOL_FRAME_0 + frameNum));
+        imageId = session.TrackColours.WithIndex((SPR_RIVER_RAPIDS_RAPIDS_WHIRLPOOL_FRAME_0 + frameNum));
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, bb);
 
         bb.offset = { 10, 10, height };
         bb.length = { 1, 2, 5 };
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        imageId = session.TrackColours.WithIndex(
             (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_FRONT_SW_NE : SPR_RIVER_RAPIDS_FLAT_FRONT_NE_SW));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, bb);
     }
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     if (direction & 1)
     {

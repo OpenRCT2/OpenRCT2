@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -125,7 +125,8 @@ TileElement* FootpathRemoveAction::GetFootpathElement() const
 {
     bool getGhostPath = GetFlags() & GAME_COMMAND_FLAG_GHOST;
 
-    TileElement* tileElement = MapGetFootpathElement(_loc);
+    // FIXME: This is a hack to get the footpath element. It should be done in a better way.
+    TileElement* tileElement = MapGetFootpathElement(_loc)->as<TileElement>();
     TileElement* footpathElement = nullptr;
     if (tileElement != nullptr)
     {

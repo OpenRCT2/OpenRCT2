@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -53,9 +53,12 @@ namespace Path
         return fs::u8path(path).parent_path().u8string();
     }
 
-    void CreateDirectory(u8string_view path)
+    bool CreateDirectory(u8string_view path)
     {
-        Platform::EnsureDirectoryExists(u8string(path).c_str());
+        std::error_code ec;
+        fs::create_directories(fs::u8path(path), ec);
+        // create_directories returns false if the directory already exists, but the error code is zero.
+        return ec.value() == 0;
     }
 
     bool DirectoryExists(u8string_view path)
@@ -82,7 +85,21 @@ namespace Path
 
     u8string WithExtension(u8string_view path, u8string_view newExtension)
     {
-        return fs::u8path(path).replace_extension(fs::u8path(newExtension)).u8string();
+        auto p = fs::u8path(path);
+
+        fs::path extensionWithDot;
+        if (!newExtension.empty() && newExtension.front() != '.')
+        {
+            extensionWithDot += ".";
+        }
+        extensionWithDot += fs::u8path(newExtension);
+
+        if (p.extension() != extensionWithDot)
+        {
+            p += extensionWithDot;
+        }
+
+        return p.u8string();
     }
 
     bool IsAbsolute(u8string_view path)
@@ -97,9 +114,15 @@ namespace Path
         return fs::absolute(fs::u8path(relative), ec).u8string();
     }
 
+    u8string GetRelative(u8string_view path, u8string_view base)
+    {
+        std::error_code ec;
+        return fs::relative(fs::u8path(path), fs::u8path(base), ec).u8string();
+    }
+
     bool Equals(u8string_view a, u8string_view b)
     {
-        return String::Equals(a, b, Platform::ShouldIgnoreCase());
+        return Platform::ShouldIgnoreCase() ? String::IEquals(a, b) : String::Equals(a, b);
     }
 
     u8string ResolveCasing(u8string_view path)

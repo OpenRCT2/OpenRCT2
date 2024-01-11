@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "Input.h"
 
 #include "Context.h"
+#include "Game.h"
 
 InputState _inputState;
 uint8_t _inputFlags;
@@ -18,7 +19,7 @@ uint8_t gInputPlaceObjectModifier;
 WidgetRef gHoverWidget;
 WidgetRef gPressedWidget;
 
-uint16_t _tooltipNotShownTicks;
+uint32_t _tooltipNotShownTimeout;
 
 Tool gCurrentToolId;
 WidgetRef gCurrentToolWidget;
@@ -75,7 +76,7 @@ InputState InputGetState()
 
 void ResetTooltipNotShown()
 {
-    _tooltipNotShownTicks = 0;
+    _tooltipNotShownTimeout = gCurrentRealTimeTicks + 50;
 }
 
 void InputResetPlaceObjModifier()

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -28,19 +28,19 @@
 #include "../../world/Wall.h"
 #include "Paint.TileElement.h"
 
-static constexpr const uint8_t DirectionToDoorImageOffset0[] = {
+static constexpr uint8_t DirectionToDoorImageOffset0[] = {
     2, 2, 22, 26, 30, 34, 34, 34, 34, 34, 30, 26, 22, 2, 6, 2, 2, 2, 6, 10, 14, 18, 18, 18, 18, 18, 14, 10, 6, 2, 22, 2,
 };
 
-static constexpr const uint8_t DirectionToDoorImageOffset1[] = {
+static constexpr uint8_t DirectionToDoorImageOffset1[] = {
     0, 0, 4, 8, 12, 16, 16, 16, 16, 16, 12, 8, 4, 0, 20, 0, 0, 0, 20, 24, 28, 32, 32, 32, 32, 32, 28, 24, 20, 0, 4, 0,
 };
 
-static constexpr const uint8_t DirectionToDoorImageOffset2[] = {
+static constexpr uint8_t DirectionToDoorImageOffset2[] = {
     2, 2, 6, 10, 14, 18, 18, 18, 18, 18, 14, 10, 6, 2, 22, 2, 2, 2, 22, 26, 30, 34, 34, 34, 34, 34, 30, 26, 22, 2, 6, 2,
 };
 
-static constexpr const uint8_t DirectionToDoorImageOffset3[] = {
+static constexpr uint8_t DirectionToDoorImageOffset3[] = {
     0, 0, 20, 24, 28, 32, 32, 32, 32, 32, 28, 24, 20, 0, 4, 0, 0, 0, 4, 8, 12, 16, 16, 16, 16, 16, 12, 8, 4, 0, 20, 0,
 };
 
@@ -302,6 +302,11 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
 {
     PROFILED_FUNCTION();
 
+    if (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+    {
+        return;
+    }
+
     auto* wallEntry = wallElement.GetEntry();
     if (wallEntry == nullptr)
     {
@@ -327,7 +332,7 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
     PaintUtilSetGeneralSupportHeight(session, 8 * wallElement.ClearanceHeight, 0x20);
 
     auto isGhost = false;
-    if (gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+    if (gTrackDesignSaveMode)
     {
         if (!TrackDesignSaveContainsTileElement(reinterpret_cast<const TileElement*>(&wallElement)))
         {
@@ -339,12 +344,12 @@ void PaintWall(PaintSession& session, uint8_t direction, int32_t height, const W
     if (wallElement.IsGhost())
     {
         session.InteractionType = ViewportInteractionItem::None;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
         isGhost = true;
     }
-    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&wallElement)))
+    else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&wallElement))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
         isGhost = true;
     }
 

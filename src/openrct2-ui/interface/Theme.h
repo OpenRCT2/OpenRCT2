@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -37,6 +37,7 @@ size_t ThemeGetIndexForName(const utf8* name);
 
 colour_t ThemeGetColour(WindowClass wc, uint8_t index);
 void ThemeSetColour(WindowClass wc, uint8_t index, colour_t colour);
+colour_t ThemeOverrideExtendedColour(colour_t inputColour);
 uint8_t ThemeGetFlags();
 void ThemeSetFlags(uint8_t flags);
 void ThemeSave();

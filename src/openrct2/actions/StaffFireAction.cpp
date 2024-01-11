@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -47,6 +47,15 @@ GameActions::Result StaffFireAction::Query() const
     {
         LOG_ERROR("Invalid spriteId. spriteId = %u", _spriteId);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+    }
+
+    if (staff->State == PeepState::Fixing)
+    {
+        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_FIRE_STAFF_FIXING, STR_NONE);
+    }
+    else if (staff->State == PeepState::Inspecting)
+    {
+        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_FIRE_STAFF_INSPECTING, STR_NONE);
     }
 
     return GameActions::Result();

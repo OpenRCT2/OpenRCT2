@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -66,12 +66,12 @@ static void PaintEnterpriseStructure(
     uint32_t imageOffset = trackElement.GetDirectionWithOffset(session.CurrentRotation);
     if (vehicle != nullptr)
     {
-        imageOffset = (vehicle->Pitch << 2) + (((vehicle->sprite_direction >> 3) + session.CurrentRotation) % 4);
+        imageOffset = (vehicle->Pitch << 2) + (((vehicle->Orientation >> 3) + session.CurrentRotation) % 4);
     }
 
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != TrackGhost)
+    auto imageFlags = GetStationColourScheme(session, trackElement);
+    if (imageFlags != TrackStationColour)
     {
         imageTemplate = imageFlags;
     }
@@ -95,13 +95,15 @@ static void PaintEnterprise(
 
     int32_t edges = edges_4x4[trackSequence];
 
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.GetStationObject();
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, floorSpritesCork, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height, fenceSpritesRope,
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, fenceSpritesRope,
         session.CurrentRotation);
 
     switch (trackSequence)

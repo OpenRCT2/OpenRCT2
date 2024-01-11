@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -42,7 +42,7 @@ static TextInputSession* _chatTextInputSession;
 static const u8string& ChatGetHistory(size_t index);
 static uint32_t ChatHistoryGetTime(size_t index);
 static void ChatClearInput();
-static int32_t ChatHistoryDrawString(DrawPixelInfo* dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width);
+static int32_t ChatHistoryDrawString(DrawPixelInfo& dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width);
 
 bool ChatAvailable()
 {
@@ -86,7 +86,7 @@ void ChatUpdate()
     _chatCaretTicks = (_chatCaretTicks + 1) % 30;
 }
 
-void ChatDraw(DrawPixelInfo* dpi, uint8_t chatBackgroundColor)
+void ChatDraw(DrawPixelInfo& dpi, uint8_t chatBackgroundColor)
 {
     thread_local std::string lineBuffer;
 
@@ -193,7 +193,7 @@ void ChatDraw(DrawPixelInfo* dpi, uint8_t chatBackgroundColor)
         auto ft = Formatter();
         ft.Add<const char*>(lineCh);
         inputLineHeight = DrawTextWrapped(
-            *dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, STR_STRING, ft, { TEXT_COLOUR_255 });
+            dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, STR_STRING, ft, { TEXT_COLOUR_255 });
         GfxSetDirtyBlocks({ screenCoords, { screenCoords + ScreenCoordsXY{ _chatWidth, inputLineHeight + 15 } } });
 
         // TODO: Show caret if the input text has multiple lines
@@ -222,12 +222,12 @@ void ChatAddHistory(std::string_view s)
 
     if (_chatHistory.size() >= CHAT_HISTORY_SIZE)
     {
-        _chatHistory.pop_front();
-        _chatHistoryTime.pop_front();
+        _chatHistory.pop_back();
+        _chatHistoryTime.pop_back();
     }
 
-    _chatHistory.push_back(buffer);
-    _chatHistoryTime.push_back(Platform::GetTicks());
+    _chatHistory.push_front(buffer);
+    _chatHistoryTime.push_front(Platform::GetTicks());
 
     // Log to file (src only as logging does its own timestamp)
     NetworkAppendChatLog(s);
@@ -272,7 +272,7 @@ static void ChatClearInput()
 
 // This method is the same as gfx_draw_string_left_wrapped.
 // But this adjusts the initial Y coordinate depending of the number of lines.
-static int32_t ChatHistoryDrawString(DrawPixelInfo* dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width)
+static int32_t ChatHistoryDrawString(DrawPixelInfo& dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width)
 {
     int32_t numLines;
     u8string wrappedString;
@@ -289,7 +289,7 @@ static int32_t ChatHistoryDrawString(DrawPixelInfo* dpi, const char* text, const
     int32_t lineY = screenCoords.y;
     for (int32_t line = 0; line <= numLines; ++line)
     {
-        GfxDrawString(*dpi, { screenCoords.x, lineY - (numLines * lineHeight) }, bufferPtr, { TEXT_COLOUR_254 });
+        GfxDrawString(dpi, { screenCoords.x, lineY - (numLines * lineHeight) }, bufferPtr, { TEXT_COLOUR_254 });
         bufferPtr = GetStringEnd(bufferPtr) + 1;
         lineY += lineHeight;
     }

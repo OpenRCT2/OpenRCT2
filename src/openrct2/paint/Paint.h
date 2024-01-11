@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,16 +22,17 @@
 
 struct EntityBase;
 struct TileElement;
+struct SurfaceElement;
 enum class RailingEntrySupportType : uint8_t;
 enum class ViewportInteractionItem : uint8_t;
 
 struct AttachedPaintStruct
 {
-    AttachedPaintStruct* next;
+    AttachedPaintStruct* NextEntry;
     ImageId image_id;
     ImageId ColourImageId;
-    int32_t x;
-    int32_t y;
+    // This is relative to the parent where we are attached to.
+    ScreenCoordsXY RelativePos;
     bool IsMasked;
 };
 
@@ -47,28 +48,25 @@ struct PaintStructBoundBox
 
 struct PaintStruct
 {
-    PaintStructBoundBox bounds;
-    AttachedPaintStruct* attached_ps;
-    PaintStruct* children;
-    PaintStruct* next_quadrant_ps;
-    TileElement* tileElement;
-    EntityBase* entity;
+    PaintStructBoundBox Bounds;
+    AttachedPaintStruct* Attached;
+    PaintStruct* Children;
+    PaintStruct* NextQuadrantEntry;
+    TileElement* Element;
+    EntityBase* Entity;
     ImageId image_id;
-    int32_t x;
-    int32_t y;
-    int32_t map_x;
-    int32_t map_y;
-    uint16_t quadrant_index;
+    ScreenCoordsXY ScreenPos;
+    CoordsXY MapPos;
+    uint16_t QuadrantIndex;
     uint8_t SortFlags;
-    ViewportInteractionItem sprite_type;
+    ViewportInteractionItem InteractionItem;
 };
 
 struct PaintStringStruct
 {
     StringId string_id;
-    PaintStringStruct* next;
-    int32_t x;
-    int32_t y;
+    PaintStringStruct* NextEntry;
+    ScreenCoordsXY ScreenPos;
     uint32_t args[4];
     uint8_t* y_offsets;
 };
@@ -181,24 +179,26 @@ public:
 
 struct PaintSessionCore
 {
-    PaintStruct PaintHead;
+    PaintStruct* PaintHead;
     PaintStruct* Quadrants[MaxPaintQuadrants];
     PaintStruct* LastPS;
     PaintStringStruct* PSStringHead;
     PaintStringStruct* LastPSString;
     AttachedPaintStruct* LastAttachedPS;
-    const TileElement* SurfaceElement;
+    const SurfaceElement* Surface;
     EntityBase* CurrentlyDrawnEntity;
     TileElement* CurrentlyDrawnTileElement;
     const TileElement* PathElementOnSameHeight;
     const TileElement* TrackElementOnSameHeight;
+    const TileElement* SelectedElement;
     PaintStruct* WoodenSupportsPrependTo;
     CoordsXY SpritePosition;
     CoordsXY MapPosition;
     uint32_t ViewFlags;
     uint32_t QuadrantBackIndex;
     uint32_t QuadrantFrontIndex;
-    ImageId TrackColours[4];
+    ImageId TrackColours;
+    ImageId SupportColours;
     SupportHeight SupportSegments[9];
     SupportHeight Support;
     uint16_t WaterHeight;
@@ -251,7 +251,7 @@ struct PaintSession : public PaintSessionCore
             }
             else
             {
-                LastPSString->next = string;
+                LastPSString->NextEntry = string;
             }
             LastPSString = string;
             return LastPSString;
@@ -272,12 +272,6 @@ struct FootpathPaintInfo
     colour_t SupportColour = 255;
 };
 
-struct RecordedPaintSession
-{
-    PaintSessionCore Session;
-    std::vector<PaintEntry> Entries;
-};
-
 extern PaintSession gPaintSession;
 
 // Globals for paint clipping
@@ -286,9 +280,10 @@ extern CoordsXY gClipSelectionA;
 extern CoordsXY gClipSelectionB;
 
 /** rct2: 0x00993CC4. The white ghost that indicates not-yet-built elements. */
-constexpr const ImageId ConstructionMarker = ImageId(0).WithRemap(FilterPaletteID::Palette44);
-constexpr const ImageId HighlightMarker = ImageId(0).WithRemap(FilterPaletteID::Palette44);
-constexpr const ImageId TrackGhost = ImageId(0, FilterPaletteID::PaletteNull);
+constexpr ImageId ConstructionMarker = ImageId(0).WithRemap(FilterPaletteID::PaletteGhost);
+constexpr ImageId HighlightMarker = ImageId(0).WithRemap(FilterPaletteID::PaletteGhost);
+constexpr ImageId TrackStationColour = ImageId(0, COLOUR_BLACK);
+constexpr ImageId ShopSupportColour = ImageId(0, COLOUR_DARK_BROWN);
 
 extern bool gShowDirtyVisuals;
 extern bool gPaintBoundingBoxes;
@@ -343,9 +338,9 @@ void PaintFloatingMoneyEffect(
     PaintSession& session, money64 amount, StringId string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
     uint32_t rotation);
 
-PaintSession* PaintSessionAlloc(DrawPixelInfo* dpi, uint32_t viewFlags);
+PaintSession* PaintSessionAlloc(DrawPixelInfo& dpi, uint32_t viewFlags);
 void PaintSessionFree(PaintSession* session);
 void PaintSessionGenerate(PaintSession& session);
 void PaintSessionArrange(PaintSessionCore& session);
 void PaintDrawStructs(PaintSession& session);
-void PaintDrawMoneyStructs(DrawPixelInfo* dpi, PaintStringStruct* ps);
+void PaintDrawMoneyStructs(DrawPixelInfo& dpi, PaintStringStruct* ps);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -177,13 +177,7 @@ GameActions::Result LandSetHeightAction::Execute() const
 
 StringId LandSetHeightAction::CheckParameters() const
 {
-    if (!LocationValid(_coords))
-    {
-        return STR_OFF_EDGE_OF_MAP;
-    }
-
-    auto mapSizeMax = GetMapSizeMaxXY();
-    if (_coords.x > mapSizeMax.x || _coords.y > mapSizeMax.y)
+    if (!LocationValid(_coords) || MapIsEdge(_coords))
     {
         return STR_OFF_EDGE_OF_MAP;
     }

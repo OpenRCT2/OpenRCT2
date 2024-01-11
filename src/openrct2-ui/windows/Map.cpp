@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -53,9 +53,9 @@ static constexpr uint16_t MapColourUnowned(uint16_t colour)
 
 constexpr int32_t MAP_WINDOW_MAP_SIZE = MAXIMUM_MAP_SIZE_TECHNICAL * 2;
 
-static constexpr const StringId WINDOW_TITLE = STR_MAP_LABEL;
-static constexpr const int32_t WH = 259;
-static constexpr const int32_t WW = 245;
+static constexpr StringId WINDOW_TITLE = STR_MAP_LABEL;
+static constexpr int32_t WH = 259;
+static constexpr int32_t WW = 245;
 
 // Some functions manipulate coordinates on the map. These are the coordinates of the pixels in the
 // minimap. In order to distinguish those from actual coordinates, we use a separate name.
@@ -126,7 +126,7 @@ static Widget window_map_widgets[] = {
 
 // used in transforming viewport view coordinates to minimap coordinates
 // rct2: 0x00981BBC
-static constexpr const ScreenCoordsXY MiniMapOffsets[] = {
+static constexpr ScreenCoordsXY MiniMapOffsets[] = {
     {     MAXIMUM_MAP_SIZE_TECHNICAL - 8,                              0 },
     { 2 * MAXIMUM_MAP_SIZE_TECHNICAL - 8,     MAXIMUM_MAP_SIZE_TECHNICAL },
     {     MAXIMUM_MAP_SIZE_TECHNICAL - 8, 2 * MAXIMUM_MAP_SIZE_TECHNICAL },
@@ -152,6 +152,7 @@ public:
             | (1uLL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_X_DOWN) | (1uLL << WIDX_LAND_TOOL_LARGER)
             | (1uLL << WIDX_LAND_TOOL_SMALLER);
 
+        ResizeMap();
         InitScrollWidgets();
 
         _rotation = GetCurrentRotation();
@@ -715,17 +716,17 @@ public:
         g1temp.y_offset = -8;
         GfxSetG1Element(SPR_TEMP, &g1temp);
         DrawingEngineInvalidateImage(SPR_TEMP);
-        GfxDrawSprite(&dpi, ImageId(SPR_TEMP), { 0, 0 });
+        GfxDrawSprite(dpi, ImageId(SPR_TEMP), { 0, 0 });
 
         if (selected_tab == PAGE_PEEPS)
         {
-            PaintPeepOverlay(&dpi);
+            PaintPeepOverlay(dpi);
         }
         else
         {
-            PaintTrainOverlay(&dpi);
+            PaintTrainOverlay(dpi);
         }
-        PaintHudRectangle(&dpi);
+        PaintHudRectangle(dpi);
     }
 
     void OnPrepareDraw() override
@@ -753,14 +754,7 @@ public:
 
         // Resize widgets to window size
         ResizeFrameWithPage();
-        widgets[WIDX_MAP].right = width - 4;
-
-        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
-            widgets[WIDX_MAP].bottom = height - 1 - 72;
-        else if (selected_tab == PAGE_RIDES)
-            widgets[WIDX_MAP].bottom = height - 1 - (4 * LIST_ROW_HEIGHT + 4);
-        else
-            widgets[WIDX_MAP].bottom = height - 1 - 14;
+        ResizeMap();
 
         widgets[WIDX_MAP_SIZE_SPINNER_Y].top = height - 15;
         widgets[WIDX_MAP_SIZE_SPINNER_Y].bottom = height - 4;
@@ -855,7 +849,7 @@ public:
     void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
-        DrawTabImages(&dpi);
+        DrawTabImages(dpi);
 
         auto screenCoords = windowPos
             + ScreenCoordsXY{ window_map_widgets[WIDX_LAND_TOOL].midX(), window_map_widgets[WIDX_LAND_TOOL].midY() };
@@ -875,7 +869,7 @@ public:
             screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
                                   widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18 };
-            GfxDrawSprite(&dpi, ImageId(SPR_6410, COLOUR_BRIGHT_RED, COLOUR_LIGHT_BROWN), screenCoords);
+            GfxDrawSprite(dpi, ImageId(SPR_6410, COLOUR_BRIGHT_RED, COLOUR_LIGHT_BROWN), screenCoords);
         }
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
@@ -894,7 +888,7 @@ public:
                 for (uint32_t i = 0; i < std::size(RideKeyColours); i++)
                 {
                     GfxFillRect(
-                        &dpi, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } },
+                        dpi, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } },
                         RideKeyColours[i]);
                     DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 }, _mapLabels[i], {});
                     screenCoords.y += LIST_ROW_HEIGHT;
@@ -1065,7 +1059,7 @@ private:
             return 0;
 
         uint16_t colour = MapColour(PALETTE_INDEX_0);
-        const auto* surfaceObject = surfaceElement->GetSurfaceStyleObject();
+        const auto* surfaceObject = surfaceElement->GetSurfaceObject();
         if (surfaceObject != nullptr)
             colour = MapColour2(surfaceObject->MapColours[0], surfaceObject->MapColours[1]);
 
@@ -1161,7 +1155,7 @@ private:
         return colourB;
     }
 
-    void PaintPeepOverlay(DrawPixelInfo* dpi)
+    void PaintPeepOverlay(DrawPixelInfo& dpi)
     {
         auto flashColour = GetGuestFlashColour();
         for (auto guest : EntityList<Guest>())
@@ -1175,7 +1169,7 @@ private:
         }
     }
 
-    void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, DrawPixelInfo* dpi)
+    void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, DrawPixelInfo& dpi)
     {
         if (peep->x == LOCATION_NULL)
             return;
@@ -1221,7 +1215,7 @@ private:
         return colour;
     }
 
-    void PaintTrainOverlay(DrawPixelInfo* dpi)
+    void PaintTrainOverlay(DrawPixelInfo& dpi)
     {
         for (auto train : TrainManager::View())
         {
@@ -1241,7 +1235,7 @@ private:
      * The call to GfxFillRect was originally wrapped in Sub68DABD which made sure that arguments were ordered correctly,
      * but it doesn't look like it's ever necessary here so the call was removed.
      */
-    void PaintHudRectangle(DrawPixelInfo* dpi)
+    void PaintHudRectangle(DrawPixelInfo& dpi)
     {
         WindowBase* mainWindow = WindowGetMain();
         if (mainWindow == nullptr)
@@ -1275,7 +1269,7 @@ private:
         GfxFillRect(dpi, { rightBottom - ScreenCoordsXY{ 0, 3 }, rightBottom }, PALETTE_INDEX_56);
     }
 
-    void DrawTabImages(DrawPixelInfo* dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         // Guest tab image (animated)
         uint32_t guestTabImage = SPR_TAB_GUESTS_0;
@@ -1387,6 +1381,18 @@ private:
         return { -x + y + MAXIMUM_MAP_SIZE_TECHNICAL - 8, x + y - 8 };
     }
 
+    void ResizeMap()
+    {
+        widgets[WIDX_MAP].right = width - 4;
+
+        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
+            widgets[WIDX_MAP].bottom = height - 1 - 72;
+        else if (selected_tab == PAGE_RIDES)
+            widgets[WIDX_MAP].bottom = height - 1 - (4 * LIST_ROW_HEIGHT + 4);
+        else
+            widgets[WIDX_MAP].bottom = height - 1 - 14;
+    }
+
     uint8_t _activeTool;
     uint32_t _currentLine;
     uint16_t _landRightsToolSize;
@@ -1399,7 +1405,7 @@ private:
         Y,
     } _resizeDirection{ ResizeDirection::Both };
 
-    static constexpr const uint16_t RideKeyColours[] = {
+    static constexpr uint16_t RideKeyColours[] = {
         MapColour(PALETTE_INDEX_61),  // COLOUR_KEY_RIDE
         MapColour(PALETTE_INDEX_42),  // COLOUR_KEY_FOOD
         MapColour(PALETTE_INDEX_20),  // COLOUR_KEY_DRINK
@@ -1410,15 +1416,15 @@ private:
         MapColour(PALETTE_INDEX_161), // COLOUR_KEY_TOILETS
     };
 
-    static constexpr const uint8_t DefaultPeepMapColour = PALETTE_INDEX_20;
-    static constexpr const uint8_t GuestMapColour = PALETTE_INDEX_172;
-    static constexpr const uint8_t GuestMapColourAlternate = PALETTE_INDEX_21;
-    static constexpr const uint8_t StaffMapColour = PALETTE_INDEX_138;
-    static constexpr const uint8_t StaffMapColourAlternate = PALETTE_INDEX_10;
+    static constexpr uint8_t DefaultPeepMapColour = PALETTE_INDEX_20;
+    static constexpr uint8_t GuestMapColour = PALETTE_INDEX_172;
+    static constexpr uint8_t GuestMapColourAlternate = PALETTE_INDEX_21;
+    static constexpr uint8_t StaffMapColour = PALETTE_INDEX_138;
+    static constexpr uint8_t StaffMapColourAlternate = PALETTE_INDEX_10;
 
-    static constexpr const uint16_t WaterColour = MapColour(PALETTE_INDEX_195);
+    static constexpr uint16_t WaterColour = MapColour(PALETTE_INDEX_195);
 
-    static constexpr const uint16_t ElementTypeMaskColour[] = {
+    static constexpr uint16_t ElementTypeMaskColour[] = {
         0xFFFF, // TILE_ELEMENT_TYPE_SURFACE
         0x0000, // TILE_ELEMENT_TYPE_PATH
         0x00FF, // TILE_ELEMENT_TYPE_TRACK
@@ -1429,7 +1435,7 @@ private:
         0xFFFF, // TILE_ELEMENT_TYPE_BANNER
     };
 
-    static constexpr const uint16_t ElementTypeAddColour[] = {
+    static constexpr uint16_t ElementTypeAddColour[] = {
         MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_SURFACE
         MapColour(PALETTE_INDEX_17),                    // TILE_ELEMENT_TYPE_PATH
         MapColour2(PALETTE_INDEX_183, PALETTE_INDEX_0), // TILE_ELEMENT_TYPE_TRACK

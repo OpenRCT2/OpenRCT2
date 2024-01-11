@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,7 +12,6 @@
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../localisation/Language.h"
 #include "../world/Footpath.h"
 
@@ -38,7 +37,7 @@ void FootpathObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.string_idx = LanguageAllocateObjectString(GetName());
-    _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.image = LoadImages();
     _legacyType.bridge_image = _legacyType.image + 109;
 
     _pathSurfaceDescriptor.Name = _legacyType.string_idx;
@@ -63,7 +62,7 @@ void FootpathObject::Load()
 void FootpathObject::Unload()
 {
     LanguageFreeObjectString(_legacyType.string_idx);
-    GfxObjectFreeImages(_legacyType.image, GetImageTable().GetCount());
+    UnloadImages();
 
     _legacyType.string_idx = 0;
     _legacyType.image = 0;
@@ -72,8 +71,8 @@ void FootpathObject::Unload()
 void FootpathObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
-    GfxDrawSprite(&dpi, ImageId(_pathSurfaceDescriptor.PreviewImage), screenCoords - ScreenCoordsXY{ 49, 17 });
-    GfxDrawSprite(&dpi, ImageId(_queueSurfaceDescriptor.PreviewImage), screenCoords + ScreenCoordsXY{ 4, -17 });
+    GfxDrawSprite(dpi, ImageId(_pathSurfaceDescriptor.PreviewImage), screenCoords - ScreenCoordsXY{ 49, 17 });
+    GfxDrawSprite(dpi, ImageId(_queueSurfaceDescriptor.PreviewImage), screenCoords + ScreenCoordsXY{ 4, -17 });
 }
 
 void FootpathObject::ReadJson(IReadObjectContext* context, json_t& root)

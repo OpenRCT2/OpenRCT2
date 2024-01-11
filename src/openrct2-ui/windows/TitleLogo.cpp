@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,15 +14,15 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
-static constexpr const int32_t WW = 232;
-static constexpr const int32_t WH = 136;
+static constexpr int32_t WW = 232;
+static constexpr int32_t WH = 136;
 
 enum
 {
     WIDX_LOGO
 };
 
-static Widget window_title_logo_widgets[] = {
+static Widget _titleLogoWidgets[] = {
     MakeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };
@@ -36,7 +36,7 @@ public:
      */
     void OnOpen() override
     {
-        widgets = window_title_logo_widgets;
+        widgets = _titleLogoWidgets;
         WindowInitScrollWidgets(*this);
         colours[0] = TRANSLUCENT(COLOUR_GREY);
         colours[1] = TRANSLUCENT(COLOUR_GREY);
@@ -60,8 +60,8 @@ public:
     void OnDraw(DrawPixelInfo& dpi) override
     {
         auto screenCoords = windowPos + ScreenCoordsXY{ 2, 2 };
-        GfxDrawSprite(&dpi, ImageId(SPR_G2_LOGO), screenCoords);
-        GfxDrawSprite(&dpi, ImageId(SPR_G2_TITLE), screenCoords + ScreenCoordsXY{ 104, 18 });
+        GfxDrawSprite(dpi, ImageId(SPR_G2_LOGO), screenCoords);
+        GfxDrawSprite(dpi, ImageId(SPR_G2_TITLE), screenCoords + ScreenCoordsXY{ 104, 18 });
     }
 };
 

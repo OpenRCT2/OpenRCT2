@@ -1218,8 +1218,8 @@ STR_1838    :Tilfredshed: {COMMA16}%
 STR_1839    :Pålidelighed: {COMMA16}%
 STR_1840    :Nede-tid: {COMMA16}%
 STR_1841    :Profit: {CURRENCY2DP} per time
-STR_1842    :Favorit hos: {COMMA16} gæst
-STR_1843    :Favorit hos: {COMMA16} gæster
+STR_1842    :Favorit hos: {COMMA32} gæst
+STR_1843    :Favorit hos: {COMMA32} gæster
 STR_1844    :Vælg hvilken informationstype der skal vises i listen over forlystelser
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} gæster
@@ -1243,7 +1243,7 @@ STR_1863    :Handymand
 STR_1864    :Mekaniker
 STR_1865    :Sikkerhedsvagt
 STR_1866    :Entertainer
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Kan ikke ændre antallet af rotationer…
 STR_1869    :{WINDOW_COLOUR_2}Antal rotationer:
 STR_1870    :Komplet antal af rotationer
@@ -2188,8 +2188,8 @@ STR_3118    :{BLACK}{STRINGID} er på vej til forlystelsen
 STR_3119    :{BLACK}{STRINGID} er i gang med at reparere forlystelsen
 STR_3120    :Find nærmeste ledige mekaniker, eller mekaniker der er i gang med at reparere en forlystelse
 STR_3121    :Kan ikke finde en mekaniker, eller alle mekanikere er optaget
-STR_3122    :{WINDOW_COLOUR_2}Ynglings forlystelse for: {BLACK}{COMMA16} gæst
-STR_3123    :{WINDOW_COLOUR_2}Ynglings forlystelse for: {BLACK}{COMMA16} gæster
+STR_3122    :{WINDOW_COLOUR_2}Ynglings forlystelse for: {BLACK}{COMMA32} gæst
+STR_3123    :{WINDOW_COLOUR_2}Ynglings forlystelse for: {BLACK}{COMMA32} gæster
 STR_3124    :I stykker {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Spændings Faktor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensitets Faktor: {BLACK}+{COMMA16}%
@@ -2990,7 +2990,7 @@ STR_5832    :Vis højde som generiske enheder i stedet for måleformat, der er u
 STR_5833    :Ændrer det datoformat, der bruges
 STR_5834    :Vælg, hvilken lydenhed OpenRCT2 skal bruge
 STR_5835    :Slå lyden fra for spillet, hvis vinduet mister fokus
-STR_5836    :Vælg musik, der skal bruges i hovedmenuen. {NEWLINE} Hvis du vælger RCT1-tema, kræver det, at du kopierer ‘data/css17.dat’ fra din RCT1-spilmappe til ‘data/css50.dat’ i din RCT2-mappe eller angiver stien til RCT1 under fanen Diverse.
+STR_5836    :Vælg musik, der skal bruges i hovedmenuen. {NEWLINE} Hvis du vælger RCT1-tema, kræver det, at du angiver stien til RCT1 under fanen Avanceret.
 STR_5837    :Oprette og administrere brugerdefinerede brugergrænsefladetemaer
 STR_5838    :Vis en separat knap til finansvinduet på værktøjslinjen
 STR_5839    :Vis en separat knap til forsknings- og udviklingsvinduet på værktøjslinjen
@@ -3590,9 +3590,9 @@ STR_6487    :Skift gennemsigtig personale
 STR_6488    :{RED}Gæster klager over længden af køerne i din park.{NEWLINE}Overvej at forkorte problematiske køer eller øge forlystelsernes gennemstrømning.
 STR_6489    :Fejl: Inkompatibel Park Version
 STR_6490    :Advarsel: Semi-kompatibel Park Version
-STR_6491    :Denne park blev gemt i en nyere version af OpenRCT2. Parken er v{INT32} og kræver mindst v{INT32}.
+STR_6491    :Denne park blev gemt i en nyere version af OpenRCT2. Parken er v{INT32} og kræver mindst v{INT32}. Du benytter v{INT32}
 STR_6492    :Denne park er gemt i en ældre version af OpenRCT2, og kan ikke åbnes med denne version af OpenRCT2. Parken er v{INT32}.
-STR_6493    :Denne park blev gemt i en nyere version af OpenRCT2, nogle data kan gå tabt. Parken er v{INT32} og kræver mindst v{INT32}.
+STR_6493    :Denne park blev gemt i en nyere version af OpenRCT2, nogle data kan gå tabt. Parken er gemt i v{INT32}. Du benytter v{INT32}
 STR_6497    :Klik på et felt for at vise dets felt elementer.{NEWLINE}Ctrl + Klik et felt element for at vælge det direkte.
 STR_6498    :Aktiver for at fastholde kvadratisk kortfacon.
 STR_6499    :Køretøjstype understøttes ikke af spor design formatet
@@ -3611,9 +3611,9 @@ STR_6511    :Nul G Rul (højre)
 STR_6512    :Stor nul G Rul (venstre)
 STR_6513    :Stor nul G Rul (højre)
 STR_6514    :Ugyldig højde!
-STR_6515    :{BLACK}RCT1 er ikke linket - Reserve billeder vil blive brugt.
-STR_6516    :Et eller flere objekter tilføjet kræver at RCT1 er linket for ordenlig visning. Reserve billeder vil blive brugt.
-STR_6517    :Et eller flere objekter i denne park kræver at RCT1 er linket for ordenlig visning. Reserve billeder vil blive brugt.
+STR_6515    :{BLACK}RollerCoaster Tycoon 1 er ikke linket - Reserve billeder vil blive brugt.
+STR_6516    :Et eller flere objekter tilføjet kræver at RollerCoaster Tycoon 1 er linket for ordenlig visning. Reserve billeder vil blive brugt.
+STR_6517    :Et eller flere objekter i denne park kræver at RollerCoaster Tycoon 1 er linket for ordenlig visning. Reserve billeder vil blive brugt.
 STR_6518    :{BLACK}Hold over et scenarie for at se beskrivelse og mål. Klik for at starte med at spille.
 STR_6519    :Ekstra
 STR_6520    :Materiel pakker
@@ -3632,6 +3632,7 @@ STR_6532    :Katy’s Dreamworld
 STR_6533    :{WINDOW_COLOUR_2}Spændings Faktor: {BLACK}-{COMMA16}%
 STR_6534    :{WINDOW_COLOUR_2}Intensitets Faktor: {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Kvalme Faktor: {BLACK}-{COMMA16}%
+STR_6536    :Denne park var gemt i en senere version af OpenRCT2. Parken var gemt i v{INT32}, du benytter v{INT32}.
 
 #############
 # Scenarios #

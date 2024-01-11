@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,7 +24,7 @@
  * colour (ebp)
  * flags (si)
  */
-void GfxFillRectInset(DrawPixelInfo* dpi, const ScreenRect& rect, int32_t colour, uint8_t flags)
+void GfxFillRectInset(DrawPixelInfo& dpi, const ScreenRect& rect, int32_t colour, uint8_t flags)
 {
     const auto leftTop = ScreenCoordsXY{ rect.GetLeft(), rect.GetTop() };
     const auto leftBottom = ScreenCoordsXY{ rect.GetLeft(), rect.GetBottom() };

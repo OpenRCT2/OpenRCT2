@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,9 +27,9 @@
 
 #pragma region Widgets
 
-static constexpr const int32_t WW = 600;
-static constexpr const int32_t WH = 400;
-static constexpr const StringId WINDOW_TITLE = STR_INVENTION_LIST;
+static constexpr int32_t WW = 600;
+static constexpr int32_t WH = 400;
+static constexpr StringId WINDOW_TITLE = STR_INVENTION_LIST;
 
 // clang-format off
 enum {
@@ -296,7 +296,7 @@ public:
                     bottom = itemY;
                 }
 
-                GfxFilterRect(&dpi, { 0, top, boxWidth, bottom }, FilterPaletteID::PaletteDarken1);
+                GfxFilterRect(dpi, { 0, top, boxWidth, bottom }, FilterPaletteID::PaletteDarken1);
             }
 
             if (dragItem != nullptr && researchItem == *dragItem)
@@ -352,7 +352,7 @@ public:
 
         // Tab image
         auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top };
-        GfxDrawSprite(&dpi, ImageId(SPR_TAB_FINANCES_RESEARCH_0 + (frame_no / 2) % 8), screenPos);
+        GfxDrawSprite(dpi, ImageId(SPR_TAB_FINANCES_RESEARCH_0 + (frame_no / 2) % 8), screenPos);
 
         // Pre-researched items label
         screenPos = windowPos
@@ -367,7 +367,7 @@ public:
         // Preview background
         auto& bkWidget = widgets[WIDX_PREVIEW];
         GfxFillRect(
-            &dpi,
+            dpi,
             { windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 },
               windowPos + ScreenCoordsXY{ bkWidget.right - 1, bkWidget.bottom - 1 } },
             ColourMapA[colours[1]].darkest);
@@ -396,7 +396,7 @@ public:
             screenPos = windowPos + ScreenCoordsXY{ bkWidget.left + 1, bkWidget.top + 1 };
             const auto clipWidth = bkWidget.width() - 1;
             const auto clipHeight = bkWidget.height() - 1;
-            if (ClipDrawPixelInfo(&clipDPI, &dpi, screenPos, clipWidth, clipHeight))
+            if (ClipDrawPixelInfo(clipDPI, dpi, screenPos, clipWidth, clipHeight))
             {
                 object->DrawPreview(clipDPI, clipWidth, clipHeight);
             }
@@ -619,6 +619,7 @@ public:
         if (inventionListWindow == nullptr)
         {
             Close();
+            return;
         }
         std::optional<InventionListItem> res;
         // Skip always researched items, so that the dragged item gets placed underneath them

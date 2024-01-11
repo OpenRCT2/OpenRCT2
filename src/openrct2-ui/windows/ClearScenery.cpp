@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,9 +30,9 @@ enum WindowClearSceneryWidgetIdx
     WIDX_FOOTPATH
 };
 // clang-format on
-static constexpr const StringId WINDOW_TITLE = STR_CLEAR_SCENERY;
-static constexpr const int32_t WW = 98;
-static constexpr const int32_t WH = 94;
+static constexpr StringId WINDOW_TITLE = STR_CLEAR_SCENERY;
+static constexpr int32_t WW = 98;
+static constexpr int32_t WH = 94;
 
 static constexpr ScreenSize CLEAR_SCENERY_BUTTON = { 24, 24 };
 
@@ -194,6 +194,11 @@ public:
             screenCoords.y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 + 27;
             DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
         }
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 };
 

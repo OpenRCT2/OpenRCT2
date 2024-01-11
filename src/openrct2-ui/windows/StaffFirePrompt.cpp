@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,9 +18,9 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_SACK_STAFF;
-static constexpr const int32_t WW = 200;
-static constexpr const int32_t WH = 100;
+static constexpr StringId WINDOW_TITLE = STR_SACK_STAFF;
+static constexpr int32_t WW = 200;
+static constexpr int32_t WH = 100;
 
 // clang-format off
 enum WindowStaffFireWidgetIdx {
@@ -32,7 +32,7 @@ enum WindowStaffFireWidgetIdx {
 };
 
 // 0x9AFB4C
-static Widget window_staff_fire_widgets[] = {
+static Widget _staffFireWidgets[] = {
     WINDOW_SHIM_WHITE(WINDOW_TITLE, WW, WH),
     MakeWidget({     10, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_YES               ),
     MakeWidget({WW - 95, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
@@ -51,7 +51,7 @@ public:
 
     void OnOpen() override
     {
-        widgets = window_staff_fire_widgets;
+        widgets = _staffFireWidgets;
         WindowInitScrollWidgets(*this);
     }
 
@@ -82,6 +82,11 @@ public:
 
         ScreenCoordsXY textCoords(windowPos + ScreenCoordsXY{ WW / 2, (WH / 2) - 3 });
         DrawTextWrapped(dpi, textCoords, WW - 4, STR_FIRE_STAFF_ID, ft, { TextAlignment::CENTRE });
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 };
 

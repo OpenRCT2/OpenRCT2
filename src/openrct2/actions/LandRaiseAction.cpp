@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,6 +24,7 @@
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
+#include "../world/SurfaceData.h"
 
 LandRaiseAction::LandRaiseAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
     : _coords(coords)
@@ -108,10 +109,18 @@ GameActions::Result LandRaiseAction::QueryExecute(bool isExecuting) const
                 continue;
 
             uint8_t currentSlope = surfaceElement->GetSlope();
-            uint8_t newSlope = tile_element_raise_styles[tableRow][currentSlope];
+            uint8_t newSlope = RaiseSurfaceCornerFlags(tableRow, currentSlope);
             if (newSlope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT)
-                height += 2;
-
+            {
+                if (height + 2 > UINT8_MAX)
+                {
+                    height = UINT8_MAX;
+                }
+                else
+                {
+                    height += 2;
+                }
+            }
             newSlope &= TILE_ELEMENT_SURFACE_SLOPE_MASK;
 
             auto landSetHeightAction = LandSetHeightAction({ x, y }, height, newSlope);

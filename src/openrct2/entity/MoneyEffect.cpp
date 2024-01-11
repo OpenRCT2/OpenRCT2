@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 #include "MoneyEffect.h"
 
 #include "../OpenRCT2.h"
+#include "../config/Config.h"
 #include "../core/DataSerialiser.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
@@ -21,7 +22,7 @@
 #include "../world/Map.h"
 #include "EntityRegistry.h"
 
-static constexpr const CoordsXY _moneyEffectMoveOffset[] = {
+static constexpr CoordsXY _moneyEffectMoveOffset[] = {
     { 1, -1 },
     { 1, 1 },
     { -1, 1 },
@@ -37,7 +38,7 @@ template<> bool EntityBase::Is<MoneyEffect>() const
  *
  *  rct2: 0x0067351F
  */
-void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool vertical)
+void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool guestPurchase)
 {
     if (value == 0.00_GBP)
         return;
@@ -47,10 +48,10 @@ void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool verti
         return;
 
     moneyEffect->Value = value;
-    moneyEffect->Vertical = (vertical ? 1 : 0);
-    moneyEffect->sprite_width = 64;
-    moneyEffect->sprite_height_negative = 20;
-    moneyEffect->sprite_height_positive = 30;
+    moneyEffect->GuestPurchase = (guestPurchase ? 1 : 0);
+    moneyEffect->SpriteData.Width = 64;
+    moneyEffect->SpriteData.HeightMin = 20;
+    moneyEffect->SpriteData.HeightMax = 30;
     moneyEffect->MoveTo(effectPos);
     moneyEffect->NumMovements = 0;
     moneyEffect->MoveDelay = 0;
@@ -123,7 +124,7 @@ void MoneyEffect::Update()
     int32_t newZ = z;
     MoveDelay = 0;
 
-    if (Vertical)
+    if (GuestPurchase)
     {
         newZ += 1;
     }
@@ -143,8 +144,8 @@ void MoneyEffect::Update()
 
 std::pair<StringId, money64> MoneyEffect::GetStringId() const
 {
-    StringId spentStringId = Vertical ? STR_MONEY_EFFECT_SPEND_HIGHP : STR_MONEY_EFFECT_SPEND;
-    StringId receiveStringId = Vertical ? STR_MONEY_EFFECT_RECEIVE_HIGHP : STR_MONEY_EFFECT_RECEIVE;
+    StringId spentStringId = GuestPurchase ? STR_MONEY_EFFECT_SPEND_HIGHP : STR_MONEY_EFFECT_SPEND;
+    StringId receiveStringId = GuestPurchase ? STR_MONEY_EFFECT_RECEIVE_HIGHP : STR_MONEY_EFFECT_RECEIVE;
     StringId stringId = receiveStringId;
     money64 outValue = Value;
     if (Value < 0)
@@ -162,7 +163,7 @@ void MoneyEffect::Serialise(DataSerialiser& stream)
     stream << frame;
     stream << MoveDelay;
     stream << NumMovements;
-    stream << Vertical;
+    stream << GuestPurchase;
     stream << Value;
     stream << OffsetX;
     stream << Wiggle;
@@ -172,6 +173,18 @@ void MoneyEffect::Paint(PaintSession& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    {
+        // Don't render any money in the title screen.
+        return;
+    }
+
+    if (GuestPurchase && !gConfigGeneral.ShowGuestPurchases)
+    {
+        // Don't show the money effect for guest purchases when the option is disabled.
+        return;
+    }
+
     DrawPixelInfo& dpi = session.DPI;
     if (dpi.zoom_level > ZoomLevel{ 0 })
     {
@@ -179,7 +192,7 @@ void MoneyEffect::Paint(PaintSession& session, int32_t imageDirection) const
     }
 
     /** rct2: 0x0097EDA4 */
-    static constexpr const int8_t waveOffset[] = {
+    static constexpr int8_t waveOffset[] = {
         0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1,
         0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1,
     };

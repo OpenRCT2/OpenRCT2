@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,14 +23,6 @@
 #include <cstdio>
 #include <cstdlib>
 #include <string>
-
-void openrct2_assert_fwd(bool expression, const char* message, ...)
-{
-    va_list va;
-    va_start(va, message);
-    Guard::Assert_VA(expression, message, va);
-    va_end(va);
-}
 
 namespace Guard
 {

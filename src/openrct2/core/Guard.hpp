@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,14 +14,6 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include <string>
-
-void openrct2_assert_fwd(bool expression, const char* message, ...);
-
-#define openrct2_assert(expr, msg, ...)                                                                                        \
-    if (!(expr))                                                                                                               \
-    {                                                                                                                          \
-        openrct2_assert_fwd((expr), msg, ##__VA_ARGS__);                                                                       \
-    }
 
 enum class ASSERT_BEHAVIOUR
 {

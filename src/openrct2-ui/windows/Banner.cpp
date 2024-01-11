@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,9 +23,9 @@
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>
 
-static constexpr const int32_t WW = 113;
-static constexpr const int32_t WH = 96;
-static constexpr const StringId WINDOW_TITLE = STR_BANNER_WINDOW_TITLE;
+static constexpr int32_t WW = 113;
+static constexpr int32_t WH = 96;
+static constexpr StringId WINDOW_TITLE = STR_BANNER_WINDOW_TITLE;
 
 // clang-format off
 enum WindowBannerWidgetIdx {
@@ -41,7 +41,7 @@ enum WindowBannerWidgetIdx {
     WIDX_TEXT_COLOUR_DROPDOWN_BUTTON
 };
 
-static constexpr const StringId BannerColouredTextFormats[] = {
+static constexpr StringId BannerColouredTextFormats[] = {
     STR_TEXT_COLOUR_BLACK,
     STR_TEXT_COLOUR_GREY,
     STR_TEXT_COLOUR_WHITE,
@@ -226,7 +226,8 @@ public:
                 if (dropdownIndex == -1)
                     break;
 
-                auto bannerSetStyle = BannerSetStyleAction(BannerSetStyleType::PrimaryColour, GetBannerIndex(), dropdownIndex);
+                auto bannerSetStyle = BannerSetStyleAction(
+                    BannerSetStyleType::PrimaryColour, GetBannerIndex(), ColourDropDownIndexToColour(dropdownIndex));
                 GameActions::Execute(&bannerSetStyle);
                 break;
             }
@@ -262,7 +263,7 @@ public:
 
         if (viewport != nullptr)
         {
-            WindowDrawViewport(&dpi, *this);
+            WindowDrawViewport(dpi, *this);
         }
     }
 
@@ -293,6 +294,11 @@ public:
         colourBtn->image = GetColourButtonImage(banner->colour);
         Widget* dropDownWidget = &window_banner_widgets[WIDX_TEXT_COLOUR_DROPDOWN];
         dropDownWidget->text = BannerColouredTextFormats[banner->text_colour];
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 };
 

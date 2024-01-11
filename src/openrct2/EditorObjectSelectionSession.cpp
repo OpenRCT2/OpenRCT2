@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -46,9 +46,7 @@ static void SelectDesignerObjects();
 static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item);
 
 /**
- * Master objects are objects that are not
- * optional / required dependants of an
- * object.
+ * Master objects are objects that are not optional / required dependants of an object.
  */
 static constexpr ResultWithMessage ObjectSelectionError(bool isMasterObject, StringId message)
 {
@@ -152,8 +150,8 @@ void SetupInUseSelectionFlags()
             case TileElementType::Surface:
             {
                 auto surfaceEl = iter.element->AsSurface();
-                auto surfaceIndex = surfaceEl->GetSurfaceStyle();
-                auto edgeIndex = surfaceEl->GetEdgeStyle();
+                auto surfaceIndex = surfaceEl->GetSurfaceObjectIndex();
+                auto edgeIndex = surfaceEl->GetEdgeObjectIndex();
 
                 Editor::SetSelectedObject(ObjectType::TerrainSurface, surfaceIndex, ObjectSelectionFlags::InUse);
                 Editor::SetSelectedObject(ObjectType::TerrainEdge, edgeIndex, ObjectSelectionFlags::InUse);
@@ -179,7 +177,7 @@ void SetupInUseSelectionFlags()
                 if (footpathEl->HasAddition())
                 {
                     auto pathAdditionEntryIndex = footpathEl->GetAdditionEntryIndex();
-                    Editor::SetSelectedObject(ObjectType::PathBits, pathAdditionEntryIndex, ObjectSelectionFlags::InUse);
+                    Editor::SetSelectedObject(ObjectType::PathAdditions, pathAdditionEntryIndex, ObjectSelectionFlags::InUse);
                 }
                 break;
             }
@@ -566,6 +564,11 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
         return { true };
     }
 
+    if (item->Flags & ObjectItemFlags::IsCompatibilityObject)
+    {
+        return ObjectSelectionError(isMasterObject, STR_OBJECT_SELECTION_ERR_COMPAT_OBJECT);
+    }
+
     ObjectType objectType = item->Type;
     uint16_t maxObjects = object_entry_group_counts[EnumValue(objectType)];
 
@@ -677,6 +680,10 @@ int32_t EditorRemoveUnusedObjects()
                 // These object types require exactly one object to be selected at all times.
                 // Removing that object can badly break the game state.
                 if (objectType == ObjectType::ParkEntrance || objectType == ObjectType::Water)
+                    continue;
+
+                // It’s hard to determine exactly if a scenery group is used, so do not remove these automatically.
+                if (objectType == ObjectType::SceneryGroup)
                     continue;
 
                 _numSelectedObjectsForType[EnumValue(objectType)]--;

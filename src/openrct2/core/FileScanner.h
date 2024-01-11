@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,7 +20,7 @@ namespace FileScanner
 {
     struct FileInfo
     {
-        const utf8* Name;
+        u8string Name;
         uint64_t Size;
         uint64_t LastModified;
     };
@@ -30,9 +30,9 @@ struct IFileScanner
 {
     virtual ~IFileScanner() = default;
 
-    virtual const FileScanner::FileInfo* GetFileInfo() const abstract;
-    virtual const utf8* GetPath() const abstract;
-    virtual const utf8* GetPathRelative() const abstract;
+    virtual const FileScanner::FileInfo& GetFileInfo() const abstract;
+    virtual const u8string& GetPath() const abstract;
+    virtual u8string GetPathRelative() const abstract;
 
     virtual void Reset() abstract;
     virtual bool Next() abstract;

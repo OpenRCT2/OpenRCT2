@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,8 @@
 
 #include <algorithm>
 #include <array>
+#include <cstdint>
+#include <optional>
 #include <string_view>
 #include <vector>
 
@@ -98,6 +100,16 @@ public:
     {
         auto it = find(k);
         return it->second;
+    }
+
+    std::optional<T> TryGet(std::string_view k) const
+    {
+        auto it = find(k);
+        if (it != end())
+        {
+            return it->second;
+        }
+        return std::nullopt;
     }
 
     auto find(const std::string_view k) const

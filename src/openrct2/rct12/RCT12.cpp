@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,6 +16,7 @@
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
+#include "../ride/TrackDesign.h"
 #include "../scenario/Scenario.h"
 #include "../world/Banner.h"
 #include "../world/Footpath.h"
@@ -311,17 +312,17 @@ uint8_t RCT12SmallSceneryElement::GetSceneryQuadrant() const
 
 colour_t RCT12SmallSceneryElement::GetPrimaryColour() const
 {
-    return Colour1 & TILE_ELEMENT_COLOUR_MASK;
+    return Colour1 & RCT12_TILE_ELEMENT_COLOUR_MASK;
 }
 
 colour_t RCT12SmallSceneryElement::GetSecondaryColour() const
 {
-    return Colour2 & TILE_ELEMENT_COLOUR_MASK;
+    return Colour2 & RCT12_TILE_ELEMENT_COLOUR_MASK;
 }
 
 bool RCT12SmallSceneryElement::NeedsSupports() const
 {
-    return Colour1 & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
+    return Colour1 & RCT12_SMALL_SCENERY_ELEMENT_NEEDS_SUPPORTS_FLAG;
 }
 
 uint32_t RCT12LargeSceneryElement::GetEntryIndex() const
@@ -335,17 +336,18 @@ uint16_t RCT12LargeSceneryElement::GetSequenceIndex() const
 }
 colour_t RCT12LargeSceneryElement::GetPrimaryColour() const
 {
-    return Colour[0] & TILE_ELEMENT_COLOUR_MASK;
+    return Colour[0] & RCT12_TILE_ELEMENT_COLOUR_MASK;
 }
 
 colour_t RCT12LargeSceneryElement::GetSecondaryColour() const
 {
-    return Colour[1] & TILE_ELEMENT_COLOUR_MASK;
+    return Colour[1] & RCT12_TILE_ELEMENT_COLOUR_MASK;
 }
 
 uint8_t RCT12LargeSceneryElement::GetBannerIndex() const
 {
-    return (Type & 0xC0) | (((Colour[0]) & ~TILE_ELEMENT_COLOUR_MASK) >> 2) | (((Colour[1]) & ~TILE_ELEMENT_COLOUR_MASK) >> 5);
+    return (Type & 0xC0) | (((Colour[0]) & ~RCT12_TILE_ELEMENT_COLOUR_MASK) >> 2)
+        | (((Colour[1]) & ~RCT12_TILE_ELEMENT_COLOUR_MASK) >> 5);
 }
 
 uint8_t RCT12WallElement::GetEntryIndex() const
@@ -360,19 +362,19 @@ uint8_t RCT12WallElement::GetSlope() const
 
 colour_t RCT12WallElement::GetPrimaryColour() const
 {
-    return Colour1 & TILE_ELEMENT_COLOUR_MASK;
+    return Colour1 & RCT12_TILE_ELEMENT_COLOUR_MASK;
 }
 
 colour_t RCT12WallElement::GetSecondaryColour() const
 {
-    uint8_t secondaryColour = (Colour1 & ~TILE_ELEMENT_COLOUR_MASK) >> 5;
+    uint8_t secondaryColour = (Colour1 & ~RCT12_TILE_ELEMENT_COLOUR_MASK) >> 5;
     secondaryColour |= (Flags & 0x60) >> 2;
     return secondaryColour;
 }
 
 colour_t RCT12WallElement::GetTertiaryColour() const
 {
-    return Colour3 & TILE_ELEMENT_COLOUR_MASK;
+    return Colour3 & RCT12_TILE_ELEMENT_COLOUR_MASK;
 }
 
 uint8_t RCT12WallElement::GetAnimationFrame() const
@@ -749,6 +751,16 @@ static constexpr std::string_view _musicStyles[] = {
     "rct2.music.pirate",
     "rct2.music.rock3",
     "rct2.music.candy",
+    "openrct2.music.galaxy",
+    "openrct2.music.acid",
+    "openrct2.music.dodgems",
+    "openrct2.music.blizzard",
+    "openrct2.music.extraterrestrial",
+    "openrct2.music.fairground2",
+    "openrct2.music.ragtime2",
+    "openrct2.music.prehistoric",
+    "openrct2.music.mystic",
+    "openrct2.music.rock4",
 };
 
 std::string_view GetStationIdentifierFromStyle(uint8_t style)
@@ -757,7 +769,7 @@ std::string_view GetStationIdentifierFromStyle(uint8_t style)
     {
         return _stationStyles[style];
     }
-    return {};
+    return _stationStyles[RCT12_STATION_STYLE_INVISIBLE];
 }
 
 uint8_t GetStationStyleFromIdentifier(u8string_view identifier)
@@ -858,3 +870,89 @@ ResearchItem RCT12ResearchItem::ToResearchItem() const
 
     return newResearchItem;
 }
+
+void ConvertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags)
+{
+    target.BrakeBoosterSpeed = kRCT2DefaultBlockBrakeSpeed;
+    if (TrackTypeIsStation(target.Type))
+    {
+        auto stationIndex = flags & EnumValue(TD46Flags::StationId);
+        target.StationIndex = StationIndex::FromUnderlying(stationIndex);
+    }
+    else
+    {
+        auto speedOrSeatRotation = flags & EnumValue(TD46Flags::SpeedOrSeatRotation);
+        if (TrackTypeHasSpeedSetting(target.Type) && target.Type != TrackElemType::BlockBrakes)
+        {
+            target.BrakeBoosterSpeed = speedOrSeatRotation << 1;
+        }
+        else
+        {
+            target.SeatRotation = speedOrSeatRotation;
+        }
+    }
+
+    target.ColourScheme = (flags & EnumValue(TD46Flags::ColourScheme)) >> 4;
+    if (flags & EnumValue(TD46Flags::IsInverted))
+        target.SetFlag(TrackDesignTrackElementFlag::IsInverted);
+    if (flags & EnumValue(TD46Flags::HasChain))
+        target.SetFlag(TrackDesignTrackElementFlag::HasChain);
+}
+
+uint8_t ConvertToTD46Flags(const TrackDesignTrackElement& source)
+{
+    uint8_t trackFlags = 0;
+    if (TrackTypeIsStation(source.Type))
+    {
+        trackFlags = (source.StationIndex.ToUnderlying() & EnumValue(TD46Flags::StationId));
+    }
+    else if (TrackTypeHasSpeedSetting(source.Type) && source.Type != TrackElemType::BlockBrakes)
+    {
+        trackFlags = (source.BrakeBoosterSpeed >> 1);
+    }
+    else
+    {
+        trackFlags = source.SeatRotation;
+    }
+
+    trackFlags |= source.ColourScheme << 4;
+
+    if (source.HasFlag(TrackDesignTrackElementFlag::HasChain))
+        trackFlags |= EnumValue(TD46Flags::HasChain);
+    if (source.HasFlag(TrackDesignTrackElementFlag::IsInverted))
+        trackFlags |= EnumValue(TD46Flags::IsInverted);
+
+    return trackFlags;
+}
+
+namespace RCT12
+{
+    size_t GetRCTStringBufferLen(const char* buffer, size_t maxBufferLen)
+    {
+        constexpr char MULTIBYTE = static_cast<char>(255);
+        size_t len = 0;
+        for (size_t i = 0; i < maxBufferLen; i++)
+        {
+            auto ch = buffer[i];
+            if (ch == MULTIBYTE)
+            {
+                i += 2;
+
+                // Check if reading two more bytes exceeds max buffer len
+                if (i < maxBufferLen)
+                {
+                    len += 3;
+                }
+            }
+            else if (ch == '\0')
+            {
+                break;
+            }
+            else
+            {
+                len++;
+            }
+        }
+        return len;
+    }
+} // namespace RCT12

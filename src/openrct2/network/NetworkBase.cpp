@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -43,7 +43,7 @@
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
 
-#define NETWORK_STREAM_VERSION "12"
+#define NETWORK_STREAM_VERSION "0"
 
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
@@ -292,7 +292,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
         Console::WriteLine("Key generated, saving private bits as %s", keyPath.c_str());
 
         const auto keysDirectory = NetworkGetKeysDirectory();
-        if (!Platform::EnsureDirectoryExists(keysDirectory.c_str()))
+        if (!Path::CreateDirectory(keysDirectory))
         {
             LOG_ERROR("Unable to create directory %s.", keysDirectory.c_str());
             return false;
@@ -1071,8 +1071,9 @@ std::string NetworkBase::BeginLog(const std::string& directory, const std::strin
         throw std::runtime_error("strftime failed");
     }
 
-    Platform::EnsureDirectoryExists(Path::Combine(directory, midName).c_str());
-    return Path::Combine(directory, midName, filename);
+    auto directoryMidName = Path::Combine(directory, midName);
+    Path::CreateDirectory(directoryMidName);
+    return Path::Combine(directoryMidName, filename);
 }
 
 void NetworkBase::AppendLog(std::ostream& fs, std::string_view s)
@@ -2112,7 +2113,7 @@ std::string NetworkBase::MakePlayerNameUnique(const std::string& name)
         // Check if there is already a player with this name in the server
         for (const auto& player : player_list)
         {
-            if (String::Equals(player->Name.c_str(), new_name.c_str(), true))
+            if (String::IEquals(player->Name, new_name))
             {
                 unique = false;
                 break;
@@ -2495,7 +2496,7 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
 
             std::string outputPath = GetContext().GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_DESYNCS);
 
-            Platform::EnsureDirectoryExists(outputPath.c_str());
+            Path::CreateDirectory(outputPath);
 
             char uniqueFileName[128] = {};
             snprintf(
@@ -2642,7 +2643,10 @@ void NetworkBase::ServerHandleAuth(NetworkConnection& connection, NetworkPacket&
         if (connection.AuthStatus == NetworkAuth::Verified)
         {
             const NetworkGroup* group = GetGroupByID(GetGroupIDByHash(connection.Key.PublicKeyHash()));
-            passwordless = group->CanPerformAction(NetworkPermission::PasswordlessLogin);
+            if (group != nullptr)
+            {
+                passwordless = group->CanPerformAction(NetworkPermission::PasswordlessLogin);
+            }
         }
         if (gameversion != NetworkGetVersion())
         {
@@ -3351,6 +3355,14 @@ std::string NetworkGetPlayerPublicKeyHash(uint32_t id)
     return {};
 }
 
+void NetworkIncrementPlayerNumCommands(uint32_t playerIndex)
+{
+    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    Guard::IndexInRange(playerIndex, network.player_list);
+
+    network.player_list[playerIndex]->IncrementNumCommands();
+}
+
 void NetworkAddPlayerMoneySpent(uint32_t index, money64 cost)
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
@@ -3640,6 +3652,11 @@ GameActions::Result NetworkModifyGroups(
         case ModifyGroupType::SetName:
         {
             NetworkGroup* group = network.GetGroupByID(groupId);
+            if (group == nullptr)
+            {
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_GROUP, STR_NONE);
+            }
+
             const char* oldName = group->GetName().c_str();
 
             if (strcmp(oldName, name.c_str()) == 0)
@@ -4088,6 +4105,9 @@ std::string NetworkGetPlayerIPAddress(uint32_t id)
 std::string NetworkGetPlayerPublicKeyHash(uint32_t id)
 {
     return {};
+}
+void NetworkIncrementPlayerNumCommands(uint32_t playerIndex)
+{
 }
 void NetworkAddPlayerMoneySpent(uint32_t index, money64 cost)
 {

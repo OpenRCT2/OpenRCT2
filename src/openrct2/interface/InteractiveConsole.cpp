@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "InteractiveConsole.h"
 
 #include "../Context.h"
+#include "../Date.h"
 #include "../EditorObjectSelectionSession.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
@@ -18,6 +19,7 @@
 #include "../Version.h"
 #include "../actions/CheatSetAction.h"
 #include "../actions/ClimateSetAction.h"
+#include "../actions/ParkSetDateAction.h"
 #include "../actions/ParkSetParameterAction.h"
 #include "../actions/RideFreezeRatingAction.h"
 #include "../actions/RideSetPriceAction.h"
@@ -32,6 +34,7 @@
 #include "../drawing/Drawing.h"
 #include "../drawing/Font.h"
 #include "../drawing/Image.h"
+#include "../entity/Balloon.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
@@ -76,6 +79,7 @@
 #endif
 
 using arguments_t = std::vector<std::string>;
+using OpenRCT2::Date;
 
 static constexpr const char* ClimateNames[] = {
     "cool_and_wet",
@@ -1393,18 +1397,8 @@ static int32_t ConsoleCommandRemoveFloatingObjects(InteractiveConsole& console, 
 
 static int32_t ConsoleCommandRemoveParkFences(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    TileElementIterator it;
-    TileElementIteratorBegin(&it);
-    do
-    {
-        if (it.element->GetType() == TileElementType::Surface)
-        {
-            // Remove all park fence flags
-            it.element->AsSurface()->SetParkFences(0);
-        }
-    } while (TileElementIteratorNext(&it));
-
-    GfxInvalidateScreen();
+    auto action = CheatSetAction(CheatType::RemoveParkFences);
+    GameActions::Execute(&action);
 
     console.WriteFormatLine("Park fences have been removed.");
     return 0;
@@ -1452,7 +1446,7 @@ static int32_t ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& cons
     // YYYY (no month provided, preserve existing month)
     if (argv.size() == 1)
     {
-        month = gDateMonthsElapsed % MONTH_COUNT + 1;
+        month = GetDate().GetMonth() + 1;
     }
 
     // YYYY MM or YYYY MM DD (month provided)
@@ -1469,21 +1463,21 @@ static int32_t ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& cons
     // YYYY OR YYYY MM (no day provided, preserve existing day)
     if (argv.size() <= 2)
     {
-        day = std::clamp(
-            gDateMonthTicks / (TICKS_PER_MONTH / days_in_month[month - 1]) + 1, 1, static_cast<int>(days_in_month[month - 1]));
+        day = std::clamp(GetDate().GetDay() + 1, 1, static_cast<int>(Date::GetDaysInMonth(month - 1)));
     }
 
     // YYYY MM DD (year, month, and day provided)
     if (argv.size() == 3)
     {
         day = atoi(argv[2].c_str());
-        if (day < 1 || day > days_in_month[month - 1])
+        if (day < 1 || day > Date::GetDaysInMonth(month - 1))
         {
             return -1;
         }
     }
 
-    DateSet(year, month, day);
+    auto setDateAction = ParkSetDateAction(year - 1, month - 1, day - 1);
+    GameActions::Execute(&setDateAction);
     WindowInvalidateByClass(WindowClass::BottomToolbar);
 
     return 1;
@@ -1921,6 +1915,23 @@ static int32_t ConsoleCommandProfilerStop(
     return 0;
 }
 
+static int32_t ConsoleSpawnBalloon(InteractiveConsole& console, const arguments_t& argv)
+{
+    if (argv.size() < 3)
+    {
+        console.WriteLineError("Need arguments: <x> <y> <z> <colour>");
+        return 1;
+    }
+    int32_t x = COORDS_XY_STEP * atof(argv[0].c_str());
+    int32_t y = COORDS_XY_STEP * atof(argv[1].c_str());
+    int32_t z = COORDS_Z_STEP * atof(argv[2].c_str());
+    int32_t col = 28;
+    if (argv.size() > 3)
+        col = atoi(argv[3].c_str());
+    Balloon::Create({ x, y, z }, col, false);
+    return 0;
+}
+
 using console_command_func = int32_t (*)(InteractiveConsole& console, const arguments_t& argv);
 struct ConsoleCommand
 {
@@ -1981,7 +1992,7 @@ static constexpr const utf8* console_window_table[] = {
 };
 // clang-format on
 
-static constexpr const ConsoleCommand console_command_table[] = {
+static constexpr ConsoleCommand console_command_table[] = {
     { "abort", ConsoleCommandAbort, "Calls std::abort(), for testing purposes only.", "abort" },
     { "add_news_item", ConsoleCommandAddNewsItem, "Inserts a news item", "add_news_item [<type> <message> <assoc>]" },
     { "assert", ConsoleCommandAssert, "Triggers assertion failure, for testing purposes only", "assert" },
@@ -2013,6 +2024,7 @@ static constexpr const ConsoleCommand console_command_table[] = {
     { "say", ConsoleCommandSay, "Say to other players.", "say <message>" },
     { "set", ConsoleCommandSet, "Sets the variable to the specified value.", "set <variable> <value>" },
     { "show_limits", ConsoleCommandShowLimits, "Shows the map data counts and limits.", "show_limits" },
+    { "spawn_balloon", ConsoleSpawnBalloon, "Spawns a balloon.", "spawn_balloon <x> <y> <z> <colour>" },
     { "staff", ConsoleCommandStaff, "Staff management.", "staff <subcommand>" },
     { "terminate", ConsoleCommandTerminate, "Calls std::terminate(), for testing purposes only.", "terminate" },
     { "variables", ConsoleCommandVariables, "Lists all the variables that can be used with get and sometimes set.",

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -109,8 +109,9 @@ public:
         DrawPixelInfo* dpi, int32_t x, int32_t y, const ImageId maskImage, const ImageId colourImage) override;
     void DrawSpriteSolid(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
     void DrawGlyph(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette) override;
-    void DrawBitmap(
-        DrawPixelInfo* dpi, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x, int32_t y) override;
+    void DrawTTFBitmap(
+        DrawPixelInfo* dpi, TextDrawInfo* info, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x,
+        int32_t y, uint8_t hinting_threshold) override;
 
     void FlushCommandBuffers();
 
@@ -131,7 +132,7 @@ public:
     }
 
     virtual void Draw(
-        DrawPixelInfo* dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+        DrawPixelInfo& dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
         const uint8_t* weatherpattern) override
     {
         const uint8_t* pattern = weatherpattern;
@@ -141,7 +142,7 @@ public:
         uint8_t patternStartXOffset = xStart % patternXSpace;
         uint8_t patternStartYOffset = yStart % patternYSpace;
 
-        uint32_t pixelOffset = (dpi->pitch + dpi->width) * y + x;
+        uint32_t pixelOffset = (dpi.pitch + dpi.width) * y + x;
         uint8_t patternYPos = patternStartYOffset % patternYSpace;
 
         for (; height != 0; height--)
@@ -157,14 +158,14 @@ public:
                 auto patternPixel = pattern[patternYPos * 2 + 1];
                 for (; xPixelOffset < finalPixelOffset; xPixelOffset += patternXSpace)
                 {
-                    int32_t pixelX = xPixelOffset % dpi->width;
-                    int32_t pixelY = (xPixelOffset / dpi->width) % dpi->height;
+                    int32_t pixelX = xPixelOffset % dpi.width;
+                    int32_t pixelY = (xPixelOffset / dpi.width) % dpi.height;
 
-                    _drawingContext->DrawLine(dpi, patternPixel, { { pixelX, pixelY }, { pixelX + 1, pixelY + 1 } });
+                    _drawingContext->DrawLine(&dpi, patternPixel, { { pixelX, pixelY }, { pixelX + 1, pixelY + 1 } });
                 }
             }
 
-            pixelOffset += dpi->pitch + dpi->width;
+            pixelOffset += dpi.pitch + dpi.width;
             patternYPos++;
             patternYPos %= patternYSpace;
         }
@@ -325,14 +326,14 @@ public:
         _drawingContext->CalculcateClipping(&_bitsDPI);
 
         WindowUpdateAllViewports();
-        WindowDrawAll(&_bitsDPI, 0, 0, _width, _height);
+        WindowDrawAll(_bitsDPI, 0, 0, _width, _height);
     }
 
     void PaintWeather() override
     {
         _drawingContext->CalculcateClipping(&_bitsDPI);
 
-        DrawWeather(&_bitsDPI, &_weatherDrawer);
+        DrawWeather(_bitsDPI, &_weatherDrawer);
     }
 
     std::string Screenshot() override
@@ -340,7 +341,7 @@ public:
         const OpenGLFramebuffer& framebuffer = _drawingContext->GetFinalFramebuffer();
         framebuffer.Bind();
         framebuffer.GetPixels(_bitsDPI);
-        std::string result = ScreenshotDumpPNG(&_bitsDPI);
+        std::string result = ScreenshotDumpPNG(_bitsDPI);
         return result;
     }
 
@@ -906,8 +907,9 @@ void OpenGLDrawingContext::DrawGlyph(DrawPixelInfo* dpi, const ImageId image, in
     command.depth = _drawCount++;
 }
 
-void OpenGLDrawingContext::DrawBitmap(
-    DrawPixelInfo* dpi, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x, int32_t y)
+void OpenGLDrawingContext::DrawTTFBitmap(
+    DrawPixelInfo* dpi, TextDrawInfo* info, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x,
+    int32_t y, uint8_t hinting_threshold)
 {
     CalculcateClipping(dpi);
 
@@ -937,16 +939,53 @@ void OpenGLDrawingContext::DrawBitmap(
     right += _offsetX;
     bottom += _offsetY;
 
-    DrawRectCommand& command = _commandBuffers.rects.allocate();
-
+    if (info->flags & TEXT_DRAW_FLAG_OUTLINE)
+    {
+        std::array<ivec4, 4> boundsArr = { {
+            { left + 1, top, right + 1, bottom },
+            { left - 1, top, right - 1, bottom },
+            { left, top + 1, right, bottom + 1 },
+            { left, top - 1, right, bottom - 1 },
+        } };
+        for (auto b : boundsArr)
+        {
+            DrawRectCommand& command = _commandBuffers.rects.allocate();
+            command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
+            command.texColourAtlas = texture.index;
+            command.texColourBounds = texture.normalizedBounds;
+            command.texMaskAtlas = 0;
+            command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
+            command.palettes = { 0, 0, 0 };
+            command.flags = DrawRectCommand::FLAG_TTF_TEXT;
+            command.colour = info->palette[3];
+            command.bounds = b;
+            command.depth = _drawCount++;
+        }
+    }
+    if (info->flags & TEXT_DRAW_FLAG_INSET)
+    {
+        DrawRectCommand& command = _commandBuffers.rects.allocate();
+        command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
+        command.texColourAtlas = texture.index;
+        command.texColourBounds = texture.normalizedBounds;
+        command.texMaskAtlas = 0;
+        command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
+        command.palettes = { 0, 0, 0 };
+        command.flags = DrawRectCommand::FLAG_TTF_TEXT;
+        command.colour = info->palette[3];
+        command.bounds = { left + 1, top + 1, right + 1, bottom + 1 };
+        command.depth = _drawCount++;
+    }
+    auto& cmdBuf = hinting_threshold > 0 ? _commandBuffers.transparent : _commandBuffers.rects;
+    DrawRectCommand& command = cmdBuf.allocate();
     command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
     command.texColourAtlas = texture.index;
     command.texColourBounds = texture.normalizedBounds;
     command.texMaskAtlas = 0;
     command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.palettes = { 0, 0, 0 };
-    command.flags = 0;
-    command.colour = 0;
+    command.flags = DrawRectCommand::FLAG_TTF_TEXT | (hinting_threshold << 8);
+    command.colour = info->palette[1];
     command.bounds = { left, top, right, bottom };
     command.depth = _drawCount++;
 }
@@ -1021,7 +1060,8 @@ void OpenGLDrawingContext::HandleTransparency()
 
         _drawRectShader->Use();
         _drawRectShader->DrawInstances();
-        _swapFramebuffer->ApplyTransparency(*_applyTransparencyShader, _textureCache->GetPaletteTexture());
+        _swapFramebuffer->ApplyTransparency(
+            *_applyTransparencyShader, _textureCache->GetPaletteTexture(), _textureCache->GetBlendPaletteTexture());
     }
 
     _commandBuffers.transparent.clear();

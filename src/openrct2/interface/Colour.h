@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,38 +20,65 @@ using PaletteIndex = uint8_t;
  */
 enum : colour_t
 {
-    COLOUR_BLACK,
-    COLOUR_GREY,
-    COLOUR_WHITE,
-    COLOUR_DARK_PURPLE,
-    COLOUR_LIGHT_PURPLE,
-    COLOUR_BRIGHT_PURPLE,
-    COLOUR_DARK_BLUE,
-    COLOUR_LIGHT_BLUE,
-    COLOUR_ICY_BLUE,
-    COLOUR_TEAL,
-    COLOUR_AQUAMARINE,
-    COLOUR_SATURATED_GREEN,
-    COLOUR_DARK_GREEN,
-    COLOUR_MOSS_GREEN,
-    COLOUR_BRIGHT_GREEN,
-    COLOUR_OLIVE_GREEN,
-    COLOUR_DARK_OLIVE_GREEN,
-    COLOUR_BRIGHT_YELLOW,
-    COLOUR_YELLOW,
-    COLOUR_DARK_YELLOW,
-    COLOUR_LIGHT_ORANGE,
-    COLOUR_DARK_ORANGE,
-    COLOUR_LIGHT_BROWN,
-    COLOUR_SATURATED_BROWN,
-    COLOUR_DARK_BROWN,
-    COLOUR_SALMON_PINK,
-    COLOUR_BORDEAUX_RED,
-    COLOUR_SATURATED_RED,
-    COLOUR_BRIGHT_RED,
-    COLOUR_DARK_PINK,
-    COLOUR_BRIGHT_PINK,
-    COLOUR_LIGHT_PINK,
+    // Original Colours
+    COLOUR_BLACK,            // Black
+    COLOUR_GREY,             // Grey
+    COLOUR_WHITE,            // White
+    COLOUR_DARK_PURPLE,      // Dark purple
+    COLOUR_LIGHT_PURPLE,     // Light purple
+    COLOUR_BRIGHT_PURPLE,    // Bright purple
+    COLOUR_DARK_BLUE,        // Dark blue
+    COLOUR_LIGHT_BLUE,       // Light blue
+    COLOUR_ICY_BLUE,         // Icy blue
+    COLOUR_TEAL,             // Dark water
+    COLOUR_AQUAMARINE,       // Light water
+    COLOUR_SATURATED_GREEN,  // Saturated green
+    COLOUR_DARK_GREEN,       // Dark green
+    COLOUR_MOSS_GREEN,       // Moss green
+    COLOUR_BRIGHT_GREEN,     // Bright green
+    COLOUR_OLIVE_GREEN,      // Olive green
+    COLOUR_DARK_OLIVE_GREEN, // Dark olive green
+    COLOUR_BRIGHT_YELLOW,    // Bright yellow
+    COLOUR_YELLOW,           // Yellow
+    COLOUR_DARK_YELLOW,      // Dark yellow
+    COLOUR_LIGHT_ORANGE,     // Light orange
+    COLOUR_DARK_ORANGE,      // Dark orange
+    COLOUR_LIGHT_BROWN,      // Light brown
+    COLOUR_SATURATED_BROWN,  // Saturated brown
+    COLOUR_DARK_BROWN,       // Dark brown
+    COLOUR_SALMON_PINK,      // Salmon pink
+    COLOUR_BORDEAUX_RED,     // Bordeaux red
+    COLOUR_SATURATED_RED,    // Saturated red
+    COLOUR_BRIGHT_RED,       // Bright red
+    COLOUR_DARK_PINK,        // Dark pink
+    COLOUR_BRIGHT_PINK,      // Bright pink
+    COLOUR_LIGHT_PINK,       // Light pink
+
+    // Extended Colour Set
+    COLOUR_DARK_OLIVE_DARK,        // Army green
+    COLOUR_DARK_OLIVE_LIGHT,       // Honeydew
+    COLOUR_SATURATED_BROWN_LIGHT,  // Tan
+    COLOUR_BORDEAUX_RED_DARK,      // Maroon
+    COLOUR_BORDEAUX_RED_LIGHT,     // Coral pink
+    COLOUR_GRASS_GREEN_DARK,       // Forest green
+    COLOUR_GRASS_GREEN_LIGHT,      // Chartreuse
+    COLOUR_OLIVE_DARK,             // Hunter green
+    COLOUR_OLIVE_LIGHT,            // Celadon
+    COLOUR_SATURATED_GREEN_LIGHT,  // Lime green
+    COLOUR_TAN_DARK,               // Sepia
+    COLOUR_TAN_LIGHT,              // Peach
+    COLOUR_DULL_PURPLE_LIGHT,      // Periwinkle
+    COLOUR_DULL_GREEN_DARK,        // Viridian
+    COLOUR_DULL_GREEN_LIGHT,       // Seafoam green
+    COLOUR_SATURATED_PURPLE_DARK,  // Violet
+    COLOUR_SATURATED_PURPLE_LIGHT, // Lavender
+    COLOUR_ORANGE_LIGHT,           // Pastel orange
+    COLOUR_AQUA_DARK,              // Deep water
+    COLOUR_MAGENTA_LIGHT,          // Pastel pink
+    COLOUR_DULL_BROWN_DARK,        // Umber
+    COLOUR_DULL_BROWN_LIGHT,       // Beige
+    COLOUR_INVISIBLE,              // Invisible
+    COLOUR_VOID,                   // Void
 
     COLOUR_COUNT,
 
@@ -64,7 +91,8 @@ enum : colour_t
 enum
 {
     COLOUR_DARK_WATER = 9,
-    COLOUR_LIGHT_WATER = 10
+    COLOUR_LIGHT_WATER = 10,
+    COLOUR_DEEP_WATER = 50
 };
 
 enum : PaletteIndex
@@ -178,6 +206,9 @@ constexpr uint8_t PALETTE_LENGTH_REMAP = 12;
 constexpr uint8_t PALETTE_OFFSET_ANIMATED = PALETTE_INDEX_230;
 constexpr uint8_t PALETTE_LENGTH_ANIMATED = 16;
 
+constexpr uint8_t COLOUR_NUM_ORIGINAL = 32;
+constexpr uint8_t COLOUR_NUM_NORMAL = 54;
+
 #define TEXT_COLOUR_254 (254)
 #define TEXT_COLOUR_255 (255)
 
@@ -221,3 +252,6 @@ namespace Colour
 #ifndef NO_TTF
 uint8_t BlendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2);
 #endif
+
+typedef uint8_t BlendColourMapType[PALETTE_COUNT][PALETTE_COUNT];
+BlendColourMapType* GetBlendColourMap();

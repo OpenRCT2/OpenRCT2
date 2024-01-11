@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -33,7 +33,7 @@ const money64 AdvertisingCampaignPricePerWeek[] = {
     200.00_GBP, // RIDE
 };
 
-static constexpr const uint16_t AdvertisingCampaignGuestGenerationProbabilities[] = {
+static constexpr uint16_t AdvertisingCampaignGuestGenerationProbabilities[] = {
     400, 300, 200, 200, 250, 200,
 };
 
@@ -93,7 +93,7 @@ static void MarketingRaiseFinishedNotification(const MarketingCampaign& campaign
 }
 
 /**
- * Update status of marketing campaigns and send produce a news item when they have finished.
+ * Update status of marketing campaigns and produce a news item when they have finished.
  *  rct2: 0x0069E0C1
  */
 void MarketingUpdate()
@@ -231,7 +231,7 @@ MarketingCampaign* MarketingGetCampaign(int32_t campaignType)
 
 void MarketingNewCampaign(const MarketingCampaign& campaign)
 {
-    // Do not allow same campaign twice, just overwrite
+    // Do not allow the same campaign twice, just overwrite
     auto currentCampaign = MarketingGetCampaign(campaign.Type);
     if (currentCampaign != nullptr)
     {

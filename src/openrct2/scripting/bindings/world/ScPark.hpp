@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #    include "../../../common.h"
 #    include "../../Duktape.hpp"
 #    include "ScParkMessage.hpp"
+#    include "ScResearch.hpp"
 
 #    include <algorithm>
 #    include <vector>
@@ -23,7 +24,12 @@ namespace OpenRCT2::Scripting
 {
     class ScPark
     {
+    private:
+        duk_context* _context;
+
     public:
+        ScPark(duk_context* ctx);
+
         money64 cash_get() const;
         void cash_set(money64 value);
 
@@ -84,6 +90,8 @@ namespace OpenRCT2::Scripting
         bool getFlag(const std::string& key) const;
 
         void setFlag(const std::string& key, bool value);
+
+        std::shared_ptr<ScResearch> research_get() const;
 
         std::vector<std::shared_ptr<ScParkMessage>> messages_get() const;
 

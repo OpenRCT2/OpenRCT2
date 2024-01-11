@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -85,7 +85,7 @@ namespace OpenRCT2::Drawing
     };
 } // namespace OpenRCT2::Drawing
 
-constexpr const GamePalette StandardPalette = { {
+constexpr GamePalette StandardPalette = { {
     // 0 (Unused/Transparent)
     { 0, 0, 0, 255 },
 
@@ -361,18 +361,18 @@ constexpr const GamePalette StandardPalette = { {
     { 0, 255, 255, 255 },
 
     // 230 - 234 (Water waves)
-    { 99, 107, 7, 255 },
-    { 99, 107, 7, 255 },
     { 135, 143, 39, 255 },
     { 123, 131, 27, 255 },
-    { 99, 107, 7, 255 },
+    { 95, 103, 7, 255 },
+    { 87, 95, 0, 255 },
+    { 111, 119, 15, 255 },
 
     // 235 - 249 (Water sparkles)
-    { 151, 155, 55, 255 },
-    { 151, 155, 55, 255 },
+    { 255, 255, 199, 255 },
     { 227, 227, 155, 255 },
-    { 203, 203, 115, 255 },
-    { 151, 155, 55, 255 },
+    { 175, 175, 83, 255 },
+    { 151, 155, 51, 255 },
+    { 203, 203, 123, 255 },
 
     // 240 - 242 (Extra grey)
     { 91, 91, 67, 255 },

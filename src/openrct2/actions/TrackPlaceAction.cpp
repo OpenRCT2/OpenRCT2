@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -79,7 +79,7 @@ GameActions::Result TrackPlaceAction::Query() const
     {
         LOG_WARNING("Invalid ride subtype for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
 
     if (!DirectionValid(_origin.direction))
@@ -258,16 +258,6 @@ GameActions::Result TrackPlaceAction::Query() const
         }
         costs += canBuild.Cost;
 
-        // When building a level crossing, remove any pre-existing path furniture.
-        if (crossingMode == CREATE_CROSSING_MODE_TRACK_OVER_PATH)
-        {
-            auto footpathElement = MapGetFootpathElement(mapLoc);
-            if (footpathElement != nullptr && footpathElement->AsPath()->HasAddition())
-            {
-                footpathElement->AsPath()->SetAddition(0);
-            }
-        }
-
         const auto clearanceData = canBuild.GetData<ConstructClearResult>();
         uint8_t mapGroundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
         if (resultData.GroundFlags != 0 && (resultData.GroundFlags & mapGroundFlags) == 0)
@@ -422,7 +412,7 @@ GameActions::Result TrackPlaceAction::Execute() const
     {
         LOG_WARNING("Invalid ride subtype for track placement, rideIndex = %d", _rideIndex.ToUnderlying());
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
 
     auto res = GameActions::Result();
@@ -477,6 +467,16 @@ GameActions::Result TrackPlaceAction::Execute() const
             return canBuild;
         }
         costs += canBuild.Cost;
+
+        // When building a level crossing, remove any pre-existing path furniture.
+        if (crossingMode == CREATE_CROSSING_MODE_TRACK_OVER_PATH && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        {
+            auto footpathElement = MapGetFootpathElement(mapLoc);
+            if (footpathElement != nullptr && footpathElement->HasAddition())
+            {
+                footpathElement->SetAddition(0);
+            }
+        }
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsDisableClearanceChecks)
         {
@@ -573,12 +573,17 @@ GameActions::Result TrackPlaceAction::Execute() const
             case TrackElemType::SpinningTunnel:
                 MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
                 break;
+            case TrackElemType::Brakes:
+            case TrackElemType::DiagBrakes:
+                trackElement->SetBrakeClosed(true);
+                break;
         }
         if (TrackTypeHasSpeedSetting(_trackType))
         {
             trackElement->SetBrakeBoosterSpeed(_brakeSpeed);
         }
-        else if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
+
+        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
         {
             trackElement->SetDoorAState(LANDSCAPE_DOOR_CLOSED);
             trackElement->SetDoorBState(LANDSCAPE_DOOR_CLOSED);
@@ -618,9 +623,9 @@ GameActions::Result TrackPlaceAction::Execute() const
         }
 
         // If the placed tile is a station modify station properties.
-        // Don't do this if the ride is simulating and the tile is a ghost to prevent desyncs.
-        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN
-            && !(ride->status == RideStatus::Simulating && GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        // Don't do this if the tile is a ghost to prevent desyncs
+        // However, ghost tiles from track designs need to modify station data to display properly
+        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) || _fromTrackDesign))
         {
             if (trackBlock->index == 0)
             {
@@ -662,6 +667,7 @@ GameActions::Result TrackPlaceAction::Execute() const
                 ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
                 ride->CableLiftLoc = originLocation;
                 break;
+            case TrackElemType::DiagBlockBrakes:
             case TrackElemType::BlockBrakes:
             {
                 ride->num_block_brakes++;

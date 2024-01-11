@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -61,14 +61,14 @@ enum WindowStaffListWidgetIdx
     WIDX_STAFF_LIST_MAP,
 };
 
-static constexpr const StringId WINDOW_TITLE = STR_STAFF;
-static constexpr const int32_t WW = 320;
-static constexpr const int32_t WH = 270;
+static constexpr StringId WINDOW_TITLE = STR_STAFF;
+static constexpr int32_t WW = 320;
+static constexpr int32_t WH = 270;
 constexpr int32_t MAX_WW = 500;
 constexpr int32_t MAX_WH = 450;
 
 // clang-format off
-static Widget window_staff_list_widgets[] = {
+static Widget _staffListWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {    WW, WH - 43}, WindowWidgetType::Resize,    WindowColour::Secondary                                                 ), // tab content panel
     MakeTab   ({  3, 17},                                                                             STR_STAFF_HANDYMEN_TAB_TIP    ), // handymen tab
@@ -110,7 +110,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_staff_list_widgets;
+        widgets = _staffListWidgets;
         WindowInitScrollWidgets(*this);
 
         widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::Empty;
@@ -177,6 +177,7 @@ public:
             height = min_height;
             Invalidate();
         }
+        ResizeFrameWithPage();
     }
 
     void OnUpdate() override
@@ -237,9 +238,13 @@ public:
 
     void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
     {
+        if (dropdownIndex == -1)
+        {
+            return;
+        }
         if (widgetIndex == WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER)
         {
-            auto action = StaffSetColourAction(GetSelectedStaffType(), dropdownIndex);
+            auto action = StaffSetColourAction(GetSelectedStaffType(), ColourDropDownIndexToColour(dropdownIndex));
             GameActions::Execute(&action);
         }
     }
@@ -263,13 +268,7 @@ public:
         }
         SetWidgetPressed(WIDX_STAFF_LIST_QUICK_FIRE, _quickFireMode);
 
-        widgets[WIDX_STAFF_LIST_BACKGROUND].right = width - 1;
-        widgets[WIDX_STAFF_LIST_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_STAFF_LIST_TAB_CONTENT_PANEL].right = width - 1;
-        widgets[WIDX_STAFF_LIST_TAB_CONTENT_PANEL].bottom = height - 1;
-        widgets[WIDX_STAFF_LIST_TITLE].right = width - 2;
-        widgets[WIDX_STAFF_LIST_CLOSE].left = width - 2 - 11;
-        widgets[WIDX_STAFF_LIST_CLOSE].right = width - 2 - 11 + 10;
+        ResizeFrameWithPage();
         widgets[WIDX_STAFF_LIST_LIST].right = width - 4;
         widgets[WIDX_STAFF_LIST_LIST].bottom = height - 15;
         widgets[WIDX_STAFF_LIST_QUICK_FIRE].left = width - 77;
@@ -377,7 +376,7 @@ public:
     {
         auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
         GfxFillRect(
-            &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
+            dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
 
         // How much space do we have for the name and action columns? (Discount scroll area and icons.)
         const int32_t nonIconSpace = widgets[WIDX_STAFF_LIST_LIST].width() - 15 - 68;
@@ -405,7 +404,7 @@ public:
 
                 if (i == _highlightedIndex)
                 {
-                    GfxFilterRect(&dpi, { 0, y, 800, y + (SCROLLABLE_ROW_HEIGHT - 1) }, FilterPaletteID::PaletteDarken1);
+                    GfxFilterRect(dpi, { 0, y, 800, y + (SCROLLABLE_ROW_HEIGHT - 1) }, FilterPaletteID::PaletteDarken1);
                     format = (_quickFireMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
                 }
 
@@ -420,7 +419,7 @@ public:
                 // True if a patrol path is set for the worker
                 if (peep->HasPatrolArea())
                 {
-                    GfxDrawSprite(&dpi, ImageId(SPR_STAFF_PATROL_PATH), { nameColumnSize + 5, y });
+                    GfxDrawSprite(dpi, ImageId(SPR_STAFF_PATROL_PATH), { nameColumnSize + 5, y });
                 }
 
                 auto staffOrderIcon_x = nameColumnSize + 20;
@@ -433,7 +432,7 @@ public:
                     {
                         if (staffOrders & 1)
                         {
-                            GfxDrawSprite(&dpi, ImageId(staffOrderSprite), { staffOrderIcon_x, y });
+                            GfxDrawSprite(dpi, ImageId(staffOrderSprite), { staffOrderIcon_x, y });
                         }
                         staffOrders = staffOrders >> 1;
                         staffOrderIcon_x += 9;
@@ -443,7 +442,7 @@ public:
                 }
                 else
                 {
-                    GfxDrawSprite(&dpi, ImageId(GetEntertainerCostumeSprite(peep->SpriteType)), { staffOrderIcon_x, y });
+                    GfxDrawSprite(dpi, ImageId(GetEntertainerCostumeSprite(peep->SpriteType)), { staffOrderIcon_x, y });
                 }
             }
 
@@ -547,7 +546,6 @@ private:
             // If autoposition of staff is disabled, pickup peep and then open the staff window
             if (staff->State == PeepState::Picked)
             {
-                picked_peep_old_x = staff->x;
                 CoordsXYZ nullLoc{};
                 nullLoc.SetNull();
 
@@ -599,7 +597,7 @@ private:
         auto imageId = (_selectedTab == tabIndex ? (_tabAnimationIndex & ~3) : 0);
         imageId += GetPeepAnimation(type).base_image + 1;
         GfxDrawSprite(
-            &dpi, ImageId(imageId, colour), windowPos + ScreenCoordsXY{ (widget.left + widget.right) / 2, widget.bottom - 6 });
+            dpi, ImageId(imageId, colour), windowPos + ScreenCoordsXY{ (widget.left + widget.right) / 2, widget.bottom - 6 });
     }
 
     void DrawTabImage(DrawPixelInfo& dpi, int32_t tabIndex, PeepSpriteType type) const
@@ -608,12 +606,12 @@ private:
         const auto& widget = widgets[widgetIndex];
         DrawPixelInfo clippedDpi;
         if (ClipDrawPixelInfo(
-                &clippedDpi, &dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 },
-                widget.right - widget.left - 1, widget.bottom - widget.top - 1))
+                clippedDpi, dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, widget.right - widget.left - 1,
+                widget.bottom - widget.top - 1))
         {
             auto imageId = (_selectedTab == 3 ? (_tabAnimationIndex & ~3) : 0);
             imageId += GetPeepAnimation(type).base_image + 1;
-            GfxDrawSprite(&clippedDpi, ImageId(imageId), { 15, 23 });
+            GfxDrawSprite(clippedDpi, ImageId(imageId), { 15, 23 });
         }
     }
 

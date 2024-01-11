@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,12 +39,12 @@
 #include <cstring>
 #include <iterator>
 
-static constexpr const uint8_t Byte97B444[] = {
+static constexpr uint8_t Byte97B444[] = {
     0, 2, 1, 3, 8, 10, 9, 11, 4, 6, 5, 7, 12, 14, 13, 15, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 16, 0, 18, 15, 0,
 };
 
 // rct2: 0x97B464, 0x97B474, 0x97B484, 0x97B494
-static constexpr const CoordsXY viewport_surface_paint_data[][4] = {
+static constexpr CoordsXY viewport_surface_paint_data[][4] = {
     {
         { 32, 0 },
         { -32, 32 },
@@ -91,7 +91,7 @@ struct CornerHeight
 /**
 *  rct2: 0x0097B4A4 (R), 0x0097B4C4 (T), 0x0097B4E4 (L), 0x0097B504 (B)
 */
-static constexpr const CornerHeight corner_heights[] = {
+static constexpr CornerHeight corner_heights[] = {
     // T  R  B  L
     { 0, 0, 0, 0 },
     { 0, 0, 1, 0 },
@@ -128,30 +128,30 @@ static constexpr const CornerHeight corner_heights[] = {
 };
 
 // bottom left tint
-static constexpr const uint8_t Byte97B524[] = {
+static constexpr uint8_t Byte97B524[] = {
     2, 5, 1, 4, 2, 5, 1, 2, 2, 4,
     1, 2, 1, 3, 0, 3, 1, 5, 0,
 };
 
 // top left tint
-static constexpr const uint32_t Byte97B537[] = {
+static constexpr uint32_t Byte97B537[] = {
     2, 5, 2, 4, 2, 5, 1, 1, 3, 4,
     3, 2, 1, 2, 0, 3, 1, 5, 0,
 };
 
 // top right tint
-static constexpr const uint8_t Byte97B54A[] = {
+static constexpr uint8_t Byte97B54A[] = {
     2, 2, 2, 4, 0, 0, 1, 1, 3, 4,
     3, 5, 1, 2, 2, 3, 1, 5, 0,
 };
 
 // bottom right tint
-static constexpr const uint8_t Byte97B55D[] = {
+static constexpr uint8_t Byte97B55D[] = {
     2, 2, 1, 4, 0, 0, 1, 2, 2, 4,
     1, 5, 1, 3, 2, 3, 1, 5, 0,
 };
 
-static constexpr const uint8_t _tunnelHeights[TUNNEL_TYPE_COUNT][2] = {
+static constexpr uint8_t _tunnelHeights[TUNNEL_TYPE_COUNT][2] = {
     { 2, 2 },
     { 3, 3 },
     { 3, 5 },
@@ -177,7 +177,7 @@ static constexpr const uint8_t _tunnelHeights[TUNNEL_TYPE_COUNT][2] = {
     { 2, 2 },
 };
 
-static constexpr const int16_t _boundBoxZOffsets[TUNNEL_TYPE_COUNT] = {
+static constexpr int16_t _boundBoxZOffsets[TUNNEL_TYPE_COUNT] = {
     0,
     0,
     -32,
@@ -205,11 +205,11 @@ static constexpr const int16_t _boundBoxZOffsets[TUNNEL_TYPE_COUNT] = {
 
 // clang-format on
 // tunnel offset
-static constexpr const uint8_t Byte97B5B0[TUNNEL_TYPE_COUNT] = {
+static constexpr uint8_t Byte97B5B0[TUNNEL_TYPE_COUNT] = {
     0, 0, 0, 3, 3, 3, 6, 6, 6, 6, 10, 11, 12, 13, 14, 14, 16, 17, 18, 19, 20, 21, 22,
 };
 
-static constexpr const uint8_t Byte97B740[] = {
+static constexpr uint8_t Byte97B740[] = {
     0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 1, 4, 0,
 };
 
@@ -217,7 +217,7 @@ struct TileDescriptor
 {
     TileCoordsXY tile_coords;
     const TileElement* tile_element;
-    uint8_t terrain;
+    const TerrainSurfaceObject* surfaceObject;
     uint8_t slope;
     CornerHeight corner_heights;
 };
@@ -233,7 +233,7 @@ struct TileSurfaceBoundaryData
     BoundBoxXY Boundbox;
 };
 
-static constexpr const TileSurfaceBoundaryData _tileSurfaceBoundaries[4] = {
+static constexpr TileSurfaceBoundaryData _tileSurfaceBoundaries[4] = {
     {
         // Bottom right
         1,
@@ -300,95 +300,64 @@ static constexpr const TileSurfaceBoundaryData _tileSurfaceBoundaries[4] = {
     },
 };
 
-static const TerrainSurfaceObject* GetSurfaceObject(size_t index)
-{
-    PROFILED_FUNCTION();
-
-    TerrainSurfaceObject* result{};
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::TerrainSurface, index);
-    if (obj != nullptr)
-    {
-        return static_cast<TerrainSurfaceObject*>(obj);
-    }
-    return result;
-}
-
 static ImageId GetSurfaceImage(
-    const PaintSession& session, ObjectEntryIndex index, int32_t offset, uint8_t rotation, int32_t grassLength, bool grid,
-    bool underground)
+    const PaintSession& session, const TerrainSurfaceObject* surfaceObject, int32_t offset, uint8_t rotation,
+    int32_t grassLength, bool grid, bool underground)
 {
-    PROFILED_FUNCTION();
-
     ImageId image;
-    auto obj = GetSurfaceObject(index);
-    if (obj != nullptr)
+    if (surfaceObject != nullptr)
     {
-        image = ImageId(obj->GetImageId(
+        image = ImageId(surfaceObject->GetImageId(
             { session.MapPosition.x >> 5, session.MapPosition.y >> 5 }, grassLength, rotation, offset, grid, underground));
-        if (obj->Colour != 255)
+        if (surfaceObject->Colour != 255)
         {
-            image = image.WithPrimary(obj->Colour);
+            image = image.WithPrimary(surfaceObject->Colour);
         }
     }
     return image;
 }
 
-static ImageId GetSurfacePattern(uint8_t index, int32_t offset)
+static ImageId GetSurfacePattern(const TerrainSurfaceObject* surfaceObject, int32_t offset)
 {
-    PROFILED_FUNCTION();
-
     ImageId image;
-    auto obj = GetSurfaceObject(index);
-    if (obj != nullptr)
+    if (surfaceObject != nullptr)
     {
-        image = ImageId(obj->PatternBaseImageId + offset);
-        if (obj->Colour != 255)
+        image = ImageId(surfaceObject->PatternBaseImageId + offset);
+        if (surfaceObject->Colour != 255)
         {
-            image = image.WithPrimary(obj->Colour);
+            image = image.WithPrimary(surfaceObject->Colour);
         }
     }
     return image;
 }
 
-static bool SurfaceShouldSmoothSelf(uint8_t index)
+static bool SurfaceShouldSmoothSelf(const TerrainSurfaceObject* surfaceObject)
 {
-    PROFILED_FUNCTION();
+    if (surfaceObject == nullptr)
+        return false;
 
-    auto obj = GetSurfaceObject(index);
-    if (obj != nullptr)
-    {
-        return obj->Flags & TERRAIN_SURFACE_FLAGS::SMOOTH_WITH_SELF;
-    }
-    return false;
+    return surfaceObject->Flags & TERRAIN_SURFACE_FLAGS::SMOOTH_WITH_SELF;
 }
 
-static bool SurfaceShouldSmooth(uint8_t index)
+static bool SurfaceShouldSmooth(const TerrainSurfaceObject* surfaceObject)
 {
-    PROFILED_FUNCTION();
+    if (surfaceObject == nullptr)
+        return false;
 
-    auto obj = GetSurfaceObject(index);
-    if (obj != nullptr)
-    {
-        return obj->Flags & TERRAIN_SURFACE_FLAGS::SMOOTH_WITH_OTHER;
-    }
-    return false;
+    return surfaceObject->Flags & TERRAIN_SURFACE_FLAGS::SMOOTH_WITH_OTHER;
 }
 
-static ImageId GetEdgeImageWithOffset(uint8_t index, uint32_t offset)
+static ImageId GetEdgeImageWithOffset(const TerrainEdgeObject* edgeObject, uint32_t offset)
 {
     ImageId result;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::TerrainEdge, index);
-    if (obj != nullptr)
+    if (edgeObject != nullptr)
     {
-        auto tobj = static_cast<TerrainEdgeObject*>(obj);
-        result = ImageId(tobj->BaseImageId + offset);
+        result = ImageId(edgeObject->BaseImageId + offset);
     }
     return result;
 }
 
-static ImageId GetEdgeImage(uint8_t index, uint8_t type)
+static ImageId GetEdgeImage(const TerrainEdgeObject* edgeObject, uint8_t type)
 {
     static constexpr uint32_t offsets[] = {
         0,
@@ -400,25 +369,20 @@ static ImageId GetEdgeImage(uint8_t index, uint8_t type)
     ImageId result;
     if (type < std::size(offsets))
     {
-        result = GetEdgeImageWithOffset(index, offsets[type]);
+        result = GetEdgeImageWithOffset(edgeObject, offsets[type]);
     }
     return result;
 }
 
-static ImageId GetTunnelImage(ObjectEntryIndex index, uint8_t type, edge_t edge)
+static ImageId GetTunnelImage(const TerrainEdgeObject* edgeObject, uint8_t type, edge_t edge)
 {
-    PROFILED_FUNCTION();
-
     static constexpr uint32_t offsets[TUNNEL_TYPE_COUNT] = { 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80,
                                                              36, 48, 60, 72, 76, 80, 84, 88, 92, 96, 100 };
 
     bool hasDoors = false;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::TerrainEdge, index);
-    if (obj != nullptr)
+    if (edgeObject != nullptr)
     {
-        auto tobj = static_cast<TerrainEdgeObject*>(obj);
-        hasDoors = tobj->HasDoors && !tobj->UsesFallbackImages();
+        hasDoors = edgeObject->HasDoors && !edgeObject->UsesFallbackImages();
     }
 
     if (!hasDoors && type >= REGULAR_TUNNEL_TYPE_COUNT && type < std::size(offsets))
@@ -427,7 +391,7 @@ static ImageId GetTunnelImage(ObjectEntryIndex index, uint8_t type, edge_t edge)
     ImageId result;
     if (type < std::size(offsets))
     {
-        result = GetEdgeImageWithOffset(index, offsets[type]).WithIndexOffset(edge == EDGE_BOTTOMRIGHT ? 2 : 0);
+        result = GetEdgeImageWithOffset(edgeObject, offsets[type]).WithIndexOffset(edge == EDGE_BOTTOMRIGHT ? 2 : 0);
     }
     return result;
 }
@@ -522,21 +486,21 @@ static void ViewportSurfaceSmoothenEdge(
             break;
     }
 
-    if (self.terrain == neighbour.terrain)
+    if (self.surfaceObject == neighbour.surfaceObject)
     {
         // same tint
         if (cl == dh)
             return;
 
-        if (!SurfaceShouldSmoothSelf(self.terrain))
+        if (!SurfaceShouldSmoothSelf(self.surfaceObject))
             return;
     }
     else
     {
-        if (!SurfaceShouldSmooth(self.terrain))
+        if (!SurfaceShouldSmooth(self.surfaceObject))
             return;
 
-        if (!SurfaceShouldSmooth(neighbour.terrain))
+        if (!SurfaceShouldSmooth(neighbour.surfaceObject))
             return;
     }
 
@@ -546,7 +510,7 @@ static void ViewportSurfaceSmoothenEdge(
     {
         AttachedPaintStruct* out = session.LastAttachedPS;
         // set content and enable masking
-        out->ColourImageId = GetSurfacePattern(neighbour.terrain, cl);
+        out->ColourImageId = GetSurfacePattern(neighbour.surfaceObject, cl);
         out->IsMasked = true;
     }
 }
@@ -569,7 +533,7 @@ static bool TileIsInsideClipView(const TileDescriptor& tile)
 }
 
 static void ViewportSurfaceDrawTileSideBottom(
-    PaintSession& session, enum edge_t edge, uint16_t height, uint8_t edgeStyle, struct TileDescriptor self,
+    PaintSession& session, enum edge_t edge, uint16_t height, const TerrainEdgeObject* edgeObject, struct TileDescriptor self,
     struct TileDescriptor neighbour, bool isWater)
 {
     PROFILED_FUNCTION();
@@ -648,10 +612,10 @@ static void ViewportSurfaceDrawTileSideBottom(
         return;
     }
 
-    auto baseImageId = GetEdgeImage(edgeStyle, 0);
+    auto baseImageId = GetEdgeImage(edgeObject, 0);
     if (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
     {
-        baseImageId = GetEdgeImage(edgeStyle, 1);
+        baseImageId = GetEdgeImage(edgeObject, 1);
     }
 
     if (edge == EDGE_BOTTOMRIGHT)
@@ -739,7 +703,7 @@ static void ViewportSurfaceDrawTileSideBottom(
             boundBoxLength -= 16;
         }
 
-        auto imageId = GetTunnelImage(edgeStyle, tunnelType, edge);
+        auto imageId = GetTunnelImage(edgeObject, tunnelType, edge);
         PaintAddImageAsParent(
             session, imageId, { offset, zOffset },
             { { 0, 0, boundBoxOffsetZ }, { tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1 } });
@@ -753,7 +717,7 @@ static void ViewportSurfaceDrawTileSideBottom(
             boundBoxLength -= 16;
         }
 
-        imageId = GetTunnelImage(edgeStyle, tunnelType, edge).WithIndexOffset(1);
+        imageId = GetTunnelImage(edgeObject, tunnelType, edge).WithIndexOffset(1);
         PaintAddImageAsParent(
             session, imageId, { offset, curHeight * COORDS_Z_PER_TINY_Z },
             { { tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ },
@@ -768,24 +732,24 @@ static void ViewportSurfaceDrawTileSideBottom(
  *  rct2: 0x0065EB7D, 0x0065F0D8
  */
 static void ViewportSurfaceDrawLandSideBottom(
-    PaintSession& session, enum edge_t edge, uint16_t height, uint8_t edgeStyle, struct TileDescriptor self,
+    PaintSession& session, enum edge_t edge, uint16_t height, const TerrainEdgeObject* edgeObject, struct TileDescriptor self,
     struct TileDescriptor neighbour)
 {
-    ViewportSurfaceDrawTileSideBottom(session, edge, height, edgeStyle, self, neighbour, false);
+    ViewportSurfaceDrawTileSideBottom(session, edge, height, edgeObject, self, neighbour, false);
 }
 
 /**
  *  rct2: 0x0065F8B9, 0x0065FE26
  */
 static void ViewportSurfaceDrawWaterSideBottom(
-    PaintSession& session, enum edge_t edge, uint16_t height, uint8_t edgeStyle, struct TileDescriptor self,
+    PaintSession& session, enum edge_t edge, uint16_t height, const TerrainEdgeObject* edgeObject, struct TileDescriptor self,
     struct TileDescriptor neighbour)
 {
-    ViewportSurfaceDrawTileSideBottom(session, edge, height, edgeStyle, self, neighbour, true);
+    ViewportSurfaceDrawTileSideBottom(session, edge, height, edgeObject, self, neighbour, true);
 }
 
 static void ViewportSurfaceDrawTileSideTop(
-    PaintSession& session, enum edge_t edge, uint16_t height, uint8_t terrain, struct TileDescriptor self,
+    PaintSession& session, enum edge_t edge, uint16_t height, const TerrainEdgeObject* edgeObject, struct TileDescriptor self,
     struct TileDescriptor neighbour, bool isWater)
 {
     PROFILED_FUNCTION();
@@ -855,10 +819,10 @@ static void ViewportSurfaceDrawTileSideTop(
     ImageId baseImageId;
     if (isWater)
     {
-        baseImageId = GetEdgeImage(terrain, 2); // var_08
+        baseImageId = GetEdgeImage(edgeObject, 2); // var_08
         if (session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
         {
-            baseImageId = GetEdgeImage(terrain, 1); // var_04
+            baseImageId = GetEdgeImage(edgeObject, 1); // var_04
         }
         baseImageId = baseImageId.WithIndexOffset(edge == EDGE_TOPLEFT ? 5 : 0);
     }
@@ -867,12 +831,12 @@ static void ViewportSurfaceDrawTileSideTop(
         if (!(session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
         {
             const uint8_t incline = (cornerHeight2 - cornerHeight1) + 1;
-            const auto imageId = GetEdgeImage(terrain, 3).WithIndexOffset((edge == EDGE_TOPLEFT ? 3 : 0) + incline);
+            const auto imageId = GetEdgeImage(edgeObject, 3).WithIndexOffset((edge == EDGE_TOPLEFT ? 3 : 0) + incline);
             const int16_t y = (height - cornerHeight1) * COORDS_Z_PER_TINY_Z;
             PaintAttachToPreviousPS(session, imageId, 0, y);
             return;
         }
-        baseImageId = GetEdgeImage(terrain, 1).WithIndexOffset(edge == EDGE_TOPLEFT ? 5 : 0);
+        baseImageId = GetEdgeImage(edgeObject, 1).WithIndexOffset(edge == EDGE_TOPLEFT ? 5 : 0);
     }
 
     uint8_t cur_height = std::min(neighbourCornerHeight2, neighbourCornerHeight1);
@@ -927,20 +891,20 @@ static void ViewportSurfaceDrawTileSideTop(
  *  rct2: 0x0065F63B, 0x0065F77D
  */
 static void ViewportSurfaceDrawLandSideTop(
-    PaintSession& session, enum edge_t edge, uint16_t height, uint8_t terrain, struct TileDescriptor self,
+    PaintSession& session, enum edge_t edge, uint16_t height, const TerrainEdgeObject* edgeObject, struct TileDescriptor self,
     struct TileDescriptor neighbour)
 {
-    ViewportSurfaceDrawTileSideTop(session, edge, height, terrain, self, neighbour, false);
+    ViewportSurfaceDrawTileSideTop(session, edge, height, edgeObject, self, neighbour, false);
 }
 
 /**
  *  rct2: 0x0066039B, 0x006604F1
  */
 static void ViewportSurfaceDrawWaterSideTop(
-    PaintSession& session, enum edge_t edge, uint16_t height, uint8_t terrain, struct TileDescriptor self,
+    PaintSession& session, enum edge_t edge, uint16_t height, const TerrainEdgeObject* edgeObject, struct TileDescriptor self,
     struct TileDescriptor neighbour)
 {
-    ViewportSurfaceDrawTileSideTop(session, edge, height, terrain, self, neighbour, true);
+    ViewportSurfaceDrawTileSideTop(session, edge, height, edgeObject, self, neighbour, true);
 }
 
 static std::pair<int32_t, int32_t> SurfaceGetHeightAboveWater(
@@ -1023,23 +987,24 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 {
     PROFILED_FUNCTION();
 
-    DrawPixelInfo* dpi = &session.DPI;
     session.InteractionType = ViewportInteractionItem::Terrain;
     session.Flags |= PaintSessionFlags::PassedSurface;
-    session.SurfaceElement = reinterpret_cast<const TileElement*>(&tileElement);
+    session.Surface = &tileElement;
 
-    const auto zoomLevel = dpi->zoom_level;
+    const auto zoomLevel = session.DPI.zoom_level;
     const uint8_t rotation = session.CurrentRotation;
-    const auto terrain_type = tileElement.GetSurfaceStyle();
     const uint8_t surfaceShape = ViewportSurfacePaintSetupGetRelativeSlope(tileElement, rotation);
     const CoordsXY& base = session.SpritePosition;
     const CornerHeight& cornerHeights = corner_heights[surfaceShape];
     const TileElement* elementPtr = &reinterpret_cast<const TileElement&>(tileElement);
 
+    const auto* surfaceObject = tileElement.GetSurfaceObject();
+    const auto* edgeObject = tileElement.GetEdgeObject();
+
     TileDescriptor selfDescriptor = {
         TileCoordsXY(base),
         elementPtr,
-        static_cast<uint8_t>(terrain_type),
+        surfaceObject,
         surfaceShape,
         {
             static_cast<uint8_t>(height / 16 + cornerHeights.top),
@@ -1077,7 +1042,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
         descriptor.tile_coords = TileCoordsXY{ position };
         descriptor.tile_element = reinterpret_cast<TileElement*>(surfaceElement);
-        descriptor.terrain = surfaceElement->GetSurfaceStyle();
+        descriptor.surfaceObject = surfaceElement->GetSurfaceObject();
         descriptor.slope = surfaceSlope;
         descriptor.corner_heights.top = baseHeight + ch.top;
         descriptor.corner_heights.right = baseHeight + ch.right;
@@ -1132,16 +1097,16 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         }
         else
         {
-            imageId = GetSurfaceImage(session, terrain_type, image_offset, rotation, grassLength, showGridlines, false);
+            imageId = GetSurfaceImage(session, surfaceObject, image_offset, rotation, grassLength, showGridlines, false);
         }
         if (session.ViewFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE))
         {
             imageId = imageId.WithTransparency(FilterPaletteID::PaletteDarken1);
         }
 
-        if (OpenRCT2::TileInspector::IsElementSelected(elementPtr))
+        if (session.SelectedElement == elementPtr)
         {
-            imageId = imageId.WithRemap(FilterPaletteID::Palette44);
+            imageId = imageId.WithRemap(FilterPaletteID::PaletteGhost);
         }
 
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, -1 });
@@ -1220,7 +1185,9 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
             {
                 // Walls
                 // Loc661089:
-                const auto fpId = static_cast<FilterPaletteID>((((mapSelectionType - 9) + rotation) & 3) + 0x21);
+                const auto fpId = static_cast<FilterPaletteID>(
+                    (((mapSelectionType - MAP_SELECT_TYPE_EDGE_0 + 1) + rotation) & 3)
+                    + static_cast<uint32_t>(FilterPaletteID::PaletteLandMarker0));
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_EDGE + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
@@ -1229,7 +1196,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 // Loc661051:(no jump)
                 // Selection split into four quarter segments
                 const auto fpId = static_cast<FilterPaletteID>(
-                    (((mapSelectionType - MAP_SELECT_TYPE_QUARTER_0) + rotation) & 3) + 0x27);
+                    (((mapSelectionType - MAP_SELECT_TYPE_QUARTER_0) + rotation) & 3)
+                    + static_cast<uint32_t>(FilterPaletteID::PaletteQuarterMarker0));
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_QUARTER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
@@ -1242,7 +1210,8 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                     eax = (mapSelectionType + rotation) & 3;
                 }
 
-                const auto fpId = static_cast<FilterPaletteID>(eax + 0x21);
+                const auto fpId = static_cast<FilterPaletteID>(
+                    eax + static_cast<uint32_t>(FilterPaletteID::PaletteLandMarker0));
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
@@ -1251,7 +1220,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 // The water tool should draw its grid _on_ the water, rather than on the surface under water.
                 auto [local_height, local_surfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
 
-                const auto fpId = static_cast<FilterPaletteID>(38);
+                const auto fpId = FilterPaletteID::PaletteWaterMarker;
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[local_surfaceShape], fpId);
 
                 PaintStruct* backup = session.LastPS;
@@ -1272,10 +1241,10 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 continue;
             }
 
-            FilterPaletteID fpId = static_cast<FilterPaletteID>(37);
+            FilterPaletteID fpId = FilterPaletteID::PaletteSceneryGroundMarker;
             if (gMapSelectFlags & MAP_SELECT_FLAG_GREEN)
             {
-                fpId = static_cast<FilterPaletteID>(43);
+                fpId = FilterPaletteID::PaletteRideGroundMarker;
             }
 
             const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
@@ -1297,22 +1266,17 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         && !(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
     {
         const uint8_t image_offset = Byte97B444[surfaceShape];
-        auto imageId = GetSurfaceImage(session, terrain_type, image_offset, rotation, 1, false, true);
+        auto imageId = GetSurfaceImage(session, surfaceObject, image_offset, rotation, 1, false, true);
         PaintAttachToPreviousPS(session, imageId, 0, 0);
     }
 
     if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
     {
-        const auto edgeStyle = tileElement.GetEdgeStyle();
-        if (static_cast<int32_t>(edgeStyle) >= object_entry_group_counts[EnumValue(ObjectType::TerrainEdge)])
-        {
-            LOG_VERBOSE("edgeStyle: %d", edgeStyle);
-        }
-
-        ViewportSurfaceDrawLandSideTop(session, EDGE_TOPLEFT, height, edgeStyle, tileDescriptors[0], tileDescriptors[3]);
-        ViewportSurfaceDrawLandSideTop(session, EDGE_TOPRIGHT, height, edgeStyle, tileDescriptors[0], tileDescriptors[4]);
-        ViewportSurfaceDrawLandSideBottom(session, EDGE_BOTTOMLEFT, height, edgeStyle, tileDescriptors[0], tileDescriptors[1]);
-        ViewportSurfaceDrawLandSideBottom(session, EDGE_BOTTOMRIGHT, height, edgeStyle, tileDescriptors[0], tileDescriptors[2]);
+        ViewportSurfaceDrawLandSideTop(session, EDGE_TOPLEFT, height, edgeObject, tileDescriptors[0], tileDescriptors[3]);
+        ViewportSurfaceDrawLandSideTop(session, EDGE_TOPRIGHT, height, edgeObject, tileDescriptors[0], tileDescriptors[4]);
+        ViewportSurfaceDrawLandSideBottom(session, EDGE_BOTTOMLEFT, height, edgeObject, tileDescriptors[0], tileDescriptors[1]);
+        ViewportSurfaceDrawLandSideBottom(
+            session, EDGE_BOTTOMRIGHT, height, edgeObject, tileDescriptors[0], tileDescriptors[2]);
     }
 
     const uint16_t waterHeight = tileElement.GetWaterHeight();
@@ -1342,18 +1306,14 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
         if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
         {
-            // This wasn't in the original, but the code depended on globals that were only set in a different conditional
-            const uint32_t edgeStyle = tileElement.GetEdgeStyle();
-            // end new code
-
             ViewportSurfaceDrawWaterSideBottom(
-                session, EDGE_BOTTOMLEFT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[1]);
+                session, EDGE_BOTTOMLEFT, waterHeight, edgeObject, tileDescriptors[0], tileDescriptors[1]);
             ViewportSurfaceDrawWaterSideBottom(
-                session, EDGE_BOTTOMRIGHT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[2]);
+                session, EDGE_BOTTOMRIGHT, waterHeight, edgeObject, tileDescriptors[0], tileDescriptors[2]);
             ViewportSurfaceDrawWaterSideTop(
-                session, EDGE_TOPLEFT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[3]);
+                session, EDGE_TOPLEFT, waterHeight, edgeObject, tileDescriptors[0], tileDescriptors[3]);
             ViewportSurfaceDrawWaterSideTop(
-                session, EDGE_TOPRIGHT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[4]);
+                session, EDGE_TOPRIGHT, waterHeight, edgeObject, tileDescriptors[0], tileDescriptors[4]);
         }
     }
 

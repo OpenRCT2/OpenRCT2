@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,8 +24,9 @@ struct Balloon : EntityBase
     uint8_t colour;
     static void Create(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped);
     void Update();
-    void Pop();
+    void Pop(bool playSound);
     void Press();
     void Serialise(DataSerialiser& stream);
     void Paint(PaintSession& session, int32_t imageDirection) const;
+    bool Collides() const;
 };

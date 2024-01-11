@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -101,11 +101,11 @@ void PaintBanner(PaintSession& session, uint8_t direction, int32_t height, const
     if (bannerElement.IsGhost())
     {
         session.InteractionType = ViewportInteractionItem::None;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
-    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&bannerElement)))
+    else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&bannerElement))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
     else
     {

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,6 +34,7 @@ class ErrorWindow final : public Window
 private:
     std::string _text;
     uint16_t _numLines;
+    uint8_t _staleCount;
 
 public:
     ErrorWindow(std::string text, uint16_t numLines)
@@ -48,7 +49,7 @@ public:
         window_error_widgets[WIDX_BACKGROUND].bottom = height;
 
         widgets = window_error_widgets;
-        error.var_480 = 0;
+        _staleCount = 0;
         if (!gDisableErrorWindowSound)
         {
             OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Error, 0, windowPos.x + (width / 2));
@@ -63,44 +64,45 @@ public:
         ScreenCoordsXY rightTop{ rightBottom.x, leftTop.y };
 
         GfxFilterRect(
-            &dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } },
+            dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } },
             FilterPaletteID::Palette45);
-        GfxFilterRect(&dpi, ScreenRect{ leftTop, rightBottom }, FilterPaletteID::PaletteGlassSaturatedRed);
+        GfxFilterRect(dpi, ScreenRect{ leftTop, rightBottom }, FilterPaletteID::PaletteGlassSaturatedRed);
 
         GfxFilterRect(
-            &dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 0, 2 }, leftBottom - ScreenCoordsXY{ 0, 2 } },
+            dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 0, 2 }, leftBottom - ScreenCoordsXY{ 0, 2 } },
             FilterPaletteID::PaletteDarken3);
         GfxFilterRect(
-            &dpi, ScreenRect{ rightTop + ScreenCoordsXY{ 0, 2 }, rightBottom - ScreenCoordsXY{ 0, 2 } },
+            dpi, ScreenRect{ rightTop + ScreenCoordsXY{ 0, 2 }, rightBottom - ScreenCoordsXY{ 0, 2 } },
             FilterPaletteID::PaletteDarken3);
         GfxFilterRect(
-            &dpi, ScreenRect{ leftBottom + ScreenCoordsXY{ 2, 0 }, rightBottom - ScreenCoordsXY{ 2, 0 } },
+            dpi, ScreenRect{ leftBottom + ScreenCoordsXY{ 2, 0 }, rightBottom - ScreenCoordsXY{ 2, 0 } },
             FilterPaletteID::PaletteDarken3);
         GfxFilterRect(
-            &dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 2, 0 }, rightTop - ScreenCoordsXY{ 2, 0 } },
+            dpi, ScreenRect{ leftTop + ScreenCoordsXY{ 2, 0 }, rightTop - ScreenCoordsXY{ 2, 0 } },
             FilterPaletteID::PaletteDarken3);
 
         GfxFilterRect(
-            &dpi, ScreenRect{ rightTop + ScreenCoordsXY{ 1, 1 }, rightTop + ScreenCoordsXY{ 1, 1 } },
+            dpi, ScreenRect{ rightTop + ScreenCoordsXY{ 1, 1 }, rightTop + ScreenCoordsXY{ 1, 1 } },
             FilterPaletteID::PaletteDarken3);
         GfxFilterRect(
-            &dpi, ScreenRect{ rightTop + ScreenCoordsXY{ -1, 1 }, rightTop + ScreenCoordsXY{ -1, 1 } },
+            dpi, ScreenRect{ rightTop + ScreenCoordsXY{ -1, 1 }, rightTop + ScreenCoordsXY{ -1, 1 } },
             FilterPaletteID::PaletteDarken3);
         GfxFilterRect(
-            &dpi, ScreenRect{ leftBottom + ScreenCoordsXY{ 1, -1 }, leftBottom + ScreenCoordsXY{ 1, -1 } },
+            dpi, ScreenRect{ leftBottom + ScreenCoordsXY{ 1, -1 }, leftBottom + ScreenCoordsXY{ 1, -1 } },
             FilterPaletteID::PaletteDarken3);
         GfxFilterRect(
-            &dpi, ScreenRect{ rightBottom - ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } },
+            dpi, ScreenRect{ rightBottom - ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } },
             FilterPaletteID::PaletteDarken3);
 
         DrawStringCentredRaw(
             dpi, { leftTop + ScreenCoordsXY{ (width + 1) / 2 - 1, 1 } }, _numLines, _text.data(), FontStyle::Medium);
     }
 
-    void OnUnknown5() override
+    void OnPeriodicUpdate() override
     {
-        error.var_480++;
-        if (error.var_480 >= 8)
+        // Close the window after 8 seconds of showing
+        _staleCount++;
+        if (_staleCount >= 8)
         {
             Close();
         }

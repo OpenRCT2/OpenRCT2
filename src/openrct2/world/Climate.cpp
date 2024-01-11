@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -91,7 +91,7 @@ int32_t ClimateCelsiusToFahrenheit(int32_t celsius)
 void ClimateReset(ClimateType climate)
 {
     auto weather = WeatherType::PartiallyCloudy;
-    int32_t month = DateGetMonth(gDateMonthsElapsed);
+    int32_t month = GetDate().GetMonth();
     const WeatherTransition* transition = &ClimateTransitions[static_cast<uint8_t>(climate)][month];
     const WeatherState* weatherState = &ClimateWeatherData[EnumValue(weather)];
 
@@ -197,7 +197,7 @@ void ClimateUpdate()
 
 void ClimateForceWeather(WeatherType weather)
 {
-    int32_t month = DateGetMonth(gDateMonthsElapsed);
+    int32_t month = GetDate().GetMonth();
     const WeatherTransition* transition = &ClimateTransitions[static_cast<uint8_t>(gClimate)][month];
     const auto weatherState = &ClimateWeatherData[EnumValue(weather)];
 
@@ -295,7 +295,7 @@ static int8_t ClimateStepWeatherLevel(int8_t currentWeatherLevel, int8_t nextWea
  */
 static void ClimateDetermineFutureWeather(int32_t randomDistribution)
 {
-    int32_t month = DateGetMonth(gDateMonthsElapsed);
+    int32_t month = GetDate().GetMonth();
 
     // Generate a random variable with values 0 up to DistributionSize-1 and chose weather from the distribution table
     // accordingly
@@ -477,7 +477,7 @@ constexpr auto R = WeatherType::Rain;
 constexpr auto H = WeatherType::HeavyRain;
 constexpr auto T = WeatherType::Thunder;
 
-static constexpr const WeatherTransition ClimateTransitionsCoolAndWet[] = {
+static constexpr WeatherTransition ClimateTransitionsCoolAndWet[] = {
     { 8, 18, { S, P, P, P, P, P, C, C, C, C, C, C, C, R, R, R, H, H, S, S, S, S, S } },
     { 10, 21, { P, P, P, P, P, C, C, C, C, C, C, C, C, C, R, R, R, H, H, H, T, S, S } },
     { 14, 17, { S, S, S, P, P, P, P, P, P, C, C, C, C, R, R, R, H, S, S, S, S, S, S } },
@@ -487,7 +487,7 @@ static constexpr const WeatherTransition ClimateTransitionsCoolAndWet[] = {
     { 16, 19, { S, S, S, P, P, P, P, P, C, C, C, C, C, C, R, R, H, H, T, S, S, S, S } },
     { 13, 16, { S, S, P, P, P, P, C, C, C, C, C, C, R, R, H, T, S, S, S, S, S, S, S } },
 };
-static constexpr const WeatherTransition ClimateTransitionsWarm[] = {
+static constexpr WeatherTransition ClimateTransitionsWarm[] = {
     { 12, 21, { S, S, S, S, S, P, P, P, P, P, P, P, P, C, C, C, C, C, C, C, H, S, S } },
     { 13, 22, { S, S, S, S, S, P, P, P, P, P, P, C, C, C, C, C, C, C, C, C, R, T, S } },
     { 16, 17, { S, S, S, S, S, S, P, P, P, P, P, P, C, C, C, C, R, S, S, S, S, S, S } },
@@ -497,7 +497,7 @@ static constexpr const WeatherTransition ClimateTransitionsWarm[] = {
     { 19, 17, { S, S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, R, S, S, S, S, S, S } },
     { 16, 17, { S, S, P, P, P, P, P, C, C, C, C, C, C, C, C, C, H, S, S, S, S, S, S } },
 };
-static constexpr const WeatherTransition ClimateTransitionsHotAndDry[] = {
+static constexpr WeatherTransition ClimateTransitionsHotAndDry[] = {
     { 12, 15, { S, S, S, S, P, P, P, P, P, P, P, P, C, C, R, S, S, S, S, S, S, S, S } },
     { 14, 12, { S, S, S, S, S, P, P, P, P, P, C, C, S, S, S, S, S, S, S, S, S, S, S } },
     { 16, 11, { S, S, S, S, S, S, P, P, P, P, C, S, S, S, S, S, S, S, S, S, S, S, S } },
@@ -507,7 +507,7 @@ static constexpr const WeatherTransition ClimateTransitionsHotAndDry[] = {
     { 21, 12, { S, S, S, S, S, S, S, P, P, P, C, T, S, S, S, S, S, S, S, S, S, S, S } },
     { 16, 13, { S, S, S, S, S, S, S, S, P, P, P, C, R, S, S, S, S, S, S, S, S, S, S } },
 };
-static constexpr const WeatherTransition ClimateTransitionsCold[] = {
+static constexpr WeatherTransition ClimateTransitionsCold[] = {
     { 4, 18, { S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, C, R, H, S, S, S, S, S } },
     { 5, 21, { S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, C, C, C, R, H, T, S, S } },
     { 7, 17, { S, S, S, S, P, P, P, P, P, P, P, C, C, C, C, R, H, S, S, S, S, S, S } },

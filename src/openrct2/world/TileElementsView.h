@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -41,7 +41,7 @@ namespace OpenRCT2
 
     template<typename T = TileElement> class TileElementsView
     {
-        const CoordsXY _loc;
+        const TileCoordsXY _loc;
 
     public:
         struct Iterator
@@ -103,6 +103,11 @@ namespace OpenRCT2
             using reference = const T&;
             using iterator_category = std::forward_iterator_tag;
         };
+
+        TileElementsView(const TileCoordsXY& loc)
+            : _loc(loc)
+        {
+        }
 
         TileElementsView(const CoordsXY& loc)
             : _loc(loc)

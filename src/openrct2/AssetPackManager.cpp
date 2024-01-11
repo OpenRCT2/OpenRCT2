@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,9 +15,9 @@
 #include "config/Config.h"
 #include "core/Console.hpp"
 #include "core/FileSystem.hpp"
+#include "core/Path.hpp"
 #include "core/String.hpp"
 #include "object/AudioSampleTable.h"
-#include "platform/Platform.h"
 
 #include <cstdio>
 
@@ -72,7 +72,7 @@ void AssetPackManager::Scan()
     Scan(openrct2Dir);
 
     auto userDirectory = fs::u8path(env->GetDirectoryPath(DIRBASE::USER, DIRID::ASSET_PACK));
-    Platform::EnsureDirectoryExists(userDirectory.u8string());
+    Path::CreateDirectory(userDirectory.u8string());
     Scan(userDirectory);
 }
 

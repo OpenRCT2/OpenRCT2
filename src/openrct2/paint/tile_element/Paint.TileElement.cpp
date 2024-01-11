@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -94,12 +94,11 @@ static void BlankTilesPaint(PaintSession& session, int32_t x, int32_t y)
     dx -= 16;
     int32_t bx = dx + 32;
 
-    DrawPixelInfo* dpi = &session.DPI;
-    if (bx <= dpi->y)
+    if (bx <= session.DPI.y)
         return;
     dx -= 20;
-    dx -= dpi->height;
-    if (dx >= dpi->y)
+    dx -= session.DPI.height;
+    if (dx >= session.DPI.y)
         return;
 
     session.SpritePosition.x = x;
@@ -119,7 +118,6 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
     PROFILED_FUNCTION();
 
     CoordsXY coords = origCoords;
-    DrawPixelInfo* dpi = &session.DPI;
 
     if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
     {
@@ -184,7 +182,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         PaintAddImageAsParent(session, imageId, { 0, 0, arrowZ }, { { 0, 0, arrowZ + 18 }, { 32, 32, -1 } });
     }
 
-    if (screenMinY + 52 <= dpi->y)
+    if (screenMinY + 52 <= session.DPI.y)
         return;
 
     const TileElement* element = tile_element; // push tile_element
@@ -208,7 +206,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         max_height = std::max(max_height, VirtualFloorGetHeight());
     }
 
-    if (screenMinY - (max_height + 32) >= dpi->y + dpi->height)
+    if (screenMinY - (max_height + 32) >= session.DPI.y + session.DPI.height)
         return;
 
     session.SpritePosition.x = coords.x;
@@ -305,7 +303,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         return;
     }
 
-    static constexpr const int32_t segmentPositions[][3] = {
+    static constexpr int32_t segmentPositions[][3] = {
         { 0, 6, 2 },
         { 5, 4, 8 },
         { 1, 7, 3 },
@@ -316,7 +314,7 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
         for (std::size_t sx = 0; sx < std::size(segmentPositions[sy]); sx++)
         {
             uint16_t segmentHeight = session.SupportSegments[segmentPositions[sy][sx]].height;
-            auto imageColourFlats = ImageId(SPR_LAND_TOOL_SIZE_1).WithTransparency(FilterPaletteID::PaletteDarken3);
+            auto imageColourFlats = ImageId(SPR_LAND_TOOL_SIZE_1).WithTransparency(FilterPaletteID::PaletteGlassBlack);
             if (segmentHeight == 0xFFFF)
             {
                 segmentHeight = session.Support.height;
@@ -331,13 +329,9 @@ static void PaintTileElementBase(PaintSession& session, const CoordsXY& origCoor
 
             int32_t xOffset = static_cast<int32_t>(sy) * 10;
             int32_t yOffset = -22 + static_cast<int32_t>(sx) * 10;
-            PaintStruct* ps = PaintAddImageAsParent(
+            PaintAddImageAsParent(
                 session, imageColourFlats, { xOffset, yOffset, segmentHeight },
                 { { xOffset + 1, yOffset + 16, segmentHeight }, { 10, 10, 1 } });
-            if (ps != nullptr)
-            {
-                ps->image_id = ps->image_id.WithTertiary(COLOUR_BORDEAUX_RED);
-            }
         }
     }
 }

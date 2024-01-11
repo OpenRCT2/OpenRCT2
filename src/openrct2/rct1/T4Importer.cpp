@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,7 +40,7 @@ namespace RCT1
         bool Load(const utf8* path) override
         {
             const auto extension = Path::GetExtension(path);
-            if (String::Equals(extension, ".td4", true))
+            if (String::IEquals(extension, ".td4"))
             {
                 _name = GetNameFromTrackPath(path);
                 auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
@@ -204,6 +204,7 @@ namespace RCT1
                 td->vehicle_colours[i] = td->vehicle_colours[0];
             }
 
+            td->StationObjectIdentifier = GetStationIdentifierFromStyle(RCT12_STATION_STYLE_PLAIN);
             td->depart_flags = td4Base.DepartFlags;
             td->number_of_trains = td4Base.NumberOfTrains;
             td->number_of_cars_per_train = td4Base.NumberOfCarsPerTrain;
@@ -266,8 +267,8 @@ namespace RCT1
                     _stream.SetPosition(_stream.GetPosition() - 1);
                     _stream.Read(&t4TrackElement, sizeof(TD46TrackElement));
                     TrackDesignTrackElement trackElement{};
-                    trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.Type, td->type);
-                    trackElement.flags = t4TrackElement.Flags;
+                    trackElement.Type = RCT1TrackTypeToOpenRCT2(t4TrackElement.Type, td->type);
+                    ConvertFromTD46Flags(trackElement, t4TrackElement.Flags);
                     td->track_elements.push_back(trackElement);
                 }
             }

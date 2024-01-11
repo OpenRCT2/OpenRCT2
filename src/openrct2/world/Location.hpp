@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,14 +14,14 @@
 
 #include <algorithm>
 
-constexpr const int16_t LOCATION_NULL = -32768;
+constexpr int16_t LOCATION_NULL = -32768;
 
-constexpr const int32_t COORDS_XY_STEP = 32;
-constexpr const int32_t COORDS_XY_HALF_TILE = (COORDS_XY_STEP / 2);
-constexpr const int32_t COORDS_Z_STEP = 8;
-constexpr const int32_t COORDS_Z_PER_TINY_Z = 16;
+constexpr int32_t COORDS_XY_STEP = 32;
+constexpr int32_t COORDS_XY_HALF_TILE = (COORDS_XY_STEP / 2);
+constexpr int32_t COORDS_Z_STEP = 8;
+constexpr int32_t COORDS_Z_PER_TINY_Z = 16;
 
-constexpr const auto NumOrthogonalDirections = 4;
+constexpr auto NumOrthogonalDirections = 4;
 
 constexpr int32_t COORDS_NULL = 0xFFFF8000;
 
@@ -65,7 +65,7 @@ struct ScreenCoordsXY
     {
     }
 
-    constexpr const ScreenCoordsXY operator-(const ScreenCoordsXY& rhs) const
+    constexpr ScreenCoordsXY operator-(const ScreenCoordsXY& rhs) const
     {
         return { x - rhs.x, y - rhs.y };
     }
@@ -84,17 +84,17 @@ struct ScreenCoordsXY
         return *this;
     }
 
-    constexpr const ScreenCoordsXY operator+(const ScreenCoordsXY& rhs) const
+    constexpr ScreenCoordsXY operator+(const ScreenCoordsXY& rhs) const
     {
         return { x + rhs.x, y + rhs.y };
     }
 
-    constexpr const ScreenCoordsXY operator+(const ScreenSize& rhs) const
+    constexpr ScreenCoordsXY operator+(const ScreenSize& rhs) const
     {
         return { x + rhs.width, y + rhs.height };
     }
 
-    constexpr const ScreenCoordsXY operator-(const ScreenSize& rhs) const
+    constexpr ScreenCoordsXY operator-(const ScreenSize& rhs) const
     {
         return { x - rhs.width, y - rhs.height };
     }
@@ -164,12 +164,12 @@ struct CoordsXY
         return x <= rhs.x && y <= rhs.y;
     }
 
-    constexpr const CoordsXY operator+(const CoordsXY& rhs) const
+    constexpr CoordsXY operator+(const CoordsXY& rhs) const
     {
         return { x + rhs.x, y + rhs.y };
     }
 
-    constexpr const CoordsXY operator-(const CoordsXY& rhs) const
+    constexpr CoordsXY operator-(const CoordsXY& rhs) const
     {
         return { x - rhs.x, y - rhs.y };
     }
@@ -179,7 +179,7 @@ struct CoordsXY
         return { x * rhs, y * rhs };
     }
 
-    constexpr const CoordsXY operator/(const int32_t rhs) const
+    constexpr CoordsXY operator/(const int32_t rhs) const
     {
         return { x / rhs, y / rhs };
     }
@@ -260,12 +260,12 @@ struct CoordsXYZ : public CoordsXY
     {
     }
 
-    constexpr const CoordsXYZ operator+(const CoordsXYZ& rhs) const
+    constexpr CoordsXYZ operator+(const CoordsXYZ& rhs) const
     {
         return { x + rhs.x, y + rhs.y, z + rhs.z };
     }
 
-    constexpr const CoordsXYZ operator-(const CoordsXYZ& rhs) const
+    constexpr CoordsXYZ operator-(const CoordsXYZ& rhs) const
     {
         return { x - rhs.x, y - rhs.y, z - rhs.z };
     }
@@ -338,7 +338,7 @@ struct TileCoordsXY
     {
     }
 
-    constexpr const TileCoordsXY operator+(const TileCoordsXY& rhs) const
+    constexpr TileCoordsXY operator+(const TileCoordsXY& rhs) const
     {
         return { x + rhs.x, y + rhs.y };
     }
@@ -640,22 +640,22 @@ struct CoordsXYZD : public CoordsXYZ
         return *this;
     }
 
-    constexpr const CoordsXYZD operator+(const CoordsXY& rhs) const
+    constexpr CoordsXYZD operator+(const CoordsXY& rhs) const
     {
         return { x + rhs.x, y + rhs.y, z, direction };
     }
 
-    constexpr const CoordsXYZD operator+(const CoordsXYZ& rhs) const
+    constexpr CoordsXYZD operator+(const CoordsXYZ& rhs) const
     {
         return { x + rhs.x, y + rhs.y, z + rhs.z, direction };
     }
 
-    constexpr const CoordsXYZD operator-(const CoordsXY& rhs) const
+    constexpr CoordsXYZD operator-(const CoordsXY& rhs) const
     {
         return { x - rhs.x, y - rhs.y, z, direction };
     }
 
-    constexpr const CoordsXYZD operator-(const CoordsXYZ& rhs) const
+    constexpr CoordsXYZD operator-(const CoordsXYZ& rhs) const
     {
         return { x - rhs.x, y - rhs.y, z - rhs.z, direction };
     }

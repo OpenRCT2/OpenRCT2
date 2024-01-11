@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,6 +17,7 @@
 class FootpathObject;
 class FootpathSurfaceObject;
 class FootpathRailingsObject;
+struct PathElement;
 
 enum
 {
@@ -121,6 +122,7 @@ enum
     FOOTPATH_ELEMENT_FLAGS2_BLOCKED_BY_VEHICLE = (1 << 3),
     FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_BROKEN = (1 << 4),
     FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY = (1 << 5),
+    FOOTPATH_ELEMENT_FLAGS2_HAS_JUNCTION_RAILINGS = (1 << 6),
 };
 
 enum
@@ -179,11 +181,11 @@ extern uint8_t gFootpathConstructSlope;
 extern uint8_t gFootpathGroundFlags;
 
 // Given a direction, this will return how to increase/decrease the x and y coordinates.
-extern const CoordsXY DirectionOffsets[NumOrthogonalDirections];
-extern const CoordsXY BinUseOffsets[NumOrthogonalDirections];
-extern const CoordsXY BenchUseOffsets[NumOrthogonalDirections * 2];
+extern const std::array<CoordsXY, NumOrthogonalDirections> DirectionOffsets;
+extern const std::array<CoordsXY, NumOrthogonalDirections> BinUseOffsets;
+extern const std::array<CoordsXY, NumOrthogonalDirections * 2> BenchUseOffsets;
 
-TileElement* MapGetFootpathElement(const CoordsXYZ& coords);
+PathElement* MapGetFootpathElement(const CoordsXYZ& coords);
 void FootpathInterruptPeeps(const CoordsXYZ& footpathPos);
 money64 FootpathProvisionalSet(
     ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,

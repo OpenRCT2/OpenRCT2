@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -114,6 +114,8 @@ namespace OpenRCT2::Scripting
         { "selection_edge_ne", SPR_G2_SELECTION_EDGE_NE },
         { "selection_edge_sw", SPR_G2_SELECTION_EDGE_SW },
         { "selection_edge_se", SPR_G2_SELECTION_EDGE_SE },
+        { "palette_invisible", SPR_G2_ICON_PALETTE_INVISIBLE },
+        { "palette_invisible_pressed", SPR_G2_ICON_PALETTE_INVISIBLE_PRESSED },
     };
 
     // Maps legacy G2 icons sprite indices to new sprite indices

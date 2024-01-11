@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -65,4 +65,4 @@ size_t TitleGetCurrentSequence();
 bool TitlePreviewSequence(size_t value);
 void TitleStopPreviewingSequence();
 bool TitleIsPreviewingSequence();
-void DrawOpenRCT2(DrawPixelInfo* dpi, const ScreenCoordsXY& screenCoords);
+void DrawOpenRCT2(DrawPixelInfo& dpi, const ScreenCoordsXY& screenCoords);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -421,7 +421,7 @@ GameActions::Result TrackRemoveAction::Execute() const
         // If the removed tile is a station modify station properties.
         // Don't do this if the ride is simulating and the tile is a ghost to prevent desyncs.
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN
-            && !(ride->status == RideStatus::Simulating && tileElement->Flags & TILE_ELEMENT_FLAG_GHOST)
+            && (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) || (GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN))
             && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             const auto removeElementResult = TrackRemoveStationElement(
@@ -463,6 +463,7 @@ GameActions::Result TrackRemoveAction::Execute() const
                 ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
                 break;
             case TrackElemType::BlockBrakes:
+            case TrackElemType::DiagBlockBrakes:
                 ride->num_block_brakes--;
                 if (ride->num_block_brakes == 0)
                 {

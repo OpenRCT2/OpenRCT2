@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,7 +34,7 @@ enum class ExpenditureType : int32_t
 #define EXPENDITURE_TABLE_MONTH_COUNT 16
 #define FINANCE_GRAPH_SIZE 128
 
-constexpr const uint8_t MaxBankLoanInterestRate = 255;
+constexpr uint8_t MaxBankLoanInterestRate = 255;
 
 extern const money64 research_cost_table[RESEARCH_FUNDING_COUNT];
 

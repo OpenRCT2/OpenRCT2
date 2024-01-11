@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -416,7 +416,7 @@ std::string ImageTable::FindLegacyObject(const std::string& name)
         while (scanner->Next())
         {
             auto currentName = Path::GetFileName(scanner->GetPathRelative());
-            if (String::Equals(currentName, name, true) || String::Equals(currentName, altName, true))
+            if (String::IEquals(currentName, name) || String::IEquals(currentName, altName))
             {
                 objectPath = scanner->GetPath();
                 break;

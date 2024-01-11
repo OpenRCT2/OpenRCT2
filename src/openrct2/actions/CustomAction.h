@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,13 +18,15 @@ class CustomAction final : public GameActionBase<GameCommand::Custom>
 private:
     std::string _id;
     std::string _json;
+    std::string _pluginName;
 
 public:
     CustomAction() = default;
-    CustomAction(const std::string& id, const std::string& json);
+    CustomAction(const std::string& id, const std::string& json, const std::string& pluginName);
 
     std::string GetId() const;
     std::string GetJson() const;
+    std::string GetPluginName() const;
 
     uint16_t GetActionFlags() const override;
 

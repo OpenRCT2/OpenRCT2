@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -41,6 +41,10 @@ declare global {
     var climate: Climate;
     /** APIs for performance profiling. */
     var profiler: Profiler;
+    /**
+     * APIs for getting, loading, and unloading objects.
+     */
+    var objectManager: ObjectManager;
     /**
      * APIs for creating and editing title sequences.
      * These will only be available to clients that are not running headless mode.
@@ -217,16 +221,39 @@ declare global {
         captureImage(options: CaptureOptions): void;
 
         /**
-         * Gets the loaded object at the given index.
-         * @param type The object type.
-         * @param index The index.
+         * @deprecated Use {@link ObjectManager.getObject} instead.
          */
-        getObject(type: ObjectType, index: number): LoadedObject;
+        getObject(type: ObjectType, index: number): LoadedImageObject;
+
+        /**
+         * @deprecated Use {@link ObjectManager.getObject} instead.
+         */
         getObject(type: "ride", index: number): RideObject;
+
+        /**
+         * @deprecated Use {@link ObjectManager.getObject} instead.
+         */
         getObject(type: "small_scenery", index: number): SmallSceneryObject;
 
-        getAllObjects(type: ObjectType): LoadedObject[];
+        /**
+         * @deprecated Use {@link ObjectManager.getObject} instead.
+         */
+        getObject(type: "music", index: number): LoadedObject;
+
+        /**
+         * @deprecated Use {@link ObjectManager.getAllObjects} instead.
+         */
+        getAllObjects(type: ObjectType): LoadedImageObject[];
+
+        /**
+         * @deprecated Use {@link ObjectManager.getAllObjects} instead.
+         */
         getAllObjects(type: "ride"): RideObject[];
+
+        /**
+         * @deprecated Use {@link ObjectManager.getAllObjects} instead.
+         */
+        getAllObjects(type: "music"): LoadedObject[];
 
         /**
          * Gets the {@link TrackSegment} for the given type.
@@ -295,6 +322,7 @@ declare global {
         queryAction(action: "footpathplace", args: FootpathPlaceArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "footpathlayoutplace", args: FootpathLayoutPlaceArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "footpathremove", args: FootpathRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "gamesetspeed", args: GameSetSpeedArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "guestsetflags", args: GuestSetFlagsArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "guestsetname", args: GuestSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "landbuyrights", args: LandBuyRightsArgs, callback?: (result: GameActionResult) => void): void;
@@ -386,6 +414,7 @@ declare global {
         executeAction(action: "footpathplace", args: FootpathPlaceArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "footpathlayoutplace", args: FootpathLayoutPlaceArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "footpathremove", args: FootpathRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "gamesetspeed", args: GameSetSpeedArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "guestsetflags", args: GuestSetFlagsArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "guestsetname", args: GuestSetNameArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "landbuyrights", args: LandBuyRightsArgs, callback?: (result: GameActionResult) => void): void;
@@ -619,6 +648,7 @@ declare global {
         "footpathplace" |
         "footpathlayoutplace" |
         "footpathremove" |
+        "gamesetspeed" |
         "guestsetflags" |
         "guestsetname" |
         "landbuyrights" |
@@ -785,6 +815,10 @@ declare global {
         x: number;
         y: number;
         z: number;
+    }
+
+    interface GameSetSpeedArgs extends GameActionArgs {
+        speed: number;
     }
 
     // recommendation: use Peep.setFlag instead of the GuestSetFlag action
@@ -1113,6 +1147,7 @@ declare global {
         quadrant: number;
         primaryColour: number;
         secondaryColour: number;
+        tertiaryColour: number;
     }
 
     interface SmallSceneryRemoveArgs extends GameActionArgs {
@@ -1438,6 +1473,7 @@ declare global {
         occupiedQuadrants: number;
         isGhost: boolean;
         isHidden: boolean; /** Take caution when changing this field, it may invalidate TileElements you have stored in your script. */
+        owner: number;
     }
 
     interface SurfaceElement extends BaseTileElement {
@@ -1584,10 +1620,80 @@ declare global {
         removeElement(index: number): void;
     }
 
+    type ObjectSourceGame =
+        "rct1" |
+        "added_attractions" |
+        "loopy_landscapes" |
+        "rct2" |
+        "wacky_worlds" |
+        "time_twister" |
+        "custom" |
+        "openrct2_official";
+
+    type ObjectGeneration = "dat" | "json";
+
     /**
-     * Represents the definition of a loaded object (.DAT or .json) such a ride type or scenery item.
+     * Represents an installed OpenRCT2 object which may or may not be currently loaded into the park.
+     */
+    interface InstalledObject {
+        /**
+         * The full path of the object file.
+         */
+        readonly path: string;
+
+        /**
+         * Whether the object is an original .DAT file, or a .parkobj / .json file.
+         */
+        readonly generation: ObjectGeneration;
+
+        /**
+         * The object type.
+         */
+        readonly type: ObjectType;
+
+        /**
+         * The original game or expansion pack this object first appeared in.
+         */
+        readonly sourceGames: ObjectSourceGame[];
+
+        /**
+         * The unique identifier of the object, e.g. "rct2.burgb".
+         * For legacy DAT objects, the identifier will be in a format similar to "09F55405|DirtGras|B9B19A7F".
+         */
+        readonly identifier: string;
+
+        /**
+         * The original unique identifier of the object, e.g. "BURGB   ".
+         * This may have trailing spaces if the name is shorter than 8 characters.
+         * Only .DAT objects or JSON objects based on .DAT objects will have legacy identifiers.
+         */
+        readonly legacyIdentifier: string | null;
+
+        /**
+         * The object version, e.g. "1.5.2-pre".
+         */
+        readonly version: string;
+
+        /**
+         * Gets the list of authors for the object.
+         */
+        readonly authors: string[];
+
+        /**
+         * The name in the user's current language.
+         */
+        readonly name: string;
+    }
+
+    /**
+     * Represents the definition of a loaded object (.DAT or .json) such as ride type or scenery item.
      */
     interface LoadedObject {
+        /**
+         * Gets a reference to the installed object.
+         */
+        readonly installedObject: InstalledObject;
+
         /**
          * The object type.
          */
@@ -1600,7 +1706,7 @@ declare global {
 
         /**
          * The unique identifier of the object, e.g. "rct2.burgb".
-         * Only JSON objects will have an identifier.
+         * For legacy DAT objects, the identifier will be in a format similar to "09F55405|DirtGras|B9B19A7F".
          */
         readonly identifier: string;
 
@@ -1618,9 +1724,25 @@ declare global {
     }
 
     /**
+    * Represents the definition of a loaded object that has one or more associated images.
+    */
+    interface LoadedImageObject extends LoadedObject {
+        /**
+         * Id of the objects base image. This is also known as the preview image.
+         */
+        readonly baseImageId: number;
+
+        /**
+         * The number of images for this object.
+         * Use this in conjunction with the baseImageId to iterate over an objects images.
+         */
+        readonly numImages: number;
+    }
+
+    /**
      * Represents the object definition of a ride or stall.
      */
-    interface RideObject extends LoadedObject {
+    interface RideObject extends LoadedImageObject {
         /**
          * The description of the ride / stall in the player's current language.
          */
@@ -1683,11 +1805,21 @@ declare global {
         readonly slopes12Banked22?: SpriteGroup;
         readonly slopes8Banked22?: SpriteGroup;
         readonly slopes25Banked22?: SpriteGroup;
+        readonly slopes8Banked45?: SpriteGroup;
+        readonly slopes16Banked22?: SpriteGroup;
+        readonly slopes16Banked45?: SpriteGroup;
         readonly slopes25Banked45?: SpriteGroup;
         readonly slopes12Banked45?: SpriteGroup;
+        readonly slopes25Banked67?: SpriteGroup;
+        readonly slopes25InlineTwists?: SpriteGroup;
+        readonly slopes42Banked22?: SpriteGroup;
+        readonly slopes42Banked45?: SpriteGroup;
+        readonly slopes42Banked90?: SpriteGroup;
+        readonly slopes60Banked22?: SpriteGroup;
         readonly corkscrews?: SpriteGroup;
         readonly restraintAnimation?: SpriteGroup;
-        readonly curvedLiftHill?: SpriteGroup;
+        readonly curvedLiftHillUp?: SpriteGroup;
+        readonly curvedLiftHillDown?: SpriteGroup;
     }
 
     /**
@@ -1724,10 +1856,19 @@ declare global {
         readonly numVerticalFramesOverride: number;
     }
 
+    interface SceneryObject extends LoadedImageObject {
+        /**
+         * A list of scenery groups this object belongs to. This may not contain any
+         * scenery groups that contain this object by default. This is typically
+         * used for custom objects to be part of existing scenery groups.
+         */
+        readonly sceneryGroups: string[];
+    }
+
     /**
      * Represents the object definition of a small scenery item such a tree.
      */
-    interface SmallSceneryObject extends LoadedObject {
+    interface SmallSceneryObject extends SceneryObject {
         /**
          * Raw bit flags that describe characteristics of the scenery item.
          */
@@ -1747,6 +1888,32 @@ declare global {
          * How much the scenery item costs to remove.
          */
         readonly removalPrice: number;
+    }
+
+    interface LargeSceneryObject extends SceneryObject {
+
+    }
+
+    interface WallObject extends SceneryObject {
+
+    }
+
+    interface FootpathAdditionObject extends SceneryObject {
+
+    }
+
+    interface BannerObject extends SceneryObject {
+
+    }
+
+    /**
+     * Represents the object definition of a scenery group.
+     */
+    interface SceneryGroupObject extends LoadedImageObject {
+        /**
+         * The scenery items that belong to this scenery group.
+         */
+        readonly items: string[];
     }
 
     /**
@@ -2105,7 +2272,7 @@ declare global {
          * The track segment adds to inversion counter. Usually applied to the first half of inversions.
          */
         readonly countsAsInversion: boolean;
-        
+
         /**
          * Gets a length of the subpositions list for this track segment.
          */
@@ -2309,6 +2476,11 @@ declare global {
          * The current tilt of the car in the X/Y axis.
          */
         bankRotation: number;
+
+        /**
+         * Whether the car sprite is reversed or not.
+         */
+        isReversed: boolean;
 
         /**
          * The colour of the car.
@@ -2853,25 +3025,100 @@ declare global {
      * Use `network.mode` to determine whether the current game is a client, server or in single player mode.
      */
     interface Network {
+        /**
+         * The current network mode. This can be used to determine whether the current
+         * session is single player, a multiplayer server, or a multiplayer client.
+         */
         readonly mode: NetworkMode;
+
+        /**
+         * The number of multiplayer groups there are in the server.
+         */
         readonly numGroups: number;
+
+        /**
+         * The number of players there are in the server.
+         */
         readonly numPlayers: number;
+
+        /**
+         * Gets all the multiplayer groups within the server. Groups are used to give individual
+         * players roles and permissions.
+         */
         readonly groups: PlayerGroup[];
+
+        /**
+         * Gets all the players that are currently in the server.
+         */
         readonly players: Player[];
+
+        /**
+         * The player this instance of the game is controlling.
+         */
         readonly currentPlayer: Player;
+
+        /**
+         * Gets or sets the default group ID that new players joining the server should be assigned to.
+         */
         defaultGroup: number;
+
+        /**
+         * Various statistics related to networking.
+         */
         readonly stats: NetworkStats;
 
-        getServerInfo(): ServerInfo;
+        /**
+         * Creates a new multiplayer group for managing player permissions.
+         */
         addGroup(): void;
-        getGroup(index: number): PlayerGroup;
-        removeGroup(index: number): void;
-        getPlayer(index: number): Player;
-        kickPlayer(index: number): void;
+
+        /**
+         * Gets the player group with the specified ID.
+         * @param id The group ID. Prior to API version 77, this is the group index.
+         */
+        getGroup(id: number): PlayerGroup;
+
+        /**
+         * Removes the player group with the specified ID.
+         * @param id The group ID. Prior to API version 77, this is the group index.
+         */
+        removeGroup(id: number): void;
+
+        /*
+         * Gets the player with the specified ID.
+         * @param id The player ID. Prior to API version 77, this is the player index.
+         */
+        getPlayer(id: number): Player;
+
+        /*
+         * Kicks the player with the specified ID from the server.
+         * @param id The player ID. Prior to API version 77, this is the player index.
+         */
+        kickPlayer(id: number): void;
+
+        /**
+         * Sends a chat message to all players.
+         * @param message The message text.
+         */
         sendMessage(message: string): void;
+
+        /**
+         * Sends a chat message to only the specified players.
+         * @param message The message text.
+         * @param players A list of player IDs that should receive the chat message.
+         *                Note: the message will be internally transmitted to players via
+         *                      the server, even if the server is not a recipient.
+         */
         sendMessage(message: string, players: number[]): void;
 
+        /**
+         * Creates a new listener that can accept TCP connections on a given port.
+         */
         createListener(): Listener;
+
+        /**
+         * Creates a new TCP client that can connect to a server.
+         */
         createSocket(): Socket;
     }
 
@@ -2881,34 +3128,81 @@ declare global {
      * Represents a player within a network game.
      */
     interface Player {
+        /**
+         * The unique ID for the player.
+         */
         readonly id: number;
+
+        /**
+         * The name of the player.
+         */
         readonly name: string;
+
+        /**
+         * The group ID the player is a member of.
+         */
         group: number;
+
+        /**
+         * The latest measured ping in milliseconds for the player.
+         */
         readonly ping: number;
+
+        /**
+         * The number of actions the player has successfully executed.
+         */
         readonly commandsRan: number;
+
+        /**
+         * The total amount of cash spent from actions performed by the player.
+         */
         readonly moneySpent: number;
+
+        /**
+         * The player's IP address.
+         */
         readonly ipAddress: string;
+
+        /**
+         * A hash of the player's public key used to authenticate with the server.
+         */
         readonly publicKeyHash: string;
     }
 
+    /**
+     * Represents a group in a network game for assigning roles and permissions
+     * to one or more players.
+     */
     interface PlayerGroup {
+        /**
+         * The unique ID for the group.
+         */
         readonly id: number;
+
+        /**
+         * The name of the group.
+         */
         name: string;
+
+        /**
+         * The permissions granted to each player belonging to the group.
+         */
         permissions: PermissionType[];
     }
 
-    interface ServerInfo {
-        readonly name: string;
-        readonly description: string;
-        readonly greeting: string;
-        readonly providerName: string;
-        readonly providerEmail: string;
-        readonly providerWebsite: string;
-    }
-
+    /**
+     * Represents various network statistics.
+     */
     interface NetworkStats {
-        bytesReceived: number[];
-        bytesSent: number[];
+        /**
+         * The number of bytes received for each category.
+         */
+        readonly bytesReceived: number[];
+
+        /**
+         * The number of bytes sent for each category.
+         */
+        readonly bytesSent: number[];
     }
 
     type PermissionType =
@@ -3112,7 +3406,21 @@ declare global {
          */
         readonly parkSize: number;
 
+        /**
+         * The name of the park, shown on the park entrance.
+         * Not the name of the scenario.
+         */
         name: string;
+
+        /**
+         * The current research status, and what
+         * has and hasn't yet been researched.
+         */
+        readonly research: Research;
+
+        /**
+         * The park message / notification queue, and historical messages.
+         */
         messages: ParkMessage[];
 
         /**
@@ -3132,6 +3440,130 @@ declare global {
         postMessage(message: ParkMessageDesc): void;
     }
 
+    interface Research {
+        /**
+         * The list of rides and scenery sets that have already been researched.
+         */
+        inventedItems: ResearchItem[];
+
+        /**
+         * The order of rides and scenery sets to be researched.
+         */
+        uninventedItems: ResearchItem[];
+
+        /**
+         * The last item that was researched, or null if no
+         * item has been researched yet.
+         */
+        readonly lastResearchedItem: ResearchItem | null;
+
+        /**
+         * The item currently being researched, or null if
+         * research is complete.
+         */
+        readonly expectedItem: ResearchItem | null;
+
+        /**
+         * The amount of funding currently spent on research.
+         */
+        funding: ResearchFundingLevel;
+
+        /**
+         * The categories of research which should be prioritised.
+         */
+        priorities: ResearchCategory[];
+
+        /**
+         * The current stage for the ride or scenery set being researched.
+         */
+        stage: ResearchFundingStage;
+
+        /**
+         * The progress for the current stage between 0 and 65535.
+         * This will increment more quickly the higher the research funding.
+         */
+        progress: number;
+
+        /**
+         * The expected month the current item being researched will complete.
+         * Value is between 0 and 7, 0 being March and 7 being October.
+         * Value is null if there is not yet an expected month.
+         */
+        readonly expectedMonth: number | null;
+
+        /**
+         * The expected day of the month the current item being researched will complete.
+         * Value is between 1 and 31.
+         * Value is null if there is not yet an expected month.
+         */
+        readonly expectedDay: number | null;
+
+        /**
+         * Gets whether a particular object has been researched and is available to construct.
+         * @param type The type of object, e.g. ride, scenery group, or small scenery.
+         * @param index The object index.
+         */
+        isObjectResearched(type: ObjectType, index: number): boolean;
+    }
+
+    type ResearchItem = RideResearchItem | SceneryResearchItem;
+
+    interface RideResearchItem {
+        readonly type: "ride";
+
+        /**
+         * The research category this item belongs in.
+         * E.g. gentle rides, thrill rides, shops etc.
+         * Note: Any updates to this field are ignored by OpenRCT2, the category will be derived from the ride type.
+         */
+        readonly category?: ResearchCategory;
+
+        /**
+         * The ride type. Each vehicle can have a seperate invention for each ride type.
+         */
+        readonly rideType: number;
+
+        /**
+         * The ride (vehicle) object index.
+         */
+        readonly object: number;
+    }
+
+    interface SceneryResearchItem {
+        readonly category?: "scenery_group";
+        readonly type: "scenery";
+
+        /**
+         * The scenery set object index.
+         */
+        readonly object: number;
+    }
+
+    type ResearchItemType = "scenery" | "ride";
+
+    type ResearchCategory =
+        "transport" |
+        "gentle" |
+        "rollercoaster" |
+        "thrill" |
+        "water" |
+        "shop" |
+        "scenery";
+
+    enum ResearchFundingLevel {
+        None,
+        Minimum,
+        Normal,
+        Maximum
+    }
+
+    type ResearchFundingStage =
+        "initial_research" |
+        "designing" |
+        "completing_design" |
+        "unknown" |
+        "finished_all";
+
     type ScenarioObjectiveType =
         "none" |
         "guestsBy" |
@@ -3150,7 +3582,7 @@ declare global {
         /**
          * The objective type.
          */
-        type: ScenarioObjective;
+        type: ScenarioObjectiveType;
 
         /**
          * The required number of guests.
@@ -3576,7 +4008,7 @@ declare global {
         "map_north_pressed" | "map_south" | "map_south_pressed" | "map_west" | "map_west_pressed" |
         "mountain_tool_even" | "mountain_tool_odd" | "multiplayer" | "multiplayer_desync" | "multiplayer_sync" |
         "multiplayer_toolbar" | "multiplayer_toolbar_pressed" | "mute" | "mute_pressed" | "news_messages" |
-        "normal_selection_6x6" | "paste" | "path_railings" | "path_surfaces" | "paths" | "placeholder" |
+        "normal_selection_6x6" | "palette_invisible" | "palette_invisible_pressed" | "paste" | "path_railings" | "path_surfaces" | "paths" | "placeholder" |
         "rct1_close_off" | "rct1_close_off_pressed" | "rct1_close_on" | "rct1_close_on_pressed" | "rct1_open_off" |
         "rct1_open_off_pressed" | "rct1_open_on" | "rct1_open_on_pressed" | "rct1_simulate_off" |
         "rct1_simulate_off_pressed" | "rct1_simulate_on" | "rct1_simulate_on_pressed" | "rct1_test_off" |
@@ -4294,5 +4726,82 @@ declare global {
         readonly totalTime: number;
         readonly parents: number[];
         readonly children: number[];
+    }
+
+    interface ObjectManager {
+        /**
+         * Gets all the objects that are installed and can be loaded into the park.
+         */
+        readonly installedObjects: InstalledObject[];
+
+        /**
+         * Gets the installed object with the given identifier, or null
+         * if the object was not found.
+         * @param identifier The object identifier.
+         */
+        getInstalledObject(identifier: string): InstalledObject | null;
+
+        /**
+         * Attempt to load the object into the current park at the given index for the object type.
+         * If an object already exists at the given index, that object will be unloaded and this object
+         * will replace it, providing the object type is the same.
+         * @param identifier The object identifier.
+         * @param index The index to load the object to. If not provided, an empty slot will be used.
+         * @returns The index of the loaded object.
+         */
+        load(identifier: string, index?: number): LoadedObject | null;
+
+        /**
+         * Attempt to load the given objects into the current park, given they are not already loaded.
+         */
+        load(identifiers: string[]): (LoadedObject | null)[];
+
+        /**
+         * Unloads the object, if loaded.
+         * @param identifier The object identifier to unload.
+         */
+        unload(identifier: string): void;
+
+        /**
+         * Unloads the specified objects, if loaded.
+         * @param identifiers The object identifiers to unload.
+         */
+        unload(identifiers: string[]): void;
+
+        /**
+         * Unloads the specified object, if loaded.
+         * @param type The object type.
+         * @param index The index of the slot to unload for the given type.
+         */
+        unload(type: ObjectType, index: number): void;
+
+        /**
+         * Gets the loaded object at the given index.
+         * @param type The object type.
+         * @param index The index.
+         */
+        getObject(type: ObjectType, index: number): LoadedObject;
+        getObject(type: "ride", index: number): RideObject;
+        getObject(type: "small_scenery", index: number): SmallSceneryObject;
+        getObject(type: "large_scenery", index: number): LargeSceneryObject;
+        getObject(type: "wall", index: number): WallObject;
+        getObject(type: "footpath_addition", index: number): FootpathAdditionObject;
+        getObject(type: "banner", index: number): BannerObject;
+        getObject(type: "scenery_group", index: number): SceneryGroupObject;
+        getObject(type: "music", index: number): LoadedObject;
+
+        /**
+         * Gets all the currently loaded objects for a given object type.
+         * @param type The object type.
+         */
+        getAllObjects(type: ObjectType): LoadedObject[];
+        getAllObjects(type: "ride"): RideObject[];
+        getAllObjects(type: "small_scenery"): SmallSceneryObject[];
+        getAllObjects(type: "large_scenery"): LargeSceneryObject[];
+        getAllObjects(type: "wall"): WallObject[];
+        getAllObjects(type: "footpath_addition"): FootpathAdditionObject[];
+        getAllObjects(type: "banner"): BannerObject[];
+        getAllObjects(type: "scenery_group"): SceneryGroupObject[];
+        getAllObjects(type: "music"): LoadedObject[];
     }
 }

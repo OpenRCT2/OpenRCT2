@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -232,27 +232,27 @@ static void ClassicWoodenRCTrackFlatToLeftBank(
     const TrackElement& trackElement)
 
 {
-    static constexpr const SpriteBoundBox2 imageIds[4][1][2] = {
+    static constexpr SpriteBoundBox2 imageIds[4][1][2] = {
         { {
-            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_SW_NE, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
+            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_SW_NE, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 3, 0 }, { 32, 25, 2 }) },
             {},
         } },
         { {
-            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_NW_SE, 0, { 0, 0, 0 }, { 3, 0, 0 }, { 25, 32, 2 } },
-            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_FRONT_NW_SE, 0, { 0, 0, 0 }, { 26, 0, 5 }, { 1, 32, 9 } },
+            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_NW_SE, 0, { 0, 0, 0 }, BoundBoxXYZ({ 3, 0, 0 }, { 25, 32, 2 }) },
+            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_FRONT_NW_SE, 0, { 0, 0, 0 }, BoundBoxXYZ({ 26, 0, 5 }, { 1, 32, 9 }) },
         } },
         { {
-            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_NE_SW, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
+            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_NE_SW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 3, 0 }, { 32, 25, 2 }) },
             {},
         } },
         { {
-            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_SE_NW, 0, { 0, 0, 0 }, { 3, 0, 0 }, { 25, 32, 2 } },
-            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_FRONT_SE_NW, 0, { 0, 0, 0 }, { 26, 0, 5 }, { 1, 32, 9 } },
+            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_SE_NW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 3, 0, 0 }, { 25, 32, 2 }) },
+            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_LEFT_BANK_FRONT_SE_NW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 26, 0, 5 }, { 1, 32, 9 }) },
         } }
     };
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -262,30 +262,30 @@ static void ClassicWoodenRCTrackFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBoundBox2 imageIds[4][1][2] = {
+    static constexpr SpriteBoundBox2 imageIds[4][1][2] = {
         { {
-            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_RIGHT_BANK_SW_NE, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
+            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_RIGHT_BANK_SW_NE, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 3, 0 }, { 32, 25, 2 }) },
             {},
         } },
         { {
-            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_RIGHT_BANK_NW_SE, 0, { 0, 0, 0 }, { 3, 0, 0 }, { 25, 32, 2 } },
+            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_RIGHT_BANK_NW_SE, 0, { 0, 0, 0 }, BoundBoxXYZ({ 3, 0, 0 }, { 25, 32, 2 }) },
             {},
         } },
 
         { {
-            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_RIGHT_BANK_NE_SW, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
-            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_RIGHT_BANK_FRONT_NE_SW, 0, { 0, 0, 0 }, { 0, 26, 5 }, { 32, 1, 9 } },
+            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_RIGHT_BANK_NE_SW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 3, 0 }, { 32, 25, 2 }) },
+            { SPR_CLASSIC_WOODEN_RC_FLAT_TO_RIGHT_BANK_FRONT_NE_SW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 26, 5 }, { 32, 1, 9 }) },
         } },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_FLAT_TO_RIGHT_BANK_SE_NW, 0, { 0, 0, 0 }, { 3, 0, 0 }, { 25, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_FLAT_TO_RIGHT_BANK_SE_NW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 3, 0, 0 }, { 25, 32, 2 }) },
                 {},
             },
         }
     };
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -309,29 +309,29 @@ static void ClassicWoodenRCTrackLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBoundBox2 imageIds[4][1][2] = {
+    static constexpr SpriteBoundBox2 imageIds[4][1][2] = {
         { {
-            { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_SW_NE, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
+            { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_SW_NE, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 3, 0 }, { 32, 25, 2 }) },
             {},
         } },
         { {
-            { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_NW_SE, 0, { 0, 0, 0 }, { 3, 0, 0 }, { 25, 32, 2 } },
+            { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_NW_SE, 0, { 0, 0, 0 }, BoundBoxXYZ({ 3, 0, 0 }, { 25, 32, 2 }) },
             {},
         } },
 
         { {
-            { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_NE_SW, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
+            { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_NE_SW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 3, 0 }, { 32, 25, 2 }) },
             {},
         } },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_SE_NW, 0, { 0, 0, 0 }, { 3, 0, 0 }, { 25, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_SE_NW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 3, 0, 0 }, { 25, 32, 2 }) },
                 {},
             },
         }
     };
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -348,30 +348,30 @@ static void ClassicWoodenRCTrackLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBoundBox2 imageIds[4][1][2] = {
+    static constexpr SpriteBoundBox2 imageIds[4][1][2] = {
         { {
-            { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_25_UP_SW_NE, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
+            { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_25_UP_SW_NE, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 3, 0 }, { 32, 25, 2 }) },
             {},
         } },
         { {
-            { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_25_UP_NW_SE, 0, { 0, 0, 0 }, { 3, 0, 0 }, { 25, 32, 2 } },
-            { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_25_UP_FRONT_NW_SE, 0, { 0, 0, 0 }, { 26, 0, 5 }, { 1, 32, 9 } },
+            { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_25_UP_NW_SE, 0, { 0, 0, 0 }, BoundBoxXYZ({ 3, 0, 0 }, { 25, 32, 2 }) },
+            { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_25_UP_FRONT_NW_SE, 0, { 0, 0, 0 }, BoundBoxXYZ({ 26, 0, 5 }, { 1, 32, 9 }) },
         } },
 
         { {
-            { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_25_UP_NE_SW, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
-            { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_25_UP_FRONT_NE_SW, 0, { 0, 0, 0 }, { 0, 26, 5 }, { 32, 1, 9 } },
+            { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_25_UP_NE_SW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 3, 0 }, { 32, 25, 2 }) },
+            { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_25_UP_FRONT_NE_SW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 26, 5 }, { 32, 1, 9 }) },
         } },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_25_UP_SE_NW, 0, { 0, 0, 0 }, { 3, 0, 0 }, { 25, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_LEFT_BANK_TO_25_UP_SE_NW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 3, 0, 0 }, { 25, 32, 2 }) },
                 {},
             },
         }
     };
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
-    WoodenASupportsPaintSetup(session, direction & 1, 1 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 1 + direction, height, session.SupportColours);
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -388,23 +388,23 @@ static void ClassicWoodenRCTrackRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBoundBox2 imageIds[4][1][2] = {
+    static constexpr SpriteBoundBox2 imageIds[4][1][2] = {
         { {
-            { SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_25_UP_SW_NE, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
+            { SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_25_UP_SW_NE, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 3, 0 }, { 32, 25, 2 }) },
             {},
         } },
         { {
-            { SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_25_UP_NW_SE, 0, { 0, 0, 0 }, { 3, 0, 0 }, { 25, 32, 2 } },
-            { SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_25_UP_FRONT_NW_SE, 0, { 0, 0, 0 }, { 26, 0, 5 }, { 1, 32, 9 } },
+            { SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_25_UP_NW_SE, 0, { 0, 0, 0 }, BoundBoxXYZ({ 3, 0, 0 }, { 25, 32, 2 }) },
+            { SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_25_UP_FRONT_NW_SE, 0, { 0, 0, 0 }, BoundBoxXYZ({ 26, 0, 5 }, { 1, 32, 9 }) },
         } },
 
         { {
-            { SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_25_UP_NE_SW, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
-            { SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_25_UP_FRONT_NE_SW, 0, { 0, 0, 0 }, { 0, 26, 5 }, { 32, 1, 9 } },
+            { SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_25_UP_NE_SW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 3, 0 }, { 32, 25, 2 }) },
+            { SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_25_UP_FRONT_NE_SW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 26, 5 }, { 32, 1, 9 }) },
         } },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_25_UP_SE_NW, 0, { 0, 0, 0 }, { 3, 0, 0 }, { 25, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_RIGHT_BANK_TO_25_UP_SE_NW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 3, 0, 0 }, { 25, 32, 2 }) },
                 {},
             },
         }
@@ -412,7 +412,7 @@ static void ClassicWoodenRCTrackRightBankTo25DegUp(
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
-    WoodenASupportsPaintSetup(session, direction & 1, 1 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 1 + direction, height, session.SupportColours);
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -429,23 +429,23 @@ static void ClassicWoodenRCTrack25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBoundBox2 imageIds[4][1][2] = {
+    static constexpr SpriteBoundBox2 imageIds[4][1][2] = {
         { {
-            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_LEFT_BANK_SW_NE, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
+            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_LEFT_BANK_SW_NE, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 3, 0 }, { 32, 25, 2 }) },
             {},
         } },
         { {
-            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_LEFT_BANK_NW_SE, 0, { 0, 0, 0 }, { 3, 0, 0 }, { 25, 32, 2 } },
-            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_LEFT_BANK_FRONT_NW_SE, 0, { 0, 0, 0 }, { 26, 0, 5 }, { 1, 32, 9 } },
+            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_LEFT_BANK_NW_SE, 0, { 0, 0, 0 }, BoundBoxXYZ({ 3, 0, 0 }, { 25, 32, 2 }) },
+            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_LEFT_BANK_FRONT_NW_SE, 0, { 0, 0, 0 }, BoundBoxXYZ({ 26, 0, 5 }, { 1, 32, 9 }) },
         } },
 
         { {
-            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_LEFT_BANK_NE_SW, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
-            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_LEFT_BANK_FRONT_NE_SW, 0, { 0, 0, 0 }, { 0, 26, 5 }, { 32, 1, 9 } },
+            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_LEFT_BANK_NE_SW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 3, 0 }, { 32, 25, 2 }) },
+            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_LEFT_BANK_FRONT_NE_SW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 26, 5 }, { 32, 1, 9 }) },
         } },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_25_UP_TO_LEFT_BANK_SE_NW, 0, { 0, 0, 0 }, { 3, 0, 0 }, { 25, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_25_UP_TO_LEFT_BANK_SE_NW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 3, 0, 0 }, { 25, 32, 2 }) },
                 {},
             },
         }
@@ -453,7 +453,7 @@ static void ClassicWoodenRCTrack25DegUpToLeftBank(
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
-    WoodenASupportsPaintSetup(session, direction & 1, 5 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 5 + direction, height, session.SupportColours);
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
@@ -470,23 +470,23 @@ static void ClassicWoodenRCTrack25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBoundBox2 imageIds[4][1][2] = {
+    static constexpr SpriteBoundBox2 imageIds[4][1][2] = {
         { {
-            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_RIGHT_BANK_SW_NE, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
+            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_RIGHT_BANK_SW_NE, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 3, 0 }, { 32, 25, 2 }) },
             {},
         } },
         { {
-            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_RIGHT_BANK_NW_SE, 0, { 0, 0, 0 }, { 3, 0, 0 }, { 25, 32, 2 } },
-            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_RIGHT_BANK_FRONT_NW_SE, 0, { 0, 0, 0 }, { 26, 0, 5 }, { 1, 32, 9 } },
+            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_RIGHT_BANK_NW_SE, 0, { 0, 0, 0 }, BoundBoxXYZ({ 3, 0, 0 }, { 25, 32, 2 }) },
+            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_RIGHT_BANK_FRONT_NW_SE, 0, { 0, 0, 0 }, BoundBoxXYZ({ 26, 0, 5 }, { 1, 32, 9 }) },
         } },
 
         { {
-            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_RIGHT_BANK_NE_SW, 0, { 0, 0, 0 }, { 0, 3, 0 }, { 32, 25, 2 } },
-            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_RIGHT_BANK_FRONT_NE_SW, 0, { 0, 0, 0 }, { 0, 26, 5 }, { 32, 1, 9 } },
+            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_RIGHT_BANK_NE_SW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 3, 0 }, { 32, 25, 2 }) },
+            { SPR_CLASSIC_WOODEN_RC_25_UP_TO_RIGHT_BANK_FRONT_NE_SW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 26, 5 }, { 32, 1, 9 }) },
         } },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_25_UP_TO_RIGHT_BANK_SE_NW, 0, { 0, 0, 0 }, { 3, 0, 0 }, { 25, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_25_UP_TO_RIGHT_BANK_SE_NW, 0, { 0, 0, 0 }, BoundBoxXYZ({ 3, 0, 0 }, { 25, 32, 2 }) },
                 {},
             },
         }
@@ -494,7 +494,7 @@ static void ClassicWoodenRCTrack25DegUpToRightBank(
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
-    WoodenASupportsPaintSetup(session, direction & 1, 5 + direction, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, direction & 1, 5 + direction, height, session.SupportColours);
     if (direction == 0 || direction == 3)
     {
         PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
@@ -539,148 +539,226 @@ static void ClassicWoodenRCTrackBankedRightQuarterTurn5(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBoundBox2 imageIds[4][7][2] = {
+    static constexpr SpriteBoundBox2 imageIds[4][7][2] = {
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_0, 0, { 0, 2, 0 }, { 0, 2, 0 }, { 32, 32, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_0, 0, { 0, 2, 0 }, { 0, 2, 27 }, { 32, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_0,
+                  0,
+                  { 0, 2, 0 },
+                  BoundBoxXYZ({ 0, 2, 0 }, { 32, 32, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_0,
+                  0,
+                  { 0, 2, 0 },
+                  BoundBoxXYZ({ 0, 2, 27 }, { 32, 32, 0 }) },
             },
             {
                 {},
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_2, 0, { 0, 16, 0 }, { 0, 16, 0 }, { 32, 16, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_2,
+                  0,
+                  { 0, 16, 0 },
+                  BoundBoxXYZ({ 0, 16, 0 }, { 32, 16, 2 }) },
                 { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_2,
                   0,
                   { 0, 16, 0 },
-                  { 0, 16, 27 },
-                  { 32, 16, 0 } },
+                  BoundBoxXYZ({ 0, 16, 27 }, { 32, 16, 0 }) },
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_3, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_3, 0, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 16, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_3,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 16, 16, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_3,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 27 }, { 16, 16, 0 }) },
             },
             {
                 {},
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_5, 0, { 16, 0, 0 }, { 16, 0, 0 }, { 16, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_5,
+                  0,
+                  { 16, 0, 0 },
+                  BoundBoxXYZ({ 16, 0, 0 }, { 16, 32, 2 }) },
                 { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_5,
                   0,
                   { 16, 0, 0 },
-                  { 16, 0, 27 },
-                  { 16, 32, 0 } },
+                  BoundBoxXYZ({ 16, 0, 27 }, { 16, 32, 0 }) },
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_6, 0, { 2, 0, 0 }, { 2, 0, 0 }, { 32, 32, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_6, 0, { 2, 0, 0 }, { 2, 0, 27 }, { 32, 32, 0 } },
-            },
-        },
-        {
-            {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_0, 0, { 2, 0, 0 }, { 2, 0, 0 }, { 32, 32, 2 } },
-                {},
-            },
-            {
-                {},
-                {},
-            },
-            {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_2, 0, { 16, 0, 0 }, { 16, 0, 0 }, { 16, 32, 2 } },
-                {},
-            },
-            {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_3, 0, { 0, 16, 0 }, { 0, 16, 0 }, { 16, 16, 2 } },
-                {},
-            },
-            {
-                {},
-                {},
-            },
-            {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_5, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
-                {},
-            },
-            {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_6, 0, { 0, 2, 0 }, { 0, 2, 0 }, { 32, 27, 2 } },
-                {},
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SW_SE_SEQ_6,
+                  0,
+                  { 2, 0, 0 },
+                  BoundBoxXYZ({ 2, 0, 0 }, { 32, 32, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_SW_SE_SEQ_6,
+                  0,
+                  { 2, 0, 0 },
+                  BoundBoxXYZ({ 2, 0, 27 }, { 32, 32, 0 }) },
             },
         },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_0, 0, { 0, 2, 0 }, { 0, 2, 0 }, { 32, 27, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_0, 0, { 0, 2, 0 }, { 0, 2, 27 }, { 32, 27, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_0,
+                  0,
+                  { 2, 0, 0 },
+                  BoundBoxXYZ({ 2, 0, 0 }, { 32, 32, 2 }) },
+                {},
             },
             {
                 {},
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_2, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_2, 0, { 0, 0, 0 }, { 0, 0, 27 }, { 32, 16, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_2,
+                  0,
+                  { 16, 0, 0 },
+                  BoundBoxXYZ({ 16, 0, 0 }, { 16, 32, 2 }) },
+                {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_3, 0, { 16, 16, 0 }, { 16, 16, 0 }, { 16, 16, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_3,
+                  0,
+                  { 0, 16, 0 },
+                  BoundBoxXYZ({ 0, 16, 0 }, { 16, 16, 2 }) },
+                {},
+            },
+            {
+                {},
+                {},
+            },
+            {
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_5,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 32, 16, 2 }) },
+                {},
+            },
+            {
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NW_SW_SEQ_6,
+                  0,
+                  { 0, 2, 0 },
+                  BoundBoxXYZ({ 0, 2, 0 }, { 32, 27, 2 }) },
+                {},
+            },
+        },
+        {
+            {
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_0,
+                  0,
+                  { 0, 2, 0 },
+                  BoundBoxXYZ({ 0, 2, 0 }, { 32, 27, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_0,
+                  0,
+                  { 0, 2, 0 },
+                  BoundBoxXYZ({ 0, 2, 27 }, { 32, 27, 0 }) },
+            },
+            {
+                {},
+                {},
+            },
+            {
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_2,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 32, 16, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_2,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 27 }, { 32, 16, 0 }) },
+            },
+            {
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_3,
+                  0,
+                  { 16, 16, 0 },
+                  BoundBoxXYZ({ 16, 16, 0 }, { 16, 16, 2 }) },
                 { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_3,
                   0,
                   { 16, 16, 0 },
-                  { 16, 16, 27 },
-                  { 16, 16, 0 } },
+                  BoundBoxXYZ({ 16, 16, 27 }, { 16, 16, 0 }) },
             },
             {
                 {},
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_5, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 32, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_5, 0, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_5,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 16, 32, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_5,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 27 }, { 16, 32, 0 }) },
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_6, 0, { 2, 0, 0 }, { 2, 0, 0 }, { 27, 32, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_6, 0, { 2, 0, 0 }, { 2, 0, 27 }, { 27, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_NE_NW_SEQ_6,
+                  0,
+                  { 2, 0, 0 },
+                  BoundBoxXYZ({ 2, 0, 0 }, { 27, 32, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_FRONT_NE_NW_SEQ_6,
+                  0,
+                  { 2, 0, 0 },
+                  BoundBoxXYZ({ 2, 0, 27 }, { 27, 32, 0 }) },
             },
         },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_0, 0, { 2, 0, 0 }, { 2, 0, 0 }, { 27, 32, 2 } },
-                { 0, 0, { 0, 0, 0 }, { 0, 2, 27 }, { 32, 27, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_0,
+                  0,
+                  { 2, 0, 0 },
+                  BoundBoxXYZ({ 2, 0, 0 }, { 27, 32, 2 }) },
+                { 0, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 2, 27 }, { 32, 27, 0 }) },
             },
             {
                 {},
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_2, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
-                { 0, 0, { 0, 0, 0 }, { 0, 0, 27 }, { 32, 16, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_2,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 32, 16, 2 }) },
+                { 0, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 0, 27 }, { 32, 16, 0 }) },
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_3, 0, { 16, 0, 0 }, { 16, 0, 0 }, { 16, 16, 2 } },
-                { 0, 0, { 0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_3,
+                  0,
+                  { 16, 0, 0 },
+                  BoundBoxXYZ({ 16, 0, 0 }, { 16, 16, 2 }) },
+                { 0, 0, { 0, 0, 0 }, BoundBoxXYZ({ 16, 16, 27 }, { 16, 16, 0 }) },
             },
             {
                 {},
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_5, 0, { 0, 16, 0 }, { 0, 16, 0 }, { 32, 16, 2 } },
-                { 0, 0, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_5,
+                  0,
+                  { 0, 16, 0 },
+                  BoundBoxXYZ({ 0, 16, 0 }, { 32, 16, 2 }) },
+                { 0, 0, { 0, 0, 0 }, BoundBoxXYZ({ 0, 0, 27 }, { 16, 32, 0 }) },
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_6, 0, { 0, 2, 0 }, { 0, 2, 0 }, { 32, 32, 2 } },
-                { 0, 0, { 0, 0, 0 }, { 2, 0, 27 }, { 27, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_5_SE_NE_SEQ_6,
+                  0,
+                  { 0, 2, 0 },
+                  BoundBoxXYZ({ 0, 2, 0 }, { 32, 32, 2 }) },
+                { 0, 0, { 0, 0, 0 }, BoundBoxXYZ({ 2, 0, 27 }, { 27, 32, 0 }) },
             },
         },
     };
-    static constexpr const int8_t supportType[4][7] = {
+    static constexpr int8_t supportType[4][7] = {
         { 0, -1, 4, 2, -1, 4, 1 },
         { 1, -1, 5, 3, -1, 5, 0 },
         { 0, -1, 2, 4, -1, 2, 1 },
         { 1, -1, 3, 5, -1, 3, 0 },
     };
 
-    static constexpr const int blockedSegments[7] = {
+    static constexpr int blockedSegments[7] = {
         SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
         SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC,
         SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
@@ -696,8 +774,7 @@ static void ClassicWoodenRCTrackBankedRightQuarterTurn5(
 
     if (supportType[direction][trackSequence] != -1)
     {
-        WoodenASupportsPaintSetup(
-            session, supportType[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetup(session, supportType[direction][trackSequence], 0, height, session.SupportColours);
     }
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -715,68 +792,112 @@ static void ClassicWoodenRCTrackRightQuarterTurn3Bank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBoundBox2 imageIds[4][4][2] = {
+    static constexpr SpriteBoundBox2 imageIds[4][4][2] = {
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_SW_SE_SEQ_0, 0, { 0, 6, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_FRONT_SW_SE_SEQ_0, 0, { 0, 6, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_SW_SE_SEQ_0,
+                  0,
+                  { 0, 6, 0 },
+                  BoundBoxXYZ({ 0, 6, 0 }, { 32, 20, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_FRONT_SW_SE_SEQ_0,
+                  0,
+                  { 0, 6, 0 },
+                  BoundBoxXYZ({ 0, 6, 27 }, { 32, 20, 0 }) },
             },
             {
                 {},
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_SW_SE_SEQ_2, 0, { 16, 16, 0 }, { 16, 16, 0 }, { 16, 16, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_SW_SE_SEQ_2,
+                  0,
+                  { 16, 16, 0 },
+                  BoundBoxXYZ({ 16, 16, 0 }, { 16, 16, 2 }) },
                 { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_FRONT_SW_SE_SEQ_2,
                   0,
                   { 16, 16, 0 },
-                  { 16, 16, 27 },
-                  { 16, 16, 0 } },
+                  BoundBoxXYZ({ 16, 16, 27 }, { 16, 16, 0 }) },
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_SW_SE_SEQ_3, 0, { 6, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_FRONT_SW_SE_SEQ_3, 0, { 6, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
-            },
-        },
-        {
-            {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_NW_SW_SEQ_0, 0, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
-                {},
-            },
-            {
-                {},
-                {},
-            },
-            {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_NW_SW_SEQ_2, 0, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 16, 2 } },
-                {},
-            },
-            {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_NW_SW_SEQ_3, 0, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
-                {},
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_SW_SE_SEQ_3,
+                  0,
+                  { 6, 0, 0 },
+                  BoundBoxXYZ({ 6, 0, 0 }, { 20, 32, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_FRONT_SW_SE_SEQ_3,
+                  0,
+                  { 6, 0, 0 },
+                  BoundBoxXYZ({ 6, 0, 27 }, { 20, 32, 0 }) },
             },
         },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_NE_NW_SEQ_0, 0, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_FRONT_NE_NW_SEQ_0, 0, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_NW_SW_SEQ_0,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 6, 0, 0 }, { 20, 32, 2 }) },
+                {},
             },
             {
                 {},
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_NE_NW_SEQ_2, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_FRONT_NE_NW_SEQ_2, 0, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 16, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_NW_SW_SEQ_2,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 16, 0, 0 }, { 16, 16, 2 }) },
+                {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_NE_NW_SEQ_3, 0, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_FRONT_NE_NW_SEQ_3, 0, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_NW_SW_SEQ_3,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 6, 0 }, { 32, 20, 2 }) },
+                {},
             },
         },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_SE_NE_SEQ_0, 0, { 6, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_NE_NW_SEQ_0,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 6, 0 }, { 32, 20, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_FRONT_NE_NW_SEQ_0,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 6, 27 }, { 32, 20, 0 }) },
+            },
+            {
+                {},
+                {},
+            },
+            {
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_NE_NW_SEQ_2,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 16, 16, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_FRONT_NE_NW_SEQ_2,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 27 }, { 16, 16, 0 }) },
+            },
+            {
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_NE_NW_SEQ_3,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 6, 0, 0 }, { 20, 32, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_FRONT_NE_NW_SEQ_3,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 6, 0, 27 }, { 20, 32, 0 }) },
+            },
+        },
+        {
+            {
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_SE_NE_SEQ_0,
+                  0,
+                  { 6, 0, 0 },
+                  BoundBoxXYZ({ 6, 0, 0 }, { 20, 32, 2 }) },
                 {},
             },
             {
@@ -784,24 +905,30 @@ static void ClassicWoodenRCTrackRightQuarterTurn3Bank(
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_SE_NE_SEQ_2, 0, { 0, 16, 0 }, { 0, 16, 0 }, { 16, 16, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_SE_NE_SEQ_2,
+                  0,
+                  { 0, 16, 0 },
+                  BoundBoxXYZ({ 0, 16, 0 }, { 16, 16, 2 }) },
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_SE_NE_SEQ_3, 0, { 0, 6, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_BANKED_QUARTER_TURN_3_SE_NE_SEQ_3,
+                  0,
+                  { 0, 6, 0 },
+                  BoundBoxXYZ({ 0, 6, 0 }, { 32, 20, 2 }) },
                 {},
             },
         },
     };
 
-    static constexpr const int8_t supportType[4][4] = {
+    static constexpr int8_t supportType[4][4] = {
         { 4, -1, -1, 4 },
         { 5, -1, -1, 5 },
         { 2, -1, -1, 2 },
         { 3, -1, -1, 3 },
     };
 
-    static constexpr const int blockedSegments[4] = {
+    static constexpr int blockedSegments[4] = {
         SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
         0,
         SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0,
@@ -814,8 +941,7 @@ static void ClassicWoodenRCTrackRightQuarterTurn3Bank(
 
     if (supportType[direction][trackSequence] != -1)
     {
-        WoodenASupportsPaintSetup(
-            session, supportType[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetup(session, supportType[direction][trackSequence], 0, height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments[trackSequence], direction), 0xFFFF, 0);
@@ -834,18 +960,27 @@ static void ClassicWoodenRCTrackLeftEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBoundBox2 imageIds[4][5][2] = {
+    static constexpr SpriteBoundBox2 imageIds[4][5][2] = {
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_0_SEQ_0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_0_SEQ_0,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 32, 32, 2 }) },
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_0_SEQ_1, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_0_SEQ_1,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 32, 16, 2 }) },
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_0_SEQ_2, 0, { 0, 0, 0 }, { 0, 16, 0 }, { 16, 16, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_0_SEQ_2,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 16, 0 }, { 16, 16, 2 }) },
                 {},
             },
             {
@@ -853,47 +988,79 @@ static void ClassicWoodenRCTrackLeftEighthBankToDiag(
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_0_SEQ_4, 0, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_0_SEQ_4,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 16, 16, 0 }, { 16, 16, 2 }) },
                 {},
             },
         },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_1_SEQ_0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 32, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_FRONT_1_SEQ_0, 0, { 0, 0, 0 }, { 0, 0, 27 }, { 32, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_1_SEQ_0,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 32, 32, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_FRONT_1_SEQ_0,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 27 }, { 32, 32, 0 }) },
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_1_SEQ_1, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 34, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_FRONT_1_SEQ_1, 0, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_1_SEQ_1,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 16, 34, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_FRONT_1_SEQ_1,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 27 }, { 16, 32, 0 }) },
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_1_SEQ_2, 0, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_1_SEQ_2,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 16, 16, 0 }, { 16, 16, 2 }) },
                 { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_FRONT_1_SEQ_2,
                   0,
                   { 0, 0, 0 },
-                  { 16, 16, 27 },
-                  { 16, 16, 0 } },
+                  BoundBoxXYZ({ 16, 16, 27 }, { 16, 16, 0 }) },
             },
             {
                 {},
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_1_SEQ_4, 0, { 0, 0, 0 }, { 16, 0, 0 }, { 18, 16, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_FRONT_1_SEQ_4, 0, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 16, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_1_SEQ_4,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 16, 0, 0 }, { 18, 16, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_FRONT_1_SEQ_4,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 16, 0, 27 }, { 16, 16, 0 }) },
             },
         },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_2_SEQ_0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_2_SEQ_0,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 32, 32, 2 }) },
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_2_SEQ_1, 0, { 0, 0, 0 }, { 0, 16, 0 }, { 32, 16, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_2_SEQ_1,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 16, 0 }, { 32, 16, 2 }) },
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_2_SEQ_2, 0, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 16, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_2_SEQ_2,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 16, 0, 0 }, { 16, 16, 2 }) },
                 {},
             },
             {
@@ -901,42 +1068,69 @@ static void ClassicWoodenRCTrackLeftEighthBankToDiag(
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_2_SEQ_4, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_2_SEQ_4,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 16, 16, 2 }) },
                 {},
             },
         },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_3_SEQ_0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 32, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_FRONT_3_SEQ_0, 0, { 0, 0, 0 }, { 0, 0, 27 }, { 32, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_3_SEQ_0,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 32, 32, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_FRONT_3_SEQ_0,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 27 }, { 32, 32, 0 }) },
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_3_SEQ_1, 0, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 32, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_FRONT_3_SEQ_1, 0, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_3_SEQ_1,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 16, 0, 0 }, { 16, 32, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_FRONT_3_SEQ_1,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 16, 0, 27 }, { 16, 32, 0 }) },
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_3_SEQ_2, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_FRONT_3_SEQ_2, 0, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 16, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_3_SEQ_2,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 16, 16, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_FRONT_3_SEQ_2,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 27 }, { 16, 16, 0 }) },
             },
             {
                 {},
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_3_SEQ_4, 0, { 0, 0, 0 }, { 0, 16, 0 }, { 16, 16, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_FRONT_3_SEQ_4, 0, { 0, 0, 0 }, { 0, 16, 27 }, { 16, 16, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_3_SEQ_4,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 16, 0 }, { 16, 16, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_LEFT_BANKED_FRONT_3_SEQ_4,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 16, 27 }, { 16, 16, 0 }) },
             },
         },
     };
 
-    static constexpr const int8_t supportType[4][5] = {
+    static constexpr int8_t supportType[4][5] = {
         { 0, 0, 3, 5, -1 },
         { 1, 1, 4, 2, -1 },
         { 0, 0, 5, 3, -1 },
         { 1, 1, 2, 4, -1 },
     };
 
-    static constexpr const int blockedSegments[5] = {
+    static constexpr int blockedSegments[5] = {
         SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
         SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
         SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
@@ -951,8 +1145,7 @@ static void ClassicWoodenRCTrackLeftEighthBankToDiag(
 
     if (supportType[direction][trackSequence] != -1)
     {
-        WoodenASupportsPaintSetup(
-            session, supportType[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetup(session, supportType[direction][trackSequence], 0, height, session.SupportColours);
     }
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
@@ -965,48 +1158,73 @@ static void ClassicWoodenRCTrackRightEighthBankToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBoundBox2 imageIds[4][5][2] = {
+    static constexpr SpriteBoundBox2 imageIds[4][5][2] = {
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_0_SEQ_0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 32, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_FRONT_0_SEQ_0, 0, { 0, 0, 0 }, { 0, 0, 27 }, { 32, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_0_SEQ_0,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 32, 32, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_FRONT_0_SEQ_0,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 27 }, { 32, 32, 0 }) },
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_0_SEQ_1, 0, { 0, 0, 0 }, { 0, 16, 0 }, { 32, 16, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_0_SEQ_1,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 16, 0 }, { 32, 16, 2 }) },
                 { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_FRONT_0_SEQ_1,
                   0,
                   { 0, 0, 0 },
-                  { 0, 16, 27 },
-                  { 32, 16, 0 } },
+                  BoundBoxXYZ({ 0, 16, 27 }, { 32, 16, 0 }) },
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_0_SEQ_2, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_FRONT_0_SEQ_2, 0, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 16, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_0_SEQ_2,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 16, 16, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_FRONT_0_SEQ_2,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 27 }, { 16, 16, 0 }) },
             },
             {
                 {},
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_0_SEQ_4, 0, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 16, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_0_SEQ_4,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 16, 0, 0 }, { 16, 16, 2 }) },
                 { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_FRONT_0_SEQ_4,
                   0,
                   { 0, 0, 0 },
-                  { 16, 0, 27 },
-                  { 16, 16, 0 } },
+                  BoundBoxXYZ({ 16, 0, 27 }, { 16, 16, 0 }) },
             },
         },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_1_SEQ_0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_1_SEQ_0,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 32, 32, 2 }) },
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_1_SEQ_1, 0, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_1_SEQ_1,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 16, 0, 0 }, { 16, 32, 0 }) },
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_1_SEQ_2, 0, { 0, 0, 0 }, { 0, 16, 0 }, { 16, 16, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_1_SEQ_2,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 16, 0 }, { 16, 16, 2 }) },
                 {},
             },
             {
@@ -1014,47 +1232,79 @@ static void ClassicWoodenRCTrackRightEighthBankToDiag(
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_1_SEQ_4, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_1_SEQ_4,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 16, 16, 2 }) },
                 {},
             },
         },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_2_SEQ_0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 32, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_FRONT_2_SEQ_0, 0, { 0, 0, 0 }, { 0, 0, 27 }, { 32, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_2_SEQ_0,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 32, 32, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_FRONT_2_SEQ_0,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 27 }, { 32, 32, 0 }) },
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_2_SEQ_1, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 34, 16, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_FRONT_2_SEQ_1, 0, { 0, 0, 0 }, { 0, 0, 27 }, { 32, 16, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_2_SEQ_1,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 34, 16, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_FRONT_2_SEQ_1,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 27 }, { 32, 16, 0 }) },
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_2_SEQ_2, 0, { 0, 0, 0 }, { 4, 4, 0 }, { 28, 28, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_FRONT_2_SEQ_2, 0, { 0, 0, 0 }, { 4, 4, 27 }, { 28, 28, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_2_SEQ_2,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 4, 4, 0 }, { 28, 28, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_FRONT_2_SEQ_2,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 4, 4, 27 }, { 28, 28, 0 }) },
             },
             {
                 {},
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_2_SEQ_4, 0, { 0, 0, 0 }, { 0, 16, 0 }, { 16, 18, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_2_SEQ_4,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 16, 0 }, { 16, 18, 2 }) },
                 { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_FRONT_2_SEQ_4,
                   0,
                   { 0, 0, 0 },
-                  { 0, 16, 27 },
-                  { 16, 16, 0 } },
+                  BoundBoxXYZ({ 0, 16, 27 }, { 16, 16, 0 }) },
             },
         },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_3_SEQ_0, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_3_SEQ_0,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 32, 32, 2 }) },
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_3_SEQ_1, 0, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_3_SEQ_1,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 0, 0, 0 }, { 16, 32, 0 }) },
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_3_SEQ_2, 0, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 16, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_3_SEQ_2,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 16, 0, 0 }, { 16, 16, 2 }) },
                 {},
             },
             {
@@ -1062,20 +1312,23 @@ static void ClassicWoodenRCTrackRightEighthBankToDiag(
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_3_SEQ_4, 0, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_ORTHO_TO_DIAG_RIGHT_BANKED_3_SEQ_4,
+                  0,
+                  { 0, 0, 0 },
+                  BoundBoxXYZ({ 16, 16, 0 }, { 16, 16, 2 }) },
                 {},
             },
         },
     };
 
-    static constexpr const int8_t supportType[4][5] = {
+    static constexpr int8_t supportType[4][5] = {
         { 0, 0, 2, 4, -1 },
         { 1, 1, 3, 5, -1 },
         { 0, 0, 4, 2, -1 },
         { 1, 1, 5, 3, -1 },
     };
 
-    static constexpr const int blockedSegments[5] = {
+    static constexpr int blockedSegments[5] = {
         SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
         SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
         SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
@@ -1090,8 +1343,7 @@ static void ClassicWoodenRCTrackRightEighthBankToDiag(
 
     if (supportType[direction][trackSequence] != -1)
     {
-        WoodenASupportsPaintSetup(
-            session, supportType[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetup(session, supportType[direction][trackSequence], 0, height, session.SupportColours);
     }
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][1], height);
@@ -1120,15 +1372,21 @@ static void ClassicWoodenRCTrackDiagFlatToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBoundBox2 imageIds[4][4][2] = {
+    static constexpr SpriteBoundBox2 imageIds[4][4][2] = {
         {
             {
                 {},
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_LEFT_0, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_LEFT_FRONT_0, 0, { -16, -16, 0 }, { -16, -16, 27 }, { 32, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_LEFT_0,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_LEFT_FRONT_0,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 27 }, { 32, 32, 0 }) },
             },
             {
                 {},
@@ -1153,7 +1411,10 @@ static void ClassicWoodenRCTrackDiagFlatToLeftBank(
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_LEFT_1, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_LEFT_1,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
                 {},
             },
         },
@@ -1167,8 +1428,14 @@ static void ClassicWoodenRCTrackDiagFlatToLeftBank(
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_LEFT_2, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 23, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_LEFT_FRONT_2, 0, { -16, -16, 0 }, { -16, -16, 27 }, { 32, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_LEFT_2,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 23, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_LEFT_FRONT_2,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 27 }, { 32, 32, 0 }) },
             },
             {
                 {},
@@ -1177,7 +1444,10 @@ static void ClassicWoodenRCTrackDiagFlatToLeftBank(
         },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_LEFT_3, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_LEFT_3,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
                 {},
             },
             {
@@ -1195,7 +1465,7 @@ static void ClassicWoodenRCTrackDiagFlatToLeftBank(
         },
     };
 
-    static constexpr const int8_t supportType[4][4] = {
+    static constexpr int8_t supportType[4][4] = {
         { -1, 2, 4, -1 },
         { -1, 3, 5, -1 },
         { -1, 4, 2, -1 },
@@ -1204,8 +1474,7 @@ static void ClassicWoodenRCTrackDiagFlatToLeftBank(
 
     if (supportType[direction][trackSequence] != -1)
     {
-        WoodenASupportsPaintSetup(
-            session, supportType[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetup(session, supportType[direction][trackSequence], 0, height, session.SupportColours);
     }
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
@@ -1218,15 +1487,21 @@ static void ClassicWoodenRCTrackDiagFlatToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBoundBox2 imageIds[4][4][2] = {
+    static constexpr SpriteBoundBox2 imageIds[4][4][2] = {
         {
             {
                 {},
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_RIGHT_0, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_RIGHT_FRONT_0, 0, { -16, -16, 0 }, { -16, -16, 27 }, { 32, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_RIGHT_0,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_RIGHT_FRONT_0,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 27 }, { 32, 32, 0 }) },
             },
             {
                 {},
@@ -1251,7 +1526,10 @@ static void ClassicWoodenRCTrackDiagFlatToRightBank(
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_RIGHT_1, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_RIGHT_1,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
                 {},
             },
         },
@@ -1265,8 +1543,14 @@ static void ClassicWoodenRCTrackDiagFlatToRightBank(
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_RIGHT_2, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 23, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_RIGHT_FRONT_2, 0, { -16, -16, 0 }, { -16, -16, 27 }, { 32, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_RIGHT_2,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 23, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_RIGHT_FRONT_2,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 27 }, { 32, 32, 0 }) },
             },
             {
                 {},
@@ -1275,7 +1559,10 @@ static void ClassicWoodenRCTrackDiagFlatToRightBank(
         },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_RIGHT_3, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_FLAT_TO_BANK_RIGHT_3,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
                 {},
             },
             {
@@ -1293,7 +1580,7 @@ static void ClassicWoodenRCTrackDiagFlatToRightBank(
         },
     };
 
-    static constexpr const int8_t supportType[4][4] = {
+    static constexpr int8_t supportType[4][4] = {
         { -1, 2, 4, -1 },
         { -1, 3, 5, -1 },
         { -1, 4, 2, -1 },
@@ -1302,8 +1589,7 @@ static void ClassicWoodenRCTrackDiagFlatToRightBank(
 
     if (supportType[direction][trackSequence] != -1)
     {
-        WoodenASupportsPaintSetup(
-            session, supportType[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetup(session, supportType[direction][trackSequence], 0, height, session.SupportColours);
     }
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
@@ -1330,15 +1616,18 @@ static void ClassicWoodenRCTrackDiagLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBoundBox2 imageIds[4][4][2] = {
+    static constexpr SpriteBoundBox2 imageIds[4][4][2] = {
         {
             {
                 {},
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_0, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_FRONT_0, 0, { -16, -16, 0 }, { -16, -16, 27 }, { 32, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_0, 0, { -16, -16, 0 }, BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_FRONT_0,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 27 }, { 32, 32, 0 }) },
             },
             {
                 {},
@@ -1363,7 +1652,7 @@ static void ClassicWoodenRCTrackDiagLeftBank(
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_1, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_1, 0, { -16, -16, 0 }, BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
                 {},
             },
         },
@@ -1377,8 +1666,11 @@ static void ClassicWoodenRCTrackDiagLeftBank(
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_2, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 23, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_FRONT_2, 0, { -16, -16, 0 }, { -16, -16, 27 }, { 32, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_2, 0, { -16, -16, 0 }, BoundBoxXYZ({ -16, -16, 0 }, { 32, 23, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_FRONT_2,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 27 }, { 32, 32, 0 }) },
             },
             {
                 {},
@@ -1387,7 +1679,7 @@ static void ClassicWoodenRCTrackDiagLeftBank(
         },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_3, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_3, 0, { -16, -16, 0 }, BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
                 {},
             },
             {
@@ -1405,7 +1697,7 @@ static void ClassicWoodenRCTrackDiagLeftBank(
         },
     };
 
-    static constexpr const int8_t supportType[4][4] = {
+    static constexpr int8_t supportType[4][4] = {
         { -1, 2, 4, -1 },
         { -1, 3, 5, -1 },
         { -1, 4, 2, -1 },
@@ -1414,8 +1706,7 @@ static void ClassicWoodenRCTrackDiagLeftBank(
 
     if (supportType[direction][trackSequence] != -1)
     {
-        WoodenASupportsPaintSetup(
-            session, supportType[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetup(session, supportType[direction][trackSequence], 0, height, session.SupportColours);
     }
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
@@ -1435,15 +1726,21 @@ static void ClassicWoodenRCTrackDiagLeftBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBoundBox2 imageIds[4][4][2] = {
+    static constexpr SpriteBoundBox2 imageIds[4][4][2] = {
         {
             {
                 {},
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_TO_25_UP_0, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_TO_25_UP_FRONT_0, 0, { -16, -16, 0 }, { -16, -16, 35 }, { 32, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_TO_25_UP_0,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_TO_25_UP_FRONT_0,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 35 }, { 32, 32, 0 }) },
             },
             {
                 {},
@@ -1468,7 +1765,10 @@ static void ClassicWoodenRCTrackDiagLeftBankTo25DegUp(
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_TO_25_UP_1, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_TO_25_UP_1,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
                 {},
             },
         },
@@ -1482,8 +1782,14 @@ static void ClassicWoodenRCTrackDiagLeftBankTo25DegUp(
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_TO_25_UP_2, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 23, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_TO_25_UP_FRONT_2, 0, { -16, -16, 0 }, { -16, -16, 35 }, { 32, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_TO_25_UP_2,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 23, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_TO_25_UP_FRONT_2,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 35 }, { 32, 32, 0 }) },
             },
             {
                 {},
@@ -1492,7 +1798,10 @@ static void ClassicWoodenRCTrackDiagLeftBankTo25DegUp(
         },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_TO_25_UP_3, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_LEFT_BANK_TO_25_UP_3,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
                 {},
             },
             {
@@ -1510,7 +1819,7 @@ static void ClassicWoodenRCTrackDiagLeftBankTo25DegUp(
         },
     };
 
-    static constexpr const int8_t supportType[4][4] = {
+    static constexpr int8_t supportType[4][4] = {
         { -1, 2, 4, -1 },
         { -1, 3, 5, -1 },
         { -1, 4, 2, -1 },
@@ -1519,8 +1828,7 @@ static void ClassicWoodenRCTrackDiagLeftBankTo25DegUp(
 
     if (supportType[direction][trackSequence] != -1)
     {
-        WoodenASupportsPaintSetup(
-            session, supportType[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetup(session, supportType[direction][trackSequence], 0, height, session.SupportColours);
     }
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
@@ -1533,15 +1841,21 @@ static void ClassicWoodenRCTrackDiagRightBankTo25DegUp(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBoundBox2 imageIds[4][4][2] = {
+    static constexpr SpriteBoundBox2 imageIds[4][4][2] = {
         {
             {
                 {},
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_UP_0, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_UP_FRONT_0, 0, { -16, -16, 0 }, { -16, -16, 35 }, { 32, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_UP_0,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_UP_FRONT_0,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 35 }, { 32, 32, 0 }) },
             },
             {
                 {},
@@ -1566,7 +1880,10 @@ static void ClassicWoodenRCTrackDiagRightBankTo25DegUp(
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_UP_1, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_UP_1,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
                 {},
             },
         },
@@ -1580,8 +1897,14 @@ static void ClassicWoodenRCTrackDiagRightBankTo25DegUp(
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_UP_2, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 23, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_UP_FRONT_2, 0, { -16, -16, 0 }, { -16, -16, 35 }, { 32, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_UP_2,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 23, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_UP_FRONT_2,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 35 }, { 32, 32, 0 }) },
             },
             {
                 {},
@@ -1590,7 +1913,10 @@ static void ClassicWoodenRCTrackDiagRightBankTo25DegUp(
         },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_UP_3, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_RIGHT_BANK_TO_25_UP_3,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
                 {},
             },
             {
@@ -1608,7 +1934,7 @@ static void ClassicWoodenRCTrackDiagRightBankTo25DegUp(
         },
     };
 
-    static constexpr const int8_t supportType[4][4] = {
+    static constexpr int8_t supportType[4][4] = {
         { -1, 2, 4, -1 },
         { -1, 3, 5, -1 },
         { -1, 4, 2, -1 },
@@ -1617,8 +1943,7 @@ static void ClassicWoodenRCTrackDiagRightBankTo25DegUp(
 
     if (supportType[direction][trackSequence] != -1)
     {
-        WoodenASupportsPaintSetup(
-            session, supportType[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetup(session, supportType[direction][trackSequence], 0, height, session.SupportColours);
     }
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
@@ -1631,15 +1956,21 @@ static void ClassicWoodenRCTrackDiag25DegUpToLeftBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBoundBox2 imageIds[4][4][2] = {
+    static constexpr SpriteBoundBox2 imageIds[4][4][2] = {
         {
             {
                 {},
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_LEFT_BANK_0, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_LEFT_BANK_FRONT_0, 0, { -16, -16, 0 }, { -16, -16, 35 }, { 32, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_LEFT_BANK_0,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_LEFT_BANK_FRONT_0,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 35 }, { 32, 32, 0 }) },
             },
             {
                 {},
@@ -1664,7 +1995,10 @@ static void ClassicWoodenRCTrackDiag25DegUpToLeftBank(
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_LEFT_BANK_1, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_LEFT_BANK_1,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
                 {},
             },
         },
@@ -1678,8 +2012,14 @@ static void ClassicWoodenRCTrackDiag25DegUpToLeftBank(
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_LEFT_BANK_2, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 23, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_LEFT_BANK_FRONT_2, 0, { -16, -16, 0 }, { -16, -16, 35 }, { 32, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_LEFT_BANK_2,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 23, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_LEFT_BANK_FRONT_2,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 35 }, { 32, 32, 0 }) },
             },
             {
                 {},
@@ -1688,7 +2028,10 @@ static void ClassicWoodenRCTrackDiag25DegUpToLeftBank(
         },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_LEFT_BANK_3, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_LEFT_BANK_3,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
                 {},
             },
             {
@@ -1706,7 +2049,7 @@ static void ClassicWoodenRCTrackDiag25DegUpToLeftBank(
         },
     };
 
-    static constexpr const int8_t supportType[4][4] = {
+    static constexpr int8_t supportType[4][4] = {
         { -1, 2, 4, -1 },
         { -1, 3, 5, -1 },
         { -1, 4, 2, -1 },
@@ -1715,8 +2058,7 @@ static void ClassicWoodenRCTrackDiag25DegUpToLeftBank(
 
     if (supportType[direction][trackSequence] != -1)
     {
-        WoodenASupportsPaintSetup(
-            session, supportType[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetup(session, supportType[direction][trackSequence], 0, height, session.SupportColours);
     }
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);
@@ -1729,15 +2071,21 @@ static void ClassicWoodenRCTrackDiag25DegUpToRightBank(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr const SpriteBoundBox2 imageIds[4][4][2] = {
+    static constexpr SpriteBoundBox2 imageIds[4][4][2] = {
         {
             {
                 {},
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_RIGHT_BANK_0, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_RIGHT_BANK_FRONT_0, 0, { -16, -16, 0 }, { -16, -16, 35 }, { 32, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_RIGHT_BANK_0,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_RIGHT_BANK_FRONT_0,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 35 }, { 32, 32, 0 }) },
             },
             {
                 {},
@@ -1762,7 +2110,10 @@ static void ClassicWoodenRCTrackDiag25DegUpToRightBank(
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_RIGHT_BANK_1, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_RIGHT_BANK_1,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
                 {},
             },
         },
@@ -1776,8 +2127,14 @@ static void ClassicWoodenRCTrackDiag25DegUpToRightBank(
                 {},
             },
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_RIGHT_BANK_2, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 23, 2 } },
-                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_RIGHT_BANK_FRONT_2, 0, { -16, -16, 0 }, { -16, -16, 35 }, { 32, 32, 0 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_RIGHT_BANK_2,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 23, 2 }) },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_RIGHT_BANK_FRONT_2,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 35 }, { 32, 32, 0 }) },
             },
             {
                 {},
@@ -1786,7 +2143,10 @@ static void ClassicWoodenRCTrackDiag25DegUpToRightBank(
         },
         {
             {
-                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_RIGHT_BANK_3, 0, { -16, -16, 0 }, { -16, -16, 0 }, { 32, 32, 2 } },
+                { SPR_CLASSIC_WOODEN_RC_DIAG_25_UP_TO_RIGHT_BANK_3,
+                  0,
+                  { -16, -16, 0 },
+                  BoundBoxXYZ({ -16, -16, 0 }, { 32, 32, 2 }) },
                 {},
             },
             {
@@ -1804,7 +2164,7 @@ static void ClassicWoodenRCTrackDiag25DegUpToRightBank(
         },
     };
 
-    static constexpr const int8_t supportType[4][4] = {
+    static constexpr int8_t supportType[4][4] = {
         { -1, 2, 4, -1 },
         { -1, 3, 5, -1 },
         { -1, 4, 2, -1 },
@@ -1813,8 +2173,7 @@ static void ClassicWoodenRCTrackDiag25DegUpToRightBank(
 
     if (supportType[direction][trackSequence] != -1)
     {
-        WoodenASupportsPaintSetup(
-            session, supportType[direction][trackSequence], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        WoodenASupportsPaintSetup(session, supportType[direction][trackSequence], 0, height, session.SupportColours);
     }
 
     WoodenRCTrackPaintBb<true>(session, &imageIds[direction][trackSequence][0], height);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -68,7 +68,7 @@ GameActions::Result BannerSetStyleAction::Query() const
     switch (_type)
     {
         case BannerSetStyleType::PrimaryColour:
-            if (_parameter > 31)
+            if (_parameter > COLOUR_COUNT)
             {
                 LOG_ERROR("Invalid primary colour: colour = %u", _parameter);
                 return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);

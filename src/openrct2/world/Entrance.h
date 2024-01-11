@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,9 +25,9 @@ enum
 
 namespace EntranceSequence
 {
-    constexpr const uint8_t Centre = 0;
-    constexpr const uint8_t Left = 1;
-    constexpr const uint8_t Right = 2;
+    constexpr uint8_t Centre = 0;
+    constexpr uint8_t Left = 1;
+    constexpr uint8_t Right = 2;
 }; // namespace EntranceSequence
 
 constexpr const uint8_t ParkEntranceHeight = 12 * COORDS_Z_STEP;

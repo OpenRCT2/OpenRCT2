@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,6 +36,7 @@ struct IObjectManager
     virtual Object* LoadObject(std::string_view identifier) abstract;
     virtual Object* LoadObject(const RCTObjectEntry* entry) abstract;
     virtual Object* LoadObject(const ObjectEntryDescriptor& descriptor) abstract;
+    virtual Object* LoadObject(const ObjectEntryDescriptor& descriptor, ObjectEntryIndex slot) abstract;
     virtual void LoadObjects(const ObjectList& entries) abstract;
     virtual void UnloadObjects(const std::vector<ObjectEntryDescriptor>& entries) abstract;
     virtual void UnloadAllTransient() abstract;

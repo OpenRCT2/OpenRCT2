@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -194,7 +194,7 @@ size_t FormatTokenGetTextColourIndex(FormatToken token)
 
 FormatToken FormatTokenFromTextColour(size_t textColour)
 {
-    static constexpr const FormatToken tokens[] = {
+    static constexpr FormatToken tokens[] = {
         FormatToken::ColourBlack,        FormatToken::ColourGrey,       FormatToken::ColourWhite,
         FormatToken::ColourRed,          FormatToken::ColourGreen,      FormatToken::ColourYellow,
         FormatToken::ColourTopaz,        FormatToken::ColourCeladon,    FormatToken::ColourBabyBlue,

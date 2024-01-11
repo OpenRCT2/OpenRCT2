@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #    include <limits.h>
 #    include <locale.h>
 #    include <pwd.h>
+#    include <unistd.h>
 #    include <vector>
 #    if defined(__FreeBSD__) || defined(__NetBSD__)
 #        include <stddef.h>
@@ -28,6 +29,7 @@
 #        include <fontconfig/fontconfig.h>
 #    endif // NO_TTF
 
+#    include "../Date.h"
 #    include "../OpenRCT2.h"
 #    include "../core/Path.hpp"
 #    include "../localisation/Language.h"

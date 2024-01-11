@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,7 +22,9 @@ static void PaintFacility(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bool hasSupports = WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_3]);
+    bool hasSupports = WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        GetShopSupportColourScheme(session, trackElement));
 
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -38,12 +40,12 @@ static void PaintFacility(
     BoundBoxXYZ bb = { { direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height },
                        { lengthX, lengthY, trackElement.GetClearanceZ() - trackElement.GetBaseZ() - 3 } };
 
-    auto imageTemplate = session.TrackColours[SCHEME_TRACK];
+    auto imageTemplate = session.TrackColours;
     auto imageIndex = firstCarEntry->base_image_id + ((direction + 2) & 3);
     auto imageId = imageTemplate.WithIndex(imageIndex);
     if (hasSupports)
     {
-        auto foundationImageTemplate = session.TrackColours[SCHEME_3];
+        auto foundationImageTemplate = GetShopSupportColourScheme(session, trackElement);
         auto foundationImageIndex = (direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS;
         auto foundationImageId = foundationImageTemplate.WithIndex(foundationImageIndex);
         PaintAddImageAsParent(session, foundationImageId, offset, bb);

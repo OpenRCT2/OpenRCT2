@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,7 +13,7 @@
 #include "Track.h"
 #include "TrackPaint.h"
 
-constexpr const uint8_t MaxSequencesPerPiece = 16;
+constexpr uint8_t MaxSequencesPerPiece = 16;
 
 // 0x009968BB, 0x009968BC, 0x009968BD, 0x009968BF, 0x009968C1, 0x009968C3
 
@@ -31,7 +31,7 @@ struct TrackDescriptor
     uint8_t track_curve;
     uint8_t slope_end;
     uint8_t bank_end;
-    uint8_t track_element;
+    track_type_t track_element;
 };
 
 enum
@@ -51,7 +51,7 @@ enum
     R9_SPIN
 };
 
-extern const TrackDescriptor gTrackDescriptors[142];
+extern const TrackDescriptor gTrackDescriptors[186];
 
 struct DodgemsTrackSize
 {
@@ -61,7 +61,7 @@ struct DodgemsTrackSize
     uint8_t bottom;
 };
 
-constexpr const DodgemsTrackSize GetDodgemsTrackSize(track_type_t type)
+constexpr DodgemsTrackSize GetDodgemsTrackSize(track_type_t type)
 {
     if (type == TrackElemType::FlatTrack2x2)
         return { 4, 4, 59, 59 };

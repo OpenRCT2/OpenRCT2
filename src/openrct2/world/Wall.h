@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,7 +34,7 @@ enum EDGE_SLOPE
 };
 
 /** rct2: 0x009A3FEC */
-constexpr const uint8_t LandSlopeToWallSlope[][NumOrthogonalDirections] = {
+constexpr uint8_t LandSlopeToWallSlope[][NumOrthogonalDirections] = {
     //  Top right                        Bottom right                   Bottom left                       Top left
     { 0,                             0,                             0,                             0                             },
     { 0,                             EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_DOWNWARDS,          0                             },

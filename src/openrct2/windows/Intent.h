@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -47,6 +47,7 @@ enum IntentAction
     INTENT_ACTION_TRACK_DESIGN_RESTORE_PROVISIONAL,
     INTENT_ACTION_SET_MAP_TOOLTIP,
     INTENT_ACTION_NEW_SCENERY,
+    INTENT_ACTION_TILE_MODIFY,
 
     INTENT_ACTION_NULL = 255,
 };

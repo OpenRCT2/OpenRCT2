@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -149,13 +149,13 @@ private:
             auto scanner = Path::ScanDirectory(pattern, true);
             while (scanner->Next())
             {
-                auto fileInfo = scanner->GetFileInfo();
-                auto path = std::string(scanner->GetPath());
+                const auto& fileInfo = scanner->GetFileInfo();
+                auto path = scanner->GetPath();
 
                 stats.TotalFiles++;
-                stats.TotalFileSize += fileInfo->Size;
-                stats.FileDateModifiedChecksum ^= static_cast<uint32_t>(fileInfo->LastModified >> 32)
-                    ^ static_cast<uint32_t>(fileInfo->LastModified & 0xFFFFFFFF);
+                stats.TotalFileSize += fileInfo.Size;
+                stats.FileDateModifiedChecksum ^= static_cast<uint32_t>(fileInfo.LastModified >> 32)
+                    ^ static_cast<uint32_t>(fileInfo.LastModified & 0xFFFFFFFF);
                 stats.FileDateModifiedChecksum = Numerics::ror32(stats.FileDateModifiedChecksum, 5);
                 stats.PathChecksum += GetPathChecksum(path);
 

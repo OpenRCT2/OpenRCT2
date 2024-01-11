@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,6 +21,7 @@
 #include "actions/ResultWithMessage.h"
 #include "audio/audio.h"
 #include "core/Path.hpp"
+#include "core/String.hpp"
 #include "entity/EntityList.h"
 #include "entity/EntityRegistry.h"
 #include "entity/Guest.h"
@@ -263,7 +264,7 @@ namespace Editor
         if (!loadSuccess)
             return false;
 
-        if (_stricmp(extension, ".sv4") == 0 || _stricmp(extension, ".sv6") == 0 || _stricmp(extension, ".sv7") == 0)
+        if (String::IEquals(extension, ".sv4") || String::IEquals(extension, ".sv6") || String::IEquals(extension, ".sv7") == 0)
         {
             loadedFromSave = true;
         }

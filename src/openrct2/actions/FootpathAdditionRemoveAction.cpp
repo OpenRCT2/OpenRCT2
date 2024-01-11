@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -91,9 +91,7 @@ GameActions::Result FootpathAdditionRemoveAction::Query() const
 
 GameActions::Result FootpathAdditionRemoveAction::Execute() const
 {
-    auto tileElement = MapGetFootpathElement(_loc);
-    auto pathElement = tileElement->AsPath();
-
+    auto* pathElement = MapGetFootpathElement(_loc);
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
         FootpathInterruptPeeps(_loc);

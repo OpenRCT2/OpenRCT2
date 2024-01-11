@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,8 +17,8 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const int32_t WW = 200;
-static constexpr const int32_t WH = 100;
+static constexpr int32_t WW = 200;
+static constexpr int32_t WH = 100;
 
 // clang-format off
 enum WindowRideRefurbishWidgetIdx
@@ -75,7 +75,7 @@ public:
 
     void OnDraw(DrawPixelInfo& dpi) override
     {
-        WindowDrawWidgets(*this, &dpi);
+        WindowDrawWidgets(*this, dpi);
 
         auto currentRide = GetRide(rideId);
         if (currentRide != nullptr)
@@ -88,6 +88,11 @@ public:
             ScreenCoordsXY stringCoords(windowPos.x + WW / 2, windowPos.y + (WH / 2) - 3);
             DrawTextWrapped(dpi, stringCoords, WW - 4, stringId, ft, { TextAlignment::CENTRE });
         }
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 };
 

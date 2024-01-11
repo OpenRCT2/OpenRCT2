@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -159,6 +159,7 @@ enum WindowOptionsWidgetIdx {
     WIDX_TRAP_CURSOR,
     WIDX_INVERT_DRAG,
     WIDX_ZOOM_TO_CURSOR,
+    WIDX_WINDOW_BUTTONS_ON_THE_LEFT,
     WIDX_HOTKEY_DROPDOWN,
     WIDX_THEMES_GROUP,
     WIDX_THEMES_LABEL,
@@ -212,9 +213,9 @@ enum WindowOptionsWidgetIdx {
     WIDX_ASSET_PACKS,
 };
 
-static constexpr const StringId WINDOW_TITLE = STR_OPTIONS_TITLE;
-static constexpr const int32_t WW = 310;
-static constexpr const int32_t WH = 332;
+static constexpr StringId WINDOW_TITLE = STR_OPTIONS_TITLE;
+static constexpr int32_t WW = 310;
+static constexpr int32_t WH = 332;
 
 #define MAIN_OPTIONS_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
@@ -318,21 +319,22 @@ static Widget window_options_audio_widgets[] = {
 static Widget window_options_controls_and_interface_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define CONTROLS_GROUP_START 53
-    MakeWidget({  5, CONTROLS_GROUP_START +  0}, {300, 92}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CONTROLS_GROUP                                          ), // Controls group
-    MakeWidget({ 10, CONTROLS_GROUP_START + 13}, {290, 14}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SCREEN_EDGE_SCROLLING,   STR_SCREEN_EDGE_SCROLLING_TIP  ), // Edge scrolling
-    MakeWidget({ 10, CONTROLS_GROUP_START + 30}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_TRAP_MOUSE,              STR_TRAP_MOUSE_TIP             ), // Trap mouse
-    MakeWidget({ 10, CONTROLS_GROUP_START + 45}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_INVERT_RIGHT_MOUSE_DRAG, STR_INVERT_RIGHT_MOUSE_DRAG_TIP), // Invert right mouse dragging
-    MakeWidget({ 10, CONTROLS_GROUP_START + 60}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_TO_CURSOR,          STR_ZOOM_TO_CURSOR_TIP         ), // Zoom to cursor
-    MakeWidget({155, CONTROLS_GROUP_START + 75}, {145, 13}, WindowWidgetType::Button,   WindowColour::Secondary, STR_HOTKEY,                  STR_HOTKEY_TIP                 ), // Set hotkeys buttons
+    MakeWidget({  5, CONTROLS_GROUP_START +  0}, {300,107}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CONTROLS_GROUP                                                ), // Controls group
+    MakeWidget({ 10, CONTROLS_GROUP_START + 13}, {290, 14}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SCREEN_EDGE_SCROLLING,      STR_SCREEN_EDGE_SCROLLING_TIP     ), // Edge scrolling
+    MakeWidget({ 10, CONTROLS_GROUP_START + 30}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_TRAP_MOUSE,                 STR_TRAP_MOUSE_TIP                ), // Trap mouse
+    MakeWidget({ 10, CONTROLS_GROUP_START + 45}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_INVERT_RIGHT_MOUSE_DRAG,    STR_INVERT_RIGHT_MOUSE_DRAG_TIP   ), // Invert right mouse dragging
+    MakeWidget({ 10, CONTROLS_GROUP_START + 60}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_TO_CURSOR,             STR_ZOOM_TO_CURSOR_TIP            ), // Zoom to cursor
+    MakeWidget({ 10, CONTROLS_GROUP_START + 75}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary,  STR_WINDOW_BUTTONS_ON_THE_LEFT, STR_WINDOW_BUTTONS_ON_THE_LEFT_TIP), // Window buttons on the left
+    MakeWidget({155, CONTROLS_GROUP_START + 90}, {145, 13}, WindowWidgetType::Button,   WindowColour::Secondary, STR_HOTKEY,                     STR_HOTKEY_TIP                    ), // Set hotkeys buttons
 #undef CONTROLS_GROUP_START
-#define THEMES_GROUP_START 148
+#define THEMES_GROUP_START 163
     MakeWidget({  5, THEMES_GROUP_START +  0}, {300, 48}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_THEMES_GROUP                                          ), // Themes group
     MakeWidget({ 10, THEMES_GROUP_START + 14}, {145, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_THEMES_LABEL_CURRENT_THEME, STR_CURRENT_THEME_TIP     ), // Themes
     MakeWidget({155, THEMES_GROUP_START + 14}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRING                                                ),
     MakeWidget({288, THEMES_GROUP_START + 15}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,             STR_CURRENT_THEME_TIP     ),
     MakeWidget({155, THEMES_GROUP_START + 30}, {145, 13}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_THEMES_BUTTON,         STR_EDIT_THEMES_BUTTON_TIP), // Themes button
 #undef THEMES_GROUP_START
-#define TOOLBAR_GROUP_START 200
+#define TOOLBAR_GROUP_START 215
     MakeWidget({  5, TOOLBAR_GROUP_START +  0}, {300, 92}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                   ), // Toolbar buttons group
     MakeWidget({ 10, TOOLBAR_GROUP_START + 14}, {280, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_SHOW_TOOLBAR_BUTTONS_FOR                                                ),
     MakeWidget({ 24, TOOLBAR_GROUP_START + 31}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP     ), // Finances
@@ -555,15 +557,15 @@ public:
     void OnDraw(DrawPixelInfo& dpi) override
     {
         DrawWidgets(dpi);
-        DrawTabImages(&dpi);
+        DrawTabImages(dpi);
 
         switch (page)
         {
             case WINDOW_OPTIONS_PAGE_DISPLAY:
-                DisplayDraw(&dpi);
+                DisplayDraw(dpi);
                 break;
             case WINDOW_OPTIONS_PAGE_ADVANCED:
-                AdvancedDraw(&dpi);
+                AdvancedDraw(dpi);
                 break;
             default:
                 break;
@@ -663,8 +665,12 @@ private:
             y = std::max<int32_t>(y, widget->bottom);
         }
         height = y + 6;
-        widgets[WIDX_BACKGROUND].bottom = height - 1;
-        widgets[WIDX_PAGE_BACKGROUND].bottom = height - 1;
+        ResizeFrameWithPage();
+    }
+
+    void OnResize() override
+    {
+        ResizeFrameWithPage();
     }
 
     void CommonUpdate()
@@ -909,12 +915,12 @@ private:
         widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(gConfigGeneral.DrawingEngine)];
     }
 
-    void DisplayDraw(DrawPixelInfo* dpi)
+    void DisplayDraw(DrawPixelInfo& dpi)
     {
         auto ft = Formatter();
         ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.WindowScale * 100));
         DrawTextBasic(
-            *dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_SCALE].left + 1, widgets[WIDX_SCALE].top + 1 },
+            dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_SCALE].left + 1, widgets[WIDX_SCALE].top + 1 },
             STR_WINDOW_COLOUR_2_COMMA2DP32, ft, { colours[1] });
     }
 #pragma endregion
@@ -1349,32 +1355,22 @@ private:
                 break;
             case WIDX_TITLE_MUSIC_DROPDOWN:
             {
-                if (!IsRCT1TitleMusicAvailable())
+                const bool rct1MusicThemeIsAvailable = IsRCT1TitleMusicAvailable();
+                int32_t numItems{};
+                int32_t checkedIndex{};
+                for (auto theme : TitleThemeOptions)
                 {
-                    // Only show None and RCT2
-                    int32_t numItems{};
+                    if (theme.Kind == TitleMusicKind::RCT1 && !rct1MusicThemeIsAvailable)
+                        continue;
+
+                    if (gConfigSound.TitleMusic == theme.Kind)
+                        checkedIndex = numItems;
+
                     gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[numItems++].Args = TitleMusicNames[0];
-                    gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[numItems++].Args = TitleMusicNames[2];
-                    ShowDropdown(widget, numItems);
-                    if (gConfigSound.TitleMusic == TitleMusicKind::None)
-                        Dropdown::SetChecked(0, true);
-                    else if (gConfigSound.TitleMusic == TitleMusicKind::RCT2)
-                        Dropdown::SetChecked(1, true);
+                    gDropdownItems[numItems++].Args = theme.Name;
                 }
-                else
-                {
-                    // Show None, RCT1, RCT2 and random
-                    int32_t numItems{};
-                    for (auto musicName : TitleMusicNames)
-                    {
-                        gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[numItems++].Args = musicName;
-                    }
-                    ShowDropdown(widget, numItems);
-                    Dropdown::SetChecked(EnumValue(gConfigSound.TitleMusic), true);
-                }
+                ShowDropdown(widget, numItems);
+                Dropdown::SetChecked(checkedIndex, true);
                 break;
             }
         }
@@ -1407,18 +1403,20 @@ private:
                 break;
             case WIDX_TITLE_MUSIC_DROPDOWN:
             {
-                auto titleMusic = static_cast<TitleMusicKind>(dropdownIndex);
-                if (!IsRCT1TitleMusicAvailable() && dropdownIndex != 0)
+                // HACK: When RCT1 is not available, it's not in the dropdown, so indices higher than it should be incremented
+                const bool rct1MusicThemeIsAvailable = IsRCT1TitleMusicAvailable();
+                for (size_t i = 0; i < std::size(TitleThemeOptions) && static_cast<int32_t>(i) <= dropdownIndex; i++)
                 {
-                    titleMusic = TitleMusicKind::RCT2;
+                    if (TitleThemeOptions[i].Kind == TitleMusicKind::RCT1 && !rct1MusicThemeIsAvailable)
+                        dropdownIndex++;
                 }
 
-                gConfigSound.TitleMusic = titleMusic;
+                gConfigSound.TitleMusic = TitleThemeOptions[dropdownIndex].Kind;
                 ConfigSaveDefault();
                 Invalidate();
 
                 OpenRCT2::Audio::StopTitleMusic();
-                if (titleMusic != TitleMusicKind::None)
+                if (gConfigSound.TitleMusic != TitleMusicKind::None)
                 {
                     OpenRCT2::Audio::PlayTitleMusic();
                 }
@@ -1465,14 +1463,14 @@ private:
         return { 500, 0 };
     }
 
-    StringId GetTitleMusicName()
+    StringId GetTitleMusicName() const
     {
-        auto index = EnumValue(gConfigSound.TitleMusic);
-        if (index < 0 || static_cast<size_t>(index) >= std::size(TitleMusicNames))
-        {
-            index = EnumValue(TitleMusicKind::None);
-        }
-        return TitleMusicNames[index];
+        auto theme = std::find_if(std::begin(TitleThemeOptions), std::end(TitleThemeOptions), [](auto&& option) {
+            return gConfigSound.TitleMusic == option.Kind;
+        });
+        if (theme != std::end(TitleThemeOptions))
+            return theme->Name;
+        return STR_OPENRCT2_DROPDOWN;
     }
 
     void AudioPrepareDraw()
@@ -1590,6 +1588,12 @@ private:
                 Invalidate();
                 WindowInvalidateByClass(WindowClass::TopToolbar);
                 break;
+            case WIDX_WINDOW_BUTTONS_ON_THE_LEFT:
+                gConfigInterface.WindowButtonsOnTheLeft ^= 1;
+                ConfigSaveDefault();
+                Invalidate();
+                WindowInvalidateAll();
+                break;
             case WIDX_INVERT_DRAG:
                 gConfigGeneral.InvertViewportDrag ^= 1;
                 ConfigSaveDefault();
@@ -1654,6 +1658,7 @@ private:
         SetCheckboxValue(WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.ToolbarShowMute);
         SetCheckboxValue(WIDX_TOOLBAR_SHOW_CHAT, gConfigInterface.ToolbarShowChat);
         SetCheckboxValue(WIDX_TOOLBAR_SHOW_ZOOM, gConfigInterface.ToolbarShowZoom);
+        SetCheckboxValue(WIDX_WINDOW_BUTTONS_ON_THE_LEFT, gConfigInterface.WindowButtonsOnTheLeft);
 
         size_t activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
         const utf8* activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
@@ -1997,12 +2002,12 @@ private:
         widgets[WIDX_AUTOSAVE_FREQUENCY].text = AutosaveNames[gConfigGeneral.AutosaveFrequency];
     }
 
-    void AdvancedDraw(DrawPixelInfo* dpi)
+    void AdvancedDraw(DrawPixelInfo& dpi)
     {
         auto ft = Formatter();
         ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.AutosaveAmount));
         DrawTextBasic(
-            *dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
+            dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
             STR_WINDOW_COLOUR_2_COMMA16, ft, { colours[1] });
 
         const auto normalisedPath = Platform::StrDecompToPrecomp(gConfigGeneral.RCT1Path);
@@ -2017,7 +2022,7 @@ private:
         uint32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
         ScreenCoordsXY screenCoords = { windowPos.x + pathWidget.left + 1,
                                         windowPos.y + pathWidget.top + static_cast<int32_t>(padding) };
-        DrawTextEllipsised(*dpi, screenCoords, 277, STR_STRING, ft, { colours[1] });
+        DrawTextEllipsised(dpi, screenCoords, 277, STR_STRING, ft, { colours[1] });
     }
 
     OpenRCT2String AdvancedTooltip(WidgetIndex widgetIndex, StringId fallback)
@@ -2048,7 +2053,7 @@ private:
 
         Invalidate();
         WindowEventResizeCall(this);
-        WindowEventInvalidateCall(this);
+        WindowEventOnPrepareDrawCall(this);
         InitScrollWidgets();
         Invalidate();
     }
@@ -2068,7 +2073,7 @@ private:
             Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
     }
 
-    void DrawTabImages(DrawPixelInfo* dpi)
+    void DrawTabImages(DrawPixelInfo& dpi)
     {
         DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_DISPLAY, SPR_TAB_PAINT_0);
         DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_RENDERING, SPR_G2_TAB_TREE);
@@ -2079,7 +2084,7 @@ private:
         DrawTabImage(dpi, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
     }
 
-    void DrawTabImage(DrawPixelInfo* dpi, int32_t p, int32_t spriteIndex)
+    void DrawTabImage(DrawPixelInfo& dpi, int32_t p, int32_t spriteIndex)
     {
         WidgetIndex widgetIndex = WIDX_FIRST_TAB + p;
         Widget* widget = &widgets[widgetIndex];
@@ -2104,10 +2109,10 @@ private:
 
             // Draw greyed out (light border bottom right shadow)
             GfxDrawSpriteSolid(
-                dpi, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[window_colour].lighter);
+                &dpi, ImageId(spriteIndex), screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[window_colour].lighter);
 
             // Draw greyed out (dark)
-            GfxDrawSpriteSolid(dpi, ImageId(spriteIndex), screenCoords, ColourMapA[window_colour].mid_light);
+            GfxDrawSpriteSolid(&dpi, ImageId(spriteIndex), screenCoords, ColourMapA[window_colour].mid_light);
         }
     }
 
@@ -2146,11 +2151,16 @@ private:
         STR_SAVE_EVERY_30MINUTES, STR_SAVE_EVERY_HOUR,     STR_SAVE_NEVER,
     };
 
-    static constexpr StringId TitleMusicNames[] = {
-        STR_OPTIONS_MUSIC_VALUE_NONE,
-        STR_ROLLERCOASTER_TYCOON_1_DROPDOWN,
-        STR_ROLLERCOASTER_TYCOON_2_DROPDOWN,
-        STR_OPTIONS_MUSIC_VALUE_RANDOM,
+    static constexpr struct
+    {
+        TitleMusicKind Kind;
+        StringId Name;
+    } TitleThemeOptions[] = {
+        { TitleMusicKind::None, STR_OPTIONS_MUSIC_VALUE_NONE },
+        { TitleMusicKind::OpenRCT2, STR_OPENRCT2_DROPDOWN },
+        { TitleMusicKind::RCT1, STR_ROLLERCOASTER_TYCOON_1_DROPDOWN },
+        { TitleMusicKind::RCT2, STR_ROLLERCOASTER_TYCOON_2_DROPDOWN },
+        { TitleMusicKind::Random, STR_OPTIONS_MUSIC_VALUE_RANDOM },
     };
 
     static constexpr StringId FullscreenModeNames[] = {

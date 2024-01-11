@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@
 #include "../Supports.h"
 #include "Paint.TileElement.h"
 
-static constexpr const CoordsXY lengths[] = {
+static constexpr CoordsXY lengths[] = {
     { 12, 26 },
     { 26, 12 },
     { 12, 26 },
@@ -42,12 +42,12 @@ static void PaintSmallScenerySupports(
     if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_NO_SUPPORTS))
         return;
 
-    auto special = 0;
+    auto transitionType = WoodenSupportTransitionType::None;
     auto supportHeight = height;
     if (supportHeight & 0xF)
     {
         supportHeight &= ~0xF;
-        special = 49;
+        transitionType = WoodenSupportTransitionType::Scenery;
     }
 
     auto supportImageTemplate = ImageId().WithRemap(0);
@@ -60,8 +60,9 @@ static void PaintSmallScenerySupports(
         supportImageTemplate = imageTemplate;
     }
 
-    auto supportType = (direction & 1) ? 1 : 0;
-    WoodenBSupportsPaintSetup(session, supportType, special, supportHeight, supportImageTemplate);
+    WoodenBSupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, supportHeight, supportImageTemplate,
+        transitionType);
 }
 
 static void SetSupportHeights(
@@ -116,7 +117,7 @@ static void PaintSmallSceneryBody(
     {
         if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HALF_SPACE))
         {
-            static constexpr const CoordsXY sceneryHalfTileOffsets[] = {
+            static constexpr CoordsXY sceneryHalfTileOffsets[] = {
                 { 3, 3 },
                 { 3, 17 },
                 { 17, 3 },
@@ -277,7 +278,7 @@ static void PaintSmallSceneryBody(
                 frame = (frame >> delay) & sceneryEntry->animation_mask;
 
                 auto imageIndex = 0;
-                if (frame < sceneryEntry->num_frames)
+                if (frame < sceneryEntry->FrameOffsetCount)
                 {
                     imageIndex = sceneryEntry->frame_offsets[frame];
                 }
@@ -344,11 +345,11 @@ void PaintSmallScenery(PaintSession& session, uint8_t direction, int32_t height,
     if (sceneryElement.IsGhost())
     {
         session.InteractionType = ViewportInteractionItem::None;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
-    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&sceneryElement)))
+    else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&sceneryElement))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
 
     PaintSmallSceneryBody(session, direction, height, sceneryElement, sceneryEntry, imageTemplate);

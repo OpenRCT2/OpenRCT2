@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,11 @@
 
 #undef M_PI
 
+// Ignore isatty warning on WIN32
+#ifndef _CRT_NONSTDC_NO_WARNINGS
+#    define _CRT_NONSTDC_NO_WARNINGS
+#endif
+
 #ifdef _MSC_VER
 #    include <ctime>
 #endif
@@ -21,51 +26,17 @@
 #include <cstddef>
 #include <cstdint>
 
-// Define MAX_PATH for various headers that don't want to include system headers
-// just for MAX_PATH
-#ifndef MAX_PATH
-#    define MAX_PATH 260
-#endif
-
 using colour_t = uint8_t;
 
 // Gets the name of a symbol as a C string
 #define nameof(symbol) #symbol
-
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-#    include <unistd.h>
-#    define STUB() LOG_WARNING("Function %s at %s:%d is a stub.", __PRETTY_FUNCTION__, __FILE__, __LINE__)
-#    define _strcmpi _stricmp
-#    define _stricmp(x, y) strcasecmp((x), (y))
-#    define _strnicmp(x, y, n) strncasecmp((x), (y), (n))
-
-#    if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-#        define RCT2_ENDIANNESS __ORDER_LITTLE_ENDIAN__
-#        define LOBYTE(w) (static_cast<uint8_t>(w))
-#        define HIBYTE(w) (static_cast<uint8_t>((static_cast<uint16_t>(w) >> 8) & 0xFF))
-#    endif // __BYTE_ORDER__
-
-#    ifndef RCT2_ENDIANNESS
-#        error Unknown endianness!
-#    endif // RCT2_ENDIANNESS
-
-#endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-
-#ifdef _WIN32
-char* strndup(const char* src, size_t size);
-#endif
-
-// BSD and macOS have MAP_ANON instead of MAP_ANONYMOUS
-#ifndef MAP_ANONYMOUS
-#    define MAP_ANONYMOUS MAP_ANON
-#endif
 
 #define OPENRCT2_MASTER_SERVER_URL "https://servers.openrct2.io"
 
 // Time (represented as number of 100-nanosecond intervals since 0001-01-01T00:00:00Z)
 using datetime64 = uint64_t;
 
-constexpr const datetime64 DATETIME64_MIN = 0;
+constexpr datetime64 DATETIME64_MIN = 0;
 
 // Represent fixed point numbers. dp = decimal point
 using fixed8_1dp = uint8_t;
@@ -143,26 +114,6 @@ constexpr int32_t operator"" _mph(long double speedMph)
 }
 
 using StringId = uint16_t;
-
-#define SafeFree(x)                                                                                                            \
-    do                                                                                                                         \
-    {                                                                                                                          \
-        free(x);                                                                                                               \
-        (x) = nullptr;                                                                                                         \
-    } while (false)
-
-#define SafeDelete(x)                                                                                                          \
-    do                                                                                                                         \
-    {                                                                                                                          \
-        delete (x);                                                                                                            \
-        (x) = nullptr;                                                                                                         \
-    } while (false)
-#define SafeDeleteArray(x)                                                                                                     \
-    do                                                                                                                         \
-    {                                                                                                                          \
-        delete[](x);                                                                                                           \
-        (x) = nullptr;                                                                                                         \
-    } while (false)
 
 #define abstract = 0
 

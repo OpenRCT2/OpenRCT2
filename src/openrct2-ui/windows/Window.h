@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -101,8 +101,8 @@ void WindowGuestListRefreshList();
 WindowBase* WindowGuestListOpen();
 WindowBase* WindowGuestListOpenWithFilter(GuestListFilterType type, int32_t index);
 WindowBase* WindowStaffFirePromptOpen(Peep* peep);
-WindowBase* WindowScenarioselectOpen(scenarioselect_callback callback, bool titleEditor);
-WindowBase* WindowScenarioselectOpen(std::function<void(std::string_view)> callback, bool titleEditor, bool disableLocking);
+WindowBase* WindowScenarioselectOpen(scenarioselect_callback callback);
+WindowBase* WindowScenarioselectOpen(std::function<void(std::string_view)> callback);
 
 WindowBase* WindowErrorOpen(StringId title, StringId message, const class Formatter& formatter);
 WindowBase* WindowErrorOpen(std::string_view title, std::string_view message);
@@ -120,8 +120,14 @@ WindowBase* WindowMapOpen();
 void WindowMapReset();
 
 WindowBase* WindowResearchOpen();
-void WindowResearchDevelopmentPagePaint(WindowBase* w, DrawPixelInfo* dpi, WidgetIndex baseWidgetIndex);
-void WindowResearchFundingPagePaint(WindowBase* w, DrawPixelInfo* dpi, WidgetIndex baseWidgetIndex);
+void WindowResearchDevelopmentMouseUp(WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex);
+void WindowResearchDevelopmentPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex);
+void WindowResearchDevelopmentDraw(WindowBase* w, DrawPixelInfo& dpi, WidgetIndex baseWidgetIndex);
+void WindowResearchFundingMouseDown(WindowBase* w, WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex);
+void WindowResearchFundingMouseUp(WidgetIndex widgetIndex, WidgetIndex baseWidgetIndex);
+void WindowResearchFundingDropdown(WidgetIndex widgetIndex, int32_t selectedIndex, WidgetIndex baseWidgetIndex);
+void WindowResearchFundingPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex);
+void WindowResearchFundingDraw(WindowBase* w, DrawPixelInfo& dpi);
 
 WindowBase* WindowNewRideOpen();
 WindowBase* WindowNewRideOpenResearch();
@@ -134,11 +140,15 @@ void WindowRideListRefreshList(WindowBase* w);
 WindowBase* WindowRideMainOpen(const Ride& ride);
 WindowBase* WindowRideOpenTrack(TileElement* tileElement);
 WindowBase* WindowRideOpenVehicle(Vehicle* vehicle);
+void WindowRideInvalidateVehicle(const Vehicle& vehicle);
+void WindowRidePaintResetVehicle(RideId rideIndex);
 void WindowRideMeasurementsDesignCancel();
 
 // rct2: 0x00F635EE
 extern RideSelection _window_track_list_item;
 WindowBase* WindowTrackListOpen(RideSelection item);
+void WindowTrackDesignListReloadTracks();
+void WindowTrackDesignListSetBeingUpdated(bool beingUpdated);
 
 void SetMapTooltip(Formatter& ft);
 const Formatter& GetMapTooltip();

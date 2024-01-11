@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,7 +34,6 @@ TEST(MultiLaunchTest, all)
     gOpenRCT2Headless = true;
     gOpenRCT2NoGraphics = true;
 
-    Platform::CoreInit();
     for (int i = 0; i < 3; i++)
     {
         auto context = CreateContext();
@@ -48,8 +47,11 @@ TEST(MultiLaunchTest, all)
         ASSERT_EQ(RideGetCount(), 134);
         auto gs = context->GetGameState();
         ASSERT_NE(gs, nullptr);
+
         auto& date = gs->GetDate();
-        ASSERT_EQ(date.GetMonthTicks(), 0);
+        // NOTE: This value is saved in the SV6 file, after the import this will be the current state.
+        // In case the save file gets replaced this needs to be adjusted.
+        ASSERT_EQ(date.GetMonthTicks(), 0x1e98);
 
         for (int j = 0; j < updatesToTest; j++)
         {

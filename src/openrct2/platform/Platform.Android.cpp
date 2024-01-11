@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,6 +27,8 @@ AndroidClassLoader::~AndroidClassLoader()
 jobject AndroidClassLoader::_classLoader;
 jmethodID AndroidClassLoader::_findClassMethod;
 
+// Initialized in JNI_OnLoad. Cannot be initialized here as JVM is not
+// available until after JNI_OnLoad is called.
 static std::shared_ptr<AndroidClassLoader> acl;
 
 namespace Platform
@@ -74,17 +76,74 @@ namespace Platform
 
     uint16_t GetLocaleLanguage()
     {
-        return LANGUAGE_ENGLISH_UK;
+        JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
+
+        jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+        jclass activityClass = env->GetObjectClass(activity);
+        jmethodID getDefaultLocale = env->GetMethodID(
+            activityClass, "getDefaultLocale", "([Ljava/lang/String;)Ljava/lang/String;");
+
+        jobjectArray jLanguageTags = env->NewObjectArray(
+            LANGUAGE_COUNT, env->FindClass("java/lang/String"), env->NewStringUTF(""));
+
+        for (int32_t i = 1; i < LANGUAGE_COUNT; ++i)
+        {
+            jstring jTag = env->NewStringUTF(LanguagesDescriptors[i].locale);
+            env->SetObjectArrayElement(jLanguageTags, i, jTag);
+        }
+
+        jstring jniString = static_cast<jstring>(env->CallObjectMethod(activity, getDefaultLocale, jLanguageTags));
+
+        const char* jniChars = env->GetStringUTFChars(jniString, nullptr);
+        std::string defaultLocale = jniChars;
+
+        env->ReleaseStringUTFChars(jniString, jniChars);
+        for (int32_t i = 0; i < LANGUAGE_COUNT; ++i)
+        {
+            jobject strToFree = env->GetObjectArrayElement(jLanguageTags, i);
+            env->DeleteLocalRef(strToFree);
+        }
+        env->DeleteLocalRef(jLanguageTags);
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(activityClass);
+
+        return LanguageGetIDFromLocale(defaultLocale.c_str());
     }
 
     CurrencyType GetLocaleCurrency()
     {
-        return Platform::GetCurrencyValue(NULL);
+        JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
+
+        jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+        jclass activityClass = env->GetObjectClass(activity);
+        jmethodID getDefaultLocale = env->GetMethodID(activityClass, "getLocaleCurrency", "()Ljava/lang/String;");
+
+        jstring jniString = static_cast<jstring>(env->CallObjectMethod(activity, getDefaultLocale));
+
+        const char* jniChars = env->GetStringUTFChars(jniString, nullptr);
+        std::string localeCurrencyCode = jniChars;
+
+        env->ReleaseStringUTFChars(jniString, jniChars);
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(activityClass);
+
+        return Platform::GetCurrencyValue(localeCurrencyCode.c_str());
     }
 
     MeasurementFormat GetLocaleMeasurementFormat()
     {
-        return MeasurementFormat::Metric;
+        JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
+
+        jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+        jclass activityClass = env->GetObjectClass(activity);
+        jmethodID getIsImperialLocaleMeasurementFormat = env->GetMethodID(
+            activityClass, "isImperialLocaleMeasurementFormat", "()Z");
+
+        jboolean isImperial = env->CallBooleanMethod(activity, getIsImperialLocaleMeasurementFormat);
+
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(activityClass);
+        return isImperial == JNI_TRUE ? MeasurementFormat::Imperial : MeasurementFormat::Metric;
     }
 
     std::string GetSteamPath()
@@ -116,11 +175,6 @@ namespace Platform
         return displayScale;
     }
 
-    void AndroidInitClassLoader()
-    {
-        acl = std::make_shared<AndroidClassLoader>();
-    }
-
     jclass AndroidFindClass(JNIEnv* env, std::string_view name)
     {
         return static_cast<jclass>(env->CallObjectMethod(
@@ -128,6 +182,19 @@ namespace Platform
             env->NewStringUTF(std::string(name).c_str())));
     }
 } // namespace Platform
+
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* pjvm, void* reserved)
+{
+    // Due to an issue where JNI_OnLoad could be called multiple times, we need
+    // to make sure it is only initialized once.
+    // https://issuetracker.google.com/issues/220523932
+    // Otherwise JVM complains about jobject-s having incorrect serial numbers.
+    if (!acl)
+    {
+        acl = std::make_shared<AndroidClassLoader>();
+    }
+    return JNI_VERSION_1_6;
+}
 
 AndroidClassLoader::AndroidClassLoader()
 {

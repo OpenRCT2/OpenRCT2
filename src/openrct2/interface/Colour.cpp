@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,7 +39,9 @@ void ColoursInitMaps()
     // Get colour maps from g1
     for (int32_t i = 0; i < COLOUR_COUNT; i++)
     {
-        const G1Element* g1 = GfxGetG1Element(SPR_PALETTE_2_START + i);
+        // Get palette index in g1 / g2
+        const auto paletteIndex = (i < COLOUR_NUM_ORIGINAL) ? SPR_PALETTE_2_START : SPR_G2_PALETTE_BEGIN - COLOUR_NUM_ORIGINAL;
+        const G1Element* g1 = GfxGetG1Element(paletteIndex + i);
         if (g1 != nullptr)
         {
             ColourMapA[i].colour_0 = g1->offset[INDEX_COLOUR_0];
@@ -93,6 +95,30 @@ namespace Colour
         { "dark_pink", COLOUR_DARK_PINK },
         { "bright_pink", COLOUR_BRIGHT_PINK },
         { "light_pink", COLOUR_LIGHT_PINK },
+        { "dark_olive_dark", COLOUR_DARK_OLIVE_DARK },
+        { "dark_olive_light", COLOUR_DARK_OLIVE_LIGHT },
+        { "saturated_brown_light", COLOUR_SATURATED_BROWN_LIGHT },
+        { "bordeaux_red_dark", COLOUR_BORDEAUX_RED_DARK },
+        { "bordeaux_red_light", COLOUR_BORDEAUX_RED_LIGHT },
+        { "grass_green_dark", COLOUR_GRASS_GREEN_DARK },
+        { "grass_green_light", COLOUR_GRASS_GREEN_LIGHT },
+        { "olive_dark", COLOUR_OLIVE_DARK },
+        { "olive_light", COLOUR_OLIVE_LIGHT },
+        { "saturated_green_light", COLOUR_SATURATED_GREEN_LIGHT },
+        { "tan_dark", COLOUR_TAN_DARK },
+        { "tan_light", COLOUR_TAN_LIGHT },
+        { "dull_purple_light", COLOUR_DULL_PURPLE_LIGHT },
+        { "dull_green_dark", COLOUR_DULL_GREEN_DARK },
+        { "dull_green_light", COLOUR_DULL_GREEN_LIGHT },
+        { "saturated_purple_dark", COLOUR_SATURATED_PURPLE_DARK },
+        { "saturated_purple_light", COLOUR_SATURATED_PURPLE_LIGHT },
+        { "orange_light", COLOUR_ORANGE_LIGHT },
+        { "aqua_dark", COLOUR_AQUA_DARK },
+        { "magenta_light", COLOUR_MAGENTA_LIGHT },
+        { "dull_brown_dark", COLOUR_DULL_BROWN_DARK },
+        { "dull_brown_light", COLOUR_DULL_BROWN_LIGHT },
+        { "invisible", COLOUR_INVISIBLE },
+        { "void", COLOUR_VOID },
     };
 
     colour_t FromString(std::string_view s, colour_t defaultValue)
@@ -104,7 +130,9 @@ namespace Colour
 } // namespace Colour
 
 #ifndef NO_TTF
-static uint8_t BlendColourMap[PALETTE_COUNT][PALETTE_COUNT] = { 0 };
+static BlendColourMapType BlendColourMap = { 0 };
+
+static bool BlendColourMapInitialised = false;
 
 static uint8_t FindClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t blue)
 {
@@ -126,21 +154,44 @@ static uint8_t FindClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t blue)
     return closest;
 }
 
+static void InitBlendColourMap()
+{
+    for (int i = 0; i < PALETTE_SIZE; i++)
+    {
+        for (int j = i; j < PALETTE_SIZE; j++)
+        {
+            uint8_t red = (gPalette[i].Red + gPalette[j].Red) / 2;
+            uint8_t green = (gPalette[i].Green + gPalette[j].Green) / 2;
+            uint8_t blue = (gPalette[i].Blue + gPalette[j].Blue) / 2;
+
+            auto colour = FindClosestPaletteIndex(red, green, blue);
+            BlendColourMap[i][j] = colour;
+            BlendColourMap[j][i] = colour;
+        }
+    }
+    BlendColourMapInitialised = true;
+}
+
+BlendColourMapType* GetBlendColourMap()
+{
+    if (!BlendColourMapInitialised)
+    {
+        InitBlendColourMap();
+    }
+    return &BlendColourMap;
+}
+
 uint8_t BlendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2)
 {
-    const uint8_t cMin = std::min(paletteIndex1, paletteIndex2);
-    const uint8_t cMax = std::max(paletteIndex1, paletteIndex2);
-
-    if (BlendColourMap[cMin][cMax] != 0)
+    if (!BlendColourMapInitialised)
     {
-        return BlendColourMap[cMin][cMax];
+        InitBlendColourMap();
     }
-
-    uint8_t red = (gPalette[cMin].Red + gPalette[cMax].Red) / 2;
-    uint8_t green = (gPalette[cMin].Green + gPalette[cMax].Green) / 2;
-    uint8_t blue = (gPalette[cMin].Blue + gPalette[cMax].Blue) / 2;
-
-    BlendColourMap[cMin][cMax] = FindClosestPaletteIndex(red, green, blue);
-    return BlendColourMap[cMin][cMax];
+    return BlendColourMap[paletteIndex1][paletteIndex2];
+}
+#else
+BlendColourMapType* GetBlendColourMap()
+{
+    return nullptr;
 }
 #endif

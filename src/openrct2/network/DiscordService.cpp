@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,7 +29,7 @@ namespace
 
     constexpr const char* APPLICATION_ID = "378612438200877056";
     constexpr const char* STEAM_APP_ID = nullptr;
-    constexpr const auto REFRESH_INTERVAL = 5.0s;
+    constexpr auto REFRESH_INTERVAL = 5.0s;
 } // namespace
 
 static void OnReady([[maybe_unused]] const DiscordUser* request)

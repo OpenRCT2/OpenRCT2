@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -49,8 +49,10 @@
     #include <netdb.h>
     #include <netinet/in.h>
     #include <netinet/tcp.h>
+    #include <unistd.h>
     #include <sys/ioctl.h>
     #include <sys/socket.h>
+    #include <unistd.h>
     #include "../common.h"
     using SOCKET = int32_t;
     #define SOCKET_ERROR -1

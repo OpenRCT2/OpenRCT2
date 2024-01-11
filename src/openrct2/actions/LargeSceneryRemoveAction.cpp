@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -72,7 +72,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
     auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
     // If we have a bugged scenery entry, do not touch the tile element.
     if (sceneryEntry == nullptr)
-        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REMOVE_THIS, STR_UNKNOWN_OBJECT_TYPE);
 
     auto rotatedOffsets = CoordsXYZ{
         CoordsXY{ sceneryEntry->tiles[_tileIndex].x_offset, sceneryEntry->tiles[_tileIndex].y_offset }.Rotate(_loc.direction),
@@ -93,6 +93,17 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
         {
+            if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+            {
+                if (sceneryEntry->HasFlag(LARGE_SCENERY_FLAG_IS_TREE))
+                {
+                    res.Error = GameActions::Status::NoClearance;
+                    res.ErrorTitle = STR_CANT_REMOVE_THIS;
+                    res.ErrorMessage = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
+                    return res;
+                }
+            }
+
             if (!MapIsLocationOwned({ currentTile.x, currentTile.y, currentTile.z }))
             {
                 return GameActions::Result(GameActions::Status::NoClearance, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);

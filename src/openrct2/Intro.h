@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -32,4 +32,4 @@ enum class IntroState : uint8_t
 extern IntroState gIntroState;
 
 void IntroUpdate();
-void IntroDraw(DrawPixelInfo* dpi);
+void IntroDraw(DrawPixelInfo& dpi);

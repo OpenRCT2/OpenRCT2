@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,7 +20,7 @@ enum WindowTitleExitWidgetIdx {
     WIDX_EXIT,
 };
 
-static Widget window_title_exit_widgets[] = {
+static Widget _titleExitWidgets[] = {
     MakeWidget({0, 0}, {40, 64}, WindowWidgetType::ImgBtn, WindowColour::Tertiary, ImageId(SPR_MENU_EXIT), STR_EXIT),
     WIDGETS_END,
 };
@@ -30,7 +30,7 @@ class TitleExitWindow final : public Window
 {
     void OnOpen() override
     {
-        widgets = window_title_exit_widgets;
+        widgets = _titleExitWidgets;
         InitScrollWidgets();
     }
 

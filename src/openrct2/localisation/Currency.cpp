@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@ CurrencyDescriptor CurrencyDescriptors[EnumValue(CurrencyType::Count)] = {
     {   "ESP",  10,     CurrencyAffix::Suffix,    "Pts",          CurrencyAffix::Suffix,    "Pts",  STR_PESETA          },  // Spanish Peseta
     {   "ITL",  1000,   CurrencyAffix::Prefix,    "L",            CurrencyAffix::Prefix,    "L",    STR_LIRA            },  // Italian Lira
     {   "NLG",  10,     CurrencyAffix::Prefix,    "\xC6\x92 ",    CurrencyAffix::Prefix,    "fl.",  STR_GUILDERS        },  // Dutch Guilder
-    {   "SEK",  10,     CurrencyAffix::Suffix,    " kr",          CurrencyAffix::Suffix,    " kr",  STR_KRONA           },  // Swedish Krona
+    {   "SEK",  100,    CurrencyAffix::Suffix,    " kr",          CurrencyAffix::Suffix,    " kr",  STR_KRONA           },  // Swedish Krona
     {   "EUR",  10,     CurrencyAffix::Prefix,    "\xE2\x82\xAC", CurrencyAffix::Suffix,    "EUR",  STR_EUROS           },  // Euro
     {   "KRW",  10000,  CurrencyAffix::Prefix,    "\xE2\x82\xA9", CurrencyAffix::Prefix,    "W",    STR_WON             },  // South Korean Won
     {   "RUB",  1000,   CurrencyAffix::Suffix,    "\xE2\x82\xBD", CurrencyAffix::Prefix,    "R ",   STR_ROUBLE          },  // Russian Rouble

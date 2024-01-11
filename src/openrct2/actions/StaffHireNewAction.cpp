@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,7 +29,7 @@
 #include <set>
 
 /* rct2: 0x009929FC */
-static constexpr const PeepSpriteType spriteTypes[] = {
+static constexpr PeepSpriteType spriteTypes[] = {
     PeepSpriteType::Handyman,
     PeepSpriteType::Mechanic,
     PeepSpriteType::Security,
@@ -172,9 +172,9 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->SpriteType = spriteType;
 
         const SpriteBounds* spriteBounds = &GetSpriteBounds(spriteType);
-        newPeep->sprite_width = spriteBounds->sprite_width;
-        newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
-        newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;
+        newPeep->SpriteData.Width = spriteBounds->sprite_width;
+        newPeep->SpriteData.HeightMin = spriteBounds->sprite_height_negative;
+        newPeep->SpriteData.HeightMax = spriteBounds->sprite_height_positive;
 
         if (_autoPosition)
         {
@@ -190,7 +190,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         }
 
         // Staff uses this
-        newPeep->As<Staff>()->SetHireDate(gDateMonthsElapsed);
+        newPeep->As<Staff>()->SetHireDate(GetDate().GetMonthsElapsed());
         newPeep->PathfindGoal.x = 0xFF;
         newPeep->PathfindGoal.y = 0xFF;
         newPeep->PathfindGoal.z = 0xFF;
@@ -201,10 +201,25 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->TrousersColour = colour;
 
         // Staff energy determines their walking speed
-        newPeep->Energy = 0x60;
-        newPeep->EnergyTarget = 0x60;
-        newPeep->StaffMowingTimeout = 0;
+        switch (gCheatsSelectedStaffSpeed)
+        {
+            case StaffSpeedCheat::None:
+                newPeep->Energy = CHEATS_STAFF_NORMAL_SPEED;
+                newPeep->EnergyTarget = CHEATS_STAFF_NORMAL_SPEED;
+                break;
 
+            case StaffSpeedCheat::Frozen:
+                newPeep->Energy = CHEATS_STAFF_FREEZE_SPEED;
+                newPeep->EnergyTarget = CHEATS_STAFF_FREEZE_SPEED;
+                break;
+
+            case StaffSpeedCheat::Fast:
+                newPeep->Energy = CHEATS_STAFF_FAST_SPEED;
+                newPeep->EnergyTarget = CHEATS_STAFF_FAST_SPEED;
+                break;
+        }
+
+        newPeep->StaffMowingTimeout = 0;
         newPeep->PatrolInfo = nullptr;
 
         res.SetData(StaffHireNewActionResult{ newPeep->Id });

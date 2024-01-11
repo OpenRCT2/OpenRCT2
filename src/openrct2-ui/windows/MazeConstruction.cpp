@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -28,9 +28,9 @@
 
 #pragma region Widgets
 
-static constexpr const StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
-static constexpr const int32_t WH = 200;
-static constexpr const int32_t WW = 166;
+static constexpr StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
+static constexpr int32_t WH = 200;
+static constexpr int32_t WW = 166;
 
 // clang-format off
 enum {
@@ -107,7 +107,7 @@ public:
     void OnClose() override
     {
         RideConstructionInvalidateCurrentTrack();
-        ViewportSetVisibility(0);
+        ViewportSetVisibility(ViewportVisibility::Default);
 
         MapInvalidateMapSelectionTiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -124,12 +124,9 @@ public:
         {
             if (currentRide->overall_view.IsNull())
             {
-                int32_t savedPausedState = gGamePaused;
-                gGamePaused = 0;
                 auto gameAction = RideDemolishAction(currentRide->id, RIDE_MODIFY_DEMOLISH);
                 gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
                 GameActions::Execute(&gameAction);
-                gGamePaused = savedPausedState;
             }
             else
             {
@@ -162,6 +159,7 @@ public:
 
     void OnResize() override
     {
+        ResizeFrameWithPage();
         uint64_t disabledWidgets = 0;
         if (_rideConstructionState == RideConstructionState::Place)
         {
@@ -366,7 +364,7 @@ private:
             if (currentRide != nullptr && RideAreAllPossibleEntrancesAndExitsBuilt(*currentRide).Successful)
             {
                 ToolCancel();
-                if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+                if (!currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
                     WindowCloseByClass(WindowClass::RideConstruction);
             }
             else

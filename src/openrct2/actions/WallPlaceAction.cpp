@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -222,7 +222,7 @@ GameActions::Result WallPlaceAction::Query() const
     if (wallEntry == nullptr)
     {
         LOG_ERROR("Wall Type not found %d", _wallType);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
 
     if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
@@ -312,7 +312,7 @@ GameActions::Result WallPlaceAction::Execute() const
     if (wallEntry == nullptr)
     {
         LOG_ERROR("Wall Type not found %d", _wallType);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_UNKNOWN_OBJECT_TYPE);
     }
 
     uint8_t clearanceHeight = targetHeight / COORDS_Z_STEP;

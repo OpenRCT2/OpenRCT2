@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,7 +25,7 @@ namespace RCT1
 {
     colour_t GetColour(colour_t colour)
     {
-        static constexpr const uint8_t map[] =
+        static constexpr uint8_t map[] =
         {
             COLOUR_BLACK,
             COLOUR_GREY,
@@ -70,7 +70,7 @@ namespace RCT1
 
     ::PeepSpriteType GetPeepSpriteType(::RCT1::PeepSpriteType rct1SpriteType)
     {
-        static constexpr const ::PeepSpriteType map[] =
+        static constexpr ::PeepSpriteType map[] =
         {
             ::PeepSpriteType::Normal, // 0x00
             ::PeepSpriteType::Handyman, // 0x01
@@ -424,7 +424,7 @@ namespace RCT1
 
     uint8_t GetVehicleSubEntryIndex(uint8_t rct1VehicleType, uint8_t vehicleSubEntry)
     {
-        static constexpr const uint8_t map[] =
+        static constexpr uint8_t map[] =
         {
             0, // STEEL_RC_FRONT
             1, // STEEL_RC_CARRIAGE
@@ -1278,7 +1278,7 @@ namespace RCT1
             "",
             "",
 
-            "rct2.footpath_surface.road",           // RCT1_FOOTPATH_TYPE_ROAD
+            "rct1.footpath_surface.road",           // RCT1_FOOTPATH_TYPE_ROAD
             "",
             "",
             "",

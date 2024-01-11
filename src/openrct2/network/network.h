@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -64,6 +64,7 @@ void NetworkFlush();
 [[nodiscard]] money64 NetworkGetPlayerMoneySpent(uint32_t index);
 [[nodiscard]] std::string NetworkGetPlayerIPAddress(uint32_t id);
 [[nodiscard]] std::string NetworkGetPlayerPublicKeyHash(uint32_t id);
+void NetworkIncrementPlayerNumCommands(uint32_t playerIndex);
 void NetworkAddPlayerMoneySpent(uint32_t index, money64 cost);
 [[nodiscard]] int32_t NetworkGetPlayerLastAction(uint32_t index, int32_t time);
 void NetworkSetPlayerLastAction(uint32_t index, GameCommand command);

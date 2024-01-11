@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -32,7 +32,7 @@ const money64 research_cost_table[RESEARCH_FUNDING_COUNT] = {
     400.00_GBP, // Maximum funding
 };
 
-static constexpr const int32_t dword_988E60[static_cast<int32_t>(ExpenditureType::Count)] = {
+static constexpr int32_t dword_988E60[static_cast<int32_t>(ExpenditureType::Count)] = {
     1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0,
 };
 
@@ -320,7 +320,7 @@ money64 FinanceGetCurrentCash()
 void FinanceShiftExpenditureTable()
 {
     // If EXPENDITURE_TABLE_MONTH_COUNT months have passed then is full, sum the oldest month
-    if (gDateMonthsElapsed >= EXPENDITURE_TABLE_MONTH_COUNT)
+    if (GetDate().GetMonthsElapsed() >= EXPENDITURE_TABLE_MONTH_COUNT)
     {
         money64 sum = 0;
         for (uint32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
@@ -363,7 +363,7 @@ void FinanceResetCashToInitial()
 money64 FinanceGetLastMonthShopProfit()
 {
     money64 profit = 0;
-    if (gDateMonthsElapsed != 0)
+    if (GetDate().GetMonthsElapsed() != 0)
     {
         const auto* lastMonthExpenditure = gExpenditureTable[1];
 

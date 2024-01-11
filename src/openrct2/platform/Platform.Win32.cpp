@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,6 +21,7 @@
 #    include <shlobj.h>
 #    undef GetEnvironmentVariable
 
+#    include "../Date.h"
 #    include "../OpenRCT2.h"
 #    include "../common.h"
 #    include "../core/Path.hpp"
@@ -40,30 +41,11 @@
 #    pragma comment(                                                                                                           \
         linker,                                                                                                                \
         "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
-
-static uint32_t _frequency = 0;
-static LARGE_INTEGER _entryTimestamp;
-
 // The name of the mutex used to prevent multiple instances of the game from running
 static constexpr wchar_t SINGLE_INSTANCE_MUTEX_NAME[] = L"RollerCoaster Tycoon 2_GSKMUTEX";
 
 #    define SOFTWARE_CLASSES L"Software\\Classes"
 #    define MUI_CACHE L"Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache"
-
-char* strndup(const char* src, size_t size)
-{
-    size_t len = strnlen(src, size);
-    char* dst = reinterpret_cast<char*>(malloc(len + 1));
-
-    if (dst == nullptr)
-    {
-        return nullptr;
-    }
-
-    dst = reinterpret_cast<char*>(std::memcpy(dst, src, len));
-    dst[len] = '\0';
-    return dst;
-}
 
 namespace Platform
 {
@@ -785,13 +767,6 @@ namespace Platform
         return !path.empty() ? Path::Combine(path, font.filename) : std::string();
     }
 
-    bool EnsureDirectoryExists(u8string_view path)
-    {
-        auto wPath = String::ToWideChar(path);
-        auto success = CreateDirectoryW(wPath.c_str(), nullptr);
-        return success != FALSE || GetLastError() == ERROR_ALREADY_EXISTS;
-    }
-
     bool LockSingleInstance()
     {
         // Check if operating system mutex exists
@@ -907,29 +882,6 @@ namespace Platform
         return false;
     }
 
-    uint32_t GetTicks()
-    {
-        LARGE_INTEGER pfc;
-        QueryPerformanceCounter(&pfc);
-
-        LARGE_INTEGER runningDelta;
-        runningDelta.QuadPart = pfc.QuadPart - _entryTimestamp.QuadPart;
-
-        return static_cast<uint32_t>(runningDelta.QuadPart / _frequency);
-    }
-
-    void Sleep(uint32_t ms)
-    {
-        ::Sleep(ms);
-    }
-
-    void InitTicks()
-    {
-        LARGE_INTEGER freq;
-        QueryPerformanceFrequency(&freq);
-        _frequency = static_cast<uint32_t>(freq.QuadPart / 1000);
-        QueryPerformanceCounter(&_entryTimestamp);
-    }
 } // namespace Platform
 
 #endif

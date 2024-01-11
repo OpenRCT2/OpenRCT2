@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -147,11 +147,11 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     if (entranceEl.IsGhost())
     {
         session.InteractionType = ViewportInteractionItem::None;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
-    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&entranceEl)))
+    else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&entranceEl))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
 
     // Format modified to stop repeated code
@@ -199,7 +199,8 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     {
         supportsImageTemplate = ImageId().WithPrimary(COLOUR_SATURATED_BROWN);
     }
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, supportsImageTemplate);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, supportsImageTemplate);
 
     height += isExit ? 40 : 56;
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -275,11 +276,11 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
     if (entranceEl.IsGhost())
     {
         session.InteractionType = ViewportInteractionItem::None;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
-    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&entranceEl)))
+    else if (session.SelectedElement == reinterpret_cast<const TileElement*>(&entranceEl))
     {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::PaletteGhost);
     }
 
     auto& objManager = GetContext()->GetObjectManager();
@@ -327,7 +328,8 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
     {
         supportsImageTemplate = ImageId().WithPrimary(COLOUR_SATURATED_BROWN);
     }
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, supportsImageTemplate);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, supportsImageTemplate);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);

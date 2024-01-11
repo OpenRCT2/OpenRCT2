@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -47,13 +47,13 @@ namespace OpenRCT2
             explicit Painter(const std::shared_ptr<Ui::IUiContext>& uiContext);
             void Paint(Drawing::IDrawingEngine& de);
 
-            PaintSession* CreateSession(DrawPixelInfo* dpi, uint32_t viewFlags);
+            PaintSession* CreateSession(DrawPixelInfo& dpi, uint32_t viewFlags);
             void ReleaseSession(PaintSession* session);
             ~Painter();
 
         private:
-            void PaintReplayNotice(DrawPixelInfo* dpi, const char* text);
-            void PaintFPS(DrawPixelInfo* dpi);
+            void PaintReplayNotice(DrawPixelInfo& dpi, const char* text);
+            void PaintFPS(DrawPixelInfo& dpi);
             void MeasureFPS();
         };
     } // namespace Paint

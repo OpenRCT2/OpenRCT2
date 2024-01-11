@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,7 +39,7 @@ struct GForces
 };
 
 // How many valid pitch values are currently in the game. Eventually pitch will be enumerated.
-constexpr const uint8_t NumVehiclePitches = 60;
+constexpr uint8_t NumVehiclePitches = 60;
 
 // Size: 0x09
 struct VehicleInfo
@@ -54,8 +54,8 @@ struct VehicleInfo
 
 struct SoundIdVolume;
 
-constexpr const uint16_t VehicleTrackDirectionMask = 0b0000000000000011;
-constexpr const uint16_t VehicleTrackTypeMask = 0b1111111111111100;
+constexpr uint16_t VehicleTrackDirectionMask = 0b0000000000000011;
+constexpr uint16_t VehicleTrackTypeMask = 0b1111111111111100;
 
 enum class MiniGolfAnimation : uint8_t;
 
@@ -210,6 +210,7 @@ struct Vehicle : EntityBase
     uint8_t seat_rotation;
     uint8_t target_seat_rotation;
     CoordsXY BoatLocation;
+    uint8_t BlockBrakeSpeed;
 
     constexpr bool IsHead() const
     {
@@ -377,6 +378,8 @@ private:
     void UpdateLandscapeDoor() const;
     void UpdateLandscapeDoorBackwards() const;
     int32_t CalculateRiderBraking() const;
+    uint8_t ChooseBrakeSpeed() const;
+    void PopulateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, TrackElement& brake);
 
     void Loc6DCE02(const Ride& curRide);
 };
@@ -447,6 +450,7 @@ namespace VehicleFlags
     constexpr uint32_t MoveSingleCar = (1 << 14); // OpenRCT2 Flag: Used to override UpdateMotion to move the position of
                                                   // an individual car on a train
     constexpr uint32_t Crashed = (1 << 15);       // Car displays as smoke plume
+    constexpr uint32_t CarIsReversed = (1 << 16); // Car is displayed running backwards
 } // namespace VehicleFlags
 
 enum

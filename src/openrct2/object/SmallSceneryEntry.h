@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -62,6 +62,7 @@ struct SmallSceneryEntry
     money64 price;
     money64 removal_price;
     uint8_t* frame_offsets;
+    uint16_t FrameOffsetCount;
     uint16_t animation_delay;
     uint16_t animation_mask;
     uint16_t num_frames;

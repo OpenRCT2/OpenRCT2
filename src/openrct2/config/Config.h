@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -135,6 +135,7 @@ struct InterfaceConfiguration
     int32_t ObjectSelectionFilterFlags;
     int32_t ScenarioselectLastTab;
     bool ListRideVehiclesSeparately;
+    bool WindowButtonsOnTheLeft;
 };
 
 struct SoundConfiguration
@@ -251,9 +252,10 @@ enum class MeasurementFormat : int32_t
 enum class TitleMusicKind : int32_t
 {
     None,
+    Random,
+    OpenRCT2,
     RCT1,
     RCT2,
-    Random
 };
 
 extern GeneralConfiguration gConfigGeneral;

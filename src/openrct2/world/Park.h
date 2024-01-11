@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,11 +14,11 @@
 
 constexpr auto MAX_ENTRANCE_FEE = 999.00_GBP;
 
-constexpr const uint8_t ParkRatingHistoryUndefined = std::numeric_limits<uint8_t>::max();
-constexpr const uint32_t GuestsInParkHistoryUndefined = std::numeric_limits<uint32_t>::max();
-constexpr const uint8_t ParkNameMaxLength = 128;
-constexpr const uint8_t ScenarioNameMaxLength = 128;
-constexpr const uint16_t ScenarioDetailsNameMaxLength = 256;
+constexpr uint8_t ParkRatingHistoryUndefined = std::numeric_limits<uint8_t>::max();
+constexpr uint32_t GuestsInParkHistoryUndefined = std::numeric_limits<uint32_t>::max();
+constexpr uint8_t ParkNameMaxLength = 128;
+constexpr uint8_t ScenarioNameMaxLength = 128;
+constexpr uint16_t ScenarioDetailsNameMaxLength = 256;
 
 enum : uint32_t
 {

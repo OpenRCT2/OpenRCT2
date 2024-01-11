@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,7 +13,6 @@
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "../world/Banner.h"
@@ -56,13 +55,13 @@ void WallObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.name = LanguageAllocateObjectString(GetName());
-    _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.image = LoadImages();
 }
 
 void WallObject::Unload()
 {
     LanguageFreeObjectString(_legacyType.name);
-    GfxObjectFreeImages(_legacyType.image, GetImageTable().GetCount());
+    UnloadImages();
 
     _legacyType.name = 0;
     _legacyType.image = 0;
@@ -81,16 +80,16 @@ void WallObject::DrawPreview(DrawPixelInfo& dpi, int32_t width, int32_t height) 
         imageId = imageId.WithSecondary(COLOUR_YELLOW);
     }
 
-    GfxDrawSprite(&dpi, imageId, screenCoords);
+    GfxDrawSprite(dpi, imageId, screenCoords);
 
     if (_legacyType.flags & WALL_SCENERY_HAS_GLASS)
     {
         auto glassImageId = imageId.WithTransparency(COLOUR_BORDEAUX_RED).WithIndexOffset(6);
-        GfxDrawSprite(&dpi, glassImageId, screenCoords);
+        GfxDrawSprite(dpi, glassImageId, screenCoords);
     }
     else if (_legacyType.flags & WALL_SCENERY_IS_DOOR)
     {
-        GfxDrawSprite(&dpi, imageId.WithIndexOffset(1), screenCoords);
+        GfxDrawSprite(dpi, imageId.WithIndexOffset(1), screenCoords);
     }
 }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,9 +16,11 @@
 
 #include <optional>
 
-constexpr const uint32_t RideConstructionSpecialPieceSelected = 0x10000;
+constexpr uint32_t RideConstructionSpecialPieceSelected = 0x10000;
 
-constexpr const int32_t BLOCK_BRAKE_BASE_SPEED = 0x20364;
+constexpr uint8_t kRCT2DefaultBlockBrakeSpeed = 2;
+constexpr int32_t kBlockBrakeBaseSpeed = 0x20364;
+constexpr int32_t kBlockBrakeSpeedOffset = kBlockBrakeBaseSpeed - (kRCT2DefaultBlockBrakeSpeed << 16);
 
 using track_type_t = uint16_t;
 using roll_type_t = uint8_t;
@@ -82,12 +84,6 @@ enum
 
 enum
 {
-    TRACK_ELEMENT_FLAG_TERMINAL_STATION = 1 << 3,
-    TD6_TRACK_ELEMENT_FLAG_INVERTED = 1 << 6,
-};
-
-enum
-{
     TRACK_ELEMENT_FLAGS2_CHAIN_LIFT = 1 << 0,
     TRACK_ELEMENT_FLAGS2_INVERTED = 1 << 1,
     // Used for giga coaster
@@ -133,15 +129,18 @@ enum
     TRACK_CURVE_VERY_SMALL,
     TRACK_CURVE_SMALL,
     TRACK_CURVE,
+    TRACK_CURVE_LARGE,
     TRACK_TWIST,
     TRACK_HALF_LOOP,
     TRACK_CORKSCREW,
     TRACK_TOWER_BASE,
-    TRACK_HELIX_SMALL,
-    TRACK_HELIX_LARGE,
-    TRACK_HELIX_LARGE_UNBANKED,
+    TRACK_HELIX_UP_BANKED_HALF,
+    TRACK_HELIX_DOWN_BANKED_HALF,
+    TRACK_HELIX_UP_BANKED_QUARTER,
+    TRACK_HELIX_DOWN_BANKED_QUARTER,
+    TRACK_HELIX_UP_UNBANKED_QUARTER,
+    TRACK_HELIX_DOWN_UNBANKED_QUARTER,
     TRACK_BRAKES,
-    TRACK_25,
     TRACK_ON_RIDE_PHOTO,
     TRACK_WATER_SPLASH,
     TRACK_SLOPE_VERTICAL,
@@ -158,7 +157,6 @@ enum
     TRACK_SLOPE_ROLL_BANKING,
     TRACK_SLOPE_STEEP_LONG,
     TRACK_CURVE_VERTICAL,
-    TRACK_42,
     TRACK_LIFT_HILL_CABLE,
     TRACK_LIFT_HILL_CURVED,
     TRACK_QUARTER_LOOP,
@@ -173,6 +171,8 @@ enum
     TRACK_RAPIDS,
     TRACK_FLYING_HALF_LOOP_UNINVERTED_UP,
     TRACK_FLYING_HALF_LOOP_INVERTED_DOWN,
+
+    TRACK_FLAT_RIDE_BASE,
 
     TRACK_WATERFALL,
     TRACK_WHIRLPOOL,
@@ -196,6 +196,12 @@ enum
 
     TRACK_FLYING_HALF_LOOP_UNINVERTED_DOWN,
     TRACK_FLYING_HALF_LOOP_INVERTED_UP,
+
+    TRACK_SLOPE_CURVE_LARGE,
+    TRACK_SLOPE_CURVE_LARGE_BANKED,
+
+    TRACK_DIAG_BRAKES,
+    TRACK_DIAG_BLOCK_BRAKES,
 
     TRACK_GROUP_COUNT,
 };
@@ -445,8 +451,8 @@ namespace TrackElemType
     constexpr track_type_t PoweredLift = 182;
     constexpr track_type_t LeftLargeHalfLoopUp = 183;
     constexpr track_type_t RightLargeHalfLoopUp = 184;
-    constexpr track_type_t RightLargeHalfLoopDown = 185;
-    constexpr track_type_t LeftLargeHalfLoopDown = 186;
+    constexpr track_type_t LeftLargeHalfLoopDown = 185;
+    constexpr track_type_t RightLargeHalfLoopDown = 186;
     constexpr track_type_t LeftFlyerTwistUp = 187;
     constexpr track_type_t RightFlyerTwistUp = 188;
     constexpr track_type_t LeftFlyerTwistDown = 189;
@@ -565,17 +571,67 @@ namespace TrackElemType
 
     constexpr track_type_t LeftFlyerLargeHalfLoopUninvertedUp = 283;
     constexpr track_type_t RightFlyerLargeHalfLoopUninvertedUp = 284;
-    constexpr track_type_t RightFlyerLargeHalfLoopInvertedDown = 285;
-    constexpr track_type_t LeftFlyerLargeHalfLoopInvertedDown = 286;
+    constexpr track_type_t LeftFlyerLargeHalfLoopInvertedDown = 285;
+    constexpr track_type_t RightFlyerLargeHalfLoopInvertedDown = 286;
     constexpr track_type_t LeftFlyerLargeHalfLoopInvertedUp = 287;
     constexpr track_type_t RightFlyerLargeHalfLoopInvertedUp = 288;
-    constexpr track_type_t RightFlyerLargeHalfLoopUninvertedDown = 289;
-    constexpr track_type_t LeftFlyerLargeHalfLoopUninvertedDown = 290;
+    constexpr track_type_t LeftFlyerLargeHalfLoopUninvertedDown = 289;
+    constexpr track_type_t RightFlyerLargeHalfLoopUninvertedDown = 290;
 
     constexpr track_type_t FlyerHalfLoopInvertedUp = 291;
     constexpr track_type_t FlyerHalfLoopUninvertedDown = 292;
 
-    constexpr track_type_t Count = 293;
+    constexpr track_type_t LeftEighthToDiagUp25 = 293;
+    constexpr track_type_t RightEighthToDiagUp25 = 294;
+    constexpr track_type_t LeftEighthToDiagDown25 = 295;
+    constexpr track_type_t RightEighthToDiagDown25 = 296;
+    constexpr track_type_t LeftEighthToOrthogonalUp25 = 297;
+    constexpr track_type_t RightEighthToOrthogonalUp25 = 298;
+    constexpr track_type_t LeftEighthToOrthogonalDown25 = 299;
+    constexpr track_type_t RightEighthToOrthogonalDown25 = 300;
+
+    constexpr track_type_t DiagUp25ToLeftBankedUp25 = 301;
+    constexpr track_type_t DiagUp25ToRightBankedUp25 = 302;
+    constexpr track_type_t DiagLeftBankedUp25ToUp25 = 303;
+    constexpr track_type_t DiagRightBankedUp25ToUp25 = 304;
+    constexpr track_type_t DiagDown25ToLeftBankedDown25 = 305;
+    constexpr track_type_t DiagDown25ToRightBankedDown25 = 306;
+    constexpr track_type_t DiagLeftBankedDown25ToDown25 = 307;
+    constexpr track_type_t DiagRightBankedDown25ToDown25 = 308;
+    constexpr track_type_t DiagLeftBankedFlatToLeftBankedUp25 = 309;
+    constexpr track_type_t DiagRightBankedFlatToRightBankedUp25 = 310;
+    constexpr track_type_t DiagLeftBankedUp25ToLeftBankedFlat = 311;
+    constexpr track_type_t DiagRightBankedUp25ToRightBankedFlat = 312;
+    constexpr track_type_t DiagLeftBankedFlatToLeftBankedDown25 = 313;
+    constexpr track_type_t DiagRightBankedFlatToRightBankedDown25 = 314;
+    constexpr track_type_t DiagLeftBankedDown25ToLeftBankedFlat = 315;
+    constexpr track_type_t DiagRightBankedDown25ToRightBankedFlat = 316;
+    constexpr track_type_t DiagFlatToLeftBankedUp25 = 317;
+    constexpr track_type_t DiagFlatToRightBankedUp25 = 318;
+    constexpr track_type_t DiagLeftBankedUp25ToFlat = 319;
+    constexpr track_type_t DiagRightBankedUp25ToFlat = 320;
+    constexpr track_type_t DiagFlatToLeftBankedDown25 = 321;
+    constexpr track_type_t DiagFlatToRightBankedDown25 = 322;
+    constexpr track_type_t DiagLeftBankedDown25ToFlat = 323;
+    constexpr track_type_t DiagRightBankedDown25ToFlat = 324;
+    constexpr track_type_t DiagUp25LeftBanked = 325;
+    constexpr track_type_t DiagUp25RightBanked = 326;
+    constexpr track_type_t DiagDown25LeftBanked = 327;
+    constexpr track_type_t DiagDown25RightBanked = 328;
+
+    constexpr track_type_t LeftEighthBankToDiagUp25 = 329;
+    constexpr track_type_t RightEighthBankToDiagUp25 = 330;
+    constexpr track_type_t LeftEighthBankToDiagDown25 = 331;
+    constexpr track_type_t RightEighthBankToDiagDown25 = 332;
+    constexpr track_type_t LeftEighthBankToOrthogonalUp25 = 333;
+    constexpr track_type_t RightEighthBankToOrthogonalUp25 = 334;
+    constexpr track_type_t LeftEighthBankToOrthogonalDown25 = 335;
+    constexpr track_type_t RightEighthBankToOrthogonalDown25 = 336;
+
+    constexpr track_type_t DiagBrakes = 337;
+    constexpr track_type_t DiagBlockBrakes = 338;
+
+    constexpr track_type_t Count = 339;
     constexpr track_type_t None = 65535;
 
 }; // namespace TrackElemType
@@ -623,7 +679,14 @@ void TrackGetBack(const CoordsXYE& input, CoordsXYE* output);
 void TrackGetFront(const CoordsXYE& input, CoordsXYE* output);
 
 bool TrackElementIsCovered(track_type_t trackElementType);
+track_type_t UncoverTrackElement(track_type_t trackElementType);
 bool TrackTypeIsStation(track_type_t trackType);
+bool TrackTypeIsBrakes(track_type_t trackType);
+bool TrackTypeIsBlockBrakes(track_type_t trackType);
+bool TrackTypeIsBooster(track_type_t trackType);
+
+std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
+    const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);
 
 roll_type_t TrackGetActualBank(TileElement* tileElement, roll_type_t bank);
 roll_type_t TrackGetActualBank2(int32_t rideType, bool isInverted, roll_type_t bank);

@@ -33,12 +33,15 @@ if [ -z "$OPENRCT2_ORG_TOKEN" ]; then
     echo -e "\033[0;31mOPENRCT2_ORG_TOKEN not set"
     exit 1
 fi
-curl -m 300 --connect-timeout 5 -o - \
+# Use HTTP1.1 as a workaround for curl bug:
+# https://github.com/actions/runner-images/issues/7329
+# https://github.com/curl/curl/issues/10591
+curl --include -m 300 --connect-timeout 5 -o - \
+    --http1.1 \
     --form "key=$OPENRCT2_ORG_TOKEN" \
     --form "fileName=$filename" \
     --form "version=$version" \
     --form "gitHash=$sha1" \
     --form "gitBranch=$branch" \
-    --form "flavourId=$flavourid" \
     --form "file=@$path" \
     "https://openrct2.org/altapi/?command=push-build"

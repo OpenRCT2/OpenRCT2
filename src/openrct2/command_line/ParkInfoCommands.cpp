@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,7 +17,7 @@
 #include "CommandLine.hpp"
 
 // clang-format off
-static constexpr const CommandLineOptionDefinition NoOptions[]
+static constexpr CommandLineOptionDefinition NoOptions[]
 {
     OptionTableEnd
 };
@@ -104,7 +104,7 @@ static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
              ObjectType::Walls,
              ObjectType::Banners,
              ObjectType::Paths,
-             ObjectType::PathBits,
+             ObjectType::PathAdditions,
              ObjectType::SceneryGroup,
              ObjectType::ParkEntrance,
              ObjectType::Water,

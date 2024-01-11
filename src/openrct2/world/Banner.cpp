@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -198,7 +198,7 @@ WallElement* BannerGetScrollingWallTileElement(BannerIndex bannerIndex)
  */
 RideId BannerGetClosestRideIndex(const CoordsXYZ& mapPos)
 {
-    static constexpr const std::array NeighbourCheckOrder = {
+    static constexpr std::array NeighbourCheckOrder = {
         CoordsXY{ COORDS_XY_STEP, 0 },
         CoordsXY{ -COORDS_XY_STEP, 0 },
         CoordsXY{ 0, COORDS_XY_STEP },

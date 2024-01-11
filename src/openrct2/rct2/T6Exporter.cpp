@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,6 +16,7 @@
 #include "../localisation/StringIds.h"
 #include "../object/ObjectList.h"
 #include "../rct12/SawyerChunkWriter.h"
+#include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
@@ -56,13 +57,14 @@ namespace RCT2
         tempStream.WriteValue<uint32_t>(_trackDesign->flags);
         tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(_trackDesign->ride_mode));
         tempStream.WriteValue<uint8_t>((_trackDesign->colour_scheme & 0x3) | (2 << 2));
-        for (auto& colour : _trackDesign->vehicle_colours)
+        for (auto i = 0; i < RCT2::Limits::MaxVehicleColours; i++)
         {
-            tempStream.WriteValue<uint8_t>(colour.Body);
-            tempStream.WriteValue<uint8_t>(colour.Trim);
+            tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_colours[i].Body);
+            tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_colours[i].Trim);
         }
         tempStream.WriteValue<uint8_t>(0);
-        tempStream.WriteValue<uint8_t>(_trackDesign->entrance_style);
+        auto entranceStyle = GetStationStyleFromIdentifier(_trackDesign->StationObjectIdentifier);
+        tempStream.WriteValue<uint8_t>(entranceStyle);
         tempStream.WriteValue<uint8_t>(_trackDesign->total_air_time);
         tempStream.WriteValue<uint8_t>(_trackDesign->depart_flags);
         tempStream.WriteValue<uint8_t>(_trackDesign->number_of_trains);
@@ -91,9 +93,9 @@ namespace RCT2
         tempStream.Write(&_trackDesign->vehicle_object.Entry, sizeof(RCTObjectEntry));
         tempStream.WriteValue<uint8_t>(_trackDesign->space_required_x);
         tempStream.WriteValue<uint8_t>(_trackDesign->space_required_y);
-        for (auto& colour : _trackDesign->vehicle_colours)
+        for (auto i = 0; i < RCT2::Limits::MaxVehicleColours; i++)
         {
-            tempStream.WriteValue<uint8_t>(colour.Tertiary);
+            tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_colours[i].Tertiary);
         }
         tempStream.WriteValue<uint8_t>(_trackDesign->lift_hill_speed | (_trackDesign->num_circuits << 5));
 
@@ -111,23 +113,26 @@ namespace RCT2
         {
             for (const auto& trackElement : _trackDesign->track_elements)
             {
-                auto trackType = OpenRCT2TrackTypeToRCT2(trackElement.type);
+                auto trackType = OpenRCT2TrackTypeToRCT2(trackElement.Type);
                 if (trackType == TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop)
                 {
                     trackType = TrackElemType::InvertedUp90ToFlatQuarterLoopAlias;
                 }
                 tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(trackType));
-                tempStream.WriteValue<uint8_t>(trackElement.flags);
+                auto flags = ConvertToTD46Flags(trackElement);
+                tempStream.WriteValue<uint8_t>(flags);
             }
 
             tempStream.WriteValue<uint8_t>(0xFF);
 
             for (const auto& entranceElement : _trackDesign->entrance_elements)
             {
-                tempStream.WriteValue<uint8_t>(entranceElement.z == -1 ? static_cast<uint8_t>(0x80) : entranceElement.z);
-                tempStream.WriteValue<uint8_t>(entranceElement.direction | (entranceElement.isExit << 7));
-                tempStream.WriteValue<int16_t>(entranceElement.x);
-                tempStream.WriteValue<int16_t>(entranceElement.y);
+                tempStream.WriteValue<uint8_t>(
+                    entranceElement.Location.z == -1 ? static_cast<uint8_t>(0x80) : entranceElement.Location.z);
+                tempStream.WriteValue<uint8_t>(entranceElement.Location.direction | (entranceElement.IsExit << 7));
+                auto xy = entranceElement.Location.ToCoordsXY();
+                tempStream.WriteValue<int16_t>(xy.x);
+                tempStream.WriteValue<int16_t>(xy.y);
             }
 
             tempStream.WriteValue<uint8_t>(0xFF);

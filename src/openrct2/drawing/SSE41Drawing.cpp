@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -66,7 +66,7 @@ void MaskSse4_1(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
 {
-    openrct2_assert(false, "SSE 4.1 function called on a CPU that doesn't support SSE 4.1");
+    Guard::Fail("SSE 4.1 function called on a CPU that doesn't support SSE 4.1");
 }
 
 #endif // __SSE4_1__

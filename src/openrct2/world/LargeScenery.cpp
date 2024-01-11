@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,19 +34,19 @@ colour_t LargeSceneryElement::GetTertiaryColour() const
 
 void LargeSceneryElement::SetPrimaryColour(colour_t newColour)
 {
-    assert(newColour <= 31);
+    assert(newColour < COLOUR_COUNT);
     Colour[0] = newColour;
 }
 
 void LargeSceneryElement::SetSecondaryColour(colour_t newColour)
 {
-    assert(newColour <= 31);
+    assert(newColour < COLOUR_COUNT);
     Colour[1] = newColour;
 }
 
 void LargeSceneryElement::SetTertiaryColour(colour_t newColour)
 {
-    assert(newColour <= 31);
+    assert(newColour < COLOUR_COUNT);
     Colour[2] = newColour;
 }
 

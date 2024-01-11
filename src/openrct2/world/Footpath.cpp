@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,13 +22,13 @@
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
-#include "../object/FootpathItemEntry.h"
 #include "../object/FootpathObject.h"
 #include "../object/FootpathRailingsObject.h"
 #include "../object/FootpathSurfaceObject.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
+#include "../object/PathAdditionEntry.h"
 #include "../paint/VirtualFloor.h"
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
@@ -61,8 +61,8 @@ static RideId _footpathQueueChain[64];
 
 // This is the coordinates that a user of the bin should move to
 // rct2: 0x00992A4C
-const CoordsXY BinUseOffsets[4] = {
-    { 11, 16 },
+const std::array<CoordsXY, NumOrthogonalDirections> BinUseOffsets = {
+    CoordsXY{ 11, 16 },
     { 16, 21 },
     { 21, 16 },
     { 16, 11 },
@@ -70,27 +70,27 @@ const CoordsXY BinUseOffsets[4] = {
 
 // These are the offsets for bench positions on footpaths, 2 for each edge
 // rct2: 0x00981F2C, 0x00981F2E
-const CoordsXY BenchUseOffsets[8] = {
-    { 7, 12 }, { 12, 25 }, { 25, 20 }, { 20, 7 }, { 7, 20 }, { 20, 25 }, { 25, 12 }, { 12, 7 },
+const std::array<CoordsXY, NumOrthogonalDirections* 2> BenchUseOffsets = {
+    CoordsXY{ 7, 12 }, { 12, 25 }, { 25, 20 }, { 20, 7 }, { 7, 20 }, { 20, 25 }, { 25, 12 }, { 12, 7 },
 };
 
 /** rct2: 0x00981D6C, 0x00981D6E */
-const CoordsXY DirectionOffsets[4] = {
-    { -1, 0 },
+const std::array<CoordsXY, NumOrthogonalDirections> DirectionOffsets = {
+    CoordsXY{ -1, 0 },
     { 0, 1 },
     { 1, 0 },
     { 0, -1 },
 };
 
 // rct2: 0x0097B974
-static constexpr const uint16_t EntranceDirections[] = {
+static constexpr uint16_t EntranceDirections[] = {
     (4),     0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_RIDE_ENTRANCE,
     (4),     0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_RIDE_EXIT,
     (4 | 1), 0, 0, 0, 0, 0, 0, 0, // ENTRANCE_TYPE_PARK_ENTRANCE
 };
 
 /** rct2: 0x0098D7F0 */
-static constexpr const uint8_t connected_path_count[] = {
+static constexpr uint8_t connected_path_count[] = {
     0, // 0b0000
     1, // 0b0001
     1, // 0b0010
@@ -119,15 +119,16 @@ static bool entrance_has_direction(const EntranceElement& entranceElement, int32
     return entranceElement.GetDirections() & (1 << (direction & 3));
 }
 
-TileElement* MapGetFootpathElement(const CoordsXYZ& coords)
+PathElement* MapGetFootpathElement(const CoordsXYZ& coords)
 {
     TileElement* tileElement = MapGetFirstElementAt(coords);
     do
     {
         if (tileElement == nullptr)
             break;
-        if (tileElement->GetType() == TileElementType::Path && tileElement->GetBaseZ() == coords.z)
-            return tileElement;
+        auto* pathElement = tileElement->AsPath();
+        if (pathElement != nullptr && pathElement->GetBaseZ() == coords.z)
+            return pathElement;
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
@@ -160,11 +161,11 @@ money64 FootpathProvisionalSet(
 
         if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
         {
-            ViewportSetVisibility(1);
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewOn);
         }
         else
         {
-            ViewportSetVisibility(3);
+            ViewportSetVisibility(ViewportVisibility::UndergroundViewOff);
         }
     }
 
@@ -1514,6 +1515,18 @@ void PathElement::SetSloped(bool isSloped)
         Flags2 |= FOOTPATH_ELEMENT_FLAGS2_IS_SLOPED;
 }
 
+bool PathElement::HasJunctionRailings() const
+{
+    return Flags2 & FOOTPATH_ELEMENT_FLAGS2_HAS_JUNCTION_RAILINGS;
+}
+
+void PathElement::SetJunctionRailings(bool hasJunctionRailings)
+{
+    Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_HAS_JUNCTION_RAILINGS;
+    if (hasJunctionRailings)
+        Flags2 |= FOOTPATH_ELEMENT_FLAGS2_HAS_JUNCTION_RAILINGS;
+}
+
 Direction PathElement::GetSlopeDirection() const
 {
     return SlopeDirection;
@@ -1616,19 +1629,26 @@ uint8_t PathElement::GetAddition() const
 
 ObjectEntryIndex PathElement::GetAdditionEntryIndex() const
 {
+    // `Additions` is set to 0 when there is no addition, so the value 1 corresponds with path addition slot 0, etc.
     return GetAddition() - 1;
 }
 
-const PathBitEntry* PathElement::GetAdditionEntry() const
+const PathAdditionEntry* PathElement::GetAdditionEntry() const
 {
     if (!HasAddition())
         return nullptr;
-    return OpenRCT2::ObjectManager::GetObjectEntry<PathBitEntry>(GetAdditionEntryIndex());
+    return OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(GetAdditionEntryIndex());
 }
 
 void PathElement::SetAddition(uint8_t newAddition)
 {
     Additions = newAddition;
+}
+
+void PathElement::SetAdditionEntryIndex(ObjectEntryIndex entryIndex)
+{
+    // `Additions` is set to 0 when there is no addition, so the value 1 corresponds with path addition slot 0, etc.
+    Additions = entryIndex + 1;
 }
 
 bool PathElement::AdditionIsGhost() const

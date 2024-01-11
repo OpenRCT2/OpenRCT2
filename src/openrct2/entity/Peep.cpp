@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -362,7 +362,7 @@ PeepActionSpriteType Peep::GetActionSpriteType()
         return PeepActionToSpriteTypeMap[EnumValue(Action)];
     }
 
-    openrct2_assert(
+    Guard::Assert(
         EnumValue(Action) >= std::size(PeepActionToSpriteTypeMap) && Action < PeepActionType::Idle, "Invalid peep action %u",
         EnumValue(Action));
     return PeepActionSpriteType::None;
@@ -387,9 +387,9 @@ void Peep::UpdateCurrentActionSpriteType()
     ActionSpriteType = newActionSpriteType;
 
     const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, ActionSpriteType);
-    sprite_width = spriteBounds->sprite_width;
-    sprite_height_negative = spriteBounds->sprite_height_negative;
-    sprite_height_positive = spriteBounds->sprite_height_positive;
+    SpriteData.Width = spriteBounds->sprite_width;
+    SpriteData.HeightMin = spriteBounds->sprite_height_negative;
+    SpriteData.HeightMax = spriteBounds->sprite_height_positive;
 
     Invalidate();
 }
@@ -416,7 +416,7 @@ void Peep::StateReset()
 }
 
 /** rct2: 0x00981D7C, 0x00981D7E */
-static constexpr const CoordsXY word_981D7C[4] = {
+static constexpr CoordsXY word_981D7C[4] = {
     { -2, 0 },
     { 0, 2 },
     { 2, 0 },
@@ -478,7 +478,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
                 nextDirection = 0;
             }
         }
-        sprite_direction = nextDirection;
+        Orientation = nextDirection;
         CoordsXY loc = { x, y };
         loc += word_981D7C[nextDirection / 8];
         WalkingFrameNum++;
@@ -524,7 +524,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
 
     const auto curLoc = GetLocation();
-    Litter::Create({ curLoc, sprite_direction }, (Id.ToUnderlying() & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
+    Litter::Create({ curLoc, Orientation }, (Id.ToUnderlying() & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
 
     static constexpr OpenRCT2::Audio::SoundId coughs[4] = {
         OpenRCT2::Audio::SoundId::Cough1,
@@ -564,7 +564,7 @@ void PeepWindowStateUpdate(Peep* peep)
 {
     WindowBase* w = WindowFindByNumber(WindowClass::Peep, peep->Id.ToUnderlying());
     if (w != nullptr)
-        WindowEventInvalidateCall(w);
+        WindowEventOnPrepareDrawCall(w);
 
     if (peep->Is<Guest>())
     {
@@ -628,7 +628,7 @@ GameActions::Result Peep::Place(const TileCoordsXYZ& location, bool apply)
     TileElement* tileElement = reinterpret_cast<TileElement*>(pathElement);
     if (pathElement == nullptr)
     {
-        tileElement = reinterpret_cast<TileElement*>(MapGetSurfaceElementAt(location.ToCoordsXYZ()));
+        tileElement = reinterpret_cast<TileElement*>(MapGetSurfaceElementAt(location));
     }
     if (tileElement == nullptr)
     {
@@ -872,7 +872,7 @@ void Peep::Update1()
     }
 
     SetDestination(GetLocation(), 10);
-    PeepDirection = sprite_direction >> 3;
+    PeepDirection = Orientation >> 3;
 }
 
 void Peep::SetState(PeepState new_state)
@@ -1274,13 +1274,13 @@ void PeepUpdateCrowdNoise()
     {
         if (peep->x == LOCATION_NULL)
             continue;
-        if (viewport->viewPos.x > peep->SpriteRect.GetRight())
+        if (viewport->viewPos.x > peep->SpriteData.SpriteRect.GetRight())
             continue;
-        if (viewport->viewPos.x + viewport->view_width < peep->SpriteRect.GetLeft())
+        if (viewport->viewPos.x + viewport->view_width < peep->SpriteData.SpriteRect.GetLeft())
             continue;
-        if (viewport->viewPos.y > peep->SpriteRect.GetBottom())
+        if (viewport->viewPos.y > peep->SpriteData.SpriteRect.GetBottom())
             continue;
-        if (viewport->viewPos.y + viewport->view_height < peep->SpriteRect.GetTop())
+        if (viewport->viewPos.y + viewport->view_height < peep->SpriteData.SpriteRect.GetTop())
             continue;
 
         visiblePeeps += peep->State == PeepState::Queuing ? 1 : 2;
@@ -1551,7 +1551,7 @@ void Peep::FormatActionTo(Formatter& ft) const
     }
 }
 
-static constexpr const StringId _staffNames[] = {
+static constexpr StringId _staffNames[] = {
     STR_HANDYMAN_X,
     STR_MECHANIC_X,
     STR_SECURITY_GUARD_X,
@@ -1667,9 +1667,9 @@ void Peep::SwitchNextActionSpriteType()
         Invalidate();
         ActionSpriteType = NextActionSpriteType;
         const SpriteBounds* spriteBounds = &GetSpriteBounds(SpriteType, NextActionSpriteType);
-        sprite_width = spriteBounds->sprite_width;
-        sprite_height_negative = spriteBounds->sprite_height_negative;
-        sprite_height_positive = spriteBounds->sprite_height_positive;
+        SpriteData.Width = spriteBounds->sprite_width;
+        SpriteData.HeightMin = spriteBounds->sprite_height_negative;
+        SpriteData.HeightMax = spriteBounds->sprite_height_positive;
         Invalidate();
     }
 }
@@ -2640,7 +2640,7 @@ void IncrementGuestsInPark()
     }
     else
     {
-        openrct2_assert(false, "Attempt to increment guests in park above max value (65535).");
+        Guard::Fail("Attempt to increment guests in park above max value (65535).");
     }
 }
 
@@ -2652,7 +2652,7 @@ void IncrementGuestsHeadingForPark()
     }
     else
     {
-        openrct2_assert(false, "Attempt to increment guests heading for park above max value (65535).");
+        Guard::Fail("Attempt to increment guests heading for park above max value (65535).");
     }
 }
 
@@ -2779,7 +2779,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         if (Is<Staff>())
         {
             auto loc = GetLocation();
-            switch (sprite_direction)
+            switch (Orientation)
             {
                 case 0:
                     loc.x -= 10;
@@ -2801,8 +2801,7 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
         }
     }
 
-    DrawPixelInfo* dpi = &session.DPI;
-    if (dpi->zoom_level > ZoomLevel{ 2 })
+    if (session.DPI.zoom_level > ZoomLevel{ 2 })
     {
         return;
     }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,9 +22,9 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_LAND_RIGHTS;
-static constexpr const int32_t WH = 94;
-static constexpr const int32_t WW = 98;
+static constexpr StringId WINDOW_TITLE = STR_LAND_RIGHTS;
+static constexpr int32_t WH = 94;
+static constexpr int32_t WW = 98;
 
 // clang-format off
 enum WindowLandRightsWidgetIdx {
@@ -375,6 +375,11 @@ public:
                 GameActions::Execute(&landBuyRightsAction);
             }
         }
+    }
+
+    void OnResize() override
+    {
+        ResizeFrame();
     }
 
 private:

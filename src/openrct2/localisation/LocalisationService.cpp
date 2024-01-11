@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -151,15 +151,6 @@ std::tuple<StringId, StringId, StringId> LocalisationService::GetLocalisedScenar
     auto result1 = _loadedLanguages[0]->GetScenarioOverrideStringId(scenarioFilename.c_str(), 1);
     auto result2 = _loadedLanguages[0]->GetScenarioOverrideStringId(scenarioFilename.c_str(), 2);
     return std::make_tuple(result0, result1, result2);
-}
-
-StringId LocalisationService::GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) const
-{
-    if (_loadedLanguages.empty())
-    {
-        return STR_NONE;
-    }
-    return _loadedLanguages[0]->GetObjectOverrideStringId(legacyIdentifier, index);
 }
 
 StringId LocalisationService::AllocateObjectString(const std::string& target)

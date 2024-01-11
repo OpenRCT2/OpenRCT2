@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,9 +21,9 @@
 
 using namespace OpenRCT2;
 
-static constexpr const StringId WINDOW_TITLE = STR_LAND;
-static constexpr const int32_t WH = 160;
-static constexpr const int32_t WW = 98;
+static constexpr StringId WINDOW_TITLE = STR_LAND;
+static constexpr int32_t WH = 160;
+static constexpr int32_t WW = 98;
 
 // clang-format off
 enum WindowLandWidgetIdx {
@@ -156,7 +156,8 @@ public:
                 if (dropdownIndex == -1)
                     dropdownIndex = gDropdownHighlightedIndex;
 
-                type = (dropdownIndex == -1) ? _selectedFloorTexture : dropdownIndex;
+                type = (dropdownIndex == -1) ? _selectedFloorTexture
+                                             : LandTool::GetSurfaceStyleFromDropdownIndex(static_cast<size_t>(dropdownIndex));
 
                 if (gLandToolTerrainSurface == type)
                 {
@@ -173,7 +174,8 @@ public:
                 if (dropdownIndex == -1)
                     dropdownIndex = gDropdownHighlightedIndex;
 
-                type = (dropdownIndex == -1) ? _selectedWallTexture : dropdownIndex;
+                type = (dropdownIndex == -1) ? _selectedWallTexture
+                                             : LandTool::GetEdgeStyleFromDropdownIndex(static_cast<size_t>(dropdownIndex));
 
                 if (gLandToolTerrainEdge == type)
                 {
@@ -252,9 +254,9 @@ public:
         {
             screenCoords = { windowPos.x + previewWidget->left, windowPos.y + previewWidget->top };
             auto sprite = ImageId(gLandToolSize % 2 == 0 ? SPR_G2_MOUNTAIN_TOOL_EVEN : SPR_G2_MOUNTAIN_TOOL_ODD);
-            GfxDrawSprite(&dpi, sprite, screenCoords);
-            WidgetDraw(&dpi, *this, WIDX_DECREMENT);
-            WidgetDraw(&dpi, *this, WIDX_INCREMENT);
+            GfxDrawSprite(dpi, sprite, screenCoords);
+            WidgetDraw(dpi, *this, WIDX_DECREMENT);
+            WidgetDraw(dpi, *this, WIDX_INCREMENT);
         }
 
         screenCoords = { windowPos.x + previewWidget->midX(), windowPos.y + previewWidget->bottom + 5 };
@@ -305,6 +307,11 @@ public:
         }
     }
 
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
+
 private:
     void DrawDropdownButtons(DrawPixelInfo& dpi)
     {
@@ -334,7 +341,7 @@ private:
     void DrawDropdownButton(DrawPixelInfo& dpi, WidgetIndex widgetIndex, ImageId image)
     {
         const auto& widget = widgets[widgetIndex];
-        GfxDrawSprite(&dpi, image, { windowPos.x + widget.left, windowPos.y + widget.top });
+        GfxDrawSprite(dpi, image, { windowPos.x + widget.left, windowPos.y + widget.top });
     }
 };
 

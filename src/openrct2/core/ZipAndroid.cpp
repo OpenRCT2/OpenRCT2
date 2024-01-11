@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -121,17 +121,17 @@ public:
 
     void SetFileData(std::string_view path, std::vector<uint8_t>&& data) override
     {
-        STUB();
+        LOG_WARNING("Function %s at %s:%d is a stub.", __PRETTY_FUNCTION__, __FILE__, __LINE__);
     }
 
     void DeleteFile(std::string_view) override
     {
-        STUB();
+        LOG_WARNING("Function %s at %s:%d is a stub.", __PRETTY_FUNCTION__, __FILE__, __LINE__);
     }
 
     void RenameFile(std::string_view, std::string_view) override
     {
-        STUB();
+        LOG_WARNING("Function %s at %s:%d is a stub.", __PRETTY_FUNCTION__, __FILE__, __LINE__);
     }
 };
 

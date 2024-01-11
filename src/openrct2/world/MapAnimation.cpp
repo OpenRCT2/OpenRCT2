@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -572,7 +572,7 @@ static bool MapAnimationInvalidateWall(const CoordsXYZ& loc)
  *
  *  rct2: 0x009819DC
  */
-static constexpr const map_animation_invalidate_event_handler _animatedObjectEventHandlers[MAP_ANIMATION_TYPE_COUNT] = {
+static constexpr map_animation_invalidate_event_handler _animatedObjectEventHandlers[MAP_ANIMATION_TYPE_COUNT] = {
     MapAnimationInvalidateRideEntrance,     MapAnimationInvalidateQueueBanner,    MapAnimationInvalidateSmallScenery,
     MapAnimationInvalidateParkEntrance,     MapAnimationInvalidateTrackWaterfall, MapAnimationInvalidateTrackRapids,
     MapAnimationInvalidateTrackOnRidePhoto, MapAnimationInvalidateTrackWhirlpool, MapAnimationInvalidateTrackSpinningTunnel,
@@ -610,92 +610,95 @@ void MapAnimationAutoCreate()
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
     {
-        auto el = it.element;
-        auto loc = CoordsXYZ{ TileCoordsXY(it.x, it.y).ToCoordsXY(), el->GetBaseZ() };
-        switch (el->GetType())
+        MapAnimationAutoCreateAtTileElement(TileCoordsXY(it.x, it.y), it.element);
+    }
+}
+
+void MapAnimationAutoCreateAtTileElement(TileCoordsXY coords, TileElement* el)
+{
+    auto loc = CoordsXYZ{ coords.ToCoordsXY(), el->GetBaseZ() };
+    switch (el->GetType())
+    {
+        case TileElementType::Banner:
+            MapAnimationCreate(MAP_ANIMATION_TYPE_BANNER, loc);
+            break;
+        case TileElementType::Wall:
         {
-            case TileElementType::Banner:
-                MapAnimationCreate(MAP_ANIMATION_TYPE_BANNER, loc);
-                break;
-            case TileElementType::Wall:
+            auto wallEl = el->AsWall();
+            auto* entry = wallEl->GetEntry();
+            if (entry != nullptr && ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != SCROLLING_MODE_NONE))
             {
-                auto wallEl = el->AsWall();
-                auto* entry = wallEl->GetEntry();
-                if (entry != nullptr
-                    && ((entry->flags2 & WALL_SCENERY_2_ANIMATED) || entry->scrolling_mode != SCROLLING_MODE_NONE))
-                {
-                    MapAnimationCreate(MAP_ANIMATION_TYPE_WALL, loc);
-                }
-                break;
+                MapAnimationCreate(MAP_ANIMATION_TYPE_WALL, loc);
             }
-            case TileElementType::SmallScenery:
-            {
-                auto sceneryEl = el->AsSmallScenery();
-                auto* sceneryEntry = sceneryEl->GetEntry();
-                if (sceneryEntry != nullptr && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
-                {
-                    MapAnimationCreate(MAP_ANIMATION_TYPE_SMALL_SCENERY, loc);
-                }
-                break;
-            }
-            case TileElementType::LargeScenery:
-            {
-                auto sceneryEl = el->AsLargeScenery();
-                auto entry = sceneryEl->GetEntry();
-                if (entry != nullptr && (entry->flags & LARGE_SCENERY_FLAG_ANIMATED))
-                {
-                    MapAnimationCreate(MAP_ANIMATION_TYPE_LARGE_SCENERY, loc);
-                }
-                break;
-            }
-            case TileElementType::Path:
-            {
-                auto path = el->AsPath();
-                if (path->HasQueueBanner())
-                {
-                    MapAnimationCreate(MAP_ANIMATION_TYPE_QUEUE_BANNER, loc);
-                }
-                break;
-            }
-            case TileElementType::Entrance:
-            {
-                auto entrance = el->AsEntrance();
-                switch (entrance->GetEntranceType())
-                {
-                    case ENTRANCE_TYPE_PARK_ENTRANCE:
-                        if (entrance->GetSequenceIndex() == 0)
-                        {
-                            MapAnimationCreate(MAP_ANIMATION_TYPE_PARK_ENTRANCE, loc);
-                        }
-                        break;
-                    case ENTRANCE_TYPE_RIDE_ENTRANCE:
-                        MapAnimationCreate(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, loc);
-                        break;
-                }
-                break;
-            }
-            case TileElementType::Track:
-            {
-                auto track = el->AsTrack();
-                switch (track->GetTrackType())
-                {
-                    case TrackElemType::Waterfall:
-                        MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_WATERFALL, loc);
-                        break;
-                    case TrackElemType::Rapids:
-                        MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_RAPIDS, loc);
-                        break;
-                    case TrackElemType::Whirlpool:
-                        MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL, loc);
-                        break;
-                    case TrackElemType::SpinningTunnel:
-                        MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, loc);
-                        break;
-                }
-                break;
-            }
-            case TileElementType::Surface:
-                break;
+            break;
         }
+        case TileElementType::SmallScenery:
+        {
+            auto sceneryEl = el->AsSmallScenery();
+            auto* sceneryEntry = sceneryEl->GetEntry();
+            if (sceneryEntry != nullptr && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
+            {
+                MapAnimationCreate(MAP_ANIMATION_TYPE_SMALL_SCENERY, loc);
+            }
+            break;
+        }
+        case TileElementType::LargeScenery:
+        {
+            auto sceneryEl = el->AsLargeScenery();
+            auto entry = sceneryEl->GetEntry();
+            if (entry != nullptr && (entry->flags & LARGE_SCENERY_FLAG_ANIMATED))
+            {
+                MapAnimationCreate(MAP_ANIMATION_TYPE_LARGE_SCENERY, loc);
+            }
+            break;
+        }
+        case TileElementType::Path:
+        {
+            auto path = el->AsPath();
+            if (path->HasQueueBanner())
+            {
+                MapAnimationCreate(MAP_ANIMATION_TYPE_QUEUE_BANNER, loc);
+            }
+            break;
+        }
+        case TileElementType::Entrance:
+        {
+            auto entrance = el->AsEntrance();
+            switch (entrance->GetEntranceType())
+            {
+                case ENTRANCE_TYPE_PARK_ENTRANCE:
+                    if (entrance->GetSequenceIndex() == 0)
+                    {
+                        MapAnimationCreate(MAP_ANIMATION_TYPE_PARK_ENTRANCE, loc);
+                    }
+                    break;
+                case ENTRANCE_TYPE_RIDE_ENTRANCE:
+                    MapAnimationCreate(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, loc);
+                    break;
+            }
+            break;
+        }
+        case TileElementType::Track:
+        {
+            auto track = el->AsTrack();
+            switch (track->GetTrackType())
+            {
+                case TrackElemType::Waterfall:
+                    MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_WATERFALL, loc);
+                    break;
+                case TrackElemType::Rapids:
+                    MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_RAPIDS, loc);
+                    break;
+                case TrackElemType::Whirlpool:
+                    MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL, loc);
+                    break;
+                case TrackElemType::SpinningTunnel:
+                    MapAnimationCreate(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, loc);
+                    break;
+            }
+            break;
+        }
+        case TileElementType::Surface:
+            break;
     }
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -56,7 +56,7 @@ namespace OpenRCT2
             X8WeatherDrawer();
             ~X8WeatherDrawer();
             void Draw(
-                DrawPixelInfo* dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+                DrawPixelInfo& dpi, int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
                 const uint8_t* weatherpattern) override;
             void Restore(DrawPixelInfo* dpi);
         };
@@ -147,9 +147,9 @@ namespace OpenRCT2
             void DrawSpriteSolid(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) override;
             void DrawGlyph(
                 DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& paletteMap) override;
-            void DrawBitmap(
-                DrawPixelInfo* dpi, uint32_t image, const void* pixels, int32_t width, int32_t height, int32_t x,
-                int32_t y) override
+            void DrawTTFBitmap(
+                DrawPixelInfo* dpi, TextDrawInfo* info, uint32_t image, const void* pixels, int32_t width, int32_t height,
+                int32_t x, int32_t y, uint8_t hinting_threshold) override
             {
             }
         };

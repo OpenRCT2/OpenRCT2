@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -37,6 +37,12 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
+
+#ifdef __APPLE__
+static constexpr bool WindowButtonsOnTheLeftDefault = true;
+#else
+static constexpr bool WindowButtonsOnTheLeftDefault = false;
+#endif
 
 namespace Config
 {
@@ -195,7 +201,12 @@ namespace Config
             model->SteamOverlayPause = reader->GetBoolean("steam_overlay_pause", true);
             model->WindowScale = reader->GetFloat("window_scale", Platform::GetDefaultScale());
             model->ShowFPS = reader->GetBoolean("show_fps", false);
-            model->MultiThreading = reader->GetBoolean("multi_threading", false);
+#ifdef _DEBUG
+            // Always have multi-threading disabled in debug builds, this makes things slower.
+            model->MultiThreading = false;
+#else
+            model->MultiThreading = reader->GetBoolean("multithreading", true);
+#endif // _DEBUG
             model->TrapCursor = reader->GetBoolean("trap_cursor", false);
             model->AutoOpenShops = reader->GetBoolean("auto_open_shops", false);
             model->ScenarioSelectMode = reader->GetInt32("scenario_select_mode", SCENARIO_SELECT_MODE_ORIGIN);
@@ -280,7 +291,7 @@ namespace Config
         writer->WriteBoolean("steam_overlay_pause", model->SteamOverlayPause);
         writer->WriteFloat("window_scale", model->WindowScale);
         writer->WriteBoolean("show_fps", model->ShowFPS);
-        writer->WriteBoolean("multi_threading", model->MultiThreading);
+        writer->WriteBoolean("multithreading", model->MultiThreading);
         writer->WriteBoolean("trap_cursor", model->TrapCursor);
         writer->WriteBoolean("auto_open_shops", model->AutoOpenShops);
         writer->WriteInt32("scenario_select_mode", model->ScenarioSelectMode);
@@ -331,6 +342,7 @@ namespace Config
             model->ObjectSelectionFilterFlags = reader->GetInt32("object_selection_filter_flags", 0x3FFF);
             model->ScenarioselectLastTab = reader->GetInt32("scenarioselect_last_tab", 0);
             model->ListRideVehiclesSeparately = reader->GetBoolean("list_ride_vehicles_separately", false);
+            model->WindowButtonsOnTheLeft = reader->GetBoolean("window_buttons_on_the_left", WindowButtonsOnTheLeftDefault);
         }
     }
 
@@ -352,6 +364,7 @@ namespace Config
         writer->WriteInt32("object_selection_filter_flags", model->ObjectSelectionFilterFlags);
         writer->WriteInt32("scenarioselect_last_tab", model->ScenarioselectLastTab);
         writer->WriteBoolean("list_ride_vehicles_separately", model->ListRideVehiclesSeparately);
+        writer->WriteBoolean("window_buttons_on_the_left", model->WindowButtonsOnTheLeft);
     }
 
     static void ReadSound(IIniReader* reader)
@@ -362,7 +375,8 @@ namespace Config
             model->Device = reader->GetString("audio_device", "");
             model->MasterSoundEnabled = reader->GetBoolean("master_sound", true);
             model->MasterVolume = reader->GetInt32("master_volume", 100);
-            model->TitleMusic = static_cast<TitleMusicKind>(reader->GetInt32("title_music", EnumValue(TitleMusicKind::RCT2)));
+            model->TitleMusic = static_cast<TitleMusicKind>(
+                reader->GetInt32("title_theme", EnumValue(TitleMusicKind::OpenRCT2)));
             model->SoundEnabled = reader->GetBoolean("sound", true);
             model->SoundVolume = reader->GetInt32("sound_volume", 100);
             model->RideMusicEnabled = reader->GetBoolean("ride_music", true);
@@ -378,7 +392,7 @@ namespace Config
         writer->WriteString("audio_device", model->Device);
         writer->WriteBoolean("master_sound", model->MasterSoundEnabled);
         writer->WriteInt32("master_volume", model->MasterVolume);
-        writer->WriteInt32("title_music", EnumValue(model->TitleMusic));
+        writer->WriteInt32("title_theme", EnumValue(model->TitleMusic));
         writer->WriteBoolean("sound", model->SoundEnabled);
         writer->WriteInt32("sound_volume", model->SoundVolume);
         writer->WriteBoolean("ride_music", model->RideMusicEnabled);

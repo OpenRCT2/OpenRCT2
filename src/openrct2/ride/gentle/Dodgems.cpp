@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,7 +27,7 @@ enum
     SprDodgemsFenceTopLeft = 21937
 };
 
-static constexpr const uint32_t DodgemsFenceSprites[] = {
+static constexpr uint32_t DodgemsFenceSprites[] = {
     SprDodgemsFenceTopRight,
     SprDodgemsFenceBottomRight,
     SprDodgemsFenceBottomLeft,
@@ -36,7 +36,7 @@ static constexpr const uint32_t DodgemsFenceSprites[] = {
 
 static void PaintDodgemsRoof(PaintSession& session, int32_t height, int32_t offset)
 {
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex((SprDodgemsRoofFrame + offset));
+    auto imageId = session.TrackColours.WithIndex((SprDodgemsRoofFrame + offset));
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 2 });
 
     imageId = ImageId(SprDodgemsRoofGlass + offset).WithTransparency(FilterPaletteID::PaletteDarken3);
@@ -51,18 +51,18 @@ static void PaintDodgems(
 
     int32_t edges = edges_4x4[relativeTrackSequence];
 
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, direction & 1, 0, height, GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.GetStationObject();
 
     if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
     {
-        auto imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SprDodgemsFloor);
+        auto imageId = session.SupportColours.WithIndex(SprDodgemsFloor);
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 1, 1, height }, { 30, 30, 1 } });
 
         TrackPaintUtilPaintFences(
-            session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_SUPPORTS], height,
-            DodgemsFenceSprites, session.CurrentRotation);
+            session, edges, session.MapPosition, trackElement, ride, session.SupportColours, height, DodgemsFenceSprites,
+            session.CurrentRotation);
 
         switch (direction)
         {

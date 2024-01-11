@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,8 +38,6 @@ static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator)
         Console::Error::WriteLine("Missing arguments <sv6-file> <ticks>.");
         return EXITCODE_FAIL;
     }
-
-    Platform::CoreInit();
 
     const char* inputPath = argv[0];
     uint32_t ticks = atol(argv[1]);

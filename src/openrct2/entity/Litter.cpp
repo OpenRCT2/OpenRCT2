@@ -80,10 +80,10 @@ void Litter::Create(const CoordsXYZD& litterPos, Type type)
     if (litter == nullptr)
         return;
 
-    litter->sprite_direction = offsetLitterPos.direction;
-    litter->sprite_width = 6;
-    litter->sprite_height_negative = 6;
-    litter->sprite_height_positive = 3;
+    litter->Orientation = offsetLitterPos.direction;
+    litter->SpriteData.Width = 6;
+    litter->SpriteData.HeightMin = 6;
+    litter->SpriteData.HeightMax = 3;
     litter->SubType = type;
     litter->MoveTo(offsetLitterPos);
     litter->creationTick = gCurrentTicks;
@@ -155,7 +155,7 @@ struct LitterSprite
 };
 
 /** rct2: 0x0097EF6C */
-static constexpr const LitterSprite _litterSprites[] = {
+static constexpr LitterSprite _litterSprites[] = {
     { SPR_LITTER_SICK, 0x1 },
     { SPR_LITTER_SICK_ALT, 0x1 },
     { SPR_LITTER_EMPTY_CAN, 0x1 },

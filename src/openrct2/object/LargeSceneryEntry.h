@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -74,9 +74,14 @@ struct LargeSceneryEntry
     uint8_t scrolling_mode;
     LargeSceneryText* text;
     uint32_t text_image;
+
+    constexpr bool HasFlag(const uint16_t _flags) const
+    {
+        return (flags & _flags) != 0;
+    }
 };
 
-enum LARGE_SCENERY_FLAGS
+enum LARGE_SCENERY_FLAGS : uint16_t
 {
     LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),          // 0x1
     LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR = (1 << 1),        // 0x2

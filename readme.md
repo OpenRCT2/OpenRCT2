@@ -19,7 +19,7 @@
 ### Download
 | Latest release                                                                                                        | Latest development build |
 |-----------------------------------------------------------------------------------------------------------------------|--------------------------|
-| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.4.3-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/github/last-commit/OpenRCT2/OpenRCT2/develop)](https://openrct2.org/downloads/develop/latest) |
+| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.4.7-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/github/last-commit/OpenRCT2/OpenRCT2/develop)](https://openrct2.org/downloads/develop/latest) |
 
 ---
 
@@ -70,13 +70,13 @@ RollerCoaster Tycoon 2 was originally written by Chris Sawyer in x86 assembly an
 
 OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](https://store.steampowered.com/app/285330/) or [GOG.com](https://www.gog.com/game/rollercoaster_tycoon_2). If you have the original RollerCoaster Tycoon and its expansion packs, you can [point OpenRCT2 to these](https://github.com/OpenRCT2/OpenRCT2/wiki/Loading-RCT1-scenarios-and-data) in order to play the original scenarios.
 
-[OpenRCT2.org](https://openrct2.org/downloads) offers precompiled builds and installers of the latest master and the develop branch. There is also a cross platform [Launcher](https://github.com/LRFLEW/OpenRCT2Launcher/releases) available that will automatically update your build of the game so that you always have the latest version.
+[OpenRCT2.org](https://openrct2.org/downloads) offers precompiled builds and installers of the latest master and the develop branch. There is also a [Launcher](https://github.com/IntelOrca/OpenLauncher/releases) available for Windows and Linux that will automatically update your build of the game so that you always have the latest version.
 
 [Flathub](https://flathub.org/) offers flatpaks for Linux distributions that support this application distribution system:
 * [Latest release](https://flathub.org/apps/details/io.openrct2.OpenRCT2)
 
 Some Linux distributions offer native packages already. These packages are usually third-party, but we're trying to resolve issues they are facing.
-* ArchLinux: [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) (AUR) and [openrct2](https://archlinux.org/packages/community/x86_64/openrct2/) (Community)
+* Arch Linux: [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) (AUR) and [openrct2](https://archlinux.org/packages/extra/x86_64/openrct2/) ([extra] repository)
 * Ubuntu PPA: [`develop` branch](https://launchpad.net/~openrct2/+archive/ubuntu/nightly) (nightly builds)
 * openSUSE OBS: [games/openrct2](https://software.opensuse.org/download.html?project=games&package=openrct2)
 * Gentoo (main portage tree): [games-simulation/openrct2](https://packages.gentoo.org/packages/games-simulation/openrct2)

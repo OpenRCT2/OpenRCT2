@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -61,6 +61,7 @@
 #include "platform/Crash.h"
 #include "platform/Platform.h"
 #include "profiling/Profiling.h"
+#include "rct2/RCT2.h"
 #include "ride/TrackData.h"
 #include "ride/TrackDesignRepository.h"
 #include "scenario/Scenario.h"
@@ -574,7 +575,7 @@ namespace OpenRCT2
 
             try
             {
-                if (String::Equals(Path::GetExtension(path), ".sea", true))
+                if (String::IEquals(Path::GetExtension(path), ".sea"))
                 {
                     auto data = DecryptSea(fs::u8path(path));
                     auto ms = MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
@@ -1112,11 +1113,11 @@ namespace OpenRCT2
             {
                 Tick();
 
-                // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
-                WindowUpdateAll();
-
                 _ticksAccumulator -= GAME_UPDATE_TIME_MS;
             }
+
+            ContextHandleInput();
+            WindowUpdateAll();
 
             if (ShouldDraw())
             {
@@ -1141,15 +1142,15 @@ namespace OpenRCT2
 
                 Tick();
 
-                // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
-                WindowUpdateAll();
-
                 _ticksAccumulator -= GAME_UPDATE_TIME_MS;
 
                 // Get the next position of each sprite
                 if (shouldDraw)
                     tweener.PostTick();
             }
+
+            ContextHandleInput();
+            WindowUpdateAll();
 
             if (shouldDraw)
             {
@@ -1175,7 +1176,7 @@ namespace OpenRCT2
 
             // TODO: This variable has been never "variable" in time, some code expects
             // this to be 40Hz (25 ms). Refactor this once the UI is decoupled.
-            gCurrentDeltaTime = static_cast<uint32_t>(GAME_UPDATE_TIME_MS * 1000.0f);
+            gCurrentDeltaTime = static_cast<uint16_t>(GAME_UPDATE_TIME_MS * 1000.0f);
 
             if (GameIsNotPaused())
             {
@@ -1240,7 +1241,7 @@ namespace OpenRCT2
             for (const auto& dirId : dirIds)
             {
                 auto path = _env->GetDirectoryPath(dirBase, dirId);
-                if (!Platform::EnsureDirectoryExists(path.c_str()))
+                if (!Path::CreateDirectory(path))
                     LOG_ERROR("Unable to create directory '%s'.", path.c_str());
             }
         }
@@ -1274,14 +1275,10 @@ namespace OpenRCT2
                 auto dstDirectory = Path::GetDirectory(dst);
 
                 // Create the directory if necessary
-                if (!Path::DirectoryExists(dstDirectory.c_str()))
+                if (!Path::CreateDirectory(dstDirectory))
                 {
-                    Console::WriteLine("Creating directory '%s'", dstDirectory.c_str());
-                    if (!Platform::EnsureDirectoryExists(dstDirectory.c_str()))
-                    {
-                        Console::Error::WriteLine("Could not create directory %s.", dstDirectory.c_str());
-                        break;
-                    }
+                    Console::Error::WriteLine("Could not create directory %s.", dstDirectory.c_str());
+                    break;
                 }
 
                 // Only copy the file if it doesn't already exist

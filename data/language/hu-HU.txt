@@ -359,9 +359,6 @@ STR_0978    :Új enyhe játékok
 STR_0979    :Új hullámvasutak
 STR_0980    :Új izgalmas játékok
 STR_0981    :Új vízi játékok
-STR_0982    :Új boltok és bódék
-STR_0983    :Kutatás-fejlesztés
-STR_0979    :Új hullámvasutak
 STR_0982    :Új boltok & bódék
 STR_0983    :Kutatás-fejlesztés
 STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
@@ -711,8 +708,6 @@ STR_1327    :Az objektumok forgatása 90°-kal
 STR_1328    :Vízszintes talaj szükséges
 STR_1329    :{WINDOW_COLOUR_2}Kilövési sebesség:
 STR_1330    :A legnagyobb sebesség az állomás elhagyásakor
-STR_1361    :Nem változtatható meg a sebesség…
-STR_1362    :Nem változtatható meg a kilövési sebesség…
 STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
@@ -1215,8 +1210,8 @@ STR_1838    :Elégedettség: {COMMA16}%
 STR_1839    :Megbízhatóság: {COMMA16}%
 STR_1840    :Üzemszünet: {COMMA16}%
 STR_1841    :Nyereség: {CURRENCY2DP} óránként
-STR_1842    :Kedvence: {COMMA16} vendégnek
-STR_1843    :Kedvence: {COMMA16} vendégnek
+STR_1842    :Kedvence: {COMMA32} vendégnek
+STR_1843    :Kedvence: {COMMA32} vendégnek
 STR_1844    :A játékok/épületek listájában megjelenített információtípus kiválasztása
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} vendég
@@ -1240,7 +1235,7 @@ STR_1863    :mindenes
 STR_1864    :gépész
 STR_1865    :biztonsági őr
 STR_1866    :szórakoztató
-STR_1867    :{BLACK}{COMMA16} {STRINGID}
+STR_1867    :{BLACK}{COMMA32} {STRINGID}
 STR_1868    :Nem változtatható meg a forgások száma…
 STR_1869    :{WINDOW_COLOUR_2}Forgások száma:
 STR_1870    :A teljes körforgások száma
@@ -2092,7 +2087,7 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :A fájl betöltése sikertelen…
 STR_3011    :A fájl érvénytelen adatod tartalmaz
-STR_3012    :Dodzsem beat stílus
+STR_3012    :Dodzsem stílus
 STR_3013    :Vásári orgona stílus
 STR_3014    :Római harsona stílus
 STR_3015    :Keleti stílus
@@ -2185,8 +2180,8 @@ STR_3118    :{BLACK}{STRINGID} a játék felé tart
 STR_3119    :{BLACK}{STRINGID} javítja a játékot
 STR_3120    :A legközelebbi elérhető vagy a játékot javító gépész megkeresése
 STR_3121    :Nem található gépész, vagy az összes közeli gépész elfoglalt
-STR_3122    :{WINDOW_COLOUR_2}Kedvenc játéka: {BLACK}{COMMA16} vendégnek
-STR_3123    :{WINDOW_COLOUR_2}Kedvenc játéka: {BLACK}{COMMA16} vendégnek
+STR_3122    :{WINDOW_COLOUR_2}Kedvenc játéka: {BLACK}{COMMA32} vendégnek
+STR_3123    :{WINDOW_COLOUR_2}Kedvenc játéka: {BLACK}{COMMA32} vendégnek
 STR_3124    :Hibás {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Izgalmi faktor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intenzitási faktor: {BLACK}+{COMMA16}%
@@ -2939,6 +2934,7 @@ STR_5786    :Érvénytelen csoportnév
 STR_5787    :{COMMA32} játékos van online
 STR_5788    :Alap ellenőrzési időköz:
 STR_5789    :Villámhatás kikapcsolása
+STR_5790    :Az RCT1-stílusú árazás ki- és bekapcsolása{NEWLINE}(például belépési díj egyszerre a parkba és a játékokra)
 STR_5791    :Az összes játék megbízhatóságát 100%-ra{NEWLINE}állítja és visszaállítja az építési idejüket „idén”-re
 STR_5792    :Megjavítja az összes meghibásodott játékot
 STR_5793    :Törli a játék ütközési előzményeit,{NEWLINE}így a vendégek nem fognak panaszkodni, hogy nem biztonságos
@@ -2950,8 +2946,6 @@ STR_5798    :Engedélyezi az építési tevékenységeket szünet közben
 STR_5799    :Letiltja a játékok fékhiba miatta meghibásodásait és ütközéseit
 STR_5800    :Megakadályozza, hogy meghibásodjanak a játékok
 STR_5801    :Szemetelés kikapcsolása
-STR_5790    :Az RCT1-stílusú árazás ki- és bekapcsolása{NEWLINE}(például belépési díj egyszerre a parkba és a játékokra)
-STR_5795    :A vendégek a park összes játékára felülnek,{NEWLINE}még az extrém magas intenzitásúakra is
 STR_5802    :A vendégek nem szemetelnek és hánynak
 STR_5803    :A kiválasztott térképelem forgatása
 STR_5804    :Hang némítása
@@ -3634,6 +3628,55 @@ STR_6544    :A kölcsön nem lehet negatív!
 STR_6545    :RCT1 kamatszámítás használata
 STR_6546    :A RollerCoaster Tycoon 1 kamatszámítási algoritmusának használata, amely egy rögzített százalékot használ, ami körülbelül 1,33%.
 STR_6547    :Minden díszlet
+STR_6548    :Korlátok megjelenítése csomópontoknál
+STR_6549    :A kompatibilitási objektumok nem választhatóak ki!
+STR_6550    :Ez az elem visszafelé kompatibilitási céllal szerepel, régi vagy sérült objektumokhoz. Nem lehet kiválasztani, csak eltávolítani.
+STR_6551    :Katonaszín
+STR_6552    :Dinnyesárga
+STR_6553    :Cser
+STR_6554    :Marrone
+STR_6555    :Korallrózsaszín
+STR_6556    :Erdőzöld
+STR_6557    :Chartreuse-szín
+STR_6558    :Vadászzöld
+STR_6559    :Szeladon
+STR_6560    :Limezöld
+STR_6561    :Szépia
+STR_6562    :Barack
+STR_6563    :Periwinkle
+STR_6564    :Viridián
+STR_6565    :Tengerzöld
+STR_6566    :Ibolya
+STR_6567    :Levendula
+STR_6568    :Pasztellnarancs
+STR_6569    :Mélyvíz
+STR_6570    :Pasztellrózsaszín
+STR_6571    :Umbra
+STR_6572    :Bézs
+STR_6573    :Láthatatlan
+STR_6574    :Üresség
+STR_6575    :Speciális színsémák engedélyezése
+STR_6576    :Speciális színek hozzáadása a színkiválasztó listához
+STR_6577    :Blokkfék sebessége
+STR_6578    :A blokkfékek sebességkorlátjának beállítása. A blokkszakasz üzemmódban a lassabb sebességű szomszédos fékek a blokkfékhez kapcsolódnak.
+STR_6579    :A blokkfékek alapértelmezett sebességre lesznek beállítva, amikor pályatervként elmentésre kerül
+STR_6580    :Visszaállítás
+STR_6581    :Biztosan vissza szeretnéd állítani az összes gyorsbillentyűt ezen a fülön?
+STR_6582    :Gyorsbillentyűk ablak megnyitása
+STR_6583    :{WINDOW_COLOUR_2}Fordított vonatok
+STR_6584    :Válassza ki, hogy a vonatok fordítva közlekedjenek
+STR_6585    :Nem lehet a változtatásokat végrehajtani…
+STR_6586    :OpenRCT2
+STR_6587    :Az OpenRCT2 főcímzenéje Allister Brimble műve,{NEWLINE}CC BY-SA 4.0 licenccel.
+STR_6588    :Köszönet Herman Ridderingnek, hogy lehetővé tette számunkra a 35er Voigt rögzítését.
+STR_6589    :Ablak gombok mutatása a bal oldalon
+STR_6590    :Az ablak gombok (pl. az ablak bezárása) mutatása az ablak címsorának bal oldalán, ahelyett hogy a jobb oldalon lennének.
+STR_6591    :Az alkalmazott jelenleg egy játékot javít, és nem lehet kirúgni.
+STR_6592    :Az alkalmazott jelenleg egy játékot ellenőriz, és nem lehet kirúgni.
+STR_6593    :Park kerítések eltávolítása
+STR_6594    :Mezővizsgáló: Fal lejtésének változtatása
+STR_6595    :{WINDOW_COLOUR_2}Szerző: {BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}Szerzők: {BLACK}{STRING}
 
 #############
 # Scenarios #

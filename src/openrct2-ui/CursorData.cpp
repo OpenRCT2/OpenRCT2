@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,12 +14,12 @@
 namespace OpenRCT2::Ui
 {
     // clang-format off
-    static constexpr const CursorData BlankCursorData =
+    static constexpr CursorData BlankCursorData =
     {
         { 0, 0 }, { 0 }, { 0 }
     };
 
-    static constexpr const CursorData UpArrowCursorData =
+    static constexpr CursorData UpArrowCursorData =
     {
         { 15, 0 },
         {
@@ -44,7 +44,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData UpDownArrowCursorData =
+    static constexpr CursorData UpDownArrowCursorData =
     {
         { 17, 15 },
         {
@@ -69,7 +69,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData ZZZCursorData =
+    static constexpr CursorData ZZZCursorData =
     {
         { 0, 0 },
         {
@@ -94,7 +94,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData DiagonalArrowCursorData =
+    static constexpr CursorData DiagonalArrowCursorData =
     {
         { 0, 0 },
         {
@@ -119,7 +119,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData PickerArrowCursorData =
+    static constexpr CursorData PickerArrowCursorData =
     {
         { 15, 31 },
         {
@@ -144,7 +144,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData TreeDownCursorData =
+    static constexpr CursorData TreeDownCursorData =
     {
         { 7, 31 },
         {
@@ -169,7 +169,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData FountainDownCursorData =
+    static constexpr CursorData FountainDownCursorData =
     {
         { 7, 31 },
         {
@@ -194,7 +194,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData StatueDownCursorData =
+    static constexpr CursorData StatueDownCursorData =
     {
         { 7, 31 },
         {
@@ -219,7 +219,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData BenchDownCursorData =
+    static constexpr CursorData BenchDownCursorData =
     {
         { 7, 31 },
         {
@@ -244,7 +244,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData CrossHairCursorData =
+    static constexpr CursorData CrossHairCursorData =
     {
         { 15, 15 },
         {
@@ -269,7 +269,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData BinDownCursorData =
+    static constexpr CursorData BinDownCursorData =
     {
         { 7, 31 },
         {
@@ -294,7 +294,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData LampPostDownCursorData =
+    static constexpr CursorData LampPostDownCursorData =
     {
         { 7, 31 },
         {
@@ -319,7 +319,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData FenceDownCursorData =
+    static constexpr CursorData FenceDownCursorData =
     {
         { 7, 31 },
         {
@@ -344,7 +344,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData FlowerDownCursorData =
+    static constexpr CursorData FlowerDownCursorData =
     {
         { 7, 31 },
         {
@@ -369,7 +369,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData FootpathDownCursorData =
+    static constexpr CursorData FootpathDownCursorData =
     {
         { 7, 31 },
         {
@@ -394,7 +394,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData DigDownCursorData =
+    static constexpr CursorData DigDownCursorData =
     {
         { 7, 31 },
         {
@@ -419,7 +419,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData WaterDownCursorData =
+    static constexpr CursorData WaterDownCursorData =
     {
         { 7, 31 },
         {
@@ -444,7 +444,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData HouseDownCursorData =
+    static constexpr CursorData HouseDownCursorData =
     {
         { 7, 31 },
         {
@@ -469,7 +469,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData VolcanoDownCursorData =
+    static constexpr CursorData VolcanoDownCursorData =
     {
         { 7, 31 },
         {
@@ -494,7 +494,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData WalkDownCursorData =
+    static constexpr CursorData WalkDownCursorData =
     {
         { 7, 31 },
         {
@@ -519,7 +519,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData PaintDownCursorData =
+    static constexpr CursorData PaintDownCursorData =
     {
         { 8, 30 },
         {
@@ -544,7 +544,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData EntranceDownCursorData =
+    static constexpr CursorData EntranceDownCursorData =
     {
         { 7, 31 },
         {
@@ -569,7 +569,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData HandOpenDownCursorData =
+    static constexpr CursorData HandOpenDownCursorData =
     {
         { 14, 15 },
         {
@@ -594,7 +594,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    static constexpr const CursorData HandClosedDownCursorData =
+    static constexpr CursorData HandClosedDownCursorData =
     {
         { 14, 15 },
         {

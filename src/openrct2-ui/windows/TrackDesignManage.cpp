@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,12 +17,12 @@
 #include <openrct2/platform/Platform.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 
-static constexpr const StringId WINDOW_TITLE = STR_STRING;
-static constexpr const int32_t WH = 44;
-static constexpr const int32_t WW = 250;
-static constexpr const int32_t WH_DELETE_PROMPT = 74;
-static constexpr const int32_t WW_DELETE_PROMPT = 250;
-static constexpr const int32_t TrackDesignNameMaxLength = 127;
+static constexpr StringId WINDOW_TITLE = STR_STRING;
+static constexpr int32_t WH = 44;
+static constexpr int32_t WW = 250;
+static constexpr int32_t WH_DELETE_PROMPT = 74;
+static constexpr int32_t WW_DELETE_PROMPT = 250;
+static constexpr int32_t TrackDesignNameMaxLength = 127;
 
 #pragma region Widgets
 
@@ -38,14 +38,14 @@ enum {
     WIDX_PROMPT_CANCEL = 4,
 };
 
-static Widget window_track_manage_widgets[] = {
+static Widget _trackManageWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({ 10, 24}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_RENAME),
     MakeWidget({130, 24}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_DELETE),
     WIDGETS_END,
 };
 
-static Widget window_track_delete_prompt_widgets[] = {
+static Widget _trackDeletePromptWidgets[] = {
     WINDOW_SHIM(STR_DELETE_FILE, WW_DELETE_PROMPT, WH_DELETE_PROMPT),
     MakeWidget({ 10, 54}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_DELETE),
     MakeWidget({130, 54}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL             ),
@@ -67,6 +67,11 @@ class TrackDesignManageWindow final : public Window
         void OnMouseUp(WidgetIndex widgetIndex) override;
         void OnTextInput(WidgetIndex widgetIndex, std::string_view text) override;
         void OnDraw(DrawPixelInfo& dpi) override;
+
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
 };
 
 class TrackDeletePromptWindow final : public Window
@@ -80,10 +85,14 @@ class TrackDeletePromptWindow final : public Window
         void OnOpen() override;
         void OnMouseUp(WidgetIndex widgetIndex) override;
         void OnDraw(DrawPixelInfo& dpi) override;
+
+    void OnResize() override
+    {
+        ResizeFrame();
+    }
 };
 
 static void WindowTrackDeletePromptOpen(TrackDesignFileRef* tdFileRef);
-static void WindowTrackDesignListReloadTracks();
 
 /**
  *
@@ -102,23 +111,15 @@ WindowBase* WindowTrackManageOpen(TrackDesignFileRef* tdFileRef)
 
 void TrackDesignManageWindow::OnOpen()
 {
-    widgets = window_track_manage_widgets;
+    widgets = _trackManageWidgets;
     WindowInitScrollWidgets(*this);
 
-    auto* trackDesignListWindow = WindowFindByClass(WindowClass::TrackDesignList);
-    if (trackDesignListWindow != nullptr)
-    {
-        trackDesignListWindow->track_list.track_list_being_updated = true;
-    }
+    WindowTrackDesignListSetBeingUpdated(true);
 }
 
 void TrackDesignManageWindow::OnClose()
 {
-    WindowBase* trackDesignListWindow = WindowFindByClass(WindowClass::TrackDesignList);
-    if (trackDesignListWindow != nullptr)
-    {
-        trackDesignListWindow->track_list.track_list_being_updated = false;
-    }
+    WindowTrackDesignListSetBeingUpdated(false);
 }
 
 void TrackDesignManageWindow::OnMouseUp(WidgetIndex widgetIndex)
@@ -194,7 +195,7 @@ static void WindowTrackDeletePromptOpen(TrackDesignFileRef* tdFileRef)
 
 void TrackDeletePromptWindow::OnOpen()
 {
-    widgets = window_track_delete_prompt_widgets;
+    widgets = _trackDeletePromptWidgets;
     WindowInitScrollWidgets(*this);
 }
 
@@ -234,11 +235,3 @@ void TrackDeletePromptWindow::OnDraw(DrawPixelInfo& dpi)
         STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, ft, { TextAlignment::CENTRE });
 }
 
-static void WindowTrackDesignListReloadTracks()
-{
-    WindowBase* trackListWindow = WindowFindByClass(WindowClass::TrackDesignList);
-    if (trackListWindow != nullptr)
-    {
-        trackListWindow->track_list.reload_track_designs = true;
-    }
-}

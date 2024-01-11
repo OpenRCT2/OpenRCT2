@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -157,7 +157,7 @@ public:
                     entryIsNotSeparate = true;
             }
 
-            if (entryIsNotSeparate || String::Equals(item.ObjectEntry, entry, true))
+            if (entryIsNotSeparate || String::IEquals(item.ObjectEntry, entry))
             {
                 count++;
             }
@@ -191,7 +191,7 @@ public:
                     entryIsNotSeparate = true;
             }
 
-            if (entryIsNotSeparate || String::Equals(item.ObjectEntry, entry, true))
+            if (entryIsNotSeparate || String::IEquals(item.ObjectEntry, entry))
             {
                 TrackDesignFileRef ref;
                 ref.name = GetNameFromTrackPath(item.Path);

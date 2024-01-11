@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,6 +31,8 @@
 constexpr auto CHEATS_MONEY_DEFAULT = 10000.00_GBP;
 constexpr auto CHEATS_MONEY_INCREMENT_DIV = 5000.00_GBP;
 
+using OpenRCT2::Date;
+
 // clang-format off
 enum
 {
@@ -43,12 +45,12 @@ enum
 
 static StringId _staffSpeedNames[] =
 {
-    STR_FROZEN,
     STR_NORMAL,
+    STR_FROZEN,
     STR_FAST,
 };
 
-static constexpr const StringId WeatherTypes[] =
+static constexpr StringId WeatherTypes[] =
 {
     STR_SUNNY,
     STR_PARTIALLY_CLOUDY,
@@ -151,10 +153,10 @@ enum WindowCheatsWidgetIdx
     WIDX_STAFF_SPEED_DROPDOWN_BUTTON,
     WIDX_PARK_CONSTRUCTION_GROUP,
     WIDX_ALLOW_REGULAR_PATH_AS_QUEUE,
+    WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES,
 
     WIDX_FIX_ALL = WIDX_TAB_CONTENT,
     WIDX_RENEW_RIDES,
-    WIDX_MAKE_DESTRUCTIBLE,
     WIDX_RESET_CRASH_STATUS,
     WIDX_10_MINUTE_INSPECTIONS,
     WIDX_CONSTRUCTION_GROUP,
@@ -162,6 +164,7 @@ enum WindowCheatsWidgetIdx
     WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES,
     WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,
     WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS,
+    WIDX_MAKE_DESTRUCTIBLE,
     WIDX_OPERATION_MODES_GROUP,
     WIDX_SHOW_ALL_OPERATING_MODES,
     WIDX_UNLOCK_OPERATING_LIMITS,
@@ -177,17 +180,17 @@ enum WindowCheatsWidgetIdx
 
 #pragma region MEASUREMENTS
 
-static constexpr const StringId WINDOW_TITLE = STR_CHEAT_TITLE;
-static constexpr const int32_t WW = 249;
-static constexpr const int32_t WH = 300;
+static constexpr StringId WINDOW_TITLE = STR_CHEAT_TITLE;
+static constexpr int32_t WW = 249;
+static constexpr int32_t WH = 300;
 
 static constexpr ScreenSize CHEAT_BUTTON = {110, 17};
 static constexpr ScreenSize CHEAT_CHECK = {221, 12};
 static constexpr ScreenSize CHEAT_SPINNER = {117, 14};
 static constexpr ScreenSize MINMAX_BUTTON = {55, 17};
 
-static constexpr const int32_t TAB_WIDTH = 31;
-static constexpr const int32_t TAB_START = 3;
+static constexpr int32_t TAB_WIDTH = 31;
+static constexpr int32_t TAB_START = 3;
 
 
 #pragma endregion
@@ -285,8 +288,9 @@ static Widget window_cheats_misc_widgets[] =
     MakeWidget        ({126, 361}, {111,  14},   WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                      ), // Staff speed
     MakeWidget        ({225, 362}, { 11,  12},   WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                  ), // Staff speed
 
-    MakeWidget        ({  5, 392}, {238,  35},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_CONSTRUCTION                                        ), // Construction group
+    MakeWidget        ({  5, 392}, {238,  56},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_CONSTRUCTION                                        ), // Construction group
     MakeWidget        ({ 11, 407}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_PATH_AS_QUEUE,   STR_CHEAT_ALLOW_PATH_AS_QUEUE_TIP  ), // Allow regular footpaths as queue path
+    MakeWidget        ({ 11, 428}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES,   STR_CHEAT_ALLOW_SPECIAL_COLOUR_SCHEMES_TIP  ), // Allow special colours in dropdown
 
     WIDGETS_END,
 };
@@ -295,14 +299,14 @@ static Widget window_cheats_rides_widgets[] =
     MAIN_CHEATS_WIDGETS,
     MakeWidget({ 11,  48}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_FIX_ALL_RIDES,                        STR_CHEAT_FIX_ALL_RIDES_TIP                    ), // Fix all rides
     MakeWidget({127,  48}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_RENEW_RIDES,                          STR_CHEAT_RENEW_RIDES_TIP                      ), // Renew rides
-    MakeWidget({ 11,  69}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_MAKE_DESTRUCTABLE,                    STR_CHEAT_MAKE_DESTRUCTABLE_TIP                ), // All destructible
     MakeWidget({127,  69}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_RESET_CRASH_STATUS,                   STR_CHEAT_RESET_CRASH_STATUS_TIP               ), // Reset crash status
-    MakeWidget({ 11,  90}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_10_MINUTE_INSPECTIONS,                STR_CHEAT_10_MINUTE_INSPECTIONS_TIP            ), // 10 minute inspections
-    MakeWidget({  5, 116}, {238, 101},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_CONSTRUCTION                                                                   ), // Construction group
-    MakeWidget({ 11, 132}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_BUILD_IN_PAUSE_MODE,                  STR_CHEAT_BUILD_IN_PAUSE_MODE_TIP              ), // Build in pause mode
-    MakeWidget({ 11, 153}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES,     STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES_TIP ), // Show all drawable track pieces
-    MakeWidget({ 11, 174}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,       STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP   ), // Enable chain lift on all track
-    MakeWidget({ 11, 195}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS,    STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS_TIP), // Allow track place at invalid heights
+    MakeWidget({ 11,  69}, CHEAT_BUTTON, WindowWidgetType::Button,   WindowColour::Secondary, STR_CHEAT_10_MINUTE_INSPECTIONS,                STR_CHEAT_10_MINUTE_INSPECTIONS_TIP            ), // 10 minute inspections
+    MakeWidget({  5, 95},  {238, 122},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_CONSTRUCTION                                                                   ), // Construction group
+    MakeWidget({ 11, 111}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_BUILD_IN_PAUSE_MODE,                  STR_CHEAT_BUILD_IN_PAUSE_MODE_TIP              ), // Build in pause mode
+    MakeWidget({ 11, 132}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES,     STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES_TIP ), // Show all drawable track pieces
+    MakeWidget({ 11, 153}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,       STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP   ), // Enable chain lift on all track
+    MakeWidget({ 11, 174}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS,    STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS_TIP), // Allow track place at invalid heights
+    MakeWidget({ 11, 195}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_MAKE_DESTRUCTABLE,                    STR_CHEAT_MAKE_DESTRUCTABLE_TIP                ), // All destructible
     MakeWidget({  5, 221}, {238, 122},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_OPERATION                                                                      ), // Operation group
     MakeWidget({ 11, 237}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_SHOW_ALL_OPERATING_MODES                                                             ), // Show all operating modes
     MakeWidget({ 11, 258}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_UNLOCK_OPERATING_LIMITS,              STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP          ), // 410 km/h lift hill etc.
@@ -357,7 +361,6 @@ class CheatsWindow final : public Window
 private:
     char _moneySpinnerText[MONEY_STRING_MAXLENGTH]{};
     money64 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
-    int32_t _selectedStaffSpeed = 1;
     int32_t _parkRatingSpinnerValue{};
     int32_t _yearSpinnerValue = 1;
     int32_t _monthSpinnerValue = 1;
@@ -482,6 +485,7 @@ public:
                 SetCheckboxValue(WIDX_NEVERENDING_MARKETING, gCheatsNeverendingMarketing);
                 SetCheckboxValue(WIDX_DISABLE_PLANT_AGING, gCheatsDisablePlantAging);
                 SetCheckboxValue(WIDX_ALLOW_REGULAR_PATH_AS_QUEUE, gCheatsAllowRegularPathAsQueue);
+                SetCheckboxValue(WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES, gCheatsAllowSpecialColourSchemes);
                 break;
             case WINDOW_CHEATS_PAGE_RIDES:
                 SetCheckboxValue(WIDX_UNLOCK_OPERATING_LIMITS, gCheatsUnlockOperatingLimits);
@@ -497,13 +501,14 @@ public:
                 SetCheckboxValue(WIDX_IGNORE_RESEARCH_STATUS, gCheatsIgnoreResearchStatus);
                 SetCheckboxValue(WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES, gCheatsEnableAllDrawableTrackPieces);
                 SetCheckboxValue(WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, gCheatsAllowTrackPlaceInvalidHeights);
+                SetCheckboxValue(WIDX_MAKE_DESTRUCTIBLE, gCheatsMakeAllDestructible);
                 break;
         }
 
         // Current weather
         window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gClimateCurrent.Weather)];
         // Staff speed
-        window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[_selectedStaffSpeed];
+        window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(gCheatsSelectedStaffSpeed)];
 
         if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         {
@@ -635,7 +640,7 @@ private:
 
     void UpdateTabPositions()
     {
-        constexpr const uint16_t tabs[] = {
+        constexpr uint16_t tabs[] = {
             WIDX_TAB_1,
             WIDX_TAB_2,
             WIDX_TAB_3,
@@ -662,7 +667,7 @@ private:
             if (page == WINDOW_CHEATS_PAGE_MONEY)
                 sprite_idx += (frame_no / 2) % 8;
             GfxDrawSprite(
-                &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
+                dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
         }
 
         // Guests tab
@@ -672,14 +677,14 @@ private:
             if (page == WINDOW_CHEATS_PAGE_GUESTS)
                 sprite_idx += (frame_no / 3) % 8;
             GfxDrawSprite(
-                &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
+                dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
         }
 
         // Misc tab
         if (!IsWidgetDisabled(WIDX_TAB_3))
         {
             GfxDrawSprite(
-                &dpi, ImageId(SPR_TAB_PARK), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
+                dpi, ImageId(SPR_TAB_PARK), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
         }
 
         // Rides tab
@@ -689,7 +694,7 @@ private:
             if (page == WINDOW_CHEATS_PAGE_RIDES)
                 sprite_idx += (frame_no / 4) % 16;
             GfxDrawSprite(
-                &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
+                dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
         }
     }
 
@@ -724,37 +729,41 @@ private:
             case WIDX_MONTH_UP:
                 _monthSpinnerValue++;
                 _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int32_t>(MONTH_COUNT));
-                _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
+                _daySpinnerValue = std::clamp(
+                    _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
                 InvalidateWidget(WIDX_MONTH_BOX);
                 InvalidateWidget(WIDX_DAY_BOX);
                 break;
             case WIDX_MONTH_DOWN:
                 _monthSpinnerValue--;
                 _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int32_t>(MONTH_COUNT));
-                _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
+                _daySpinnerValue = std::clamp(
+                    _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
                 InvalidateWidget(WIDX_MONTH_BOX);
                 InvalidateWidget(WIDX_DAY_BOX);
                 break;
             case WIDX_DAY_UP:
                 _daySpinnerValue++;
-                _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
+                _daySpinnerValue = std::clamp(
+                    _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
                 InvalidateWidget(WIDX_DAY_BOX);
                 break;
             case WIDX_DAY_DOWN:
                 _daySpinnerValue--;
-                _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
+                _daySpinnerValue = std::clamp(
+                    _daySpinnerValue, 1, static_cast<int32_t>(Date::GetDaysInMonth(_monthSpinnerValue - 1)));
                 InvalidateWidget(WIDX_DAY_BOX);
                 break;
             case WIDX_DATE_SET:
             {
-                auto setDateAction = ParkSetDateAction(_yearSpinnerValue, _monthSpinnerValue, _daySpinnerValue);
+                auto setDateAction = ParkSetDateAction(_yearSpinnerValue - 1, _monthSpinnerValue - 1, _daySpinnerValue - 1);
                 GameActions::Execute(&setDateAction);
                 WindowInvalidateByClass(WindowClass::BottomToolbar);
                 break;
             }
             case WIDX_DATE_RESET:
             {
-                auto setDateAction = ParkSetDateAction(1, 1, 1);
+                auto setDateAction = ParkSetDateAction(0, 0, 0);
                 GameActions::Execute(&setDateAction);
                 WindowInvalidateByClass(WindowClass::BottomToolbar);
                 InvalidateWidget(WIDX_YEAR_BOX);
@@ -782,7 +791,7 @@ private:
                 CheatsSet(CheatType::SetMoney, _moneySpinnerValue);
                 break;
             case WIDX_CLEAR_LOAN:
-                CheatsSet(CheatType::ClearLoan, CHEATS_MONEY_DEFAULT);
+                CheatsSet(CheatType::ClearLoan);
                 break;
         }
     }
@@ -841,7 +850,7 @@ private:
                 WindowDropdownShowTextCustomWidth(
                     { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                     colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
-                Dropdown::SetChecked(_selectedStaffSpeed, true);
+                Dropdown::SetChecked(EnumValue(gCheatsSelectedStaffSpeed), true);
             }
         }
     }
@@ -905,6 +914,9 @@ private:
             case WIDX_ALLOW_REGULAR_PATH_AS_QUEUE:
                 CheatsSet(CheatType::AllowRegularPathAsQueue, !gCheatsAllowRegularPathAsQueue);
                 break;
+            case WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES:
+                CheatsSet(CheatType::AllowSpecialColourSchemes, !gCheatsAllowSpecialColourSchemes);
+                break;
         }
     }
 
@@ -921,18 +933,24 @@ private:
         }
         if (widgetIndex == WIDX_STAFF_SPEED_DROPDOWN_BUTTON)
         {
-            int32_t speed = CHEATS_STAFF_FAST_SPEED;
+            int32_t speed = CHEATS_STAFF_NORMAL_SPEED;
             switch (dropdownIndex)
             {
                 case 0:
+                    gCheatsSelectedStaffSpeed = StaffSpeedCheat::None;
+                    speed = CHEATS_STAFF_NORMAL_SPEED;
+                    break;
+
+                case 1:
+                    gCheatsSelectedStaffSpeed = StaffSpeedCheat::Frozen;
                     speed = CHEATS_STAFF_FREEZE_SPEED;
                     break;
-                case 1:
-                    speed = CHEATS_STAFF_NORMAL_SPEED;
-            }
 
+                case 2:
+                    gCheatsSelectedStaffSpeed = StaffSpeedCheat::Fast;
+                    speed = CHEATS_STAFF_FAST_SPEED;
+            }
             CheatsSet(CheatType::SetStaffSpeed, speed);
-            _selectedStaffSpeed = dropdownIndex;
         }
     }
 
@@ -1026,7 +1044,7 @@ private:
                 CheatsSet(CheatType::RenewRides);
                 break;
             case WIDX_MAKE_DESTRUCTIBLE:
-                CheatsSet(CheatType::MakeDestructible);
+                CheatsSet(CheatType::MakeDestructible, !gCheatsMakeAllDestructible);
                 break;
             case WIDX_FIX_ALL:
                 CheatsSet(CheatType::FixRides);
@@ -1107,6 +1125,11 @@ private:
             }
             break;
         }
+    }
+
+    void OnResize() override
+    {
+        ResizeFrameWithPage();
     }
 };
 

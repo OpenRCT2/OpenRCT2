@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,10 +23,10 @@
 #include <iterator>
 #include <limits>
 
-constexpr const int32_t DUCK_MAX_STATES = 5;
+constexpr int32_t DUCK_MAX_STATES = 5;
 
 // clang-format off
-static constexpr const CoordsXY DuckMoveOffset[] =
+static constexpr CoordsXY DuckMoveOffset[] =
 {
     { -1,  0 },
     {  0,  1 },
@@ -34,28 +34,28 @@ static constexpr const CoordsXY DuckMoveOffset[] =
     {  0, -1 },
 };
 
-static constexpr const uint8_t DuckAnimationFlyToWater[] =
+static constexpr uint8_t DuckAnimationFlyToWater[] =
 {
     8, 9, 10, 11, 12, 13
 };
 
-static constexpr const uint8_t DuckAnimationSwim[] =
+static constexpr uint8_t DuckAnimationSwim[] =
 {
     0
 };
 
-static constexpr const uint8_t DuckAnimationDrink[] =
+static constexpr uint8_t DuckAnimationDrink[] =
 {
     1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 0xFF
 };
 
-static constexpr const uint8_t DuckAnimationDoubleDrink[] =
+static constexpr uint8_t DuckAnimationDoubleDrink[] =
 {
     4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6,
     6, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, 0, 0, 0, 0, 0xFF
 };
 
-static constexpr const uint8_t DuckAnimationFlyAway[] =
+static constexpr uint8_t DuckAnimationFlyAway[] =
 {
     8, 9, 10, 11, 12, 13
 };
@@ -99,7 +99,7 @@ void Duck::UpdateFlyToWater()
 
     Invalidate();
     int32_t manhattanDistance = abs(target_x - x) + abs(target_y - y);
-    int32_t direction = sprite_direction >> 3;
+    int32_t direction = Orientation >> 3;
     auto destination = CoordsXYZ{ CoordsXY{ x, y } + DuckMoveOffset[direction], 0 };
     int32_t manhattanDistanceN = abs(target_x - destination.x) + abs(target_y - destination.y);
 
@@ -171,7 +171,7 @@ void Duck::UpdateSwim()
     }
     else
     {
-        int32_t currentMonth = DateGetMonth(gDateMonthsElapsed);
+        int32_t currentMonth = GetDate().GetMonth();
         if (currentMonth >= MONTH_SEPTEMBER && (randomNumber >> 16) < 218)
         {
             state = DuckState::FlyAway;
@@ -195,10 +195,10 @@ void Duck::UpdateSwim()
                 if ((randomNumber & 0xFFFF) <= 0xAAA)
                 {
                     randomNumber >>= 16;
-                    sprite_direction = randomNumber & 0x18;
+                    Orientation = randomNumber & 0x18;
                 }
 
-                int32_t direction = sprite_direction >> 3;
+                int32_t direction = Orientation >> 3;
                 auto destination = CoordsXYZ{ CoordsXY{ x, y } + DuckMoveOffset[direction], 0 };
                 landZ = TileElementHeight(destination);
                 waterZ = TileElementWaterHeight(destination);
@@ -256,7 +256,7 @@ void Duck::UpdateFlyAway()
 
         Invalidate();
 
-        int32_t direction = sprite_direction >> 3;
+        int32_t direction = Orientation >> 3;
         auto destination = CoordsXYZ{ x + (DuckMoveOffset[direction].x * 2), y + (DuckMoveOffset[direction].y * 2),
                                       std::min<int32_t>(z + 2, 496) };
         if (MapIsLocationValid(destination))
@@ -294,9 +294,9 @@ void Duck::Create(const CoordsXY& pos)
     targetPos.x += offsetXY;
     targetPos.y += offsetXY;
 
-    duck->sprite_width = 9;
-    duck->sprite_height_negative = 12;
-    duck->sprite_height_positive = 9;
+    duck->SpriteData.Width = 9;
+    duck->SpriteData.HeightMin = 12;
+    duck->SpriteData.HeightMax = 9;
     duck->target_x = targetPos.x;
     duck->target_y = targetPos.y;
     uint8_t direction = ScenarioRand() & 3;
@@ -315,7 +315,7 @@ void Duck::Create(const CoordsXY& pos)
             targetPos.y = GetMapSizeMaxXY().y - (ScenarioRand() & 0x3F);
             break;
     }
-    duck->sprite_direction = direction << 3;
+    duck->Orientation = direction << 3;
     duck->MoveTo({ targetPos.x, targetPos.y, 496 });
     duck->state = Duck::DuckState::FlyToWater;
     duck->frame = 0;

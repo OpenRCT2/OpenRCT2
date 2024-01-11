@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -32,9 +32,9 @@ namespace OpenRCT2::Drawing
         virtual void DrawSpriteSolid(DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, uint8_t colour) abstract;
         virtual void DrawGlyph(
             DrawPixelInfo* dpi, const ImageId image, int32_t x, int32_t y, const PaletteMap& palette) abstract;
-        virtual void DrawBitmap(
-            DrawPixelInfo* dpi, ImageIndex image, const void* pixels, int32_t width, int32_t height, int32_t x,
-            int32_t y) abstract;
+        virtual void DrawTTFBitmap(
+            DrawPixelInfo* dpi, TextDrawInfo* info, ImageIndex image, const void* pixels, int32_t width, int32_t height,
+            int32_t x, int32_t y, uint8_t hinting_threshold) abstract;
     };
 
 } // namespace OpenRCT2::Drawing

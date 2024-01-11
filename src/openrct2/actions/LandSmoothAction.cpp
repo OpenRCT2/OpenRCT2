@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,6 +24,7 @@
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
+#include "../world/SurfaceData.h"
 
 LandSmoothAction::LandSmoothAction(const CoordsXY& coords, MapRange range, uint8_t selectionType, bool isLowering)
     : _coords(coords)
@@ -70,7 +71,7 @@ GameActions::Result LandSmoothAction::SmoothLandTile(
     int32_t slope = surfaceElement->GetSlope();
     if (_isLowering)
     {
-        slope = tile_element_lower_styles[direction][slope];
+        slope = LowerSurfaceCornerFlags(direction, slope);
         if (slope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT)
         {
             targetBaseZ -= 2;
@@ -79,7 +80,7 @@ GameActions::Result LandSmoothAction::SmoothLandTile(
     }
     else
     {
-        slope = tile_element_raise_styles[direction][slope];
+        slope = RaiseSurfaceCornerFlags(direction, slope);
         if (slope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT)
         {
             targetBaseZ += 2;
@@ -184,7 +185,7 @@ money64 LandSmoothAction::SmoothLandRowByEdge(
         {
             if (shouldContinue & 0x4)
             {
-                slope = tile_element_lower_styles[direction1][slope];
+                slope = LowerSurfaceCornerFlags(direction1, slope);
                 if (slope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT)
                 {
                     targetBaseZ -= 2;
@@ -195,7 +196,7 @@ money64 LandSmoothAction::SmoothLandRowByEdge(
                 && MapGetCornerHeight(surfaceElement->BaseHeight, oldSlope, direction2)
                     == MapGetCornerHeight(targetBaseZ, slope, direction2))
             {
-                slope = tile_element_lower_styles[direction2][slope];
+                slope = LowerSurfaceCornerFlags(direction2, slope);
                 if (slope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT)
                 {
                     targetBaseZ -= 2;
@@ -207,7 +208,7 @@ money64 LandSmoothAction::SmoothLandRowByEdge(
         {
             if (shouldContinue & 0x4)
             {
-                slope = tile_element_raise_styles[direction1][slope];
+                slope = RaiseSurfaceCornerFlags(direction1, slope);
                 if (slope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT)
                 {
                     targetBaseZ += 2;
@@ -218,7 +219,7 @@ money64 LandSmoothAction::SmoothLandRowByEdge(
                 && MapGetCornerHeight(surfaceElement->BaseHeight, oldSlope, direction2)
                     == MapGetCornerHeight(targetBaseZ, slope, direction2))
             {
-                slope = tile_element_raise_styles[direction2][slope];
+                slope = RaiseSurfaceCornerFlags(direction2, slope);
                 if (slope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT)
                 {
                     targetBaseZ += 2;
@@ -448,11 +449,11 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
 
             if (raiseLand)
             {
-                newSlope = tile_element_raise_styles[selectionType][newSlope];
+                newSlope = RaiseSurfaceCornerFlags(selectionType, newSlope);
             }
             else
             {
-                newSlope = tile_element_lower_styles[selectionType][newSlope];
+                newSlope = LowerSurfaceCornerFlags(selectionType, newSlope);
             }
 
             if (newSlope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT)
@@ -542,8 +543,8 @@ GameActions::Result LandSmoothAction::SmoothLand(bool isExecuting) const
             uint8_t newBaseZ = surfaceElement->BaseHeight;
             uint8_t oldSlope = surfaceElement->GetSlope();
             int32_t rowIndex = selectionType - (MAP_SELECT_TYPE_EDGE_0 - MAP_SELECT_TYPE_FULL - 1);
-            uint8_t newSlope = raiseLand ? tile_element_raise_styles[rowIndex][oldSlope]
-                                         : tile_element_lower_styles[rowIndex][oldSlope];
+            uint8_t newSlope = raiseLand ? RaiseSurfaceCornerFlags(rowIndex, oldSlope)
+                                         : LowerSurfaceCornerFlags(rowIndex, oldSlope);
 
             const bool changeBaseHeight = newSlope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT;
             if (changeBaseHeight)

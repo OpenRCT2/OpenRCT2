@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -157,6 +157,9 @@ const CarEntry CableLiftVehicle = {
     /* .SpriteGroups[Slopes12Banked22] = */ 0, SpritePrecision::None,
     /* .SpriteGroups[Slopes8Banked22] = */ 0, SpritePrecision::None,
     /* .SpriteGroups[Slopes25Banked22] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes8Banked22] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes16Banked22] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes16Banked45] = */ 0, SpritePrecision::None,
     /* .SpriteGroups[Slopes25Banked45] = */ 0, SpritePrecision::None,
     /* .SpriteGroups[Slopes12Banked45] = */ 0, SpritePrecision::None,
     /* .SpriteGroups[Slopes25Banked67] = */ 0, SpritePrecision::None,
@@ -169,7 +172,8 @@ const CarEntry CableLiftVehicle = {
     /* .SpriteGroups[Slopes60Banked22] = */ 0, SpritePrecision::None,
     /* .SpriteGroups[Corkscrews] = */ 0, SpritePrecision::None,
     /* .SpriteGroups[RestraintAnimation] = */ 0, SpritePrecision::None,
-    /* .SpriteGroups[CurvedLiftHill] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[CurvedLiftHillUp] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[CurvedLiftHillDown] = */ 0, SpritePrecision::None,
     /* .no_vehicle_images = */ 0,
     /* .no_seating_rows = */ 0,
     /* .spinning_inertia = */ 0,
@@ -239,7 +243,7 @@ const StringId RideModeNames[] = {
 };
 // clang-format on
 
-constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
+constexpr RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_SPIRAL_ROLLER_COASTER              */ SpiralRollerCoasterRTD,
     /* RIDE_TYPE_STAND_UP_ROLLER_COASTER            */ StandUpRollerCoasterRTD,
     /* RIDE_TYPE_SUSPENDED_SWINGING_COASTER         */ SuspendedSwingingCoasterRTD,

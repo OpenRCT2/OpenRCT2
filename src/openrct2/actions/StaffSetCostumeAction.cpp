@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,7 +17,7 @@
 #include "../windows/Intent.h"
 
 /** rct2: 0x00982134 */
-constexpr const bool peep_slow_walking_types[] = {
+constexpr bool peep_slow_walking_types[] = {
     false, // PeepSpriteType::Normal
     false, // PeepSpriteType::Handyman
     false, // PeepSpriteType::Mechanic
