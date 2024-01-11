@@ -3687,6 +3687,11 @@ STR_6614    :Can’t change park entrance fee
 STR_6615    :Track on this tile needs water
 STR_6616    :Action invalid for that staff type
 STR_6617    :Can’t swap tile element with itself
+STR_6618    :Can’t restrict or derestrict object…
+STR_6619    :Object type cannot be restricted!
+STR_6620    :Object not found!
+STR_6621    :Restrict
+STR_6622    :Restrict object to the Scenario Editor and Sandbox mode.
 
 #############
 # Scenarios #

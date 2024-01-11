@@ -4029,6 +4029,12 @@ enum : uint16_t
     STR_ERR_ACTION_INVALID_FOR_THAT_STAFF_TYPE = 6616,
     STR_ERR_CANT_SWAP_TILE_ELEMENT_WITH_ITSELF = 6617,
 
+    STR_CANT_RESTRICT_OBJECT = 6618,
+    STR_OBJECT_TYPE_CANNOT_BE_RESTRICTED = 6619,
+    STR_OBJECT_NOT_FOUND = 6620,
+    STR_RESTRICT_SCENERY = 6621,
+    STR_RESTRICT_SCENERY_TIP = 6622,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
