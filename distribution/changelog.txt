@@ -1,6 +1,6 @@
 0.4.8 (in development)
 ------------------------------------------------------------------------
-- Fix: [#21178] Inca Lost City's scenario description incorrectly stating there are height restrictions.
+- Fix: [#21178] Inca Lost City’s scenario description incorrectly states there are height restrictions.
 
 0.4.7 (2023-12-31)
 ------------------------------------------------------------------------
