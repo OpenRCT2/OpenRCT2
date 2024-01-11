@@ -936,13 +936,13 @@ namespace RCT2
             }
             else if (String::Equals(_s6.ScenarioFilename, "Europe - Renovation.SC6"))
             {
-                  // clang-format off
+                // clang-format off
                   FixLandOwnershipTilesWithOwnership(
                       {
                           { 12, 21 },
                       },
                       OWNERSHIP_OWNED);
-                  // clang-format on
+                // clang-format on
             }
             else if (
                 String::IEquals(gScenarioFileName, "N America - Extreme Hawaiian Island.SC6")
