@@ -1597,10 +1597,12 @@ void ScriptEngine::SetParkStorageFromJSON(std::string_view value)
 
 IntervalHandle ScriptEngine::AllocateHandle()
 {
-    // In case of overflow start from 1 again
-    _nextIntervalHandle = std::max(_nextIntervalHandle++, 1U);
+    const auto nextHandle = _nextIntervalHandle;
 
-    return _nextIntervalHandle;
+    // In case of overflow start from 1 again
+    _nextIntervalHandle = std::max(_nextIntervalHandle + 1U, 1U);
+
+    return nextHandle;
 }
 
 IntervalHandle ScriptEngine::AddInterval(const std::shared_ptr<Plugin>& plugin, int32_t delay, bool repeat, DukValue&& callback)
