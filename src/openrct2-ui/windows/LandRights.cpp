@@ -240,7 +240,6 @@ public:
         MapInvalidateSelectionRect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-        // auto mapTile = ScreenGetMapXY(screenCoords, nullptr);
         auto info = GetMapCoordinatesFromPos(
             screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
         if (info.SpriteType == ViewportInteractionItem::None)
