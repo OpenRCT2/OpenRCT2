@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Improved: [#18632] Land ownership and construction rights are now shown on top of the water.
 - Improved: [#20951] Activate OpenRCT2 window after using native file dialog on macOS.
+- Fix: [#20616] Confirmation button in the track designer's quit prompt now says "OK".
 - Fix: [#21145] [Plugin] setInterval/setTimeout handle conflict.
 - Fix: [#21158] [Plugin] Potential crash using setInterval/setTimeout within the callback.
 - Fix: [#21171] [Plugin] Crash creating entities with no more entity slots available.
