@@ -995,6 +995,7 @@
     <ClCompile Include="profiling\Profiling.cpp" />
     <ClCompile Include="rct12\CSStringConverter.cpp" />
     <ClCompile Include="rct12\RCT12.cpp" />
+    <ClCompile Include="rct12\ScenarioPatcher.cpp" />
     <ClCompile Include="rct12\SawyerChunk.cpp" />
     <ClCompile Include="rct12\SawyerChunkReader.cpp" />
     <ClCompile Include="rct12\SawyerChunkWriter.cpp" />
