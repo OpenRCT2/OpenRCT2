@@ -840,6 +840,7 @@ namespace RCT2
                     OWNERSHIP_UNOWNED);
                 FixLandOwnershipTilesWithOwnership(
                     {
+                        { 11, 64 }, { 11, 65 }, { 11, 66 },
                         { 13, 68 }, { 13, 69 },
                         { 14, 69 },
                         { 15, 59 },
