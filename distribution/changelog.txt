@@ -1,6 +1,7 @@
 0.4.8 (in development)
 ------------------------------------------------------------------------
 - Improved: [#18632] Land ownership and construction rights are now shown on top of the water.
+- Improved: [#20951] Activate OpenRCT2 window after using native file dialog on macOS.
 - Fix: [#21145] [Plugin] setInterval/setTimeout handle conflict.
 - Fix: [#21158] [Plugin] Potential crash using setInterval/setTimeout within the callback.
 - Fix: [#21178] Inca Lost City’s scenario description incorrectly states there are height restrictions.
