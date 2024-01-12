@@ -1,7 +1,6 @@
 0.4.8 (in development)
 ------------------------------------------------------------------------
 - Fix: [#21179] additional missing land/construction rights tiles in Inca Lost City & Renovation.
-
 0.4.7 (2023-12-31)
 ------------------------------------------------------------------------
 - Feature: [#12078] Add shortcut key for toggling wall slope.
