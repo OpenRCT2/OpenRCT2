@@ -4359,7 +4359,7 @@ STR_DTLS    :Você é um bem-sucedido magnata dos negócios em longas férias qu
 <South America - Inca Lost City>
 STR_SCNR    :América do Norte - Cidade Perdida Inca
 STR_PARK    :Fundadação da Cidade Perdida
-STR_DTLS    :Para dar um impulso adicional ao turismo local você deve construir um parque que está em sintonia com seus arredores, e tem restrições de altura.
+STR_DTLS    :Para dar um impulso adicional ao turismo local você deve construir um parque que está em sintonia com seus arredores.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :América do Sul - Planalto da Floresta Tropical
