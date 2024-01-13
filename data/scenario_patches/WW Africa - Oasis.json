@@ -1,0 +1,14 @@
+{
+    "land_ownership": {
+        "unowned": {
+            "coordinates": [
+                [ 61, 35 ]
+            ]
+        },
+        "owned": {
+            "coordinates": [
+                [ 46, 87 ]
+            ]
+        }
+    }
+}
