@@ -1,0 +1,11 @@
+{
+    "land_ownership": {
+        "available": {
+            "cannot_downgrade": true,
+            "coordinates": [
+                [ 104, 64 ],
+                [ 111, 114 ], [ 112, 114 ]
+            ]
+        }
+    }
+}
