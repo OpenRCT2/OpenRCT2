@@ -57,12 +57,12 @@ static void InMaTriangleTrackAltStation(
         };
 
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 0, height },
+            session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
             { { 0, 6, height + 3 }, { 32, 20, 1 } });
 
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][1]), { 0, 0, height },
-            { 32, 32, 1 });
+            session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]),
+            { 0, 0, height }, { 32, 32, 1 });
     }
     else
     {
@@ -76,22 +76,21 @@ static void InMaTriangleTrackAltStation(
         {
             bool isClosed = trackElement.IsBrakeClosed();
             PaintAddImageAsParentRotated(
-                session, direction,
-                session.TrackColours[SCHEME_TRACK].WithIndex(_InMaTriangleAltBlockBrakeImages[direction][isClosed]),
+                session, direction, session.TrackColours.WithIndex(_InMaTriangleAltBlockBrakeImages[direction][isClosed]),
                 { 0, 0, height }, { { 0, 6, height + 3 }, { 32, 20, 1 } });
         }
         else
         {
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(imageIds[direction][0]), { 0, 0, height },
+                session, direction, session.TrackColours.WithIndex(imageIds[direction][0]), { 0, 0, height },
                 { { 0, 6, height + 3 }, { 32, 20, 1 } });
         }
 
         PaintAddImageAsParentRotated(
-            session, direction, session.TrackColours[SCHEME_MISC].WithIndex(imageIds[direction][1]), { 0, 0, height },
-            { 32, 32, 1 });
+            session, direction, GetStationColourScheme(session, trackElement).WithIndex(imageIds[direction][1]),
+            { 0, 0, height }, { 32, 32, 1 });
     }
-    DrawSupportsSideBySide(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], MetalSupportType::Tubes);
+    DrawSupportsSideBySide(session, direction, height, session.SupportColours, MetalSupportType::Tubes);
     TrackPaintUtilDrawStation2(session, ride, direction, height, trackElement, 9, 11);
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -104,13 +103,13 @@ static void InMaTriangleTrackAltBrakes(
 {
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(_InMaTriangleAltBrakeImages[direction][isClosed]),
-        { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+        session, direction, session.TrackColours.WithIndex(_InMaTriangleAltBrakeImages[direction][isClosed]), { 0, 0, height },
+        { { 0, 6, height }, { 32, 20, 3 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(
@@ -124,13 +123,13 @@ static void InMaTriangleTrackAltBlockBrakes(
 {
     bool isClosed = trackElement.IsBrakeClosed();
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(_InMaTriangleAltBlockBrakeImages[direction][isClosed]),
+        session, direction, session.TrackColours.WithIndex(_InMaTriangleAltBlockBrakeImages[direction][isClosed]),
         { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(
@@ -146,29 +145,29 @@ static void InMaTriangleTrackAltBooster(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_RC_BOOSTER_ALT_NE_SW),
-                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_RC_BOOSTER_ALT_NE_SW), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_RC_BOOSTER_ALT_NW_SE),
-                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_RC_BOOSTER_ALT_NW_SE), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_RC_BOOSTER_ALT_SW_NE),
-                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_RC_BOOSTER_ALT_SW_NE), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK].WithIndex(SPR_G2_GIGA_RC_BOOSTER_ALT_SE_NW),
-                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_RC_BOOSTER_ALT_SE_NW), { 0, 0, height },
+                { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
     {
         MetalASupportsPaintSetup(
-            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 0, height, session.SupportColours);
     }
     PaintUtilPushTunnelRotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     PaintUtilSetSegmentSupportHeight(
