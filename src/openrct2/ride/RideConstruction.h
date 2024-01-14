@@ -48,14 +48,14 @@ extern uint8_t _currentTrackPieceDirection;
 extern track_type_t _currentTrackPieceType;
 extern uint8_t _currentTrackSelectionFlags;
 extern uint32_t _rideConstructionNextArrowPulse;
-extern TrackPitch _currentTrackSlopeEnd;
+extern TrackPitch _currentTrackPitchEnd;
 extern TrackRoll _currentTrackRollEnd;
 extern uint8_t _currentTrackLiftHill;
 extern uint8_t _currentTrackAlternative;
 extern track_type_t _selectedTrackType;
 
 extern TrackRoll _previousTrackRollEnd;
-extern TrackPitch _previousTrackSlopeEnd;
+extern TrackPitch _previousTrackPitchEnd;
 
 extern CoordsXYZ _previousTrackPiece;
 

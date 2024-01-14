@@ -47,7 +47,7 @@ void ScTrackSegment::Register(duk_context* ctx)
     dukglue_register_property(ctx, &ScTrackSegment::getPriceModifier, nullptr, "priceModifier");
     dukglue_register_property(ctx, &ScTrackSegment::getTrackGroup, nullptr, "trackGroup");
     dukglue_register_property(ctx, &ScTrackSegment::getTrackCurvature, nullptr, "turnDirection");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackSlopeDirection, nullptr, "slopeDirection");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackPitchDirection, nullptr, "slopeDirection");
 
     dukglue_register_property(
         ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_ONLY_UNDERWATER>, nullptr, "onlyAllowedUnderwater");
@@ -282,7 +282,7 @@ std::string ScTrackSegment::getTrackCurvature() const
     return "straight";
 }
 
-std::string ScTrackSegment::getTrackSlopeDirection() const
+std::string ScTrackSegment::getTrackPitchDirection() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
     if (ted.Flags & TRACK_ELEM_FLAG_UP)

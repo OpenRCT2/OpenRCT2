@@ -64,14 +64,14 @@ uint8_t _currentTrackPieceDirection;
 track_type_t _currentTrackPieceType;
 uint8_t _currentTrackSelectionFlags;
 uint32_t _rideConstructionNextArrowPulse = 0;
-TrackPitch _currentTrackSlopeEnd;
+TrackPitch _currentTrackPitchEnd;
 TrackRoll _currentTrackRollEnd;
 uint8_t _currentTrackLiftHill;
 uint8_t _currentTrackAlternative;
 track_type_t _selectedTrackType;
 
 TrackRoll _previousTrackRollEnd;
-TrackPitch _previousTrackSlopeEnd;
+TrackPitch _previousTrackPitchEnd;
 
 CoordsXYZ _previousTrackPiece;
 
@@ -606,7 +606,7 @@ static void ride_construction_reset_current_piece()
     if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK) || ride->num_stations == 0)
     {
         _currentTrackCurve = rtd.StartTrackPiece | RideConstructionSpecialPieceSelected;
-        _currentTrackSlopeEnd = TrackPitch::None;
+        _currentTrackPitchEnd = TrackPitch::None;
         _currentTrackRollEnd = TrackRoll::None;
         _currentTrackLiftHill = 0;
         _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
@@ -614,7 +614,7 @@ static void ride_construction_reset_current_piece()
         {
             _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
         }
-        _previousTrackSlopeEnd = TrackPitch::None;
+        _previousTrackPitchEnd = TrackPitch::None;
         _previousTrackRollEnd = TrackRoll::None;
     }
     else
@@ -694,8 +694,8 @@ void RideConstructionSetDefaultNextPiece()
             _previousTrackRollEnd = bank;
 
             // Set track slope and lift hill
-            _currentTrackSlopeEnd = slope;
-            _previousTrackSlopeEnd = slope;
+            _currentTrackPitchEnd = slope;
+            _previousTrackPitchEnd = slope;
             _currentTrackLiftHill = tileElement->AsTrack()->HasChain()
                 && ((slope != TrackPitch::Down25 && slope != TrackPitch::Down60) || gCheatsEnableChainLiftOnAllTrack);
             break;
@@ -742,8 +742,8 @@ void RideConstructionSetDefaultNextPiece()
             _previousTrackRollEnd = bank;
 
             // Set track slope and lift hill
-            _currentTrackSlopeEnd = slope;
-            _previousTrackSlopeEnd = slope;
+            _currentTrackPitchEnd = slope;
+            _previousTrackPitchEnd = slope;
             if (!gCheatsEnableChainLiftOnAllTrack)
             {
                 _currentTrackLiftHill = tileElement->AsTrack()->HasChain();
@@ -1123,7 +1123,7 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
     InputSetFlag(INPUT_FLAG_6, true);
 
     _currentTrackCurve = ride.GetRideTypeDescriptor().StartTrackPiece | RideConstructionSpecialPieceSelected;
-    _currentTrackSlopeEnd = TrackPitch::None;
+    _currentTrackPitchEnd = TrackPitch::None;
     _currentTrackRollEnd = TrackRoll::None;
     _currentTrackLiftHill = 0;
     _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
@@ -1132,7 +1132,7 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
         _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
 
     _previousTrackRollEnd = TrackRoll::None;
-    _previousTrackSlopeEnd = TrackPitch::None;
+    _previousTrackPitchEnd = TrackPitch::None;
 
     _currentTrackPieceDirection = 0;
     _rideConstructionState = RideConstructionState::Place;

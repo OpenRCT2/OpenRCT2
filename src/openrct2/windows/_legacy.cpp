@@ -61,7 +61,7 @@ money64 PlaceProvisionalTrackPiece(
         _unkF440C5 = { trackPos, static_cast<Direction>(trackDirection) };
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
         ViewportSetVisibility(ViewportVisibility::UndergroundViewOff);
-        if (_currentTrackSlopeEnd != TrackPitch::None)
+        if (_currentTrackPitchEnd != TrackPitch::None)
             ViewportSetVisibility(ViewportVisibility::TrackHeights);
 
         // Invalidate previous track piece (we may not be changing height!)
@@ -105,7 +105,7 @@ money64 PlaceProvisionalTrackPiece(
     const auto visiblity = (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? ViewportVisibility::UndergroundViewOn
                                                                              : ViewportVisibility::UndergroundViewOff;
     ViewportSetVisibility(visiblity);
-    if (_currentTrackSlopeEnd != TrackPitch::None)
+    if (_currentTrackPitchEnd != TrackPitch::None)
         ViewportSetVisibility(ViewportVisibility::TrackHeights);
 
     // Invalidate previous track piece (we may not be changing height!)
@@ -125,15 +125,15 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES);
     ContextBroadcastIntent(&intent);
 
-    auto startSlope = _previousTrackSlopeEnd;
-    auto endSlope = _currentTrackSlopeEnd;
+    auto startSlope = _previousTrackPitchEnd;
+    auto endSlope = _currentTrackPitchEnd;
     auto startBank = _previousTrackRollEnd;
     auto endBank = _currentTrackRollEnd;
 
     if (_rideConstructionState == RideConstructionState::Back)
     {
-        startSlope = _currentTrackSlopeEnd;
-        endSlope = _previousTrackSlopeEnd;
+        startSlope = _currentTrackPitchEnd;
+        endSlope = _previousTrackPitchEnd;
         startBank = _currentTrackRollEnd;
         endBank = _previousTrackRollEnd;
     }
