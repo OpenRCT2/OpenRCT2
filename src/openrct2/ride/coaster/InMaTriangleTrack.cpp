@@ -9476,25 +9476,19 @@ static void InMaTriangleTrackBooster(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    // These offsets could be moved to the g2.dat file when that supports offsets.
-    int8_t ne_sw_offsetX = 7;
-    int8_t ne_sw_offsetY = -15;
-    int8_t nw_se_offsetX = -15;
-    int8_t nw_se_offsetY = 7;
-
     switch (direction)
     {
         case 0:
         case 2:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_RC_BOOSTER_NE_SW),
-                { ne_sw_offsetX, ne_sw_offsetY, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
                 session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_RC_BOOSTER_NW_SE),
-                { nw_se_offsetX, nw_se_offsetY, height }, { { 0, 6, height }, { 32, 20, 3 } });
+                { 0, 0, height }, { { 0, 6, height }, { 32, 20, 3 } });
             break;
     }
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))

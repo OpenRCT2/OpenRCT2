@@ -18,21 +18,14 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
-// Closed block brakes and regular brakes use the same images
-static constexpr uint32_t GIGA_COASTER_BRAKE_SW_NE_OPEN_1 = 18076;
 static constexpr uint32_t GIGA_COASTER_BRAKE_NW_SE_OPEN_1 = 18077;
-static constexpr uint32_t GIGA_COASTER_BRAKE_SW_NE_CLOSED_1 = 18078;
 static constexpr uint32_t GIGA_COASTER_BRAKE_NW_SE_CLOSED_1 = 18079;
-static constexpr uint32_t GIGA_COASTER_BRAKE_SW_NE_OPEN_2 = 18080;
-static constexpr uint32_t GIGA_COASTER_BRAKE_NW_SE_OPEN_2 = 18081;
-static constexpr uint32_t GIGA_COASTER_BRAKE_SW_NE_CLOSED_2 = 18082;
-static constexpr uint32_t GIGA_COASTER_BRAKE_NW_SE_CLOSED_2 = 18083;
 
 static constexpr uint32_t _InMaTriangleAltBrakeImages[NumOrthogonalDirections][2] = {
     { SPR_G2_GIGA_RC_BRAKE_ALT_OPEN_NE_SW, SPR_G2_GIGA_RC_BRAKE_ALT_CLOSED_NE_SW },
-    { GIGA_COASTER_BRAKE_NW_SE_OPEN_1, GIGA_COASTER_BRAKE_NW_SE_CLOSED_1 },
+    { SPR_G2_GIGA_RC_BRAKE_ALT_OPEN_NW_SE, SPR_G2_GIGA_RC_BRAKE_ALT_CLOSED_NW_SE },
     { SPR_G2_GIGA_RC_BRAKE_ALT_OPEN_SW_NE, SPR_G2_GIGA_RC_BRAKE_ALT_CLOSED_SW_NE },
-    { GIGA_COASTER_BRAKE_NW_SE_OPEN_1, GIGA_COASTER_BRAKE_NW_SE_CLOSED_1 },
+    { SPR_G2_GIGA_RC_BRAKE_ALT_OPEN_SE_NW, SPR_G2_GIGA_RC_BRAKE_ALT_CLOSED_SE_NW },
 };
 
 static constexpr uint32_t _InMaTriangleAltBlockBrakeImages[NumOrthogonalDirections][2] = {
