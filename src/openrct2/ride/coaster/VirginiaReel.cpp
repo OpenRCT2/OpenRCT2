@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -230,7 +230,7 @@ static void PaintVirginiaReelTrackFlat(
         sprites = virginia_reel_track_pieces_flat_lift_hill;
     }
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction]);
+    auto imageId = session.TrackColours.WithIndex(sprites[direction]);
     if (direction & 1)
     {
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 27, 32, 2 } });
@@ -242,7 +242,7 @@ static void PaintVirginiaReelTrackFlat(
         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.SupportColours);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
@@ -259,7 +259,7 @@ static void PaintVirginiaReelTrack25DegUp(
         sprites = virginia_reel_track_pieces_25_deg_up_lift_hill;
     }
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction]);
+    auto imageId = session.TrackColours.WithIndex(sprites[direction]);
     PaintStruct* ps;
 
     if (direction & 1)
@@ -279,19 +279,19 @@ static void PaintVirginiaReelTrack25DegUp(
     switch (direction)
     {
         case 0:
-            WoodenASupportsPaintSetup(session, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 0, 9, height, session.SupportColours);
             PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_SQUARE_7);
             break;
         case 1:
-            WoodenASupportsPaintSetup(session, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 1, 10, height, session.SupportColours);
             PaintUtilPushTunnelRight(session, height + 8, TUNNEL_SQUARE_8);
             break;
         case 2:
-            WoodenASupportsPaintSetup(session, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 0, 11, height, session.SupportColours);
             PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_SQUARE_8);
             break;
         case 3:
-            WoodenASupportsPaintSetup(session, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 1, 12, height, session.SupportColours);
             PaintUtilPushTunnelRight(session, height - 8, TUNNEL_SQUARE_7);
             break;
     }
@@ -311,34 +311,34 @@ static void PaintVirginiaReelTrackFlatTo25DegUp(
         sprites = virginia_reel_track_pieces_flat_to_25_deg_up_lift_hill;
     }
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction]);
+    auto imageId = session.TrackColours.WithIndex(sprites[direction]);
     PaintStruct* ps;
     switch (direction)
     {
         case 0:
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
 
-            WoodenASupportsPaintSetup(session, 0, 1, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 0, 1, height, session.SupportColours);
             PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
             break;
         case 1:
             ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 27, 32, 2 } });
             session.WoodenSupportsPrependTo = ps;
 
-            WoodenASupportsPaintSetup(session, 1, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 1, 2, height, session.SupportColours);
             PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_8);
             break;
         case 2:
             ps = PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 2, height }, { 32, 27, 2 } });
             session.WoodenSupportsPrependTo = ps;
 
-            WoodenASupportsPaintSetup(session, 0, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 0, 3, height, session.SupportColours);
             PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_8);
             break;
         case 3:
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 2, 0, height }, { 27, 32, 2 } });
 
-            WoodenASupportsPaintSetup(session, 1, 4, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 1, 4, height, session.SupportColours);
             PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
             break;
     }
@@ -358,7 +358,7 @@ static void PaintVirginiaReelTrack25DegUpToFlat(
         sprites = virginia_reel_track_pieces_25_deg_up_to_flat_lift_hill;
     }
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(sprites[direction]);
+    auto imageId = session.TrackColours.WithIndex(sprites[direction]);
     PaintStruct* ps;
 
     if (direction & 1)
@@ -378,19 +378,19 @@ static void PaintVirginiaReelTrack25DegUpToFlat(
     switch (direction)
     {
         case 0:
-            WoodenASupportsPaintSetup(session, 0, 5, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 0, 5, height, session.SupportColours);
             PaintUtilPushTunnelLeft(session, height - 8, TUNNEL_SQUARE_FLAT);
             break;
         case 1:
-            WoodenASupportsPaintSetup(session, 1, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 1, 6, height, session.SupportColours);
             PaintUtilPushTunnelRight(session, height + 8, TUNNEL_14);
             break;
         case 2:
-            WoodenASupportsPaintSetup(session, 0, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 0, 7, height, session.SupportColours);
             PaintUtilPushTunnelLeft(session, height + 8, TUNNEL_14);
             break;
         case 3:
-            WoodenASupportsPaintSetup(session, 1, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 1, 8, height, session.SupportColours);
             PaintUtilPushTunnelRight(session, height - 8, TUNNEL_SQUARE_FLAT);
             break;
     }
@@ -432,26 +432,26 @@ static void PaintVirginiaReelStation(
 
     if (direction == 0 || direction == 2)
     {
-        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_SW_NE);
+        imageId = GetStationColourScheme(session, trackElement).WithIndex(SPR_STATION_BASE_B_SW_NE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 2 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_VIRGINIA_REEL_FLAT_SW_NE);
+        imageId = session.TrackColours.WithIndex(SPR_VIRGINIA_REEL_FLAT_SW_NE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 20, 2 } });
 
         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
     }
     else if (direction == 1 || direction == 3)
     {
-        imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_STATION_BASE_B_NW_SE);
+        imageId = GetStationColourScheme(session, trackElement).WithIndex(SPR_STATION_BASE_B_NW_SE);
         PaintAddImageAsParent(session, imageId, { 0, 0, height - 2 }, { { 2, 0, height }, { 28, 32, 2 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_VIRGINIA_REEL_FLAT_NW_SE);
+        imageId = session.TrackColours.WithIndex(SPR_VIRGINIA_REEL_FLAT_NW_SE);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 20, 32, 2 } });
 
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.SupportColours);
     TrackPaintUtilDrawStation(session, ride, direction, height, trackElement);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -471,7 +471,7 @@ static void PaintVirginiaReelTrackLeftQuarterTurn3Tiles(
     const TrackElement& trackElement)
 {
     TrackPaintUtilLeftQuarterTurn3TilesPaint(
-        session, 2, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
+        session, 2, height, direction, trackSequence, session.TrackColours,
         virginia_reel_track_pieces_flat_quarter_turn_3_tiles);
     TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, height, TUNNEL_SQUARE_FLAT, direction, trackSequence);
 
@@ -484,7 +484,7 @@ static void PaintVirginiaReelTrackLeftQuarterTurn3Tiles(
         case 0:
         case 3:
             WoodenASupportsPaintSetup(
-                session, virginia_reel_left_quarter_turn_supports[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                session, virginia_reel_left_quarter_turn_supports[direction], 0, height, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(SEGMENTS_ALL, direction), 0xFFFF, 0);
             break;
     }
@@ -514,24 +514,23 @@ static void PaintVirginiaReelTrackLeftQuarterTurn1Tile(
     const TrackElement& trackElement)
 {
     TrackPaintUtilLeftQuarterTurn1TilePaint(
-        session, 2, height, 0, direction, session.TrackColours[SCHEME_TRACK],
-        virginia_reel_track_pieces_flat_quarter_turn_1_tile);
+        session, 2, height, 0, direction, session.TrackColours, virginia_reel_track_pieces_flat_quarter_turn_1_tile);
 
     switch (direction)
     {
         case 0:
-            WoodenASupportsPaintSetup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 5, 0, height, session.SupportColours);
             PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
             break;
         case 1:
-            WoodenASupportsPaintSetup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 2, 0, height, session.SupportColours);
             break;
         case 2:
-            WoodenASupportsPaintSetup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 3, 0, height, session.SupportColours);
             PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
             break;
         case 3:
-            WoodenASupportsPaintSetup(session, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+            WoodenASupportsPaintSetup(session, 4, 0, height, session.SupportColours);
             PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
             PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
             break;

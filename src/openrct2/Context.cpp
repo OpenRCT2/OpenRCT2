@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -61,6 +61,7 @@
 #include "platform/Crash.h"
 #include "platform/Platform.h"
 #include "profiling/Profiling.h"
+#include "rct2/RCT2.h"
 #include "ride/TrackData.h"
 #include "ride/TrackDesignRepository.h"
 #include "scenario/Scenario.h"

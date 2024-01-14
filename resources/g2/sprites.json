@@ -24972,5 +24972,15 @@
         "x_offset": -5,
         "y_offset": -20,
         "palette": "keep"
+    },
+    {
+    	"path": "icons/medium-curve-left.png",
+        "x_offset": 2,
+        "y_offset": 6
+    },
+    {
+    	"path": "icons/medium-curve-right.png",
+        "x_offset": 1,
+        "y_offset": 6
     }
 ]

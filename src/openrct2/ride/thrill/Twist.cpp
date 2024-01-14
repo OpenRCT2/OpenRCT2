@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,7 +21,8 @@
 
 /** rct2: 0x0076E5C9 */
 static void PaintTwistStructure(
-    PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height,
+    ImageId stationColour)
 {
     const auto* rideEntry = GetRideEntryByIndex(ride.subtype);
     Vehicle* vehicle = nullptr;
@@ -49,11 +50,10 @@ static void PaintTwistStructure(
         frameNum = frameNum % 216;
     }
 
-    auto imageFlags = session.TrackColours[SCHEME_MISC];
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    if (imageFlags != TrackGhost)
+    if (stationColour != TrackStationColour)
     {
-        imageTemplate = imageFlags;
+        imageTemplate = stationColour;
     }
 
     auto baseImageId = rideEntry->Cars[0].base_image_id;
@@ -91,29 +91,30 @@ static void PaintTwist(
 
     ImageId imageId;
 
+    auto stationColour = GetStationColourScheme(session, trackElement);
     WoodenASupportsPaintSetupRotated(
-        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.TrackColours[SCHEME_MISC]);
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
 
     const StationObject* stationObject = ride.GetStationObject();
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_MISC], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, stationColour, height, floorSpritesCork, stationObject);
 
     switch (trackSequence)
     {
         case 7:
             if (TrackPaintUtilHasFence(EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation))
             {
-                imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_FENCE_ROPE_SW);
+                imageId = stationColour.WithIndex(SPR_FENCE_ROPE_SW);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 29, 0, height + 3 }, { 1, 28, 7 } });
             }
             if (TrackPaintUtilHasFence(EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation))
             {
-                imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_FENCE_ROPE_SE);
+                imageId = stationColour.WithIndex(SPR_FENCE_ROPE_SE);
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 29, height + 3 }, { 28, 1, 7 } });
             }
             break;
         default:
             TrackPaintUtilPaintFences(
-                session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_MISC], height,
+                session, edges, session.MapPosition, trackElement, ride, GetStationColourScheme(session, trackElement), height,
                 fenceSpritesRope, session.CurrentRotation);
             break;
     }
@@ -121,22 +122,22 @@ static void PaintTwist(
     switch (trackSequence)
     {
         case 1:
-            PaintTwistStructure(session, ride, direction, 32, 32, height);
+            PaintTwistStructure(session, ride, direction, 32, 32, height, stationColour);
             break;
         case 3:
-            PaintTwistStructure(session, ride, direction, 32, -32, height);
+            PaintTwistStructure(session, ride, direction, 32, -32, height, stationColour);
             break;
         case 5:
-            PaintTwistStructure(session, ride, direction, 0, -32, height);
+            PaintTwistStructure(session, ride, direction, 0, -32, height, stationColour);
             break;
         case 6:
-            PaintTwistStructure(session, ride, direction, -32, 32, height);
+            PaintTwistStructure(session, ride, direction, -32, 32, height, stationColour);
             break;
         case 7:
-            PaintTwistStructure(session, ride, direction, -32, -32, height);
+            PaintTwistStructure(session, ride, direction, -32, -32, height, stationColour);
             break;
         case 8:
-            PaintTwistStructure(session, ride, direction, -32, 0, height);
+            PaintTwistStructure(session, ride, direction, -32, 0, height, stationColour);
             break;
     }
 

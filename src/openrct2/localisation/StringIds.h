@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -4007,6 +4007,9 @@ enum : uint16_t
     STR_CHEAT_REMOVE_PARK_FENCES = 6593,
 
     STR_SHORTCUT_TOGGLE_WALL_SLOPE = 6594,
+
+    STR_SCENERY_AUTHOR = 6595,
+    STR_SCENERY_AUTHOR_PLURAL = 6596,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

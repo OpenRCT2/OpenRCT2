@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1270,7 +1270,7 @@ namespace RCT2
             dst->mode = static_cast<RideMode>(src->Mode);
             dst->colour_scheme_type = src->ColourSchemeType;
 
-            for (uint8_t i = 0; i < Limits::MaxTrainsPerRide; i++)
+            for (uint8_t i = 0; i < Limits::MaxVehicleColours; i++)
             {
                 dst->vehicle_colours[i].Body = src->VehicleColours[i].BodyColour;
                 dst->vehicle_colours[i].Trim = src->VehicleColours[i].TrimColour;
@@ -2327,7 +2327,7 @@ namespace RCT2
         {
             const auto originalString = _s6.CustomStrings[stringId % 1024];
             auto originalStringView = std::string_view(
-                originalString, GetRCT2StringBufferLen(originalString, USER_STRING_MAX_LENGTH));
+                originalString, RCT12::GetRCTStringBufferLen(originalString, USER_STRING_MAX_LENGTH));
             auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::EnglishUK);
             auto justText = RCT12RemoveFormattingUTF8(asUtf8);
             return justText.data();

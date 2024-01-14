@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -341,11 +341,14 @@ EntityBase* CreateEntity(EntityType type)
 
     if (EntityTypeIsMiscEntity(type))
     {
-        // Misc sprites are commonly used for effects, if there are less than MAX_MISC_SPRITES
-        // free it will fail to keep slots for more relevant sprites.
-        // Also there can't be more than MAX_MISC_SPRITES sprites in this list.
-        uint16_t miscSlotsRemaining = MAX_MISC_SPRITES - GetMiscEntityCount();
-        if (miscSlotsRemaining >= _freeIdList.size())
+        // Misc sprites are commonly used for effects, give other entity types higher priority.
+        if (GetMiscEntityCount() >= MAX_MISC_SPRITES)
+        {
+            return nullptr;
+        }
+
+        // If there are less than MAX_MISC_SPRITES free slots, ensure other entities can be created.
+        if (_freeIdList.size() < MAX_MISC_SPRITES)
         {
             return nullptr;
         }
@@ -407,6 +410,11 @@ void UpdateAllMiscEntities()
     MiscUpdateAllTypes<
         SteamParticle, MoneyEffect, VehicleCrashParticle, ExplosionCloud, CrashSplashParticle, ExplosionFlare, JumpingFountain,
         Balloon, Duck>();
+}
+
+void UpdateMoneyEffect()
+{
+    MiscUpdateAllTypes<MoneyEffect>();
 }
 
 // Performs a search to ensure that insert keeps next_in_quadrant in sprite_index order

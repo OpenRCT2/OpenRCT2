@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -85,35 +85,6 @@ namespace RCT2
             default:
                 return openrct2Type;
         }
-    }
-
-    size_t GetRCT2StringBufferLen(const char* buffer, size_t maxBufferLen)
-    {
-        constexpr char MULTIBYTE = static_cast<char>(255);
-        size_t len = 0;
-        for (size_t i = 0; i < maxBufferLen; i++)
-        {
-            auto ch = buffer[i];
-            if (ch == MULTIBYTE)
-            {
-                i += 2;
-
-                // Check if reading two more bytes exceeds max buffer len
-                if (i < maxBufferLen)
-                {
-                    len += 3;
-                }
-            }
-            else if (ch == '\0')
-            {
-                break;
-            }
-            else
-            {
-                len++;
-            }
-        }
-        return len;
     }
 
     uint8_t Ride::GetMinCarsPerTrain() const
@@ -216,6 +187,7 @@ namespace RCT2
           "rct2.footpath_railings.concrete" },
         { "PATHCRZY", "rct1ll.footpath_surface.tiles_green", "rct1aa.footpath_surface.queue_green",
           "rct2.footpath_railings.concrete" },
+        { "ROAD    ", "rct1.footpath_surface.road", "rct1.footpath_surface.queue_blue", "rct2.footpath_railings.wood" },
 
         // Custom path mapping
         { "PATHINVS", "openrct2.footpath_surface.invisible", "openrct2.footpath_surface.queue_invisible",

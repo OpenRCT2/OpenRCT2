@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -980,6 +980,75 @@ static void PaintPatrolArea(PaintSession& session, const SurfaceElement& element
     }
 }
 
+static void PaintSurfaceLandOwnership(
+    PaintSession& session, const SurfaceElement& tileElement, uint16_t height, uint8_t surfaceShape)
+{
+    auto [aboveWaterHeight, aboveWaterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
+
+    // Loc660E9A:
+    if (tileElement.GetOwnership() & OWNERSHIP_OWNED)
+    {
+        assert(static_cast<size_t>(surfaceShape) < std::size(Byte97B444));
+        assert(static_cast<size_t>(aboveWaterSurfaceShape) < std::size(Byte97B444));
+
+        // Paint outline on top of surface (can be underwater)
+        PaintAttachToPreviousPS(session, ImageId(SPR_TERRAIN_SELECTION_SQUARE + Byte97B444[surfaceShape]), 0, 0);
+
+        const auto tileIsUnderWater = height != aboveWaterHeight || surfaceShape != aboveWaterSurfaceShape;
+        if (tileIsUnderWater)
+        {
+            PaintStruct* backup = session.LastPS;
+            PaintAddImageAsParent(
+                session, ImageId(SPR_TERRAIN_SELECTION_SQUARE + Byte97B444[aboveWaterSurfaceShape]), { 0, 0, aboveWaterHeight },
+                { 32, 32, 1 });
+            session.LastPS = backup;
+        }
+    }
+    else if (tileElement.GetOwnership() & OWNERSHIP_AVAILABLE)
+    {
+        const auto pos = CoordsXYZ(session.MapPosition.x + 16, session.MapPosition.y + 16, aboveWaterHeight);
+        const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape);
+
+        PaintStruct* backup = session.LastPS;
+        PaintAddImageAsParent(session, ImageId(SPR_LAND_OWNERSHIP_AVAILABLE), { 16, 16, height2 }, { 1, 1, 0 });
+        session.LastPS = backup;
+    }
+}
+
+static void PaintSurfaceConstructionRights(
+    PaintSession& session, const SurfaceElement& tileElement, uint16_t height, uint8_t surfaceShape)
+{
+    auto [aboveWaterHeight, aboveWaterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
+
+    if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
+    {
+        assert(static_cast<size_t>(surfaceShape) < std::size(Byte97B444));
+        assert(static_cast<size_t>(aboveWaterSurfaceShape) < std::size(Byte97B444));
+
+        // Paint outline on top of surface (can be underwater)
+        PaintAttachToPreviousPS(session, ImageId(SPR_TERRAIN_SELECTION_DOTTED + Byte97B444[surfaceShape]), 0, 0);
+
+        const auto tileIsUnderWater = height != aboveWaterHeight || surfaceShape != aboveWaterSurfaceShape;
+        if (tileIsUnderWater)
+        {
+            PaintStruct* backup = session.LastPS;
+            PaintAddImageAsParent(
+                session, ImageId(SPR_TERRAIN_SELECTION_DOTTED + Byte97B444[aboveWaterSurfaceShape]), { 0, 0, aboveWaterHeight },
+                { 32, 32, 1 });
+            session.LastPS = backup;
+        }
+    }
+    else if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
+    {
+        const auto pos = CoordsXYZ(session.MapPosition.x + 16, session.MapPosition.y + 16, aboveWaterHeight);
+        const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape);
+
+        PaintStruct* backup = session.LastPS;
+        PaintAddImageAsParent(session, ImageId(SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE), { 16, 16, height2 }, { 1, 1, 0 });
+        session.LastPS = backup;
+    }
+}
+
 /**
  *  rct2: 0x0066062C
  */
@@ -1001,7 +1070,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     const auto* surfaceObject = tileElement.GetSurfaceObject();
     const auto* edgeObject = tileElement.GetEdgeObject();
 
-    TileDescriptor selfDescriptor = {
+    const auto selfDescriptor = TileDescriptor{
         TileCoordsXY(base),
         elementPtr,
         surfaceObject,
@@ -1014,15 +1083,14 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         },
     };
 
-    TileDescriptor tileDescriptors[5];
-    tileDescriptors[0] = selfDescriptor;
+    TileDescriptor tileDescriptors[4];
 
     for (std::size_t i = 0; i < std::size(viewport_surface_paint_data); i++)
     {
         const CoordsXY& offset = viewport_surface_paint_data[i][rotation];
         const CoordsXY position = base + offset;
 
-        TileDescriptor& descriptor = tileDescriptors[i + 1];
+        TileDescriptor& descriptor = tileDescriptors[i];
 
         descriptor.tile_element = nullptr;
         if (!MapIsLocationValid(position))
@@ -1135,38 +1203,12 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     if (session.ViewFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
     {
-        // Loc660E9A:
-        if (tileElement.GetOwnership() & OWNERSHIP_OWNED)
-        {
-            assert(surfaceShape < std::size(Byte97B444));
-            PaintAttachToPreviousPS(session, ImageId(SPR_TERRAIN_SELECTION_SQUARE + Byte97B444[surfaceShape]), 0, 0);
-        }
-        else if (tileElement.GetOwnership() & OWNERSHIP_AVAILABLE)
-        {
-            const CoordsXY& pos = session.MapPosition;
-            const int32_t height2 = (TileElementHeight({ pos.x + 16, pos.y + 16 })) + 3;
-            PaintStruct* backup = session.LastPS;
-            PaintAddImageAsParent(session, ImageId(SPR_LAND_OWNERSHIP_AVAILABLE), { 16, 16, height2 }, { 1, 1, 0 });
-            session.LastPS = backup;
-        }
+        PaintSurfaceLandOwnership(session, tileElement, height, surfaceShape);
     }
 
     if (session.ViewFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS && !(tileElement.GetOwnership() & OWNERSHIP_OWNED))
     {
-        if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
-        {
-            assert(surfaceShape < std::size(Byte97B444));
-            PaintAttachToPreviousPS(session, ImageId(SPR_TERRAIN_SELECTION_DOTTED + Byte97B444[surfaceShape]), 0, 0);
-        }
-        else if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
-        {
-            const CoordsXY& pos = session.MapPosition;
-            const int32_t height2 = TileElementHeight({ pos.x + 16, pos.y + 16 });
-            PaintStruct* backup = session.LastPS;
-            PaintAddImageAsParent(
-                session, ImageId(SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE), { 16, 16, height2 + 3 }, { 1, 1, 0 });
-            session.LastPS = backup;
-        }
+        PaintSurfaceConstructionRights(session, tileElement, height, surfaceShape);
     }
 
     // ebx[0] = esi;
@@ -1215,6 +1257,23 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
                 const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
                 PaintAttachToPreviousPS(session, image_id, 0, 0);
             }
+            else if (mapSelectionType == MAP_SELECT_TYPE_FULL_LAND_RIGHTS)
+            {
+                auto [waterHeight, waterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
+
+                const auto fpId = FilterPaletteID::PaletteGlassLightPurple;
+                const auto imageId1 = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
+                PaintAttachToPreviousPS(session, imageId1, 0, 0);
+
+                const bool isUnderWater = (surfaceShape != waterSurfaceShape || height != waterHeight);
+                if (isUnderWater)
+                {
+                    const auto imageId2 = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[waterSurfaceShape], fpId);
+                    PaintStruct* backup = session.LastPS;
+                    PaintAddImageAsParent(session, imageId2, { 0, 0, waterHeight }, { 32, 32, 1 });
+                    session.LastPS = backup;
+                }
+            }
             else
             {
                 // The water tool should draw its grid _on_ the water, rather than on the surface under water.
@@ -1256,10 +1315,10 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     if (zoomLevel <= ZoomLevel{ 0 } && has_surface && !(session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
         && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_BASE) && gConfigGeneral.LandscapeSmoothing)
     {
-        ViewportSurfaceSmoothenEdge(session, EDGE_TOPLEFT, tileDescriptors[0], tileDescriptors[3]);
-        ViewportSurfaceSmoothenEdge(session, EDGE_TOPRIGHT, tileDescriptors[0], tileDescriptors[4]);
-        ViewportSurfaceSmoothenEdge(session, EDGE_BOTTOMLEFT, tileDescriptors[0], tileDescriptors[1]);
-        ViewportSurfaceSmoothenEdge(session, EDGE_BOTTOMRIGHT, tileDescriptors[0], tileDescriptors[2]);
+        ViewportSurfaceSmoothenEdge(session, EDGE_TOPLEFT, selfDescriptor, tileDescriptors[2]);
+        ViewportSurfaceSmoothenEdge(session, EDGE_TOPRIGHT, selfDescriptor, tileDescriptors[3]);
+        ViewportSurfaceSmoothenEdge(session, EDGE_BOTTOMLEFT, selfDescriptor, tileDescriptors[0]);
+        ViewportSurfaceSmoothenEdge(session, EDGE_BOTTOMRIGHT, selfDescriptor, tileDescriptors[1]);
     }
 
     if ((session.ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_BASE)
@@ -1272,11 +1331,10 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
     if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
     {
-        ViewportSurfaceDrawLandSideTop(session, EDGE_TOPLEFT, height, edgeObject, tileDescriptors[0], tileDescriptors[3]);
-        ViewportSurfaceDrawLandSideTop(session, EDGE_TOPRIGHT, height, edgeObject, tileDescriptors[0], tileDescriptors[4]);
-        ViewportSurfaceDrawLandSideBottom(session, EDGE_BOTTOMLEFT, height, edgeObject, tileDescriptors[0], tileDescriptors[1]);
-        ViewportSurfaceDrawLandSideBottom(
-            session, EDGE_BOTTOMRIGHT, height, edgeObject, tileDescriptors[0], tileDescriptors[2]);
+        ViewportSurfaceDrawLandSideTop(session, EDGE_TOPLEFT, height, edgeObject, selfDescriptor, tileDescriptors[2]);
+        ViewportSurfaceDrawLandSideTop(session, EDGE_TOPRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[3]);
+        ViewportSurfaceDrawLandSideBottom(session, EDGE_BOTTOMLEFT, height, edgeObject, selfDescriptor, tileDescriptors[0]);
+        ViewportSurfaceDrawLandSideBottom(session, EDGE_BOTTOMRIGHT, height, edgeObject, selfDescriptor, tileDescriptors[1]);
     }
 
     const uint16_t waterHeight = tileElement.GetWaterHeight();
@@ -1307,13 +1365,12 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
         if (!(session.ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
         {
             ViewportSurfaceDrawWaterSideBottom(
-                session, EDGE_BOTTOMLEFT, waterHeight, edgeObject, tileDescriptors[0], tileDescriptors[1]);
+                session, EDGE_BOTTOMLEFT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[0]);
             ViewportSurfaceDrawWaterSideBottom(
-                session, EDGE_BOTTOMRIGHT, waterHeight, edgeObject, tileDescriptors[0], tileDescriptors[2]);
+                session, EDGE_BOTTOMRIGHT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[1]);
+            ViewportSurfaceDrawWaterSideTop(session, EDGE_TOPLEFT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[2]);
             ViewportSurfaceDrawWaterSideTop(
-                session, EDGE_TOPLEFT, waterHeight, edgeObject, tileDescriptors[0], tileDescriptors[3]);
-            ViewportSurfaceDrawWaterSideTop(
-                session, EDGE_TOPRIGHT, waterHeight, edgeObject, tileDescriptors[0], tileDescriptors[4]);
+                session, EDGE_TOPRIGHT, waterHeight, edgeObject, selfDescriptor, tileDescriptors[3]);
         }
     }
 

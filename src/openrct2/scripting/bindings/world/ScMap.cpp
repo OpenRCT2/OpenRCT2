@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -233,6 +233,11 @@ namespace OpenRCT2::Scripting
     DukValue createEntityType(duk_context* ctx, const DukValue& initializer)
     {
         TEntityType* entity = CreateEntity<TEntityType>();
+        if (entity == nullptr)
+        {
+            // Probably no more space for entities for this specified entity type.
+            return ToDuk(ctx, undefined);
+        }
 
         auto entityPos = CoordsXYZ{ AsOrDefault(initializer["x"], 0), AsOrDefault(initializer["y"], 0),
                                     AsOrDefault(initializer["z"], 0) };

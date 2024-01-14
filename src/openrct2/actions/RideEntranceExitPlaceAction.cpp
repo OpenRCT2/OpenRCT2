@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -162,7 +162,8 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     }
 
     auto z = station.GetBaseZ();
-    if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+    if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
+        && !gCheatsDisableClearanceChecks)
     {
         FootpathRemoveLitter({ _loc, z });
         WallRemoveAtZ({ _loc, z });

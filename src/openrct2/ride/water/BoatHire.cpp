@@ -1,5 +1,6 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+/*****************************************************************************
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,18 +41,18 @@ static void PaintBoatHireTrackFlat(
     const auto offset = CoordsXYZ{ 0, 0, height };
     if (direction & 1)
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_BOAT_HIRE_FLAT_BACK_NW_SE);
+        imageId = session.TrackColours.WithIndex(SPR_BOAT_HIRE_FLAT_BACK_NW_SE);
         PaintAddImageAsParent(session, imageId, offset, { { 4, 0, height }, { 1, 32, 3 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_BOAT_HIRE_FLAT_FRONT_NW_SE);
+        imageId = session.TrackColours.WithIndex(SPR_BOAT_HIRE_FLAT_FRONT_NW_SE);
         PaintAddImageAsParent(session, imageId, offset, { { 28, 0, height }, { 1, 32, 3 } });
     }
     else
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_BOAT_HIRE_FLAT_BACK_SW_NE);
+        imageId = session.TrackColours.WithIndex(SPR_BOAT_HIRE_FLAT_BACK_SW_NE);
         PaintAddImageAsParent(session, imageId, offset, { { 0, 4, height }, { 32, 1, 3 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_BOAT_HIRE_FLAT_FRONT_SW_NE);
+        imageId = session.TrackColours.WithIndex(SPR_BOAT_HIRE_FLAT_FRONT_SW_NE);
         PaintAddImageAsParent(session, imageId, offset, { { 0, 28, height }, { 32, 1, 3 } });
     }
 
@@ -94,31 +95,31 @@ static void PaintBoatHireTrackLeftQuarterTurn1Tile(
     switch (direction)
     {
         case 0:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_SW_NW);
+            imageId = session.TrackColours.WithIndex(SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_SW_NW);
             PaintAddImageAsParent(session, imageId, offset, { { 0, 0, height }, { 32, 32, 0 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_SW_NW);
+            imageId = session.TrackColours.WithIndex(SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_SW_NW);
             PaintAddImageAsParent(session, imageId, offset, { { 28, 28, height + 2 }, { 3, 3, 3 } });
             break;
         case 1:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_NW_NE);
+            imageId = session.TrackColours.WithIndex(SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_NW_NE);
             PaintAddImageAsParent(session, imageId, offset, { { 0, 0, height }, { 32, 32, 0 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_NW_NE);
+            imageId = session.TrackColours.WithIndex(SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_NW_NE);
             PaintAddImageAsParent(session, imageId, offset, { { 28, 28, height + 2 }, { 3, 3, 3 } });
             break;
         case 2:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_NE_SE);
+            imageId = session.TrackColours.WithIndex(SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_NE_SE);
             PaintAddImageAsParent(session, imageId, offset, { { 0, 0, height }, { 32, 32, 0 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_NE_SE);
+            imageId = session.TrackColours.WithIndex(SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_NE_SE);
             PaintAddImageAsParent(session, imageId, offset, { { 28, 28, height + 2 }, { 3, 3, 3 } });
             break;
         case 3:
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_SE_SW);
+            imageId = session.TrackColours.WithIndex(SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_SE_SW);
             PaintAddImageAsParent(session, imageId, offset, { { 28, 28, height + 2 }, { 3, 3, 3 } });
 
-            imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_SE_SW);
+            imageId = session.TrackColours.WithIndex(SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_SE_SW);
             PaintAddImageAsParent(session, imageId, offset, { { 0, 0, height }, { 32, 32, 0 } });
             break;
     }

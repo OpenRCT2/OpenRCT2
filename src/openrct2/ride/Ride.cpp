@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -2181,7 +2181,7 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
 VehicleColour RideGetVehicleColour(const Ride& ride, int32_t vehicleIndex)
 {
     // Prevent indexing array out of bounds
-    vehicleIndex = std::min<int32_t>(vehicleIndex, OpenRCT2::Limits::MaxCarsPerTrain);
+    vehicleIndex = std::min<int32_t>(vehicleIndex, static_cast<int32_t>(std::size(ride.vehicle_colours)));
     return ride.vehicle_colours[vehicleIndex];
 }
 

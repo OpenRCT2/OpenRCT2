@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -210,14 +210,6 @@ enum
 
 enum
 {
-    SCHEME_TRACK = 0,
-    SCHEME_SUPPORTS = 1,
-    SCHEME_MISC = 2,
-    SCHEME_3 = 3,
-};
-
-enum
-{
     STATION_VARIANT_BASIC,
     STATION_VARIANT_1,
     STATION_VARIANT_TALL,
@@ -283,6 +275,9 @@ extern const uint8_t mapLeftEighthTurnToOrthogonal[5];
 
 extern const size_t MiniGolfPeepAnimationLengths[];
 
+ImageId GetStationColourScheme(PaintSession& session, const TrackElement& trackElement);
+ImageId GetShopSupportColourScheme(PaintSession& session, const TrackElement& trackElement);
+
 bool TrackPaintUtilHasFence(
     enum edge_t edge, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride, uint8_t rotation);
 void TrackPaintUtilPaintFloor(
@@ -292,10 +287,11 @@ void TrackPaintUtilPaintFences(
     PaintSession& session, uint8_t edges, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride,
     const ImageId colourFlags, uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation);
 bool TrackPaintUtilDrawStationCovers(
-    PaintSession& session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height);
+    PaintSession& session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height,
+    ImageId colour);
 bool TrackPaintUtilDrawStationCovers2(
     PaintSession& session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height,
-    uint8_t stationVariant);
+    uint8_t stationVariant, ImageId colour);
 void TrackPaintUtilDrawNarrowStationPlatform(
     PaintSession& session, const Ride& ride, Direction direction, int32_t height, int32_t zOffset,
     const TrackElement& trackElement);

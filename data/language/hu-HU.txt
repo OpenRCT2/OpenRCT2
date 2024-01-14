@@ -3675,6 +3675,8 @@ STR_6591    :Az alkalmazott jelenleg egy játékot javít, és nem lehet kirúgn
 STR_6592    :Az alkalmazott jelenleg egy játékot ellenőriz, és nem lehet kirúgni.
 STR_6593    :Park kerítések eltávolítása
 STR_6594    :Mezővizsgáló: Fal lejtésének változtatása
+STR_6595    :{WINDOW_COLOUR_2}Szerző: {BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}Szerzők: {BLACK}{STRING}
 
 #############
 # Scenarios #

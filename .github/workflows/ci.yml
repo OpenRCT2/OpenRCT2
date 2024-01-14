@@ -23,7 +23,7 @@ env:
   OPENRCT2_BUILD_SERVER: GitHub
   OPENRCT2_ORG_TOKEN: ${{ secrets.OPENRCT2_ORG_TOKEN }}
   BACKTRACE_IO_TOKEN: ${{ secrets.BACKTRACE_IO_TOKEN }}
-  OPENRCT2_VERSION: 0.4.6
+  OPENRCT2_VERSION: 0.4.7
 
 # https://docs.github.com/en/actions/using-jobs/using-concurrency#example-using-a-fallback-value
 concurrency:
@@ -58,6 +58,17 @@ jobs:
         uses: actions/checkout@v3
       - name: Run clang-format
         run: scripts/check-code-formatting
+  check-changelog-formatting:
+    name: Check changelog formatting
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run check-changelog-formatting
+        run: scripts/check-changelog-formatting
   windows:
     name: Windows
     runs-on: windows-latest

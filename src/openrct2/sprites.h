@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1511,7 +1511,10 @@ enum
     SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL = SPR_G2_ALPINE_LIFT_TRACK_FLAT_DIAGONAL + 4,
     SPR_G2_ALPINE_END = SPR_G2_ALPINE_LIFT_TRACK_GENTLE_DIAGONAL + 12,
 
-    SPR_G2_END = SPR_G2_ALPINE_END,
+    SPR_G2_ICON_MEDIUM_CURVE_LEFT = SPR_G2_ALPINE_END,
+    SPR_G2_ICON_MEDIUM_CURVE_RIGHT,
+
+    SPR_G2_END,
 
     SPR_CSG_BEGIN = SPR_G2_END,
     SPR_CSG_END = SPR_CSG_BEGIN + RCT1::Limits::Num_LL_CSG_Entries,

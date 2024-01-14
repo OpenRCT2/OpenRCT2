@@ -3696,6 +3696,8 @@ STR_6591    :O funcionário está atualmente consertando uma atração e não po
 STR_6592    :O funcionário está atualmente inspecionando uma atração e não pode ser demitido.
 STR_6593    :Remover cercas do parque
 STR_6594    :Inspetor de azulejo: Mudar inclinação da parede
+STR_6595    :{WINDOW_COLOUR_2}Autor: {BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}Autores: {BLACK}{STRING}
 
 #############
 # Scenarios #
@@ -4357,7 +4359,7 @@ STR_DTLS    :Você é um bem-sucedido magnata dos negócios em longas férias qu
 <South America - Inca Lost City>
 STR_SCNR    :América do Norte - Cidade Perdida Inca
 STR_PARK    :Fundadação da Cidade Perdida
-STR_DTLS    :Para dar um impulso adicional ao turismo local você deve construir um parque que está em sintonia com seus arredores, e tem restrições de altura.
+STR_DTLS    :Para dar um impulso adicional ao turismo local você deve construir um parque que está em sintonia com seus arredores.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :América do Sul - Planalto da Floresta Tropical

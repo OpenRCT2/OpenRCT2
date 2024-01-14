@@ -265,3 +265,7 @@ else ()
     # Dummy target to ease invocation
     add_custom_target(${PROJECT_NAME}-headers-check)
 endif ()
+
+if (UNIX)
+    add_definitions(-D_FILE_OFFSET_BITS=64)
+endif ()

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1275,8 +1275,8 @@ namespace RCT1
 
             const SpriteBounds* spriteBounds = &GetSpriteBounds(dst->SpriteType, dst->ActionSpriteType);
             dst->SpriteData.Width = spriteBounds->sprite_width;
-            dst->SpriteData.HeightMax = spriteBounds->sprite_height_negative;
-            dst->SpriteData.HeightMin = spriteBounds->sprite_height_positive;
+            dst->SpriteData.HeightMin = spriteBounds->sprite_height_negative;
+            dst->SpriteData.HeightMax = spriteBounds->sprite_height_positive;
 
             dst->MoveTo({ src->x, src->y, src->z });
 
@@ -2473,7 +2473,7 @@ namespace RCT1
         {
             const auto originalString = _s4.StringTable[stringId % 1024];
             auto originalStringView = std::string_view(
-                originalString, RCT2::GetRCT2StringBufferLen(originalString, USER_STRING_MAX_LENGTH));
+                originalString, RCT12::GetRCTStringBufferLen(originalString, USER_STRING_MAX_LENGTH));
             auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::EnglishUK);
             auto justText = RCT12RemoveFormattingUTF8(asUtf8);
             return justText.data();

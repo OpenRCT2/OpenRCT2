@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -74,7 +74,7 @@ static void SubmarineRidePaintTrackStation(
 
     if (direction & 1)
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
+        imageId = session.TrackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
         PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { { 6, 0, heightLower }, { 20, 32, 3 } });
 
         PaintUtilPushTunnelRight(session, height, TUNNEL_SQUARE_FLAT);
@@ -83,7 +83,7 @@ static void SubmarineRidePaintTrackStation(
     }
     else
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
+        imageId = session.TrackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { { 0, 6, heightLower }, { 32, 20, 3 } });
 
         PaintUtilPushTunnelLeft(session, height, TUNNEL_SQUARE_FLAT);
@@ -104,13 +104,13 @@ static void SubmarineRidePaintTrackFlat(
 
     if (direction & 1)
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
+        imageId = session.TrackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW);
         PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { { 6, 0, heightLower }, { 20, 32, 3 } });
         PaintUtilPushTunnelRight(session, heightLower, TUNNEL_0);
     }
     else
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
+        imageId = session.TrackColours.WithIndex(SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW);
         PaintAddImageAsParent(session, imageId, { 0, 0, heightLower }, { { 0, 6, heightLower }, { 32, 20, 3 } });
         PaintUtilPushTunnelLeft(session, heightLower, TUNNEL_0);
     }
@@ -119,7 +119,7 @@ static void SubmarineRidePaintTrackFlat(
     {
         MetalASupportsPaintSetup(
             session, (direction & 1) ? MetalSupportType::StickAlt : MetalSupportType::Stick, MetalSupportPlace::Centre, -1,
-            heightLower, session.TrackColours[SCHEME_SUPPORTS]);
+            heightLower, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(
@@ -132,7 +132,7 @@ static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
     const TrackElement& trackElement)
 {
     TrackPaintUtilLeftQuarterTurn3TilesPaint(
-        session, 3, height - 16, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
+        session, 3, height - 16, direction, trackSequence, session.TrackColours,
         trackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles);
     TrackPaintUtilLeftQuarterTurn3TilesTunnel(session, height - 16, TUNNEL_0, direction, trackSequence);
 
@@ -140,8 +140,7 @@ static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
     {
         case 0:
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Stick, MetalSupportPlace::Centre, -1, height - 16,
-                session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Stick, MetalSupportPlace::Centre, -1, height - 16, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B4, direction), 0xFFFF, 0);
             break;
@@ -151,8 +150,7 @@ static void SubmarineRidePaintTrackLeftQuarterTurn3Tiles(
             break;
         case 3:
             MetalASupportsPaintSetup(
-                session, MetalSupportType::Stick, MetalSupportPlace::Centre, -1, height - 16,
-                session.TrackColours[SCHEME_SUPPORTS]);
+                session, MetalSupportType::Stick, MetalSupportPlace::Centre, -1, height - 16, session.SupportColours);
             PaintUtilSetSegmentSupportHeight(
                 session, PaintUtilRotateSegments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0, direction), 0xFFFF, 0);
             break;
@@ -180,8 +178,7 @@ static void SubmarineRidePaintTrackLeftQuarterTurn1Tile(
     const TrackElement& trackElement)
 {
     TrackPaintUtilLeftQuarterTurn1TilePaint(
-        session, 1, height - 16, 0, direction, session.TrackColours[SCHEME_TRACK],
-        trackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile);
+        session, 1, height - 16, 0, direction, session.TrackColours, trackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile);
     TrackPaintUtilLeftQuarterTurn1TileTunnel(session, direction, height - 16, 0, TUNNEL_0, 0, TUNNEL_0);
 
     PaintUtilSetSegmentSupportHeight(

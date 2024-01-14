@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -54,11 +54,11 @@ static void PaintLiftBase(
 
     if (trackSequence == 0)
     {
-        PaintLiftCage(session, direction, session.TrackColours[SCHEME_TRACK], height, session.CurrentRotation);
+        PaintLiftCage(session, direction, session.TrackColours, height, session.CurrentRotation);
 
-        PaintLiftCage(session, -1, session.TrackColours[SCHEME_TRACK], height + 32, session.CurrentRotation);
+        PaintLiftCage(session, -1, session.TrackColours, height + 32, session.CurrentRotation);
 
-        PaintLiftCage(session, -1, session.TrackColours[SCHEME_TRACK], height + 64, session.CurrentRotation);
+        PaintLiftCage(session, -1, session.TrackColours, height + 64, session.CurrentRotation);
 
         PaintUtilSetVerticalTunnel(session, height + 96);
         PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -70,11 +70,11 @@ static void PaintLiftBase(
 
     int32_t edges = edges_3x3[trackSequence];
 
-    auto imageId = session.TrackColours[SCHEME_SUPPORTS].WithIndex(SPR_FLOOR_METAL_B);
+    auto imageId = session.SupportColours.WithIndex(SPR_FLOOR_METAL_B);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 0, 0, height }, { 32, 32, 1 } });
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB,
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, fenceSpritesMetalB,
         session.CurrentRotation);
 
     int32_t blockedSegments = 0;
@@ -120,7 +120,7 @@ static void PaintLiftTowerSection(
         return;
     }
 
-    PaintLiftCage(session, -1, session.TrackColours[SCHEME_TRACK], height, session.CurrentRotation);
+    PaintLiftCage(session, -1, session.TrackColours, height, session.CurrentRotation);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -79,6 +79,7 @@ enum
     MAP_SELECT_TYPE_CORNER_3,
     MAP_SELECT_TYPE_FULL,
     MAP_SELECT_TYPE_FULL_WATER,
+    MAP_SELECT_TYPE_FULL_LAND_RIGHTS,
     MAP_SELECT_TYPE_QUARTER_0,
     MAP_SELECT_TYPE_QUARTER_1,
     MAP_SELECT_TYPE_QUARTER_2,
@@ -191,6 +192,7 @@ void MapInvalidateMapSelectionTiles();
 void MapInvalidateSelectionRect();
 bool MapCheckCapacityAndReorganise(const CoordsXY& loc, size_t numElements = 1);
 int16_t TileElementHeight(const CoordsXY& loc);
+int16_t TileElementHeight(const CoordsXYZ& loc, uint8_t slope);
 int16_t TileElementWaterHeight(const CoordsXY& loc);
 void TileElementRemove(TileElement* tileElement);
 TileElement* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementType type);

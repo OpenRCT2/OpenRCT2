@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,11 +9,10 @@
 
 #pragma once
 
+#include "../Limits.h"
 #include "../actions/GameActionResult.h"
 #include "../common.h"
 #include "../object/Object.h"
-#include "../rct12/RCT12.h"
-#include "../rct2/RCT2.h"
 #include "../world/Map.h"
 #include "VehicleColour.h"
 
@@ -41,11 +40,8 @@ struct TrackDesignState
 /* Track Entrance entry */
 struct TrackDesignEntranceElement
 {
-    int8_t z;
-    uint8_t direction;
-    int16_t x;
-    int16_t y;
-    bool isExit;
+    TileCoordsXYZD Location{};
+    bool IsExit{};
 };
 
 struct TrackDesignSceneryElement
@@ -129,8 +125,8 @@ struct TrackDesign
     RideMode ride_mode;
     uint8_t track_flags;
     uint8_t colour_scheme;
-    std::array<VehicleColour, RCT2::Limits::MaxTrainsPerRide> vehicle_colours;
-    uint8_t entrance_style;
+    std::array<VehicleColour, OpenRCT2::Limits::MaxVehicleColours> vehicle_colours;
+    u8string StationObjectIdentifier{};
     uint8_t total_air_time;
     uint8_t depart_flags;
     uint8_t number_of_trains;
@@ -152,9 +148,9 @@ struct TrackDesign
     uint8_t intensity;
     uint8_t nausea;
     money64 upkeep_cost;
-    uint8_t track_spine_colour[RCT12::Limits::NumColourSchemes];
-    uint8_t track_rail_colour[RCT12::Limits::NumColourSchemes];
-    uint8_t track_support_colour[RCT12::Limits::NumColourSchemes];
+    uint8_t track_spine_colour[OpenRCT2::Limits::NumColourSchemes];
+    uint8_t track_rail_colour[OpenRCT2::Limits::NumColourSchemes];
+    uint8_t track_support_colour[OpenRCT2::Limits::NumColourSchemes];
     uint32_t flags2;
     ObjectEntryDescriptor vehicle_object;
     uint8_t space_required_x;
@@ -181,25 +177,6 @@ private:
     CoordsXYE MazeGetFirstElement(const Ride& ride);
 };
 
-// Only written to in RCT2, not used in OpenRCT2. All of these are elements that had to be invented in RCT1.
-enum : uint32_t
-{
-    TRACK_FLAGS_CONTAINS_VERTICAL_LOOP = (1 << 7),
-    TRACK_FLAGS_CONTAINS_INLINE_TWIST = (1 << 17),
-    TRACK_FLAGS_CONTAINS_HALF_LOOP = (1 << 18),
-    TRACK_FLAGS_CONTAINS_CORKSCREW = (1 << 19),
-    TRACK_FLAGS_CONTAINS_WATER_SPLASH = (1 << 27),
-    TRACK_FLAGS_CONTAINS_BARREL_ROLL = (1 << 29),
-    TRACK_FLAGS_CONTAINS_POWERED_LIFT = (1 << 30),
-    TRACK_FLAGS_CONTAINS_LARGE_HALF_LOOP = (1u << 31),
-};
-
-enum : uint32_t
-{
-    TRACK_FLAGS2_CONTAINS_LOG_FLUME_REVERSER = (1 << 1),
-    TRACK_FLAGS2_SIX_FLAGS_RIDE_DEPRECATED = (1u << 31) // Not used anymore.
-};
-
 enum
 {
     TDPF_PLACE_SCENERY = 1 << 0,
@@ -224,13 +201,6 @@ enum
 };
 
 static constexpr uint8_t PTD_OPERATION_FLAG_IS_REPLAY = (1 << 7);
-
-enum
-{
-    MAZE_ELEMENT_TYPE_MAZE_TRACK = 0,
-    MAZE_ELEMENT_TYPE_ENTRANCE = (1 << 3),
-    MAZE_ELEMENT_TYPE_EXIT = (1 << 7)
-};
 
 extern bool gTrackDesignSceneryToggle;
 

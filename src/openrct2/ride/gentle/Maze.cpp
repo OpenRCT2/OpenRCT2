@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -61,10 +61,10 @@ static void MazePaintSetup(
 
     uint32_t rotation = session.CurrentRotation;
     // draw ground
-    auto imageId = session.TrackColours[SCHEME_MISC].WithIndex(SPR_TERRAIN_DIRT);
+    auto imageId = GetStationColourScheme(session, trackElement).WithIndex(SPR_TERRAIN_DIRT);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 0 });
 
-    WoodenASupportsPaintSetup(session, (rotation & 1) ? 0 : 1, 0, height, session.TrackColours[SCHEME_3]);
+    WoodenASupportsPaintSetup(session, (rotation & 1) ? 0 : 1, 0, height, GetShopSupportColourScheme(session, trackElement));
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
 
@@ -85,7 +85,7 @@ static void MazePaintSetup(
             break;
     }
 
-    auto baseImage = session.TrackColours[SCHEME_MISC].WithIndex(baseImageId);
+    auto baseImage = GetStationColourScheme(session, trackElement).WithIndex(baseImageId);
 
     imageId = baseImage.WithIndexOffset(SprMazeOffsetWallCentre);
     if (mazeEntry & MAZE_ENTRY_FLAG_3)

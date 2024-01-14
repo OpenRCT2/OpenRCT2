@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,6 +34,7 @@
 #include "../drawing/Drawing.h"
 #include "../drawing/Font.h"
 #include "../drawing/Image.h"
+#include "../entity/Balloon.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
@@ -1914,6 +1915,23 @@ static int32_t ConsoleCommandProfilerStop(
     return 0;
 }
 
+static int32_t ConsoleSpawnBalloon(InteractiveConsole& console, const arguments_t& argv)
+{
+    if (argv.size() < 3)
+    {
+        console.WriteLineError("Need arguments: <x> <y> <z> <colour>");
+        return 1;
+    }
+    int32_t x = COORDS_XY_STEP * atof(argv[0].c_str());
+    int32_t y = COORDS_XY_STEP * atof(argv[1].c_str());
+    int32_t z = COORDS_Z_STEP * atof(argv[2].c_str());
+    int32_t col = 28;
+    if (argv.size() > 3)
+        col = atoi(argv[3].c_str());
+    Balloon::Create({ x, y, z }, col, false);
+    return 0;
+}
+
 using console_command_func = int32_t (*)(InteractiveConsole& console, const arguments_t& argv);
 struct ConsoleCommand
 {
@@ -2006,6 +2024,7 @@ static constexpr ConsoleCommand console_command_table[] = {
     { "say", ConsoleCommandSay, "Say to other players.", "say <message>" },
     { "set", ConsoleCommandSet, "Sets the variable to the specified value.", "set <variable> <value>" },
     { "show_limits", ConsoleCommandShowLimits, "Shows the map data counts and limits.", "show_limits" },
+    { "spawn_balloon", ConsoleSpawnBalloon, "Spawns a balloon.", "spawn_balloon <x> <y> <z> <colour>" },
     { "staff", ConsoleCommandStaff, "Staff management.", "staff <subcommand>" },
     { "terminate", ConsoleCommandTerminate, "Calls std::terminate(), for testing purposes only.", "terminate" },
     { "variables", ConsoleCommandVariables, "Lists all the variables that can be used with get and sometimes set.",

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -769,7 +769,7 @@ std::string_view GetStationIdentifierFromStyle(uint8_t style)
     {
         return _stationStyles[style];
     }
-    return {};
+    return _stationStyles[RCT12_STATION_STYLE_INVISIBLE];
 }
 
 uint8_t GetStationStyleFromIdentifier(u8string_view identifier)
@@ -924,3 +924,55 @@ uint8_t ConvertToTD46Flags(const TrackDesignTrackElement& source)
 
     return trackFlags;
 }
+
+void ImportMazeElement(TrackDesign& td, const TD46MazeElement& td46MazeElement)
+{
+    if (td46MazeElement.IsEntrance() || td46MazeElement.IsExit())
+    {
+        TrackDesignEntranceElement element{};
+        element.Location = TileCoordsXYZD(td46MazeElement.x, td46MazeElement.y, 0, td46MazeElement.Direction);
+        element.IsExit = td46MazeElement.IsExit();
+        td.entrance_elements.push_back(element);
+    }
+    else
+    {
+        TrackDesignMazeElement mazeElement{};
+        mazeElement.x = td46MazeElement.x;
+        mazeElement.y = td46MazeElement.y;
+        mazeElement.direction = td46MazeElement.Direction;
+        mazeElement.type = td46MazeElement.Type;
+        td.maze_elements.push_back(mazeElement);
+    }
+}
+
+namespace RCT12
+{
+    size_t GetRCTStringBufferLen(const char* buffer, size_t maxBufferLen)
+    {
+        constexpr char MULTIBYTE = static_cast<char>(255);
+        size_t len = 0;
+        for (size_t i = 0; i < maxBufferLen; i++)
+        {
+            auto ch = buffer[i];
+            if (ch == MULTIBYTE)
+            {
+                i += 2;
+
+                // Check if reading two more bytes exceeds max buffer len
+                if (i < maxBufferLen)
+                {
+                    len += 3;
+                }
+            }
+            else if (ch == '\0')
+            {
+                break;
+            }
+            else
+            {
+                len++;
+            }
+        }
+        return len;
+    }
+} // namespace RCT12

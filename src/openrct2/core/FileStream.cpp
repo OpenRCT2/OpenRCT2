@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,11 +19,6 @@
 #    include <sys/stat.h>
 #else
 #    include <io.h>
-#endif
-
-#if defined(__linux__) && !defined(__ANDROID__)
-#    define ftello ftello64
-#    define fseeko fseeko64
 #endif
 
 #ifdef _MSC_VER
