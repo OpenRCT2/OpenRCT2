@@ -102,7 +102,7 @@ int32_t ScTrackSegment::beginSlope_get() const
 int32_t ScTrackSegment::beginBank_get() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
-    return ted.Definition.bank_start;
+    return EnumValue(ted.Definition.bank_start);
 }
 
 int32_t ScTrackSegment::endX_get() const
@@ -138,7 +138,7 @@ int32_t ScTrackSegment::endSlope_get() const
 int32_t ScTrackSegment::endBank_get() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
-    return ted.Definition.bank_end;
+    return EnumValue(ted.Definition.bank_end);
 }
 
 int32_t ScTrackSegment::length_get() const

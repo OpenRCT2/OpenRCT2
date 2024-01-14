@@ -53,17 +53,17 @@ PitchAndRoll TrackPitchAndRollEnd(track_type_t trackType)
  */
 int32_t TrackIsConnectedByShape(TileElement* a, TileElement* b)
 {
-    int32_t trackType, aBank, aAngle, bBank, bAngle;
+    int32_t trackType, aAngle, bAngle;
 
     trackType = a->AsTrack()->GetTrackType();
     const auto* ted = &GetTrackElementDescriptor(trackType);
-    aBank = ted->Definition.bank_end;
+    auto aBank = ted->Definition.bank_end;
     aAngle = ted->Definition.vangle_end;
     aBank = TrackGetActualBank(a, aBank);
 
     trackType = b->AsTrack()->GetTrackType();
     ted = &GetTrackElementDescriptor(trackType);
-    bBank = ted->Definition.bank_start;
+    auto bBank = ted->Definition.bank_start;
     bAngle = ted->Definition.vangle_start;
     bBank = TrackGetActualBank(b, bBank);
 
@@ -564,7 +564,7 @@ bool TrackElement::IsBlockStart() const
     return false;
 }
 
-roll_type_t TrackGetActualBank(TileElement* tileElement, roll_type_t bank)
+TrackBank TrackGetActualBank(TileElement* tileElement, TrackBank bank)
 {
     auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
     if (ride != nullptr)
@@ -575,26 +575,26 @@ roll_type_t TrackGetActualBank(TileElement* tileElement, roll_type_t bank)
     return bank;
 }
 
-roll_type_t TrackGetActualBank2(int32_t rideType, bool isInverted, roll_type_t bank)
+TrackBank TrackGetActualBank2(int32_t rideType, bool isInverted, TrackBank bank)
 {
     if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
     {
         if (isInverted)
         {
-            if (bank == TRACK_BANK_NONE)
+            if (bank == TrackBank::None)
             {
-                bank = TRACK_BANK_UPSIDE_DOWN;
+                bank = TrackBank::UpsideDown;
             }
-            else if (bank == TRACK_BANK_UPSIDE_DOWN)
+            else if (bank == TrackBank::UpsideDown)
             {
-                bank = TRACK_BANK_NONE;
+                bank = TrackBank::None;
             }
         }
     }
     return bank;
 }
 
-roll_type_t TrackGetActualBank3(bool useInvertedSprites, TileElement* tileElement)
+TrackBank TrackGetActualBank3(bool useInvertedSprites, TileElement* tileElement)
 {
     auto trackType = tileElement->AsTrack()->GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);

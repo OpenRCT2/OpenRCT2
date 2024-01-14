@@ -23,25 +23,32 @@ constexpr int32_t kBlockBrakeBaseSpeed = 0x20364;
 constexpr int32_t kBlockBrakeSpeedOffset = kBlockBrakeBaseSpeed - (kRCT2DefaultBlockBrakeSpeed << 16);
 
 using track_type_t = uint16_t;
-using roll_type_t = uint8_t;
 using pitch_type_t = uint8_t;
 
 struct ResultWithMessage;
+
+enum class TrackBank : uint8_t
+{
+    None = 0,
+    Left = 2,
+    Right = 4,
+    UpsideDown = 15,
+};
 
 struct TrackDefinition
 {
     track_type_t type;
     pitch_type_t vangle_end;
     pitch_type_t vangle_start;
-    roll_type_t bank_end;
-    roll_type_t bank_start;
+    TrackBank bank_end;
+    TrackBank bank_start;
     int8_t preview_z_offset;
 };
 
 struct PitchAndRoll
 {
     pitch_type_t Pitch;
-    roll_type_t Roll;
+    TrackBank Roll;
 };
 constexpr bool operator==(const PitchAndRoll& vb1, const PitchAndRoll& vb2)
 {
@@ -231,14 +238,6 @@ enum
 
     TRACK_VANGLE_TOWER = 10,
     TRACK_VANGLE_REVERSE_FREEFALL = 10
-};
-
-enum
-{
-    TRACK_BANK_NONE = 0,
-    TRACK_BANK_LEFT = 2,
-    TRACK_BANK_RIGHT = 4,
-    TRACK_BANK_UPSIDE_DOWN = 15,
 };
 
 enum
@@ -688,9 +687,9 @@ bool TrackTypeIsBooster(track_type_t trackType);
 std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
     const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);
 
-roll_type_t TrackGetActualBank(TileElement* tileElement, roll_type_t bank);
-roll_type_t TrackGetActualBank2(int32_t rideType, bool isInverted, roll_type_t bank);
-roll_type_t TrackGetActualBank3(bool useInvertedSprites, TileElement* tileElement);
+TrackBank TrackGetActualBank(TileElement* tileElement, TrackBank bank);
+TrackBank TrackGetActualBank2(int32_t rideType, bool isInverted, TrackBank bank);
+TrackBank TrackGetActualBank3(bool useInvertedSprites, TileElement* tileElement);
 
 ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign);
 ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIndex, int32_t flags);
