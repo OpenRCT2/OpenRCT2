@@ -6,6 +6,7 @@
 - Fix: [#21158] [Plugin] Potential crash using setInterval/setTimeout within the callback.
 - Fix: [#21171] [Plugin] Crash creating entities with no more entity slots available.
 - Fix: [#21178] Inca Lost City’s scenario description incorrectly states there are height restrictions.
+- Fix: [#21198] [Plugin] Setting brake or booster speeds on a tile element doesn’t work.
 
 0.4.7 (2023-12-31)
 ------------------------------------------------------------------------
