@@ -107,6 +107,15 @@ namespace RCT2
                 tempStream.WriteValue<uint32_t>(mazeElement.all);
             }
 
+            for (const auto& entranceElement : _trackDesign->entrance_elements)
+            {
+                tempStream.WriteValue<int8_t>(entranceElement.Location.x);
+                tempStream.WriteValue<int8_t>(entranceElement.Location.y);
+                tempStream.WriteValue<int8_t>(entranceElement.Location.direction);
+                tempStream.WriteValue<int8_t>(
+                    EnumValue(entranceElement.IsExit ? TD46MazeElementType::Exit : TD46MazeElementType::Entrance));
+            }
+
             tempStream.WriteValue<uint32_t>(0);
         }
         else

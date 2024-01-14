@@ -79,6 +79,7 @@ enum
     MAP_SELECT_TYPE_CORNER_3,
     MAP_SELECT_TYPE_FULL,
     MAP_SELECT_TYPE_FULL_WATER,
+    MAP_SELECT_TYPE_FULL_LAND_RIGHTS,
     MAP_SELECT_TYPE_QUARTER_0,
     MAP_SELECT_TYPE_QUARTER_1,
     MAP_SELECT_TYPE_QUARTER_2,
@@ -191,6 +192,7 @@ void MapInvalidateMapSelectionTiles();
 void MapInvalidateSelectionRect();
 bool MapCheckCapacityAndReorganise(const CoordsXY& loc, size_t numElements = 1);
 int16_t TileElementHeight(const CoordsXY& loc);
+int16_t TileElementHeight(const CoordsXYZ& loc, uint8_t slope);
 int16_t TileElementWaterHeight(const CoordsXY& loc);
 void TileElementRemove(TileElement* tileElement);
 TileElement* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementType type);

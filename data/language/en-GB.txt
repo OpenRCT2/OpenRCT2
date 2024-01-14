@@ -4351,7 +4351,7 @@ STR_DTLS    :You are a successful business tycoon on long sabbatical who desires
 <South America - Inca Lost City>
 STR_SCNR    :South America - Inca Lost City
 STR_PARK    :Lost City Founder
-STR_DTLS    :To further boost local tourism you must construct a park that is in tune with its surroundings, and has height restrictions.
+STR_DTLS    :To further boost local tourism you must construct a park that is in tune with its surroundings.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :South America - Rain Forest Plateau

@@ -240,9 +240,9 @@ public:
         MapInvalidateSelectionRect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-        auto mapTile = ScreenGetMapXY(screenCoords, nullptr);
-
-        if (!mapTile.has_value())
+        auto info = GetMapCoordinatesFromPos(
+            screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
+        if (info.SpriteType == ViewportInteractionItem::None)
         {
             if (_landRightsCost != MONEY64_UNDEFINED)
             {
@@ -251,6 +251,7 @@ public:
             }
             return;
         }
+        auto mapTile = info.Loc;
 
         uint8_t state_changed = 0;
 
@@ -260,9 +261,9 @@ public:
             state_changed++;
         }
 
-        if (gMapSelectType != MAP_SELECT_TYPE_FULL)
+        if (gMapSelectType != MAP_SELECT_TYPE_FULL_LAND_RIGHTS)
         {
-            gMapSelectType = MAP_SELECT_TYPE_FULL;
+            gMapSelectType = MAP_SELECT_TYPE_FULL_LAND_RIGHTS;
             state_changed++;
         }
 
@@ -273,34 +274,34 @@ public:
         int16_t tool_length = (tool_size - 1) * 32;
 
         // Move to tool bottom left
-        mapTile->x -= (tool_size - 1) * 16;
-        mapTile->y -= (tool_size - 1) * 16;
-        mapTile = mapTile->ToTileStart();
+        mapTile.x -= (tool_size - 1) * 16;
+        mapTile.y -= (tool_size - 1) * 16;
+        mapTile = mapTile.ToTileStart();
 
-        if (gMapSelectPositionA.x != mapTile->x)
+        if (gMapSelectPositionA.x != mapTile.x)
         {
-            gMapSelectPositionA.x = mapTile->x;
+            gMapSelectPositionA.x = mapTile.x;
             state_changed++;
         }
 
-        if (gMapSelectPositionA.y != mapTile->y)
+        if (gMapSelectPositionA.y != mapTile.y)
         {
-            gMapSelectPositionA.y = mapTile->y;
+            gMapSelectPositionA.y = mapTile.y;
             state_changed++;
         }
 
-        mapTile->x += tool_length;
-        mapTile->y += tool_length;
+        mapTile.x += tool_length;
+        mapTile.y += tool_length;
 
-        if (gMapSelectPositionB.x != mapTile->x)
+        if (gMapSelectPositionB.x != mapTile.x)
         {
-            gMapSelectPositionB.x = mapTile->x;
+            gMapSelectPositionB.x = mapTile.x;
             state_changed++;
         }
 
-        if (gMapSelectPositionB.y != mapTile->y)
+        if (gMapSelectPositionB.y != mapTile.y)
         {
-            gMapSelectPositionB.y = mapTile->y;
+            gMapSelectPositionB.y = mapTile.y;
             state_changed++;
         }
 

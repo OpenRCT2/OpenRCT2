@@ -250,12 +250,7 @@ namespace RCT1
                     _stream.Read(&t4MazeElement, sizeof(TD46MazeElement));
                     if (t4MazeElement.All != 0)
                     {
-                        TrackDesignMazeElement mazeElement{};
-                        mazeElement.x = t4MazeElement.x;
-                        mazeElement.y = t4MazeElement.y;
-                        mazeElement.direction = t4MazeElement.Direction;
-                        mazeElement.type = t4MazeElement.Type;
-                        td->maze_elements.push_back(mazeElement);
+                        ImportMazeElement(*td, t4MazeElement);
                     }
                 }
             }
