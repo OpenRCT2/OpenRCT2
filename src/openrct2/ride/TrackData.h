@@ -27,10 +27,10 @@ struct TrackDescriptor
 {
     bool starts_diagonal;
     TrackPitch slope_start;
-    TrackBank bank_start;
+    TrackBank RollStart;
     TrackCurve track_curve;
     TrackPitch slope_end;
-    TrackBank bank_end;
+    TrackBank RollEnd;
     track_type_t track_element;
 };
 

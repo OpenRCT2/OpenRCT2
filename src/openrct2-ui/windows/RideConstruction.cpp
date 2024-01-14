@@ -2562,7 +2562,7 @@ private:
         mapCoords.y = 4112 + (rotatedMapCoords.y / 2);
         mapCoords.z = 1024 + mapCoords.z;
 
-        int16_t previewZOffset = ted.Definition.preview_z_offset;
+        auto previewZOffset = ted.Definition.PreviewZOffset;
         mapCoords.z -= previewZOffset;
 
         const ScreenCoordsXY rotatedScreenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), mapCoords);

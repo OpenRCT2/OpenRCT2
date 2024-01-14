@@ -167,9 +167,9 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
                 continue;
             if (trackDescriptor->slope_end != endSlope)
                 continue;
-            if (trackDescriptor->bank_start != startBank)
+            if (trackDescriptor->RollStart != startBank)
                 continue;
-            if (trackDescriptor->bank_end != endBank)
+            if (trackDescriptor->RollEnd != endBank)
                 continue;
 
             return std::make_tuple(true, trackDescriptor->track_element);

@@ -50,12 +50,12 @@ enum class TrackPitch : uint8_t
 
 struct TrackDefinition
 {
-    track_type_t type;
-    TrackPitch vangle_end;
-    TrackPitch vangle_start;
-    TrackBank bank_end;
-    TrackBank bank_start;
-    int8_t preview_z_offset;
+    track_type_t Type;
+    TrackPitch PitchEnd;
+    TrackPitch PitchStart;
+    TrackBank RollEnd;
+    TrackBank RollStart;
+    int8_t PreviewZOffset;
 };
 
 struct PitchAndRoll

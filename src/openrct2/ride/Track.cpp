@@ -39,13 +39,13 @@ using namespace OpenRCT2::TrackMetaData;
 PitchAndRoll TrackPitchAndRollStart(track_type_t trackType)
 {
     const auto& ted = GetTrackElementDescriptor(trackType);
-    return { ted.Definition.vangle_start, ted.Definition.bank_start };
+    return { ted.Definition.PitchStart, ted.Definition.RollStart };
 }
 
 PitchAndRoll TrackPitchAndRollEnd(track_type_t trackType)
 {
     const auto& ted = GetTrackElementDescriptor(trackType);
-    return { ted.Definition.vangle_end, ted.Definition.bank_end };
+    return { ted.Definition.PitchEnd, ted.Definition.RollEnd };
 }
 
 /**
@@ -55,14 +55,14 @@ int32_t TrackIsConnectedByShape(TileElement* a, TileElement* b)
 {
     auto trackType = a->AsTrack()->GetTrackType();
     const auto* ted = &GetTrackElementDescriptor(trackType);
-    auto aBank = ted->Definition.bank_end;
-    auto aAngle = ted->Definition.vangle_end;
+    auto aBank = ted->Definition.RollEnd;
+    auto aAngle = ted->Definition.PitchEnd;
     aBank = TrackGetActualBank(a, aBank);
 
     trackType = b->AsTrack()->GetTrackType();
     ted = &GetTrackElementDescriptor(trackType);
-    auto bBank = ted->Definition.bank_start;
-    auto bAngle = ted->Definition.vangle_start;
+    auto bBank = ted->Definition.RollStart;
+    auto bAngle = ted->Definition.PitchStart;
     bBank = TrackGetActualBank(b, bBank);
 
     return aBank == bBank && aAngle == bAngle;
@@ -596,7 +596,7 @@ TrackBank TrackGetActualBank3(bool useInvertedSprites, TileElement* tileElement)
 {
     auto trackType = tileElement->AsTrack()->GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    auto bankStart = ted.Definition.bank_start;
+    auto bankStart = ted.Definition.RollStart;
     auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
     if (ride == nullptr)
         return bankStart;

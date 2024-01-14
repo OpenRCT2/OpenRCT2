@@ -96,13 +96,13 @@ int32_t ScTrackSegment::beginDirection_get() const
 int32_t ScTrackSegment::beginSlope_get() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
-    return EnumValue(ted.Definition.vangle_start);
+    return EnumValue(ted.Definition.PitchStart);
 }
 
 int32_t ScTrackSegment::beginBank_get() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
-    return EnumValue(ted.Definition.bank_start);
+    return EnumValue(ted.Definition.RollStart);
 }
 
 int32_t ScTrackSegment::endX_get() const
@@ -132,13 +132,13 @@ int32_t ScTrackSegment::endDirection_get() const
 int32_t ScTrackSegment::endSlope_get() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
-    return EnumValue(ted.Definition.vangle_end);
+    return EnumValue(ted.Definition.PitchEnd);
 }
 
 int32_t ScTrackSegment::endBank_get() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
-    return EnumValue(ted.Definition.bank_end);
+    return EnumValue(ted.Definition.RollEnd);
 }
 
 int32_t ScTrackSegment::length_get() const
@@ -269,7 +269,7 @@ int32_t ScTrackSegment::getTrackGroup() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
 
-    return ted.Definition.type;
+    return ted.Definition.Type;
 }
 
 std::string ScTrackSegment::getTrackCurvature() const

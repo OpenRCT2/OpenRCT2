@@ -675,8 +675,8 @@ void RideConstructionSetDefaultNextPiece()
 
             ted = &GetTrackElementDescriptor(trackType);
             curve = ted->CurveChain.next;
-            auto bank = ted->Definition.bank_end;
-            auto slope = ted->Definition.vangle_end;
+            auto bank = ted->Definition.RollEnd;
+            auto slope = ted->Definition.PitchEnd;
 
             // Set track curve
             _currentTrackCurve = curve;
@@ -723,8 +723,8 @@ void RideConstructionSetDefaultNextPiece()
 
             ted = &GetTrackElementDescriptor(trackType);
             curve = ted->CurveChain.previous;
-            auto bank = ted->Definition.bank_start;
-            auto slope = ted->Definition.vangle_start;
+            auto bank = ted->Definition.RollStart;
+            auto slope = ted->Definition.PitchStart;
 
             // Set track curve
             _currentTrackCurve = curve;
