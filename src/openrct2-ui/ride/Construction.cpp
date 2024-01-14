@@ -42,7 +42,7 @@ void RideConstructNew(RideSelection listItem)
 }
 
 SpecialElementsDropdownState BuildSpecialElementsList(
-    const Ride& currentRide, uint8_t buildDirection, TrackPitch buildSlope, TrackBank buildBank, RideConstructionState state)
+    const Ride& currentRide, uint8_t buildDirection, TrackPitch buildSlope, TrackRoll buildBank, RideConstructionState state)
 {
     auto buildDirectionIsDiagonal = TrackPieceDirectionIsDiagonal(buildDirection);
     SpecialElementsDropdownState list;

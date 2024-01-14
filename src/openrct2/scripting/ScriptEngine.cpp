@@ -526,10 +526,10 @@ void ScriptEngine::RegisterConstants()
         .Constant("Up90", EnumValue(TrackPitch::Up90))
         .Constant("Down90", EnumValue(TrackPitch::Down90));
     builder.Namespace("TrackBanking")
-        .Constant("None", EnumValue(TrackBank::None))
-        .Constant("BankLeft", EnumValue(TrackBank::Left))
-        .Constant("BankRight", EnumValue(TrackBank::Right))
-        .Constant("UpsideDown", EnumValue(TrackBank::UpsideDown));
+        .Constant("None", EnumValue(TrackRoll::None))
+        .Constant("BankLeft", EnumValue(TrackRoll::Left))
+        .Constant("BankRight", EnumValue(TrackRoll::Right))
+        .Constant("UpsideDown", EnumValue(TrackRoll::UpsideDown));
 }
 
 void ScriptEngine::RefreshPlugins()

@@ -562,7 +562,7 @@ bool TrackElement::IsBlockStart() const
     return false;
 }
 
-TrackBank TrackGetActualBank(TileElement* tileElement, TrackBank bank)
+TrackRoll TrackGetActualBank(TileElement* tileElement, TrackRoll bank)
 {
     auto ride = GetRide(tileElement->AsTrack()->GetRideIndex());
     if (ride != nullptr)
@@ -573,26 +573,26 @@ TrackBank TrackGetActualBank(TileElement* tileElement, TrackBank bank)
     return bank;
 }
 
-TrackBank TrackGetActualBank2(int32_t rideType, bool isInverted, TrackBank bank)
+TrackRoll TrackGetActualBank2(int32_t rideType, bool isInverted, TrackRoll bank)
 {
     if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
     {
         if (isInverted)
         {
-            if (bank == TrackBank::None)
+            if (bank == TrackRoll::None)
             {
-                bank = TrackBank::UpsideDown;
+                bank = TrackRoll::UpsideDown;
             }
-            else if (bank == TrackBank::UpsideDown)
+            else if (bank == TrackRoll::UpsideDown)
             {
-                bank = TrackBank::None;
+                bank = TrackRoll::None;
             }
         }
     }
     return bank;
 }
 
-TrackBank TrackGetActualBank3(bool useInvertedSprites, TileElement* tileElement)
+TrackRoll TrackGetActualBank3(bool useInvertedSprites, TileElement* tileElement)
 {
     auto trackType = tileElement->AsTrack()->GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);

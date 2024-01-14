@@ -65,12 +65,12 @@ track_type_t _currentTrackPieceType;
 uint8_t _currentTrackSelectionFlags;
 uint32_t _rideConstructionNextArrowPulse = 0;
 TrackPitch _currentTrackSlopeEnd;
-TrackBank _currentTrackBankEnd;
+TrackRoll _currentTrackRollEnd;
 uint8_t _currentTrackLiftHill;
 uint8_t _currentTrackAlternative;
 track_type_t _selectedTrackType;
 
-TrackBank _previousTrackBankEnd;
+TrackRoll _previousTrackRollEnd;
 TrackPitch _previousTrackSlopeEnd;
 
 CoordsXYZ _previousTrackPiece;
@@ -607,7 +607,7 @@ static void ride_construction_reset_current_piece()
     {
         _currentTrackCurve = rtd.StartTrackPiece | RideConstructionSpecialPieceSelected;
         _currentTrackSlopeEnd = TrackPitch::None;
-        _currentTrackBankEnd = TrackBank::None;
+        _currentTrackRollEnd = TrackRoll::None;
         _currentTrackLiftHill = 0;
         _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
         if (rtd.HasFlag(RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED))
@@ -615,7 +615,7 @@ static void ride_construction_reset_current_piece()
             _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
         }
         _previousTrackSlopeEnd = TrackPitch::None;
-        _previousTrackBankEnd = TrackBank::None;
+        _previousTrackRollEnd = TrackRoll::None;
     }
     else
     {
@@ -684,14 +684,14 @@ void RideConstructionSetDefaultNextPiece()
             // Set track banking
             if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
             {
-                if (bank == TrackBank::UpsideDown)
+                if (bank == TrackRoll::UpsideDown)
                 {
-                    bank = TrackBank::None;
+                    bank = TrackRoll::None;
                     _currentTrackAlternative ^= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
                 }
             }
-            _currentTrackBankEnd = bank;
-            _previousTrackBankEnd = bank;
+            _currentTrackRollEnd = bank;
+            _previousTrackRollEnd = bank;
 
             // Set track slope and lift hill
             _currentTrackSlopeEnd = slope;
@@ -732,14 +732,14 @@ void RideConstructionSetDefaultNextPiece()
             // Set track banking
             if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
             {
-                if (bank == TrackBank::UpsideDown)
+                if (bank == TrackRoll::UpsideDown)
                 {
-                    bank = TrackBank::None;
+                    bank = TrackRoll::None;
                     _currentTrackAlternative ^= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
                 }
             }
-            _currentTrackBankEnd = bank;
-            _previousTrackBankEnd = bank;
+            _currentTrackRollEnd = bank;
+            _previousTrackRollEnd = bank;
 
             // Set track slope and lift hill
             _currentTrackSlopeEnd = slope;
@@ -1124,14 +1124,14 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
 
     _currentTrackCurve = ride.GetRideTypeDescriptor().StartTrackPiece | RideConstructionSpecialPieceSelected;
     _currentTrackSlopeEnd = TrackPitch::None;
-    _currentTrackBankEnd = TrackBank::None;
+    _currentTrackRollEnd = TrackRoll::None;
     _currentTrackLiftHill = 0;
     _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
 
     if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED))
         _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
 
-    _previousTrackBankEnd = TrackBank::None;
+    _previousTrackRollEnd = TrackRoll::None;
     _previousTrackSlopeEnd = TrackPitch::None;
 
     _currentTrackPieceDirection = 0;

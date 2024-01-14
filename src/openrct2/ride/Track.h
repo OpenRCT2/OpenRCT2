@@ -26,7 +26,7 @@ using track_type_t = uint16_t;
 
 struct ResultWithMessage;
 
-enum class TrackBank : uint8_t
+enum class TrackRoll : uint8_t
 {
     None = 0,
     Left = 2,
@@ -53,15 +53,15 @@ struct TrackDefinition
     track_type_t Type;
     TrackPitch PitchEnd;
     TrackPitch PitchStart;
-    TrackBank RollEnd;
-    TrackBank RollStart;
+    TrackRoll RollEnd;
+    TrackRoll RollStart;
     int8_t PreviewZOffset;
 };
 
 struct PitchAndRoll
 {
     TrackPitch Pitch;
-    TrackBank Roll;
+    TrackRoll Roll;
 };
 constexpr bool operator==(const PitchAndRoll& vb1, const PitchAndRoll& vb2)
 {
@@ -686,9 +686,9 @@ bool TrackTypeIsBooster(track_type_t trackType);
 std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
     const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);
 
-TrackBank TrackGetActualBank(TileElement* tileElement, TrackBank bank);
-TrackBank TrackGetActualBank2(int32_t rideType, bool isInverted, TrackBank bank);
-TrackBank TrackGetActualBank3(bool useInvertedSprites, TileElement* tileElement);
+TrackRoll TrackGetActualBank(TileElement* tileElement, TrackRoll bank);
+TrackRoll TrackGetActualBank2(int32_t rideType, bool isInverted, TrackRoll bank);
+TrackRoll TrackGetActualBank3(bool useInvertedSprites, TileElement* tileElement);
 
 ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign);
 ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIndex, int32_t flags);

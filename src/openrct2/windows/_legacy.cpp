@@ -127,15 +127,15 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
 
     auto startSlope = _previousTrackSlopeEnd;
     auto endSlope = _currentTrackSlopeEnd;
-    auto startBank = _previousTrackBankEnd;
-    auto endBank = _currentTrackBankEnd;
+    auto startBank = _previousTrackRollEnd;
+    auto endBank = _currentTrackRollEnd;
 
     if (_rideConstructionState == RideConstructionState::Back)
     {
         startSlope = _currentTrackSlopeEnd;
         endSlope = _previousTrackSlopeEnd;
-        startBank = _currentTrackBankEnd;
-        endBank = _previousTrackBankEnd;
+        startBank = _currentTrackRollEnd;
+        endBank = _previousTrackRollEnd;
     }
 
     auto curve = _currentTrackCurve;
@@ -188,7 +188,7 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
                 return std::make_tuple(false, 0);
             }
 
-            if (startBank != TrackBank::None || endBank != TrackBank::None)
+            if (startBank != TrackRoll::None || endBank != TrackRoll::None)
             {
                 return std::make_tuple(false, 0);
             }
@@ -197,7 +197,7 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
 
         case TrackElemType::LeftVerticalLoop:
         case TrackElemType::RightVerticalLoop:
-            if (startBank != TrackBank::None || endBank != TrackBank::None)
+            if (startBank != TrackRoll::None || endBank != TrackRoll::None)
             {
                 return std::make_tuple(false, 0);
             }
