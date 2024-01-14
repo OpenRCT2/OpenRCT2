@@ -145,7 +145,7 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
     }
 
     bool startsDiagonal = (_currentTrackPieceDirection & (1 << 2)) != 0;
-    if (curve == TRACK_CURVE_LEFT_LARGE || curve == TRACK_CURVE_RIGHT_LARGE)
+    if (curve == EnumValue(TrackCurve::LeftLarge) || curve == EnumValue(TrackCurve::RightLarge))
     {
         if (_rideConstructionState == RideConstructionState::Back)
         {
@@ -159,7 +159,7 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
         {
             const TrackDescriptor* trackDescriptor = &gTrackDescriptors[i];
 
-            if (trackDescriptor->track_curve != curve)
+            if (EnumValue(trackDescriptor->track_curve) != curve)
                 continue;
             if (trackDescriptor->starts_diagonal != startsDiagonal)
                 continue;

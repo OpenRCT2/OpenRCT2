@@ -206,17 +206,17 @@ enum
     TRACK_GROUP_COUNT,
 };
 
-enum
+enum class TrackCurve : uint8_t
 {
-    TRACK_CURVE_LEFT_VERY_SMALL = 5,
-    TRACK_CURVE_LEFT_SMALL = 3,
-    TRACK_CURVE_LEFT = 1,
-    TRACK_CURVE_LEFT_LARGE = 7,
-    TRACK_CURVE_NONE = 0,
-    TRACK_CURVE_RIGHT_LARGE = 8,
-    TRACK_CURVE_RIGHT = 2,
-    TRACK_CURVE_RIGHT_SMALL = 4,
-    TRACK_CURVE_RIGHT_VERY_SMALL = 6
+    LeftVerySmall = 5,
+    LeftSmall = 3,
+    Left = 1,
+    LeftLarge = 7,
+    None = 0,
+    RightLarge = 8,
+    Right = 2,
+    RightSmall = 4,
+    RightVerySmall = 6
 };
 
 enum

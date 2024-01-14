@@ -28,7 +28,7 @@ struct TrackDescriptor
     bool starts_diagonal;
     uint8_t slope_start;
     uint8_t bank_start;
-    uint8_t track_curve;
+    TrackCurve track_curve;
     uint8_t slope_end;
     uint8_t bank_end;
     track_type_t track_element;
