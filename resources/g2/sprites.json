@@ -2691,7 +2691,17 @@
         "y_offset": -4
     },
     {
+        "path": "track/intamin/block_brake_alt_closed_2.png",
+        "x_offset": -22,
+        "y_offset": -4
+    },
+    {
         "path": "track/intamin/block_brake_alt_closed_3.png",
+        "x_offset": -22,
+        "y_offset": -4
+    },
+    {
+        "path": "track/intamin/block_brake_alt_closed_4.png",
         "x_offset": -22,
         "y_offset": -4
     },
@@ -2701,7 +2711,17 @@
         "y_offset": -4
     },
     {
+        "path": "track/intamin/block_brake_alt_open_2.png",
+        "x_offset": -22,
+        "y_offset": -4
+    },
+    {
         "path": "track/intamin/block_brake_alt_open_3.png",
+        "x_offset": -22,
+        "y_offset": -4
+    },
+    {
+        "path": "track/intamin/block_brake_alt_open_4.png",
         "x_offset": -22,
         "y_offset": -4
     },
@@ -2787,7 +2807,17 @@
         "y_offset": -4
     },
     {
+        "path": "track/intamin/drive_tyre_2.png",
+        "x_offset": -22,
+        "y_offset": -4
+    },
+    {
         "path": "track/intamin/drive_tyre_3.png",
+        "x_offset": -22,
+        "y_offset": -4
+    },
+    {
+        "path": "track/intamin/drive_tyre_4.png",
         "x_offset": -22,
         "y_offset": -4
     },

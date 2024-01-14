@@ -18,9 +18,6 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
-static constexpr uint32_t GIGA_COASTER_BRAKE_NW_SE_OPEN_1 = 18077;
-static constexpr uint32_t GIGA_COASTER_BRAKE_NW_SE_CLOSED_1 = 18079;
-
 static constexpr uint32_t _InMaTriangleAltBrakeImages[NumOrthogonalDirections][2] = {
     { SPR_G2_GIGA_RC_BRAKE_ALT_OPEN_NE_SW, SPR_G2_GIGA_RC_BRAKE_ALT_CLOSED_NE_SW },
     { SPR_G2_GIGA_RC_BRAKE_ALT_OPEN_NW_SE, SPR_G2_GIGA_RC_BRAKE_ALT_CLOSED_NW_SE },
@@ -30,9 +27,9 @@ static constexpr uint32_t _InMaTriangleAltBrakeImages[NumOrthogonalDirections][2
 
 static constexpr uint32_t _InMaTriangleAltBlockBrakeImages[NumOrthogonalDirections][2] = {
     { SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_OPEN_NE_SW, SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_CLOSED_NE_SW },
-    { GIGA_COASTER_BRAKE_NW_SE_OPEN_1, GIGA_COASTER_BRAKE_NW_SE_CLOSED_1 },
+    { SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_OPEN_NW_SE, SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_CLOSED_NW_SE },
     { SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_OPEN_SW_NE, SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_CLOSED_SW_NE },
-    { GIGA_COASTER_BRAKE_NW_SE_OPEN_1, GIGA_COASTER_BRAKE_NW_SE_CLOSED_1 },
+    { SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_OPEN_SE_NW, SPR_G2_GIGA_RC_BLOCK_BRAKE_ALT_CLOSED_SE_NW },
 };
 
 static void InMaTriangleTrackAltStation(
@@ -61,9 +58,9 @@ static void InMaTriangleTrackAltStation(
     {
         static constexpr uint32_t imageIds[4][2] = {
             { SPR_G2_GIGA_RC_DRIVE_TYRE_NE_SW, SPR_STATION_BASE_A_SW_NE },
-            { 18085, SPR_STATION_BASE_A_NW_SE },
+            { SPR_G2_GIGA_RC_DRIVE_TYRE_NW_SE, SPR_STATION_BASE_A_NW_SE },
             { SPR_G2_GIGA_RC_DRIVE_TYRE_SW_NE, SPR_STATION_BASE_A_SW_NE },
-            { 18085, SPR_STATION_BASE_A_NW_SE },
+            { SPR_G2_GIGA_RC_DRIVE_TYRE_SE_NW, SPR_STATION_BASE_A_NW_SE },
         };
         if (trackElement.GetTrackType() == TrackElemType::EndStation)
         {
