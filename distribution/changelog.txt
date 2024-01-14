@@ -21,7 +21,6 @@
 - Feature: [OpenMusic#50] Added Rock style 4 ride music.
 - Improved: [objects#261] Add composer credits on all RCT2 music objects.
 - Change: [#20790] Default ride price set to free if park charges for entry.
-- Change: [#20810] Giga Roller Coaster boosters are now locked behind cheats.
 - Change: [#20880] Restore removed default coaster colours.
 - Change: [#21102] The money effect will now update even when the game is paused.
 - Change: [objects#244] Update sort priorities for expansion scenery groups.
