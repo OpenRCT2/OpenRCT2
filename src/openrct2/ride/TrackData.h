@@ -26,10 +26,10 @@ struct TrackCurveChain
 struct TrackDescriptor
 {
     bool starts_diagonal;
-    uint8_t slope_start;
+    TrackPitch slope_start;
     TrackBank bank_start;
     TrackCurve track_curve;
-    uint8_t slope_end;
+    TrackPitch slope_end;
     TrackBank bank_end;
     track_type_t track_element;
 };

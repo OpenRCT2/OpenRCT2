@@ -23,7 +23,6 @@ constexpr int32_t kBlockBrakeBaseSpeed = 0x20364;
 constexpr int32_t kBlockBrakeSpeedOffset = kBlockBrakeBaseSpeed - (kRCT2DefaultBlockBrakeSpeed << 16);
 
 using track_type_t = uint16_t;
-using pitch_type_t = uint8_t;
 
 struct ResultWithMessage;
 
@@ -35,11 +34,25 @@ enum class TrackBank : uint8_t
     UpsideDown = 15,
 };
 
+enum class TrackPitch : uint8_t
+{
+    None = 0,
+    Up25 = 2,
+    Up60 = 4,
+    Down25 = 6,
+    Down60 = 8,
+    Up90 = 10,
+    Down90 = 18,
+
+    Tower = 10,
+    ReverseFreefall = 10
+};
+
 struct TrackDefinition
 {
     track_type_t type;
-    pitch_type_t vangle_end;
-    pitch_type_t vangle_start;
+    TrackPitch vangle_end;
+    TrackPitch vangle_start;
     TrackBank bank_end;
     TrackBank bank_start;
     int8_t preview_z_offset;
@@ -47,7 +60,7 @@ struct TrackDefinition
 
 struct PitchAndRoll
 {
-    pitch_type_t Pitch;
+    TrackPitch Pitch;
     TrackBank Roll;
 };
 constexpr bool operator==(const PitchAndRoll& vb1, const PitchAndRoll& vb2)
@@ -224,20 +237,6 @@ enum class TrackCurve : uint8_t
     Right = 2,
     RightSmall = 4,
     RightVerySmall = 6
-};
-
-enum
-{
-    TRACK_SLOPE_NONE = 0,
-    TRACK_SLOPE_UP_25 = 2,
-    TRACK_SLOPE_UP_60 = 4,
-    TRACK_SLOPE_DOWN_25 = 6,
-    TRACK_SLOPE_DOWN_60 = 8,
-    TRACK_SLOPE_UP_90 = 10,
-    TRACK_SLOPE_DOWN_90 = 18,
-
-    TRACK_VANGLE_TOWER = 10,
-    TRACK_VANGLE_REVERSE_FREEFALL = 10
 };
 
 enum

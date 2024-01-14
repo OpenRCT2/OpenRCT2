@@ -53,18 +53,16 @@ PitchAndRoll TrackPitchAndRollEnd(track_type_t trackType)
  */
 int32_t TrackIsConnectedByShape(TileElement* a, TileElement* b)
 {
-    int32_t trackType, aAngle, bAngle;
-
-    trackType = a->AsTrack()->GetTrackType();
+    auto trackType = a->AsTrack()->GetTrackType();
     const auto* ted = &GetTrackElementDescriptor(trackType);
     auto aBank = ted->Definition.bank_end;
-    aAngle = ted->Definition.vangle_end;
+    auto aAngle = ted->Definition.vangle_end;
     aBank = TrackGetActualBank(a, aBank);
 
     trackType = b->AsTrack()->GetTrackType();
     ted = &GetTrackElementDescriptor(trackType);
     auto bBank = ted->Definition.bank_start;
-    bAngle = ted->Definition.vangle_start;
+    auto bAngle = ted->Definition.vangle_start;
     bBank = TrackGetActualBank(b, bBank);
 
     return aBank == bBank && aAngle == bAngle;

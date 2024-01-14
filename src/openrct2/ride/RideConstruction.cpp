@@ -64,14 +64,14 @@ uint8_t _currentTrackPieceDirection;
 track_type_t _currentTrackPieceType;
 uint8_t _currentTrackSelectionFlags;
 uint32_t _rideConstructionNextArrowPulse = 0;
-uint8_t _currentTrackSlopeEnd;
+TrackPitch _currentTrackSlopeEnd;
 TrackBank _currentTrackBankEnd;
 uint8_t _currentTrackLiftHill;
 uint8_t _currentTrackAlternative;
 track_type_t _selectedTrackType;
 
 TrackBank _previousTrackBankEnd;
-uint8_t _previousTrackSlopeEnd;
+TrackPitch _previousTrackSlopeEnd;
 
 CoordsXYZ _previousTrackPiece;
 
@@ -606,7 +606,7 @@ static void ride_construction_reset_current_piece()
     if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK) || ride->num_stations == 0)
     {
         _currentTrackCurve = rtd.StartTrackPiece | RideConstructionSpecialPieceSelected;
-        _currentTrackSlopeEnd = 0;
+        _currentTrackSlopeEnd = TrackPitch::None;
         _currentTrackBankEnd = TrackBank::None;
         _currentTrackLiftHill = 0;
         _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
@@ -614,7 +614,7 @@ static void ride_construction_reset_current_piece()
         {
             _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
         }
-        _previousTrackSlopeEnd = 0;
+        _previousTrackSlopeEnd = TrackPitch::None;
         _previousTrackBankEnd = TrackBank::None;
     }
     else
@@ -637,7 +637,7 @@ void RideConstructionSetDefaultNextPiece()
 
     const auto& rtd = ride->GetRideTypeDescriptor();
 
-    int32_t z, direction, trackType, curve, slope;
+    int32_t z, direction, trackType, curve;
     TrackBeginEnd trackBeginEnd;
     CoordsXYE xyElement;
     TileElement* tileElement;
@@ -676,7 +676,7 @@ void RideConstructionSetDefaultNextPiece()
             ted = &GetTrackElementDescriptor(trackType);
             curve = ted->CurveChain.next;
             auto bank = ted->Definition.bank_end;
-            slope = ted->Definition.vangle_end;
+            auto slope = ted->Definition.vangle_end;
 
             // Set track curve
             _currentTrackCurve = curve;
@@ -697,7 +697,7 @@ void RideConstructionSetDefaultNextPiece()
             _currentTrackSlopeEnd = slope;
             _previousTrackSlopeEnd = slope;
             _currentTrackLiftHill = tileElement->AsTrack()->HasChain()
-                && ((slope != TRACK_SLOPE_DOWN_25 && slope != TRACK_SLOPE_DOWN_60) || gCheatsEnableChainLiftOnAllTrack);
+                && ((slope != TrackPitch::Down25 && slope != TrackPitch::Down60) || gCheatsEnableChainLiftOnAllTrack);
             break;
         }
         case RideConstructionState::Back:
@@ -724,7 +724,7 @@ void RideConstructionSetDefaultNextPiece()
             ted = &GetTrackElementDescriptor(trackType);
             curve = ted->CurveChain.previous;
             auto bank = ted->Definition.bank_start;
-            slope = ted->Definition.vangle_start;
+            auto slope = ted->Definition.vangle_start;
 
             // Set track curve
             _currentTrackCurve = curve;
@@ -1123,7 +1123,7 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
     InputSetFlag(INPUT_FLAG_6, true);
 
     _currentTrackCurve = ride.GetRideTypeDescriptor().StartTrackPiece | RideConstructionSpecialPieceSelected;
-    _currentTrackSlopeEnd = 0;
+    _currentTrackSlopeEnd = TrackPitch::None;
     _currentTrackBankEnd = TrackBank::None;
     _currentTrackLiftHill = 0;
     _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
@@ -1132,7 +1132,7 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
         _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
 
     _previousTrackBankEnd = TrackBank::None;
-    _previousTrackSlopeEnd = 0;
+    _previousTrackSlopeEnd = TrackPitch::None;
 
     _currentTrackPieceDirection = 0;
     _rideConstructionState = RideConstructionState::Place;

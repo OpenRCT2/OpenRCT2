@@ -61,7 +61,7 @@ money64 PlaceProvisionalTrackPiece(
         _unkF440C5 = { trackPos, static_cast<Direction>(trackDirection) };
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
         ViewportSetVisibility(ViewportVisibility::UndergroundViewOff);
-        if (_currentTrackSlopeEnd != 0)
+        if (_currentTrackSlopeEnd != TrackPitch::None)
             ViewportSetVisibility(ViewportVisibility::TrackHeights);
 
         // Invalidate previous track piece (we may not be changing height!)
@@ -105,7 +105,7 @@ money64 PlaceProvisionalTrackPiece(
     const auto visiblity = (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? ViewportVisibility::UndergroundViewOn
                                                                              : ViewportVisibility::UndergroundViewOff;
     ViewportSetVisibility(visiblity);
-    if (_currentTrackSlopeEnd != 0)
+    if (_currentTrackSlopeEnd != TrackPitch::None)
         ViewportSetVisibility(ViewportVisibility::TrackHeights);
 
     // Invalidate previous track piece (we may not be changing height!)
@@ -125,8 +125,8 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES);
     ContextBroadcastIntent(&intent);
 
-    uint8_t startSlope = _previousTrackSlopeEnd;
-    uint8_t endSlope = _currentTrackSlopeEnd;
+    auto startSlope = _previousTrackSlopeEnd;
+    auto endSlope = _currentTrackSlopeEnd;
     auto startBank = _previousTrackBankEnd;
     auto endBank = _currentTrackBankEnd;
 
@@ -183,7 +183,7 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
         case TrackElemType::EndStation:
         case TrackElemType::SBendLeft:
         case TrackElemType::SBendRight:
-            if (startSlope != TRACK_SLOPE_NONE || endSlope != TRACK_SLOPE_NONE)
+            if (startSlope != TrackPitch::None || endSlope != TrackPitch::None)
             {
                 return std::make_tuple(false, 0);
             }
@@ -204,14 +204,14 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
 
             if (_rideConstructionState == RideConstructionState::Back)
             {
-                if (endSlope != TRACK_SLOPE_DOWN_25)
+                if (endSlope != TrackPitch::Down25)
                 {
                     return std::make_tuple(false, 0);
                 }
             }
             else
             {
-                if (startSlope != TRACK_SLOPE_UP_25)
+                if (startSlope != TrackPitch::Up25)
                 {
                     return std::make_tuple(false, 0);
                 }

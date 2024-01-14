@@ -518,13 +518,13 @@ void ScriptEngine::RegisterConstants()
 {
     ConstantBuilder builder(_context);
     builder.Namespace("TrackSlope")
-        .Constant("None", TRACK_SLOPE_NONE)
-        .Constant("Up25", TRACK_SLOPE_UP_25)
-        .Constant("Up60", TRACK_SLOPE_UP_60)
-        .Constant("Down25", TRACK_SLOPE_DOWN_25)
-        .Constant("Down60", TRACK_SLOPE_DOWN_60)
-        .Constant("Up90", TRACK_SLOPE_UP_90)
-        .Constant("Down90", TRACK_SLOPE_DOWN_90);
+        .Constant("None", EnumValue(TrackPitch::None))
+        .Constant("Up25", EnumValue(TrackPitch::Up25))
+        .Constant("Up60", EnumValue(TrackPitch::Up60))
+        .Constant("Down25", EnumValue(TrackPitch::Down25))
+        .Constant("Down60", EnumValue(TrackPitch::Down60))
+        .Constant("Up90", EnumValue(TrackPitch::Up90))
+        .Constant("Down90", EnumValue(TrackPitch::Down90));
     builder.Namespace("TrackBanking")
         .Constant("None", EnumValue(TrackBank::None))
         .Constant("BankLeft", EnumValue(TrackBank::Left))
