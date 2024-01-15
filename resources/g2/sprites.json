@@ -2822,25 +2822,49 @@
         "y_offset": -4
     },
     {
-        "path": "track/intamin/liftbooster_0.png",
+        "path": "track/intamin/liftbooster_1.png",
         "x_offset": -21,
         "y_offset": -20,
         "palette": "keep"
     },
     {
-        "path": "track/intamin/liftbooster_1.png",
+        "path": "track/intamin/liftbooster_2.png",
         "x_offset": -21,
         "y_offset": -4,
         "palette": "keep"
     },
     {
-        "path": "track/intamin/liftbooster_2.png",
+        "path": "track/intamin/liftbooster_3.png",
         "x_offset": -22,
         "y_offset": -4,
         "palette": "keep"
     },
     {
-        "path": "track/intamin/liftbooster_3.png",
+        "path": "track/intamin/liftbooster_4.png",
+        "x_offset": -22,
+        "y_offset": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/intamin/liftbooster_alt_1.png",
+        "x_offset": -21,
+        "y_offset": -20,
+        "palette": "keep"
+    },
+    {
+        "path": "track/intamin/liftbooster_alt_2.png",
+        "x_offset": -21,
+        "y_offset": -5,
+        "palette": "keep"
+    },
+    {
+        "path": "track/intamin/liftbooster_alt_3.png",
+        "x_offset": -22,
+        "y_offset": -4,
+        "palette": "keep"
+    },
+    {
+        "path": "track/intamin/liftbooster_alt_4.png",
         "x_offset": -22,
         "y_offset": -20,
         "palette": "keep"

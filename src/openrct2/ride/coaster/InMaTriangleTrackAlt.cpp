@@ -165,6 +165,32 @@ static void InMaTriangleTrackAltBooster(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
+static void InMaTriangleTrackAltPoweredLift(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    PaintAddImageAsParentRotated(
+        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_RC_POWERED_LIFT_ALT_1 + direction), { 0, 0, height },
+        { { 0, 6, height }, { 32, 20, 3 } });
+
+    if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
+    {
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, MetalSupportPlace::Centre, 8, height, session.SupportColours);
+    }
+    if (direction == 0 || direction == 3)
+    {
+        PaintUtilPushTunnelRotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+    }
+    else
+    {
+        PaintUtilPushTunnelRotated(session, direction, height + 8, TUNNEL_SQUARE_8);
+    }
+    PaintUtilSetSegmentSupportHeight(
+        session, PaintUtilRotateSegments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
+}
+
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionInMaTriangleAlt(int32_t trackType)
 {
     switch (trackType)
@@ -179,6 +205,8 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionInMaTriangleAlt(int32_t trackType)
             return InMaTriangleTrackAltBlockBrakes;
         case TrackElemType::Booster:
             return InMaTriangleTrackAltBooster;
+        case TrackElemType::PoweredLift:
+            return InMaTriangleTrackAltPoweredLift;
     }
     return GetTrackPaintFunctionInMaTriangle(trackType);
 }

@@ -9507,7 +9507,7 @@ static void InMaTriangleTrackPoweredLift(
     const TrackElement& trackElement)
 {
     PaintAddImageAsParentRotated(
-        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_RC_POWERED_LIFT_0 + direction), { 0, 0, height },
+        session, direction, session.TrackColours.WithIndex(SPR_G2_GIGA_RC_POWERED_LIFT_1 + direction), { 0, 0, height },
         { { 0, 6, height }, { 32, 20, 3 } });
 
     if (TrackPaintUtilShouldPaintSupports(session.MapPosition))
