@@ -89,14 +89,10 @@ public:
 
     void OnOpen() override
     {
-        if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
-        {
-            widgets = _quitPromptWidgets;
-        }
-        else
-        {
-            widgets = _savePromptWidgets;
-        }
+        bool canSave = !(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER));
+
+        widgets = canSave ? _savePromptWidgets : _quitPromptWidgets;
+
         InitScrollWidgets();
 
         // Pause the game if not network play.
@@ -108,17 +104,20 @@ public:
 
         WindowInvalidateByClass(WindowClass::TopToolbar);
 
-        StringId stringId = window_save_prompt_labels[EnumValue(_promptMode)][0];
-        if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+        if (canSave)
         {
-            stringId = STR_LOAD_LANDSCAPE_PROMPT_TITLE;
+            StringId stringId = window_save_prompt_labels[EnumValue(_promptMode)][0];
+            if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+            {
+                stringId = STR_LOAD_LANDSCAPE_PROMPT_TITLE;
+            }
+            else if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+            {
+                stringId = STR_QUIT_SCENARIO_EDITOR;
+            }
+            widgets[WIDX_TITLE].text = stringId;
+            widgets[WIDX_LABEL].text = window_save_prompt_labels[EnumValue(_promptMode)][1];
         }
-        else if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-        {
-            stringId = STR_QUIT_SCENARIO_EDITOR;
-        }
-        widgets[WIDX_TITLE].text = stringId;
-        widgets[WIDX_LABEL].text = window_save_prompt_labels[EnumValue(_promptMode)][1];
     }
 
     void OnClose() override

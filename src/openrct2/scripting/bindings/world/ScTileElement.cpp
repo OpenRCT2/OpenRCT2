@@ -1017,7 +1017,7 @@ namespace OpenRCT2::Scripting
             if (el == nullptr)
                 throw DukException() << "Cannot set 'brakeBoosterSpeed' property, tile element is not a TrackElement.";
 
-            if (TrackTypeHasSpeedSetting(el->GetTrackType()))
+            if (!TrackTypeHasSpeedSetting(el->GetTrackType()))
                 throw DukException() << "Cannot set 'brakeBoosterSpeed' property, track element has no speed setting.";
 
             el->SetBrakeBoosterSpeed(value.as_uint());
