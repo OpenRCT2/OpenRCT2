@@ -1,0 +1,14 @@
+{
+    "land_ownership": {
+        "owned": {
+            "coordinates": [
+                [ 64, 77 ], [ 61, 66 ], [ 61, 67 ], [ 39, 20 ]
+            ]
+        },
+        "construction_rights_available": {
+            "coordinates": [
+                [ 46, 47 ]
+            ]
+        }
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "land_ownership": {
+        "available": {
+            "coordinates": [
+                [ 85, 73 ], [ 71, 75 ], [ 90, 73 ]
+            ]
+        }
+    }
+}
