@@ -323,6 +323,7 @@ namespace OpenRCT2::Scripting
                         WidgetSetDisabled(*w, _widgetIndex + 2, value);
                     }
                 }
+                Invalidate(widget);
             }
         }
 
@@ -355,6 +356,7 @@ namespace OpenRCT2::Scripting
                         WidgetSetVisible(*w, _widgetIndex + 2, value);
                     }
                 }
+                Invalidate(widget);
             }
         }
 
