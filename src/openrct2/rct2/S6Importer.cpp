@@ -539,7 +539,7 @@ namespace RCT2
             // Checking _s6.ScenarioFilename is generally more reliable as it survives renaming.
             // However, some WW/TT scenarios have this incorrectly set to "Six Flags Magic Mountain.SC6",
             // so for those cases (as well as for SFMM proper, we’ll have to check the filename.
-
+            // TODO: Land ownership is applied even when loading saved scenario. Should it?
             RCT12::FetchAndApplyScenarioPatch(
                 _s6.ScenarioFilename != gScenarioFileName ? gScenarioFileName : _s6.ScenarioFilename);
         }
