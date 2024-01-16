@@ -119,7 +119,7 @@ struct Ride
     ObjectEntryIndex subtype;
     RideMode mode;
     uint8_t colour_scheme_type;
-    VehicleColour vehicle_colours[OpenRCT2::Limits::MaxTrainsPerRide + 1];
+    VehicleColour vehicle_colours[OpenRCT2::Limits::MaxVehicleColours];
     // 0 = closed, 1 = open, 2 = test
     RideStatus status;
     std::string custom_name;

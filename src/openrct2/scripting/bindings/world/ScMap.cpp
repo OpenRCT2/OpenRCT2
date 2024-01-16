@@ -233,6 +233,11 @@ namespace OpenRCT2::Scripting
     DukValue createEntityType(duk_context* ctx, const DukValue& initializer)
     {
         TEntityType* entity = CreateEntity<TEntityType>();
+        if (entity == nullptr)
+        {
+            // Probably no more space for entities for this specified entity type.
+            return ToDuk(ctx, undefined);
+        }
 
         auto entityPos = CoordsXYZ{ AsOrDefault(initializer["x"], 0), AsOrDefault(initializer["y"], 0),
                                     AsOrDefault(initializer["z"], 0) };

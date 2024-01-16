@@ -724,26 +724,20 @@ template<> struct DataSerializerTraitsT<TrackDesignEntranceElement>
 {
     static void encode(OpenRCT2::IStream* stream, const TrackDesignEntranceElement& val)
     {
-        stream->Write(&val.x);
-        stream->Write(&val.y);
-        stream->Write(&val.z);
-        stream->Write(&val.direction);
-        stream->Write(&val.isExit);
+        stream->Write(&val.Location);
+        stream->Write(&val.IsExit);
     }
     static void decode(OpenRCT2::IStream* stream, TrackDesignEntranceElement& val)
     {
-        stream->Read(&val.x);
-        stream->Read(&val.y);
-        stream->Read(&val.z);
-        stream->Read(&val.direction);
-        stream->Read(&val.isExit);
+        stream->Read(&val.Location);
+        stream->Read(&val.IsExit);
     }
     static void log(OpenRCT2::IStream* stream, const TrackDesignEntranceElement& val)
     {
         char msg[128] = {};
         snprintf(
-            msg, sizeof(msg), "TrackDesignEntranceElement(x = %d, y = %d, z = %d, dir = %d, isExit = %d)", val.x, val.y, val.z,
-            val.direction, val.isExit);
+            msg, sizeof(msg), "TrackDesignEntranceElement(x = %d, y = %d, z = %d, dir = %d, isExit = %d)", val.Location.x,
+            val.Location.y, val.Location.z, val.Location.direction, val.IsExit);
         stream->Write(msg, strlen(msg));
     }
 };

@@ -204,6 +204,7 @@ namespace RCT1
                 td->vehicle_colours[i] = td->vehicle_colours[0];
             }
 
+            td->StationObjectIdentifier = GetStationIdentifierFromStyle(RCT12_STATION_STYLE_PLAIN);
             td->depart_flags = td4Base.DepartFlags;
             td->number_of_trains = td4Base.NumberOfTrains;
             td->number_of_cars_per_train = td4Base.NumberOfCarsPerTrain;
@@ -249,12 +250,7 @@ namespace RCT1
                     _stream.Read(&t4MazeElement, sizeof(TD46MazeElement));
                     if (t4MazeElement.All != 0)
                     {
-                        TrackDesignMazeElement mazeElement{};
-                        mazeElement.x = t4MazeElement.x;
-                        mazeElement.y = t4MazeElement.y;
-                        mazeElement.direction = t4MazeElement.Direction;
-                        mazeElement.type = t4MazeElement.Type;
-                        td->maze_elements.push_back(mazeElement);
+                        ImportMazeElement(*td, t4MazeElement);
                     }
                 }
             }

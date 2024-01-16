@@ -433,7 +433,40 @@ private:
                    _trackDesign.get(), RideGetTemporaryForPreview(), { loc, z, _currentTrackPieceDirection });
     }
 
-    void DrawMiniPreviewTrack(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max)
+    void DrawMiniPreviewEntrances(
+        const TrackDesign& td6, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max, Direction rotation)
+    {
+        for (const auto& entrance : td6.entrance_elements)
+        {
+            auto rotatedAndOffsetEntrance = origin + entrance.Location.ToCoordsXY().Rotate(rotation);
+
+            if (pass == 0)
+            {
+                min.x = std::min(min.x, rotatedAndOffsetEntrance.x);
+                max.x = std::max(max.x, rotatedAndOffsetEntrance.x);
+                min.y = std::min(min.y, rotatedAndOffsetEntrance.y);
+                max.y = std::max(max.y, rotatedAndOffsetEntrance.y);
+            }
+            else
+            {
+                auto pixelPosition = DrawMiniPreviewGetPixelPosition(rotatedAndOffsetEntrance);
+                if (DrawMiniPreviewIsPixelInBounds(pixelPosition))
+                {
+                    uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
+                    uint8_t colour = entrance.IsExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
+                    for (int32_t i = 0; i < 4; i++)
+                    {
+                        pixel[338 + i] = colour; // x + 2, y + 2
+                        pixel[168 + i] = colour; //        y + 1
+                        pixel[2 + i] = colour;   // x + 2
+                        pixel[172 + i] = colour; // x + 4, y + 1
+                    }
+                }
+            }
+        }
+    }
+
+    void DrawMiniPreviewTrack(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max)
     {
         const uint8_t rotation = (_currentTrackPieceDirection + GetCurrentRotation()) & 3;
 
@@ -503,38 +536,10 @@ private:
             }
         }
 
-        // Draw entrance and exit preview.
-        for (const auto& entrance : td6->entrance_elements)
-        {
-            auto rotatedAndOffsetEntrance = origin + CoordsXY{ entrance.x, entrance.y }.Rotate(rotation);
-
-            if (pass == 0)
-            {
-                min.x = std::min(min.x, rotatedAndOffsetEntrance.x);
-                max.x = std::max(max.x, rotatedAndOffsetEntrance.x);
-                min.y = std::min(min.y, rotatedAndOffsetEntrance.y);
-                max.y = std::max(max.y, rotatedAndOffsetEntrance.y);
-            }
-            else
-            {
-                auto pixelPosition = DrawMiniPreviewGetPixelPosition(rotatedAndOffsetEntrance);
-                if (DrawMiniPreviewIsPixelInBounds(pixelPosition))
-                {
-                    uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
-                    uint8_t colour = entrance.isExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
-                    for (int32_t i = 0; i < 4; i++)
-                    {
-                        pixel[338 + i] = colour; // x + 2, y + 2
-                        pixel[168 + i] = colour; //        y + 1
-                        pixel[2 + i] = colour;   // x + 2
-                        pixel[172 + i] = colour; // x + 4, y + 1
-                    }
-                }
-            }
-        }
+        DrawMiniPreviewEntrances(*td6, pass, origin, min, max, rotation);
     }
 
-    void DrawMiniPreviewMaze(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max)
+    void DrawMiniPreviewMaze(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max)
     {
         uint8_t rotation = (_currentTrackPieceDirection + GetCurrentRotation()) & 3;
         for (const auto& mazeElement : td6->maze_elements)
@@ -556,13 +561,6 @@ private:
                     uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
 
                     uint8_t colour = _PaletteIndexColourTrack;
-
-                    // Draw entrance and exit with different colours.
-                    if (mazeElement.type == MAZE_ELEMENT_TYPE_ENTRANCE)
-                        colour = _PaletteIndexColourEntrance;
-                    else if (mazeElement.type == MAZE_ELEMENT_TYPE_EXIT)
-                        colour = _PaletteIndexColourExit;
-
                     for (int32_t i = 0; i < 4; i++)
                     {
                         pixel[338 + i] = colour; // x + 2, y + 2
@@ -573,6 +571,8 @@ private:
                 }
             }
         }
+
+        DrawMiniPreviewEntrances(*td6, pass, origin, min, max, rotation);
     }
 
     ScreenCoordsXY DrawMiniPreviewGetPixelPosition(const CoordsXY& location)

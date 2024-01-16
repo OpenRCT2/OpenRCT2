@@ -1147,6 +1147,7 @@ declare global {
         quadrant: number;
         primaryColour: number;
         secondaryColour: number;
+        tertiaryColour: number;
     }
 
     interface SmallSceneryRemoveArgs extends GameActionArgs {
@@ -1543,6 +1544,7 @@ declare global {
         object: number;
         primaryColour: number;
         secondaryColour: number;
+        tertiaryColour: number;
         quadrant: number;
         age: number;
     }
