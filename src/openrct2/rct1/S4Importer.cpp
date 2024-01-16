@@ -2493,6 +2493,7 @@ namespace RCT1
 
         void FixLandOwnership()
         {
+            // TODO: Land ownership is applied even when loading saved scenario. Should it?
             RCT12::FetchAndApplyScenarioPatch(_s4.ScenarioName);
             // TODO: investigate why Katie's Dreamland.s4 and .sea have different patches
         }
