@@ -530,7 +530,7 @@ namespace OpenRCT2::Scripting
                         // RideVoucher
                         obj.Set("rideId", peep->VoucherRideId.ToUnderlying());
                     }
-                    if (peep->VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
+                    else if (peep->VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
                     {
                         // FoodDrinkVoucher
                         obj.Set("item", ShopItemMap[peep->VoucherShopItem]);
