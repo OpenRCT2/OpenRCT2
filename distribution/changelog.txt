@@ -4,6 +4,7 @@
 - Improved: [#20951] Activate OpenRCT2 window after using native file dialog on macOS.
 - Fix: [#20255] Images from the last hovered-over coaster in the object selection are not freed.
 - Fix: [#20616] Confirmation button in the track designer’s quit prompt has the wrong text.
+- Fix: [#20628] Moving caret using Ctrl+left for TTF fonts caused underflow.
 - Fix: [#21145] [Plugin] setInterval/setTimeout handle conflict.
 - Fix: [#21157] [Plugin] Widgets do not redraw correctly when updating disabled or visibility state. 
 - Fix: [#21158] [Plugin] Potential crash using setInterval/setTimeout within the callback.
