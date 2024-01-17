@@ -10,6 +10,7 @@
 - Fix: [#21171] [Plugin] Crash creating entities with no more entity slots available.
 - Fix: [#21178] Inca Lost City’s scenario description incorrectly states there are height restrictions.
 - Fix: [#21198] [Plugin] Setting brake or booster speeds on a tile element doesn’t work.
+- Fix: [#21213] Moving caret using Ctrl+left for TTF fonts caused underflow.
 
 0.4.7 (2023-12-31)
 ------------------------------------------------------------------------
