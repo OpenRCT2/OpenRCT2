@@ -4361,7 +4361,7 @@ STR_DTLS    :당신은 긴 휴식기를 가지는 동안 이 도시 공원을 �
 <South America - Inca Lost City>
 STR_SCNR    :남 아메리카 - 잉카의 잊혀진 도시
 STR_PARK    :잊혀진 도시의 발견자
-STR_DTLS    :이 지역의 관광산업을 보다 활기차게 만들기 위해서는 주변 환경과 잘 어울리는 공원을 지어야 합니다. 높이 제한이 있습니다.
+STR_DTLS    :이 지역의 관광산업을 보다 활기차게 만들기 위해서는 주변 환경과 잘 어울리는 공원을 지어야 합니다.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :남 아메리카 - 열대우림 고원
