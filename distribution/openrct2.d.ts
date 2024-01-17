@@ -1544,6 +1544,7 @@ declare global {
         object: number;
         primaryColour: number;
         secondaryColour: number;
+        tertiaryColour: number;
         quadrant: number;
         age: number;
     }
