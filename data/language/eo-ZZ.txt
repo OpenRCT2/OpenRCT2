@@ -4359,7 +4359,7 @@ STR_DTLS    :Vi estas sukcesa komerca magnato prenanta longan libertempon, kiu d
 <South America - Inca Lost City>
 STR_SCNR    :Sudameriko - La Perdita Inkaa Urbo
 STR_PARK    :Fondinto de la Perdita Urbo
-STR_DTLS    :Por plue akceli lokan turismon, vi devas konstrui parkon, kiu kaj akordas kun sia ĉirkaŭaĵo, kaj observas limigojn de alteco.
+STR_DTLS    :Por plue akceli lokan turismon, vi devas konstrui parkon, kiu akordas kun sia ĉirkaŭaĵo.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :Sudameriko - Pluvarbaro-Altebenaĵo
