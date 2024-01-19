@@ -67,7 +67,7 @@ namespace OpenRCT2::Scripting
         int32_t getTrackGroup() const;
         template<uint16_t flag> bool getTrackFlag() const;
         std::string getTrackCurvature() const;
-        std::string getTrackSlopeDirection() const;
+        std::string getTrackPitchDirection() const;
     };
 
 } // namespace OpenRCT2::Scripting
