@@ -59,5 +59,4 @@ namespace OpenRCT2
     private:
         void CreateStateSnapshot();
     };
-
 } // namespace OpenRCT2
