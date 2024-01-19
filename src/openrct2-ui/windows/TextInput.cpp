@@ -321,7 +321,6 @@ private:
     {
         SDL_Rect rect = { cursorX, cursorY, 100, 100 };
         SDL_SetTextInputRect(&rect);
-        SDL_StartTextInput();
     }
 
     void ExecuteCallback(bool hasValue)

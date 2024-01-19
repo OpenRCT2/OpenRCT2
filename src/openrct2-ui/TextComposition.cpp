@@ -38,6 +38,7 @@ bool TextComposition::IsActive()
 
 TextInputSession* TextComposition::Start(u8string& buffer, size_t maxLength)
 {
+    SDL_StartTextInput();
     _session.Buffer = &buffer;
     _session.MaxLength = maxLength;
     _session.SelectionStart = buffer.size();
