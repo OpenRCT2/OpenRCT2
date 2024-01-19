@@ -68,6 +68,9 @@ namespace OpenRCT2::Scripting
         { "empty_juice_cup", ShopItem::EmptyJuiceCup },
         { "rubbish", ShopItem::Rubbish },
     });
+    // Since the ShopItem enum is missing values and includes ShopItem::Admission (something a
+    // guest cannot carry), 6 is subtracted from the value.
+    static_assert((EnumValue(ShopItem::Count) - 6) == 50, "ShopItem::Count changed, update scripting binding!");
 
     static const DukEnumMap<uint32_t> VoucherTypeMap({
         { "entry_free", VOUCHER_TYPE_PARK_ENTRY_FREE },
