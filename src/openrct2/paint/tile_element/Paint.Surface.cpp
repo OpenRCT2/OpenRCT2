@@ -39,6 +39,9 @@
 #include <cstring>
 #include <iterator>
 
+// Needed to make the sign appear above footpaths.
+static constexpr int16_t ForSaleSignZOffset = 3;
+
 static constexpr uint8_t Byte97B444[] = {
     0, 2, 1, 3, 8, 10, 9, 11, 4, 6, 5, 7, 12, 14, 13, 15, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 16, 0, 18, 15, 0,
 };
@@ -1007,7 +1010,7 @@ static void PaintSurfaceLandOwnership(
     else if (tileElement.GetOwnership() & OWNERSHIP_AVAILABLE)
     {
         const auto pos = CoordsXYZ(session.MapPosition.x + 16, session.MapPosition.y + 16, aboveWaterHeight);
-        const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape);
+        const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape) + ForSaleSignZOffset;
 
         PaintStruct* backup = session.LastPS;
         PaintAddImageAsParent(session, ImageId(SPR_LAND_OWNERSHIP_AVAILABLE), { 16, 16, height2 }, { 1, 1, 0 });
@@ -1041,7 +1044,7 @@ static void PaintSurfaceConstructionRights(
     else if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
     {
         const auto pos = CoordsXYZ(session.MapPosition.x + 16, session.MapPosition.y + 16, aboveWaterHeight);
-        const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape);
+        const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape) + ForSaleSignZOffset;
 
         PaintStruct* backup = session.LastPS;
         PaintAddImageAsParent(session, ImageId(SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE), { 16, 16, height2 }, { 1, 1, 0 });
