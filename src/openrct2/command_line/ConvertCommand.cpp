@@ -9,6 +9,7 @@
 
 #include "../Context.h"
 #include "../FileClassifier.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../common.h"
@@ -21,6 +22,8 @@
 #include "CommandLine.hpp"
 
 #include <memory>
+
+using namespace OpenRCT2;
 
 static void WriteConvertFromAndToMessage(FileExtension sourceFileType, FileExtension destinationFileType);
 static u8string GetFileTypeFriendlyName(FileExtension fileType);
@@ -98,7 +101,9 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
 
         objManager.LoadObjects(loadResult.RequiredObjects);
 
-        importer->Import();
+        // TODO: Have a separate GameState and exchange once loaded.
+        auto& gameState = GetGameState();
+        importer->Import(gameState);
     }
     catch (const std::exception& ex)
     {
@@ -120,7 +125,9 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
         //      correct initial view
         WindowCloseByClass(WindowClass::MainWindow);
 
-        exporter->Export(destinationPath);
+        auto& gameState = GetGameState();
+
+        exporter->Export(gameState, destinationPath);
     }
     catch (const std::exception& ex)
     {

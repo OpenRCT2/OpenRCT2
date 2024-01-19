@@ -77,6 +77,8 @@
 
 #include <algorithm>
 
+using namespace OpenRCT2;
+
 namespace RCT2
 {
 #define DECRYPT_MONEY(money) (static_cast<money32>(Numerics::rol32((money) ^ 0xF4EC9621, 13)))
@@ -225,7 +227,7 @@ namespace RCT2
             return false;
         }
 
-        void Import() override
+        void Import(GameState_t& gameState) override
         {
             Initialise();
 
@@ -250,7 +252,7 @@ namespace RCT2
             }
 
             OpenRCT2::GetContext()->GetGameState()->SetDate(OpenRCT2::Date(_s6.ElapsedMonths, _s6.CurrentDay));
-            gCurrentTicks = _s6.GameTicks1;
+            gameState.CurrentTicks = _s6.GameTicks1;
 
             ScenarioRandSeed(_s6.ScenarioSrand0, _s6.ScenarioSrand1);
 

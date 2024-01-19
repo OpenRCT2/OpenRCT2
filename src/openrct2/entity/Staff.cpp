@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../Input.h"
 #include "../actions/StaffSetOrdersAction.h"
 #include "../audio/audio.h"
@@ -48,6 +49,8 @@
 
 #include <algorithm>
 #include <iterator>
+
+using namespace OpenRCT2;
 
 // clang-format off
 const StringId StaffCostumeNames[] = {
@@ -487,7 +490,7 @@ bool Staff::DoHandymanPathFinding()
     Direction litterDirection = INVALID_DIRECTION;
     uint8_t validDirections = GetValidPatrolDirections(NextLoc);
 
-    if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((gCurrentTicks + Id.ToUnderlying()) & 0xFFF) > 110)
+    if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((GetGameState().CurrentTicks + Id.ToUnderlying()) & 0xFFF) > 110)
     {
         litterDirection = HandymanDirectionToNearestLitter();
     }

@@ -69,7 +69,7 @@ namespace OpenRCT2::Scripting
 
         uint32_t ticksElapsed_get() const
         {
-            return gCurrentTicks;
+            return GetGameState().CurrentTicks;
         }
 
         int32_t day_get() const

@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../actions/GameAction.h"
@@ -211,11 +212,13 @@ void PeepUpdateAll()
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return;
 
+    const auto currentTicks = OpenRCT2::GetGameState().CurrentTicks;
+
     int32_t i = 0;
     // Warning this loop can delete peeps
     for (auto peep : EntityList<Guest>())
     {
-        if (static_cast<uint32_t>(i & 0x7F) != (gCurrentTicks & 0x7F))
+        if (static_cast<uint32_t>(i & 0x7F) != (currentTicks & 0x7F))
         {
             peep->Update();
         }
@@ -234,7 +237,7 @@ void PeepUpdateAll()
 
     for (auto staff : EntityList<Staff>())
     {
-        if (static_cast<uint32_t>(i & 0x7F) != (gCurrentTicks & 0x7F))
+        if (static_cast<uint32_t>(i & 0x7F) != (currentTicks & 0x7F))
         {
             staff->Update();
         }
@@ -888,7 +891,7 @@ void Peep::SetState(PeepState new_state)
  */
 void Peep::UpdatePicked()
 {
-    if (gCurrentTicks & 0x1F)
+    if (OpenRCT2::GetGameState().CurrentTicks & 0x1F)
         return;
     SubState++;
     auto* guest = As<Guest>();

@@ -143,23 +143,23 @@ namespace OpenRCT2
             ReadWritePackedObjectsChunk(*_os);
         }
 
-        void Import()
+        void Import(GameState_t& gameState)
         {
             auto& os = *_os;
-            ReadWriteTilesChunk(os);
-            ReadWriteBannersChunk(os);
-            ReadWriteRidesChunk(os);
-            ReadWriteEntitiesChunk(os);
-            ReadWriteScenarioChunk(os);
-            ReadWriteGeneralChunk(os);
-            ReadWriteParkChunk(os);
-            ReadWriteClimateChunk(os);
-            ReadWriteResearchChunk(os);
-            ReadWriteNotificationsChunk(os);
-            ReadWriteInterfaceChunk(os);
-            ReadWriteCheatsChunk(os);
-            ReadWriteRestrictedObjectsChunk(os);
-            ReadWritePluginStorageChunk(os);
+            ReadWriteTilesChunk(gameState, os);
+            ReadWriteBannersChunk(gameState, os);
+            ReadWriteRidesChunk(gameState, os);
+            ReadWriteEntitiesChunk(gameState, os);
+            ReadWriteScenarioChunk(gameState, os);
+            ReadWriteGeneralChunk(gameState, os);
+            ReadWriteParkChunk(gameState, os);
+            ReadWriteClimateChunk(gameState, os);
+            ReadWriteResearchChunk(gameState, os);
+            ReadWriteNotificationsChunk(gameState, os);
+            ReadWriteInterfaceChunk(gameState, os);
+            ReadWriteCheatsChunk(gameState, os);
+            ReadWriteRestrictedObjectsChunk(gameState, os);
+            ReadWritePluginStorageChunk(gameState, os);
             if (os.GetHeader().TargetVersion < 0x4)
             {
                 UpdateTrackElementsRideType();
@@ -169,7 +169,7 @@ namespace OpenRCT2
             gInitialCash = gCash;
         }
 
-        void Save(IStream& stream)
+        void Save(GameState_t& gameState, IStream& stream)
         {
             OrcaStream os(stream, OrcaStream::Mode::WRITING);
 
@@ -180,27 +180,27 @@ namespace OpenRCT2
 
             ReadWriteAuthoringChunk(os);
             ReadWriteObjectsChunk(os);
-            ReadWriteTilesChunk(os);
-            ReadWriteBannersChunk(os);
-            ReadWriteRidesChunk(os);
-            ReadWriteEntitiesChunk(os);
-            ReadWriteScenarioChunk(os);
-            ReadWriteGeneralChunk(os);
-            ReadWriteParkChunk(os);
-            ReadWriteClimateChunk(os);
-            ReadWriteResearchChunk(os);
-            ReadWriteNotificationsChunk(os);
-            ReadWriteInterfaceChunk(os);
-            ReadWriteCheatsChunk(os);
-            ReadWriteRestrictedObjectsChunk(os);
-            ReadWritePluginStorageChunk(os);
+            ReadWriteTilesChunk(gameState, os);
+            ReadWriteBannersChunk(gameState, os);
+            ReadWriteRidesChunk(gameState, os);
+            ReadWriteEntitiesChunk(gameState, os);
+            ReadWriteScenarioChunk(gameState, os);
+            ReadWriteGeneralChunk(gameState, os);
+            ReadWriteParkChunk(gameState, os);
+            ReadWriteClimateChunk(gameState, os);
+            ReadWriteResearchChunk(gameState, os);
+            ReadWriteNotificationsChunk(gameState, os);
+            ReadWriteInterfaceChunk(gameState, os);
+            ReadWriteCheatsChunk(gameState, os);
+            ReadWriteRestrictedObjectsChunk(gameState, os);
+            ReadWritePluginStorageChunk(gameState, os);
             ReadWritePackedObjectsChunk(os);
         }
 
-        void Save(const std::string_view path)
+        void Save(GameState_t& gameState, const std::string_view path)
         {
             FileStream fs(path, FILE_MODE_WRITE);
-            Save(fs);
+            Save(gameState, fs);
         }
 
         ScenarioIndexEntry ReadScenarioChunk()
@@ -415,12 +415,13 @@ namespace OpenRCT2
             }
         }
 
-        void ReadWriteScenarioChunk(OrcaStream& os)
+        void ReadWriteScenarioChunk(GameState_t& gameState, OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [&os](OrcaStream::ChunkStream& cs) {
                 cs.ReadWrite(gScenarioCategory);
                 ReadWriteStringTable(cs, gScenarioName, "en-GB");
 
+                // TODO: Use the passed gameState instead of the global one.
                 auto& park = GetContext()->GetGameState()->GetPark();
                 ReadWriteStringTable(cs, park.Name, "en-GB");
 
@@ -464,10 +465,10 @@ namespace OpenRCT2
             });
         }
 
-        void ReadWriteGeneralChunk(OrcaStream& os)
+        void ReadWriteGeneralChunk(GameState_t& gameState, OrcaStream& os)
         {
             const auto version = os.GetHeader().TargetVersion;
-            auto found = os.ReadWriteChunk(ParkFileChunkType::GENERAL, [this, &os, &version](OrcaStream::ChunkStream& cs) {
+            auto found = os.ReadWriteChunk(ParkFileChunkType::GENERAL, [&](OrcaStream::ChunkStream& cs) {
                 // Only GAME_PAUSED_NORMAL from gGamePaused is relevant.
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
@@ -480,13 +481,14 @@ namespace OpenRCT2
                     const uint8_t isPaused = (gGamePaused & GAME_PAUSED_NORMAL);
                     cs.Write(isPaused);
                 }
-                cs.ReadWrite(gCurrentTicks);
+                cs.ReadWrite(gameState.CurrentTicks);
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
                     uint16_t monthTicks;
                     uint32_t monthsElapsed;
                     cs.ReadWrite(monthTicks);
                     cs.ReadWrite(monthsElapsed);
+                    // TODO: Use the passed gameState instead of the global one.
                     GetContext()->GetGameState()->SetDate(Date(monthsElapsed, monthTicks));
                 }
                 else
@@ -600,7 +602,7 @@ namespace OpenRCT2
             cs.ReadWrite(calcData.StationFlags);
         }
 
-        void ReadWriteInterfaceChunk(OrcaStream& os)
+        void ReadWriteInterfaceChunk(GameState_t& gameState, OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::INTERFACE, [](OrcaStream::ChunkStream& cs) {
                 cs.ReadWrite(gSavedView.x);
@@ -620,7 +622,7 @@ namespace OpenRCT2
             });
         }
 
-        void ReadWriteCheatsChunk(OrcaStream& os)
+        void ReadWriteCheatsChunk(GameState_t& gameState, OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::CHEATS, [](OrcaStream::ChunkStream& cs) {
                 DataSerialiser ds(cs.GetMode() == OrcaStream::Mode::WRITING, cs.GetStream());
@@ -628,7 +630,7 @@ namespace OpenRCT2
             });
         }
 
-        void ReadWriteRestrictedObjectsChunk(OrcaStream& os)
+        void ReadWriteRestrictedObjectsChunk(GameState_t& gameState, OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::RESTRICTED_OBJECTS, [](OrcaStream::ChunkStream& cs) {
                 auto& restrictedScenery = GetRestrictedScenery();
@@ -650,8 +652,9 @@ namespace OpenRCT2
             });
         }
 
-        void ReadWritePluginStorageChunk(OrcaStream& os)
+        void ReadWritePluginStorageChunk(GameState_t& gameState, OrcaStream& os)
         {
+            // TODO: Use the passed gameState instead of the global one.
             auto& park = GetContext()->GetGameState()->GetPark();
             if (os.GetMode() == OrcaStream::Mode::WRITING)
             {
@@ -775,7 +778,7 @@ namespace OpenRCT2
             });
         }
 
-        void ReadWriteClimateChunk(OrcaStream& os)
+        void ReadWriteClimateChunk(GameState_t& gameState, OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::CLIMATE, [](OrcaStream::ChunkStream& cs) {
                 cs.ReadWrite(gClimate);
@@ -792,9 +795,10 @@ namespace OpenRCT2
             });
         }
 
-        void ReadWriteParkChunk(OrcaStream& os)
+        void ReadWriteParkChunk(GameState_t& gameState, OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::PARK, [version = os.GetHeader().TargetVersion](OrcaStream::ChunkStream& cs) {
+                // TODO: Use the passed gameState instead of the global one.
                 auto& park = GetContext()->GetGameState()->GetPark();
                 cs.ReadWrite(park.Name);
                 cs.ReadWrite(gCash);
@@ -937,7 +941,7 @@ namespace OpenRCT2
             });
         }
 
-        void ReadWriteResearchChunk(OrcaStream& os)
+        void ReadWriteResearchChunk(GameState_t& gameState, OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::RESEARCH, [](OrcaStream::ChunkStream& cs) {
                 // Research status
@@ -991,7 +995,7 @@ namespace OpenRCT2
             cs.ReadWrite(item.category);
         }
 
-        void ReadWriteNotificationsChunk(OrcaStream& os)
+        void ReadWriteNotificationsChunk(GameState_t& gameState, OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::NOTIFICATIONS, [](OrcaStream::ChunkStream& cs) {
                 if (cs.GetMode() == OrcaStream::Mode::READING)
@@ -1047,7 +1051,7 @@ namespace OpenRCT2
             }
         }
 
-        void ReadWriteTilesChunk(OrcaStream& os)
+        void ReadWriteTilesChunk(GameState_t& gameState, OrcaStream& os)
         {
             auto* pathToSurfaceMap = _pathToSurfaceMap;
             auto* pathToQueueSurfaceMap = _pathToQueueSurfaceMap;
@@ -1061,6 +1065,7 @@ namespace OpenRCT2
 
                     if (cs.GetMode() == OrcaStream::Mode::READING)
                     {
+                        // TODO: Use the passed gameState instead of the global one.
                         OpenRCT2::GetContext()->GetGameState()->InitAll(gMapSize);
 
                         auto numElements = cs.Read<uint32_t>();
@@ -1167,7 +1172,7 @@ namespace OpenRCT2
             }
         }
 
-        void ReadWriteBannersChunk(OrcaStream& os)
+        void ReadWriteBannersChunk(GameState_t& gameState, OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::BANNERS, [&os](OrcaStream::ChunkStream& cs) {
                 auto version = os.GetHeader().TargetVersion;
@@ -1245,7 +1250,7 @@ namespace OpenRCT2
             cs.ReadWrite(banner.position.y);
         }
 
-        void ReadWriteRidesChunk(OrcaStream& os)
+        void ReadWriteRidesChunk(GameState_t& gameState, OrcaStream& os)
         {
             const auto version = os.GetHeader().TargetVersion;
             os.ReadWriteChunk(ParkFileChunkType::RIDES, [this, &version](OrcaStream::ChunkStream& cs) {
@@ -1987,7 +1992,7 @@ namespace OpenRCT2
 
         template<typename... T> void ReadEntitiesOfTypes(OrcaStream& os, OrcaStream::ChunkStream& cs);
 
-        void ReadWriteEntitiesChunk(OrcaStream& os);
+        void ReadWriteEntitiesChunk(GameState_t& gameState, OrcaStream& os);
 
         static void ReadWriteStringTable(OrcaStream::ChunkStream& cs, std::string& value, const std::string_view lcode)
         {
@@ -2488,7 +2493,7 @@ namespace OpenRCT2
         (ReadEntitiesOfType<T>(os, cs), ...);
     }
 
-    void ParkFile::ReadWriteEntitiesChunk(OrcaStream& os)
+    void ParkFile::ReadWriteEntitiesChunk(GameState_t& gameState, OrcaStream& os)
     {
         os.ReadWriteChunk(ParkFileChunkType::ENTITIES, [this, &os](OrcaStream::ChunkStream& cs) {
             if (cs.GetMode() == OrcaStream::Mode::READING)
@@ -2513,17 +2518,17 @@ namespace OpenRCT2
     }
 } // namespace OpenRCT2
 
-void ParkFileExporter::Export(std::string_view path)
+void ParkFileExporter::Export(GameState_t& gameState, std::string_view path)
 {
     auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
-    parkFile->Save(path);
+    parkFile->Save(gameState, path);
 }
 
-void ParkFileExporter::Export(IStream& stream)
+void ParkFileExporter::Export(GameState_t& gameState, IStream& stream)
 {
     auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
     parkFile->ExportObjectsList = ExportObjectsList;
-    parkFile->Save(stream);
+    parkFile->Save(gameState, stream);
 }
 
 enum : uint32_t
@@ -2533,7 +2538,7 @@ enum : uint32_t
     S6_SAVE_FLAG_AUTOMATIC = 1u << 31,
 };
 
-int32_t ScenarioSave(u8string_view path, int32_t flags)
+int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
 {
     if (flags & S6_SAVE_FLAG_SCENARIO)
     {
@@ -2570,7 +2575,7 @@ int32_t ScenarioSave(u8string_view path, int32_t flags)
         {
             // s6exporter->SaveGame(path);
         }
-        parkFile->Save(path);
+        parkFile->Save(gameState, path);
         result = true;
     }
     catch (const std::exception& e)
@@ -2658,9 +2663,9 @@ public:
         return result;
     }
 
-    void Import() override
+    void Import(GameState_t& gameState) override
     {
-        _parkFile->Import();
+        _parkFile->Import(gameState);
         ResearchDetermineFirstOfType();
         GameFixSaveVars();
     }

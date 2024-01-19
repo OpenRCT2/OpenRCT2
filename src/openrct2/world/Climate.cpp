@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../audio/AudioChannel.h"
 #include "../audio/AudioMixer.h"
@@ -30,6 +31,7 @@
 #include <iterator>
 #include <memory>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
 constexpr int32_t MAX_THUNDER_INSTANCES = 2;
@@ -136,7 +138,7 @@ void ClimateUpdate()
             }
             gClimateUpdateTimer--;
         }
-        else if (!(gCurrentTicks & 0x7F))
+        else if (!(GetGameState().CurrentTicks & 0x7F))
         {
             if (gClimateCurrent.Temperature == gClimateNext.Temperature)
             {

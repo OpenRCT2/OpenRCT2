@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../GameStateSnapshots.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
@@ -38,6 +39,8 @@
 #include <algorithm>
 #include <iterator>
 #include <stdexcept>
+
+using namespace OpenRCT2;
 
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
@@ -783,12 +786,14 @@ bool NetworkBase::IsDesynchronised() const noexcept
 
 bool NetworkBase::CheckDesynchronizaton()
 {
+    const auto currentTicks = GetGameState().CurrentTicks;
+
     // Check synchronisation
     if (GetMode() == NETWORK_MODE_CLIENT && _serverState.state != NetworkServerStatus::Desynced
-        && !CheckSRAND(gCurrentTicks, ScenarioRandState().s0))
+        && !CheckSRAND(currentTicks, ScenarioRandState().s0))
     {
         _serverState.state = NetworkServerStatus::Desynced;
-        _serverState.desyncTick = gCurrentTicks;
+        _serverState.desyncTick = currentTicks;
 
         char str_desync[256];
         FormatStringLegacy(str_desync, 256, STR_MULTIPLAYER_DESYNC, nullptr);
@@ -1496,7 +1501,7 @@ void NetworkBase::Client_Send_GAME_ACTION(const GameAction* action)
     DataSerialiser stream(true);
     action->Serialise(stream);
 
-    packet << gCurrentTicks << action->GetType() << stream;
+    packet << GetGameState().CurrentTicks << action->GetType() << stream;
     _serverConnection->QueuePacket(std::move(packet));
 }
 
@@ -1507,7 +1512,7 @@ void NetworkBase::ServerSendGameAction(const GameAction* action)
     DataSerialiser stream(true);
     action->Serialise(stream);
 
-    packet << gCurrentTicks << action->GetType() << stream;
+    packet << GetGameState().CurrentTicks << action->GetType() << stream;
 
     SendPacketToClients(packet);
 }
@@ -1515,7 +1520,7 @@ void NetworkBase::ServerSendGameAction(const GameAction* action)
 void NetworkBase::ServerSendTick()
 {
     NetworkPacket packet(NetworkCommand::Tick);
-    packet << gCurrentTicks << ScenarioRandState().s0;
+    packet << GetGameState().CurrentTicks << ScenarioRandState().s0;
     uint32_t flags = 0;
     // Simple counter which limits how often a sprite checksum gets sent.
     // This can get somewhat expensive, so we don't want to push it every tick in release,
@@ -1542,7 +1547,7 @@ void NetworkBase::ServerSendTick()
 void NetworkBase::ServerSendPlayerInfo(int32_t playerId)
 {
     NetworkPacket packet(NetworkCommand::PlayerInfo);
-    packet << gCurrentTicks;
+    packet << GetGameState().CurrentTicks;
 
     auto* player = GetPlayerByID(playerId);
     if (player == nullptr)
@@ -1555,7 +1560,7 @@ void NetworkBase::ServerSendPlayerInfo(int32_t playerId)
 void NetworkBase::ServerSendPlayerList()
 {
     NetworkPacket packet(NetworkCommand::PlayerList);
-    packet << gCurrentTicks << static_cast<uint8_t>(player_list.size());
+    packet << GetGameState().CurrentTicks << static_cast<uint8_t>(player_list.size());
     for (auto& player : player_list)
     {
         player->Write(packet);
@@ -1849,7 +1854,7 @@ void NetworkBase::ProcessPlayerList()
         auto itPending = _pendingPlayerLists.begin();
         while (itPending != _pendingPlayerLists.end())
         {
-            if (itPending->first > gCurrentTicks)
+            if (itPending->first > GetGameState().CurrentTicks)
                 break;
 
             // List of active players found in the list.
@@ -1921,7 +1926,9 @@ void NetworkBase::ProcessPlayerList()
 
 void NetworkBase::ProcessPlayerInfo()
 {
-    auto range = _pendingPlayerInfo.equal_range(gCurrentTicks);
+    const auto currentTicks = GetGameState().CurrentTicks;
+
+    auto range = _pendingPlayerInfo.equal_range(currentTicks);
     for (auto it = range.first; it != range.second; it++)
     {
         auto* player = GetPlayerByID(it->second.Id);
@@ -1936,7 +1943,7 @@ void NetworkBase::ProcessPlayerInfo()
             player->CommandsRan = networkedInfo.CommandsRan;
         }
     }
-    _pendingPlayerInfo.erase(gCurrentTicks);
+    _pendingPlayerInfo.erase(currentTicks);
 }
 
 void NetworkBase::ProcessDisconnectedClients()
@@ -2750,7 +2757,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
             GameLoadInit();
             GameLoadScripts();
             GameNotifyMapChanged();
-            _serverState.tick = gCurrentTicks;
+            _serverState.tick = GetGameState().CurrentTicks;
             // WindowNetworkStatusOpen("Loaded new map from network");
             _serverState.state = NetworkServerStatus::Ok;
             _clientMapLoaded = true;
@@ -2790,7 +2797,10 @@ bool NetworkBase::LoadMap(IStream* stream)
         auto importer = ParkImporter::CreateParkFile(context.GetObjectRepository());
         auto loadResult = importer->LoadFromStream(stream, false);
         objManager.LoadObjects(loadResult.RequiredObjects);
-        importer->Import();
+
+        // TODO: Have a separate GameState and exchange once loaded.
+        auto& gameState = GetGameState();
+        importer->Import(gameState);
 
         EntityTweener::Get().Reset();
         MapAnimationAutoCreate();
@@ -2813,7 +2823,9 @@ bool NetworkBase::SaveMap(IStream* stream, const std::vector<const ObjectReposit
     {
         auto exporter = std::make_unique<ParkFileExporter>();
         exporter->ExportObjectsList = objects;
-        exporter->Export(*stream);
+
+        auto& gameState = GetGameState();
+        exporter->Export(gameState, *stream);
         result = true;
     }
     catch (const std::exception& e)
@@ -4030,7 +4042,7 @@ NetworkAuth NetworkGetAuthstatus()
 }
 uint32_t NetworkGetServerTick()
 {
-    return gCurrentTicks;
+    return GetGameState().CurrentTicks;
 }
 void NetworkFlush()
 {

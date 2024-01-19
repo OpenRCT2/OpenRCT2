@@ -11,6 +11,7 @@
 
 #include "../../Context.h"
 #include "../../Game.h"
+#include "../../GameState.h"
 #include "../../config/Config.h"
 #include "../../core/Numerics.hpp"
 #include "../../entity/PatrolArea.h"
@@ -330,7 +331,7 @@ static void PathPaintFencesAndQueueBanners(
             }
 
             uint16_t stringWidth = GfxGetStringWidth(gCommonStringFormatBuffer, FontStyle::Tiny);
-            uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
+            uint16_t scroll = stringWidth > 0 ? (GetGameState().CurrentTicks / 2) % stringWidth : 0;
 
             PaintAddImageAsChild(
                 session, ScrollingTextSetup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK),

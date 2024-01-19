@@ -21,6 +21,13 @@ namespace OpenRCT2
 {
     class Park;
 
+    struct GameState_t
+    {
+        uint32_t CurrentTicks{};
+    };
+
+    GameState_t& GetGameState();
+
     /**
      * Class to update the state of the map and park.
      */

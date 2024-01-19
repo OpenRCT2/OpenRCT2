@@ -25,6 +25,11 @@ struct ResultWithMessage;
 
 using random_engine_t = Random::RCT2::Engine;
 
+namespace OpenRCT2
+{
+    struct GameState_t;
+}
+
 enum
 {
     SCENARIO_FLAGS_VISIBLE = (1 << 0),
@@ -184,7 +189,7 @@ random_engine_t::result_type ScenarioRand();
 uint32_t ScenarioRandMax(uint32_t max);
 
 ResultWithMessage ScenarioPrepareForSave();
-int32_t ScenarioSave(u8string_view path, int32_t flags);
+int32_t ScenarioSave(OpenRCT2::GameState_t& gameState, u8string_view path, int32_t flags);
 void ScenarioFailure();
 void ScenarioSuccess();
 void ScenarioSuccessSubmitName(const char* name);

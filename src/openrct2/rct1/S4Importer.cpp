@@ -169,7 +169,7 @@ namespace RCT1
             return ParkLoadResult(GetRequiredObjects());
         }
 
-        void Import() override
+        void Import(GameState_t& gameState) override
         {
             Initialise();
 
@@ -183,7 +183,7 @@ namespace RCT1
             ImportFinance();
             ImportResearch();
             ImportParkName();
-            ImportParkFlags();
+            ImportParkFlags(gameState);
             ImportClimate();
             ImportScenarioNameDetails();
             ImportScenarioObjective();
@@ -2118,10 +2118,10 @@ namespace RCT1
             park.Name = std::move(parkName);
         }
 
-        void ImportParkFlags()
+        void ImportParkFlags(GameState_t& gameState)
         {
             // Date and srand
-            gCurrentTicks = _s4.Ticks;
+            gameState.CurrentTicks = _s4.Ticks;
             ScenarioRandSeed(_s4.RandomA, _s4.RandomB);
             GetContext()->GetGameState()->SetDate(Date(_s4.Month, _s4.Day));
 

@@ -9,6 +9,7 @@
 #include "Duck.h"
 
 #include "../Game.h"
+#include "../GameState.h"
 #include "../audio/audio.h"
 #include "../core/DataSerialiser.h"
 #include "../localisation/Date.h"
@@ -22,6 +23,8 @@
 #include <algorithm>
 #include <iterator>
 #include <limits>
+
+using namespace OpenRCT2;
 
 constexpr int32_t DUCK_MAX_STATES = 5;
 
@@ -88,7 +91,9 @@ void Duck::Remove()
 
 void Duck::UpdateFlyToWater()
 {
-    if ((gCurrentTicks & 3) != 0)
+    const auto currentTicks = GetGameState().CurrentTicks;
+
+    if ((currentTicks & 3) != 0)
         return;
 
     frame++;
@@ -150,7 +155,9 @@ void Duck::UpdateFlyToWater()
 
 void Duck::UpdateSwim()
 {
-    if (((gCurrentTicks + Id.ToUnderlying()) & 3) != 0)
+    const auto currentTicks = GetGameState().CurrentTicks;
+
+    if (((currentTicks + Id.ToUnderlying()) & 3) != 0)
         return;
 
     uint32_t randomNumber = ScenarioRand();
@@ -246,7 +253,7 @@ void Duck::UpdateDoubleDrink()
 
 void Duck::UpdateFlyAway()
 {
-    if ((gCurrentTicks & 3) == 0)
+    if ((GetGameState().CurrentTicks & 3) == 0)
     {
         frame++;
         if (frame >= std::size(DuckAnimationFlyAway))
