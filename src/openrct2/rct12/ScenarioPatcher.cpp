@@ -89,7 +89,6 @@ static void ApplyLandOwnershipFixes(const json_t& landOwnershipFixes, int owners
     const bool cannotDowngrade = ownershipParameters.contains(s_cannotDowngradeKey)
         ? Json::GetBoolean(ownershipParameters[s_cannotDowngradeKey], false)
         : false;
-    std::initializer_list<TileCoordsXY> tiles;
     for (size_t i = 0; i < ownershipCoords.size(); ++i)
     {
         if (!ownershipCoords[i].is_array())
