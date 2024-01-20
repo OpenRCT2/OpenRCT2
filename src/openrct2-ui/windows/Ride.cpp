@@ -6605,7 +6605,7 @@ private:
 
 #pragma region Scripting
 
-    #ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING
     void InvokeRideWindowOpen(const RideId rideId)
     {
         auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
@@ -6622,7 +6622,7 @@ private:
             hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::WINDOW_OPEN_RIDE, e, true);
         }
     }
-    #endif
+#endif
 
 #pragma endregion
 };
