@@ -506,8 +506,11 @@ namespace OpenRCT2::RCT2
 
             gameState.Park.Name = GetUserString(_s6.ParkName);
 
-            FixLandOwnership();
-            FixWater();
+            // Checking _s6.ScenarioFilename is generally more reliable as it survives renaming.
+            // However, some WW/TT scenarios have this incorrectly set to "Six Flags Magic Mountain.SC6",
+            // so for those cases (as well as for SFMM proper, we’ll have to check the filename.
+            RCT12::FetchAndApplyScenarioPatch(
+                _s6.ScenarioFilename != gScenarioFileName ? gScenarioFileName : _s6.ScenarioFilename, _isScenario);
             FixAyersRockScenario();
 
             ResearchDetermineFirstOfType();
@@ -532,40 +535,6 @@ namespace OpenRCT2::RCT2
             gameState.ScenarioCompletedBy = RCT2StringToUTF8(gameState.ScenarioCompletedBy, RCT2LanguageId::EnglishUK);
             gameState.ScenarioName = RCT2StringToUTF8(gameState.ScenarioName, RCT2LanguageId::EnglishUK);
             gameState.ScenarioDetails = RCT2StringToUTF8(gameState.ScenarioDetails, RCT2LanguageId::EnglishUK);
-        }
-
-        void FixLandOwnership() const
-        {
-            // Checking _s6.ScenarioFilename is generally more reliable as it survives renaming.
-            // However, some WW/TT scenarios have this incorrectly set to "Six Flags Magic Mountain.SC6",
-            // so for those cases (as well as for SFMM proper, we’ll have to check the filename.
-            // TODO: Land ownership is applied even when loading saved scenario. Should it?
-            RCT12::FetchAndApplyScenarioPatch(
-                _s6.ScenarioFilename != gScenarioFileName ? gScenarioFileName : _s6.ScenarioFilename);
-        }
-
-        void FixWater() const
-        {
-            if (!_isScenario)
-            {
-                return;
-            }
-            if (String::IEquals(_s6.ScenarioFilename, "Infernal Views.SC6")
-                || String::IEquals(_s6.ScenarioFilename, "infernal views.sea"))
-            {
-                auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ 45, 62 });
-
-                surfaceElement->SetWaterHeight(96);
-            }
-            else if (
-                String::Equals(_s6.ScenarioFilename, "Six Flags Holland.SC6", true)
-                || String::Equals(_s6.ScenarioFilename, "six flags holland.sea", true))
-
-            {
-                auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ 126, 73 });
-
-                surfaceElement->SetWaterHeight(96);
-            }
         }
 
         void FixAyersRockScenario() const

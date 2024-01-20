@@ -192,7 +192,9 @@ namespace OpenRCT2::RCT1
             ImportScenarioNameDetails(gameState);
             ImportScenarioObjective(gameState);
             ImportSavedView();
-            FixLandOwnership();
+
+            // TODO: investigate why Katie's Dreamland.s4 and .sea have different patches
+            RCT12::FetchAndApplyScenarioPatch(_s4.ScenarioName, _isScenario);
             FixUrbanPark();
             FixNextGuestNumber(gameState);
             CountBlockSections();
@@ -2512,13 +2514,6 @@ namespace OpenRCT2::RCT1
             auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::EnglishUK);
             auto justText = RCT12RemoveFormattingUTF8(asUtf8);
             return justText.data();
-        }
-
-        void FixLandOwnership()
-        {
-            // TODO: Land ownership is applied even when loading saved scenario. Should it?
-            RCT12::FetchAndApplyScenarioPatch(_s4.ScenarioName);
-            // TODO: investigate why Katie's Dreamland.s4 and .sea have different patches
         }
 
         /**
