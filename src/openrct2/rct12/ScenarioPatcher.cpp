@@ -10,12 +10,18 @@
 #include "ScenarioPatcher.h"
 
 #include "../Context.h"
+#include "../Game.h"
 #include "../PlatformEnvironment.h"
 #include "../core/File.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
 #include "../core/Path.hpp"
+#include "../entity/EntityList.h"
+#include "../entity/Guest.h"
+#include "../entity/Peep.h"
+#include "../ride/Ride.h"
 #include "../ride/Track.h"
+#include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "../world/Surface.h"
@@ -39,6 +45,11 @@ static const std::string s_fromKey = "from";
 static const std::string s_toKey = "to";
 static const std::string s_tilesKey = "tiles";
 static const std::string s_typeKey = "type";
+
+// Ride fix keys
+static const std::string s_ridesKey = "rides";
+static const std::string s_rideIdKey = "id";
+static const std::string s_operationKey = "operation";
 
 static u8string ToOwnershipJsonKey(int ownershipType)
 {
@@ -333,6 +344,96 @@ static void ApplyTileFixes(const json_t& scenarioPatch)
     }
 }
 
+static void SwapRideEntranceAndExit(RideId rideId)
+{
+    auto ride = GetRide(rideId);
+    if (ride == nullptr)
+    {
+        Guard::Assert(0, "Invalid Ride Id for SwapRideEntranceAndExit");
+        return;
+    }
+
+    // First, make the queuing peep exit
+    for (auto peep : EntityList<Guest>())
+    {
+        if (peep->State == PeepState::QueuingFront && peep->CurrentRide == rideId)
+        {
+            peep->RemoveFromQueue();
+            peep->SetState(PeepState::Falling);
+            break;
+        }
+    }
+
+    // Now, swap the entrance and exit.
+    if (ride != nullptr)
+    {
+        auto& station = ride->GetStation();
+        auto entranceCoords = station.Exit;
+        auto exitCoords = station.Entrance;
+        station.Entrance = entranceCoords;
+        station.Exit = exitCoords;
+
+        auto entranceElement = MapGetRideExitElementAt(entranceCoords.ToCoordsXYZD(), false);
+        entranceElement->SetEntranceType(ENTRANCE_TYPE_RIDE_ENTRANCE);
+        auto exitElement = MapGetRideEntranceElementAt(exitCoords.ToCoordsXYZD(), false);
+        exitElement->SetEntranceType(ENTRANCE_TYPE_RIDE_EXIT);
+
+        // Trigger footpath update
+        FootpathQueueChainReset();
+        FootpathConnectEdges(
+            entranceCoords.ToCoordsXY(), reinterpret_cast<TileElement*>(entranceElement),
+            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+        FootpathUpdateQueueChains();
+    }
+}
+
+static void ApplyRideFixes(const json_t& scenarioPatch)
+{
+    if (!scenarioPatch.contains(s_ridesKey))
+    {
+        return;
+    }
+
+    if (!scenarioPatch[s_ridesKey].is_array())
+    {
+        Guard::Assert(0, "Ride fixes should be an array of arrays");
+        return;
+    }
+
+    auto rideFixes = Json::AsArray(scenarioPatch[s_ridesKey]);
+    if (rideFixes.empty())
+    {
+        Guard::Assert(0, "Ride fixes should not be an empty array");
+        return;
+    }
+
+    for (size_t i = 0; i < rideFixes.size(); ++i)
+    {
+        if (!rideFixes[i].contains(s_rideIdKey))
+        {
+            Guard::Assert(0, "Ride fixes should contain a ride id");
+            return;
+        }
+
+        if (!rideFixes[i].contains(s_operationKey))
+        {
+            Guard::Assert(0, "Ride fixes should contain a ride operation");
+            return;
+        }
+
+        RideId rideId = RideId::FromUnderlying(Json::GetNumber<uint16_t>(rideFixes[i][s_rideIdKey]));
+        auto operation = Json::GetString(rideFixes[i][s_operationKey]);
+        if (operation == "swap_entrance_exit")
+        {
+            SwapRideEntranceAndExit(rideId);
+        }
+        else
+        {
+            Guard::Assert(0, "Unsupported ride fix operation");
+        }
+    }
+}
+
 static u8string GetPatchFileName(u8string_view scenarioName)
 {
     auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
@@ -355,6 +456,7 @@ void RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioName, bool isScenar
         {
             ApplyWaterFixes(scenarioPatch);
             ApplyTileFixes(scenarioPatch);
+            ApplyRideFixes(scenarioPatch);
         }
     }
 }
