@@ -433,13 +433,14 @@ private:
 
     void FinancialMouseDown(WidgetIndex widgetIndex)
     {
+        auto& gameState = GetGameState();
         switch (widgetIndex)
         {
             case WIDX_INITIAL_CASH_INCREASE:
-                if (GetGameState().InitialCash < 1000000.00_GBP)
+                if (gameState.InitialCash < 1000000.00_GBP)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::InitialCash, GetGameState().InitialCash + 500.00_GBP);
+                        ScenarioSetSetting::InitialCash, gameState.InitialCash + 500.00_GBP);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -449,10 +450,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_INITIAL_CASH_DECREASE:
-                if (GetGameState().InitialCash > 0.00_GBP)
+                if (gameState.InitialCash > 0.00_GBP)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::InitialCash, GetGameState().InitialCash - 500.00_GBP);
+                        ScenarioSetSetting::InitialCash, gameState.InitialCash - 500.00_GBP);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else

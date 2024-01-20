@@ -213,6 +213,8 @@ void FinanceResetHistory()
  */
 void FinanceInit()
 {
+    auto& gameState = GetGameState();
+
     // It only initialises the first month
     for (uint32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
     {
@@ -225,9 +227,9 @@ void FinanceInit()
     gWeeklyProfitAverageDividend = 0;
     gWeeklyProfitAverageDivisor = 0;
 
-    GetGameState().InitialCash = 10000.00_GBP; // Cheat detection
+    gameState.InitialCash = 10000.00_GBP; // Cheat detection
 
-    GetGameState().Cash = 10000.00_GBP;
+    gameState.Cash = 10000.00_GBP;
     gBankLoan = 10000.00_GBP;
     gMaxBankLoan = 20000.00_GBP;
 
@@ -355,7 +357,8 @@ void FinanceShiftExpenditureTable()
  */
 void FinanceResetCashToInitial()
 {
-    GetGameState().Cash = GetGameState().InitialCash;
+    auto& gameState = GetGameState();
+    gameState.Cash = gameState.InitialCash;
 }
 
 /**

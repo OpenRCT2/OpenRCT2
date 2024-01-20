@@ -110,12 +110,13 @@ void ScenarioReset()
     ScenerySetDefaultPlacementConfiguration();
     News::InitQueue();
 
+    auto& gameState = GetGameState();
     auto& park = GetContext()->GetGameState()->GetPark();
     gParkRating = park.CalculateParkRating();
     gParkValue = park.CalculateParkValue();
     gCompanyValue = park.CalculateCompanyValue();
-    gHistoricalProfit = GetGameState().InitialCash - gBankLoan;
-    GetGameState().Cash = GetGameState().InitialCash;
+    gHistoricalProfit = gameState.InitialCash - gBankLoan;
+    gameState.Cash = gameState.InitialCash;
 
     {
         utf8 normalisedName[64];
