@@ -44,6 +44,7 @@ namespace OpenRCT2::Scripting
         MAP_CHANGED,
         MAP_SAVE,
         COUNT,
+        WINDOW_OPEN_RIDE,
         UNDEFINED = -1,
     };
     constexpr size_t NUM_HOOK_TYPES = static_cast<size_t>(HOOK_TYPE::COUNT);

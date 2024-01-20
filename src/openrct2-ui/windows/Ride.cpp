@@ -60,6 +60,8 @@
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/sprites.h>
+#include <openrct2/scripting/HookEngine.h>
+#include <openrct2/scripting/ScriptEngine.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 #include <optional>
@@ -662,6 +664,10 @@ public:
         UpdateOverallView(*ride);
 
         PopulateVehicleTypeDropdown(*ride, true);
+
+#ifdef ENABLE_SCRIPTING
+        InvokeRideWindowOpen(rideId);
+#endif
     }
 
     virtual void OnClose() override
@@ -6594,6 +6600,29 @@ private:
         ft.Add<int16_t>(age);
         DrawTextBasic(dpi, screenCoords, stringId, ft);
     }
+
+#pragma endregion
+
+#pragma region Scripting
+
+    #ifdef ENABLE_SCRIPTING
+    void InvokeRideWindowOpen(const RideId rideId)
+    {
+        auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+        if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::WINDOW_OPEN_RIDE))
+        {
+            auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+            // Create event args object
+            auto obj = OpenRCT2::Scripting::DukObject(ctx);
+            obj.Set("id", rideId.ToUnderlying());
+
+            // Call the subscriptions
+            auto e = obj.Take();
+            hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::WINDOW_OPEN_RIDE, e, true);
+        }
+    }
+    #endif
 
 #pragma endregion
 };
