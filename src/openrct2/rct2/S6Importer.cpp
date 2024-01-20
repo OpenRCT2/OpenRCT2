@@ -511,7 +511,6 @@ namespace OpenRCT2::RCT2
             // so for those cases (as well as for SFMM proper, we’ll have to check the filename.
             RCT12::FetchAndApplyScenarioPatch(
                 _s6.ScenarioFilename != gScenarioFileName ? gScenarioFileName : _s6.ScenarioFilename, _isScenario);
-            FixAyersRockScenario();
 
             ResearchDetermineFirstOfType();
             UpdateConsolidatedPatrolAreas();
@@ -535,60 +534,6 @@ namespace OpenRCT2::RCT2
             gameState.ScenarioCompletedBy = RCT2StringToUTF8(gameState.ScenarioCompletedBy, RCT2LanguageId::EnglishUK);
             gameState.ScenarioName = RCT2StringToUTF8(gameState.ScenarioName, RCT2LanguageId::EnglishUK);
             gameState.ScenarioDetails = RCT2StringToUTF8(gameState.ScenarioDetails, RCT2LanguageId::EnglishUK);
-        }
-
-        void FixAyersRockScenario() const
-        {
-            if (!_isScenario || !String::Equals(_s6.ScenarioFilename, "Australasia - Ayers Rock.SC6"))
-                return;
-
-            TileCoordsXY tilesToUncovered[] = {
-                { 123, 59 }, { 123, 60 }, { 123, 61 }, { 118, 69 }, { 118, 70 }, { 118, 71 },
-                { 118, 72 }, { 118, 73 }, { 112, 79 }, { 112, 80 }, { 112, 81 }, { 112, 82 },
-            };
-            for (const auto& tile : tilesToUncovered)
-            {
-                auto* tileElement = MapGetFirstElementAt(tile);
-                if (tileElement == nullptr)
-                    continue;
-
-                do
-                {
-                    if (tileElement->GetType() != TileElementType::Track)
-                        continue;
-
-                    auto* trackElement = tileElement->AsTrack();
-                    if (trackElement->GetTrackType() != TrackElemType::FlatCovered)
-                        continue;
-
-                    trackElement->SetTrackType(TrackElemType::Flat);
-                } while (!(tileElement++)->IsLastForTile());
-            }
-
-            TileCoordsXY tilesToCovered[] = {
-                { 123, 83 },
-                { 123, 84 },
-                { 123, 85 },
-                { 123, 86 },
-            };
-            for (const auto& tile : tilesToCovered)
-            {
-                auto* tileElement = MapGetFirstElementAt(tile);
-                if (tileElement == nullptr)
-                    continue;
-
-                do
-                {
-                    if (tileElement->GetType() != TileElementType::Track)
-                        continue;
-
-                    auto* trackElement = tileElement->AsTrack();
-                    if (trackElement->GetTrackType() != TrackElemType::Flat)
-                        continue;
-
-                    trackElement->SetTrackType(TrackElemType::FlatCovered);
-                } while (!(tileElement++)->IsLastForTile());
-            }
         }
 
         void ImportRides()
