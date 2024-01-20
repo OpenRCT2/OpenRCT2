@@ -13,6 +13,7 @@
 #include "../Date.h"
 #include "../EditorObjectSelectionSession.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../ReplayManager.h"
@@ -77,6 +78,8 @@
 #ifndef NO_TTF
 #    include "../drawing/TTF.h"
 #endif
+
+using namespace OpenRCT2;
 
 using arguments_t = std::vector<std::string>;
 using OpenRCT2::Date;
@@ -564,7 +567,7 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "money")
         {
-            console.WriteFormatLine("money %d.%d0", gCash / 10, gCash % 10);
+            console.WriteFormatLine("money %d.%d0", GetGameState().Cash / 10, GetGameState().Cash % 10);
         }
         else if (argv[0] == "scenario_initial_cash")
         {
@@ -767,7 +770,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         if (argv[0] == "money" && InvalidArguments(&invalidArgs, double_valid[0]))
         {
             money64 money = ToMoney64FromGBP(double_val[0]);
-            if (gCash != money)
+            if (GetGameState().Cash != money)
             {
                 auto cheatSetAction = CheatSetAction(CheatType::SetMoney, money);
                 cheatSetAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {

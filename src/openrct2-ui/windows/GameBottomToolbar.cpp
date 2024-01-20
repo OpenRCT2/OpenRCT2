@@ -14,6 +14,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
@@ -28,6 +29,8 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
+
+using namespace OpenRCT2;
 
 // clang-format off
 enum WindowGameBottomToolbarWidgetIdx
@@ -98,9 +101,9 @@ private:
                 = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_MONEY
                        ? COLOUR_WHITE
                        : NOT_TRANSLUCENT(colours[0]));
-            StringId stringId = gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
+            StringId stringId = GetGameState().Cash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
             auto ft = Formatter();
-            ft.Add<money64>(gCash);
+            ft.Add<money64>(GetGameState().Cash);
             DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
         }
 

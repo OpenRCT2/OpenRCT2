@@ -11,6 +11,7 @@
 
 #    include "NetworkServerAdvertiser.h"
 
+#    include "../GameState.h"
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"
 #    include "../core/Guard.hpp"
@@ -32,6 +33,8 @@
 #    include <memory>
 #    include <random>
 #    include <string>
+
+using namespace OpenRCT2;
 
 enum class MasterServerStatus
 {
@@ -306,7 +309,7 @@ private:
         };
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
-            gameInfo["cash"] = gCash;
+            gameInfo["cash"] = GetGameState().Cash;
         }
 
         root["gameInfo"] = gameInfo;

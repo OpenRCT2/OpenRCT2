@@ -180,7 +180,7 @@ namespace RCT1
             ImportSprites();
             ImportTileElements();
             ImportPeepSpawns();
-            ImportFinance();
+            ImportFinance(gameState);
             ImportResearch();
             ImportParkName();
             ImportParkFlags(gameState);
@@ -1389,13 +1389,13 @@ namespace RCT1
             }
         }
 
-        void ImportFinance()
+        void ImportFinance(GameState_t& gameState)
         {
             gParkEntranceFee = _s4.ParkEntranceFee;
             gLandPrice = ToMoney64(_s4.LandPrice);
             gConstructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
 
-            gCash = ToMoney64(_s4.Cash);
+            gameState.Cash = ToMoney64(_s4.Cash);
             gBankLoan = ToMoney64(_s4.Loan);
             gMaxBankLoan = ToMoney64(_s4.MaxLoan);
             // It's more like 1.33%, but we can only use integers. Can be fixed once we have our own save format.

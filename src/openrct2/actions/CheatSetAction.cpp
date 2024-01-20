@@ -39,6 +39,8 @@
 #include "ParkSetLoanAction.h"
 #include "ParkSetParameterAction.h"
 
+using namespace OpenRCT2;
+
 using ParametersRange = std::pair<std::pair<int64_t, int64_t>, std::pair<int64_t, int64_t>>;
 
 CheatSetAction::CheatSetAction(CheatType cheatType, int64_t param1, int64_t param2)
@@ -565,7 +567,7 @@ void CheatSetAction::SetScenarioNoMoney(bool enabled) const
 
 void CheatSetAction::SetMoney(money64 amount) const
 {
-    gCash = amount;
+    GetGameState().Cash = amount;
 
     WindowInvalidateByClass(WindowClass::Finances);
     WindowInvalidateByClass(WindowClass::BottomToolbar);
@@ -573,7 +575,7 @@ void CheatSetAction::SetMoney(money64 amount) const
 
 void CheatSetAction::AddMoney(money64 amount) const
 {
-    gCash = AddClamp_money64(gCash, amount);
+    GetGameState().Cash = AddClamp_money64(GetGameState().Cash, amount);
 
     WindowInvalidateByClass(WindowClass::Finances);
     WindowInvalidateByClass(WindowClass::BottomToolbar);
