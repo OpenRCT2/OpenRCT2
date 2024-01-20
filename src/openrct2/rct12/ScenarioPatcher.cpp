@@ -108,6 +108,80 @@ static void ApplyLandOwnershipFixes(const json_t& scenarioPatch)
     }
 }
 
+static void ApplyWaterFixes(const json_t& scenarioPatch)
+{
+    constexpr u8string_view waterFixKey = "water";
+    if (!scenarioPatch.contains(waterFixKey))
+    {
+        return;
+    }
+
+    if (!scenarioPatch[waterFixKey].is_array())
+    {
+        Guard::Assert(0, "Water fix should be an array");
+        return;
+    }
+
+    auto waterFixes = Json::AsArray(scenarioPatch[waterFixKey]);
+    if (waterFixes.empty())
+    {
+        Guard::Assert(0, "Water fix array should not be empty");
+        return;
+    }
+
+    for (size_t i = 0; i < waterFixes.size(); ++i)
+    {
+        constexpr u8string_view heightKey = "height";
+        if (!waterFixes[i].contains(heightKey))
+        {
+            Guard::Assert(0, "Water fix sub-array should set a height");
+            return;
+        }
+
+        auto waterHeight = waterFixes[i][heightKey];
+
+        constexpr u8string_view coordinatesKey = "coordinates";
+        if (!waterFixes[i].contains(coordinatesKey))
+        {
+            Guard::Assert(0, "Water fix sub-array should contain coordinates");
+            return;
+        }
+
+        if (!waterFixes[i][coordinatesKey].is_array())
+        {
+            Guard::Assert(0, "Water fix coordinates sub-array should be an array");
+            return;
+        }
+
+        auto coordinatesPairs = Json::AsArray(waterFixes[i][coordinatesKey]);
+        if (coordinatesPairs.empty())
+        {
+            Guard::Assert(0, "Water fix coordinates sub-array should not be empty");
+            return;
+        }
+
+        for (size_t j = 0; j < coordinatesPairs.size(); ++j)
+        {
+            if (!coordinatesPairs[j].is_array())
+            {
+                Guard::Assert(0, "Water fix coordinates should contain only arrays");
+                return;
+            }
+
+            auto coordinatesPair = Json::AsArray(coordinatesPairs[j]);
+            if (coordinatesPair.size() != 2)
+            {
+                Guard::Assert(0, "Water fix coordinates sub array should have 2 elements");
+                return;
+            }
+            auto surfaceElement = MapGetSurfaceElementAt(
+                TileCoordsXY{ Json::GetNumber<int32_t>(coordinatesPair[0]), Json::GetNumber<int32_t>(coordinatesPair[1]) });
+
+            surfaceElement->SetWaterHeight(waterHeight);
+        }
+    }
+}
+
 static u8string GetPatchFileName(u8string_view scenarioName)
 {
     auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
@@ -116,7 +190,7 @@ static u8string GetPatchFileName(u8string_view scenarioName)
     return Path::Combine(scenarioPatches, scenarioPatchFile);
 }
 
-void RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioName)
+void RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioName, bool isScenario)
 {
     auto patchPath = GetPatchFileName(scenarioName);
     std::cout << "Path is: " << patchPath << std::endl;
@@ -124,6 +198,11 @@ void RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioName)
     if (File::Exists(patchPath))
     {
         auto scenarioPatch = Json::ReadFromFile(patchPath);
+        // TODO: Land ownership is applied even when loading saved scenario. Should it?
         ApplyLandOwnershipFixes(scenarioPatch);
+        if (isScenario)
+        {
+            ApplyWaterFixes(scenarioPatch);
+        }
     }
 }
