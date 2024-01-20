@@ -12,6 +12,7 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../../../Context.h"
+#    include "../../../GameState.h"
 #    include "../../../common.h"
 #    include "../../../core/String.hpp"
 #    include "../../../world/Climate.h"
@@ -112,8 +113,8 @@ namespace OpenRCT2::Scripting
 
         std::shared_ptr<ScClimateState> future_get() const
         {
-            std::string weatherType = WeatherTypeToString(gClimateNext.Weather);
-            return std::make_shared<ScClimateState>(weatherType, gClimateNext.Temperature);
+            std::string weatherType = WeatherTypeToString(OpenRCT2::GetGameState().ClimateNext.Weather);
+            return std::make_shared<ScClimateState>(weatherType, OpenRCT2::GetGameState().ClimateNext.Temperature);
         }
 
         static void Register(duk_context* ctx)

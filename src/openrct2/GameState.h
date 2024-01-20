@@ -10,6 +10,7 @@
 #pragma once
 
 #include "Date.h"
+#include "world/Climate.h"
 #include "world/Location.hpp"
 
 #include <array>
@@ -24,6 +25,7 @@ namespace OpenRCT2
     struct GameState_t
     {
         uint32_t CurrentTicks{};
+        ClimateState ClimateNext;
         money64 Cash;
     };
 

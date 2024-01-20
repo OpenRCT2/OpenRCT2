@@ -56,7 +56,6 @@ extern const FilterPaletteID ClimateWeatherGloomColours[4];
 // Climate data
 ClimateType gClimate;
 ClimateState gClimateCurrent;
-ClimateState gClimateNext;
 uint16_t gClimateUpdateTimer;
 uint16_t gClimateLightningFlash;
 
@@ -140,37 +139,38 @@ void ClimateUpdate()
         }
         else if (!(GetGameState().CurrentTicks & 0x7F))
         {
-            if (gClimateCurrent.Temperature == gClimateNext.Temperature)
+            if (gClimateCurrent.Temperature == GetGameState().ClimateNext.Temperature)
             {
-                if (gClimateCurrent.WeatherGloom == gClimateNext.WeatherGloom)
+                if (gClimateCurrent.WeatherGloom == GetGameState().ClimateNext.WeatherGloom)
                 {
-                    gClimateCurrent.WeatherEffect = gClimateNext.WeatherEffect;
+                    gClimateCurrent.WeatherEffect = GetGameState().ClimateNext.WeatherEffect;
                     _thunderTimer = 0;
                     _lightningTimer = 0;
 
-                    if (gClimateCurrent.Level == gClimateNext.Level)
+                    if (gClimateCurrent.Level == GetGameState().ClimateNext.Level)
                     {
-                        gClimateCurrent.Weather = gClimateNext.Weather;
+                        gClimateCurrent.Weather = GetGameState().ClimateNext.Weather;
                         ClimateDetermineFutureWeather(ScenarioRand());
                         auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
                         ContextBroadcastIntent(&intent);
                     }
-                    else if (gClimateNext.Level <= WeatherLevel::Heavy)
+                    else if (GetGameState().ClimateNext.Level <= WeatherLevel::Heavy)
                     {
                         gClimateCurrent.Level = static_cast<WeatherLevel>(ClimateStepWeatherLevel(
-                            static_cast<int8_t>(gClimateCurrent.Level), static_cast<int8_t>(gClimateNext.Level)));
+                            static_cast<int8_t>(gClimateCurrent.Level), static_cast<int8_t>(GetGameState().ClimateNext.Level)));
                     }
                 }
                 else
                 {
                     gClimateCurrent.WeatherGloom = ClimateStepWeatherLevel(
-                        gClimateCurrent.WeatherGloom, gClimateNext.WeatherGloom);
+                        gClimateCurrent.WeatherGloom, GetGameState().ClimateNext.WeatherGloom);
                     GfxInvalidateScreen();
                 }
             }
             else
             {
-                gClimateCurrent.Temperature = ClimateStepWeatherLevel(gClimateCurrent.Temperature, gClimateNext.Temperature);
+                gClimateCurrent.Temperature = ClimateStepWeatherLevel(
+                    gClimateCurrent.Temperature, GetGameState().ClimateNext.Temperature);
                 auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
                 ContextBroadcastIntent(&intent);
             }
@@ -303,13 +303,13 @@ static void ClimateDetermineFutureWeather(int32_t randomDistribution)
     // accordingly
     const WeatherTransition* transition = &ClimateTransitions[static_cast<uint8_t>(gClimate)][month];
     WeatherType nextWeather = (transition->Distribution[((randomDistribution & 0xFF) * transition->DistributionSize) >> 8]);
-    gClimateNext.Weather = nextWeather;
+    GetGameState().ClimateNext.Weather = nextWeather;
 
     const auto nextWeatherState = &ClimateWeatherData[EnumValue(nextWeather)];
-    gClimateNext.Temperature = transition->BaseTemperature + nextWeatherState->TemperatureDelta;
-    gClimateNext.WeatherEffect = nextWeatherState->EffectLevel;
-    gClimateNext.WeatherGloom = nextWeatherState->GloomLevel;
-    gClimateNext.Level = nextWeatherState->Level;
+    GetGameState().ClimateNext.Temperature = transition->BaseTemperature + nextWeatherState->TemperatureDelta;
+    GetGameState().ClimateNext.WeatherEffect = nextWeatherState->EffectLevel;
+    GetGameState().ClimateNext.WeatherGloom = nextWeatherState->GloomLevel;
+    GetGameState().ClimateNext.Level = nextWeatherState->Level;
 
     gClimateUpdateTimer = 1920;
 }

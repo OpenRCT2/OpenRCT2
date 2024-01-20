@@ -72,7 +72,6 @@ struct ClimateState
 
 extern ClimateType gClimate;
 extern ClimateState gClimateCurrent;
-extern ClimateState gClimateNext;
 extern uint16_t gClimateUpdateTimer;
 extern uint16_t gClimateLightningFlash;
 
