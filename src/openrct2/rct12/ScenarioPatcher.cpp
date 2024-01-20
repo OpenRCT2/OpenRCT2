@@ -15,9 +15,11 @@
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
 #include "../core/Path.hpp"
+#include "../ride/Track.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "../world/Surface.h"
+#include "../world/tile_element/TileElementType.h"
 
 #include <iostream>
 
@@ -182,6 +184,150 @@ static void ApplyWaterFixes(const json_t& scenarioPatch)
     }
 }
 
+static track_type_t toTrackType(const u8string_view trackTypeString)
+{
+    if (trackTypeString == "flat")
+        return TrackElemType::Flat;
+    else if (trackTypeString == "flat_covered")
+        return TrackElemType::FlatCovered;
+    else
+    {
+        Guard::Assert(0, "Unsupported track type conversion");
+        return TrackElemType::None;
+    }
+}
+
+static void ApplyTrackTypeFixes(const json_t& trackTilesFixes)
+{
+    constexpr u8string_view operationsKey = "operations";
+    if (!trackTilesFixes.contains(operationsKey))
+    {
+        Guard::Assert(0, "Cannot apply track tile fixes when operations array is unset");
+        return;
+    }
+
+    if (!trackTilesFixes[operationsKey].is_array())
+    {
+        Guard::Assert(0, "Track tile fixes should have an operations array");
+        return;
+    }
+
+    auto fixOperations = Json::AsArray(trackTilesFixes[operationsKey]);
+    if (fixOperations.empty())
+    {
+        Guard::Assert(0, "Operations fix array should not be empty");
+        return;
+    }
+
+    for (size_t i = 0; i < fixOperations.size(); ++i)
+    {
+        constexpr u8string_view fromKey = "from";
+        if (!fixOperations[i].contains(fromKey))
+        {
+            Guard::Assert(0, "Operation sub-array should contain a from key");
+            return;
+        }
+
+        constexpr u8string_view toKey = "to";
+        if (!fixOperations[i].contains(toKey))
+        {
+            Guard::Assert(0, "Operation sub-array should contain a to key");
+            return;
+        }
+
+        auto fromTrackType = toTrackType(Json::GetString(fixOperations[i][fromKey]));
+        auto destinationTrackType = toTrackType(Json::GetString(fixOperations[i][toKey]));
+
+        constexpr u8string_view coordinatesKey = "coordinates";
+        if (!fixOperations[i].contains(coordinatesKey))
+        {
+            Guard::Assert(0, "Operations fix sub-array should contain coordinates");
+            return;
+        }
+
+        if (!fixOperations[i][coordinatesKey].is_array())
+        {
+            Guard::Assert(0, "Operations fix coordinates sub-array should be an array");
+            return;
+        }
+
+        auto coordinatesPairs = Json::AsArray(fixOperations[i][coordinatesKey]);
+        if (coordinatesPairs.empty())
+        {
+            Guard::Assert(0, "Operations fix coordinates sub-array should not be empty");
+            return;
+        }
+
+        for (size_t j = 0; j < coordinatesPairs.size(); ++j)
+        {
+            if (!coordinatesPairs[j].is_array())
+            {
+                Guard::Assert(0, "Operations fix coordinates should contain only arrays");
+                return;
+            }
+
+            auto coordinatesPair = Json::AsArray(coordinatesPairs[j]);
+            if (coordinatesPair.size() != 2)
+            {
+                Guard::Assert(0, "Operations fix coordinates sub array should have 2 elements");
+                return;
+            }
+
+            TileCoordsXY tile{ Json::GetNumber<int32_t>(coordinatesPair[0]), Json::GetNumber<int32_t>(coordinatesPair[1]) };
+            auto* tileElement = MapGetFirstElementAt(tile);
+            if (tileElement == nullptr)
+                continue;
+
+            do
+            {
+                if (tileElement->GetType() != TileElementType::Track)
+                    continue;
+
+                auto* trackElement = tileElement->AsTrack();
+                if (trackElement->GetTrackType() != fromTrackType)
+                    continue;
+
+                trackElement->SetTrackType(destinationTrackType);
+            } while (!(tileElement++)->IsLastForTile());
+        }
+    }
+}
+
+static TileElementType toTileElementType(const u8string_view tileTypeString)
+{
+    if (tileTypeString == "track")
+        return TileElementType::Track;
+    else
+    {
+        Guard::Assert(0, "Unsupported tile type conversion");
+        return TileElementType::Track;
+    }
+}
+
+static void ApplyTileFixes(const json_t& scenarioPatch)
+{
+    constexpr u8string_view tilesKey = "tiles";
+    if (!scenarioPatch.contains(tilesKey))
+    {
+        return;
+    }
+
+    auto tilesFixes = scenarioPatch[tilesKey];
+    constexpr u8string_view typeKey = "type";
+    if (!tilesFixes.contains(typeKey))
+    {
+        Guard::Assert(0, "Cannot apply tile fixes without defined type");
+    }
+    else
+    {
+        auto tileType = toTileElementType(Json::GetString(tilesFixes[typeKey]));
+        if (tileType == TileElementType::Track)
+        {
+            ApplyTrackTypeFixes(tilesFixes);
+        }
+    }
+}
+
 static u8string GetPatchFileName(u8string_view scenarioName)
 {
     auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
@@ -203,6 +349,7 @@ void RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioName, bool isScenar
         if (isScenario)
         {
             ApplyWaterFixes(scenarioPatch);
+            ApplyTileFixes(scenarioPatch);
         }
     }
 }
