@@ -16,6 +16,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/ClimateSetAction.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
@@ -28,6 +29,8 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
+
+using namespace OpenRCT2;
 
 static constexpr int32_t WW_FINANCIAL = 280;
 static constexpr int32_t WH_FINANCIAL = 149;
@@ -430,13 +433,14 @@ private:
 
     void FinancialMouseDown(WidgetIndex widgetIndex)
     {
+        auto& gameState = GetGameState();
         switch (widgetIndex)
         {
             case WIDX_INITIAL_CASH_INCREASE:
-                if (gInitialCash < 1000000.00_GBP)
+                if (gameState.InitialCash < 1000000.00_GBP)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::InitialCash, gInitialCash + 500.00_GBP);
+                        ScenarioSetSetting::InitialCash, gameState.InitialCash + 500.00_GBP);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -446,10 +450,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_INITIAL_CASH_DECREASE:
-                if (gInitialCash > 0.00_GBP)
+                if (gameState.InitialCash > 0.00_GBP)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::InitialCash, gInitialCash - 500.00_GBP);
+                        ScenarioSetSetting::InitialCash, gameState.InitialCash - 500.00_GBP);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -623,7 +627,7 @@ private:
 
             screenCoords = windowPos + ScreenCoordsXY{ initialCashWidget.left + 1, initialCashWidget.top };
             auto ft = Formatter();
-            ft.Add<money64>(gInitialCash);
+            ft.Add<money64>(GetGameState().InitialCash);
             DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
         }
 

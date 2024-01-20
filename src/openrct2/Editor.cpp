@@ -336,7 +336,7 @@ namespace Editor
 
             gGuestInitialCash = std::clamp(gGuestInitialCash, 10.00_GBP, MAX_ENTRANCE_FEE);
 
-            gInitialCash = std::min<money64>(gInitialCash, 100000);
+            GetGameState().InitialCash = std::min<money64>(GetGameState().InitialCash, 100000);
             FinanceResetCashToInitial();
 
             gBankLoan = std::clamp<money64>(gBankLoan, 0.00_GBP, 5000000.00_GBP);

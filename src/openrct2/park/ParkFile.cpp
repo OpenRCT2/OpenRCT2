@@ -166,7 +166,7 @@ namespace OpenRCT2
             }
 
             // Initial cash will eventually be removed
-            gInitialCash = gameState.Cash;
+            gameState.InitialCash = gameState.Cash;
         }
 
         void Save(GameState_t& gameState, IStream& stream)
