@@ -9,6 +9,7 @@
 
 #include "ScenarioSetSettingAction.h"
 
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../entity/Peep.h"
 #include "../interface/Window.h"
@@ -18,6 +19,8 @@
 #include "../world/Park.h"
 
 #include <algorithm>
+
+using namespace OpenRCT2;
 
 void ScenarioSetSettingAction::Serialise(DataSerialiser& stream)
 {
@@ -80,7 +83,7 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             break;
         case ScenarioSetSetting::InitialCash:
             gInitialCash = std::clamp<money64>(_value, 0.00_GBP, 1000000.00_GBP);
-            gCash = gInitialCash;
+            GetGameState().Cash = gInitialCash;
             WindowInvalidateByClass(WindowClass::Finances);
             WindowInvalidateByClass(WindowClass::BottomToolbar);
             break;

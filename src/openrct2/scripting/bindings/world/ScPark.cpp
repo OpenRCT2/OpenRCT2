@@ -51,15 +51,15 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::cash_get() const
     {
-        return gCash;
+        return GetGameState().Cash;
     }
     void ScPark::cash_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
 
-        if (gCash != value)
+        if (GetGameState().Cash != value)
         {
-            gCash = value;
+            GetGameState().Cash = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             ContextBroadcastIntent(&intent);
         }

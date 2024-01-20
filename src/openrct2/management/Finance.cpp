@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
@@ -23,6 +24,8 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
+
+using namespace OpenRCT2;
 
 // Monthly research funding costs
 const money64 research_cost_table[RESEARCH_FUNDING_COUNT] = {
@@ -37,7 +40,6 @@ static constexpr int32_t dword_988E60[static_cast<int32_t>(ExpenditureType::Coun
 };
 
 money64 gInitialCash;
-money64 gCash;
 money64 gBankLoan;
 uint8_t gBankLoanInterestRate;
 money64 gMaxBankLoan;
@@ -75,7 +77,7 @@ bool FinanceCheckMoneyRequired(uint32_t flags)
  */
 bool FinanceCheckAffordability(money64 cost, uint32_t flags)
 {
-    return !FinanceCheckMoneyRequired(flags) || cost <= 0 || cost <= gCash;
+    return !FinanceCheckMoneyRequired(flags) || cost <= 0 || cost <= GetGameState().Cash;
 }
 
 /**
@@ -87,7 +89,7 @@ bool FinanceCheckAffordability(money64 cost, uint32_t flags)
 void FinancePayment(money64 amount, ExpenditureType type)
 {
     // overflow check
-    gCash = AddClamp_money64(gCash, -amount);
+    GetGameState().Cash = AddClamp_money64(GetGameState().Cash, -amount);
 
     gExpenditureTable[0][static_cast<int32_t>(type)] -= amount;
     if (dword_988E60[static_cast<int32_t>(type)] & 1)
@@ -226,7 +228,7 @@ void FinanceInit()
 
     gInitialCash = 10000.00_GBP; // Cheat detection
 
-    gCash = 10000.00_GBP;
+    GetGameState().Cash = 10000.00_GBP;
     gBankLoan = 10000.00_GBP;
     gMaxBankLoan = 20000.00_GBP;
 
@@ -309,7 +311,7 @@ money64 FinanceGetMaximumLoan()
 
 money64 FinanceGetCurrentCash()
 {
-    return gCash;
+    return GetGameState().Cash;
 }
 
 /**
@@ -354,7 +356,7 @@ void FinanceShiftExpenditureTable()
  */
 void FinanceResetCashToInitial()
 {
-    gCash = gInitialCash;
+    GetGameState().Cash = gInitialCash;
 }
 
 /**

@@ -24,6 +24,7 @@ namespace OpenRCT2
     struct GameState_t
     {
         uint32_t CurrentTicks{};
+        money64 Cash;
     };
 
     GameState_t& GetGameState();

@@ -115,7 +115,7 @@ void ScenarioReset()
     gParkValue = park.CalculateParkValue();
     gCompanyValue = park.CalculateCompanyValue();
     gHistoricalProfit = gInitialCash - gBankLoan;
-    gCash = gInitialCash;
+    GetGameState().Cash = gInitialCash;
 
     {
         utf8 normalisedName[64];

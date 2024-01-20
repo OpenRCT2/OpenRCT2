@@ -166,7 +166,7 @@ namespace OpenRCT2
             }
 
             // Initial cash will eventually be removed
-            gInitialCash = gCash;
+            gInitialCash = gameState.Cash;
         }
 
         void Save(GameState_t& gameState, IStream& stream)
@@ -797,148 +797,149 @@ namespace OpenRCT2
 
         void ReadWriteParkChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::PARK, [version = os.GetHeader().TargetVersion](OrcaStream::ChunkStream& cs) {
-                // TODO: Use the passed gameState instead of the global one.
-                auto& park = GetContext()->GetGameState()->GetPark();
-                cs.ReadWrite(park.Name);
-                cs.ReadWrite(gCash);
-                cs.ReadWrite(gBankLoan);
-                cs.ReadWrite(gMaxBankLoan);
-                cs.ReadWrite(gBankLoanInterestRate);
-                cs.ReadWrite(gParkFlags);
-                if (version <= 18)
-                {
-                    money16 tempParkEntranceFee{};
-                    cs.ReadWrite(tempParkEntranceFee);
-                    gParkEntranceFee = ToMoney64(tempParkEntranceFee);
-                }
-                else
-                {
-                    cs.ReadWrite(gParkEntranceFee);
-                }
-
-                cs.ReadWrite(gStaffHandymanColour);
-                cs.ReadWrite(gStaffMechanicColour);
-                cs.ReadWrite(gStaffSecurityColour);
-                cs.ReadWrite(gSamePriceThroughoutPark);
-
-                // Finances
-                if (cs.GetMode() == OrcaStream::Mode::READING)
-                {
-                    auto numMonths = std::min<uint32_t>(EXPENDITURE_TABLE_MONTH_COUNT, cs.Read<uint32_t>());
-                    auto numTypes = std::min<uint32_t>(static_cast<uint32_t>(ExpenditureType::Count), cs.Read<uint32_t>());
-                    for (uint32_t i = 0; i < numMonths; i++)
+            os.ReadWriteChunk(
+                ParkFileChunkType::PARK, [version = os.GetHeader().TargetVersion, &gameState](OrcaStream::ChunkStream& cs) {
+                    // TODO: Use the passed gameState instead of the global one.
+                    auto& park = GetContext()->GetGameState()->GetPark();
+                    cs.ReadWrite(park.Name);
+                    cs.ReadWrite(gameState.Cash);
+                    cs.ReadWrite(gBankLoan);
+                    cs.ReadWrite(gMaxBankLoan);
+                    cs.ReadWrite(gBankLoanInterestRate);
+                    cs.ReadWrite(gParkFlags);
+                    if (version <= 18)
                     {
-                        for (uint32_t j = 0; j < numTypes; j++)
+                        money16 tempParkEntranceFee{};
+                        cs.ReadWrite(tempParkEntranceFee);
+                        gParkEntranceFee = ToMoney64(tempParkEntranceFee);
+                    }
+                    else
+                    {
+                        cs.ReadWrite(gParkEntranceFee);
+                    }
+
+                    cs.ReadWrite(gStaffHandymanColour);
+                    cs.ReadWrite(gStaffMechanicColour);
+                    cs.ReadWrite(gStaffSecurityColour);
+                    cs.ReadWrite(gSamePriceThroughoutPark);
+
+                    // Finances
+                    if (cs.GetMode() == OrcaStream::Mode::READING)
+                    {
+                        auto numMonths = std::min<uint32_t>(EXPENDITURE_TABLE_MONTH_COUNT, cs.Read<uint32_t>());
+                        auto numTypes = std::min<uint32_t>(static_cast<uint32_t>(ExpenditureType::Count), cs.Read<uint32_t>());
+                        for (uint32_t i = 0; i < numMonths; i++)
                         {
-                            gExpenditureTable[i][j] = cs.Read<money64>();
+                            for (uint32_t j = 0; j < numTypes; j++)
+                            {
+                                gExpenditureTable[i][j] = cs.Read<money64>();
+                            }
                         }
                     }
-                }
-                else
-                {
-                    auto numMonths = static_cast<uint32_t>(EXPENDITURE_TABLE_MONTH_COUNT);
-                    auto numTypes = static_cast<uint32_t>(ExpenditureType::Count);
-
-                    cs.Write(numMonths);
-                    cs.Write(numTypes);
-                    for (uint32_t i = 0; i < numMonths; i++)
+                    else
                     {
-                        for (uint32_t j = 0; j < numTypes; j++)
+                        auto numMonths = static_cast<uint32_t>(EXPENDITURE_TABLE_MONTH_COUNT);
+                        auto numTypes = static_cast<uint32_t>(ExpenditureType::Count);
+
+                        cs.Write(numMonths);
+                        cs.Write(numTypes);
+                        for (uint32_t i = 0; i < numMonths; i++)
                         {
-                            cs.Write(gExpenditureTable[i][j]);
+                            for (uint32_t j = 0; j < numTypes; j++)
+                            {
+                                cs.Write(gExpenditureTable[i][j]);
+                            }
                         }
                     }
-                }
-                cs.ReadWrite(gHistoricalProfit);
+                    cs.ReadWrite(gHistoricalProfit);
 
-                // Marketing
-                cs.ReadWriteVector(gMarketingCampaigns, [&cs](MarketingCampaign& campaign) {
-                    cs.ReadWrite(campaign.Type);
-                    cs.ReadWrite(campaign.WeeksLeft);
-                    cs.ReadWrite(campaign.Flags);
-                    cs.ReadWrite(campaign.RideId);
-                });
+                    // Marketing
+                    cs.ReadWriteVector(gMarketingCampaigns, [&cs](MarketingCampaign& campaign) {
+                        cs.ReadWrite(campaign.Type);
+                        cs.ReadWrite(campaign.WeeksLeft);
+                        cs.ReadWrite(campaign.Flags);
+                        cs.ReadWrite(campaign.RideId);
+                    });
 
-                // Awards
-                if (version <= 6)
-                {
-                    Award awards[RCT2::Limits::MaxAwards]{};
-                    cs.ReadWriteArray(awards, [&cs](Award& award) {
-                        if (award.Time != 0)
-                        {
+                    // Awards
+                    if (version <= 6)
+                    {
+                        Award awards[RCT2::Limits::MaxAwards]{};
+                        cs.ReadWriteArray(awards, [&cs](Award& award) {
+                            if (award.Time != 0)
+                            {
+                                cs.ReadWrite(award.Time);
+                                cs.ReadWrite(award.Type);
+                                GetAwards().push_back(award);
+                                return true;
+                            }
+
+                            return false;
+                        });
+                    }
+                    else
+                    {
+                        cs.ReadWriteVector(GetAwards(), [&cs](Award& award) {
                             cs.ReadWrite(award.Time);
                             cs.ReadWrite(award.Type);
-                            GetAwards().push_back(award);
-                            return true;
-                        }
+                        });
+                    }
+                    cs.ReadWrite(gParkValue);
+                    cs.ReadWrite(gCompanyValue);
+                    cs.ReadWrite(gParkSize);
+                    cs.ReadWrite(gNumGuestsInPark);
+                    cs.ReadWrite(gNumGuestsHeadingForPark);
+                    cs.ReadWrite(gParkRating);
+                    cs.ReadWrite(gParkRatingCasualtyPenalty);
+                    cs.ReadWrite(gCurrentExpenditure);
+                    cs.ReadWrite(gCurrentProfit);
+                    cs.ReadWrite(gWeeklyProfitAverageDividend);
+                    cs.ReadWrite(gWeeklyProfitAverageDivisor);
+                    cs.ReadWrite(gTotalAdmissions);
+                    cs.ReadWrite(gTotalIncomeFromAdmissions);
+                    if (version <= 16)
+                    {
+                        money16 legacyTotalRideValueForMoney = 0;
+                        cs.ReadWrite(legacyTotalRideValueForMoney);
+                        gTotalRideValueForMoney = legacyTotalRideValueForMoney;
+                    }
+                    else
+                    {
+                        cs.ReadWrite(gTotalRideValueForMoney);
+                    }
+                    cs.ReadWrite(gNumGuestsInParkLastWeek);
+                    cs.ReadWrite(gGuestChangeModifier);
+                    cs.ReadWrite(_guestGenerationProbability);
+                    cs.ReadWrite(_suggestedGuestMaximum);
 
-                        return false;
+                    cs.ReadWriteArray(gPeepWarningThrottle, [&cs](uint8_t& value) {
+                        cs.ReadWrite(value);
+                        return true;
                     });
-                }
-                else
-                {
-                    cs.ReadWriteVector(GetAwards(), [&cs](Award& award) {
-                        cs.ReadWrite(award.Time);
-                        cs.ReadWrite(award.Type);
+
+                    cs.ReadWriteArray(gParkRatingHistory, [&cs](uint8_t& value) {
+                        cs.ReadWrite(value);
+                        return true;
                     });
-                }
-                cs.ReadWrite(gParkValue);
-                cs.ReadWrite(gCompanyValue);
-                cs.ReadWrite(gParkSize);
-                cs.ReadWrite(gNumGuestsInPark);
-                cs.ReadWrite(gNumGuestsHeadingForPark);
-                cs.ReadWrite(gParkRating);
-                cs.ReadWrite(gParkRatingCasualtyPenalty);
-                cs.ReadWrite(gCurrentExpenditure);
-                cs.ReadWrite(gCurrentProfit);
-                cs.ReadWrite(gWeeklyProfitAverageDividend);
-                cs.ReadWrite(gWeeklyProfitAverageDivisor);
-                cs.ReadWrite(gTotalAdmissions);
-                cs.ReadWrite(gTotalIncomeFromAdmissions);
-                if (version <= 16)
-                {
-                    money16 legacyTotalRideValueForMoney = 0;
-                    cs.ReadWrite(legacyTotalRideValueForMoney);
-                    gTotalRideValueForMoney = legacyTotalRideValueForMoney;
-                }
-                else
-                {
-                    cs.ReadWrite(gTotalRideValueForMoney);
-                }
-                cs.ReadWrite(gNumGuestsInParkLastWeek);
-                cs.ReadWrite(gGuestChangeModifier);
-                cs.ReadWrite(_guestGenerationProbability);
-                cs.ReadWrite(_suggestedGuestMaximum);
 
-                cs.ReadWriteArray(gPeepWarningThrottle, [&cs](uint8_t& value) {
-                    cs.ReadWrite(value);
-                    return true;
-                });
+                    cs.ReadWriteArray(gGuestsInParkHistory, [&cs](uint32_t& value) {
+                        cs.ReadWrite(value);
+                        return true;
+                    });
 
-                cs.ReadWriteArray(gParkRatingHistory, [&cs](uint8_t& value) {
-                    cs.ReadWrite(value);
-                    return true;
+                    cs.ReadWriteArray(gCashHistory, [&cs](money64& value) {
+                        cs.ReadWrite(value);
+                        return true;
+                    });
+                    cs.ReadWriteArray(gWeeklyProfitHistory, [&cs](money64& value) {
+                        cs.ReadWrite(value);
+                        return true;
+                    });
+                    cs.ReadWriteArray(gParkValueHistory, [&cs](money64& value) {
+                        cs.ReadWrite(value);
+                        return true;
+                    });
                 });
-
-                cs.ReadWriteArray(gGuestsInParkHistory, [&cs](uint32_t& value) {
-                    cs.ReadWrite(value);
-                    return true;
-                });
-
-                cs.ReadWriteArray(gCashHistory, [&cs](money64& value) {
-                    cs.ReadWrite(value);
-                    return true;
-                });
-                cs.ReadWriteArray(gWeeklyProfitHistory, [&cs](money64& value) {
-                    cs.ReadWrite(value);
-                    return true;
-                });
-                cs.ReadWriteArray(gParkValueHistory, [&cs](money64& value) {
-                    cs.ReadWrite(value);
-                    return true;
-                });
-            });
         }
 
         void ReadWriteResearchChunk(GameState_t& gameState, OrcaStream& os)

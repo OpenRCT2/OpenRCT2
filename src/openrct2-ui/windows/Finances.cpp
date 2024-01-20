@@ -28,6 +28,8 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 
+using namespace OpenRCT2;
+
 enum
 {
     WINDOW_FINANCES_PAGE_SUMMARY,
@@ -571,8 +573,8 @@ public:
 
         // Current cash
         auto ft = Formatter();
-        ft.Add<money64>(gCash);
-        StringId stringId = gCash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
+        ft.Add<money64>(GetGameState().Cash);
+        StringId stringId = GetGameState().Cash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
         DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, 294 }, stringId, ft);
 
         // Objective related financial information
@@ -612,7 +614,7 @@ public:
         auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
 
         // Cash (less loan)
-        auto cashLessLoan = gCash - gBankLoan;
+        auto cashLessLoan = GetGameState().Cash - gBankLoan;
         auto ft = Formatter();
         ft.Add<money64>(cashLessLoan);
 

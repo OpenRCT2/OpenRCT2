@@ -397,7 +397,7 @@ namespace RCT2
             gHistoricalProfit = ToMoney64(_s6.HistoricalProfit);
             // Pad013587D4
             gScenarioCompletedBy = std::string_view(_s6.ScenarioCompletedName, sizeof(_s6.ScenarioCompletedName));
-            gCash = ToMoney64(DECRYPT_MONEY(_s6.Cash));
+            gameState.Cash = ToMoney64(DECRYPT_MONEY(_s6.Cash));
             // Pad013587FC
             gParkRatingCasualtyPenalty = _s6.ParkRatingCasualtyPenalty;
             gMapSize = { _s6.MapSize, _s6.MapSize };
