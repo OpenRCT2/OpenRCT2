@@ -10,5 +10,11 @@
                 [ 46, 47 ]
             ]
         }
-    }
+    },
+    "rides": [
+        {
+            "id": 0,
+            "operation": "swap_entrance_exit"
+        }
+    ]
 }

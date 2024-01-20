@@ -196,7 +196,6 @@ namespace OpenRCT2::RCT1
             // TODO: investigate why Katie's Dreamland.s4 and .sea have different patches
             // TODO: s4 patch system is broken since .s4 files do not use scenario name, but rather slot
             RCT12::FetchAndApplyScenarioPatch(_s4.ScenarioName, _isScenario);
-            FixUrbanPark();
             FixNextGuestNumber(gameState);
             CountBlockSections();
             SetDefaultNames();
@@ -2515,53 +2514,6 @@ namespace OpenRCT2::RCT1
             auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::EnglishUK);
             auto justText = RCT12RemoveFormattingUTF8(asUtf8);
             return justText.data();
-        }
-
-        /**
-         * In Urban Park, the entrance and exit of the merry-go-round are the wrong way round. This code fixes that.
-         * To avoid messing up saves (in which this problem is most likely solved by the user), only carry out this
-         * fix when loading from a scenario.
-         */
-        void FixUrbanPark()
-        {
-            if (_s4.ScenarioSlotIndex == SC_URBAN_PARK && _isScenario)
-            {
-                const auto merryGoRoundId = RideId::FromUnderlying(0);
-
-                // First, make the queuing peep exit
-                for (auto peep : EntityList<Guest>())
-                {
-                    if (peep->State == PeepState::QueuingFront && peep->CurrentRide == merryGoRoundId)
-                    {
-                        peep->RemoveFromQueue();
-                        peep->SetState(PeepState::Falling);
-                        break;
-                    }
-                }
-
-                // Now, swap the entrance and exit.
-                auto ride = GetRide(merryGoRoundId);
-                if (ride != nullptr)
-                {
-                    auto& station = ride->GetStation();
-                    auto entranceCoords = station.Exit;
-                    auto exitCoords = station.Entrance;
-                    station.Entrance = entranceCoords;
-                    station.Exit = exitCoords;
-
-                    auto entranceElement = MapGetRideExitElementAt(entranceCoords.ToCoordsXYZD(), false);
-                    entranceElement->SetEntranceType(ENTRANCE_TYPE_RIDE_ENTRANCE);
-                    auto exitElement = MapGetRideEntranceElementAt(exitCoords.ToCoordsXYZD(), false);
-                    exitElement->SetEntranceType(ENTRANCE_TYPE_RIDE_EXIT);
-
-                    // Trigger footpath update
-                    FootpathQueueChainReset();
-                    FootpathConnectEdges(
-                        entranceCoords.ToCoordsXY(), reinterpret_cast<TileElement*>(entranceElement),
-                        GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-                    FootpathUpdateQueueChains();
-                }
-            }
         }
 
         void FixNextGuestNumber(GameState_t& gameState)
