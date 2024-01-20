@@ -39,7 +39,6 @@ static constexpr int32_t dword_988E60[static_cast<int32_t>(ExpenditureType::Coun
     1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0,
 };
 
-money64 gInitialCash;
 money64 gBankLoan;
 uint8_t gBankLoanInterestRate;
 money64 gMaxBankLoan;
@@ -226,7 +225,7 @@ void FinanceInit()
     gWeeklyProfitAverageDividend = 0;
     gWeeklyProfitAverageDivisor = 0;
 
-    gInitialCash = 10000.00_GBP; // Cheat detection
+    GetGameState().InitialCash = 10000.00_GBP; // Cheat detection
 
     GetGameState().Cash = 10000.00_GBP;
     gBankLoan = 10000.00_GBP;
@@ -296,7 +295,7 @@ void FinanceUpdateDailyProfit()
 
 money64 FinanceGetInitialCash()
 {
-    return gInitialCash;
+    return GetGameState().InitialCash;
 }
 
 money64 FinanceGetCurrentLoan()
@@ -356,7 +355,7 @@ void FinanceShiftExpenditureTable()
  */
 void FinanceResetCashToInitial()
 {
-    GetGameState().Cash = gInitialCash;
+    GetGameState().Cash = GetGameState().InitialCash;
 }
 
 /**

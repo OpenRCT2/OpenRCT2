@@ -1400,7 +1400,7 @@ namespace RCT1
             gMaxBankLoan = ToMoney64(_s4.MaxLoan);
             // It's more like 1.33%, but we can only use integers. Can be fixed once we have our own save format.
             gBankLoanInterestRate = 1;
-            gInitialCash = ToMoney64(_s4.Cash);
+            gameState.InitialCash = ToMoney64(_s4.Cash);
 
             gCompanyValue = ToMoney64(_s4.CompanyValue);
             gParkValue = CorrectRCT1ParkValue(_s4.ParkValue);

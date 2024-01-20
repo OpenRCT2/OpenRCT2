@@ -260,7 +260,7 @@ namespace RCT2
             ImportTileElements();
             ImportEntities();
 
-            gInitialCash = ToMoney64(_s6.InitialCash);
+            gameState.InitialCash = ToMoney64(_s6.InitialCash);
             gBankLoan = ToMoney64(_s6.CurrentLoan);
 
             gParkFlags = _s6.ParkFlags & ~PARK_FLAGS_NO_MONEY_SCENARIO;

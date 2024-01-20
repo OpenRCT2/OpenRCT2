@@ -571,7 +571,7 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "scenario_initial_cash")
         {
-            console.WriteFormatLine("scenario_initial_cash %d", gInitialCash / 10);
+            console.WriteFormatLine("scenario_initial_cash %d", GetGameState().InitialCash / 10);
         }
         else if (argv[0] == "current_loan")
         {

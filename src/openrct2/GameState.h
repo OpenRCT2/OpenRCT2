@@ -25,6 +25,7 @@ namespace OpenRCT2
     {
         uint32_t CurrentTicks{};
         money64 Cash;
+        money64 InitialCash;
     };
 
     GameState_t& GetGameState();

@@ -82,8 +82,8 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             }
             break;
         case ScenarioSetSetting::InitialCash:
-            gInitialCash = std::clamp<money64>(_value, 0.00_GBP, 1000000.00_GBP);
-            GetGameState().Cash = gInitialCash;
+            GetGameState().InitialCash = std::clamp<money64>(_value, 0.00_GBP, 1000000.00_GBP);
+            GetGameState().Cash = GetGameState().InitialCash;
             WindowInvalidateByClass(WindowClass::Finances);
             WindowInvalidateByClass(WindowClass::BottomToolbar);
             break;
