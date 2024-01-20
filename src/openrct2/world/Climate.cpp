@@ -59,6 +59,9 @@ ClimateState gClimateCurrent;
 uint16_t gClimateUpdateTimer;
 uint16_t gClimateLightningFlash;
 
+// GameState
+static GameState_t gameState;
+
 // Sound data
 static int32_t _weatherVolume = 1;
 static uint32_t _lightningTimer;
@@ -139,38 +142,38 @@ void ClimateUpdate()
         }
         else if (!(GetGameState().CurrentTicks & 0x7F))
         {
-            if (gClimateCurrent.Temperature == GetGameState().ClimateNext.Temperature)
+            if (gClimateCurrent.Temperature == gameState.ClimateNext.Temperature)
             {
-                if (gClimateCurrent.WeatherGloom == GetGameState().ClimateNext.WeatherGloom)
+                if (gClimateCurrent.WeatherGloom == gameState.ClimateNext.WeatherGloom)
                 {
-                    gClimateCurrent.WeatherEffect = GetGameState().ClimateNext.WeatherEffect;
+                    gClimateCurrent.WeatherEffect = gameState.ClimateNext.WeatherEffect;
                     _thunderTimer = 0;
                     _lightningTimer = 0;
 
-                    if (gClimateCurrent.Level == GetGameState().ClimateNext.Level)
+                    if (gClimateCurrent.Level == gameState.ClimateNext.Level)
                     {
-                        gClimateCurrent.Weather = GetGameState().ClimateNext.Weather;
+                        gClimateCurrent.Weather = gameState.ClimateNext.Weather;
                         ClimateDetermineFutureWeather(ScenarioRand());
                         auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
                         ContextBroadcastIntent(&intent);
                     }
-                    else if (GetGameState().ClimateNext.Level <= WeatherLevel::Heavy)
+                    else if (gameState.ClimateNext.Level <= WeatherLevel::Heavy)
                     {
                         gClimateCurrent.Level = static_cast<WeatherLevel>(ClimateStepWeatherLevel(
-                            static_cast<int8_t>(gClimateCurrent.Level), static_cast<int8_t>(GetGameState().ClimateNext.Level)));
+                            static_cast<int8_t>(gClimateCurrent.Level), static_cast<int8_t>(gameState.ClimateNext.Level)));
                     }
                 }
                 else
                 {
                     gClimateCurrent.WeatherGloom = ClimateStepWeatherLevel(
-                        gClimateCurrent.WeatherGloom, GetGameState().ClimateNext.WeatherGloom);
+                        gClimateCurrent.WeatherGloom, gameState.ClimateNext.WeatherGloom);
                     GfxInvalidateScreen();
                 }
             }
             else
             {
                 gClimateCurrent.Temperature = ClimateStepWeatherLevel(
-                    gClimateCurrent.Temperature, GetGameState().ClimateNext.Temperature);
+                    gClimateCurrent.Temperature, gameState.ClimateNext.Temperature);
                 auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
                 ContextBroadcastIntent(&intent);
             }
@@ -303,13 +306,13 @@ static void ClimateDetermineFutureWeather(int32_t randomDistribution)
     // accordingly
     const WeatherTransition* transition = &ClimateTransitions[static_cast<uint8_t>(gClimate)][month];
     WeatherType nextWeather = (transition->Distribution[((randomDistribution & 0xFF) * transition->DistributionSize) >> 8]);
-    GetGameState().ClimateNext.Weather = nextWeather;
+    gameState.ClimateNext.Weather = nextWeather;
 
     const auto nextWeatherState = &ClimateWeatherData[EnumValue(nextWeather)];
-    GetGameState().ClimateNext.Temperature = transition->BaseTemperature + nextWeatherState->TemperatureDelta;
-    GetGameState().ClimateNext.WeatherEffect = nextWeatherState->EffectLevel;
-    GetGameState().ClimateNext.WeatherGloom = nextWeatherState->GloomLevel;
-    GetGameState().ClimateNext.Level = nextWeatherState->Level;
+    gameState.ClimateNext.Temperature = transition->BaseTemperature + nextWeatherState->TemperatureDelta;
+    gameState.ClimateNext.WeatherEffect = nextWeatherState->EffectLevel;
+    gameState.ClimateNext.WeatherGloom = nextWeatherState->GloomLevel;
+    gameState.ClimateNext.Level = nextWeatherState->Level;
 
     gClimateUpdateTimer = 1920;
 }
