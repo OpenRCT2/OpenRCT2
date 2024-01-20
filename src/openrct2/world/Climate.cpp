@@ -59,9 +59,6 @@ ClimateState gClimateCurrent;
 uint16_t gClimateUpdateTimer;
 uint16_t gClimateLightningFlash;
 
-// GameState
-static GameState_t gameState;
-
 // Sound data
 static int32_t _weatherVolume = 1;
 static uint32_t _lightningTimer;
@@ -124,6 +121,8 @@ void ClimateReset(ClimateType climate)
 void ClimateUpdate()
 {
     PROFILED_FUNCTION();
+
+    auto& gameState = GetGameState();
 
     // Only do climate logic if playing (not in scenario editor or title screen)
     if (gScreenFlags & (~SCREEN_FLAGS_PLAYING))
@@ -301,6 +300,7 @@ static int8_t ClimateStepWeatherLevel(int8_t currentWeatherLevel, int8_t nextWea
 static void ClimateDetermineFutureWeather(int32_t randomDistribution)
 {
     int32_t month = GetDate().GetMonth();
+    auto& gameState = GetGameState();
 
     // Generate a random variable with values 0 up to DistributionSize-1 and chose weather from the distribution table
     // accordingly
