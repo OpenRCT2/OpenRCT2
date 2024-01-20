@@ -23,6 +23,23 @@
 
 #include <iostream>
 
+static const std::string s_coordinatesKey = "coordinates";
+
+// Land Ownership Keys
+static const std::string s_cannotDowngradeKey = "cannot_downgrade";
+static const std::string s_landOwnershipKey = "land_ownership";
+
+// Water fix keys
+static const std::string s_waterFixKey = "water";
+static const std::string s_heightKey = "height";
+
+// Tile fix keys
+static const std::string s_operationsKey = "operations";
+static const std::string s_fromKey = "from";
+static const std::string s_toKey = "to";
+static const std::string s_tilesKey = "tiles";
+static const std::string s_typeKey = "type";
+
 static u8string ToOwnershipJsonKey(int ownershipType)
 {
     switch (ownershipType)
@@ -51,27 +68,26 @@ static void ApplyLandOwnershipFixes(const json_t& landOwnershipFixes, int owners
     }
 
     auto ownershipParameters = landOwnershipFixes[ownershipTypeKey];
-    constexpr u8string_view coordinatesKey = "coordinates";
-    if (!ownershipParameters.contains(coordinatesKey))
+    if (!ownershipParameters.contains(s_coordinatesKey))
     {
         Guard::Assert(0, "Cannot have ownership fix without coordinates array");
         return;
     }
-    else if (!ownershipParameters[coordinatesKey].is_array())
+    else if (!ownershipParameters[s_coordinatesKey].is_array())
     {
         Guard::Assert(0, "Ownership fix coordinates should be an array");
         return;
     }
 
-    auto ownershipCoords = Json::AsArray(ownershipParameters[coordinatesKey]);
+    auto ownershipCoords = Json::AsArray(ownershipParameters[s_coordinatesKey]);
     if (ownershipCoords.empty())
     {
         Guard::Assert(0, "Ownership fix coordinates array should not be empty");
         return;
     }
 
-    const bool cannotDowngrade = ownershipParameters.contains("cannot_downgrade")
-        ? Json::GetBoolean(ownershipParameters["cannot_downgrade"], false)
+    const bool cannotDowngrade = ownershipParameters.contains(s_cannotDowngradeKey)
+        ? Json::GetBoolean(ownershipParameters[s_cannotDowngradeKey], false)
         : false;
     std::initializer_list<TileCoordsXY> tiles;
     for (size_t i = 0; i < ownershipCoords.size(); ++i)
@@ -96,13 +112,12 @@ static void ApplyLandOwnershipFixes(const json_t& landOwnershipFixes, int owners
 
 static void ApplyLandOwnershipFixes(const json_t& scenarioPatch)
 {
-    constexpr u8string_view landOwnershipKey = "land_ownership";
-    if (!scenarioPatch.contains(landOwnershipKey))
+    if (!scenarioPatch.contains(s_landOwnershipKey))
     {
         return;
     }
 
-    auto landOwnershipFixes = scenarioPatch[landOwnershipKey];
+    auto landOwnershipFixes = scenarioPatch[s_landOwnershipKey];
     for (const auto& ownershipType : { OWNERSHIP_UNOWNED, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED, OWNERSHIP_OWNED,
                                        OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE, OWNERSHIP_AVAILABLE })
     {
@@ -112,19 +127,18 @@ static void ApplyLandOwnershipFixes(const json_t& scenarioPatch)
 
 static void ApplyWaterFixes(const json_t& scenarioPatch)
 {
-    constexpr u8string_view waterFixKey = "water";
-    if (!scenarioPatch.contains(waterFixKey))
+    if (!scenarioPatch.contains(s_waterFixKey))
     {
         return;
     }
 
-    if (!scenarioPatch[waterFixKey].is_array())
+    if (!scenarioPatch[s_waterFixKey].is_array())
     {
         Guard::Assert(0, "Water fix should be an array");
         return;
     }
 
-    auto waterFixes = Json::AsArray(scenarioPatch[waterFixKey]);
+    auto waterFixes = Json::AsArray(scenarioPatch[s_waterFixKey]);
     if (waterFixes.empty())
     {
         Guard::Assert(0, "Water fix array should not be empty");
@@ -133,29 +147,27 @@ static void ApplyWaterFixes(const json_t& scenarioPatch)
 
     for (size_t i = 0; i < waterFixes.size(); ++i)
     {
-        constexpr u8string_view heightKey = "height";
-        if (!waterFixes[i].contains(heightKey))
+        if (!waterFixes[i].contains(s_heightKey))
         {
             Guard::Assert(0, "Water fix sub-array should set a height");
             return;
         }
 
-        auto waterHeight = waterFixes[i][heightKey];
+        auto waterHeight = waterFixes[i][s_heightKey];
 
-        constexpr u8string_view coordinatesKey = "coordinates";
-        if (!waterFixes[i].contains(coordinatesKey))
+        if (!waterFixes[i].contains(s_coordinatesKey))
         {
             Guard::Assert(0, "Water fix sub-array should contain coordinates");
             return;
         }
 
-        if (!waterFixes[i][coordinatesKey].is_array())
+        if (!waterFixes[i][s_coordinatesKey].is_array())
         {
             Guard::Assert(0, "Water fix coordinates sub-array should be an array");
             return;
         }
 
-        auto coordinatesPairs = Json::AsArray(waterFixes[i][coordinatesKey]);
+        auto coordinatesPairs = Json::AsArray(waterFixes[i][s_coordinatesKey]);
         if (coordinatesPairs.empty())
         {
             Guard::Assert(0, "Water fix coordinates sub-array should not be empty");
@@ -199,20 +211,19 @@ static track_type_t toTrackType(const u8string_view trackTypeString)
 
 static void ApplyTrackTypeFixes(const json_t& trackTilesFixes)
 {
-    constexpr u8string_view operationsKey = "operations";
-    if (!trackTilesFixes.contains(operationsKey))
+    if (!trackTilesFixes.contains(s_operationsKey))
     {
         Guard::Assert(0, "Cannot apply track tile fixes when operations array is unset");
         return;
     }
 
-    if (!trackTilesFixes[operationsKey].is_array())
+    if (!trackTilesFixes[s_operationsKey].is_array())
     {
         Guard::Assert(0, "Track tile fixes should have an operations array");
         return;
     }
 
-    auto fixOperations = Json::AsArray(trackTilesFixes[operationsKey]);
+    auto fixOperations = Json::AsArray(trackTilesFixes[s_operationsKey]);
     if (fixOperations.empty())
     {
         Guard::Assert(0, "Operations fix array should not be empty");
@@ -221,37 +232,34 @@ static void ApplyTrackTypeFixes(const json_t& trackTilesFixes)
 
     for (size_t i = 0; i < fixOperations.size(); ++i)
     {
-        constexpr u8string_view fromKey = "from";
-        if (!fixOperations[i].contains(fromKey))
+        if (!fixOperations[i].contains(s_fromKey))
         {
             Guard::Assert(0, "Operation sub-array should contain a from key");
             return;
         }
 
-        constexpr u8string_view toKey = "to";
-        if (!fixOperations[i].contains(toKey))
+        if (!fixOperations[i].contains(s_toKey))
         {
             Guard::Assert(0, "Operation sub-array should contain a to key");
             return;
         }
 
-        auto fromTrackType = toTrackType(Json::GetString(fixOperations[i][fromKey]));
-        auto destinationTrackType = toTrackType(Json::GetString(fixOperations[i][toKey]));
+        auto fromTrackType = toTrackType(Json::GetString(fixOperations[i][s_fromKey]));
+        auto destinationTrackType = toTrackType(Json::GetString(fixOperations[i][s_toKey]));
 
-        constexpr u8string_view coordinatesKey = "coordinates";
-        if (!fixOperations[i].contains(coordinatesKey))
+        if (!fixOperations[i].contains(s_coordinatesKey))
         {
             Guard::Assert(0, "Operations fix sub-array should contain coordinates");
             return;
         }
 
-        if (!fixOperations[i][coordinatesKey].is_array())
+        if (!fixOperations[i][s_coordinatesKey].is_array())
         {
             Guard::Assert(0, "Operations fix coordinates sub-array should be an array");
             return;
         }
 
-        auto coordinatesPairs = Json::AsArray(fixOperations[i][coordinatesKey]);
+        auto coordinatesPairs = Json::AsArray(fixOperations[i][s_coordinatesKey]);
         if (coordinatesPairs.empty())
         {
             Guard::Assert(0, "Operations fix coordinates sub-array should not be empty");
@@ -306,21 +314,19 @@ static TileElementType toTileElementType(const u8string_view tileTypeString)
 
 static void ApplyTileFixes(const json_t& scenarioPatch)
 {
-    constexpr u8string_view tilesKey = "tiles";
-    if (!scenarioPatch.contains(tilesKey))
+    if (!scenarioPatch.contains(s_tilesKey))
     {
         return;
     }
 
-    auto tilesFixes = scenarioPatch[tilesKey];
-    constexpr u8string_view typeKey = "type";
-    if (!tilesFixes.contains(typeKey))
+    auto tilesFixes = scenarioPatch[s_tilesKey];
+    if (!tilesFixes.contains(s_typeKey))
     {
         Guard::Assert(0, "Cannot apply tile fixes without defined type");
     }
     else
     {
-        auto tileType = toTileElementType(Json::GetString(tilesFixes[typeKey]));
+        auto tileType = toTileElementType(Json::GetString(tilesFixes[s_typeKey]));
         if (tileType == TileElementType::Track)
         {
             ApplyTrackTypeFixes(tilesFixes);
