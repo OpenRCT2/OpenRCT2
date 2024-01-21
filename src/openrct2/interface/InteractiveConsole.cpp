@@ -551,6 +551,8 @@ static int32_t ConsoleCommandStaff(InteractiveConsole& console, const arguments_
 
 static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t& argv)
 {
+    auto& gameState = GetGameState();
+
     if (!argv.empty())
     {
         if (argv[0] == "park_rating")
@@ -669,7 +671,8 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         else if (argv[0] == "climate")
         {
             console.WriteFormatLine(
-                "climate %s  (%d)", ClimateNames[static_cast<uint8_t>(gClimate)], static_cast<uint8_t>(gClimate));
+                "climate %s  (%d)", ClimateNames[static_cast<uint8_t>(gameState.Climate)],
+                static_cast<uint8_t>(gameState.Climate));
         }
         else if (argv[0] == "game_speed")
         {

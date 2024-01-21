@@ -428,7 +428,7 @@ private:
         WindowDropdownShowTextCustomWidth(
             { windowPos.x + dropdownWidget.left, windowPos.y + dropdownWidget.top }, dropdownWidget.height() + 1, colours[1], 0,
             Dropdown::Flag::StayOpen, static_cast<uint8_t>(ClimateType::Count), dropdownWidget.width() - 3);
-        Dropdown::SetChecked(static_cast<uint8_t>(gClimate), true);
+        Dropdown::SetChecked(static_cast<uint8_t>(GetGameState().Climate), true);
     }
 
     void FinancialMouseDown(WidgetIndex widgetIndex)
@@ -1110,7 +1110,7 @@ private:
                 break;
             }
             case WIDX_CLIMATE_DROPDOWN:
-                if (static_cast<uint8_t>(gClimate) != static_cast<uint8_t>(dropdownIndex))
+                if (static_cast<uint8_t>(GetGameState().Climate) != static_cast<uint8_t>(dropdownIndex))
                 {
                     auto gameAction = ClimateSetAction(ClimateType{ static_cast<uint8_t>(dropdownIndex) });
                     GameActions::Execute(&gameAction);
@@ -1255,7 +1255,7 @@ private:
         // Climate value
         screenCoords = windowPos + ScreenCoordsXY{ climateWidget.left + 1, climateWidget.top };
         auto ft = Formatter();
-        ft.Add<StringId>(ClimateNames[static_cast<uint8_t>(gClimate)]);
+        ft.Add<StringId>(ClimateNames[static_cast<uint8_t>(GetGameState().Climate)]);
         DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
     }
 
