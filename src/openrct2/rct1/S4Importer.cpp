@@ -1777,7 +1777,7 @@ namespace RCT1
                         type = _wallTypeToEntryMap[type];
                         auto baseZ = src->BaseHeight * Limits::CoordsZStep;
                         auto clearanceZ = src->ClearanceHeight * Limits::CoordsZStep;
-                        auto edgeSlope = LandSlopeToWallSlope[slope][edge & 3];
+                        auto edgeSlope = GetWallSlopeFromEdgeSlope(slope, edge & 3);
                         if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
                         {
                             clearanceZ += LAND_HEIGHT_STEP;
