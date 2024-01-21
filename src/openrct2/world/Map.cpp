@@ -2217,7 +2217,7 @@ void FixLandOwnershipTilesWithOwnership(std::vector<TileCoordsXY> tiles, uint8_t
                 continue;
 
             surfaceElement->SetOwnership(ownership);
-            Park::UpdateFencesAroundTile({ (*tile).x * 32, (*tile).y * 32 });
+            Park::UpdateFencesAroundTile(tile.ToCoordsXY());
         }
     }
 }
