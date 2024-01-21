@@ -70,6 +70,48 @@ static u8string ToOwnershipJsonKey(int ownershipType)
     return {};
 }
 
+static std::vector<TileCoordsXY> getCoordinates(const json_t& parameters)
+{
+    if (!parameters.contains(s_coordinatesKey))
+    {
+        Guard::Assert(0, "Cannot have fix without coordinates array");
+        return {};
+    }
+    else if (!parameters[s_coordinatesKey].is_array())
+    {
+        Guard::Assert(0, "Fix coordinates should be an array");
+        return {};
+    }
+
+    auto coords = Json::AsArray(parameters[s_coordinatesKey]);
+    if (coords.empty())
+    {
+        Guard::Assert(0, "Fix coordinates array should not be empty");
+        return {};
+    }
+
+    std::vector<TileCoordsXY> parsedCoordinates;
+    parsedCoordinates.reserve(coords.size());
+    for (size_t i = 0; i < coords.size(); ++i)
+    {
+        if (!coords[i].is_array())
+        {
+            Guard::Assert(0, "Fix coordinates should contain only arrays");
+            return {};
+        }
+
+        auto coordinatesPair = Json::AsArray(coords[i]);
+        if (coordinatesPair.size() != 2)
+        {
+            Guard::Assert(0, "Fix coordinates sub array should have 2 elements");
+            return {};
+        }
+        parsedCoordinates.emplace_back(
+            Json::GetNumber<int32_t>(coordinatesPair[0]), Json::GetNumber<int32_t>(coordinatesPair[1]));
+    }
+    return parsedCoordinates;
+}
+
 static void ApplyLandOwnershipFixes(const json_t& landOwnershipFixes, int ownershipType)
 {
     auto ownershipTypeKey = ToOwnershipJsonKey(ownershipType);
@@ -79,45 +121,11 @@ static void ApplyLandOwnershipFixes(const json_t& landOwnershipFixes, int owners
     }
 
     auto ownershipParameters = landOwnershipFixes[ownershipTypeKey];
-    if (!ownershipParameters.contains(s_coordinatesKey))
-    {
-        Guard::Assert(0, "Cannot have ownership fix without coordinates array");
-        return;
-    }
-    else if (!ownershipParameters[s_coordinatesKey].is_array())
-    {
-        Guard::Assert(0, "Ownership fix coordinates should be an array");
-        return;
-    }
-
-    auto ownershipCoords = Json::AsArray(ownershipParameters[s_coordinatesKey]);
-    if (ownershipCoords.empty())
-    {
-        Guard::Assert(0, "Ownership fix coordinates array should not be empty");
-        return;
-    }
-
     const bool cannotDowngrade = ownershipParameters.contains(s_cannotDowngradeKey)
         ? Json::GetBoolean(ownershipParameters[s_cannotDowngradeKey], false)
         : false;
-    for (size_t i = 0; i < ownershipCoords.size(); ++i)
-    {
-        if (!ownershipCoords[i].is_array())
-        {
-            Guard::Assert(0, "Ownership fix coordinates should contain only arrays");
-            return;
-        }
-
-        auto coordinatesPair = Json::AsArray(ownershipCoords[i]);
-        if (coordinatesPair.size() != 2)
-        {
-            Guard::Assert(0, "Ownership fix coordinates sub array should have 2 elements");
-            return;
-        }
-        FixLandOwnershipTilesWithOwnership(
-            { { Json::GetNumber<int32_t>(coordinatesPair[0]), Json::GetNumber<int32_t>(coordinatesPair[1]) } }, ownershipType,
-            cannotDowngrade);
-    }
+    auto coordinatesVector = getCoordinates(ownershipParameters);
+    FixLandOwnershipTilesWithOwnership(coordinatesVector, ownershipType, cannotDowngrade);
 }
 
 static void ApplyLandOwnershipFixes(const json_t& scenarioPatch)
@@ -164,43 +172,10 @@ static void ApplyWaterFixes(const json_t& scenarioPatch)
         }
 
         auto waterHeight = waterFixes[i][s_heightKey];
-
-        if (!waterFixes[i].contains(s_coordinatesKey))
+        auto coordinatesVector = getCoordinates(waterFixes[i]);
+        for (const auto& tile : coordinatesVector)
         {
-            Guard::Assert(0, "Water fix sub-array should contain coordinates");
-            return;
-        }
-
-        if (!waterFixes[i][s_coordinatesKey].is_array())
-        {
-            Guard::Assert(0, "Water fix coordinates sub-array should be an array");
-            return;
-        }
-
-        auto coordinatesPairs = Json::AsArray(waterFixes[i][s_coordinatesKey]);
-        if (coordinatesPairs.empty())
-        {
-            Guard::Assert(0, "Water fix coordinates sub-array should not be empty");
-            return;
-        }
-
-        for (size_t j = 0; j < coordinatesPairs.size(); ++j)
-        {
-            if (!coordinatesPairs[j].is_array())
-            {
-                Guard::Assert(0, "Water fix coordinates should contain only arrays");
-                return;
-            }
-
-            auto coordinatesPair = Json::AsArray(coordinatesPairs[j]);
-            if (coordinatesPair.size() != 2)
-            {
-                Guard::Assert(0, "Water fix coordinates sub array should have 2 elements");
-                return;
-            }
-            auto surfaceElement = MapGetSurfaceElementAt(
-                TileCoordsXY{ Json::GetNumber<int32_t>(coordinatesPair[0]), Json::GetNumber<int32_t>(coordinatesPair[1]) });
-
+            auto surfaceElement = MapGetSurfaceElementAt(tile);
             surfaceElement->SetWaterHeight(waterHeight);
         }
     }
@@ -256,42 +231,10 @@ static void ApplyTrackTypeFixes(const json_t& trackTilesFixes)
 
         auto fromTrackType = toTrackType(Json::GetString(fixOperations[i][s_fromKey]));
         auto destinationTrackType = toTrackType(Json::GetString(fixOperations[i][s_toKey]));
+        auto coordinatesVector = getCoordinates(fixOperations[i]);
 
-        if (!fixOperations[i].contains(s_coordinatesKey))
+        for (const auto& tile : coordinatesVector)
         {
-            Guard::Assert(0, "Operations fix sub-array should contain coordinates");
-            return;
-        }
-
-        if (!fixOperations[i][s_coordinatesKey].is_array())
-        {
-            Guard::Assert(0, "Operations fix coordinates sub-array should be an array");
-            return;
-        }
-
-        auto coordinatesPairs = Json::AsArray(fixOperations[i][s_coordinatesKey]);
-        if (coordinatesPairs.empty())
-        {
-            Guard::Assert(0, "Operations fix coordinates sub-array should not be empty");
-            return;
-        }
-
-        for (size_t j = 0; j < coordinatesPairs.size(); ++j)
-        {
-            if (!coordinatesPairs[j].is_array())
-            {
-                Guard::Assert(0, "Operations fix coordinates should contain only arrays");
-                return;
-            }
-
-            auto coordinatesPair = Json::AsArray(coordinatesPairs[j]);
-            if (coordinatesPair.size() != 2)
-            {
-                Guard::Assert(0, "Operations fix coordinates sub array should have 2 elements");
-                return;
-            }
-
-            TileCoordsXY tile{ Json::GetNumber<int32_t>(coordinatesPair[0]), Json::GetNumber<int32_t>(coordinatesPair[1]) };
             auto* tileElement = MapGetFirstElementAt(tile);
             if (tileElement == nullptr)
                 continue;
