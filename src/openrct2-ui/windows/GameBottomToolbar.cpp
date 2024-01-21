@@ -221,7 +221,7 @@ private:
         GfxDrawSprite(dpi, ImageId(currentWeatherSpriteId), screenCoords);
 
         // Next weather
-        auto nextWeatherSpriteId = ClimateGetWeatherSpriteId(gClimateNext);
+        auto nextWeatherSpriteId = ClimateGetWeatherSpriteId(GetGameState().ClimateNext);
         if (currentWeatherSpriteId != nextWeatherSpriteId)
         {
             if (gClimateUpdateTimer < 960)

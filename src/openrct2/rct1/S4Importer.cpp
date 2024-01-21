@@ -184,7 +184,7 @@ namespace RCT1
             ImportResearch();
             ImportParkName();
             ImportParkFlags(gameState);
-            ImportClimate();
+            ImportClimate(gameState);
             ImportScenarioNameDetails();
             ImportScenarioObjective();
             ImportSavedView();
@@ -2276,7 +2276,7 @@ namespace RCT1
             }
         }
 
-        void ImportClimate()
+        void ImportClimate(GameState_t& gameState)
         {
             gClimate = ClimateType{ _s4.Climate };
             gClimateUpdateTimer = _s4.ClimateTimer;
@@ -2285,11 +2285,11 @@ namespace RCT1
             gClimateCurrent.WeatherEffect = WeatherEffectType::None;
             gClimateCurrent.WeatherGloom = _s4.WeatherGloom;
             gClimateCurrent.Level = static_cast<WeatherLevel>(_s4.Rain);
-            gClimateNext.Temperature = _s4.TargetTemperature;
-            gClimateNext.Weather = WeatherType{ _s4.TargetWeather };
-            gClimateNext.WeatherEffect = WeatherEffectType::None;
-            gClimateNext.WeatherGloom = _s4.TargetWeatherGloom;
-            gClimateNext.Level = static_cast<WeatherLevel>(_s4.TargetRain);
+            gameState.ClimateNext.Temperature = _s4.TargetTemperature;
+            gameState.ClimateNext.Weather = WeatherType{ _s4.TargetWeather };
+            gameState.ClimateNext.WeatherEffect = WeatherEffectType::None;
+            gameState.ClimateNext.WeatherGloom = _s4.TargetWeatherGloom;
+            gameState.ClimateNext.Level = static_cast<WeatherLevel>(_s4.TargetRain);
         }
 
         void ImportScenarioNameDetails()
