@@ -2587,26 +2587,6 @@ int32_t ScenarioSave(GameState_t& gameState, u8string_view path, int32_t flags)
         ft.Add<const char*>(e.what());
         ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_STRING, ft);
         GfxInvalidateScreen();
-
-        auto ctx = OpenRCT2::GetContext();
-        auto uictx = ctx->GetUiContext();
-
-        std::string title = "Error while saving";
-        std::string message
-            = "There was an error while saving scenario.\nhttps://github.com/OpenRCT2/OpenRCT2/issues/17664\nWe would like to "
-              "collect more information about this issue, if this did not happen due to missing permissions, lack of space, "
-              "etc. please consider submitting a bug report. To collect information we would like to trigger an assert.";
-
-        std::string report_bug_button = "Report bug, trigger an assert, potentially terminating the game";
-        std::string skip_button = "Skip reporting, let me continue";
-
-        std::vector<std::string> buttons{ std::move(report_bug_button), std::move(skip_button) };
-        int choice = uictx->ShowMessageBox(title, message, buttons);
-
-        if (choice == 0)
-        {
-            Guard::Assert(false, "Error while saving: %s", e.what());
-        }
     }
 
     GfxInvalidateScreen();
