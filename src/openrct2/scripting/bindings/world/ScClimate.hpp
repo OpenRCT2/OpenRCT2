@@ -53,9 +53,6 @@ namespace OpenRCT2::Scripting
 
     class ScClimate
     {
-    private:
-        OpenRCT2::GameState_t _gameState;
-
     public:
         static std::string ClimateTypeToString(ClimateType token)
         {
@@ -116,8 +113,9 @@ namespace OpenRCT2::Scripting
 
         std::shared_ptr<ScClimateState> future_get() const
         {
-            std::string weatherType = WeatherTypeToString(_gameState.ClimateNext.Weather);
-            return std::make_shared<ScClimateState>(weatherType, _gameState.ClimateNext.Temperature);
+            auto& gameState = OpenRCT2::GetGameState();
+            std::string weatherType = WeatherTypeToString(gameState.ClimateNext.Weather);
+            return std::make_shared<ScClimateState>(weatherType, gameState.ClimateNext.Temperature);
         }
 
         static void Register(duk_context* ctx)
