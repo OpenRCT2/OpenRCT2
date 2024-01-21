@@ -2200,11 +2200,6 @@ uint16_t CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos)
     return destOwnership;
 }
 
-void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles)
-{
-    FixLandOwnershipTilesWithOwnership(tiles, OWNERSHIP_AVAILABLE);
-}
-
 void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tiles, uint8_t ownership, bool doNotDowngrade)
 {
     for (const TileCoordsXY* tile = tiles.begin(); tile != tiles.end(); ++tile)

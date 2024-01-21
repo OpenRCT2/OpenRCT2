@@ -232,7 +232,6 @@ bool MapIsLocationAtEdge(const CoordsXY& loc);
 
 uint16_t CheckMaxAllowableLandRightsForTile(const CoordsXYZ& tileMapPos);
 
-void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles);
 void FixLandOwnershipTilesWithOwnership(
     std::initializer_list<TileCoordsXY> tiles, uint8_t ownership, bool doNotDowngrade = false);
 MapRange ClampRangeWithinMap(const MapRange& range);
