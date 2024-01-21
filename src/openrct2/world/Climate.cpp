@@ -122,8 +122,6 @@ void ClimateUpdate()
 {
     PROFILED_FUNCTION();
 
-    auto& gameState = GetGameState();
-
     // Only do climate logic if playing (not in scenario editor or title screen)
     if (gScreenFlags & (~SCREEN_FLAGS_PLAYING))
         return;
@@ -141,6 +139,7 @@ void ClimateUpdate()
         }
         else if (!(GetGameState().CurrentTicks & 0x7F))
         {
+            auto& gameState = GetGameState();
             if (gClimateCurrent.Temperature == gameState.ClimateNext.Temperature)
             {
                 if (gClimateCurrent.WeatherGloom == gameState.ClimateNext.WeatherGloom)
