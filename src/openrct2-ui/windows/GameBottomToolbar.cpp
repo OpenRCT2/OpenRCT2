@@ -27,7 +27,6 @@
 #include <openrct2/management/Finance.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/sprites.h>
-#include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
 
 using namespace OpenRCT2;
@@ -204,7 +203,7 @@ private:
         screenCoords = { windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15,
                          static_cast<int32_t>(screenCoords.y + line_height + 1) };
 
-        int32_t temperature = gClimateCurrent.Temperature;
+        int32_t temperature = OpenRCT2::GetGameState().ClimateCurrent.Temperature;
         StringId format = STR_CELSIUS_VALUE;
         if (gConfigGeneral.TemperatureFormat == TemperatureUnit::Fahrenheit)
         {
@@ -217,7 +216,7 @@ private:
         screenCoords.x += 30;
 
         // Current weather
-        auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(gClimateCurrent);
+        auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(OpenRCT2::GetGameState().ClimateCurrent);
         GfxDrawSprite(dpi, ImageId(currentWeatherSpriteId), screenCoords);
 
         // Next weather

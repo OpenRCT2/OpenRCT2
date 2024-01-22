@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/BannerRemoveAction.h"
 #include "../actions/FootpathAdditionRemoveAction.h"
@@ -33,7 +34,6 @@
 #include "../object/SmallSceneryEntry.h"
 #include "../object/WallSceneryEntry.h"
 #include "../scenario/Scenario.h"
-#include "Climate.h"
 #include "Footpath.h"
 #include "Map.h"
 #include "Park.h"
@@ -184,7 +184,7 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
         return;
     }
 
-    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED) || WeatherIsDry(gClimateCurrent.Weather) || GetAge() < 5)
+    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED) || WeatherIsDry(OpenRCT2::GetGameState().ClimateCurrent.Weather) || GetAge() < 5)
     {
         IncreaseAge(sceneryPos);
         return;

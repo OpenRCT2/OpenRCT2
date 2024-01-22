@@ -784,7 +784,7 @@ namespace OpenRCT2
                 cs.ReadWrite(gameState.Climate);
                 cs.ReadWrite(gClimateUpdateTimer);
 
-                for (auto* cl : { &gClimateCurrent, &gameState.ClimateNext })
+                for (auto* cl : { &gameState.ClimateCurrent, &gameState.ClimateNext })
                 {
                     cs.ReadWrite(cl->Weather);
                     cs.ReadWrite(cl->Temperature);

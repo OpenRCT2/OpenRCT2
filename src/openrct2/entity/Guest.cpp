@@ -1512,7 +1512,9 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
         return false;
     }
 
-    if ((shopItem == ShopItem::Sunglasses || shopItem == ShopItem::IceCream) && gClimateCurrent.Temperature < 12)
+    auto& gameState = GetGameState();
+
+    if ((shopItem == ShopItem::Sunglasses || shopItem == ShopItem::IceCream) && gameState.ClimateCurrent.Temperature < 12)
     {
         return false;
     }
@@ -1551,9 +1553,9 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
             }
         }
 
-        if (gClimateCurrent.Temperature >= 21)
+        if (gameState.ClimateCurrent.Temperature >= 21)
             itemValue = shopItemDescriptor.HotValue;
-        else if (gClimateCurrent.Temperature <= 11)
+        else if (gameState.ClimateCurrent.Temperature <= 11)
             itemValue = shopItemDescriptor.ColdValue;
         else
             itemValue = shopItemDescriptor.BaseValue;
@@ -1599,9 +1601,9 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
         }
 
         // reset itemValue for satisfaction calculation
-        if (gClimateCurrent.Temperature >= 21)
+        if (gameState.ClimateCurrent.Temperature >= 21)
             itemValue = shopItemDescriptor.HotValue;
-        else if (gClimateCurrent.Temperature <= 11)
+        else if (gameState.ClimateCurrent.Temperature <= 11)
             itemValue = shopItemDescriptor.ColdValue;
         else
             itemValue = shopItemDescriptor.BaseValue;
@@ -3049,7 +3051,7 @@ static void PeepDecideWhetherToLeavePark(Guest* peep)
         peep->EnergyTarget -= 2;
     }
 
-    if (gClimateCurrent.Temperature >= 21 && peep->Thirst >= 5)
+    if (GetGameState().ClimateCurrent.Temperature >= 21 && peep->Thirst >= 5)
     {
         peep->Thirst--;
     }

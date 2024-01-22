@@ -26,6 +26,7 @@ namespace OpenRCT2
     {
         uint32_t CurrentTicks{};
         ClimateType Climate;
+        ClimateState ClimateCurrent;
         ClimateState ClimateNext;
         money64 Cash;
         money64 InitialCash;

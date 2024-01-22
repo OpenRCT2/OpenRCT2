@@ -63,7 +63,7 @@ void DrawWeather(DrawPixelInfo& dpi, IWeatherDrawer* weatherDrawer)
             viewFlags = viewport->flags;
 
         // Get weather draw function and draw weather
-        auto weatherLevel = gClimateCurrent.Level;
+        auto weatherLevel = GetGameState().ClimateCurrent.Level;
         if (weatherLevel != WeatherLevel::None && !gTrackDesignSaveMode && !(viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         {
             auto drawFunc = DrawRainFunctions[static_cast<int8_t>(weatherLevel)];
