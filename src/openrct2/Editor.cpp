@@ -313,6 +313,8 @@ namespace Editor
             staff->SetName({});
         }
 
+        auto& gameState = GetGameState();
+
         ResetAllEntities();
         UpdateConsolidatedPatrolAreas();
         gNumGuestsInPark = 0;
@@ -346,7 +348,7 @@ namespace Editor
             gBankLoanInterestRate = std::clamp<uint8_t>(gBankLoanInterestRate, 5, MaxBankLoanInterestRate);
         }
 
-        ClimateReset(gClimate);
+        ClimateReset(gameState.Climate);
 
         News::InitQueue();
     }

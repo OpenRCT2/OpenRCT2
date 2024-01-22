@@ -781,7 +781,7 @@ namespace OpenRCT2
         void ReadWriteClimateChunk(GameState_t& gameState, OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::CLIMATE, [&gameState](OrcaStream::ChunkStream& cs) {
-                cs.ReadWrite(gClimate);
+                cs.ReadWrite(gameState.Climate);
                 cs.ReadWrite(gClimateUpdateTimer);
 
                 for (auto* cl : { &gClimateCurrent, &gameState.ClimateNext })

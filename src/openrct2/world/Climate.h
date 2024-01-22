@@ -70,7 +70,6 @@ struct ClimateState
     WeatherLevel Level;
 };
 
-extern ClimateType gClimate;
 extern ClimateState gClimateCurrent;
 extern uint16_t gClimateUpdateTimer;
 extern uint16_t gClimateLightningFlash;

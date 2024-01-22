@@ -9,6 +9,8 @@
 
 #include "ClimateSetAction.h"
 
+#include "../GameState.h"
+
 ClimateSetAction::ClimateSetAction(ClimateType climate)
     : _climate(climate)
 {
@@ -43,7 +45,7 @@ GameActions::Result ClimateSetAction::Query() const
 
 GameActions::Result ClimateSetAction::Execute() const
 {
-    gClimate = ClimateType{ _climate };
+    OpenRCT2::GetGameState().Climate = ClimateType{ _climate };
 
     GfxInvalidateScreen();
 

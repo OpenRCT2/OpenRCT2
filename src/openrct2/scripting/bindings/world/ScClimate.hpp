@@ -102,7 +102,8 @@ namespace OpenRCT2::Scripting
 
         std::string type_get() const
         {
-            return ClimateTypeToString(gClimate);
+            auto& gameState = OpenRCT2::GetGameState();
+            return ClimateTypeToString(gameState.Climate);
         }
 
         std::shared_ptr<ScClimateState> current_get() const
