@@ -119,7 +119,7 @@ GameActions::Result WallPlaceAction::Query() const
         targetHeight = surfaceElement->GetBaseZ();
 
         uint8_t slope = surfaceElement->GetSlope();
-        edgeSlope = LandSlopeToWallSlope[slope][_edge & 3];
+        edgeSlope = GetWallSlopeFromEdgeSlope(slope, _edge & 3);
         if (edgeSlope & EDGE_SLOPE_ELEVATED)
         {
             targetHeight += 16;
@@ -298,7 +298,7 @@ GameActions::Result WallPlaceAction::Execute() const
         targetHeight = surfaceElement->GetBaseZ();
 
         uint8_t slope = surfaceElement->GetSlope();
-        edgeSlope = LandSlopeToWallSlope[slope][_edge & 3];
+        edgeSlope = GetWallSlopeFromEdgeSlope(slope, _edge & 3);
         if (edgeSlope & EDGE_SLOPE_ELEVATED)
         {
             targetHeight += 16;
