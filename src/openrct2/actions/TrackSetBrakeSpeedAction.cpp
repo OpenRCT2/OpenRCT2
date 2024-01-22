@@ -57,7 +57,7 @@ GameActions::Result TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting) con
 
     if (!LocationValid(_loc))
     {
-        return GameActions::Result(GameActions::Status::NotOwned, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::NotOwned, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     TileElement* tileElement = MapGetTrackElementAtOfType(_loc, _trackType);
