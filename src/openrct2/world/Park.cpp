@@ -46,7 +46,6 @@
 
 using namespace OpenRCT2;
 
-uint64_t gParkFlags;
 uint16_t gParkRating;
 money64 gParkEntranceFee;
 uint32_t gParkSize;
@@ -193,7 +192,7 @@ int32_t ParkGetForcedRating()
 
 money64 ParkGetEntranceFee()
 {
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return 0;
     }
@@ -206,11 +205,12 @@ money64 ParkGetEntranceFee()
 
 bool ParkRidePricesUnlocked()
 {
-    if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+    const auto& gameState = GetGameState();
+    if (gameState.ParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
     {
         return true;
     }
-    if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
+    if (gameState.ParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
     {
         return true;
     }
@@ -219,11 +219,12 @@ bool ParkRidePricesUnlocked()
 
 bool ParkEntranceFeeUnlocked()
 {
-    if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+    const auto& gameState = GetGameState();
+    if (gameState.ParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
     {
         return true;
     }
-    if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY))
+    if (!(gameState.ParkFlags & PARK_FLAGS_PARK_FREE_ENTRY))
     {
         return true;
     }
@@ -232,7 +233,7 @@ bool ParkEntranceFeeUnlocked()
 
 bool Park::IsOpen() const
 {
-    return (gParkFlags & PARK_FLAGS_PARK_OPEN) != 0;
+    return (GetGameState().ParkFlags & PARK_FLAGS_PARK_OPEN) != 0;
 }
 
 uint16_t Park::GetParkRating() const
@@ -294,7 +295,7 @@ void Park::Initialise()
     gScenarioObjective.NumGuests = 1000;
     gLandPrice = 90.00_GBP;
     gConstructionRightsPrice = 40.00_GBP;
-    gParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+    GetGameState().ParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
     ResetHistories();
     FinanceResetHistory();
     AwardReset();
@@ -373,7 +374,7 @@ int32_t Park::CalculateParkRating() const
     }
 
     int32_t result = 1150;
-    if (gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING)
+    if (GetGameState().ParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING)
     {
         result = 1050;
     }
@@ -520,7 +521,7 @@ money64 Park::CalculateCompanyValue() const
 money64 Park::CalculateTotalRideValueForMoney() const
 {
     money64 totalRideValue = 0;
-    bool ridePricesUnlocked = ParkRidePricesUnlocked() && !(gParkFlags & PARK_FLAGS_NO_MONEY);
+    bool ridePricesUnlocked = ParkRidePricesUnlocked() && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY);
     for (auto& ride : GetRideManager())
     {
         if (ride.status != RideStatus::Open)
@@ -552,6 +553,8 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
     uint32_t suggestedMaxGuests = 0;
     uint32_t difficultGenerationBonus = 0;
 
+    auto& gameState = GetGameState();
+
     for (auto& ride : GetRideManager())
     {
         if (ride.status != RideStatus::Open)
@@ -565,7 +568,7 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
         suggestedMaxGuests += ride.GetRideTypeDescriptor().BonusValue;
 
         // If difficult guest generation, extra guests are available for good rides
-        if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+        if (gameState.ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
         {
             if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_TESTED))
                 continue;
@@ -583,7 +586,7 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
         }
     }
 
-    if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+    if (gameState.ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
     {
         suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 1000);
         suggestedMaxGuests += difficultGenerationBonus;
@@ -604,7 +607,7 @@ uint32_t Park::CalculateGuestGenerationProbability() const
     {
         probability /= 4;
         // Even lower for difficult guest generation
-        if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+        if (GetGameState().ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
         {
             probability /= 4;
         }
@@ -672,7 +675,7 @@ void Park::GenerateGuests()
     // Generate a new guest for some probability
     if (static_cast<int32_t>(ScenarioRand() & 0xFFFF) < _guestGenerationProbability)
     {
-        bool difficultGeneration = (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
+        bool difficultGeneration = (GetGameState().ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
         if (!difficultGeneration || _suggestedGuestMaximum + 150 >= gNumGuestsInPark)
         {
             GenerateGuest();

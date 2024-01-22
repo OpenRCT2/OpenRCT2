@@ -263,15 +263,15 @@ namespace RCT2
             gameState.InitialCash = ToMoney64(_s6.InitialCash);
             gBankLoan = ToMoney64(_s6.CurrentLoan);
 
-            gParkFlags = _s6.ParkFlags & ~PARK_FLAGS_NO_MONEY_SCENARIO;
+            gameState.ParkFlags = _s6.ParkFlags & ~PARK_FLAGS_NO_MONEY_SCENARIO;
 
             // RCT2 used a different flag for `no money` when the park is a scenario
             if (_s6.Header.Type == S6_TYPE_SCENARIO)
             {
                 if (_s6.ParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
-                    gParkFlags |= PARK_FLAGS_NO_MONEY;
+                    gameState.ParkFlags |= PARK_FLAGS_NO_MONEY;
                 else
-                    gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+                    gameState.ParkFlags &= ~PARK_FLAGS_NO_MONEY;
             }
 
             gParkEntranceFee = _s6.ParkEntranceFee;

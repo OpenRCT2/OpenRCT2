@@ -316,12 +316,13 @@ void ResearchUpdate()
         return;
     }
 
-    if (GetGameState().CurrentTicks % 32 != 0)
+    auto& gameState = GetGameState();
+    if (gameState.CurrentTicks % 32 != 0)
     {
         return;
     }
 
-    if ((gParkFlags & PARK_FLAGS_NO_MONEY) && gResearchFundingLevel == RESEARCH_FUNDING_NONE)
+    if ((gameState.ParkFlags & PARK_FLAGS_NO_MONEY) && gResearchFundingLevel == RESEARCH_FUNDING_NONE)
     {
         researchLevel = RESEARCH_FUNDING_NORMAL;
     }

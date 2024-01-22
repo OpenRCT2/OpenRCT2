@@ -89,9 +89,11 @@ private:
 
         // Figure out how much line height we have to work with.
         uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
+        
+        auto& gameState = GetGameState();
 
         // Draw money
-        if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             Widget widget = window_game_bottom_toolbar_widgets[WIDX_MONEY];
             auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(),
@@ -101,9 +103,9 @@ private:
                 = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_MONEY
                        ? COLOUR_WHITE
                        : NOT_TRANSLUCENT(colours[0]));
-            StringId stringId = GetGameState().Cash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
+            StringId stringId = gameState.Cash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
             auto ft = Formatter();
-            ft.Add<money64>(GetGameState().Cash);
+            ft.Add<money64>(gameState.Cash);
             DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
         }
 
@@ -419,7 +421,7 @@ public:
         {
             case WIDX_LEFT_OUTSET:
             case WIDX_MONEY:
-                if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+                if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
                     ContextOpenWindow(WindowClass::Finances);
                 break;
             case WIDX_GUESTS:
@@ -499,7 +501,7 @@ public:
             = line_height * 3 + 1;
 
         // Reposition left widgets in accordance with line height... depending on whether there is money in play.
-        if (gParkFlags & PARK_FLAGS_NO_MONEY)
+        if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
         {
             widgets[WIDX_MONEY].type = WindowWidgetType::Empty;
             widgets[WIDX_GUESTS].top = 1;

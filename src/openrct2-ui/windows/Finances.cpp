@@ -230,7 +230,7 @@ private:
 
     void SetDisabledTabs()
     {
-        disabled_widgets = (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
+        disabled_widgets = (GetGameState().ParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
     }
 
 public:
@@ -536,6 +536,7 @@ public:
     void OnDrawSummary(DrawPixelInfo& dpi)
     {
         auto screenCoords = windowPos + ScreenCoordsXY{ 8, 51 };
+        auto& gameState = GetGameState();
 
         // Expenditure / Income heading
         DrawTextBasic(
@@ -564,7 +565,7 @@ public:
 
         // Loan and interest rate
         DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, 279 }, STR_FINANCES_SUMMARY_LOAN);
-        if (!(gParkFlags & PARK_FLAGS_RCT1_INTEREST))
+        if (!(gameState.ParkFlags & PARK_FLAGS_RCT1_INTEREST))
         {
             auto ft = Formatter();
             ft.Add<uint16_t>(gBankLoanInterestRate);
@@ -573,8 +574,8 @@ public:
 
         // Current cash
         auto ft = Formatter();
-        ft.Add<money64>(GetGameState().Cash);
-        StringId stringId = GetGameState().Cash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
+        ft.Add<money64>(gameState.Cash);
+        StringId stringId = gameState.Cash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
         DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, 294 }, stringId, ft);
 
         // Objective related financial information

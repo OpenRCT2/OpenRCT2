@@ -10,6 +10,7 @@
 #include "LargeSceneryRemoveAction.h"
 
 #include "../Cheats.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../common.h"
 #include "../core/MemoryStream.h"
@@ -93,7 +94,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
         {
-            if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+            if (GetGameState().ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
             {
                 if (sceneryEntry->HasFlag(LARGE_SCENERY_FLAG_IS_TREE))
                 {

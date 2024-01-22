@@ -14,6 +14,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/PeepPickupAction.h>
 #include <openrct2/actions/StaffFireAction.h>
@@ -34,6 +35,8 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 #include <vector>
+
+using namespace OpenRCT2;
 
 enum
 {
@@ -286,7 +289,7 @@ public:
         DrawWidgets(dpi);
         DrawTabImages(dpi);
 
-        if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto ft = Formatter();
             ft.Add<money64>(GetStaffWage(GetSelectedStaffType()));

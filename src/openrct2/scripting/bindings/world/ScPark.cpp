@@ -285,17 +285,18 @@ namespace OpenRCT2::Scripting
     bool ScPark::getFlag(const std::string& key) const
     {
         auto mask = ParkFlagMap[key];
-        return (gParkFlags & mask) != 0;
+        return (GetGameState().ParkFlags & mask) != 0;
     }
 
     void ScPark::setFlag(const std::string& key, bool value)
     {
         ThrowIfGameStateNotMutable();
         auto mask = ParkFlagMap[key];
+        auto& gameState = GetGameState();
         if (value)
-            gParkFlags |= mask;
+            gameState.ParkFlags |= mask;
         else
-            gParkFlags &= ~mask;
+            gameState.ParkFlags &= ~mask;
         GfxInvalidateScreen();
     }
 

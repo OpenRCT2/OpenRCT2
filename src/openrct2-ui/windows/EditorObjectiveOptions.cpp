@@ -29,6 +29,8 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 
+using namespace OpenRCT2;
+
 static constexpr StringId WINDOW_TITLE = STR_OBJECTIVE_SELECTION;
 static constexpr int32_t WH = 229;
 static constexpr int32_t WW = 450;
@@ -432,17 +434,16 @@ private:
     {
         int32_t numItems = 0, objectiveType;
         Widget* dropdownWidget;
-        uint32_t parkFlags;
 
         dropdownWidget = &widgets[WIDX_OBJECTIVE];
-        parkFlags = gParkFlags;
 
         for (auto i = 0; i < OBJECTIVE_COUNT; i++)
         {
             if (i == OBJECTIVE_NONE || i == OBJECTIVE_BUILD_THE_BEST)
                 continue;
 
-            const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY) || !ObjectiveNeedsMoney(i);
+            const bool objectiveAllowedByMoneyUsage = !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+                || !ObjectiveNeedsMoney(i);
             // This objective can only work if the player can ask money for rides.
             const bool objectiveAllowedByPaymentSettings = (i != OBJECTIVE_MONTHLY_RIDE_INCOME) || ParkRidePricesUnlocked();
             if (objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings)
@@ -743,18 +744,17 @@ private:
      */
     void OnUpdateMain()
     {
-        uint32_t parkFlags;
         uint8_t objectiveType;
 
         frame_no++;
         OnPrepareDraw();
         InvalidateWidget(WIDX_TAB_1);
 
-        parkFlags = gParkFlags;
         objectiveType = gScenarioObjective.Type;
 
         // Check if objective is allowed by money and pay-per-ride settings.
-        const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY) || !ObjectiveNeedsMoney(objectiveType);
+        const bool objectiveAllowedByMoneyUsage = !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+            || !ObjectiveNeedsMoney(objectiveType);
         // This objective can only work if the player can ask money for rides.
         const bool objectiveAllowedByPaymentSettings = (objectiveType != OBJECTIVE_MONTHLY_RIDE_INCOME)
             || ParkRidePricesUnlocked();

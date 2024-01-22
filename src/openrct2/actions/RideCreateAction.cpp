@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../GameState.h"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
 #include "../interface/Window.h"
@@ -26,6 +27,8 @@
 #include "../world/Park.h"
 
 #include <algorithm>
+
+using namespace OpenRCT2;
 
 RideCreateAction::RideCreateAction(
     int32_t rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2, ObjectEntryIndex entranceObjectIndex)
@@ -207,7 +210,7 @@ GameActions::Result RideCreateAction::Execute() const
         price = 0;
     }
 
-    if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+    if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
     {
         for (auto i = 0; i < RCT2::ObjectLimits::MaxShopItemsPerRideEntry; i++)
         {

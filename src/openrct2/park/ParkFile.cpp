@@ -806,7 +806,7 @@ namespace OpenRCT2
                     cs.ReadWrite(gBankLoan);
                     cs.ReadWrite(gMaxBankLoan);
                     cs.ReadWrite(gBankLoanInterestRate);
-                    cs.ReadWrite(gParkFlags);
+                    cs.ReadWrite(gameState.ParkFlags);
                     if (version <= 18)
                     {
                         money16 tempParkEntranceFee{};

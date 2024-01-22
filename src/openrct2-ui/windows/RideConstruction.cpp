@@ -18,6 +18,7 @@
 #include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/MazeSetTrackAction.h>
 #include <openrct2/actions/RideDemolishAction.h>
@@ -46,6 +47,9 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
+using namespace OpenRCT2;
+using namespace OpenRCT2::TrackMetaData;
+
 static constexpr StringId WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
 static constexpr int32_t WH = 394;
 static constexpr int32_t WW = 210;
@@ -53,8 +57,6 @@ static constexpr int32_t WW = 210;
 static constexpr uint16_t ARROW_PULSE_DURATION = 200;
 // Width of the group boxes, e.g. “Banking”
 static constexpr int32_t GW = WW - 6;
-
-using namespace OpenRCT2::TrackMetaData;
 
 #pragma region Widgets
 
@@ -1551,7 +1553,7 @@ public:
             DrawTextBasic(dpi, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
 
         screenCoords.y += 11;
-        if (_currentTrackPrice != MONEY64_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (_currentTrackPrice != MONEY64_UNDEFINED && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto ft = Formatter();
             ft.Add<money64>(_currentTrackPrice);

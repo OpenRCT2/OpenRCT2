@@ -25,6 +25,7 @@ namespace OpenRCT2
     struct GameState_t
     {
         uint32_t CurrentTicks{};
+        uint64_t ParkFlags;
         ClimateType Climate;
         ClimateState ClimateNext;
         money64 Cash;

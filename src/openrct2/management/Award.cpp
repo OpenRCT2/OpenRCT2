@@ -9,6 +9,7 @@
 
 #include "Award.h"
 
+#include "../GameState.h"
 #include "../config/Config.h"
 #include "../entity/Guest.h"
 #include "../interface/Window.h"
@@ -22,6 +23,8 @@
 #include "NewsItem.h"
 
 #include <algorithm>
+
+using namespace OpenRCT2;
 
 constexpr uint8_t NEGATIVE = 0;
 constexpr uint8_t POSITIVE = 1;
@@ -178,7 +181,7 @@ static bool AwardIsDeservedBestValue(int32_t activeAwardTypes)
     if (activeAwardTypes & EnumToFlag(AwardType::MostDisappointing))
         return false;
 
-    if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !ParkEntranceFeeUnlocked())
+    if ((GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) || !ParkEntranceFeeUnlocked())
         return false;
 
     if (gTotalRideValueForMoney < 10.00_GBP)
@@ -228,7 +231,7 @@ static bool AwardIsDeservedWorstValue(int32_t activeAwardTypes)
 {
     if (activeAwardTypes & EnumToFlag(AwardType::BestValue))
         return false;
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
         return false;
 
     const auto parkEntranceFee = ParkGetEntranceFee();
@@ -621,7 +624,7 @@ void AwardUpdateAll()
     }
 
     // Only add new awards if park is open
-    if (gParkFlags & PARK_FLAGS_PARK_OPEN)
+    if (GetGameState().ParkFlags & PARK_FLAGS_PARK_OPEN)
     {
         // Set active award types as flags
         int32_t activeAwardTypes = 0;
