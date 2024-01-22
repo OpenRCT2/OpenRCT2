@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../TrackImporter.h"
 #include "../actions/FootpathLayoutPlaceAction.h"
@@ -1935,10 +1936,11 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
         }
     }
 
+    auto& gameState = GetGameState();
     _trackDesignDrawingPreview = true;
     uint8_t backup_rotation = _currentTrackPieceDirection;
-    uint32_t backup_park_flags = gParkFlags;
-    gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+    uint32_t backup_park_flags = gameState.ParkFlags;
+    gameState.ParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
     auto mapSize = TileCoordsXY{ gMapSize.x * 16, gMapSize.y * 16 };
 
     _currentTrackPieceDirection = 0;
@@ -1962,7 +1964,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     auto res = TrackDesignPlaceVirtual(
         tds, td6, PTD_OPERATION_PLACE_TRACK_PREVIEW, placeScenery, *ride,
         { mapSize.x, mapSize.y, z, _currentTrackPieceDirection });
-    gParkFlags = backup_park_flags;
+    gameState.ParkFlags = backup_park_flags;
 
     if (res.Error == GameActions::Status::Ok)
     {

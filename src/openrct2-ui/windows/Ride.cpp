@@ -1270,7 +1270,7 @@ private:
         }
 
         if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_FIRST_AID)
-            || (gParkFlags & PARK_FLAGS_NO_MONEY) != 0)
+            || (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) != 0)
             disabledTabs |= (1uLL << WIDX_TAB_9); // 0x1000
 
         if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) != 0)

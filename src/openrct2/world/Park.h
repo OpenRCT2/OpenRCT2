@@ -92,7 +92,6 @@ namespace OpenRCT2
     };
 } // namespace OpenRCT2
 
-extern uint64_t gParkFlags;
 extern uint16_t gParkRating;
 extern money64 gParkEntranceFee;
 extern uint32_t gParkSize;

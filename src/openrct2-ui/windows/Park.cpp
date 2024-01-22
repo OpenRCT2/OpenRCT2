@@ -35,6 +35,8 @@
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Park.h>
 
+using namespace OpenRCT2;
+
 static constexpr StringId WINDOW_TITLE = STR_STRINGID;
 static constexpr int32_t WH = 224;
 
@@ -394,7 +396,7 @@ private:
     void SetDisabledTabs()
     {
         // Disable price tab if money is disabled
-        disabled_widgets = (gParkFlags & PARK_FLAGS_NO_MONEY) ? (1uLL << WIDX_TAB_4) : 0;
+        disabled_widgets = (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) ? (1uLL << WIDX_TAB_4) : 0;
     }
 
     void PrepareWindowTitleText()
@@ -528,7 +530,7 @@ private:
             disabled_widgets &= ~((1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT));
 
         // Only allow purchase of land when there is money
-        if (gParkFlags & PARK_FLAGS_NO_MONEY)
+        if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
             widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::Empty;
         else
             widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
@@ -869,7 +871,7 @@ private:
         }
 
         // If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
-        if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !ParkEntranceFeeUnlocked())
+        if ((GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) || !ParkEntranceFeeUnlocked())
         {
             widgets[WIDX_PRICE].type = WindowWidgetType::LabelCentred;
             widgets[WIDX_INCREASE_PRICE].type = WindowWidgetType::Empty;
@@ -1046,7 +1048,7 @@ private:
         PrepareWindowTitleText();
 
         // Show name input button on scenario completion.
-        if (gParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
+        if (GetGameState().ParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
         {
             widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Button;
             widgets[WIDX_ENTER_NAME].top = height - 19;

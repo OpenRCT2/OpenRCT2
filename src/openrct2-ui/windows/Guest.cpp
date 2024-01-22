@@ -468,7 +468,7 @@ private:
             if (!WidgetIsDisabled(*this, WIDX_PICKUP))
                 Invalidate();
         }
-        if (gParkFlags & PARK_FLAGS_NO_MONEY)
+        if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
         {
             newDisabledWidgets |= (1uLL << WIDX_TAB_4); // Disable finance tab if no money
         }

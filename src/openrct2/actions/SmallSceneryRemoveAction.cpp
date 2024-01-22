@@ -10,6 +10,7 @@
 #include "SmallSceneryRemoveAction.h"
 
 #include "../Cheats.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../common.h"
 #include "../core/MemoryStream.h"
@@ -76,7 +77,7 @@ GameActions::Result SmallSceneryRemoveAction::Query() const
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsSandboxMode)
     {
         // Check if allowed to remove item
-        if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+        if (GetGameState().ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
         {
             if (entry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
             {

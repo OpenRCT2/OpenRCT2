@@ -75,9 +75,9 @@
 #include <memory>
 #include <vector>
 
-static constexpr ObjectEntryIndex ObjectEntryIndexIgnore = 254;
-
 using namespace OpenRCT2;
+
+static constexpr ObjectEntryIndex ObjectEntryIndexIgnore = 254;
 
 namespace RCT1
 {
@@ -171,7 +171,7 @@ namespace RCT1
 
         void Import(GameState_t& gameState) override
         {
-            Initialise();
+            Initialise(gameState);
 
             CreateAvailableObjectMappings();
 
@@ -313,7 +313,7 @@ namespace RCT1
             throw std::runtime_error("Unable to decode park.");
         }
 
-        void Initialise()
+        void Initialise(GameState_t& gameState)
         {
             // Avoid reusing the value used for last import
             _parkValueConversionFactor = 0;
@@ -326,7 +326,7 @@ namespace RCT1
             auto context = OpenRCT2::GetContext();
             context->GetGameState()->InitAll({ mapSize, mapSize });
             gEditorStep = EditorStep::ObjectSelection;
-            gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+            gameState.ParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
             gScenarioCategory = SCENARIO_CATEGORY_OTHER;
         }
 
@@ -2201,14 +2201,14 @@ namespace RCT1
             gStaffSecurityColour = RCT1::GetColour(_s4.SecurityGuardColour);
 
             // Flags
-            gParkFlags = _s4.ParkFlags;
-            gParkFlags &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
-            gParkFlags |= PARK_FLAGS_RCT1_INTEREST;
+            gameState.ParkFlags = _s4.ParkFlags;
+            gameState.ParkFlags &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
+            gameState.ParkFlags |= PARK_FLAGS_RCT1_INTEREST;
             // Loopy Landscape parks can set a flag to lock the entry price to free.
             // If this flag is not set, the player can ask money for both rides and entry.
             if (!(_s4.ParkFlags & RCT1_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE))
             {
-                gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                gameState.ParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
             }
 
             gParkSize = _s4.ParkSize;

@@ -109,7 +109,7 @@ namespace Editor
         OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gEditorStep = EditorStep::ObjectSelection;
-        gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        GetGameState().ParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gScenarioCategory = SCENARIO_CATEGORY_OTHER;
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
@@ -323,22 +323,22 @@ namespace Editor
         gGuestChangeModifier = 0;
         if (fromSave)
         {
-            gParkFlags |= PARK_FLAGS_NO_MONEY;
+            gameState.ParkFlags |= PARK_FLAGS_NO_MONEY;
 
             if (gParkEntranceFee == 0)
             {
-                gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                gameState.ParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
             }
             else
             {
-                gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+                gameState.ParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
             }
 
-            gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+            gameState.ParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 
             gGuestInitialCash = std::clamp(gGuestInitialCash, 10.00_GBP, MAX_ENTRANCE_FEE);
 
-            GetGameState().InitialCash = std::min<money64>(GetGameState().InitialCash, 100000);
+            gameState.InitialCash = std::min<money64>(GetGameState().InitialCash, 100000);
             FinanceResetCashToInitial();
 
             gBankLoan = std::clamp<money64>(gBankLoan, 0.00_GBP, 5000000.00_GBP);

@@ -343,12 +343,12 @@ static void Select(const char* path)
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO):
         {
             SetAndSaveConfigPath(gConfigGeneral.LastSaveScenarioDirectory, pathBuffer);
-            int32_t parkFlagsBackup = gParkFlags;
-            gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+            int32_t parkFlagsBackup = gameState.ParkFlags;
+            gameState.ParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
             gEditorStep = EditorStep::Invalid;
             gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
             int32_t success = ScenarioSave(gameState, pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2);
-            gParkFlags = parkFlagsBackup;
+            gameState.ParkFlags = parkFlagsBackup;
 
             if (success)
             {

@@ -1075,7 +1075,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
                         possible_thoughts[num_thoughts++] = PeepThoughtType::Toilet;
                     }
 
-                    if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && CashInPocket <= 9.00_GBP && Happiness >= 105 && Energy >= 70)
+                    if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) && CashInPocket <= 9.00_GBP && Happiness >= 105
+                        && Energy >= 70)
                     {
                         /* The energy check was originally a second check on happiness.
                          * This was superfluous so should probably check something else.
@@ -1537,7 +1538,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
 
     if (!hasVoucher)
     {
-        if (price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (price != 0 && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             if (CashInPocket == 0)
             {
@@ -1584,7 +1585,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
             itemValue -= price;
             itemValue = std::max(0.80_GBP, itemValue);
 
-            if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+            if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
             {
                 if (itemValue >= static_cast<money64>(ScenarioRand() & 0x07))
                 {
@@ -1692,7 +1693,8 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 
-    if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+    auto& gameState = GetGameState();
+    if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
         FinancePayment(shopItemDescriptor.Cost, expenditure);
 
     // Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
@@ -1702,7 +1704,7 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
         RemoveItem(ShopItem::Voucher);
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
-    else if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+    else if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
     {
         SpendMoney(*expend_type, price, expenditure);
     }
@@ -2002,8 +2004,9 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 return false;
             }
 
+            auto& gameState = GetGameState();
             // Basic price checks
-            if (ridePrice != 0 && !PeepHasVoucherForFreeRide(this, ride) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+            if (ridePrice != 0 && !PeepHasVoucherForFreeRide(this, ride) && !(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
             {
                 if (ridePrice > CashInPocket)
                 {
@@ -2151,7 +2154,8 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
             money64 value = ride.value;
 
             // If the value of the ride hasn't yet been calculated, peeps will be willing to pay any amount for the ride.
-            if (value != RIDE_VALUE_UNDEFINED && !PeepHasVoucherForFreeRide(this, ride) && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+            if (value != RIDE_VALUE_UNDEFINED && !PeepHasVoucherForFreeRide(this, ride)
+                && !(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
             {
                 // The amount peeps are willing to pay is decreased by 75% if they had to pay to enter the park.
                 if (PeepFlags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY)
@@ -2177,7 +2181,7 @@ bool Guest::ShouldGoOnRide(Ride& ride, StationIndex entranceNum, bool atQueue, b
                 // A ride is good value if the price is 50% or less of the ride value and the peep didn't pay to enter the park.
                 if (ridePrice <= (value / 2) && peepAtRide)
                 {
-                    if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+                    if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
                     {
                         if (!(PeepFlags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY))
                         {
@@ -2296,7 +2300,7 @@ void Guest::SpendMoney(money64 amount, ExpenditureType expenditure)
  */
 void Guest::SpendMoney(money64& peep_expend_type, money64 amount, ExpenditureType expenditure)
 {
-    assert(!(gParkFlags & PARK_FLAGS_NO_MONEY));
+    assert(!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY));
 
     CashInPocket = std::max(0.00_GBP, static_cast<money64>(CashInPocket) - amount);
     CashSpent += amount;
@@ -2611,7 +2615,7 @@ static bool PeepCheckRidePriceAtEntrance(Guest* peep, const Ride& ride, money64 
         && peep->VoucherRideId == peep->CurrentRide)
         return true;
 
-    if (peep->CashInPocket <= 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+    if (peep->CashInPocket <= 0 && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
     {
         peep->InsertNewThought(PeepThoughtType::SpentMoney);
         PeepUpdateRideAtEntranceTryLeave(peep);
@@ -2705,7 +2709,7 @@ static void PeepUpdateFavouriteRide(Guest* peep, const Ride& ride)
 /* rct2: 0x00695555 */
 static int16_t PeepCalculateRideValueSatisfaction(Guest* peep, const Ride& ride)
 {
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return -30;
     }
@@ -2879,7 +2883,7 @@ static bool PeepShouldGoOnRideAgain(Guest* peep, const Ride& ride)
 
 static bool PeepShouldPreferredIntensityIncrease(Guest* peep)
 {
-    if (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
+    if (GetGameState().ParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
         return false;
     if (peep->Happiness < 200)
         return false;
@@ -3064,7 +3068,7 @@ static void PeepDecideWhetherToLeavePark(Guest* peep)
      * in the park. */
     if (!(peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK))
     {
-        if (gParkFlags & PARK_FLAGS_NO_MONEY)
+        if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
         {
             if (peep->Energy >= 70 && peep->Happiness >= 60)
             {
@@ -3294,7 +3298,7 @@ void Guest::StopPurchaseThought(ride_type_t rideType)
  */
 static bool PeepShouldUseCashMachine(Guest* peep, RideId rideIndex)
 {
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
         return false;
     if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         return false;
@@ -7107,9 +7111,10 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
     /* Check which intensity boxes are enabled
      * and apply the appropriate intensity settings. */
-    if (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
+    auto& gameState = GetGameState();
+    if (gameState.ParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
     {
-        if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
+        if (gameState.ParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
         {
             intensityLowest = 0;
             intensityHighest = 15;
@@ -7120,7 +7125,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
             intensityHighest = 4;
         }
     }
-    else if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
+    else if (gameState.ParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
     {
         intensityLowest = 9;
         intensityHighest = 15;
@@ -7129,7 +7134,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->Intensity = IntensityRange(intensityLowest, intensityHighest);
 
     uint8_t nauseaTolerance = ScenarioRand() & 0x7;
-    if (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
+    if (gameState.ParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
     {
         nauseaTolerance += 4;
     }
@@ -7186,7 +7191,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
         cash = 500;
     }
 
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
     {
         cash = 0;
     }

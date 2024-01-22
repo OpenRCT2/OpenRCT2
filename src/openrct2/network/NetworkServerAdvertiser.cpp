@@ -307,9 +307,11 @@ private:
             { "mapSize", mapSize },         { "day", date.GetMonthTicks() }, { "month", date.GetMonthsElapsed() },
             { "guests", gNumGuestsInPark }, { "parkValue", gParkValue },
         };
-        if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+
+        auto& gameState = GetGameState();
+        if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
         {
-            gameInfo["cash"] = GetGameState().Cash;
+            gameInfo["cash"] = gameState.Cash;
         }
 
         root["gameInfo"] = gameInfo;

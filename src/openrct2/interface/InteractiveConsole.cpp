@@ -569,11 +569,11 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "money")
         {
-            console.WriteFormatLine("money %d.%d0", GetGameState().Cash / 10, GetGameState().Cash % 10);
+            console.WriteFormatLine("money %d.%d0", gameState.Cash / 10, gameState.Cash % 10);
         }
         else if (argv[0] == "scenario_initial_cash")
         {
-            console.WriteFormatLine("scenario_initial_cash %d", GetGameState().InitialCash / 10);
+            console.WriteFormatLine("scenario_initial_cash %d", gameState.InitialCash / 10);
         }
         else if (argv[0] == "current_loan")
         {
@@ -616,48 +616,52 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         else if (argv[0] == "guest_prefer_less_intense_rides")
         {
             console.WriteFormatLine(
-                "guest_prefer_less_intense_rides %d", (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) != 0);
+                "guest_prefer_less_intense_rides %d", (gameState.ParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) != 0);
         }
         else if (argv[0] == "guest_prefer_more_intense_rides")
         {
             console.WriteFormatLine(
-                "guest_prefer_more_intense_rides %d", (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES) != 0);
+                "guest_prefer_more_intense_rides %d", (gameState.ParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES) != 0);
         }
         else if (argv[0] == "forbid_marketing_campaigns")
         {
-            console.WriteFormatLine("forbid_marketing_campaigns %d", (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) != 0);
+            console.WriteFormatLine(
+                "forbid_marketing_campaigns %d", (gameState.ParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) != 0);
         }
         else if (argv[0] == "forbid_landscape_changes")
         {
-            console.WriteFormatLine("forbid_landscape_changes %d", (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) != 0);
+            console.WriteFormatLine(
+                "forbid_landscape_changes %d", (gameState.ParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) != 0);
         }
         else if (argv[0] == "forbid_tree_removal")
         {
-            console.WriteFormatLine("forbid_tree_removal %d", (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL) != 0);
+            console.WriteFormatLine("forbid_tree_removal %d", (gameState.ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL) != 0);
         }
         else if (argv[0] == "forbid_high_construction")
         {
-            console.WriteFormatLine("forbid_high_construction %d", (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION) != 0);
+            console.WriteFormatLine(
+                "forbid_high_construction %d", (gameState.ParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION) != 0);
         }
         else if (argv[0] == "pay_for_rides")
         {
-            console.WriteFormatLine("pay_for_rides %d", (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) != 0);
+            console.WriteFormatLine("pay_for_rides %d", (gameState.ParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) != 0);
         }
         else if (argv[0] == "no_money")
         {
-            console.WriteFormatLine("no_money %d", (gParkFlags & PARK_FLAGS_NO_MONEY) != 0);
+            console.WriteFormatLine("no_money %d", (gameState.ParkFlags & PARK_FLAGS_NO_MONEY) != 0);
         }
         else if (argv[0] == "difficult_park_rating")
         {
-            console.WriteFormatLine("difficult_park_rating %d", (gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING) != 0);
+            console.WriteFormatLine("difficult_park_rating %d", (gameState.ParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING) != 0);
         }
         else if (argv[0] == "difficult_guest_generation")
         {
-            console.WriteFormatLine("difficult_guest_generation %d", (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0);
+            console.WriteFormatLine(
+                "difficult_guest_generation %d", (gameState.ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0);
         }
         else if (argv[0] == "park_open")
         {
-            console.WriteFormatLine("park_open %d", (gParkFlags & PARK_FLAGS_PARK_OPEN) != 0);
+            console.WriteFormatLine("park_open %d", (gameState.ParkFlags & PARK_FLAGS_PARK_OPEN) != 0);
         }
         else if (argv[0] == "land_rights_cost")
         {
@@ -770,10 +774,11 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
             }
         }
 
+        auto& gameState = GetGameState();
         if (argv[0] == "money" && InvalidArguments(&invalidArgs, double_valid[0]))
         {
             money64 money = ToMoney64FromGBP(double_val[0]);
-            if (GetGameState().Cash != money)
+            if (gameState.Cash != money)
             {
                 auto cheatSetAction = CheatSetAction(CheatType::SetMoney, money);
                 cheatSetAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
@@ -943,7 +948,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "pay_for_rides" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            SET_FLAG(gParkFlags, PARK_FLAGS_PARK_FREE_ENTRY, int_val[0]);
+            SET_FLAG(gameState.ParkFlags, PARK_FLAGS_PARK_FREE_ENTRY, int_val[0]);
             console.Execute("get pay_for_rides");
         }
         else if (argv[0] == "no_money" && InvalidArguments(&invalidArgs, int_valid[0]))

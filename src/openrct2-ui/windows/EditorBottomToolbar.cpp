@@ -15,6 +15,7 @@
 #include <openrct2/Editor.h>
 #include <openrct2/EditorObjectSelectionSession.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
@@ -26,6 +27,8 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 #include <string>
+
+using namespace OpenRCT2;
 
 // clang-format off
 enum {
@@ -99,7 +102,7 @@ public:
             }
             else if (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER))
             {
-                if (GetNumFreeEntities() != MAX_ENTITIES || gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)
+                if (GetNumFreeEntities() != MAX_ENTITIES || GetGameState().ParkFlags & PARK_FLAGS_SPRITES_INITIALISED)
                 {
                     HidePreviousStepButton();
                 }
@@ -134,7 +137,7 @@ public:
         if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
         {
             if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-                || (GetNumFreeEntities() == MAX_ENTITIES && !(gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)))
+                || (GetNumFreeEntities() == MAX_ENTITIES && !(GetGameState().ParkFlags & PARK_FLAGS_SPRITES_INITIALISED)))
             {
                 ((this)->*(_previousButtonMouseUp[EnumValue(gEditorStep)]))();
             }

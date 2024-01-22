@@ -56,22 +56,22 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             {
                 if (_value != 0)
                 {
-                    gParkFlags |= PARK_FLAGS_NO_MONEY;
+                    gameState.ParkFlags |= PARK_FLAGS_NO_MONEY;
                 }
                 else
                 {
-                    gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+                    gameState.ParkFlags &= ~PARK_FLAGS_NO_MONEY;
                 }
             }
             else
             {
                 if (_value != 0)
                 {
-                    gParkFlags |= PARK_FLAGS_NO_MONEY;
+                    gameState.ParkFlags |= PARK_FLAGS_NO_MONEY;
                 }
                 else
                 {
-                    gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+                    gameState.ParkFlags &= ~PARK_FLAGS_NO_MONEY;
                 }
                 // Invalidate all windows that have anything to do with finance
                 WindowInvalidateByClass(WindowClass::Ride);
@@ -105,11 +105,11 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
         case ScenarioSetSetting::ForbidMarketingCampaigns:
             if (_value != 0)
             {
-                gParkFlags |= PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
+                gameState.ParkFlags |= PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
             }
             else
             {
-                gParkFlags &= ~PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
+                gameState.ParkFlags &= ~PARK_FLAGS_FORBID_MARKETING_CAMPAIGN;
             }
             break;
         case ScenarioSetSetting::AverageCashPerGuest:
@@ -127,21 +127,21 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
         case ScenarioSetSetting::GuestsPreferLessIntenseRides:
             if (_value != 0)
             {
-                gParkFlags |= PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
+                gameState.ParkFlags |= PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
             }
             else
             {
-                gParkFlags &= ~PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
+                gameState.ParkFlags &= ~PARK_FLAGS_PREF_LESS_INTENSE_RIDES;
             }
             break;
         case ScenarioSetSetting::GuestsPreferMoreIntenseRides:
             if (_value != 0)
             {
-                gParkFlags |= PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
+                gameState.ParkFlags |= PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
             }
             else
             {
-                gParkFlags &= ~PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
+                gameState.ParkFlags &= ~PARK_FLAGS_PREF_MORE_INTENSE_RIDES;
             }
             break;
         case ScenarioSetSetting::CostToBuyLand:
@@ -155,20 +155,20 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             {
                 if (_value == 0)
                 {
-                    gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                    gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gameState.ParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                    gameState.ParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
                     gParkEntranceFee = 0.00_GBP;
                 }
                 else if (_value == 1)
                 {
-                    gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-                    gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gameState.ParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+                    gameState.ParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
                     gParkEntranceFee = 10.00_GBP;
                 }
                 else
                 {
-                    gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                    gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gameState.ParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                    gameState.ParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
                     gParkEntranceFee = 10.00_GBP;
                 }
             }
@@ -176,18 +176,18 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             {
                 if (_value == 0)
                 {
-                    gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                    gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gameState.ParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                    gameState.ParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
                 }
                 else if (_value == 1)
                 {
-                    gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-                    gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gameState.ParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+                    gameState.ParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
                 }
                 else
                 {
-                    gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                    gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gameState.ParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                    gameState.ParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
                 }
                 WindowInvalidateByClass(WindowClass::ParkInformation);
                 WindowInvalidateByClass(WindowClass::Ride);
@@ -200,51 +200,51 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
         case ScenarioSetSetting::ForbidTreeRemoval:
             if (_value != 0)
             {
-                gParkFlags |= PARK_FLAGS_FORBID_TREE_REMOVAL;
+                gameState.ParkFlags |= PARK_FLAGS_FORBID_TREE_REMOVAL;
             }
             else
             {
-                gParkFlags &= ~PARK_FLAGS_FORBID_TREE_REMOVAL;
+                gameState.ParkFlags &= ~PARK_FLAGS_FORBID_TREE_REMOVAL;
             }
             break;
         case ScenarioSetSetting::ForbidLandscapeChanges:
             if (_value != 0)
             {
-                gParkFlags |= PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
+                gameState.ParkFlags |= PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
             }
             else
             {
-                gParkFlags &= ~PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
+                gameState.ParkFlags &= ~PARK_FLAGS_FORBID_LANDSCAPE_CHANGES;
             }
             break;
         case ScenarioSetSetting::ForbidHighConstruction:
             if (_value != 0)
             {
-                gParkFlags |= PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+                gameState.ParkFlags |= PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
             }
             else
             {
-                gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+                gameState.ParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
             }
             break;
         case ScenarioSetSetting::ParkRatingHigherDifficultyLevel:
             if (_value != 0)
             {
-                gParkFlags |= PARK_FLAGS_DIFFICULT_PARK_RATING;
+                gameState.ParkFlags |= PARK_FLAGS_DIFFICULT_PARK_RATING;
             }
             else
             {
-                gParkFlags &= ~PARK_FLAGS_DIFFICULT_PARK_RATING;
+                gameState.ParkFlags &= ~PARK_FLAGS_DIFFICULT_PARK_RATING;
             }
             break;
         case ScenarioSetSetting::GuestGenerationHigherDifficultyLevel:
             if (_value != 0)
             {
-                gParkFlags |= PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
+                gameState.ParkFlags |= PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
             }
             else
             {
-                gParkFlags &= ~PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
+                gameState.ParkFlags &= ~PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
             }
             break;
         case ScenarioSetSetting::AllowEarlyCompletion:
@@ -254,11 +254,11 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
         {
             if (_value != 0)
             {
-                gParkFlags |= PARK_FLAGS_RCT1_INTEREST;
+                gameState.ParkFlags |= PARK_FLAGS_RCT1_INTEREST;
             }
             else
             {
-                gParkFlags &= ~PARK_FLAGS_RCT1_INTEREST;
+                gameState.ParkFlags &= ~PARK_FLAGS_RCT1_INTEREST;
             }
             break;
         }

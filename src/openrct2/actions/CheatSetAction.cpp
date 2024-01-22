@@ -547,14 +547,16 @@ void CheatSetAction::Set10MinuteInspection() const
 
 void CheatSetAction::SetScenarioNoMoney(bool enabled) const
 {
+    auto& gameState = GetGameState();
     if (enabled)
     {
-        gParkFlags |= PARK_FLAGS_NO_MONEY;
+        gameState.ParkFlags |= PARK_FLAGS_NO_MONEY;
     }
     else
     {
-        gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+        gameState.ParkFlags &= ~PARK_FLAGS_NO_MONEY;
     }
+
     // Invalidate all windows that have anything to do with finance
     WindowInvalidateByClass(WindowClass::Ride);
     WindowInvalidateByClass(WindowClass::Peep);

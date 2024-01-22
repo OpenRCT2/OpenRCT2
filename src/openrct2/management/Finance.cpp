@@ -58,7 +58,7 @@ money64 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(Ex
  */
 bool FinanceCheckMoneyRequired(uint32_t flags)
 {
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
         return false;
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return false;
@@ -88,7 +88,8 @@ bool FinanceCheckAffordability(money64 cost, uint32_t flags)
 void FinancePayment(money64 amount, ExpenditureType type)
 {
     // overflow check
-    GetGameState().Cash = AddClamp_money64(GetGameState().Cash, -amount);
+    auto& gameState = GetGameState();
+    gameState.Cash = AddClamp_money64(gameState.Cash, -amount);
 
     gExpenditureTable[0][static_cast<int32_t>(type)] -= amount;
     if (dword_988E60[static_cast<int32_t>(type)] & 1)
@@ -109,7 +110,7 @@ void FinancePayWages()
 {
     PROFILED_FUNCTION();
 
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
@@ -126,7 +127,7 @@ void FinancePayWages()
  **/
 void FinancePayResearch()
 {
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
@@ -141,7 +142,7 @@ void FinancePayResearch()
  */
 void FinancePayInterest()
 {
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
@@ -150,8 +151,9 @@ void FinancePayInterest()
     // that will overflow money64 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
     const money64 current_loan = gBankLoan;
     const auto current_interest_rate = gBankLoanInterestRate;
-    const money64 interest_to_pay = (gParkFlags & PARK_FLAGS_RCT1_INTEREST) ? (current_loan / 2400)
-                                                                            : (current_loan * 5 * current_interest_rate) >> 14;
+    const money64 interest_to_pay = (GetGameState().ParkFlags & PARK_FLAGS_RCT1_INTEREST)
+        ? (current_loan / 2400)
+        : (current_loan * 5 * current_interest_rate) >> 14;
 
     FinancePayment(interest_to_pay, ExpenditureType::Interest);
 }
@@ -171,7 +173,7 @@ void FinancePayRideUpkeep()
             ride.Renew();
         }
 
-        if (ride.status != RideStatus::Closed && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (ride.status != RideStatus::Closed && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto upkeep = ride.upkeep_cost;
             if (upkeep != MONEY64_UNDEFINED)
@@ -257,7 +259,7 @@ void FinanceUpdateDailyProfit()
 
     money64 current_profit = 0;
 
-    if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+    if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Staff costs
         for (auto peep : EntityList<Staff>())

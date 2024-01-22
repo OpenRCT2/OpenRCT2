@@ -958,7 +958,7 @@ private:
 
     static GuestItem::CompareFunc GetGuestCompareFunc()
     {
-        return gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? CompareGuestItem<true> : CompareGuestItem<false>;
+        return GetGameState().ParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? CompareGuestItem<true> : CompareGuestItem<false>;
     }
 };
 

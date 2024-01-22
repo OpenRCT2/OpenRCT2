@@ -60,6 +60,8 @@
 
 #include <algorithm>
 
+using namespace OpenRCT2;
+
 const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BEGINNER_PARKS, STR_CHALLENGING_PARKS,    STR_EXPERT_PARKS, STR_REAL_PARKS, STR_OTHER_PARKS,
     STR_DLC_PARKS,      STR_BUILD_YOUR_OWN_PARKS, STR_COMPETITIONS, STR_UCES_TM,    STR_UCES_KD,
@@ -152,7 +154,7 @@ void ScenarioReset()
     gTotalAdmissions = 0;
     gTotalIncomeFromAdmissions = 0;
 
-    gParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+    gameState.ParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
     gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
     gScenarioCompletedBy = "?";
 
@@ -178,13 +180,13 @@ void ScenarioReset()
     gParkRatingCasualtyPenalty = 0;
 
     // Open park with free entry when there is no money
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
     {
-        gParkFlags |= PARK_FLAGS_PARK_OPEN;
+        gameState.ParkFlags |= PARK_FLAGS_PARK_OPEN;
         gParkEntranceFee = 0;
     }
 
-    gParkFlags |= PARK_FLAGS_SPRITES_INITIALISED;
+    gameState.ParkFlags |= PARK_FLAGS_SPRITES_INITIALISED;
     gGamePaused = false;
 }
 
@@ -220,7 +222,7 @@ void ScenarioSuccess()
     if (ScenarioRepositoryTryRecordHighscore(gScenarioFileName.c_str(), companyValue, nullptr))
     {
         // Allow name entry
-        gParkFlags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+        GetGameState().ParkFlags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
         gScenarioCompanyValueRecord = companyValue;
     }
     ScenarioEnd();
@@ -236,7 +238,7 @@ void ScenarioSuccessSubmitName(const char* name)
     {
         gScenarioCompletedBy = name;
     }
-    gParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+    GetGameState().ParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 }
 
 /**
@@ -247,7 +249,7 @@ static void ScenarioCheckEntranceFeeTooHigh()
 {
     const auto max_fee = AddClamp_money64(gTotalRideValueForMoney, gTotalRideValueForMoney / 2);
 
-    if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && ParkGetEntranceFee() > max_fee)
+    if ((GetGameState().ParkFlags & PARK_FLAGS_PARK_OPEN) && ParkGetEntranceFee() > max_fee)
     {
         if (!gParkEntrances.empty())
         {
@@ -319,7 +321,7 @@ static void ScenarioDayUpdate()
     }
 
     // Lower the casualty penalty
-    uint16_t casualtyPenaltyModifier = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
+    uint16_t casualtyPenaltyModifier = (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
     gParkRatingCasualtyPenalty = std::max(0, gParkRatingCasualtyPenalty - casualtyPenaltyModifier);
 
     auto intent = Intent(INTENT_ACTION_UPDATE_DATE);
@@ -610,7 +612,7 @@ ResultWithMessage ScenarioPrepareForSave()
     }
 
     if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
-        gParkFlags |= PARK_FLAGS_PARK_OPEN;
+        GetGameState().ParkFlags |= PARK_FLAGS_PARK_OPEN;
 
     ScenarioReset();
 
@@ -732,7 +734,7 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
         else if (gScenarioParkRatingWarningDays == 29)
         {
             News::AddItemToQueue(News::ItemType::Graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
-            gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
+            GetGameState().ParkFlags &= ~PARK_FLAGS_PARK_OPEN;
             gGuestInitialHappiness = 50;
             return ObjectiveStatus::Failure;
         }
