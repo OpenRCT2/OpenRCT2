@@ -838,7 +838,6 @@ void LightFxAddShopLights(const CoordsXY& mapPosition, const uint8_t direction, 
 
 void LightFXApplyPaletteFilter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
 {
-
     auto& gameState = OpenRCT2::GetGameState();
 
     float night = static_cast<float>(pow(gDayNightCycle, 1.5));

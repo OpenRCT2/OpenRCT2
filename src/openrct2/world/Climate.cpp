@@ -158,7 +158,8 @@ void ClimateUpdate()
                     else if (gameState.ClimateNext.Level <= WeatherLevel::Heavy)
                     {
                         gameState.ClimateCurrent.Level = static_cast<WeatherLevel>(ClimateStepWeatherLevel(
-                            static_cast<int8_t>(gameState.ClimateCurrent.Level), static_cast<int8_t>(gameState.ClimateNext.Level)));
+                            static_cast<int8_t>(gameState.ClimateCurrent.Level),
+                            static_cast<int8_t>(gameState.ClimateNext.Level)));
                     }
                 }
                 else
@@ -321,7 +322,8 @@ static void ClimateDetermineFutureWeather(int32_t randomDistribution)
 
 static void ClimateUpdateWeatherSound()
 {
-    if (GetGameState().ClimateCurrent.WeatherEffect == WeatherEffectType::Rain || GetGameState().ClimateCurrent.WeatherEffect == WeatherEffectType::Storm)
+    if (GetGameState().ClimateCurrent.WeatherEffect == WeatherEffectType::Rain
+        || GetGameState().ClimateCurrent.WeatherEffect == WeatherEffectType::Storm)
     {
         // Start playing the weather sound
         if (_weatherSoundChannel == nullptr || _weatherSoundChannel->IsDone())

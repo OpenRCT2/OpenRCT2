@@ -184,7 +184,8 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
         return;
     }
 
-    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED) || WeatherIsDry(OpenRCT2::GetGameState().ClimateCurrent.Weather) || GetAge() < 5)
+    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_CAN_BE_WATERED)
+        || WeatherIsDry(OpenRCT2::GetGameState().ClimateCurrent.Weather) || GetAge() < 5)
     {
         IncreaseAge(sceneryPos);
         return;

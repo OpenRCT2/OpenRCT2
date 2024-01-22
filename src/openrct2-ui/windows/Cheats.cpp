@@ -506,7 +506,8 @@ public:
         }
 
         // Current weather
-        window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(OpenRCT2::GetGameState().ClimateCurrent.Weather)];
+        window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(
+            OpenRCT2::GetGameState().ClimateCurrent.Weather)];
         // Staff speed
         window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(gCheatsSelectedStaffSpeed)];
 
