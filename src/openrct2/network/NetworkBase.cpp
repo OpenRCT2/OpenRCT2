@@ -3705,7 +3705,8 @@ GameActions::Result NetworkModifyGroups(
         break;
         default:
             LOG_ERROR("Invalid Modify Group Type: %u", static_cast<uint8_t>(type));
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     network.SaveGroups();

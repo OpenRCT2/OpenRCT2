@@ -41,7 +41,8 @@ GameActions::Result ParkSetParameterAction::Query() const
 {
     if (_parameter >= ParkParameter::Count)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters,
+            STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     auto res = GameActions::Result();
@@ -72,7 +73,8 @@ GameActions::Result ParkSetParameterAction::Execute() const
             WindowInvalidateByClass(WindowClass::Ride);
             break;
         default:
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     auto res = GameActions::Result();

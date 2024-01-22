@@ -47,7 +47,8 @@ GameActions::Result ParkSetDateAction::Query() const
 {
     if (_year < 0 || _year >= MAX_YEAR || _month < 0 || _month >= MONTH_COUNT || _day < 0 || _day >= 31)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters,
+            STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     return GameActions::Result();

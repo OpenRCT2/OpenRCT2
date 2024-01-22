@@ -42,7 +42,8 @@ GameActions::Result RideFreezeRatingAction::Query() const
     if (_value <= 0)
     {
         LOG_WARNING("Rating value must be positive", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters,
+            STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     return GameActions::Result();

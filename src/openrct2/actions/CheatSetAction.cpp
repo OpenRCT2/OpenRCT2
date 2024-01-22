@@ -72,18 +72,21 @@ GameActions::Result CheatSetAction::Query() const
 {
     if (static_cast<uint32_t>(_cheatType) >= static_cast<uint32_t>(CheatType::Count))
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters,
+            STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     ParametersRange validRange = GetParameterRange(static_cast<CheatType>(_cheatType.id));
 
     if (_param1 < validRange.first.first || _param1 > validRange.first.second)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters,
+            STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
     if (_param2 < validRange.second.first || _param2 > validRange.second.second)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters,
+            STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     return GameActions::Result();
@@ -256,7 +259,8 @@ GameActions::Result CheatSetAction::Execute() const
         default:
         {
             LOG_ERROR("Unabled cheat: %d", _cheatType.id);
-            GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
         break;
     }

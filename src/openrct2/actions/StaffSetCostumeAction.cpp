@@ -80,7 +80,8 @@ GameActions::Result StaffSetCostumeAction::Query() const
     if (EnumValue(spriteType) > std::size(peep_slow_walking_types))
     {
         LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters,
+            STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
     return GameActions::Result();
 }
