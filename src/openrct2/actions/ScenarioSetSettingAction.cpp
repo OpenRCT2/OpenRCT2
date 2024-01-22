@@ -40,8 +40,8 @@ GameActions::Result ScenarioSetSettingAction::Query() const
     if (_setting >= ScenarioSetSetting::Count)
     {
         LOG_ERROR("Invalid setting: %u", _setting);
-        return GameActions::Result(GameActions::Status::InvalidParameters,
-            STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     return GameActions::Result();
@@ -266,8 +266,7 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
         default:
             LOG_ERROR("Invalid setting: %u", _setting);
             return GameActions::Result(
-                GameActions::Status::InvalidParameters,
-                STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+                GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
     WindowInvalidateByClass(WindowClass::EditorScenarioOptions);
     return GameActions::Result();

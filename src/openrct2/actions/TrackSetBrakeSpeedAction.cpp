@@ -64,8 +64,8 @@ GameActions::Result TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting) con
     if (tileElement == nullptr)
     {
         LOG_WARNING("Invalid game command for setting brakes speed. x = %d, y = %d", _loc.x, _loc.y);
-        return GameActions::Result(GameActions::Status::InvalidParameters,
-            STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     if (isExecuting)

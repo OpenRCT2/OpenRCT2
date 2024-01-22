@@ -231,8 +231,8 @@ GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
         }
         default:
             LOG_ERROR("invalid instruction");
-            return GameActions::Result(GameActions::Status::InvalidParameters,
-                STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     res.Position.x = _loc.x;

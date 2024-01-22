@@ -116,8 +116,8 @@ GameActions::Result LandSetRightsAction::MapBuyLandRightsForTile(const CoordsXY&
     if (surfaceElement == nullptr)
     {
         LOG_ERROR("Could not find surface. x = %d, y = %d", loc.x, loc.y);
-        return GameActions::Result(GameActions::Status::InvalidParameters,
-            STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
 
     auto res = GameActions::Result();
@@ -204,7 +204,7 @@ GameActions::Result LandSetRightsAction::MapBuyLandRightsForTile(const CoordsXY&
         }
         default:
             LOG_WARNING("Tried calling set land rights with an incorrect setting. setting = %u", _setting);
-            return GameActions::Result(GameActions::Status::InvalidParameters,
-                STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 }

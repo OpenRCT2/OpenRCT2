@@ -47,8 +47,8 @@ GameActions::Result ParkSetEntranceFeeAction::Query() const
     }
     if (_fee < 0.00_GBP || _fee > MAX_ENTRANCE_FEE)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters,
-            STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
     return GameActions::Result();
 }

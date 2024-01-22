@@ -70,8 +70,7 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
     if (ride == nullptr)
     {
         LOG_WARNING("Invalid ride id %u for entrance/exit removal", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters,
-            STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
     }
 
     if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
@@ -102,8 +101,8 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
         LOG_WARNING(
             "Entrance not found. x = %d, y = %d, ride = %u, station = %u", _loc.x, _loc.y, _rideIndex.ToUnderlying(),
             _stationNum.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters,
-            STR_ERR_INVALID_PARAMETER, STR_ERR_ENTRANCE_ELEMENT_NOT_FOUND);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ENTRANCE_ELEMENT_NOT_FOUND);
     }
 
     return GameActions::Result();
@@ -115,8 +114,7 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
     if (ride == nullptr)
     {
         LOG_WARNING("Invalid ride id %u for entrance/exit removal", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters,
-            STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
     }
 
     const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
@@ -138,10 +136,10 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
     else if (entranceElement == nullptr)
     {
         LOG_WARNING(
-            "Entrance not found. x = %d, y = %d, ride = %u, station = %d",
-            _loc.x, _loc.y, _rideIndex.ToUnderlying(), _stationNum);
-        return GameActions::Result(GameActions::Status::InvalidParameters,
-            STR_ERR_INVALID_PARAMETER, STR_ERR_ENTRANCE_ELEMENT_NOT_FOUND);
+            "Entrance not found. x = %d, y = %d, ride = %u, station = %d", _loc.x, _loc.y, _rideIndex.ToUnderlying(),
+            _stationNum);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ENTRANCE_ELEMENT_NOT_FOUND);
     }
 
     auto res = GameActions::Result();

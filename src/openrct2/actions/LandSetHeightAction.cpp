@@ -102,8 +102,8 @@ GameActions::Result LandSetHeightAction::Query() const
 
     auto* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
-        return GameActions::Result(GameActions::Status::InvalidParameters,
-            STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
 
     // We need to check if there is _currently_ a level crossing on the tile.
     // For that, we need the old height, so we can't use the _height variable.
@@ -164,8 +164,8 @@ GameActions::Result LandSetHeightAction::Execute() const
 
     auto* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
-        return GameActions::Result(GameActions::Status::InvalidParameters,
-            STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
 
     cost += GetSurfaceHeightChangeCost(surfaceElement);
     SetSurfaceHeight(reinterpret_cast<TileElement*>(surfaceElement));
