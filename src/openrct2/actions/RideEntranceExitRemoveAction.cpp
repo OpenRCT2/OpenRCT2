@@ -95,7 +95,7 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
     // If we are trying to remove a ghost and the element we found is real, return an error, but don't log a warning
     if (entranceElement != nullptr && (GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(entranceElement->IsGhost()))
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_GHOST_NOT_FOUND, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_GHOST_ELEMENT_NOT_FOUND, STR_NONE);
     }
     else if (entranceElement == nullptr)
     {
@@ -133,7 +133,7 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
     // If we are trying to remove a ghost and the element we found is real, return an error, but don't log a warning
     if (entranceElement != nullptr && isGhost && !(entranceElement->IsGhost()))
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_GHOST_NOT_FOUND, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_GHOST_ELEMENT_NOT_FOUND, STR_NONE);
     }
     else if (entranceElement == nullptr)
     {
