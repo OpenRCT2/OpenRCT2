@@ -46,7 +46,6 @@
 
 using namespace OpenRCT2;
 
-uint16_t gParkRating;
 money64 gParkEntranceFee;
 uint32_t gParkSize;
 money64 gLandPrice;
@@ -180,7 +179,7 @@ void ParkSetForcedRating(int32_t rating)
 {
     _forcedParkRating = rating;
     auto& park = GetContext()->GetGameState()->GetPark();
-    gParkRating = park.CalculateParkRating();
+    GetGameState().ParkRating = park.CalculateParkRating();
     auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
     ContextBroadcastIntent(&intent);
 }
@@ -238,7 +237,7 @@ bool Park::IsOpen() const
 
 uint16_t Park::GetParkRating() const
 {
-    return gParkRating;
+    return GetGameState().ParkRating;
 }
 
 money64 Park::GetParkValue() const
@@ -254,6 +253,7 @@ money64 Park::GetCompanyValue() const
 void Park::Initialise()
 {
     auto& gameState = GetGameState();
+
     Name = FormatStringID(STR_UNNAMED_PARK, nullptr);
     PluginStorage = {};
     gStaffHandymanColour = COLOUR_BRIGHT_RED;
@@ -263,7 +263,7 @@ void Park::Initialise()
     gNumGuestsInParkLastWeek = 0;
     gNumGuestsHeadingForPark = 0;
     gGuestChangeModifier = 0;
-    gParkRating = 0;
+    gameState.ParkRating = 0;
     _guestGenerationProbability = 0;
     gTotalRideValueForMoney = 0;
     _suggestedGuestMaximum = 0;
@@ -296,7 +296,7 @@ void Park::Initialise()
     gScenarioObjective.NumGuests = 1000;
     gLandPrice = 90.00_GBP;
     gConstructionRightsPrice = 40.00_GBP;
-    GetGameState().ParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+    gameState.ParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
     ResetHistories();
     FinanceResetHistory();
     AwardReset();
@@ -315,12 +315,13 @@ void Park::Update(const Date& date)
         UpdateHistories();
     }
 
-    const auto currentTicks = GetGameState().CurrentTicks;
+    auto& gameState = GetGameState();
+    const auto currentTicks = gameState.CurrentTicks;
 
     // Every ~13 seconds
     if (currentTicks % 512 == 0)
     {
-        gParkRating = CalculateParkRating();
+        gameState.ParkRating = CalculateParkRating();
         gParkValue = CalculateParkValue();
         gCompanyValue = CalculateCompanyValue();
         gTotalRideValueForMoney = CalculateTotalRideValueForMoney();
@@ -599,8 +600,10 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
 
 uint32_t Park::CalculateGuestGenerationProbability() const
 {
+    auto& gameState = GetGameState();
+
     // Begin with 50 + park rating
-    uint32_t probability = 50 + std::clamp(gParkRating - 200, 0, 650);
+    uint32_t probability = 50 + std::clamp(gameState.ParkRating - 200, 0, 650);
 
     // The more guests, the lower the chance of a new one
     uint32_t numGuests = gNumGuestsInPark + gNumGuestsHeadingForPark;
@@ -608,7 +611,7 @@ uint32_t Park::CalculateGuestGenerationProbability() const
     {
         probability /= 4;
         // Even lower for difficult guest generation
-        if (GetGameState().ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+        if (gameState.ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
         {
             probability /= 4;
         }
@@ -759,7 +762,8 @@ void Park::UpdateHistories()
     gNumGuestsInParkLastWeek = gNumGuestsInPark;
 
     // Update park rating, guests in park and current cash history
-    HistoryPushRecord<uint8_t, 32>(gParkRatingHistory, gParkRating / 4);
+    auto& gameState = GetGameState();
+    HistoryPushRecord<uint8_t, 32>(gParkRatingHistory, gameState.ParkRating / 4);
     HistoryPushRecord<uint32_t, 32>(gGuestsInParkHistory, gNumGuestsInPark);
     HistoryPushRecord<money64, std::size(gCashHistory)>(gCashHistory, FinanceGetCurrentCash() - gBankLoan);
 

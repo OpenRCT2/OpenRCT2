@@ -557,7 +557,7 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
     {
         if (argv[0] == "park_rating")
         {
-            console.WriteFormatLine("park_rating %d", gParkRating);
+            console.WriteFormatLine("park_rating %d", gameState.ParkRating);
         }
         else if (argv[0] == "park_value")
         {

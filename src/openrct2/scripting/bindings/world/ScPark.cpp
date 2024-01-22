@@ -57,9 +57,10 @@ namespace OpenRCT2::Scripting
     {
         ThrowIfGameStateNotMutable();
 
-        if (GetGameState().Cash != value)
+        auto& gameState = GetGameState();
+        if (gameState.Cash != value)
         {
-            GetGameState().Cash = value;
+            gameState.Cash = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             ContextBroadcastIntent(&intent);
         }
@@ -67,16 +68,17 @@ namespace OpenRCT2::Scripting
 
     int32_t ScPark::rating_get() const
     {
-        return gParkRating;
+        return GetGameState().ParkRating;
     }
     void ScPark::rating_set(int32_t value)
     {
         ThrowIfGameStateNotMutable();
 
         auto valueClamped = std::min(std::max(0, value), 999);
-        if (gParkRating != valueClamped)
+        auto& gameState = GetGameState();
+        if (gameState.ParkRating != valueClamped)
         {
-            gParkRating = std::min(std::max(0, value), 999);
+            gameState.ParkRating = std::min(std::max(0, value), 999);
             auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
             ContextBroadcastIntent(&intent);
         }

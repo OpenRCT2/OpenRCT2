@@ -305,7 +305,7 @@ namespace RCT2
             gStaffMechanicColour = _s6.MechanicColour;
             gStaffSecurityColour = _s6.SecurityColour;
 
-            gParkRating = _s6.ParkRating;
+            gameState.ParkRating = _s6.ParkRating;
 
             auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
             park.ResetHistories();

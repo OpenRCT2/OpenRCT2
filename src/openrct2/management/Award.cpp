@@ -410,7 +410,7 @@ static bool AwardIsDeservedMostDisappointing(int32_t activeAwardTypes)
 {
     if (activeAwardTypes & EnumToFlag(AwardType::BestValue))
         return false;
-    if (gParkRating > 650)
+    if (GetGameState().ParkRating > 650)
         return false;
 
     // Count the number of disappointing rides

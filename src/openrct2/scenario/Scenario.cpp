@@ -114,7 +114,7 @@ void ScenarioReset()
 
     auto& gameState = GetGameState();
     auto& park = GetContext()->GetGameState()->GetPark();
-    gParkRating = park.CalculateParkRating();
+    gameState.ParkRating = park.CalculateParkRating();
     gParkValue = park.CalculateParkValue();
     gCompanyValue = park.CalculateCompanyValue();
     gHistoricalProfit = gameState.InitialCash - gBankLoan;
@@ -621,7 +621,7 @@ ResultWithMessage ScenarioPrepareForSave()
 
 ObjectiveStatus Objective::CheckGuestsBy() const
 {
-    auto parkRating = gParkRating;
+    auto parkRating = GetGameState().ParkRating;
     int32_t currentMonthYear = GetDate().GetMonthsElapsed();
 
     if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
@@ -700,7 +700,8 @@ ObjectiveStatus Objective::Check10RollerCoasters() const
  */
 ObjectiveStatus Objective::CheckGuestsAndRating() const
 {
-    if (gParkRating < 700 && GetDate().GetMonthsElapsed() >= 1)
+    auto& gameState = GetGameState();
+    if (gameState.ParkRating < 700 && GetDate().GetMonthsElapsed() >= 1)
     {
         gScenarioParkRatingWarningDays++;
         if (gScenarioParkRatingWarningDays == 1)
@@ -734,7 +735,6 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
         else if (gScenarioParkRatingWarningDays == 29)
         {
             News::AddItemToQueue(News::ItemType::Graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
-            auto& gameState = GetGameState();
             gameState.ParkFlags &= ~PARK_FLAGS_PARK_OPEN;
             gameState.GuestInitialHappiness = 50;
             return ObjectiveStatus::Failure;
@@ -745,7 +745,7 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
         gScenarioParkRatingWarningDays = 0;
     }
 
-    if (gParkRating >= 700)
+    if (gameState.ParkRating >= 700)
         if (gNumGuestsInPark >= NumGuests)
             return ObjectiveStatus::Success;
 
