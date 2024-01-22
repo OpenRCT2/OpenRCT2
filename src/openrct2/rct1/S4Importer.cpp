@@ -171,7 +171,7 @@ namespace RCT1
 
         void Import(GameState_t& gameState) override
         {
-            Initialise();
+            Initialise(gameState);
 
             CreateAvailableObjectMappings();
 
@@ -313,7 +313,7 @@ namespace RCT1
             throw std::runtime_error("Unable to decode park.");
         }
 
-        void Initialise()
+        void Initialise(GameState_t& gameState)
         {
             // Avoid reusing the value used for last import
             _parkValueConversionFactor = 0;
@@ -326,7 +326,7 @@ namespace RCT1
             auto context = OpenRCT2::GetContext();
             context->GetGameState()->InitAll({ mapSize, mapSize });
             gEditorStep = EditorStep::ObjectSelection;
-            GetGameState().ParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+            gameState.ParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
             gScenarioCategory = SCENARIO_CATEGORY_OTHER;
         }
 
