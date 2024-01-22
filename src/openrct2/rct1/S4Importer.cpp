@@ -2188,10 +2188,10 @@ namespace RCT1
             }
 
             // Initial guest status
-            gGuestInitialCash = ToMoney64(_s4.GuestInitialCash);
-            gGuestInitialHunger = _s4.GuestInitialHunger;
-            gGuestInitialThirst = _s4.GuestInitialThirst;
-            gGuestInitialHappiness = _s4.GuestInitialHappiness;
+            gameState.GuestInitialCash = ToMoney64(_s4.GuestInitialCash);
+            gameState.GuestInitialHunger = _s4.GuestInitialHunger;
+            gameState.GuestInitialThirst = _s4.GuestInitialThirst;
+            gameState.GuestInitialHappiness = _s4.GuestInitialHappiness;
 
             _guestGenerationProbability = _s4.GuestGenerationProbability;
 

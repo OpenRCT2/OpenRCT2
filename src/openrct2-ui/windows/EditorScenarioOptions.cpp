@@ -717,13 +717,15 @@ private:
 
     void GuestsMouseDown(WidgetIndex widgetIndex)
     {
+        auto& gameState = GetGameState();
+
         switch (widgetIndex)
         {
             case WIDX_CASH_PER_GUEST_INCREASE:
-                if (gGuestInitialCash < 1000.00_GBP)
+                if (gameState.GuestInitialCash < 1000.00_GBP)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::AverageCashPerGuest, gGuestInitialCash + 1.00_GBP);
+                        ScenarioSetSetting::AverageCashPerGuest, gameState.GuestInitialCash + 1.00_GBP);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -733,10 +735,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_CASH_PER_GUEST_DECREASE:
-                if (gGuestInitialCash > 0.00_GBP)
+                if (gameState.GuestInitialCash > 0.00_GBP)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::AverageCashPerGuest, gGuestInitialCash - 1.00_GBP);
+                        ScenarioSetSetting::AverageCashPerGuest, gameState.GuestInitialCash - 1.00_GBP);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -746,10 +748,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_GUEST_INITIAL_HAPPINESS_INCREASE:
-                if (gGuestInitialHappiness < 250)
+                if (gameState.GuestInitialHappiness < 250)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::GuestInitialHappiness, gGuestInitialHappiness + 4);
+                        ScenarioSetSetting::GuestInitialHappiness, gameState.GuestInitialHappiness + 4);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -759,10 +761,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_GUEST_INITIAL_HAPPINESS_DECREASE:
-                if (gGuestInitialHappiness > 40)
+                if (gameState.GuestInitialHappiness > 40)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::GuestInitialHappiness, gGuestInitialHappiness - 4);
+                        ScenarioSetSetting::GuestInitialHappiness, gameState.GuestInitialHappiness - 4);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -772,10 +774,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_GUEST_INITIAL_HUNGER_INCREASE:
-                if (gGuestInitialHunger > 40)
+                if (gameState.GuestInitialHunger > 40)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::GuestInitialHunger, gGuestInitialHunger - 4);
+                        ScenarioSetSetting::GuestInitialHunger, gameState.GuestInitialHunger - 4);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -785,10 +787,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_GUEST_INITIAL_HUNGER_DECREASE:
-                if (gGuestInitialHunger < 250)
+                if (gameState.GuestInitialHunger < 250)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::GuestInitialHunger, gGuestInitialHunger + 4);
+                        ScenarioSetSetting::GuestInitialHunger, gameState.GuestInitialHunger + 4);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -798,10 +800,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_GUEST_INITIAL_THIRST_INCREASE:
-                if (gGuestInitialThirst > 40)
+                if (gameState.GuestInitialThirst > 40)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::GuestInitialThirst, gGuestInitialThirst - 4);
+                        ScenarioSetSetting::GuestInitialThirst, gameState.GuestInitialThirst - 4);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -811,10 +813,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_GUEST_INITIAL_THIRST_DECREASE:
-                if (gGuestInitialThirst < 250)
+                if (gameState.GuestInitialThirst < 250)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::GuestInitialThirst, gGuestInitialThirst + 4);
+                        ScenarioSetSetting::GuestInitialThirst, gameState.GuestInitialThirst + 4);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -873,6 +875,7 @@ private:
 
         WindowDrawWidgets(*this, dpi);
         DrawTabImages(dpi);
+        auto& gameState = GetGameState();
 
         const auto& cashPerGuestWidget = widgets[WIDX_CASH_PER_GUEST];
         if (cashPerGuestWidget.type != WindowWidgetType::Empty)
@@ -884,7 +887,7 @@ private:
             // Cash per guest value
             screenCoords = windowPos + ScreenCoordsXY{ cashPerGuestWidget.left + 1, cashPerGuestWidget.top };
             auto ft = Formatter();
-            ft.Add<money64>(gGuestInitialCash);
+            ft.Add<money64>(gameState.GuestInitialCash);
             DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
         }
 
@@ -896,7 +899,7 @@ private:
         // Guest initial happiness value
         screenCoords = windowPos + ScreenCoordsXY{ initialHappinessWidget.left + 1, initialHappinessWidget.top };
         auto ft = Formatter();
-        ft.Add<uint16_t>((gGuestInitialHappiness * 100) / 255);
+        ft.Add<uint16_t>((gameState.GuestInitialHappiness * 100) / 255);
         DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 
         // Guest initial hunger label
@@ -907,7 +910,7 @@ private:
         // Guest initial hunger value
         screenCoords = windowPos + ScreenCoordsXY{ initialHungerWidget.left + 1, initialHungerWidget.top };
         ft = Formatter();
-        ft.Add<uint16_t>(((255 - gGuestInitialHunger) * 100) / 255);
+        ft.Add<uint16_t>(((255 - gameState.GuestInitialHunger) * 100) / 255);
         DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
 
         // Guest initial thirst label
@@ -918,7 +921,7 @@ private:
         // Guest initial thirst value
         screenCoords = windowPos + ScreenCoordsXY{ initialThirstWidget.left + 1, initialThirstWidget.top };
         ft = Formatter();
-        ft.Add<uint16_t>(((255 - gGuestInitialThirst) * 100) / 255);
+        ft.Add<uint16_t>(((255 - gameState.GuestInitialThirst) * 100) / 255);
         DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
     }
 

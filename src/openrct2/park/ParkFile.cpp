@@ -513,19 +513,19 @@ namespace OpenRCT2
                     cs.Write(randState.s1);
                 }
 
-                cs.ReadWrite(gGuestInitialHappiness);
+                cs.ReadWrite(gameState.GuestInitialHappiness);
                 if (version <= 18)
                 {
                     money16 tempGuestInitialCash{};
                     cs.ReadWrite(tempGuestInitialCash);
-                    gGuestInitialCash = ToMoney64(tempGuestInitialCash);
+                    gameState.GuestInitialCash = ToMoney64(tempGuestInitialCash);
                 }
                 else
                 {
-                    cs.ReadWrite(gGuestInitialCash);
+                    cs.ReadWrite(gameState.GuestInitialCash);
                 }
-                cs.ReadWrite(gGuestInitialHunger);
-                cs.ReadWrite(gGuestInitialThirst);
+                cs.ReadWrite(gameState.GuestInitialHunger);
+                cs.ReadWrite(gameState.GuestInitialThirst);
 
                 cs.ReadWrite(gNextGuestNumber);
                 cs.ReadWriteVector(gPeepSpawns, [&cs](PeepSpawn& spawn) {

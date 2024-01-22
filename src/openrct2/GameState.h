@@ -30,6 +30,10 @@ namespace OpenRCT2
         ClimateState ClimateNext;
         money64 Cash;
         money64 InitialCash;
+        money64 GuestInitialCash;
+        uint8_t GuestInitialHappiness;
+        uint8_t GuestInitialHunger;
+        uint8_t GuestInitialThirst;
     };
 
     GameState_t& GetGameState();

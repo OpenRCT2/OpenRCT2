@@ -734,8 +734,9 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
         else if (gScenarioParkRatingWarningDays == 29)
         {
             News::AddItemToQueue(News::ItemType::Graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
-            GetGameState().ParkFlags &= ~PARK_FLAGS_PARK_OPEN;
-            gGuestInitialHappiness = 50;
+            auto& gameState = GetGameState();
+            gameState.ParkFlags &= ~PARK_FLAGS_PARK_OPEN;
+            gameState.GuestInitialHappiness = 50;
             return ObjectiveStatus::Failure;
         }
     }
