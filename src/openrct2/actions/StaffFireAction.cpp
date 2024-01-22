@@ -39,14 +39,16 @@ GameActions::Result StaffFireAction::Query() const
     if (_spriteId.ToUnderlying() >= MAX_ENTITIES || _spriteId.IsNull())
     {
         LOG_ERROR("Invalid spriteId. spriteId = %u", _spriteId);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters,
+            STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
     }
 
     auto staff = TryGetEntity<Staff>(_spriteId);
     if (staff == nullptr)
     {
         LOG_ERROR("Invalid spriteId. spriteId = %u", _spriteId);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters,
+            STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
     }
 
     if (staff->State == PeepState::Fixing)
@@ -67,7 +69,8 @@ GameActions::Result StaffFireAction::Execute() const
     if (staff == nullptr)
     {
         LOG_ERROR("Invalid spriteId. spriteId = %u", _spriteId);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters,
+            STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
     }
     WindowCloseByClass(WindowClass::FirePrompt);
     PeepEntityRemove(staff);

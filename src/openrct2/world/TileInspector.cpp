@@ -139,7 +139,8 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const tileElement = MapGetNthElementAt(loc, elementIndex);
         if (tileElement == nullptr)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_TILE_ELEMENT_NOT_FOUND);
 
         if (isExecuting)
         {
@@ -202,7 +203,8 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const tileElement = MapGetNthElementAt(loc, elementIndex);
         if (tileElement == nullptr)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_TILE_ELEMENT_NOT_FOUND);
 
         if (isExecuting)
         {
@@ -280,7 +282,8 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const tileElement = MapGetNthElementAt(loc, elementIndex);
         if (tileElement == nullptr)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_TILE_ELEMENT_NOT_FOUND);
 
         if (!isExecuting)
         {
@@ -365,7 +368,8 @@ namespace OpenRCT2::TileInspector
         {
             const TileElement* const firstElement = MapGetFirstElementAt(loc);
             if (firstElement == nullptr)
-                return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters,
+                    STR_ERR_INVALID_PARAMETER, STR_ERR_TILE_ELEMENT_NOT_FOUND);
 
             // Count elements on tile
             int32_t numElement = 0;
@@ -440,7 +444,8 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const tileElement = MapGetNthElementAt(loc, elementIndex);
         if (tileElement == nullptr)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_TILE_ELEMENT_NOT_FOUND);
 
         auto heightValidationResult = ValidateTileHeight(tileElement, heightOffset);
         if (heightValidationResult.Error != GameActions::Status::Ok)
@@ -485,7 +490,8 @@ namespace OpenRCT2::TileInspector
 
         // No surface element on tile
         if (surfaceelement == nullptr)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
 
         if (isExecuting)
         {
@@ -504,7 +510,8 @@ namespace OpenRCT2::TileInspector
 
         // No surface element on tile
         if (surfaceElement == nullptr)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
 
         if (isExecuting)
         {
@@ -550,7 +557,8 @@ namespace OpenRCT2::TileInspector
 
         // No surface element on tile
         if (surfaceElement == nullptr)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
 
         if (isExecuting)
         {
@@ -565,7 +573,8 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const pathElement = MapGetNthElementAt(loc, elementIndex);
         if (pathElement == nullptr || pathElement->GetType() != TileElementType::Path)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_PATH_ELEMENT_NOT_FOUND);
 
         if (isExecuting)
         {
@@ -580,7 +589,8 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const pathElement = MapGetNthElementAt(loc, elementIndex);
         if (pathElement == nullptr || pathElement->GetType() != TileElementType::Path)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_PATH_ELEMENT_NOT_FOUND);
 
         if (isExecuting)
         {
@@ -594,7 +604,8 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const pathElement = MapGetNthElementAt(loc, elementIndex);
         if (pathElement == nullptr || pathElement->GetType() != TileElementType::Path)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_PATH_ELEMENT_NOT_FOUND);
 
         if (isExecuting)
         {
@@ -608,7 +619,8 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const pathElement = MapGetNthElementAt(loc, elementIndex);
         if (pathElement == nullptr || pathElement->GetType() != TileElementType::Path)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_PATH_ELEMENT_NOT_FOUND);
 
         if (isExecuting)
         {
@@ -623,11 +635,13 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const entranceElement = MapGetNthElementAt(loc, elementIndex);
         if (entranceElement == nullptr || entranceElement->GetType() != TileElementType::Entrance)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_ENTRANCE_ELEMENT_NOT_FOUND);
 
         auto ride = GetRide(entranceElement->AsEntrance()->GetRideIndex());
         if (ride == nullptr)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
 
         if (isExecuting)
         {
@@ -652,7 +666,8 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const wallElement = MapGetNthElementAt(loc, elementIndex);
         if (wallElement == nullptr || wallElement->GetType() != TileElementType::Wall)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_WALL_ELEMENT_NOT_FOUND);
 
         if (isExecuting)
         {
@@ -668,7 +683,8 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const wallElement = MapGetNthElementAt(loc, elementIndex);
         if (wallElement == nullptr || wallElement->GetType() != TileElementType::Wall)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_WALL_ELEMENT_NOT_FOUND);
 
         if (isExecuting)
         {
@@ -688,7 +704,8 @@ namespace OpenRCT2::TileInspector
 
         TileElement* const trackElement = MapGetNthElementAt(loc, elementIndex);
         if (trackElement == nullptr || trackElement->GetType() != TileElementType::Track)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
 
         if (isExecuting)
         {
@@ -700,12 +717,14 @@ namespace OpenRCT2::TileInspector
             auto rideIndex = trackElement->AsTrack()->GetRideIndex();
             auto ride = GetRide(rideIndex);
             if (ride == nullptr)
-                return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters,
+                    STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
 
             const auto& ted = GetTrackElementDescriptor(type);
             const auto* trackBlock = ted.GetBlockForSequence(trackElement->AsTrack()->GetSequenceIndex());
             if (trackBlock == nullptr)
-                return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters,
+                    STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_BLOCK_NOT_FOUND);
 
             uint8_t originDirection = trackElement->GetDirection();
             CoordsXY offsets = { trackBlock->x, trackBlock->y };
@@ -724,11 +743,12 @@ namespace OpenRCT2::TileInspector
                 offsets.y = trackBlock->y;
                 elem += offsets.Rotate(originDirection);
 
-                TrackElement* tileElement = MapGetTrackElementAtOfTypeSeq(elem, type, trackBlock->index);
-                if (tileElement == nullptr)
+                TrackElement* trackElement = MapGetTrackElementAtOfTypeSeq(elem, type, trackBlock->index);
+                if (trackElement == nullptr)
                 {
                     LOG_ERROR("Track map element part not found!");
-                    return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+                    return GameActions::Result(GameActions::Status::InvalidParameters,
+                        STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
                 }
 
                 // track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is
@@ -738,8 +758,8 @@ namespace OpenRCT2::TileInspector
                 // Keep?
                 // invalidate_test_results(ride);
 
-                tileElement->BaseHeight += offset;
-                tileElement->ClearanceHeight += offset;
+                trackElement->BaseHeight += offset;
+                trackElement->ClearanceHeight += offset;
             }
         }
 
@@ -754,7 +774,8 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const trackElement = MapGetNthElementAt(loc, elementIndex);
         if (trackElement == nullptr || trackElement->GetType() != TileElementType::Track)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
 
         if (isExecuting)
         {
@@ -777,12 +798,14 @@ namespace OpenRCT2::TileInspector
             auto rideIndex = trackElement->AsTrack()->GetRideIndex();
             auto ride = GetRide(rideIndex);
             if (ride == nullptr)
-                return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters,
+                    STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
 
             const auto& ted = GetTrackElementDescriptor(type);
             auto trackBlock = ted.GetBlockForSequence(trackElement->AsTrack()->GetSequenceIndex());
             if (trackBlock == nullptr)
-                return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters,
+                    STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_BLOCK_NOT_FOUND);
 
             uint8_t originDirection = trackElement->GetDirection();
             CoordsXY offsets = { trackBlock->x, trackBlock->y };
@@ -801,11 +824,12 @@ namespace OpenRCT2::TileInspector
                 offsets.y = trackBlock->y;
                 elem += offsets.Rotate(originDirection);
 
-                TrackElement* tileElement = MapGetTrackElementAtOfTypeSeq(elem, type, trackBlock->index);
-                if (tileElement == nullptr)
+                TrackElement* trackElement = MapGetTrackElementAtOfTypeSeq(elem, type, trackBlock->index);
+                if (trackElement == nullptr)
                 {
                     LOG_ERROR("Track map element part not found!");
-                    return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+                    return GameActions::Result(GameActions::Status::InvalidParameters,
+                        STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
                 }
 
                 // track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is
@@ -815,9 +839,9 @@ namespace OpenRCT2::TileInspector
                 // Keep?
                 // invalidate_test_results(ride);
 
-                if (tileElement->AsTrack()->HasChain() != setChain)
+                if (trackElement->AsTrack()->HasChain() != setChain)
                 {
-                    tileElement->AsTrack()->SetHasChain(setChain);
+                    trackElement->AsTrack()->SetHasChain(setChain);
                 }
             }
         }
@@ -829,7 +853,8 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const trackElement = MapGetNthElementAt(loc, elementIndex);
         if (trackElement == nullptr || trackElement->GetType() != TileElementType::Track)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
 
         if (isExecuting)
         {
@@ -844,7 +869,8 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const trackElement = MapGetNthElementAt(loc, elementIndex);
         if (trackElement == nullptr || trackElement->GetType() != TileElementType::Track)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_ELEMENT_NOT_FOUND);
 
         if (isExecuting)
         {
@@ -859,7 +885,8 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const tileElement = MapGetNthElementAt(loc, elementIndex);
         if (tileElement == nullptr || tileElement->GetType() != TileElementType::SmallScenery)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_TILE_ELEMENT_NOT_FOUND);
 
         if (isExecuting)
         {
@@ -878,7 +905,8 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const tileElement = MapGetNthElementAt(loc, elementIndex);
         if (tileElement == nullptr || tileElement->GetType() != TileElementType::SmallScenery)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_TILE_ELEMENT_NOT_FOUND);
 
         if (isExecuting)
         {
@@ -894,7 +922,8 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const bannerElement = MapGetNthElementAt(loc, elementIndex);
         if (bannerElement == nullptr || bannerElement->GetType() != TileElementType::Banner)
-            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters,
+                STR_ERR_INVALID_PARAMETER, STR_ERR_BANNER_ELEMENT_NOT_FOUND);
 
         if (isExecuting)
         {

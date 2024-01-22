@@ -61,7 +61,8 @@ GameActions::Result StaffSetPatrolAreaAction::QueryExecute(bool executing) const
     if (staff == nullptr)
     {
         LOG_ERROR("Invalid entity ID: %u", _spriteId.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters,
+            STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
     }
 
     auto validRange = ClampRangeWithinMap(_range);

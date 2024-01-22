@@ -45,7 +45,8 @@ GameActions::Result StaffSetOrdersAction::Query() const
 {
     if (_spriteIndex.ToUnderlying() >= MAX_ENTITIES || _spriteIndex.IsNull())
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters,
+            STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
     }
 
     auto* staff = TryGetEntity<Staff>(_spriteIndex);
@@ -65,7 +66,8 @@ GameActions::Result StaffSetOrdersAction::Execute() const
     if (staff == nullptr)
     {
         LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters,
+            STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
     }
     staff->StaffOrders = _ordersId;
 

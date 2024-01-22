@@ -3721,7 +3721,8 @@ GameActions::Result NetworkKickPlayer(NetworkPlayerId_t playerId, bool isExecuti
     {
         // Player might be already removed by the PLAYERLIST command, need to refactor non-game commands executing too
         // early.
-        return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters,
+            STR_ERR_INVALID_PARAMETER, STR_ERR_PLAYER_NOT_FOUND);
     }
 
     if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
