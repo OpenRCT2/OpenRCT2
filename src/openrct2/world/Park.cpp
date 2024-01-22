@@ -253,6 +253,7 @@ money64 Park::GetCompanyValue() const
 
 void Park::Initialise()
 {
+    auto& gameState = GetGameState();
     Name = FormatStringID(STR_UNNAMED_PARK, nullptr);
     PluginStorage = {};
     gStaffHandymanColour = COLOUR_BRIGHT_RED;
@@ -286,10 +287,10 @@ void Park::Initialise()
         ResearchCategory::Water, ResearchCategory::Shop, ResearchCategory::SceneryGroup);
     gResearchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
-    gGuestInitialCash = 50.00_GBP;
-    gGuestInitialHappiness = CalculateGuestInitialHappiness(50);
-    gGuestInitialHunger = 200;
-    gGuestInitialThirst = 200;
+    gameState.GuestInitialCash = 50.00_GBP;
+    gameState.GuestInitialHappiness = CalculateGuestInitialHappiness(50);
+    gameState.GuestInitialHunger = 200;
+    gameState.GuestInitialThirst = 200;
     gScenarioObjective.Type = OBJECTIVE_GUESTS_BY;
     gScenarioObjective.Year = 4;
     gScenarioObjective.NumGuests = 1000;

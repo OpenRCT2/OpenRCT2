@@ -71,11 +71,6 @@ uint32_t gNumGuestsInPark;
 uint32_t gNumGuestsInParkLastWeek;
 uint32_t gNumGuestsHeadingForPark;
 
-money64 gGuestInitialCash;
-uint8_t gGuestInitialHappiness;
-uint8_t gGuestInitialHunger;
-uint8_t gGuestInitialThirst;
-
 uint32_t gNextGuestNumber;
 
 uint8_t gPeepWarningThrottle[16];

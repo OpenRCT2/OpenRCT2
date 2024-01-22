@@ -585,20 +585,21 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "guest_initial_cash")
         {
-            console.WriteFormatLine("guest_initial_cash %d.%d0", gGuestInitialCash / 10, gGuestInitialCash % 10);
+            console.WriteFormatLine(
+                "guest_initial_cash %d.%d0", gameState.GuestInitialCash / 10, gameState.GuestInitialCash % 10);
         }
         else if (argv[0] == "guest_initial_happiness")
         {
-            uint32_t current_happiness = gGuestInitialHappiness;
+            uint32_t current_happiness = gameState.GuestInitialHappiness;
             for (int32_t i = 15; i <= 99; i++)
             {
                 if (i == 99)
                 {
-                    console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", 15, gGuestInitialHappiness);
+                    console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", 15, gameState.GuestInitialHappiness);
                 }
                 else if (current_happiness == CalculateGuestInitialHappiness(i))
                 {
-                    console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", i, gGuestInitialHappiness);
+                    console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", i, gameState.GuestInitialHappiness);
                     break;
                 }
             }
@@ -606,12 +607,14 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         else if (argv[0] == "guest_initial_hunger")
         {
             console.WriteFormatLine(
-                "guest_initial_hunger %d%%  (%d)", ((255 - gGuestInitialHunger) * 100) / 255, gGuestInitialHunger);
+                "guest_initial_hunger %d%%  (%d)", ((255 - gameState.GuestInitialHunger) * 100) / 255,
+                gameState.GuestInitialHunger);
         }
         else if (argv[0] == "guest_initial_thirst")
         {
             console.WriteFormatLine(
-                "guest_initial_thirst %d%%  (%d)", ((255 - gGuestInitialThirst) * 100) / 255, gGuestInitialThirst);
+                "guest_initial_thirst %d%%  (%d)", ((255 - gameState.GuestInitialThirst) * 100) / 255,
+                gameState.GuestInitialThirst);
         }
         else if (argv[0] == "guest_prefer_less_intense_rides")
         {

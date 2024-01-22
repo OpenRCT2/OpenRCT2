@@ -113,16 +113,16 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             }
             break;
         case ScenarioSetSetting::AverageCashPerGuest:
-            gGuestInitialCash = std::clamp<money64>(_value, 0.00_GBP, 1000.00_GBP);
+            gameState.GuestInitialCash = std::clamp<money64>(_value, 0.00_GBP, 1000.00_GBP);
             break;
         case ScenarioSetSetting::GuestInitialHappiness:
-            gGuestInitialHappiness = std::clamp<uint8_t>(_value, 40, 250);
+            gameState.GuestInitialHappiness = std::clamp<uint8_t>(_value, 40, 250);
             break;
         case ScenarioSetSetting::GuestInitialHunger:
-            gGuestInitialHunger = std::clamp<uint8_t>(_value, 40, 250);
+            gameState.GuestInitialHunger = std::clamp<uint8_t>(_value, 40, 250);
             break;
         case ScenarioSetSetting::GuestInitialThirst:
-            gGuestInitialThirst = std::clamp<uint8_t>(_value, 40, 250);
+            gameState.GuestInitialThirst = std::clamp<uint8_t>(_value, 40, 250);
             break;
         case ScenarioSetSetting::GuestsPreferLessIntenseRides:
             if (_value != 0)

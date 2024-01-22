@@ -7076,6 +7076,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     if (GetNumFreeEntities() < 400)
         return nullptr;
 
+    auto& gameState = GetGameState();
     Guest* peep = CreateEntity<Guest>();
     peep->SpriteType = PeepSpriteType::Normal;
     peep->OutsideOfPark = true;
@@ -7111,7 +7112,6 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
     /* Check which intensity boxes are enabled
      * and apply the appropriate intensity settings. */
-    auto& gameState = GetGameState();
     if (gameState.ParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES)
     {
         if (gameState.ParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES)
@@ -7144,10 +7144,10 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     /* Scenario editor limits initial guest happiness to between 37..253.
      * To be on the safe side, assume the value could have been hacked
      * to any value 0..255. */
-    peep->Happiness = gGuestInitialHappiness;
+    peep->Happiness = gameState.GuestInitialHappiness;
     /* Assume a default initial happiness of 0 is wrong and set
      * to 128 (50%) instead. */
-    if (gGuestInitialHappiness == 0)
+    if (gameState.GuestInitialHappiness == 0)
         peep->Happiness = 128;
     /* Initial value will vary by -15..16 */
     int8_t happinessDelta = (ScenarioRand() & 0x1F) - 15;
@@ -7160,7 +7160,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     /* Scenario editor limits initial guest hunger to between 37..253.
      * To be on the safe side, assume the value could have been hacked
      * to any value 0..255. */
-    peep->Hunger = gGuestInitialHunger;
+    peep->Hunger = gameState.GuestInitialHunger;
     /* Initial value will vary by -15..16 */
     int8_t hungerDelta = (ScenarioRand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
@@ -7169,7 +7169,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     /* Scenario editor limits initial guest thirst to between 37..253.
      * To be on the safe side, assume the value could have been hacked
      * to any value 0..255. */
-    peep->Thirst = gGuestInitialThirst;
+    peep->Thirst = gameState.GuestInitialThirst;
     /* Initial value will vary by -15..16 */
     int8_t thirstDelta = (ScenarioRand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
@@ -7182,11 +7182,11 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->PeepId = gNextGuestNumber++;
     peep->Name = nullptr;
 
-    money64 cash = (static_cast<money64>(ScenarioRand() & 0x3) * 100) - 100 + gGuestInitialCash;
+    money64 cash = (static_cast<money64>(ScenarioRand() & 0x3) * 100) - 100 + gameState.GuestInitialCash;
     if (cash < 0)
         cash = 0;
 
-    if (gGuestInitialCash == 0.00_GBP)
+    if (gameState.GuestInitialCash == 0.00_GBP)
     {
         cash = 500;
     }
@@ -7196,7 +7196,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
         cash = 0;
     }
 
-    if (gGuestInitialCash == MONEY64_UNDEFINED)
+    if (gameState.GuestInitialCash == MONEY64_UNDEFINED)
     {
         cash = 0;
     }

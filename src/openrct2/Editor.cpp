@@ -336,7 +336,7 @@ namespace Editor
 
             gameState.ParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 
-            gGuestInitialCash = std::clamp(gGuestInitialCash, 10.00_GBP, MAX_ENTRANCE_FEE);
+            gameState.GuestInitialCash = std::clamp(gameState.GuestInitialCash, 10.00_GBP, MAX_ENTRANCE_FEE);
 
             gameState.InitialCash = std::min<money64>(GetGameState().InitialCash, 100000);
             FinanceResetCashToInitial();

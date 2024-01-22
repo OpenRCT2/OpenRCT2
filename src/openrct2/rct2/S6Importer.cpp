@@ -334,14 +334,14 @@ namespace RCT2
             gResearchProgress = _s6.ResearchProgress;
             gResearchExpectedDay = _s6.NextResearchExpectedDay;
             gResearchExpectedMonth = _s6.NextResearchExpectedMonth;
-            gGuestInitialHappiness = _s6.GuestInitialHappiness;
+            gameState.GuestInitialHappiness = _s6.GuestInitialHappiness;
             gParkSize = _s6.ParkSize;
             _guestGenerationProbability = _s6.GuestGenerationProbability;
             gTotalRideValueForMoney = _s6.TotalRideValueForMoney;
             gMaxBankLoan = ToMoney64(_s6.MaximumLoan);
-            gGuestInitialCash = ToMoney64(_s6.GuestInitialCash);
-            gGuestInitialHunger = _s6.GuestInitialHunger;
-            gGuestInitialThirst = _s6.GuestInitialThirst;
+            gameState.GuestInitialCash = ToMoney64(_s6.GuestInitialCash);
+            gameState.GuestInitialHunger = _s6.GuestInitialHunger;
+            gameState.GuestInitialThirst = _s6.GuestInitialThirst;
             gScenarioObjective.Type = _s6.ObjectiveType;
             gScenarioObjective.Year = _s6.ObjectiveYear;
             // Pad013580FA
