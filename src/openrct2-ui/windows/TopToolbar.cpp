@@ -899,7 +899,7 @@ private:
                 }
 
                 gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-                if (gWindowSceneryScatterEnabled)
+                if (OpenRCT2::GetGameState().WindowSceneryScatterEnabled)
                 {
                     uint16_t cluster_size = (gWindowSceneryScatterSize - 1) * COORDS_XY_STEP;
                     gMapSelectPositionA.x = mapTile.x - cluster_size / 2;
@@ -923,7 +923,7 @@ private:
                 auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(selection.EntryIndex);
 
                 gMapSelectType = MAP_SELECT_TYPE_FULL;
-                if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryScatterEnabled)
+                if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && !GetGameState().WindowSceneryScatterEnabled)
                 {
                     gMapSelectType = MAP_SELECT_TYPE_QUARTER_0 + (quadrant ^ 2);
                 }
@@ -2191,7 +2191,7 @@ private:
                     return;
 
                 int32_t quantity = 1;
-                bool isCluster = gWindowSceneryScatterEnabled
+                bool isCluster = GetGameState().WindowSceneryScatterEnabled
                     && (NetworkGetMode() != NETWORK_MODE_CLIENT
                         || NetworkCanPerformCommand(NetworkGetCurrentPlayerGroupIndex(), -2));
 

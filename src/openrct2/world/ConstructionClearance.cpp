@@ -310,6 +310,13 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
         case TileElementType::SmallScenery:
         {
             auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+
+            // don't display the error message if in scenery scatter mode
+            if (GetGameState().WindowSceneryScatterEnabled)
+            {
+                res.ErrorMessage = "Test";
+                break;
+            }
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
             StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(STR_EMPTY);

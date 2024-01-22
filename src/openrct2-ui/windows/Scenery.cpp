@@ -215,11 +215,12 @@ public:
 
     void OnClose() override
     {
+        auto& gameState = GetGameState();
         SceneryRemoveGhostToolPlacement();
         HideGridlines();
         ViewportSetVisibility(ViewportVisibility::Default);
 
-        if (gWindowSceneryScatterEnabled)
+        if (gameState.WindowSceneryScatterEnabled)
             WindowCloseByClass(WindowClass::SceneryScatter);
 
         if (SceneryToolIsActive())
@@ -228,6 +229,8 @@ public:
 
     void OnMouseUp(WidgetIndex widgetIndex) override
     {
+        auto& gameState = GetGameState();
+
         switch (widgetIndex)
         {
             case WIDX_SCENERY_CLOSE:
@@ -242,14 +245,14 @@ public:
             case WIDX_SCENERY_REPAINT_SCENERY_BUTTON:
                 gWindowSceneryPaintEnabled ^= 1;
                 gWindowSceneryEyedropperEnabled = false;
-                if (gWindowSceneryScatterEnabled)
+                if (gameState.WindowSceneryScatterEnabled)
                     WindowCloseByClass(WindowClass::SceneryScatter);
                 Invalidate();
                 break;
             case WIDX_SCENERY_EYEDROPPER_BUTTON:
                 gWindowSceneryPaintEnabled = 0;
                 gWindowSceneryEyedropperEnabled = !gWindowSceneryEyedropperEnabled;
-                if (gWindowSceneryScatterEnabled)
+                if (gameState.WindowSceneryScatterEnabled)
                     WindowCloseByClass(WindowClass::SceneryScatter);
                 SceneryRemoveGhostToolPlacement();
                 Invalidate();
@@ -257,7 +260,7 @@ public:
             case WIDX_SCENERY_BUILD_CLUSTER_BUTTON:
                 gWindowSceneryPaintEnabled = 0;
                 gWindowSceneryEyedropperEnabled = false;
-                if (gWindowSceneryScatterEnabled)
+                if (gameState.WindowSceneryScatterEnabled)
                     WindowCloseByClass(WindowClass::SceneryScatter);
                 else if (
                     NetworkGetMode() != NETWORK_MODE_CLIENT
@@ -610,7 +613,7 @@ public:
             pressed_widgets |= (1uLL << WIDX_SCENERY_REPAINT_SCENERY_BUTTON);
         if (gWindowSceneryEyedropperEnabled)
             pressed_widgets |= (1uLL << WIDX_SCENERY_EYEDROPPER_BUTTON);
-        if (gWindowSceneryScatterEnabled)
+        if (OpenRCT2::GetGameState().WindowSceneryScatterEnabled)
             pressed_widgets |= (1uLL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 
         widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::Empty;
