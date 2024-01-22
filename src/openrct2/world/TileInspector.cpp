@@ -743,8 +743,8 @@ namespace OpenRCT2::TileInspector
                 offsets.y = trackBlock->y;
                 elem += offsets.Rotate(originDirection);
 
-                TrackElement* trackElement = MapGetTrackElementAtOfTypeSeq(elem, type, trackBlock->index);
-                if (trackElement == nullptr)
+                TrackElement* nextTrackElement = MapGetTrackElementAtOfTypeSeq(elem, type, trackBlock->index);
+                if (nextTrackElement == nullptr)
                 {
                     LOG_ERROR("Track map element part not found!");
                     return GameActions::Result(
@@ -758,8 +758,8 @@ namespace OpenRCT2::TileInspector
                 // Keep?
                 // invalidate_test_results(ride);
 
-                trackElement->BaseHeight += offset;
-                trackElement->ClearanceHeight += offset;
+                nextTrackElement->BaseHeight += offset;
+                nextTrackElement->ClearanceHeight += offset;
             }
         }
 
@@ -824,8 +824,8 @@ namespace OpenRCT2::TileInspector
                 offsets.y = trackBlock->y;
                 elem += offsets.Rotate(originDirection);
 
-                TrackElement* trackElement = MapGetTrackElementAtOfTypeSeq(elem, type, trackBlock->index);
-                if (trackElement == nullptr)
+                TrackElement* nextTrackElement = MapGetTrackElementAtOfTypeSeq(elem, type, trackBlock->index);
+                if (nextTrackElement == nullptr)
                 {
                     LOG_ERROR("Track map element part not found!");
                     return GameActions::Result(
@@ -839,9 +839,9 @@ namespace OpenRCT2::TileInspector
                 // Keep?
                 // invalidate_test_results(ride);
 
-                if (trackElement->AsTrack()->HasChain() != setChain)
+                if (nextTrackElement->AsTrack()->HasChain() != setChain)
                 {
-                    trackElement->AsTrack()->SetHasChain(setChain);
+                    nextTrackElement->AsTrack()->SetHasChain(setChain);
                 }
             }
         }
