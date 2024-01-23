@@ -64,6 +64,7 @@
 #include <openrct2/world/Park.h>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
 using namespace OpenRCT2;
@@ -624,7 +625,7 @@ struct EntranceTypeLabel
 {
     ObjectEntryIndex EntranceTypeId;
     StringId LabelId;
-    const char* LabelString;
+    u8string_view LabelString;
 };
 
 class RideWindow final : public Window
@@ -2015,12 +2016,12 @@ private:
             if (stationObj != nullptr)
             {
                 auto name = stationObj->NameStringId;
-                _entranceDropdownData.push_back({ i, name, ls.GetString(name) });
+                _entranceDropdownData.push_back({ i, name, u8string_view{ ls.GetString(name) } });
             }
         }
 
         std::sort(_entranceDropdownData.begin(), _entranceDropdownData.end(), [](auto& a, auto& b) {
-            return String::Compare(a.LabelString, b.LabelString, true) < 0;
+            return a.LabelString.compare(b.LabelString) < 0;
         });
 
         _entranceDropdownDataLanguage = ls.GetCurrentLanguage();
