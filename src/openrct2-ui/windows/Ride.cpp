@@ -624,7 +624,7 @@ struct EntranceTypeLabel
 {
     ObjectEntryIndex EntranceTypeId;
     StringId LabelId;
-    const char* label_string;
+    const char* LabelString;
 };
 
 class RideWindow final : public Window
@@ -2020,7 +2020,7 @@ private:
         }
 
         std::sort(_entranceDropdownData.begin(), _entranceDropdownData.end(), [](auto& a, auto& b) {
-            return String::Compare(a.label_string, b.label_string, true) < 0;
+            return String::Compare(a.LabelString, b.LabelString, true) < 0;
         });
 
         _entranceDropdownDataLanguage = ls.GetCurrentLanguage();
