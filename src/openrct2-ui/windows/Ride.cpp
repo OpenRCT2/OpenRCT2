@@ -608,7 +608,7 @@ struct RideTypeLabel
 {
     ride_type_t RideTypeId;
     StringId LabelId;
-    const char* label_string;
+    const char* LabelString;
 };
 
 // Used for sorting the vehicle type dropdown.
@@ -616,7 +616,7 @@ struct VehicleTypeLabel
 {
     ObjectEntryIndex SubTypeId;
     StringId LabelId;
-    const char* label_string;
+    const char* LabelString;
 };
 
 // Used for sorting the entrance type dropdown.
@@ -1810,7 +1810,7 @@ private:
         }
 
         std::sort(_rideDropdownData.begin(), _rideDropdownData.end(), [](auto& a, auto& b) {
-            return String::Compare(a.label_string, b.label_string, true) < 0;
+            return String::Compare(a.LabelString, b.LabelString, true) < 0;
         });
 
         _rideDropdownDataLanguage = ls.GetCurrentLanguage();
@@ -1953,7 +1953,7 @@ private:
         }
 
         std::sort(_vehicleDropdownData.begin(), _vehicleDropdownData.end(), [](auto& a, auto& b) {
-            return String::Compare(a.label_string, b.label_string, true) < 0;
+            return String::Compare(a.LabelString, b.LabelString, true) < 0;
         });
 
         _vehicleDropdownExpanded = selectionShouldBeExpanded;
