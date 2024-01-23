@@ -4345,7 +4345,7 @@ STR_DTLS    :Je bent een succesvol zakenman op een lange sabbatical. Die wil je 
 <South America - Inca Lost City>
 STR_SCNR    :Zuid-Amerika - Verloren Incastad
 STR_PARK    :Lost City Founder
-STR_DTLS    :Om nog meer toeristen te trekken moet je een park bouwen dat past bij de omgeving. Dat betekent ook dat er hoogtebeperkingen zijn.
+STR_DTLS    :Om nog meer toeristen te trekken moet je een park bouwen dat past bij de omgeving.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :Zuid-Amerika - Regenwoudplateau

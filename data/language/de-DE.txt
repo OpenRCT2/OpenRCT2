@@ -4357,7 +4357,7 @@ STR_DTLS    :Sie sind ein erfolgreicher Geschäftsmann, der sich eine vierjähri
 <South America - Inca Lost City>
 STR_SCNR    :Südamerika - Verlorene Stadt der Inka
 STR_PARK    :Gründer der Verlorenen Stadt
-STR_DTLS    :Um der örtlichen Tourismusindustrie den Rücken zu stärken, müssen Sie einen Vergnügungspark konstruieren, der sich harmonisch in die Umgebung einfügt - Höhenbegrenzungen inklusive.
+STR_DTLS    :Um der örtlichen Tourismusindustrie den Rücken zu stärken, müssen Sie einen Vergnügungspark konstruieren, der sich harmonisch in die Umgebung einfügt.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :Südamerika - Regenwaldplateau
