@@ -609,7 +609,7 @@ struct RideTypeLabel
 {
     ride_type_t RideTypeId;
     StringId LabelId;
-    const char* LabelString;
+    u8string_view LabelString;
 };
 
 // Used for sorting the vehicle type dropdown.
@@ -617,7 +617,7 @@ struct VehicleTypeLabel
 {
     ObjectEntryIndex SubTypeId;
     StringId LabelId;
-    const char* LabelString;
+    u8string_view LabelString;
 };
 
 // Used for sorting the entrance type dropdown.
@@ -1807,11 +1807,11 @@ private:
         for (uint8_t i = 0; i < RIDE_TYPE_COUNT; i++)
         {
             auto name = GetRideTypeNameForDropdown(i);
-            _rideDropdownData.push_back({ i, name, ls.GetString(name) });
+            _rideDropdownData.push_back({ i, name, u8string_view{ ls.GetString(name) } });
         }
 
         std::sort(_rideDropdownData.begin(), _rideDropdownData.end(), [](auto& a, auto& b) {
-            return String::Compare(a.LabelString, b.LabelString, true) < 0;
+            return a.LabelString.compare(b.LabelString) < 0;
         });
 
         _rideDropdownDataLanguage = ls.GetCurrentLanguage();
@@ -1948,13 +1948,13 @@ private:
                 if (!RideEntryIsInvented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
                     continue;
 
-                _vehicleDropdownData.push_back(
-                    { rideEntryIndex, currentRideEntry->naming.Name, ls.GetString(currentRideEntry->naming.Name) });
+                auto name = currentRideEntry->naming.Name;
+                _vehicleDropdownData.push_back({ rideEntryIndex, name, u8string_view{ ls.GetString(name) } });
             }
         }
 
         std::sort(_vehicleDropdownData.begin(), _vehicleDropdownData.end(), [](auto& a, auto& b) {
-            return String::Compare(a.LabelString, b.LabelString, true) < 0;
+            return a.LabelString.compare(b.LabelString) < 0;
         });
 
         _vehicleDropdownExpanded = selectionShouldBeExpanded;
