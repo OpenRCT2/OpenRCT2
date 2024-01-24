@@ -25,7 +25,6 @@
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
-#include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
 
@@ -509,7 +508,8 @@ public:
         }
 
         // Current weather
-        window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gClimateCurrent.Weather)];
+        window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(
+            OpenRCT2::GetGameState().ClimateCurrent.Weather)];
         // Staff speed
         window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(gCheatsSelectedStaffSpeed)];
 
@@ -834,7 +834,7 @@ private:
                     { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                     colours[1], 0, Dropdown::Flag::StayOpen, std::size(WeatherTypes), dropdownWidget->width() - 3);
 
-                auto currentWeather = gClimateCurrent.Weather;
+                auto currentWeather = OpenRCT2::GetGameState().ClimateCurrent.Weather;
                 Dropdown::SetChecked(EnumValue(currentWeather), true);
             }
             break;

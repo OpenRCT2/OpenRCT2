@@ -456,15 +456,15 @@ namespace RCT2
             // Byte13CA742
             // Pad013CA747
             gClimateUpdateTimer = _s6.ClimateUpdateTimer;
-            gClimateCurrent.Weather = WeatherType{ _s6.CurrentWeather };
+            gameState.ClimateCurrent.Weather = WeatherType{ _s6.CurrentWeather };
             gameState.ClimateNext.Weather = WeatherType{ _s6.NextWeather };
-            gClimateCurrent.Temperature = _s6.Temperature;
+            gameState.ClimateCurrent.Temperature = _s6.Temperature;
             gameState.ClimateNext.Temperature = _s6.NextTemperature;
-            gClimateCurrent.WeatherEffect = WeatherEffectType{ _s6.CurrentWeatherEffect };
+            gameState.ClimateCurrent.WeatherEffect = WeatherEffectType{ _s6.CurrentWeatherEffect };
             gameState.ClimateNext.WeatherEffect = WeatherEffectType{ _s6.NextWeatherEffect };
-            gClimateCurrent.WeatherGloom = _s6.CurrentWeatherGloom;
+            gameState.ClimateCurrent.WeatherGloom = _s6.CurrentWeatherGloom;
             gameState.ClimateNext.WeatherGloom = _s6.NextWeatherGloom;
-            gClimateCurrent.Level = static_cast<WeatherLevel>(_s6.CurrentWeatherLevel);
+            gameState.ClimateCurrent.Level = static_cast<WeatherLevel>(_s6.CurrentWeatherLevel);
             gameState.ClimateNext.Level = static_cast<WeatherLevel>(_s6.NextWeatherLevel);
 
             // News items

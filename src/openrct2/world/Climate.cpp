@@ -54,7 +54,6 @@ extern const WeatherState ClimateWeatherData[EnumValue(WeatherType::Count)];
 extern const FilterPaletteID ClimateWeatherGloomColours[4];
 
 // Climate data
-ClimateState gClimateCurrent;
 uint16_t gClimateUpdateTimer;
 uint16_t gClimateLightningFlash;
 
@@ -97,11 +96,11 @@ void ClimateReset(ClimateType climate)
     const WeatherState* weatherState = &ClimateWeatherData[EnumValue(weather)];
 
     gameState.Climate = climate;
-    gClimateCurrent.Weather = weather;
-    gClimateCurrent.Temperature = transition->BaseTemperature + weatherState->TemperatureDelta;
-    gClimateCurrent.WeatherEffect = weatherState->EffectLevel;
-    gClimateCurrent.WeatherGloom = weatherState->GloomLevel;
-    gClimateCurrent.Level = weatherState->Level;
+    gameState.ClimateCurrent.Weather = weather;
+    gameState.ClimateCurrent.Temperature = transition->BaseTemperature + weatherState->TemperatureDelta;
+    gameState.ClimateCurrent.WeatherEffect = weatherState->EffectLevel;
+    gameState.ClimateCurrent.WeatherGloom = weatherState->GloomLevel;
+    gameState.ClimateCurrent.Level = weatherState->Level;
 
     _lightningTimer = 0;
     _thunderTimer = 0;
@@ -141,38 +140,39 @@ void ClimateUpdate()
         }
         else if (!(gameState.CurrentTicks & 0x7F))
         {
-            if (gClimateCurrent.Temperature == gameState.ClimateNext.Temperature)
+            if (gameState.ClimateCurrent.Temperature == gameState.ClimateNext.Temperature)
             {
-                if (gClimateCurrent.WeatherGloom == gameState.ClimateNext.WeatherGloom)
+                if (gameState.ClimateCurrent.WeatherGloom == gameState.ClimateNext.WeatherGloom)
                 {
-                    gClimateCurrent.WeatherEffect = gameState.ClimateNext.WeatherEffect;
+                    gameState.ClimateCurrent.WeatherEffect = gameState.ClimateNext.WeatherEffect;
                     _thunderTimer = 0;
                     _lightningTimer = 0;
 
-                    if (gClimateCurrent.Level == gameState.ClimateNext.Level)
+                    if (gameState.ClimateCurrent.Level == gameState.ClimateNext.Level)
                     {
-                        gClimateCurrent.Weather = gameState.ClimateNext.Weather;
+                        gameState.ClimateCurrent.Weather = gameState.ClimateNext.Weather;
                         ClimateDetermineFutureWeather(ScenarioRand());
                         auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
                         ContextBroadcastIntent(&intent);
                     }
                     else if (gameState.ClimateNext.Level <= WeatherLevel::Heavy)
                     {
-                        gClimateCurrent.Level = static_cast<WeatherLevel>(ClimateStepWeatherLevel(
-                            static_cast<int8_t>(gClimateCurrent.Level), static_cast<int8_t>(gameState.ClimateNext.Level)));
+                        gameState.ClimateCurrent.Level = static_cast<WeatherLevel>(ClimateStepWeatherLevel(
+                            static_cast<int8_t>(gameState.ClimateCurrent.Level),
+                            static_cast<int8_t>(gameState.ClimateNext.Level)));
                     }
                 }
                 else
                 {
-                    gClimateCurrent.WeatherGloom = ClimateStepWeatherLevel(
-                        gClimateCurrent.WeatherGloom, gameState.ClimateNext.WeatherGloom);
+                    gameState.ClimateCurrent.WeatherGloom = ClimateStepWeatherLevel(
+                        gameState.ClimateCurrent.WeatherGloom, gameState.ClimateNext.WeatherGloom);
                     GfxInvalidateScreen();
                 }
             }
             else
             {
-                gClimateCurrent.Temperature = ClimateStepWeatherLevel(
-                    gClimateCurrent.Temperature, gameState.ClimateNext.Temperature);
+                gameState.ClimateCurrent.Temperature = ClimateStepWeatherLevel(
+                    gameState.ClimateCurrent.Temperature, gameState.ClimateNext.Temperature);
                 auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
                 ContextBroadcastIntent(&intent);
             }
@@ -185,8 +185,8 @@ void ClimateUpdate()
         ClimateUpdateThunder();
     }
     else if (
-        gClimateCurrent.WeatherEffect == WeatherEffectType::Storm
-        || gClimateCurrent.WeatherEffect == WeatherEffectType::Blizzard)
+        gameState.ClimateCurrent.WeatherEffect == WeatherEffectType::Storm
+        || gameState.ClimateCurrent.WeatherEffect == WeatherEffectType::Blizzard)
     {
         // Create new thunder and lightning
         uint32_t randomNumber = UtilRand();
@@ -206,11 +206,11 @@ void ClimateForceWeather(WeatherType weather)
     const WeatherTransition* transition = &ClimateTransitions[static_cast<uint8_t>(gameState.Climate)][month];
     const auto weatherState = &ClimateWeatherData[EnumValue(weather)];
 
-    gClimateCurrent.Weather = weather;
-    gClimateCurrent.WeatherGloom = weatherState->GloomLevel;
-    gClimateCurrent.Level = weatherState->Level;
-    gClimateCurrent.WeatherEffect = weatherState->EffectLevel;
-    gClimateCurrent.Temperature = transition->BaseTemperature + weatherState->TemperatureDelta;
+    gameState.ClimateCurrent.Weather = weather;
+    gameState.ClimateCurrent.WeatherGloom = weatherState->GloomLevel;
+    gameState.ClimateCurrent.Level = weatherState->Level;
+    gameState.ClimateCurrent.WeatherEffect = weatherState->EffectLevel;
+    gameState.ClimateCurrent.Temperature = transition->BaseTemperature + weatherState->TemperatureDelta;
     gClimateUpdateTimer = 1920;
 
     ClimateUpdate();
@@ -235,8 +235,9 @@ void ClimateUpdateSound()
 
 bool ClimateIsRaining()
 {
-    if (gClimateCurrent.Weather == WeatherType::Rain || gClimateCurrent.Weather == WeatherType::HeavyRain
-        || gClimateCurrent.Weather == WeatherType::Thunder)
+    auto& gameState = GetGameState();
+    if (gameState.ClimateCurrent.Weather == WeatherType::Rain || gameState.ClimateCurrent.Weather == WeatherType::HeavyRain
+        || gameState.ClimateCurrent.Weather == WeatherType::Thunder)
     {
         return true;
     }
@@ -246,8 +247,9 @@ bool ClimateIsRaining()
 
 bool ClimateIsSnowing()
 {
-    if (gClimateCurrent.Weather == WeatherType::Snow || gClimateCurrent.Weather == WeatherType::HeavySnow
-        || gClimateCurrent.Weather == WeatherType::Blizzard)
+    auto& gameState = GetGameState();
+    if (gameState.ClimateCurrent.Weather == WeatherType::Snow || gameState.ClimateCurrent.Weather == WeatherType::HeavySnow
+        || gameState.ClimateCurrent.Weather == WeatherType::Blizzard)
     {
         return true;
     }
@@ -320,7 +322,8 @@ static void ClimateDetermineFutureWeather(int32_t randomDistribution)
 
 static void ClimateUpdateWeatherSound()
 {
-    if (gClimateCurrent.WeatherEffect == WeatherEffectType::Rain || gClimateCurrent.WeatherEffect == WeatherEffectType::Storm)
+    if (GetGameState().ClimateCurrent.WeatherEffect == WeatherEffectType::Rain
+        || GetGameState().ClimateCurrent.WeatherEffect == WeatherEffectType::Storm)
     {
         // Start playing the weather sound
         if (_weatherSoundChannel == nullptr || _weatherSoundChannel->IsDone())
