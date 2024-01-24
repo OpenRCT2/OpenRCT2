@@ -45,10 +45,7 @@ money64 gMaxBankLoan;
 money64 gCurrentExpenditure;
 money64 gCurrentProfit;
 money64 gHistoricalProfit;
-money64 gWeeklyProfitAverageDividend;
-uint16_t gWeeklyProfitAverageDivisor;
 money64 gCashHistory[FINANCE_GRAPH_SIZE];
-money64 gWeeklyProfitHistory[FINANCE_GRAPH_SIZE];
 money64 gParkValueHistory[FINANCE_GRAPH_SIZE];
 money64 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
 
@@ -193,10 +190,11 @@ void FinancePayRideUpkeep()
 
 void FinanceResetHistory()
 {
+    auto& gameState = GetGameState();
     for (int32_t i = 0; i < FINANCE_GRAPH_SIZE; i++)
     {
         gCashHistory[i] = MONEY64_UNDEFINED;
-        gWeeklyProfitHistory[i] = MONEY64_UNDEFINED;
+        gameState.WeeklyProfitHistory[i] = MONEY64_UNDEFINED;
         gParkValueHistory[i] = MONEY64_UNDEFINED;
     }
 
@@ -226,8 +224,8 @@ void FinanceInit()
     gCurrentExpenditure = 0;
     gCurrentProfit = 0;
 
-    gWeeklyProfitAverageDividend = 0;
-    gWeeklyProfitAverageDivisor = 0;
+    gameState.WeeklyProfitAverageDividend = 0;
+    gameState.WeeklyProfitAverageDivisor = 0;
 
     gameState.InitialCash = 10000.00_GBP; // Cheat detection
 
@@ -258,8 +256,9 @@ void FinanceUpdateDailyProfit()
     gCurrentExpenditure = 0; // Reset daily expenditure
 
     money64 current_profit = 0;
+    auto& gameState = GetGameState();
 
-    if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+    if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Staff costs
         for (auto peep : EntityList<Staff>())
@@ -291,8 +290,8 @@ void FinanceUpdateDailyProfit()
     gCurrentProfit += current_profit;
 
     // These are related to weekly profit graph
-    gWeeklyProfitAverageDividend += gCurrentProfit;
-    gWeeklyProfitAverageDivisor += 1;
+    gameState.WeeklyProfitAverageDividend += gCurrentProfit;
+    gameState.WeeklyProfitAverageDivisor += 1;
 
     WindowInvalidateByClass(WindowClass::Finances);
 }

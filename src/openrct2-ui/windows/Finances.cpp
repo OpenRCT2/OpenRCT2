@@ -730,6 +730,7 @@ public:
 
     void OnDrawProfitGraph(DrawPixelInfo& dpi)
     {
+        auto& gameState = GetGameState();
         Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
         auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
         auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
@@ -748,7 +749,7 @@ public:
         int32_t yAxisScale = 0;
         for (int32_t i = 0; i < 64; i++)
         {
-            auto balance = gWeeklyProfitHistory[i];
+            auto balance = gameState.WeeklyProfitHistory[i];
             if (balance == MONEY64_UNDEFINED)
                 continue;
 
@@ -780,7 +781,7 @@ public:
 
         // X axis labels and values
         screenPos = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-        Graph::Draw(dpi, gWeeklyProfitHistory, 64, screenPos, yAxisScale, 128);
+        Graph::Draw(dpi, gameState.WeeklyProfitHistory, 64, screenPos, yAxisScale, 128);
     }
 
 #pragma endregion

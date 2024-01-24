@@ -1410,7 +1410,7 @@ namespace RCT1
             {
                 gCashHistory[i] = ToMoney64(_s4.CashHistory[i]);
                 gParkValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
-                gWeeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
+                gameState.WeeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
             }
 
             for (size_t i = 0; i < Limits::ExpenditureTableMonthCount; i++)

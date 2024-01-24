@@ -768,14 +768,14 @@ void Park::UpdateHistories()
     HistoryPushRecord<money64, std::size(gCashHistory)>(gCashHistory, FinanceGetCurrentCash() - gBankLoan);
 
     // Update weekly profit history
-    auto currentWeeklyProfit = gWeeklyProfitAverageDividend;
-    if (gWeeklyProfitAverageDivisor != 0)
+    auto currentWeeklyProfit = gameState.WeeklyProfitAverageDividend;
+    if (gameState.WeeklyProfitAverageDivisor != 0)
     {
-        currentWeeklyProfit /= gWeeklyProfitAverageDivisor;
+        currentWeeklyProfit /= gameState.WeeklyProfitAverageDivisor;
     }
-    HistoryPushRecord<money64, std::size(gWeeklyProfitHistory)>(gWeeklyProfitHistory, currentWeeklyProfit);
-    gWeeklyProfitAverageDividend = 0;
-    gWeeklyProfitAverageDivisor = 0;
+    HistoryPushRecord<money64, FINANCE_GRAPH_SIZE>(gameState.WeeklyProfitHistory, currentWeeklyProfit);
+    gameState.WeeklyProfitAverageDividend = 0;
+    gameState.WeeklyProfitAverageDivisor = 0;
 
     // Update park value history
     HistoryPushRecord<money64, std::size(gParkValueHistory)>(gParkValueHistory, gParkValue);
