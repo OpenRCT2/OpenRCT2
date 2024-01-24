@@ -67,10 +67,6 @@ const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_DLC_PARKS,      STR_BUILD_YOUR_OWN_PARKS, STR_COMPETITIONS, STR_UCES_TM,    STR_UCES_KD,
 };
 
-SCENARIO_CATEGORY gScenarioCategory;
-std::string gScenarioName;
-std::string gScenarioDetails;
-std::string gScenarioCompletedBy;
 std::string gScenarioSavePath;
 bool gFirstTimeSaving = true;
 uint16_t gSavedAge;
@@ -78,31 +74,26 @@ uint32_t gLastAutoSaveUpdate = 0;
 
 random_engine_t gScenarioRand;
 
-Objective gScenarioObjective;
-
 bool gAllowEarlyCompletionInNetworkPlay;
-uint16_t gScenarioParkRatingWarningDays;
-money64 gScenarioCompletedCompanyValue;
-money64 gScenarioCompanyValueRecord;
 
 std::string gScenarioFileName;
 
-static void ScenarioCheckObjective();
+static void ScenarioCheckObjective(GameState_t& gameState);
 
 using namespace OpenRCT2;
 
-void ScenarioBegin()
+void ScenarioBegin(GameState_t& gameState)
 {
     GameLoadInit();
-    ScenarioReset();
+    ScenarioReset(gameState);
 
-    if (gScenarioObjective.Type != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
+    if (gameState.ScenarioObjective.Type != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
         ContextOpenWindowView(WV_PARK_OBJECTIVE);
 
     gScreenAge = 0;
 }
 
-void ScenarioReset()
+void ScenarioReset(GameState_t& gameState)
 {
     // Set the scenario pseudo-random seeds
     Random::RCT2::Seed s{ 0x1234567F ^ Platform::GetTicks(), 0x789FABCD ^ Platform::GetTicks() };
@@ -112,7 +103,6 @@ void ScenarioReset()
     ScenerySetDefaultPlacementConfiguration();
     News::InitQueue();
 
-    auto& gameState = GetGameState();
     auto& park = GetContext()->GetGameState()->GetPark();
     gameState.ParkRating = park.CalculateParkRating();
     gParkValue = park.CalculateParkValue();
@@ -122,14 +112,14 @@ void ScenarioReset()
 
     {
         utf8 normalisedName[64];
-        ScenarioSources::NormaliseName(normalisedName, sizeof(normalisedName), gScenarioName.c_str());
+        ScenarioSources::NormaliseName(normalisedName, sizeof(normalisedName), gameState.ScenarioName.c_str());
 
         StringId localisedStringIds[3];
         if (LanguageGetLocalisedScenarioStrings(normalisedName, localisedStringIds))
         {
             if (localisedStringIds[0] != STR_NONE)
             {
-                gScenarioName = LanguageGetString(localisedStringIds[0]);
+                gameState.ScenarioName = LanguageGetString(localisedStringIds[0]);
             }
             if (localisedStringIds[1] != STR_NONE)
             {
@@ -137,7 +127,7 @@ void ScenarioReset()
             }
             if (localisedStringIds[2] != STR_NONE)
             {
-                gScenarioDetails = LanguageGetString(localisedStringIds[2]);
+                gameState.ScenarioDetails = LanguageGetString(localisedStringIds[2]);
             }
         }
     }
@@ -155,8 +145,8 @@ void ScenarioReset()
     gTotalIncomeFromAdmissions = 0;
 
     gameState.ParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
-    gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
-    gScenarioCompletedBy = "?";
+    gameState.ScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
+    gameState.ScenarioCompletedBy = "?";
 
     park.ResetHistories();
     FinanceResetHistory();
@@ -202,9 +192,9 @@ static void ScenarioEnd()
  *
  *  rct2: 0x0066A752
  */
-void ScenarioFailure()
+void ScenarioFailure(GameState_t& gameState)
 {
-    gScenarioCompletedCompanyValue = COMPANY_VALUE_ON_FAILED_OBJECTIVE;
+    gameState.ScenarioCompletedCompanyValue = COMPANY_VALUE_ON_FAILED_OBJECTIVE;
     ScenarioEnd();
 }
 
@@ -212,18 +202,18 @@ void ScenarioFailure()
  *
  *  rct2: 0x0066A75E
  */
-void ScenarioSuccess()
+void ScenarioSuccess(GameState_t& gameState)
 {
     auto companyValue = gCompanyValue;
 
-    gScenarioCompletedCompanyValue = companyValue;
+    gameState.ScenarioCompletedCompanyValue = companyValue;
     PeepApplause();
 
     if (ScenarioRepositoryTryRecordHighscore(gScenarioFileName.c_str(), companyValue, nullptr))
     {
         // Allow name entry
         GetGameState().ParkFlags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
-        gScenarioCompanyValueRecord = companyValue;
+        gameState.ScenarioCompanyValueRecord = companyValue;
     }
     ScenarioEnd();
 }
@@ -232,13 +222,13 @@ void ScenarioSuccess()
  *
  *  rct2: 0x006695E8
  */
-void ScenarioSuccessSubmitName(const char* name)
+void ScenarioSuccessSubmitName(GameState_t& gameState, const char* name)
 {
-    if (ScenarioRepositoryTryRecordHighscore(gScenarioFileName.c_str(), gScenarioCompanyValueRecord, name))
+    if (ScenarioRepositoryTryRecordHighscore(gScenarioFileName.c_str(), gameState.ScenarioCompanyValueRecord, name))
     {
-        gScenarioCompletedBy = name;
+        gameState.ScenarioCompletedBy = name;
     }
-    GetGameState().ParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+    gameState.ParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 }
 
 /**
@@ -301,22 +291,22 @@ void ScenarioAutosaveCheck()
     }
 }
 
-static void ScenarioDayUpdate()
+static void ScenarioDayUpdate(GameState_t& gameState)
 {
     FinanceUpdateDailyProfit();
     PeepUpdateDaysInQueue();
-    switch (gScenarioObjective.Type)
+    switch (gameState.ScenarioObjective.Type)
     {
         case OBJECTIVE_10_ROLLERCOASTERS:
         case OBJECTIVE_GUESTS_AND_RATING:
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-            ScenarioCheckObjective();
+            ScenarioCheckObjective(gameState);
             break;
         default:
             if (AllowEarlyCompletion())
-                ScenarioCheckObjective();
+                ScenarioCheckObjective(gameState);
             break;
     }
 
@@ -361,7 +351,7 @@ static void ScenarioFortnightUpdate()
 static void ScenarioMonthUpdate()
 {
     FinanceShiftExpenditureTable();
-    ScenarioCheckObjective();
+    ScenarioCheckObjective(GetGameState());
     ScenarioCheckEntranceFeeTooHigh();
     AwardUpdateAll();
 }
@@ -407,7 +397,7 @@ static void ScenarioUpdateDayNightCycle()
  * Scenario and finance related update iteration.
  *  rct2: 0x006C44B1
  */
-void ScenarioUpdate()
+void ScenarioUpdate(GameState_t& gameState)
 {
     PROFILED_FUNCTION();
 
@@ -416,7 +406,7 @@ void ScenarioUpdate()
         auto& date = GetDate();
         if (date.IsDayStart())
         {
-            ScenarioDayUpdate();
+            ScenarioDayUpdate(gameState);
         }
         if (date.IsWeekStart())
         {
@@ -543,9 +533,9 @@ uint32_t ScenarioRandMax(uint32_t max)
  * Prepare rides, for the finish five rollercoasters objective.
  *  rct2: 0x006788F7
  */
-static ResultWithMessage ScenarioPrepareRidesForSave()
+static ResultWithMessage ScenarioPrepareRidesForSave(GameState_t& gameState)
 {
-    int32_t isFiveCoasterObjective = gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
+    int32_t isFiveCoasterObjective = gameState.ScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
     uint8_t rcs = 0;
 
     for (auto& ride : GetRideManager())
@@ -602,19 +592,19 @@ static ResultWithMessage ScenarioPrepareRidesForSave()
  *
  *  rct2: 0x006726C7
  */
-ResultWithMessage ScenarioPrepareForSave()
+ResultWithMessage ScenarioPrepareForSave(GameState_t& gameState)
 {
     // This can return false if the goal is 'Finish 5 roller coaster' and there are too few.
-    const auto prepareRidesResult = ScenarioPrepareRidesForSave();
+    const auto prepareRidesResult = ScenarioPrepareRidesForSave(gameState);
     if (!prepareRidesResult.Successful)
     {
         return { false, prepareRidesResult.Message };
     }
 
-    if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
+    if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
         GetGameState().ParkFlags |= PARK_FLAGS_PARK_OPEN;
 
-    ScenarioReset();
+    ScenarioReset(gameState);
 
     return { true };
 }
@@ -703,36 +693,36 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
     auto& gameState = GetGameState();
     if (gameState.ParkRating < 700 && GetDate().GetMonthsElapsed() >= 1)
     {
-        gScenarioParkRatingWarningDays++;
-        if (gScenarioParkRatingWarningDays == 1)
+        gameState.ScenarioParkRatingWarningDays++;
+        if (gameState.ScenarioParkRatingWarningDays == 1)
         {
             if (gConfigNotifications.ParkRatingWarnings)
             {
                 News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0, {});
             }
         }
-        else if (gScenarioParkRatingWarningDays == 8)
+        else if (gameState.ScenarioParkRatingWarningDays == 8)
         {
             if (gConfigNotifications.ParkRatingWarnings)
             {
                 News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0, {});
             }
         }
-        else if (gScenarioParkRatingWarningDays == 15)
+        else if (gameState.ScenarioParkRatingWarningDays == 15)
         {
             if (gConfigNotifications.ParkRatingWarnings)
             {
                 News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0, {});
             }
         }
-        else if (gScenarioParkRatingWarningDays == 22)
+        else if (gameState.ScenarioParkRatingWarningDays == 22)
         {
             if (gConfigNotifications.ParkRatingWarnings)
             {
                 News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0, {});
             }
         }
-        else if (gScenarioParkRatingWarningDays == 29)
+        else if (gameState.ScenarioParkRatingWarningDays == 29)
         {
             News::AddItemToQueue(News::ItemType::Graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
             gameState.ParkFlags &= ~PARK_FLAGS_PARK_OPEN;
@@ -740,9 +730,9 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
             return ObjectiveStatus::Failure;
         }
     }
-    else if (gScenarioCompletedCompanyValue != COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+    else if (gameState.ScenarioCompletedCompanyValue != COMPANY_VALUE_ON_FAILED_OBJECTIVE)
     {
-        gScenarioParkRatingWarningDays = 0;
+        gameState.ScenarioParkRatingWarningDays = 0;
     }
 
     if (gameState.ParkRating >= 700)
@@ -872,16 +862,16 @@ bool AllowEarlyCompletion()
     }
 }
 
-static void ScenarioCheckObjective()
+static void ScenarioCheckObjective(GameState_t& gameState)
 {
-    auto status = gScenarioObjective.Check();
+    auto status = gameState.ScenarioObjective.Check(gameState);
     if (status == ObjectiveStatus::Success)
     {
-        ScenarioSuccess();
+        ScenarioSuccess(gameState);
     }
     else if (status == ObjectiveStatus::Failure)
     {
-        ScenarioFailure();
+        ScenarioFailure(gameState);
     }
 }
 
@@ -889,9 +879,9 @@ static void ScenarioCheckObjective()
  * Checks the win/lose conditions of the current objective.
  *  rct2: 0x0066A4B2
  */
-ObjectiveStatus Objective::Check() const
+ObjectiveStatus Objective::Check(GameState_t& gameState) const
 {
-    if (gScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
+    if (gameState.ScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
     {
         return ObjectiveStatus::Undecided;
     }

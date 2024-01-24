@@ -91,6 +91,7 @@ GameActions::Result CheatSetAction::Query() const
 
 GameActions::Result CheatSetAction::Execute() const
 {
+    auto& gameState = GetGameState();
     switch (static_cast<CheatType>(_cheatType.id))
     {
         case CheatType::SandboxMode:
@@ -198,7 +199,7 @@ GameActions::Result CheatSetAction::Execute() const
             Set10MinuteInspection();
             break;
         case CheatType::WinScenario:
-            ScenarioSuccess();
+            ScenarioSuccess(gameState);
             break;
         case CheatType::ForceWeather:
             // Todo - make sure this is safe
@@ -214,7 +215,7 @@ GameActions::Result CheatSetAction::Execute() const
             ParkSetOpen(!ParkIsOpen());
             break;
         case CheatType::HaveFun:
-            gScenarioObjective.Type = OBJECTIVE_HAVE_FUN;
+            gameState.ScenarioObjective.Type = OBJECTIVE_HAVE_FUN;
             break;
         case CheatType::SetForcedParkRating:
             ParkSetForcedRating(_param1);

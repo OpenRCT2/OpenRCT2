@@ -232,7 +232,7 @@ namespace RCT2
             Initialise();
 
             gEditorStep = _s6.Info.EditorStep;
-            gScenarioCategory = static_cast<SCENARIO_CATEGORY>(_s6.Info.Category);
+            gameState.ScenarioCategory = static_cast<SCENARIO_CATEGORY>(_s6.Info.Category);
 
             // Some scenarios have their scenario details in UTF-8, due to earlier bugs in OpenRCT2.
             auto loadMaybeUTF8 = [](std::string_view str) -> std::string {
@@ -241,14 +241,14 @@ namespace RCT2
 
             if (_s6.Header.Type == S6_TYPE_SCENARIO)
             {
-                gScenarioName = loadMaybeUTF8(_s6.Info.Name);
-                gScenarioDetails = loadMaybeUTF8(_s6.Info.Details);
+                gameState.ScenarioName = loadMaybeUTF8(_s6.Info.Name);
+                gameState.ScenarioDetails = loadMaybeUTF8(_s6.Info.Details);
             }
             else
             {
                 // Saved games do not have an info chunk
-                gScenarioName = loadMaybeUTF8(_s6.ScenarioName);
-                gScenarioDetails = loadMaybeUTF8(_s6.ScenarioDescription);
+                gameState.ScenarioName = loadMaybeUTF8(_s6.ScenarioName);
+                gameState.ScenarioDetails = loadMaybeUTF8(_s6.ScenarioDescription);
             }
 
             OpenRCT2::GetContext()->GetGameState()->SetDate(OpenRCT2::Date(_s6.ElapsedMonths, _s6.CurrentDay));
@@ -342,16 +342,16 @@ namespace RCT2
             gameState.GuestInitialCash = ToMoney64(_s6.GuestInitialCash);
             gameState.GuestInitialHunger = _s6.GuestInitialHunger;
             gameState.GuestInitialThirst = _s6.GuestInitialThirst;
-            gScenarioObjective.Type = _s6.ObjectiveType;
-            gScenarioObjective.Year = _s6.ObjectiveYear;
+            gameState.ScenarioObjective.Type = _s6.ObjectiveType;
+            gameState.ScenarioObjective.Year = _s6.ObjectiveYear;
             // Pad013580FA
-            gScenarioObjective.Currency = _s6.ObjectiveCurrency;
+            gameState.ScenarioObjective.Currency = _s6.ObjectiveCurrency;
             // In RCT2, the ride string IDs start at index STR_0002 and are directly mappable.
             // This is not always the case in OpenRCT2, so we use the actual ride ID.
-            if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
-                gScenarioObjective.RideId = _s6.ObjectiveGuests - RCT2_RIDE_STRING_START;
+            if (gameState.ScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
+                gameState.ScenarioObjective.RideId = _s6.ObjectiveGuests - RCT2_RIDE_STRING_START;
             else
-                gScenarioObjective.NumGuests = _s6.ObjectiveGuests;
+                gameState.ScenarioObjective.NumGuests = _s6.ObjectiveGuests;
             ImportMarketingCampaigns();
 
             gCurrentExpenditure = ToMoney64(_s6.CurrentExpenditure);
@@ -369,7 +369,7 @@ namespace RCT2
                 gParkValueHistory[i] = ToMoney64(_s6.ParkValueHistory[i]);
             }
 
-            gScenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s6.CompletedCompanyValue);
+            gameState.ScenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s6.CompletedCompanyValue);
             gTotalAdmissions = _s6.TotalAdmissions;
             gTotalIncomeFromAdmissions = ToMoney64(_s6.IncomeFromAdmissions);
             gCompanyValue = ToMoney64(_s6.CompanyValue);
@@ -391,19 +391,19 @@ namespace RCT2
             // Pad01358776
             // _s6.CdKey
             _gameVersion = _s6.GameVersionNumber;
-            gScenarioCompanyValueRecord = _s6.CompletedCompanyValueRecord;
+            gameState.ScenarioCompanyValueRecord = _s6.CompletedCompanyValueRecord;
             // _s6.LoanHash;
             // Pad013587CA
             gHistoricalProfit = ToMoney64(_s6.HistoricalProfit);
             // Pad013587D4
-            gScenarioCompletedBy = std::string_view(_s6.ScenarioCompletedName, sizeof(_s6.ScenarioCompletedName));
+            gameState.ScenarioCompletedBy = std::string_view(_s6.ScenarioCompletedName, sizeof(_s6.ScenarioCompletedName));
             gameState.Cash = ToMoney64(DECRYPT_MONEY(_s6.Cash));
             // Pad013587FC
             gParkRatingCasualtyPenalty = _s6.ParkRatingCasualtyPenalty;
             gMapSize = { _s6.MapSize, _s6.MapSize };
             gSamePriceThroughoutPark = _s6.SamePriceThroughout | (static_cast<uint64_t>(_s6.SamePriceThroughoutExtended) << 32);
             _suggestedGuestMaximum = _s6.SuggestedMaxGuests;
-            gScenarioParkRatingWarningDays = _s6.ParkRatingWarningDays;
+            gameState.ScenarioParkRatingWarningDays = _s6.ParkRatingWarningDays;
             gLastEntranceStyle = _s6.LastEntranceStyle;
             // rct1_water_colour
             // Pad01358842
@@ -501,7 +501,7 @@ namespace RCT2
 
             // Fix and set dynamic variables
             MapStripGhostFlagFromElements();
-            ConvertScenarioStringsToUTF8();
+            ConvertScenarioStringsToUTF8(gameState);
             DetermineRideEntranceAndExitLocations();
 
             park.Name = GetUserString(_s6.ParkName);
@@ -526,12 +526,12 @@ namespace RCT2
             _terrainEdgeEntries.AddRange(DefaultTerrainEdges);
         }
 
-        void ConvertScenarioStringsToUTF8()
+        void ConvertScenarioStringsToUTF8(GameState_t& gameState)
         {
             // Scenario details
-            gScenarioCompletedBy = RCT2StringToUTF8(gScenarioCompletedBy, RCT2LanguageId::EnglishUK);
-            gScenarioName = RCT2StringToUTF8(gScenarioName, RCT2LanguageId::EnglishUK);
-            gScenarioDetails = RCT2StringToUTF8(gScenarioDetails, RCT2LanguageId::EnglishUK);
+            gameState.ScenarioCompletedBy = RCT2StringToUTF8(gameState.ScenarioCompletedBy, RCT2LanguageId::EnglishUK);
+            gameState.ScenarioName = RCT2StringToUTF8(gameState.ScenarioName, RCT2LanguageId::EnglishUK);
+            gameState.ScenarioDetails = RCT2StringToUTF8(gameState.ScenarioDetails, RCT2LanguageId::EnglishUK);
         }
 
         void FixLandOwnership() const

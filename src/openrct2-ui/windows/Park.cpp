@@ -503,6 +503,7 @@ private:
 
     void OnPrepareDrawEntrance()
     {
+        const auto& gameState = GetGameState();
         widgets = _pagedWidgets[page];
         InitScrollWidgets();
 
@@ -524,7 +525,7 @@ private:
         widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
         // Only allow closing of park for guest / rating objective
-        if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
+        if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
             disabled_widgets |= (1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT);
         else
             disabled_widgets &= ~((1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT));
@@ -549,7 +550,7 @@ private:
         if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK)
         {
             widgets[WIDX_OPEN_OR_CLOSE].type = WindowWidgetType::Empty;
-            if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
+            if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
             {
                 widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::FlatBtn;
                 widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::FlatBtn;
@@ -1038,7 +1039,7 @@ private:
         if (widgetIndex == WIDX_ENTER_NAME && !text.empty())
         {
             std::string strText(text);
-            ScenarioSuccessSubmitName(strText.c_str());
+            ScenarioSuccessSubmitName(GetGameState(), strText.c_str());
             Invalidate();
         }
     }
@@ -1064,6 +1065,7 @@ private:
 
     void OnDrawObjective(DrawPixelInfo& dpi)
     {
+        auto& gameState = GetGameState();
         DrawWidgets(dpi);
         DrawTabImages(dpi);
 
@@ -1072,7 +1074,7 @@ private:
             + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 7 };
         auto ft = Formatter();
         ft.Add<StringId>(STR_STRING);
-        ft.Add<const char*>(gScenarioDetails.c_str());
+        ft.Add<const char*>(gameState.ScenarioDetails.c_str());
         screenCoords.y += DrawTextWrapped(dpi, screenCoords, 222, STR_BLACK_STRING, ft);
         screenCoords.y += 5;
 
@@ -1082,10 +1084,10 @@ private:
 
         // Objective
         ft = Formatter();
-        if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
+        if (gameState.ScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
         {
             StringId rideTypeString = STR_NONE;
-            auto rideTypeId = gScenarioObjective.RideId;
+            auto rideTypeId = gameState.ScenarioObjective.RideId;
             if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
             {
                 rideTypeString = GetRideTypeDescriptor(rideTypeId).Naming.Name;
@@ -1094,21 +1096,21 @@ private:
         }
         else
         {
-            ft.Add<uint16_t>(gScenarioObjective.NumGuests);
-            ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, gScenarioObjective.Year));
-            if (gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
-                ft.Add<uint16_t>(gScenarioObjective.MinimumExcitement);
+            ft.Add<uint16_t>(gameState.ScenarioObjective.NumGuests);
+            ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, gameState.ScenarioObjective.Year));
+            if (gameState.ScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
+                ft.Add<uint16_t>(gameState.ScenarioObjective.MinimumExcitement);
             else
-                ft.Add<money64>(gScenarioObjective.Currency);
+                ft.Add<money64>(gameState.ScenarioObjective.Currency);
         }
 
-        screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, ObjectiveNames[gScenarioObjective.Type], ft);
+        screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, ObjectiveNames[gameState.ScenarioObjective.Type], ft);
         screenCoords.y += 5;
 
         // Objective outcome
-        if (gScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
+        if (gameState.ScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
         {
-            if (gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+            if (gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
             {
                 // Objective failed
                 DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_FAILED);
@@ -1117,7 +1119,7 @@ private:
             {
                 // Objective completed
                 ft = Formatter();
-                ft.Add<money64>(gScenarioCompletedCompanyValue);
+                ft.Add<money64>(gameState.ScenarioCompletedCompanyValue);
                 DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_ACHIEVED, ft);
             }
         }

@@ -439,7 +439,7 @@ static void ShortcutQuickSaveGame()
     {
         auto intent = Intent(WindowClass::Loadsave);
         intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-        intent.PutExtra(INTENT_EXTRA_PATH, gScenarioName);
+        intent.PutExtra(INTENT_EXTRA_PATH, GetGameState().ScenarioName);
         ContextOpenIntent(&intent);
     }
 }

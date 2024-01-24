@@ -185,8 +185,8 @@ namespace RCT1
             ImportParkName();
             ImportParkFlags(gameState);
             ImportClimate(gameState);
-            ImportScenarioNameDetails();
-            ImportScenarioObjective();
+            ImportScenarioNameDetails(gameState);
+            ImportScenarioObjective(gameState);
             ImportSavedView();
             FixLandOwnership();
             FixUrbanPark();
@@ -327,7 +327,7 @@ namespace RCT1
             context->GetGameState()->InitAll({ mapSize, mapSize });
             gEditorStep = EditorStep::ObjectSelection;
             gameState.ParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-            gScenarioCategory = SCENARIO_CATEGORY_OTHER;
+            gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
         }
 
         std::string GetRCT1ScenarioName()
@@ -1422,7 +1422,7 @@ namespace RCT1
             }
             gCurrentExpenditure = ToMoney64(_s4.TotalExpenditure);
 
-            gScenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s4.CompletedCompanyValue);
+            gameState.ScenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s4.CompletedCompanyValue);
             gTotalAdmissions = _s4.NumAdmissions;
             gTotalIncomeFromAdmissions = ToMoney64(_s4.AdmissionTotalIncome);
 
@@ -2292,7 +2292,7 @@ namespace RCT1
             gameState.ClimateNext.Level = static_cast<WeatherLevel>(_s4.TargetRain);
         }
 
-        void ImportScenarioNameDetails()
+        void ImportScenarioNameDetails(GameState_t& gameState)
         {
             std::string name = String::ToStd(_s4.ScenarioName);
             std::string details;
@@ -2318,27 +2318,27 @@ namespace RCT1
                 }
             }
 
-            gScenarioName = std::move(name);
-            gScenarioDetails = std::move(details);
+            gameState.ScenarioName = std::move(name);
+            gameState.ScenarioDetails = std::move(details);
         }
 
-        void ImportScenarioObjective()
+        void ImportScenarioObjective(GameState_t& gameState)
         {
-            gScenarioObjective.Type = _s4.ScenarioObjectiveType;
-            gScenarioObjective.Year = _s4.ScenarioObjectiveYears;
-            gScenarioObjective.NumGuests = _s4.ScenarioObjectiveNumGuests;
+            gameState.ScenarioObjective.Type = _s4.ScenarioObjectiveType;
+            gameState.ScenarioObjective.Year = _s4.ScenarioObjectiveYears;
+            gameState.ScenarioObjective.NumGuests = _s4.ScenarioObjectiveNumGuests;
 
             // RCT1 used a different way of calculating the park value.
             // This is corrected here, but since scenario_objective_currency doubles as minimum excitement rating,
             // we need to check the goal to avoid affecting scenarios like Volcania.
             if (_s4.ScenarioObjectiveType == OBJECTIVE_PARK_VALUE_BY)
-                gScenarioObjective.Currency = CorrectRCT1ParkValue(_s4.ScenarioObjectiveCurrency);
+                gameState.ScenarioObjective.Currency = CorrectRCT1ParkValue(_s4.ScenarioObjectiveCurrency);
             else
-                gScenarioObjective.Currency = ToMoney64(_s4.ScenarioObjectiveCurrency);
+                gameState.ScenarioObjective.Currency = ToMoney64(_s4.ScenarioObjectiveCurrency);
 
             // This does not seem to be saved in the objective arguments, so look up the ID from the available rides instead.
             if (_s4.ScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
-                gScenarioObjective.RideId = GetBuildTheBestRideId();
+                gameState.ScenarioObjective.RideId = GetBuildTheBestRideId();
         }
 
         void ImportSavedView()

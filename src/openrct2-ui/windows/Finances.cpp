@@ -579,7 +579,7 @@ public:
         DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, 294 }, stringId, ft);
 
         // Objective related financial information
-        if (gScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
+        if (gameState.ScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
         {
             auto lastMonthProfit = FinanceGetLastMonthShopProfit();
             ft = Formatter();

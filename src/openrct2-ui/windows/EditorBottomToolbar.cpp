@@ -254,7 +254,8 @@ private:
 
     void JumpForwardToSaveScenario() const
     {
-        const auto savePrepareResult = ScenarioPrepareForSave();
+        auto& gameState = GetGameState();
+        const auto savePrepareResult = ScenarioPrepareForSave(gameState);
         if (!savePrepareResult.Successful)
         {
             ContextShowError(STR_UNABLE_TO_SAVE_SCENARIO_FILE, savePrepareResult.Message, {});
@@ -265,7 +266,7 @@ private:
         WindowCloseAll();
         auto intent = Intent(WindowClass::Loadsave);
         intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO);
-        intent.PutExtra(INTENT_EXTRA_PATH, gScenarioName);
+        intent.PutExtra(INTENT_EXTRA_PATH, gameState.ScenarioName);
         ContextOpenIntent(&intent);
     }
 
