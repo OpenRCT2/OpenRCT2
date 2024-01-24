@@ -143,7 +143,7 @@ private:
             auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 11, widget.midY() - 5 };
 
             DrawParkRating(
-                dpi, colours[3], screenCoords, std::max(10, ((gParkRating / 4) * 263) / 256));
+                dpi, colours[3], screenCoords, std::max(10, ((gameState.ParkRating / 4) * 263) / 256));
         }
     }
 
@@ -479,7 +479,7 @@ public:
                     ft.Add<money64>(gParkValue);
                     break;
                 case WIDX_PARK_RATING:
-                    ft.Add<int16_t>(gParkRating);
+                    ft.Add<int16_t>(GetGameState().ParkRating);
                     break;
             }
         return { fallback, ft };

@@ -697,7 +697,7 @@ private:
 
         // Current value
         auto ft = Formatter();
-        ft.Add<uint16_t>(gParkRating);
+        ft.Add<uint16_t>(GetGameState().ParkRating);
         DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
 
         // Graph border

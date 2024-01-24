@@ -2126,7 +2126,7 @@ namespace RCT1
             GetContext()->GetGameState()->SetDate(Date(_s4.Month, _s4.Day));
 
             // Park rating
-            gParkRating = _s4.ParkRating;
+            gameState.ParkRating = _s4.ParkRating;
 
             auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
             park.ResetHistories();
