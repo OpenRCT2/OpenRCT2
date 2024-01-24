@@ -238,10 +238,10 @@ void FinanceInit()
     gBankLoanInterestRate = 10;
     gParkValue = 0;
     gCompanyValue = 0;
-    gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
+    gameState.ScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
     gTotalAdmissions = 0;
     gTotalIncomeFromAdmissions = 0;
-    gScenarioCompletedBy = "?";
+    gameState.ScenarioCompletedBy = "?";
 }
 
 /**

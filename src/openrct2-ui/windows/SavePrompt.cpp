@@ -12,6 +12,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
@@ -159,7 +160,7 @@ public:
                 {
                     intent = std::make_unique<Intent>(WindowClass::Loadsave);
                     intent->PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-                    intent->PutExtra(INTENT_EXTRA_PATH, gScenarioName);
+                    intent->PutExtra(INTENT_EXTRA_PATH, OpenRCT2::GetGameState().ScenarioName);
                 }
                 else
                 {

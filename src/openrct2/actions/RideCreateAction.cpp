@@ -210,7 +210,7 @@ GameActions::Result RideCreateAction::Execute() const
         price = 0;
     }
 
-    const auto& gameState = GetGameState();
+    auto& gameState = GetGameState();
     if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
     {
         for (auto i = 0; i < RCT2::ObjectLimits::MaxShopItemsPerRideEntry; i++)
@@ -234,7 +234,7 @@ GameActions::Result RideCreateAction::Execute() const
             ride->price[1] = GetShopItemDescriptor(rideEntry->shop_item[1]).DefaultPrice;
         }
 
-        if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
+        if (gameState.ScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
         {
             ride->price[0] = 0;
         }

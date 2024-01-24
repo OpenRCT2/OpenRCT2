@@ -104,19 +104,20 @@ namespace Editor
      */
     void Load()
     {
+        auto& gameState = GetGameState();
         OpenRCT2::Audio::StopAll();
         ObjectListLoad();
         OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gEditorStep = EditorStep::ObjectSelection;
-        GetGameState().ParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-        gScenarioCategory = SCENARIO_CATEGORY_OTHER;
+        gameState.ParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
         gScreenAge = 0;
-        gScenarioName = LanguageGetString(STR_MY_NEW_SCENARIO);
+        gameState.ScenarioName = LanguageGetString(STR_MY_NEW_SCENARIO);
     }
 
     /**
@@ -144,11 +145,12 @@ namespace Editor
             return;
         }
 
-        ScenarioReset();
+        auto& gameState = GetGameState();
+        ScenarioReset(gameState);
 
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gEditorStep = EditorStep::ObjectiveSelection;
-        gScenarioCategory = SCENARIO_CATEGORY_OTHER;
+        gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
         ViewportInitAll();
         OpenEditorWindows();
         FinaliseMainView();

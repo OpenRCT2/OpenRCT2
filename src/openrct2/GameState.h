@@ -11,6 +11,7 @@
 
 #include "Date.h"
 #include "management/Finance.h"
+#include "scenario/Scenario.h"
 #include "world/Climate.h"
 #include "world/Location.hpp"
 
@@ -42,6 +43,15 @@ namespace OpenRCT2
         money64 WeeklyProfitAverageDividend;
         uint16_t WeeklyProfitAverageDivisor;
         money64 WeeklyProfitHistory[FINANCE_GRAPH_SIZE];
+        Objective ScenarioObjective;
+        uint16_t ScenarioParkRatingWarningDays;
+        money64 ScenarioCompletedCompanyValue;
+        money64 ScenarioCompanyValueRecord;
+
+        SCENARIO_CATEGORY ScenarioCategory;
+        std::string ScenarioName;
+        std::string ScenarioDetails;
+        std::string ScenarioCompletedBy;
     };
 
     GameState_t& GetGameState();

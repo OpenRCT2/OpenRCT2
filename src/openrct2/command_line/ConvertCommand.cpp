@@ -93,6 +93,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     context->Initialise();
 
     auto& objManager = context->GetObjectManager();
+    auto& gameState = GetGameState();
 
     try
     {
@@ -102,7 +103,6 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
         objManager.LoadObjects(loadResult.RequiredObjects);
 
         // TODO: Have a separate GameState and exchange once loaded.
-        auto& gameState = GetGameState();
         importer->Import(gameState);
     }
     catch (const std::exception& ex)
@@ -114,7 +114,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     if (sourceFileType == FileExtension::SC4 || sourceFileType == FileExtension::SC6)
     {
         // We are converting a scenario, so reset the park
-        ScenarioBegin();
+        ScenarioBegin(gameState);
     }
 
     try
@@ -124,8 +124,6 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
         // HACK remove the main window so it saves the park with the
         //      correct initial view
         WindowCloseByClass(WindowClass::MainWindow);
-
-        auto& gameState = GetGameState();
 
         exporter->Export(gameState, destinationPath);
     }

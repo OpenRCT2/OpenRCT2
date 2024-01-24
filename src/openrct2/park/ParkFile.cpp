@@ -417,32 +417,32 @@ namespace OpenRCT2
 
         void ReadWriteScenarioChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [&os](OrcaStream::ChunkStream& cs) {
-                cs.ReadWrite(gScenarioCategory);
-                ReadWriteStringTable(cs, gScenarioName, "en-GB");
+            os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [&os, &gameState](OrcaStream::ChunkStream& cs) {
+                cs.ReadWrite(gameState.ScenarioCategory);
+                ReadWriteStringTable(cs, gameState.ScenarioName, "en-GB");
 
                 // TODO: Use the passed gameState instead of the global one.
                 auto& park = GetContext()->GetGameState()->GetPark();
                 ReadWriteStringTable(cs, park.Name, "en-GB");
 
-                ReadWriteStringTable(cs, gScenarioDetails, "en-GB");
+                ReadWriteStringTable(cs, gameState.ScenarioDetails, "en-GB");
 
-                cs.ReadWrite(gScenarioObjective.Type);
-                cs.ReadWrite(gScenarioObjective.Year);
-                cs.ReadWrite(gScenarioObjective.NumGuests);
-                cs.ReadWrite(gScenarioObjective.Currency);
+                cs.ReadWrite(gameState.ScenarioObjective.Type);
+                cs.ReadWrite(gameState.ScenarioObjective.Year);
+                cs.ReadWrite(gameState.ScenarioObjective.NumGuests);
+                cs.ReadWrite(gameState.ScenarioObjective.Currency);
 
-                cs.ReadWrite(gScenarioParkRatingWarningDays);
+                cs.ReadWrite(gameState.ScenarioParkRatingWarningDays);
 
-                cs.ReadWrite(gScenarioCompletedCompanyValue);
-                if (gScenarioCompletedCompanyValue == MONEY64_UNDEFINED
-                    || gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+                cs.ReadWrite(gameState.ScenarioCompletedCompanyValue);
+                if (gameState.ScenarioCompletedCompanyValue == MONEY64_UNDEFINED
+                    || gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
                 {
                     cs.Write("");
                 }
                 else
                 {
-                    cs.ReadWrite(gScenarioCompletedBy);
+                    cs.ReadWrite(gameState.ScenarioCompletedBy);
                 }
 
                 if (cs.GetMode() == OrcaStream::Mode::READING)

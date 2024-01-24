@@ -290,9 +290,9 @@ void Park::Initialise()
     gameState.GuestInitialHappiness = CalculateGuestInitialHappiness(50);
     gameState.GuestInitialHunger = 200;
     gameState.GuestInitialThirst = 200;
-    gScenarioObjective.Type = OBJECTIVE_GUESTS_BY;
-    gScenarioObjective.Year = 4;
-    gScenarioObjective.NumGuests = 1000;
+    gameState.ScenarioObjective.Type = OBJECTIVE_GUESTS_BY;
+    gameState.ScenarioObjective.Year = 4;
+    gameState.ScenarioObjective.NumGuests = 1000;
     gLandPrice = 90.00_GBP;
     gConstructionRightsPrice = 40.00_GBP;
     gameState.ParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -300,8 +300,8 @@ void Park::Initialise()
     FinanceResetHistory();
     AwardReset();
 
-    gScenarioName.clear();
-    gScenarioDetails = String::ToStd(LanguageGetString(STR_NO_DETAILS_YET));
+    gameState.ScenarioName.clear();
+    gameState.ScenarioDetails = String::ToStd(LanguageGetString(STR_NO_DETAILS_YET));
 }
 
 void Park::Update(const Date& date)

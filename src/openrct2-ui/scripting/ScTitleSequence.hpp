@@ -269,7 +269,7 @@ namespace OpenRCT2::Scripting
                         }
 
                         if (isScenario)
-                            ScenarioBegin();
+                            ScenarioBegin(gameState);
                         else
                             GameLoadInit();
                         gLoadKeepWindowsOpen = old;

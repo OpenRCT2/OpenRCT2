@@ -320,7 +320,8 @@ void GameState::UpdateLogic()
 
     _date.Update();
 
-    ScenarioUpdate();
+    auto& gameState = GetGameState();
+    ScenarioUpdate(gameState);
     ClimateUpdate();
     MapUpdateTiles();
     // Temporarily remove provisional paths to prevent peep from interacting with them
@@ -362,7 +363,7 @@ void GameState::UpdateLogic()
     NetworkProcessPending();
     NetworkFlush();
 
-    GetGameState().CurrentTicks++;
+    gameState.CurrentTicks++;
     gSavedAge++;
 
 #ifdef ENABLE_SCRIPTING
