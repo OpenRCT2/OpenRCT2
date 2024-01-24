@@ -11,6 +11,7 @@
 
 #include "Date.h"
 #include "management/Finance.h"
+#include "world/Banner.h"
 #include "scenario/Scenario.h"
 #include "world/Climate.h"
 #include "world/Location.hpp"
@@ -52,6 +53,7 @@ namespace OpenRCT2
         std::string ScenarioName;
         std::string ScenarioDetails;
         std::string ScenarioCompletedBy;
+        std::vector<Banner> Banners;
     };
 
     GameState_t& GetGameState();
