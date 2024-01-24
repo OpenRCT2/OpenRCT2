@@ -57,7 +57,7 @@ GameActions::Result ParkSetEntranceFeeAction::Query() const
 
 GameActions::Result ParkSetEntranceFeeAction::Execute() const
 {
-    gParkEntranceFee = _fee;
+    GetGameState().ParkEntranceFee = _fee;
     WindowInvalidateByClass(WindowClass::ParkInformation);
     return GameActions::Result();
 }

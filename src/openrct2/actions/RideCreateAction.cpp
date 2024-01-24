@@ -210,7 +210,8 @@ GameActions::Result RideCreateAction::Execute() const
         price = 0;
     }
 
-    if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+    const auto& gameState = GetGameState();
+    if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
     {
         for (auto i = 0; i < RCT2::ObjectLimits::MaxShopItemsPerRideEntry; i++)
         {
@@ -219,7 +220,7 @@ GameActions::Result RideCreateAction::Execute() const
 
         if (rideEntry->shop_item[0] == ShopItem::None)
         {
-            if (!ParkRidePricesUnlocked() || gParkEntranceFee > 0)
+            if (!ParkRidePricesUnlocked() || gameState.ParkEntranceFee > 0)
             {
                 ride->price[0] = 0;
             }

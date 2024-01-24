@@ -1055,10 +1055,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_ENTRY_PRICE_INCREASE:
-                if (gParkEntranceFee < MAX_ENTRANCE_FEE)
+                if (gameState.ParkEntranceFee < MAX_ENTRANCE_FEE)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::ParkChargeEntryFee, gParkEntranceFee + 1.00_GBP);
+                        ScenarioSetSetting::ParkChargeEntryFee, gameState.ParkEntranceFee + 1.00_GBP);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -1068,10 +1068,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_ENTRY_PRICE_DECREASE:
-                if (gParkEntranceFee > 0.00_GBP)
+                if (gameState.ParkEntranceFee > 0.00_GBP)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::ParkChargeEntryFee, gParkEntranceFee - 1.00_GBP);
+                        ScenarioSetSetting::ParkChargeEntryFee, gameState.ParkEntranceFee - 1.00_GBP);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -1202,6 +1202,7 @@ private:
         WindowDrawWidgets(*this, dpi);
         DrawTabImages(dpi);
 
+        const auto& gameState = GetGameState();
         const auto& landCostWidget = widgets[WIDX_LAND_COST];
         if (landCostWidget.type != WindowWidgetType::Empty)
         {
@@ -1237,7 +1238,6 @@ private:
             // Pay for park or rides label
             screenCoords = windowPos + ScreenCoordsXY{ payForParkOrRidesWidget.left + 1, payForParkOrRidesWidget.top };
 
-            auto& gameState = GetGameState();
             auto ft = Formatter();
             // Pay for park and/or rides value
             if (gameState.ParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
@@ -1260,7 +1260,7 @@ private:
             // Entry price value
             screenCoords = windowPos + ScreenCoordsXY{ entryPriceWidget.left + 1, entryPriceWidget.top };
             auto ft = Formatter();
-            ft.Add<money64>(gParkEntranceFee);
+            ft.Add<money64>(gameState.ParkEntranceFee);
             DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
         }
 
@@ -1272,7 +1272,7 @@ private:
         // Climate value
         screenCoords = windowPos + ScreenCoordsXY{ climateWidget.left + 1, climateWidget.top };
         auto ft = Formatter();
-        ft.Add<StringId>(ClimateNames[static_cast<uint8_t>(GetGameState().Climate)]);
+        ft.Add<StringId>(ClimateNames[static_cast<uint8_t>(gameState.Climate)]);
         DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
     }
 

@@ -811,11 +811,11 @@ namespace OpenRCT2
                     {
                         money16 tempParkEntranceFee{};
                         cs.ReadWrite(tempParkEntranceFee);
-                        gParkEntranceFee = ToMoney64(tempParkEntranceFee);
+                        gameState.ParkEntranceFee = ToMoney64(tempParkEntranceFee);
                     }
                     else
                     {
-                        cs.ReadWrite(gParkEntranceFee);
+                        cs.ReadWrite(gameState.ParkEntranceFee);
                     }
 
                     cs.ReadWrite(gStaffHandymanColour);

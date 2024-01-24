@@ -157,19 +157,19 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
                 {
                     gameState.ParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
                     gameState.ParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
-                    gParkEntranceFee = 0.00_GBP;
+                    gameState.ParkEntranceFee = 0.00_GBP;
                 }
                 else if (_value == 1)
                 {
                     gameState.ParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
                     gameState.ParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
-                    gParkEntranceFee = 10.00_GBP;
+                    gameState.ParkEntranceFee = 10.00_GBP;
                 }
                 else
                 {
                     gameState.ParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
                     gameState.ParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
-                    gParkEntranceFee = 10.00_GBP;
+                    gameState.ParkEntranceFee = 10.00_GBP;
                 }
             }
             else
@@ -194,7 +194,7 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             }
             break;
         case ScenarioSetSetting::ParkChargeEntryFee:
-            gParkEntranceFee = std::clamp<money64>(_value, 0.00_GBP, MAX_ENTRANCE_FEE);
+            gameState.ParkEntranceFee = std::clamp<money64>(_value, 0.00_GBP, MAX_ENTRANCE_FEE);
             WindowInvalidateByClass(WindowClass::ParkInformation);
             break;
         case ScenarioSetSetting::ForbidTreeRemoval:

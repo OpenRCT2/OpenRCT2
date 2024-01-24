@@ -183,7 +183,7 @@ void ScenarioReset()
     if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
     {
         gameState.ParkFlags |= PARK_FLAGS_PARK_OPEN;
-        gParkEntranceFee = 0;
+        gameState.ParkEntranceFee = 0;
     }
 
     gameState.ParkFlags |= PARK_FLAGS_SPRITES_INITIALISED;
