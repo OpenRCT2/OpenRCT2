@@ -823,18 +823,19 @@ private:
 
     void OnMouseDownPrice(WidgetIndex widgetIndex)
     {
+        const auto& gameState = GetGameState();
         switch (widgetIndex)
         {
             case WIDX_INCREASE_PRICE:
             {
-                const auto newFee = std::min(MAX_ENTRANCE_FEE, gParkEntranceFee + 1.00_GBP);
+                const auto newFee = std::min(MAX_ENTRANCE_FEE, gameState.ParkEntranceFee + 1.00_GBP);
                 auto gameAction = ParkSetEntranceFeeAction(newFee);
                 GameActions::Execute(&gameAction);
                 break;
             }
             case WIDX_DECREASE_PRICE:
             {
-                const auto newFee = std::max(0.00_GBP, gParkEntranceFee - 1.00_GBP);
+                const auto newFee = std::max(0.00_GBP, gameState.ParkEntranceFee - 1.00_GBP);
                 auto gameAction = ParkSetEntranceFeeAction(newFee);
                 GameActions::Execute(&gameAction);
                 break;

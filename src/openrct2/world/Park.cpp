@@ -46,7 +46,6 @@
 
 using namespace OpenRCT2;
 
-money64 gParkEntranceFee;
 uint32_t gParkSize;
 money64 gLandPrice;
 money64 gConstructionRightsPrice;
@@ -191,7 +190,8 @@ int32_t ParkGetForcedRating()
 
 money64 ParkGetEntranceFee()
 {
-    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+    const auto& gameState = GetGameState();
+    if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return 0;
     }
@@ -199,7 +199,7 @@ money64 ParkGetEntranceFee()
     {
         return 0;
     }
-    return gParkEntranceFee;
+    return gameState.ParkEntranceFee;
 }
 
 bool ParkRidePricesUnlocked()
@@ -277,7 +277,7 @@ void Park::Initialise()
 
     SetAllSceneryItemsInvented();
 
-    gParkEntranceFee = 10.00_GBP;
+    gameState.ParkEntranceFee = 10.00_GBP;
 
     gPeepSpawns.clear();
     ParkEntranceReset();

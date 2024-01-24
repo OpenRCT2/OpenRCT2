@@ -118,15 +118,16 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::entranceFee_get() const
     {
-        return gParkEntranceFee;
+        return GetGameState().ParkEntranceFee;
     }
     void ScPark::entranceFee_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
 
-        if (gParkEntranceFee != value)
+        auto& gameState = GetGameState();
+        if (gameState.ParkEntranceFee != value)
         {
-            gParkEntranceFee = value;
+            gameState.ParkEntranceFee = value;
             WindowInvalidateByClass(WindowClass::ParkInformation);
         }
     }

@@ -325,7 +325,7 @@ namespace Editor
         {
             gameState.ParkFlags |= PARK_FLAGS_NO_MONEY;
 
-            if (gParkEntranceFee == 0)
+            if (gameState.ParkEntranceFee == 0)
             {
                 gameState.ParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
             }

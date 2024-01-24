@@ -27,6 +27,7 @@ namespace OpenRCT2
         uint32_t CurrentTicks{};
         uint64_t ParkFlags;
         uint16_t ParkRating;
+        money64 ParkEntranceFee;
         ClimateType Climate;
         ClimateState ClimateCurrent;
         ClimateState ClimateNext;
