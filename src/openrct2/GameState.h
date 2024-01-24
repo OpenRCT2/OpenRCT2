@@ -33,6 +33,7 @@ namespace OpenRCT2
         ClimateType Climate;
         ClimateState ClimateCurrent;
         ClimateState ClimateNext;
+        uint16_t ClimateUpdateTimer;
         money64 Cash;
         money64 InitialCash;
         money64 GuestInitialCash;

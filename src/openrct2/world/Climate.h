@@ -70,7 +70,6 @@ struct ClimateState
     WeatherLevel Level;
 };
 
-extern uint16_t gClimateUpdateTimer;
 extern uint16_t gClimateLightningFlash;
 
 int32_t ClimateCelsiusToFahrenheit(int32_t celsius);

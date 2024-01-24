@@ -54,7 +54,6 @@ extern const WeatherState ClimateWeatherData[EnumValue(WeatherType::Count)];
 extern const FilterPaletteID ClimateWeatherGloomColours[4];
 
 // Climate data
-uint16_t gClimateUpdateTimer;
 uint16_t gClimateLightningFlash;
 
 // Sound data
@@ -129,14 +128,14 @@ void ClimateUpdate()
 
     if (!gCheatsFreezeWeather)
     {
-        if (gClimateUpdateTimer)
+        if (gameState.ClimateUpdateTimer)
         {
-            if (gClimateUpdateTimer == 960)
+            if (gameState.ClimateUpdateTimer == 960)
             {
                 auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
                 ContextBroadcastIntent(&intent);
             }
-            gClimateUpdateTimer--;
+            gameState.ClimateUpdateTimer--;
         }
         else if (!(gameState.CurrentTicks & 0x7F))
         {
@@ -211,7 +210,7 @@ void ClimateForceWeather(WeatherType weather)
     gameState.ClimateCurrent.Level = weatherState->Level;
     gameState.ClimateCurrent.WeatherEffect = weatherState->EffectLevel;
     gameState.ClimateCurrent.Temperature = transition->BaseTemperature + weatherState->TemperatureDelta;
-    gClimateUpdateTimer = 1920;
+    gameState.ClimateUpdateTimer = 1920;
 
     ClimateUpdate();
 
@@ -317,7 +316,7 @@ static void ClimateDetermineFutureWeather(int32_t randomDistribution)
     gameState.ClimateNext.WeatherGloom = nextWeatherState->GloomLevel;
     gameState.ClimateNext.Level = nextWeatherState->Level;
 
-    gClimateUpdateTimer = 1920;
+    gameState.ClimateUpdateTimer = 1920;
 }
 
 static void ClimateUpdateWeatherSound()
