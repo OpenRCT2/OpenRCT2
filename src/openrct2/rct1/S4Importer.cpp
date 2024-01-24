@@ -2211,7 +2211,7 @@ namespace RCT1
                 gameState.ParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
             }
 
-            gParkSize = _s4.ParkSize;
+            gameState.ParkSize = _s4.ParkSize;
             gTotalRideValueForMoney = _s4.TotalRideValueForMoney;
             gSamePriceThroughoutPark = 0;
             if (_gameVersion == FILE_VERSION_RCT1_LL)

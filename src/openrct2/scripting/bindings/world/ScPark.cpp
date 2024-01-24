@@ -266,7 +266,7 @@ namespace OpenRCT2::Scripting
 
     uint16_t ScPark::parkSize_get() const
     {
-        return gParkSize;
+        return GetGameState().ParkSize;
     }
 
     std::string ScPark::name_get() const
