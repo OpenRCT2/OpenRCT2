@@ -64,6 +64,7 @@
 #include <openrct2/world/Park.h>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
 using namespace OpenRCT2;
@@ -608,7 +609,7 @@ struct RideTypeLabel
 {
     ride_type_t RideTypeId;
     StringId LabelId;
-    const char* label_string;
+    u8string_view LabelString;
 };
 
 // Used for sorting the vehicle type dropdown.
@@ -616,7 +617,15 @@ struct VehicleTypeLabel
 {
     ObjectEntryIndex SubTypeId;
     StringId LabelId;
-    const char* label_string;
+    u8string_view LabelString;
+};
+
+// Used for sorting the entrance type dropdown.
+struct EntranceTypeLabel
+{
+    ObjectEntryIndex EntranceTypeId;
+    StringId LabelId;
+    u8string_view LabelString;
 };
 
 class RideWindow final : public Window
@@ -625,11 +634,13 @@ class RideWindow final : public Window
     std::vector<RideTypeLabel> _rideDropdownData;
     int32_t _rideDropdownDataLanguage = LANGUAGE_UNDEFINED;
     int32_t _vehicleDropdownDataLanguage = LANGUAGE_UNDEFINED;
+    int32_t _entranceDropdownDataLanguage = LANGUAGE_UNDEFINED;
     const RideObjectEntry* _vehicleDropdownRideType = nullptr;
     bool _vehicleDropdownExpanded = false;
     std::vector<VehicleTypeLabel> _vehicleDropdownData;
     int16_t _vehicleIndex = 0;
     uint16_t _rideColour = 0;
+    std::vector<EntranceTypeLabel> _entranceDropdownData;
     bool _autoScrollGraph = true;
 
 public:
@@ -1796,11 +1807,11 @@ private:
         for (uint8_t i = 0; i < RIDE_TYPE_COUNT; i++)
         {
             auto name = GetRideTypeNameForDropdown(i);
-            _rideDropdownData.push_back({ i, name, ls.GetString(name) });
+            _rideDropdownData.push_back({ i, name, u8string_view{ ls.GetString(name) } });
         }
 
         std::sort(_rideDropdownData.begin(), _rideDropdownData.end(), [](auto& a, auto& b) {
-            return String::Compare(a.label_string, b.label_string, true) < 0;
+            return a.LabelString.compare(b.LabelString) < 0;
         });
 
         _rideDropdownDataLanguage = ls.GetCurrentLanguage();
@@ -1937,13 +1948,13 @@ private:
                 if (!RideEntryIsInvented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
                     continue;
 
-                _vehicleDropdownData.push_back(
-                    { rideEntryIndex, currentRideEntry->naming.Name, ls.GetString(currentRideEntry->naming.Name) });
+                auto name = currentRideEntry->naming.Name;
+                _vehicleDropdownData.push_back({ rideEntryIndex, name, u8string_view{ ls.GetString(name) } });
             }
         }
 
         std::sort(_vehicleDropdownData.begin(), _vehicleDropdownData.end(), [](auto& a, auto& b) {
-            return String::Compare(a.label_string, b.label_string, true) < 0;
+            return a.LabelString.compare(b.LabelString) < 0;
         });
 
         _vehicleDropdownExpanded = selectionShouldBeExpanded;
@@ -1987,6 +1998,54 @@ private:
         gDropdownHighlightedIndex = pos;
         gDropdownDefaultIndex = pos;
         Dropdown::SetChecked(pos, true);
+    }
+
+    void PopulateEntranceStyleDropdown()
+    {
+        auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
+        if (_entranceDropdownDataLanguage == ls.GetCurrentLanguage())
+            return;
+
+        _entranceDropdownData.clear();
+
+        auto& objManager = GetContext()->GetObjectManager();
+
+        for (ObjectEntryIndex i = 0; i < MAX_STATION_OBJECTS; i++)
+        {
+            auto stationObj = static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, i));
+            if (stationObj != nullptr)
+            {
+                auto name = stationObj->NameStringId;
+                _entranceDropdownData.push_back({ i, name, u8string_view{ ls.GetString(name) } });
+            }
+        }
+
+        std::sort(_entranceDropdownData.begin(), _entranceDropdownData.end(), [](auto& a, auto& b) {
+            return a.LabelString.compare(b.LabelString) < 0;
+        });
+
+        _entranceDropdownDataLanguage = ls.GetCurrentLanguage();
+    }
+
+    void ShowEntranceStyleDropdown()
+    {
+        auto dropdownWidget = &widgets[WIDX_ENTRANCE_STYLE_DROPDOWN] - 1;
+        auto ride = GetRide(rideId);
+
+        PopulateEntranceStyleDropdown();
+
+        for (size_t i = 0; i < _entranceDropdownData.size(); i++)
+        {
+            gDropdownItems[i].Args = _entranceDropdownData[i].LabelId;
+            gDropdownItems[i].Format = _entranceDropdownData[i].EntranceTypeId == ride->entrance_style
+                ? STR_DROPDOWN_MENU_LABEL_SELECTED
+                : STR_DROPDOWN_MENU_LABEL;
+        }
+
+        WindowDropdownShowTextCustomWidth(
+            { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1, colours[1],
+            0, Dropdown::Flag::StayOpen, _entranceDropdownData.size(),
+            widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].right - dropdownWidget->left);
     }
 
     void MainOnMouseDown(WidgetIndex widgetIndex)
@@ -4152,29 +4211,8 @@ private:
                 Dropdown::SetChecked(ride->track_colour[colourSchemeIndex].supports, true);
                 break;
             case WIDX_ENTRANCE_STYLE_DROPDOWN:
-            {
-                auto ddIndex = 0;
-                auto& objManager = GetContext()->GetObjectManager();
-                for (i = 0; i < MAX_STATION_OBJECTS; i++)
-                {
-                    auto stationObj = static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, i));
-                    if (stationObj != nullptr)
-                    {
-                        gDropdownItems[ddIndex].Format = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItems[ddIndex].Args = stationObj->NameStringId;
-                        if (ride->entrance_style == i)
-                        {
-                            gDropdownItems[ddIndex].Format = STR_DROPDOWN_MENU_LABEL_SELECTED;
-                        }
-                        ddIndex++;
-                    }
-                }
-
-                WindowDropdownShowTextCustomWidth(
-                    { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                    colours[1], 0, Dropdown::Flag::StayOpen, ddIndex, widgets[widgetIndex].right - dropdownWidget->left);
+                ShowEntranceStyleDropdown();
                 break;
-            }
             case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
                 for (i = 0; i < 3; i++)
                 {
@@ -4271,28 +4309,19 @@ private:
             break;
             case WIDX_ENTRANCE_STYLE_DROPDOWN:
             {
-                auto ddIndex = 0;
-                auto& objManager = GetContext()->GetObjectManager();
-                for (auto i = 0; i < MAX_STATION_OBJECTS; i++)
+                if (static_cast<size_t>(dropdownIndex) >= _entranceDropdownData.size())
                 {
-                    auto stationObj = static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, i));
-                    if (stationObj != nullptr)
-                    {
-                        if (ddIndex == dropdownIndex)
-                        {
-                            auto rideSetAppearanceAction = RideSetAppearanceAction(
-                                rideId, RideSetAppearanceType::EntranceStyle, ddIndex, 0);
-                            rideSetAppearanceAction.SetCallback([ddIndex](const GameAction*, const GameActions::Result* res) {
-                                if (res->Error != GameActions::Status::Ok)
-                                    return;
-                                gLastEntranceStyle = ddIndex;
-                            });
-                            GameActions::Execute(&rideSetAppearanceAction);
-                            break;
-                        }
-                        ddIndex++;
-                    }
+                    break;
                 }
+                auto objIndex = _entranceDropdownData[dropdownIndex].EntranceTypeId;
+                auto rideSetAppearanceAction = RideSetAppearanceAction(
+                    rideId, RideSetAppearanceType::EntranceStyle, objIndex, 0);
+                rideSetAppearanceAction.SetCallback([objIndex](const GameAction*, const GameActions::Result* res) {
+                    if (res->Error != GameActions::Status::Ok)
+                        return;
+                    gLastEntranceStyle = objIndex;
+                });
+                GameActions::Execute(&rideSetAppearanceAction);
                 break;
             }
             case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
