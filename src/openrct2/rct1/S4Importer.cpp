@@ -2279,7 +2279,7 @@ namespace RCT1
         void ImportClimate(GameState_t& gameState)
         {
             gameState.Climate = ClimateType{ _s4.Climate };
-            gClimateUpdateTimer = _s4.ClimateTimer;
+            gameState.ClimateUpdateTimer = _s4.ClimateTimer;
             gameState.ClimateCurrent.Temperature = _s4.Temperature;
             gameState.ClimateCurrent.Weather = WeatherType{ _s4.Weather };
             gameState.ClimateCurrent.WeatherEffect = WeatherEffectType::None;
