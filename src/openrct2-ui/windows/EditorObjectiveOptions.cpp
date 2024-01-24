@@ -433,7 +433,7 @@ private:
 
     void ShowObjectiveDropdown()
     {
-        auto& gameState = GetGameState();
+        const auto& gameState = GetGameState();
         int32_t numItems = 0, objectiveType;
         Widget* dropdownWidget;
 
@@ -655,7 +655,7 @@ private:
      */
     void OnMouseUpMain(WidgetIndex widgetIndex)
     {
-        auto& gameState = GetGameState();
+        const auto& gameState = GetGameState();
         switch (widgetIndex)
         {
             case WIDX_PARK_NAME:
@@ -871,7 +871,7 @@ private:
      */
     void OnDrawMain(DrawPixelInfo& dpi)
     {
-        auto& gameState = GetGameState();
+        const auto& gameState = GetGameState();
         int32_t widthToSet;
         StringId stringId;
 

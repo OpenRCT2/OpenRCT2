@@ -77,7 +77,7 @@ namespace OpenRCT2::Scripting
 
         uint8_t year_get()
         {
-            auto& gameState = GetGameState();
+            const auto& gameState = GetGameState();
             if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_BY
                 || gameState.ScenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY)
             {
@@ -99,7 +99,7 @@ namespace OpenRCT2::Scripting
 
         uint16_t length_get()
         {
-            auto& gameState = GetGameState();
+            const auto& gameState = GetGameState();
             if (gameState.ScenarioObjective.Type == OBJECTIVE_10_ROLLERCOASTERS_LENGTH)
             {
                 return gameState.ScenarioObjective.NumGuests;
@@ -119,7 +119,7 @@ namespace OpenRCT2::Scripting
 
         money64 excitement_get()
         {
-            auto& gameState = GetGameState();
+            const auto& gameState = GetGameState();
             if (gameState.ScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
             {
                 return gameState.ScenarioObjective.Currency;
@@ -139,7 +139,7 @@ namespace OpenRCT2::Scripting
 
         money64 parkValue_get()
         {
-            auto& gameState = GetGameState();
+            const auto& gameState = GetGameState();
             if (gameState.ScenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY
                 || gameState.ScenarioObjective.Type == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
             {
@@ -161,7 +161,7 @@ namespace OpenRCT2::Scripting
 
         money64 monthlyIncome_get()
         {
-            auto& gameState = GetGameState();
+            const auto& gameState = GetGameState();
             if (gameState.ScenarioObjective.Type == OBJECTIVE_MONTHLY_RIDE_INCOME
                 || gameState.ScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
             {
@@ -261,7 +261,7 @@ namespace OpenRCT2::Scripting
 
         DukValue completedCompanyValue_get() const
         {
-            auto& gameState = GetGameState();
+            const auto& gameState = GetGameState();
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             if (gameState.ScenarioCompletedCompanyValue == MONEY64_UNDEFINED
                 || gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
@@ -278,7 +278,7 @@ namespace OpenRCT2::Scripting
 
         std::string status_get() const
         {
-            auto& gameState = GetGameState();
+            const auto& gameState = GetGameState();
             if (gameState.ScenarioCompletedCompanyValue == MONEY64_UNDEFINED)
                 return "inProgress";
             if (gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)

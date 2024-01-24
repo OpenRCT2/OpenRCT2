@@ -503,7 +503,7 @@ private:
 
     void OnPrepareDrawEntrance()
     {
-        auto& gameState = GetGameState();
+        const auto& gameState = GetGameState();
         widgets = _pagedWidgets[page];
         InitScrollWidgets();
 

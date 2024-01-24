@@ -417,7 +417,7 @@ namespace OpenRCT2
 
         void ReadWriteScenarioChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [&os, &gameState](OrcaStream::ChunkStream& cs) {
+            os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [&gameState, &os](OrcaStream::ChunkStream& cs) {
                 cs.ReadWrite(gameState.ScenarioCategory);
                 ReadWriteStringTable(cs, gameState.ScenarioName, "en-GB");
 
