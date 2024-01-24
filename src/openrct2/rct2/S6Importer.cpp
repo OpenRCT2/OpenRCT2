@@ -335,7 +335,7 @@ namespace RCT2
             gResearchExpectedDay = _s6.NextResearchExpectedDay;
             gResearchExpectedMonth = _s6.NextResearchExpectedMonth;
             gameState.GuestInitialHappiness = _s6.GuestInitialHappiness;
-            gParkSize = _s6.ParkSize;
+            gameState.ParkSize = _s6.ParkSize;
             _guestGenerationProbability = _s6.GuestGenerationProbability;
             gTotalRideValueForMoney = _s6.TotalRideValueForMoney;
             gMaxBankLoan = ToMoney64(_s6.MaximumLoan);

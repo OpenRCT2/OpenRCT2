@@ -46,7 +46,6 @@
 
 using namespace OpenRCT2;
 
-uint32_t gParkSize;
 money64 gLandPrice;
 money64 gConstructionRightsPrice;
 
@@ -336,7 +335,7 @@ void Park::Update(const Date& date)
     // Every ~102 seconds
     if (currentTicks % 4096 == 0)
     {
-        gParkSize = CalculateParkSize();
+        gameState.ParkSize = CalculateParkSize();
         WindowInvalidateByClass(WindowClass::ParkInformation);
     }
 
@@ -359,9 +358,10 @@ uint32_t Park::CalculateParkSize() const
         }
     } while (TileElementIteratorNext(&it));
 
-    if (tiles != gParkSize)
+    auto& gameState = GetGameState();
+    if (tiles != gameState.ParkSize)
     {
-        gParkSize = tiles;
+        gameState.ParkSize = tiles;
         WindowInvalidateByClass(WindowClass::ParkInformation);
     }
 
@@ -794,10 +794,11 @@ int32_t ParkIsOpen()
 
 uint32_t ParkCalculateSize()
 {
+    auto& gameState = GetGameState();
     auto tiles = GetContext()->GetGameState()->GetPark().CalculateParkSize();
-    if (tiles != gParkSize)
+    if (tiles != gameState.ParkSize)
     {
-        gParkSize = tiles;
+        gameState.ParkSize = tiles;
         WindowInvalidateByClass(WindowClass::ParkInformation);
     }
     return tiles;

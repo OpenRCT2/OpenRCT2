@@ -962,7 +962,7 @@ private:
             + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
         // Draw park size
-        auto parkSize = gParkSize * 10;
+        auto parkSize = GetGameState().ParkSize * 10;
         auto stringIndex = STR_PARK_SIZE_METRIC_LABEL;
         if (gConfigGeneral.MeasurementFormat == MeasurementFormat::Imperial)
         {
