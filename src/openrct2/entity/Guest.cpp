@@ -1514,7 +1514,6 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
     }
 
     auto& gameState = GetGameState();
-
     if ((shopItem == ShopItem::Sunglasses || shopItem == ShopItem::IceCream) && gameState.ClimateCurrent.Temperature < 12)
     {
         return false;
@@ -1695,7 +1694,6 @@ bool Guest::DecideAndBuyItem(Ride& ride, const ShopItem shopItem, money64 price)
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 
-    auto& gameState = GetGameState();
     if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
         FinancePayment(shopItemDescriptor.Cost, expenditure);
 
