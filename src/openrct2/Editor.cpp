@@ -144,7 +144,8 @@ namespace Editor
             return;
         }
 
-        ScenarioReset();
+        auto& gameState = GetGameState();
+        ScenarioReset(gameState);
 
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gEditorStep = EditorStep::ObjectiveSelection;

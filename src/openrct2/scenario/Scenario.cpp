@@ -91,10 +91,10 @@ static void ScenarioCheckObjective();
 
 using namespace OpenRCT2;
 
-void ScenarioBegin()
+void ScenarioBegin(GameState_t& gameState)
 {
     GameLoadInit();
-    ScenarioReset();
+    ScenarioReset(gameState);
 
     if (gScenarioObjective.Type != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
         ContextOpenWindowView(WV_PARK_OBJECTIVE);
@@ -102,7 +102,7 @@ void ScenarioBegin()
     gScreenAge = 0;
 }
 
-void ScenarioReset()
+void ScenarioReset(GameState_t& gameState)
 {
     // Set the scenario pseudo-random seeds
     Random::RCT2::Seed s{ 0x1234567F ^ Platform::GetTicks(), 0x789FABCD ^ Platform::GetTicks() };
@@ -112,7 +112,6 @@ void ScenarioReset()
     ScenerySetDefaultPlacementConfiguration();
     News::InitQueue();
 
-    auto& gameState = GetGameState();
     auto& park = GetContext()->GetGameState()->GetPark();
     gameState.ParkRating = park.CalculateParkRating();
     gParkValue = park.CalculateParkValue();
@@ -604,6 +603,8 @@ static ResultWithMessage ScenarioPrepareRidesForSave()
  */
 ResultWithMessage ScenarioPrepareForSave()
 {
+    auto& gameState = GetGameState();
+
     // This can return false if the goal is 'Finish 5 roller coaster' and there are too few.
     const auto prepareRidesResult = ScenarioPrepareRidesForSave();
     if (!prepareRidesResult.Successful)
@@ -612,9 +613,9 @@ ResultWithMessage ScenarioPrepareForSave()
     }
 
     if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
-        GetGameState().ParkFlags |= PARK_FLAGS_PARK_OPEN;
+        gameState.ParkFlags |= PARK_FLAGS_PARK_OPEN;
 
-    ScenarioReset();
+    ScenarioReset(gameState);
 
     return { true };
 }

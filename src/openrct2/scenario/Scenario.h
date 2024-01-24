@@ -177,8 +177,8 @@ extern uint32_t gLastAutoSaveUpdate;
 
 extern std::string gScenarioFileName;
 
-void ScenarioBegin();
-void ScenarioReset();
+void ScenarioBegin(OpenRCT2::GameState_t& gameState);
+void ScenarioReset(OpenRCT2::GameState_t& gameState);
 void ScenarioUpdate();
 bool ScenarioCreateDucks();
 bool AllowEarlyCompletion();
