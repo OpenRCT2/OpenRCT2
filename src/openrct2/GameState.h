@@ -10,6 +10,7 @@
 #pragma once
 
 #include "Date.h"
+#include "management/Finance.h"
 #include "world/Climate.h"
 #include "world/Location.hpp"
 
@@ -38,6 +39,9 @@ namespace OpenRCT2
         uint8_t GuestInitialHappiness;
         uint8_t GuestInitialHunger;
         uint8_t GuestInitialThirst;
+        money64 WeeklyProfitAverageDividend;
+        uint16_t WeeklyProfitAverageDivisor;
+        money64 WeeklyProfitHistory[FINANCE_GRAPH_SIZE];
     };
 
     GameState_t& GetGameState();

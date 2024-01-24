@@ -149,8 +149,8 @@ void ScenarioReset()
 
     gCurrentExpenditure = 0;
     gCurrentProfit = 0;
-    gWeeklyProfitAverageDividend = 0;
-    gWeeklyProfitAverageDivisor = 0;
+    gameState.WeeklyProfitAverageDividend = 0;
+    gameState.WeeklyProfitAverageDivisor = 0;
     gTotalAdmissions = 0;
     gTotalIncomeFromAdmissions = 0;
 

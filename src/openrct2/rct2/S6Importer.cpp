@@ -356,8 +356,8 @@ namespace RCT2
 
             gCurrentExpenditure = ToMoney64(_s6.CurrentExpenditure);
             gCurrentProfit = ToMoney64(_s6.CurrentProfit);
-            gWeeklyProfitAverageDividend = ToMoney64(_s6.WeeklyProfitAverageDividend);
-            gWeeklyProfitAverageDivisor = _s6.WeeklyProfitAverageDivisor;
+            gameState.WeeklyProfitAverageDividend = ToMoney64(_s6.WeeklyProfitAverageDividend);
+            gameState.WeeklyProfitAverageDivisor = _s6.WeeklyProfitAverageDivisor;
             // Pad0135833A
 
             gParkValue = ToMoney64(_s6.ParkValue);
@@ -365,7 +365,7 @@ namespace RCT2
             for (size_t i = 0; i < Limits::FinanceGraphSize; i++)
             {
                 gCashHistory[i] = ToMoney64(_s6.BalanceHistory[i]);
-                gWeeklyProfitHistory[i] = ToMoney64(_s6.WeeklyProfitHistory[i]);
+                gameState.WeeklyProfitHistory[i] = ToMoney64(_s6.WeeklyProfitHistory[i]);
                 gParkValueHistory[i] = ToMoney64(_s6.ParkValueHistory[i]);
             }
 

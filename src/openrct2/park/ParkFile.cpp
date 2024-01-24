@@ -893,8 +893,8 @@ namespace OpenRCT2
                     cs.ReadWrite(gParkRatingCasualtyPenalty);
                     cs.ReadWrite(gCurrentExpenditure);
                     cs.ReadWrite(gCurrentProfit);
-                    cs.ReadWrite(gWeeklyProfitAverageDividend);
-                    cs.ReadWrite(gWeeklyProfitAverageDivisor);
+                    cs.ReadWrite(gameState.WeeklyProfitAverageDividend);
+                    cs.ReadWrite(gameState.WeeklyProfitAverageDivisor);
                     cs.ReadWrite(gTotalAdmissions);
                     cs.ReadWrite(gTotalIncomeFromAdmissions);
                     if (version <= 16)
@@ -931,7 +931,7 @@ namespace OpenRCT2
                         cs.ReadWrite(value);
                         return true;
                     });
-                    cs.ReadWriteArray(gWeeklyProfitHistory, [&cs](money64& value) {
+                    cs.ReadWriteArray(gameState.WeeklyProfitHistory, [&cs](money64& value) {
                         cs.ReadWrite(value);
                         return true;
                     });
