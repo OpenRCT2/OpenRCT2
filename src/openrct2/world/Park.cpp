@@ -52,7 +52,6 @@ money64 gConstructionRightsPrice;
 uint64_t gTotalAdmissions;
 money64 gTotalIncomeFromAdmissions;
 
-money64 gParkValue;
 money64 gCompanyValue;
 
 int16_t gParkRatingCasualtyPenalty;
@@ -241,7 +240,7 @@ uint16_t Park::GetParkRating() const
 
 money64 Park::GetParkValue() const
 {
-    return gParkValue;
+    return GetGameState().ParkValue;
 }
 
 money64 Park::GetCompanyValue() const
@@ -321,7 +320,7 @@ void Park::Update(const Date& date)
     if (currentTicks % 512 == 0)
     {
         gameState.ParkRating = CalculateParkRating();
-        gParkValue = CalculateParkValue();
+        gameState.ParkValue = CalculateParkValue();
         gCompanyValue = CalculateCompanyValue();
         gTotalRideValueForMoney = CalculateTotalRideValueForMoney();
         _suggestedGuestMaximum = CalculateSuggestedMaxGuests();
@@ -512,7 +511,7 @@ money64 Park::CalculateRideValue(const Ride& ride) const
 
 money64 Park::CalculateCompanyValue() const
 {
-    auto result = gParkValue - gBankLoan;
+    auto result = GetGameState().ParkValue - gBankLoan;
 
     // Clamp addition to prevent overflow
     result = AddClamp_money64(result, FinanceGetCurrentCash());
@@ -778,7 +777,7 @@ void Park::UpdateHistories()
     gameState.WeeklyProfitAverageDivisor = 0;
 
     // Update park value history
-    HistoryPushRecord<money64, std::size(gParkValueHistory)>(gParkValueHistory, gParkValue);
+    HistoryPushRecord<money64, std::size(gParkValueHistory)>(gParkValueHistory, gameState.ParkValue);
 
     // Invalidate relevant windows
     auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);

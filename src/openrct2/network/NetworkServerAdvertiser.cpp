@@ -301,14 +301,14 @@ private:
             { "players", numPlayers },
         };
 
-        auto& date = GetDate();
+        const auto& gameState = GetGameState();
+        const auto& date = GetDate();
         json_t mapSize = { { "x", gMapSize.x - 2 }, { "y", gMapSize.y - 2 } };
         json_t gameInfo = {
-            { "mapSize", mapSize },         { "day", date.GetMonthTicks() }, { "month", date.GetMonthsElapsed() },
-            { "guests", gNumGuestsInPark }, { "parkValue", gParkValue },
+            { "mapSize", mapSize },         { "day", date.GetMonthTicks() },      { "month", date.GetMonthsElapsed() },
+            { "guests", gNumGuestsInPark }, { "parkValue", gameState.ParkValue },
         };
 
-        auto& gameState = GetGameState();
         if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             gameInfo["cash"] = gameState.Cash;

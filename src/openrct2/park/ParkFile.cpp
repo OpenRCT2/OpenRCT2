@@ -884,7 +884,7 @@ namespace OpenRCT2
                             cs.ReadWrite(award.Type);
                         });
                     }
-                    cs.ReadWrite(gParkValue);
+                    cs.ReadWrite(gameState.ParkValue);
                     cs.ReadWrite(gCompanyValue);
                     cs.ReadWrite(gameState.ParkSize);
                     cs.ReadWrite(gNumGuestsInPark);

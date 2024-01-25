@@ -236,7 +236,7 @@ void FinanceInit()
     gHistoricalProfit = 0;
 
     gBankLoanInterestRate = 10;
-    gParkValue = 0;
+    gameState.ParkValue = 0;
     gCompanyValue = 0;
     gameState.ScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
     gTotalAdmissions = 0;

@@ -469,18 +469,19 @@ public:
 
     OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback) override
     {
+        const auto& gameState = GetGameState();
         auto ft = Formatter();
 
-            switch (widgetIndex)
-            {
-                case WIDX_MONEY:
-                    ft.Add<money64>(gCurrentProfit);
-                    ft.Add<money64>(gParkValue);
-                    break;
-                case WIDX_PARK_RATING:
-                    ft.Add<int16_t>(GetGameState().ParkRating);
-                    break;
-            }
+        switch (widgetIndex)
+        {
+            case WIDX_MONEY:
+                ft.Add<money64>(gCurrentProfit);
+                ft.Add<money64>(gameState.ParkValue);
+                break;
+            case WIDX_PARK_RATING:
+                ft.Add<int16_t>(gameState.ParkRating);
+                break;
+        }
         return { fallback, ft };
     }
 
