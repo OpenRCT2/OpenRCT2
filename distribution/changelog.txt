@@ -3,6 +3,7 @@
 - Feature: [#21062] [Plugin] Add API for managing a guest's items.
 - Improved: [#18632] Land ownership and construction rights are now shown on top of the water.
 - Improved: [#20951] Activate OpenRCT2 window after using native file dialog on macOS.
+- Improved: [#21184] The construction marker for rides, paths and large scenery is not shown on top of the water.
 - Improved: [#21227] Entrance style dropdown is now sorted alphabetically everywhere.
 - Change: [#21200] Raise maximum lift speeds of the Reverser Coaster, Side Friction Coaster, and Virginia Reel for RCT1 parity.
 - Change: [#21225] Raise maximum allowed misc entities to 1600.
