@@ -41,6 +41,7 @@ namespace OpenRCT2
         uint8_t GuestInitialHappiness;
         uint8_t GuestInitialHunger;
         uint8_t GuestInitialThirst;
+        uint32_t NextGuestNumber;
         money64 WeeklyProfitAverageDividend;
         uint16_t WeeklyProfitAverageDivisor;
         money64 WeeklyProfitHistory[FINANCE_GRAPH_SIZE];

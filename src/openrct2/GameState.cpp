@@ -88,7 +88,7 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
 
     gInMapInitCode = false;
 
-    gNextGuestNumber = 1;
+    GetGameState().NextGuestNumber = 1;
 
     ContextInit();
     ScenerySetDefaultPlacementConfiguration();

@@ -465,8 +465,6 @@ extern uint32_t gNumGuestsInPark;
 extern uint32_t gNumGuestsInParkLastWeek;
 extern uint32_t gNumGuestsHeadingForPark;
 
-extern uint32_t gNextGuestNumber;
-
 void PeepThoughtSetFormatArgs(const PeepThought* thought, Formatter& ft);
 
 void IncrementGuestsInPark();

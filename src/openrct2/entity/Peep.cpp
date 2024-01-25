@@ -71,8 +71,6 @@ uint32_t gNumGuestsInPark;
 uint32_t gNumGuestsInParkLastWeek;
 uint32_t gNumGuestsHeadingForPark;
 
-uint32_t gNextGuestNumber;
-
 uint8_t gPeepWarningThrottle[16];
 
 std::unique_ptr<GuestPathfinding> gGuestPathfinder = std::make_unique<OriginalPathfinding>();

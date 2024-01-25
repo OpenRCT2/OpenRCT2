@@ -7179,7 +7179,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->TimeToConsume = 0;
 
     peep->GuestNumRides = 0;
-    peep->PeepId = gNextGuestNumber++;
+    peep->PeepId = gameState.NextGuestNumber++;
     peep->Name = nullptr;
 
     money64 cash = (static_cast<money64>(ScenarioRand() & 0x3) * 100) - 100 + gameState.GuestInitialCash;
