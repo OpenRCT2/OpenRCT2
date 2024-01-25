@@ -6337,13 +6337,13 @@
     },
     {
         "path": "track/bm/booster_1.png",
-        "x_offset": -22,
-        "y_offset": -4
+        "x_offset": -25,
+        "y_offset": -5
     },
     {
         "path": "track/bm/booster_2.png",
-        "x_offset": -22,
-        "y_offset": -4
+        "x_offset": -25,
+        "y_offset": -5
     },
     {
         "path": "track/railway/quarter_turn_3_tiles_sw_se_part_3.png",
