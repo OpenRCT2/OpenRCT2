@@ -46,7 +46,6 @@ money64 gCurrentExpenditure;
 money64 gCurrentProfit;
 money64 gHistoricalProfit;
 money64 gCashHistory[FINANCE_GRAPH_SIZE];
-money64 gParkValueHistory[FINANCE_GRAPH_SIZE];
 money64 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
 
 /**
@@ -195,7 +194,7 @@ void FinanceResetHistory()
     {
         gCashHistory[i] = MONEY64_UNDEFINED;
         gameState.WeeklyProfitHistory[i] = MONEY64_UNDEFINED;
-        gParkValueHistory[i] = MONEY64_UNDEFINED;
+        gameState.ParkValueHistory[i] = MONEY64_UNDEFINED;
     }
 
     for (uint32_t i = 0; i < EXPENDITURE_TABLE_MONTH_COUNT; ++i)

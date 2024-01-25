@@ -691,7 +691,7 @@ public:
         int32_t yAxisScale = 0;
         for (int32_t i = 0; i < 64; i++)
         {
-            auto balance = gParkValueHistory[i];
+            auto balance = gameState.ParkValueHistory[i];
             if (balance == MONEY64_UNDEFINED)
                 continue;
 
@@ -723,7 +723,7 @@ public:
 
         // X axis labels and values
         coords = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-        Graph::Draw(dpi, gParkValueHistory, 64, coords, yAxisScale, 0);
+        Graph::Draw(dpi, gameState.ParkValueHistory, 64, coords, yAxisScale, 0);
     }
 
 #pragma endregion

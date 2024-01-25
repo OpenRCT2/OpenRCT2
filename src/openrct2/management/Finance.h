@@ -51,7 +51,6 @@ extern money64 gCurrentProfit;
 extern money64 gHistoricalProfit;
 
 extern money64 gCashHistory[FINANCE_GRAPH_SIZE];
-extern money64 gParkValueHistory[FINANCE_GRAPH_SIZE];
 extern money64 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
 
 bool FinanceCheckMoneyRequired(uint32_t flags);

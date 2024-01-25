@@ -935,7 +935,7 @@ namespace OpenRCT2
                         cs.ReadWrite(value);
                         return true;
                     });
-                    cs.ReadWriteArray(gParkValueHistory, [&cs](money64& value) {
+                    cs.ReadWriteArray(gameState.ParkValueHistory, [&cs](money64& value) {
                         cs.ReadWrite(value);
                         return true;
                     });

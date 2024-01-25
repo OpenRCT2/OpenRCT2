@@ -366,7 +366,7 @@ namespace RCT2
             {
                 gCashHistory[i] = ToMoney64(_s6.BalanceHistory[i]);
                 gameState.WeeklyProfitHistory[i] = ToMoney64(_s6.WeeklyProfitHistory[i]);
-                gParkValueHistory[i] = ToMoney64(_s6.ParkValueHistory[i]);
+                gameState.ParkValueHistory[i] = ToMoney64(_s6.ParkValueHistory[i]);
             }
 
             gameState.ScenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s6.CompletedCompanyValue);

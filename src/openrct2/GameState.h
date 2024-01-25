@@ -32,6 +32,7 @@ namespace OpenRCT2
         money64 ParkEntranceFee;
         uint32_t ParkSize;
         money64 ParkValue;
+        money64 ParkValueHistory[FINANCE_GRAPH_SIZE];
         ClimateType Climate;
         ClimateState ClimateCurrent;
         ClimateState ClimateNext;

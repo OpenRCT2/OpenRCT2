@@ -43,6 +43,7 @@
 
 #include <algorithm>
 #include <limits>
+#include <type_traits>
 
 using namespace OpenRCT2;
 
@@ -777,7 +778,8 @@ void Park::UpdateHistories()
     gameState.WeeklyProfitAverageDivisor = 0;
 
     // Update park value history
-    HistoryPushRecord<money64, std::size(gParkValueHistory)>(gParkValueHistory, gameState.ParkValue);
+    HistoryPushRecord<money64, std::extent_v<decltype(GameState_t::ParkValueHistory)>>(
+        gameState.ParkValueHistory, gameState.ParkValue);
 
     // Invalidate relevant windows
     auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
