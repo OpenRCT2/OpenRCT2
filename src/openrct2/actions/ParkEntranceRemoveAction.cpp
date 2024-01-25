@@ -9,11 +9,11 @@
 
 #include "ParkEntranceRemoveAction.h"
 
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
 #include "../world/Entrance.h"
 #include "../world/Park.h"
-#include "../GameState.h"
 
 using namespace OpenRCT2;
 
