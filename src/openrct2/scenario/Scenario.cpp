@@ -105,7 +105,7 @@ void ScenarioReset(GameState_t& gameState)
 
     auto& park = GetContext()->GetGameState()->GetPark();
     gameState.ParkRating = park.CalculateParkRating();
-    gParkValue = park.CalculateParkValue();
+    gameState.ParkValue = park.CalculateParkValue();
     gCompanyValue = park.CalculateCompanyValue();
     gHistoricalProfit = gameState.InitialCash - gBankLoan;
     gameState.Cash = gameState.InitialCash;
@@ -635,7 +635,7 @@ ObjectiveStatus Objective::CheckParkValueBy() const
 {
     int32_t currentMonthYear = GetDate().GetMonthsElapsed();
     money64 objectiveParkValue = Currency;
-    money64 parkValue = gParkValue;
+    money64 parkValue = GetGameState().ParkValue;
 
     if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
     {
@@ -819,7 +819,8 @@ ObjectiveStatus Objective::CheckFinish5RollerCoasters() const
 
 ObjectiveStatus Objective::CheckRepayLoanAndParkValue() const
 {
-    money64 parkValue = gParkValue;
+    const auto& gameState = GetGameState();
+    money64 parkValue = gameState.ParkValue;
     money64 currentLoan = gBankLoan;
 
     if (currentLoan <= 0 && parkValue >= Currency)

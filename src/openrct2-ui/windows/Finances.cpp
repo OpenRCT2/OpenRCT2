@@ -591,7 +591,7 @@ public:
         {
             // Park value and company value
             ft = Formatter();
-            ft.Add<money64>(gParkValue);
+            ft.Add<money64>(gameState.ParkValue);
             DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, 279 }, STR_PARK_VALUE_LABEL, ft);
             ft = Formatter();
             ft.Add<money64>(gCompanyValue);
@@ -677,9 +677,11 @@ public:
         auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
         auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
 
+        const auto& gameState = GetGameState();
+
         // Park value
         auto ft = Formatter();
-        ft.Add<money64>(gParkValue);
+        ft.Add<money64>(gameState.ParkValue);
         DrawTextBasic(dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 }, STR_FINANCES_PARK_VALUE, ft);
 
         // Graph
@@ -689,7 +691,7 @@ public:
         int32_t yAxisScale = 0;
         for (int32_t i = 0; i < 64; i++)
         {
-            auto balance = gParkValueHistory[i];
+            auto balance = gameState.ParkValueHistory[i];
             if (balance == MONEY64_UNDEFINED)
                 continue;
 
@@ -721,7 +723,7 @@ public:
 
         // X axis labels and values
         coords = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-        Graph::Draw(dpi, gParkValueHistory, 64, coords, yAxisScale, 0);
+        Graph::Draw(dpi, gameState.ParkValueHistory, 64, coords, yAxisScale, 0);
     }
 
 #pragma endregion

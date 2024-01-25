@@ -360,13 +360,13 @@ namespace RCT2
             gameState.WeeklyProfitAverageDivisor = _s6.WeeklyProfitAverageDivisor;
             // Pad0135833A
 
-            gParkValue = ToMoney64(_s6.ParkValue);
+            gameState.ParkValue = ToMoney64(_s6.ParkValue);
 
             for (size_t i = 0; i < Limits::FinanceGraphSize; i++)
             {
                 gCashHistory[i] = ToMoney64(_s6.BalanceHistory[i]);
                 gameState.WeeklyProfitHistory[i] = ToMoney64(_s6.WeeklyProfitHistory[i]);
-                gParkValueHistory[i] = ToMoney64(_s6.ParkValueHistory[i]);
+                gameState.ParkValueHistory[i] = ToMoney64(_s6.ParkValueHistory[i]);
             }
 
             gameState.ScenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s6.CompletedCompanyValue);

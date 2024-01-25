@@ -98,7 +98,6 @@ extern money64 gConstructionRightsPrice;
 extern uint64_t gTotalAdmissions;
 extern money64 gTotalIncomeFromAdmissions;
 
-extern money64 gParkValue;
 extern money64 gCompanyValue;
 
 extern int16_t gParkRatingCasualtyPenalty;

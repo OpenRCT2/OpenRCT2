@@ -561,7 +561,7 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "park_value")
         {
-            console.WriteFormatLine("park_value %d", gParkValue / 10);
+            console.WriteFormatLine("park_value %d", gameState.ParkValue / 10);
         }
         else if (argv[0] == "company_value")
         {
