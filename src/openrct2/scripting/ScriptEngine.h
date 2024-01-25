@@ -134,6 +134,7 @@ namespace OpenRCT2::Scripting
         int64_t LastTimestamp{};
         DukValue Callback;
         bool Repeat{};
+        bool Deleted{};
     };
 
     class ScriptEngine
