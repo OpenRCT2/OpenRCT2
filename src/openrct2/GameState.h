@@ -54,6 +54,7 @@ namespace OpenRCT2
         uint16_t ScenarioParkRatingWarningDays;
         money64 ScenarioCompletedCompanyValue;
         money64 ScenarioCompanyValueRecord;
+        random_engine_t ScenarioRand;
 
         SCENARIO_CATEGORY ScenarioCategory;
         std::string ScenarioName;

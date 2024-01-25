@@ -504,11 +504,11 @@ namespace OpenRCT2
                     cs.ReadWrite(s0);
                     cs.ReadWrite(s1);
                     Random::RCT2::Seed s{ s0, s1 };
-                    gScenarioRand.seed(s);
+                    gameState.ScenarioRand.seed(s);
                 }
                 else
                 {
-                    auto randState = gScenarioRand.state();
+                    auto randState = gameState.ScenarioRand.state();
                     cs.Write(randState.s0);
                     cs.Write(randState.s1);
                 }

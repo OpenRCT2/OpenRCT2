@@ -158,8 +158,6 @@ static constexpr money64 COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x8000000000000001;
 
 extern const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
-extern random_engine_t gScenarioRand;
-
 extern bool gAllowEarlyCompletionInNetworkPlay;
 
 extern std::string gScenarioSavePath;
