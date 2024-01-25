@@ -298,7 +298,7 @@ namespace OpenRCT2::TileInspector
         // Make sure there is enough space for the new element
         if (!MapCheckCapacityAndReorganise(loc))
         {
-            return GameActions::Result(GameActions::Status::NoFreeElements, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_PASTE, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
 
         auto tileLoc = TileCoordsXY(loc);
