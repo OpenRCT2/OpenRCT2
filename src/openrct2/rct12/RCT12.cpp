@@ -13,6 +13,7 @@
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../object/ObjectList.h"
+#include "../rct1/Tables.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
@@ -407,7 +408,14 @@ int32_t RCT12WallElement::GetRCT1WallType(int32_t edge) const
 
     if (typeB != 0x0F)
     {
-        return typeA | (typeB << 2);
+        int32_t index = typeA | (typeB << 2);
+
+        auto slope = GetRCT1Slope();
+        auto edgeSlope = GetWallSlopeFromEdgeSlope(slope, edge & 3);
+        if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
+            index = RCT1::MapSlopedWall(index);
+
+        return index;
     }
 
     return -1;
