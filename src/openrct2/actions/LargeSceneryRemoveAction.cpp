@@ -113,7 +113,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
 
         if (!LocationValid(currentTile))
         {
-            return GameActions::Result(GameActions::Status::NoClearance, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
         }
         // Prevent duplicate costs when using the clear scenery tool that overlaps multiple large
         // scenery tile elements.

@@ -85,7 +85,7 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
 
     if (!LocationValid(_loc))
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_LAND_NOT_OWNED_BY_PARK, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
     }
 
     auto* entranceElement = FindEntranceElement(

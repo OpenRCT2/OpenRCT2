@@ -60,7 +60,7 @@ GameActions::Result SmallSceneryRemoveAction::Query() const
 
     if (!LocationValid(_loc))
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
     }
 
     auto* entry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(_sceneryType);

@@ -167,7 +167,7 @@ GameActions::Result TrackRemoveAction::Query() const
         if (!LocationValid(mapLoc))
         {
             return GameActions::Result(
-                GameActions::Status::NotOwned, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+                GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
         }
         MapInvalidateTileFull(mapLoc);
 
