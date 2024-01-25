@@ -72,13 +72,14 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
 {
     PROFILED_FUNCTION();
 
+    auto& gameState = GetGameState();
     gInMapInitCode = true;
-    GetGameState().CurrentTicks = 0;
+    gameState.CurrentTicks = 0;
 
     MapInit(mapSize);
     _park->Initialise();
     FinanceInit();
-    BannerInit();
+    BannerInit(gameState);
     RideInitAll();
     ResetAllEntities();
     UpdateConsolidatedPatrolAreas();
