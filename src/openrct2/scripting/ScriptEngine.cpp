@@ -1678,6 +1678,12 @@ void ScriptEngine::UpdateIntervals()
             continue;
         }
 
+        if (interval.Deleted)
+        {
+            // There is a chance that in one of the callbacks it deletes another interval.
+            continue;
+        }
+
         ExecutePluginCall(interval.Owner, interval.Callback, {}, false);
 
         interval.LastTimestamp = timestamp;
