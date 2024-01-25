@@ -527,7 +527,7 @@ namespace OpenRCT2
                 cs.ReadWrite(gameState.GuestInitialHunger);
                 cs.ReadWrite(gameState.GuestInitialThirst);
 
-                cs.ReadWrite(gNextGuestNumber);
+                cs.ReadWrite(gameState.NextGuestNumber);
                 cs.ReadWriteVector(gPeepSpawns, [&cs](PeepSpawn& spawn) {
                     cs.ReadWrite(spawn.x);
                     cs.ReadWrite(spawn.y);
