@@ -177,7 +177,7 @@ namespace RCT1
 
             ImportRides();
             ImportRideMeasurements();
-            ImportSprites();
+            ImportEntities();
             ImportTileElements();
             ImportPeepSpawns();
             ImportFinance(gameState);
@@ -190,6 +190,7 @@ namespace RCT1
             ImportSavedView();
             FixLandOwnership();
             FixUrbanPark();
+            FixNextGuestNumber(gameState);
             CountBlockSections();
             SetDefaultNames();
             DetermineRideEntranceAndExitLocations();
@@ -1199,7 +1200,7 @@ namespace RCT1
         void ImportEntity(const RCT12EntityBase& src);
         template<typename T> void ImportEntity(const RCT12EntityBase& src);
 
-        void ImportSprites()
+        void ImportEntities()
         {
             for (int i = 0; i < Limits::MaxEntities; i++)
             {
@@ -2599,6 +2600,22 @@ namespace RCT1
                     FootpathUpdateQueueChains();
                 }
             }
+        }
+
+        void FixNextGuestNumber(GameState_t& gameState)
+        {
+            // In RCT1, the next guest number is not saved, so we have to calculate it.
+            // This is done by finding the highest guest number in the park, and adding 1.
+            uint32_t nextGuestNumber = 0;
+
+            // TODO: Entities are currently read from the global state, change this once entities are stored
+            // in the passed gameState.
+            for (auto peep : EntityList<Guest>())
+            {
+                nextGuestNumber = std::max(nextGuestNumber, peep->PeepId);
+            }
+
+            gameState.NextGuestNumber = nextGuestNumber + 1;
         }
 
         /**
