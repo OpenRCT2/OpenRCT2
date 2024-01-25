@@ -412,7 +412,7 @@ namespace RCT2
             gBankLoanInterestRate = _s6.CurrentInterestRate;
             // Pad0135934B
             // Preserve compatibility with vanilla RCT2's save format.
-            gParkEntrances.clear();
+            gameState.ParkEntrances.clear();
             for (uint8_t i = 0; i < Limits::MaxParkEntrances; i++)
             {
                 if (_s6.ParkEntranceX[i] != LOCATION_NULL)
@@ -422,7 +422,7 @@ namespace RCT2
                     entrance.y = _s6.ParkEntranceY[i];
                     entrance.z = _s6.ParkEntranceZ[i];
                     entrance.direction = _s6.ParkEntranceDirection[i];
-                    gParkEntrances.push_back(entrance);
+                    gameState.ParkEntrances.push_back(entrance);
                 }
             }
             if (_s6.Header.Type == S6_TYPE_SCENARIO)

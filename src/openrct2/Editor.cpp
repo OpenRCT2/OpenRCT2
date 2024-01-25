@@ -505,12 +505,13 @@ namespace Editor
             return { false, STR_PARK_MUST_OWN_SOME_LAND };
         }
 
-        if (gParkEntrances.empty())
+        const auto& gameState = GetGameState();
+        if (gameState.ParkEntrances.empty())
         {
             return { false, STR_NO_PARK_ENTRANCES };
         }
 
-        for (const auto& parkEntrance : gParkEntrances)
+        for (const auto& parkEntrance : gameState.ParkEntrances)
         {
             int32_t direction = DirectionReverse(parkEntrance.direction);
 
