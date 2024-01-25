@@ -1634,7 +1634,7 @@ void ScriptEngine::RemoveInterval(const std::shared_ptr<Plugin>& plugin, Interva
     // Only allow owner or REPL (nullptr) to remove intervals
     if (plugin == nullptr || interval.Owner == plugin)
     {
-        _intervals.erase(it);
+        interval.Deleted = true;
     }
 }
 
@@ -1653,21 +1653,43 @@ void ScriptEngine::UpdateIntervals()
     }
     _lastIntervalTimestamp = timestamp;
 
-    for (auto it = _intervals.begin(), itNext = it; it != _intervals.end(); it = itNext)
+    // Erase all intervals marked as deleted.
+    for (auto it = _intervals.begin(); it != _intervals.end();)
     {
-        itNext++;
-
         auto& interval = it->second;
 
-        if (timestamp >= interval.LastTimestamp + interval.Delay)
+        if (interval.Deleted)
         {
-            ExecutePluginCall(interval.Owner, interval.Callback, {}, false);
+            it = _intervals.erase(it);
+        }
+        else
+        {
+            it++;
+        }
+    }
 
-            interval.LastTimestamp = timestamp;
-            if (!interval.Repeat)
-            {
-                _intervals.erase(it);
-            }
+    // Execute all intervals that are due.
+    for (auto it = _intervals.begin(); it != _intervals.end(); it++)
+    {
+        auto& interval = it->second;
+
+        if (timestamp < interval.LastTimestamp + interval.Delay)
+        {
+            continue;
+        }
+
+        if (interval.Deleted)
+        {
+            // There is a chance that in one of the callbacks it deletes another interval.
+            continue;
+        }
+
+        ExecutePluginCall(interval.Owner, interval.Callback, {}, false);
+
+        interval.LastTimestamp = timestamp;
+        if (!interval.Repeat)
+        {
+            interval.Deleted = true;
         }
     }
 }
