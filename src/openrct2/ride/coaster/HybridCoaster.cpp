@@ -28,8 +28,8 @@ namespace HybridRC
 {
     static ImageId GetTrackColour(PaintSession& session)
     {
-        if (session.TrackColours.ToUInt32() == 0x21600000)
-            return session.TrackColours; // TODO dirty hack
+        if (session.TrackColours == ConstructionMarker)
+            return session.TrackColours;
         else
             return (session.TrackColours.WithSecondary(session.SupportColours.GetPrimary()));
     }
