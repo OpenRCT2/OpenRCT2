@@ -363,7 +363,8 @@ static void FixGuestsHeadingToParkCount()
 
     if (gameState.NumGuestsHeadingForPark != guestsHeadingToPark)
     {
-        LOG_WARNING("Corrected bad amount of guests heading to park: %u -> %u", gameState.NumGuestsHeadingForPark, guestsHeadingToPark);
+        LOG_WARNING(
+            "Corrected bad amount of guests heading to park: %u -> %u", gameState.NumGuestsHeadingForPark, guestsHeadingToPark);
     }
 
     gameState.NumGuestsHeadingForPark = guestsHeadingToPark;
