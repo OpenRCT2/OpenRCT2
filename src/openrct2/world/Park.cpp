@@ -773,13 +773,14 @@ void Park::UpdateHistories()
     {
         currentWeeklyProfit /= gameState.WeeklyProfitAverageDivisor;
     }
-    HistoryPushRecord<money64, FINANCE_GRAPH_SIZE>(gameState.WeeklyProfitHistory, currentWeeklyProfit);
+    constexpr auto profitHistorySize = std::extent_v<decltype(GameState_t::WeeklyProfitHistory)>;
+    HistoryPushRecord<money64, profitHistorySize>(gameState.WeeklyProfitHistory, currentWeeklyProfit);
     gameState.WeeklyProfitAverageDividend = 0;
     gameState.WeeklyProfitAverageDivisor = 0;
 
     // Update park value history
-    HistoryPushRecord<money64, std::extent_v<decltype(GameState_t::ParkValueHistory)>>(
-        gameState.ParkValueHistory, gameState.ParkValue);
+    constexpr auto parkValueHistorySize = std::extent_v<decltype(GameState_t::WeeklyProfitHistory)>;
+    HistoryPushRecord<money64, parkValueHistorySize>(gameState.ParkValueHistory, gameState.ParkValue);
 
     // Invalidate relevant windows
     auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
