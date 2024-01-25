@@ -616,10 +616,12 @@ private:
         if (page != WINDOW_PARK_PAGE_ENTRANCE)
             return;
 
+        const auto& gameState = GetGameState();
+
         std::optional<Focus> newFocus = std::nullopt;
-        if (!gParkEntrances.empty())
+        if (!gameState.ParkEntrances.empty())
         {
-            const auto& entrance = gParkEntrances[0];
+            const auto& entrance = gameState.ParkEntrances[0];
             newFocus = Focus(CoordsXYZ{ entrance.x + 16, entrance.y + 16, entrance.z + 32 });
         }
 

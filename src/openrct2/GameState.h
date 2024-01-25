@@ -19,6 +19,7 @@
 #include <chrono>
 #include <memory>
 #include <unordered_map>
+#include <vector>
 
 namespace OpenRCT2
 {
@@ -30,6 +31,7 @@ namespace OpenRCT2
         uint64_t ParkFlags;
         uint16_t ParkRating;
         money64 ParkEntranceFee;
+        std::vector<CoordsXYZD> ParkEntrances;
         uint32_t ParkSize;
         ClimateType Climate;
         ClimateState ClimateCurrent;

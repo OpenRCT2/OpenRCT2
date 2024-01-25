@@ -1885,8 +1885,8 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
 
         bool found = false;
         auto entrance = std::find_if(
-            gParkEntrances.begin(), gParkEntrances.end(), [coords](const auto& e) { return coords.ToTileStart() == e; });
-        if (entrance != gParkEntrances.end())
+            gameState.ParkEntrances.begin(), gameState.ParkEntrances.end(), [coords](const auto& e) { return coords.ToTileStart() == e; });
+        if (entrance != gameState.ParkEntrances.end())
         {
             int16_t z = entrance->z / 8;
             entranceDirection = entrance->direction;

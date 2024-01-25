@@ -239,11 +239,12 @@ static void ScenarioCheckEntranceFeeTooHigh()
 {
     const auto max_fee = AddClamp_money64(gTotalRideValueForMoney, gTotalRideValueForMoney / 2);
 
-    if ((GetGameState().ParkFlags & PARK_FLAGS_PARK_OPEN) && ParkGetEntranceFee() > max_fee)
+    const auto& gameState = GetGameState();
+    if ((gameState.ParkFlags & PARK_FLAGS_PARK_OPEN) && ParkGetEntranceFee() > max_fee)
     {
-        if (!gParkEntrances.empty())
+        if (!gameState.ParkEntrances.empty())
         {
-            const auto& entrance = gParkEntrances[0];
+            const auto& entrance = gameState.ParkEntrances[0];
             auto x = entrance.x + 16;
             auto y = entrance.y + 16;
 

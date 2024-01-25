@@ -13,6 +13,9 @@
 #include "../management/Finance.h"
 #include "../world/Entrance.h"
 #include "../world/Park.h"
+#include "../GameState.h"
+
+using namespace OpenRCT2;
 
 ParkEntranceRemoveAction::ParkEntranceRemoveAction(const CoordsXYZ& loc)
     : _loc(loc)
@@ -71,7 +74,8 @@ GameActions::Result ParkEntranceRemoveAction::Execute() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
-    auto direction = (gParkEntrances[entranceIndex].direction - 1) & 3;
+    auto& gameState = GetGameState();
+    auto direction = (gameState.ParkEntrances[entranceIndex].direction - 1) & 3;
 
     // Centre (sign)
     ParkEntranceRemoveSegment(_loc);
@@ -84,7 +88,7 @@ GameActions::Result ParkEntranceRemoveAction::Execute() const
     ParkEntranceRemoveSegment(
         { _loc.x - CoordsDirectionDelta[direction].x, _loc.y - CoordsDirectionDelta[direction].y, _loc.z });
 
-    gParkEntrances.erase(gParkEntrances.begin() + entranceIndex);
+    gameState.ParkEntrances.erase(gameState.ParkEntrances.begin() + entranceIndex);
     return res;
 }
 

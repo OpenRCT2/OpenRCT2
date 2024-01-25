@@ -2410,10 +2410,11 @@ namespace RCT1
 
         void FixEntrancePositions()
         {
-            gParkEntrances.clear();
+            auto& gameState = GetGameState();
+            gameState.ParkEntrances.clear();
             TileElementIterator it;
             TileElementIteratorBegin(&it);
-            while (TileElementIteratorNext(&it) && gParkEntrances.size() < Limits::MaxParkEntrances)
+            while (TileElementIteratorNext(&it) && gameState.ParkEntrances.size() < Limits::MaxParkEntrances)
             {
                 TileElement* element = it.element;
 
@@ -2425,7 +2426,7 @@ namespace RCT1
                     continue;
 
                 CoordsXYZD entrance = { TileCoordsXY(it.x, it.y).ToCoordsXY(), element->GetBaseZ(), element->GetDirection() };
-                gParkEntrances.push_back(entrance);
+                gameState.ParkEntrances.push_back(entrance);
             }
         }
 
