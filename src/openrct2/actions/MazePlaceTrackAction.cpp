@@ -50,7 +50,13 @@ GameActions::Result MazePlaceTrackAction::Query() const
         return res;
     }
 
-    if (!LocationValid(_loc) || (!MapIsLocationOwned(_loc) && !gCheatsSandboxMode))
+    if (!LocationValid(_loc))
+    {
+        res.Error = GameActions::Status::InvalidParameters;
+        res.ErrorMessage = STR_OFF_EDGE_OF_MAP;
+        return res;
+    }
+    if (!MapIsLocationOwned(_loc) && !gCheatsSandboxMode)
     {
         res.Error = GameActions::Status::NotOwned;
         res.ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;

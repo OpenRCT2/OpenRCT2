@@ -51,8 +51,11 @@ GameActions::Result ParkEntranceRemoveAction::Query() const
     res.Position = _loc;
     res.ErrorTitle = STR_CANT_REMOVE_THIS;
 
-    auto entranceIndex = ParkEntranceGetIndex(_loc);
-    if (!LocationValid(_loc) || entranceIndex == -1)
+    if (!LocationValid(_loc))
+    {
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
+    }
+    if (ParkEntranceGetIndex(_loc) == -1)
     {
         LOG_ERROR("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);

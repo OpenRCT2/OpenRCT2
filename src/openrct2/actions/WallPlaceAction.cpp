@@ -77,7 +77,7 @@ GameActions::Result WallPlaceAction::Query() const
 
     if (!LocationValid(_loc))
     {
-        return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
     auto mapSizeMax = GetMapSizeMaxXY();
