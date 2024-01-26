@@ -72,8 +72,6 @@ bool gFirstTimeSaving = true;
 uint16_t gSavedAge;
 uint32_t gLastAutoSaveUpdate = 0;
 
-random_engine_t gScenarioRand;
-
 bool gAllowEarlyCompletionInNetworkPlay;
 
 std::string gScenarioFileName;
@@ -97,7 +95,7 @@ void ScenarioReset(GameState_t& gameState)
 {
     // Set the scenario pseudo-random seeds
     Random::RCT2::Seed s{ 0x1234567F ^ Platform::GetTicks(), 0x789FABCD ^ Platform::GetTicks() };
-    gScenarioRand.seed(s);
+    gameState.ScenarioRand.seed(s);
 
     ResearchResetCurrentItem();
     ScenerySetDefaultPlacementConfiguration();
@@ -496,13 +494,13 @@ bool ScenarioCreateDucks()
 
 const random_engine_t::state_type& ScenarioRandState()
 {
-    return gScenarioRand.state();
+    return GetGameState().ScenarioRand.state();
 };
 
 void ScenarioRandSeed(random_engine_t::result_type s0, random_engine_t::result_type s1)
 {
     Random::RCT2::Seed s{ s0, s1 };
-    gScenarioRand.seed(s);
+    GetGameState().ScenarioRand.seed(s);
 }
 
 /**
@@ -513,7 +511,7 @@ void ScenarioRandSeed(random_engine_t::result_type s0, random_engine_t::result_t
  */
 random_engine_t::result_type ScenarioRand()
 {
-    return gScenarioRand();
+    return GetGameState().ScenarioRand();
 }
 
 uint32_t ScenarioRandMax(uint32_t max)
