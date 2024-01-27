@@ -282,10 +282,6 @@ jobs:
           # Use `-fno-var-tracking-assignments` to reduce amount of produced debug information. This is necessary due to 100MiB limit of GitHub / openrct2.org API.
           # For focal the debug information still takes too much space, so reduce amount of debug info to minimum using `-g1` (`-g` means `-g2`), which is enough for backtraces only.
           - platform: x86_64
-            distro: bionic
-            image: openrct2/openrct2-build:4-bionic
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -fno-var-tracking-assignments" -DWITH_TESTS=off -DDISABLE_FLAC=ON -DDISABLE_VORBIS=ON
-          - platform: x86_64
             distro: focal
             image: openrct2/openrct2-build:12-focal
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g1 -gz" -DWITH_TESTS=off
