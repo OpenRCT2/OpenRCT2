@@ -32,13 +32,14 @@
 
 SmallSceneryPlaceAction::SmallSceneryPlaceAction(
     const CoordsXYZD& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour,
-    uint8_t tertiaryColour)
+    uint8_t tertiaryColour, bool batchPlacement)
     : _loc(loc)
     , _quadrant(quadrant)
     , _sceneryType(sceneryType)
     , _primaryColour(primaryColour)
     , _secondaryColour(secondaryColour)
     , _tertiaryColour(tertiaryColour)
+    , _batchPlacement(batchPlacement)
 {
 }
 
@@ -50,6 +51,7 @@ void SmallSceneryPlaceAction::AcceptParameters(GameActionParameterVisitor& visit
     visitor.Visit("primaryColour", _primaryColour);
     visitor.Visit("secondaryColour", _secondaryColour);
     visitor.Visit("tertiaryColour", _tertiaryColour);
+    visitor.Visit("batchPlacement", _batchPlacement);
 }
 
 uint32_t SmallSceneryPlaceAction::GetCooldownTime() const
@@ -265,7 +267,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     const auto isTree = sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE);
     auto canBuild = MapCanConstructWithClearAt(
         { _loc, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE, isTree);
-    if (canBuild.Error != GameActions::Status::Ok)
+    if ((canBuild.Error != GameActions::Status::Ok) && !_batchPlacement)
     {
         canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
         return canBuild;
@@ -404,7 +406,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     auto canBuild = MapCanConstructWithClearAt(
         { _loc, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
         CREATE_CROSSING_MODE_NONE, isTree);
-    if (canBuild.Error != GameActions::Status::Ok)
+    if ((canBuild.Error != GameActions::Status::Ok) && !_batchPlacement)
     {
         canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
         return canBuild;

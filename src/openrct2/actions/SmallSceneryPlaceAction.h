@@ -28,12 +28,13 @@ private:
     uint8_t _primaryColour{};
     uint8_t _secondaryColour{};
     uint8_t _tertiaryColour{};
+    bool _batchPlacement{};
 
 public:
     SmallSceneryPlaceAction() = default;
     SmallSceneryPlaceAction(
         const CoordsXYZD& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour,
-        uint8_t tertiaryColour);
+        uint8_t tertiaryColour, bool batchPlacement);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

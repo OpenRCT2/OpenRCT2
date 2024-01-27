@@ -288,7 +288,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
 {
     Ride* ride;
 
-    res.ErrorMessage = STR_OBJECT_IN_THE_WAY;
+    // res.ErrorMessage = STR_OBJECT_IN_THE_WAY;
     switch (tileElement->GetType())
     {
         case TileElementType::Surface:
@@ -301,7 +301,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             ride = GetRide(tileElement->AsTrack()->GetRideIndex());
             if (ride != nullptr)
             {
-                res.ErrorMessage = STR_X_IN_THE_WAY;
+                // res.ErrorMessage = STR_X_IN_THE_WAY;
 
                 Formatter ft(res.ErrorMessageArgs.data());
                 ride->FormatNameTo(ft);
@@ -309,11 +309,11 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
             break;
         case TileElementType::SmallScenery:
         {
-            auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
-            res.ErrorMessage = STR_X_IN_THE_WAY;
-            auto ft = Formatter(res.ErrorMessageArgs.data());
-            StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(STR_EMPTY);
-            ft.Add<StringId>(stringId);
+            // auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+            // res.ErrorMessage = STR_X_IN_THE_WAY;
+            // auto ft = Formatter(res.ErrorMessageArgs.data());
+            // StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(STR_EMPTY);
+            // ft.Add<StringId>(stringId);
             break;
         }
         case TileElementType::Entrance:
@@ -333,7 +333,7 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
         case TileElementType::Wall:
         {
             auto* wallEntry = tileElement->AsWall()->GetEntry();
-            res.ErrorMessage = STR_X_IN_THE_WAY;
+            // res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
             StringId stringId = wallEntry != nullptr ? wallEntry->name : static_cast<StringId>(STR_EMPTY);
             ft.Add<StringId>(stringId);
@@ -341,11 +341,11 @@ void MapGetObstructionErrorText(TileElement* tileElement, GameActions::Result& r
         }
         case TileElementType::LargeScenery:
         {
-            auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-            res.ErrorMessage = STR_X_IN_THE_WAY;
-            auto ft = Formatter(res.ErrorMessageArgs.data());
-            StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(STR_EMPTY);
-            ft.Add<StringId>(stringId);
+            // auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+            // res.ErrorMessage = STR_X_IN_THE_WAY;
+            // auto ft = Formatter(res.ErrorMessageArgs.data());
+            // StringId stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<StringId>(STR_EMPTY);
+            // ft.Add<StringId>(stringId);
             break;
         }
         case TileElementType::Banner:
