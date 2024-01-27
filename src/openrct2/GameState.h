@@ -30,7 +30,6 @@ namespace OpenRCT2
         ClimateState ClimateNext;
         money64 Cash;
         money64 InitialCash;
-        bool WindowSceneryScatterEnabled = false;
     };
 
     GameState_t& GetGameState();

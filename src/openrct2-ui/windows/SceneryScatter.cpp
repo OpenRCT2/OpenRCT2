@@ -11,7 +11,6 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
-#include <openrct2/GameState.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -31,6 +30,7 @@ enum WindowSceneryScatterWidgetIdx
     WIDX_DENSITY_HIGH
 };
 
+bool gWindowSceneryScatterEnabled = false;
 uint16_t gWindowSceneryScatterSize;
 ScatterToolDensity gWindowSceneryScatterDensity;
 
@@ -62,14 +62,14 @@ public:
         WindowInitScrollWidgets(*this);
         WindowPushOthersBelow(*this);
 
-        OpenRCT2::GetGameState().WindowSceneryScatterEnabled = true;
+        gWindowSceneryScatterEnabled = true;
         gWindowSceneryScatterSize = 16;
         gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
     }
 
     void OnClose() override
     {
-        OpenRCT2::GetGameState().WindowSceneryScatterEnabled = false;
+        gWindowSceneryScatterEnabled = false;
     }
 
     void InputSize(const WidgetIndex widgetIndex)

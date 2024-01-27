@@ -899,7 +899,7 @@ private:
                 }
 
                 gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-                if (OpenRCT2::GetGameState().WindowSceneryScatterEnabled)
+                if (gWindowSceneryScatterEnabled)
                 {
                     uint16_t cluster_size = (gWindowSceneryScatterSize - 1) * COORDS_XY_STEP;
                     gMapSelectPositionA.x = mapTile.x - cluster_size / 2;
@@ -923,7 +923,7 @@ private:
                 auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(selection.EntryIndex);
 
                 gMapSelectType = MAP_SELECT_TYPE_FULL;
-                if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && !GetGameState().WindowSceneryScatterEnabled)
+                if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryScatterEnabled)
                 {
                     gMapSelectType = MAP_SELECT_TYPE_QUARTER_0 + (quadrant ^ 2);
                 }
@@ -2191,7 +2191,7 @@ private:
                     return;
 
                 int32_t quantity = 1;
-                bool isCluster = GetGameState().WindowSceneryScatterEnabled
+                bool isCluster = gWindowSceneryScatterEnabled
                     && (NetworkGetMode() != NETWORK_MODE_CLIENT
                         || NetworkCanPerformCommand(NetworkGetCurrentPlayerGroupIndex(), -2));
 
@@ -2276,7 +2276,7 @@ private:
                     }
 
                     // Actually place
-                    if (success == GameActions::Status::Ok || ((q + 1 == quantity) && forceError))
+                    if ((success == GameActions::Status::Ok || ((q + 1 == quantity) && forceError)) && (!gWindowSceneryScatterEnabled))
                     {
                         auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
                             { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
@@ -2299,6 +2299,34 @@ private:
                             break;
                         }
                     }
+                    else if ((success == GameActions::Status::Ok || ((q + 1 == quantity) && forceError)) && (gWindowSceneryScatterEnabled))
+                    {
+                        auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
+                            { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
+                            gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+
+                        smallSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+                            if (result->Error == GameActions::Status::Ok)
+                            {
+                                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+                            }
+                        });
+                        auto res = GameActions::Execute(&smallSceneryPlaceAction);
+                        if (res.Error == GameActions::Status::Ok)
+                        {
+                            forceError = false;
+                        }
+
+                        if (res.Error == GameActions::Status::InsufficientFunds)
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+
                     gSceneryPlaceZ = zCoordinate;
                 }
                 break;
