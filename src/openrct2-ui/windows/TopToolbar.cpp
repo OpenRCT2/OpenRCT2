@@ -2213,8 +2213,7 @@ private:
                     }
                 }
 
-                bool forceError = true;
-                for (int32_t q = 0; q < quantity; q++)
+                if (gWindowSceneryScatterEnabled)
                 {
                     int32_t zCoordinate = gSceneryPlaceZ;
                     auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(selectedScenery);
@@ -2251,83 +2250,108 @@ private:
                         zAttemptRange = 20;
                     }
 
-                    auto success = GameActions::Status::Unknown;
-                    // Try find a valid z coordinate
-                    for (; zAttemptRange != 0; zAttemptRange--)
+                    auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
+                        { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
+                        gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+                    auto res = GameActions::Execute(&smallSceneryPlaceAction);
+
+                    if (zAttemptRange != 1)
                     {
-                        auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
-                            { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
-                            gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
-                        auto res = GameActions::Query(&smallSceneryPlaceAction);
-                        success = res.Error;
-                        if (res.Error == GameActions::Status::Ok)
-                        {
-                            break;
-                        }
-
-                        if (res.Error == GameActions::Status::InsufficientFunds)
-                        {
-                            break;
-                        }
-                        if (zAttemptRange != 1)
-                        {
-                            gSceneryPlaceZ += 8;
-                        }
+                        gSceneryPlaceZ += 8;
                     }
-
-                    // Actually place
-                    if ((success == GameActions::Status::Ok || ((q + 1 == quantity) && forceError)) && (!gWindowSceneryScatterEnabled))
-                    {
-                        auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
-                            { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
-                            gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
-
-                        smallSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
-                            if (result->Error == GameActions::Status::Ok)
-                            {
-                                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
-                            }
-                        });
-                        auto res = GameActions::Execute(&smallSceneryPlaceAction);
-                        if (res.Error == GameActions::Status::Ok)
-                        {
-                            forceError = false;
-                        }
-
-                        if (res.Error == GameActions::Status::InsufficientFunds)
-                        {
-                            break;
-                        }
-                    }
-                    else if ((success == GameActions::Status::Ok || ((q + 1 == quantity) && forceError)) && (gWindowSceneryScatterEnabled))
-                    {
-                        auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
-                            { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
-                            gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
-
-                        smallSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
-                            if (result->Error == GameActions::Status::Ok)
-                            {
-                                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
-                            }
-                        });
-                        auto res = GameActions::Execute(&smallSceneryPlaceAction);
-                        if (res.Error == GameActions::Status::Ok)
-                        {
-                            forceError = false;
-                        }
-
-                        if (res.Error == GameActions::Status::InsufficientFunds)
-                        {
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        break;
-                    }
-
                     gSceneryPlaceZ = zCoordinate;
+                }
+
+                else 
+                {
+                    bool forceError = true;
+                    for (int32_t q = 0; q < quantity; q++)
+                    {
+                        int32_t zCoordinate = gSceneryPlaceZ;
+                        auto* sceneryEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(selectedScenery);
+
+                        int16_t cur_grid_x = gridPos.x;
+                        int16_t cur_grid_y = gridPos.y;
+
+                        if (isCluster)
+                        {
+                            if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE))
+                            {
+                                quadrant = UtilRand() & 3;
+                            }
+
+                            int16_t grid_x_offset = (UtilRand() % gWindowSceneryScatterSize) - (gWindowSceneryScatterSize / 2);
+                            int16_t grid_y_offset = (UtilRand() % gWindowSceneryScatterSize) - (gWindowSceneryScatterSize / 2);
+                            if (gWindowSceneryScatterSize % 2 == 0)
+                            {
+                                grid_x_offset += 1;
+                                grid_y_offset += 1;
+                            }
+                            cur_grid_x += grid_x_offset * COORDS_XY_STEP;
+                            cur_grid_y += grid_y_offset * COORDS_XY_STEP;
+
+                            if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ROTATABLE))
+                            {
+                                gSceneryPlaceRotation = (gSceneryPlaceRotation + 1) & 3;
+                            }
+                        }
+
+                        uint8_t zAttemptRange = 1;
+                        if (gSceneryPlaceZ != 0 && gSceneryShiftPressed)
+                        {
+                            zAttemptRange = 20;
+                        }
+
+                        auto success = GameActions::Status::Unknown;
+                        // Try find a valid z coordinate
+                        for (; zAttemptRange != 0; zAttemptRange--)
+                        {
+                            auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
+                                { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
+                                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+                            auto res = GameActions::Query(&smallSceneryPlaceAction);
+                            success = res.Error;
+                            if (res.Error == GameActions::Status::Ok)
+                            {
+                                break;
+                            }
+
+                            if (res.Error == GameActions::Status::InsufficientFunds)
+                            {
+                                break;
+                            }
+                            if (zAttemptRange != 1)
+                            {
+                                gSceneryPlaceZ += 8;
+                            }
+                        }
+
+                        // Actually place
+                        if ((success == GameActions::Status::Ok || ((q + 1 == quantity) && forceError)) && (!gWindowSceneryScatterEnabled))
+                        {
+                            auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
+                                { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
+                                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+
+                            smallSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+                                if (result->Error == GameActions::Status::Ok)
+                                {
+                                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+                                }
+                            });
+                            auto res = GameActions::Execute(&smallSceneryPlaceAction);
+                            if (res.Error == GameActions::Status::Ok)
+                            {
+                                forceError = false;
+                            }
+
+                            if (res.Error == GameActions::Status::InsufficientFunds)
+                            {
+                                break;
+                            }
+                        }
+                        gSceneryPlaceZ = zCoordinate;
+                    }
                 }
                 break;
             }
