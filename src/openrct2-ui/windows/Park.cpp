@@ -772,7 +772,7 @@ private:
 
         // Current value
         auto ft = Formatter();
-        ft.Add<uint32_t>(gNumGuestsInPark);
+        ft.Add<uint32_t>(OpenRCT2::GetGameState().NumGuestsInPark);
         DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
 
         // Graph border
@@ -997,7 +997,7 @@ private:
 
         // Draw number of guests in park
         ft = Formatter();
-        ft.Add<uint32_t>(gNumGuestsInPark);
+        ft.Add<uint32_t>(OpenRCT2::GetGameState().NumGuestsInPark);
         DrawTextBasic(dpi, screenCoords, STR_GUESTS_IN_PARK_LABEL, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
 

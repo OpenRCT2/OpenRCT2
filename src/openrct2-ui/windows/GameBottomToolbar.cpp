@@ -125,14 +125,14 @@ private:
             Widget widget = window_game_bottom_toolbar_widgets[WIDX_GUESTS];
             auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(), windowPos.y + widget.midY() - 6 };
 
-            StringId stringId = gNumGuestsInPark == 1 ? _guestCountFormatsSingular[gGuestChangeModifier]
-                                                      : _guestCountFormats[gGuestChangeModifier];
+            StringId stringId = gameState.NumGuestsInPark == 1 ? _guestCountFormatsSingular[gGuestChangeModifier]
+                                                               : _guestCountFormats[gGuestChangeModifier];
             colour_t colour
                 = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_GUESTS
                        ? COLOUR_WHITE
                        : NOT_TRANSLUCENT(colours[0]));
             auto ft = Formatter();
-            ft.Add<uint32_t>(gNumGuestsInPark);
+            ft.Add<uint32_t>(gameState.NumGuestsInPark);
             DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
         }
 

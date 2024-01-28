@@ -319,7 +319,7 @@ namespace Editor
 
         ResetAllEntities();
         UpdateConsolidatedPatrolAreas();
-        gNumGuestsInPark = 0;
+        gameState.NumGuestsInPark = 0;
         gameState.NumGuestsHeadingForPark = 0;
         gNumGuestsInParkLastWeek = 0;
         gGuestChangeModifier = 0;

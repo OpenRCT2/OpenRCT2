@@ -67,7 +67,6 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
 uint8_t gGuestChangeModifier;
-uint32_t gNumGuestsInPark;
 uint32_t gNumGuestsInParkLastWeek;
 
 uint8_t gPeepWarningThrottle[16];
@@ -1122,10 +1121,12 @@ void PeepProblemWarningsUpdate()
                 break;
         }
     }
+    auto& gameState = GetGameState();
+
     // could maybe be packed into a loop, would lose a lot of clarity though
     if (warningThrottle[0])
         --warningThrottle[0];
-    else if (hungerCounter >= PEEP_HUNGER_WARNING_THRESHOLD && hungerCounter >= gNumGuestsInPark / 16)
+    else if (hungerCounter >= PEEP_HUNGER_WARNING_THRESHOLD && hungerCounter >= gameState.NumGuestsInPark / 16)
     {
         warningThrottle[0] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1137,7 +1138,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[1])
         --warningThrottle[1];
-    else if (thirstCounter >= PEEP_THIRST_WARNING_THRESHOLD && thirstCounter >= gNumGuestsInPark / 16)
+    else if (thirstCounter >= PEEP_THIRST_WARNING_THRESHOLD && thirstCounter >= gameState.NumGuestsInPark / 16)
     {
         warningThrottle[1] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1149,7 +1150,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[2])
         --warningThrottle[2];
-    else if (toiletCounter >= PEEP_TOILET_WARNING_THRESHOLD && toiletCounter >= gNumGuestsInPark / 16)
+    else if (toiletCounter >= PEEP_TOILET_WARNING_THRESHOLD && toiletCounter >= gameState.NumGuestsInPark / 16)
     {
         warningThrottle[2] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1161,7 +1162,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[3])
         --warningThrottle[3];
-    else if (litterCounter >= PEEP_LITTER_WARNING_THRESHOLD && litterCounter >= gNumGuestsInPark / 32)
+    else if (litterCounter >= PEEP_LITTER_WARNING_THRESHOLD && litterCounter >= gameState.NumGuestsInPark / 32)
     {
         warningThrottle[3] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1173,7 +1174,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[4])
         --warningThrottle[4];
-    else if (disgustCounter >= PEEP_DISGUST_WARNING_THRESHOLD && disgustCounter >= gNumGuestsInPark / 32)
+    else if (disgustCounter >= PEEP_DISGUST_WARNING_THRESHOLD && disgustCounter >= gameState.NumGuestsInPark / 32)
     {
         warningThrottle[4] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -1185,7 +1186,7 @@ void PeepProblemWarningsUpdate()
 
     if (warningThrottle[5])
         --warningThrottle[5];
-    else if (vandalismCounter >= PEEP_VANDALISM_WARNING_THRESHOLD && vandalismCounter >= gNumGuestsInPark / 32)
+    else if (vandalismCounter >= PEEP_VANDALISM_WARNING_THRESHOLD && vandalismCounter >= gameState.NumGuestsInPark / 32)
     {
         warningThrottle[5] = 4;
         if (gConfigNotifications.GuestWarnings)
@@ -2633,9 +2634,10 @@ void PeepUpdateNames(bool realNames)
 
 void IncrementGuestsInPark()
 {
-    if (gNumGuestsInPark < UINT32_MAX)
+    auto& gameState = GetGameState();
+    if (gameState.NumGuestsInPark < UINT32_MAX)
     {
-        gNumGuestsInPark++;
+        gameState.NumGuestsInPark++;
     }
     else
     {
@@ -2646,7 +2648,6 @@ void IncrementGuestsInPark()
 void IncrementGuestsHeadingForPark()
 {
     auto& gameState = GetGameState();
-
     if (gameState.NumGuestsHeadingForPark < UINT32_MAX)
     {
         gameState.NumGuestsHeadingForPark++;
@@ -2659,9 +2660,10 @@ void IncrementGuestsHeadingForPark()
 
 void DecrementGuestsInPark()
 {
-    if (gNumGuestsInPark > 0)
+    auto& gameState = GetGameState();
+    if (gameState.NumGuestsInPark > 0)
     {
-        gNumGuestsInPark--;
+        gameState.NumGuestsInPark--;
     }
     else
     {

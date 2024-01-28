@@ -258,7 +258,7 @@ void Park::Initialise()
     gameState.StaffHandymanColour = COLOUR_BRIGHT_RED;
     gameState.StaffMechanicColour = COLOUR_LIGHT_BLUE;
     gameState.StaffSecurityColour = COLOUR_YELLOW;
-    gNumGuestsInPark = 0;
+    gameState.NumGuestsInPark = 0;
     gNumGuestsInParkLastWeek = 0;
     gameState.NumGuestsHeadingForPark = 0;
     gGuestChangeModifier = 0;
@@ -375,8 +375,9 @@ int32_t Park::CalculateParkRating() const
         return _forcedParkRating;
     }
 
+    auto& gameState = GetGameState();
     int32_t result = 1150;
-    if (GetGameState().ParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING)
+    if (gameState.ParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING)
     {
         result = 1050;
     }
@@ -384,7 +385,7 @@ int32_t Park::CalculateParkRating() const
     // Guests
     {
         // -150 to +3 based on a range of guests from 0 to 2000
-        result -= 150 - (std::min<int32_t>(2000, gNumGuestsInPark) / 13);
+        result -= 150 - (std::min<int32_t>(2000, gameState.NumGuestsInPark) / 13);
 
         // Find the number of happy peeps and the number of peeps who can't find the park exit
         uint32_t happyGuestCount = 0;
@@ -406,9 +407,9 @@ int32_t Park::CalculateParkRating() const
 
         // Peep happiness -500 to +0
         result -= 500;
-        if (gNumGuestsInPark > 0)
+        if (gameState.NumGuestsInPark > 0)
         {
-            result += 2 * std::min(250u, (happyGuestCount * 300) / gNumGuestsInPark);
+            result += 2 * std::min(250u, (happyGuestCount * 300) / gameState.NumGuestsInPark);
         }
 
         // Up to 25 guests can be lost without affecting the park rating.
@@ -494,7 +495,7 @@ money64 Park::CalculateParkValue() const
     }
 
     // +7.00 per guest
-    result += static_cast<money64>(gNumGuestsInPark) * 7.00_GBP;
+    result += static_cast<money64>(GetGameState().NumGuestsInPark) * 7.00_GBP;
 
     return result;
 }
@@ -606,7 +607,7 @@ uint32_t Park::CalculateGuestGenerationProbability() const
     uint32_t probability = 50 + std::clamp(gameState.ParkRating - 200, 0, 650);
 
     // The more guests, the lower the chance of a new one
-    uint32_t numGuests = gNumGuestsInPark + gameState.NumGuestsHeadingForPark;
+    uint32_t numGuests = gameState.NumGuestsInPark + gameState.NumGuestsHeadingForPark;
     if (numGuests > _suggestedGuestMaximum)
     {
         probability /= 4;
@@ -676,11 +677,13 @@ uint8_t Park::CalculateGuestInitialHappiness(uint8_t percentage)
 
 void Park::GenerateGuests()
 {
+    auto& gameState = GetGameState();
+
     // Generate a new guest for some probability
     if (static_cast<int32_t>(ScenarioRand() & 0xFFFF) < _guestGenerationProbability)
     {
-        bool difficultGeneration = (GetGameState().ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
-        if (!difficultGeneration || _suggestedGuestMaximum + 150 >= gNumGuestsInPark)
+        bool difficultGeneration = (gameState.ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
+        if (!difficultGeneration || _suggestedGuestMaximum + 150 >= gameState.NumGuestsInPark)
         {
             GenerateGuest();
         }
@@ -748,8 +751,10 @@ void Park::ResetHistories()
 
 void Park::UpdateHistories()
 {
+    auto& gameState = GetGameState();
     uint8_t guestChangeModifier = 1;
-    int32_t changeInGuestsInPark = static_cast<int32_t>(gNumGuestsInPark) - static_cast<int32_t>(gNumGuestsInParkLastWeek);
+    int32_t changeInGuestsInPark = static_cast<int32_t>(gameState.NumGuestsInPark)
+        - static_cast<int32_t>(gNumGuestsInParkLastWeek);
     if (changeInGuestsInPark > -20)
     {
         guestChangeModifier++;
@@ -759,12 +764,11 @@ void Park::UpdateHistories()
         }
     }
     gGuestChangeModifier = guestChangeModifier;
-    gNumGuestsInParkLastWeek = gNumGuestsInPark;
+    gNumGuestsInParkLastWeek = gameState.NumGuestsInPark;
 
     // Update park rating, guests in park and current cash history
-    auto& gameState = GetGameState();
     HistoryPushRecord<uint8_t, 32>(gParkRatingHistory, gameState.ParkRating / 4);
-    HistoryPushRecord<uint32_t, 32>(gGuestsInParkHistory, gNumGuestsInPark);
+    HistoryPushRecord<uint32_t, 32>(gGuestsInParkHistory, gameState.NumGuestsInPark);
     HistoryPushRecord<money64, std::size(gCashHistory)>(gCashHistory, FinanceGetCurrentCash() - gBankLoan);
 
     // Update weekly profit history

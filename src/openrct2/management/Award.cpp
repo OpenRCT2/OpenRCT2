@@ -110,7 +110,7 @@ static bool AwardIsDeservedMostUntidy(int32_t activeAwardTypes)
         }
     }
 
-    return (negativeCount > gNumGuestsInPark / 16);
+    return (negativeCount > GetGameState().NumGuestsInPark / 16);
 }
 
 /** More than 1/64 of the total guests must be thinking tidy thoughts and less than 6 guests thinking untidy thoughts. */
@@ -142,7 +142,7 @@ static bool AwardIsDeservedMostTidy(int32_t activeAwardTypes)
         }
     }
 
-    return (negativeCount <= 5 && positiveCount > gNumGuestsInPark / 64);
+    return (negativeCount <= 5 && positiveCount > GetGameState().NumGuestsInPark / 64);
 }
 
 /** At least 6 open roller coasters. */
@@ -223,7 +223,7 @@ static bool AwardIsDeservedMostBeautiful(int32_t activeAwardTypes)
         }
     }
 
-    return (negativeCount <= 15 && positiveCount > gNumGuestsInPark / 128);
+    return (negativeCount <= 15 && positiveCount > GetGameState().NumGuestsInPark / 128);
 }
 
 /** Entrance fee is more than total ride value. */
@@ -311,7 +311,7 @@ static bool AwardIsDeservedBestFood(int32_t activeAwardTypes)
         }
     }
 
-    if (shops < 7 || uniqueShops < 4 || shops < gNumGuestsInPark / 128)
+    if (shops < 7 || uniqueShops < 4 || shops < GetGameState().NumGuestsInPark / 128)
         return false;
 
     // Count hungry peeps
@@ -356,7 +356,7 @@ static bool AwardIsDeservedWorstFood(int32_t activeAwardTypes)
         }
     }
 
-    if (uniqueShops > 2 || shops > gNumGuestsInPark / 256)
+    if (uniqueShops > 2 || shops > GetGameState().NumGuestsInPark / 256)
         return false;
 
     // Count hungry peeps
@@ -388,7 +388,7 @@ static bool AwardIsDeservedBestToilets([[maybe_unused]] int32_t activeAwardTypes
         return false;
 
     // At least one open toilet for every 128 guests
-    if (numToilets < gNumGuestsInPark / 128u)
+    if (numToilets < GetGameState().NumGuestsInPark / 128u)
         return false;
 
     // Count number of guests who are thinking they need the toilet
