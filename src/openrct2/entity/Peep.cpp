@@ -1075,7 +1075,7 @@ void PeepProblemWarningsUpdate()
                     break;
                 }
                 ride = GetRide(peep->GuestHeadingToRideId);
-                if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+                if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SELLS_FOOD))
                     hungerCounter++;
                 break;
 
