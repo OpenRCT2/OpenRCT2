@@ -21,6 +21,7 @@
 - Fix: [#21178] Inca Lost City’s scenario description incorrectly states there are height restrictions.
 - Fix: [#21179] Additional missing land/construction rights tiles in Inca Lost City & Renovation.
 - Fix: [#21198] [Plugin] Setting brake or booster speeds on a tile element doesn’t work.
+- Fix: [#21291] Hungry guests heading to any flat ride do not count for warning threshold (original bug).
 
 0.4.7 (2023-12-31)
 ------------------------------------------------------------------------
