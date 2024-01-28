@@ -7,6 +7,7 @@
 - Improved: [#21227] Entrance style dropdown is now sorted alphabetically everywhere.
 - Change: [#21200] Raise maximum lift speeds of the Reverser Coaster, Side Friction Coaster, and Virginia Reel for RCT1 parity.
 - Change: [#21225] Raise maximum allowed misc entities to 1600.
+- Fix: [#19494] RCT1 fence gate walls not imported properly if they were placed on slopes.
 - Fix: [#20196] New scenarios start with an incorrect temperature.
 - Fix: [#20255] Images from the last hovered-over coaster in the object selection are not freed.
 - Fix: [#20616] Confirmation button in the track designer’s quit prompt has the wrong text.
