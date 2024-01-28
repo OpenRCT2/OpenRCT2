@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../actions/GameAction.h"
@@ -62,19 +63,12 @@
 #include <memory>
 #include <optional>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
 uint8_t gGuestChangeModifier;
 uint32_t gNumGuestsInPark;
 uint32_t gNumGuestsInParkLastWeek;
-uint32_t gNumGuestsHeadingForPark;
-
-money64 gGuestInitialCash;
-uint8_t gGuestInitialHappiness;
-uint8_t gGuestInitialHunger;
-uint8_t gGuestInitialThirst;
-
-uint32_t gNextGuestNumber;
 
 uint8_t gPeepWarningThrottle[16];
 
@@ -211,11 +205,13 @@ void PeepUpdateAll()
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return;
 
+    const auto currentTicks = OpenRCT2::GetGameState().CurrentTicks;
+
     int32_t i = 0;
     // Warning this loop can delete peeps
     for (auto peep : EntityList<Guest>())
     {
-        if (static_cast<uint32_t>(i & 0x7F) != (gCurrentTicks & 0x7F))
+        if (static_cast<uint32_t>(i & 0x7F) != (currentTicks & 0x7F))
         {
             peep->Update();
         }
@@ -234,7 +230,7 @@ void PeepUpdateAll()
 
     for (auto staff : EntityList<Staff>())
     {
-        if (static_cast<uint32_t>(i & 0x7F) != (gCurrentTicks & 0x7F))
+        if (static_cast<uint32_t>(i & 0x7F) != (currentTicks & 0x7F))
         {
             staff->Update();
         }
@@ -888,7 +884,7 @@ void Peep::SetState(PeepState new_state)
  */
 void Peep::UpdatePicked()
 {
-    if (gCurrentTicks & 0x1F)
+    if (OpenRCT2::GetGameState().CurrentTicks & 0x1F)
         return;
     SubState++;
     auto* guest = As<Guest>();
@@ -1574,7 +1570,7 @@ void Peep::FormatNameTo(Formatter& ft) const
             ft.Add<StringId>(_staffNames[staffNameIndex]);
             ft.Add<uint32_t>(PeepId);
         }
-        else if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
+        else if (GetGameState().ParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
             auto realNameStringId = GetRealNameStringIDFromPeepID(PeepId);
             ft.Add<StringId>(realNameStringId);
@@ -1594,7 +1590,7 @@ std::string Peep::GetName() const
 {
     Formatter ft;
     FormatNameTo(ft);
-    return FormatStringID(STR_STRINGID, ft.Data());
+    return ::FormatStringID(STR_STRINGID, ft.Data());
 }
 
 bool Peep::SetName(std::string_view value)
@@ -1821,6 +1817,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             return true;
         }
 
+        auto& gameState = GetGameState();
         uint8_t entranceDirection = tile_element->GetDirection();
         if (entranceDirection != guest->PeepDirection)
         {
@@ -1840,7 +1837,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             if (!(guest->PeepFlags & PEEP_FLAGS_LEAVING_PARK))
             {
                 // If the park is open and leaving flag isn't set return to centre
-                if (gParkFlags & PARK_FLAGS_PARK_OPEN)
+                if (gameState.ParkFlags & PARK_FLAGS_PARK_OPEN)
                 {
                     PeepReturnToCentreOfTile(guest);
                     return true;
@@ -1873,7 +1870,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             return true;
         }
 
-        if (!(gParkFlags & PARK_FLAGS_PARK_OPEN))
+        if (!(gameState.ParkFlags & PARK_FLAGS_PARK_OPEN))
         {
             guest->State = PeepState::LeavingPark;
             guest->Var37 = 1;
@@ -1884,9 +1881,10 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
         }
 
         bool found = false;
-        auto entrance = std::find_if(
-            gParkEntrances.begin(), gParkEntrances.end(), [coords](const auto& e) { return coords.ToTileStart() == e; });
-        if (entrance != gParkEntrances.end())
+        auto entrance = std::find_if(gameState.ParkEntrances.begin(), gameState.ParkEntrances.end(), [coords](const auto& e) {
+            return coords.ToTileStart() == e;
+        });
+        if (entrance != gameState.ParkEntrances.end())
         {
             int16_t z = entrance->z / 8;
             entranceDirection = entrance->direction;
@@ -2321,7 +2319,7 @@ static bool PeepInteractWithShop(Peep* peep, const CoordsXYE& coords)
         }
 
         auto cost = ride->price[0];
-        if (cost != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (cost != 0 && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             ride->total_profit += cost;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
@@ -2586,7 +2584,7 @@ int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b
 
     if (peep_a->Name == nullptr && peep_b->Name == nullptr)
     {
-        if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
+        if (GetGameState().ParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
             // Potentially could find a more optional way of sorting dynamic real names
         }
@@ -2616,14 +2614,15 @@ int32_t PeepCompare(const EntityId sprite_index_a, const EntityId sprite_index_b
  */
 void PeepUpdateNames(bool realNames)
 {
+    auto& gameState = GetGameState();
     if (realNames)
     {
-        gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        gameState.ParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         // Peep names are now dynamic
     }
     else
     {
-        gParkFlags &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        gameState.ParkFlags &= ~PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         // Peep names are now dynamic
     }
 
@@ -2646,9 +2645,11 @@ void IncrementGuestsInPark()
 
 void IncrementGuestsHeadingForPark()
 {
-    if (gNumGuestsHeadingForPark < UINT32_MAX)
+    auto& gameState = GetGameState();
+
+    if (gameState.NumGuestsHeadingForPark < UINT32_MAX)
     {
-        gNumGuestsHeadingForPark++;
+        gameState.NumGuestsHeadingForPark++;
     }
     else
     {
@@ -2670,9 +2671,11 @@ void DecrementGuestsInPark()
 
 void DecrementGuestsHeadingForPark()
 {
-    if (gNumGuestsHeadingForPark > 0)
+    auto& gameState = GetGameState();
+
+    if (gameState.NumGuestsHeadingForPark > 0)
     {
-        gNumGuestsHeadingForPark--;
+        gameState.NumGuestsHeadingForPark--;
     }
     else
     {

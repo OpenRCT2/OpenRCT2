@@ -3700,6 +3700,8 @@ STR_6591    :El empleado está reparando una atracción y no puede ser despedido
 STR_6592    :El empleado está inspeccionando una atracción y no puede ser despedido.
 STR_6593    :Eliminar vallas del parque
 STR_6594    :Inspector de cuadricula: Alternar inclinación del muro
+STR_6595    :{WINDOW_COLOUR_2}Autor: {BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}Autores: {BLACK}{STRING}
 
 ##############
 # Escenarios #
@@ -4364,7 +4366,7 @@ STR_DTLS    :Eres un exitoso magnate de los negocios que se ha tomado cuatro añ
 <South America - Inca Lost City>
 STR_SCNR    :Sudamérica; Ciudad perdida inca
 STR_PARK    :Fundador de la ciudad perdida
-STR_DTLS    :Para impulsar aún más el turismo local, tienes que construir un parque que esté a tono con el entorno que lo rodea, y respetando las restricciones de altura.
+STR_DTLS    :Para impulsar aún más el turismo local, tienes que construir un parque que esté en sintonía con el entorno que lo rodea.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :Sudamérica - Meseta selvática

@@ -92,7 +92,11 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
     }
 
     auto z = ride->GetStation(_stationNum).GetBaseZ();
-    if (!LocationValid(_loc) || (!gCheatsSandboxMode && !MapIsLocationOwned({ _loc, z })))
+    if (!LocationValid(_loc))
+    {
+        return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_OFF_EDGE_OF_MAP);
+    }
+    if (!gCheatsSandboxMode && !MapIsLocationOwned({ _loc, z }))
     {
         return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
     }

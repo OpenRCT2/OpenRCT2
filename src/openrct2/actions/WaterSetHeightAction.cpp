@@ -9,11 +9,14 @@
 
 #include "WaterSetHeightAction.h"
 
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/Park.h"
 #include "../world/Surface.h"
+
+using namespace OpenRCT2;
 
 WaterSetHeightAction::WaterSetHeightAction(const CoordsXY& coords, uint8_t height)
     : _coords(coords)
@@ -46,7 +49,7 @@ GameActions::Result WaterSetHeightAction::Query() const
     res.Position = { _coords, _height * COORDS_Z_STEP };
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
-        && gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
+        && GetGameState().ParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
     }

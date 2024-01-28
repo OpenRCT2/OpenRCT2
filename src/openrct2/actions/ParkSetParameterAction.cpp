@@ -9,10 +9,13 @@
 
 #include "ParkSetParameterAction.h"
 
+#include "../GameState.h"
 #include "../interface/Window.h"
 #include "../ride/ShopItem.h"
 #include "../util/Util.h"
 #include "../world/Park.h"
+
+using namespace OpenRCT2;
 
 ParkSetParameterAction::ParkSetParameterAction(ParkParameter parameter, uint64_t value)
     : _parameter(parameter)
@@ -51,19 +54,20 @@ GameActions::Result ParkSetParameterAction::Query() const
 
 GameActions::Result ParkSetParameterAction::Execute() const
 {
+    auto& gameState = GetGameState();
     switch (_parameter)
     {
         case ParkParameter::Close:
-            if (gParkFlags & PARK_FLAGS_PARK_OPEN)
+            if (gameState.ParkFlags & PARK_FLAGS_PARK_OPEN)
             {
-                gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
+                gameState.ParkFlags &= ~PARK_FLAGS_PARK_OPEN;
                 WindowInvalidateByClass(WindowClass::ParkInformation);
             }
             break;
         case ParkParameter::Open:
-            if (!(gParkFlags & PARK_FLAGS_PARK_OPEN))
+            if (!(gameState.ParkFlags & PARK_FLAGS_PARK_OPEN))
             {
-                gParkFlags |= PARK_FLAGS_PARK_OPEN;
+                gameState.ParkFlags |= PARK_FLAGS_PARK_OPEN;
                 WindowInvalidateByClass(WindowClass::ParkInformation);
             }
             break;

@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../TrackImporter.h"
 #include "../actions/FootpathLayoutPlaceAction.h"
@@ -412,13 +413,11 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
     } while (!(tileElement++)->IsLastForTile());
     // Add something that stops this from walking off the end
 
-    uint8_t entranceDirection = tileElement->GetDirection();
-    TrackDesignMazeElement mazeEntrance{};
-    mazeEntrance.direction = entranceDirection;
-    mazeEntrance.type = 8;
-    mazeEntrance.x = static_cast<int8_t>((entranceLoc.x - startLoc.x) / 32);
-    mazeEntrance.y = static_cast<int8_t>((entranceLoc.y - startLoc.y) / 32);
-    maze_elements.push_back(mazeEntrance);
+    auto entranceOffset = entranceLoc - startLoc;
+    TrackDesignEntranceElement mazeEntrance{};
+    mazeEntrance.Location = TileCoordsXYZD(CoordsXYZD(entranceOffset, 0, tileElement->GetDirection()));
+    mazeEntrance.IsExit = false;
+    entrance_elements.push_back(mazeEntrance);
 
     location = ride.GetStation().Exit;
     if (location.IsNull())
@@ -441,13 +440,11 @@ ResultWithMessage TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, cons
     } while (!(tileElement++)->IsLastForTile());
     // Add something that stops this from walking off the end
 
-    uint8_t exit_direction = tileElement->GetDirection();
-    TrackDesignMazeElement mazeExit{};
-    mazeExit.direction = exit_direction;
-    mazeExit.type = 0x80;
-    mazeExit.x = static_cast<int8_t>((exitLoc.x - startLoc.x) / 32);
-    mazeExit.y = static_cast<int8_t>((exitLoc.y - startLoc.y) / 32);
-    maze_elements.push_back(mazeExit);
+    auto exitOffset = exitLoc - startLoc;
+    TrackDesignEntranceElement mazeExit{};
+    mazeExit.Location = TileCoordsXYZD(CoordsXYZD(exitOffset, 0, tileElement->GetDirection()));
+    mazeExit.IsExit = true;
+    entrance_elements.push_back(mazeExit);
 
     // Save global vars as they are still used by scenery????
     int32_t startZ = tds.Origin.z;
@@ -874,6 +871,18 @@ static void TrackDesignMirrorScenery(TrackDesign* td6)
     }
 }
 
+static void TrackDesignMirrorEntrances(TrackDesign& td)
+{
+    for (auto& entrance : td.entrance_elements)
+    {
+        entrance.Location.y = -entrance.Location.y;
+        if (entrance.Location.direction & 1)
+        {
+            entrance.Location.direction = DirectionReverse(entrance.Location.direction);
+        }
+    }
+}
+
 /**
  *
  *  rct2: 0x006D2443
@@ -884,15 +893,6 @@ static void TrackDesignMirrorRide(TrackDesign* td6)
     {
         const auto& ted = GetTrackElementDescriptor(track.Type);
         track.Type = ted.MirrorElement;
-    }
-
-    for (auto& entrance : td6->entrance_elements)
-    {
-        entrance.Location.y = -entrance.Location.y;
-        if (entrance.Location.direction & 1)
-        {
-            entrance.Location.direction = DirectionReverse(entrance.Location.direction);
-        }
     }
 }
 
@@ -910,15 +910,6 @@ static void TrackDesignMirrorMaze(TrackDesign* td6)
     for (auto& maze : td6->maze_elements)
     {
         maze.y = -maze.y;
-
-        if (maze.type == 0x8 || maze.type == 0x80)
-        {
-            if (maze.direction & 1)
-            {
-                maze.direction = DirectionReverse(maze.direction);
-            }
-            continue;
-        }
 
         uint16_t maze_entry = maze.maze_entry;
         uint16_t new_entry = 0;
@@ -946,6 +937,7 @@ void TrackDesignMirror(TrackDesign* td6)
     {
         TrackDesignMirrorRide(td6);
     }
+    TrackDesignMirrorEntrances(*td6);
     TrackDesignMirrorScenery(td6);
 }
 
@@ -1347,27 +1339,130 @@ static GameActions::Result TrackDesignPlaceAllScenery(
     return res;
 }
 
+static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
+    TrackDesignState& tds, const TrackDesign& td, CoordsXYZ newCoords, RideId rideId, money64& totalCost)
+{
+    for (const auto& entrance : td.entrance_elements)
+    {
+        auto rotation = _currentTrackPieceDirection & 3;
+        CoordsXY entranceMapPos = entrance.Location.ToCoordsXY();
+        auto rotatedEntranceMapPos = entranceMapPos.Rotate(rotation);
+        newCoords = { rotatedEntranceMapPos + tds.Origin, newCoords.z };
+
+        TrackDesignUpdatePreviewBounds(tds, newCoords);
+
+        switch (tds.PlaceOperation)
+        {
+            case PTD_OPERATION_DRAW_OUTLINES:
+                TrackDesignAddSelectedTile(newCoords);
+                break;
+            case PTD_OPERATION_PLACE_QUERY:
+            case PTD_OPERATION_PLACE:
+            case PTD_OPERATION_PLACE_GHOST:
+            case PTD_OPERATION_PLACE_TRACK_PREVIEW:
+            {
+                rotation = (rotation + entrance.Location.direction) & 3;
+                newCoords.z = entrance.Location.z * COORDS_Z_STEP;
+                newCoords.z += tds.Origin.z;
+
+                if (tds.PlaceOperation != PTD_OPERATION_PLACE_QUERY)
+                {
+                    auto tile = CoordsXY{ newCoords } + CoordsDirectionDelta[rotation];
+                    TileElement* tile_element = MapGetFirstElementAt(tile);
+                    if (tile_element == nullptr)
+                    {
+                        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+                    }
+
+                    do
+                    {
+                        if (tile_element->GetType() != TileElementType::Track)
+                        {
+                            continue;
+                        }
+                        if (tile_element->GetBaseZ() != newCoords.z)
+                        {
+                            continue;
+                        }
+
+                        auto stationIndex = tile_element->AsTrack()->GetStationIndex();
+                        uint8_t flags = GAME_COMMAND_FLAG_APPLY;
+                        if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
+                        {
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                                | GAME_COMMAND_FLAG_NO_SPEND;
+                        }
+                        if (tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST)
+                        {
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
+                                | GAME_COMMAND_FLAG_GHOST;
+                        }
+                        if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
+                        {
+                            flags = 0;
+                        }
+                        if (tds.IsReplay)
+                        {
+                            flags |= GAME_COMMAND_FLAG_REPLAY;
+                        }
+
+                        auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
+                            newCoords, rotation, rideId, stationIndex, entrance.IsExit);
+                        rideEntranceExitPlaceAction.SetFlags(flags);
+                        auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideEntranceExitPlaceAction)
+                                                                   : GameActions::QueryNested(&rideEntranceExitPlaceAction);
+
+                        if (res.Error != GameActions::Status::Ok)
+                        {
+                            return res;
+                        }
+                        totalCost += res.Cost;
+                        tds.EntranceExitPlaced = true;
+                        _trackDesignPlaceStateEntranceExitPlaced = true;
+                        break;
+                    } while (!(tile_element++)->IsLastForTile());
+                }
+                else
+                {
+                    auto res = RideEntranceExitPlaceAction::TrackPlaceQuery(newCoords, false);
+                    if (res.Error != GameActions::Status::Ok)
+                    {
+                        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+                    }
+
+                    totalCost += res.Cost;
+                    tds.EntranceExitPlaced = true;
+                    _trackDesignPlaceStateEntranceExitPlaced = true;
+                }
+                break;
+            }
+        }
+    }
+
+    return std::nullopt;
+}
+
 static GameActions::Result TrackDesignPlaceMaze(
-    TrackDesignState& tds, TrackDesign* td6, const CoordsXYZ& coords, const Ride& ride)
+    TrackDesignState& tds, TrackDesign& td, const CoordsXYZ& origin, const Ride& ride)
 {
     if (tds.PlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
     {
         gMapSelectionTiles.clear();
-        gMapSelectArrowPosition = CoordsXYZ{ coords, TileElementHeight(coords) };
+        gMapSelectArrowPosition = CoordsXYZ{ origin, TileElementHeight(origin) };
         gMapSelectArrowDirection = _currentTrackPieceDirection;
     }
 
     tds.PlaceZ = 0;
     money64 totalCost = 0;
 
-    for (const auto& maze_element : td6->maze_elements)
+    for (const auto& maze_element : td.maze_elements)
     {
         uint8_t rotation = _currentTrackPieceDirection & 3;
         CoordsXY mazeMapPos = TileCoordsXY(maze_element.x, maze_element.y).ToCoordsXY();
         auto mapCoord = mazeMapPos.Rotate(rotation);
-        mapCoord += coords;
+        mapCoord += origin;
 
-        TrackDesignUpdatePreviewBounds(tds, { mapCoord, coords.z });
+        TrackDesignUpdatePreviewBounds(tds, { mapCoord, origin.z });
 
         if (tds.PlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
         {
@@ -1379,135 +1474,40 @@ static GameActions::Result TrackDesignPlaceMaze(
         {
             uint8_t flags;
             money64 cost = 0;
-            uint16_t maze_entry;
-            switch (maze_element.type)
+
+            uint16_t maze_entry = Numerics::rol16(maze_element.maze_entry, rotation * 4);
+
+            if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
             {
-                case MAZE_ELEMENT_TYPE_ENTRANCE:
-                    // entrance
-                    rotation += maze_element.direction;
-                    rotation &= 3;
-
-                    flags = GAME_COMMAND_FLAG_APPLY;
-
-                    if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
-                    {
-                        auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({ mapCoord, coords.z }, false);
-                        if (res.Error != GameActions::Status::Ok)
-                        {
-                            return res;
-                        }
-                        cost = res.Cost;
-                    }
-                    else
-                    {
-                        if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
-                        {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                                | GAME_COMMAND_FLAG_NO_SPEND;
-                        }
-                        else if (tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST)
-                        {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-                                | GAME_COMMAND_FLAG_GHOST;
-                        }
-                        if (tds.IsReplay)
-                        {
-                            flags |= GAME_COMMAND_FLAG_REPLAY;
-                        }
-                        auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
-                            mapCoord, rotation, ride.id, StationIndex::FromUnderlying(0), false);
-                        rideEntranceExitPlaceAction.SetFlags(flags);
-                        auto res = GameActions::ExecuteNested(&rideEntranceExitPlaceAction);
-                        if (res.Error != GameActions::Status::Ok)
-                        {
-                            return res;
-                        }
-                        cost = res.Cost;
-                    }
-                    tds.EntranceExitPlaced = true;
-                    _trackDesignPlaceStateEntranceExitPlaced = true;
-                    break;
-                case MAZE_ELEMENT_TYPE_EXIT:
-                    // exit
-                    rotation += maze_element.direction;
-                    rotation &= 3;
-
-                    flags = GAME_COMMAND_FLAG_APPLY;
-
-                    if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
-                    {
-                        auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({ mapCoord, coords.z }, true);
-                        if (res.Error != GameActions::Status::Ok)
-                        {
-                            return res;
-                        }
-                        cost = res.Cost;
-                    }
-                    else
-                    {
-                        if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
-                        {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                                | GAME_COMMAND_FLAG_NO_SPEND;
-                        }
-                        else if (tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST)
-                        {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-                                | GAME_COMMAND_FLAG_GHOST;
-                        }
-                        if (tds.IsReplay)
-                        {
-                            flags |= GAME_COMMAND_FLAG_REPLAY;
-                        }
-                        auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
-                            mapCoord, rotation, ride.id, StationIndex::FromUnderlying(0), true);
-                        rideEntranceExitPlaceAction.SetFlags(flags);
-                        auto res = GameActions::ExecuteNested(&rideEntranceExitPlaceAction);
-                        if (res.Error != GameActions::Status::Ok)
-                        {
-                            return res;
-                        }
-                        cost = res.Cost;
-                    }
-                    tds.EntranceExitPlaced = true;
-                    _trackDesignPlaceStateEntranceExitPlaced = true;
-                    break;
-                default:
-                    maze_entry = Numerics::rol16(maze_element.maze_entry, rotation * 4);
-
-                    if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
-                    {
-                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
-                    }
-                    else if (tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST)
-                    {
-                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-                            | GAME_COMMAND_FLAG_GHOST;
-                    }
-                    else if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
-                    {
-                        flags = 0;
-                    }
-                    else
-                    {
-                        flags = GAME_COMMAND_FLAG_APPLY;
-                    }
-                    if (tds.IsReplay)
-                    {
-                        flags |= GAME_COMMAND_FLAG_REPLAY;
-                    }
-
-                    auto mazePlace = MazePlaceTrackAction({ mapCoord, coords.z }, ride.id, maze_entry);
-                    mazePlace.SetFlags(flags);
-                    auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&mazePlace)
-                                                               : GameActions::QueryNested(&mazePlace);
-                    if (res.Error != GameActions::Status::Ok)
-                    {
-                        return res;
-                    }
-                    cost = res.Cost;
-                    break;
+                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
             }
+            else if (tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST)
+            {
+                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
+                    | GAME_COMMAND_FLAG_GHOST;
+            }
+            else if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
+            {
+                flags = 0;
+            }
+            else
+            {
+                flags = GAME_COMMAND_FLAG_APPLY;
+            }
+            if (tds.IsReplay)
+            {
+                flags |= GAME_COMMAND_FLAG_REPLAY;
+            }
+
+            auto mazePlace = MazePlaceTrackAction({ mapCoord, origin.z }, ride.id, maze_entry);
+            mazePlace.SetFlags(flags);
+            auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&mazePlace)
+                                                       : GameActions::QueryNested(&mazePlace);
+            if (res.Error != GameActions::Status::Ok)
+            {
+                return res;
+            }
+            cost = res.Cost;
 
             totalCost += cost;
         }
@@ -1538,12 +1538,20 @@ static GameActions::Result TrackDesignPlaceMaze(
                 surfaceZ = waterZ;
             }
 
-            int16_t temp_z = coords.z + tds.PlaceZ - surfaceZ;
+            int16_t temp_z = origin.z + tds.PlaceZ - surfaceZ;
             if (temp_z < 0)
             {
                 tds.PlaceZ -= temp_z;
             }
         }
+    }
+
+    tds.Origin = origin;
+
+    auto result = TrackDesignPlaceEntrances(tds, td, origin, ride.id, totalCost);
+    if (result.has_value())
+    {
+        return result.value();
     }
 
     if (tds.PlaceOperation == PTD_OPERATION_REMOVE_GHOST)
@@ -1552,8 +1560,6 @@ static GameActions::Result TrackDesignPlaceMaze(
         gameAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         GameActions::Execute(&gameAction);
     }
-
-    tds.Origin = coords;
 
     auto res = GameActions::Result();
     res.Cost = totalCost;
@@ -1721,102 +1727,10 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
         }
     }
 
-    // Entrance elements
-    for (const auto& entrance : td6->entrance_elements)
+    auto result = TrackDesignPlaceEntrances(tds, *td6, newCoords, ride.id, totalCost);
+    if (result.has_value())
     {
-        rotation = _currentTrackPieceDirection & 3;
-        CoordsXY entranceMapPos = entrance.Location.ToCoordsXY();
-        auto rotatedEntranceMapPos = entranceMapPos.Rotate(rotation);
-        newCoords = { rotatedEntranceMapPos + tds.Origin, newCoords.z };
-
-        TrackDesignUpdatePreviewBounds(tds, newCoords);
-
-        switch (tds.PlaceOperation)
-        {
-            case PTD_OPERATION_DRAW_OUTLINES:
-                TrackDesignAddSelectedTile(newCoords);
-                break;
-            case PTD_OPERATION_PLACE_QUERY:
-            case PTD_OPERATION_PLACE:
-            case PTD_OPERATION_PLACE_GHOST:
-            case PTD_OPERATION_PLACE_TRACK_PREVIEW:
-            {
-                rotation = (rotation + entrance.Location.direction) & 3;
-                newCoords.z = entrance.Location.z * COORDS_Z_STEP;
-                newCoords.z += tds.Origin.z;
-
-                if (tds.PlaceOperation != PTD_OPERATION_PLACE_QUERY)
-                {
-                    auto tile = CoordsXY{ newCoords } + CoordsDirectionDelta[rotation];
-                    TileElement* tile_element = MapGetFirstElementAt(tile);
-                    if (tile_element == nullptr)
-                    {
-                        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
-                    }
-
-                    do
-                    {
-                        if (tile_element->GetType() != TileElementType::Track)
-                        {
-                            continue;
-                        }
-                        if (tile_element->GetBaseZ() != newCoords.z)
-                        {
-                            continue;
-                        }
-
-                        auto stationIndex = tile_element->AsTrack()->GetStationIndex();
-                        uint8_t flags = GAME_COMMAND_FLAG_APPLY;
-                        if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
-                        {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-                                | GAME_COMMAND_FLAG_NO_SPEND;
-                        }
-                        if (tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST)
-                        {
-                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-                                | GAME_COMMAND_FLAG_GHOST;
-                        }
-                        if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
-                        {
-                            flags = 0;
-                        }
-                        if (tds.IsReplay)
-                        {
-                            flags |= GAME_COMMAND_FLAG_REPLAY;
-                        }
-
-                        auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
-                            newCoords, rotation, ride.id, stationIndex, entrance.IsExit);
-                        rideEntranceExitPlaceAction.SetFlags(flags);
-                        auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideEntranceExitPlaceAction)
-                                                                   : GameActions::QueryNested(&rideEntranceExitPlaceAction);
-
-                        if (res.Error != GameActions::Status::Ok)
-                        {
-                            return res;
-                        }
-                        totalCost += res.Cost;
-                        tds.EntranceExitPlaced = true;
-                        _trackDesignPlaceStateEntranceExitPlaced = true;
-                        break;
-                    } while (!(tile_element++)->IsLastForTile());
-                }
-                else
-                {
-                    auto res = RideEntranceExitPlaceAction::TrackPlaceQuery(newCoords, false);
-                    if (res.Error != GameActions::Status::Ok)
-                    {
-                        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
-                    }
-
-                    totalCost += res.Cost;
-                    tds.EntranceExitPlaced = true;
-                    _trackDesignPlaceStateEntranceExitPlaced = true;
-                }
-                break;
-            }
-        }
+        return result.value();
     }
 
     if (tds.PlaceOperation == PTD_OPERATION_REMOVE_GHOST)
@@ -1877,7 +1791,7 @@ static GameActions::Result TrackDesignPlaceVirtual(
     const auto& rtd = GetRideTypeDescriptor(td6->type);
     if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
     {
-        trackPlaceRes = TrackDesignPlaceMaze(tds, td6, coords, ride);
+        trackPlaceRes = TrackDesignPlaceMaze(tds, *td6, coords, ride);
     }
     else
     {
@@ -2022,10 +1936,11 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
         }
     }
 
+    auto& gameState = GetGameState();
     _trackDesignDrawingPreview = true;
     uint8_t backup_rotation = _currentTrackPieceDirection;
-    uint32_t backup_park_flags = gParkFlags;
-    gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+    uint32_t backup_park_flags = gameState.ParkFlags;
+    gameState.ParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
     auto mapSize = TileCoordsXY{ gMapSize.x * 16, gMapSize.y * 16 };
 
     _currentTrackPieceDirection = 0;
@@ -2049,7 +1964,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     auto res = TrackDesignPlaceVirtual(
         tds, td6, PTD_OPERATION_PLACE_TRACK_PREVIEW, placeScenery, *ride,
         { mapSize.x, mapSize.y, z, _currentTrackPieceDirection });
-    gParkFlags = backup_park_flags;
+    gameState.ParkFlags = backup_park_flags;
 
     if (res.Error == GameActions::Status::Ok)
     {

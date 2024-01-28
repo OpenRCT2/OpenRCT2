@@ -49,7 +49,10 @@ static std::unique_ptr<IContext> localStartGame(const std::string& parkPath)
     auto importer = ParkImporter::CreateS6(context->GetObjectRepository());
     auto loadResult = importer->LoadSavedGame(parkPath.c_str(), false);
     context->GetObjectManager().LoadObjects(loadResult.RequiredObjects);
-    importer->Import();
+
+    // TODO: Have a separate GameState and exchange once loaded.
+    auto& gameState = GetGameState();
+    importer->Import(gameState);
 
     ResetEntitySpatialIndices();
 
@@ -99,7 +102,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     // Open park for free but charging for rides
     execute<ParkSetParameterAction>(ParkParameter::Open);
     execute<ParkSetEntranceFeeAction>(0);
-    gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+    GetGameState().ParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find ferris wheel
     auto rideManager = GetRideManager();
@@ -160,7 +163,7 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     // Open park for free but charging for rides
     execute<ParkSetParameterAction>(ParkParameter::Open);
     execute<ParkSetEntranceFeeAction>(0);
-    gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+    GetGameState().ParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
 
     // Find car ride
     auto rideManager = GetRideManager();

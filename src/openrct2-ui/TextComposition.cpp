@@ -276,7 +276,8 @@ void TextComposition::CaretMoveToLeftToken()
             lastChar = selectionOffset;
             break;
         }
-
+        if (selectionOffset == 0)
+            break;
         ch--;
         selectionOffset--;
     }
@@ -295,12 +296,13 @@ void TextComposition::CaretMoveToLeftToken()
             break;
 
         lastChar = selectionOffset;
-
+        if (selectionOffset == 0)
+            break;
         ch--;
         selectionOffset--;
     }
 
-    _session.SelectionSize = std::max<size_t>(0, _session.SelectionSize - (selectionOffset - _session.SelectionStart));
+    _session.SelectionSize = _session.SelectionSize - (selectionOffset - _session.SelectionStart);
     _session.SelectionStart = selectionOffset == 0 ? 0 : lastChar;
 }
 

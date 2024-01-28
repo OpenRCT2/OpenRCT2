@@ -10,6 +10,7 @@
 #include "ConstructionClearance.h"
 
 #include "../Game.h"
+#include "../GameState.h"
 #include "../localisation/Formatter.h"
 #include "../object/LargeSceneryEntry.h"
 #include "../object/SmallSceneryEntry.h"
@@ -20,6 +21,8 @@
 #include "Park.h"
 #include "Scenery.h"
 #include "Surface.h"
+
+using namespace OpenRCT2;
 
 static int32_t MapPlaceClearFunc(
     TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money64* price, bool is_scenery)
@@ -32,13 +35,14 @@ static int32_t MapPlaceClearFunc(
 
     auto* scenery = (*tile_element)->AsSmallScenery()->GetEntry();
 
-    if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+    auto& gameState = GetGameState();
+    if (gameState.ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
     {
         if (scenery != nullptr && scenery->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
             return 1;
     }
 
-    if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && scenery != nullptr)
+    if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY) && scenery != nullptr)
         *price += scenery->removal_price;
 
     if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -185,7 +189,7 @@ GameActions::Result MapCanConstructWithClearAt(
             }
         }
 
-        if (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION && !isTree)
+        if (GetGameState().ParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION && !isTree)
         {
             const auto heightFromGround = pos.clearanceZ - tileElement->GetBaseZ();
 

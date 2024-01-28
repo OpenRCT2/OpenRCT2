@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../entity/EntityList.h"
 #include "../entity/Peep.h"
 #include "../interface/Viewport.h"
@@ -27,6 +28,8 @@
 #include "Footpath.h"
 #include "Map.h"
 #include "Scenery.h"
+
+using namespace OpenRCT2;
 
 using map_animation_invalidate_event_handler = bool (*)(const CoordsXYZ& loc);
 
@@ -192,7 +195,7 @@ static bool MapAnimationInvalidateSmallScenery(const CoordsXYZ& loc)
         if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_CLOCK))
         {
             // Peep, looking at scenery
-            if (!(gCurrentTicks & 0x3FF) && GameIsNotPaused())
+            if (!(GetGameState().CurrentTicks & 0x3FF) && GameIsNotPaused())
             {
                 int32_t direction = tileElement->GetDirection();
                 auto quad = EntityTileList<Peep>(CoordsXY{ loc } - CoordsDirectionDelta[direction]);
@@ -480,7 +483,7 @@ static bool MapAnimationInvalidateWallDoor(const CoordsXYZ& loc)
     TileCoordsXYZ tileLoc{ loc };
     TileElement* tileElement;
 
-    if (gCurrentTicks & 1)
+    if (GetGameState().CurrentTicks & 1)
         return false;
 
     bool removeAnimation = true;

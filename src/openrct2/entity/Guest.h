@@ -463,14 +463,6 @@ enum
 extern uint8_t gGuestChangeModifier;
 extern uint32_t gNumGuestsInPark;
 extern uint32_t gNumGuestsInParkLastWeek;
-extern uint32_t gNumGuestsHeadingForPark;
-
-extern money64 gGuestInitialCash;
-extern uint8_t gGuestInitialHappiness;
-extern uint8_t gGuestInitialHunger;
-extern uint8_t gGuestInitialThirst;
-
-extern uint32_t gNextGuestNumber;
 
 void PeepThoughtSetFormatArgs(const PeepThought* thought, Formatter& ft);
 

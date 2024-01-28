@@ -177,25 +177,6 @@ private:
     CoordsXYE MazeGetFirstElement(const Ride& ride);
 };
 
-// Only written to in RCT2, not used in OpenRCT2. All of these are elements that had to be invented in RCT1.
-enum : uint32_t
-{
-    TRACK_FLAGS_CONTAINS_VERTICAL_LOOP = (1 << 7),
-    TRACK_FLAGS_CONTAINS_INLINE_TWIST = (1 << 17),
-    TRACK_FLAGS_CONTAINS_HALF_LOOP = (1 << 18),
-    TRACK_FLAGS_CONTAINS_CORKSCREW = (1 << 19),
-    TRACK_FLAGS_CONTAINS_WATER_SPLASH = (1 << 27),
-    TRACK_FLAGS_CONTAINS_BARREL_ROLL = (1 << 29),
-    TRACK_FLAGS_CONTAINS_POWERED_LIFT = (1 << 30),
-    TRACK_FLAGS_CONTAINS_LARGE_HALF_LOOP = (1u << 31),
-};
-
-enum : uint32_t
-{
-    TRACK_FLAGS2_CONTAINS_LOG_FLUME_REVERSER = (1 << 1),
-    TRACK_FLAGS2_SIX_FLAGS_RIDE_DEPRECATED = (1u << 31) // Not used anymore.
-};
-
 enum
 {
     TDPF_PLACE_SCENERY = 1 << 0,
@@ -220,13 +201,6 @@ enum
 };
 
 static constexpr uint8_t PTD_OPERATION_FLAG_IS_REPLAY = (1 << 7);
-
-enum
-{
-    MAZE_ELEMENT_TYPE_MAZE_TRACK = 0,
-    MAZE_ELEMENT_TYPE_ENTRANCE = (1 << 3),
-    MAZE_ELEMENT_TYPE_EXIT = (1 << 7)
-};
 
 extern bool gTrackDesignSceneryToggle;
 

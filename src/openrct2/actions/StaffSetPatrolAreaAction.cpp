@@ -71,7 +71,7 @@ GameActions::Result StaffSetPatrolAreaAction::QueryExecute(bool executing) const
         {
             if (!LocationValid({ x, y }))
             {
-                return GameActions::Result(GameActions::Status::NotOwned, STR_SET_PATROL_AREA, STR_LAND_NOT_OWNED_BY_PARK);
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_SET_PATROL_AREA, STR_OFF_EDGE_OF_MAP);
             }
         }
     }

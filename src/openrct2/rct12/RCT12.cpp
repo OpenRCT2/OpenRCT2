@@ -13,6 +13,7 @@
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../object/ObjectList.h"
+#include "../rct1/Tables.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
@@ -407,7 +408,14 @@ int32_t RCT12WallElement::GetRCT1WallType(int32_t edge) const
 
     if (typeB != 0x0F)
     {
-        return typeA | (typeB << 2);
+        int32_t index = typeA | (typeB << 2);
+
+        auto slope = GetRCT1Slope();
+        auto edgeSlope = GetWallSlopeFromEdgeSlope(slope, edge & 3);
+        if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
+            index = RCT1::MapSlopedWall(index);
+
+        return index;
     }
 
     return -1;
@@ -923,6 +931,26 @@ uint8_t ConvertToTD46Flags(const TrackDesignTrackElement& source)
         trackFlags |= EnumValue(TD46Flags::IsInverted);
 
     return trackFlags;
+}
+
+void ImportMazeElement(TrackDesign& td, const TD46MazeElement& td46MazeElement)
+{
+    if (td46MazeElement.IsEntrance() || td46MazeElement.IsExit())
+    {
+        TrackDesignEntranceElement element{};
+        element.Location = TileCoordsXYZD(td46MazeElement.x, td46MazeElement.y, 0, td46MazeElement.Direction);
+        element.IsExit = td46MazeElement.IsExit();
+        td.entrance_elements.push_back(element);
+    }
+    else
+    {
+        TrackDesignMazeElement mazeElement{};
+        mazeElement.x = td46MazeElement.x;
+        mazeElement.y = td46MazeElement.y;
+        mazeElement.direction = td46MazeElement.Direction;
+        mazeElement.type = td46MazeElement.Type;
+        td.maze_elements.push_back(mazeElement);
+    }
 }
 
 namespace RCT12

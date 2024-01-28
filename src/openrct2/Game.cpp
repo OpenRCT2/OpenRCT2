@@ -13,6 +13,7 @@
 #include "Context.h"
 #include "Editor.h"
 #include "FileClassifier.h"
+#include "GameState.h"
 #include "GameStateSnapshots.h"
 #include "Input.h"
 #include "OpenRCT2.h"
@@ -74,6 +75,8 @@
 #include <iterator>
 #include <memory>
 
+using namespace OpenRCT2;
+
 uint16_t gCurrentDeltaTime;
 uint8_t gGamePaused = 0;
 int32_t gGameSpeed = 1;
@@ -87,7 +90,6 @@ bool gIsAutosaveLoaded = false;
 
 bool gLoadKeepWindowsOpen = false;
 
-uint32_t gCurrentTicks;
 uint32_t gCurrentRealTimeTicks;
 
 #ifdef ENABLE_SCRIPTING
@@ -212,7 +214,7 @@ void UpdatePaletteEffects()
         uint32_t shade = 0;
         if (gConfigGeneral.RenderWeatherGloom)
         {
-            auto paletteId = ClimateGetWeatherGloomPaletteId(gClimateCurrent);
+            auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().ClimateCurrent);
             if (paletteId != FilterPaletteID::PaletteNull)
             {
                 shade = 1;
@@ -347,6 +349,8 @@ void RCT2StringToUTF8Self(char* buffer, size_t length)
 
 static void FixGuestsHeadingToParkCount()
 {
+    auto& gameState = GetGameState();
+
     uint32_t guestsHeadingToPark = 0;
 
     for (auto* peep : EntityList<Guest>())
@@ -357,12 +361,13 @@ static void FixGuestsHeadingToParkCount()
         }
     }
 
-    if (gNumGuestsHeadingForPark != guestsHeadingToPark)
+    if (gameState.NumGuestsHeadingForPark != guestsHeadingToPark)
     {
-        LOG_WARNING("Corrected bad amount of guests heading to park: %u -> %u", gNumGuestsHeadingForPark, guestsHeadingToPark);
+        LOG_WARNING(
+            "Corrected bad amount of guests heading to park: %u -> %u", gameState.NumGuestsHeadingForPark, guestsHeadingToPark);
     }
 
-    gNumGuestsHeadingForPark = guestsHeadingToPark;
+    gameState.NumGuestsHeadingForPark = guestsHeadingToPark;
 }
 
 static void FixGuestCount()
@@ -639,7 +644,9 @@ void SaveGameCmd(u8string_view name /* = {} */)
 void SaveGameWithName(u8string_view name)
 {
     LOG_VERBOSE("Saving to %s", u8string(name).c_str());
-    if (ScenarioSave(name, gConfigGeneral.SavePluginData ? 1 : 0))
+
+    auto& gameState = GetGameState();
+    if (ScenarioSave(gameState, name, gConfigGeneral.SavePluginData ? 1 : 0))
     {
         LOG_VERBOSE("Saved to %s", u8string(name).c_str());
         gCurrentLoadedPath = name;
@@ -761,7 +768,9 @@ void GameAutosave()
         File::Copy(path, backupPath, true);
     }
 
-    if (!ScenarioSave(path, saveFlags))
+    auto& gameState = GetGameState();
+
+    if (!ScenarioSave(gameState, path, saveFlags))
         Console::Error::WriteLine("Could not autosave the scenario. Is the save folder writeable?");
 }
 

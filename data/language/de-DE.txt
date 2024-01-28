@@ -1059,7 +1059,7 @@ STR_1669    :{WINDOW_COLOUR_2}Zufriedenheit: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}Besucher gesamt: {BLACK}{COMMA32}
 STR_1671    :{WINDOW_COLOUR_2}Gesamtgewinn: {BLACK}{CURRENCY2DP}
 STR_1672    :Bremsen
-STR_1673    :Drehkontrolle umschalt.
+STR_1673    :Drehkontrolle umschalten
 STR_1674    :Bremsgeschwindigkeit
 STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Geschwindigkeitsgrenze{NEWLINE}für Bremsen einstellen
@@ -3326,7 +3326,7 @@ STR_6199    :Datum setzen
 STR_6200    :Datum zurücksetzen
 STR_6201    :{MONTH}
 STR_6202    :Stil des virtuellen Bodens:
-STR_6203    :Um vertikales Platzieren von Elementen zu vereinfachen, wird ein virtueller Boden eingeblendet, wenn Strg oder Shift gehalten wird
+STR_6203    :Um vertikales Platzieren von Elementen zu vereinfachen, wird ein virtueller Boden eingeblendet, wenn die Strg- oder Umschalttaste gehalten wird.
 STR_6215    :Konstruktion
 STR_6216    :Betrieb
 STR_6217    :Bahn- / Streckenverfügbarkeit
@@ -3650,7 +3650,7 @@ STR_6548    :Geländer an Kreuzung zeigen
 STR_6549    :Kompabilitätsobjekte können nicht ausgewählt werden!
 STR_6550    :Dieser Eintrag wird für die Abwärtskompabilität mit alten oder beschädigten Objekten bereitgestellt. Er kann nicht ausgewählt werden. Er kann nur abgewählt werden.
 STR_6551    :Armeegrün
-STR_6552    :Honigtau
+STR_6552    :Honigmelone
 STR_6553    :Loh
 STR_6554    :Kastanienrot
 STR_6555    :Koralle
@@ -4357,7 +4357,7 @@ STR_DTLS    :Sie sind ein erfolgreicher Geschäftsmann, der sich eine vierjähri
 <South America - Inca Lost City>
 STR_SCNR    :Südamerika - Verlorene Stadt der Inka
 STR_PARK    :Gründer der Verlorenen Stadt
-STR_DTLS    :Um der örtlichen Tourismusindustrie den Rücken zu stärken, müssen Sie einen Vergnügungspark konstruieren, der sich harmonisch in die Umgebung einfügt - Höhenbegrenzungen inklusive.
+STR_DTLS    :Um der örtlichen Tourismusindustrie den Rücken zu stärken, müssen Sie einen Vergnügungspark konstruieren, der sich harmonisch in die Umgebung einfügt.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :Südamerika - Regenwaldplateau

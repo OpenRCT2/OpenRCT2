@@ -77,6 +77,8 @@
 
 #include <algorithm>
 
+using namespace OpenRCT2;
+
 namespace RCT2
 {
 #define DECRYPT_MONEY(money) (static_cast<money32>(Numerics::rol32((money) ^ 0xF4EC9621, 13)))
@@ -225,12 +227,12 @@ namespace RCT2
             return false;
         }
 
-        void Import() override
+        void Import(GameState_t& gameState) override
         {
             Initialise();
 
             gEditorStep = _s6.Info.EditorStep;
-            gScenarioCategory = static_cast<SCENARIO_CATEGORY>(_s6.Info.Category);
+            gameState.ScenarioCategory = static_cast<SCENARIO_CATEGORY>(_s6.Info.Category);
 
             // Some scenarios have their scenario details in UTF-8, due to earlier bugs in OpenRCT2.
             auto loadMaybeUTF8 = [](std::string_view str) -> std::string {
@@ -239,18 +241,18 @@ namespace RCT2
 
             if (_s6.Header.Type == S6_TYPE_SCENARIO)
             {
-                gScenarioName = loadMaybeUTF8(_s6.Info.Name);
-                gScenarioDetails = loadMaybeUTF8(_s6.Info.Details);
+                gameState.ScenarioName = loadMaybeUTF8(_s6.Info.Name);
+                gameState.ScenarioDetails = loadMaybeUTF8(_s6.Info.Details);
             }
             else
             {
                 // Saved games do not have an info chunk
-                gScenarioName = loadMaybeUTF8(_s6.ScenarioName);
-                gScenarioDetails = loadMaybeUTF8(_s6.ScenarioDescription);
+                gameState.ScenarioName = loadMaybeUTF8(_s6.ScenarioName);
+                gameState.ScenarioDetails = loadMaybeUTF8(_s6.ScenarioDescription);
             }
 
             OpenRCT2::GetContext()->GetGameState()->SetDate(OpenRCT2::Date(_s6.ElapsedMonths, _s6.CurrentDay));
-            gCurrentTicks = _s6.GameTicks1;
+            gameState.CurrentTicks = _s6.GameTicks1;
 
             ScenarioRandSeed(_s6.ScenarioSrand0, _s6.ScenarioSrand1);
 
@@ -258,21 +260,21 @@ namespace RCT2
             ImportTileElements();
             ImportEntities();
 
-            gInitialCash = ToMoney64(_s6.InitialCash);
+            gameState.InitialCash = ToMoney64(_s6.InitialCash);
             gBankLoan = ToMoney64(_s6.CurrentLoan);
 
-            gParkFlags = _s6.ParkFlags & ~PARK_FLAGS_NO_MONEY_SCENARIO;
+            gameState.ParkFlags = _s6.ParkFlags & ~PARK_FLAGS_NO_MONEY_SCENARIO;
 
             // RCT2 used a different flag for `no money` when the park is a scenario
             if (_s6.Header.Type == S6_TYPE_SCENARIO)
             {
                 if (_s6.ParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
-                    gParkFlags |= PARK_FLAGS_NO_MONEY;
+                    gameState.ParkFlags |= PARK_FLAGS_NO_MONEY;
                 else
-                    gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+                    gameState.ParkFlags &= ~PARK_FLAGS_NO_MONEY;
             }
 
-            gParkEntranceFee = _s6.ParkEntranceFee;
+            gameState.ParkEntranceFee = _s6.ParkEntranceFee;
             // rct1_park_entranceX
             // rct1_park_entrance_y
             // Pad013573EE
@@ -287,7 +289,7 @@ namespace RCT2
             // _s6.ResearchedTrackTypesB
 
             gNumGuestsInPark = _s6.GuestsInPark;
-            gNumGuestsHeadingForPark = _s6.GuestsHeadingForPark;
+            gameState.NumGuestsHeadingForPark = _s6.GuestsHeadingForPark;
 
             for (size_t i = 0; i < Limits::ExpenditureTableMonthCount; i++)
             {
@@ -299,11 +301,11 @@ namespace RCT2
 
             gNumGuestsInParkLastWeek = _s6.LastGuestsInPark;
             // Pad01357BCA
-            gStaffHandymanColour = _s6.HandymanColour;
-            gStaffMechanicColour = _s6.MechanicColour;
-            gStaffSecurityColour = _s6.SecurityColour;
+            gameState.StaffHandymanColour = _s6.HandymanColour;
+            gameState.StaffMechanicColour = _s6.MechanicColour;
+            gameState.StaffSecurityColour = _s6.SecurityColour;
 
-            gParkRating = _s6.ParkRating;
+            gameState.ParkRating = _s6.ParkRating;
 
             auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
             park.ResetHistories();
@@ -332,42 +334,42 @@ namespace RCT2
             gResearchProgress = _s6.ResearchProgress;
             gResearchExpectedDay = _s6.NextResearchExpectedDay;
             gResearchExpectedMonth = _s6.NextResearchExpectedMonth;
-            gGuestInitialHappiness = _s6.GuestInitialHappiness;
-            gParkSize = _s6.ParkSize;
+            gameState.GuestInitialHappiness = _s6.GuestInitialHappiness;
+            gameState.ParkSize = _s6.ParkSize;
             _guestGenerationProbability = _s6.GuestGenerationProbability;
             gTotalRideValueForMoney = _s6.TotalRideValueForMoney;
             gMaxBankLoan = ToMoney64(_s6.MaximumLoan);
-            gGuestInitialCash = ToMoney64(_s6.GuestInitialCash);
-            gGuestInitialHunger = _s6.GuestInitialHunger;
-            gGuestInitialThirst = _s6.GuestInitialThirst;
-            gScenarioObjective.Type = _s6.ObjectiveType;
-            gScenarioObjective.Year = _s6.ObjectiveYear;
+            gameState.GuestInitialCash = ToMoney64(_s6.GuestInitialCash);
+            gameState.GuestInitialHunger = _s6.GuestInitialHunger;
+            gameState.GuestInitialThirst = _s6.GuestInitialThirst;
+            gameState.ScenarioObjective.Type = _s6.ObjectiveType;
+            gameState.ScenarioObjective.Year = _s6.ObjectiveYear;
             // Pad013580FA
-            gScenarioObjective.Currency = _s6.ObjectiveCurrency;
+            gameState.ScenarioObjective.Currency = _s6.ObjectiveCurrency;
             // In RCT2, the ride string IDs start at index STR_0002 and are directly mappable.
             // This is not always the case in OpenRCT2, so we use the actual ride ID.
-            if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
-                gScenarioObjective.RideId = _s6.ObjectiveGuests - RCT2_RIDE_STRING_START;
+            if (gameState.ScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
+                gameState.ScenarioObjective.RideId = _s6.ObjectiveGuests - RCT2_RIDE_STRING_START;
             else
-                gScenarioObjective.NumGuests = _s6.ObjectiveGuests;
+                gameState.ScenarioObjective.NumGuests = _s6.ObjectiveGuests;
             ImportMarketingCampaigns();
 
             gCurrentExpenditure = ToMoney64(_s6.CurrentExpenditure);
             gCurrentProfit = ToMoney64(_s6.CurrentProfit);
-            gWeeklyProfitAverageDividend = ToMoney64(_s6.WeeklyProfitAverageDividend);
-            gWeeklyProfitAverageDivisor = _s6.WeeklyProfitAverageDivisor;
+            gameState.WeeklyProfitAverageDividend = ToMoney64(_s6.WeeklyProfitAverageDividend);
+            gameState.WeeklyProfitAverageDivisor = _s6.WeeklyProfitAverageDivisor;
             // Pad0135833A
 
-            gParkValue = ToMoney64(_s6.ParkValue);
+            gameState.ParkValue = ToMoney64(_s6.ParkValue);
 
             for (size_t i = 0; i < Limits::FinanceGraphSize; i++)
             {
                 gCashHistory[i] = ToMoney64(_s6.BalanceHistory[i]);
-                gWeeklyProfitHistory[i] = ToMoney64(_s6.WeeklyProfitHistory[i]);
-                gParkValueHistory[i] = ToMoney64(_s6.ParkValueHistory[i]);
+                gameState.WeeklyProfitHistory[i] = ToMoney64(_s6.WeeklyProfitHistory[i]);
+                gameState.ParkValueHistory[i] = ToMoney64(_s6.ParkValueHistory[i]);
             }
 
-            gScenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s6.CompletedCompanyValue);
+            gameState.ScenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s6.CompletedCompanyValue);
             gTotalAdmissions = _s6.TotalAdmissions;
             gTotalIncomeFromAdmissions = ToMoney64(_s6.IncomeFromAdmissions);
             gCompanyValue = ToMoney64(_s6.CompanyValue);
@@ -389,19 +391,19 @@ namespace RCT2
             // Pad01358776
             // _s6.CdKey
             _gameVersion = _s6.GameVersionNumber;
-            gScenarioCompanyValueRecord = _s6.CompletedCompanyValueRecord;
+            gameState.ScenarioCompanyValueRecord = _s6.CompletedCompanyValueRecord;
             // _s6.LoanHash;
             // Pad013587CA
             gHistoricalProfit = ToMoney64(_s6.HistoricalProfit);
             // Pad013587D4
-            gScenarioCompletedBy = std::string_view(_s6.ScenarioCompletedName, sizeof(_s6.ScenarioCompletedName));
-            gCash = ToMoney64(DECRYPT_MONEY(_s6.Cash));
+            gameState.ScenarioCompletedBy = std::string_view(_s6.ScenarioCompletedName, sizeof(_s6.ScenarioCompletedName));
+            gameState.Cash = ToMoney64(DECRYPT_MONEY(_s6.Cash));
             // Pad013587FC
             gParkRatingCasualtyPenalty = _s6.ParkRatingCasualtyPenalty;
             gMapSize = { _s6.MapSize, _s6.MapSize };
             gSamePriceThroughoutPark = _s6.SamePriceThroughout | (static_cast<uint64_t>(_s6.SamePriceThroughoutExtended) << 32);
             _suggestedGuestMaximum = _s6.SuggestedMaxGuests;
-            gScenarioParkRatingWarningDays = _s6.ParkRatingWarningDays;
+            gameState.ScenarioParkRatingWarningDays = _s6.ParkRatingWarningDays;
             gLastEntranceStyle = _s6.LastEntranceStyle;
             // rct1_water_colour
             // Pad01358842
@@ -410,7 +412,7 @@ namespace RCT2
             gBankLoanInterestRate = _s6.CurrentInterestRate;
             // Pad0135934B
             // Preserve compatibility with vanilla RCT2's save format.
-            gParkEntrances.clear();
+            gameState.ParkEntrances.clear();
             for (uint8_t i = 0; i < Limits::MaxParkEntrances; i++)
             {
                 if (_s6.ParkEntranceX[i] != LOCATION_NULL)
@@ -420,7 +422,7 @@ namespace RCT2
                     entrance.y = _s6.ParkEntranceY[i];
                     entrance.z = _s6.ParkEntranceZ[i];
                     entrance.direction = _s6.ParkEntranceDirection[i];
-                    gParkEntrances.push_back(entrance);
+                    gameState.ParkEntrances.push_back(entrance);
                 }
             }
             if (_s6.Header.Type == S6_TYPE_SCENARIO)
@@ -444,26 +446,26 @@ namespace RCT2
 
             ImportRideRatingsCalcData();
             ImportRideMeasurements();
-            gNextGuestNumber = _s6.NextGuestIndex;
+            gameState.NextGuestNumber = _s6.NextGuestIndex;
             gGrassSceneryTileLoopPosition = _s6.GrassAndSceneryTilepos;
             // unk_13CA73E
             // Pad13CA73F
             // unk_13CA740
-            gClimate = ClimateType{ _s6.Climate };
+            gameState.Climate = ClimateType{ _s6.Climate };
             // Pad13CA741;
             // Byte13CA742
             // Pad013CA747
-            gClimateUpdateTimer = _s6.ClimateUpdateTimer;
-            gClimateCurrent.Weather = WeatherType{ _s6.CurrentWeather };
-            gClimateNext.Weather = WeatherType{ _s6.NextWeather };
-            gClimateCurrent.Temperature = _s6.Temperature;
-            gClimateNext.Temperature = _s6.NextTemperature;
-            gClimateCurrent.WeatherEffect = WeatherEffectType{ _s6.CurrentWeatherEffect };
-            gClimateNext.WeatherEffect = WeatherEffectType{ _s6.NextWeatherEffect };
-            gClimateCurrent.WeatherGloom = _s6.CurrentWeatherGloom;
-            gClimateNext.WeatherGloom = _s6.NextWeatherGloom;
-            gClimateCurrent.Level = static_cast<WeatherLevel>(_s6.CurrentWeatherLevel);
-            gClimateNext.Level = static_cast<WeatherLevel>(_s6.NextWeatherLevel);
+            gameState.ClimateUpdateTimer = _s6.ClimateUpdateTimer;
+            gameState.ClimateCurrent.Weather = WeatherType{ _s6.CurrentWeather };
+            gameState.ClimateNext.Weather = WeatherType{ _s6.NextWeather };
+            gameState.ClimateCurrent.Temperature = _s6.Temperature;
+            gameState.ClimateNext.Temperature = _s6.NextTemperature;
+            gameState.ClimateCurrent.WeatherEffect = WeatherEffectType{ _s6.CurrentWeatherEffect };
+            gameState.ClimateNext.WeatherEffect = WeatherEffectType{ _s6.NextWeatherEffect };
+            gameState.ClimateCurrent.WeatherGloom = _s6.CurrentWeatherGloom;
+            gameState.ClimateNext.WeatherGloom = _s6.NextWeatherGloom;
+            gameState.ClimateCurrent.Level = static_cast<WeatherLevel>(_s6.CurrentWeatherLevel);
+            gameState.ClimateNext.Level = static_cast<WeatherLevel>(_s6.NextWeatherLevel);
 
             // News items
             News::InitQueue();
@@ -499,7 +501,7 @@ namespace RCT2
 
             // Fix and set dynamic variables
             MapStripGhostFlagFromElements();
-            ConvertScenarioStringsToUTF8();
+            ConvertScenarioStringsToUTF8(gameState);
             DetermineRideEntranceAndExitLocations();
 
             park.Name = GetUserString(_s6.ParkName);
@@ -524,12 +526,12 @@ namespace RCT2
             _terrainEdgeEntries.AddRange(DefaultTerrainEdges);
         }
 
-        void ConvertScenarioStringsToUTF8()
+        void ConvertScenarioStringsToUTF8(GameState_t& gameState)
         {
             // Scenario details
-            gScenarioCompletedBy = RCT2StringToUTF8(gScenarioCompletedBy, RCT2LanguageId::EnglishUK);
-            gScenarioName = RCT2StringToUTF8(gScenarioName, RCT2LanguageId::EnglishUK);
-            gScenarioDetails = RCT2StringToUTF8(gScenarioDetails, RCT2LanguageId::EnglishUK);
+            gameState.ScenarioCompletedBy = RCT2StringToUTF8(gameState.ScenarioCompletedBy, RCT2LanguageId::EnglishUK);
+            gameState.ScenarioName = RCT2StringToUTF8(gameState.ScenarioName, RCT2LanguageId::EnglishUK);
+            gameState.ScenarioDetails = RCT2StringToUTF8(gameState.ScenarioDetails, RCT2LanguageId::EnglishUK);
         }
 
         void FixLandOwnership() const
@@ -725,11 +727,11 @@ namespace RCT2
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
                     {
-                        { 104, 190 }, { 105, 190 }, { 108, 197 }, 
-                        { 75, 167 }, 
+                        { 104, 190 }, { 105, 190 }, { 108, 197 },
+                        { 75, 167 },
                         { 61, 92 }, { 61, 93 }, { 61, 94 }, { 61, 95 }, { 62, 90 }, { 62, 91 }, { 62, 92 }, { 62, 93 }, { 62, 94 },
                         { 92, 57 }, { 93, 57 },
-                        { 89, 40 }, { 89, 41 }, { 89, 42 }, { 88, 42 }, 
+                        { 89, 40 }, { 89, 41 }, { 89, 42 }, { 88, 42 },
                         { 168, 20 }, { 169, 20 },
                         { 46, 51 }, { 58, 159 }, { 71, 201 }, { 126, 15 }, { 190, 6 }
                     },
@@ -743,11 +745,11 @@ namespace RCT2
                 // clang-format off
                 FixLandOwnershipTilesWithOwnership(
                     {
-                        { 104, 190 }, { 105, 190 }, { 108, 197 }, 
-                        { 75, 167 }, 
+                        { 104, 190 }, { 105, 190 }, { 108, 197 },
+                        { 75, 167 },
                         { 61, 92 }, { 61, 93 }, { 61, 94 }, { 61, 95 }, { 62, 90 }, { 62, 91 }, { 62, 92 }, { 62, 93 }, { 62, 94 },
                         { 92, 57 }, { 93, 57 },
-                        { 89, 40 }, { 89, 41 }, { 89, 42 }, { 88, 42 }, 
+                        { 89, 40 }, { 89, 41 }, { 89, 42 }, { 88, 42 },
                         { 168, 20 }, { 169, 20 },
                         { 46, 51 }, { 58, 159 }, { 71, 201 }, { 126, 15 }, { 190, 6 }
                     },
@@ -791,7 +793,7 @@ namespace RCT2
                     {
                         { 128, 90 },
                         { 135, 91 }, { 136, 91 },
-                        { 129, 90 }, { 130, 90 }, { 131, 90 }, { 132, 90 }, 
+                        { 129, 90 }, { 130, 90 }, { 131, 90 }, { 132, 90 },
                         { 137, 92 }, { 138, 92 }, { 139, 92 }, { 140, 92 },
                         { 125, 88 }, { 126, 89 }, { 127, 91 }, { 127, 92 }, { 127, 93 },
                         {  47, 85 }, {  48, 85 },
@@ -1006,7 +1008,7 @@ namespace RCT2
                         { 34, 72 }, { 35, 72 }, { 35, 73 },
                         { 66, 19 }, { 66, 20 }, { 67, 20 },
                         { 75, 85 }, { 76, 85 }, { 76, 86 },
-                        { 59, 18 }, { 60, 18 }, { 60, 17 }, { 61, 17 }, 
+                        { 59, 18 }, { 60, 18 }, { 60, 17 }, { 61, 17 },
                     },
                     OWNERSHIP_OWNED);
                 FixLandOwnershipTilesWithOwnership(

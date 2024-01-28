@@ -599,6 +599,12 @@ public:
             if (!objectSelectResult.Successful)
                 return;
 
+            if (_loadedObject != nullptr)
+            {
+                _loadedObject->Unload();
+                _loadedObject = nullptr;
+            }
+
             auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
             _loadedObject = objRepository.LoadObject(listItem->repositoryItem);
             auto& objManager = OpenRCT2::GetContext()->GetObjectManager();

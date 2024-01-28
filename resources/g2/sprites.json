@@ -2656,10 +2656,14 @@
         "palette": "keep"
     },
     {
-        "path": "track/intamin/booster_1.png"
+        "path": "track/intamin/booster_1.png",
+        "x_offset": -22,
+        "y_offset": -4
     },
     {
-        "path": "track/intamin/booster_2.png"
+        "path": "track/intamin/booster_2.png",
+        "x_offset": -22,
+        "y_offset": -4
     },
     {
         "path": "track/intamin/brake_horizontal_background_open.png",
@@ -6286,10 +6290,14 @@
         "palette": "keep"
     },
     {
-        "path": "track/mini/booster_1.png"
+        "path": "track/mini/booster_1.png",
+        "x_offset": -22,
+        "y_offset": -4
     },
     {
-        "path": "track/mini/booster_2.png"
+        "path": "track/mini/booster_2.png",
+        "x_offset": -22,
+        "y_offset": -4
     },
     {
         "path": "track/bm/brake_horizontal.png",
@@ -6328,10 +6336,14 @@
         "palette": "keep"
     },
     {
-        "path": "track/bm/booster_1.png"
+        "path": "track/bm/booster_1.png",
+        "x_offset": -25,
+        "y_offset": -5
     },
     {
-        "path": "track/bm/booster_2.png"
+        "path": "track/bm/booster_2.png",
+        "x_offset": -25,
+        "y_offset": -5
     },
     {
         "path": "track/railway/quarter_turn_3_tiles_sw_se_part_3.png",

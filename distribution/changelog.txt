@@ -1,9 +1,26 @@
 0.4.8 (in development)
 ------------------------------------------------------------------------
+- Feature: [#21062] [Plugin] Add API for managing a guest's items.
+- Improved: [#18632] Land ownership and construction rights are now shown on top of the water.
+- Improved: [#20951] Activate OpenRCT2 window after using native file dialog on macOS.
+- Improved: [#21184] The construction marker for rides, paths and large scenery is not shown on top of the water.
+- Improved: [#21227] Entrance style dropdown is now sorted alphabetically everywhere.
+- Change: [#21200] Raise maximum lift speeds of the Reverser Coaster, Side Friction Coaster, and Virginia Reel for RCT1 parity.
+- Change: [#21225] Raise maximum allowed misc entities to 1600.
+- Fix: [#19494] RCT1 fence gate walls not imported properly if they were placed on slopes.
+- Fix: [#20196] New scenarios start with an incorrect temperature.
+- Fix: [#20255] Images from the last hovered-over coaster in the object selection are not freed.
+- Fix: [#20616] Confirmation button in the track designer’s quit prompt has the wrong text.
+- Fix: [#20628] Moving caret using Ctrl+left can move too far when using a multibyte grapheme.
+- Fix: [#20845] Trying to save under a folder with no write permissions causes a crash.
+- Fix: [#21054] “No entrance” style is selected by default in the track designer.
 - Fix: [#21145] [Plugin] setInterval/setTimeout handle conflict.
+- Fix: [#21157] [Plugin] Widgets do not redraw correctly when updating disabled or visibility state. 
 - Fix: [#21158] [Plugin] Potential crash using setInterval/setTimeout within the callback.
+- Fix: [#21171] [Plugin] Crash creating entities with no more entity slots available.
 - Fix: [#21178] Inca Lost City’s scenario description incorrectly states there are height restrictions.
-- Fix: [#21179] additional missing land/construction rights tiles in Inca Lost City & Renovation.
+- Fix: [#21179] Additional missing land/construction rights tiles in Inca Lost City & Renovation.
+- Fix: [#21198] [Plugin] Setting brake or booster speeds on a tile element doesn’t work.
 
 0.4.7 (2023-12-31)
 ------------------------------------------------------------------------

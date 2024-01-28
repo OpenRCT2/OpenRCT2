@@ -43,20 +43,16 @@
 
 #include <algorithm>
 #include <limits>
+#include <type_traits>
 
 using namespace OpenRCT2;
 
-uint64_t gParkFlags;
-uint16_t gParkRating;
-money64 gParkEntranceFee;
-uint32_t gParkSize;
 money64 gLandPrice;
 money64 gConstructionRightsPrice;
 
 uint64_t gTotalAdmissions;
 money64 gTotalIncomeFromAdmissions;
 
-money64 gParkValue;
 money64 gCompanyValue;
 
 int16_t gParkRatingCasualtyPenalty;
@@ -181,7 +177,7 @@ void ParkSetForcedRating(int32_t rating)
 {
     _forcedParkRating = rating;
     auto& park = GetContext()->GetGameState()->GetPark();
-    gParkRating = park.CalculateParkRating();
+    GetGameState().ParkRating = park.CalculateParkRating();
     auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
     ContextBroadcastIntent(&intent);
 }
@@ -193,7 +189,8 @@ int32_t ParkGetForcedRating()
 
 money64 ParkGetEntranceFee()
 {
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    const auto& gameState = GetGameState();
+    if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return 0;
     }
@@ -201,16 +198,17 @@ money64 ParkGetEntranceFee()
     {
         return 0;
     }
-    return gParkEntranceFee;
+    return gameState.ParkEntranceFee;
 }
 
 bool ParkRidePricesUnlocked()
 {
-    if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+    const auto& gameState = GetGameState();
+    if (gameState.ParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
     {
         return true;
     }
-    if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
+    if (gameState.ParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
     {
         return true;
     }
@@ -219,11 +217,12 @@ bool ParkRidePricesUnlocked()
 
 bool ParkEntranceFeeUnlocked()
 {
-    if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+    const auto& gameState = GetGameState();
+    if (gameState.ParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
     {
         return true;
     }
-    if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY))
+    if (!(gameState.ParkFlags & PARK_FLAGS_PARK_FREE_ENTRY))
     {
         return true;
     }
@@ -232,17 +231,17 @@ bool ParkEntranceFeeUnlocked()
 
 bool Park::IsOpen() const
 {
-    return (gParkFlags & PARK_FLAGS_PARK_OPEN) != 0;
+    return (GetGameState().ParkFlags & PARK_FLAGS_PARK_OPEN) != 0;
 }
 
 uint16_t Park::GetParkRating() const
 {
-    return gParkRating;
+    return GetGameState().ParkRating;
 }
 
 money64 Park::GetParkValue() const
 {
-    return gParkValue;
+    return GetGameState().ParkValue;
 }
 
 money64 Park::GetCompanyValue() const
@@ -252,16 +251,18 @@ money64 Park::GetCompanyValue() const
 
 void Park::Initialise()
 {
+    auto& gameState = GetGameState();
+
     Name = FormatStringID(STR_UNNAMED_PARK, nullptr);
     PluginStorage = {};
-    gStaffHandymanColour = COLOUR_BRIGHT_RED;
-    gStaffMechanicColour = COLOUR_LIGHT_BLUE;
-    gStaffSecurityColour = COLOUR_YELLOW;
+    gameState.StaffHandymanColour = COLOUR_BRIGHT_RED;
+    gameState.StaffMechanicColour = COLOUR_LIGHT_BLUE;
+    gameState.StaffSecurityColour = COLOUR_YELLOW;
     gNumGuestsInPark = 0;
     gNumGuestsInParkLastWeek = 0;
-    gNumGuestsHeadingForPark = 0;
+    gameState.NumGuestsHeadingForPark = 0;
     gGuestChangeModifier = 0;
-    gParkRating = 0;
+    gameState.ParkRating = 0;
     _guestGenerationProbability = 0;
     gTotalRideValueForMoney = 0;
     _suggestedGuestMaximum = 0;
@@ -275,7 +276,7 @@ void Park::Initialise()
 
     SetAllSceneryItemsInvented();
 
-    gParkEntranceFee = 10.00_GBP;
+    gameState.ParkEntranceFee = 10.00_GBP;
 
     gPeepSpawns.clear();
     ParkEntranceReset();
@@ -285,22 +286,22 @@ void Park::Initialise()
         ResearchCategory::Water, ResearchCategory::Shop, ResearchCategory::SceneryGroup);
     gResearchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
-    gGuestInitialCash = 50.00_GBP;
-    gGuestInitialHappiness = CalculateGuestInitialHappiness(50);
-    gGuestInitialHunger = 200;
-    gGuestInitialThirst = 200;
-    gScenarioObjective.Type = OBJECTIVE_GUESTS_BY;
-    gScenarioObjective.Year = 4;
-    gScenarioObjective.NumGuests = 1000;
+    gameState.GuestInitialCash = 50.00_GBP;
+    gameState.GuestInitialHappiness = CalculateGuestInitialHappiness(50);
+    gameState.GuestInitialHunger = 200;
+    gameState.GuestInitialThirst = 200;
+    gameState.ScenarioObjective.Type = OBJECTIVE_GUESTS_BY;
+    gameState.ScenarioObjective.Year = 4;
+    gameState.ScenarioObjective.NumGuests = 1000;
     gLandPrice = 90.00_GBP;
     gConstructionRightsPrice = 40.00_GBP;
-    gParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+    gameState.ParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
     ResetHistories();
     FinanceResetHistory();
     AwardReset();
 
-    gScenarioName.clear();
-    gScenarioDetails = String::ToStd(LanguageGetString(STR_NO_DETAILS_YET));
+    gameState.ScenarioName.clear();
+    gameState.ScenarioDetails = String::ToStd(LanguageGetString(STR_NO_DETAILS_YET));
 }
 
 void Park::Update(const Date& date)
@@ -313,11 +314,14 @@ void Park::Update(const Date& date)
         UpdateHistories();
     }
 
+    auto& gameState = GetGameState();
+    const auto currentTicks = gameState.CurrentTicks;
+
     // Every ~13 seconds
-    if (gCurrentTicks % 512 == 0)
+    if (currentTicks % 512 == 0)
     {
-        gParkRating = CalculateParkRating();
-        gParkValue = CalculateParkValue();
+        gameState.ParkRating = CalculateParkRating();
+        gameState.ParkValue = CalculateParkValue();
         gCompanyValue = CalculateCompanyValue();
         gTotalRideValueForMoney = CalculateTotalRideValueForMoney();
         _suggestedGuestMaximum = CalculateSuggestedMaxGuests();
@@ -329,9 +333,9 @@ void Park::Update(const Date& date)
     }
 
     // Every ~102 seconds
-    if (gCurrentTicks % 4096 == 0)
+    if (currentTicks % 4096 == 0)
     {
-        gParkSize = CalculateParkSize();
+        gameState.ParkSize = CalculateParkSize();
         WindowInvalidateByClass(WindowClass::ParkInformation);
     }
 
@@ -354,9 +358,10 @@ uint32_t Park::CalculateParkSize() const
         }
     } while (TileElementIteratorNext(&it));
 
-    if (tiles != gParkSize)
+    auto& gameState = GetGameState();
+    if (tiles != gameState.ParkSize)
     {
-        gParkSize = tiles;
+        gameState.ParkSize = tiles;
         WindowInvalidateByClass(WindowClass::ParkInformation);
     }
 
@@ -371,7 +376,7 @@ int32_t Park::CalculateParkRating() const
     }
 
     int32_t result = 1150;
-    if (gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING)
+    if (GetGameState().ParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING)
     {
         result = 1050;
     }
@@ -507,7 +512,7 @@ money64 Park::CalculateRideValue(const Ride& ride) const
 
 money64 Park::CalculateCompanyValue() const
 {
-    auto result = gParkValue - gBankLoan;
+    auto result = GetGameState().ParkValue - gBankLoan;
 
     // Clamp addition to prevent overflow
     result = AddClamp_money64(result, FinanceGetCurrentCash());
@@ -518,7 +523,7 @@ money64 Park::CalculateCompanyValue() const
 money64 Park::CalculateTotalRideValueForMoney() const
 {
     money64 totalRideValue = 0;
-    bool ridePricesUnlocked = ParkRidePricesUnlocked() && !(gParkFlags & PARK_FLAGS_NO_MONEY);
+    bool ridePricesUnlocked = ParkRidePricesUnlocked() && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY);
     for (auto& ride : GetRideManager())
     {
         if (ride.status != RideStatus::Open)
@@ -550,6 +555,8 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
     uint32_t suggestedMaxGuests = 0;
     uint32_t difficultGenerationBonus = 0;
 
+    auto& gameState = GetGameState();
+
     for (auto& ride : GetRideManager())
     {
         if (ride.status != RideStatus::Open)
@@ -563,7 +570,7 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
         suggestedMaxGuests += ride.GetRideTypeDescriptor().BonusValue;
 
         // If difficult guest generation, extra guests are available for good rides
-        if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+        if (gameState.ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
         {
             if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_TESTED))
                 continue;
@@ -581,7 +588,7 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
         }
     }
 
-    if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+    if (gameState.ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
     {
         suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 1000);
         suggestedMaxGuests += difficultGenerationBonus;
@@ -593,16 +600,18 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
 
 uint32_t Park::CalculateGuestGenerationProbability() const
 {
+    auto& gameState = GetGameState();
+
     // Begin with 50 + park rating
-    uint32_t probability = 50 + std::clamp(gParkRating - 200, 0, 650);
+    uint32_t probability = 50 + std::clamp(gameState.ParkRating - 200, 0, 650);
 
     // The more guests, the lower the chance of a new one
-    uint32_t numGuests = gNumGuestsInPark + gNumGuestsHeadingForPark;
+    uint32_t numGuests = gNumGuestsInPark + gameState.NumGuestsHeadingForPark;
     if (numGuests > _suggestedGuestMaximum)
     {
         probability /= 4;
         // Even lower for difficult guest generation
-        if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+        if (gameState.ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
         {
             probability /= 4;
         }
@@ -670,7 +679,7 @@ void Park::GenerateGuests()
     // Generate a new guest for some probability
     if (static_cast<int32_t>(ScenarioRand() & 0xFFFF) < _guestGenerationProbability)
     {
-        bool difficultGeneration = (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
+        bool difficultGeneration = (GetGameState().ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
         if (!difficultGeneration || _suggestedGuestMaximum + 150 >= gNumGuestsInPark)
         {
             GenerateGuest();
@@ -753,22 +762,25 @@ void Park::UpdateHistories()
     gNumGuestsInParkLastWeek = gNumGuestsInPark;
 
     // Update park rating, guests in park and current cash history
-    HistoryPushRecord<uint8_t, 32>(gParkRatingHistory, gParkRating / 4);
+    auto& gameState = GetGameState();
+    HistoryPushRecord<uint8_t, 32>(gParkRatingHistory, gameState.ParkRating / 4);
     HistoryPushRecord<uint32_t, 32>(gGuestsInParkHistory, gNumGuestsInPark);
     HistoryPushRecord<money64, std::size(gCashHistory)>(gCashHistory, FinanceGetCurrentCash() - gBankLoan);
 
     // Update weekly profit history
-    auto currentWeeklyProfit = gWeeklyProfitAverageDividend;
-    if (gWeeklyProfitAverageDivisor != 0)
+    auto currentWeeklyProfit = gameState.WeeklyProfitAverageDividend;
+    if (gameState.WeeklyProfitAverageDivisor != 0)
     {
-        currentWeeklyProfit /= gWeeklyProfitAverageDivisor;
+        currentWeeklyProfit /= gameState.WeeklyProfitAverageDivisor;
     }
-    HistoryPushRecord<money64, std::size(gWeeklyProfitHistory)>(gWeeklyProfitHistory, currentWeeklyProfit);
-    gWeeklyProfitAverageDividend = 0;
-    gWeeklyProfitAverageDivisor = 0;
+    constexpr auto profitHistorySize = std::extent_v<decltype(GameState_t::WeeklyProfitHistory)>;
+    HistoryPushRecord<money64, profitHistorySize>(gameState.WeeklyProfitHistory, currentWeeklyProfit);
+    gameState.WeeklyProfitAverageDividend = 0;
+    gameState.WeeklyProfitAverageDivisor = 0;
 
     // Update park value history
-    HistoryPushRecord<money64, std::size(gParkValueHistory)>(gParkValueHistory, gParkValue);
+    constexpr auto parkValueHistorySize = std::extent_v<decltype(GameState_t::WeeklyProfitHistory)>;
+    HistoryPushRecord<money64, parkValueHistorySize>(gameState.ParkValueHistory, gameState.ParkValue);
 
     // Invalidate relevant windows
     auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
@@ -784,10 +796,11 @@ int32_t ParkIsOpen()
 
 uint32_t ParkCalculateSize()
 {
+    auto& gameState = GetGameState();
     auto tiles = GetContext()->GetGameState()->GetPark().CalculateParkSize();
-    if (tiles != gParkSize)
+    if (tiles != gameState.ParkSize)
     {
-        gParkSize = tiles;
+        gameState.ParkSize = tiles;
         WindowInvalidateByClass(WindowClass::ParkInformation);
     }
     return tiles;
