@@ -69,7 +69,6 @@ using namespace OpenRCT2::Audio;
 uint8_t gGuestChangeModifier;
 uint32_t gNumGuestsInPark;
 uint32_t gNumGuestsInParkLastWeek;
-uint32_t gNumGuestsHeadingForPark;
 
 uint8_t gPeepWarningThrottle[16];
 
@@ -2646,9 +2645,11 @@ void IncrementGuestsInPark()
 
 void IncrementGuestsHeadingForPark()
 {
-    if (gNumGuestsHeadingForPark < UINT32_MAX)
+    auto& gameState = GetGameState();
+
+    if (gameState.NumGuestsHeadingForPark < UINT32_MAX)
     {
-        gNumGuestsHeadingForPark++;
+        gameState.NumGuestsHeadingForPark++;
     }
     else
     {
@@ -2670,9 +2671,11 @@ void DecrementGuestsInPark()
 
 void DecrementGuestsHeadingForPark()
 {
-    if (gNumGuestsHeadingForPark > 0)
+    auto& gameState = GetGameState();
+
+    if (gameState.NumGuestsHeadingForPark > 0)
     {
-        gNumGuestsHeadingForPark--;
+        gameState.NumGuestsHeadingForPark--;
     }
     else
     {

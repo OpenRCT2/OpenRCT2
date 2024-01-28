@@ -349,6 +349,8 @@ void RCT2StringToUTF8Self(char* buffer, size_t length)
 
 static void FixGuestsHeadingToParkCount()
 {
+    auto& gameState = GetGameState();
+
     uint32_t guestsHeadingToPark = 0;
 
     for (auto* peep : EntityList<Guest>())
@@ -359,12 +361,13 @@ static void FixGuestsHeadingToParkCount()
         }
     }
 
-    if (gNumGuestsHeadingForPark != guestsHeadingToPark)
+    if (gameState.NumGuestsHeadingForPark != guestsHeadingToPark)
     {
-        LOG_WARNING("Corrected bad amount of guests heading to park: %u -> %u", gNumGuestsHeadingForPark, guestsHeadingToPark);
+        LOG_WARNING(
+            "Corrected bad amount of guests heading to park: %u -> %u", gameState.NumGuestsHeadingForPark, guestsHeadingToPark);
     }
 
-    gNumGuestsHeadingForPark = guestsHeadingToPark;
+    gameState.NumGuestsHeadingForPark = guestsHeadingToPark;
 }
 
 static void FixGuestCount()

@@ -260,7 +260,7 @@ void Park::Initialise()
     gStaffSecurityColour = COLOUR_YELLOW;
     gNumGuestsInPark = 0;
     gNumGuestsInParkLastWeek = 0;
-    gNumGuestsHeadingForPark = 0;
+    gameState.NumGuestsHeadingForPark = 0;
     gGuestChangeModifier = 0;
     gameState.ParkRating = 0;
     _guestGenerationProbability = 0;
@@ -606,7 +606,7 @@ uint32_t Park::CalculateGuestGenerationProbability() const
     uint32_t probability = 50 + std::clamp(gameState.ParkRating - 200, 0, 650);
 
     // The more guests, the lower the chance of a new one
-    uint32_t numGuests = gNumGuestsInPark + gNumGuestsHeadingForPark;
+    uint32_t numGuests = gNumGuestsInPark + gameState.NumGuestsHeadingForPark;
     if (numGuests > _suggestedGuestMaximum)
     {
         probability /= 4;
