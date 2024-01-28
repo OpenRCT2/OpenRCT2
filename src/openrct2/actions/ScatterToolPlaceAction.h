@@ -12,14 +12,14 @@
 #include "../world/TileElement.h"
 #include "GameAction.h"
 
-struct SmallSceneryPlaceActionResult
+struct ScatterToolPlaceActionResult
 {
     uint8_t GroundFlags{};
     int32_t BaseHeight{};
     uint8_t SceneryQuadrant{};
 };
 
-class SmallSceneryPlaceAction final : public GameActionBase<GameCommand::PlaceScenery>
+class ScatterToolPlaceAction final : public GameActionBase<GameCommand::PlaceScenery>
 {
 private:
     CoordsXYZD _loc;
@@ -30,8 +30,8 @@ private:
     uint8_t _tertiaryColour{};
 
 public:
-    SmallSceneryPlaceAction() = default;
-    SmallSceneryPlaceAction(
+    ScatterToolPlaceAction() = default;
+    ScatterToolPlaceAction(
         const CoordsXYZD& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour,
         uint8_t tertiaryColour);
 

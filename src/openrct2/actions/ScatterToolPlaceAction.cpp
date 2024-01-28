@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "SmallSceneryPlaceAction.h"
+#include "ScatterToolPlaceAction.h"
 
 #include "../Cheats.h"
 #include "../OpenRCT2.h"
@@ -30,7 +30,7 @@
 #include "GameAction.h"
 #include "SmallSceneryRemoveAction.h"
 
-SmallSceneryPlaceAction::SmallSceneryPlaceAction(
+ScatterToolPlaceAction::ScatterToolPlaceAction(
     const CoordsXYZD& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour,
     uint8_t tertiaryColour)
     : _loc(loc)
@@ -42,7 +42,7 @@ SmallSceneryPlaceAction::SmallSceneryPlaceAction(
 {
 }
 
-void SmallSceneryPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
+void ScatterToolPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
     visitor.Visit("quadrant", _quadrant);
@@ -52,17 +52,17 @@ void SmallSceneryPlaceAction::AcceptParameters(GameActionParameterVisitor& visit
     visitor.Visit("tertiaryColour", _tertiaryColour);
 }
 
-uint32_t SmallSceneryPlaceAction::GetCooldownTime() const
+uint32_t ScatterToolPlaceAction::GetCooldownTime() const
 {
     return 20;
 }
 
-uint16_t SmallSceneryPlaceAction::GetActionFlags() const
+uint16_t ScatterToolPlaceAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags();
 }
 
-void SmallSceneryPlaceAction::Serialise(DataSerialiser& stream)
+void ScatterToolPlaceAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
@@ -70,7 +70,7 @@ void SmallSceneryPlaceAction::Serialise(DataSerialiser& stream)
            << DS_TAG(_tertiaryColour);
 }
 
-GameActions::Result SmallSceneryPlaceAction::Query() const
+GameActions::Result ScatterToolPlaceAction::Query() const
 {
     bool isOnWater = false;
     bool supportsRequired = false;
@@ -265,15 +265,10 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     const auto isTree = sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE);
     auto canBuild = MapCanConstructWithClearAt(
         { _loc, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE, isTree);
-    if (canBuild.Error != GameActions::Status::Ok)
-    {
-        canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
-        return canBuild;
-    }
 
     const auto clearanceData = canBuild.GetData<ConstructClearResult>();
     const uint8_t groundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-    res.SetData(SmallSceneryPlaceActionResult{ groundFlags, 0, 0 });
+    res.SetData(ScatterToolPlaceActionResult{ groundFlags, 0, 0 });
 
     res.Expenditure = ExpenditureType::Landscaping;
     res.Cost = sceneryEntry->price + canBuild.Cost;
@@ -281,7 +276,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     return res;
 }
 
-GameActions::Result SmallSceneryPlaceAction::Execute() const
+GameActions::Result ScatterToolPlaceAction::Execute() const
 {
     bool supportsRequired = false;
     if (_loc.z != 0)
@@ -404,11 +399,6 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     auto canBuild = MapCanConstructWithClearAt(
         { _loc, zLow, zHigh }, &MapPlaceSceneryClearFunc, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
         CREATE_CROSSING_MODE_NONE, isTree);
-    if (canBuild.Error != GameActions::Status::Ok)
-    {
-        canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
-        return canBuild;
-    }
 
     res.Expenditure = ExpenditureType::Landscaping;
     res.Cost = sceneryEntry->price + canBuild.Cost;
@@ -437,7 +427,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
 
     const auto clearanceData = canBuild.GetData<ConstructClearResult>();
     const uint8_t groundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-    res.SetData(SmallSceneryPlaceActionResult{ groundFlags, sceneryElement->GetBaseZ(), sceneryElement->GetSceneryQuadrant() });
+    res.SetData(ScatterToolPlaceActionResult{ groundFlags, sceneryElement->GetBaseZ(), sceneryElement->GetSceneryQuadrant() });
 
     MapInvalidateTileFull(_loc);
     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))

@@ -40,6 +40,7 @@
 #include <openrct2/actions/LargeScenerySetColourAction.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
 #include <openrct2/actions/PauseToggleAction.h>
+#include <openrct2/actions/ScatterToolPlaceAction.h>
 #include <openrct2/actions/SmallSceneryPlaceAction.h>
 #include <openrct2/actions/SmallScenerySetColourAction.h>
 #include <openrct2/actions/SurfaceSetStyleAction.h>
@@ -1323,7 +1324,7 @@ private:
 
         // 6e252b
         auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
-            loc, quadrant, entryIndex, primaryColour, secondaryColour, tertiaryColour, false);
+            loc, quadrant, entryIndex, primaryColour, secondaryColour, tertiaryColour);
         smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         auto res = GameActions::Execute(&smallSceneryPlaceAction);
         if (res.Error != GameActions::Status::Ok)
@@ -2256,15 +2257,9 @@ private:
                     // Try find a valid z coordinate
                     for (; zAttemptRange != 0; zAttemptRange--)
                     {
-                        if (gWindowSceneryScatterEnabled)
-                        {
-                            auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
-                                { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
-                                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour, true);
-                        }
                         auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
                             { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
-                            gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour, false);
+                            gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
                         auto res = GameActions::Query(&smallSceneryPlaceAction);
                         success = res.Error;
                         if (res.Error == GameActions::Status::Ok)
@@ -2287,29 +2282,47 @@ private:
                     {
                         if (gWindowSceneryScatterEnabled)
                         {
+                            auto scatterToolPlaceAction = ScatterToolPlaceAction(
+                                { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
+                                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+                            scatterToolPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+                                if (result->Error == GameActions::Status::Ok)
+                                {
+                                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+                                }
+                            });
+                            auto res = GameActions::Execute(&scatterToolPlaceAction);
+                            if (res.Error == GameActions::Status::Ok)
+                            {
+                                forceError = false;
+                            }
+
+                            if (res.Error == GameActions::Status::InsufficientFunds)
+                            {
+                                break;
+                            }
+                        }
+                        else
+                        {
                             auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
                                 { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
-                                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour, true);
-                        }
-                        auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
-                            { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
-                            gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour, false);
-                        
-                        smallSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
-                            if ((result->Error == GameActions::Status::Ok) && !gWindowSceneryScatterEnabled)
+                                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+                            smallSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+                                if (result->Error == GameActions::Status::Ok)
+                                {
+                                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+                                }
+                            });
+                            auto res = GameActions::Execute(&smallSceneryPlaceAction);
+                            if (res.Error == GameActions::Status::Ok)
                             {
-                                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+                                forceError = false;
                             }
-                        });
-                        auto res = GameActions::Execute(&smallSceneryPlaceAction);
-                        if ((res.Error == GameActions::Status::Ok) && !gWindowSceneryScatterEnabled)
-                        {
-                            forceError = false;
-                        }
 
-                        if ((res.Error == GameActions::Status::InsufficientFunds) && !gWindowSceneryScatterEnabled)
-                        {
-                            break;
+                            if (res.Error == GameActions::Status::InsufficientFunds)
+                            {
+                                break;
+                            }
                         }
                     }
                     gSceneryPlaceZ = zCoordinate;

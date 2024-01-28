@@ -66,6 +66,7 @@
 #include "RideSetSettingAction.h"
 #include "RideSetStatusAction.h"
 #include "RideSetVehicleAction.h"
+#include "ScatterToolPlaceAction.h"
 #include "ScenarioSetSettingAction.h"
 #include "SignSetNameAction.h"
 #include "SignSetStyleAction.h"
@@ -180,6 +181,7 @@ namespace GameActions
         REGISTER_ACTION(WallPlaceAction);
         REGISTER_ACTION(WallRemoveAction);
         REGISTER_ACTION(WallSetColourAction);
+        REGISTER_ACTION(ScatterToolPlaceAction);
         REGISTER_ACTION(SmallSceneryPlaceAction);
         REGISTER_ACTION(SmallSceneryRemoveAction);
         REGISTER_ACTION(SmallScenerySetColourAction);

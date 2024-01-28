@@ -137,6 +137,7 @@
     <ClInclude Include="actions\RideSetSettingAction.h" />
     <ClInclude Include="actions\RideSetStatusAction.h" />
     <ClInclude Include="actions\RideSetVehicleAction.h" />
+    <ClInclude Include="actions\ScatterToolPlaceAction.h" />
     <ClInclude Include="actions\ScenarioSetSettingAction.h" />
     <ClInclude Include="actions\SignSetNameAction.h" />
     <ClInclude Include="actions\SignSetStyleAction.h" />
@@ -660,6 +661,7 @@
     <ClCompile Include="actions\RideSetSettingAction.cpp" />
     <ClCompile Include="actions\RideSetStatusAction.cpp" />
     <ClCompile Include="actions\RideSetVehicleAction.cpp" />
+    <ClCompile Include="actions\ScatterToolPlaceAction.cpp" />
     <ClCompile Include="actions\ScenarioSetSettingAction.cpp" />
     <ClCompile Include="actions\SignSetNameAction.cpp" />
     <ClCompile Include="actions\SignSetStyleAction.cpp" />

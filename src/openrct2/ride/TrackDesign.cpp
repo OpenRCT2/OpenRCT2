@@ -1100,7 +1100,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
 
             auto smallSceneryPlace = SmallSceneryPlaceAction(
                 { mapCoord.x, mapCoord.y, z, rotation }, quadrant, entryInfo->Index, scenery.primary_colour,
-                scenery.secondary_colour, COLOUR_DARK_BROWN, false);
+                scenery.secondary_colour, COLOUR_DARK_BROWN);
 
             smallSceneryPlace.SetFlags(flags);
             auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&smallSceneryPlace)
