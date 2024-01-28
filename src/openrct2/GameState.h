@@ -61,7 +61,12 @@ namespace OpenRCT2
         std::string ScenarioName;
         std::string ScenarioDetails;
         std::string ScenarioCompletedBy;
+
         std::vector<Banner> Banners;
+
+        colour_t StaffHandymanColour;
+        colour_t StaffMechanicColour;
+        colour_t StaffSecurityColour;
     };
 
     GameState_t& GetGameState();

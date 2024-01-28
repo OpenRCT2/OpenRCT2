@@ -3944,7 +3944,7 @@ private:
         // Locate mechanic button image
         Widget* widget = &widgets[WIDX_LOCATE_MECHANIC];
         auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
-        auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, gStaffMechanicColour);
+        auto image = ImageId(SPR_MECHANIC, COLOUR_BLACK, GetGameState().StaffMechanicColour);
         GfxDrawSprite(dpi, image, screenCoords);
 
         // Inspection label

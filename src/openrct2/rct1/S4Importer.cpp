@@ -2197,9 +2197,9 @@ namespace RCT1
             _guestGenerationProbability = _s4.GuestGenerationProbability;
 
             // Staff colours
-            gStaffHandymanColour = RCT1::GetColour(_s4.HandymanColour);
-            gStaffMechanicColour = RCT1::GetColour(_s4.MechanicColour);
-            gStaffSecurityColour = RCT1::GetColour(_s4.SecurityGuardColour);
+            gameState.StaffHandymanColour = RCT1::GetColour(_s4.HandymanColour);
+            gameState.StaffMechanicColour = RCT1::GetColour(_s4.MechanicColour);
+            gameState.StaffSecurityColour = RCT1::GetColour(_s4.SecurityGuardColour);
 
             // Flags
             gameState.ParkFlags = _s4.ParkFlags;
