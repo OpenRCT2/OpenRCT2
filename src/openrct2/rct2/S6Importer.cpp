@@ -835,8 +835,17 @@ namespace RCT2
                 || String::IEquals(gScenarioFileName, "south america - inca lost city.sea"))
             {
                 // clang-format off
+                 FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 15, 59 },
+                    },
+                    OWNERSHIP_UNOWNED);
                 FixLandOwnershipTilesWithOwnership(
                     {
+                        { 11, 64 }, { 11, 65 }, { 11, 66 },
+                        { 13, 68 }, { 13, 69 },
+                        { 14, 69 },
+                        { 15, 59 },
                         { 55, 60 },
                         { 61, 6 },
                         { 86, 63 },
@@ -932,6 +941,16 @@ namespace RCT2
                           { 64, 97 },
                       },
                       OWNERSHIP_AVAILABLE, true);
+                // clang-format on
+            }
+            else if (String::Equals(_s6.ScenarioFilename, "Europe - Renovation.SC6"))
+            {
+                // clang-format off
+                  FixLandOwnershipTilesWithOwnership(
+                      {
+                          { 12, 21 },
+                      },
+                      OWNERSHIP_OWNED);
                 // clang-format on
             }
             else if (
