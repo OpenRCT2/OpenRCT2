@@ -255,9 +255,9 @@ void Park::Initialise()
 
     Name = FormatStringID(STR_UNNAMED_PARK, nullptr);
     PluginStorage = {};
-    gStaffHandymanColour = COLOUR_BRIGHT_RED;
-    gStaffMechanicColour = COLOUR_LIGHT_BLUE;
-    gStaffSecurityColour = COLOUR_YELLOW;
+    gameState.StaffHandymanColour = COLOUR_BRIGHT_RED;
+    gameState.StaffMechanicColour = COLOUR_LIGHT_BLUE;
+    gameState.StaffSecurityColour = COLOUR_YELLOW;
     gNumGuestsInPark = 0;
     gNumGuestsInParkLastWeek = 0;
     gNumGuestsHeadingForPark = 0;

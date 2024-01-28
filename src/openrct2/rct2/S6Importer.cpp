@@ -301,9 +301,9 @@ namespace RCT2
 
             gNumGuestsInParkLastWeek = _s6.LastGuestsInPark;
             // Pad01357BCA
-            gStaffHandymanColour = _s6.HandymanColour;
-            gStaffMechanicColour = _s6.MechanicColour;
-            gStaffSecurityColour = _s6.SecurityColour;
+            gameState.StaffHandymanColour = _s6.HandymanColour;
+            gameState.StaffMechanicColour = _s6.MechanicColour;
+            gameState.StaffSecurityColour = _s6.SecurityColour;
 
             gameState.ParkRating = _s6.ParkRating;
 

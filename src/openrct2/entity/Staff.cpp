@@ -68,10 +68,6 @@ const StringId StaffCostumeNames[] = {
 };
 // clang-format on
 
-colour_t gStaffHandymanColour;
-colour_t gStaffMechanicColour;
-colour_t gStaffSecurityColour;
-
 // Maximum manhattan distance that litter can be for a handyman to seek to it
 const uint16_t MAX_LITTER_DISTANCE = 3 * COORDS_XY_STEP;
 
@@ -994,14 +990,15 @@ PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType)
 
 colour_t StaffGetColour(StaffType staffType)
 {
+    const auto& gameState = GetGameState();
     switch (staffType)
     {
         case StaffType::Handyman:
-            return gStaffHandymanColour;
+            return gameState.StaffHandymanColour;
         case StaffType::Mechanic:
-            return gStaffMechanicColour;
+            return gameState.StaffMechanicColour;
         case StaffType::Security:
-            return gStaffSecurityColour;
+            return gameState.StaffSecurityColour;
         case StaffType::Entertainer:
             return 0;
         default:
@@ -1012,16 +1009,17 @@ colour_t StaffGetColour(StaffType staffType)
 
 bool StaffSetColour(StaffType staffType, colour_t value)
 {
+    auto& gameState = GetGameState();
     switch (staffType)
     {
         case StaffType::Handyman:
-            gStaffHandymanColour = value;
+            gameState.StaffHandymanColour = value;
             break;
         case StaffType::Mechanic:
-            gStaffMechanicColour = value;
+            gameState.StaffMechanicColour = value;
             break;
         case StaffType::Security:
-            gStaffSecurityColour = value;
+            gameState.StaffSecurityColour = value;
             break;
         default:
             return false;

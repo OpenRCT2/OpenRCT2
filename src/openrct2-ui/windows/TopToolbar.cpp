@@ -3185,6 +3185,7 @@ public:
 
     void OnDraw(DrawPixelInfo& dpi) override
     {
+        const auto& gameState = GetGameState();
         int32_t imgId;
 
         WindowDrawWidgets(*this, dpi);
@@ -3197,7 +3198,7 @@ public:
             imgId = SPR_TOOLBAR_STAFF;
             if (WidgetIsPressed(*this, WIDX_STAFF))
                 imgId++;
-            GfxDrawSprite(dpi, ImageId(imgId, gStaffHandymanColour, gStaffMechanicColour), screenPos);
+            GfxDrawSprite(dpi, ImageId(imgId, gameState.StaffHandymanColour, gameState.StaffMechanicColour), screenPos);
         }
 
         // Draw fast forward button

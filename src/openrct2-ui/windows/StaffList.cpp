@@ -587,9 +587,10 @@ private:
 
     void DrawTabImages(DrawPixelInfo& dpi) const
     {
-        DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_HANDYMEN, PeepSpriteType::Handyman, gStaffHandymanColour);
-        DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_MECHANICS, PeepSpriteType::Mechanic, gStaffMechanicColour);
-        DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_SECURITY, PeepSpriteType::Security, gStaffSecurityColour);
+        const auto& gameState = GetGameState();
+        DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_HANDYMEN, PeepSpriteType::Handyman, gameState.StaffHandymanColour);
+        DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_MECHANICS, PeepSpriteType::Mechanic, gameState.StaffMechanicColour);
+        DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_SECURITY, PeepSpriteType::Security, gameState.StaffSecurityColour);
         DrawTabImage(dpi, WINDOW_STAFF_LIST_TAB_ENTERTAINERS, PeepSpriteType::EntertainerElephant);
     }
 
