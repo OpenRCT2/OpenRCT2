@@ -2634,9 +2634,10 @@ void PeepUpdateNames(bool realNames)
 
 void IncrementGuestsInPark()
 {
-    if (GetGameState().NumGuestsInPark < UINT32_MAX)
+    auto& gameState = GetGameState();
+    if (gameState.NumGuestsInPark < UINT32_MAX)
     {
-        GetGameState().NumGuestsInPark++;
+        gameState.NumGuestsInPark++;
     }
     else
     {
@@ -2647,7 +2648,6 @@ void IncrementGuestsInPark()
 void IncrementGuestsHeadingForPark()
 {
     auto& gameState = GetGameState();
-
     if (gameState.NumGuestsHeadingForPark < UINT32_MAX)
     {
         gameState.NumGuestsHeadingForPark++;
@@ -2660,9 +2660,10 @@ void IncrementGuestsHeadingForPark()
 
 void DecrementGuestsInPark()
 {
-    if (GetGameState().NumGuestsInPark > 0)
+    auto& gameState = GetGameState();
+    if (gameState.NumGuestsInPark > 0)
     {
-        GetGameState().NumGuestsInPark--;
+        gameState.NumGuestsInPark--;
     }
     else
     {
