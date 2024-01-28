@@ -383,12 +383,13 @@ static void FixGuestCount()
         }
     }
 
-    if (gNumGuestsInPark != guestCount)
+    auto& gameState = GetGameState();
+    if (gameState.NumGuestsInPark != guestCount)
     {
-        LOG_WARNING("Corrected bad amount of guests in park: %u -> %u", gNumGuestsInPark, guestCount);
+        LOG_WARNING("Corrected bad amount of guests in park: %u -> %u", gameState.NumGuestsInPark, guestCount);
     }
 
-    gNumGuestsInPark = guestCount;
+    gameState.NumGuestsInPark = guestCount;
 }
 
 static void FixPeepsWithInvalidRideReference()

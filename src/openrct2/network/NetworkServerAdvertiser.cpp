@@ -305,8 +305,11 @@ private:
         const auto& date = GetDate();
         json_t mapSize = { { "x", gMapSize.x - 2 }, { "y", gMapSize.y - 2 } };
         json_t gameInfo = {
-            { "mapSize", mapSize },         { "day", date.GetMonthTicks() },      { "month", date.GetMonthsElapsed() },
-            { "guests", gNumGuestsInPark }, { "parkValue", gameState.ParkValue },
+            { "mapSize", mapSize },
+            { "day", date.GetMonthTicks() },
+            { "month", date.GetMonthsElapsed() },
+            { "guests", gameState.NumGuestsInPark },
+            { "parkValue", gameState.ParkValue },
         };
 
         if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))

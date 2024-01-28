@@ -615,7 +615,7 @@ ObjectiveStatus Objective::CheckGuestsBy() const
 
     if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
     {
-        if (parkRating >= 600 && gNumGuestsInPark >= NumGuests)
+        if (parkRating >= 600 && GetGameState().NumGuestsInPark >= NumGuests)
         {
             return ObjectiveStatus::Success;
         }
@@ -735,7 +735,7 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
     }
 
     if (gameState.ParkRating >= 700)
-        if (gNumGuestsInPark >= NumGuests)
+        if (gameState.NumGuestsInPark >= NumGuests)
             return ObjectiveStatus::Success;
 
     return ObjectiveStatus::Undecided;

@@ -288,7 +288,7 @@ namespace RCT2
             // _s6.ResearchedTrackTypesA
             // _s6.ResearchedTrackTypesB
 
-            gNumGuestsInPark = _s6.GuestsInPark;
+            gameState.NumGuestsInPark = _s6.GuestsInPark;
             gameState.NumGuestsHeadingForPark = _s6.GuestsHeadingForPark;
 
             for (size_t i = 0; i < Limits::ExpenditureTableMonthCount; i++)

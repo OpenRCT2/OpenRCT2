@@ -461,7 +461,6 @@ enum
 };
 
 extern uint8_t gGuestChangeModifier;
-extern uint32_t gNumGuestsInPark;
 extern uint32_t gNumGuestsInParkLastWeek;
 
 void PeepThoughtSetFormatArgs(const PeepThought* thought, Formatter& ft);
