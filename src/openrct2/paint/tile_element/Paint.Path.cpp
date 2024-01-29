@@ -819,6 +819,36 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
     PaintLampLightEffects(session, tileElement, height);
 }
 
+static BoundBoxXYZ PathPaintGetBoundbox(const PaintSession& session, int32_t height, uint8_t edges)
+{
+    CoordsXY boundBoxOffset = stru_98D804[edges].offset;
+    CoordsXY boundBoxSize = stru_98D804[edges].length;
+    
+    const bool hasPassedSurface = (session.Flags & PaintSessionFlags::PassedSurface) != 0;
+    if (!hasPassedSurface)
+    {
+        boundBoxOffset.x = 3;
+        boundBoxOffset.y = 3;
+        boundBoxSize.x = 26;
+        boundBoxSize.y = 26;
+    }
+    
+    // By default, add 1 to the z bounding box to always clip above the surface
+    uint8_t boundingBoxZOffset = 1;
+
+    // If we are on the same tile as a straight track, add the offset 2 so we
+    //  can clip above gravel part of the track sprite
+    if (session.TrackElementOnSameHeight != nullptr)
+    {
+        if (session.TrackElementOnSameHeight->AsTrack()->GetTrackType() == TrackElemType::Flat)
+        {
+            boundingBoxZOffset = 2;
+        }
+    }
+
+    return BoundBoxXYZ({ boundBoxOffset, height + boundingBoxZOffset }, { boundBoxSize, 0 });
+}
+
 static void PathPaintSegmentSupportHeight(
     PaintSession& session, const PathElement& pathElement, int32_t height, uint8_t edges, bool hasSupports)
 {
@@ -878,9 +908,6 @@ void PathPaintBoxSupport(
     uint8_t corners = (((pathElement.GetCorners()) << session.CurrentRotation) & 0xF)
         | (((pathElement.GetCorners()) << session.CurrentRotation) >> 4);
 
-    CoordsXY boundBoxOffset = stru_98D804[edges].offset;
-    CoordsXY boundBoxSize = stru_98D804[edges].length;
-
     uint16_t edi = edges | (corners << 4);
 
     ImageIndex surfaceBaseImageIndex = pathPaintInfo.SurfaceImageId;
@@ -895,41 +922,20 @@ void PathPaintBoxSupport(
         surfaceBaseImageIndex += Byte98D6E0[edi];
     }
 
+    auto boundbox = PathPaintGetBoundbox(session, height, edges);
+
     const bool hasPassedSurface = (session.Flags & PaintSessionFlags::PassedSurface) != 0;
-    if (!hasPassedSurface)
-    {
-        boundBoxOffset.x = 3;
-        boundBoxOffset.y = 3;
-        boundBoxSize.x = 26;
-        boundBoxSize.y = 26;
-    }
-
-    // By default, add 1 to the z bounding box to always clip above the surface
-    uint8_t boundingBoxZOffset = 1;
-
-    // If we are on the same tile as a straight track, add the offset 2 so we
-    //  can clip above gravel part of the track sprite
-    if (session.TrackElementOnSameHeight != nullptr)
-    {
-        if (session.TrackElementOnSameHeight->AsTrack()->GetTrackType() == TrackElemType::Flat)
-        {
-            boundingBoxZOffset = 2;
-        }
-    }
-
     if (!hasSupports || !hasPassedSurface)
     {
-        PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height },
-            { { boundBoxOffset, height + boundingBoxZOffset }, { boundBoxSize, 0 } });
+        PaintAddImageAsParent(session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height }, boundbox);
     }
     else
     {
         ImageIndex bridgeBaseImageIndex;
         if (pathElement.IsSloped())
         {
-            auto directionOffset
-                = ((pathElement.GetSlopeDirection() + session.CurrentRotation) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
+            auto directionOffset = (pathElement.GetSlopeDirection() + session.CurrentRotation)
+                & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
             bridgeBaseImageIndex = pathPaintInfo.BridgeImageId + 51 + directionOffset;
         }
         else
@@ -937,15 +943,11 @@ void PathPaintBoxSupport(
             bridgeBaseImageIndex = Byte98D8A4[edges] + pathPaintInfo.BridgeImageId + 49;
         }
 
-        PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(bridgeBaseImageIndex), { 0, 0, height },
-            { { boundBoxOffset, height + boundingBoxZOffset }, { boundBoxSize, 0 } });
+        PaintAddImageAsParent(session, imageTemplate.WithIndex(bridgeBaseImageIndex), { 0, 0, height }, boundbox);
 
         if (pathElement.IsQueue() || (pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
         {
-            PaintAddImageAsChild(
-                session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height },
-                { { boundBoxOffset, height + boundingBoxZOffset }, { boundBoxSize, 0 } });
+            PaintAddImageAsChild(session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height }, boundbox);
         }
     }
 
@@ -973,9 +975,6 @@ void PathPaintPoleSupport(
     uint8_t edges = ((pathElement.GetEdges() << session.CurrentRotation) & 0xF)
         | (((pathElement.GetEdges()) << session.CurrentRotation) >> 4);
 
-    CoordsXY boundBoxOffset = stru_98D804[edges].offset;
-    CoordsXY boundBoxSize = stru_98D804[edges].length;
-
     uint8_t corners = (((pathElement.GetCorners()) << session.CurrentRotation) & 0xF)
         | (((pathElement.GetCorners()) << session.CurrentRotation) >> 4);
 
@@ -984,8 +983,8 @@ void PathPaintPoleSupport(
     ImageIndex surfaceBaseImageIndex = pathPaintInfo.SurfaceImageId;
     if (pathElement.IsSloped())
     {
-        auto directionOffset
-            = ((pathElement.GetSlopeDirection() + session.CurrentRotation) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
+        auto directionOffset = (pathElement.GetSlopeDirection() + session.CurrentRotation)
+            & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
         surfaceBaseImageIndex += 16 + directionOffset;
     }
     else
@@ -993,34 +992,13 @@ void PathPaintPoleSupport(
         surfaceBaseImageIndex += Byte98D6E0[edi];
     }
 
+    auto boundbox = PathPaintGetBoundbox(session, height, edges);
+
     // Below Surface
     const bool hasPassedSurface = (session.Flags & PaintSessionFlags::PassedSurface) != 0;
-    if (!hasPassedSurface)
-    {
-        boundBoxOffset.x = 3;
-        boundBoxOffset.y = 3;
-        boundBoxSize.x = 26;
-        boundBoxSize.y = 26;
-    }
-
-    // By default, add 1 to the z bounding box to always clip above the surface
-    uint8_t boundingBoxZOffset = 1;
-
-    // If we are on the same tile as a straight track, add the offset 2 so we
-    //  can clip above gravel part of the track sprite
-    if (session.TrackElementOnSameHeight != nullptr)
-    {
-        if (session.TrackElementOnSameHeight->AsTrack()->GetTrackType() == TrackElemType::Flat)
-        {
-            boundingBoxZOffset = 2;
-        }
-    }
-
     if (!hasSupports || !hasPassedSurface)
     {
-        PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height },
-            { { boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset }, { boundBoxSize.x, boundBoxSize.y, 0 } });
+        PaintAddImageAsParent(session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height }, boundbox);
     }
     else
     {
@@ -1036,15 +1014,11 @@ void PathPaintPoleSupport(
             bridgeBaseImageIndex = edges + pathPaintInfo.BridgeImageId;
         }
 
-        PaintAddImageAsParent(
-            session, imageTemplate.WithIndex(bridgeBaseImageIndex), { 0, 0, height },
-            { { boundBoxOffset, height + boundingBoxZOffset }, { boundBoxSize, 0 } });
+        PaintAddImageAsParent(session, imageTemplate.WithIndex(bridgeBaseImageIndex), { 0, 0, height }, boundbox);
 
         if (pathElement.IsQueue() || (pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS))
         {
-            PaintAddImageAsChild(
-                session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height },
-                { { boundBoxOffset, height + boundingBoxZOffset }, { boundBoxSize, 0 } });
+            PaintAddImageAsChild(session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height }, boundbox);
         }
     }
 
