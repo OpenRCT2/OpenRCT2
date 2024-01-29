@@ -832,6 +832,25 @@ static std::pair<uint8_t, uint8_t> PathPaintGetRotatedEdgesAndCorners(
     return std::make_pair(edges, corners);
 }
 
+static ImageIndex PathPaintGetBaseImage(
+    const PaintSession& session, const PathElement& pathElement, const FootpathPaintInfo& pathPaintInfo,
+    uint16_t rotatedEdgesAndCorners)
+{
+    ImageIndex surfaceBaseImageIndex = pathPaintInfo.SurfaceImageId;
+    if (pathElement.IsSloped())
+    {
+        auto directionOffset = (pathElement.GetSlopeDirection() + session.CurrentRotation)
+            & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+        surfaceBaseImageIndex += 16 + directionOffset;
+    }
+    else
+    {
+        surfaceBaseImageIndex += Byte98D6E0[rotatedEdgesAndCorners];
+    }
+
+    return surfaceBaseImageIndex;
+}
+
 static BoundBoxXYZ PathPaintGetBoundbox(const PaintSession& session, int32_t height, uint8_t edges)
 {
     CoordsXY boundBoxOffset = stru_98D804[edges].offset;
@@ -917,18 +936,7 @@ void PathPaintBoxSupport(
     auto [edges, corners] = PathPaintGetRotatedEdgesAndCorners(session, pathElement);
     uint16_t edi = edges | (corners << 4);
 
-    ImageIndex surfaceBaseImageIndex = pathPaintInfo.SurfaceImageId;
-    if (pathElement.IsSloped())
-    {
-        auto directionOffset = (pathElement.GetSlopeDirection() + session.CurrentRotation)
-            & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
-        surfaceBaseImageIndex += 16 + directionOffset;
-    }
-    else
-    {
-        surfaceBaseImageIndex += Byte98D6E0[edi];
-    }
-
+    auto surfaceBaseImageIndex = PathPaintGetBaseImage(session, pathElement, pathPaintInfo, edi);
     auto boundbox = PathPaintGetBoundbox(session, height, edges);
 
     const bool hasPassedSurface = (session.Flags & PaintSessionFlags::PassedSurface) != 0;
@@ -981,18 +989,7 @@ void PathPaintPoleSupport(
     auto [edges, corners] = PathPaintGetRotatedEdgesAndCorners(session, pathElement);
     uint16_t edi = edges | (corners << 4);
 
-    ImageIndex surfaceBaseImageIndex = pathPaintInfo.SurfaceImageId;
-    if (pathElement.IsSloped())
-    {
-        auto directionOffset = (pathElement.GetSlopeDirection() + session.CurrentRotation)
-            & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
-        surfaceBaseImageIndex += 16 + directionOffset;
-    }
-    else
-    {
-        surfaceBaseImageIndex += Byte98D6E0[edi];
-    }
-
+    auto surfaceBaseImageIndex = PathPaintGetBaseImage(session, pathElement, pathPaintInfo, edi);
     auto boundbox = PathPaintGetBoundbox(session, height, edges);
 
     // Below Surface
