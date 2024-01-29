@@ -39,7 +39,8 @@ GameActions::Result StaffFireAction::Query() const
     if (_spriteId.ToUnderlying() >= MAX_ENTITIES || _spriteId.IsNull())
     {
         LOG_ERROR("Invalid spriteId. spriteId = %u", _spriteId);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     auto staff = TryGetEntity<Staff>(_spriteId);
