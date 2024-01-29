@@ -77,7 +77,8 @@ GameActions::Result WaterSetHeightAction::Query() const
     if (surfaceElement == nullptr)
     {
         LOG_ERROR("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
-        return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
 
     int32_t zHigh = surfaceElement->GetBaseZ();
@@ -122,7 +123,8 @@ GameActions::Result WaterSetHeightAction::Execute() const
     if (surfaceElement == nullptr)
     {
         LOG_ERROR("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
-        return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
     }
 
     if (_height > surfaceElement->BaseHeight)

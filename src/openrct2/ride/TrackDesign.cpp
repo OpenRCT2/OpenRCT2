@@ -1371,7 +1371,8 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                     TileElement* tile_element = MapGetFirstElementAt(tile);
                     if (tile_element == nullptr)
                     {
-                        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+                        return GameActions::Result(
+                            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_TILE_ELEMENT_NOT_FOUND);
                     }
 
                     do
@@ -1683,7 +1684,9 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
                     auto surfaceElement = MapGetSurfaceElementAt(tile);
                     if (surfaceElement == nullptr)
                     {
-                        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+                        return GameActions::Result(
+                            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER,
+                            STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
                     }
 
                     int32_t surfaceZ = surfaceElement->GetBaseZ();
