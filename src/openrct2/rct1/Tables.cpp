@@ -696,8 +696,12 @@ namespace RCT1
         return map[vehicleSubEntry];
     }
 
-    std::string_view GetRideTypeObject(RideType rideType)
+    std::string_view GetRideTypeObject(RideType rideType, bool isLL)
     {
+        if (rideType == RideType::InvertedRollerCoaster && !isLL) {
+            return "rct1.ride.inverted_trains";
+        }
+
         static constexpr const char * map[] =
         {
             "rct1.ride.wooden_rc_trains",            // RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER

@@ -606,7 +606,7 @@ namespace RCT1
 
             if (_rideTypeToRideEntryMap[EnumValue(rideType)] == OBJECT_ENTRY_INDEX_NULL)
             {
-                auto entryName = RCT1::GetRideTypeObject(rideType);
+                auto entryName = RCT1::GetRideTypeObject(rideType, _gameVersion == FILE_VERSION_RCT1_LL);
                 if (!entryName.empty())
                 {
                     auto entryIndex = _rideEntries.GetOrAddEntry(entryName);
