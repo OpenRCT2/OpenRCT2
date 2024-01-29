@@ -168,6 +168,39 @@ static void PathPaintQueueBanner(
     }
 }
 
+static void PathPaintSlopedFences(
+    PaintSession& session, const PathElement& pathElement, uint16_t height, ImageId imageId, bool isQueue)
+{
+    auto queueOffset = isQueue ? 14 : 0;
+    switch ((pathElement.GetSlopeDirection() + session.CurrentRotation) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
+    {
+        case 0:
+            PaintAddImageAsParent(
+                session, imageId.WithIndexOffset(8 + queueOffset), { 0, 4, height }, { { 0, 4, height + 2 }, { 32, 1, 23 } });
+            PaintAddImageAsParent(
+                session, imageId.WithIndexOffset(8 + queueOffset), { 0, 28, height }, { { 0, 28, height + 2 }, { 32, 1, 23 } });
+            break;
+        case 1:
+            PaintAddImageAsParent(
+                session, imageId.WithIndexOffset(7 + queueOffset), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 32, 23 } });
+            PaintAddImageAsParent(
+                session, imageId.WithIndexOffset(7 + queueOffset), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 32, 23 } });
+            break;
+        case 2:
+            PaintAddImageAsParent(
+                session, imageId.WithIndexOffset(9 + queueOffset), { 0, 4, height }, { { 0, 4, height + 2 }, { 32, 1, 23 } });
+            PaintAddImageAsParent(
+                session, imageId.WithIndexOffset(9 + queueOffset), { 0, 28, height }, { { 0, 28, height + 2 }, { 32, 1, 23 } });
+            break;
+        case 3:
+            PaintAddImageAsParent(
+                session, imageId.WithIndexOffset(6 + queueOffset), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 32, 23 } });
+            PaintAddImageAsParent(
+                session, imageId.WithIndexOffset(6 + queueOffset), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 32, 23 } });
+            break;
+    }
+}
+
 static void PathPaintFencesAndQueueBannersQueue(
     PaintSession& session, const PathElement& pathElement, uint16_t height, uint32_t connectedEdges, bool hasSupports,
     const FootpathPaintInfo& pathPaintInfo, ImageId imageTemplate)
@@ -176,33 +209,7 @@ static void PathPaintFencesAndQueueBannersQueue(
 
     if (pathElement.IsSloped())
     {
-        switch ((pathElement.GetSlopeDirection() + session.CurrentRotation) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
-        {
-            case 0:
-                PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(22), { 0, 4, height }, { { 0, 4, height + 2 }, { 32, 1, 23 } });
-                PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(22), { 0, 28, height }, { { 0, 28, height + 2 }, { 32, 1, 23 } });
-                break;
-            case 1:
-                PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(21), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 32, 23 } });
-                PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(21), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 32, 23 } });
-                break;
-            case 2:
-                PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(23), { 0, 4, height }, { { 0, 4, height + 2 }, { 32, 1, 23 } });
-                PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(23), { 0, 28, height }, { { 0, 28, height + 2 }, { 32, 1, 23 } });
-                break;
-            case 3:
-                PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(20), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 32, 23 } });
-                PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(20), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 32, 23 } });
-                break;
-        }
+        PathPaintSlopedFences(session, pathElement, height, imageId, true);
     }
     else
     {
@@ -361,33 +368,7 @@ static void PathPaintFencesAndQueueBannersNonQueue(
     auto slopeRailingsSupported = !(pathPaintInfo.SurfaceFlags & FOOTPATH_ENTRY_FLAG_NO_SLOPE_RAILINGS);
     if ((hasSupports || slopeRailingsSupported) && pathElement.IsSloped())
     {
-        switch ((pathElement.GetSlopeDirection() + session.CurrentRotation) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
-        {
-            case 0:
-                PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(8), { 0, 4, height }, { { 0, 4, height + 2 }, { 32, 1, 23 } });
-                PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(8), { 0, 28, height }, { { 0, 28, height + 2 }, { 32, 1, 23 } });
-                break;
-            case 1:
-                PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(7), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 32, 23 } });
-                PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(7), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 32, 23 } });
-                break;
-            case 2:
-                PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(9), { 0, 4, height }, { { 0, 4, height + 2 }, { 32, 1, 23 } });
-                PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(9), { 0, 28, height }, { { 0, 28, height + 2 }, { 32, 1, 23 } });
-                break;
-            case 3:
-                PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(6), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 32, 23 } });
-                PaintAddImageAsParent(
-                    session, imageId.WithIndexOffset(6), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 32, 23 } });
-                break;
-        }
+        PathPaintSlopedFences(session, pathElement, height, imageId, false);
     }
     else
     {
