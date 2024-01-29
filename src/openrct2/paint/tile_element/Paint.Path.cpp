@@ -819,6 +819,52 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
     PaintLampLightEffects(session, tileElement, height);
 }
 
+static void PathPaintSegmentSupportHeight(
+    PaintSession& session, const PathElement& pathElement, int32_t height, uint8_t edges, bool hasSupports)
+{
+    height += 32;
+    if (pathElement.IsSloped())
+    {
+        height += 16;
+    }
+
+    PaintUtilSetGeneralSupportHeight(session, height, 0x20);
+
+    if (pathElement.IsQueue() || (pathElement.GetEdgesAndCorners() != 0xFF && hasSupports))
+    {
+        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
+        return;
+    }
+
+    if (pathElement.GetEdgesAndCorners() == 0xFF)
+    {
+        PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, 0xFFFF, 0);
+        return;
+    }
+
+    PaintUtilSetSegmentSupportHeight(session, SEGMENT_C4, 0xFFFF, 0);
+
+    if (edges & EDGE_NE)
+    {
+        PaintUtilSetSegmentSupportHeight(session, SEGMENT_CC, 0xFFFF, 0);
+    }
+
+    if (edges & EDGE_SE)
+    {
+        PaintUtilSetSegmentSupportHeight(session, SEGMENT_D4, 0xFFFF, 0);
+    }
+
+    if (edges & EDGE_SW)
+    {
+        PaintUtilSetSegmentSupportHeight(session, SEGMENT_D0, 0xFFFF, 0);
+    }
+
+    if (edges & EDGE_NW)
+    {
+        PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8, 0xFFFF, 0);
+    }
+}
+
 void PathPaintBoxSupport(
     PaintSession& session, const PathElement& pathElement, int32_t height, const FootpathPaintInfo& pathPaintInfo,
     bool hasSupports, ImageId imageTemplate, ImageId sceneryImageTemplate)
@@ -914,47 +960,7 @@ void PathPaintBoxSupport(
     auto supportType = Byte98D8A4[edges] == 0 ? 0 : 1;
     PathASupportsPaintSetup(session, supportType, ax, height, imageTemplate, pathPaintInfo, nullptr);
 
-    height += 32;
-    if (pathElement.IsSloped())
-    {
-        height += 16;
-    }
-
-    PaintUtilSetGeneralSupportHeight(session, height, 0x20);
-
-    if (pathElement.IsQueue() || (pathElement.GetEdgesAndCorners() != 0xFF && hasSupports))
-    {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
-        return;
-    }
-
-    if (pathElement.GetEdgesAndCorners() == 0xFF)
-    {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, 0xFFFF, 0);
-        return;
-    }
-
-    PaintUtilSetSegmentSupportHeight(session, SEGMENT_C4, 0xFFFF, 0);
-
-    if (edges & 1)
-    {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENT_CC, 0xFFFF, 0);
-    }
-
-    if (edges & 2)
-    {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENT_D4, 0xFFFF, 0);
-    }
-
-    if (edges & 4)
-    {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENT_D0, 0xFFFF, 0);
-    }
-
-    if (edges & 8)
-    {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8, 0xFFFF, 0);
-    }
+    PathPaintSegmentSupportHeight(session, pathElement, height, edges, hasSupports);
 }
 
 void PathPaintPoleSupport(
@@ -1073,45 +1079,5 @@ void PathPaintPoleSupport(
         }
     }
 
-    height += 32;
-    if (pathElement.IsSloped())
-    {
-        height += 16;
-    }
-
-    PaintUtilSetGeneralSupportHeight(session, height, 0x20);
-
-    if (pathElement.IsQueue() || (pathElement.GetEdgesAndCorners() != 0xFF && hasSupports))
-    {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
-        return;
-    }
-
-    if (pathElement.GetEdgesAndCorners() == 0xFF)
-    {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, 0xFFFF, 0);
-        return;
-    }
-
-    PaintUtilSetSegmentSupportHeight(session, SEGMENT_C4, 0xFFFF, 0);
-
-    if (edges & EDGE_NE)
-    {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENT_CC, 0xFFFF, 0);
-    }
-
-    if (edges & EDGE_SE)
-    {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENT_D4, 0xFFFF, 0);
-    }
-
-    if (edges & EDGE_SW)
-    {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENT_D0, 0xFFFF, 0);
-    }
-
-    if (edges & EDGE_NW)
-    {
-        PaintUtilSetSegmentSupportHeight(session, SEGMENT_C8, 0xFFFF, 0);
-    }
+    PathPaintSegmentSupportHeight(session, pathElement, height, edges, hasSupports);
 }
