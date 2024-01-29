@@ -12,6 +12,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/GameState.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
@@ -26,6 +27,7 @@
 #include <openrct2/scenario/ScenarioSources.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
+#include <openrct2/world/Park.h>
 #include <vector>
 
 static constexpr StringId WINDOW_TITLE = STR_SELECT_SCENARIO;
@@ -276,8 +278,26 @@ public:
             ft = Formatter();
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(completedByName.c_str());
-            ft.Add<money64>(scenario->Highscore->company_value);
-            screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, ft);
+
+            // if (OpenRCT2::GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+            // {
+            //     screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_COMPLETED_BY, ft);
+            // }
+            // else
+            // {
+            //     ft.Add<money64>(scenario->Highscore->company_value);
+            //     screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, ft);
+            // }
+
+            if (scenario->Highscore->company_value == MONEY64_UNDEFINED)
+            {
+                screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_COMPLETED_BY, ft);
+            }
+            else
+            {
+                ft.Add<money64>(scenario->Highscore->company_value);
+                screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, ft);
+            }
         }
     }
 
