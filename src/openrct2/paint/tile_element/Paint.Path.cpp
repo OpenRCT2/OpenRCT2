@@ -862,7 +862,7 @@ static BoundBoxXYZ PathPaintGetBoundbox(const PaintSession& session, int32_t hei
 {
     CoordsXY boundBoxOffset = stru_98D804[edges].offset;
     CoordsXY boundBoxSize = stru_98D804[edges].length;
-    
+
     const bool hasPassedSurface = (session.Flags & PaintSessionFlags::PassedSurface) != 0;
     if (!hasPassedSurface)
     {
@@ -871,7 +871,7 @@ static BoundBoxXYZ PathPaintGetBoundbox(const PaintSession& session, int32_t hei
         boundBoxSize.x = 26;
         boundBoxSize.y = 26;
     }
-    
+
     // By default, add 1 to the z bounding box to always clip above the surface
     uint8_t boundingBoxZOffset = 1;
 
