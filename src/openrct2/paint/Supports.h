@@ -146,10 +146,10 @@ bool MetalBSupportsPaintSetup(
     PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate);
 bool PathBoxSupportsPaintSetup(
-    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
-    const FootpathPaintInfo& pathPaintInfo, bool* underground);
+    PaintSession& session, WoodenSupportSubType supportType, bool isSloped, Direction slopeRotation, int32_t height,
+    ImageId imageTemplate, const FootpathPaintInfo& pathPaintInfo);
 bool PathPoleSupportsPaintSetup(
-    PaintSession& session, int32_t segment, int32_t special, int32_t height, ImageId imageTemplate,
+    PaintSession& session, MetalSupportPlace supportPlace, bool isSloped, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo);
 void DrawSupportsSideBySide(
     PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special = 0);

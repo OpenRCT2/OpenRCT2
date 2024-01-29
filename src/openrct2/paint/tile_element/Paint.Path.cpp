@@ -82,8 +82,8 @@ static constexpr BoundBoxXY stru_98D804[] = {
     { { 0, 0 }, { 32, 32 } },
 };
 
-static constexpr uint8_t Byte98D8A4[] = {
-    0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0
+static constexpr WoodenSupportSubType PathSupportOrientation[] = {
+    WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw, WoodenSupportSubType::NwSe, WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw, WoodenSupportSubType::NwSe, WoodenSupportSubType::NeSw, WoodenSupportSubType::NwSe, WoodenSupportSubType::NwSe, WoodenSupportSubType::NwSe, WoodenSupportSubType::NwSe, WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw, WoodenSupportSubType::NwSe, WoodenSupportSubType::NeSw,
 };
 // clang-format on
 
@@ -955,7 +955,7 @@ void PathPaintBoxSupport(
         }
         else
         {
-            bridgeBaseImageIndex = Byte98D8A4[edges] + pathPaintInfo.BridgeImageId + 49;
+            bridgeBaseImageIndex = EnumValue(PathSupportOrientation[edges]) + pathPaintInfo.BridgeImageId + 49;
         }
 
         PaintAddImageAsParent(session, imageTemplate.WithIndex(bridgeBaseImageIndex), { 0, 0, height }, boundbox);
@@ -968,14 +968,14 @@ void PathPaintBoxSupport(
 
     Sub6A3F61(session, pathElement, edi, height, pathPaintInfo, imageTemplate, sceneryImageTemplate, hasSupports);
 
-    uint16_t ax = 0;
+    Direction slopeDirection{};
     if (pathElement.IsSloped())
     {
-        ax = ((pathElement.GetSlopeDirection() + session.CurrentRotation) & 0x3) + 1;
+        slopeDirection = ((pathElement.GetSlopeDirection() + session.CurrentRotation) & 0x3);
     }
 
-    auto supportType = Byte98D8A4[edges] == 0 ? 0 : 1;
-    PathBoxSupportsPaintSetup(session, supportType, ax, height, imageTemplate, pathPaintInfo, nullptr);
+    PathBoxSupportsPaintSetup(
+        session, PathSupportOrientation[edges], pathElement.IsSloped(), slopeDirection, height, imageTemplate, pathPaintInfo);
 
     PathPaintSegmentSupportHeight(session, pathElement, height, edges, hasSupports);
 }
@@ -1024,17 +1024,11 @@ void PathPaintPoleSupport(
         session, pathElement, edi, height, pathPaintInfo, imageTemplate, sceneryImageTemplate,
         hasSupports); // TODO: arguments
 
-    uint16_t ax = 0;
-    if (pathElement.IsSloped())
-    {
-        ax = 8;
-    }
-
-    uint8_t supports[] = {
-        6,
-        8,
-        7,
-        5,
+    MetalSupportPlace supports[] = {
+        MetalSupportPlace::TopRightSide,
+        MetalSupportPlace::BottomRightSide,
+        MetalSupportPlace::BottomLeftSide,
+        MetalSupportPlace::TopLeftSide,
     };
 
     for (int8_t i = 3; i > -1; --i)
@@ -1047,7 +1041,7 @@ void PathPaintPoleSupport(
             {
                 imageTemplate = ImageId().WithPrimary(supportColour);
             }
-            PathPoleSupportsPaintSetup(session, supports[i], ax, height, imageTemplate, pathPaintInfo);
+            PathPoleSupportsPaintSetup(session, supports[i], pathElement.IsSloped(), height, imageTemplate, pathPaintInfo);
         }
     }
 
