@@ -12,6 +12,7 @@
 - Fix: [#20255] Images from the last hovered-over coaster in the object selection are not freed.
 - Fix: [#20616] Confirmation button in the track designer’s quit prompt has the wrong text.
 - Fix: [#20628] Moving caret using Ctrl+left can move too far when using a multibyte grapheme.
+- Fix: [#20631] IME window not positioned correctly.
 - Fix: [#20845] Trying to save under a folder with no write permissions causes a crash.
 - Fix: [#21054] “No entrance” style is selected by default in the track designer.
 - Fix: [#21145] [Plugin] setInterval/setTimeout handle conflict.
@@ -23,7 +24,6 @@
 - Fix: [#21198] [Plugin] Setting brake or booster speeds on a tile element doesn’t work.
 - Fix: [#21290] Sound keeps playing when paused from fast-forward mode.
 - Fix: [#21291] Hungry guests heading to any flat ride do not count for warning threshold (original bug).
-- Fix: [#20631] IME window not positioned correctly.
 
 0.4.7 (2023-12-31)
 ------------------------------------------------------------------------
