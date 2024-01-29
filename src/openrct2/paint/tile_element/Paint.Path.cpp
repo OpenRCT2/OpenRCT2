@@ -94,257 +94,261 @@ void PathPaintPoleSupport(
     PaintSession& session, const PathElement& pathElement, int16_t height, const FootpathPaintInfo& pathPaintInfo,
     bool hasSupports, ImageId imageTemplate, ImageId sceneryImageTemplate);
 
-/**
- * rct2: 0x006A4101
- * @param tile_element (esi)
- */
-static void PathPaintFencesAndQueueBanners(
-    PaintSession& session, const PathElement& pathElement, uint16_t height, uint32_t connectedEdges, bool hasSupports,
-    const FootpathPaintInfo& pathPaintInfo, ImageId imageTemplate)
+static void PathPaintQueueBanner(
+    PaintSession& session, const PathElement& pathElement, uint16_t height, const FootpathPaintInfo& pathPaintInfo,
+    ImageId imageTemplate)
 {
-    PROFILED_FUNCTION();
-
     auto imageId = imageTemplate.WithIndex(pathPaintInfo.RailingsImageId);
-    if (pathElement.IsQueue())
+
+    uint8_t direction = pathElement.GetQueueBannerDirection();
+    // Draw ride sign
+    session.InteractionType = ViewportInteractionItem::Ride;
+    if (pathElement.IsSloped())
     {
-        if (pathElement.IsSloped())
+        if (pathElement.GetSlopeDirection() == direction)
+            height += COORDS_Z_STEP * 2;
+    }
+    direction += session.CurrentRotation;
+    direction &= 3;
+
+    CoordsXYZ boundBoxOffsets = CoordsXYZ(BannerBoundBoxes[direction][0], height + 2);
+
+    imageId = imageId.WithIndexOffset(28 + (direction << 1));
+
+    // Draw pole in the back
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { boundBoxOffsets, { 1, 1, 21 } });
+
+    // Draw pole in the front and banner
+    boundBoxOffsets.x = BannerBoundBoxes[direction][1].x;
+    boundBoxOffsets.y = BannerBoundBoxes[direction][1].y;
+    imageId = imageId.WithIndexOffset(1);
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, { boundBoxOffsets, { 1, 1, 21 } });
+
+    direction--;
+    // If text shown
+    auto ride = GetRide(pathElement.GetRideIndex());
+    if (direction < 2 && ride != nullptr && !imageTemplate.IsRemap())
+    {
+        uint16_t scrollingMode = pathPaintInfo.ScrollingMode;
+        scrollingMode += direction;
+
+        auto ft = Formatter();
+
+        if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
-            switch ((pathElement.GetSlopeDirection() + session.CurrentRotation) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
-            {
-                case 0:
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(22), { 0, 4, height }, { { 0, 4, height + 2 }, { 32, 1, 23 } });
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(22), { 0, 28, height }, { { 0, 28, height + 2 }, { 32, 1, 23 } });
-                    break;
-                case 1:
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(21), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 32, 23 } });
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(21), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 32, 23 } });
-                    break;
-                case 2:
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(23), { 0, 4, height }, { { 0, 4, height + 2 }, { 32, 1, 23 } });
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(23), { 0, 28, height }, { { 0, 28, height + 2 }, { 32, 1, 23 } });
-                    break;
-                case 3:
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(20), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 32, 23 } });
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(20), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 32, 23 } });
-                    break;
-            }
+            ft.Add<StringId>(STR_RIDE_ENTRANCE_NAME);
+            ride->FormatNameTo(ft);
         }
         else
         {
-            const auto pathEdges = connectedEdges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
-            switch (pathEdges)
-            {
-                case 0b0001:
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(17), { 0, 4, height }, { { 0, 4, height + 2 }, { 28, 1, 7 } });
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(17), { 0, 28, height }, { { 0, 28, height + 2 }, { 28, 1, 7 } });
-                    break;
-                case 0b0010:
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(18), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 28, 7 } });
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(18), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 28, 7 } });
-                    break;
-                case 0b0011:
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(17), { 0, 4, height }, { { 0, 4, height + 2 }, { 28, 1, 7 } });
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(18), { 28, 0, height },
-                        { { 28, 4, height + 2 }, { 1, 28, 7 } }); // bound_box_offset_y seems to be a bug
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(25), { 0, 0, height }, { { 0, 28, height + 2 }, { 4, 4, 7 } });
-                    break;
-                case 0b0100:
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(19), { 0, 4, height }, { { 0, 4, height + 2 }, { 28, 1, 7 } });
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(19), { 0, 28, height }, { { 0, 28, height + 2 }, { 28, 1, 7 } });
-                    break;
-                case 0b0101:
+            ft.Add<StringId>(STR_RIDE_ENTRANCE_CLOSED);
+        }
+        if (gConfigGeneral.UpperCaseBanners)
+        {
+            FormatStringToUpper(
+                gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
+        }
+        else
+        {
+            FormatStringLegacy(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
+        }
+
+        uint16_t stringWidth = GfxGetStringWidth(gCommonStringFormatBuffer, FontStyle::Tiny);
+        uint16_t scroll = stringWidth > 0 ? (GetGameState().CurrentTicks / 2) % stringWidth : 0;
+
+        PaintAddImageAsChild(
+            session, ScrollingTextSetup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK),
+            { 0, 0, height + 7 }, { boundBoxOffsets, { 1, 1, 21 } });
+    }
+
+    session.InteractionType = ViewportInteractionItem::Footpath;
+    if (imageTemplate.IsRemap())
+    {
+        session.InteractionType = ViewportInteractionItem::None;
+    }
+}
+
+static void PathPaintFencesAndQueueBannersQueue(
+    PaintSession& session, const PathElement& pathElement, uint16_t height, uint32_t connectedEdges, bool hasSupports,
+    const FootpathPaintInfo& pathPaintInfo, ImageId imageTemplate)
+{
+    auto imageId = imageTemplate.WithIndex(pathPaintInfo.RailingsImageId);
+
+    if (pathElement.IsSloped())
+    {
+        switch ((pathElement.GetSlopeDirection() + session.CurrentRotation) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
+        {
+            case 0:
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(22), { 0, 4, height }, { { 0, 4, height + 2 }, { 32, 1, 23 } });
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(22), { 0, 28, height }, { { 0, 28, height + 2 }, { 32, 1, 23 } });
+                break;
+            case 1:
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(21), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 32, 23 } });
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(21), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 32, 23 } });
+                break;
+            case 2:
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(23), { 0, 4, height }, { { 0, 4, height + 2 }, { 32, 1, 23 } });
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(23), { 0, 28, height }, { { 0, 28, height + 2 }, { 32, 1, 23 } });
+                break;
+            case 3:
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(20), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 32, 23 } });
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(20), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 32, 23 } });
+                break;
+        }
+    }
+    else
+    {
+        const auto pathEdges = connectedEdges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
+        switch (pathEdges)
+        {
+            case 0b0001:
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(17), { 0, 4, height }, { { 0, 4, height + 2 }, { 28, 1, 7 } });
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(17), { 0, 28, height }, { { 0, 28, height + 2 }, { 28, 1, 7 } });
+                break;
+            case 0b0010:
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(18), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 28, 7 } });
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(18), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 28, 7 } });
+                break;
+            case 0b0011:
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(17), { 0, 4, height }, { { 0, 4, height + 2 }, { 28, 1, 7 } });
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(18), { 28, 0, height },
+                    { { 28, 4, height + 2 }, { 1, 28, 7 } }); // bound_box_offset_y seems to be a bug
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(25), { 0, 0, height }, { { 0, 28, height + 2 }, { 4, 4, 7 } });
+                break;
+            case 0b0100:
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(19), { 0, 4, height }, { { 0, 4, height + 2 }, { 28, 1, 7 } });
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(19), { 0, 28, height }, { { 0, 28, height + 2 }, { 28, 1, 7 } });
+                break;
+            case 0b0101:
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(15), { 0, 4, height }, { { 0, 4, height + 2 }, { 32, 1, 7 } });
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(15), { 0, 28, height }, { { 0, 28, height + 2 }, { 32, 1, 7 } });
+                break;
+            case 0b0110:
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(18), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 28, 7 } });
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(19), { 0, 4, height }, { { 0, 4, height + 2 }, { 28, 1, 7 } });
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(26), { 0, 0, height }, { { 28, 28, height + 2 }, { 4, 4, 7 } });
+                break;
+            case 0b0111:
+                if (pathElement.HasJunctionRailings())
+                {
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(15), { 0, 4, height }, { { 0, 4, height + 2 }, { 32, 1, 7 } });
                     PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(15), { 0, 28, height }, { { 0, 28, height + 2 }, { 32, 1, 7 } });
-                    break;
-                case 0b0110:
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(18), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 28, 7 } });
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(19), { 0, 4, height }, { { 0, 4, height + 2 }, { 28, 1, 7 } });
+                        session, imageId.WithIndexOffset(25), { 0, 0, height }, { { 0, 28, height + 2 }, { 4, 4, 7 } });
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(26), { 0, 0, height }, { { 28, 28, height + 2 }, { 4, 4, 7 } });
-                    break;
-                case 0b0111:
-                    if (pathElement.HasJunctionRailings())
-                    {
-                        PaintAddImageAsParent(
-                            session, imageId.WithIndexOffset(15), { 0, 4, height }, { { 0, 4, height + 2 }, { 32, 1, 7 } });
-                        PaintAddImageAsParent(
-                            session, imageId.WithIndexOffset(25), { 0, 0, height }, { { 0, 28, height + 2 }, { 4, 4, 7 } });
-                        PaintAddImageAsParent(
-                            session, imageId.WithIndexOffset(26), { 0, 0, height }, { { 28, 28, height + 2 }, { 4, 4, 7 } });
-                    }
-                    break;
-                case 0b1000:
+                }
+                break;
+            case 0b1000:
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(16), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 28, 7 } });
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(16), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 28, 7 } });
+                break;
+            case 0b1001:
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(16), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 28, 7 } });
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(17), { 0, 28, height }, { { 0, 28, height + 2 }, { 28, 1, 7 } });
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(24), { 0, 0, height }, { { 0, 0, height + 2 }, { 4, 4, 7 } });
+                break;
+            case 0b1010:
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(14), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 32, 7 } });
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(14), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 32, 7 } });
+                break;
+            case 0b1011:
+                if (pathElement.HasJunctionRailings())
+                {
                     PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(16), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 28, 7 } });
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(16), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 28, 7 } });
-                    break;
-                case 0b1001:
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(16), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 28, 7 } });
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(17), { 0, 28, height }, { { 0, 28, height + 2 }, { 28, 1, 7 } });
+                        session, imageId.WithIndexOffset(14), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 32, 7 } });
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(24), { 0, 0, height }, { { 0, 0, height + 2 }, { 4, 4, 7 } });
-                    break;
-                case 0b1010:
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(25), { 0, 0, height }, { { 0, 28, height + 2 }, { 4, 4, 7 } });
+                }
+                break;
+            case 0b1100:
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(16), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 28, 7 } });
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(19), { 0, 28, height },
+                    { { 4, 28, height + 2 }, { 28, 1, 7 } }); // bound_box_offset_x seems to be a bug
+                PaintAddImageAsParent(
+                    session, imageId.WithIndexOffset(27), { 0, 0, height }, { { 28, 0, height + 2 }, { 4, 4, 7 } });
+                break;
+            case 0b1101:
+                if (pathElement.HasJunctionRailings())
+                {
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(15), { 0, 28, height }, { { 0, 28, height + 2 }, { 32, 1, 7 } });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(24), { 0, 0, height }, { { 0, 0, height + 2 }, { 4, 4, 7 } });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(27), { 0, 0, height }, { { 28, 0, height + 2 }, { 4, 4, 7 } });
+                }
+                break;
+            case 0b1110:
+                if (pathElement.HasJunctionRailings())
+                {
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(14), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 32, 7 } });
                     PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(14), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 32, 7 } });
-                    break;
-                case 0b1011:
-                    if (pathElement.HasJunctionRailings())
-                    {
-                        PaintAddImageAsParent(
-                            session, imageId.WithIndexOffset(14), { 28, 0, height }, { { 28, 0, height + 2 }, { 1, 32, 7 } });
-                        PaintAddImageAsParent(
-                            session, imageId.WithIndexOffset(24), { 0, 0, height }, { { 0, 0, height + 2 }, { 4, 4, 7 } });
-                        PaintAddImageAsParent(
-                            session, imageId.WithIndexOffset(25), { 0, 0, height }, { { 0, 28, height + 2 }, { 4, 4, 7 } });
-                    }
-                    break;
-                case 0b1100:
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(16), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 28, 7 } });
-                    PaintAddImageAsParent(
-                        session, imageId.WithIndexOffset(19), { 0, 28, height },
-                        { { 4, 28, height + 2 }, { 28, 1, 7 } }); // bound_box_offset_x seems to be a bug
+                        session, imageId.WithIndexOffset(26), { 0, 0, height }, { { 28, 28, height + 2 }, { 4, 4, 7 } });
                     PaintAddImageAsParent(
                         session, imageId.WithIndexOffset(27), { 0, 0, height }, { { 28, 0, height + 2 }, { 4, 4, 7 } });
-                    break;
-                case 0b1101:
-                    if (pathElement.HasJunctionRailings())
-                    {
-                        PaintAddImageAsParent(
-                            session, imageId.WithIndexOffset(15), { 0, 28, height }, { { 0, 28, height + 2 }, { 32, 1, 7 } });
-                        PaintAddImageAsParent(
-                            session, imageId.WithIndexOffset(24), { 0, 0, height }, { { 0, 0, height + 2 }, { 4, 4, 7 } });
-                        PaintAddImageAsParent(
-                            session, imageId.WithIndexOffset(27), { 0, 0, height }, { { 28, 0, height + 2 }, { 4, 4, 7 } });
-                    }
-                    break;
-                case 0b1110:
-                    if (pathElement.HasJunctionRailings())
-                    {
-                        PaintAddImageAsParent(
-                            session, imageId.WithIndexOffset(14), { 4, 0, height }, { { 4, 0, height + 2 }, { 1, 32, 7 } });
-                        PaintAddImageAsParent(
-                            session, imageId.WithIndexOffset(26), { 0, 0, height }, { { 28, 28, height + 2 }, { 4, 4, 7 } });
-                        PaintAddImageAsParent(
-                            session, imageId.WithIndexOffset(27), { 0, 0, height }, { { 28, 0, height + 2 }, { 4, 4, 7 } });
-                    }
-                    break;
-                case 0b1111:
-                    if (pathElement.HasJunctionRailings())
-                    {
-                        PaintAddImageAsParent(
-                            session, imageId.WithIndexOffset(24), { 0, 0, height }, { { 0, 0, height + 2 }, { 4, 4, 7 } });
-                        PaintAddImageAsParent(
-                            session, imageId.WithIndexOffset(25), { 0, 0, height }, { { 0, 28, height + 2 }, { 4, 4, 7 } });
-                        PaintAddImageAsParent(
-                            session, imageId.WithIndexOffset(26), { 0, 0, height }, { { 28, 28, height + 2 }, { 4, 4, 7 } });
-                        PaintAddImageAsParent(
-                            session, imageId.WithIndexOffset(27), { 0, 0, height }, { { 28, 0, height + 2 }, { 4, 4, 7 } });
-                    }
-            }
+                }
+                break;
+            case 0b1111:
+                if (pathElement.HasJunctionRailings())
+                {
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(24), { 0, 0, height }, { { 0, 0, height + 2 }, { 4, 4, 7 } });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(25), { 0, 0, height }, { { 0, 28, height + 2 }, { 4, 4, 7 } });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(26), { 0, 0, height }, { { 28, 28, height + 2 }, { 4, 4, 7 } });
+                    PaintAddImageAsParent(
+                        session, imageId.WithIndexOffset(27), { 0, 0, height }, { { 28, 0, height + 2 }, { 4, 4, 7 } });
+                }
         }
-
-        if (!pathElement.HasQueueBanner() || (pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_NO_QUEUE_BANNER))
-        {
-            return;
-        }
-
-        uint8_t direction = pathElement.GetQueueBannerDirection();
-        // Draw ride sign
-        session.InteractionType = ViewportInteractionItem::Ride;
-        if (pathElement.IsSloped())
-        {
-            if (pathElement.GetSlopeDirection() == direction)
-                height += COORDS_Z_STEP * 2;
-        }
-        direction += session.CurrentRotation;
-        direction &= 3;
-
-        CoordsXYZ boundBoxOffsets = CoordsXYZ(BannerBoundBoxes[direction][0], height + 2);
-
-        imageId = imageId.WithIndexOffset(28 + (direction << 1));
-
-        // Draw pole in the back
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { boundBoxOffsets, { 1, 1, 21 } });
-
-        // Draw pole in the front and banner
-        boundBoxOffsets.x = BannerBoundBoxes[direction][1].x;
-        boundBoxOffsets.y = BannerBoundBoxes[direction][1].y;
-        imageId = imageId.WithIndexOffset(1);
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { boundBoxOffsets, { 1, 1, 21 } });
-
-        direction--;
-        // If text shown
-        auto ride = GetRide(pathElement.GetRideIndex());
-        if (direction < 2 && ride != nullptr && !imageTemplate.IsRemap())
-        {
-            uint16_t scrollingMode = pathPaintInfo.ScrollingMode;
-            scrollingMode += direction;
-
-            auto ft = Formatter();
-
-            if (ride->status == RideStatus::Open && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
-            {
-                ft.Add<StringId>(STR_RIDE_ENTRANCE_NAME);
-                ride->FormatNameTo(ft);
-            }
-            else
-            {
-                ft.Add<StringId>(STR_RIDE_ENTRANCE_CLOSED);
-            }
-            if (gConfigGeneral.UpperCaseBanners)
-            {
-                FormatStringToUpper(
-                    gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
-            }
-            else
-            {
-                FormatStringLegacy(
-                    gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
-            }
-
-            uint16_t stringWidth = GfxGetStringWidth(gCommonStringFormatBuffer, FontStyle::Tiny);
-            uint16_t scroll = stringWidth > 0 ? (GetGameState().CurrentTicks / 2) % stringWidth : 0;
-
-            PaintAddImageAsChild(
-                session, ScrollingTextSetup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK),
-                { 0, 0, height + 7 }, { boundBoxOffsets, { 1, 1, 21 } });
-        }
-
-        session.InteractionType = ViewportInteractionItem::Footpath;
-        if (imageTemplate.IsRemap())
-        {
-            session.InteractionType = ViewportInteractionItem::None;
-        }
-        return;
     }
+
+    if (pathElement.HasQueueBanner() && !(pathPaintInfo.RailingFlags & RAILING_ENTRY_FLAG_NO_QUEUE_BANNER))
+    {
+        PathPaintQueueBanner(session, pathElement, height, pathPaintInfo, imageTemplate);
+    }
+}
+
+static void PathPaintFencesAndQueueBannersNonQueue(
+    PaintSession& session, const PathElement& pathElement, uint16_t height, uint32_t connectedEdges, bool hasSupports,
+    const FootpathPaintInfo& pathPaintInfo, ImageId imageTemplate)
+{
+    auto imageId = imageTemplate.WithIndex(pathPaintInfo.RailingsImageId);
 
     uint32_t drawnCorners = 0;
     // If the path is not drawn over the supports, then no corner sprites will be drawn (making double-width paths
@@ -561,6 +565,28 @@ static void PathPaintFencesAndQueueBanners(
                 }
                 break;
         }
+    }
+}
+
+/**
+ * rct2: 0x006A4101
+ * @param tile_element (esi)
+ */
+static void PathPaintFencesAndQueueBanners(
+    PaintSession& session, const PathElement& pathElement, uint16_t height, uint32_t connectedEdges, bool hasSupports,
+    const FootpathPaintInfo& pathPaintInfo, ImageId imageTemplate)
+{
+    PROFILED_FUNCTION();
+
+    if (pathElement.IsQueue())
+    {
+        PathPaintFencesAndQueueBannersQueue(
+            session, pathElement, height, connectedEdges, hasSupports, pathPaintInfo, imageTemplate);
+    }
+    else
+    {
+        PathPaintFencesAndQueueBannersNonQueue(
+            session, pathElement, height, connectedEdges, hasSupports, pathPaintInfo, imageTemplate);
     }
 }
 
