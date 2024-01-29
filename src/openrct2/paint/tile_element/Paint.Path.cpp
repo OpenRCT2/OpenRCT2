@@ -975,7 +975,7 @@ void PathPaintBoxSupport(
     }
 
     auto supportType = Byte98D8A4[edges] == 0 ? 0 : 1;
-    PathASupportsPaintSetup(session, supportType, ax, height, imageTemplate, pathPaintInfo, nullptr);
+    PathBoxSupportsPaintSetup(session, supportType, ax, height, imageTemplate, pathPaintInfo, nullptr);
 
     PathPaintSegmentSupportHeight(session, pathElement, height, edges, hasSupports);
 }
@@ -1047,7 +1047,7 @@ void PathPaintPoleSupport(
             {
                 imageTemplate = ImageId().WithPrimary(supportColour);
             }
-            PathBSupportsPaintSetup(session, supports[i], ax, height, imageTemplate, pathPaintInfo);
+            PathPoleSupportsPaintSetup(session, supports[i], ax, height, imageTemplate, pathPaintInfo);
         }
     }
 

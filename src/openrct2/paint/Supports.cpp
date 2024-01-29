@@ -1251,7 +1251,7 @@ bool MetalBSupportsPaintSetup(
  *
  * @return Whether supports were drawn
  */
-bool PathASupportsPaintSetup(
+bool PathBoxSupportsPaintSetup(
     PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo, bool* underground)
 {
@@ -1406,7 +1406,7 @@ bool PathASupportsPaintSetup(
  *
  * @return Whether supports were drawn
  */
-bool PathBSupportsPaintSetup(
+bool PathPoleSupportsPaintSetup(
     PaintSession& session, int32_t segment, int32_t special, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo)
 {
