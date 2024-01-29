@@ -561,7 +561,6 @@ void CheatSetAction::SetScenarioNoMoney(bool enabled) const
     gameState.ScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
     gCompanyValue = MONEY64_UNDEFINED;
 
-
     // Invalidate all windows that have anything to do with finance
     WindowInvalidateByClass(WindowClass::Ride);
     WindowInvalidateByClass(WindowClass::Peep);

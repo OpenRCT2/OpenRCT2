@@ -279,16 +279,6 @@ public:
             ft.Add<StringId>(STR_STRING);
             ft.Add<const char*>(completedByName.c_str());
 
-            // if (OpenRCT2::GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
-            // {
-            //     screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_COMPLETED_BY, ft);
-            // }
-            // else
-            // {
-            //     ft.Add<money64>(scenario->Highscore->company_value);
-            //     screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, ft);
-            // }
-
             if (scenario->Highscore->company_value == MONEY64_UNDEFINED)
             {
                 screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_COMPLETED_BY, ft);
