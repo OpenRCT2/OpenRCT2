@@ -819,6 +819,19 @@ void PaintPath(PaintSession& session, uint16_t height, const PathElement& tileEl
     PaintLampLightEffects(session, tileElement, height);
 }
 
+static std::pair<uint8_t, uint8_t> PathPaintGetRotatedEdgesAndCorners(
+    const PaintSession& session, const PathElement& pathElement)
+{
+    // Rol edges around rotation
+    uint8_t edges = ((pathElement.GetEdges() << session.CurrentRotation) & 0xF)
+        | (((pathElement.GetEdges()) << session.CurrentRotation) >> 4);
+
+    uint8_t corners = (((pathElement.GetCorners()) << session.CurrentRotation) & 0xF)
+        | (((pathElement.GetCorners()) << session.CurrentRotation) >> 4);
+
+    return std::make_pair(edges, corners);
+}
+
 static BoundBoxXYZ PathPaintGetBoundbox(const PaintSession& session, int32_t height, uint8_t edges)
 {
     CoordsXY boundBoxOffset = stru_98D804[edges].offset;
@@ -901,13 +914,7 @@ void PathPaintBoxSupport(
 {
     PROFILED_FUNCTION();
 
-    // Rol edges around rotation
-    uint8_t edges = ((pathElement.GetEdges() << session.CurrentRotation) & 0xF)
-        | (((pathElement.GetEdges()) << session.CurrentRotation) >> 4);
-
-    uint8_t corners = (((pathElement.GetCorners()) << session.CurrentRotation) & 0xF)
-        | (((pathElement.GetCorners()) << session.CurrentRotation) >> 4);
-
+    auto [edges, corners] = PathPaintGetRotatedEdgesAndCorners(session, pathElement);
     uint16_t edi = edges | (corners << 4);
 
     ImageIndex surfaceBaseImageIndex = pathPaintInfo.SurfaceImageId;
@@ -971,13 +978,7 @@ void PathPaintPoleSupport(
 {
     PROFILED_FUNCTION();
 
-    // Rol edges around rotation
-    uint8_t edges = ((pathElement.GetEdges() << session.CurrentRotation) & 0xF)
-        | (((pathElement.GetEdges()) << session.CurrentRotation) >> 4);
-
-    uint8_t corners = (((pathElement.GetCorners()) << session.CurrentRotation) & 0xF)
-        | (((pathElement.GetCorners()) << session.CurrentRotation) >> 4);
-
+    auto [edges, corners] = PathPaintGetRotatedEdgesAndCorners(session, pathElement);
     uint16_t edi = edges | (corners << 4);
 
     ImageIndex surfaceBaseImageIndex = pathPaintInfo.SurfaceImageId;
