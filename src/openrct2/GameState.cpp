@@ -218,6 +218,10 @@ void GameState::Tick()
                 break;
             }
         }
+        // Don't call UpdateLogic again if the game was just paused.
+        isPaused |= GameIsPaused();
+        if (isPaused)
+            break;
     }
 
     NetworkFlush();
