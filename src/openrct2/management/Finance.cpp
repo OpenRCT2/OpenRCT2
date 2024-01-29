@@ -123,12 +123,13 @@ void FinancePayWages()
  **/
 void FinancePayResearch()
 {
-    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+    const auto& gameState = GetGameState();
+    if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
 
-    const uint8_t level = gResearchFundingLevel;
+    const uint8_t level = gameState.ResearchFundingLevel;
     FinancePayment(research_cost_table[level] / 4, ExpenditureType::Research);
 }
 
@@ -266,7 +267,7 @@ void FinanceUpdateDailyProfit()
         }
 
         // Research costs
-        uint8_t level = gResearchFundingLevel;
+        uint8_t level = gameState.ResearchFundingLevel;
         current_profit -= research_cost_table[level];
 
         // Loan costs

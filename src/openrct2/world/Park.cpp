@@ -266,10 +266,10 @@ void Park::Initialise()
     _guestGenerationProbability = 0;
     gTotalRideValueForMoney = 0;
     _suggestedGuestMaximum = 0;
-    gResearchLastItem = std::nullopt;
+    gameState.ResearchLastItem = std::nullopt;
     gMarketingCampaigns.clear();
 
-    ResearchResetItems();
+    ResearchResetItems(gameState);
     FinanceInit();
 
     SetEveryRideTypeNotInvented();
@@ -281,10 +281,10 @@ void Park::Initialise()
     gPeepSpawns.clear();
     ParkEntranceReset();
 
-    gResearchPriorities = EnumsToFlags(
+    gameState.ResearchPriorities = EnumsToFlags(
         ResearchCategory::Transport, ResearchCategory::Gentle, ResearchCategory::Rollercoaster, ResearchCategory::Thrill,
         ResearchCategory::Water, ResearchCategory::Shop, ResearchCategory::SceneryGroup);
-    gResearchFundingLevel = RESEARCH_FUNDING_NORMAL;
+    gameState.ResearchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
     gameState.GuestInitialCash = 50.00_GBP;
     gameState.GuestInitialHappiness = CalculateGuestInitialHappiness(50);

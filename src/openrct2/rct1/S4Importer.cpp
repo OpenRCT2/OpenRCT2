@@ -181,7 +181,7 @@ namespace RCT1
             ImportTileElements();
             ImportPeepSpawns();
             ImportFinance(gameState);
-            ImportResearch();
+            ImportResearch(gameState);
             ImportParkName();
             ImportParkFlags(gameState);
             ImportClimate(gameState);
@@ -1862,12 +1862,12 @@ namespace RCT1
             return 0;
         }
 
-        void ImportResearch()
+        void ImportResearch(GameState_t& gameState)
         {
             // All available objects must be loaded before this method is called as it
             // requires them to correctly insert objects into the research list
 
-            ResearchResetItems();
+            ResearchResetItems(gameState);
 
             size_t researchListCount;
             const RCT1::ResearchItem* researchList = GetResearchList(&researchListCount);
@@ -2024,41 +2024,41 @@ namespace RCT1
             {
                 activeResearchTypes |= EnumToFlag(ResearchCategory::SceneryGroup);
             }
-            gResearchPriorities = activeResearchTypes;
-            gResearchFundingLevel = _s4.ResearchLevel;
+            gameState.ResearchPriorities = activeResearchTypes;
+            gameState.ResearchFundingLevel = _s4.ResearchLevel;
 
             // This will mark items as researched/unresearched according to the research list.
             // This needs to be called before importing progress, as it will reset it.
             ResearchResetCurrentItem();
 
             // Research history
-            gResearchProgress = _s4.ResearchProgress;
-            gResearchProgressStage = _s4.ResearchProgressStage;
-            gResearchExpectedDay = _s4.NextResearchExpectedDay;
-            gResearchExpectedMonth = _s4.NextResearchExpectedMonth;
+            gameState.ResearchProgress = _s4.ResearchProgress;
+            gameState.ResearchProgressStage = _s4.ResearchProgressStage;
+            gameState.ResearchExpectedDay = _s4.NextResearchExpectedDay;
+            gameState.ResearchExpectedMonth = _s4.NextResearchExpectedMonth;
 
             if (_s4.LastResearchFlags == 0xFF)
             {
-                gResearchLastItem = std::nullopt;
+                gameState.ResearchLastItem = std::nullopt;
             }
             else
             {
                 ::ResearchItem researchItem = {};
                 ConvertResearchEntry(&researchItem, _s4.LastResearchItem, _s4.LastResearchType);
-                gResearchLastItem = researchItem;
+                gameState.ResearchLastItem = researchItem;
             }
 
             if (_s4.NextResearchFlags == 0xFF)
             {
-                gResearchNextItem = std::nullopt;
-                gResearchProgressStage = RESEARCH_STAGE_INITIAL_RESEARCH;
-                gResearchProgress = 0;
+                gameState.ResearchNextItem = std::nullopt;
+                gameState.ResearchProgressStage = RESEARCH_STAGE_INITIAL_RESEARCH;
+                gameState.ResearchProgress = 0;
             }
             else
             {
                 ::ResearchItem researchItem = {};
                 ConvertResearchEntry(&researchItem, _s4.NextResearchItem, _s4.NextResearchType);
-                gResearchNextItem = researchItem;
+                gameState.ResearchNextItem = researchItem;
             }
         }
 
