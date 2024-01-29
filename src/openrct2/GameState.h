@@ -68,6 +68,19 @@ namespace OpenRCT2
         colour_t StaffHandymanColour;
         colour_t StaffMechanicColour;
         colour_t StaffSecurityColour;
+
+        uint8_t ResearchFundingLevel;
+        uint8_t ResearchPriorities;
+        uint16_t ResearchProgress;
+        uint8_t ResearchProgressStage;
+        uint8_t ResearchExpectedMonth;
+        uint8_t ResearchExpectedDay;
+        std::optional<ResearchItem> ResearchLastItem;
+        std::optional<ResearchItem> ResearchNextItem;
+
+        std::vector<ResearchItem> ResearchItemsUninvented;
+        std::vector<ResearchItem> ResearchItemsInvented;
+        uint8_t ResearchUncompletedCategories;
     };
 
     GameState_t& GetGameState();

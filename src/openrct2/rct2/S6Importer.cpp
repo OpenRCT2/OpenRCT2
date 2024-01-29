@@ -283,7 +283,7 @@ namespace RCT2
             ImportPeepSpawns();
 
             gGuestChangeModifier = _s6.GuestCountChangeModifier;
-            gResearchFundingLevel = _s6.CurrentResearchLevel;
+            gameState.ResearchFundingLevel = _s6.CurrentResearchLevel;
             // Pad01357400
             // _s6.ResearchedTrackTypesA
             // _s6.ResearchedTrackTypesB
@@ -318,22 +318,24 @@ namespace RCT2
                 }
             }
 
-            gResearchPriorities = _s6.ActiveResearchTypes;
-            gResearchProgressStage = _s6.ResearchProgressStage;
+            gameState.ResearchPriorities = _s6.ActiveResearchTypes;
+            gameState.ResearchProgressStage = _s6.ResearchProgressStage;
             if (_s6.LastResearchedItemSubject != RCT12_RESEARCHED_ITEMS_SEPARATOR)
-                gResearchLastItem = RCT12ResearchItem{ _s6.LastResearchedItemSubject, EnumValue(ResearchCategory::Transport) }
-                                        .ToResearchItem();
+                gameState.ResearchLastItem = RCT12ResearchItem{ _s6.LastResearchedItemSubject,
+                                                                EnumValue(ResearchCategory::Transport) }
+                                                 .ToResearchItem();
             else
-                gResearchLastItem = std::nullopt;
+                gameState.ResearchLastItem = std::nullopt;
             // Pad01357CF8
             if (_s6.NextResearchItem != RCT12_RESEARCHED_ITEMS_SEPARATOR)
-                gResearchNextItem = RCT12ResearchItem{ _s6.NextResearchItem, _s6.NextResearchCategory }.ToResearchItem();
+                gameState.ResearchNextItem = RCT12ResearchItem{ _s6.NextResearchItem, _s6.NextResearchCategory }
+                                                 .ToResearchItem();
             else
-                gResearchNextItem = std::nullopt;
+                gameState.ResearchNextItem = std::nullopt;
 
-            gResearchProgress = _s6.ResearchProgress;
-            gResearchExpectedDay = _s6.NextResearchExpectedDay;
-            gResearchExpectedMonth = _s6.NextResearchExpectedMonth;
+            gameState.ResearchProgress = _s6.ResearchProgress;
+            gameState.ResearchExpectedDay = _s6.NextResearchExpectedDay;
+            gameState.ResearchExpectedMonth = _s6.NextResearchExpectedMonth;
             gameState.GuestInitialHappiness = _s6.GuestInitialHappiness;
             gameState.ParkSize = _s6.ParkSize;
             _guestGenerationProbability = _s6.GuestGenerationProbability;
@@ -407,7 +409,7 @@ namespace RCT2
             gLastEntranceStyle = _s6.LastEntranceStyle;
             // rct1_water_colour
             // Pad01358842
-            ImportResearchList();
+            ImportResearchList(gameState);
             gMapBaseZ = _s6.MapBaseZ;
             gBankLoanInterestRate = _s6.CurrentInterestRate;
             // Pad0135934B
@@ -1638,7 +1640,7 @@ namespace RCT2
             }
         }
 
-        void ImportResearchList()
+        void ImportResearchList(GameState_t gameState)
         {
             bool invented = true;
             for (const auto& researchItem : _s6.ResearchItems)
@@ -1654,9 +1656,9 @@ namespace RCT2
                 }
 
                 if (invented)
-                    gResearchItemsInvented.emplace_back(researchItem.ToResearchItem());
+                    gameState.ResearchItemsInvented.emplace_back(researchItem.ToResearchItem());
                 else
-                    gResearchItemsUninvented.emplace_back(researchItem.ToResearchItem());
+                    gameState.ResearchItemsUninvented.emplace_back(researchItem.ToResearchItem());
             }
         }
 
