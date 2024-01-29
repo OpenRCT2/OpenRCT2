@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1697,6 +1697,14 @@ public:
         _elementCopied = false;
     }
 
+    void ToggleInvisibility()
+    {
+        if (windowTileInspectorSelectedIndex >= 0 && windowTileInspectorSelectedIndex < windowTileInspectorElementCount)
+        {
+            ToggleInvisibility(windowTileInspectorSelectedIndex);
+        }
+    }
+
 private:
     void SetPage(const TileInspectorPage p)
     {
@@ -2368,4 +2376,11 @@ void WindowTileInspectorClearClipboard()
     auto* window = WindowFindByClass(WindowClass::TileInspector);
     if (window != nullptr)
         static_cast<TileInspector*>(window)->ClearClipboard();
+}
+
+void WindowTileInspectorKeyboardShortcutToggleInvisibility()
+{
+    auto* window = WindowFindByClass(WindowClass::TileInspector);
+    if (window != nullptr)
+        static_cast<TileInspector*>(window)->ToggleInvisibility();
 }

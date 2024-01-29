@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,7 +27,9 @@ AndroidClassLoader::~AndroidClassLoader()
 jobject AndroidClassLoader::_classLoader;
 jmethodID AndroidClassLoader::_findClassMethod;
 
-static std::shared_ptr<AndroidClassLoader> acl = std::make_shared<AndroidClassLoader>();
+// Initialized in JNI_OnLoad. Cannot be initialized here as JVM is not
+// available until after JNI_OnLoad is called.
+static std::shared_ptr<AndroidClassLoader> acl;
 
 namespace Platform
 {
@@ -180,6 +182,19 @@ namespace Platform
             env->NewStringUTF(std::string(name).c_str())));
     }
 } // namespace Platform
+
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* pjvm, void* reserved)
+{
+    // Due to an issue where JNI_OnLoad could be called multiple times, we need
+    // to make sure it is only initialized once.
+    // https://issuetracker.google.com/issues/220523932
+    // Otherwise JVM complains about jobject-s having incorrect serial numbers.
+    if (!acl)
+    {
+        acl = std::make_shared<AndroidClassLoader>();
+    }
+    return JNI_VERSION_1_6;
+}
 
 AndroidClassLoader::AndroidClassLoader()
 {

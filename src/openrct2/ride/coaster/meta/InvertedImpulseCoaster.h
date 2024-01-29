@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionInvertedImpulseRC),
+    SET_FIELD(TrackPaintFunctions, TrackDrawerDescriptor(GetTrackPaintFunctionInvertedImpulseRC)),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES |
                      RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG_IS_SUSPENDED |
@@ -46,8 +46,9 @@ constexpr RideTypeDescriptor InvertedImpulseCoasterRTD =
     SET_FIELD(PhotoItem, ShopItem::Photo2),
     SET_FIELD(BonusValue, 75),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
-        { COLOUR_BLACK, COLOUR_ICY_BLUE, COLOUR_BLACK },
-        { COLOUR_WHITE, COLOUR_WHITE, COLOUR_YELLOW },
+        { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_GREY },
+        { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_WHITE },
+        { COLOUR_BRIGHT_PURPLE, COLOUR_BRIGHT_PURPLE, COLOUR_BORDEAUX_RED },
         { COLOUR_BRIGHT_YELLOW, COLOUR_BRIGHT_YELLOW, COLOUR_BORDEAUX_RED }, // Volcano: The Blast Coaster
         { COLOUR_BRIGHT_YELLOW, COLOUR_BRIGHT_YELLOW, COLOUR_TEAL }, // Wicked Twister
     )),

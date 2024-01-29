@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,10 +20,12 @@
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/CheatSetAction.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
+#include <openrct2/actions/TileModifyAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Chat.h>
@@ -40,6 +42,7 @@
 #include <openrct2/windows/TileInspectorGlobals.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
+#include <openrct2/world/TileInspector.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
@@ -281,7 +284,7 @@ static void ShortcutShowFinancialInformation()
         return;
 
     if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-        if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
             ContextOpenWindow(WindowClass::Finances);
 }
 
@@ -436,7 +439,7 @@ static void ShortcutQuickSaveGame()
     {
         auto intent = Intent(WindowClass::Loadsave);
         intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-        intent.PutExtra(INTENT_EXTRA_PATH, gScenarioName);
+        intent.PutExtra(INTENT_EXTRA_PATH, GetGameState().ScenarioName);
         ContextOpenIntent(&intent);
     }
 }
@@ -515,23 +518,29 @@ static void TileInspectorMouseDown(WidgetIndex widgetIndex)
     }
 }
 
-static void ShortcutToggleVisibility()
+static void ShortcutToggleWallSlope()
 {
-    // TODO: Once the tile inspector window has its own class, move this to its own function
-    if (windowTileInspectorSelectedIndex < 0)
+    WindowBase* window = WindowFindByClass(WindowClass::TileInspector);
+    if (window == nullptr)
+    {
         return;
+    }
 
-    WindowBase* w = WindowFindByClass(WindowClass::TileInspector);
-    if (w == nullptr)
+    const TileElement* tileElement = OpenRCT2::TileInspector::GetSelectedElement();
+
+    // Ensure an element is selected and it's a wall
+    if (tileElement == nullptr || tileElement->GetType() != TileElementType::Wall)
+    {
         return;
+    }
+
+    int32_t currSlopeValue = tileElement->AsWall()->GetSlope();
+    int32_t newSlopeValue = (currSlopeValue + 1) % 3;
 
     extern TileCoordsXY windowTileInspectorTile;
-    TileElement* tileElement = MapGetNthElementAt(windowTileInspectorTile.ToCoordsXY(), windowTileInspectorSelectedIndex);
-    if (tileElement != nullptr)
-    {
-        tileElement->SetInvisible(!tileElement->IsInvisible());
-        w->Invalidate();
-    }
+    auto modifyTile = TileModifyAction(
+        windowTileInspectorTile.ToCoordsXY(), TileModifyType::WallSetSlope, windowTileInspectorSelectedIndex, newSlopeValue);
+    GameActions::Execute(&modifyTile);
 }
 
 static void ShortcutIncreaseElementHeight()
@@ -878,7 +887,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::WindowRideConstructionNext, STR_SHORTCUT_CONSTRUCTION_NEXT_TRACK, "NUMPAD 9", WindowRideConstructionKeyboardShortcutNextTrack);
     RegisterShortcut(ShortcutId::WindowRideConstructionBuild, STR_SHORTCUT_CONSTRUCTION_BUILD_CURRENT, "NUMPAD 0", ShortcutConstructionBuildCurrent);
     RegisterShortcut(ShortcutId::WindowRideConstructionDemolish, STR_SHORTCUT_CONSTRUCTION_DEMOLISH_CURRENT, "NUMPAD -", ShortcutConstructionDemolishCurrent);
-    RegisterShortcut(ShortcutId::WindowTileInspectorToggleInvisibility, STR_SHORTCUT_TOGGLE_INVISIBILITY, ShortcutToggleVisibility);
+    RegisterShortcut(ShortcutId::WindowTileInspectorToggleInvisibility, STR_SHORTCUT_TOGGLE_INVISIBILITY, WindowTileInspectorKeyboardShortcutToggleInvisibility);
     RegisterShortcut(ShortcutId::WindowTileInspectorCopy, STR_SHORTCUT_COPY_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_COPY));
     RegisterShortcut(ShortcutId::WindowTileInspectorPaste, STR_SHORTCUT_PASTE_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE));
     RegisterShortcut(ShortcutId::WindowTileInspectorRemove, STR_SHORTCUT_REMOVE_ELEMENT, std::bind(TileInspectorMouseUp, WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE));
@@ -890,6 +899,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::WindowTileInspectorDecreaseY, STR_SHORTCUT_DECREASE_Y_COORD, std::bind(TileInspectorMouseDown, WC_TILE_INSPECTOR__WIDX_SPINNER_Y_DECREASE));
     RegisterShortcut(ShortcutId::WindowTileInspectorIncreaseHeight, STR_SHORTCUT_INCREASE_ELEM_HEIGHT, ShortcutIncreaseElementHeight);
     RegisterShortcut(ShortcutId::WindowTileInspectorDecreaseHeight, STR_SHORTCUT_DECREASE_ELEM_HEIGHT, ShortcutDecreaseElementHeight);
+    RegisterShortcut(ShortcutId::WindowTileInspectorChangeWallSlope, STR_SHORTCUT_TOGGLE_WALL_SLOPE, ShortcutToggleWallSlope);
 
     // Debug
     RegisterShortcut(ShortcutId::DebugToggleConsole, STR_CONSOLE, "`", ShortcutToggleConsole);

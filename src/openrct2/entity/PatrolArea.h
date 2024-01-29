@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,8 +14,9 @@
 
 #include <variant>
 
-// The number of elements in the gStaffPatrolAreas array per staff member. Every bit in the array represents a 4x4 square.
-// Right now, it's a 32-bit array like in RCT2. 32 * 128 = 4096 bits, which is also the number of 4x4 squares on a 256x256 map.
+// The number of elements in the GameState_t.StaffPatrolAreas array per staff member. Every bit in the array represents a 4x4
+// square. Right now, it's a 32-bit array like in RCT2. 32 * 128 = 4096 bits, which is also the number of 4x4 squares on a
+// 256x256 map.
 constexpr size_t STAFF_PATROL_AREA_BLOCKS_PER_LINE = MAXIMUM_MAP_SIZE_TECHNICAL / 4;
 constexpr size_t STAFF_PATROL_AREA_SIZE = (STAFF_PATROL_AREA_BLOCKS_PER_LINE * STAFF_PATROL_AREA_BLOCKS_PER_LINE) / 32;
 

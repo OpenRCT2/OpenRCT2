@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,8 +38,7 @@ int TTF_Init(void);
 TTF_Font* TTF_OpenFont(const char* file, int ptsize);
 int TTF_GlyphIsProvided(const TTF_Font* font, codepoint_t ch);
 int TTF_SizeUTF8(TTF_Font* font, const char* text, int* w, int* h);
-TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, uint32_t colour);
-TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, uint32_t fg, uint32_t bg);
+TTFSurface* TTF_RenderUTF8(TTF_Font* font, const char* text, bool shaded);
 void TTF_CloseFont(TTF_Font* font);
 void TTF_SetFontHinting(TTF_Font* font, int hinting);
 int TTF_GetFontHinting(const TTF_Font* font);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include <openrct2/Editor.h>
 #include <openrct2/EditorObjectSelectionSession.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
@@ -26,6 +27,8 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 #include <string>
+
+using namespace OpenRCT2;
 
 // clang-format off
 enum {
@@ -99,7 +102,7 @@ public:
             }
             else if (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER))
             {
-                if (GetNumFreeEntities() != MAX_ENTITIES || gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)
+                if (GetNumFreeEntities() != MAX_ENTITIES || GetGameState().ParkFlags & PARK_FLAGS_SPRITES_INITIALISED)
                 {
                     HidePreviousStepButton();
                 }
@@ -134,7 +137,7 @@ public:
         if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
         {
             if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-                || (GetNumFreeEntities() == MAX_ENTITIES && !(gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)))
+                || (GetNumFreeEntities() == MAX_ENTITIES && !(GetGameState().ParkFlags & PARK_FLAGS_SPRITES_INITIALISED)))
             {
                 ((this)->*(_previousButtonMouseUp[EnumValue(gEditorStep)]))();
             }
@@ -251,7 +254,8 @@ private:
 
     void JumpForwardToSaveScenario() const
     {
-        const auto savePrepareResult = ScenarioPrepareForSave();
+        auto& gameState = GetGameState();
+        const auto savePrepareResult = ScenarioPrepareForSave(gameState);
         if (!savePrepareResult.Successful)
         {
             ContextShowError(STR_UNABLE_TO_SAVE_SCENARIO_FILE, savePrepareResult.Message, {});
@@ -262,7 +266,7 @@ private:
         WindowCloseAll();
         auto intent = Intent(WindowClass::Loadsave);
         intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO);
-        intent.PutExtra(INTENT_EXTRA_PATH, gScenarioName);
+        intent.PutExtra(INTENT_EXTRA_PATH, gameState.ScenarioName);
         ContextOpenIntent(&intent);
     }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -51,8 +51,7 @@ GameActions::Result RideSetColourSchemeAction::Query() const
 {
     if (!LocationValid(_loc))
     {
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_OFF_EDGE_OF_MAP);
     }
     // Find the relevant track piece, prefer sequence 0 (logic copied from GetTrackElementOriginAndApplyChanges)
     auto trackElement = MapGetTrackElementAtOfTypeSeq(_loc, _trackType, 0);

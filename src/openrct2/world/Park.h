@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -92,17 +92,12 @@ namespace OpenRCT2
     };
 } // namespace OpenRCT2
 
-extern uint64_t gParkFlags;
-extern uint16_t gParkRating;
-extern money64 gParkEntranceFee;
-extern uint32_t gParkSize;
 extern money64 gLandPrice;
 extern money64 gConstructionRightsPrice;
 
 extern uint64_t gTotalAdmissions;
 extern money64 gTotalIncomeFromAdmissions;
 
-extern money64 gParkValue;
 extern money64 gCompanyValue;
 
 extern int16_t gParkRatingCasualtyPenalty;

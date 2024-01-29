@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -130,7 +130,9 @@ namespace Colour
 } // namespace Colour
 
 #ifndef NO_TTF
-static uint8_t BlendColourMap[PALETTE_COUNT][PALETTE_COUNT] = { 0 };
+static BlendColourMapType BlendColourMap = { 0 };
+
+static bool BlendColourMapInitialised = false;
 
 static uint8_t FindClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t blue)
 {
@@ -152,21 +154,44 @@ static uint8_t FindClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t blue)
     return closest;
 }
 
+static void InitBlendColourMap()
+{
+    for (int i = 0; i < PALETTE_SIZE; i++)
+    {
+        for (int j = i; j < PALETTE_SIZE; j++)
+        {
+            uint8_t red = (gPalette[i].Red + gPalette[j].Red) / 2;
+            uint8_t green = (gPalette[i].Green + gPalette[j].Green) / 2;
+            uint8_t blue = (gPalette[i].Blue + gPalette[j].Blue) / 2;
+
+            auto colour = FindClosestPaletteIndex(red, green, blue);
+            BlendColourMap[i][j] = colour;
+            BlendColourMap[j][i] = colour;
+        }
+    }
+    BlendColourMapInitialised = true;
+}
+
+BlendColourMapType* GetBlendColourMap()
+{
+    if (!BlendColourMapInitialised)
+    {
+        InitBlendColourMap();
+    }
+    return &BlendColourMap;
+}
+
 uint8_t BlendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2)
 {
-    const uint8_t cMin = std::min(paletteIndex1, paletteIndex2);
-    const uint8_t cMax = std::max(paletteIndex1, paletteIndex2);
-
-    if (BlendColourMap[cMin][cMax] != 0)
+    if (!BlendColourMapInitialised)
     {
-        return BlendColourMap[cMin][cMax];
+        InitBlendColourMap();
     }
-
-    uint8_t red = (gPalette[cMin].Red + gPalette[cMax].Red) / 2;
-    uint8_t green = (gPalette[cMin].Green + gPalette[cMax].Green) / 2;
-    uint8_t blue = (gPalette[cMin].Blue + gPalette[cMax].Blue) / 2;
-
-    BlendColourMap[cMin][cMax] = FindClosestPaletteIndex(red, green, blue);
-    return BlendColourMap[cMin][cMax];
+    return BlendColourMap[paletteIndex1][paletteIndex2];
+}
+#else
+BlendColourMapType* GetBlendColourMap()
+{
+    return nullptr;
 }
 #endif

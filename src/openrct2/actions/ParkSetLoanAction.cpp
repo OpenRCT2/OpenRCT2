@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,12 +10,15 @@
 #include "ParkSetLoanAction.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../core/MemoryStream.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
+
+using namespace OpenRCT2;
 
 ParkSetLoanAction::ParkSetLoanAction(money64 value)
     : _value(value)
@@ -52,7 +55,7 @@ GameActions::Result ParkSetLoanAction::Query() const
     // The “isPayingBack” check is needed to allow increasing the loan when the player is in debt.
     const auto isPayingBack = gBankLoan > _value;
     const auto amountToPayBack = gBankLoan - _value;
-    if (isPayingBack && amountToPayBack > gCash)
+    if (isPayingBack && amountToPayBack > GetGameState().Cash)
     {
         return GameActions::Result(
             GameActions::Status::InsufficientFunds, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
@@ -62,7 +65,7 @@ GameActions::Result ParkSetLoanAction::Query() const
 
 GameActions::Result ParkSetLoanAction::Execute() const
 {
-    gCash -= (gBankLoan - _value);
+    GetGameState().Cash -= (gBankLoan - _value);
     gBankLoan = _value;
 
     auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();

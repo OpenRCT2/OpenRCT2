@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@ constexpr RideTypeDescriptor MiniSuspendedCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionMiniSuspendedRC),
+    SET_FIELD(TrackPaintFunctions, TrackDrawerDescriptor(GetTrackPaintFunctionMiniSuspendedRC)),
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
                      RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |

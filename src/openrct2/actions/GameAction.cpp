@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "GameAction.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../ReplayManager.h"
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
@@ -101,7 +102,7 @@ namespace GameActions
             return;
         }
 
-        const uint32_t currentTick = gCurrentTicks;
+        const uint32_t currentTick = GetGameState().CurrentTicks;
 
         while (_actionQueue.begin() != _actionQueue.end())
         {
@@ -251,7 +252,7 @@ namespace GameActions
 
         char temp[128] = {};
         snprintf(
-            temp, sizeof(temp), "[%s] Tick: %u, GA: %s (%08X) (", GetRealm(), gCurrentTicks, action->GetName(),
+            temp, sizeof(temp), "[%s] Tick: %u, GA: %s (%08X) (", GetRealm(), GetGameState().CurrentTicks, action->GetName(),
             EnumValue(action->GetType()));
 
         output.Write(temp, strlen(temp));
@@ -292,11 +293,14 @@ namespace GameActions
         uint16_t actionFlags = action->GetActionFlags();
         uint32_t flags = action->GetFlags();
 
+        // Some actions are not recorded in the replay.
+        const auto ignoreForReplays = (actionFlags & GameActions::Flags::IgnoreForReplays) != 0;
+
         auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
         if (replayManager != nullptr && (replayManager->IsReplaying() || replayManager->IsNormalising()))
         {
             // We only accept replay commands as long the replay is active.
-            if ((flags & GAME_COMMAND_FLAG_REPLAY) == 0)
+            if ((flags & GAME_COMMAND_FLAG_REPLAY) == 0 && !ignoreForReplays)
             {
                 // TODO: Introduce proper error.
                 auto result = GameActions::Result();
@@ -342,7 +346,7 @@ namespace GameActions
                     if (!(actionFlags & GameActions::Flags::ClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                     {
                         LOG_VERBOSE("[%s] GameAction::Execute %s (Queue)", GetRealm(), action->GetName());
-                        Enqueue(action, gCurrentTicks);
+                        Enqueue(action, GetGameState().CurrentTicks);
 
                         return result;
                     }
@@ -403,7 +407,7 @@ namespace GameActions
                     bool commandExecutes = (flags & GAME_COMMAND_FLAG_GHOST) == 0 && (flags & GAME_COMMAND_FLAG_NO_SPEND) == 0;
 
                     bool recordAction = false;
-                    if (replayManager != nullptr)
+                    if (replayManager != nullptr && !ignoreForReplays)
                     {
                         if (replayManager->IsRecording() && commandExecutes)
                             recordAction = true;
@@ -412,7 +416,7 @@ namespace GameActions
                     }
                     if (recordAction)
                     {
-                        replayManager->AddGameAction(gCurrentTicks, action);
+                        replayManager->AddGameAction(GetGameState().CurrentTicks, action);
                     }
                 }
             }

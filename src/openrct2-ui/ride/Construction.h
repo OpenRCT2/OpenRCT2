@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -45,6 +45,7 @@ constexpr std::array DropdownOrder = {
     TrackElemType::RightHalfBankedHelixDownLarge,
     TrackElemType::Booster,
     TrackElemType::Brakes,
+    TrackElemType::DiagBrakes,
     TrackElemType::OnRidePhoto,
     TrackElemType::LeftQuarterBankedHelixLargeUp,
     TrackElemType::RightQuarterBankedHelixLargeUp,
@@ -108,6 +109,7 @@ constexpr std::array DropdownOrder = {
     TrackElemType::AirThrustVerticalDown,
     TrackElemType::AirThrustVerticalDownToLevel,
     TrackElemType::BlockBrakes,
+    TrackElemType::DiagBlockBrakes,
     TrackElemType::RotationControlToggle,
     TrackElemType::LeftLargeCorkscrewUp,
     TrackElemType::LeftLargeCorkscrewDown,
@@ -137,7 +139,7 @@ constexpr std::array DropdownOrder = {
 constexpr size_t DropdownLength = DropdownOrder.size();
 
 // Update the magic number with the current number of track elements to silence
-static_assert(TrackElemType::Count == 337, "Reminder to add new track element to special dropdown list");
+static_assert(TrackElemType::Count == 339, "Reminder to add new track element to special dropdown list");
 
 constexpr bool TrackPieceDirectionIsDiagonal(const uint8_t direction)
 {
@@ -157,6 +159,6 @@ struct SpecialElementsDropdownState
 };
 
 SpecialElementsDropdownState BuildSpecialElementsList(
-    const Ride& currentRide, uint8_t buildDirection, uint8_t buildSlope, uint8_t buildBank, RideConstructionState state);
+    const Ride& currentRide, uint8_t buildDirection, TrackPitch buildSlope, TrackRoll buildBank, RideConstructionState state);
 
 void RideConstructNew(RideSelection listItem);

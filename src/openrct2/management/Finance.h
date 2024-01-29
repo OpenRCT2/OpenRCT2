@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,8 +38,6 @@ constexpr uint8_t MaxBankLoanInterestRate = 255;
 
 extern const money64 research_cost_table[RESEARCH_FUNDING_COUNT];
 
-extern money64 gInitialCash;
-extern money64 gCash;
 extern money64 gBankLoan;
 extern uint8_t gBankLoanInterestRate;
 extern money64 gMaxBankLoan;
@@ -52,11 +50,7 @@ extern money64 gCurrentProfit;
  */
 extern money64 gHistoricalProfit;
 
-extern money64 gWeeklyProfitAverageDividend;
-extern uint16_t gWeeklyProfitAverageDivisor;
 extern money64 gCashHistory[FINANCE_GRAPH_SIZE];
-extern money64 gWeeklyProfitHistory[FINANCE_GRAPH_SIZE];
-extern money64 gParkValueHistory[FINANCE_GRAPH_SIZE];
 extern money64 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
 
 bool FinanceCheckMoneyRequired(uint32_t flags);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,6 +19,11 @@
 class Formatter;
 struct TileElement;
 struct WallElement;
+
+namespace OpenRCT2
+{
+    struct GameState_t;
+}
 
 constexpr ObjectEntryIndex BANNER_NULL = OBJECT_ENTRY_INDEX_NULL;
 constexpr size_t MAX_BANNERS = 8192;
@@ -54,7 +59,7 @@ enum BANNER_FLAGS
     BANNER_FLAG_IS_WALL = (1 << 3)
 };
 
-void BannerInit();
+void BannerInit(OpenRCT2::GameState_t& gameState);
 TileElement* BannerGetTileElement(BannerIndex bannerIndex);
 WallElement* BannerGetScrollingWallTileElement(BannerIndex bannerIndex);
 RideId BannerGetClosestRideIndex(const CoordsXYZ& mapPos);

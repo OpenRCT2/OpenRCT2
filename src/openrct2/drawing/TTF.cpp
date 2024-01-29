@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -365,12 +365,7 @@ static TTFSurface* TTFRender(TTF_Font* font, std::string_view text)
 {
     thread_local std::string buffer;
     buffer.assign(text);
-    if (TTF_GetFontHinting(font) != 0)
-    {
-        return TTF_RenderUTF8_Shaded(font, buffer.c_str(), 0x000000FF, 0x000000FF);
-    }
-
-    return TTF_RenderUTF8_Solid(font, buffer.c_str(), 0x000000FF);
+    return TTF_RenderUTF8(font, buffer.c_str(), TTF_GetFontHinting(font) != 0);
 }
 
 void TTFFreeSurface(TTFSurface* surface)

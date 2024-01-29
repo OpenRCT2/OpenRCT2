@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,6 +16,7 @@ namespace RCT2::Limits
     constexpr uint8_t MaxStaff = 200;
     constexpr uint8_t MaxBanners = 250;
     constexpr uint8_t MaxTrainsPerRide = 32;
+    constexpr uint8_t MaxVehicleColours = 32;
     constexpr uint8_t DowntimeHistorySize = 8;
     constexpr uint16_t MaxEntities = 10000;
     constexpr uint16_t MaxEntitiesRCTCExtended = 15000; // Used in files marked with “classic flag” 0xF

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@ constexpr RideTypeDescriptor SideFrictionRollerCoasterRTD =
     SET_FIELD(ExtraTrackPieces, {}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionSideFrictionRC),
+    SET_FIELD(TrackPaintFunctions, TrackDrawerDescriptor(GetTrackPaintFunctionSideFrictionRC)),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS |
@@ -37,7 +37,7 @@ constexpr RideTypeDescriptor SideFrictionRollerCoasterRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(Heights, { 18, 24, 4, 11, }),
     SET_FIELD(MaxMass, 15),
-    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftWood, 3, 4 }),
+    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftWood, 3, 5 }),
     SET_FIELD(RatingsMultipliers, { 48, 28, 7 }),
     SET_FIELD(UpkeepCosts, { 39, 20, 80, 10, 3, 10 }),
     SET_FIELD(BuildCosts, { 27.50_GBP, 3.00_GBP, 37, }),

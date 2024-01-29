@@ -1,9 +1,11 @@
 #version 150
 
+// clang-format off
 const int MASK_REMAP_COUNT          = 3;
 const int FLAG_NO_TEXTURE           = (1 << 2);
 const int FLAG_MASK                 = (1 << 3);
 const int FLAG_CROSS_HATCH          = (1 << 4);
+const int FLAG_TTF_TEXT             = (1 << 5);
 
 uniform usampler2DArray uTexture;
 uniform usampler2D      uPaletteTex;
@@ -17,8 +19,9 @@ in vec3                 fTexColour;
 in vec3                 fTexMask;
 flat in vec3            fPalettes;
 
-in vec2 fPosition;
-in vec3 fPeelPos;
+in vec2                 fPosition;
+in vec3                 fPeelPos;
+// clang-format on
 
 out uint oColour;
 
@@ -41,7 +44,28 @@ void main()
         {
             discard;
         }
-        texel += fColour;
+        if ((fFlags & FLAG_TTF_TEXT) == 0)
+        {
+            texel += fColour;
+        }
+        else
+        {
+            uint hint_thresh = uint(fFlags & 0xff00) >> 8;
+            if (hint_thresh > 0u)
+            {
+                bool solidColor = texel > 180u;
+                texel = (texel > hint_thresh) ? fColour : 0u;
+                texel = texel << 8;
+                if (solidColor)
+                {
+                    texel += 1u;
+                }
+            }
+            else
+            {
+                texel = fColour;
+            }
+        }
     }
     else
     {
@@ -79,7 +103,7 @@ void main()
     if ((fFlags & FLAG_MASK) != 0)
     {
         uint mask = texture(uTexture, fTexMask).r;
-        if ( mask == 0u )
+        if (mask == 0u)
         {
             discard;
         }

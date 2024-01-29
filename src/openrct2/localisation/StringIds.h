@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -3999,6 +3999,30 @@ enum : uint16_t
 
     STR_CANT_FIRE_STAFF_FIXING = 6591,
     STR_CANT_FIRE_STAFF_INSPECTING = 6592,
+
+    STR_CHEAT_REMOVE_PARK_FENCES = 6593,
+
+    STR_SHORTCUT_TOGGLE_WALL_SLOPE = 6594,
+
+    STR_SCENERY_AUTHOR = 6595,
+    STR_SCENERY_AUTHOR_PLURAL = 6596,
+
+    STR_ERR_INVALID_PARAMETER = 6597,
+    STR_ERR_VALUE_OUT_OF_RANGE = 6598,
+    STR_ERR_GHOST_ELEMENT_NOT_FOUND = 6599,
+    STR_ERR_BALLOON_NOT_FOUND = 6600,
+    STR_ERR_STAFF_NOT_FOUND = 6601,
+    STR_ERR_RIDE_NOT_FOUND = 6602,
+    STR_ERR_RIDE_OBJECT_ENTRY_NOT_FOUND = 6603,
+    STR_ERR_PLAYER_NOT_FOUND = 6604,
+    STR_ERR_ENTRANCE_ELEMENT_NOT_FOUND = 6605,
+    STR_ERR_SURFACE_ELEMENT_NOT_FOUND = 6606,
+    STR_ERR_TILE_ELEMENT_NOT_FOUND = 6607,
+    STR_ERR_TRACK_ELEMENT_NOT_FOUND = 6608,
+    STR_ERR_TRACK_BLOCK_NOT_FOUND = 6609,
+    STR_ERR_PATH_ELEMENT_NOT_FOUND = 6610,
+    STR_ERR_WALL_ELEMENT_NOT_FOUND = 6611,
+    STR_ERR_BANNER_ELEMENT_NOT_FOUND = 6612,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

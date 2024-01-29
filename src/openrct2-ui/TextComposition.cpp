@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -272,7 +272,8 @@ void TextComposition::CaretMoveToLeftToken()
             lastChar = selectionOffset;
             break;
         }
-
+        if (selectionOffset == 0)
+            break;
         ch--;
         selectionOffset--;
     }
@@ -291,12 +292,13 @@ void TextComposition::CaretMoveToLeftToken()
             break;
 
         lastChar = selectionOffset;
-
+        if (selectionOffset == 0)
+            break;
         ch--;
         selectionOffset--;
     }
 
-    _session.SelectionSize = std::max<size_t>(0, _session.SelectionSize - (selectionOffset - _session.SelectionStart));
+    _session.SelectionSize = _session.SelectionSize - (selectionOffset - _session.SelectionStart);
     _session.SelectionStart = selectionOffset == 0 ? 0 : lastChar;
 }
 

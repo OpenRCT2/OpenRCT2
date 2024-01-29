@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,6 +34,8 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Park.h>
+
+using namespace OpenRCT2;
 
 static constexpr StringId WINDOW_TITLE = STR_STRINGID;
 static constexpr int32_t WH = 224;
@@ -394,7 +396,7 @@ private:
     void SetDisabledTabs()
     {
         // Disable price tab if money is disabled
-        disabled_widgets = (gParkFlags & PARK_FLAGS_NO_MONEY) ? (1uLL << WIDX_TAB_4) : 0;
+        disabled_widgets = (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) ? (1uLL << WIDX_TAB_4) : 0;
     }
 
     void PrepareWindowTitleText()
@@ -501,6 +503,7 @@ private:
 
     void OnPrepareDrawEntrance()
     {
+        const auto& gameState = GetGameState();
         widgets = _pagedWidgets[page];
         InitScrollWidgets();
 
@@ -522,13 +525,13 @@ private:
         widgets[WIDX_OPEN_LIGHT].image = ImageId(openLightImage);
 
         // Only allow closing of park for guest / rating objective
-        if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
+        if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
             disabled_widgets |= (1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT);
         else
             disabled_widgets &= ~((1uLL << WIDX_OPEN_OR_CLOSE) | (1uLL << WIDX_CLOSE_LIGHT) | (1uLL << WIDX_OPEN_LIGHT));
 
         // Only allow purchase of land when there is money
-        if (gParkFlags & PARK_FLAGS_NO_MONEY)
+        if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
             widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::Empty;
         else
             widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
@@ -547,7 +550,7 @@ private:
         if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK)
         {
             widgets[WIDX_OPEN_OR_CLOSE].type = WindowWidgetType::Empty;
-            if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
+            if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
             {
                 widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::FlatBtn;
                 widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::FlatBtn;
@@ -613,10 +616,12 @@ private:
         if (page != WINDOW_PARK_PAGE_ENTRANCE)
             return;
 
+        const auto& gameState = GetGameState();
+
         std::optional<Focus> newFocus = std::nullopt;
-        if (!gParkEntrances.empty())
+        if (!gameState.ParkEntrances.empty())
         {
-            const auto& entrance = gParkEntrances[0];
+            const auto& entrance = gameState.ParkEntrances[0];
             newFocus = Focus(CoordsXYZ{ entrance.x + 16, entrance.y + 16, entrance.z + 32 });
         }
 
@@ -695,7 +700,7 @@ private:
 
         // Current value
         auto ft = Formatter();
-        ft.Add<uint16_t>(gParkRating);
+        ft.Add<uint16_t>(GetGameState().ParkRating);
         DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
 
         // Graph border
@@ -767,7 +772,7 @@ private:
 
         // Current value
         auto ft = Formatter();
-        ft.Add<uint32_t>(gNumGuestsInPark);
+        ft.Add<uint32_t>(OpenRCT2::GetGameState().NumGuestsInPark);
         DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
 
         // Graph border
@@ -821,18 +826,19 @@ private:
 
     void OnMouseDownPrice(WidgetIndex widgetIndex)
     {
+        const auto& gameState = GetGameState();
         switch (widgetIndex)
         {
             case WIDX_INCREASE_PRICE:
             {
-                const auto newFee = std::min(MAX_ENTRANCE_FEE, gParkEntranceFee + 1.00_GBP);
+                const auto newFee = std::min(MAX_ENTRANCE_FEE, gameState.ParkEntranceFee + 1.00_GBP);
                 auto gameAction = ParkSetEntranceFeeAction(newFee);
                 GameActions::Execute(&gameAction);
                 break;
             }
             case WIDX_DECREASE_PRICE:
             {
-                const auto newFee = std::max(0.00_GBP, gParkEntranceFee - 1.00_GBP);
+                const auto newFee = std::max(0.00_GBP, gameState.ParkEntranceFee - 1.00_GBP);
                 auto gameAction = ParkSetEntranceFeeAction(newFee);
                 GameActions::Execute(&gameAction);
                 break;
@@ -869,7 +875,7 @@ private:
         }
 
         // If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
-        if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !ParkEntranceFeeUnlocked())
+        if ((GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) || !ParkEntranceFeeUnlocked())
         {
             widgets[WIDX_PRICE].type = WindowWidgetType::LabelCentred;
             widgets[WIDX_INCREASE_PRICE].type = WindowWidgetType::Empty;
@@ -959,7 +965,7 @@ private:
             + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
         // Draw park size
-        auto parkSize = gParkSize * 10;
+        auto parkSize = GetGameState().ParkSize * 10;
         auto stringIndex = STR_PARK_SIZE_METRIC_LABEL;
         if (gConfigGeneral.MeasurementFormat == MeasurementFormat::Imperial)
         {
@@ -991,7 +997,7 @@ private:
 
         // Draw number of guests in park
         ft = Formatter();
-        ft.Add<uint32_t>(gNumGuestsInPark);
+        ft.Add<uint32_t>(OpenRCT2::GetGameState().NumGuestsInPark);
         DrawTextBasic(dpi, screenCoords, STR_GUESTS_IN_PARK_LABEL, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
 
@@ -1035,7 +1041,7 @@ private:
         if (widgetIndex == WIDX_ENTER_NAME && !text.empty())
         {
             std::string strText(text);
-            ScenarioSuccessSubmitName(strText.c_str());
+            ScenarioSuccessSubmitName(GetGameState(), strText.c_str());
             Invalidate();
         }
     }
@@ -1046,7 +1052,7 @@ private:
         PrepareWindowTitleText();
 
         // Show name input button on scenario completion.
-        if (gParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
+        if (GetGameState().ParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
         {
             widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Button;
             widgets[WIDX_ENTER_NAME].top = height - 19;
@@ -1061,6 +1067,7 @@ private:
 
     void OnDrawObjective(DrawPixelInfo& dpi)
     {
+        auto& gameState = GetGameState();
         DrawWidgets(dpi);
         DrawTabImages(dpi);
 
@@ -1069,7 +1076,7 @@ private:
             + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 7 };
         auto ft = Formatter();
         ft.Add<StringId>(STR_STRING);
-        ft.Add<const char*>(gScenarioDetails.c_str());
+        ft.Add<const char*>(gameState.ScenarioDetails.c_str());
         screenCoords.y += DrawTextWrapped(dpi, screenCoords, 222, STR_BLACK_STRING, ft);
         screenCoords.y += 5;
 
@@ -1079,10 +1086,10 @@ private:
 
         // Objective
         ft = Formatter();
-        if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
+        if (gameState.ScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
         {
             StringId rideTypeString = STR_NONE;
-            auto rideTypeId = gScenarioObjective.RideId;
+            auto rideTypeId = gameState.ScenarioObjective.RideId;
             if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
             {
                 rideTypeString = GetRideTypeDescriptor(rideTypeId).Naming.Name;
@@ -1091,21 +1098,21 @@ private:
         }
         else
         {
-            ft.Add<uint16_t>(gScenarioObjective.NumGuests);
-            ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, gScenarioObjective.Year));
-            if (gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
-                ft.Add<uint16_t>(gScenarioObjective.MinimumExcitement);
+            ft.Add<uint16_t>(gameState.ScenarioObjective.NumGuests);
+            ft.Add<int16_t>(DateGetTotalMonths(MONTH_OCTOBER, gameState.ScenarioObjective.Year));
+            if (gameState.ScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
+                ft.Add<uint16_t>(gameState.ScenarioObjective.MinimumExcitement);
             else
-                ft.Add<money64>(gScenarioObjective.Currency);
+                ft.Add<money64>(gameState.ScenarioObjective.Currency);
         }
 
-        screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, ObjectiveNames[gScenarioObjective.Type], ft);
+        screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, ObjectiveNames[gameState.ScenarioObjective.Type], ft);
         screenCoords.y += 5;
 
         // Objective outcome
-        if (gScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
+        if (gameState.ScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
         {
-            if (gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+            if (gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
             {
                 // Objective failed
                 DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_FAILED);
@@ -1114,7 +1121,7 @@ private:
             {
                 // Objective completed
                 ft = Formatter();
-                ft.Add<money64>(gScenarioCompletedCompanyValue);
+                ft.Add<money64>(gameState.ScenarioCompletedCompanyValue);
                 DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_ACHIEVED, ft);
             }
         }

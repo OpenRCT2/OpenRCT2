@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -28,6 +28,7 @@ namespace GameActions
         constexpr uint16_t AllowWhilePaused = 1 << 0;
         constexpr uint16_t ClientOnly = 1 << 1;
         constexpr uint16_t EditorOnly = 1 << 2;
+        constexpr uint16_t IgnoreForReplays = 1 << 3;
     } // namespace Flags
 
 } // namespace GameActions

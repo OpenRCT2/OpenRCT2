@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -536,9 +536,20 @@ int16_t TileElementHeight(const CoordsXY& loc)
         return MINIMUM_LAND_HEIGHT_BIG;
     }
 
-    uint16_t height = surfaceElement->GetBaseZ();
+    auto height = surfaceElement->GetBaseZ();
+    auto slope = surfaceElement->GetSlope();
 
-    uint32_t slope = surfaceElement->GetSlope();
+    return TileElementHeight(CoordsXYZ{ loc, height }, slope);
+}
+
+int16_t TileElementHeight(const CoordsXYZ& loc, uint8_t slope)
+{
+    // Off the map
+    if (!MapIsLocationValid(loc))
+        return MINIMUM_LAND_HEIGHT_BIG;
+
+    auto height = loc.z;
+
     uint8_t extra_height = (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4; // 0x10 is the 5th bit - sets slope to double height
     // Remove the extra height bit
     slope &= TILE_ELEMENT_SLOPE_ALL_CORNERS_UP;

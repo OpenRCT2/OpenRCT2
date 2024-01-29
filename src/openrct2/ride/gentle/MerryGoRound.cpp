@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -51,7 +51,8 @@ static void PaintRiders(
 }
 
 static void PaintCarousel(
-    PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+    PaintSession& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height,
+    ImageId stationColour)
 {
     height += 7;
 
@@ -83,10 +84,9 @@ static void PaintCarousel(
     BoundBoxXYZ bb = { { xOffset + 16, yOffset + 16, height }, { 24, 24, 48 } };
 
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    auto imageFlags = session.TrackColours[SCHEME_MISC];
-    if (imageFlags != TrackGhost)
+    if (stationColour != TrackStationColour)
     {
-        imageTemplate = imageFlags;
+        imageTemplate = stationColour;
     }
     auto imageOffset = rotationOffset & 0x1F;
     auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + imageOffset);
@@ -109,35 +109,36 @@ static void PaintMerryGoRound(
 
     int32_t edges = edges_3x3[trackSequence];
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, floorSpritesCork, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_MISC], height, fenceSpritesRope,
-        session.CurrentRotation);
+        session, edges, session.MapPosition, trackElement, ride, GetStationColourScheme(session, trackElement), height,
+        fenceSpritesRope, session.CurrentRotation);
 
+    auto stationColour = GetStationColourScheme(session, trackElement);
     switch (trackSequence)
     {
         case 1:
-            PaintCarousel(session, ride, direction, 32, 32, height);
+            PaintCarousel(session, ride, direction, 32, 32, height, stationColour);
             break;
         case 3:
-            PaintCarousel(session, ride, direction, 32, -32, height);
+            PaintCarousel(session, ride, direction, 32, -32, height, stationColour);
             break;
         case 5:
-            PaintCarousel(session, ride, direction, 0, -32, height);
+            PaintCarousel(session, ride, direction, 0, -32, height, stationColour);
             break;
         case 6:
-            PaintCarousel(session, ride, direction, -32, 32, height);
+            PaintCarousel(session, ride, direction, -32, 32, height, stationColour);
             break;
         case 7:
-            PaintCarousel(session, ride, direction, -32, -32, height);
+            PaintCarousel(session, ride, direction, -32, -32, height, stationColour);
             break;
         case 8:
-            PaintCarousel(session, ride, direction, -32, 0, height);
+            PaintCarousel(session, ride, direction, -32, 0, height, stationColour);
             break;
     }
 

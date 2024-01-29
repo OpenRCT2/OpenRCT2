@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,12 +13,14 @@
 #include "Context.h"
 #include "Editor.h"
 #include "FileClassifier.h"
+#include "GameState.h"
 #include "GameStateSnapshots.h"
 #include "Input.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
 #include "ReplayManager.h"
+#include "actions/GameSetSpeedAction.h"
 #include "actions/LoadOrQuitAction.h"
 #include "audio/audio.h"
 #include "config/Config.h"
@@ -73,6 +75,8 @@
 #include <iterator>
 #include <memory>
 
+using namespace OpenRCT2;
+
 uint16_t gCurrentDeltaTime;
 uint8_t gGamePaused = 0;
 int32_t gGameSpeed = 1;
@@ -86,7 +90,6 @@ bool gIsAutosaveLoaded = false;
 
 bool gLoadKeepWindowsOpen = false;
 
-uint32_t gCurrentTicks;
 uint32_t gCurrentRealTimeTicks;
 
 #ifdef ENABLE_SCRIPTING
@@ -97,24 +100,28 @@ using namespace OpenRCT2;
 
 void GameResetSpeed()
 {
-    gGameSpeed = 1;
-    WindowInvalidateByClass(WindowClass::TopToolbar);
+    auto setSpeedAction = GameSetSpeedAction(1);
+    GameActions::Execute(&setSpeedAction);
 }
 
 void GameIncreaseGameSpeed()
 {
-    gGameSpeed = std::min(gConfigGeneral.DebuggingTools ? 5 : 4, gGameSpeed + 1);
-    if (gGameSpeed == 5)
-        gGameSpeed = 8;
-    WindowInvalidateByClass(WindowClass::TopToolbar);
+    auto newSpeed = std::min(gConfigGeneral.DebuggingTools ? 5 : 4, gGameSpeed + 1);
+    if (newSpeed == 5)
+        newSpeed = 8;
+
+    auto setSpeedAction = GameSetSpeedAction(newSpeed);
+    GameActions::Execute(&setSpeedAction);
 }
 
 void GameReduceGameSpeed()
 {
-    gGameSpeed = std::max(1, gGameSpeed - 1);
-    if (gGameSpeed == 7)
-        gGameSpeed = 4;
-    WindowInvalidateByClass(WindowClass::TopToolbar);
+    auto newSpeed = std::max(1, gGameSpeed - 1);
+    if (newSpeed == 7)
+        newSpeed = 4;
+
+    auto setSpeedAction = GameSetSpeedAction(newSpeed);
+    GameActions::Execute(&setSpeedAction);
 }
 
 /**
@@ -207,7 +214,7 @@ void UpdatePaletteEffects()
         uint32_t shade = 0;
         if (gConfigGeneral.RenderWeatherGloom)
         {
-            auto paletteId = ClimateGetWeatherGloomPaletteId(gClimateCurrent);
+            auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().ClimateCurrent);
             if (paletteId != FilterPaletteID::PaletteNull)
             {
                 shade = 1;
@@ -340,24 +347,53 @@ void RCT2StringToUTF8Self(char* buffer, size_t length)
     }
 }
 
-// OpenRCT2 workaround to recalculate some values which are saved redundantly in the save to fix corrupted files.
-// For example recalculate guest count by looking at all the guests instead of trusting the value in the file.
-void GameFixSaveVars()
+static void FixGuestsHeadingToParkCount()
 {
-    // Recalculates peep count after loading a save to fix corrupted files
-    uint32_t guestCount = 0;
+    auto& gameState = GetGameState();
+
+    uint32_t guestsHeadingToPark = 0;
+
+    for (auto* peep : EntityList<Guest>())
     {
-        for (auto guest : EntityList<Guest>())
+        if (peep->OutsideOfPark && peep->State != PeepState::LeavingPark)
         {
-            if (!guest->OutsideOfPark)
-            {
-                guestCount++;
-            }
+            guestsHeadingToPark++;
         }
     }
 
-    gNumGuestsInPark = guestCount;
+    if (gameState.NumGuestsHeadingForPark != guestsHeadingToPark)
+    {
+        LOG_WARNING(
+            "Corrected bad amount of guests heading to park: %u -> %u", gameState.NumGuestsHeadingForPark, guestsHeadingToPark);
+    }
 
+    gameState.NumGuestsHeadingForPark = guestsHeadingToPark;
+}
+
+static void FixGuestCount()
+{
+    // Recalculates peep count after loading a save to fix corrupted files
+    uint32_t guestCount = 0;
+
+    for (auto guest : EntityList<Guest>())
+    {
+        if (!guest->OutsideOfPark)
+        {
+            guestCount++;
+        }
+    }
+
+    auto& gameState = GetGameState();
+    if (gameState.NumGuestsInPark != guestCount)
+    {
+        LOG_WARNING("Corrected bad amount of guests in park: %u -> %u", gameState.NumGuestsInPark, guestCount);
+    }
+
+    gameState.NumGuestsInPark = guestCount;
+}
+
+static void FixPeepsWithInvalidRideReference()
+{
     // Peeps to remove have to be cached here, as removing them from within the loop breaks iteration
     std::vector<Peep*> peepsToRemove;
 
@@ -407,9 +443,13 @@ void GameFixSaveVars()
     {
         ptr->Remove();
     }
+}
 
+static void FixInvalidSurfaces()
+{
     // Fixes broken saves where a surface element could be null
     // and broken saves with incorrect invisible map border tiles
+
     for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
@@ -438,6 +478,19 @@ void GameFixSaveVars()
             }
         }
     }
+}
+
+// OpenRCT2 workaround to recalculate some values which are saved redundantly in the save to fix corrupted files.
+// For example recalculate guest count by looking at all the guests instead of trusting the value in the file.
+void GameFixSaveVars()
+{
+    FixGuestsHeadingToParkCount();
+
+    FixGuestCount();
+
+    FixPeepsWithInvalidRideReference();
+
+    FixInvalidSurfaces();
 
     ResearchFix();
 
@@ -592,7 +645,9 @@ void SaveGameCmd(u8string_view name /* = {} */)
 void SaveGameWithName(u8string_view name)
 {
     LOG_VERBOSE("Saving to %s", u8string(name).c_str());
-    if (ScenarioSave(name, gConfigGeneral.SavePluginData ? 1 : 0))
+
+    auto& gameState = GetGameState();
+    if (ScenarioSave(gameState, name, gConfigGeneral.SavePluginData ? 1 : 0))
     {
         LOG_VERBOSE("Saved to %s", u8string(name).c_str());
         gCurrentLoadedPath = name;
@@ -714,7 +769,9 @@ void GameAutosave()
         File::Copy(path, backupPath, true);
     }
 
-    if (!ScenarioSave(path, saveFlags))
+    auto& gameState = GetGameState();
+
+    if (!ScenarioSave(gameState, path, saveFlags))
         Console::Error::WriteLine("Could not autosave the scenario. Is the save folder writeable?");
 }
 
@@ -777,7 +834,7 @@ void GameLoadOrQuitNoSavePrompt()
             {
                 InputSetFlag(INPUT_FLAG_5, false);
             }
-            gGameSpeed = 1;
+            GameResetSpeed();
             gFirstTimeSaving = true;
             GameNotifyMapChange();
             GameUnloadScripts();

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 
 #    include <algorithm>
 #    include <openrct2/drawing/Drawing.h>
+#    include <openrct2/interface/Colour.h>
 #    include <openrct2/util/Util.h>
 #    include <openrct2/world/Location.hpp>
 #    include <stdexcept>
@@ -192,6 +193,18 @@ void TextureCache::CreateTextures()
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         GeneratePaletteTexture();
+
+        auto blendArray = GetBlendColourMap();
+        if (blendArray != nullptr)
+        {
+            glGenTextures(1, &_blendPaletteTexture);
+            glBindTexture(GL_TEXTURE_2D, _blendPaletteTexture);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+            glTexImage2D(
+                GL_TEXTURE_2D, 0, GL_R8UI, PALETTE_SIZE, PALETTE_SIZE, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, blendArray);
+        }
 
         _initialized = true;
         _atlasesTextureIndices = 0;
@@ -412,6 +425,11 @@ GLuint TextureCache::GetAtlasesTexture()
 GLuint TextureCache::GetPaletteTexture()
 {
     return _paletteTexture;
+}
+
+GLuint TextureCache::GetBlendPaletteTexture()
+{
+    return _blendPaletteTexture;
 }
 
 GLint TextureCache::PaletteToY(FilterPaletteID palette)

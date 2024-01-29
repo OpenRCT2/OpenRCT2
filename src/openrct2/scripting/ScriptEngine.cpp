@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -518,18 +518,18 @@ void ScriptEngine::RegisterConstants()
 {
     ConstantBuilder builder(_context);
     builder.Namespace("TrackSlope")
-        .Constant("None", TRACK_SLOPE_NONE)
-        .Constant("Up25", TRACK_SLOPE_UP_25)
-        .Constant("Up60", TRACK_SLOPE_UP_60)
-        .Constant("Down25", TRACK_SLOPE_DOWN_25)
-        .Constant("Down60", TRACK_SLOPE_DOWN_60)
-        .Constant("Up90", TRACK_SLOPE_UP_90)
-        .Constant("Down90", TRACK_SLOPE_DOWN_90);
+        .Constant("None", EnumValue(TrackPitch::None))
+        .Constant("Up25", EnumValue(TrackPitch::Up25))
+        .Constant("Up60", EnumValue(TrackPitch::Up60))
+        .Constant("Down25", EnumValue(TrackPitch::Down25))
+        .Constant("Down60", EnumValue(TrackPitch::Down60))
+        .Constant("Up90", EnumValue(TrackPitch::Up90))
+        .Constant("Down90", EnumValue(TrackPitch::Down90));
     builder.Namespace("TrackBanking")
-        .Constant("None", TRACK_BANK_NONE)
-        .Constant("BankLeft", TRACK_BANK_LEFT)
-        .Constant("BankRight", TRACK_BANK_RIGHT)
-        .Constant("UpsideDown", TRACK_BANK_UPSIDE_DOWN);
+        .Constant("None", EnumValue(TrackRoll::None))
+        .Constant("BankLeft", EnumValue(TrackRoll::Left))
+        .Constant("BankRight", EnumValue(TrackRoll::Right))
+        .Constant("UpsideDown", EnumValue(TrackRoll::UpsideDown));
 }
 
 void ScriptEngine::RefreshPlugins()
@@ -1069,7 +1069,7 @@ GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(const CustomAct
         }
 
         std::vector<DukValue> pluginCallArgs;
-        if (GetTargetAPIVersion() <= API_VERSION_68_CUSTOM_ACTION_ARGS)
+        if (customActionInfo.Owner->GetTargetAPIVersion() <= API_VERSION_68_CUSTOM_ACTION_ARGS)
         {
             pluginCallArgs = { *dukArgs };
         }
@@ -1326,6 +1326,7 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "footpathremove", GameCommand::RemovePath },
     { "footpathadditionplace", GameCommand::PlaceFootpathAddition },
     { "footpathadditionremove", GameCommand::RemoveFootpathAddition },
+    { "gamesetspeed", GameCommand::SetGameSpeed },
     { "guestsetflags", GameCommand::GuestSetFlags },
     { "guestsetname", GameCommand::SetGuestName },
     { "landbuyrights", GameCommand::BuyLandRights },
@@ -1596,44 +1597,44 @@ void ScriptEngine::SetParkStorageFromJSON(std::string_view value)
 
 IntervalHandle ScriptEngine::AllocateHandle()
 {
-    for (size_t i = 0; i < _intervals.size(); i++)
-    {
-        if (!_intervals[i].IsValid())
-        {
-            return static_cast<IntervalHandle>(i + 1);
-        }
-    }
-    _intervals.emplace_back();
-    return static_cast<IntervalHandle>(_intervals.size());
+    const auto nextHandle = _nextIntervalHandle;
+
+    // In case of overflow start from 1 again
+    _nextIntervalHandle = std::max(_nextIntervalHandle + 1U, 1U);
+
+    return nextHandle;
 }
 
 IntervalHandle ScriptEngine::AddInterval(const std::shared_ptr<Plugin>& plugin, int32_t delay, bool repeat, DukValue&& callback)
 {
     auto handle = AllocateHandle();
-    if (handle != 0)
-    {
-        auto& interval = _intervals[static_cast<size_t>(handle) - 1];
-        interval.Owner = plugin;
-        interval.Handle = handle;
-        interval.Delay = delay;
-        interval.LastTimestamp = _lastIntervalTimestamp;
-        interval.Callback = std::move(callback);
-        interval.Repeat = repeat;
-    }
+    assert(handle != 0);
+
+    auto& interval = _intervals[handle];
+    interval.Owner = plugin;
+    interval.Delay = delay;
+    interval.LastTimestamp = _lastIntervalTimestamp;
+    interval.Callback = std::move(callback);
+    interval.Repeat = repeat;
+
     return handle;
 }
 
 void ScriptEngine::RemoveInterval(const std::shared_ptr<Plugin>& plugin, IntervalHandle handle)
 {
-    if (handle > 0 && static_cast<size_t>(handle) <= _intervals.size())
-    {
-        auto& interval = _intervals[static_cast<size_t>(handle) - 1];
+    if (handle == 0)
+        return;
 
-        // Only allow owner or REPL (nullptr) to remove intervals
-        if (plugin == nullptr || interval.Owner == plugin)
-        {
-            interval = {};
-        }
+    auto it = _intervals.find(handle);
+    if (it == _intervals.end())
+        return;
+
+    auto& interval = it->second;
+
+    // Only allow owner or REPL (nullptr) to remove intervals
+    if (plugin == nullptr || interval.Owner == plugin)
+    {
+        interval.Deleted = true;
     }
 }
 
@@ -1644,41 +1645,68 @@ void ScriptEngine::UpdateIntervals()
     {
         // timestamp has wrapped, subtract all intervals by the remaining amount before wrap
         auto delta = static_cast<int64_t>(std::numeric_limits<uint32_t>::max() - _lastIntervalTimestamp);
-        for (auto& interval : _intervals)
+        for (auto& entry : _intervals)
         {
-            if (interval.IsValid())
-            {
-                interval.LastTimestamp = -delta;
-            }
+            auto& interval = entry.second;
+            interval.LastTimestamp = -delta;
         }
     }
     _lastIntervalTimestamp = timestamp;
 
-    for (auto& interval : _intervals)
+    // Erase all intervals marked as deleted.
+    for (auto it = _intervals.begin(); it != _intervals.end();)
     {
-        if (interval.IsValid())
-        {
-            if (timestamp >= interval.LastTimestamp + interval.Delay)
-            {
-                ExecutePluginCall(interval.Owner, interval.Callback, {}, false);
+        auto& interval = it->second;
 
-                interval.LastTimestamp = timestamp;
-                if (!interval.Repeat)
-                {
-                    RemoveInterval(nullptr, interval.Handle);
-                }
-            }
+        if (interval.Deleted)
+        {
+            it = _intervals.erase(it);
+        }
+        else
+        {
+            it++;
+        }
+    }
+
+    // Execute all intervals that are due.
+    for (auto it = _intervals.begin(); it != _intervals.end(); it++)
+    {
+        auto& interval = it->second;
+
+        if (timestamp < interval.LastTimestamp + interval.Delay)
+        {
+            continue;
+        }
+
+        if (interval.Deleted)
+        {
+            // There is a chance that in one of the callbacks it deletes another interval.
+            continue;
+        }
+
+        ExecutePluginCall(interval.Owner, interval.Callback, {}, false);
+
+        interval.LastTimestamp = timestamp;
+        if (!interval.Repeat)
+        {
+            interval.Deleted = true;
         }
     }
 }
 
 void ScriptEngine::RemoveIntervals(const std::shared_ptr<Plugin>& plugin)
 {
-    for (auto& interval : _intervals)
+    for (auto it = _intervals.begin(); it != _intervals.end();)
     {
+        auto& interval = it->second;
+
         if (interval.Owner == plugin)
         {
-            interval = {};
+            it = _intervals.erase(it);
+        }
+        else
+        {
+            it++;
         }
     }
 }

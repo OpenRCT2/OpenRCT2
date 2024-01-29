@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/FootpathPlaceAction.h>
@@ -33,6 +34,7 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
 // clang-format off
@@ -498,7 +500,7 @@ public:
                               window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12 };
         if (_windowFootpathCost != MONEY64_UNDEFINED)
         {
-            if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+            if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
             {
                 auto ft = Formatter();
                 ft.Add<money64>(_windowFootpathCost);

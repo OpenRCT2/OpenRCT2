@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,6 +38,10 @@ namespace RCT1
     std::string_view GetVehicleObject(uint8_t vehicleType);
     std::string_view GetSmallSceneryObject(uint8_t smallSceneryType);
     std::string_view GetLargeSceneryObject(uint8_t largeSceneryType);
+    /**
+     * Most sloped gates look like their ungated counterpart. This function maps these gates.
+     */
+    int32_t MapSlopedWall(uint8_t wallType);
     std::string_view GetWallObject(uint8_t wallType);
     std::string_view GetPathSurfaceObject(uint8_t pathType);
     std::string_view GetPathAddtionObject(uint8_t pathAdditionType);

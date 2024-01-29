@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -121,6 +121,8 @@ const std::string_view DefaultSelectedObjects[] = {
     "openrct2.music.fairground2",
     "openrct2.music.ragtime2",
     "openrct2.music.prehistoric",
+    "openrct2.music.mystic",
+    "openrct2.music.rock4",
 
     // Footpath surfaces
     "rct2.footpath_surface.tarmac",

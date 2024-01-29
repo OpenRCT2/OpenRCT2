@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1191,6 +1191,70 @@ namespace RCT1
         return map[largeSceneryType];
     }
 
+    int32_t MapSlopedWall(uint8_t wallType)
+    {
+        static constexpr uint8_t map[] =
+        {
+            RCT1_WALL_TYPE_MESH_FENCE,                   // RCT1_WALL_TYPE_MESH_FENCE,
+            RCT1_WALL_TYPE_MESH_FENCE,                   // RCT1_WALL_TYPE_MESH_FENCE_WITH_GATE,
+            RCT1_WALL_TYPE_ROMAN,                        // RCT1_WALL_TYPE_ROMAN,
+            RCT1_WALL_TYPE_EGYPTIAN,                     // RCT1_WALL_TYPE_EGYPTIAN,
+            RCT1_WALL_TYPE_HEDGE,                        // RCT1_WALL_TYPE_HEDGE,
+            RCT1_WALL_TYPE_HEDGE,                        // RCT1_WALL_TYPE_HEDGE_WITH_GATE,
+            RCT1_WALL_TYPE_BLUE_PLAYING_CARDS,           // RCT1_WALL_TYPE_BLUE_PLAYING_CARDS,
+            RCT1_WALL_TYPE_RED_PLAYING_CARDS,            // RCT1_WALL_TYPE_RED_PLAYING_CARDS,
+            RCT1_WALL_TYPE_WHITE_RAILING,                // RCT1_WALL_TYPE_WHITE_RAILING,
+            RCT1_WALL_TYPE_WHITE_RAILING,                // RCT1_WALL_TYPE_WHITE_RAILING_WITH_GATE,
+            RCT1_WALL_TYPE_MARTIAN,                      // RCT1_WALL_TYPE_MARTIAN,
+            RCT1_WALL_TYPE_GLASS_SMOOTH,                 // RCT1_WALL_TYPE_GLASS_SMOOTH,
+            RCT1_WALL_TYPE_WOODEN_PANEL_FENCE,           // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE,
+            RCT1_WALL_TYPE_WOODEN_PANEL_FENCE,           // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_GATE,
+            RCT1_WALL_TYPE_WOODEN_POST_FENCE,            // RCT1_WALL_TYPE_WOODEN_POST_FENCE,
+            RCT1_WALL_TYPE_RED_WOODEN_POST_FENCE,        // RCT1_WALL_TYPE_RED_WOODEN_POST_FENCE,
+            RCT1_WALL_TYPE_BARBED_WIRE,                  // RCT1_WALL_TYPE_BARBED_WIRE,
+            RCT1_WALL_TYPE_BARBED_WIRE,                  // RCT1_WALL_TYPE_BARBED_WIRE_WITH_GATE,
+            RCT1_WALL_TYPE_PRIMITIVE_TALL_WOOD_FENCE,    // RCT1_WALL_TYPE_PRIMITIVE_TALL_WOOD_FENCE,
+            RCT1_WALL_TYPE_PRIMITIVE_SHORT_WOOD_FENCE,   // RCT1_WALL_TYPE_PRIMITIVE_SHORT_WOOD_FENCE,
+            RCT1_WALL_TYPE_IRON_RAILING,                 // RCT1_WALL_TYPE_IRON_RAILING,
+            RCT1_WALL_TYPE_IRON_RAILING,                 // RCT1_WALL_TYPE_IRON_RAILING_WITH_GATE,
+            RCT1_WALL_TYPE_GLASS_PANELS,                 // RCT1_WALL_TYPE_GLASS_PANELS,
+            RCT1_WALL_TYPE_BONE_FENCE,                   // RCT1_WALL_TYPE_BONE_FENCE,
+            RCT1_WALL_TYPE_BRICK,                        // RCT1_WALL_TYPE_BRICK,
+            RCT1_WALL_TYPE_BRICK,                        // RCT1_WALL_TYPE_BRICK_WITH_GATE,
+            RCT1_WALL_TYPE_WHITE_WOODEN_PANEL_FENCE,     // RCT1_WALL_TYPE_WHITE_WOODEN_PANEL_FENCE,
+            RCT1_WALL_TYPE_RED_WOODEN_PANEL_FENCE,       // RCT1_WALL_TYPE_RED_WOODEN_PANEL_FENCE,
+            RCT1_WALL_TYPE_STONE,                        // RCT1_WALL_TYPE_STONE,
+            RCT1_WALL_TYPE_STONE,                        // RCT1_WALL_TYPE_STONE_WITH_GATE,
+            RCT1_WALL_TYPE_WOODEN_FENCE,                 // RCT1_WALL_TYPE_WOODEN_FENCE,
+            RCT1_WALL_TYPE_JUNGLE,                       // RCT1_WALL_TYPE_JUNGLE,
+            RCT1_WALL_TYPE_CONIFER_HEDGE,                // RCT1_WALL_TYPE_CONIFER_HEDGE,
+            RCT1_WALL_TYPE_CONIFER_HEDGE,                // RCT1_WALL_TYPE_CONIFER_HEDGE_WITH_GATE,
+            RCT1_WALL_TYPE_SMALL_BROWN_CASTLE,           // RCT1_WALL_TYPE_SMALL_BROWN_CASTLE,
+            RCT1_WALL_TYPE_SMALL_GREY_CASTLE,            // RCT1_WALL_TYPE_SMALL_GREY_CASTLE,
+            RCT1_WALL_TYPE_ROMAN_COLUMN,                 // RCT1_WALL_TYPE_ROMAN_COLUMN,
+            RCT1_WALL_TYPE_LARGE_BROWN_CASTLE,           // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE,
+            RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_CROSS,     // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_CROSS,
+            RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_GATE,      // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_GATE,
+            RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_WINDOW,    // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_WINDOW,
+            RCT1_WALL_TYPE_MEDIUM_BROWN_CASTLE,          // RCT1_WALL_TYPE_MEDIUM_BROWN_CASTLE,
+            RCT1_WALL_TYPE_LARGE_GREY_CASTLE,            // RCT1_WALL_TYPE_LARGE_GREY_CASTLE,
+            RCT1_WALL_TYPE_LARGE_GREY_CASTLE_CROSS,      // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_CROSS,
+            RCT1_WALL_TYPE_LARGE_GREY_CASTLE_GATE,       // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_GATE,
+            RCT1_WALL_TYPE_LARGE_GREY_CASTLE_WINDOW,     // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_WINDOW,
+            RCT1_WALL_TYPE_MEDIUM_GREY_CASTLE,           // RCT1_WALL_TYPE_MEDIUM_GREY_CASTLE,
+            RCT1_WALL_TYPE_CREEPY,                       // RCT1_WALL_TYPE_CREEPY,
+            RCT1_WALL_TYPE_CREEPY_GATE,                  // RCT1_WALL_TYPE_CREEPY_GATE,
+            RCT1_WALL_TYPE_BARBED_WIRE_WITH_SNOW,        // RCT1_WALL_TYPE_BARBED_WIRE_WITH_SNOW,
+            RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_SNOW, // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_SNOW,
+            RCT1_WALL_TYPE_WOODEN_POST_FENCE_WITH_SNOW,  // RCT1_WALL_TYPE_WOODEN_POST_FENCE_WITH_SNOW,
+        };
+
+        if (wallType < std::size(map))
+            return map[wallType];
+        
+        return -1;
+    }
+
     std::string_view GetWallObject(uint8_t wallType)
     {
         static constexpr const char * map[] =
@@ -1278,7 +1342,7 @@ namespace RCT1
             "",
             "",
 
-            "rct2.footpath_surface.road",           // RCT1_FOOTPATH_TYPE_ROAD
+            "rct1.footpath_surface.road",           // RCT1_FOOTPATH_TYPE_ROAD
             "",
             "",
             "",

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,6 +39,8 @@
 #include "ParkSetLoanAction.h"
 #include "ParkSetParameterAction.h"
 
+using namespace OpenRCT2;
+
 using ParametersRange = std::pair<std::pair<int64_t, int64_t>, std::pair<int64_t, int64_t>>;
 
 CheatSetAction::CheatSetAction(CheatType cheatType, int64_t param1, int64_t param2)
@@ -70,18 +72,21 @@ GameActions::Result CheatSetAction::Query() const
 {
     if (static_cast<uint32_t>(_cheatType) >= static_cast<uint32_t>(CheatType::Count))
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     ParametersRange validRange = GetParameterRange(static_cast<CheatType>(_cheatType.id));
 
     if (_param1 < validRange.first.first || _param1 > validRange.first.second)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
     if (_param2 < validRange.second.first || _param2 > validRange.second.second)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     return GameActions::Result();
@@ -89,6 +94,7 @@ GameActions::Result CheatSetAction::Query() const
 
 GameActions::Result CheatSetAction::Execute() const
 {
+    auto& gameState = GetGameState();
     switch (static_cast<CheatType>(_cheatType.id))
     {
         case CheatType::SandboxMode:
@@ -196,7 +202,7 @@ GameActions::Result CheatSetAction::Execute() const
             Set10MinuteInspection();
             break;
         case CheatType::WinScenario:
-            ScenarioSuccess();
+            ScenarioSuccess(gameState);
             break;
         case CheatType::ForceWeather:
             // Todo - make sure this is safe
@@ -212,7 +218,7 @@ GameActions::Result CheatSetAction::Execute() const
             ParkSetOpen(!ParkIsOpen());
             break;
         case CheatType::HaveFun:
-            gScenarioObjective.Type = OBJECTIVE_HAVE_FUN;
+            gameState.ScenarioObjective.Type = OBJECTIVE_HAVE_FUN;
             break;
         case CheatType::SetForcedParkRating:
             ParkSetForcedRating(_param1);
@@ -248,12 +254,15 @@ GameActions::Result CheatSetAction::Execute() const
         case CheatType::AllowSpecialColourSchemes:
             gCheatsAllowSpecialColourSchemes = static_cast<bool>(_param1);
             break;
+        case CheatType::RemoveParkFences:
+            RemoveParkFences();
+            break;
         default:
         {
             LOG_ERROR("Unabled cheat: %d", _cheatType.id);
-            GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
         }
-        break;
     }
 
     if (NetworkGetMode() == NETWORK_MODE_NONE)
@@ -395,6 +404,8 @@ ParametersRange CheatSetAction::GetParameterRange(CheatType cheatType) const
         case CheatType::NoCapOnQueueLengthDummy:
             [[fallthrough]];
         case CheatType::RemoveLitter:
+            [[fallthrough]];
+        case CheatType::RemoveParkFences:
             return { { 0, 0 }, { 0, 0 } };
         case CheatType::Count:
             break;
@@ -540,14 +551,16 @@ void CheatSetAction::Set10MinuteInspection() const
 
 void CheatSetAction::SetScenarioNoMoney(bool enabled) const
 {
+    auto& gameState = GetGameState();
     if (enabled)
     {
-        gParkFlags |= PARK_FLAGS_NO_MONEY;
+        gameState.ParkFlags |= PARK_FLAGS_NO_MONEY;
     }
     else
     {
-        gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+        gameState.ParkFlags &= ~PARK_FLAGS_NO_MONEY;
     }
+
     // Invalidate all windows that have anything to do with finance
     WindowInvalidateByClass(WindowClass::Ride);
     WindowInvalidateByClass(WindowClass::Peep);
@@ -560,7 +573,7 @@ void CheatSetAction::SetScenarioNoMoney(bool enabled) const
 
 void CheatSetAction::SetMoney(money64 amount) const
 {
-    gCash = amount;
+    GetGameState().Cash = amount;
 
     WindowInvalidateByClass(WindowClass::Finances);
     WindowInvalidateByClass(WindowClass::BottomToolbar);
@@ -568,7 +581,7 @@ void CheatSetAction::SetMoney(money64 amount) const
 
 void CheatSetAction::AddMoney(money64 amount) const
 {
-    gCash = AddClamp_money64(gCash, amount);
+    GetGameState().Cash = AddClamp_money64(GetGameState().Cash, amount);
 
     WindowInvalidateByClass(WindowClass::Finances);
     WindowInvalidateByClass(WindowClass::BottomToolbar);
@@ -785,4 +798,20 @@ void CheatSetAction::CreateDucks(int count) const
                 break;
         }
     }
+}
+
+void CheatSetAction::RemoveParkFences() const
+{
+    TileElementIterator it;
+    TileElementIteratorBegin(&it);
+    do
+    {
+        if (it.element->GetType() == TileElementType::Surface)
+        {
+            // Remove all park fence flags
+            it.element->AsSurface()->SetParkFences(0);
+        }
+    } while (TileElementIteratorNext(&it));
+
+    GfxInvalidateScreen();
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -64,21 +64,23 @@ GameActions::Result StaffSetCostumeAction::Query() const
 {
     if (_spriteIndex.ToUnderlying() >= MAX_ENTITIES || _spriteIndex.IsNull())
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     auto* staff = TryGetEntity<Staff>(_spriteIndex);
     if (staff == nullptr)
     {
         LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
     }
 
     auto spriteType = EntertainerCostumeToSprite(_costume);
     if (EnumValue(spriteType) > std::size(peep_slow_walking_types))
     {
         LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
     return GameActions::Result();
 }
@@ -89,7 +91,7 @@ GameActions::Result StaffSetCostumeAction::Execute() const
     if (staff == nullptr)
     {
         LOG_WARNING("Invalid game command for sprite %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_STAFF_NOT_FOUND);
     }
 
     auto spriteType = EntertainerCostumeToSprite(_costume);

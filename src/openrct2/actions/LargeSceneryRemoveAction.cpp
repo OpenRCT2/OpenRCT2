@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "LargeSceneryRemoveAction.h"
 
 #include "../Cheats.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../common.h"
 #include "../core/MemoryStream.h"
@@ -93,6 +94,17 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
         {
+            if (GetGameState().ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+            {
+                if (sceneryEntry->HasFlag(LARGE_SCENERY_FLAG_IS_TREE))
+                {
+                    res.Error = GameActions::Status::NoClearance;
+                    res.ErrorTitle = STR_CANT_REMOVE_THIS;
+                    res.ErrorMessage = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
+                    return res;
+                }
+            }
+
             if (!MapIsLocationOwned({ currentTile.x, currentTile.y, currentTile.z }))
             {
                 return GameActions::Result(GameActions::Status::NoClearance, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
@@ -101,7 +113,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
 
         if (!LocationValid(currentTile))
         {
-            return GameActions::Result(GameActions::Status::NoClearance, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
         }
         // Prevent duplicate costs when using the clear scenery tool that overlaps multiple large
         // scenery tile elements.

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/TrackDesignAction.h>
 #include <openrct2/audio/audio.h>
@@ -304,7 +305,7 @@ public:
         }
 
         // Price
-        if (_placementCost != MONEY64_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (_placementCost != MONEY64_UNDEFINED && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             ft = Formatter();
             ft.Add<money64>(_placementCost);
@@ -433,7 +434,40 @@ private:
                    _trackDesign.get(), RideGetTemporaryForPreview(), { loc, z, _currentTrackPieceDirection });
     }
 
-    void DrawMiniPreviewTrack(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max)
+    void DrawMiniPreviewEntrances(
+        const TrackDesign& td6, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max, Direction rotation)
+    {
+        for (const auto& entrance : td6.entrance_elements)
+        {
+            auto rotatedAndOffsetEntrance = origin + entrance.Location.ToCoordsXY().Rotate(rotation);
+
+            if (pass == 0)
+            {
+                min.x = std::min(min.x, rotatedAndOffsetEntrance.x);
+                max.x = std::max(max.x, rotatedAndOffsetEntrance.x);
+                min.y = std::min(min.y, rotatedAndOffsetEntrance.y);
+                max.y = std::max(max.y, rotatedAndOffsetEntrance.y);
+            }
+            else
+            {
+                auto pixelPosition = DrawMiniPreviewGetPixelPosition(rotatedAndOffsetEntrance);
+                if (DrawMiniPreviewIsPixelInBounds(pixelPosition))
+                {
+                    uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
+                    uint8_t colour = entrance.IsExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
+                    for (int32_t i = 0; i < 4; i++)
+                    {
+                        pixel[338 + i] = colour; // x + 2, y + 2
+                        pixel[168 + i] = colour; //        y + 1
+                        pixel[2 + i] = colour;   // x + 2
+                        pixel[172 + i] = colour; // x + 4, y + 1
+                    }
+                }
+            }
+        }
+    }
+
+    void DrawMiniPreviewTrack(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max)
     {
         const uint8_t rotation = (_currentTrackPieceDirection + GetCurrentRotation()) & 3;
 
@@ -441,14 +475,8 @@ private:
         uint8_t curTrackRotation = rotation;
         for (const auto& trackElement : td6->track_elements)
         {
-            int32_t trackType = trackElement.type;
-            if (trackType == TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
-            {
-                trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;
-            }
-
             // Follow a single track piece shape
-            const auto& ted = GetTrackElementDescriptor(trackType);
+            const auto& ted = GetTrackElementDescriptor(trackElement.Type);
             const PreviewTrack* trackBlock = ted.Block;
             while (trackBlock->index != 255)
             {
@@ -509,38 +537,10 @@ private:
             }
         }
 
-        // Draw entrance and exit preview.
-        for (const auto& entrance : td6->entrance_elements)
-        {
-            auto rotatedAndOffsetEntrance = origin + CoordsXY{ entrance.x, entrance.y }.Rotate(rotation);
-
-            if (pass == 0)
-            {
-                min.x = std::min(min.x, rotatedAndOffsetEntrance.x);
-                max.x = std::max(max.x, rotatedAndOffsetEntrance.x);
-                min.y = std::min(min.y, rotatedAndOffsetEntrance.y);
-                max.y = std::max(max.y, rotatedAndOffsetEntrance.y);
-            }
-            else
-            {
-                auto pixelPosition = DrawMiniPreviewGetPixelPosition(rotatedAndOffsetEntrance);
-                if (DrawMiniPreviewIsPixelInBounds(pixelPosition))
-                {
-                    uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
-                    uint8_t colour = entrance.isExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
-                    for (int32_t i = 0; i < 4; i++)
-                    {
-                        pixel[338 + i] = colour; // x + 2, y + 2
-                        pixel[168 + i] = colour; //        y + 1
-                        pixel[2 + i] = colour;   // x + 2
-                        pixel[172 + i] = colour; // x + 4, y + 1
-                    }
-                }
-            }
-        }
+        DrawMiniPreviewEntrances(*td6, pass, origin, min, max, rotation);
     }
 
-    void DrawMiniPreviewMaze(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max)
+    void DrawMiniPreviewMaze(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY& min, CoordsXY& max)
     {
         uint8_t rotation = (_currentTrackPieceDirection + GetCurrentRotation()) & 3;
         for (const auto& mazeElement : td6->maze_elements)
@@ -562,13 +562,6 @@ private:
                     uint8_t* pixel = DrawMiniPreviewGetPixelPtr(pixelPosition);
 
                     uint8_t colour = _PaletteIndexColourTrack;
-
-                    // Draw entrance and exit with different colours.
-                    if (mazeElement.type == MAZE_ELEMENT_TYPE_ENTRANCE)
-                        colour = _PaletteIndexColourEntrance;
-                    else if (mazeElement.type == MAZE_ELEMENT_TYPE_EXIT)
-                        colour = _PaletteIndexColourExit;
-
                     for (int32_t i = 0; i < 4; i++)
                     {
                         pixel[338 + i] = colour; // x + 2, y + 2
@@ -579,6 +572,8 @@ private:
                 }
             }
         }
+
+        DrawMiniPreviewEntrances(*td6, pass, origin, min, max, rotation);
     }
 
     ScreenCoordsXY DrawMiniPreviewGetPixelPosition(const CoordsXY& location)

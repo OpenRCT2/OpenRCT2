@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include "../Date.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/ParkSetResearchFundingAction.h"
 #include "../config/Config.h"
@@ -217,11 +218,6 @@ void ResearchFinishItem(const ResearchItem& researchItem)
                 ObjectEntryIndex index = researchItem3.entryIndex;
                 seenRideEntry[index] = true;
             }
-            for (auto const& researchItem3 : gResearchItemsInvented)
-            {
-                ObjectEntryIndex index = researchItem3.entryIndex;
-                seenRideEntry[index] = true;
-            }
 
             // RCT2 made non-separated vehicles available at once, by removing all but one from research.
             // To ensure old files keep working, look for ride entries not in research, and make them available as well.
@@ -237,6 +233,7 @@ void ResearchFinishItem(const ResearchItem& researchItem)
                             if (rideEntry2->ride_type[j] == base_ride_type)
                             {
                                 RideEntrySetInvented(i);
+                                ResearchInsertRideEntry(i, true);
                                 break;
                             }
                         }
@@ -319,12 +316,13 @@ void ResearchUpdate()
         return;
     }
 
-    if (gCurrentTicks % 32 != 0)
+    auto& gameState = GetGameState();
+    if (gameState.CurrentTicks % 32 != 0)
     {
         return;
     }
 
-    if ((gParkFlags & PARK_FLAGS_NO_MONEY) && gResearchFundingLevel == RESEARCH_FUNDING_NONE)
+    if ((gameState.ParkFlags & PARK_FLAGS_NO_MONEY) && gResearchFundingLevel == RESEARCH_FUNDING_NONE)
     {
         researchLevel = RESEARCH_FUNDING_NORMAL;
     }
@@ -818,12 +816,59 @@ static void ResearchRebuildInventedTables()
 
 static void ResearchAddAllMissingItems(bool isResearched)
 {
+    // Mark base ridetypes as seen if they exist in the invented research list.
+    bool seenBaseEntry[MAX_RIDE_OBJECTS]{};
+    for (auto const& researchItem : gResearchItemsInvented)
+    {
+        ObjectEntryIndex index = researchItem.baseRideType;
+        seenBaseEntry[index] = true;
+    }
+
+    // Unlock and add research entries to the invented list for ride types whose base ridetype has been seen.
     for (ObjectEntryIndex i = 0; i < MAX_RIDE_OBJECTS; i++)
     {
         const auto* rideEntry = GetRideEntryByIndex(i);
         if (rideEntry != nullptr)
         {
-            ResearchInsertRideEntry(i, isResearched);
+            for (uint8_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
+            {
+                if (seenBaseEntry[rideEntry->ride_type[j]])
+                {
+                    RideEntrySetInvented(i);
+                    ResearchInsertRideEntry(i, true);
+                    break;
+                }
+            }
+        }
+    }
+
+    // Mark base ridetypes as seen if they exist in the uninvented research list.
+    for (auto const& researchItem : gResearchItemsUninvented)
+    {
+        ObjectEntryIndex index = researchItem.baseRideType;
+        seenBaseEntry[index] = true;
+    }
+
+    // Only add Rides to uninvented research that haven't had their base ridetype seen.
+    // This prevents rct2 grouped rides from only unlocking the first train.
+    for (ObjectEntryIndex i = 0; i < MAX_RIDE_OBJECTS; i++)
+    {
+        const auto* rideEntry = GetRideEntryByIndex(i);
+        if (rideEntry != nullptr)
+        {
+            bool baseSeen = false;
+            for (uint8_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
+            {
+                if (seenBaseEntry[rideEntry->ride_type[j]])
+                {
+                    baseSeen = true;
+                    break;
+                }
+            }
+            if (!baseSeen)
+            {
+                ResearchInsertRideEntry(i, isResearched);
+            }
         }
     }
 

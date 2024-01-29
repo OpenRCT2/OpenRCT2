@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -50,6 +50,16 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
 
+static GameState_t _gameState{};
+
+namespace OpenRCT2
+{
+    GameState_t& GetGameState()
+    {
+        return _gameState;
+    }
+} // namespace OpenRCT2
+
 GameState::GameState()
 {
     _park = std::make_unique<Park>();
@@ -62,13 +72,14 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
 {
     PROFILED_FUNCTION();
 
+    auto& gameState = GetGameState();
     gInMapInitCode = true;
-    gCurrentTicks = 0;
+    gameState.CurrentTicks = 0;
 
     MapInit(mapSize);
     _park->Initialise();
     FinanceInit();
-    BannerInit();
+    BannerInit(gameState);
     RideInitAll();
     ResetAllEntities();
     UpdateConsolidatedPatrolAreas();
@@ -78,7 +89,7 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
 
     gInMapInitCode = false;
 
-    gNextGuestNumber = 1;
+    GetGameState().NextGuestNumber = 1;
 
     ContextInit();
     ScenerySetDefaultPlacementConfiguration();
@@ -130,7 +141,7 @@ void GameState::Tick()
     if (NetworkGetMode() == NETWORK_MODE_CLIENT && NetworkGetStatus() == NETWORK_STATUS_CONNECTED
         && NetworkGetAuthstatus() == NetworkAuth::Ok)
     {
-        numUpdates = std::clamp<uint32_t>(NetworkGetServerTick() - gCurrentTicks, 0, 10);
+        numUpdates = std::clamp<uint32_t>(NetworkGetServerTick() - GetGameState().CurrentTicks, 0, 10);
     }
     else
     {
@@ -173,6 +184,9 @@ void GameState::Tick()
                 NetworkSendTick();
             }
 
+            // Keep updating the money effect even when paused.
+            UpdateMoneyEffect();
+
             // Update the animation list. Note this does not
             // increment the map animation.
             MapAnimationInvalidateAll();
@@ -204,6 +218,10 @@ void GameState::Tick()
                 break;
             }
         }
+        // Don't call UpdateLogic again if the game was just paused.
+        isPaused |= GameIsPaused();
+        if (isPaused)
+            break;
     }
 
     NetworkFlush();
@@ -277,7 +295,7 @@ void GameState::UpdateLogic()
     else if (NetworkGetMode() == NETWORK_MODE_CLIENT)
     {
         // Don't run past the server, this condition can happen during map changes.
-        if (NetworkGetServerTick() == gCurrentTicks)
+        if (NetworkGetServerTick() == GetGameState().CurrentTicks)
         {
             gInUpdateCode = false;
             return;
@@ -307,7 +325,8 @@ void GameState::UpdateLogic()
 
     _date.Update();
 
-    ScenarioUpdate();
+    auto& gameState = GetGameState();
+    ScenarioUpdate(gameState);
     ClimateUpdate();
     MapUpdateTiles();
     // Temporarily remove provisional paths to prevent peep from interacting with them
@@ -349,7 +368,7 @@ void GameState::UpdateLogic()
     NetworkProcessPending();
     NetworkFlush();
 
-    gCurrentTicks++;
+    gameState.CurrentTicks++;
     gSavedAge++;
 
 #ifdef ENABLE_SCRIPTING
@@ -373,7 +392,7 @@ void GameState::CreateStateSnapshot()
 
     auto& snapshot = snapshots->CreateSnapshot();
     snapshots->Capture(snapshot);
-    snapshots->LinkSnapshot(snapshot, gCurrentTicks, ScenarioRandState().s0);
+    snapshots->LinkSnapshot(snapshot, GetGameState().CurrentTicks, ScenarioRandState().s0);
 }
 
 void GameState::SetDate(Date newDate)

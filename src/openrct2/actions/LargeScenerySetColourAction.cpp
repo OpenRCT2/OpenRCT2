@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -137,7 +137,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
 
         if (!LocationValid(currentTile))
         {
-            return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_OFF_EDGE_OF_MAP);
         }
 
         auto tileElement = MapGetLargeScenerySegment({ currentTile.x, currentTile.y, _loc.z, _loc.direction }, i);

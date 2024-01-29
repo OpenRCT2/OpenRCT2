@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -77,7 +77,7 @@ GameActions::Result WallPlaceAction::Query() const
 
     if (!LocationValid(_loc))
     {
-        return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
     auto mapSizeMax = GetMapSizeMaxXY();
@@ -119,7 +119,7 @@ GameActions::Result WallPlaceAction::Query() const
         targetHeight = surfaceElement->GetBaseZ();
 
         uint8_t slope = surfaceElement->GetSlope();
-        edgeSlope = LandSlopeToWallSlope[slope][_edge & 3];
+        edgeSlope = GetWallSlopeFromEdgeSlope(slope, _edge & 3);
         if (edgeSlope & EDGE_SLOPE_ELEVATED)
         {
             targetHeight += 16;
@@ -298,7 +298,7 @@ GameActions::Result WallPlaceAction::Execute() const
         targetHeight = surfaceElement->GetBaseZ();
 
         uint8_t slope = surfaceElement->GetSlope();
-        edgeSlope = LandSlopeToWallSlope[slope][_edge & 3];
+        edgeSlope = GetWallSlopeFromEdgeSlope(slope, _edge & 3);
         if (edgeSlope & EDGE_SLOPE_ELEVATED)
         {
             targetHeight += 16;
@@ -442,7 +442,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
             return false;
         }
 
-        if (ted.Definition.bank_start == 0)
+        if (ted.Definition.RollStart == TrackRoll::None)
         {
             if (!(ted.Coordinates.rotation_begin & 4))
             {
@@ -467,7 +467,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         return false;
     }
 
-    if (ted.Definition.bank_end != 0)
+    if (ted.Definition.RollEnd != TrackRoll::None)
     {
         return false;
     }

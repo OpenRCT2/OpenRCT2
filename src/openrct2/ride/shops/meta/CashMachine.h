@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,7 +22,7 @@ constexpr RideTypeDescriptor CashMachineRTD =
     SET_FIELD(ExtraTrackPieces, {}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::FlatTrack1x1A),
-    SET_FIELD(TrackPaintFunction, GetTrackPaintFunctionShop),
+    SET_FIELD(TrackPaintFunctions, TrackDrawerDescriptor(GetTrackPaintFunctionShop)),
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE |
                      RIDE_TYPE_FLAG_NO_VEHICLES | RIDE_TYPE_FLAG_IS_CASH_MACHINE | RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY |
                      RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -107,27 +107,29 @@ static void PaintRotoDropBase(
 
     int32_t edges = edges_3x3[trackSequence];
 
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        GetStationColourScheme(session, trackElement));
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    TrackPaintUtilPaintFloor(session, edges, session.TrackColours[SCHEME_SUPPORTS], height, floorSpritesMetalB, stationObject);
+    TrackPaintUtilPaintFloor(session, edges, session.SupportColours, height, floorSpritesMetalB, stationObject);
 
     TrackPaintUtilPaintFences(
-        session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB,
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours, height, fenceSpritesMetalB,
         session.CurrentRotation);
 
     if (trackSequence == 0)
     {
-        auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        auto imageId = session.TrackColours.WithIndex(
             (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_90_DEG : SPR_ROTO_DROP_TOWER_BASE));
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height + 3 }, { 2, 2, 27 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        imageId = session.TrackColours.WithIndex(
             (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_SEGMENT_90_DEG : SPR_ROTO_DROP_TOWER_BASE_SEGMENT));
         PaintAddImageAsParent(session, imageId, { 0, 0, height + 32 }, { { 8, 8, height + 32 }, { 2, 2, 30 } });
 
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(
+        imageId = session.TrackColours.WithIndex(
             (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_SEGMENT_90_DEG : SPR_ROTO_DROP_TOWER_BASE_SEGMENT));
         PaintAddImageAsParent(session, imageId, { 0, 0, height + 64 }, { { 8, 8, height + 64 }, { 2, 2, 30 } });
 
@@ -182,7 +184,7 @@ static void PaintRotoDropTowerSection(
         return;
     }
 
-    auto imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_ROTO_DROP_TOWER_SEGMENT);
+    auto imageId = session.TrackColours.WithIndex(SPR_ROTO_DROP_TOWER_SEGMENT);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
 
     // The top segment of the Roto drop is only drawn when there is no tile element right above it
@@ -196,7 +198,7 @@ static void PaintRotoDropTowerSection(
 
     if (paintTopSegment)
     {
-        imageId = session.TrackColours[SCHEME_TRACK].WithIndex(SPR_ROTO_DROP_TOWER_SEGMENT_TOP);
+        imageId = session.TrackColours.WithIndex(SPR_ROTO_DROP_TOWER_SEGMENT_TOP);
         PaintAddImageAsChild(session, imageId, { 0, 0, height }, { { 8, 8, height }, { 2, 2, 30 } });
     }
 

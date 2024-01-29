@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,6 +38,8 @@
 #include <openrct2/world/Park.h>
 #include <string>
 #include <vector>
+
+using namespace OpenRCT2;
 
 #pragma region Widgets
 
@@ -106,7 +108,6 @@ static TrackDesign* _trackDesign;
 
 static std::vector<LoadSaveListItem> _listItems;
 static char _directory[MAX_PATH];
-static char _shortenedDirectory[MAX_PATH];
 static char _parentDirectory[MAX_PATH];
 static u8string _extensionPattern;
 static u8string _defaultPath;
@@ -265,6 +266,8 @@ static void Select(const char* path)
     char pathBuffer[MAX_PATH];
     SafeStrCpy(pathBuffer, path, sizeof(pathBuffer));
 
+    auto& gameState = GetGameState();
+
     switch (_type & 0x0F)
     {
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME):
@@ -285,7 +288,7 @@ static void Select(const char* path)
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME):
             SetAndSaveConfigPath(gConfigGeneral.LastSaveGameDirectory, pathBuffer);
-            if (ScenarioSave(pathBuffer, gConfigGeneral.SavePluginData ? 1 : 0))
+            if (ScenarioSave(gameState, pathBuffer, gConfigGeneral.SavePluginData ? 1 : 0))
             {
                 gScenarioSavePath = pathBuffer;
                 gCurrentLoadedPath = pathBuffer;
@@ -323,7 +326,7 @@ static void Select(const char* path)
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE):
             SetAndSaveConfigPath(gConfigGeneral.LastSaveLandscapeDirectory, pathBuffer);
             gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
-            if (ScenarioSave(pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2))
+            if (ScenarioSave(gameState, pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2))
             {
                 gCurrentLoadedPath = pathBuffer;
                 WindowCloseByClass(WindowClass::Loadsave);
@@ -340,12 +343,12 @@ static void Select(const char* path)
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO):
         {
             SetAndSaveConfigPath(gConfigGeneral.LastSaveScenarioDirectory, pathBuffer);
-            int32_t parkFlagsBackup = gParkFlags;
-            gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+            int32_t parkFlagsBackup = gameState.ParkFlags;
+            gameState.ParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
             gEditorStep = EditorStep::Invalid;
             gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
-            int32_t success = ScenarioSave(pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2);
-            gParkFlags = parkFlagsBackup;
+            int32_t success = ScenarioSave(gameState, pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2);
+            gameState.ParkFlags = parkFlagsBackup;
 
             if (success)
             {
@@ -377,7 +380,7 @@ static void Select(const char* path)
         {
             SetAndSaveConfigPath(gConfigGeneral.LastSaveTrackDirectory, pathBuffer);
 
-            const auto withExtension = Path::WithExtension(pathBuffer, "td6");
+            const auto withExtension = Path::WithExtension(pathBuffer, ".td6");
             String::Set(pathBuffer, sizeof(pathBuffer), withExtension.c_str());
 
             RCT2::T6Exporter t6Export{ _trackDesign };
@@ -408,35 +411,30 @@ static void Select(const char* path)
 static u8string OpenSystemFileBrowser(bool isSave)
 {
     OpenRCT2::Ui::FileDialogDesc desc = {};
-    u8string extension{};
-    auto fileType = FileExtension::Unknown;
+    u8string extension;
     StringId title = STR_NONE;
     switch (_type & 0x0E)
     {
         case LOADSAVETYPE_GAME:
             extension = u8".park";
-            fileType = FileExtension::PARK;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
             desc.Filters.emplace_back(LanguageGetString(STR_OPENRCT2_SAVED_GAME), GetFilterPatternByType(_type, isSave));
             break;
 
         case LOADSAVETYPE_LANDSCAPE:
             extension = u8".park";
-            fileType = FileExtension::PARK;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
             desc.Filters.emplace_back(LanguageGetString(STR_OPENRCT2_LANDSCAPE_FILE), GetFilterPatternByType(_type, isSave));
             break;
 
         case LOADSAVETYPE_SCENARIO:
             extension = u8".park";
-            fileType = FileExtension::PARK;
             title = STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
             desc.Filters.emplace_back(LanguageGetString(STR_OPENRCT2_SCENARIO_FILE), GetFilterPatternByType(_type, isSave));
             break;
 
         case LOADSAVETYPE_TRACK:
             extension = u8".td6";
-            fileType = FileExtension::TD6;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
             desc.Filters.emplace_back(LanguageGetString(STR_OPENRCT2_TRACK_DESIGN_FILE), GetFilterPatternByType(_type, isSave));
             break;
@@ -472,21 +470,10 @@ static u8string OpenSystemFileBrowser(bool isSave)
     desc.Type = isSave ? OpenRCT2::Ui::FileDialogType::Save : OpenRCT2::Ui::FileDialogType::Open;
     desc.DefaultFilename = isSave ? path : u8string();
 
-    // Add 'all files' filter. If the number of filters is increased, this code will need to be adjusted.
     desc.Filters.emplace_back(LanguageGetString(STR_ALL_FILES), "*");
 
     desc.Title = LanguageGetString(title);
-
-    u8string outPath = ContextOpenCommonFileDialog(desc);
-    if (!outPath.empty())
-    {
-        // When the given save type was given, Windows still interprets a filename with a dot in its name as a custom
-        // extension, meaning files like "My Coaster v1.2" will not get the .td6 extension by default.
-        if (isSave && GetFileExtensionType(outPath) != fileType)
-            outPath = Path::WithExtension(outPath, extension);
-    }
-
-    return outPath;
+    return ContextOpenCommonFileDialog(desc);
 }
 
 class LoadSaveWindow final : public Window
@@ -509,7 +496,6 @@ public:
         SafeStrCpy(_directory, absoluteDirectory.c_str(), std::size(_directory));
         // Note: This compares the pointers, not values
         _extensionPattern = extensionPattern;
-        _shortenedDirectory[0] = '\0';
 
         _listItems.clear();
 
@@ -742,18 +728,15 @@ public:
     {
         DrawWidgets(dpi);
 
-        if (_shortenedDirectory[0] == '\0')
-        {
-            ShortenPath(_shortenedDirectory, sizeof(_shortenedDirectory), _directory, width - 8, FontStyle::Medium);
-        }
+        const auto shortPath = ShortenPath(_directory, width - 8, FontStyle::Medium);
 
         // Format text
-        thread_local std::string _buffer;
-        _buffer.assign("{BLACK}");
-        _buffer += _shortenedDirectory;
+        std::string buffer;
+        buffer.assign("{BLACK}");
+        buffer += shortPath;
 
         // Draw path text
-        const auto normalisedPath = Platform::StrDecompToPrecomp(_buffer.data());
+        const auto normalisedPath = Platform::StrDecompToPrecomp(buffer.data());
         const auto* normalisedPathC = normalisedPath.c_str();
         auto ft = Formatter();
         ft.Add<const char*>(normalisedPathC);

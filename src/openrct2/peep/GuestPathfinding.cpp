@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #include "GuestPathfinding.h"
 
+#include "../GameState.h"
 #include "../core/Guard.hpp"
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"
@@ -1643,7 +1644,7 @@ static std::optional<CoordsXYZ> GetNearestParkEntrance(const CoordsXY& loc)
 {
     std::optional<CoordsXYZ> chosenEntrance = std::nullopt;
     uint16_t nearestDist = 0xFFFF;
-    for (const auto& parkEntrance : gParkEntrances)
+    for (const auto& parkEntrance : GetGameState().ParkEntrances)
     {
         auto dist = abs(parkEntrance.x - loc.x) + abs(parkEntrance.y - loc.y);
         if (dist < nearestDist)

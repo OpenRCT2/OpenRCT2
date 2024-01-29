@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,12 +11,15 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
+
+using namespace OpenRCT2;
 
 static constexpr int32_t WW = 200;
 static constexpr int32_t WH = 100;
@@ -81,7 +84,8 @@ public:
         auto currentRide = GetRide(rideId);
         if (currentRide != nullptr)
         {
-            auto stringId = (gParkFlags & PARK_FLAGS_NO_MONEY) ? STR_DEMOLISH_RIDE_ID : STR_DEMOLISH_RIDE_ID_MONEY;
+            auto stringId = (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) ? STR_DEMOLISH_RIDE_ID
+                                                                             : STR_DEMOLISH_RIDE_ID_MONEY;
             auto ft = Formatter();
             currentRide->FormatNameTo(ft);
             ft.Add<money64>(_demolishRideCost);

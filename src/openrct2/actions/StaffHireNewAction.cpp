@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../GameState.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../entity/EntityRegistry.h"
@@ -27,6 +28,8 @@
 #include "../world/Park.h"
 
 #include <set>
+
+using namespace OpenRCT2;
 
 /* rct2: 0x009929FC */
 static constexpr PeepSpriteType spriteTypes[] = {
@@ -201,10 +204,25 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->TrousersColour = colour;
 
         // Staff energy determines their walking speed
-        newPeep->Energy = 0x60;
-        newPeep->EnergyTarget = 0x60;
-        newPeep->StaffMowingTimeout = 0;
+        switch (gCheatsSelectedStaffSpeed)
+        {
+            case StaffSpeedCheat::None:
+                newPeep->Energy = CHEATS_STAFF_NORMAL_SPEED;
+                newPeep->EnergyTarget = CHEATS_STAFF_NORMAL_SPEED;
+                break;
 
+            case StaffSpeedCheat::Frozen:
+                newPeep->Energy = CHEATS_STAFF_FREEZE_SPEED;
+                newPeep->EnergyTarget = CHEATS_STAFF_FREEZE_SPEED;
+                break;
+
+            case StaffSpeedCheat::Fast:
+                newPeep->Energy = CHEATS_STAFF_FAST_SPEED;
+                newPeep->EnergyTarget = CHEATS_STAFF_FAST_SPEED;
+                break;
+        }
+
+        newPeep->StaffMowingTimeout = 0;
         newPeep->PatrolInfo = nullptr;
 
         res.SetData(StaffHireNewActionResult{ newPeep->Id });
@@ -273,10 +291,11 @@ void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
     else
     {
         // No walking guests; pick random park entrance
-        if (!gParkEntrances.empty())
+        const auto& gameState = GetGameState();
+        if (!gameState.ParkEntrances.empty())
         {
-            auto rand = ScenarioRandMax(static_cast<uint32_t>(gParkEntrances.size()));
-            const auto& entrance = gParkEntrances[rand];
+            auto rand = ScenarioRandMax(static_cast<uint32_t>(gameState.ParkEntrances.size()));
+            const auto& entrance = gameState.ParkEntrances[rand];
             auto dir = entrance.direction;
             newLocation = entrance;
             // TODO: Replace with CoordsDirectionDelta

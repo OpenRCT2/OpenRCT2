@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -117,6 +117,7 @@ namespace OpenRCT2::Ui::ShortcutId
     constexpr std::string_view WindowTileInspectorDecreaseY = "window.tileinspector.decrease_y";
     constexpr std::string_view WindowTileInspectorIncreaseHeight = "window.tileinspector.increase_height";
     constexpr std::string_view WindowTileInspectorDecreaseHeight = "window.tileinspector.decrease_height";
+    constexpr std::string_view WindowTileInspectorChangeWallSlope = "window.tileinspector.toggle_wall_slope";
 
     // Debug
     constexpr std::string_view DebugToggleConsole = "debug.console";

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "SurfaceSetStyleAction.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
 #include "../object/ObjectManager.h"
@@ -18,6 +19,8 @@
 #include "../world/Park.h"
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
+
+using namespace OpenRCT2;
 
 SurfaceSetStyleAction::SurfaceSetStyleAction(MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle)
     : _range(range)
@@ -83,7 +86,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
 
     // Do nothing if not in editor, sandbox mode or landscaping is forbidden
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
-        && (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
+        && (GetGameState().ParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);

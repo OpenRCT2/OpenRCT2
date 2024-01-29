@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../Editor.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/RideSetStatusAction.h"
 #include "../audio/AudioChannel.h"
@@ -55,6 +56,7 @@
 #include <algorithm>
 #include <iterator>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::TrackMetaData;
 using namespace OpenRCT2::Math::Trigonometry;
@@ -1069,7 +1071,7 @@ static void UpdateSound(
         sound.Pan = sound_params->pan_x;
         sound.Channel->SetPan(DStoMixerPan(sound_params->pan_x));
     }
-    if (!(gCurrentTicks & 3) && sound_params->frequency != sound.Frequency)
+    if (!(GetGameState().CurrentTicks & 3) && sound_params->frequency != sound.Frequency)
     {
         sound.Frequency = sound_params->frequency;
         if (ShouldUpdateChannelRate<type>(id))
@@ -4909,7 +4911,7 @@ void Vehicle::UpdateHauntedHouseOperating()
 
     if (Pitch != 0)
     {
-        if (gCurrentTicks & 1)
+        if (GetGameState().CurrentTicks & 1)
         {
             Pitch++;
             Invalidate();
@@ -5422,11 +5424,12 @@ void Vehicle::UpdateSound()
         frictionSound.volume = std::min(208 + (ecx & 0xFF), 255);
     }
 
+    const auto currentTicks = GetGameState().CurrentTicks;
     switch (carEntry.sound_range)
     {
         case SOUND_RANGE_WHISTLE:
             screamSound.id = scream_sound_id;
-            if (!(gCurrentTicks & 0x7F))
+            if (!(currentTicks & 0x7F))
             {
                 if (velocity < 4.0_mph || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
                 {
@@ -5448,7 +5451,7 @@ void Vehicle::UpdateSound()
 
         case SOUND_RANGE_BELL:
             screamSound.id = scream_sound_id;
-            if (!(gCurrentTicks & 0x7F))
+            if (!(currentTicks & 0x7F))
             {
                 if (velocity < 4.0_mph || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
                 {
@@ -5724,7 +5727,7 @@ int32_t Vehicle::UpdateMotionDodgems()
     if (!(curRide->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
         || curRide->breakdown_reason_pending != BREAKDOWN_SAFETY_CUT_OUT)
     {
-        if (gCurrentTicks & 1 && var_34 != 0)
+        if ((GetGameState().CurrentTicks & 1) && var_34 != 0)
         {
             if (var_34 > 0)
             {
@@ -6081,6 +6084,7 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
     switch (trackType)
     {
         case TrackElemType::BlockBrakes:
+        case TrackElemType::DiagBlockBrakes:
             if (curRide->IsBlockSectioned() && trackElement->AsTrack()->IsBrakeClosed())
                 ApplyStopBlockBrake();
             else
@@ -6185,12 +6189,13 @@ static void block_brakes_open_previous_section(
 
     // Get the start of the track block instead of the end
     location = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
-    auto trackElement = MapGetTrackElementAt(location);
-    if (trackElement == nullptr)
+    auto trackOrigin = MapGetTrackElementAtOfTypeSeq(location, trackBeginEnd.begin_element->AsTrack()->GetTrackType(), 0);
+    if (trackOrigin == nullptr)
     {
         return;
     }
-    trackElement->SetBrakeClosed(false);
+    auto trackElement = trackOrigin->AsTrack();
+    SetBrakeClosedMultiTile(*trackElement, location, false);
     MapInvalidateElement(location, reinterpret_cast<TileElement*>(trackElement));
 
     auto trackType = trackElement->GetTrackType();
@@ -6198,7 +6203,7 @@ static void block_brakes_open_previous_section(
     {
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeClose, location);
     }
-    else if (trackType == TrackElemType::BlockBrakes)
+    else if (TrackTypeIsBlockBrakes(trackType))
     {
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BlockBrakeClose, location);
         BlockBrakeSetLinkedBrakesClosed(location, *trackElement, false);
@@ -6414,7 +6419,7 @@ void Vehicle::UpdateSwingingCar()
                 break;
         }
 
-        if (TrackTypeIsStation(trackType) || trackType == TrackElemType::Brakes || trackType == TrackElemType::BlockBrakes)
+        if (TrackTypeIsStation(trackType) || TrackTypeIsBrakes(trackType) || TrackTypeIsBlockBrakes(trackType))
         {
             dx = 0;
             cx = 0;
@@ -6929,7 +6934,7 @@ static PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tile
 {
     auto trackType = tileElement->AsTrack()->GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    return PitchAndRoll{ ted.Definition.vangle_start, TrackGetActualBank3(useInvertedSprites, tileElement) };
+    return PitchAndRoll{ ted.Definition.PitchStart, TrackGetActualBank3(useInvertedSprites, tileElement) };
 }
 
 void Vehicle::UpdateGoKartAttemptSwitchLanes()
@@ -7398,7 +7403,7 @@ void Vehicle::Sub6DBF3E()
  */
 uint8_t Vehicle::ChooseBrakeSpeed() const
 {
-    if (GetTrackType() != TrackElemType::Brakes)
+    if (!TrackTypeIsBrakes(GetTrackType()))
         return brake_speed;
     auto trackElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
     if (trackElement != nullptr)
@@ -7418,7 +7423,7 @@ void Vehicle::PopulateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, TrackEle
 {
     auto trackSpeed = brake.GetBrakeBoosterSpeed();
     brake_speed = trackSpeed;
-    if (brake.GetTrackType() != TrackElemType::Brakes)
+    if (!TrackTypeIsBrakes(brake.GetTrackType()))
     {
         BlockBrakeSpeed = trackSpeed;
         return;
@@ -7430,12 +7435,12 @@ void Vehicle::PopulateBrakeSpeed(const CoordsXYZ& vehicleTrackLocation, TrackEle
     uint16_t timeoutCount = 256;
     do
     {
-        if (output.element->AsTrack()->GetTrackType() == TrackElemType::BlockBrakes)
+        if (TrackTypeIsBlockBrakes(output.element->AsTrack()->GetTrackType()))
         {
             BlockBrakeSpeed = output.element->AsTrack()->GetBrakeBoosterSpeed();
             return;
         }
-        if (output.element->AsTrack()->GetTrackType() != TrackElemType::Brakes)
+        if (!TrackTypeIsBrakes(output.element->AsTrack()->GetTrackType()))
         {
             break;
         }
@@ -7471,9 +7476,8 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
     {
         if (next_vehicle_on_train.IsNull())
         {
-            tileElement->AsTrack()->SetBrakeClosed(true);
-
-            if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::EndStation)
+            SetBrakeClosedMultiTile(*tileElement->AsTrack(), TrackLocation, true);
+            if (TrackTypeIsBlockBrakes(trackType) || trackType == TrackElemType::EndStation)
             {
                 if (!(rideEntry.Cars[0].flags & CAR_ENTRY_FLAG_POWERED))
                 {
@@ -7482,7 +7486,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, const Rid
             }
             MapInvalidateElement(TrackLocation, tileElement);
             block_brakes_open_previous_section(curRide, TrackLocation, tileElement);
-            if (trackType == TrackElemType::BlockBrakes)
+            if (TrackTypeIsBlockBrakes(trackType))
             {
                 BlockBrakeSetLinkedBrakesClosed(TrackLocation, *tileElement->AsTrack(), true);
             }
@@ -7656,7 +7660,7 @@ Loc6DAEB9:
             acceleration = 0x50000;
         }
     }
-    else if (trackType == TrackElemType::Brakes)
+    else if (TrackTypeIsBrakes(trackType))
     {
         bool hasBrakesFailure = curRide.lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN
             && curRide.breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE;
@@ -7668,7 +7672,7 @@ Loc6DAEB9:
             {
                 acceleration = -_vehicleVelocityF64E08 * 16;
             }
-            else if (!(gCurrentTicks & 0x0F))
+            else if (!(GetGameState().CurrentTicks & 0x0F))
             {
                 if (_vehicleF64E2C == 0)
                 {
@@ -7678,7 +7682,7 @@ Loc6DAEB9:
             }
         }
     }
-    else if (trackType == TrackElemType::Booster)
+    else if (TrackTypeIsBooster(trackType))
     {
         auto boosterSpeed = GetBoosterSpeed(curRide.type, (brake_speed << 16));
         if (boosterSpeed > _vehicleVelocityF64E08)
@@ -7872,7 +7876,7 @@ static PitchAndRoll PitchAndRollEnd(const Ride& curRide, bool useInvertedSprites
 {
     bool isInverted = useInvertedSprites ^ tileElement->AsTrack()->IsInverted();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    return { ted.Definition.vangle_end, TrackGetActualBank2(curRide.type, isInverted, ted.Definition.bank_end) };
+    return { ted.Definition.PitchEnd, TrackGetActualBank2(curRide.type, isInverted, ted.Definition.RollEnd) };
 }
 
 /**
@@ -8050,7 +8054,7 @@ bool Vehicle::UpdateTrackMotionBackwards(const CarEntry* carEntry, const Ride& c
             }
         }
 
-        if (trackType == TrackElemType::Brakes)
+        if (TrackTypeIsBrakes(trackType))
         {
             auto brakeSpeed = ChooseBrakeSpeed();
 

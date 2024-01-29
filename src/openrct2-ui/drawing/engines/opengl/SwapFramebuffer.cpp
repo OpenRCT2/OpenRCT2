@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,7 @@ constexpr GLuint indexValue[4] = { 0, 0, 0, 0 };
 
 SwapFramebuffer::SwapFramebuffer(int32_t width, int32_t height)
     : _opaqueFramebuffer(width, height)
-    , _transparentFramebuffer(width, height)
+    , _transparentFramebuffer(width, height, true, true, true)
     , _mixFramebuffer(width, height, false)
     , _backDepth(OpenGLFramebuffer::CreateDepthTexture(width, height))
 {
@@ -32,14 +32,14 @@ SwapFramebuffer::~SwapFramebuffer()
     glDeleteTextures(1, &_backDepth);
 }
 
-void SwapFramebuffer::ApplyTransparency(ApplyTransparencyShader& shader, GLuint paletteTex)
+void SwapFramebuffer::ApplyTransparency(ApplyTransparencyShader& shader, GLuint paletteTex, GLuint blendPaletteTex)
 {
     _mixFramebuffer.Bind();
     glDisable(GL_DEPTH_TEST);
     shader.Use();
     shader.SetTextures(
         _opaqueFramebuffer.GetTexture(), _opaqueFramebuffer.GetDepthTexture(), _transparentFramebuffer.GetTexture(),
-        _transparentFramebuffer.GetDepthTexture(), paletteTex);
+        _transparentFramebuffer.GetDepthTexture(), paletteTex, blendPaletteTex);
     shader.Draw();
 
     _backDepth = _transparentFramebuffer.SwapDepthTexture(_backDepth);

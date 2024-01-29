@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,6 +23,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
@@ -31,6 +32,7 @@
 #include <openrct2/actions/BannerSetColourAction.h>
 #include <openrct2/actions/ClearAction.h>
 #include <openrct2/actions/FootpathAdditionPlaceAction.h>
+#include <openrct2/actions/GameSetSpeedAction.h>
 #include <openrct2/actions/LandLowerAction.h>
 #include <openrct2/actions/LandRaiseAction.h>
 #include <openrct2/actions/LandSmoothAction.h>
@@ -1550,7 +1552,7 @@ private:
                 {
                     WindowScenerySetSelectedItem(
                         { SCENERY_TYPE_SMALL, entryIndex }, sceneryElement->GetPrimaryColour(),
-                        sceneryElement->GetSecondaryColour(), std::nullopt,
+                        sceneryElement->GetSecondaryColour(), sceneryElement->GetTertiaryColour(),
                         sceneryElement->GetDirectionWithOffset(GetCurrentRotation()));
                 }
                 break;
@@ -2703,7 +2705,7 @@ public:
                         {
                             auto intent = Intent(WindowClass::Loadsave);
                             intent.PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-                            intent.PutExtra(INTENT_EXTRA_PATH, gScenarioName);
+                            intent.PutExtra(INTENT_EXTRA_PATH, GetGameState().ScenarioName);
                             ContextOpenIntent(&intent);
                         }
                         else
@@ -3032,7 +3034,7 @@ public:
             widgets[WIDX_PAUSE].type = WindowWidgetType::Empty;
         }
 
-        if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !gConfigInterface.ToolbarShowFinances)
+        if ((GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) || !gConfigInterface.ToolbarShowFinances)
             widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
 
         if (gScreenFlags & SCREEN_FLAGS_EDITOR)
@@ -3183,6 +3185,7 @@ public:
 
     void OnDraw(DrawPixelInfo& dpi) override
     {
+        const auto& gameState = GetGameState();
         int32_t imgId;
 
         WindowDrawWidgets(*this, dpi);
@@ -3195,7 +3198,7 @@ public:
             imgId = SPR_TOOLBAR_STAFF;
             if (WidgetIsPressed(*this, WIDX_STAFF))
                 imgId++;
-            GfxDrawSprite(dpi, ImageId(imgId, gStaffHandymanColour, gStaffMechanicColour), screenPos);
+            GfxDrawSprite(dpi, ImageId(imgId, gameState.StaffHandymanColour, gameState.StaffMechanicColour), screenPos);
         }
 
         // Draw fast forward button
@@ -3661,10 +3664,12 @@ void TopToolbar::FastforwardMenuDropdown(int16_t dropdownIndex)
     {
         if (dropdownIndex >= 0 && dropdownIndex <= 5)
         {
-            gGameSpeed = dropdownIndex + 1;
-            if (gGameSpeed >= 5)
-                gGameSpeed = 8;
-            w->Invalidate();
+            auto newSpeed = dropdownIndex + 1;
+            if (newSpeed >= 5)
+                newSpeed = 8;
+
+            auto setSpeedAction = GameSetSpeedAction(newSpeed);
+            GameActions::Execute(&setSpeedAction);
         }
     }
 }

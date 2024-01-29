@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -75,9 +75,9 @@
 #include <memory>
 #include <vector>
 
-static constexpr ObjectEntryIndex ObjectEntryIndexIgnore = 254;
-
 using namespace OpenRCT2;
+
+static constexpr ObjectEntryIndex ObjectEntryIndexIgnore = 254;
 
 namespace RCT1
 {
@@ -169,27 +169,28 @@ namespace RCT1
             return ParkLoadResult(GetRequiredObjects());
         }
 
-        void Import() override
+        void Import(GameState_t& gameState) override
         {
-            Initialise();
+            Initialise(gameState);
 
             CreateAvailableObjectMappings();
 
             ImportRides();
             ImportRideMeasurements();
-            ImportSprites();
+            ImportEntities();
             ImportTileElements();
             ImportPeepSpawns();
-            ImportFinance();
+            ImportFinance(gameState);
             ImportResearch();
             ImportParkName();
-            ImportParkFlags();
-            ImportClimate();
-            ImportScenarioNameDetails();
-            ImportScenarioObjective();
+            ImportParkFlags(gameState);
+            ImportClimate(gameState);
+            ImportScenarioNameDetails(gameState);
+            ImportScenarioObjective(gameState);
             ImportSavedView();
             FixLandOwnership();
             FixUrbanPark();
+            FixNextGuestNumber(gameState);
             CountBlockSections();
             SetDefaultNames();
             DetermineRideEntranceAndExitLocations();
@@ -313,7 +314,7 @@ namespace RCT1
             throw std::runtime_error("Unable to decode park.");
         }
 
-        void Initialise()
+        void Initialise(GameState_t& gameState)
         {
             // Avoid reusing the value used for last import
             _parkValueConversionFactor = 0;
@@ -326,8 +327,8 @@ namespace RCT1
             auto context = OpenRCT2::GetContext();
             context->GetGameState()->InitAll({ mapSize, mapSize });
             gEditorStep = EditorStep::ObjectSelection;
-            gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-            gScenarioCategory = SCENARIO_CATEGORY_OTHER;
+            gameState.ParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+            gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
         }
 
         std::string GetRCT1ScenarioName()
@@ -1199,7 +1200,7 @@ namespace RCT1
         void ImportEntity(const RCT12EntityBase& src);
         template<typename T> void ImportEntity(const RCT12EntityBase& src);
 
-        void ImportSprites()
+        void ImportEntities()
         {
             for (int i = 0; i < Limits::MaxEntities; i++)
             {
@@ -1275,8 +1276,8 @@ namespace RCT1
 
             const SpriteBounds* spriteBounds = &GetSpriteBounds(dst->SpriteType, dst->ActionSpriteType);
             dst->SpriteData.Width = spriteBounds->sprite_width;
-            dst->SpriteData.HeightMax = spriteBounds->sprite_height_negative;
-            dst->SpriteData.HeightMin = spriteBounds->sprite_height_positive;
+            dst->SpriteData.HeightMin = spriteBounds->sprite_height_negative;
+            dst->SpriteData.HeightMax = spriteBounds->sprite_height_positive;
 
             dst->MoveTo({ src->x, src->y, src->z });
 
@@ -1389,28 +1390,28 @@ namespace RCT1
             }
         }
 
-        void ImportFinance()
+        void ImportFinance(GameState_t& gameState)
         {
-            gParkEntranceFee = _s4.ParkEntranceFee;
+            gameState.ParkEntranceFee = _s4.ParkEntranceFee;
             gLandPrice = ToMoney64(_s4.LandPrice);
             gConstructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
 
-            gCash = ToMoney64(_s4.Cash);
+            gameState.Cash = ToMoney64(_s4.Cash);
             gBankLoan = ToMoney64(_s4.Loan);
             gMaxBankLoan = ToMoney64(_s4.MaxLoan);
             // It's more like 1.33%, but we can only use integers. Can be fixed once we have our own save format.
             gBankLoanInterestRate = 1;
-            gInitialCash = ToMoney64(_s4.Cash);
+            gameState.InitialCash = ToMoney64(_s4.Cash);
 
             gCompanyValue = ToMoney64(_s4.CompanyValue);
-            gParkValue = CorrectRCT1ParkValue(_s4.ParkValue);
+            gameState.ParkValue = CorrectRCT1ParkValue(_s4.ParkValue);
             gCurrentProfit = ToMoney64(_s4.Profit);
 
             for (size_t i = 0; i < Limits::FinanceGraphSize; i++)
             {
                 gCashHistory[i] = ToMoney64(_s4.CashHistory[i]);
-                gParkValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
-                gWeeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
+                gameState.ParkValueHistory[i] = CorrectRCT1ParkValue(_s4.ParkValueHistory[i]);
+                gameState.WeeklyProfitHistory[i] = ToMoney64(_s4.WeeklyProfitHistory[i]);
             }
 
             for (size_t i = 0; i < Limits::ExpenditureTableMonthCount; i++)
@@ -1422,7 +1423,7 @@ namespace RCT1
             }
             gCurrentExpenditure = ToMoney64(_s4.TotalExpenditure);
 
-            gScenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s4.CompletedCompanyValue);
+            gameState.ScenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s4.CompletedCompanyValue);
             gTotalAdmissions = _s4.NumAdmissions;
             gTotalIncomeFromAdmissions = ToMoney64(_s4.AdmissionTotalIncome);
 
@@ -1777,7 +1778,7 @@ namespace RCT1
                         type = _wallTypeToEntryMap[type];
                         auto baseZ = src->BaseHeight * Limits::CoordsZStep;
                         auto clearanceZ = src->ClearanceHeight * Limits::CoordsZStep;
-                        auto edgeSlope = LandSlopeToWallSlope[slope][edge & 3];
+                        auto edgeSlope = GetWallSlopeFromEdgeSlope(slope, edge & 3);
                         if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
                         {
                             clearanceZ += LAND_HEIGHT_STEP;
@@ -2118,15 +2119,15 @@ namespace RCT1
             park.Name = std::move(parkName);
         }
 
-        void ImportParkFlags()
+        void ImportParkFlags(GameState_t& gameState)
         {
             // Date and srand
-            gCurrentTicks = _s4.Ticks;
+            gameState.CurrentTicks = _s4.Ticks;
             ScenarioRandSeed(_s4.RandomA, _s4.RandomB);
             GetContext()->GetGameState()->SetDate(Date(_s4.Month, _s4.Day));
 
             // Park rating
-            gParkRating = _s4.ParkRating;
+            gameState.ParkRating = _s4.ParkRating;
 
             auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
             park.ResetHistories();
@@ -2188,30 +2189,30 @@ namespace RCT1
             }
 
             // Initial guest status
-            gGuestInitialCash = ToMoney64(_s4.GuestInitialCash);
-            gGuestInitialHunger = _s4.GuestInitialHunger;
-            gGuestInitialThirst = _s4.GuestInitialThirst;
-            gGuestInitialHappiness = _s4.GuestInitialHappiness;
+            gameState.GuestInitialCash = ToMoney64(_s4.GuestInitialCash);
+            gameState.GuestInitialHunger = _s4.GuestInitialHunger;
+            gameState.GuestInitialThirst = _s4.GuestInitialThirst;
+            gameState.GuestInitialHappiness = _s4.GuestInitialHappiness;
 
             _guestGenerationProbability = _s4.GuestGenerationProbability;
 
             // Staff colours
-            gStaffHandymanColour = RCT1::GetColour(_s4.HandymanColour);
-            gStaffMechanicColour = RCT1::GetColour(_s4.MechanicColour);
-            gStaffSecurityColour = RCT1::GetColour(_s4.SecurityGuardColour);
+            gameState.StaffHandymanColour = RCT1::GetColour(_s4.HandymanColour);
+            gameState.StaffMechanicColour = RCT1::GetColour(_s4.MechanicColour);
+            gameState.StaffSecurityColour = RCT1::GetColour(_s4.SecurityGuardColour);
 
             // Flags
-            gParkFlags = _s4.ParkFlags;
-            gParkFlags &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
-            gParkFlags |= PARK_FLAGS_RCT1_INTEREST;
+            gameState.ParkFlags = _s4.ParkFlags;
+            gameState.ParkFlags &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
+            gameState.ParkFlags |= PARK_FLAGS_RCT1_INTEREST;
             // Loopy Landscape parks can set a flag to lock the entry price to free.
             // If this flag is not set, the player can ask money for both rides and entry.
             if (!(_s4.ParkFlags & RCT1_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE))
             {
-                gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                gameState.ParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
             }
 
-            gParkSize = _s4.ParkSize;
+            gameState.ParkSize = _s4.ParkSize;
             gTotalRideValueForMoney = _s4.TotalRideValueForMoney;
             gSamePriceThroughoutPark = 0;
             if (_gameVersion == FILE_VERSION_RCT1_LL)
@@ -2276,23 +2277,23 @@ namespace RCT1
             }
         }
 
-        void ImportClimate()
+        void ImportClimate(GameState_t& gameState)
         {
-            gClimate = ClimateType{ _s4.Climate };
-            gClimateUpdateTimer = _s4.ClimateTimer;
-            gClimateCurrent.Temperature = _s4.Temperature;
-            gClimateCurrent.Weather = WeatherType{ _s4.Weather };
-            gClimateCurrent.WeatherEffect = WeatherEffectType::None;
-            gClimateCurrent.WeatherGloom = _s4.WeatherGloom;
-            gClimateCurrent.Level = static_cast<WeatherLevel>(_s4.Rain);
-            gClimateNext.Temperature = _s4.TargetTemperature;
-            gClimateNext.Weather = WeatherType{ _s4.TargetWeather };
-            gClimateNext.WeatherEffect = WeatherEffectType::None;
-            gClimateNext.WeatherGloom = _s4.TargetWeatherGloom;
-            gClimateNext.Level = static_cast<WeatherLevel>(_s4.TargetRain);
+            gameState.Climate = ClimateType{ _s4.Climate };
+            gameState.ClimateUpdateTimer = _s4.ClimateTimer;
+            gameState.ClimateCurrent.Temperature = _s4.Temperature;
+            gameState.ClimateCurrent.Weather = WeatherType{ _s4.Weather };
+            gameState.ClimateCurrent.WeatherEffect = WeatherEffectType::None;
+            gameState.ClimateCurrent.WeatherGloom = _s4.WeatherGloom;
+            gameState.ClimateCurrent.Level = static_cast<WeatherLevel>(_s4.Rain);
+            gameState.ClimateNext.Temperature = _s4.TargetTemperature;
+            gameState.ClimateNext.Weather = WeatherType{ _s4.TargetWeather };
+            gameState.ClimateNext.WeatherEffect = WeatherEffectType::None;
+            gameState.ClimateNext.WeatherGloom = _s4.TargetWeatherGloom;
+            gameState.ClimateNext.Level = static_cast<WeatherLevel>(_s4.TargetRain);
         }
 
-        void ImportScenarioNameDetails()
+        void ImportScenarioNameDetails(GameState_t& gameState)
         {
             std::string name = String::ToStd(_s4.ScenarioName);
             std::string details;
@@ -2318,27 +2319,27 @@ namespace RCT1
                 }
             }
 
-            gScenarioName = std::move(name);
-            gScenarioDetails = std::move(details);
+            gameState.ScenarioName = std::move(name);
+            gameState.ScenarioDetails = std::move(details);
         }
 
-        void ImportScenarioObjective()
+        void ImportScenarioObjective(GameState_t& gameState)
         {
-            gScenarioObjective.Type = _s4.ScenarioObjectiveType;
-            gScenarioObjective.Year = _s4.ScenarioObjectiveYears;
-            gScenarioObjective.NumGuests = _s4.ScenarioObjectiveNumGuests;
+            gameState.ScenarioObjective.Type = _s4.ScenarioObjectiveType;
+            gameState.ScenarioObjective.Year = _s4.ScenarioObjectiveYears;
+            gameState.ScenarioObjective.NumGuests = _s4.ScenarioObjectiveNumGuests;
 
             // RCT1 used a different way of calculating the park value.
             // This is corrected here, but since scenario_objective_currency doubles as minimum excitement rating,
             // we need to check the goal to avoid affecting scenarios like Volcania.
             if (_s4.ScenarioObjectiveType == OBJECTIVE_PARK_VALUE_BY)
-                gScenarioObjective.Currency = CorrectRCT1ParkValue(_s4.ScenarioObjectiveCurrency);
+                gameState.ScenarioObjective.Currency = CorrectRCT1ParkValue(_s4.ScenarioObjectiveCurrency);
             else
-                gScenarioObjective.Currency = ToMoney64(_s4.ScenarioObjectiveCurrency);
+                gameState.ScenarioObjective.Currency = ToMoney64(_s4.ScenarioObjectiveCurrency);
 
             // This does not seem to be saved in the objective arguments, so look up the ID from the available rides instead.
             if (_s4.ScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
-                gScenarioObjective.RideId = GetBuildTheBestRideId();
+                gameState.ScenarioObjective.RideId = GetBuildTheBestRideId();
         }
 
         void ImportSavedView()
@@ -2410,10 +2411,11 @@ namespace RCT1
 
         void FixEntrancePositions()
         {
-            gParkEntrances.clear();
+            auto& gameState = GetGameState();
+            gameState.ParkEntrances.clear();
             TileElementIterator it;
             TileElementIteratorBegin(&it);
-            while (TileElementIteratorNext(&it) && gParkEntrances.size() < Limits::MaxParkEntrances)
+            while (TileElementIteratorNext(&it) && gameState.ParkEntrances.size() < Limits::MaxParkEntrances)
             {
                 TileElement* element = it.element;
 
@@ -2425,7 +2427,7 @@ namespace RCT1
                     continue;
 
                 CoordsXYZD entrance = { TileCoordsXY(it.x, it.y).ToCoordsXY(), element->GetBaseZ(), element->GetDirection() };
-                gParkEntrances.push_back(entrance);
+                gameState.ParkEntrances.push_back(entrance);
             }
         }
 
@@ -2473,7 +2475,7 @@ namespace RCT1
         {
             const auto originalString = _s4.StringTable[stringId % 1024];
             auto originalStringView = std::string_view(
-                originalString, RCT2::GetRCT2StringBufferLen(originalString, USER_STRING_MAX_LENGTH));
+                originalString, RCT12::GetRCTStringBufferLen(originalString, USER_STRING_MAX_LENGTH));
             auto asUtf8 = RCT2StringToUTF8(originalStringView, RCT2LanguageId::EnglishUK);
             auto justText = RCT12RemoveFormattingUTF8(asUtf8);
             return justText.data();
@@ -2487,13 +2489,25 @@ namespace RCT1
                     FixLandOwnershipTiles({ { 97, 18 }, { 99, 19 }, { 83, 34 } });
                     break;
                 case SC_LEAFY_LAKE:
-                    FixLandOwnershipTiles({ { 49, 66 } });
+                    FixLandOwnershipTiles({ { 49, 66 }, { 74, 96 } });
+                    break;
+                case SC_TRINITY_ISLANDS:
+                    FixLandOwnershipTilesWithOwnership({ { 80, 60 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
                     break;
                 case SC_KATIES_DREAMLAND:
                     FixLandOwnershipTiles({ { 74, 70 }, { 75, 70 }, { 76, 70 }, { 77, 73 }, { 80, 77 } });
+                    FixLandOwnershipTilesWithOwnership(
+                        { { 115, 63 }, { 105, 66 }, { 109, 66 }, { 118, 67 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                    FixLandOwnershipTilesWithOwnership({ { 45, 69 }, { 59, 74 } }, OWNERSHIP_OWNED);
                     break;
                 case SC_POKEY_PARK:
-                    FixLandOwnershipTiles({ { 64, 102 } });
+                    FixLandOwnershipTiles({ { 84, 71 }, { 64, 102 } });
+                    break;
+                case SC_WHITE_WATER_PARK:
+                    FixLandOwnershipTilesWithOwnership({ { 42, 85 }, { 89, 42 } }, OWNERSHIP_OWNED);
+                    break;
+                case SC_MELS_WORLD:
+                    FixLandOwnershipTilesWithOwnership({ { 93, 76 }, { 93, 77 } }, OWNERSHIP_OWNED);
                     break;
                 case SC_MYSTIC_MOUNTAIN:
                     FixLandOwnershipTiles({ { 98, 69 }, { 98, 70 }, { 103, 64 }, { 53, 79 }, { 86, 93 }, { 87, 93 } });
@@ -2501,11 +2515,43 @@ namespace RCT1
                 case SC_PACIFIC_PYRAMIDS:
                     FixLandOwnershipTiles({ { 93, 105 }, { 63, 34 }, { 76, 25 }, { 85, 31 }, { 96, 47 }, { 96, 48 } });
                     break;
+                case SC_THREE_MONKEYS_PARK:
+                    FixLandOwnershipTilesWithOwnership({ { 89, 92 } }, OWNERSHIP_UNOWNED);
+                    FixLandOwnershipTilesWithOwnership({ { 46, 22 } }, OWNERSHIP_OWNED);
+                    break;
+                case SC_HAUNTED_HARBOUR:
+                    FixLandOwnershipTiles({ { 49, 42 } });
+                    break;
+                case SC_COASTER_CANYON:
+                    FixLandOwnershipTilesWithOwnership({ { 21, 55 } }, OWNERSHIP_OWNED);
+                    break;
                 case SC_UTOPIA_PARK:
-                    FixLandOwnershipTiles({ { 85, 73 } });
+                    FixLandOwnershipTiles({ { 85, 73 }, { 71, 75 }, { 90, 73 } });
+                    break;
+                case SC_ROTTING_HEIGHTS:
+                    FixLandOwnershipTilesWithOwnership({ { 35, 20 } }, OWNERSHIP_OWNED);
                     break;
                 case SC_URBAN_PARK:
                     FixLandOwnershipTiles({ { 64, 77 }, { 61, 66 }, { 61, 67 }, { 39, 20 } });
+                    FixLandOwnershipTilesWithOwnership({ { 46, 47 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE);
+                    break;
+                case SC_GRAND_GLACIER:
+                    FixLandOwnershipTilesWithOwnership({ { 99, 58 } }, OWNERSHIP_OWNED);
+                    break;
+                case SC_WOODWORM_PARK:
+                    FixLandOwnershipTilesWithOwnership({ { 62, 105 }, { 101, 55 } }, OWNERSHIP_OWNED);
+                    break;
+                case SC_PLEASURE_ISLAND:
+                    FixLandOwnershipTilesWithOwnership({ { 37, 66 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                    break;
+                case SC_NEVERMORE_PARK:
+                    FixLandOwnershipTilesWithOwnership({ { 9, 74 } }, OWNERSHIP_OWNED);
+                    break;
+                case SC_ALTON_TOWERS:
+                    FixLandOwnershipTilesWithOwnership({ { 11, 31 }, { 68, 112 }, { 72, 118 } }, OWNERSHIP_OWNED);
+                    break;
+                case SC_FORT_ANACHRONISM:
+                    FixLandOwnershipTiles({ { 36, 87 }, { 54, 29 }, { 53, 88 } });
                     break;
             }
         }
@@ -2555,6 +2601,22 @@ namespace RCT1
                     FootpathUpdateQueueChains();
                 }
             }
+        }
+
+        void FixNextGuestNumber(GameState_t& gameState)
+        {
+            // In RCT1, the next guest number is not saved, so we have to calculate it.
+            // This is done by finding the highest guest number in the park, and adding 1.
+            uint32_t nextGuestNumber = 0;
+
+            // TODO: Entities are currently read from the global state, change this once entities are stored
+            // in the passed gameState.
+            for (auto peep : EntityList<Guest>())
+            {
+                nextGuestNumber = std::max(nextGuestNumber, peep->PeepId);
+            }
+
+            gameState.NextGuestNumber = nextGuestNumber + 1;
         }
 
         /**
@@ -2911,15 +2973,6 @@ namespace RCT1
         }
 
         dst->SetItemFlags(src->GetItemFlags());
-
-        if (dst->OutsideOfPark && dst->State != PeepState::LeavingPark)
-        {
-            IncrementGuestsHeadingForPark();
-        }
-        else
-        {
-            IncrementGuestsInPark();
-        }
     }
 
     template<> void S4Importer::ImportEntity<Staff>(const RCT12EntityBase& srcBase)

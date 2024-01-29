@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -71,7 +71,7 @@ static void PaintRideEntranceExitScrollingText(
         FormatStringLegacy(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
     auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
-    auto scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
+    auto scroll = stringWidth > 0 ? (GetGameState().CurrentTicks / 2) % stringWidth : 0;
 
     PaintAddImageAsChild(
         session, ScrollingTextSetup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, stationObj.ScrollingMode, COLOUR_BLACK),
@@ -199,7 +199,8 @@ static void PaintRideEntranceExit(PaintSession& session, uint8_t direction, int3
     {
         supportsImageTemplate = ImageId().WithPrimary(COLOUR_SATURATED_BROWN);
     }
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, supportsImageTemplate);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, supportsImageTemplate);
 
     height += isExit ? 40 : 56;
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -219,7 +220,7 @@ static void PaintParkEntranceScrollingText(
         return;
 
     auto ft = Formatter();
-    if (gParkFlags & PARK_FLAGS_PARK_OPEN)
+    if (GetGameState().ParkFlags & PARK_FLAGS_PARK_OPEN)
     {
         const auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
         auto name = park.Name.c_str();
@@ -243,7 +244,7 @@ static void PaintParkEntranceScrollingText(
     }
 
     auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
-    auto scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
+    auto scroll = stringWidth > 0 ? (GetGameState().CurrentTicks / 2) % stringWidth : 0;
     auto imageIndex = ScrollingTextSetup(
         session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode + direction / 2, COLOUR_BLACK);
     auto textHeight = height + entrance.GetTextHeight();
@@ -327,7 +328,8 @@ static void PaintParkEntrance(PaintSession& session, uint8_t direction, int32_t 
     {
         supportsImageTemplate = ImageId().WithPrimary(COLOUR_SATURATED_BROWN);
     }
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, supportsImageTemplate);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, supportsImageTemplate);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 80, 0x20);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,12 +25,6 @@
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
-
-// Define MAX_PATH for various headers that don't want to include system headers
-// just for MAX_PATH
-#ifndef MAX_PATH
-#    define MAX_PATH 260
-#endif
 
 using colour_t = uint8_t;
 

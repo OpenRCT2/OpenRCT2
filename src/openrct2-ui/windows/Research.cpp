@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/actions/ParkSetResearchFundingAction.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -22,6 +23,8 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
+
+using namespace OpenRCT2;
 
 static constexpr int32_t WH_DEVELOPMENT = 196;
 static constexpr int32_t WW_DEVELOPMENT = 300;
@@ -535,7 +538,7 @@ void WindowResearchFundingPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex
 {
     auto widgetOffset = GetWidgetIndexOffset(baseWidgetIndex, WIDX_RESEARCH_FUNDING);
 
-    if ((gParkFlags & PARK_FLAGS_NO_MONEY) || gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
+    if ((GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) || gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
     {
         w->widgets[WIDX_RESEARCH_FUNDING + widgetOffset].type = WindowWidgetType::Empty;
         w->widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON + widgetOffset].type = WindowWidgetType::Empty;
@@ -579,7 +582,7 @@ void WindowResearchFundingPrepareDraw(WindowBase* w, WidgetIndex baseWidgetIndex
 
 void WindowResearchFundingDraw(WindowBase* w, DrawPixelInfo& dpi)
 {
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
         return;
 
     int32_t currentResearchLevel = gResearchFundingLevel;

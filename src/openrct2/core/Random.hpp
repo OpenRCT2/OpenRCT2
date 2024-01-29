@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -118,7 +118,9 @@ namespace Random
             return std::numeric_limits<result_type>::max();
         }
 
-        explicit RotateEngine(result_type seed_value = default_seed)
+        RotateEngine() = default;
+
+        explicit RotateEngine(result_type seed_value)
         {
             seed(seed_value);
         }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/PeepPickupAction.h>
 #include <openrct2/actions/StaffSetCostumeAction.h>
@@ -33,6 +34,8 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
+
+using namespace OpenRCT2;
 
 static constexpr StringId WINDOW_TITLE = STR_STRINGID;
 
@@ -927,7 +930,7 @@ private:
 
         auto screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_RESIZE].left + 4, widgets[WIDX_RESIZE].top + 4 };
 
-        if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto ft = Formatter();
             ft.Add<money64>(GetStaffWage(staff->AssignedStaffType));

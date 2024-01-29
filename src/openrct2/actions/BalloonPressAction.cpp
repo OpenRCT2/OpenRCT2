@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,7 +40,8 @@ GameActions::Result BalloonPressAction::Query() const
     if (balloon == nullptr)
     {
         LOG_ERROR("Tried getting invalid sprite for balloon: %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_BALLOON_NOT_FOUND);
     }
     return GameActions::Result();
 }
@@ -51,7 +52,8 @@ GameActions::Result BalloonPressAction::Execute() const
     if (balloon == nullptr)
     {
         LOG_ERROR("Tried getting invalid sprite for balloon: %u", _spriteIndex);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_BALLOON_NOT_FOUND);
     }
 
     balloon->Press();

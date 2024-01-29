@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,8 +13,6 @@
 #include "../common.h"
 #include "Location.hpp"
 #include "Map.h"
-
-#include <vector>
 
 struct TileElement;
 
@@ -38,8 +36,6 @@ extern bool gParkEntranceGhostExists;
 extern CoordsXYZD gParkEntranceGhostPosition;
 
 constexpr int32_t MaxRideEntranceOrExitHeight = 244 * COORDS_Z_STEP;
-
-extern std::vector<CoordsXYZD> gParkEntrances;
 
 extern CoordsXYZD gRideEntranceExitGhostPosition;
 extern StationIndex gRideEntranceExitGhostStationIndex;

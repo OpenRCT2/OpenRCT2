@@ -147,7 +147,7 @@ STR_0560    :
 STR_0561    :
 STR_0562    :Angetriebene Wagen fahren auf einer mehrstöckigen Strecke mit gruseliger Landschaft und Spezialeffekten
 STR_0563    :Die Fahrgäste sitzen in komfortablen Wagen mit einfachen Beckenhalterungen, in denen sie gigantische, gemäßigte Gefälle erleben, aber auch viel Zeit oben „in der Luft“ verbringen
-STR_0564    :Diese Holzachterbahn ist schnell, rauh, laut und gibt einem das Gefühl, außer Kontrolle zu sein, wobei man häufig „in der Luft“ ist
+STR_0564    :Diese Holzachterbahn ist schnell, rau, laut und gibt einem das Gefühl, außer Kontrolle zu sein, wobei man häufig „in der Luft“ ist
 STR_0565    :Eine einfache Holzachterbahn mit nur leichten Gefällen und Kurven, bei der die Wagen nur mit Hilfe von seitlichen Führungsrollen und der Schwerkraft auf der Strecke gehalten werden
 STR_0566    :Voneinander unabhängige Achterbahnwagen rasen auf einer engen Zickzack-Strecke mit scharfen Kurven und kurzen, starken Gefällen
 STR_0567    :Die Passagiere befinden sich in Sitzen, die an beiden Seiten der Bahn hängen, auf der sie über Kopf steile Gefälle hinunterrasen und verschiedene Inversionsfiguren erleben
@@ -177,10 +177,10 @@ STR_0598    :Umgekehrte Achterbahnzüge werden aus der Station beschleunigt und 
 STR_0599    :Eine kompakte Achterbahn mit unabhängigen Wagen und gemäßigten, sich windenden Gefällen
 STR_0600    :Angetriebene Minenzüge fahren auf einer gemäßigten und verwundenen Strecke
 STR_0602    :Achterbahnzüge werden aus der Station mit Hilfe von linearen Induktionsmotoren beschleunigt und rasen durch gewundene Überkopfteile
-STR_0603    :Eine Achterbahn im Holzstil mit einer Stahlschiene, die steile Abfahrten und Inversionen ermöglicht.
-STR_0604    :Die Fahrgäste fahren in einer Einzelreihe auf einer engen Einschienenstrecke, wobei sie durch enge Inversionen und Richtungswechsel rasen.
-STR_0605    :Die Fahrgäste rodeln eine sich schlängelnde Stahlbahn hinunter und bremsen, um ihre Geschwindigkeit zu regulieren.
-STR_0606    :Eine Holzachterbahn nach älterer Art. Sie ist schnell, rauh, laut und gibt einem das Gefühl, außer Kontrolle zu sein, wobei man gelegentlich seitlichen Gs ausgesetzt und häufig „in der Luft“ ist
+STR_0603    :Eine Achterbahn im Holzstil mit einer Stahlschiene, die steile Abfahrten und Inversionen ermöglicht
+STR_0604    :Die Fahrgäste fahren in einer Einzelreihe auf einer engen Einschienenstrecke, wobei sie durch enge Inversionen und Richtungswechsel rasen
+STR_0605    :Die Fahrgäste rodeln eine sich schlängelnde Stahlbahn hinunter und bremsen, um ihre Geschwindigkeit zu regulieren
+STR_0606    :Eine Holzachterbahn nach älterer Art. Sie ist schnell, rau, laut und gibt einem das Gefühl, außer Kontrolle zu sein, wobei man gelegentlich seitlichen Gs ausgesetzt und häufig „in der Luft“ ist
 STR_0767    :Besucher {INT32}
 STR_0768    :Parkpfleger {INT32}
 STR_0769    :Mechaniker {INT32}
@@ -1059,7 +1059,7 @@ STR_1669    :{WINDOW_COLOUR_2}Zufriedenheit: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}Besucher gesamt: {BLACK}{COMMA32}
 STR_1671    :{WINDOW_COLOUR_2}Gesamtgewinn: {BLACK}{CURRENCY2DP}
 STR_1672    :Bremsen
-STR_1673    :Drehkontrolle umschalt.
+STR_1673    :Drehkontrolle umschalten
 STR_1674    :Bremsgeschwindigkeit
 STR_1675    :{POP16}{VELOCITY}
 STR_1676    :Geschwindigkeitsgrenze{NEWLINE}für Bremsen einstellen
@@ -3326,7 +3326,7 @@ STR_6199    :Datum setzen
 STR_6200    :Datum zurücksetzen
 STR_6201    :{MONTH}
 STR_6202    :Stil des virtuellen Bodens:
-STR_6203    :Um vertikales Platzieren von Elementen zu vereinfachen, wird ein virtueller Boden eingeblendet, wenn Strg oder Shift gehalten wird
+STR_6203    :Um vertikales Platzieren von Elementen zu vereinfachen, wird ein virtueller Boden eingeblendet, wenn die Strg- oder Umschalttaste gehalten wird.
 STR_6215    :Konstruktion
 STR_6216    :Betrieb
 STR_6217    :Bahn- / Streckenverfügbarkeit
@@ -3595,7 +3595,7 @@ STR_6493    :Dieser Park wurde in einer späteren Version von OpenRCT2 gespeiche
 STR_6494    :Nach Fahrgeschäftstyp gruppieren
 STR_6495    :Fahrgeschäfte nach Fahrgeschäftstyp gruppieren, anstatt jedes Fahrzeug separat anzuzeigen.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
-STR_6497    :Klicken Sie auf eine Kachel, um ihre Kachelelemente anzuzeigen.{NEWLINE}Strg + Klick auf Kachel, um sie direkt auszuwählen.
+STR_6497    :Klicken Sie auf eine Kachel, um ihre Kachelelemente anzuzeigen.{NEWLINE}Strg + Klick auf ein Kachelelement, um es direkt auszuwählen.
 STR_6498    :Aktivieren, um quadratische Kartenform beizubehalten.
 STR_6499    :Fahrzeugtyp nicht vom Streckendesignformat unterstüzt
 STR_6500    :Streckenelemente nicht vom Streckendesignformat unterstüzt
@@ -3613,7 +3613,7 @@ STR_6511    :Null-G-Rolle (rechts)
 STR_6512    :Große Null-G-Rolle (l.)
 STR_6513    :Große Null-G-Rolle (r.)
 STR_6514    :Ungültige Höhe!
-STR_6515    :{BLACK}RollerCoaster Tycoon 1 nicht verknüpft - Es werden Fallback-Bilder verwendet.
+STR_6515    :{BLACK}RollerCoaster Tycoon 1 nicht verknüpft. Es werden Fallback-Bilder verwendet.
 STR_6516    :Eines oder mehrere der hinzugefügten Objekte benötigen eine Verknüpfung mit RollerCoaster Tycoon 1 für eine korrekte Anzeige. Es werden Fallback-Bilder verwendet.
 STR_6517    :Eines oder mehrere Objekte in diesem Park benötigen eine Verknüpfung mit RollerCoaster Tycoon 1 für eine korrekte Anzeige. Es werden Fallback-Bilder verwendet.
 STR_6518    :{BLACK}Zeigen Sie auf ein Szenario, um seine Beschreibung und sein Ziel zu sehen. Klicken Sie, um das Spiel zu beginnen.
@@ -3636,7 +3636,7 @@ STR_6534    :{WINDOW_COLOUR_2}Intensitätsfaktor: {BLACK}-{COMMA16}%
 STR_6535    :{WINDOW_COLOUR_2}Übelkeitsfaktor: {BLACK}-{COMMA16}%
 STR_6536    :Dieser Park wurde in einer späteren Version von OpenRCT2 gespeichert. Der Park wurde in v{INT32} gespeichert. Sie benutzen im Moment v{INT32}.
 STR_6537    :Normale Fußwege als Warteschlangen erlauben
-STR_6538    :Zeigt reguläre Pfade in der Warteschlangenliste im Fußwegfenster an
+STR_6538    :Zeigt normale Fußwege in der Warteschlangenliste im Fußwegfenster an
 STR_6539    :Bremse geschlossen
 STR_6540    :{WINDOW_COLOUR_2}Besonderen Dank an die folgenden Unternehmen für die Gestattung der Verwendung ihrer Abbilder:
 STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
@@ -3650,7 +3650,7 @@ STR_6548    :Geländer an Kreuzung zeigen
 STR_6549    :Kompabilitätsobjekte können nicht ausgewählt werden!
 STR_6550    :Dieser Eintrag wird für die Abwärtskompabilität mit alten oder beschädigten Objekten bereitgestellt. Er kann nicht ausgewählt werden. Er kann nur abgewählt werden.
 STR_6551    :Armeegrün
-STR_6552    :Honigtau
+STR_6552    :Honigmelone
 STR_6553    :Loh
 STR_6554    :Kastanienrot
 STR_6555    :Koralle
@@ -3691,6 +3691,10 @@ STR_6589    :Schaltflächen auf der linken Seite anzeigen
 STR_6590    :Schaltflächen (z.B. zum Schließen des Fensters) auf der linken anstatt auf der rechten Seite der Titelleiste anzeigen.
 STR_6591    :Der Mitarbeiter repariert gerade ein Fahrgeschäft und kann deshalb nicht entlassen werden.
 STR_6592    :Der Mitarbeiter inspiziert gerade ein Fahrgeschäft und kann deshalb nicht entlassen werden.
+STR_6593    :Parkzäune entfernen
+STR_6594    :Kachelinspektor: Wandneigung umschalten
+STR_6595    :{WINDOW_COLOUR_2}Autor: {BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}Autoren: {BLACK}{STRING}
 
 #############
 # Scenarios #
@@ -4353,7 +4357,7 @@ STR_DTLS    :Sie sind ein erfolgreicher Geschäftsmann, der sich eine vierjähri
 <South America - Inca Lost City>
 STR_SCNR    :Südamerika - Verlorene Stadt der Inka
 STR_PARK    :Gründer der Verlorenen Stadt
-STR_DTLS    :Um der örtlichen Tourismusindustrie den Rücken zu stärken, müssen Sie einen Vergnügungspark konstruieren, der sich harmonisch in die Umgebung einfügt - Höhenbegrenzungen inklusive.
+STR_DTLS    :Um der örtlichen Tourismusindustrie den Rücken zu stärken, müssen Sie einen Vergnügungspark konstruieren, der sich harmonisch in die Umgebung einfügt.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :Südamerika - Regenwaldplateau

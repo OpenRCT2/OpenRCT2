@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -28,7 +28,7 @@ private:
 
 public:
     explicit OpenGLFramebuffer(SDL_Window* window);
-    OpenGLFramebuffer(int32_t width, int32_t height, bool depth = true, bool integer = true);
+    OpenGLFramebuffer(int32_t width, int32_t height, bool depth = true, bool integer = true, bool word = false);
     ~OpenGLFramebuffer();
 
     OpenGLFramebuffer(const OpenGLFramebuffer&) = delete;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -218,13 +218,10 @@ public:
         // Scenario path
         if (gConfigGeneral.DebuggingTools)
         {
-            utf8 path[MAX_PATH];
+            const auto shortPath = ShortenPath(scenario->Path, width - 6 - TabWidth, FontStyle::Medium);
 
-            ShortenPath(path, sizeof(path), scenario->Path, width - 6 - TabWidth, FontStyle::Medium);
-
-            const utf8* pathPtr = path;
             auto ft = Formatter();
-            ft.Add<const char*>(pathPtr);
+            ft.Add<utf8*>(shortPath.c_str());
             DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ TabWidth + 3, height - 3 - 11 }, STR_STRING, ft, { colours[1] });
         }
 

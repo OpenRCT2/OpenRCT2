@@ -64,17 +64,17 @@ set(TITLE_SEQUENCE_VERSION "0.4.6")
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v${TITLE_SEQUENCE_VERSION}/title-sequences.zip")
 set(TITLE_SEQUENCE_SHA1 "80fefc6ebbabc42a6f4703412daa5c62f661420d")
 
-set(OBJECTS_VERSION "1.3.11")
+set(OBJECTS_VERSION "1.3.13")
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
-set(OBJECTS_SHA1 "02ddf6c685a2da8bac98a57b34be95d63192443d")
+set(OBJECTS_SHA1 "15a60424d5f4f0b94ac07763b6967ba0e6ae3a7d")
 
 set(OPENSFX_VERSION "1.0.3")
 set(OPENSFX_URL  "https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v${OPENSFX_VERSION}/opensound.zip")
 set(OPENSFX_SHA1 "ffec5a97bd5035860c4c9a43fe32cf51886478e3")
 
-set(OPENMSX_VERSION "1.3.1")
+set(OPENMSX_VERSION "1.5")
 set(OPENMSX_URL  "https://github.com/OpenRCT2/OpenMusic/releases/download/v${OPENMSX_VERSION}/openmusic.zip")
-set(OPENMSX_SHA1 "cb7b05af97aaf7949fb509063d45df6613f20521")
+set(OPENMSX_SHA1 "f3c707e576281758637598ce68880416891fe5f9")
 
 set(REPLAYS_VERSION "0.0.78")
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")

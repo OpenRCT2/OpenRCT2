@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 #include "../Context.h"
 #include "../Editor.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../actions/ResultWithMessage.h"
@@ -1128,7 +1129,7 @@ void Ride::Update()
         // Breakdown updates originally were performed when (id == (gCurrentTicks / 2) & 0xFF)
         // with the increased MAX_RIDES the update is tied to the first byte of the id this allows
         // for identical balance with vanilla.
-        const auto updatingRideByte = static_cast<uint8_t>((gCurrentTicks / 2) & 0xFF);
+        const auto updatingRideByte = static_cast<uint8_t>((GetGameState().CurrentTicks / 2) & 0xFF);
         if (updatingRideByte == static_cast<uint8_t>(id.ToUnderlying()))
             RideBreakdownStatusUpdate(*this);
     }
@@ -1252,7 +1253,7 @@ static constexpr CoordsXY ride_spiral_slide_main_tile_offset[][4] = {
 
 void UpdateSpiralSlide(Ride& ride)
 {
-    if (gCurrentTicks & 3)
+    if (GetGameState().CurrentTicks & 3)
         return;
     if (ride.slide_in_use == 0)
         return;
@@ -1312,7 +1313,7 @@ static uint8_t _breakdownProblemProbabilities[] = {
  */
 static void RideInspectionUpdate(Ride& ride)
 {
-    if (gCurrentTicks & 2047)
+    if (GetGameState().CurrentTicks & 2047)
         return;
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
         return;
@@ -1377,7 +1378,8 @@ static int32_t GetAgePenalty(const Ride& ride)
  */
 static void RideBreakdownUpdate(Ride& ride)
 {
-    if (gCurrentTicks & 255)
+    const auto currentTicks = GetGameState().CurrentTicks;
+    if (currentTicks & 255)
         return;
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
@@ -1386,7 +1388,7 @@ static void RideBreakdownUpdate(Ride& ride)
     if (ride.lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
         ride.downtime_history[0]++;
 
-    if (!(gCurrentTicks & 8191))
+    if (!(currentTicks & 8191))
     {
         int32_t totalDowntime = 0;
 
@@ -1889,7 +1891,7 @@ static bool RideMusicBreakdownEffect(Ride& ride)
     {
         if (ride.breakdown_reason_pending == BREAKDOWN_CONTROL_FAILURE)
         {
-            if (!(gCurrentTicks & 7))
+            if (!(GetGameState().CurrentTicks & 7))
                 if (ride.breakdown_sound_modifier != 255)
                     ride.breakdown_sound_modifier++;
         }
@@ -2021,12 +2023,15 @@ static void RideMeasurementUpdate(Ride& ride, RideMeasurement& measurement)
     auto trackType = vehicle->GetTrackType();
     if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::CableLiftHill
         || trackType == TrackElemType::Up25ToFlat || trackType == TrackElemType::Up60ToFlat
-        || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat)
+        || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat
+        || trackType == TrackElemType::DiagBlockBrakes)
         if (vehicle->velocity == 0)
             return;
 
     if (measurement.current_item >= RideMeasurement::MAX_ITEMS)
         return;
+
+    const auto currentTicks = GetGameState().CurrentTicks;
 
     if (measurement.flags & RIDE_MEASUREMENT_FLAG_G_FORCES)
     {
@@ -2034,7 +2039,7 @@ static void RideMeasurementUpdate(Ride& ride, RideMeasurement& measurement)
         gForces.VerticalG = std::clamp(gForces.VerticalG / 8, -127, 127);
         gForces.LateralG = std::clamp(gForces.LateralG / 8, -127, 127);
 
-        if (gCurrentTicks & 1)
+        if (currentTicks & 1)
         {
             gForces.VerticalG = (gForces.VerticalG + measurement.vertical[measurement.current_item]) / 2;
             gForces.LateralG = (gForces.LateralG + measurement.lateral[measurement.current_item]) / 2;
@@ -2047,7 +2052,7 @@ static void RideMeasurementUpdate(Ride& ride, RideMeasurement& measurement)
     auto velocity = std::min(std::abs((vehicle->velocity * 5) >> 16), 255);
     auto altitude = std::min(vehicle->z / 8, 255);
 
-    if (gCurrentTicks & 1)
+    if (currentTicks & 1)
     {
         velocity = (velocity + measurement.velocity[measurement.current_item]) / 2;
         altitude = (altitude + measurement.altitude[measurement.current_item]) / 2;
@@ -2056,7 +2061,7 @@ static void RideMeasurementUpdate(Ride& ride, RideMeasurement& measurement)
     measurement.velocity[measurement.current_item] = velocity & 0xFF;
     measurement.altitude[measurement.current_item] = altitude & 0xFF;
 
-    if (gCurrentTicks & 1)
+    if (currentTicks & 1)
     {
         measurement.current_item++;
         measurement.num_items = std::max(measurement.num_items, measurement.current_item);
@@ -2161,7 +2166,7 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
         assert(measurement != nullptr);
     }
 
-    measurement->last_use_tick = gCurrentTicks;
+    measurement->last_use_tick = GetGameState().CurrentTicks;
     if (measurement->flags & 1)
     {
         return { measurement.get(), { STR_EMPTY, {} } };
@@ -2180,7 +2185,7 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
 VehicleColour RideGetVehicleColour(const Ride& ride, int32_t vehicleIndex)
 {
     // Prevent indexing array out of bounds
-    vehicleIndex = std::min<int32_t>(vehicleIndex, OpenRCT2::Limits::MaxCarsPerTrain);
+    vehicleIndex = std::min<int32_t>(vehicleIndex, static_cast<int32_t>(std::size(ride.vehicle_colours)));
     return ride.vehicle_colours[vehicleIndex];
 }
 
@@ -2716,7 +2721,7 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
     TrackCircuitIteratorBegin(&it, input);
     while (TrackCircuitIteratorNext(&it))
     {
-        if (it.current.element->AsTrack()->GetTrackType() == TrackElemType::BlockBrakes)
+        if (TrackTypeIsBlockBrakes(it.current.element->AsTrack()->GetTrackType()))
         {
             auto type = it.last.element->AsTrack()->GetTrackType();
             if (type == TrackElemType::EndStation)
@@ -2724,7 +2729,7 @@ static ResultWithMessage RideCheckBlockBrakes(const CoordsXYE& input, CoordsXYE*
                 *output = it.current;
                 return { false, STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION };
             }
-            if (type == TrackElemType::BlockBrakes)
+            if (TrackTypeIsBlockBrakes(type))
             {
                 *output = it.current;
                 return { false, STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_EACH_OTHER };
@@ -3047,6 +3052,24 @@ static void RideSetMazeEntranceExitPoints(Ride& ride)
     }
 }
 
+void SetBrakeClosedMultiTile(TrackElement& trackElement, const CoordsXY& trackLocation, bool isClosed)
+{
+    switch (trackElement.GetTrackType())
+    {
+        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::DiagUp60ToFlat:
+        case TrackElemType::CableLiftHill:
+        case TrackElemType::DiagBrakes:
+        case TrackElemType::DiagBlockBrakes:
+            GetTrackElementOriginAndApplyChanges(
+                { trackLocation, trackElement.GetBaseZ(), trackElement.GetDirection() }, trackElement.GetTrackType(), isClosed,
+                nullptr, TRACK_ELEMENT_SET_BRAKE_CLOSED_STATE);
+            break;
+        default:
+            trackElement.SetBrakeClosed(isClosed);
+    }
+}
+
 /**
  * Opens all block brakes of a ride.
  *  rct2: 0x006B4E6B
@@ -3060,17 +3083,18 @@ static void RideOpenBlockBrakes(const CoordsXYE& startElement)
         switch (trackType)
         {
             case TrackElemType::BlockBrakes:
+            case TrackElemType::DiagBlockBrakes:
                 BlockBrakeSetLinkedBrakesClosed(
                     CoordsXYZ(currentElement.x, currentElement.y, currentElement.element->GetBaseZ()),
                     *currentElement.element->AsTrack(), false);
                 [[fallthrough]];
-            case TrackElemType::EndStation:
-            case TrackElemType::CableLiftHill:
-            case TrackElemType::Up25ToFlat:
-            case TrackElemType::Up60ToFlat:
             case TrackElemType::DiagUp25ToFlat:
             case TrackElemType::DiagUp60ToFlat:
-                currentElement.element->AsTrack()->SetBrakeClosed(false);
+            case TrackElemType::CableLiftHill:
+            case TrackElemType::EndStation:
+            case TrackElemType::Up25ToFlat:
+            case TrackElemType::Up60ToFlat:
+                SetBrakeClosedMultiTile(*currentElement.element->AsTrack(), { currentElement.x, currentElement.y }, false);
                 break;
         }
     } while (TrackBlockGetNext(&currentElement, &currentElement, nullptr, nullptr)
@@ -3107,10 +3131,11 @@ void BlockBrakeSetLinkedBrakesClosed(const CoordsXYZ& vehicleTrackLocation, Trac
         location.z = trackBeginEnd.begin_z;
         tileElement = trackBeginEnd.begin_element;
 
-        if (trackBeginEnd.begin_element->AsTrack()->GetTrackType() == TrackElemType::Brakes)
+        if (TrackTypeIsBrakes(tileElement->AsTrack()->GetTrackType()))
         {
-            trackBeginEnd.begin_element->AsTrack()->SetBrakeClosed(
-                (trackBeginEnd.begin_element->AsTrack()->GetBrakeBoosterSpeed() >= brakeSpeed) || isClosed);
+            SetBrakeClosedMultiTile(
+                *tileElement->AsTrack(), { trackBeginEnd.begin_x, trackBeginEnd.begin_y },
+                (tileElement->AsTrack()->GetBrakeBoosterSpeed() >= brakeSpeed) || isClosed);
         }
 
         // prevent infinite loop
@@ -3128,7 +3153,7 @@ void BlockBrakeSetLinkedBrakesClosed(const CoordsXYZ& vehicleTrackLocation, Trac
                 return;
             }
         }
-    } while (trackBeginEnd.begin_element->AsTrack()->GetTrackType() == TrackElemType::Brakes);
+    } while (TrackTypeIsBrakes(trackBeginEnd.begin_element->AsTrack()->GetTrackType()));
 }
 
 /**
@@ -3511,30 +3536,34 @@ static void RideCreateVehiclesFindFirstBlock(const Ride& ride, CoordsXYE* outXYE
         auto trackType = trackElement->GetTrackType();
         switch (trackType)
         {
-            case TrackElemType::Up25ToFlat:
-            case TrackElemType::Up60ToFlat:
-                if (trackElement->HasChain())
+            case TrackElemType::DiagUp25ToFlat:
+            case TrackElemType::DiagUp60ToFlat:
+                if (!trackElement->HasChain())
                 {
-                    *outXYElement = { trackPos, reinterpret_cast<TileElement*>(trackElement) };
+                    break;
+                }
+                [[fallthrough]];
+            case TrackElemType::DiagBlockBrakes:
+            {
+                TileElement* tileElement = MapGetTrackElementAtOfTypeSeq(
+                    { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z }, trackType, 0);
+
+                if (tileElement != nullptr)
+                {
+                    outXYElement->x = trackBeginEnd.begin_x;
+                    outXYElement->y = trackBeginEnd.begin_y;
+                    outXYElement->element = tileElement;
                     return;
                 }
                 break;
-            case TrackElemType::DiagUp25ToFlat:
-            case TrackElemType::DiagUp60ToFlat:
-                if (trackElement->HasChain())
+            }
+            case TrackElemType::Up25ToFlat:
+            case TrackElemType::Up60ToFlat:
+                if (!trackElement->HasChain())
                 {
-                    TileElement* tileElement = MapGetTrackElementAtOfTypeSeq(
-                        { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z }, trackType, 0);
-
-                    if (tileElement != nullptr)
-                    {
-                        outXYElement->x = trackBeginEnd.begin_x;
-                        outXYElement->y = trackBeginEnd.begin_y;
-                        outXYElement->element = tileElement;
-                        return;
-                    }
+                    break;
                 }
-                break;
+                [[fallthrough]];
             case TrackElemType::EndStation:
             case TrackElemType::CableLiftHill:
             case TrackElemType::BlockBrakes:
@@ -3687,8 +3716,8 @@ void Ride::MoveTrainsToBlockBrakes(const CoordsXYZ& firstBlockPosition, TrackEle
 
         // All vehicles are in position, set the block brake directly before the station one last time and make sure the brakes
         // are set appropriately
-        firstBlock.SetBrakeClosed(true);
-        if (firstBlock.GetTrackType() == TrackElemType::BlockBrakes)
+        SetBrakeClosedMultiTile(firstBlock, firstBlockPosition, true);
+        if (TrackTypeIsBlockBrakes(firstBlock.GetTrackType()))
         {
             BlockBrakeSetLinkedBrakesClosed(firstBlockPosition, firstBlock, true);
         }
@@ -4873,9 +4902,11 @@ OpenRCT2::BitSet<TRACK_GROUP_COUNT> RideEntryGetSupportedTrackPieces(const RideO
           SpritePrecision::Sprites4 }, // TRACK_FLYING_HALF_LOOP_INVERTED_UP
         { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
           SpriteGroupType::Slopes75, SpritePrecision::Sprites4, SpriteGroupType::Slopes90,
-          SpritePrecision::Sprites4 }, // TRACK_FLYING_HALF_LOOP_UNINVERTED_DOWN
-        {},                            // TRACK_SLOPE_CURVE_LARGE
-        {},                            // TRACK_SLOPE_CURVE_LARGE_BANKED
+          SpritePrecision::Sprites4 },                             // TRACK_FLYING_HALF_LOOP_UNINVERTED_DOWN
+        {},                                                        // TRACK_SLOPE_CURVE_LARGE
+        {},                                                        // TRACK_SLOPE_CURVE_LARGE_BANKED
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TRACK_DIAG_BRAKES
+        { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites8 }, // TRACK_DIAG_BLOCK_BRAKES
     };
     static_assert(std::size(trackPieceRequiredSprites) == TRACK_GROUP_COUNT);
 
@@ -5282,7 +5313,7 @@ bool Ride::IsRide() const
 
 money64 RideGetPrice(const Ride& ride)
 {
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
         return 0;
     if (ride.IsRide())
     {

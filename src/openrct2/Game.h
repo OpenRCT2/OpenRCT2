@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -103,6 +103,7 @@ enum class GameCommand : int32_t
     Custom,                   // GA
     ChangeMapSize,
     FreezeRideRating,
+    SetGameSpeed,
     Count,
 };
 
@@ -133,7 +134,6 @@ enum
     ERROR_TYPE_FILE_LOAD = 255
 };
 
-extern uint32_t gCurrentTicks;
 extern uint32_t gCurrentRealTimeTicks;
 
 extern uint16_t gCurrentDeltaTime;

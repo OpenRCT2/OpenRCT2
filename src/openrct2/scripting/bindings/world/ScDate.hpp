@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -69,7 +69,7 @@ namespace OpenRCT2::Scripting
 
         uint32_t ticksElapsed_get() const
         {
-            return gCurrentTicks;
+            return GetGameState().CurrentTicks;
         }
 
         int32_t day_get() const

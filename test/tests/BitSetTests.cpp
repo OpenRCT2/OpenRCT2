@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -90,7 +90,7 @@ TEST(BitTest, test_big)
     static_assert(size == 32u);
 
     bits.flip();
-#if defined(_M_X64) || defined(_M_ARM64) || defined(__x86_64__)
+#if defined(__LP64__) || defined(_WIN64)
     static_assert(std::is_same_v<decltype(bits)::BlockType, uint64_t>);
     static_assert(bits.data().size() == 4);
     ASSERT_EQ(bits.data()[0], ~0uLL);

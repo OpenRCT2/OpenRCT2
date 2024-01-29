@@ -3694,6 +3694,10 @@ STR_6589    :Montri fenestro-butonojn maldekstre
 STR_6590    :Montri la fenestro-butonojn (ekz. fermi la fenestron) maldekstre de la titola breto anstataŭ dekstre.
 STR_6591    :Dungito nune estas riparanta atrakcion kaj ne povas esti maldungita.
 STR_6592    :Dungito nune estas inspektanta atrakcion kaj ne povas esti maldungita.
+STR_6593    :Forigi parkobarilojn
+STR_6594    :Inspektilo de Bloko: Baskuligi deklivecon de muro
+STR_6595    :{WINDOW_COLOUR_2}Aŭtoro: {BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}Aŭtoroj: {BLACK}{STRING}
 
 #############
 # Scenarios #
@@ -4355,7 +4359,7 @@ STR_DTLS    :Vi estas sukcesa komerca magnato prenanta longan libertempon, kiu d
 <South America - Inca Lost City>
 STR_SCNR    :Sudameriko - La Perdita Inkaa Urbo
 STR_PARK    :Fondinto de la Perdita Urbo
-STR_DTLS    :Por plue akceli lokan turismon, vi devas konstrui parkon, kiu kaj akordas kun sia ĉirkaŭaĵo, kaj observas limigojn de alteco.
+STR_DTLS    :Por plue akceli lokan turismon, vi devas konstrui parkon, kiu akordas kun sia ĉirkaŭaĵo.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :Sudameriko - Pluvarbaro-Altebenaĵo

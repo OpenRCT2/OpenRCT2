@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
@@ -38,6 +39,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::TrackMetaData;
 
 static constexpr StringId WindowTitle = STR_NONE;
@@ -367,7 +369,7 @@ public:
                 SetPage(_currentTab);
                 break;
             case WIDX_FILTER_TEXT_BOX:
-                WindowStartTextbox(*this, widgetIndex, STR_STRING, _filter.data(), MAX_PATH);
+                WindowStartTextbox(*this, widgetIndex, STR_STRING, _filter.data(), TEXT_INPUT_SIZE);
                 break;
             case WIDX_FILTER_CLEAR_BUTTON:
                 _filter.clear();
@@ -843,7 +845,7 @@ private:
             widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WindowWidgetType::Groupbox;
             widgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WindowWidgetType::Groupbox;
             widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
-            if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+            if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
                 widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WindowWidgetType::FlatBtn;
 
             newWidth = 300;
@@ -952,7 +954,7 @@ private:
         DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ 0, 51 }, designCountStringId, ft);
 
         // Price
-        if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             // Get price of ride
             int32_t startPieceId = GetRideTypeDescriptor(item.Type).StartTrackPiece;

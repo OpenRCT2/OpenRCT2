@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,7 +14,6 @@
 #include "../management/Research.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
-#include "../rct12/RCT12.h"
 #include "../ride/RideConstruction.h"
 #include "../ride/TrackDesign.h"
 #include "RideCreateAction.h"
@@ -59,7 +58,7 @@ GameActions::Result TrackDesignAction::Query() const
     if (!LocationValid(_loc))
     {
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
@@ -242,24 +241,22 @@ GameActions::Result TrackDesignAction::Execute() const
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
     ride->colour_scheme_type = _td.colour_scheme;
 
-    auto stationIdentifier = GetStationIdentifierFromStyle(_td.entrance_style);
-    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(stationIdentifier);
+    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(_td.StationObjectIdentifier);
     if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
     {
         ride->entrance_style = gLastEntranceStyle;
     }
 
-    for (int32_t i = 0; i < RCT12::Limits::NumColourSchemes; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::NumColourSchemes; i++)
     {
         ride->track_colour[i].main = _td.track_spine_colour[i];
         ride->track_colour[i].additional = _td.track_rail_colour[i];
         ride->track_colour[i].supports = _td.track_support_colour[i];
     }
 
-    for (size_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
+    for (size_t i = 0; i < OpenRCT2::Limits::MaxVehicleColours; i++)
     {
-        auto tdIndex = i % std::size(_td.vehicle_colours);
-        ride->vehicle_colours[i] = _td.vehicle_colours[tdIndex];
+        ride->vehicle_colours[i] = _td.vehicle_colours[i];
     }
 
     for (int32_t count = 1; count == 1 || r.Error != GameActions::Status::Ok; ++count)

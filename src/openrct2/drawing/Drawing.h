@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -130,6 +130,32 @@ struct DrawPixelInfo
     size_t GetBytesPerRow() const;
     uint8_t* GetBitsOffset(const ScreenCoordsXY& pos) const;
     DrawPixelInfo Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const;
+};
+
+struct TextDrawInfo
+{
+    int32_t startX;
+    int32_t startY;
+    int32_t x;
+    int32_t y;
+    int32_t maxX;
+    int32_t maxY;
+    int32_t flags;
+    uint8_t palette[8];
+    ::FontStyle FontStyle;
+    const int8_t* y_offset;
+};
+
+enum : uint32_t
+{
+    TEXT_DRAW_FLAG_INSET = 1 << 0,
+    TEXT_DRAW_FLAG_OUTLINE = 1 << 1,
+    TEXT_DRAW_FLAG_DARK = 1 << 2,
+    TEXT_DRAW_FLAG_EXTRA_DARK = 1 << 3,
+    TEXT_DRAW_FLAG_NO_FORMATTING = 1 << 28,
+    TEXT_DRAW_FLAG_Y_OFFSET_EFFECT = 1 << 29,
+    TEXT_DRAW_FLAG_TTF = 1 << 30,
+    TEXT_DRAW_FLAG_NO_DRAW = 1u << 31
 };
 
 struct RCTG1Element
@@ -572,7 +598,7 @@ int32_t GfxGetStringWidthNewLined(std::string_view text, FontStyle fontStyle);
 int32_t GfxGetStringWidthNoFormatting(std::string_view text, FontStyle fontStyle);
 int32_t StringGetHeightRaw(std::string_view text, FontStyle fontStyle);
 int32_t GfxClipString(char* buffer, int32_t width, FontStyle fontStyle);
-void ShortenPath(utf8* buffer, size_t bufferSize, const utf8* path, int32_t availableWidth, FontStyle fontStyle);
+u8string ShortenPath(const u8string& path, int32_t availableWidth, FontStyle fontStyle);
 void TTFDrawString(
     DrawPixelInfo& dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords, bool noFormatting,
     FontStyle fontStyle, TextDarkness darkness);

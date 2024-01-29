@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../Input.h"
 #include "../actions/StaffSetOrdersAction.h"
 #include "../audio/audio.h"
@@ -49,6 +50,8 @@
 #include <algorithm>
 #include <iterator>
 
+using namespace OpenRCT2;
+
 // clang-format off
 const StringId StaffCostumeNames[] = {
         STR_STAFF_OPTION_COSTUME_PANDA,
@@ -64,10 +67,6 @@ const StringId StaffCostumeNames[] = {
         STR_STAFF_OPTION_COSTUME_PIRATE,
 };
 // clang-format on
-
-colour_t gStaffHandymanColour;
-colour_t gStaffMechanicColour;
-colour_t gStaffSecurityColour;
 
 // Maximum manhattan distance that litter can be for a handyman to seek to it
 const uint16_t MAX_LITTER_DISTANCE = 3 * COORDS_XY_STEP;
@@ -487,7 +486,7 @@ bool Staff::DoHandymanPathFinding()
     Direction litterDirection = INVALID_DIRECTION;
     uint8_t validDirections = GetValidPatrolDirections(NextLoc);
 
-    if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((gCurrentTicks + Id.ToUnderlying()) & 0xFFF) > 110)
+    if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((GetGameState().CurrentTicks + Id.ToUnderlying()) & 0xFFF) > 110)
     {
         litterDirection = HandymanDirectionToNearestLitter();
     }
@@ -991,14 +990,15 @@ PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType)
 
 colour_t StaffGetColour(StaffType staffType)
 {
+    const auto& gameState = GetGameState();
     switch (staffType)
     {
         case StaffType::Handyman:
-            return gStaffHandymanColour;
+            return gameState.StaffHandymanColour;
         case StaffType::Mechanic:
-            return gStaffMechanicColour;
+            return gameState.StaffMechanicColour;
         case StaffType::Security:
-            return gStaffSecurityColour;
+            return gameState.StaffSecurityColour;
         case StaffType::Entertainer:
             return 0;
         default:
@@ -1009,16 +1009,17 @@ colour_t StaffGetColour(StaffType staffType)
 
 bool StaffSetColour(StaffType staffType, colour_t value)
 {
+    auto& gameState = GetGameState();
     switch (staffType)
     {
         case StaffType::Handyman:
-            gStaffHandymanColour = value;
+            gameState.StaffHandymanColour = value;
             break;
         case StaffType::Mechanic:
-            gStaffMechanicColour = value;
+            gameState.StaffMechanicColour = value;
             break;
         case StaffType::Security:
-            gStaffSecurityColour = value;
+            gameState.StaffSecurityColour = value;
             break;
         default:
             return false;

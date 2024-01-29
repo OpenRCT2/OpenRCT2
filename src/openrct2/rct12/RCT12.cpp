@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,9 +13,11 @@
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../object/ObjectList.h"
+#include "../rct1/Tables.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
+#include "../ride/TrackDesign.h"
 #include "../scenario/Scenario.h"
 #include "../world/Banner.h"
 #include "../world/Footpath.h"
@@ -406,7 +408,14 @@ int32_t RCT12WallElement::GetRCT1WallType(int32_t edge) const
 
     if (typeB != 0x0F)
     {
-        return typeA | (typeB << 2);
+        int32_t index = typeA | (typeB << 2);
+
+        auto slope = GetRCT1Slope();
+        auto edgeSlope = GetWallSlopeFromEdgeSlope(slope, edge & 3);
+        if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
+            index = RCT1::MapSlopedWall(index);
+
+        return index;
     }
 
     return -1;
@@ -758,6 +767,8 @@ static constexpr std::string_view _musicStyles[] = {
     "openrct2.music.fairground2",
     "openrct2.music.ragtime2",
     "openrct2.music.prehistoric",
+    "openrct2.music.mystic",
+    "openrct2.music.rock4",
 };
 
 std::string_view GetStationIdentifierFromStyle(uint8_t style)
@@ -766,7 +777,7 @@ std::string_view GetStationIdentifierFromStyle(uint8_t style)
     {
         return _stationStyles[style];
     }
-    return {};
+    return _stationStyles[RCT12_STATION_STYLE_INVISIBLE];
 }
 
 uint8_t GetStationStyleFromIdentifier(u8string_view identifier)
@@ -867,3 +878,109 @@ ResearchItem RCT12ResearchItem::ToResearchItem() const
 
     return newResearchItem;
 }
+
+void ConvertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags)
+{
+    target.BrakeBoosterSpeed = kRCT2DefaultBlockBrakeSpeed;
+    if (TrackTypeIsStation(target.Type))
+    {
+        auto stationIndex = flags & EnumValue(TD46Flags::StationId);
+        target.StationIndex = StationIndex::FromUnderlying(stationIndex);
+    }
+    else
+    {
+        auto speedOrSeatRotation = flags & EnumValue(TD46Flags::SpeedOrSeatRotation);
+        if (TrackTypeHasSpeedSetting(target.Type) && target.Type != TrackElemType::BlockBrakes)
+        {
+            target.BrakeBoosterSpeed = speedOrSeatRotation << 1;
+        }
+        else
+        {
+            target.SeatRotation = speedOrSeatRotation;
+        }
+    }
+
+    target.ColourScheme = (flags & EnumValue(TD46Flags::ColourScheme)) >> 4;
+    if (flags & EnumValue(TD46Flags::IsInverted))
+        target.SetFlag(TrackDesignTrackElementFlag::IsInverted);
+    if (flags & EnumValue(TD46Flags::HasChain))
+        target.SetFlag(TrackDesignTrackElementFlag::HasChain);
+}
+
+uint8_t ConvertToTD46Flags(const TrackDesignTrackElement& source)
+{
+    uint8_t trackFlags = 0;
+    if (TrackTypeIsStation(source.Type))
+    {
+        trackFlags = (source.StationIndex.ToUnderlying() & EnumValue(TD46Flags::StationId));
+    }
+    else if (TrackTypeHasSpeedSetting(source.Type) && source.Type != TrackElemType::BlockBrakes)
+    {
+        trackFlags = (source.BrakeBoosterSpeed >> 1);
+    }
+    else
+    {
+        trackFlags = source.SeatRotation;
+    }
+
+    trackFlags |= source.ColourScheme << 4;
+
+    if (source.HasFlag(TrackDesignTrackElementFlag::HasChain))
+        trackFlags |= EnumValue(TD46Flags::HasChain);
+    if (source.HasFlag(TrackDesignTrackElementFlag::IsInverted))
+        trackFlags |= EnumValue(TD46Flags::IsInverted);
+
+    return trackFlags;
+}
+
+void ImportMazeElement(TrackDesign& td, const TD46MazeElement& td46MazeElement)
+{
+    if (td46MazeElement.IsEntrance() || td46MazeElement.IsExit())
+    {
+        TrackDesignEntranceElement element{};
+        element.Location = TileCoordsXYZD(td46MazeElement.x, td46MazeElement.y, 0, td46MazeElement.Direction);
+        element.IsExit = td46MazeElement.IsExit();
+        td.entrance_elements.push_back(element);
+    }
+    else
+    {
+        TrackDesignMazeElement mazeElement{};
+        mazeElement.x = td46MazeElement.x;
+        mazeElement.y = td46MazeElement.y;
+        mazeElement.direction = td46MazeElement.Direction;
+        mazeElement.type = td46MazeElement.Type;
+        td.maze_elements.push_back(mazeElement);
+    }
+}
+
+namespace RCT12
+{
+    size_t GetRCTStringBufferLen(const char* buffer, size_t maxBufferLen)
+    {
+        constexpr char MULTIBYTE = static_cast<char>(255);
+        size_t len = 0;
+        for (size_t i = 0; i < maxBufferLen; i++)
+        {
+            auto ch = buffer[i];
+            if (ch == MULTIBYTE)
+            {
+                i += 2;
+
+                // Check if reading two more bytes exceeds max buffer len
+                if (i < maxBufferLen)
+                {
+                    len += 3;
+                }
+            }
+            else if (ch == '\0')
+            {
+                break;
+            }
+            else
+            {
+                len++;
+            }
+        }
+        return len;
+    }
+} // namespace RCT12

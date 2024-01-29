@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../../../Context.h"
+#    include "../../../GameState.h"
 #    include "../../../common.h"
 #    include "../../../core/String.hpp"
 #    include "../../../world/Climate.h"
@@ -101,19 +102,22 @@ namespace OpenRCT2::Scripting
 
         std::string type_get() const
         {
-            return ClimateTypeToString(gClimate);
+            auto& gameState = OpenRCT2::GetGameState();
+            return ClimateTypeToString(gameState.Climate);
         }
 
         std::shared_ptr<ScClimateState> current_get() const
         {
-            std::string weatherType = WeatherTypeToString(gClimateCurrent.Weather);
-            return std::make_shared<ScClimateState>(weatherType, gClimateCurrent.Temperature);
+            auto& gameState = OpenRCT2::GetGameState();
+            std::string weatherType = WeatherTypeToString(gameState.ClimateCurrent.Weather);
+            return std::make_shared<ScClimateState>(weatherType, gameState.ClimateCurrent.Temperature);
         }
 
         std::shared_ptr<ScClimateState> future_get() const
         {
-            std::string weatherType = WeatherTypeToString(gClimateNext.Weather);
-            return std::make_shared<ScClimateState>(weatherType, gClimateNext.Temperature);
+            auto& gameState = OpenRCT2::GetGameState();
+            std::string weatherType = WeatherTypeToString(gameState.ClimateNext.Weather);
+            return std::make_shared<ScClimateState>(weatherType, gameState.ClimateNext.Temperature);
         }
 
         static void Register(duk_context* ctx)

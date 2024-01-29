@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -322,6 +322,7 @@ declare global {
         queryAction(action: "footpathplace", args: FootpathPlaceArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "footpathlayoutplace", args: FootpathLayoutPlaceArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "footpathremove", args: FootpathRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: "gamesetspeed", args: GameSetSpeedArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "guestsetflags", args: GuestSetFlagsArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "guestsetname", args: GuestSetNameArgs, callback?: (result: GameActionResult) => void): void;
         queryAction(action: "landbuyrights", args: LandBuyRightsArgs, callback?: (result: GameActionResult) => void): void;
@@ -413,6 +414,7 @@ declare global {
         executeAction(action: "footpathplace", args: FootpathPlaceArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "footpathlayoutplace", args: FootpathLayoutPlaceArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "footpathremove", args: FootpathRemoveArgs, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: "gamesetspeed", args: GameSetSpeedArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "guestsetflags", args: GuestSetFlagsArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "guestsetname", args: GuestSetNameArgs, callback?: (result: GameActionResult) => void): void;
         executeAction(action: "landbuyrights", args: LandBuyRightsArgs, callback?: (result: GameActionResult) => void): void;
@@ -646,6 +648,7 @@ declare global {
         "footpathplace" |
         "footpathlayoutplace" |
         "footpathremove" |
+        "gamesetspeed" |
         "guestsetflags" |
         "guestsetname" |
         "landbuyrights" |
@@ -812,6 +815,10 @@ declare global {
         x: number;
         y: number;
         z: number;
+    }
+
+    interface GameSetSpeedArgs extends GameActionArgs {
+        speed: number;
     }
 
     // recommendation: use Peep.setFlag instead of the GuestSetFlag action
@@ -1140,6 +1147,7 @@ declare global {
         quadrant: number;
         primaryColour: number;
         secondaryColour: number;
+        tertiaryColour: number;
     }
 
     interface SmallSceneryRemoveArgs extends GameActionArgs {
@@ -1465,6 +1473,7 @@ declare global {
         occupiedQuadrants: number;
         isGhost: boolean;
         isHidden: boolean; /** Take caution when changing this field, it may invalidate TileElements you have stored in your script. */
+        owner: number;
     }
 
     interface SurfaceElement extends BaseTileElement {
@@ -1535,6 +1544,7 @@ declare global {
         object: number;
         primaryColour: number;
         secondaryColour: number;
+        tertiaryColour: number;
         quadrant: number;
         age: number;
     }
@@ -2757,6 +2767,35 @@ declare global {
          * The list of thoughts this guest has.
          */
         readonly thoughts: Thought[];
+
+        /**
+         * The list of items this guest has.
+         */
+        readonly items: GuestItem[];
+
+        /**
+         * Checks whether this guest has a certain item.
+         * @param item The item to check.
+         */
+        hasItem(item: GuestItem): boolean;
+
+        /**
+         * Gives an item to the guest. Guests can only have one item of a given type.
+         * If this guest already has an item of the same type, this will override the current item.
+         * @param item The item to give.
+         */
+        giveItem(item: GuestItem): void;
+
+        /**
+         * Removes an item from the guest's possession.
+         * @param item The item to remove.
+         */
+        removeItem(item: GuestItem): void;
+
+        /**
+         * Removes all items from the guest's possession.
+         */
+        removeAllItems(): void;
     }
 
     /**
@@ -2918,6 +2957,120 @@ declare global {
         "nice_ride_deprecated" |
         "excited_deprecated" |
         "here_we_are";
+
+    type GuestItemType =
+        "balloon" |
+        "hat" |
+        "map" |
+        "sunglasses" |
+        "toy" |
+        "tshirt" |
+        "umbrella" |
+        "photo1" |
+        "photo2" |
+        "photo3" |
+        "photo4" |
+        "voucher" |
+        "beef_noodles" |
+        "burger" |
+        "candyfloss" |
+        "chicken" |
+        "chips" |
+        "chocolate" |
+        "cookie" |
+        "doughnut" |
+        "hot_dog" |
+        "fried_rice_noodles" |
+        "funnel_cake" |
+        "ice_cream" |
+        "meatball_soup" |
+        "pizza" |
+        "popcorn" |
+        "pretzel" |
+        "roast_sausage" |
+        "sub_sandwich" |
+        "tentacle" |
+        "toffee_apple" |
+        "wonton_soup" |
+        "coffee" |
+        "drink" |
+        "fruit_juice" |
+        "iced_tea" |
+        "lemonade" |
+        "soybean_milk" |
+        "sujeonggwa" |
+        "empty_bottle" |
+        "empty_bowl_blue" |
+        "empty_bowl_red" |
+        "empty_box" |
+        "empty_burger_box" |
+        "empty_can" |
+        "empty_cup" |
+        "empty_drink_carton" |
+        "empty_juice_cup" |
+        "rubbish";
+
+    type VoucherType =
+        "entry_free" |
+        "entry_half_price" |
+        "ride_free" |
+        "food_drink_free";
+
+    /**
+     * Represents an item in a guest's possession.
+     * If giving a guest a photo or voucher, use the other interfaces instead.
+     */
+    interface GuestItem {
+        /**
+         * The type of item.
+         */
+        readonly type: GuestItemType;
+    }
+
+    /**
+     * Represents an on-ride photo in a guest's possession.
+     */
+    interface GuestPhoto extends GuestItem {
+        readonly type: "photo1" | "photo2" | "photo3" | "photo4";
+        /**
+         * The id of the ride the on-ride photo is for.
+         */
+        readonly rideId: number;
+    }
+
+    /**
+     * Represents a voucher in a guest's possession. If giving a guest a voucher for free rides
+     * or free food/drink, use the other interfaces instead.
+     */
+    interface Voucher extends GuestItem {
+        readonly type: "voucher";
+        /**
+         * The type of voucher.
+         */
+        readonly voucherType: VoucherType;
+    }
+
+    /**
+     * Represents a voucher for a free ride in a guest's possession.
+     */
+    interface RideVoucher extends Voucher {
+        readonly voucherType: "ride_free";
+        /**
+         * The id of the ride the voucher is for.
+         */
+        readonly rideId: number;
+    }
+
+    /**
+     * Represents a voucher for free food or drink in a guest's possession.
+     */
+    interface FoodDrinkVoucher extends Voucher {
+        readonly voucherType: "food_drink_free";
+        /**
+         * The type of food or drink the voucher is for.
+         */
+        readonly item: GuestItemType;
+    }
 
     /**
      * Represents a staff member.

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,11 +26,11 @@ struct TrackCurveChain
 struct TrackDescriptor
 {
     bool starts_diagonal;
-    uint8_t slope_start;
-    uint8_t bank_start;
-    uint8_t track_curve;
-    uint8_t slope_end;
-    uint8_t bank_end;
+    TrackPitch slope_start;
+    TrackRoll RollStart;
+    TrackCurve track_curve;
+    TrackPitch slope_end;
+    TrackRoll RollEnd;
     track_type_t track_element;
 };
 

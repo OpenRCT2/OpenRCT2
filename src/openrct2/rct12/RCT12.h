@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -73,6 +73,9 @@ constexpr uint8_t RCT12PeepThoughtItemNone = std::numeric_limits<uint8_t>::max()
 
 constexpr uint8_t RCT12GuestsInParkHistoryFactor = 20;
 constexpr uint8_t RCT12ParkHistoryUndefined = std::numeric_limits<uint8_t>::max();
+
+struct TrackDesign;
+struct TrackDesignTrackElement;
 
 enum class RCT12TrackDesignVersion : uint8_t
 {
@@ -167,6 +170,25 @@ enum
     RCT12_ENTITY_FLAGS_IS_CRASHED_VEHICLE_ENTITY = 1 << 7,
 };
 
+// Only written to in RCT2, not used in OpenRCT2. All of these are elements that had to be invented in RCT1.
+enum : uint32_t
+{
+    TRACK_FLAGS_CONTAINS_VERTICAL_LOOP = (1 << 7),
+    TRACK_FLAGS_CONTAINS_INLINE_TWIST = (1 << 17),
+    TRACK_FLAGS_CONTAINS_HALF_LOOP = (1 << 18),
+    TRACK_FLAGS_CONTAINS_CORKSCREW = (1 << 19),
+    TRACK_FLAGS_CONTAINS_WATER_SPLASH = (1 << 27),
+    TRACK_FLAGS_CONTAINS_BARREL_ROLL = (1 << 29),
+    TRACK_FLAGS_CONTAINS_POWERED_LIFT = (1 << 30),
+    TRACK_FLAGS_CONTAINS_LARGE_HALF_LOOP = (1u << 31),
+};
+
+enum : uint32_t
+{
+    TRACK_FLAGS2_CONTAINS_LOG_FLUME_REVERSER = (1 << 1),
+    TRACK_FLAGS2_SIX_FLAGS_RIDE_DEPRECATED = (1u << 31) // Not used anymore.
+};
+
 #pragma pack(push, 1)
 
 struct RCT12xy8
@@ -192,6 +214,12 @@ struct RCT12xy8
 };
 assert_struct_size(RCT12xy8, 2);
 
+enum class TD46MazeElementType : uint8_t
+{
+    Entrance = (1 << 3),
+    Exit = (1 << 7)
+};
+
 /* Maze Element entry   size: 0x04 */
 struct TD46MazeElement
 {
@@ -213,6 +241,16 @@ struct TD46MazeElement
             };
         };
     };
+
+    constexpr bool IsEntrance() const
+    {
+        return Type == EnumValue(TD46MazeElementType::Entrance);
+    }
+
+    constexpr bool IsExit() const
+    {
+        return Type == EnumValue(TD46MazeElementType::Exit);
+    }
 };
 assert_struct_size(TD46MazeElement, 0x04);
 
@@ -900,3 +938,25 @@ template<typename T> std::vector<RideId> RCT12GetRidesBeenOn(T* srcPeep)
     }
     return ridesBeenOn;
 }
+
+enum class TD46Flags : uint8_t
+{
+    StationId = 0b00000011,
+    SpeedOrSeatRotation = 0b00001111,
+    ColourScheme = 0b00110000,
+    IsInverted = 0b01000000,
+    HasChain = 0b10000000,
+};
+
+void ConvertFromTD46Flags(TrackDesignTrackElement& target, uint8_t flags);
+uint8_t ConvertToTD46Flags(const TrackDesignTrackElement& source);
+void ImportMazeElement(TrackDesign& td, const TD46MazeElement& td46MazeElement);
+
+namespace RCT12
+{
+    /**
+     * Iterates an RCT string buffer and returns the length of the string in bytes.
+     * Handles single and multi-byte strings.
+     */
+    size_t GetRCTStringBufferLen(const char* buffer, size_t maxBufferLen);
+} // namespace RCT12
