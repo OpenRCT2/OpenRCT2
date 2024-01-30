@@ -961,6 +961,7 @@ static constexpr PreviewTrack TrackBlocks039[] = {
     TRACK_BLOCK_END
 };
 
+// LeftVerticalLoop
 static constexpr PreviewTrack TrackBlocks040[] = {
     { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
     { 1, -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
@@ -975,6 +976,7 @@ static constexpr PreviewTrack TrackBlocks040[] = {
     TRACK_BLOCK_END
 };
 
+// RightVerticalLoop
 static constexpr PreviewTrack TrackBlocks041[] = {
     { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
     { 1, -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
@@ -1091,6 +1093,7 @@ static constexpr PreviewTrack TrackBlocks055[] = {
     TRACK_BLOCK_END
 };
 
+// HalfLoopUp
 static constexpr PreviewTrack TrackBlocks056[] = {
     { 0, 0, 0, 0, 32, { 0b1111, 0b1100 }, 0 },
     { 1, -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
@@ -1099,6 +1102,7 @@ static constexpr PreviewTrack TrackBlocks056[] = {
     TRACK_BLOCK_END
 };
 
+// HalfLoopDown
 static constexpr PreviewTrack TrackBlocks057[] = {
     { 0, 0, 0, -32, 32, { 0b1111, 0 }, 0 },
     { 1, -32, 0, -120, 96,{ 0b0011, 0 }, 0 },
@@ -2076,6 +2080,7 @@ static constexpr PreviewTrack TrackBlocks182[] = {
     TRACK_BLOCK_END
 };
 
+// LeftLargeHalfLoopUp
 static constexpr PreviewTrack TrackBlocks183[] = {
     { 0, 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
     { 1, -32, 0, 16, 40, { 0b1111, 0b1100 }, 0 },
@@ -2087,6 +2092,7 @@ static constexpr PreviewTrack TrackBlocks183[] = {
     TRACK_BLOCK_END
 };
 
+// RightLargeHalfLoopUp
 static constexpr PreviewTrack TrackBlocks184[] = {
     { 0, 0, 0, 0, 24, { 0b1111, 0b1100 }, 0 },
     { 1, -32, 0, 16, 40, { 0b1111, 0b1100 }, 0 },
@@ -2098,6 +2104,7 @@ static constexpr PreviewTrack TrackBlocks184[] = {
     TRACK_BLOCK_END
 };
 
+// LeftLargeHalfLoopDown
 static constexpr PreviewTrack TrackBlocks185[] = {
     { 0, 0, 0, -32, 24, { 0b1111, 0 }, 0 },
     { 1, -32, 0, -216, 192, { 0b1111, 0 }, 0 },
@@ -2109,6 +2116,7 @@ static constexpr PreviewTrack TrackBlocks185[] = {
     TRACK_BLOCK_END
 };
 
+// RightLargeHalfLoopDown
 static constexpr PreviewTrack TrackBlocks186[] = {
     { 0, 0, 0, -32, 24, { 0b1111, 0 }, 0 },
     { 1, -32, 0, -216, 192, { 0b1111, 0 }, 0 },
@@ -2148,6 +2156,7 @@ static constexpr PreviewTrack TrackBlocks190[] = {
     TRACK_BLOCK_END
 };
 
+// FlyerHalfLoopUninvertedUp
 static constexpr PreviewTrack TrackBlocks191[] = {
     { 0, 0, 0, 0, 32, { 0b1111, 0b1100 }, 0 },
     { 1, -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
@@ -2156,6 +2165,7 @@ static constexpr PreviewTrack TrackBlocks191[] = {
     TRACK_BLOCK_END
 };
 
+// FlyerHalfLoopInvertedDown
 static constexpr PreviewTrack TrackBlocks192[] = {
     { 0, 0, 0, 0, 32, { 0b1111, 0 }, 0 },
     { 1, -32, 0, -88, 96,{ 0b0011, 0 }, 0 },
