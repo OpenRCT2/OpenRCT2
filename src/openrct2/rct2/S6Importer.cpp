@@ -1640,7 +1640,7 @@ namespace RCT2
             }
         }
 
-        void ImportResearchList(GameState_t gameState)
+        void ImportResearchList(GameState_t& gameState)
         {
             bool invented = true;
             for (const auto& researchItem : _s6.ResearchItems)
