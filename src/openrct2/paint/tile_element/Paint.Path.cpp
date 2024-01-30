@@ -83,7 +83,22 @@ static constexpr BoundBoxXY stru_98D804[] = {
 };
 
 static constexpr WoodenSupportSubType PathSupportOrientation[] = {
-    WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw, WoodenSupportSubType::NwSe, WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw, WoodenSupportSubType::NwSe, WoodenSupportSubType::NeSw, WoodenSupportSubType::NwSe, WoodenSupportSubType::NwSe, WoodenSupportSubType::NwSe, WoodenSupportSubType::NwSe, WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw, WoodenSupportSubType::NwSe, WoodenSupportSubType::NeSw,
+    WoodenSupportSubType::NeSw, 
+    WoodenSupportSubType::NeSw, 
+    WoodenSupportSubType::NwSe, 
+    WoodenSupportSubType::NeSw,
+    WoodenSupportSubType::NeSw, 
+    WoodenSupportSubType::NeSw, 
+    WoodenSupportSubType::NwSe, 
+    WoodenSupportSubType::NeSw,
+    WoodenSupportSubType::NwSe, 
+    WoodenSupportSubType::NwSe, 
+    WoodenSupportSubType::NwSe, 
+    WoodenSupportSubType::NwSe,
+    WoodenSupportSubType::NeSw, 
+    WoodenSupportSubType::NeSw, 
+    WoodenSupportSubType::NwSe, 
+    WoodenSupportSubType::NeSw,
 };
 // clang-format on
 
@@ -866,10 +881,8 @@ static BoundBoxXYZ PathPaintGetBoundbox(const PaintSession& session, int32_t hei
     const bool hasPassedSurface = (session.Flags & PaintSessionFlags::PassedSurface) != 0;
     if (!hasPassedSurface)
     {
-        boundBoxOffset.x = 3;
-        boundBoxOffset.y = 3;
-        boundBoxSize.x = 26;
-        boundBoxSize.y = 26;
+        boundBoxOffset = { 3, 3 };
+        boundBoxSize = { 26, 26 };
     }
 
     // By default, add 1 to the z bounding box to always clip above the surface
@@ -877,12 +890,10 @@ static BoundBoxXYZ PathPaintGetBoundbox(const PaintSession& session, int32_t hei
 
     // If we are on the same tile as a straight track, add the offset 2 so we
     //  can clip above gravel part of the track sprite
-    if (session.TrackElementOnSameHeight != nullptr)
+    if (session.TrackElementOnSameHeight != nullptr
+        && session.TrackElementOnSameHeight->AsTrack()->GetTrackType() == TrackElemType::Flat)
     {
-        if (session.TrackElementOnSameHeight->AsTrack()->GetTrackType() == TrackElemType::Flat)
-        {
-            boundingBoxZOffset = 2;
-        }
+        boundingBoxZOffset = 2;
     }
 
     return BoundBoxXYZ({ boundBoxOffset, height + boundingBoxZOffset }, { boundBoxSize, 0 });
