@@ -232,7 +232,7 @@ GameActions::Result TrackPlaceAction::Query() const
 
         int32_t baseZ = Floor2(mapLoc.z, COORDS_Z_STEP);
 
-        int32_t clearanceZ = trackBlock->var_07;
+        int32_t clearanceZ = trackBlock->ClearanceZ;
         if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
         {
             clearanceZ += 24;
@@ -450,7 +450,7 @@ GameActions::Result TrackPlaceAction::Execute() const
         auto quarterTile = trackBlock->var_08.Rotate(_origin.direction);
 
         int32_t baseZ = Floor2(mapLoc.z, COORDS_Z_STEP);
-        int32_t clearanceZ = trackBlock->var_07;
+        int32_t clearanceZ = trackBlock->ClearanceZ;
         if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && clearanceHeight > 24)
         {
             clearanceZ += 24;
