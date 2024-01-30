@@ -1095,7 +1095,7 @@ static constexpr PreviewTrack TrackBlocks055[] = {
 
 // HalfLoopUp
 static constexpr PreviewTrack TrackBlocks056[] = {
-    { 0, 0, 0, 0, 32, { 0b1111, 0b1100 }, 0 },
+    { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
     { 1, -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
     { 2, -64, 0, 32, 96,{ 0b0011, 0 }, 0 },
     { 3, -32, 0, 120, 16, { 0b1111, 0 }, 0 },
@@ -1104,7 +1104,7 @@ static constexpr PreviewTrack TrackBlocks056[] = {
 
 // HalfLoopDown
 static constexpr PreviewTrack TrackBlocks057[] = {
-    { 0, 0, 0, -32, 32, { 0b1111, 0 }, 0 },
+    { 0, 0, 0, -32, 16, { 0b1111, 0 }, 0 },
     { 1, -32, 0, -120, 96,{ 0b0011, 0 }, 0 },
     { 2, 0, 0, -136, 16, { 0b1111, 0b1100 }, 0 },
     { 3, 32, 0, -152, 16, { 0b1111, 0b1100 }, 0 },
