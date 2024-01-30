@@ -2106,7 +2106,7 @@ static constexpr PreviewTrack TrackBlocks184[] = {
 
 // LeftLargeHalfLoopDown
 static constexpr PreviewTrack TrackBlocks185[] = {
-    { 0, 0, 0, -32, 24, { 0b1111, 0 }, 0 },
+    { 0, 0, 0, -32, 16, { 0b1111, 0 }, 0 },
     { 1, -32, 0, -216, 192, { 0b1111, 0 }, 0 },
     { 2, -64, 0, -160, 96, { 0b1111, 0 }, 0 },
     { 3, -32, -32, -216, 192, { 0b1111, 0 }, 0 },
@@ -2118,7 +2118,7 @@ static constexpr PreviewTrack TrackBlocks185[] = {
 
 // RightLargeHalfLoopDown
 static constexpr PreviewTrack TrackBlocks186[] = {
-    { 0, 0, 0, -32, 24, { 0b1111, 0 }, 0 },
+    { 0, 0, 0, -32, 16, { 0b1111, 0 }, 0 },
     { 1, -32, 0, -216, 192, { 0b1111, 0 }, 0 },
     { 2, -64, 0, -160, 96, { 0b1111, 0 }, 0 },
     { 3, -32, 32, -216, 192, { 0b1111, 0 }, 0 },
