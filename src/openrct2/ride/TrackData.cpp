@@ -2863,7 +2863,7 @@ static constexpr PreviewTrack TrackBlocksRightFlyerLargeHalfLoopUninvertedUp[] =
 };
 
 static constexpr PreviewTrack TrackBlocksLeftFlyerLargeHalfLoopInvertedDown[] = {
-    { 0, 0, 0, 0, 24, { 0b1111, 0 }, 0 },
+    { 0, 0, 0, 0, 16, { 0b1111, 0 }, 0 },
     { 1, -32, 0, -184, 192, { 0b1111, 0 }, 0 },
     { 2, -64, 0, -128, 96, { 0b1111, 0 }, 0 },
     { 3, -32, -32, -184, 192, { 0b1111, 0 }, 0 },
@@ -2874,7 +2874,7 @@ static constexpr PreviewTrack TrackBlocksLeftFlyerLargeHalfLoopInvertedDown[] = 
 };
 
 static constexpr PreviewTrack TrackBlocksRightFlyerLargeHalfLoopInvertedDown[] = {
-    { 0, 0, 0, 0, 24, { 0b1111, 0 }, 0 },
+    { 0, 0, 0, 0, 16, { 0b1111, 0 }, 0 },
     { 1, -32, 0, -184, 192, { 0b1111, 0 }, 0 },
     { 2, -64, 0, -128, 96, { 0b1111, 0 }, 0 },
     { 3, -32, 32, -184, 192, { 0b1111, 0 }, 0 },
@@ -2907,7 +2907,7 @@ static constexpr PreviewTrack TrackBlocksRightFlyerLargeHalfLoopInvertedUp[] = {
 };
 
 static constexpr PreviewTrack TrackBlocksLeftFlyerLargeHalfLoopUninvertedDown[] = {
-    { 0, 0, 0, -32, 40, { 0b1111, 0 }, 0 },
+    { 0, 0, 0, -32, 32, { 0b1111, 0 }, 0 },
     { 1, -32, 0, -216, 192, { 0b1111, 0 }, 0 },
     { 2, -64, 0, -160, 96, { 0b1111, 0 }, 0 },
     { 3, -32, -32, -216, 192, { 0b1111, 0 }, 0 },
@@ -2918,7 +2918,7 @@ static constexpr PreviewTrack TrackBlocksLeftFlyerLargeHalfLoopUninvertedDown[] 
 };
 
 static constexpr PreviewTrack TrackBlocksRightFlyerLargeHalfLoopUninvertedDown[] = {
-    { 0, 0, 0, -32, 40, { 0b1111, 0 }, 0 },
+    { 0, 0, 0, -32, 32, { 0b1111, 0 }, 0 },
     { 1, -32, 0, -216, 192, { 0b1111, 0 }, 0 },
     { 2, -64, 0, -160, 96, { 0b1111, 0 }, 0 },
     { 3, -32, 32, -216, 192, { 0b1111, 0 }, 0 },
