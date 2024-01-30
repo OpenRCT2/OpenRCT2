@@ -24,6 +24,7 @@
 - Fix: [#21198] [Plugin] Setting brake or booster speeds on a tile element doesn’t work.
 - Fix: [#21290] Sound keeps playing when paused from fast-forward mode.
 - Fix: [#21291] Hungry guests heading to any flat ride do not count for warning threshold (original bug).
+- Fix: [#21309] Africa - Oasis & Blackpool Pleasure Beach’s monorails are built outside the park’s land rights.
 - Fix: [#21316] Isolated land for sale tile on Extreme Hawaiian Island.
 
 0.4.7 (2023-12-31)
