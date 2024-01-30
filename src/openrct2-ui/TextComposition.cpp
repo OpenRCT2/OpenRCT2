@@ -38,11 +38,7 @@ bool TextComposition::IsActive()
 
 TextInputSession* TextComposition::Start(u8string& buffer, size_t maxLength)
 {
-    // TODO This doesn't work, and position could be improved to where text entry is
-    SDL_Rect rect = { 10, 10, 100, 100 };
-    SDL_SetTextInputRect(&rect);
     SDL_StartTextInput();
-
     _session.Buffer = &buffer;
     _session.MaxLength = maxLength;
     _session.SelectionStart = buffer.size();
