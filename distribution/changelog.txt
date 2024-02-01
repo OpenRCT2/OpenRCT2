@@ -1,7 +1,7 @@
 0.4.8 (in development)
 ------------------------------------------------------------------------
 - Feature: [#21062] [Plugin] Add API for managing a guest's items.
-- Improved: [#18632] Land ownership and construction rights are now shown on top of the water.
+- Improved: [#18632, #21306] Land ownership and construction rights are now shown on top of the water.
 - Improved: [#20951] Activate OpenRCT2 window after using native file dialog on macOS.
 - Improved: [#21184] The construction marker for rides, paths and large scenery is now shown on top of the water.
 - Improved: [#21227] Entrance style dropdown is now sorted alphabetically everywhere.
