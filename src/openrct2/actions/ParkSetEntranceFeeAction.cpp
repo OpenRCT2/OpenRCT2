@@ -10,10 +10,13 @@
 #include "ParkSetEntranceFeeAction.h"
 
 #include "../Cheats.h"
+#include "../GameState.h"
 #include "../core/MemoryStream.h"
 #include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../world/Park.h"
+
+using namespace OpenRCT2;
 
 ParkSetEntranceFeeAction::ParkSetEntranceFeeAction(money64 fee)
     : _fee(fee)
@@ -39,7 +42,7 @@ void ParkSetEntranceFeeAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result ParkSetEntranceFeeAction::Query() const
 {
-    bool noMoney = (gParkFlags & PARK_FLAGS_NO_MONEY) != 0;
+    bool noMoney = (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) != 0;
     bool forceFreeEntry = !ParkEntranceFeeUnlocked();
     if (noMoney || forceFreeEntry)
     {
@@ -47,14 +50,15 @@ GameActions::Result ParkSetEntranceFeeAction::Query() const
     }
     if (_fee < 0.00_GBP || _fee > MAX_ENTRANCE_FEE)
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
     return GameActions::Result();
 }
 
 GameActions::Result ParkSetEntranceFeeAction::Execute() const
 {
-    gParkEntranceFee = _fee;
+    GetGameState().ParkEntranceFee = _fee;
     WindowInvalidateByClass(WindowClass::ParkInformation);
     return GameActions::Result();
 }

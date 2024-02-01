@@ -10,6 +10,7 @@
 #include "ParkEntrancePlaceAction.h"
 
 #include "../Cheats.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
 #include "../localisation/StringIds.h"
@@ -20,6 +21,8 @@
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Surface.h"
+
+using namespace OpenRCT2;
 
 ParkEntrancePlaceAction::ParkEntrancePlaceAction(const CoordsXYZD& location, ObjectEntryIndex pathType)
     : _loc(location)
@@ -71,7 +74,8 @@ GameActions::Result ParkEntrancePlaceAction::Query() const
             GameActions::Status::NoFreeElements, STR_CANT_BUILD_THIS_HERE, STR_ERR_LANDSCAPE_DATA_AREA_FULL);
     }
 
-    if (gParkEntrances.size() >= OpenRCT2::Limits::MaxParkEntrances)
+    const auto& gameState = GetGameState();
+    if (gameState.ParkEntrances.size() >= OpenRCT2::Limits::MaxParkEntrances)
     {
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
@@ -117,7 +121,7 @@ GameActions::Result ParkEntrancePlaceAction::Execute() const
 
     uint32_t flags = GetFlags();
 
-    gParkEntrances.push_back(_loc);
+    GetGameState().ParkEntrances.push_back(_loc);
 
     auto zLow = _loc.z;
     auto zHigh = zLow + ParkEntranceHeight;

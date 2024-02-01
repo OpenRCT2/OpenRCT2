@@ -42,7 +42,7 @@ void RideConstructNew(RideSelection listItem)
 }
 
 SpecialElementsDropdownState BuildSpecialElementsList(
-    const Ride& currentRide, uint8_t buildDirection, uint8_t buildSlope, uint8_t buildBank, RideConstructionState state)
+    const Ride& currentRide, uint8_t buildDirection, TrackPitch buildSlope, TrackRoll buildBank, RideConstructionState state)
 {
     auto buildDirectionIsDiagonal = TrackPieceDirectionIsDiagonal(buildDirection);
     SpecialElementsDropdownState list;
@@ -54,19 +54,19 @@ SpecialElementsDropdownState BuildSpecialElementsList(
     for (track_type_t trackType : DropdownOrder)
     {
         const auto& ted = GetTrackElementDescriptor(trackType);
-        if (!IsTrackEnabled(ted.Definition.type))
+        if (!IsTrackEnabled(ted.Definition.Type))
             continue;
         bool entryIsDisabled;
 
         // If the current build orientation (slope, bank, diagonal) matches the track element's, show the piece as enabled
         if (state == RideConstructionState::Back)
         {
-            entryIsDisabled = ted.Definition.vangle_end != buildSlope || ted.Definition.bank_end != buildBank
+            entryIsDisabled = ted.Definition.PitchEnd != buildSlope || ted.Definition.RollEnd != buildBank
                 || TrackPieceDirectionIsDiagonal(ted.Coordinates.rotation_end) != buildDirectionIsDiagonal;
         }
         else
         {
-            entryIsDisabled = ted.Definition.vangle_start != buildSlope || ted.Definition.bank_start != buildBank
+            entryIsDisabled = ted.Definition.PitchStart != buildSlope || ted.Definition.RollStart != buildBank
                 || TrackPieceDirectionIsDiagonal(ted.Coordinates.rotation_begin) != buildDirectionIsDiagonal;
         }
 

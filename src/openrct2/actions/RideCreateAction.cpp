@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../GameState.h"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
 #include "../interface/Window.h"
@@ -26,6 +27,8 @@
 #include "../world/Park.h"
 
 #include <algorithm>
+
+using namespace OpenRCT2;
 
 RideCreateAction::RideCreateAction(
     int32_t rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2, ObjectEntryIndex entranceObjectIndex)
@@ -207,7 +210,8 @@ GameActions::Result RideCreateAction::Execute() const
         price = 0;
     }
 
-    if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+    auto& gameState = GetGameState();
+    if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
     {
         for (auto i = 0; i < RCT2::ObjectLimits::MaxShopItemsPerRideEntry; i++)
         {
@@ -216,7 +220,7 @@ GameActions::Result RideCreateAction::Execute() const
 
         if (rideEntry->shop_item[0] == ShopItem::None)
         {
-            if (!ParkRidePricesUnlocked() || gParkEntranceFee > 0)
+            if (!ParkRidePricesUnlocked() || gameState.ParkEntranceFee > 0)
             {
                 ride->price[0] = 0;
             }
@@ -230,7 +234,7 @@ GameActions::Result RideCreateAction::Execute() const
             ride->price[1] = GetShopItemDescriptor(rideEntry->shop_item[1]).DefaultPrice;
         }
 
-        if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
+        if (gameState.ScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
         {
             ride->price[0] = 0;
         }

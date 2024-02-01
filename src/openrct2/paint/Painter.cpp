@@ -10,6 +10,7 @@
 #include "Painter.h"
 
 #include "../Game.h"
+#include "../GameState.h"
 #include "../Intro.h"
 #include "../OpenRCT2.h"
 #include "../ReplayManager.h"
@@ -94,7 +95,7 @@ void Painter::PaintReplayNotice(DrawPixelInfo& dpi, const char* text)
     auto stringWidth = GfxGetStringWidth(buffer, FontStyle::Medium);
     screenCoords.x = screenCoords.x - stringWidth;
 
-    if (((gCurrentTicks >> 1) & 0xF) > 4)
+    if (((GetGameState().CurrentTicks >> 1) & 0xF) > 4)
         GfxDrawString(dpi, screenCoords, buffer, { COLOUR_SATURATED_RED });
 
     // Make area dirty so the text doesn't get drawn over the last

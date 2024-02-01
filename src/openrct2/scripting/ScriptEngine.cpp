@@ -518,18 +518,18 @@ void ScriptEngine::RegisterConstants()
 {
     ConstantBuilder builder(_context);
     builder.Namespace("TrackSlope")
-        .Constant("None", TRACK_SLOPE_NONE)
-        .Constant("Up25", TRACK_SLOPE_UP_25)
-        .Constant("Up60", TRACK_SLOPE_UP_60)
-        .Constant("Down25", TRACK_SLOPE_DOWN_25)
-        .Constant("Down60", TRACK_SLOPE_DOWN_60)
-        .Constant("Up90", TRACK_SLOPE_UP_90)
-        .Constant("Down90", TRACK_SLOPE_DOWN_90);
+        .Constant("None", EnumValue(TrackPitch::None))
+        .Constant("Up25", EnumValue(TrackPitch::Up25))
+        .Constant("Up60", EnumValue(TrackPitch::Up60))
+        .Constant("Down25", EnumValue(TrackPitch::Down25))
+        .Constant("Down60", EnumValue(TrackPitch::Down60))
+        .Constant("Up90", EnumValue(TrackPitch::Up90))
+        .Constant("Down90", EnumValue(TrackPitch::Down90));
     builder.Namespace("TrackBanking")
-        .Constant("None", TRACK_BANK_NONE)
-        .Constant("BankLeft", TRACK_BANK_LEFT)
-        .Constant("BankRight", TRACK_BANK_RIGHT)
-        .Constant("UpsideDown", TRACK_BANK_UPSIDE_DOWN);
+        .Constant("None", EnumValue(TrackRoll::None))
+        .Constant("BankLeft", EnumValue(TrackRoll::Left))
+        .Constant("BankRight", EnumValue(TrackRoll::Right))
+        .Constant("UpsideDown", EnumValue(TrackRoll::UpsideDown));
 }
 
 void ScriptEngine::RefreshPlugins()
@@ -1634,7 +1634,7 @@ void ScriptEngine::RemoveInterval(const std::shared_ptr<Plugin>& plugin, Interva
     // Only allow owner or REPL (nullptr) to remove intervals
     if (plugin == nullptr || interval.Owner == plugin)
     {
-        _intervals.erase(it);
+        interval.Deleted = true;
     }
 }
 
@@ -1653,21 +1653,43 @@ void ScriptEngine::UpdateIntervals()
     }
     _lastIntervalTimestamp = timestamp;
 
-    for (auto it = _intervals.begin(), itNext = it; it != _intervals.end(); it = itNext)
+    // Erase all intervals marked as deleted.
+    for (auto it = _intervals.begin(); it != _intervals.end();)
     {
-        itNext++;
-
         auto& interval = it->second;
 
-        if (timestamp >= interval.LastTimestamp + interval.Delay)
+        if (interval.Deleted)
         {
-            ExecutePluginCall(interval.Owner, interval.Callback, {}, false);
+            it = _intervals.erase(it);
+        }
+        else
+        {
+            it++;
+        }
+    }
 
-            interval.LastTimestamp = timestamp;
-            if (!interval.Repeat)
-            {
-                _intervals.erase(it);
-            }
+    // Execute all intervals that are due.
+    for (auto it = _intervals.begin(); it != _intervals.end(); it++)
+    {
+        auto& interval = it->second;
+
+        if (timestamp < interval.LastTimestamp + interval.Delay)
+        {
+            continue;
+        }
+
+        if (interval.Deleted)
+        {
+            // There is a chance that in one of the callbacks it deletes another interval.
+            continue;
+        }
+
+        ExecutePluginCall(interval.Owner, interval.Callback, {}, false);
+
+        interval.LastTimestamp = timestamp;
+        if (!interval.Repeat)
+        {
+            interval.Deleted = true;
         }
     }
 }

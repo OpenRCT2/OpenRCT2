@@ -647,7 +647,11 @@ namespace OpenRCT2
 
                 GameUnloadScripts();
                 _objectManager->LoadObjects(result.RequiredObjects);
-                parkImporter->Import();
+
+                // TODO: Have a separate GameState and exchange once loaded.
+                auto& gameState = ::GetGameState();
+                parkImporter->Import(gameState);
+
                 gScenarioSavePath = path;
                 gCurrentLoadedPath = path;
                 gFirstTimeSaving = true;
@@ -678,7 +682,7 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    ScenarioBegin();
+                    ScenarioBegin(gameState);
 #ifndef DISABLE_NETWORK
                     if (_network.GetMode() == NETWORK_MODE_SERVER)
                     {

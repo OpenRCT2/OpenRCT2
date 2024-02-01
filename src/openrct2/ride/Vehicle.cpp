@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../Editor.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/RideSetStatusAction.h"
 #include "../audio/AudioChannel.h"
@@ -55,6 +56,7 @@
 #include <algorithm>
 #include <iterator>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::TrackMetaData;
 using namespace OpenRCT2::Math::Trigonometry;
@@ -1069,7 +1071,7 @@ static void UpdateSound(
         sound.Pan = sound_params->pan_x;
         sound.Channel->SetPan(DStoMixerPan(sound_params->pan_x));
     }
-    if (!(gCurrentTicks & 3) && sound_params->frequency != sound.Frequency)
+    if (!(GetGameState().CurrentTicks & 3) && sound_params->frequency != sound.Frequency)
     {
         sound.Frequency = sound_params->frequency;
         if (ShouldUpdateChannelRate<type>(id))
@@ -4909,7 +4911,7 @@ void Vehicle::UpdateHauntedHouseOperating()
 
     if (Pitch != 0)
     {
-        if (gCurrentTicks & 1)
+        if (GetGameState().CurrentTicks & 1)
         {
             Pitch++;
             Invalidate();
@@ -5422,11 +5424,12 @@ void Vehicle::UpdateSound()
         frictionSound.volume = std::min(208 + (ecx & 0xFF), 255);
     }
 
+    const auto currentTicks = GetGameState().CurrentTicks;
     switch (carEntry.sound_range)
     {
         case SOUND_RANGE_WHISTLE:
             screamSound.id = scream_sound_id;
-            if (!(gCurrentTicks & 0x7F))
+            if (!(currentTicks & 0x7F))
             {
                 if (velocity < 4.0_mph || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
                 {
@@ -5448,7 +5451,7 @@ void Vehicle::UpdateSound()
 
         case SOUND_RANGE_BELL:
             screamSound.id = scream_sound_id;
-            if (!(gCurrentTicks & 0x7F))
+            if (!(currentTicks & 0x7F))
             {
                 if (velocity < 4.0_mph || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
                 {
@@ -5724,7 +5727,7 @@ int32_t Vehicle::UpdateMotionDodgems()
     if (!(curRide->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
         || curRide->breakdown_reason_pending != BREAKDOWN_SAFETY_CUT_OUT)
     {
-        if (gCurrentTicks & 1 && var_34 != 0)
+        if ((GetGameState().CurrentTicks & 1) && var_34 != 0)
         {
             if (var_34 > 0)
             {
@@ -6931,7 +6934,7 @@ static PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tile
 {
     auto trackType = tileElement->AsTrack()->GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    return PitchAndRoll{ ted.Definition.vangle_start, TrackGetActualBank3(useInvertedSprites, tileElement) };
+    return PitchAndRoll{ ted.Definition.PitchStart, TrackGetActualBank3(useInvertedSprites, tileElement) };
 }
 
 void Vehicle::UpdateGoKartAttemptSwitchLanes()
@@ -7669,7 +7672,7 @@ Loc6DAEB9:
             {
                 acceleration = -_vehicleVelocityF64E08 * 16;
             }
-            else if (!(gCurrentTicks & 0x0F))
+            else if (!(GetGameState().CurrentTicks & 0x0F))
             {
                 if (_vehicleF64E2C == 0)
                 {
@@ -7873,7 +7876,7 @@ static PitchAndRoll PitchAndRollEnd(const Ride& curRide, bool useInvertedSprites
 {
     bool isInverted = useInvertedSprites ^ tileElement->AsTrack()->IsInverted();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    return { ted.Definition.vangle_end, TrackGetActualBank2(curRide.type, isInverted, ted.Definition.bank_end) };
+    return { ted.Definition.PitchEnd, TrackGetActualBank2(curRide.type, isInverted, ted.Definition.RollEnd) };
 }
 
 /**

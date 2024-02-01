@@ -12,6 +12,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/GameState.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/object/ObjectManager.h>
@@ -261,7 +262,7 @@ public:
 
         screenCoords = { windowPos.x + previewWidget->midX(), windowPos.y + previewWidget->bottom + 5 };
 
-        if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             // Draw raise cost amount
             if (gLandToolRaiseCost != MONEY64_UNDEFINED && gLandToolRaiseCost != 0)

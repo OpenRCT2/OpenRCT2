@@ -26,6 +26,7 @@
 
 #    include "../Context.h"
 #    include "../Game.h"
+#    include "../GameState.h"
 #    include "../OpenRCT2.h"
 #    include "../PlatformEnvironment.h"
 #    include "../Version.h"
@@ -183,7 +184,8 @@ static bool OnCrash(
         auto& objManager = ctx->GetObjectManager();
         exporter->ExportObjectsList = objManager.GetPackableObjects();
 
-        exporter->Export(saveFilePathUTF8.c_str());
+        auto& gameState = GetGameState();
+        exporter->Export(gameState, saveFilePathUTF8.c_str());
         savedGameDumped = true;
     }
     catch (const std::exception& e)

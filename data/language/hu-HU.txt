@@ -598,7 +598,7 @@ STR_1207    :{WINDOW_COLOUR_2}Távozzon, ha másik vonat érkezik az állomásra
 STR_1208    :{WINDOW_COLOUR_2}Távozzon, ha másik csónak érkezik az állomásra
 STR_1209    :Válaszd ki, hogy várakozzon-e utasokra indulás előtt
 STR_1210    :Válaszd ki, hogy távozzon-e, ha egy másik jármű érkezik ugyanarra az állomásra
-STR_1211    :{WINDOW_COLOUR_2}Minimum várakozási idő
+STR_1211    :{WINDOW_COLOUR_2}Minimum várakozási idő:
 STR_1212    :{WINDOW_COLOUR_2}Maximum várakozási idő:
 STR_1213    :Az indulás előtti minimum várakozási idő kiválasztása
 STR_1214    :Az indulás előtti maximum várakozási idő kiválasztása
@@ -1100,7 +1100,7 @@ STR_1711    :{WINDOW_COLOUR_1}Biztos, hogy ki akarod rúgni őt: {STRINGID}?
 STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Utak takarítása
 STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Kertek öntözése
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Kukák ürítése
-STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Fűnyírás
+STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Fű lenyírása
 STR_1716    :Érvénytelen parknév
 STR_1717    :Nem nevezhető át a park…
 STR_1718    :Park neve
@@ -1112,7 +1112,7 @@ STR_1723    :Nem nyitható meg a park…
 STR_1724    :Nem zárható be a park…
 STR_1725    :Nem vásárolható meg a terület…
 STR_1726    :A terület nem eladó!
-STR_1727    :Az építési jogok nem eladók!
+STR_1727    :Az építési jogok nem eladóak!
 STR_1728    :Itt nem lehet építési jogokat vásárolni…
 STR_1729    :A terület nem a park tulajdona!
 STR_1730    :{RED}Zárva
@@ -1648,7 +1648,7 @@ STR_2286    :Tervezés
 STR_2287    :Terv véglegesítése
 STR_2288    :Ismeretlen
 STR_2289    :{POP16}{STRINGID} {PUSH16}{PUSH16}{STRINGID}
-STR_2291    :Válaszd ki az új játék pályáját
+STR_2291    :Válassz pályát az új játékhoz
 STR_2292    :{WINDOW_COLOUR_2}Az alábbi játékokon volt:
 STR_2293    :{BLACK} Semmi
 STR_2294    :A talajtípus megváltoztatása
@@ -2826,7 +2826,7 @@ STR_5626    :Egyéb parkok
 STR_5627    :Pályák csoportosítása:
 STR_5628    :Forrásjáték
 STR_5629    :Nehézségi szint
-STR_5630    :Progresszív feloldás bekapcsolása
+STR_5630    :Fokozatos feloldás bekapcsolása
 STR_5631    :Eredeti DLC parkok
 STR_5632    :Építsd meg a saját…
 STR_5633    :CMD +
@@ -3003,7 +3003,7 @@ STR_5843    :A pályák fokozatos feloldásának engedélyezése (RCT1-beli vise
 STR_5844    :Tartsa fenn a kapcsolatot a többjátékos{NEWLINE}szerverrel akkor is, ha szinkronizációs vagy egyéb hiba jelentkezik
 STR_5845    :Hozzáadja a hibakereső{NEWLINE}eszközök gombját az eszköztárhoz.{NEWLINE}Engedélyezi a fejlesztői konzol gyorsbillentyűjét
 STR_5846    :Az OpenRCT2 milyen gyakran mentsen automatikusan
-STR_5847    :A címképernyőn használt parkszekvencia kiválasztása.{NEWLINE}Az RCT1/2-ből származó címszekvenciák működéséhez importált pályák szükségesek
+STR_5847    :A címképernyőn használt parkjelenetek kiválasztása.{NEWLINE}Az RCT1/2-ből származó címképernyős jelenetek működéséhez importált pályák szükségesek
 STR_5849    :Az újonnan felvett alkalmazottak{NEWLINE}automatikus lerakása
 STR_5851    :Az alapértelmezett vizsgálati időköz megadása{NEWLINE}újonnan épített játékokhoz
 STR_5853    :A hanghatások be- és kikapcsolása
@@ -3309,7 +3309,7 @@ STR_6164    :{WHITE}❌
 STR_6165    :Vertikális szinkron
 STR_6166    :A megjelenített képkockákat a kijelző frissítési gyakoriságához igazítja, így megakadályozza a kép szétcsúszását.
 STR_6167    :Haladó
-STR_6168    :Főcím
+STR_6168    :Címképernyős jelenetek
 STR_6169    :Pályaválasztás
 STR_6170    :Felület finomhangolása
 STR_6171    :Keresés
@@ -3685,7 +3685,7 @@ STR_6580    :Visszaállítás
 STR_6581    :Biztosan vissza szeretnéd állítani az összes gyorsbillentyűt ezen a fülön?
 STR_6582    :Gyorsbillentyűk ablak megnyitása
 STR_6583    :{WINDOW_COLOUR_2}Fordított vonatok
-STR_6584    :Válassza ki, hogy a vonatok fordítva közlekedjenek
+STR_6584    :A vonatok visszafelé történő közlekedésének kiválasztása
 STR_6585    :Nem lehet a változtatásokat végrehajtani…
 STR_6586    :OpenRCT2
 STR_6587    :Az OpenRCT2 főcímzenéje Allister Brimble műve,{NEWLINE}CC BY-SA 4.0 licenccel.
@@ -3698,6 +3698,22 @@ STR_6593    :Park kerítések eltávolítása
 STR_6594    :Mezővizsgáló: Fal lejtésének változtatása
 STR_6595    :{WINDOW_COLOUR_2}Szerző: {BLACK}{STRING}
 STR_6596    :{WINDOW_COLOUR_2}Szerzők: {BLACK}{STRING}
+STR_6597    :Érvénytelen paraméter
+STR_6598    :Érték kívül esik a tartományon
+STR_6599    :Szellemelem nem található
+STR_6600    :Lufi nem található
+STR_6601    :Alkalmazott nem található
+STR_6602    :Játék nem található
+STR_6603    :Játék objektumbejegyzése nem található
+STR_6604    :Játékos nem található
+STR_6605    :Bejárati elem nem található
+STR_6606    :Felszíni elem nem található
+STR_6607    :Mezőelem nem találhatő
+STR_6608    :Pályaelem nem található
+STR_6609    :Pályablokk nem található
+STR_6610    :Útelem nem található
+STR_6611    :Falelem nem található
+STR_6612    :Hirdetőtábla-elem nem található
 
 #############
 # Scenarios #
@@ -4426,7 +4442,7 @@ STR_PARK    :Metropolisz
 STR_DTLS    :Egy üres telek tulajdonosa vagy a város alacsonyabb részéhez közel. Hogy a legtöbbet hozd ki városi ingatlanodból, építs egy felhőkarcoló témájú parkot, amelyet a húszas évek szárnyaló art deco építészete ihletett.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock ‘n’ Roll - Flower Power
+STR_SCNR    :Rock ‘n’ Roll - Virágbéke
 STR_PARK    :Woodstock
 STR_DTLS    :Évente megrendezésre kerül egy nagyszabású zenei fesztivál a területeden. Építs egy menő vidámparkot, hogy szórakoztasd a szabad szellemű közönséget.
 
@@ -4544,4 +4560,4 @@ STR_DTLS    :Hé, gyerekek! Érezzük jól magunkat!{NEWLINE}Szerzők: Piehead &
 <Sand Dune>
 STR_SCNR    :Homokdűne
 STR_PARK    :Homokdűne
-STR_DTLS    :Egy kis park tulajdonosaként vásároltál egy nagy darab földet a tengerparton, hogy bővíts és még több vendéget vonzz a gyönyörű homokdűnékre, de vigyázz: nem bolygathatod az ökológiailag érzékeny homokdűnéket.{NEWLINE}Szerző: rbarclay
+STR_DTLS    :Egy kis park tulajdonosaként vásároltál egy nagy darab földet a tengerparton, hogy bővíts és még több vendéget vonzz a gyönyörű homokdűnékhez, de vigyázz: nem bolygathatod az ökológiailag érzékeny homokdűnéket.{NEWLINE}Szerző: rbarclay

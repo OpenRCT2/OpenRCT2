@@ -104,19 +104,20 @@ namespace Editor
      */
     void Load()
     {
+        auto& gameState = GetGameState();
         OpenRCT2::Audio::StopAll();
         ObjectListLoad();
         OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gEditorStep = EditorStep::ObjectSelection;
-        gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-        gScenarioCategory = SCENARIO_CATEGORY_OTHER;
+        gameState.ParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+        gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         LoadPalette();
         gScreenAge = 0;
-        gScenarioName = LanguageGetString(STR_MY_NEW_SCENARIO);
+        gameState.ScenarioName = LanguageGetString(STR_MY_NEW_SCENARIO);
     }
 
     /**
@@ -144,11 +145,12 @@ namespace Editor
             return;
         }
 
-        ScenarioReset();
+        auto& gameState = GetGameState();
+        ScenarioReset(gameState);
 
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gEditorStep = EditorStep::ObjectiveSelection;
-        gScenarioCategory = SCENARIO_CATEGORY_OTHER;
+        gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
         ViewportInitAll();
         OpenEditorWindows();
         FinaliseMainView();
@@ -282,7 +284,10 @@ namespace Editor
             auto importer = ParkImporter::CreateParkFile(context->GetObjectRepository());
             auto loadResult = importer->Load(path);
             objManager.LoadObjects(loadResult.RequiredObjects);
-            importer->Import();
+
+            // TODO: Have a separate GameState and exchange once loaded.
+            auto& gameState = GetGameState();
+            importer->Import(gameState);
 
             AfterLoadCleanup(true);
             return true;
@@ -310,30 +315,32 @@ namespace Editor
             staff->SetName({});
         }
 
+        auto& gameState = GetGameState();
+
         ResetAllEntities();
         UpdateConsolidatedPatrolAreas();
-        gNumGuestsInPark = 0;
-        gNumGuestsHeadingForPark = 0;
+        gameState.NumGuestsInPark = 0;
+        gameState.NumGuestsHeadingForPark = 0;
         gNumGuestsInParkLastWeek = 0;
         gGuestChangeModifier = 0;
         if (fromSave)
         {
-            gParkFlags |= PARK_FLAGS_NO_MONEY;
+            gameState.ParkFlags |= PARK_FLAGS_NO_MONEY;
 
-            if (gParkEntranceFee == 0)
+            if (gameState.ParkEntranceFee == 0)
             {
-                gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                gameState.ParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
             }
             else
             {
-                gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+                gameState.ParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
             }
 
-            gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
+            gameState.ParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 
-            gGuestInitialCash = std::clamp(gGuestInitialCash, 10.00_GBP, MAX_ENTRANCE_FEE);
+            gameState.GuestInitialCash = std::clamp(gameState.GuestInitialCash, 10.00_GBP, MAX_ENTRANCE_FEE);
 
-            gInitialCash = std::min<money64>(gInitialCash, 100000);
+            gameState.InitialCash = std::min<money64>(GetGameState().InitialCash, 100000);
             FinanceResetCashToInitial();
 
             gBankLoan = std::clamp<money64>(gBankLoan, 0.00_GBP, 5000000.00_GBP);
@@ -343,7 +350,7 @@ namespace Editor
             gBankLoanInterestRate = std::clamp<uint8_t>(gBankLoanInterestRate, 5, MaxBankLoanInterestRate);
         }
 
-        ClimateReset(gClimate);
+        ClimateReset(gameState.Climate);
 
         News::InitQueue();
     }
@@ -498,12 +505,13 @@ namespace Editor
             return { false, STR_PARK_MUST_OWN_SOME_LAND };
         }
 
-        if (gParkEntrances.empty())
+        const auto& gameState = GetGameState();
+        if (gameState.ParkEntrances.empty())
         {
             return { false, STR_NO_PARK_ENTRANCES };
         }
 
-        for (const auto& parkEntrance : gParkEntrances)
+        for (const auto& parkEntrance : gameState.ParkEntrances)
         {
             int32_t direction = DirectionReverse(parkEntrance.direction);
 
