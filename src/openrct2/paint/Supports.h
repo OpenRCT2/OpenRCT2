@@ -48,6 +48,14 @@ enum class WoodenSupportTransitionType : uint8_t
     Up25DegToFlatRailway = 10,
     Up25DegRailway = 11,
     Scenery = 12,
+    FlatToUp60DegLongBaseSeq0 = 13,
+    FlatToUp60DegLongBaseSeq1 = 14,
+    FlatToUp60DegLongBaseSeq2 = 15,
+    FlatToUp60DegLongBaseSeq3 = 16,
+    Up60DegToFlatLongBaseSeq0 = 17,
+    Up60DegToFlatLongBaseSeq1 = 18,
+    Up60DegToFlatLongBaseSeq2 = 19,
+    Up60DegToFlatLongBaseSeq3 = 20,
 };
 
 // There are 13 types of metal supports. A graphic showing all of them is available here:
