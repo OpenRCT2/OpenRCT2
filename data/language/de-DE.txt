@@ -3695,6 +3695,22 @@ STR_6593    :Parkzäune entfernen
 STR_6594    :Kachelinspektor: Wandneigung umschalten
 STR_6595    :{WINDOW_COLOUR_2}Autor: {BLACK}{STRING}
 STR_6596    :{WINDOW_COLOUR_2}Autoren: {BLACK}{STRING}
+STR_6597    :Ungültiger Parameter
+STR_6598    :Wert liegt außerhalb des zulässigen Bereichs
+STR_6599    :Geisterelement konnte nicht gefunden werden
+STR_6600    :Ballon konnte nicht gefunden werden
+STR_6601    :Mitarbeiter konnte nicht gefunden werden
+STR_6602    :Fahrgeschäft/Attraktion konnte nicht gefunden werden
+STR_6603    :Attraktionseingang konnte nicht gefunden werden
+STR_6604    :Spieler konnte nicht gefunden werden
+STR_6605    :Eingangselement konnte nicht gefunden werden
+STR_6606    :Oberflächenelement konnte nicht gefunden werden
+STR_6607    :Kachelelement konnte nicht gefunden werden
+STR_6608    :Streckenelement konnte nicht gefunden werden
+STR_6609    :Streckenblock konnte nicht gefunden werden
+STR_6610    :Wegelement konnte nicht gefunden werden
+STR_6611    :Wandelement konnte nicht gefunden werden
+STR_6612    :Bannerelement konnte nicht gefunden werden
 
 #############
 # Scenarios #
