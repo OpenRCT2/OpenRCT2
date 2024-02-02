@@ -2550,6 +2550,21 @@ namespace RCT1
                 case SC_ALTON_TOWERS:
                     FixLandOwnershipTilesWithOwnership({ { 11, 31 }, { 68, 112 }, { 72, 118 } }, OWNERSHIP_OWNED);
                     break;
+                case SC_BLACKPOOL_PLEASURE_BEACH:
+                    FixLandOwnershipTilesWithOwnership(
+                        { { 93, 23 },
+                          { 94, 23 },
+                          { 95, 23 },
+                          { 95, 24 },
+                          { 96, 24 },
+                          { 96, 25 },
+                          { 97, 25 },
+                          { 97, 26 },
+                          { 97, 27 },
+                          { 96, 28 } },
+                        OWNERSHIP_OWNED);
+                    FixLandOwnershipTilesWithOwnership({ { 94, 24 }, { 95, 25 } }, OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                    break;
                 case SC_FORT_ANACHRONISM:
                     FixLandOwnershipTiles({ { 36, 87 }, { 54, 29 }, { 53, 88 } });
                     break;
