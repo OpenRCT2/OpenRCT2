@@ -28,6 +28,7 @@ On top of the community rules, the development and moderation team has to keep t
 - We work with a 3 strike system, if you hit strike 3 you will lose your role.
 
 ### Rules regarding PRs
+
 - Any contributor PR requires at least two code reviews, either by developers or trusted community members (at least one developer).
 - Any developer PR requires at least one code review, by another developer.
 - Any PR requires one playtest review, if applicable.
@@ -45,6 +46,7 @@ With an online presence we require maintaining a good public image. For this we 
 
 
 #### Team Signatures
+
 When finding a message on our social media the following signatures refer to the following members:
 
 | Name | Signature |
