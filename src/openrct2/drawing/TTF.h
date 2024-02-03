@@ -24,6 +24,7 @@ struct TTFSurface
     int32_t w;
     int32_t h;
     int32_t pitch;
+    uint8_t GetPixel(int32_t x, int32_t y);
 };
 
 TTFFontDescriptor* TTFGetFontFromSpriteBase(FontStyle fontStyle);

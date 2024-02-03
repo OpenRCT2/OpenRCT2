@@ -374,6 +374,13 @@ void TTFFreeSurface(TTFSurface* surface)
     free(surface);
 }
 
+uint8_t TTFSurface::GetPixel(int32_t x, int32_t y)
+{
+    if (x < 0 || y < 0 || x >= w || y >= h)
+        return 0;
+    return static_cast<const uint8_t*>(pixels)[y * pitch + x];
+}
+
 #else
 
 #    include "TTF.h"
