@@ -5,6 +5,7 @@
   <project_license>GPL-3.0</project_license>
   <name>OpenRCT2</name>
   <summary>A construction and management simulation video game that simulates amusement park management</summary>
+  <developer_name>The OpenRCT2 Team</developer_name>
   <description>
     <p>
       OpenRCT2 is an open-source re-implementation of RollerCoaster Tycoon 2 (RCT2).
