@@ -595,7 +595,6 @@ static void TTFDrawStringRawTTF(DrawPixelInfo& dpi, std::string_view text, TextD
     int32_t srcScanSkip = surface->pitch - width;
     int32_t dstScanSkip = dpi.width + dpi.pitch - width;
     uint8_t* dst_orig = dst;
-    const uint8_t* src_orig = src;
 
     // Draw shadow/outline
     if (info->flags & (TEXT_DRAW_FLAG_OUTLINE | TEXT_DRAW_FLAG_INSET))
@@ -627,9 +626,7 @@ static void TTFDrawStringRawTTF(DrawPixelInfo& dpi, std::string_view text, TextD
             dst += dstScanSkip;
         }
     }
-
     dst = dst_orig;
-    src = src_orig;
     for (int32_t yy = 0; yy < height; yy++)
     {
         for (int32_t xx = 0; xx < width; xx++)
