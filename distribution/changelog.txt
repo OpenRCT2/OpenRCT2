@@ -1,4 +1,4 @@
-0.4.8 (in development)
+0.4.8 (2024-02-04)
 ------------------------------------------------------------------------
 - Feature: [#21062] [Plugin] Add API for managing a guest's items.
 - Improved: [#18632, #21306] Land ownership and construction rights are now shown on top of the water.
