@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -146,22 +146,18 @@ namespace OpenRCT2::Scripting
                     auto buttonWidget = widget + 1;
                     buttonWidget->left += delta;
                     buttonWidget->right += delta;
-                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 1);
                 }
                 else if (widget->type == WindowWidgetType::Spinner)
                 {
                     auto upWidget = widget + 1;
                     upWidget->left += delta;
                     upWidget->right += delta;
-                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 1);
-
                     auto downWidget = widget + 2;
                     downWidget->left += delta;
                     downWidget->right += delta;
-                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 2);
                 }
 
-                Invalidate();
+                Invalidate(widget);
             }
         }
 
@@ -190,22 +186,18 @@ namespace OpenRCT2::Scripting
                     auto buttonWidget = widget + 1;
                     buttonWidget->top += delta;
                     buttonWidget->bottom += delta;
-                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 1);
                 }
                 else if (widget->type == WindowWidgetType::Spinner)
                 {
                     auto upWidget = widget + 1;
                     upWidget->top += delta;
                     upWidget->bottom += delta;
-                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 1);
-
                     auto downWidget = widget + 2;
                     downWidget->top += delta;
                     downWidget->bottom += delta;
-                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 2);
                 }
 
-                Invalidate();
+                Invalidate(widget);
             }
         }
 
@@ -233,22 +225,18 @@ namespace OpenRCT2::Scripting
                     auto buttonWidget = widget + 1;
                     buttonWidget->left += delta;
                     buttonWidget->right += delta;
-                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 1);
                 }
                 else if (widget->type == WindowWidgetType::Spinner)
                 {
                     auto upWidget = widget + 1;
                     upWidget->left += delta;
                     upWidget->right += delta;
-                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 1);
-
                     auto downWidget = widget + 2;
                     downWidget->left += delta;
                     downWidget->right += delta;
-                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 2);
                 }
 
-                Invalidate();
+                Invalidate(widget);
             }
         }
 
@@ -275,20 +263,16 @@ namespace OpenRCT2::Scripting
                 {
                     auto buttonWidget = widget + 1;
                     buttonWidget->bottom += delta;
-                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 1);
                 }
                 else if (widget->type == WindowWidgetType::Spinner)
                 {
                     auto upWidget = widget + 1;
                     upWidget->bottom += delta;
-                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 1);
-
                     auto downWidget = widget + 2;
                     downWidget->bottom += delta;
-                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 2);
                 }
 
-                Invalidate();
+                Invalidate(widget);
             }
         }
 
@@ -339,6 +323,7 @@ namespace OpenRCT2::Scripting
                         WidgetSetDisabled(*w, _widgetIndex + 2, value);
                     }
                 }
+                Invalidate(widget);
             }
         }
 
@@ -371,6 +356,7 @@ namespace OpenRCT2::Scripting
                         WidgetSetVisible(*w, _widgetIndex + 2, value);
                     }
                 }
+                Invalidate(widget);
             }
         }
 
@@ -427,6 +413,23 @@ namespace OpenRCT2::Scripting
                 return w->classification == WindowClass::Custom;
             }
             return false;
+        }
+
+        void Invalidate(const Widget* widget)
+        {
+            if (widget != nullptr)
+            {
+                if (widget->type == WindowWidgetType::DropdownMenu)
+                {
+                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 1);
+                }
+                else if (widget->type == WindowWidgetType::Spinner)
+                {
+                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 1);
+                    WidgetInvalidateByNumber(_class, _number, _widgetIndex + 2);
+                }
+            }
+            Invalidate();
         }
 
         void Invalidate()

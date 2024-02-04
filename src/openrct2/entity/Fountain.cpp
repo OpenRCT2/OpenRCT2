@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "Fountain.h"
 
 #include "../Game.h"
+#include "../GameState.h"
 #include "../core/DataSerialiser.h"
 #include "../object/PathAdditionEntry.h"
 #include "../paint/Paint.h"
@@ -20,6 +21,8 @@
 #include "../world/Map.h"
 #include "../world/Scenery.h"
 #include "EntityRegistry.h"
+
+using namespace OpenRCT2;
 
 enum class PATTERN
 {
@@ -86,11 +89,13 @@ template<> bool EntityBase::Is<JumpingFountain>() const
 
 void JumpingFountain::StartAnimation(const JumpingFountainType newType, const CoordsXY& newLoc, const TileElement* tileElement)
 {
+    const auto currentTicks = GetGameState().CurrentTicks;
+
     int32_t randomIndex;
     auto newZ = tileElement->GetBaseZ();
 
     // Change pattern approximately every 51 seconds
-    uint32_t pattern = (gCurrentTicks >> 11) & 7;
+    uint32_t pattern = (currentTicks >> 11) & 7;
     switch (static_cast<PATTERN>(pattern))
     {
         case PATTERN::CYCLIC_SQUARES:

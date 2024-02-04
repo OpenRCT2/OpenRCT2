@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -51,7 +51,11 @@ GameActions::Result BannerRemoveAction::Query() const
     res.Position.z = _loc.z;
     res.ErrorTitle = STR_CANT_REMOVE_THIS;
 
-    if (!LocationValid(_loc) || !MapCanBuildAt({ _loc.x, _loc.y, _loc.z - 16 }))
+    if (!LocationValid(_loc))
+    {
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
+    }
+    if (!MapCanBuildAt({ _loc.x, _loc.y, _loc.z - 16 }))
     {
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }

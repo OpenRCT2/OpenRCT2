@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -483,6 +483,14 @@ void FinishObjectSelection()
     {
         SetEveryRideTypeInvented();
         SetEveryRideEntryInvented();
+
+        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+        gLastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
+        if (gLastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
+        {
+            gLastEntranceStyle = 0;
+        }
+
         gEditorStep = EditorStep::RollercoasterDesigner;
         GfxInvalidateScreen();
     }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -48,6 +48,14 @@ enum class WoodenSupportTransitionType : uint8_t
     Up25DegToFlatRailway = 10,
     Up25DegRailway = 11,
     Scenery = 12,
+    FlatToUp60DegLongBaseSeq0 = 13,
+    FlatToUp60DegLongBaseSeq1 = 14,
+    FlatToUp60DegLongBaseSeq2 = 15,
+    FlatToUp60DegLongBaseSeq3 = 16,
+    Up60DegToFlatLongBaseSeq0 = 17,
+    Up60DegToFlatLongBaseSeq1 = 18,
+    Up60DegToFlatLongBaseSeq2 = 19,
+    Up60DegToFlatLongBaseSeq3 = 20,
 };
 
 // There are 13 types of metal supports. A graphic showing all of them is available here:
@@ -145,11 +153,11 @@ bool MetalASupportsPaintSetup(
 bool MetalBSupportsPaintSetup(
     PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate);
-bool PathASupportsPaintSetup(
-    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
-    const FootpathPaintInfo& pathPaintInfo, bool* underground);
-bool PathBSupportsPaintSetup(
-    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
+bool PathBoxSupportsPaintSetup(
+    PaintSession& session, WoodenSupportSubType supportType, bool isSloped, Direction slopeRotation, int32_t height,
+    ImageId imageTemplate, const FootpathPaintInfo& pathPaintInfo);
+bool PathPoleSupportsPaintSetup(
+    PaintSession& session, MetalSupportPlace supportPlace, bool isSloped, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo);
 void DrawSupportsSideBySide(
     PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special = 0);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,6 +19,11 @@
 
 struct RideObjectEntry;
 struct ScenerySelection;
+
+namespace OpenRCT2
+{
+    struct GameState_t;
+}
 
 namespace Research
 {
@@ -110,21 +115,9 @@ enum
     RESEARCH_STAGE_FINISHED_ALL
 };
 
-extern uint8_t gResearchFundingLevel;
-extern uint8_t gResearchPriorities;
-extern uint16_t gResearchProgress;
-extern uint8_t gResearchProgressStage;
-extern uint8_t gResearchExpectedMonth;
-extern uint8_t gResearchExpectedDay;
-extern std::optional<ResearchItem> gResearchLastItem;
-extern std::optional<ResearchItem> gResearchNextItem;
-
-extern std::vector<ResearchItem> gResearchItemsUninvented;
-extern std::vector<ResearchItem> gResearchItemsInvented;
-extern uint8_t gResearchUncompletedCategories;
 extern bool gSilentResearch;
 
-void ResearchResetItems();
+void ResearchResetItems(OpenRCT2::GameState_t& gameState);
 void ResearchUpdateUncompletedTypes();
 void ResearchUpdate();
 void ResearchResetCurrentItem();

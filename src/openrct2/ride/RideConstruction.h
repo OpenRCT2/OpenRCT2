@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 #include "../common.h"
 #include "../world/Location.hpp"
 #include "Station.h"
+#include "Track.h"
 
 #include <cstdint>
 #include <optional>
@@ -47,14 +48,14 @@ extern uint8_t _currentTrackPieceDirection;
 extern track_type_t _currentTrackPieceType;
 extern uint8_t _currentTrackSelectionFlags;
 extern uint32_t _rideConstructionNextArrowPulse;
-extern uint8_t _currentTrackSlopeEnd;
-extern uint8_t _currentTrackBankEnd;
+extern TrackPitch _currentTrackPitchEnd;
+extern TrackRoll _currentTrackRollEnd;
 extern uint8_t _currentTrackLiftHill;
 extern uint8_t _currentTrackAlternative;
 extern track_type_t _selectedTrackType;
 
-extern uint8_t _previousTrackBankEnd;
-extern uint8_t _previousTrackSlopeEnd;
+extern TrackRoll _previousTrackRollEnd;
+extern TrackPitch _previousTrackPitchEnd;
 
 extern CoordsXYZ _previousTrackPiece;
 

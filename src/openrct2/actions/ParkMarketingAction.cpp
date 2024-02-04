@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "ParkMarketingAction.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../core/MemoryStream.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
@@ -20,6 +21,8 @@
 #include "../world/Park.h"
 
 #include <iterator>
+
+using namespace OpenRCT2;
 
 ParkMarketingAction::ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks)
     : _type(type)
@@ -52,7 +55,7 @@ GameActions::Result ParkMarketingAction::Query() const
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_START_MARKETING_CAMPAIGN, STR_NONE);
     }
-    if (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
+    if (GetGameState().ParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
     {
         return GameActions::Result(
             GameActions::Status::Disallowed, STR_CANT_START_MARKETING_CAMPAIGN,

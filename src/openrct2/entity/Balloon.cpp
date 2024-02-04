@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -158,12 +158,8 @@ bool Balloon::Collides() const
             }
             else
             {
-                // all station platforms besides the plain and invisible ones are covered
-                auto style = GetRide(trackElement->GetRideIndex())->GetEntranceStyle();
-                if (style != RCT12_STATION_STYLE_PLAIN && style != RCT12_STATION_STYLE_INVISIBLE)
-                {
-                    check_ceiling = true;
-                }
+                auto* ride = GetRide(trackElement->GetRideIndex());
+                check_ceiling = (ride != nullptr) ? RideHasStationShelter(*ride) : false;
             }
         }
 

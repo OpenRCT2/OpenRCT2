@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -275,7 +275,8 @@ static void EntityReset(EntityBase* entity)
     entity->Type = EntityType::Null;
 }
 
-static constexpr uint16_t MAX_MISC_SPRITES = 300;
+static constexpr uint16_t MAX_MISC_SPRITES = 1600;
+
 static void AddToEntityList(EntityBase* entity)
 {
     auto& list = gEntityLists[EnumValue(entity->Type)];
@@ -341,11 +342,14 @@ EntityBase* CreateEntity(EntityType type)
 
     if (EntityTypeIsMiscEntity(type))
     {
-        // Misc sprites are commonly used for effects, if there are less than MAX_MISC_SPRITES
-        // free it will fail to keep slots for more relevant sprites.
-        // Also there can't be more than MAX_MISC_SPRITES sprites in this list.
-        uint16_t miscSlotsRemaining = MAX_MISC_SPRITES - GetMiscEntityCount();
-        if (miscSlotsRemaining >= _freeIdList.size())
+        // Misc sprites are commonly used for effects, give other entity types higher priority.
+        if (GetMiscEntityCount() >= MAX_MISC_SPRITES)
+        {
+            return nullptr;
+        }
+
+        // If there are less than MAX_MISC_SPRITES free slots, ensure other entities can be created.
+        if (_freeIdList.size() < MAX_MISC_SPRITES)
         {
             return nullptr;
         }

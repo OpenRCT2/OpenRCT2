@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -61,7 +61,7 @@ money64 PlaceProvisionalTrackPiece(
         _unkF440C5 = { trackPos, static_cast<Direction>(trackDirection) };
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
         ViewportSetVisibility(ViewportVisibility::UndergroundViewOff);
-        if (_currentTrackSlopeEnd != 0)
+        if (_currentTrackPitchEnd != TrackPitch::None)
             ViewportSetVisibility(ViewportVisibility::TrackHeights);
 
         // Invalidate previous track piece (we may not be changing height!)
@@ -105,7 +105,7 @@ money64 PlaceProvisionalTrackPiece(
     const auto visiblity = (resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? ViewportVisibility::UndergroundViewOn
                                                                              : ViewportVisibility::UndergroundViewOff;
     ViewportSetVisibility(visiblity);
-    if (_currentTrackSlopeEnd != 0)
+    if (_currentTrackPitchEnd != TrackPitch::None)
         ViewportSetVisibility(ViewportVisibility::TrackHeights);
 
     // Invalidate previous track piece (we may not be changing height!)
@@ -125,17 +125,17 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES);
     ContextBroadcastIntent(&intent);
 
-    uint8_t startSlope = _previousTrackSlopeEnd;
-    uint8_t endSlope = _currentTrackSlopeEnd;
-    uint8_t startBank = _previousTrackBankEnd;
-    uint8_t endBank = _currentTrackBankEnd;
+    auto startSlope = _previousTrackPitchEnd;
+    auto endSlope = _currentTrackPitchEnd;
+    auto startBank = _previousTrackRollEnd;
+    auto endBank = _currentTrackRollEnd;
 
     if (_rideConstructionState == RideConstructionState::Back)
     {
-        startSlope = _currentTrackSlopeEnd;
-        endSlope = _previousTrackSlopeEnd;
-        startBank = _currentTrackBankEnd;
-        endBank = _previousTrackBankEnd;
+        startSlope = _currentTrackPitchEnd;
+        endSlope = _previousTrackPitchEnd;
+        startBank = _currentTrackRollEnd;
+        endBank = _previousTrackRollEnd;
     }
 
     auto curve = _currentTrackCurve;
@@ -145,7 +145,7 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
     }
 
     bool startsDiagonal = (_currentTrackPieceDirection & (1 << 2)) != 0;
-    if (curve == TRACK_CURVE_LEFT_LARGE || curve == TRACK_CURVE_RIGHT_LARGE)
+    if (curve == EnumValue(TrackCurve::LeftLarge) || curve == EnumValue(TrackCurve::RightLarge))
     {
         if (_rideConstructionState == RideConstructionState::Back)
         {
@@ -159,7 +159,7 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
         {
             const TrackDescriptor* trackDescriptor = &gTrackDescriptors[i];
 
-            if (trackDescriptor->track_curve != curve)
+            if (EnumValue(trackDescriptor->track_curve) != curve)
                 continue;
             if (trackDescriptor->starts_diagonal != startsDiagonal)
                 continue;
@@ -167,9 +167,9 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
                 continue;
             if (trackDescriptor->slope_end != endSlope)
                 continue;
-            if (trackDescriptor->bank_start != startBank)
+            if (trackDescriptor->RollStart != startBank)
                 continue;
-            if (trackDescriptor->bank_end != endBank)
+            if (trackDescriptor->RollEnd != endBank)
                 continue;
 
             return std::make_tuple(true, trackDescriptor->track_element);
@@ -183,12 +183,12 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
         case TrackElemType::EndStation:
         case TrackElemType::SBendLeft:
         case TrackElemType::SBendRight:
-            if (startSlope != TRACK_SLOPE_NONE || endSlope != TRACK_SLOPE_NONE)
+            if (startSlope != TrackPitch::None || endSlope != TrackPitch::None)
             {
                 return std::make_tuple(false, 0);
             }
 
-            if (startBank != TRACK_BANK_NONE || endBank != TRACK_BANK_NONE)
+            if (startBank != TrackRoll::None || endBank != TrackRoll::None)
             {
                 return std::make_tuple(false, 0);
             }
@@ -197,21 +197,21 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
 
         case TrackElemType::LeftVerticalLoop:
         case TrackElemType::RightVerticalLoop:
-            if (startBank != TRACK_BANK_NONE || endBank != TRACK_BANK_NONE)
+            if (startBank != TrackRoll::None || endBank != TrackRoll::None)
             {
                 return std::make_tuple(false, 0);
             }
 
             if (_rideConstructionState == RideConstructionState::Back)
             {
-                if (endSlope != TRACK_SLOPE_DOWN_25)
+                if (endSlope != TrackPitch::Down25)
                 {
                     return std::make_tuple(false, 0);
                 }
             }
             else
             {
-                if (startSlope != TRACK_SLOPE_UP_25)
+                if (startSlope != TrackPitch::Up25)
                 {
                     return std::make_tuple(false, 0);
                 }

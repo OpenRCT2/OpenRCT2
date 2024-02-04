@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -47,7 +47,7 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
-    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 81;
+    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 82;
 
     // Versions marking breaking changes.
     static constexpr int32_t API_VERSION_33_PEEP_DEPRECATION = 33;
@@ -126,20 +126,15 @@ namespace OpenRCT2::Scripting
         }
     };
 
-    using IntervalHandle = int32_t;
+    using IntervalHandle = uint32_t;
     struct ScriptInterval
     {
         std::shared_ptr<Plugin> Owner;
-        IntervalHandle Handle{};
         uint32_t Delay{};
         int64_t LastTimestamp{};
         DukValue Callback;
         bool Repeat{};
-
-        bool IsValid() const
-        {
-            return Handle != 0;
-        }
+        bool Deleted{};
     };
 
     class ScriptEngine
@@ -162,7 +157,8 @@ namespace OpenRCT2::Scripting
         DukValue _parkStorage;
 
         uint32_t _lastIntervalTimestamp{};
-        std::vector<ScriptInterval> _intervals;
+        std::map<IntervalHandle, ScriptInterval> _intervals;
+        IntervalHandle _nextIntervalHandle = 1;
 
         std::unique_ptr<FileWatcher> _pluginFileWatcher;
         std::unordered_set<std::string> _changedPluginFiles;

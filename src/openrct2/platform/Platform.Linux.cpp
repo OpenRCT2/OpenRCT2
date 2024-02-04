@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -97,25 +97,23 @@ namespace Platform
         }
         // 2. Try {${exeDir},${cwd},/}/{data,standard system app directories}
         // exeDir should come first to allow installing into build dir
-        std::vector<std::string> prefixes;
-        auto exePath = Platform::GetCurrentExecutablePath();
-        prefixes.push_back(Path::GetDirectory(exePath));
-        prefixes.push_back(GetCurrentWorkingDirectory());
-        prefixes.push_back("/");
-        static const char* SearchLocations[] = {
+        // clang-format off
+        const std::string prefixes[]{
+            Path::GetDirectory(Platform::GetCurrentExecutablePath()),
+            GetCurrentWorkingDirectory(),
+            "/"
+        };
+        static constexpr u8string_view SearchLocations[] = {
             "/data",
             "../share/openrct2",
-#    ifdef ORCT2_RESOURCE_DIR
-            // defined in CMakeLists.txt
-            ORCT2_RESOURCE_DIR,
-#    endif // ORCT2_RESOURCE_DIR
             "/usr/local/share/openrct2",
             "/var/lib/openrct2",
             "/usr/share/openrct2",
         };
+        // clang-format on
         for (const auto& prefix : prefixes)
         {
-            for (auto searchLocation : SearchLocations)
+            for (const auto searchLocation : SearchLocations)
             {
                 auto prefixedPath = Path::Combine(prefix, searchLocation);
                 LOG_VERBOSE("Looking for OpenRCT2 data in %s", prefixedPath.c_str());

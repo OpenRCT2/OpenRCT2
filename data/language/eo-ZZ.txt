@@ -3579,7 +3579,7 @@ STR_6474    :Nevideblaj Gastoj
 STR_6475    :Nevidebla Dungitaro
 STR_6476    :Nevideba Vegetaĵaro
 STR_6477    :Nevideba Pejzaĝo
-STR_6478    :Nevidebaj Trotruaroj
+STR_6478    :Nevidebaj Trotuaroj
 STR_6479    :Nevidebaj Atrakcioj
 STR_6480    :Nevidebaj Veturiloj
 STR_6481    :Agordoj de Travidebleco
@@ -3698,6 +3698,22 @@ STR_6593    :Forigi parkobarilojn
 STR_6594    :Inspektilo de Bloko: Baskuligi deklivecon de muro
 STR_6595    :{WINDOW_COLOUR_2}Aŭtoro: {BLACK}{STRING}
 STR_6596    :{WINDOW_COLOUR_2}Aŭtoroj: {BLACK}{STRING}
+STR_6597    :Nevalida parametro
+STR_6598    :Valoro estas ekstervarieja
+STR_6599    :Fantomo-elemento ne troviĝis
+STR_6600    :Balono ne troviĝis
+STR_6601    :Dungitaro ne troviĝis
+STR_6602    :Atrakcio ne troviĝis
+STR_6603    :Enigo de atrakcio-objekto ne troviĝis
+STR_6604    :Ludanto ne troviĝis
+STR_6605    :Enirejo-elemento ne troviĝis
+STR_6606    :Surfaco-elemento ne troviĝis
+STR_6607    :Blokelemento ne troviĝis
+STR_6608    :Trakelemento ne troviĝis
+STR_6609    :Blokparto de trako ne troviĝis
+STR_6610    :Trotuaro-elemento ne troviĝis
+STR_6611    :Muro-elemento ne troviĝis
+STR_6612    :Rubando-elemento ne troviĝis
 
 #############
 # Scenarios #
@@ -4359,7 +4375,7 @@ STR_DTLS    :Vi estas sukcesa komerca magnato prenanta longan libertempon, kiu d
 <South America - Inca Lost City>
 STR_SCNR    :Sudameriko - La Perdita Inkaa Urbo
 STR_PARK    :Fondinto de la Perdita Urbo
-STR_DTLS    :Por plue akceli lokan turismon, vi devas konstrui parkon, kiu kaj akordas kun sia ĉirkaŭaĵo, kaj observas limigojn de alteco.
+STR_DTLS    :Por plue akceli lokan turismon, vi devas konstrui parkon, kiu akordas kun sia ĉirkaŭaĵo.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :Sudameriko - Pluvarbaro-Altebenaĵo

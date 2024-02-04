@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "../Paint.h"
 
 #include "../../Game.h"
+#include "../../GameState.h"
 #include "../../config/Config.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Date.h"
@@ -22,6 +23,8 @@
 #include "../../world/TileInspector.h"
 #include "../Supports.h"
 #include "Paint.TileElement.h"
+
+using namespace OpenRCT2;
 
 static constexpr CoordsXY lengths[] = {
     { 12, 26 },
@@ -209,23 +212,25 @@ static void PaintSmallSceneryBody(
 
     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
     {
+        const auto currentTicks = GetGameState().CurrentTicks;
+
         if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED) || (session.DPI.zoom_level <= ZoomLevel{ 1 }))
         {
             if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1))
             {
-                auto imageIndex = sceneryEntry->image + 4 + ((gCurrentTicks / 2) & 0xF);
+                auto imageIndex = sceneryEntry->image + 4 + ((currentTicks / 2) & 0xF);
                 auto imageId = imageTemplate.WithIndex(imageIndex);
                 PaintAddImageAsChild(session, imageId, offset, boundBox);
             }
             else if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4))
             {
-                auto imageIndex = sceneryEntry->image + 8 + ((gCurrentTicks / 2) & 0xF);
+                auto imageIndex = sceneryEntry->image + 8 + ((currentTicks / 2) & 0xF);
                 PaintAddImageAsChild(session, imageTemplate.WithIndex(imageIndex), offset, boundBox);
 
                 imageIndex = direction + sceneryEntry->image + 4;
                 PaintAddImageAsChild(session, imageTemplate.WithIndex(imageIndex), offset, boundBox);
 
-                imageIndex = sceneryEntry->image + 24 + ((gCurrentTicks / 2) & 0xF);
+                imageIndex = sceneryEntry->image + 24 + ((currentTicks / 2) & 0xF);
                 PaintAddImageAsChild(session, imageTemplate.WithIndex(imageIndex), offset, boundBox);
             }
             else if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_CLOCK))
@@ -260,7 +265,7 @@ static void PaintSmallSceneryBody(
             }
             else if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_SWAMP_GOO))
             {
-                auto imageIndex = gCurrentTicks;
+                auto imageIndex = currentTicks;
                 imageIndex += session.SpritePosition.x / 4;
                 imageIndex += session.SpritePosition.y / 4;
                 imageIndex = sceneryEntry->image + ((imageIndex / 4) % 16);
@@ -269,7 +274,7 @@ static void PaintSmallSceneryBody(
             else if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
             {
                 auto delay = sceneryEntry->animation_delay & 0xFF;
-                auto frame = gCurrentTicks;
+                auto frame = currentTicks;
                 if (!(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_COG)))
                 {
                     frame += ((session.SpritePosition.x / 4) + (session.SpritePosition.y / 4));

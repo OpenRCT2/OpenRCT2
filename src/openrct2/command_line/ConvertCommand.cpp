@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #include "../Context.h"
 #include "../FileClassifier.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../common.h"
@@ -21,6 +22,8 @@
 #include "CommandLine.hpp"
 
 #include <memory>
+
+using namespace OpenRCT2;
 
 static void WriteConvertFromAndToMessage(FileExtension sourceFileType, FileExtension destinationFileType);
 static u8string GetFileTypeFriendlyName(FileExtension fileType);
@@ -90,6 +93,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     context->Initialise();
 
     auto& objManager = context->GetObjectManager();
+    auto& gameState = GetGameState();
 
     try
     {
@@ -98,7 +102,8 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
 
         objManager.LoadObjects(loadResult.RequiredObjects);
 
-        importer->Import();
+        // TODO: Have a separate GameState and exchange once loaded.
+        importer->Import(gameState);
     }
     catch (const std::exception& ex)
     {
@@ -109,7 +114,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     if (sourceFileType == FileExtension::SC4 || sourceFileType == FileExtension::SC6)
     {
         // We are converting a scenario, so reset the park
-        ScenarioBegin();
+        ScenarioBegin(gameState);
     }
 
     try
@@ -120,7 +125,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
         //      correct initial view
         WindowCloseByClass(WindowClass::MainWindow);
 
-        exporter->Export(destinationPath);
+        exporter->Export(gameState, destinationPath);
     }
     catch (const std::exception& ex)
     {

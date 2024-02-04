@@ -1,8 +1,8 @@
-openrct2 (0.4.7-develop-1) unstable; urgency=medium
+openrct2 (0.4.8-develop-1) unstable; urgency=medium
 
  * Nightly develop build.
 
-openrct2 (0.4.8-develop-1) unstable; urgency=medium
+openrct2 (0.4.7-develop-1) unstable; urgency=medium
 
  * Feature: [#12078] Add shortcut key for toggling wall slope.
  * Feature: [#19919] Add diagonal brakes and diagonal block brakes to most coaster types.

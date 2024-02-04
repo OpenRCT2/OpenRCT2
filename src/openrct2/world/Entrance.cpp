@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/ParkEntranceRemoveAction.h"
 #include "../actions/RideEntranceExitPlaceAction.h"
@@ -32,9 +33,10 @@
 
 #include <algorithm>
 
+using namespace OpenRCT2;
+
 bool gParkEntranceGhostExists = false;
 CoordsXYZD gParkEntranceGhostPosition = { 0, 0, 0, 0 };
-std::vector<CoordsXYZD> gParkEntrances;
 
 CoordsXYZD gRideEntranceExitGhostPosition;
 StationIndex gRideEntranceExitGhostStationIndex;
@@ -68,7 +70,7 @@ void ParkEntranceRemoveGhost()
 int32_t ParkEntranceGetIndex(const CoordsXYZ& entrancePos)
 {
     int32_t i = 0;
-    for (const auto& entrance : gParkEntrances)
+    for (const auto& entrance : GetGameState().ParkEntrances)
     {
         if (entrancePos == entrance)
         {
@@ -81,7 +83,7 @@ int32_t ParkEntranceGetIndex(const CoordsXYZ& entrancePos)
 
 void ParkEntranceReset()
 {
-    gParkEntrances.clear();
+    GetGameState().ParkEntrances.clear();
 }
 
 void RideEntranceExitPlaceProvisionalGhost()
@@ -210,17 +212,19 @@ void MazeEntranceHedgeRemoval(const CoordsXYE& entrance)
 
 void ParkEntranceFixLocations(void)
 {
-    // Fix gParkEntrance locations for which the tile_element no longer exists
-    gParkEntrances.erase(
+    auto& gameState = GetGameState();
+    // Fix ParkEntrance locations for which the tile_element no longer exists
+    gameState.ParkEntrances.erase(
         std::remove_if(
-            gParkEntrances.begin(), gParkEntrances.end(),
+            gameState.ParkEntrances.begin(), gameState.ParkEntrances.end(),
             [](const auto& entrance) { return MapGetParkEntranceElementAt(entrance, false) == nullptr; }),
-        gParkEntrances.end());
+        gameState.ParkEntrances.end());
 }
 
 void ParkEntranceUpdateLocations()
 {
-    gParkEntrances.clear();
+    auto& gameState = GetGameState();
+    gameState.ParkEntrances.clear();
     TileElementIterator it;
     TileElementIteratorBegin(&it);
     while (TileElementIteratorNext(&it))
@@ -230,7 +234,7 @@ void ParkEntranceUpdateLocations()
             && entranceElement->GetSequenceIndex() == 0 && !entranceElement->IsGhost())
         {
             auto entrance = TileCoordsXYZD(it.x, it.y, it.element->BaseHeight, it.element->GetDirection()).ToCoordsXYZD();
-            gParkEntrances.push_back(entrance);
+            gameState.ParkEntrances.push_back(entrance);
         }
     }
 }

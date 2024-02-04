@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Editor.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/interface/Cursors.h>
@@ -26,6 +27,8 @@
 #include <openrct2/world/Scenery.h>
 
 #pragma region Widgets
+
+using namespace OpenRCT2;
 
 static constexpr int32_t WW = 600;
 static constexpr int32_t WH = 400;
@@ -220,14 +223,15 @@ public:
 
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override
     {
+        const auto& gameState = GetGameState();
         ScreenSize size{};
         if (scrollIndex == 0)
         {
-            size.height = static_cast<int32_t>(gResearchItemsInvented.size()) * SCROLLABLE_ROW_HEIGHT;
+            size.height = static_cast<int32_t>(gameState.ResearchItemsInvented.size()) * SCROLLABLE_ROW_HEIGHT;
         }
         else
         {
-            size.height = static_cast<int32_t>(gResearchItemsUninvented.size()) * SCROLLABLE_ROW_HEIGHT;
+            size.height = static_cast<int32_t>(gameState.ResearchItemsUninvented.size()) * SCROLLABLE_ROW_HEIGHT;
         }
         return size;
     }
@@ -265,6 +269,8 @@ public:
 
     void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
     {
+        const auto& gameState = GetGameState();
+
         // Draw background
         uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
         GfxClear(&dpi, paletteIndex);
@@ -273,7 +279,7 @@ public:
         int32_t itemY = -SCROLLABLE_ROW_HEIGHT;
         auto* dragItem = WindowEditorInventionsListDragGetItem();
 
-        const auto& researchList = scrollIndex == 0 ? gResearchItemsInvented : gResearchItemsUninvented;
+        const auto& researchList = scrollIndex == 0 ? gameState.ResearchItemsInvented : gameState.ResearchItemsUninvented;
         for (const auto& researchItem : researchList)
         {
             itemY += SCROLLABLE_ROW_HEIGHT;
@@ -512,6 +518,7 @@ public:
 
     void MoveResearchItem(const ResearchItem& item, ResearchItem* beforeItem, bool isInvented)
     {
+        auto& gameState = GetGameState();
         _selectedResearchItem = nullptr;
         Invalidate();
 
@@ -524,7 +531,7 @@ public:
 
         ResearchRemove(item);
 
-        auto& researchList = isInvented ? gResearchItemsInvented : gResearchItemsUninvented;
+        auto& researchList = isInvented ? gameState.ResearchItemsInvented : gameState.ResearchItemsUninvented;
         if (beforeItem != nullptr)
         {
             for (size_t i = 0; i < researchList.size(); i++)
@@ -544,7 +551,8 @@ public:
 private:
     ResearchItem* GetItemFromScrollY(bool isInvented, int32_t y) const
     {
-        auto& researchList = isInvented ? gResearchItemsInvented : gResearchItemsUninvented;
+        auto& gameState = GetGameState();
+        auto& researchList = isInvented ? gameState.ResearchItemsInvented : gameState.ResearchItemsUninvented;
         for (auto& researchItem : researchList)
         {
             y -= SCROLLABLE_ROW_HEIGHT;
@@ -559,7 +567,8 @@ private:
 
     ResearchItem* GetItemFromScrollYIncludeSeps(bool isInvented, int32_t y) const
     {
-        auto& researchList = isInvented ? gResearchItemsInvented : gResearchItemsUninvented;
+        auto& gameState = GetGameState();
+        auto& researchList = isInvented ? gameState.ResearchItemsInvented : gameState.ResearchItemsUninvented;
         for (auto& researchItem : researchList)
         {
             y -= SCROLLABLE_ROW_HEIGHT;

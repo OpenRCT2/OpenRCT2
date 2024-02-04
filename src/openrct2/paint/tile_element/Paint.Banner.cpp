@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #include "../Paint.h"
 
 #include "../../Game.h"
+#include "../../GameState.h"
 #include "../../config/Config.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatter.h"
@@ -24,6 +25,8 @@
 #include "../../world/Scenery.h"
 #include "../../world/TileInspector.h"
 #include "Paint.TileElement.h"
+
+using namespace OpenRCT2;
 
 // BannerBoundBoxes[rotation][0] is for the pole in the back
 // BannerBoundBoxes[rotation][1] is for the pole and the banner in the front
@@ -65,7 +68,7 @@ static void PaintBannerScrollingText(
     }
 
     auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
-    auto scroll = (gCurrentTicks / 2) % stringWidth;
+    auto scroll = (GetGameState().CurrentTicks / 2) % stringWidth;
     auto imageId = ScrollingTextSetup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 22 }, { bbOffset, { 1, 1, 21 } });
 }

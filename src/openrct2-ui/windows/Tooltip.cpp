@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,13 +40,20 @@ public:
     TooltipWindow(const OpenRCT2String& message, ScreenCoordsXY screenCoords)
     {
         int32_t textWidth = FormatTextForTooltip(message);
-        width = textWidth + 3;
-        height = ((_tooltipNumLines + 1) * FontGetLineHeight(FontStyle::Small)) + 4;
+        int32_t textHeight = ((_tooltipNumLines + 1) * FontGetLineHeight(FontStyle::Small));
+
+        width = textWidth + 5;
+        height = textHeight + 4;
 
         widgets = _tooltipWidgets;
         widgets[WIDX_BACKGROUND].right = width;
         widgets[WIDX_BACKGROUND].bottom = height;
 
+        UpdatePosition(screenCoords);
+    }
+
+    void UpdatePosition(ScreenCoordsXY screenCoords)
+    {
         int32_t screenWidth = ContextGetWidth();
         int32_t screenHeight = ContextGetHeight();
         screenCoords.x = std::clamp(screenCoords.x - (width / 2), 0, screenWidth - width);
@@ -54,15 +61,29 @@ public:
         // TODO The cursor size will be relative to the window DPI.
         //      The amount to offset the y should be adjusted.
 
-        int32_t max_y = screenHeight - height;
-        screenCoords.y += 26; // Normally, we'd display the tooltip 26 lower
-        if (screenCoords.y > max_y)
-            // If y is too large, the tooltip could be forced below the cursor if we'd just clamped y,
-            // so we'll subtract a bit more
-            screenCoords.y -= height + 40;
-        screenCoords.y = std::clamp(screenCoords.y, 22, max_y);
+        const int32_t cursorHeight = 20;
+        const int32_t cursorMargin = 4;
+        const int32_t cursorOffset = cursorHeight + cursorMargin;
 
-        windowPos = screenCoords;
+        const int32_t maxY = screenHeight - height;
+
+        if (screenCoords.y + cursorOffset > maxY)
+        {
+            // Display the tooltip above the cursor if there is not enough space below.
+            screenCoords.y -= (height + cursorMargin);
+        }
+        else
+        {
+            // Display the tooltip under the cursor if there is enough space below.
+            screenCoords.y += cursorOffset;
+        }
+
+        screenCoords.y = std::clamp(screenCoords.y, cursorOffset, maxY);
+
+        if (windowPos != screenCoords)
+        {
+            WindowSetPosition(*this, screenCoords);
+        }
     }
 
     void OnOpen() override
@@ -72,7 +93,7 @@ public:
 
     void OnUpdate() override
     {
-        ResetTooltipNotShown();
+        UpdatePosition(gTooltipCursor);
     }
 
     void OnDraw(DrawPixelInfo& dpi) override
@@ -172,9 +193,6 @@ void WindowTooltipOpen(WindowBase* widgetWindow, WidgetIndex widgetIndex, const 
     else
     {
         auto stringId = widget->tooltip;
-        if (stringId == STR_NONE)
-            return;
-
         gTooltipWidget.window_classification = widgetWindow->classification;
         gTooltipWidget.window_number = widgetWindow->number;
         gTooltipWidget.widget_index = widgetIndex;

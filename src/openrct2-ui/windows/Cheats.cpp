@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/CheatSetAction.h>
 #include <openrct2/actions/ParkSetDateAction.h>
@@ -24,14 +25,14 @@
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
-#include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
 
+using namespace OpenRCT2;
+using OpenRCT2::Date;
+
 constexpr auto CHEATS_MONEY_DEFAULT = 10000.00_GBP;
 constexpr auto CHEATS_MONEY_INCREMENT_DIV = 5000.00_GBP;
-
-using OpenRCT2::Date;
 
 // clang-format off
 enum
@@ -453,11 +454,12 @@ public:
         // Set title
         widgets[WIDX_TITLE].text = window_cheats_page_titles[page];
 
+        auto& gameState = GetGameState();
         switch (page)
         {
             case WINDOW_CHEATS_PAGE_MONEY:
             {
-                auto moneyDisabled = (gParkFlags & PARK_FLAGS_NO_MONEY) != 0;
+                auto moneyDisabled = (gameState.ParkFlags & PARK_FLAGS_NO_MONEY) != 0;
                 SetCheckboxValue(WIDX_NO_MONEY, moneyDisabled);
                 SetWidgetDisabled(WIDX_ADD_SET_MONEY_GROUP, moneyDisabled);
                 SetWidgetDisabled(WIDX_MONEY_SPINNER, moneyDisabled);
@@ -478,8 +480,8 @@ public:
                 break;
             }
             case WINDOW_CHEATS_PAGE_MISC:
-                widgets[WIDX_OPEN_CLOSE_PARK].text = (gParkFlags & PARK_FLAGS_PARK_OPEN) ? STR_CHEAT_CLOSE_PARK
-                                                                                         : STR_CHEAT_OPEN_PARK;
+                widgets[WIDX_OPEN_CLOSE_PARK].text = (gameState.ParkFlags & PARK_FLAGS_PARK_OPEN) ? STR_CHEAT_CLOSE_PARK
+                                                                                                  : STR_CHEAT_OPEN_PARK;
                 SetCheckboxValue(WIDX_FORCE_PARK_RATING, ParkGetForcedRating() >= 0);
                 SetCheckboxValue(WIDX_FREEZE_WEATHER, gCheatsFreezeWeather);
                 SetCheckboxValue(WIDX_NEVERENDING_MARKETING, gCheatsNeverendingMarketing);
@@ -506,7 +508,8 @@ public:
         }
 
         // Current weather
-        window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gClimateCurrent.Weather)];
+        window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(
+            OpenRCT2::GetGameState().ClimateCurrent.Weather)];
         // Staff speed
         window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(gCheatsSelectedStaffSpeed)];
 
@@ -779,7 +782,7 @@ private:
         switch (widgetIndex)
         {
             case WIDX_NO_MONEY:
-                CheatsSet(CheatType::NoMoney, gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1);
+                CheatsSet(CheatType::NoMoney, GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY ? 0 : 1);
                 break;
             case WIDX_MONEY_SPINNER:
                 MoneyToString(_moneySpinnerValue, _moneySpinnerText, MONEY_STRING_MAXLENGTH, false);
@@ -831,7 +834,7 @@ private:
                     { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                     colours[1], 0, Dropdown::Flag::StayOpen, std::size(WeatherTypes), dropdownWidget->width() - 3);
 
-                auto currentWeather = gClimateCurrent.Weather;
+                auto currentWeather = OpenRCT2::GetGameState().ClimateCurrent.Weather;
                 Dropdown::SetChecked(EnumValue(currentWeather), true);
             }
             break;

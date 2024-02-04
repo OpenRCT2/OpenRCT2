@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -119,7 +119,7 @@ struct Ride
     ObjectEntryIndex subtype;
     RideMode mode;
     uint8_t colour_scheme_type;
-    VehicleColour vehicle_colours[OpenRCT2::Limits::MaxTrainsPerRide + 1];
+    VehicleColour vehicle_colours[OpenRCT2::Limits::MaxVehicleColours];
     // 0 = closed, 1 = open, 2 = test
     RideStatus status;
     std::string custom_name;

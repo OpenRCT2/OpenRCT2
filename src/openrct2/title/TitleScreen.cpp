@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -144,10 +144,9 @@ void TitleScreen::Load()
 
     if (_sequencePlayer != nullptr)
     {
-        _sequencePlayer->Begin(_currentSequence);
-
         // Force the title sequence to load / update so we
         // don't see a blank screen for a split second.
+        _loadedTitleSequenceId = SIZE_MAX;
         TryLoadSequence();
         _sequencePlayer->Update();
     }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -129,6 +129,7 @@ namespace OpenRCT2::Ui
                 }
                 else
                 {
+                    SDL_RaiseWindow(window);
                     return std::string();
                 }
 
@@ -137,10 +138,12 @@ namespace OpenRCT2::Ui
                 panel.directoryURL = [NSURL fileURLWithPath:directory];
                 if ([panel runModal] == NSModalResponseCancel)
                 {
+                    SDL_RaiseWindow(window);
                     return std::string();
                 }
                 else
                 {
+                    SDL_RaiseWindow(window);
                     return panel.URL.path.UTF8String;
                 }
             }
@@ -158,10 +161,12 @@ namespace OpenRCT2::Ui
                 {
                     NSString* selectedPath = panel.URL.path;
                     const char* path = selectedPath.UTF8String;
+                    SDL_RaiseWindow(window);
                     return path;
                 }
                 else
                 {
+                    SDL_RaiseWindow(window);
                     return "";
                 }
             }

@@ -3699,6 +3699,22 @@ STR_6593    :Remove park fences
 STR_6594    :Tile Inspector: Toggle wall slope
 STR_6595    :{WINDOW_COLOUR_2}Author: {BLACK}{STRING}
 STR_6596    :{WINDOW_COLOUR_2}Authors: {BLACK}{STRING}
+STR_6597    :Invalid parameter
+STR_6598    :Value out of range
+STR_6599    :Ghost element not found
+STR_6600    :Balloon not found
+STR_6601    :Staff not found
+STR_6602    :Ride not found
+STR_6603    :Ride object entry not found
+STR_6604    :Player not found
+STR_6605    :Entrance element not found
+STR_6606    :Surface element not found
+STR_6607    :Tile element not found
+STR_6608    :Track element not found
+STR_6609    :Track block not found
+STR_6610    :Path element not found
+STR_6611    :Wall element not found
+STR_6612    :Banner element not found
 
 #############
 # Scenarios #
@@ -4351,7 +4367,7 @@ STR_DTLS    :You are a successful business tycoon on long sabbatical who desires
 <South America - Inca Lost City>
 STR_SCNR    :South America - Inca Lost City
 STR_PARK    :Lost City Founder
-STR_DTLS    :To further boost local tourism you must construct a park that is in tune with its surroundings, and has height restrictions.
+STR_DTLS    :To further boost local tourism you must construct a park that is in tune with its surroundings.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :South America - Rain Forest Plateau

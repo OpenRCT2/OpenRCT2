@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2023 OpenRCT2 developers
+ * Copyright (c) 2014-2024 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
@@ -26,8 +27,9 @@
 #include <openrct2/management/Finance.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/sprites.h>
-#include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
+
+using namespace OpenRCT2;
 
 // clang-format off
 enum WindowGameBottomToolbarWidgetIdx
@@ -87,8 +89,10 @@ private:
         // Figure out how much line height we have to work with.
         uint32_t line_height = FontGetLineHeight(FontStyle::Medium);
 
+        auto& gameState = GetGameState();
+
         // Draw money
-        if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             Widget widget = window_game_bottom_toolbar_widgets[WIDX_MONEY];
             auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(),
@@ -98,9 +102,9 @@ private:
                 = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_MONEY
                        ? COLOUR_WHITE
                        : NOT_TRANSLUCENT(colours[0]));
-            StringId stringId = gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
+            StringId stringId = gameState.Cash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
             auto ft = Formatter();
-            ft.Add<money64>(gCash);
+            ft.Add<money64>(gameState.Cash);
             DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
         }
 
@@ -121,14 +125,14 @@ private:
             Widget widget = window_game_bottom_toolbar_widgets[WIDX_GUESTS];
             auto screenCoords = ScreenCoordsXY{ windowPos.x + widget.midX(), windowPos.y + widget.midY() - 6 };
 
-            StringId stringId = gNumGuestsInPark == 1 ? _guestCountFormatsSingular[gGuestChangeModifier]
-                                                      : _guestCountFormats[gGuestChangeModifier];
+            StringId stringId = gameState.NumGuestsInPark == 1 ? _guestCountFormatsSingular[gGuestChangeModifier]
+                                                               : _guestCountFormats[gGuestChangeModifier];
             colour_t colour
                 = (gHoverWidget.window_classification == WindowClass::BottomToolbar && gHoverWidget.widget_index == WIDX_GUESTS
                        ? COLOUR_WHITE
                        : NOT_TRANSLUCENT(colours[0]));
             auto ft = Formatter();
-            ft.Add<uint32_t>(gNumGuestsInPark);
+            ft.Add<uint32_t>(gameState.NumGuestsInPark);
             DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
         }
 
@@ -138,7 +142,7 @@ private:
             auto screenCoords = windowPos + ScreenCoordsXY{ widget.left + 11, widget.midY() - 5 };
 
             DrawParkRating(
-                dpi, colours[3], screenCoords, std::max(10, ((gParkRating / 4) * 263) / 256));
+                dpi, colours[3], screenCoords, std::max(10, ((gameState.ParkRating / 4) * 263) / 256));
         }
     }
 
@@ -201,7 +205,7 @@ private:
         screenCoords = { windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15,
                          static_cast<int32_t>(screenCoords.y + line_height + 1) };
 
-        int32_t temperature = gClimateCurrent.Temperature;
+        int32_t temperature = OpenRCT2::GetGameState().ClimateCurrent.Temperature;
         StringId format = STR_CELSIUS_VALUE;
         if (gConfigGeneral.TemperatureFormat == TemperatureUnit::Fahrenheit)
         {
@@ -214,14 +218,14 @@ private:
         screenCoords.x += 30;
 
         // Current weather
-        auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(gClimateCurrent);
+        auto currentWeatherSpriteId = ClimateGetWeatherSpriteId(OpenRCT2::GetGameState().ClimateCurrent);
         GfxDrawSprite(dpi, ImageId(currentWeatherSpriteId), screenCoords);
 
         // Next weather
-        auto nextWeatherSpriteId = ClimateGetWeatherSpriteId(gClimateNext);
+        auto nextWeatherSpriteId = ClimateGetWeatherSpriteId(GetGameState().ClimateNext);
         if (currentWeatherSpriteId != nextWeatherSpriteId)
         {
-            if (gClimateUpdateTimer < 960)
+            if (GetGameState().ClimateUpdateTimer < 960)
             {
                 GfxDrawSprite(dpi, ImageId(SPR_NEXT_WEATHER), screenCoords + ScreenCoordsXY{ 27, 5 });
                 GfxDrawSprite(dpi, ImageId(nextWeatherSpriteId), screenCoords + ScreenCoordsXY{ 40, 0 });
@@ -416,7 +420,7 @@ public:
         {
             case WIDX_LEFT_OUTSET:
             case WIDX_MONEY:
-                if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+                if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
                     ContextOpenWindow(WindowClass::Finances);
                 break;
             case WIDX_GUESTS:
@@ -465,18 +469,19 @@ public:
 
     OpenRCT2String OnTooltip(WidgetIndex widgetIndex, StringId fallback) override
     {
+        const auto& gameState = GetGameState();
         auto ft = Formatter();
 
-            switch (widgetIndex)
-            {
-                case WIDX_MONEY:
-                    ft.Add<money64>(gCurrentProfit);
-                    ft.Add<money64>(gParkValue);
-                    break;
-                case WIDX_PARK_RATING:
-                    ft.Add<int16_t>(gParkRating);
-                    break;
-            }
+        switch (widgetIndex)
+        {
+            case WIDX_MONEY:
+                ft.Add<money64>(gCurrentProfit);
+                ft.Add<money64>(gameState.ParkValue);
+                break;
+            case WIDX_PARK_RATING:
+                ft.Add<int16_t>(gameState.ParkRating);
+                break;
+        }
         return { fallback, ft };
     }
 
@@ -496,7 +501,7 @@ public:
             = line_height * 3 + 1;
 
         // Reposition left widgets in accordance with line height... depending on whether there is money in play.
-        if (gParkFlags & PARK_FLAGS_NO_MONEY)
+        if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
         {
             widgets[WIDX_MONEY].type = WindowWidgetType::Empty;
             widgets[WIDX_GUESTS].top = 1;
