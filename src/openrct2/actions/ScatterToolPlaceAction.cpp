@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../OpenRCT2.h"
 #include "../common.h"
+#include "../audio/audio.h"
 #include "../core/MemoryStream.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
@@ -437,3 +438,34 @@ GameActions::Result ScatterToolPlaceAction::Execute() const
 
     return res;
 }
+
+void scatterItems(int quantity, int gridPos_x, int gridPos_y, int selectedScenery, int quadrant, colour_t primaryColour, colour_t secondaryColour, colour_t tertiaryColour, uint16_t sceneryScatterSize) {
+    for (int32_t q = 0; q < quantity; q++) {
+        // Generate random offsets for x and y
+        int16_t grid_x_offset = (UtilRand() % sceneryScatterSize) - (sceneryScatterSize / 2);
+        int16_t grid_y_offset = (UtilRand() % sceneryScatterSize) - (sceneryScatterSize / 2);
+        if (sceneryScatterSize % 2 == 0) {
+            grid_x_offset += 1;
+            grid_y_offset += 1;
+        }
+
+        // Apply offsets to current grid position
+        int16_t cur_grid_x = gridPos_x + grid_x_offset * COORDS_XY_STEP;
+        int16_t cur_grid_y = gridPos_y + grid_y_offset * COORDS_XY_STEP;
+
+        // Create and execute ScatterToolPlaceAction
+        auto scatterToolPlaceAction = ScatterToolPlaceAction(
+            { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
+            primaryColour, secondaryColour, tertiaryColour);
+        scatterToolPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+            if (result->Error == GameActions::Status::Ok) {
+                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+            }
+        });
+        auto res = GameActions::Execute(&scatterToolPlaceAction);
+        if (res.Error == GameActions::Status::InsufficientFunds) {
+            break;
+        }
+    }
+}
+

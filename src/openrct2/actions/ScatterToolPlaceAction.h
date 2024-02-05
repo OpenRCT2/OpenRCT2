@@ -44,3 +44,5 @@ public:
     GameActions::Result Query() const override;
     GameActions::Result Execute() const override;
 };
+
+void scatterItems(int quantity, int gridPos_x, int gridPos_y, int selectedScenery, int quadrant, colour_t primaryColour, colour_t secondaryColour, colour_t tertiaryColour, uint16_t sceneryScatterSize);
