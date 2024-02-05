@@ -259,7 +259,7 @@ void Park::Initialise()
     gameState.StaffMechanicColour = COLOUR_LIGHT_BLUE;
     gameState.StaffSecurityColour = COLOUR_YELLOW;
     gameState.NumGuestsInPark = 0;
-    gNumGuestsInParkLastWeek = 0;
+    gameState.NumGuestsInParkLastWeek = 0;
     gameState.NumGuestsHeadingForPark = 0;
     gGuestChangeModifier = 0;
     gameState.ParkRating = 0;
@@ -754,7 +754,7 @@ void Park::UpdateHistories()
     auto& gameState = GetGameState();
     uint8_t guestChangeModifier = 1;
     int32_t changeInGuestsInPark = static_cast<int32_t>(gameState.NumGuestsInPark)
-        - static_cast<int32_t>(gNumGuestsInParkLastWeek);
+        - static_cast<int32_t>(gameState.NumGuestsInParkLastWeek);
     if (changeInGuestsInPark > -20)
     {
         guestChangeModifier++;
@@ -764,7 +764,7 @@ void Park::UpdateHistories()
         }
     }
     gGuestChangeModifier = guestChangeModifier;
-    gNumGuestsInParkLastWeek = gameState.NumGuestsInPark;
+    gameState.NumGuestsInParkLastWeek = gameState.NumGuestsInPark;
 
     // Update park rating, guests in park and current cash history
     HistoryPushRecord<uint8_t, 32>(gParkRatingHistory, gameState.ParkRating / 4);

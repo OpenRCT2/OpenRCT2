@@ -299,7 +299,7 @@ namespace RCT2
                 }
             }
 
-            gNumGuestsInParkLastWeek = _s6.LastGuestsInPark;
+            gameState.NumGuestsInParkLastWeek = _s6.LastGuestsInPark;
             // Pad01357BCA
             gameState.StaffHandymanColour = _s6.HandymanColour;
             gameState.StaffMechanicColour = _s6.MechanicColour;

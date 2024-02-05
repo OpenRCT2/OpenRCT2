@@ -67,7 +67,6 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
 uint8_t gGuestChangeModifier;
-uint32_t gNumGuestsInParkLastWeek;
 
 uint8_t gPeepWarningThrottle[16];
 
