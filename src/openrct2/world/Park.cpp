@@ -50,7 +50,6 @@ using namespace OpenRCT2;
 money64 gLandPrice;
 money64 gConstructionRightsPrice;
 
-uint64_t gTotalAdmissions;
 money64 gTotalIncomeFromAdmissions;
 
 money64 gCompanyValue;

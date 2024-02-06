@@ -895,7 +895,7 @@ namespace OpenRCT2
                     cs.ReadWrite(gCurrentProfit);
                     cs.ReadWrite(gameState.WeeklyProfitAverageDividend);
                     cs.ReadWrite(gameState.WeeklyProfitAverageDivisor);
-                    cs.ReadWrite(gTotalAdmissions);
+                    cs.ReadWrite(gameState.TotalAdmissions);
                     cs.ReadWrite(gTotalIncomeFromAdmissions);
                     if (version <= 16)
                     {

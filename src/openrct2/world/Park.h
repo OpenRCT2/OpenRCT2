@@ -95,7 +95,6 @@ namespace OpenRCT2
 extern money64 gLandPrice;
 extern money64 gConstructionRightsPrice;
 
-extern uint64_t gTotalAdmissions;
 extern money64 gTotalIncomeFromAdmissions;
 
 extern money64 gCompanyValue;

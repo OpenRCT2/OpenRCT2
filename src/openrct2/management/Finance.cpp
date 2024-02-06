@@ -239,7 +239,7 @@ void FinanceInit()
     gameState.ParkValue = 0;
     gCompanyValue = 0;
     gameState.ScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
-    gTotalAdmissions = 0;
+    gameState.TotalAdmissions = 0;
     gTotalIncomeFromAdmissions = 0;
     gameState.ScenarioCompletedBy = "?";
 }

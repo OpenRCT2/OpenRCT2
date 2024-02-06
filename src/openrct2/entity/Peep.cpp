@@ -1976,7 +1976,7 @@ static bool PeepInteractWithEntrance(Peep* peep, const CoordsXYE& coords, uint8_
             guest->PeepFlags |= PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY;
         }
 
-        gTotalAdmissions++;
+        GetGameState().TotalAdmissions++;
         WindowInvalidateByNumber(WindowClass::ParkInformation, 0);
 
         guest->Var37 = 1;

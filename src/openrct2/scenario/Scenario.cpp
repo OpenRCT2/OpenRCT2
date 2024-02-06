@@ -139,7 +139,7 @@ void ScenarioReset(GameState_t& gameState)
     gCurrentProfit = 0;
     gameState.WeeklyProfitAverageDividend = 0;
     gameState.WeeklyProfitAverageDivisor = 0;
-    gTotalAdmissions = 0;
+    gameState.TotalAdmissions = 0;
     gTotalIncomeFromAdmissions = 0;
 
     gameState.ParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
