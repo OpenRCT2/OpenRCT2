@@ -49,6 +49,7 @@ namespace OpenRCT2
         uint32_t NextGuestNumber;
         uint32_t NumGuestsInPark;
         uint32_t NumGuestsHeadingForPark;
+        uint32_t NumGuestsInParkLastWeek;
         money64 WeeklyProfitAverageDividend;
         uint16_t WeeklyProfitAverageDivisor;
         money64 WeeklyProfitHistory[FINANCE_GRAPH_SIZE];

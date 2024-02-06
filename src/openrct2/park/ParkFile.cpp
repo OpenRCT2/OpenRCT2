@@ -907,7 +907,7 @@ namespace OpenRCT2
                     {
                         cs.ReadWrite(gTotalRideValueForMoney);
                     }
-                    cs.ReadWrite(gNumGuestsInParkLastWeek);
+                    cs.ReadWrite(gameState.NumGuestsInParkLastWeek);
                     cs.ReadWrite(gGuestChangeModifier);
                     cs.ReadWrite(_guestGenerationProbability);
                     cs.ReadWrite(_suggestedGuestMaximum);
