@@ -25,6 +25,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/CheatSetAction.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
+#include <openrct2/actions/PauseToggleAction.h>
 #include <openrct2/actions/TileModifyAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
@@ -254,12 +255,7 @@ static void ShortcutBuildPaths()
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            WindowBase* window = WindowFindByClass(WindowClass::TopToolbar);
-            if (window != nullptr)
-            {
-                window->Invalidate();
-                WindowEventMouseUpCall(window, WC_TOP_TOOLBAR__WIDX_PATH);
-            }
+            ContextOpenWindow(WindowClass::Footpath);
         }
     }
 }
@@ -783,12 +779,8 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::InterfacePause, STR_SHORTCUT_PAUSE_GAME, "PAUSE", []() {
         if (!(gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            auto window = WindowFindByClass(WindowClass::TopToolbar);
-            if (window != nullptr)
-            {
-                window->Invalidate();
-                WindowEventMouseUpCall(window, WC_TOP_TOOLBAR__WIDX_PAUSE);
-            }
+            auto pauseToggleAction = PauseToggleAction();
+            GameActions::Execute(&pauseToggleAction);
         }
     });
     RegisterShortcut(ShortcutId::InterfaceDecreaseSpeed, STR_SHORTCUT_REDUCE_GAME_SPEED, "-", ShortcutReduceGameSpeed);
