@@ -964,8 +964,9 @@ private:
         auto screenCoords = windowPos
             + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
+        auto& gameState = GetGameState();
         // Draw park size
-        auto parkSize = GetGameState().ParkSize * 10;
+        auto parkSize = gameState.ParkSize * 10;
         auto stringIndex = STR_PARK_SIZE_METRIC_LABEL;
         if (gConfigGeneral.MeasurementFormat == MeasurementFormat::Imperial)
         {
@@ -997,12 +998,12 @@ private:
 
         // Draw number of guests in park
         ft = Formatter();
-        ft.Add<uint32_t>(OpenRCT2::GetGameState().NumGuestsInPark);
+        ft.Add<uint32_t>(gameState.NumGuestsInPark);
         DrawTextBasic(dpi, screenCoords, STR_GUESTS_IN_PARK_LABEL, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
 
         ft = Formatter();
-        ft.Add<uint32_t>(gTotalAdmissions);
+        ft.Add<uint32_t>(gameState.TotalAdmissions);
         DrawTextBasic(dpi, screenCoords, STR_TOTAL_ADMISSIONS, ft);
     }
 #pragma endregion

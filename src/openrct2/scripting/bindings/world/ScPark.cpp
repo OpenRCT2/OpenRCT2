@@ -207,15 +207,16 @@ namespace OpenRCT2::Scripting
 
     uint32_t ScPark::totalAdmissions_get() const
     {
-        return gTotalAdmissions;
+        return GetGameState().TotalAdmissions;
     }
     void ScPark::totalAdmissions_set(uint32_t value)
     {
         ThrowIfGameStateNotMutable();
+        auto& gameState = GetGameState();
 
-        if (gTotalAdmissions != value)
+        if (gameState.TotalAdmissions != value)
         {
-            gTotalAdmissions = value;
+            gameState.TotalAdmissions = value;
             WindowInvalidateByClass(WindowClass::ParkInformation);
         }
     }

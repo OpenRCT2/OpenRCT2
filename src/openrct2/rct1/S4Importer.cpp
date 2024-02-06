@@ -1424,7 +1424,7 @@ namespace RCT1
             gCurrentExpenditure = ToMoney64(_s4.TotalExpenditure);
 
             gameState.ScenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s4.CompletedCompanyValue);
-            gTotalAdmissions = _s4.NumAdmissions;
+            gameState.TotalAdmissions = _s4.NumAdmissions;
             gTotalIncomeFromAdmissions = ToMoney64(_s4.AdmissionTotalIncome);
 
             // TODO marketing campaigns not working
