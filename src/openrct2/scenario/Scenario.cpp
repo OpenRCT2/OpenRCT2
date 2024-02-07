@@ -140,7 +140,7 @@ void ScenarioReset(GameState_t& gameState)
     gameState.WeeklyProfitAverageDividend = 0;
     gameState.WeeklyProfitAverageDivisor = 0;
     gameState.TotalAdmissions = 0;
-    gTotalIncomeFromAdmissions = 0;
+    gameState.TotalIncomeFromAdmissions = 0;
 
     gameState.ParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
     gameState.ScenarioCompletedCompanyValue = MONEY64_UNDEFINED;

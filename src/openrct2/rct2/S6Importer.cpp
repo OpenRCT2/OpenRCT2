@@ -373,7 +373,7 @@ namespace RCT2
 
             gameState.ScenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s6.CompletedCompanyValue);
             gameState.TotalAdmissions = _s6.TotalAdmissions;
-            gTotalIncomeFromAdmissions = ToMoney64(_s6.IncomeFromAdmissions);
+            gameState.TotalIncomeFromAdmissions = ToMoney64(_s6.IncomeFromAdmissions);
             gCompanyValue = ToMoney64(_s6.CompanyValue);
             std::memcpy(gPeepWarningThrottle, _s6.PeepWarningThrottle, sizeof(_s6.PeepWarningThrottle));
 

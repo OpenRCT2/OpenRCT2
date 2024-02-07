@@ -896,7 +896,7 @@ namespace OpenRCT2
                     cs.ReadWrite(gameState.WeeklyProfitAverageDividend);
                     cs.ReadWrite(gameState.WeeklyProfitAverageDivisor);
                     cs.ReadWrite(gameState.TotalAdmissions);
-                    cs.ReadWrite(gTotalIncomeFromAdmissions);
+                    cs.ReadWrite(gameState.TotalIncomeFromAdmissions);
                     if (version <= 16)
                     {
                         money16 legacyTotalRideValueForMoney = 0;

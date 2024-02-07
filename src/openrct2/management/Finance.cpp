@@ -240,7 +240,7 @@ void FinanceInit()
     gCompanyValue = 0;
     gameState.ScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
     gameState.TotalAdmissions = 0;
-    gTotalIncomeFromAdmissions = 0;
+    gameState.TotalIncomeFromAdmissions = 0;
     gameState.ScenarioCompletedBy = "?";
 }
 

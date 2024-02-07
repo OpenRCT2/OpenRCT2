@@ -223,15 +223,16 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::totalIncomeFromAdmissions_get() const
     {
-        return gTotalIncomeFromAdmissions;
+        return GetGameState().TotalIncomeFromAdmissions;
     }
     void ScPark::totalIncomeFromAdmissions_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
+        auto& gameState = GetGameState();
 
-        if (gTotalIncomeFromAdmissions != value)
+        if (gameState.TotalIncomeFromAdmissions != value)
         {
-            gTotalIncomeFromAdmissions = value;
+            gameState.TotalIncomeFromAdmissions = value;
             WindowInvalidateByClass(WindowClass::ParkInformation);
         }
     }
