@@ -900,7 +900,7 @@ private:
         auto screenCoords = windowPos
             + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 30 };
         auto ft = Formatter();
-        ft.Add<money64>(gTotalIncomeFromAdmissions);
+        ft.Add<money64>(GetGameState().TotalIncomeFromAdmissions);
         DrawTextBasic(dpi, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
 
         money64 parkEntranceFee = ParkGetEntranceFee();

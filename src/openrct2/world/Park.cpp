@@ -50,8 +50,6 @@ using namespace OpenRCT2;
 money64 gLandPrice;
 money64 gConstructionRightsPrice;
 
-money64 gTotalIncomeFromAdmissions;
-
 money64 gCompanyValue;
 
 int16_t gParkRatingCasualtyPenalty;

@@ -53,6 +53,7 @@ namespace OpenRCT2
         uint32_t NumGuestsInParkLastWeek;
         money64 WeeklyProfitAverageDividend;
         uint64_t TotalAdmissions;
+        money64 TotalIncomeFromAdmissions;
         uint16_t WeeklyProfitAverageDivisor;
         money64 WeeklyProfitHistory[FINANCE_GRAPH_SIZE];
         Objective ScenarioObjective;
