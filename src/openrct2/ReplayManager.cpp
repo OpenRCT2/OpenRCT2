@@ -668,7 +668,7 @@ namespace OpenRCT2
             auto& gameState = GetGameState();
 
             serialiser << gameState.GuestGenerationProbability;
-            serialiser << _suggestedGuestMaximum;
+            serialiser << gameState.SuggestedGuestMaximum;
             serialiser << gConfigGeneral.ShowRealNamesOfGuests;
 
             // To make this a little bit less volatile against updates

@@ -99,7 +99,6 @@ extern money64 gCompanyValue;
 
 extern int16_t gParkRatingCasualtyPenalty;
 extern uint32_t gGuestsInParkHistory[32];
-extern uint32_t _suggestedGuestMaximum;
 
 void ParkSetForcedRating(int32_t rating);
 int32_t ParkGetForcedRating();

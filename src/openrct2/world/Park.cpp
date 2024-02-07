@@ -59,11 +59,6 @@ uint32_t gGuestsInParkHistory[32];
 static int32_t _forcedParkRating = -1;
 
 /**
- * In a difficult guest generation scenario, no guests will be generated if over this value.
- */
-uint32_t _suggestedGuestMaximum;
-
-/**
  * Choose a random peep spawn and iterates through until defined spawn is found.
  */
 static PeepSpawn* GetRandomPeepSpawn()
@@ -253,7 +248,7 @@ void Park::Initialise()
     gameState.ParkRating = 0;
     gameState.GuestGenerationProbability = 0;
     gameState.TotalRideValueForMoney = 0;
-    _suggestedGuestMaximum = 0;
+    gameState.SuggestedGuestMaximum = 0;
     gameState.ResearchLastItem = std::nullopt;
     gMarketingCampaigns.clear();
 
@@ -312,7 +307,7 @@ void Park::Update(const Date& date)
         gameState.ParkValue = CalculateParkValue();
         gCompanyValue = CalculateCompanyValue();
         gameState.TotalRideValueForMoney = CalculateTotalRideValueForMoney();
-        _suggestedGuestMaximum = CalculateSuggestedMaxGuests();
+        gameState.SuggestedGuestMaximum = CalculateSuggestedMaxGuests();
         gameState.GuestGenerationProbability = CalculateGuestGenerationProbability();
 
         WindowInvalidateByClass(WindowClass::Finances);
@@ -596,7 +591,7 @@ uint32_t Park::CalculateGuestGenerationProbability() const
 
     // The more guests, the lower the chance of a new one
     uint32_t numGuests = gameState.NumGuestsInPark + gameState.NumGuestsHeadingForPark;
-    if (numGuests > _suggestedGuestMaximum)
+    if (numGuests > gameState.SuggestedGuestMaximum)
     {
         probability /= 4;
         // Even lower for difficult guest generation
@@ -671,7 +666,7 @@ void Park::GenerateGuests()
     if (static_cast<int32_t>(ScenarioRand() & 0xFFFF) < gameState.GuestGenerationProbability)
     {
         bool difficultGeneration = (gameState.ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
-        if (!difficultGeneration || _suggestedGuestMaximum + 150 >= gameState.NumGuestsInPark)
+        if (!difficultGeneration || gameState.SuggestedGuestMaximum + 150 >= gameState.NumGuestsInPark)
         {
             GenerateGuest();
         }

@@ -404,7 +404,7 @@ namespace RCT2
             gParkRatingCasualtyPenalty = _s6.ParkRatingCasualtyPenalty;
             gMapSize = { _s6.MapSize, _s6.MapSize };
             gSamePriceThroughoutPark = _s6.SamePriceThroughout | (static_cast<uint64_t>(_s6.SamePriceThroughoutExtended) << 32);
-            _suggestedGuestMaximum = _s6.SuggestedMaxGuests;
+            gameState.SuggestedGuestMaximum = _s6.SuggestedMaxGuests;
             gameState.ScenarioParkRatingWarningDays = _s6.ParkRatingWarningDays;
             gLastEntranceStyle = _s6.LastEntranceStyle;
             // rct1_water_colour

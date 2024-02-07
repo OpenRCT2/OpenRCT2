@@ -94,6 +94,10 @@ namespace OpenRCT2
          * awards, approximately 1 guest per second can be generated (+60 guests in one minute).
          */
         int32_t GuestGenerationProbability;
+        /**
+         * In a difficult guest generation scenario, no guests will be generated if over this value.
+         */
+        uint32_t SuggestedGuestMaximum;
     };
 
     GameState_t& GetGameState();

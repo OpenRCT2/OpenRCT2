@@ -139,7 +139,7 @@ namespace OpenRCT2::Scripting
 
     uint32_t ScPark::suggestedGuestMaximum_get() const
     {
-        return _suggestedGuestMaximum;
+        return GetGameState().SuggestedGuestMaximum;
     }
 
     int32_t ScPark::guestGenerationProbability_get() const
