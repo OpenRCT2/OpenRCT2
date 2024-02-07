@@ -1,6 +1,7 @@
 0.4.9 (in development)
 ------------------------------------------------------------------------
 - Fix: [#20907] RCT1/AA scenarios use the 4-across train for the Inverted Roller Coaster.
+- Fix: [#21332] Mini helicopters & monorail cycles ride types being swapped in research within RCT1 scenarios.
 
 0.4.8 (2024-02-04)
 ------------------------------------------------------------------------

@@ -765,7 +765,7 @@ namespace RCT1
             "rct2.ride.toffs",                       // RCT1_RIDE_TYPE_TOFFEE_APPLE_STALL
             "rct2.ride.vreel",                       // RCT1_RIDE_TYPE_VIRGINIA_REEL
             "rct2.ride.spboat",                      // RCT1_RIDE_TYPE_RIVER_RIDE
-            "rct2.ride.monbk",                       // RCT1_RIDE_TYPE_CYCLE_MONORAIL
+            "rct2.ride.helicar",                     // RCT1_RIDE_TYPE_CYCLE_MONORAIL
             "rct2.ride.vekst",                       // RCT1_RIDE_TYPE_FLYING_ROLLER_COASTER
             "rct2.ride.smono",                       // RCT1_RIDE_TYPE_SUSPENDED_MONORAIL
             "",                                      // RCT1_RIDE_TYPE_40
@@ -776,7 +776,7 @@ namespace RCT1
             "rct2.ride.gdrop1",                      // RCT1_RIDE_TYPE_ROTO_DROP
             "rct2.ride.fsauc",                       // RCT1_RIDE_TYPE_FLYING_SAUCERS
             "rct2.ride.chbuild",                     // RCT1_RIDE_TYPE_CROOKED_HOUSE
-            "rct2.ride.helicar",                     // RCT1_RIDE_TYPE_CYCLE_RAILWAY
+            "rct2.ride.monbk",                       // RCT1_RIDE_TYPE_CYCLE_RAILWAY
             "rct1.ride.inverted_trains",             // RCT1_RIDE_TYPE_SUSPENDED_LOOPING_ROLLER_COASTER
             "rct2.ride.cstboat",                     // RCT1_RIDE_TYPE_WATER_COASTER
             "rct2.ride.thcar",                       // RCT1_RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER
