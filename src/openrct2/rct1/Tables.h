@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../entity/Peep.h"
+#include "RCT1.h"
 
 #include <vector>
 
@@ -27,15 +28,15 @@ namespace RCT1
     colour_t GetColour(colour_t colour);
     ::PeepSpriteType GetPeepSpriteType(PeepSpriteType rct1SpriteType);
 
-    uint8_t GetRideType(RideType rideType, uint8_t vehicleType);
-    VehicleColourSchemeCopyDescriptor GetColourSchemeCopyDescriptor(uint8_t vehicleType);
+    uint8_t GetRideType(RideType rideType, VehicleType vehicleType);
+    VehicleColourSchemeCopyDescriptor GetColourSchemeCopyDescriptor(VehicleType vehicleType);
     bool RideTypeUsesVehicles(RideType rideType);
     bool PathIsQueue(uint8_t pathType);
     uint8_t NormalisePathAddition(uint8_t pathAdditionType);
-    uint8_t GetVehicleSubEntryIndex(uint8_t rct1VehicleType, uint8_t vehicleSubEntry);
+    uint8_t GetVehicleSubEntryIndex(VehicleType rct1VehicleType, uint8_t vehicleSubEntry);
 
     std::string_view GetRideTypeObject(RideType rideType, bool isLL);
-    std::string_view GetVehicleObject(uint8_t vehicleType);
+    std::string_view GetVehicleObject(VehicleType vehicleType);
     std::string_view GetSmallSceneryObject(uint8_t smallSceneryType);
     std::string_view GetLargeSceneryObject(uint8_t largeSceneryType);
     /**

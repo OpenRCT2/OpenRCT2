@@ -106,7 +106,7 @@ namespace RCT1
 
         // Lookup tables for converting from RCT1 hard coded types to the new dynamic object entries
         ObjectEntryIndex _rideTypeToRideEntryMap[EnumValue(RideType::Count)]{};
-        ObjectEntryIndex _vehicleTypeToRideEntryMap[RCT1_VEHICLE_TYPE_COUNT]{};
+        ObjectEntryIndex _vehicleTypeToRideEntryMap[EnumValue(VehicleType::Count)]{};
         ObjectEntryIndex _smallSceneryTypeToEntryMap[256]{};
         ObjectEntryIndex _largeSceneryTypeToEntryMap[256]{};
         ObjectEntryIndex _wallTypeToEntryMap[256]{};
@@ -453,7 +453,8 @@ namespace RCT1
                         // For some bizarre reason, RCT1 research lists contain vehicles that aren't actually researched.
                         if (rideTypeInResearch[researchItem->RelatedRide])
                         {
-                            AddEntryForVehicleType(static_cast<RideType>(researchItem->RelatedRide), researchItem->Item);
+                            AddEntryForVehicleType(
+                                static_cast<RideType>(researchItem->RelatedRide), static_cast<VehicleType>(researchItem->Item));
                         }
                         break;
                 }
@@ -614,17 +615,17 @@ namespace RCT1
             }
         }
 
-        void AddEntryForVehicleType(RideType rideType, uint8_t vehicleType)
+        void AddEntryForVehicleType(RideType rideType, VehicleType vehicleType)
         {
             Guard::Assert(EnumValue(rideType) < std::size(_rideTypeToRideEntryMap));
 
-            if (_vehicleTypeToRideEntryMap[vehicleType] == OBJECT_ENTRY_INDEX_NULL)
+            if (_vehicleTypeToRideEntryMap[EnumValue(vehicleType)] == OBJECT_ENTRY_INDEX_NULL)
             {
                 auto entryName = RCT1::GetVehicleObject(vehicleType);
                 if (!entryName.empty())
                 {
                     auto entryIndex = _rideEntries.GetOrAddEntry(entryName);
-                    _vehicleTypeToRideEntryMap[vehicleType] = entryIndex;
+                    _vehicleTypeToRideEntryMap[EnumValue(vehicleType)] = entryIndex;
 
                     if (rideType != RideType::Null)
                         AddEntryForRideType(rideType);
@@ -797,7 +798,7 @@ namespace RCT1
 
             if (RCT1::RideTypeUsesVehicles(src->Type))
             {
-                dst->subtype = _vehicleTypeToRideEntryMap[src->VehicleType];
+                dst->subtype = _vehicleTypeToRideEntryMap[EnumValue(src->VehicleType)];
             }
             else
             {
@@ -1210,9 +1211,8 @@ namespace RCT1
         void SetVehicleColours(::Vehicle* dst, const RCT1::Vehicle* src)
         {
             const auto& srcRide = _s4.Rides[src->Ride];
-            uint8_t vehicleTypeIndex = srcRide.VehicleType;
             RCT1::VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(
-                vehicleTypeIndex);
+                srcRide.VehicleType);
 
             // RCT1 had no third colour
             if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
@@ -2717,7 +2717,7 @@ namespace RCT1
 
                 if (researchList[i].Type == RCT1_RESEARCH_TYPE_RIDE)
                 {
-                    return RCT1::GetRideType(static_cast<RideType>(researchList[i].Item), 0);
+                    return RCT1::GetRideType(static_cast<RideType>(researchList[i].Item), static_cast<VehicleType>(0));
                 }
             }
 
