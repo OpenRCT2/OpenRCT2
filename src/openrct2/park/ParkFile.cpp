@@ -917,7 +917,7 @@ namespace OpenRCT2
                         return true;
                     });
 
-                    cs.ReadWriteArray(gParkRatingHistory, [&cs](uint8_t& value) {
+                    cs.ReadWriteArray(gameState.ParkRatingHistory, [&cs](uint8_t& value) {
                         cs.ReadWrite(value);
                         return true;
                     });

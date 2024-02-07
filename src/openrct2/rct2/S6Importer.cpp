@@ -309,7 +309,7 @@ namespace RCT2
 
             auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
             park.ResetHistories();
-            std::copy(std::begin(_s6.ParkRatingHistory), std::end(_s6.ParkRatingHistory), gParkRatingHistory);
+            std::copy(std::begin(_s6.ParkRatingHistory), std::end(_s6.ParkRatingHistory), gameState.ParkRatingHistory);
             for (size_t i = 0; i < std::size(_s6.GuestsInParkHistory); i++)
             {
                 if (_s6.GuestsInParkHistory[i] != RCT12ParkHistoryUndefined)
