@@ -144,7 +144,7 @@ namespace OpenRCT2::Scripting
 
     int32_t ScPark::guestGenerationProbability_get() const
     {
-        return _guestGenerationProbability;
+        return GetGameState().GuestGenerationProbability;
     }
 
     money64 ScPark::guestInitialCash_get() const

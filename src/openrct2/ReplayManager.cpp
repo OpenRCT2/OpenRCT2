@@ -665,7 +665,9 @@ namespace OpenRCT2
 
         bool SerialiseParkParameters(DataSerialiser& serialiser)
         {
-            serialiser << _guestGenerationProbability;
+            auto& gameState = GetGameState();
+
+            serialiser << gameState.GuestGenerationProbability;
             serialiser << _suggestedGuestMaximum;
             serialiser << gConfigGeneral.ShowRealNamesOfGuests;
 

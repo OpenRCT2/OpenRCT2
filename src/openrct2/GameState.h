@@ -86,6 +86,14 @@ namespace OpenRCT2
         std::vector<ResearchItem> ResearchItemsUninvented;
         std::vector<ResearchItem> ResearchItemsInvented;
         uint8_t ResearchUncompletedCategories;
+
+        /**
+         * Probability out of 65535, of gaining a new guest per game tick.
+         * new guests per second = 40 * (probability / 65535)
+         * With a full park rating, non-overpriced entrance fee, less guests than the suggested maximum and four positive
+         * awards, approximately 1 guest per second can be generated (+60 guests in one minute).
+         */
+        int32_t GuestGenerationProbability;
     };
 
     GameState_t& GetGameState();

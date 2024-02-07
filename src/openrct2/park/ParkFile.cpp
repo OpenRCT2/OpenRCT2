@@ -909,7 +909,7 @@ namespace OpenRCT2
                     }
                     cs.ReadWrite(gameState.NumGuestsInParkLastWeek);
                     cs.ReadWrite(gGuestChangeModifier);
-                    cs.ReadWrite(_guestGenerationProbability);
+                    cs.ReadWrite(gameState.GuestGenerationProbability);
                     cs.ReadWrite(_suggestedGuestMaximum);
 
                     cs.ReadWriteArray(gPeepWarningThrottle, [&cs](uint8_t& value) {

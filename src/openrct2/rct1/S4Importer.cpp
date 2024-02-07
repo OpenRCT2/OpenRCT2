@@ -2194,7 +2194,7 @@ namespace RCT1
             gameState.GuestInitialThirst = _s4.GuestInitialThirst;
             gameState.GuestInitialHappiness = _s4.GuestInitialHappiness;
 
-            _guestGenerationProbability = _s4.GuestGenerationProbability;
+            gameState.GuestGenerationProbability = _s4.GuestGenerationProbability;
 
             // Staff colours
             gameState.StaffHandymanColour = RCT1::GetColour(_s4.HandymanColour);
