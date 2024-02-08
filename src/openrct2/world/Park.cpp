@@ -59,19 +59,6 @@ uint32_t gGuestsInParkHistory[32];
 static int32_t _forcedParkRating = -1;
 
 /**
- * In a difficult guest generation scenario, no guests will be generated if over this value.
- */
-uint32_t _suggestedGuestMaximum;
-
-/**
- * Probability out of 65535, of gaining a new guest per game tick.
- * new guests per second = 40 * (probability / 65535)
- * With a full park rating, non-overpriced entrance fee, less guests than the suggested maximum and four positive awards,
- * approximately 1 guest per second can be generated (+60 guests in one minute).
- */
-int32_t _guestGenerationProbability;
-
-/**
  * Choose a random peep spawn and iterates through until defined spawn is found.
  */
 static PeepSpawn* GetRandomPeepSpawn()
@@ -259,9 +246,9 @@ void Park::Initialise()
     gameState.NumGuestsHeadingForPark = 0;
     gGuestChangeModifier = 0;
     gameState.ParkRating = 0;
-    _guestGenerationProbability = 0;
+    gameState.GuestGenerationProbability = 0;
     gameState.TotalRideValueForMoney = 0;
-    _suggestedGuestMaximum = 0;
+    gameState.SuggestedGuestMaximum = 0;
     gameState.ResearchLastItem = std::nullopt;
     gMarketingCampaigns.clear();
 
@@ -320,8 +307,8 @@ void Park::Update(const Date& date)
         gameState.ParkValue = CalculateParkValue();
         gCompanyValue = CalculateCompanyValue();
         gameState.TotalRideValueForMoney = CalculateTotalRideValueForMoney();
-        _suggestedGuestMaximum = CalculateSuggestedMaxGuests();
-        _guestGenerationProbability = CalculateGuestGenerationProbability();
+        gameState.SuggestedGuestMaximum = CalculateSuggestedMaxGuests();
+        gameState.GuestGenerationProbability = CalculateGuestGenerationProbability();
 
         WindowInvalidateByClass(WindowClass::Finances);
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
@@ -604,7 +591,7 @@ uint32_t Park::CalculateGuestGenerationProbability() const
 
     // The more guests, the lower the chance of a new one
     uint32_t numGuests = gameState.NumGuestsInPark + gameState.NumGuestsHeadingForPark;
-    if (numGuests > _suggestedGuestMaximum)
+    if (numGuests > gameState.SuggestedGuestMaximum)
     {
         probability /= 4;
         // Even lower for difficult guest generation
@@ -676,10 +663,10 @@ void Park::GenerateGuests()
     auto& gameState = GetGameState();
 
     // Generate a new guest for some probability
-    if (static_cast<int32_t>(ScenarioRand() & 0xFFFF) < _guestGenerationProbability)
+    if (static_cast<int32_t>(ScenarioRand() & 0xFFFF) < gameState.GuestGenerationProbability)
     {
         bool difficultGeneration = (gameState.ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
-        if (!difficultGeneration || _suggestedGuestMaximum + 150 >= gameState.NumGuestsInPark)
+        if (!difficultGeneration || gameState.SuggestedGuestMaximum + 150 >= gameState.NumGuestsInPark)
         {
             GenerateGuest();
         }

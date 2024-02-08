@@ -338,7 +338,7 @@ namespace RCT2
             gameState.ResearchExpectedMonth = _s6.NextResearchExpectedMonth;
             gameState.GuestInitialHappiness = _s6.GuestInitialHappiness;
             gameState.ParkSize = _s6.ParkSize;
-            _guestGenerationProbability = _s6.GuestGenerationProbability;
+            gameState.GuestGenerationProbability = _s6.GuestGenerationProbability;
             gameState.TotalRideValueForMoney = _s6.TotalRideValueForMoney;
             gMaxBankLoan = ToMoney64(_s6.MaximumLoan);
             gameState.GuestInitialCash = ToMoney64(_s6.GuestInitialCash);
@@ -404,7 +404,7 @@ namespace RCT2
             gParkRatingCasualtyPenalty = _s6.ParkRatingCasualtyPenalty;
             gMapSize = { _s6.MapSize, _s6.MapSize };
             gSamePriceThroughoutPark = _s6.SamePriceThroughout | (static_cast<uint64_t>(_s6.SamePriceThroughoutExtended) << 32);
-            _suggestedGuestMaximum = _s6.SuggestedMaxGuests;
+            gameState.SuggestedGuestMaximum = _s6.SuggestedMaxGuests;
             gameState.ScenarioParkRatingWarningDays = _s6.ParkRatingWarningDays;
             gLastEntranceStyle = _s6.LastEntranceStyle;
             // rct1_water_colour
