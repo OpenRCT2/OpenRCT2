@@ -4027,6 +4027,7 @@ enum : uint16_t
     STR_ERR_CANT_CHANGE_PARK_ENTRANCE_FEE = 6614,
     STR_ERR_TRACK_ON_THIS_TILE_NEEDS_WATER = 6615,
     STR_ERR_ACTION_INVALID_FOR_THAT_STAFF_TYPE = 6616,
+    STR_ERR_CANT_SWAP_TILE_ELEMENT_WITH_ITSELF = 6617,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

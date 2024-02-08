@@ -3686,6 +3686,7 @@ STR_6613    :Reload object
 STR_6614    :Can’t change park entrance fee
 STR_6615    :Track on this tile needs water
 STR_6616    :Action invalid for that staff type
+STR_6617    :Can’t swap tile element with itself
 
 #############
 # Scenarios #
