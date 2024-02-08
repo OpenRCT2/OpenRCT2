@@ -1428,7 +1428,7 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                     auto res = RideEntranceExitPlaceAction::TrackPlaceQuery(newCoords, false);
                     if (res.Error != GameActions::Status::Ok)
                     {
-                        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+                        return res;
                     }
 
                     totalCost += res.Cost;
