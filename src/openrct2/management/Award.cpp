@@ -175,19 +175,21 @@ static bool AwardIsDeservedBestRollercoasters([[maybe_unused]] int32_t activeAwa
 /** Entrance fee is 0.10 less than half of the total ride value. */
 static bool AwardIsDeservedBestValue(int32_t activeAwardTypes)
 {
+    auto& gameState = GetGameState();
+
     if (activeAwardTypes & EnumToFlag(AwardType::WorstValue))
         return false;
 
     if (activeAwardTypes & EnumToFlag(AwardType::MostDisappointing))
         return false;
 
-    if ((GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY) || !ParkEntranceFeeUnlocked())
+    if ((gameState.ParkFlags & PARK_FLAGS_NO_MONEY) || !ParkEntranceFeeUnlocked())
         return false;
 
-    if (gTotalRideValueForMoney < 10.00_GBP)
+    if (gameState.TotalRideValueForMoney < 10.00_GBP)
         return false;
 
-    if (ParkGetEntranceFee() + 0.10_GBP >= gTotalRideValueForMoney / 2)
+    if (ParkGetEntranceFee() + 0.10_GBP >= gameState.TotalRideValueForMoney / 2)
         return false;
 
     return true;
@@ -229,15 +231,17 @@ static bool AwardIsDeservedMostBeautiful(int32_t activeAwardTypes)
 /** Entrance fee is more than total ride value. */
 static bool AwardIsDeservedWorstValue(int32_t activeAwardTypes)
 {
+    auto& gameState = GetGameState();
+
     if (activeAwardTypes & EnumToFlag(AwardType::BestValue))
         return false;
-    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+    if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
         return false;
 
     const auto parkEntranceFee = ParkGetEntranceFee();
     if (parkEntranceFee == 0.00_GBP)
         return false;
-    if (parkEntranceFee <= gTotalRideValueForMoney)
+    if (parkEntranceFee <= gameState.TotalRideValueForMoney)
         return false;
     return true;
 }

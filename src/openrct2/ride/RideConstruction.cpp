@@ -50,8 +50,6 @@
 
 using namespace OpenRCT2::TrackMetaData;
 
-money64 gTotalRideValueForMoney;
-
 money64 _currentTrackPrice;
 
 uint32_t _currentTrackCurve;

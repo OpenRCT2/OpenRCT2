@@ -260,7 +260,7 @@ void Park::Initialise()
     gGuestChangeModifier = 0;
     gameState.ParkRating = 0;
     _guestGenerationProbability = 0;
-    gTotalRideValueForMoney = 0;
+    gameState.TotalRideValueForMoney = 0;
     _suggestedGuestMaximum = 0;
     gameState.ResearchLastItem = std::nullopt;
     gMarketingCampaigns.clear();
@@ -319,7 +319,7 @@ void Park::Update(const Date& date)
         gameState.ParkRating = CalculateParkRating();
         gameState.ParkValue = CalculateParkValue();
         gCompanyValue = CalculateCompanyValue();
-        gTotalRideValueForMoney = CalculateTotalRideValueForMoney();
+        gameState.TotalRideValueForMoney = CalculateTotalRideValueForMoney();
         _suggestedGuestMaximum = CalculateSuggestedMaxGuests();
         _guestGenerationProbability = CalculateGuestGenerationProbability();
 
@@ -622,11 +622,11 @@ uint32_t Park::CalculateGuestGenerationProbability() const
 
     // Penalty for overpriced entrance fee relative to total ride value
     auto entranceFee = ParkGetEntranceFee();
-    if (entranceFee > gTotalRideValueForMoney)
+    if (entranceFee > gameState.TotalRideValueForMoney)
     {
         probability /= 4;
         // Extra penalty for very overpriced entrance fee
-        if (entranceFee / 2 > gTotalRideValueForMoney)
+        if (entranceFee / 2 > gameState.TotalRideValueForMoney)
         {
             probability /= 4;
         }

@@ -54,6 +54,7 @@ namespace OpenRCT2
         money64 WeeklyProfitAverageDividend;
         uint64_t TotalAdmissions;
         money64 TotalIncomeFromAdmissions;
+        money64 TotalRideValueForMoney;
         uint16_t WeeklyProfitAverageDivisor;
         money64 WeeklyProfitHistory[FINANCE_GRAPH_SIZE];
         Objective ScenarioObjective;

@@ -202,7 +202,7 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::totalRideValueForMoney_get() const
     {
-        return gTotalRideValueForMoney;
+        return GetGameState().TotalRideValueForMoney;
     }
 
     uint32_t ScPark::totalAdmissions_get() const
