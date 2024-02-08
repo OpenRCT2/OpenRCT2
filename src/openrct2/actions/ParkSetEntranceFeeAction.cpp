@@ -47,7 +47,7 @@ GameActions::Result ParkSetEntranceFeeAction::Query() const
     if (noMoney || forceFreeEntry)
     {
         return GameActions::Result(
-            GameActions::Status::Disallowed, STR_ERR_INVALID_PARAMETER, STR_ERR_CANT_CHANGE_PARK_ENTRANCE_FEE);
+            GameActions::Status::Disallowed, STR_ERR_CANT_CHANGE_PARK_ENTRANCE_FEE, STR_NONE);
     }
     if (_fee < 0.00_GBP || _fee > MAX_ENTRANCE_FEE)
     {
