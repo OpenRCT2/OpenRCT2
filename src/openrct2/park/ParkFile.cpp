@@ -901,11 +901,11 @@ namespace OpenRCT2
                     {
                         money16 legacyTotalRideValueForMoney = 0;
                         cs.ReadWrite(legacyTotalRideValueForMoney);
-                        gTotalRideValueForMoney = legacyTotalRideValueForMoney;
+                        gameState.TotalRideValueForMoney = legacyTotalRideValueForMoney;
                     }
                     else
                     {
-                        cs.ReadWrite(gTotalRideValueForMoney);
+                        cs.ReadWrite(gameState.TotalRideValueForMoney);
                     }
                     cs.ReadWrite(gameState.NumGuestsInParkLastWeek);
                     cs.ReadWrite(gGuestChangeModifier);
