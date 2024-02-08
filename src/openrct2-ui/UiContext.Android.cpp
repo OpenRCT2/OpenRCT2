@@ -31,6 +31,10 @@ namespace OpenRCT2::Ui
         {
         }
 
+        void Initialize(SDL_Window* window) override
+        {
+        }
+
         void SetWindowIcon(SDL_Window* window) override
         {
         }

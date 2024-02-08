@@ -13,6 +13,10 @@
 // clang-format off
 #    include <windows.h>
 #    include <shellapi.h>
+#    include <CommCtrl.h>
+#    pragma comment(lib, "Comctl32.lib")
+#    include <dwmapi.h>
+#    pragma comment(lib, "dwmapi.lib")
 // clang-format on
 #    undef CreateWindow
 
@@ -66,10 +70,83 @@ namespace OpenRCT2::Ui
     private:
         HMODULE _win32module;
 
+        void SetWindowTheme(HWND hwnd)
+        {
+            if (hwnd != nullptr)
+            {
+#ifndef DWMWA_USE_IMMERSIVE_DARK_MODE
+#define DWMWA_USE_IMMERSIVE_DARK_MODE 20
+#endif
+                BOOL value = AppsUseDarkTheme() ? TRUE : FALSE;
+                DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, &value, sizeof(value));
+            }
+        }
+
+        bool AppsUseDarkTheme()
+        {
+            // This implementation was taken from SDL 3.x; future versions of SDL will handle this automacially (see WIN_UpdateDarkModeForHWND(HWND))
+            // https://github.com/libsdl-org/SDL/blob/1269590dfc24144a67777ad11c8e41a60c837026/src/video/windows/SDL_windowsvideo.c#L693C1-L711C2
+            bool isDarkTheme = false;
+            HKEY hKey;
+            DWORD dwType = REG_DWORD;
+            DWORD value = ~0U;
+            DWORD length = sizeof(value);
+
+            /* Technically this isn't the system theme, but it's the preference for applications */
+            if (RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", 0, KEY_READ, &hKey) == ERROR_SUCCESS)
+            {
+                if (RegQueryValueExW(hKey, L"AppsUseLightTheme", 0, &dwType, (LPBYTE)&value, &length) == ERROR_SUCCESS)
+                {
+                    if (value == 0)
+                    {
+                        isDarkTheme = true;
+                    }
+                }
+                RegCloseKey(hKey);
+            }
+            return isDarkTheme;
+        }
+
+        static LRESULT CALLBACK SubclassWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData)
+        {
+            auto pThis = (Win32Context*)dwRefData;
+
+            switch (uMsg)
+            {
+                case WM_SETTINGCHANGE:
+                    // settings for system colors have changed; indicates that the prefered app theme might have changed
+                    if (wParam == 0 && lParam != 0 && SDL_wcscmp((wchar_t*)lParam, L"ImmersiveColorSet") == 0)
+                    {
+                        pThis->SetWindowTheme(hWnd);
+                        return 0;
+                    }
+                    break;
+                case WM_NCDESTROY:
+                    // remove this subclass before the window is destroyed
+                    RemoveWindowSubclass(hWnd, &SubclassWndProc, uIdSubclass);
+                    break;
+                default:
+                    break;
+            }
+
+            // return window message handling to SDL
+            return DefSubclassProc(hWnd, uMsg, wParam, lParam);
+        }
+
     public:
         Win32Context()
         {
             _win32module = GetModuleHandle(nullptr);
+        }
+
+        void Initialize(SDL_Window* window) override
+        {
+            // listen for the window message queue (WndProc) and react to system color changes
+            // in SDL the messages can be read with SDL_SYSWMEVENT and SDL_EventState()
+            // but this would be too late as lParam will point into nothing
+            // so instead we subclass the window to access the message queue before SDL does
+            SetWindowSubclass(GetHWND(window), &SubclassWndProc, 1, (DWORD_PTR)this);
+            SetWindowTheme(GetHWND(window));
         }
 
         void SetWindowIcon(SDL_Window* window) override
