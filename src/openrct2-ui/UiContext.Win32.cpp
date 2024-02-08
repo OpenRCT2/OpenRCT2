@@ -74,9 +74,9 @@ namespace OpenRCT2::Ui
         {
             if (hwnd != nullptr)
             {
-#ifndef DWMWA_USE_IMMERSIVE_DARK_MODE
-#define DWMWA_USE_IMMERSIVE_DARK_MODE 20
-#endif
+#    ifndef DWMWA_USE_IMMERSIVE_DARK_MODE
+#        define DWMWA_USE_IMMERSIVE_DARK_MODE 20
+#    endif
                 BOOL value = AppsUseDarkTheme() ? TRUE : FALSE;
                 DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, &value, sizeof(value));
             }
@@ -84,7 +84,8 @@ namespace OpenRCT2::Ui
 
         bool AppsUseDarkTheme()
         {
-            // This implementation was taken from SDL 3.x; future versions of SDL will handle this automacially (see WIN_UpdateDarkModeForHWND(HWND))
+            // This implementation was taken from SDL 3.x; future versions of SDL will handle this automacially (see
+            // WIN_UpdateDarkModeForHWND(HWND))
             // https://github.com/libsdl-org/SDL/blob/1269590dfc24144a67777ad11c8e41a60c837026/src/video/windows/SDL_windowsvideo.c#L693C1-L711C2
             bool isDarkTheme = false;
             HKEY hKey;
@@ -93,7 +94,9 @@ namespace OpenRCT2::Ui
             DWORD length = sizeof(value);
 
             /* Technically this isn't the system theme, but it's the preference for applications */
-            if (RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", 0, KEY_READ, &hKey) == ERROR_SUCCESS)
+            if (RegOpenKeyExW(
+                    HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", 0, KEY_READ, &hKey)
+                == ERROR_SUCCESS)
             {
                 if (RegQueryValueExW(hKey, L"AppsUseLightTheme", 0, &dwType, (LPBYTE)&value, &length) == ERROR_SUCCESS)
                 {
@@ -107,7 +110,8 @@ namespace OpenRCT2::Ui
             return isDarkTheme;
         }
 
-        static LRESULT CALLBACK SubclassWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData)
+        static LRESULT CALLBACK
+            SubclassWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData)
         {
             auto pThis = (Win32Context*)dwRefData;
 
