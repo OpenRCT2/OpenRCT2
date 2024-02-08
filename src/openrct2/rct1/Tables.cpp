@@ -732,7 +732,7 @@ namespace RCT1
             "rct1.ride.dodgems",                     // RCT1_RIDE_TYPE_DODGEMS
             "rct2.ride.swsh1",                       // RCT1_RIDE_TYPE_SWINGING_SHIP
             "rct2.ride.swsh2",                       // RCT1_RIDE_TYPE_SWINGING_INVERTER_SHIP
-            "rct2.ride.icecr1",                      // RCT1_RIDE_TYPE_ICE_CREAM_STALL
+            "rct1.ride.fruity_ices_stall",           // RCT1_RIDE_TYPE_ICE_CREAM_STALL
             "rct2.ride.chpsh",                       // RCT1_RIDE_TYPE_CHIPS_STALL
             "rct2.ride.drnks",                       // RCT1_RIDE_TYPE_DRINK_STALL
             "rct2.ride.cndyf",                       // RCT1_RIDE_TYPE_CANDYFLOSS_STALL
