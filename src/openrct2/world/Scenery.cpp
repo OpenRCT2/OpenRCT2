@@ -429,12 +429,14 @@ static std::vector<ScenerySelection> GetAllMiscScenery()
 {
     std::vector<ScenerySelection> miscScenery;
     std::vector<ScenerySelection> nonMiscScenery;
+    std::vector<ObjectEntryIndex> sceneryGroupIds;
     for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
         const auto* sgEntry = OpenRCT2::ObjectManager::GetObjectEntry<SceneryGroupEntry>(i);
         if (sgEntry != nullptr)
         {
             nonMiscScenery.insert(nonMiscScenery.end(), sgEntry->SceneryEntries.begin(), sgEntry->SceneryEntries.end());
+            sceneryGroupIds.emplace_back(i);
         }
     }
     for (uint8_t sceneryType = SCENERY_TYPE_SMALL; sceneryType < SCENERY_TYPE_COUNT; sceneryType++)
@@ -442,6 +444,59 @@ static std::vector<ScenerySelection> GetAllMiscScenery()
         const auto maxObjects = GetMaxObjectsForSceneryType(sceneryType);
         for (ObjectEntryIndex i = 0; i < maxObjects; i++)
         {
+            ObjectEntryIndex linkedSceneryGroup = OBJECT_ENTRY_INDEX_NULL;
+            const auto objectType = GetObjectTypeFromSceneryType(sceneryType);
+            switch (objectType)
+            {
+                case ObjectType::SmallScenery:
+                {
+                    const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<SmallSceneryEntry>(i);
+                    if (objectEntry != nullptr)
+                        linkedSceneryGroup = objectEntry->scenery_tab_id;
+                    break;
+                }
+                case ObjectType::LargeScenery:
+                {
+                    const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<LargeSceneryEntry>(i);
+                    if (objectEntry != nullptr)
+                        linkedSceneryGroup = objectEntry->scenery_tab_id;
+                    break;
+                }
+                case ObjectType::Walls:
+                {
+                    const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<WallSceneryEntry>(i);
+                    if (objectEntry != nullptr)
+                        linkedSceneryGroup = objectEntry->scenery_tab_id;
+                    break;
+                }
+                case ObjectType::Banners:
+                {
+                    const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<BannerSceneryEntry>(i);
+                    if (objectEntry != nullptr)
+                        linkedSceneryGroup = objectEntry->scenery_tab_id;
+                    break;
+                }
+                case ObjectType::PathAdditions:
+                {
+                    const auto* objectEntry = OpenRCT2::ObjectManager::GetObjectEntry<PathAdditionEntry>(i);
+                    if (objectEntry != nullptr)
+                        linkedSceneryGroup = objectEntry->scenery_tab_id;
+                    break;
+                }
+                default:
+                    break;
+            }
+
+            // An object may be link itself against a scenery group, in which case it should not be marked as miscellaneous.
+            if (linkedSceneryGroup != OBJECT_ENTRY_INDEX_NULL)
+            {
+                if (std::find(std::begin(sceneryGroupIds), std::end(sceneryGroupIds), linkedSceneryGroup)
+                    != std::end(sceneryGroupIds))
+                {
+                    continue;
+                }
+            }
+
             const ScenerySelection sceneryItem = { sceneryType, i };
             if (IsSceneryEntryValid(sceneryItem))
             {
