@@ -1742,7 +1742,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
         ride.Delete();
     }
 
-    auto res = GameActions::Result(GameActions::Status::Ok, STR_NONE, STR_NONE);
+    auto res = GameActions::Result();
     res.Cost = totalCost;
 
     return res;
