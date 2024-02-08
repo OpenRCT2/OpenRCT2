@@ -9,6 +9,7 @@
 - Improved: [#21388] Tooltips will now show even when an error message is present.
 - Improved: [#21423] Add mechanism to allow building partly underground.
 - Improved: [objects#272, objects#276, objects#277, objects#278, objects#279, objects#280, objects#281] Add missing RCT1 ride and vehicle objects.
+- Improved: [objects#275, objects#284, objects#286] Add missing RCT1 walls.
 - Change: [#21453] Reintroduce lost RCT1 Jet skis colour presets to the boat hire.
 - Fix: [#18963] Research table in parks from Loopy Landscapes is imported incorrectly.
 - Fix: [#20907] RCT1/AA scenarios use the 4-across train for the Inverted Roller Coaster.

@@ -1263,58 +1263,58 @@ namespace RCT1
     {
         static constexpr const char * map[] =
         {
-            "rct2.scenery_wall.wmf",         // RCT1_WALL_TYPE_MESH_FENCE
-            "rct2.scenery_wall.wmfg",        // RCT1_WALL_TYPE_MESH_FENCE_WITH_GATE
-            "rct2.scenery_wall.wrw",         // RCT1_WALL_TYPE_ROMAN
-            "rct2.scenery_wall.wew",         // RCT1_WALL_TYPE_EGYPTIAN
-            "rct2.scenery_wall.whg",         // RCT1_WALL_TYPE_HEDGE
-            "rct2.scenery_wall.whgg",        // RCT1_WALL_TYPE_HEDGE_WITH_GATE
-            "rct2.scenery_wall.wcw1",        // RCT1_WALL_TYPE_BLUE_PLAYING_CARDS
-            "rct2.scenery_wall.wcw2",        // RCT1_WALL_TYPE_RED_PLAYING_CARDS
-            "rct2.scenery_wall.wsw",         // RCT1_WALL_TYPE_WHITE_RAILING
-            "rct2.scenery_wall.wswg",        // RCT1_WALL_TYPE_WHITE_RAILING_WITH_GATE
-            "rct2.scenery_wall.wmw",         // RCT1_WALL_TYPE_MARTIAN
-            "rct2.scenery_wall.wallgl16",    // RCT1_WALL_TYPE_GLASS_SMOOTH
-            "rct2.scenery_wall.wfw1",        // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE
-            "rct2.scenery_wall.wfwg",        // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_GATE
-            "rct2.scenery_wall.wpw1",        // RCT1_WALL_TYPE_WOODEN_POST_FENCE
-            "rct2.scenery_wall.wpw2",        // RCT1_WALL_TYPE_RED_WOODEN_POST_FENCE
-            "rct2.scenery_wall.wpf",         // RCT1_WALL_TYPE_BARBED_WIRE
-            "rct2.scenery_wall.wpfg",        // RCT1_WALL_TYPE_BARBED_WIRE_WITH_GATE
-            "rct2.scenery_wall.wwtw",        // RCT1_WALL_TYPE_PRIMITIVE_TALL_WOOD_FENCE
-            "rct2.scenery_wall.wmww",        // RCT1_WALL_TYPE_PRIMITIVE_SHORT_WOOD_FENCE
-            "rct2.scenery_wall.wsw1",        // RCT1_WALL_TYPE_IRON_RAILING
-            "rct2.scenery_wall.wsw2",        // RCT1_WALL_TYPE_IRON_RAILING_WITH_GATE
-            "rct2.scenery_wall.wgw2",        // RCT1_WALL_TYPE_GLASS_PANELS
-            "rct2.scenery_wall.wbw",         // RCT1_WALL_TYPE_BONE_FENCE
-            "rct2.scenery_wall.wbr1",        // RCT1_WALL_TYPE_BRICK
-            "rct2.scenery_wall.wbrg",        // RCT1_WALL_TYPE_BRICK_WITH_GATE
-            "rct2.scenery_wall.wfw1",        // RCT1_WALL_TYPE_WHITE_WOODEN_PANEL_FENCE
-            "rct1.scenery_wall.wooden_fence_red", // RCT1_WALL_TYPE_RED_WOODEN_PANEL_FENCE
-            "rct2.scenery_wall.wbr2",        // RCT1_WALL_TYPE_STONE
-            "rct2.scenery_wall.wbr3",        // RCT1_WALL_TYPE_STONE_WITH_GATE
-            "rct2.scenery_wall.wpw3",        // RCT1_WALL_TYPE_WOODEN_FENCE
-            "rct2.scenery_wall.wjf",         // RCT1_WALL_TYPE_JUNGLE
-            "rct2.scenery_wall.wch",         // RCT1_WALL_TYPE_CONIFER_HEDGE
-            "rct2.scenery_wall.wchg",        // RCT1_WALL_TYPE_CONIFER_HEDGE_WITH_GATE
-            "rct2.scenery_wall.wc1",         // RCT1_WALL_TYPE_SMALL_BROWN_CASTLE
-            "rct2.scenery_wall.wc2",         // RCT1_WALL_TYPE_SMALL_GREY_CASTLE
-            "rct2.scenery_wall.wc3",         // RCT1_WALL_TYPE_ROMAN_COLUMN
-            "rct2.scenery_wall.wc4",         // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE
-            "rct2.scenery_wall.wc5",         // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_CROSS
-            "rct2.scenery_wall.wc6",         // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_GATE
-            "rct2.scenery_wall.wc7",         // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_WINDOW
-            "rct2.scenery_wall.wc8",         // RCT1_WALL_TYPE_MEDIUM_BROWN_CASTLE
-            "rct2.scenery_wall.wc9",         // RCT1_WALL_TYPE_LARGE_GREY_CASTLE
-            "rct2.scenery_wall.wc10",        // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_CROSS
-            "rct2.scenery_wall.wc11",        // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_GATE
-            "rct2.scenery_wall.wc12",        // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_WINDOW
-            "rct2.scenery_wall.wc13",        // RCT1_WALL_TYPE_MEDIUM_GREY_CASTLE
-            "rct2.scenery_wall.wc14",        // RCT1_WALL_TYPE_CREEPY
-            "rct2.scenery_wall.wc15",        // RCT1_WALL_TYPE_CREEPY_GATE
-            "rct2.scenery_wall.wc16",        // RCT1_WALL_TYPE_BARBED_WIRE_WITH_SNOW
-            "rct2.scenery_wall.wc17",        // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_SNOW
-            "rct2.scenery_wall.wc18",        // RCT1_WALL_TYPE_WOODEN_POST_FENCE_WITH_SNOW
+            "rct2.scenery_wall.wmf",                       // RCT1_WALL_TYPE_MESH_FENCE
+            "rct2.scenery_wall.wmfg",                      // RCT1_WALL_TYPE_MESH_FENCE_WITH_GATE
+            "rct2.scenery_wall.wrw",                       // RCT1_WALL_TYPE_ROMAN
+            "rct2.scenery_wall.wew",                       // RCT1_WALL_TYPE_EGYPTIAN
+            "rct2.scenery_wall.whg",                       // RCT1_WALL_TYPE_HEDGE
+            "rct2.scenery_wall.whgg",                      // RCT1_WALL_TYPE_HEDGE_WITH_GATE
+            "rct1.scenery_wall.playing_card_wall_1",       // RCT1_WALL_TYPE_BLUE_PLAYING_CARDS
+            "rct1.scenery_wall.playing_card_wall_2",       // RCT1_WALL_TYPE_RED_PLAYING_CARDS
+            "rct2.scenery_wall.wsw",                       // RCT1_WALL_TYPE_WHITE_RAILING
+            "rct2.scenery_wall.wswg",                      // RCT1_WALL_TYPE_WHITE_RAILING_WITH_GATE
+            "rct2.scenery_wall.wmw",                       // RCT1_WALL_TYPE_MARTIAN
+            "rct1aa.scenery_wall.glass_wall",              // RCT1_WALL_TYPE_GLASS_SMOOTH
+            "rct1.scenery_wall.wooden_fence_brown",        // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE
+            "rct1.scenery_wall.wooden_fence_brown_gate",   // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_GATE
+            "rct1aa.scenery_wall.wooden_post_wall_1",      // RCT1_WALL_TYPE_WOODEN_POST_FENCE
+            "rct1aa.scenery_wall.wooden_post_wall_2",      // RCT1_WALL_TYPE_RED_WOODEN_POST_FENCE
+            "rct2.scenery_wall.wpf",                       // RCT1_WALL_TYPE_BARBED_WIRE
+            "rct2.scenery_wall.wpfg",                      // RCT1_WALL_TYPE_BARBED_WIRE_WITH_GATE
+            "rct2.scenery_wall.wwtw",                      // RCT1_WALL_TYPE_PRIMITIVE_TALL_WOOD_FENCE
+            "rct2.scenery_wall.wmww",                      // RCT1_WALL_TYPE_PRIMITIVE_SHORT_WOOD_FENCE
+            "rct2.scenery_wall.wsw1",                      // RCT1_WALL_TYPE_IRON_RAILING
+            "rct2.scenery_wall.wsw2",                      // RCT1_WALL_TYPE_IRON_RAILING_WITH_GATE
+            "rct2.scenery_wall.wgw2",                      // RCT1_WALL_TYPE_GLASS_PANELS
+            "rct2.scenery_wall.wbw",                       // RCT1_WALL_TYPE_BONE_FENCE
+            "rct2.scenery_wall.wbr1",                      // RCT1_WALL_TYPE_BRICK
+            "rct2.scenery_wall.wbrg",                      // RCT1_WALL_TYPE_BRICK_WITH_GATE
+            "rct1.scenery_wall.wooden_fence_white",        // RCT1_WALL_TYPE_WHITE_WOODEN_PANEL_FENCE
+            "rct1.scenery_wall.wooden_fence_red",          // RCT1_WALL_TYPE_RED_WOODEN_PANEL_FENCE
+            "rct2.scenery_wall.wbr2",                      // RCT1_WALL_TYPE_STONE
+            "rct2.scenery_wall.wbr3",                      // RCT1_WALL_TYPE_STONE_WITH_GATE
+            "rct1ll.scenery_wall.medieval_wooden_fence",   // RCT1_WALL_TYPE_WOODEN_FENCE
+            "rct2.scenery_wall.wjf",                       // RCT1_WALL_TYPE_JUNGLE
+            "rct2.scenery_wall.wch",                       // RCT1_WALL_TYPE_CONIFER_HEDGE
+            "rct2.scenery_wall.wchg",                      // RCT1_WALL_TYPE_CONIFER_HEDGE_WITH_GATE
+            "rct2.scenery_wall.wc1",                       // RCT1_WALL_TYPE_SMALL_BROWN_CASTLE
+            "rct2.scenery_wall.wc2",                       // RCT1_WALL_TYPE_SMALL_GREY_CASTLE
+            "rct1.scenery_wall.roman_column_wall",         // RCT1_WALL_TYPE_ROMAN_COLUMN
+            "rct2.scenery_wall.wc4",                       // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE
+            "rct2.scenery_wall.wc5",                       // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_CROSS
+            "rct2.scenery_wall.wc6",                       // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_GATE
+            "rct2.scenery_wall.wc7",                       // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_WINDOW
+            "rct2.scenery_wall.wc8",                       // RCT1_WALL_TYPE_MEDIUM_BROWN_CASTLE
+            "rct2.scenery_wall.wc9",                       // RCT1_WALL_TYPE_LARGE_GREY_CASTLE
+            "rct2.scenery_wall.wc10",                      // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_CROSS
+            "rct2.scenery_wall.wc11",                      // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_GATE
+            "rct2.scenery_wall.wc12",                      // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_WINDOW
+            "rct2.scenery_wall.wc13",                      // RCT1_WALL_TYPE_MEDIUM_GREY_CASTLE
+            "rct2.scenery_wall.wc14",                      // RCT1_WALL_TYPE_CREEPY
+            "rct2.scenery_wall.wc15",                      // RCT1_WALL_TYPE_CREEPY_GATE
+            "rct2.scenery_wall.wc16",                      // RCT1_WALL_TYPE_BARBED_WIRE_WITH_SNOW
+            "rct1ll.scenery_wall.wooden_fence_brown_snow", // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_SNOW
+            "rct2.scenery_wall.wc18",                      // RCT1_WALL_TYPE_WOODEN_POST_FENCE_WITH_SNOW
         };
         if (wallType < std::size(map))
             return map[wallType];
@@ -1439,12 +1439,12 @@ namespace RCT1
               "rct2.scenery_small.ts0", "rct2.scenery_small.ts1", "rct2.scenery_small.ts2", "rct2.scenery_small.ts3", "rct2.scenery_small.ts4", "rct2.scenery_small.ts5", "rct2.scenery_small.ts6", "rct2.scenery_small.tef", "rct2.scenery_small.tal", "rct2.scenery_small.tsq", "rct2.scenery_small.tht", "rct2.scenery_small.tcb", "rct2.scenery_small.tdm", "rct2.scenery_small.tsd", "rct2.scenery_small.torn1", "rct2.scenery_small.torn2", "rct2.scenery_small.tgs", "rct2.scenery_small.tus", "rct2.scenery_small.tbc", "rct2.scenery_small.tsc", "rct2.scenery_small.twf", "rct2.scenery_small.tsh0", "rct2.scenery_small.tsh1", "rct2.scenery_small.tsh2", "rct2.scenery_small.tsh3", "rct2.scenery_small.tsh4", "rct2.scenery_small.tsh5", "rct2.scenery_small.tdf", "rct2.scenery_small.tsh", "rct2.scenery_small.thrs", "rct2.scenery_small.tstd", "rct2.scenery_small.tbr", "rct2.scenery_small.ttf", "rct2.scenery_wall.whg", "rct2.scenery_wall.whgg", "rct2.scenery_wall.wch", "rct2.scenery_wall.wchg",
               "rct2.scenery_small.tg1", "rct2.scenery_small.tg2", "rct2.scenery_small.tg3", "rct2.scenery_small.tg4", "rct2.scenery_small.tg5", "rct2.scenery_small.tg6", "rct2.scenery_small.tg7", "rct2.scenery_small.tg8", "rct2.scenery_small.tg9", "rct2.scenery_small.tg10", "rct2.scenery_small.tg11", "rct2.scenery_small.tg12", "rct2.scenery_small.tg13", "rct2.scenery_small.tg14", "rct2.scenery_small.tg15", "rct2.scenery_small.tg16", "rct2.scenery_small.tg17", "rct2.scenery_small.tg18", "rct2.scenery_small.tg19", "rct2.scenery_small.tg20", "rct2.scenery_small.tg21",
               "rct2.scenery_wall.wbr1a", "rct2.scenery_wall.wbr2a", "rct2.scenery_wall.wallbb34", "rct2.scenery_wall.walltn32", "rct2.scenery_small.tntroof1", "rct2.scenery_wall.wallbb33", "rct2.scenery_wall.wallbb32", "rct2.scenery_wall.wallbb16", "rct2.scenery_wall.wallbb8", "rct2.scenery_small.roof5", "rct2.scenery_small.roof7", "rct2.scenery_wall.wallrs32", "rct2.scenery_wall.wallrs16", "rct2.scenery_wall.wallrs8", "rct2.scenery_wall.wallbr32", "rct2.scenery_wall.wallbr16", "rct2.scenery_wall.wallbr8", "rct2.scenery_wall.wallbrdr", "rct2.scenery_wall.wallbrwn", "rct2.scenery_small.brbase", "rct2.scenery_small.roof1", "rct2.scenery_small.roof2", "rct2.scenery_small.roof3", "rct2.scenery_small.roof4", "rct2.scenery_wall.wallcb32", "rct2.scenery_wall.wallcb16", "rct2.scenery_wall.wallcb8", "rct2.scenery_wall.wallcbdr", "rct2.scenery_wall.wallcbwn", "rct2.scenery_small.brbase2", "rct2.scenery_small.cwbcrv33", "rct2.scenery_small.cwbcrv32", "rct2.scenery_small.brcrrf1", "rct2.scenery_small.roof6", "rct2.scenery_small.roof8", "rct2.scenery_wall.wallcf32", "rct2.scenery_wall.wallcf16", "rct2.scenery_wall.wallcf8", "rct2.scenery_wall.wallcfdr", "rct2.scenery_wall.wallcfwn", "rct2.scenery_wall.wallcfar", "rct2.scenery_small.brbase3", "rct2.scenery_small.cwfcrv33", "rct2.scenery_small.cwfcrv32", "rct2.scenery_small.brcrrf2", "rct2.scenery_small.roof9", "rct2.scenery_small.roof11", "rct2.scenery_small.roof10", "rct2.scenery_small.roof12", "rct2.scenery_small.corroof2", "rct2.scenery_wall.wallco16", "rct2.scenery_small.corroof", "rct2.scenery_wall.walllt32", "rct2.scenery_wall.wallsk16", "rct2.scenery_wall.wallsk32", "rct2.scenery_small.sktdw2", "rct2.scenery_small.sktdw", "rct2.scenery_small.sktbase", "rct2.scenery_small.sktbaset", "rct2.scenery_small.suppw2", "rct2.scenery_small.suppw1", "rct2.scenery_small.suppw3", "rct2.scenery_small.suppleg1", "rct2.scenery_small.suppleg2", "rct2.scenery_small.sumrf", "rct2.scenery_wall.wallrh32",
-              "rct2.scenery_wall.wmf", "rct2.scenery_wall.wmfg", "rct2.scenery_wall.wsw", "rct2.scenery_wall.wswg", "rct2.scenery_wall.wfw1", "rct1.scenery_wall.wooden_fence_red", "rct2.scenery_wall.wfwg", "rct2.scenery_wall.wpf", "rct2.scenery_wall.wpfg", "rct2.scenery_wall.wsw1", "rct2.scenery_wall.wsw2", "rct2.scenery_wall.wbr1", "rct2.scenery_wall.wbrg", "rct2.scenery_wall.wbr2", "rct2.scenery_wall.wbr3", "rct2.scenery_wall.wallmm16", "rct2.scenery_wall.wallmm17",
+              "rct2.scenery_wall.wmf", "rct2.scenery_wall.wmfg", "rct2.scenery_wall.wsw", "rct2.scenery_wall.wswg", "rct2.scenery_wall.wfw1", "rct2.scenery_wall.wfwg", "rct1.scenery_wall.wooden_fence_brown", "rct1.scenery_wall.wooden_fence_brown_gate", "rct1.scenery_wall.wooden_fence_red", "rct1.scenery_wall.wooden_fence_white", "rct2.scenery_wall.wpf", "rct2.scenery_wall.wpfg", "rct2.scenery_wall.wsw1", "rct2.scenery_wall.wsw2", "rct2.scenery_wall.wbr1", "rct2.scenery_wall.wbrg", "rct2.scenery_wall.wbr2", "rct2.scenery_wall.wbr3", "rct2.scenery_wall.wallmm16", "rct2.scenery_wall.wallmm17",
               "rct2.footpath_item.lamp1", "rct2.footpath_item.lamp2", "rct2.footpath_item.litter1", "rct2.footpath_item.bench1", "rct2.footpath_item.qtv1", "rct2.footpath_banner.bn1", "rct2.scenery_wall.wallpost", "rct2.scenery_wall.wallsign", "rct2.scenery_large.ssig1", "rct2.scenery_large.ssig2", "rct2.scenery_large.ssig3", "rct2.scenery_large.ssig4" },
             // RCT1_SCENERY_THEME_MINE
             { "rct2.scenery_large.smh1", "rct2.scenery_large.smh2", "rct2.scenery_large.smn1", "rct2.scenery_small.tbw", "rct2.scenery_small.tbr1", "rct2.scenery_small.tbr2", "rct2.scenery_small.tml", "rct2.scenery_small.tmw", "rct2.scenery_small.tbr3", "rct2.scenery_small.tbr4", "rct2.scenery_small.tmj", "rct2.footpath_banner.bn5", "rct2.scenery_wall.wallwd8", "rct2.scenery_wall.wallwd16", "rct2.scenery_wall.wallwd32", "rct2.scenery_wall.wallwd33", "rct2.scenery_wall.wallmn32", "rct2.scenery_small.wdbase", "rct2.scenery_small.minroof1", "rct2.scenery_small.roof13", "rct2.footpath_item.littermn" },
             // RCT1_SCENERY_THEME_CLASSICAL_ROMAN
-            { "rct2.scenery_large.scol", "rct2.scenery_small.tt1", "rct2.scenery_small.trms", "rct2.scenery_small.trws", "rct2.scenery_small.trc", "rct2.scenery_small.tqf", "rct2.scenery_wall.wrw", "rct2.scenery_wall.wrwa", "rct2.scenery_small.romroof2", "rct2.scenery_wall.wc3", "rct2.scenery_small.romroof1", "rct2.footpath_banner.bn3" },
+            { "rct2.scenery_large.scol", "rct2.scenery_small.tt1", "rct2.scenery_small.trms", "rct2.scenery_small.trws", "rct2.scenery_small.trc", "rct2.scenery_small.tqf", "rct2.scenery_wall.wrw", "rct2.scenery_wall.wrwa", "rct2.scenery_small.romroof2", "rct1.scenery_wall.roman_column_wall", "rct2.scenery_wall.wc3", "rct2.scenery_small.romroof1", "rct2.footpath_banner.bn3" },
             // RCT1_SCENERY_THEME_EGYPTIAN
             { "rct2.scenery_large.sspx", "rct2.scenery_large.scln", "rct2.scenery_large.spyr", "rct2.scenery_small.tes1", "rct2.scenery_small.ten", "rct2.scenery_small.ters", "rct2.scenery_small.terb", "rct2.scenery_small.tep", "rct2.scenery_wall.wew", "rct2.footpath_item.lamp3", "rct2.footpath_banner.bn4", "rct2.footpath_item.benchstn" },
             // RCT1_SCENERY_THEME_MARTIAN
@@ -1452,21 +1452,21 @@ namespace RCT1
             // RCT1_SCENERY_THEME_JUMPING_FOUNTAINS (Single researchable scenery item)
             { "rct2.footpath_item.jumpfnt1" },
             // RCT1_SCENERY_THEME_WONDERLAND
-            { "rct2.scenery_small.twh1", "rct2.scenery_small.twh2", "rct2.scenery_small.tst1", "rct2.scenery_small.tst2", "rct2.scenery_small.tms1", "rct2.scenery_small.tst3", "rct2.scenery_small.tst4", "rct2.scenery_small.tst5", "rct2.scenery_small.tas1", "rct2.scenery_small.tas2", "rct2.scenery_small.tas3", "rct2.scenery_small.tas4", "rct2.scenery_small.chbbase", "rct2.scenery_small.tp1", "rct2.scenery_small.tp2", "rct2.scenery_small.tk1", "rct2.scenery_small.tk2", "rct2.scenery_small.tr1", "rct2.scenery_small.tr2", "rct2.scenery_small.tq1", "rct2.scenery_small.tq2", "rct2.scenery_small.tb1", "rct2.scenery_small.tb2", "rct2.scenery_small.tk3", "rct2.scenery_small.tk4", "rct2.scenery_wall.wcw1", "rct2.scenery_wall.wcw2" },
+            { "rct2.scenery_small.twh1", "rct2.scenery_small.twh2", "rct2.scenery_small.tst1", "rct2.scenery_small.tst2", "rct2.scenery_small.tms1", "rct2.scenery_small.tst3", "rct2.scenery_small.tst4", "rct2.scenery_small.tst5", "rct2.scenery_small.tas1", "rct2.scenery_small.tas2", "rct2.scenery_small.tas3", "rct2.scenery_small.tas4", "rct2.scenery_small.chbbase", "rct2.scenery_small.tp1", "rct2.scenery_small.tp2", "rct2.scenery_small.tk1", "rct2.scenery_small.tk2", "rct2.scenery_small.tr1", "rct2.scenery_small.tr2", "rct2.scenery_small.tq1", "rct2.scenery_small.tq2", "rct2.scenery_small.tb1", "rct2.scenery_small.tb2", "rct2.scenery_small.tk3", "rct2.scenery_small.tk4", "rct1.scenery_wall.playing_card_wall_1", "rct1.scenery_wall.playing_card_wall_2", "rct2.scenery_wall.wcw1", "rct2.scenery_wall.wcw2" },
             // RCT1_SCENERY_THEME_JURASSIC
             { "rct2.scenery_small.tbn", "rct2.scenery_small.tbn1", "rct2.scenery_small.tdn4", "rct2.scenery_small.tdn5", "rct2.scenery_large.sdn1", "rct2.scenery_large.sdn2", "rct2.scenery_large.sdn3", "rct2.scenery_wall.wwtw", "rct2.scenery_wall.wmww", "rct2.scenery_wall.wwtwa", "rct2.scenery_wall.wbw", "rct2.footpath_banner.bn6" },
             // RCT1_SCENERY_THEME_SPOOKY,
             { "rct2.scenery_large.ssk1", "rct2.scenery_small.tdt1", "rct2.scenery_small.tdt2", "rct2.scenery_small.tdt3", "rct2.scenery_small.tmm1", "rct2.scenery_small.tmm2", "rct2.scenery_small.tmm3", "rct2.scenery_small.tgs1", "rct2.scenery_small.tgs2", "rct2.scenery_small.tgs3", "rct2.scenery_small.tgs4", "rct2.scenery_small.smskull", "rct2.scenery_wall.wallrk32" },
             // RCT1_SCENERY_THEME_JUNGLE
-            { "rct2.scenery_small.tjt1", "rct2.scenery_small.tjt2", "rct2.scenery_small.tjb1", "rct2.scenery_small.tjt3", "rct2.scenery_small.tjt4", "rct2.scenery_small.tjp1", "rct2.scenery_small.tjb2", "rct2.scenery_small.tjt5", "rct2.scenery_small.tjb3", "rct2.scenery_small.tjb4", "rct2.scenery_small.tjt6", "rct2.scenery_small.tjp2", "rct2.scenery_small.tjf", "rct2.scenery_wall.wpw1", "rct2.scenery_wall.wpw2", "rct2.scenery_wall.wjf", "rct2.footpath_banner.bn2", "rct2.scenery_wall.walljn32", "rct2.scenery_small.jngroof1", "rct2.scenery_small.roof14", "rct2.footpath_item.benchlog" },
+            { "rct2.scenery_small.tjt1", "rct2.scenery_small.tjt2", "rct2.scenery_small.tjb1", "rct2.scenery_small.tjt3", "rct2.scenery_small.tjt4", "rct2.scenery_small.tjp1", "rct2.scenery_small.tjb2", "rct2.scenery_small.tjt5", "rct2.scenery_small.tjb3", "rct2.scenery_small.tjb4", "rct2.scenery_small.tjt6", "rct2.scenery_small.tjp2", "rct2.scenery_small.tjf", "rct1aa.scenery_wall.wooden_post_wall_1", "rct1aa.scenery_wall.wooden_post_wall_2", "rct2.scenery_wall.wpw1", "rct2.scenery_wall.wpw2", "rct2.scenery_wall.wjf", "rct2.footpath_banner.bn2", "rct2.scenery_wall.walljn32", "rct2.scenery_small.jngroof1", "rct2.scenery_small.roof14", "rct2.footpath_item.benchlog" },
             // RCT1_SCENERY_THEME_ABSTRACT
-            { "rct2.scenery_small.tge1", "rct2.scenery_small.tge2", "rct2.scenery_small.tge3", "rct2.scenery_small.tge4", "rct2.scenery_small.tge5", "rct2.scenery_small.tgc1", "rct2.scenery_small.tgc2", "rct2.scenery_wall.wallgl8", "rct2.scenery_wall.wallgl16", "rct2.scenery_wall.wallgl32", "rct2.scenery_small.georoof1", "rct2.scenery_wall.wgw2", "rct2.scenery_small.georoof2" },
+            { "rct2.scenery_small.tge1", "rct2.scenery_small.tge2", "rct2.scenery_small.tge3", "rct2.scenery_small.tge4", "rct2.scenery_small.tge5", "rct2.scenery_small.tgc1", "rct2.scenery_small.tgc2", "rct2.scenery_wall.wallgl8", "rct2.scenery_wall.wallgl16", "rct2.scenery_wall.wallgl32", "rct2.scenery_small.georoof1", "rct2.scenery_wall.wgw2", "rct1aa.scenery_wall.glass_wall", "rct2.scenery_small.georoof2" },
             // RCT1_SCENERY_THEME_GARDEN_CLOCK (Single researchable scenery item)
             { "rct2.scenery_small.tck" },
             // RCT1_SCENERY_THEME_SNOW_ICE
-            { "rct2.scenery_large.sip", "rct2.scenery_small.tsm", "rct2.scenery_small.tig", "rct2.scenery_small.tsf1", "rct2.scenery_small.tsf2", "rct2.scenery_small.tsf3", "rct2.scenery_small.tsnc", "rct2.scenery_small.tsnb", "rct2.scenery_wall.wc16", "rct2.scenery_wall.wc17", "rct2.scenery_wall.wc18", "rct2.footpath_item.jumpsnw1", "rct2.scenery_small.tcfs", "rct2.scenery_small.trfs", "rct2.scenery_small.trf3", "rct2.scenery_small.tnss", "rct2.footpath_banner.bn8", "rct2.scenery_wall.wallig16", "rct2.scenery_wall.wallig24", "rct2.scenery_small.igroof" },
+            { "rct2.scenery_large.sip", "rct2.scenery_small.tsm", "rct2.scenery_small.tig", "rct2.scenery_small.tsf1", "rct2.scenery_small.tsf2", "rct2.scenery_small.tsf3", "rct2.scenery_small.tsnc", "rct2.scenery_small.tsnb", "rct2.scenery_wall.wc16", "rct1ll.scenery_wall.wooden_fence_brown_snow", "rct2.scenery_wall.wc17", "rct2.scenery_wall.wc18", "rct2.footpath_item.jumpsnw1", "rct2.scenery_small.tcfs", "rct2.scenery_small.trfs", "rct2.scenery_small.trf3", "rct2.scenery_small.tnss", "rct2.footpath_banner.bn8", "rct2.scenery_wall.wallig16", "rct2.scenery_wall.wallig24", "rct2.scenery_small.igroof" },
             // RCT1_SCENERY_THEME_MEDIEVAL
-            { "rct2.scenery_small.tct1", "rct2.scenery_large.stb1", "rct2.scenery_large.stb2", "rct2.scenery_wall.wc1", "rct2.scenery_wall.wc4", "rct2.scenery_wall.wc5", "rct2.scenery_wall.wc6", "rct2.scenery_wall.wc7", "rct2.scenery_wall.wc8", "rct2.scenery_wall.wallcz32", "rct2.scenery_wall.wallcy32", "rct2.scenery_small.tct2", "rct2.scenery_large.stg1", "rct2.scenery_large.stg2", "rct2.scenery_wall.wc2", "rct2.scenery_wall.wc9", "rct2.scenery_wall.wc10", "rct2.scenery_wall.wc11", "rct2.scenery_wall.wc12", "rct2.scenery_wall.wc13", "rct2.scenery_wall.wallcw32", "rct2.scenery_wall.wallcx32", "rct2.scenery_small.tcn", "rct2.scenery_small.ttg", "rct2.scenery_large.sct", "rct2.scenery_large.soh1", "rct2.scenery_large.soh2", "rct2.scenery_large.soh3", "rct2.scenery_wall.wpw3", "rct2.scenery_wall.wallcfpc", "rct2.scenery_wall.wallcbpc" },
+            { "rct2.scenery_small.tct1", "rct2.scenery_large.stb1", "rct2.scenery_large.stb2", "rct2.scenery_wall.wc1", "rct2.scenery_wall.wc4", "rct2.scenery_wall.wc5", "rct2.scenery_wall.wc6", "rct2.scenery_wall.wc7", "rct2.scenery_wall.wc8", "rct2.scenery_wall.wallcz32", "rct2.scenery_wall.wallcy32", "rct2.scenery_small.tct2", "rct2.scenery_large.stg1", "rct2.scenery_large.stg2", "rct2.scenery_wall.wc2", "rct2.scenery_wall.wc9", "rct2.scenery_wall.wc10", "rct2.scenery_wall.wc11", "rct2.scenery_wall.wc12", "rct2.scenery_wall.wc13", "rct2.scenery_wall.wallcw32", "rct2.scenery_wall.wallcx32", "rct2.scenery_small.tcn", "rct2.scenery_small.ttg", "rct2.scenery_large.sct", "rct2.scenery_large.soh1", "rct2.scenery_large.soh2", "rct2.scenery_large.soh3", "rct1ll.scenery_wall.medieval_wooden_fence", "rct2.scenery_wall.wpw3", "rct2.scenery_wall.wallcfpc", "rct2.scenery_wall.wallcbpc" },
             // RCT1_SCENERY_THEME_SPACE
             { "rct2.scenery_large.ssr", "rct2.scenery_large.sst", "rct2.scenery_large.ssh", "rct2.scenery_small.tscp", "rct2.scenery_small.tsph", "rct2.scenery_small.tsc2", "rct2.scenery_small.tsp1", "rct2.scenery_small.tsp2", "rct2.scenery_wall.wallsp32", "rct2.scenery_small.spcroof1", "rct2.footpath_banner.bn9", "rct2.footpath_item.benchspc", "rct2.footpath_item.littersp" },
             // RCT1_SCENERY_THEME_CREEPY
