@@ -3684,6 +3684,7 @@ STR_6611    :Wall element not found
 STR_6612    :Banner element not found
 STR_6613    :Reload object
 STR_6614    :Can’t change park entrance fee
+STR_6615    :Track on this tile needs water
 
 #############
 # Scenarios #
