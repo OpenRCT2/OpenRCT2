@@ -11,6 +11,7 @@
 - Improved: [#21423] Add mechanism to allow building partly underground.
 - Improved: [objects#272, objects#276, objects#277, objects#278, objects#279, objects#280, objects#281] Add missing RCT1 ride and vehicle objects.
 - Improved: [objects#275, objects#284, objects#286] Add missing RCT1 walls.
+- Change: [#21350] Group Dodgems and Flying Saucers vehicles.
 - Change: [#21453] Reintroduce lost RCT1 Jet skis colour presets to the boat hire.
 - Change: [objects#285] Mark old reversed train objects as compatibility objects.
 - Fix: [#17610] Some scenery items are unavailable in RCT1 scenarios.
@@ -26,6 +27,7 @@
 - Fix: [#21332] Mini Helicopters and Monorail Cycles ride types are swapped in research within RCT1 scenarios.
 - Fix: [#21343] “Pause” and “Build Path” hotkeys do not work if top toolbar is hidden.
 - Fix: [#21347] Too many options are hidden if the platform has no file picker.
+- Fix: [#21350] Maze and Mini Golf track designs from RCT1 not shown in track designs list.
 - Fix: [#21425] Additional missing/misplaced land & construction rights tiles in Japanese Coastal Reclaim.
 - Fix: [objects#262, objects#263, objects#265, objects#266, objects#267, objects#268, objects#270, objects#271, objects#283] Various errors in expansion pack objects (original bug).
 - Fix: [OpenSFX#18] B&M Roar sound effect not looping correctly.
