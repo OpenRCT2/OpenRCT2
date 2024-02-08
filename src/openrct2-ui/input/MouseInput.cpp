@@ -1463,7 +1463,7 @@ void InputStateWidgetPressed(
         }
         return;
     }
-    else if (_inputState == InputState::DropdownActive && gDropdownIsColour)
+    else if (gDropdownIsColour)
     {
         // This is ordinarily covered in InputWidgetOver but the dropdown with colours is a special case.
         InputUpdateTooltip(w, widgetIndex, screenCoords);
