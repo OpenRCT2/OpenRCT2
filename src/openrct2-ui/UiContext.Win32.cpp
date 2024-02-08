@@ -13,7 +13,7 @@
 // clang-format off
 #    include <windows.h>
 #    include <shellapi.h>
-#    include <CommCtrl.h>
+#    include <commctrl.h>
 #    pragma comment(lib, "Comctl32.lib")
 #    include <dwmapi.h>
 #    pragma comment(lib, "dwmapi.lib")
