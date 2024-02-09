@@ -15,6 +15,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/actions/RideDemolishAction.h>
 #include <openrct2/actions/RideSetStatusAction.h>
 #include <openrct2/config/Config.h>
@@ -27,6 +28,8 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
+
+using namespace OpenRCT2;
 
 static constexpr StringId WINDOW_TITLE = STR_NONE;
 static constexpr int32_t WH = 240;
@@ -297,7 +300,7 @@ public:
             int32_t selectedIndex = -1;
             for (int32_t type = INFORMATION_TYPE_STATUS; type <= lastType; type++)
             {
-                if ((gParkFlags & PARK_FLAGS_NO_MONEY))
+                if ((GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
                 {
                     if (ride_info_type_money_mapping[type])
                     {

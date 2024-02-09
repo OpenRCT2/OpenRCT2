@@ -13,6 +13,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
@@ -27,6 +28,8 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Park.h>
 #include <vector>
+
+using namespace OpenRCT2;
 
 static constexpr StringId WINDOW_TITLE = STR_GUESTS;
 static constexpr int32_t WH = 330;
@@ -812,7 +815,7 @@ private:
 
     bool IsRefreshOfGroupsRequired()
     {
-        uint32_t tick256 = Floor2(gCurrentTicks, 256);
+        uint32_t tick256 = Floor2(GetGameState().CurrentTicks, 256);
         if (_selectedView == _lastFindGroupsSelectedView)
         {
             if (_lastFindGroupsWait != 0 || _lastFindGroupsTick == tick256)
@@ -839,7 +842,7 @@ private:
 
     void RefreshGroups()
     {
-        _lastFindGroupsTick = Floor2(gCurrentTicks, 256);
+        _lastFindGroupsTick = Floor2(GetGameState().CurrentTicks, 256);
         _lastFindGroupsSelectedView = _selectedView;
         _lastFindGroupsWait = 320;
         _groups.clear();
@@ -955,7 +958,7 @@ private:
 
     static GuestItem::CompareFunc GetGuestCompareFunc()
     {
-        return gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? CompareGuestItem<true> : CompareGuestItem<false>;
+        return GetGameState().ParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? CompareGuestItem<true> : CompareGuestItem<false>;
     }
 };
 

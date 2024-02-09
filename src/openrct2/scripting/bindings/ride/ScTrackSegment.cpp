@@ -47,7 +47,7 @@ void ScTrackSegment::Register(duk_context* ctx)
     dukglue_register_property(ctx, &ScTrackSegment::getPriceModifier, nullptr, "priceModifier");
     dukglue_register_property(ctx, &ScTrackSegment::getTrackGroup, nullptr, "trackGroup");
     dukglue_register_property(ctx, &ScTrackSegment::getTrackCurvature, nullptr, "turnDirection");
-    dukglue_register_property(ctx, &ScTrackSegment::getTrackSlopeDirection, nullptr, "slopeDirection");
+    dukglue_register_property(ctx, &ScTrackSegment::getTrackPitchDirection, nullptr, "slopeDirection");
 
     dukglue_register_property(
         ctx, &ScTrackSegment::getTrackFlag<TRACK_ELEM_FLAG_ONLY_UNDERWATER>, nullptr, "onlyAllowedUnderwater");
@@ -96,13 +96,13 @@ int32_t ScTrackSegment::beginDirection_get() const
 int32_t ScTrackSegment::beginSlope_get() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
-    return ted.Definition.vangle_start;
+    return EnumValue(ted.Definition.PitchStart);
 }
 
 int32_t ScTrackSegment::beginBank_get() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
-    return ted.Definition.bank_start;
+    return EnumValue(ted.Definition.RollStart);
 }
 
 int32_t ScTrackSegment::endX_get() const
@@ -132,13 +132,13 @@ int32_t ScTrackSegment::endDirection_get() const
 int32_t ScTrackSegment::endSlope_get() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
-    return ted.Definition.vangle_end;
+    return EnumValue(ted.Definition.PitchEnd);
 }
 
 int32_t ScTrackSegment::endBank_get() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
-    return ted.Definition.bank_end;
+    return EnumValue(ted.Definition.RollEnd);
 }
 
 int32_t ScTrackSegment::length_get() const
@@ -269,7 +269,7 @@ int32_t ScTrackSegment::getTrackGroup() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
 
-    return ted.Definition.type;
+    return ted.Definition.Type;
 }
 
 std::string ScTrackSegment::getTrackCurvature() const
@@ -282,7 +282,7 @@ std::string ScTrackSegment::getTrackCurvature() const
     return "straight";
 }
 
-std::string ScTrackSegment::getTrackSlopeDirection() const
+std::string ScTrackSegment::getTrackPitchDirection() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
     if (ted.Flags & TRACK_ELEM_FLAG_UP)

@@ -48,7 +48,7 @@ STR_0043    :Romringer
 STR_0044    :Bakvendt fritt fall-bane
 STR_0045    :Heis
 STR_0046    :Vertikalt-fall berg-og-dal-bane
-STR_0047    :Bankautomat
+STR_0047    :Minibank
 STR_0048    :Twister
 STR_0049    :Spøkelseshus
 STR_0050    :Førstehjelp
@@ -104,8 +104,8 @@ STR_0513    :En loopende berg-og-dal-bane hvor passasjerene kjører stående
 STR_0514    :Tog som henger under berg-og-dal-banesporet svinger utover i svingene
 STR_0515    :En berg-og-dal-bane i stål hvor togene henger under banen, med komplekse og vridde baner
 STR_0516    :En rolig berg-og-dal-bane for dem som ikke enda tør våge seg på de større attraksjonene
-STR_0517    :Passasjerer kjører i miniatyrtog langs en smalsport togbane
-STR_0518    :Passasjerer reiser i elektriske tog lang en monorailbane
+STR_0517    :Passasjerer kjører i miniatyrtog langs en smalsporet togbane
+STR_0518    :Passasjerer reiser i elektriske tog langs en monorailbane
 STR_0519    :Passasjerer kjører i små vogner, hengende under en enkelt skinne, hvor de svinger fritt fra side til side i svingene
 STR_0520    :En brygge hvor gjester kan kjøre/ro personlige fartøy på vannet
 STR_0521    :En rask og forskrudd berg-og-dal-bane med skarpe svinger og bratte fall; høy intensitet er garantert
@@ -140,7 +140,7 @@ STR_0552    :
 STR_0553    :
 STR_0554    :Vognen blir skutt ut av stasjonen langs en rett strekning ved hjelp av lineære induksjonsmotorer, for så å bli ledet rett opp et høyt tårn, hvor den faller fritt baklengs tilbake til stasjonen
 STR_0555    :Gjester reiser opp eller ned et vertikalt tårn for å komme fra ett nivå til et annet
-STR_0556    :Extra vide vogner kjører ned vertikale fall for en ultimat fritt fall-opplevelse
+STR_0556    :Ekstra vide vogner kjører ned vertikale fall for en ultimat fritt fall-opplevelse
 STR_0557    :
 STR_0558    :
 STR_0559    :
@@ -150,7 +150,7 @@ STR_0562    :Motoriserte biler reiser forbi skumle kulisser og spesialeffekter o
 STR_0563    :I komfortable vogner nyter passasjerene gigantiske myke fall og langvarig vektløshet over bakketoppene
 STR_0564    :Denne berg-og-dal-banen er laget i tre og er rask, røff og bråkete på en måte som gjør at toget føles som det er ute av kontroll
 STR_0565    :En enkel berg-og-dal-bane i tre hvor vognene kun holdes på sporet ved hjelp av tyngdekraften
-STR_0566    :Berg-og-dal-banevogner fyker rundt en trang bane preget av sikksakk-mønstre og korte, skarpe fall
+STR_0566    :Berg-og-dal-banevogner fyker rundt en kompakt bane preget av sikksakk-mønstre og korte, skarpe fall
 STR_0567    :I seter hengende utover siden av sporet fyker passasjerene hodestups ned bratte fall og diverse inversjoner
 STR_0569    :I spesialseler hengende under sporet opplever passasjerene en følelse av å fly gjennom luften
 STR_0571    :Sirkulære vogner spinner mens de blir ledet gjennom en sikksakkbane av tre
@@ -243,7 +243,7 @@ STR_0828    :Lukk vindu
 STR_0829    :Vindustittel - dra denne for å flytte vinduet
 STR_0830    :Zoom inn
 STR_0831    :Zoom ut
-STR_0832    :Rotate kameravinkelen 90° med klokken
+STR_0832    :Roter kameravinkelen 90° med klokken
 STR_0833    :Pause spillet
 STR_0834    :Disk- og spillinnstillinger
 STR_0839    :{UINT16} × {UINT16}
@@ -252,7 +252,7 @@ STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} ×
 STR_0847    :Om ‘OpenRCT2’
 STR_0850    :{WINDOW_COLOUR_2}Opphavsrett © 2002 Chris Sawyer, alle rettigheter forbeholdt
 STR_0851    :{WINDOW_COLOUR_2}Designet og programmert av Chris Sawyer
-STR_0852    :{WINDOW_COLOUR_2}Graphikk av Simon Foster
+STR_0852    :{WINDOW_COLOUR_2}Grafikk av Simon Foster
 STR_0853    :{WINDOW_COLOUR_2}Lyd og musikk av Allister Brimble
 STR_0854    :{WINDOW_COLOUR_2}Ytterligere lyder spilt inn av David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Representasjon av Jacqui Lyons ved Marjacq AS
@@ -368,7 +368,7 @@ STR_0974    :Attraksjoner
 STR_0975    :Boder
 STR_0976    :Toaletter og informasjonskiosker
 STR_0977    :Nye transportattraksjoner
-STR_0978    :Nye roliger attraksjoner
+STR_0978    :Nye rolige attraksjoner
 STR_0979    :Nye berg-og-dal-baner
 STR_0980    :Nye spennende attraksjoner
 STR_0981    :Nye vannattraksjoner
@@ -863,77 +863,77 @@ STR_1469    :Attraksjon må starte og slutte med stasjoner
 STR_1470    :Stasjon ikke lang nok
 STR_1471    :{WINDOW_COLOUR_2}Fart:
 STR_1472    :Attraksjonens fart
-STR_1473    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1474    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}Not yet available
-STR_1475    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1476    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}Not yet available
-STR_1477    :{WINDOW_COLOUR_2}Intensity rating: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
-STR_1478    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1479    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}Not yet available
-STR_1480    :“I can’t afford {STRINGID}”
-STR_1481    :“I’ve spent all my money”
-STR_1482    :“I feel sick”
-STR_1483    :“I feel very sick”
-STR_1484    :“I want to go on something more thrilling than {STRINGID}”
-STR_1485    :“{STRINGID} looks too intense for me”
-STR_1486    :“I haven’t finished my {STRINGID} yet”
-STR_1487    :“Just looking at {STRINGID} makes me feel sick”
-STR_1488    :“I’m not paying that much to go on {STRINGID}”
-STR_1489    :“I want to go home”
-STR_1490    :“{STRINGID} is really good value”
-STR_1491    :“I’ve already got {STRINGID}”
-STR_1492    :“I can’t afford {STRINGID}”
-STR_1493    :“I’m not hungry”
-STR_1494    :“I’m not thirsty”
-STR_1495    :“Help! I’m drowning!”
-STR_1496    :“I’m lost!”
-STR_1497    :“{STRINGID} was great”
-STR_1498    :“I’ve been queuing for {STRINGID} for ages”
-STR_1499    :“I’m tired”
-STR_1500    :“I’m hungry”
-STR_1501    :“I’m thirsty”
-STR_1502    :“I need to go to the bathroom”
-STR_1503    :“I can’t find {STRINGID}”
-STR_1504    :“I’m not paying that much to use {STRINGID}”
-STR_1505    :“I’m not going on {STRINGID} while it’s raining”
-STR_1506    :“The litter here is really bad”
-STR_1507    :“I can’t find the park exit”
-STR_1508    :“I want to get off {STRINGID}”
-STR_1509    :“I want to get out of {STRINGID}”
-STR_1510    :“I’m not going on {STRINGID} - It isn’t safe”
-STR_1511    :“This path is disgusting”
-STR_1512    :“It’s too crowded here”
-STR_1513    :“The vandalism here is really bad”
-STR_1514    :“Great scenery!”
-STR_1515    :“This park is really clean and tidy”
-STR_1516    :“The jumping fountains are great”
-STR_1517    :“The music is nice here”
-STR_1518    :“This balloon from {STRINGID} is really good value”
-STR_1519    :“This cuddly toy from {STRINGID} is really good value”
-STR_1520    :“This park map from {STRINGID} is really good value”
-STR_1521    :“This on-ride photo from {STRINGID} is really good value”
-STR_1522    :“This umbrella from {STRINGID} is really good value”
-STR_1523    :“This drink from {STRINGID} is really good value”
-STR_1524    :“This burger from {STRINGID} is really good value”
-STR_1525    :“These chips from {STRINGID} are really good value”
-STR_1526    :“This ice cream from {STRINGID} is really good value”
-STR_1527    :“This candyfloss from {STRINGID} is really good value”
+STR_1473    :{WINDOW_COLOUR_2}Gledesnivå: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1474    :{WINDOW_COLOUR_2}Gledesnivå: {BLACK}Not yet available
+STR_1475    :{WINDOW_COLOUR_2}Intensitetsnivå: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1476    :{WINDOW_COLOUR_2}Intensitetsnivå: {BLACK}Not yet available
+STR_1477    :{WINDOW_COLOUR_2}Intensitetsnivå: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
+STR_1478    :{WINDOW_COLOUR_2}Kvalmhetsnivå: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1479    :{WINDOW_COLOUR_2}Kvalmhetsnivå: {BLACK}Not yet available
+STR_1480    :“Jeg har ikke råd til {STRINGID}”
+STR_1481    :“Jeg er blakk”
+STR_1482    :“Jeg føler meg kvalm”
+STR_1483    :“Jeg føler meg veldig kvalm”
+STR_1484    :“Jeg vil ta noe mer spennende enn {STRINGID}”
+STR_1485    :“{STRINGID} ser for intens ut for meg”
+STR_1486    :“Jeg har ikke fullført min {STRINGID} enda”
+STR_1487    :“Bare å se på {STRINGID} gjør meg kvalm”
+STR_1488    :“Jeg betaler ikke så mye for å ta {STRINGID}”
+STR_1489    :“Jeg vil dra hjem”
+STR_1490    :“{STRINGID} gir meg mye for pengene”
+STR_1491    :“Jeg har allerede {STRINGID}”
+STR_1492    :“Jeg har ikke råd til {STRINGID}”
+STR_1493    :“Jeg er ikke sulten”
+STR_1494    :“Jeg er ikke tørst”
+STR_1495    :“Hjelp! Jeg drukner!”
+STR_1496    :“Jeg har gått meg vill!”
+STR_1497    :“{STRINGID} var fantastisk”
+STR_1498    :“Jeg har stått i kø for {STRINGID} i en evighet”
+STR_1499    :“Jeg er sliten”
+STR_1500    :“Jeg er sulten”
+STR_1501    :“Jeg er tørst”
+STR_1502    :“Jeg trenger å gå på do”
+STR_1503    :“Jeg kan ikke finne {STRINGID}”
+STR_1504    :“Jeg betaler ikke så mye for å bruke {STRINGID}”
+STR_1505    :“Jeg tar ikke {STRINGID} når det regner”
+STR_1506    :“Det er veldig forsøplet her”
+STR_1507    :“Jeg finner ikke utgangen til parken”
+STR_1508    :“Jeg vil gå av {STRINGID}”
+STR_1509    :“Jeg vil komme meg ut av {STRINGID}”
+STR_1510    :“Jeg tar ikke {STRINGID} - Det er ikke trygt”
+STR_1511    :“Denne gangstien er ekkel”
+STR_1512    :“Det er for mye folk her”
+STR_1513    :“Hærverket her er veldig ille”
+STR_1514    :“Fantastisk dekorasjon!”
+STR_1515    :“Denne parken er veldig ren og ryddig”
+STR_1516    :“Jeg elsker de hoppende fontenene”
+STR_1517    :“Musikken her er fin”
+STR_1518    :“Denne ballongen fra {STRINGID} gir meg mye for pengene”
+STR_1519    :“Denne bamsen fra {STRINGID} gir meg mye for pengene”
+STR_1520    :“Dette parkkartet {STRINGID} gir meg mye for pengene”
+STR_1521    :“Dette bildet fra {STRINGID} gir meg mye for pengene”
+STR_1522    :“Denne paraplyen fra {STRINGID} gir meg mye for pengene”
+STR_1523    :“Denne drikken fra {STRINGID} gir meg mye for pengene”
+STR_1524    :“Denne burgeren fra {STRINGID} gir meg mye for pengene”
+STR_1525    :“Denne pommes friten fra {STRINGID} gir meg mye for pengene”
+STR_1526    :“Denne iskremen fra {STRINGID} gir meg mye for pengene”
+STR_1527    :“Dette sukkerspinnet fra {STRINGID} gir meg mye for pengene”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :“This pizza from {STRINGID} is really good value”
+STR_1531    :“Denne pizzaen fra {STRINGID} gir meg mye for pengene”
 STR_1532    :
-STR_1533    :“This popcorn from {STRINGID} is really good value”
-STR_1534    :“This hot dog from {STRINGID} is really good value”
-STR_1535    :“This tentacle from {STRINGID} is really good value”
-STR_1536    :“This hat from {STRINGID} is really good value”
-STR_1537    :“This toffee apple from {STRINGID} is really good value”
-STR_1538    :“This T-shirt from {STRINGID} is really good value”
-STR_1539    :“This doughnut from {STRINGID} is really good value”
-STR_1540    :“This coffee from {STRINGID} is really good value”
+STR_1533    :“Dette popcornet fra {STRINGID} gir meg mye for pengene”
+STR_1534    :“Denne pølsa fra {STRINGID} gir meg mye for pengene”
+STR_1535    :“Denne blekkspruten fra {STRINGID} gir meg mye for pengene”
+STR_1536    :“Denne hatten fra {STRINGID} gir meg mye for pengene”
+STR_1537    :“Dette glaserte eplet fra {STRINGID} gir meg mye for pengene”
+STR_1538    :“Denne t-skjorta fra {STRINGID} gir meg mye for pengene”
+STR_1539    :“Denne smultringen fra {STRINGID} gir meg mye for pengene”
+STR_1540    :“Denne kaffen fra {STRINGID} gir meg mye for pengene”
 STR_1541    :
-STR_1542    :“This fried chicken from {STRINGID} is really good value”
-STR_1543    :“This lemonade from {STRINGID} is really good value”
+STR_1542    :“Denne friterte kyllingen fra {STRINGID} gir meg mye for pengene”
+STR_1543    :“Denne lemonaden fra {STRINGID} gir meg mye for pengene”
 STR_1544    :
 STR_1545    :
 STR_1546    :
@@ -941,60 +941,60 @@ STR_1547    :
 STR_1548    :
 STR_1549    :
 STR_1550    :“Wow!”
-STR_1551    :“I have the strangest feeling someone is watching me”
-STR_1552    :“I’m not paying that much for a balloon from {STRINGID}”
-STR_1553    :“I’m not paying that much for a cuddly toy from {STRINGID}”
-STR_1554    :“I’m not paying that much for a park map from {STRINGID}”
-STR_1555    :“I’m not paying that much for an on-ride photo from {STRINGID}”
-STR_1556    :“I’m not paying that much for an umbrella from {STRINGID}”
-STR_1557    :“I’m not paying that much for a drink from {STRINGID}”
-STR_1558    :“I’m not paying that much for a burger from {STRINGID}”
-STR_1559    :“I’m not paying that much for chips from {STRINGID}”
-STR_1560    :“I’m not paying that much for an ice cream from {STRINGID}”
-STR_1561    :“I’m not paying that much for candyfloss from {STRINGID}”
+STR_1551    :“Jeg har en merkelig følelse av at noen ser på meg”
+STR_1552    :“Jeg betaler ikke så mye for en ballong fra {STRINGID}”
+STR_1553    :“Jeg betaler ikke så mye for en bamse fra {STRINGID}”
+STR_1554    :“Jeg betaler ikke så mye for et parkkart fra {STRINGID}”
+STR_1555    :“Jeg betaler ikke så mye for et bilde fra {STRINGID}”
+STR_1556    :“Jeg betaler ikke så mye for en paraply fra {STRINGID}”
+STR_1557    :“Jeg betaler ikke så mye for drikke fra {STRINGID}”
+STR_1558    :“Jeg betaler ikke så mye for en burger fra {STRINGID}”
+STR_1559    :“Jeg betaler ikke så mye for pommes frites fra {STRINGID}”
+STR_1560    :“Jeg betaler ikke så mye for iskrem fra {STRINGID}”
+STR_1561    :“Jeg betaler ikke så mye for sukkerspinn fra {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :“I’m not paying that much for pizza from {STRINGID}”
+STR_1565    :“Jeg betaler ikke så mye for pizza fra {STRINGID}”
 STR_1566    :
-STR_1567    :“I’m not paying that much for popcorn from {STRINGID}”
-STR_1568    :“I’m not paying that much for a hot dog from {STRINGID}”
-STR_1569    :“I’m not paying that much for tentacle from {STRINGID}”
-STR_1570    :“I’m not paying that much for a hat from {STRINGID}”
-STR_1571    :“I’m not paying that much for a toffee apple from {STRINGID}”
-STR_1572    :“I’m not paying that much for a T-shirt from {STRINGID}”
-STR_1573    :“I’m not paying that much for a doughnut from {STRINGID}”
-STR_1574    :“I’m not paying that much for coffee from {STRINGID}”
+STR_1567    :“Jeg betaler ikke så mye for popcorn fra {STRINGID}”
+STR_1568    :“Jeg betaler ikke så mye for en pølse fra {STRINGID}”
+STR_1569    :“Jeg betaler ikke så mye for en blekksprut fra {STRINGID}”
+STR_1570    :“Jeg betaler ikke så mye for en hatt fra {STRINGID}”
+STR_1571    :“Jeg betaler ikke så mye for et glasert eple fra {STRINGID}”
+STR_1572    :“Jeg betaler ikke så mye for en t-skjorte fra {STRINGID}”
+STR_1573    :“Jeg betaler ikke så mye for en smultring fra {STRINGID}”
+STR_1574    :“Jeg betaler ikke så mye for kaffen fra {STRINGID}”
 STR_1575    :
-STR_1576    :“I’m not paying that much for fried chicken from {STRINGID}”
-STR_1577    :“I’m not paying that much for lemonade from {STRINGID}”
+STR_1576    :“Jeg betaler ikke så mye for fritert kylling fra {STRINGID}”
+STR_1577    :“Jeg betaler ikke så mye for lemonade fra {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :“This on-ride photo from {STRINGID} is really good value”
-STR_1585    :“This on-ride photo from {STRINGID} is really good value”
-STR_1586    :“This on-ride photo from {STRINGID} is really good value”
-STR_1587    :“This pretzel from {STRINGID} is really good value”
-STR_1588    :“This hot chocolate from {STRINGID} is really good value”
-STR_1589    :“This iced tea from {STRINGID} is really good value”
-STR_1590    :“This funnel cake from {STRINGID} is really good value”
-STR_1591    :“These sunglasses from {STRINGID} are really good value”
-STR_1592    :“These beef noodles from {STRINGID} are really good value”
-STR_1593    :“These fried rice noodles from {STRINGID} are really good value”
-STR_1594    :“This wonton soup from {STRINGID} is really good value”
-STR_1595    :“This meatball soup from {STRINGID} is really good value”
-STR_1596    :“This fruit juice from {STRINGID} is really good value”
-STR_1597    :“This soybean milk from {STRINGID} is really good value”
-STR_1598    :“This sujongkwa from {STRINGID} is really good value”
-STR_1599    :“This sub sandwich from {STRINGID} is really good value”
-STR_1600    :“This cookie from {STRINGID} is really good value”
+STR_1584    :“Dette bildet fra {STRINGID} gir meg mye for pengene”
+STR_1585    :“Dette bildet fra {STRINGID} gir meg mye for pengene”
+STR_1586    :“Dette bildet fra {STRINGID} gir meg mye for pengene”
+STR_1587    :“Denne kringla fra {STRINGID} gir meg mye for pengene”
+STR_1588    :“Denne kakaoen fra {STRINGID} gir meg mye for pengene”
+STR_1589    :“Denne isteen fra {STRINGID} gir meg mye for pengene”
+STR_1590    :“Denne traktkaka fra {STRINGID} gir meg mye for pengene”
+STR_1591    :“Disse solbrillene fra {STRINGID} gir meg mye for pengene”
+STR_1592    :“Disse biffnudlene fra {STRINGID} gir meg mye for pengene”
+STR_1593    :“Disse risnudlene fra {STRINGID} gir meg mye for pengene”
+STR_1594    :“Denne wonton-suppa fra {STRINGID} gir meg mye for pengene”
+STR_1595    :“Denne kjøttbolle-suppa fra {STRINGID} gir meg mye for pengene”
+STR_1596    :“Denne fruktjuicen fra {STRINGID} gir meg mye for pengene”
+STR_1597    :“Denne soyamelka fra {STRINGID} gir meg mye for pengene”
+STR_1598    :“Denne sujongkwaen fra {STRINGID} gir meg mye for pengene”
+STR_1599    :“Dette smørbrødet fra {STRINGID} gir meg mye for pengene”
+STR_1600    :“Denne kjeksen fra {STRINGID} gir meg mye for pengene”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :“This roast sausage from {STRINGID} are really good value”
+STR_1604    :“Denne stekte pølsa fra {STRINGID} gir meg mye for pengene”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1006,27 +1006,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :“I’m not paying that much for an on-ride photo from {STRINGID}”
-STR_1617    :“I’m not paying that much for an on-ride photo from {STRINGID}”
-STR_1618    :“I’m not paying that much for an on-ride photo from {STRINGID}”
-STR_1619    :“I’m not paying that much for a pretzel from {STRINGID}”
-STR_1620    :“I’m not paying that much for hot chocolate from {STRINGID}”
-STR_1621    :“I’m not paying that much for iced tea from {STRINGID}”
-STR_1622    :“I’m not paying that much for a funnel cake from {STRINGID}”
-STR_1623    :“I’m not paying that much for sunglasses from {STRINGID}”
-STR_1624    :“I’m not paying that much for beef noodles from {STRINGID}”
-STR_1625    :“I’m not paying that much for fried rice noodles from {STRINGID}”
-STR_1626    :“I’m not paying that much for wonton soup from {STRINGID}”
-STR_1627    :“I’m not paying that much for meatball soup from {STRINGID}”
-STR_1628    :“I’m not paying that much for fruit juice from {STRINGID}”
-STR_1629    :“I’m not paying that much for soybean milk from {STRINGID}”
-STR_1630    :“I’m not paying that much for sujongkwa from {STRINGID}”
-STR_1631    :“I’m not paying that much for a sub sandwich from {STRINGID}”
-STR_1632    :“I’m not paying that much for a cookie from {STRINGID}”
+STR_1616    :“Jeg betaler ikke så mye for et bilde fra {STRINGID}”
+STR_1617    :“Jeg betaler ikke så mye for et bilde fra {STRINGID}”
+STR_1618    :“Jeg betaler ikke så mye for et bilde fra {STRINGID}”
+STR_1619    :“Jeg betaler ikke så mye for en kringle fra {STRINGID}”
+STR_1620    :“Jeg betaler ikke så mye for kakao fra {STRINGID}”
+STR_1621    :“Jeg betaler ikke så mye for iste fra {STRINGID}”
+STR_1622    :“Jeg betaler ikke så mye for en traktkake fra {STRINGID}”
+STR_1623    :“Jeg betaler ikke så mye for solbriller fra {STRINGID}”
+STR_1624    :“Jeg betaler ikke så mye for biffnudler fra {STRINGID}”
+STR_1625    :“Jeg betaler ikke så mye for risnudler fra {STRINGID}”
+STR_1626    :“Jeg betaler ikke så mye for wonton-suppe fra {STRINGID}”
+STR_1627    :“Jeg betaler ikke så mye for kjøttbolle-suppe fra {STRINGID}”
+STR_1628    :“Jeg betaler ikke så mye for fruktjuice fra {STRINGID}”
+STR_1629    :“Jeg betaler ikke så mye for soyamelk fra {STRINGID}”
+STR_1630    :“Jeg betaler ikke så mye for sujongkwa fra {STRINGID}”
+STR_1631    :“Jeg betaler ikke så mye for et smørbrød fra {STRINGID}”
+STR_1632    :“Jeg betaler ikke så mye for en kjeks fra {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :“I’m not paying that much for a roast sausage from {STRINGID}”
+STR_1636    :“Jeg betaler ikke så mye for en stekt pølse fra {STRINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1038,11 +1038,11 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :“Help! Put me down!”
-STR_1649    :“I’m running out of cash!”
-STR_1650    :“Wow! A new ride being built!”
-STR_1653    :“…and here we are on {STRINGID}!”
-STR_1654    :{WINDOW_COLOUR_2}Recent thoughts:
+STR_1648    :“Hjelp! Sett meg ned!”
+STR_1649    :“Jeg begynner å gå tom for kontanter!”
+STR_1650    :“Wow! De bygger en ny attraksjon!”
+STR_1653    :“…og her er vi på {STRINGID}!”
+STR_1654    :{WINDOW_COLOUR_2}Nylige tanker:
 STR_1655    :Construct footpath on land
 STR_1656    :Construct bridge or tunnel footpath
 STR_1657    :{WINDOW_COLOUR_2}Preferred ride

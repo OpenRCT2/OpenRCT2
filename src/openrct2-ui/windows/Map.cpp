@@ -430,12 +430,16 @@ public:
     {
         MapInvalidateSelectionRect();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-        auto mapCoords = ScreenGetMapXY(screenCoords, nullptr);
-        if (!mapCoords.has_value())
+
+        auto info = GetMapCoordinatesFromPos(
+            screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
+        if (info.SpriteType == ViewportInteractionItem::None)
             return;
 
+        auto mapCoords = info.Loc;
+
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-        gMapSelectType = MAP_SELECT_TYPE_FULL;
+        gMapSelectType = MAP_SELECT_TYPE_FULL_LAND_RIGHTS;
 
         int32_t landRightsToolSize = _landRightsToolSize;
         if (landRightsToolSize == 0)
@@ -443,11 +447,12 @@ public:
 
         int32_t size = (landRightsToolSize * 32) - 32;
         int32_t radius = (landRightsToolSize * 16) - 16;
-        mapCoords->x = (mapCoords->x - radius) & 0xFFE0;
-        mapCoords->y = (mapCoords->y - radius) & 0xFFE0;
-        gMapSelectPositionA = *mapCoords;
-        gMapSelectPositionB.x = mapCoords->x + size;
-        gMapSelectPositionB.y = mapCoords->y + size;
+        mapCoords.x -= radius;
+        mapCoords.y -= radius;
+        mapCoords = mapCoords.ToTileStart();
+        gMapSelectPositionA = mapCoords;
+        gMapSelectPositionB.x = mapCoords.x + size;
+        gMapSelectPositionB.y = mapCoords.y + size;
         MapInvalidateSelectionRect();
     }
 
@@ -687,7 +692,7 @@ public:
 
             MapInvalidateSelectionRect();
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-            gMapSelectType = MAP_SELECT_TYPE_FULL;
+            gMapSelectType = MAP_SELECT_TYPE_FULL_LAND_RIGHTS;
             gMapSelectPositionA = mapCoords;
             gMapSelectPositionB = mapCoords + CoordsXY{ size, size };
             MapInvalidateSelectionRect();

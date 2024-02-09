@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../GameState.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../entity/EntityRegistry.h"
@@ -27,6 +28,8 @@
 #include "../world/Park.h"
 
 #include <set>
+
+using namespace OpenRCT2;
 
 /* rct2: 0x009929FC */
 static constexpr PeepSpriteType spriteTypes[] = {
@@ -288,10 +291,11 @@ void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
     else
     {
         // No walking guests; pick random park entrance
-        if (!gParkEntrances.empty())
+        const auto& gameState = GetGameState();
+        if (!gameState.ParkEntrances.empty())
         {
-            auto rand = ScenarioRandMax(static_cast<uint32_t>(gParkEntrances.size()));
-            const auto& entrance = gParkEntrances[rand];
+            auto rand = ScenarioRandMax(static_cast<uint32_t>(gameState.ParkEntrances.size()));
+            const auto& entrance = gameState.ParkEntrances[rand];
             auto dir = entrance.direction;
             newLocation = entrance;
             // TODO: Replace with CoordsDirectionDelta

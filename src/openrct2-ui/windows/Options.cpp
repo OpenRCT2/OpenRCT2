@@ -649,7 +649,8 @@ private:
 
         disabled_widgets = 0;
         auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
-        if (!hasFilePicker)
+        const bool controlsTabSelected = (WIDX_FIRST_TAB + page) == WIDX_TAB_CONTROLS_AND_INTERFACE;
+        if (!hasFilePicker && controlsTabSelected)
         {
             disabled_widgets |= (1uLL << WIDX_ALWAYS_NATIVE_LOADSAVE);
             widgets[WIDX_ALWAYS_NATIVE_LOADSAVE].type = WindowWidgetType::Empty;

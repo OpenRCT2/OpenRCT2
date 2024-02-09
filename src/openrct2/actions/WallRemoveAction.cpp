@@ -46,8 +46,7 @@ GameActions::Result WallRemoveAction::Query() const
 
     if (!LocationValid(_loc))
     {
-        return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
     }
 
     const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;

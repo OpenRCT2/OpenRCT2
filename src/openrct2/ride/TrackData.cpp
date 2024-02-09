@@ -3697,93 +3697,93 @@ static_assert(std::size(TrackPieceLengths) == TrackElemType::Count);
 
 // rct2: 0x00998C95
 static constexpr TrackCurveChain gTrackCurveChain[] = {
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
     { RideConstructionSpecialPieceSelected | TrackElemType::EndStation, RideConstructionSpecialPieceSelected | TrackElemType::EndStation },
     { RideConstructionSpecialPieceSelected | TrackElemType::EndStation, RideConstructionSpecialPieceSelected | TrackElemType::EndStation },
     { RideConstructionSpecialPieceSelected | TrackElemType::EndStation, RideConstructionSpecialPieceSelected | TrackElemType::EndStation },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_NONE },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_NONE, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_NONE, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_NONE, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_NONE },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_NONE, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_NONE },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_NONE },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_LEFT_SMALL, TRACK_CURVE_LEFT_SMALL },
-    { TRACK_CURVE_RIGHT_SMALL, TRACK_CURVE_RIGHT_SMALL },
-    { TRACK_CURVE_LEFT_SMALL, TRACK_CURVE_LEFT_SMALL },
-    { TRACK_CURVE_RIGHT_SMALL, TRACK_CURVE_RIGHT_SMALL },
-    { TRACK_CURVE_LEFT_SMALL, TRACK_CURVE_LEFT_SMALL },
-    { TRACK_CURVE_RIGHT_SMALL, TRACK_CURVE_RIGHT_SMALL },
-    { TRACK_CURVE_LEFT_SMALL, TRACK_CURVE_LEFT_SMALL },
-    { TRACK_CURVE_RIGHT_SMALL, TRACK_CURVE_RIGHT_SMALL },
-    { TRACK_CURVE_LEFT_VERY_SMALL, TRACK_CURVE_LEFT_VERY_SMALL },
-    { TRACK_CURVE_RIGHT_VERY_SMALL, TRACK_CURVE_RIGHT_VERY_SMALL },
-    { RideConstructionSpecialPieceSelected | TrackElemType::LeftTwistUpToDown, TRACK_CURVE_NONE },
-    { RideConstructionSpecialPieceSelected | TrackElemType::RightTwistUpToDown, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::LeftTwistDownToUp },
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::RightTwistDownToUp },
-    { RideConstructionSpecialPieceSelected | TrackElemType::HalfLoopDown, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::HalfLoopUp },
-    { RideConstructionSpecialPieceSelected | TrackElemType::RightCorkscrewDown, TRACK_CURVE_NONE },
-    { RideConstructionSpecialPieceSelected | TrackElemType::LeftCorkscrewDown, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::RightCorkscrewUp },
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::LeftCorkscrewUp },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { RideConstructionSpecialPieceSelected | TrackElemType::TowerSection, TRACK_CURVE_NONE },
-    { RideConstructionSpecialPieceSelected | TrackElemType::TowerSection, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_LEFT_SMALL, TRACK_CURVE_LEFT_SMALL },
-    { TRACK_CURVE_RIGHT_SMALL, TRACK_CURVE_RIGHT_SMALL },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
+    { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
+    { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
+    { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
+    { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
+    { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
+    { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
+    { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
+    { EnumValue(TrackCurve::LeftVerySmall), EnumValue(TrackCurve::LeftVerySmall) },
+    { EnumValue(TrackCurve::RightVerySmall), EnumValue(TrackCurve::RightVerySmall) },
+    { RideConstructionSpecialPieceSelected | TrackElemType::LeftTwistUpToDown, EnumValue(TrackCurve::None) },
+    { RideConstructionSpecialPieceSelected | TrackElemType::RightTwistUpToDown, EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftTwistDownToUp },
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightTwistDownToUp },
+    { RideConstructionSpecialPieceSelected | TrackElemType::HalfLoopDown, EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::HalfLoopUp },
+    { RideConstructionSpecialPieceSelected | TrackElemType::RightCorkscrewDown, EnumValue(TrackCurve::None) },
+    { RideConstructionSpecialPieceSelected | TrackElemType::LeftCorkscrewDown, EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightCorkscrewUp },
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftCorkscrewUp },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { RideConstructionSpecialPieceSelected | TrackElemType::TowerSection, EnumValue(TrackCurve::None) },
+    { RideConstructionSpecialPieceSelected | TrackElemType::TowerSection, EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
+    { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
     { RideConstructionSpecialPieceSelected | TrackElemType::LeftHalfBankedHelixUpSmall, RideConstructionSpecialPieceSelected | TrackElemType::LeftHalfBankedHelixUpSmall },
     { RideConstructionSpecialPieceSelected | TrackElemType::RightHalfBankedHelixUpSmall, RideConstructionSpecialPieceSelected | TrackElemType::RightHalfBankedHelixUpSmall },
     { RideConstructionSpecialPieceSelected | TrackElemType::LeftHalfBankedHelixDownSmall, RideConstructionSpecialPieceSelected | TrackElemType::LeftHalfBankedHelixDownSmall },
@@ -3792,13 +3792,13 @@ static constexpr TrackCurveChain gTrackCurveChain[] = {
     { RideConstructionSpecialPieceSelected | TrackElemType::RightHalfBankedHelixUpLarge, RideConstructionSpecialPieceSelected | TrackElemType::RightHalfBankedHelixUpLarge },
     { RideConstructionSpecialPieceSelected | TrackElemType::LeftHalfBankedHelixDownLarge, RideConstructionSpecialPieceSelected | TrackElemType::LeftHalfBankedHelixDownLarge },
     { RideConstructionSpecialPieceSelected | TrackElemType::RightHalfBankedHelixDownLarge, RideConstructionSpecialPieceSelected | TrackElemType::RightHalfBankedHelixDownLarge },
-    { TRACK_CURVE_LEFT_SMALL, TRACK_CURVE_LEFT_SMALL },
-    { TRACK_CURVE_RIGHT_SMALL, TRACK_CURVE_RIGHT_SMALL },
-    { TRACK_CURVE_LEFT_SMALL, TRACK_CURVE_LEFT_SMALL },
-    { TRACK_CURVE_RIGHT_SMALL, TRACK_CURVE_RIGHT_SMALL },
+    { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
+    { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
+    { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
+    { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
     { RideConstructionSpecialPieceSelected | TrackElemType::Brakes, RideConstructionSpecialPieceSelected | TrackElemType::Brakes },
     { RideConstructionSpecialPieceSelected | TrackElemType::Booster, RideConstructionSpecialPieceSelected | TrackElemType::Booster },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
     { RideConstructionSpecialPieceSelected | TrackElemType::LeftQuarterBankedHelixLargeUp, RideConstructionSpecialPieceSelected | TrackElemType::LeftQuarterBankedHelixLargeUp },
     { RideConstructionSpecialPieceSelected | TrackElemType::RightQuarterBankedHelixLargeUp, RideConstructionSpecialPieceSelected | TrackElemType::RightQuarterBankedHelixLargeUp },
     { RideConstructionSpecialPieceSelected | TrackElemType::LeftQuarterBankedHelixLargeDown, RideConstructionSpecialPieceSelected | TrackElemType::LeftQuarterBankedHelixLargeDown },
@@ -3807,156 +3807,156 @@ static constexpr TrackCurveChain gTrackCurveChain[] = {
     { RideConstructionSpecialPieceSelected | TrackElemType::RightQuarterHelixLargeUp, RideConstructionSpecialPieceSelected | TrackElemType::RightQuarterHelixLargeUp },
     { RideConstructionSpecialPieceSelected | TrackElemType::LeftQuarterHelixLargeDown, RideConstructionSpecialPieceSelected | TrackElemType::LeftQuarterHelixLargeDown },
     { RideConstructionSpecialPieceSelected | TrackElemType::RightQuarterHelixLargeDown, RideConstructionSpecialPieceSelected | TrackElemType::RightQuarterHelixLargeDown },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_RIGHT },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
     { RideConstructionSpecialPieceSelected | TrackElemType::Waterfall, RideConstructionSpecialPieceSelected | TrackElemType::Waterfall },
     { RideConstructionSpecialPieceSelected | TrackElemType::Rapids, RideConstructionSpecialPieceSelected | TrackElemType::Rapids },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { RideConstructionSpecialPieceSelected | TrackElemType::ReverseFreefallVertical, TRACK_CURVE_NONE },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { RideConstructionSpecialPieceSelected | TrackElemType::ReverseFreefallVertical, EnumValue(TrackCurve::None) },
     { RideConstructionSpecialPieceSelected | TrackElemType::ReverseFreefallVertical, RideConstructionSpecialPieceSelected | TrackElemType::ReverseFreefallVertical },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE },
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE },
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE },
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_LEFT_LARGE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_RIGHT_LARGE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_LEFT_LARGE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_RIGHT_LARGE },
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_LEFT_LARGE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_RIGHT_LARGE },
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { RideConstructionSpecialPieceSelected | TrackElemType::LeftBarrelRollDownToUp, TRACK_CURVE_NONE },
-    { RideConstructionSpecialPieceSelected | TrackElemType::RightBarrelRollDownToUp, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::LeftBarrelRollUpToDown },
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::RightBarrelRollUpToDown },
-    { TRACK_CURVE_LEFT_SMALL, TRACK_CURVE_LEFT_SMALL },
-    { TRACK_CURVE_RIGHT_SMALL, TRACK_CURVE_RIGHT_SMALL },
-    { TRACK_CURVE_LEFT_SMALL, TRACK_CURVE_LEFT_SMALL },
-    { TRACK_CURVE_RIGHT_SMALL, TRACK_CURVE_RIGHT_SMALL },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) },
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) },
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) },
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::LeftLarge) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::RightLarge) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::LeftLarge) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::RightLarge) },
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::LeftLarge) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::RightLarge) },
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { RideConstructionSpecialPieceSelected | TrackElemType::LeftBarrelRollDownToUp, EnumValue(TrackCurve::None) },
+    { RideConstructionSpecialPieceSelected | TrackElemType::RightBarrelRollDownToUp, EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftBarrelRollUpToDown },
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightBarrelRollUpToDown },
+    { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
+    { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
+    { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
+    { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
     { RideConstructionSpecialPieceSelected | TrackElemType::PoweredLift, RideConstructionSpecialPieceSelected | TrackElemType::PoweredLift },
-    { RideConstructionSpecialPieceSelected | TrackElemType::RightLargeHalfLoopDown, TRACK_CURVE_NONE },
-    { RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeHalfLoopDown, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::RightLargeHalfLoopUp },
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeHalfLoopUp },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { RideConstructionSpecialPieceSelected | TrackElemType::InvertedFlatToDown90QuarterLoop, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::Up90ToInvertedFlatQuarterLoop },
+    { RideConstructionSpecialPieceSelected | TrackElemType::RightLargeHalfLoopDown, EnumValue(TrackCurve::None) },
+    { RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeHalfLoopDown, EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightLargeHalfLoopUp },
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeHalfLoopUp },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { RideConstructionSpecialPieceSelected | TrackElemType::InvertedFlatToDown90QuarterLoop, EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::Up90ToInvertedFlatQuarterLoop },
     { RideConstructionSpecialPieceSelected | TrackElemType::LeftCurvedLiftHill, RideConstructionSpecialPieceSelected | TrackElemType::LeftCurvedLiftHill },
     { RideConstructionSpecialPieceSelected | TrackElemType::RightCurvedLiftHill, RideConstructionSpecialPieceSelected | TrackElemType::RightCurvedLiftHill },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
     { RideConstructionSpecialPieceSelected | TrackElemType::AirThrustVerticalDown, RideConstructionSpecialPieceSelected | TrackElemType::ReverseFreefallVertical },
     { RideConstructionSpecialPieceSelected | TrackElemType::AirThrustVerticalDown, RideConstructionSpecialPieceSelected | TrackElemType::AirThrustVerticalDown },
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::AirThrustVerticalDown },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_LEFT_SMALL, TRACK_CURVE_LEFT_SMALL },
-    { TRACK_CURVE_RIGHT_SMALL, TRACK_CURVE_RIGHT_SMALL },
-    { TRACK_CURVE_LEFT_SMALL, TRACK_CURVE_LEFT_SMALL },
-    { TRACK_CURVE_RIGHT_SMALL, TRACK_CURVE_RIGHT_SMALL },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_NONE },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_NONE, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_NONE },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_NONE, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_NONE },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_NONE, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_LEFT, TRACK_CURVE_NONE },
-    { TRACK_CURVE_RIGHT, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_LEFT },
-    { TRACK_CURVE_NONE, TRACK_CURVE_RIGHT },
-    { TRACK_CURVE_LEFT_SMALL, TRACK_CURVE_LEFT_SMALL },
-    { TRACK_CURVE_RIGHT_SMALL, TRACK_CURVE_RIGHT_SMALL },
-    { TRACK_CURVE_LEFT_SMALL, TRACK_CURVE_LEFT_SMALL },
-    { TRACK_CURVE_RIGHT_SMALL, TRACK_CURVE_RIGHT_SMALL },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::AirThrustVerticalDown },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
+    { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
+    { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
+    { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::Left), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::Right), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Left) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::Right) },
+    { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
+    { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
+    { EnumValue(TrackCurve::LeftSmall), EnumValue(TrackCurve::LeftSmall) },
+    { EnumValue(TrackCurve::RightSmall), EnumValue(TrackCurve::RightSmall) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },
     { 65535, 65535 },                       // TrackElemType::FlatTrack1x4A
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE }, // TrackElemType::FlatTrack2x2
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE }, // TrackElemType::FlatTrack4x4
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) }, // TrackElemType::FlatTrack2x2
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) }, // TrackElemType::FlatTrack4x4
     { 65535, 65535 },                       // TrackElemType::FlatTrack2x4
     { 65535, 65535 },                       // TrackElemType::FlatTrack1x5
     { 65535, 65535 },                       // TrackElemType::FlatTrack1x1A
@@ -3964,268 +3964,268 @@ static constexpr TrackCurveChain gTrackCurveChain[] = {
     { 65535, 65535 },                       // TrackElemType::FlatTrack1x1B
     { 65535, 65535 },                       // TrackElemType::FlatTrack1x4C
     { 65535, 65535 },                       // TrackElemType::FlatTrack3x3
-    { RideConstructionSpecialPieceSelected | TrackElemType::RightLargeCorkscrewDown, TRACK_CURVE_NONE }, // TrackElemType::LeftLargeCorkscrewUp
-    { RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeCorkscrewDown, TRACK_CURVE_NONE },  // TrackElemType::RightLargeCorkscrewUp
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::RightLargeCorkscrewUp },   // TrackElemType::LeftLargeCorkscrewDown
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeCorkscrewUp },    // TrackElemType::RightCorkscrewDown
-    { RideConstructionSpecialPieceSelected | TrackElemType::RightMediumHalfLoopDown, TRACK_CURVE_NONE }, // TrackElemType::LeftMediumHalfLoopUp
-    { RideConstructionSpecialPieceSelected | TrackElemType::LeftMediumHalfLoopDown, TRACK_CURVE_NONE },  // TrackElemType::RightMediumHalfLoopUp
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::RightMediumHalfLoopUp },   // TrackElemType::LeftMediumHalfLoopDown
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::LeftMediumHalfLoopUp },    // TrackElemType::RightMediumHalfLoopDown
-    { RideConstructionSpecialPieceSelected | TrackElemType::LeftZeroGRollDown, TRACK_CURVE_NONE },       // TrackElemType::LeftZeroGRollUp
-    { RideConstructionSpecialPieceSelected | TrackElemType::RightZeroGRollDown, TRACK_CURVE_NONE },      // TrackElemType::RightZeroGRollUp
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::LeftZeroGRollUp },         // TrackElemType::LeftZeroGRollDown
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::RightZeroGRollUp },        // TrackElemType::RightZeroGRollDown
-    { RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeZeroGRollDown, TRACK_CURVE_NONE },  // TrackElemType::LeftLargeZeroGRollUp
-    { RideConstructionSpecialPieceSelected | TrackElemType::RightLargeZeroGRollDown, TRACK_CURVE_NONE }, // TrackElemType::RightLargeZeroGRollUp
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeZeroGRollUp },    // TrackElemType::LeftLargeZeroGRollDown
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::RightLargeZeroGRollUp },   // TrackElemType::RightLargeZeroGRollDown
-    { RideConstructionSpecialPieceSelected | TrackElemType::RightFlyerLargeHalfLoopInvertedDown, TRACK_CURVE_NONE },   // LeftFlyerLargeHalfLoopUninvertedUp
-    { RideConstructionSpecialPieceSelected | TrackElemType::LeftFlyerLargeHalfLoopInvertedDown, TRACK_CURVE_NONE },    // RightFlyerLargeHalfLoopUninvertedUp
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::RightFlyerLargeHalfLoopUninvertedUp },   // LeftFlyerLargeHalfLoopInvertedDown
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp },    // RightFlyerLargeHalfLoopInvertedDown
-    { RideConstructionSpecialPieceSelected | TrackElemType::RightFlyerLargeHalfLoopUninvertedDown, TRACK_CURVE_NONE},  // LeftFlyerLargeHalfLoopInvertedUp
-    { RideConstructionSpecialPieceSelected | TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown, TRACK_CURVE_NONE },  // RightFlyerLargeHalfLoopInvertedUp
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::RightFlyerLargeHalfLoopInvertedUp },     // LeftFlyerLargeHalfLoopUninvertedDown
-    { TRACK_CURVE_NONE, RideConstructionSpecialPieceSelected | TrackElemType::LeftFlyerLargeHalfLoopInvertedUp },      // RightFlyerLargeHalfLoopUninvertedDown
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE }, // FlyerHalfLoopInvertedUp
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE }, // FlyerHalfLoopUninvertedUp
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::LeftEighthToDiagUp25         
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::RightEighthToDiagUp25        
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::LeftEighthToDiagDown25       
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::RightEighthToDiagDown25      
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::LeftEighthToOrthogonalUp25   
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::RightEighthToOrthogonalUp25  
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::LeftEighthToOrthogonalDown25 
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::RightEighthToOrthogonalDown25
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::DiagUp25ToLeftBankedUp25
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::DiagUp25ToRightBankedUp25
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },               // TrackElemType::DiagLeftBankedUp25ToUp25
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },               // TrackElemType::DiagRightBankedUp25ToUp25
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::DiagDown25ToLeftBankedDown25
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::DiagDown25ToRightBankedDown25
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },               // TrackElemType::DiagLeftBankedDown25ToDown25
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },               // TrackElemType::DiagRightBankedDown25ToDown25
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::DiagLeftBankedFlatToLeftBankedUp25
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::DiagRightBankedFlatToRightBankedUp25
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::DiagRightBankedUp25ToRightBankedFlat
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::DiagLeftBankedFlatToLeftBankedDown25
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::DiagRightBankedFlatToRightBankedDown25
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::DiagRightBankedDown25ToRightBankedFlat
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::DiagFlatToLeftBankedUp25
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::DiagFlatToRightBankedUp25
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },               // TrackElemType::DiagLeftBankedUp25ToFlat
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },               // TrackElemType::DiagRightBankedUp25ToFlat
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::DiagFlatToLeftBankedDown25
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::DiagFlatToRightBankedDown25
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },               // TrackElemType::DiagLeftBankedDown25ToFlat
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE },               // TrackElemType::DiagRightBankedDown25ToFlat
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::DiagUp25LeftBanked
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::DiagUp25RightBanked 
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::DiagDown25LeftBanked
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::DiagDown25RightBanked
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::LeftEighthBankToDiagUp25
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::RightEighthBankToDiagUp25
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::LeftEighthBankToDiagDown25
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::RightEighthBankToDiagDown25
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::LeftEighthBankToOrthogonalUp25
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::RightEighthBankToOrthogonalUp25 
-    { TRACK_CURVE_LEFT_LARGE, TRACK_CURVE_LEFT_LARGE },   // TrackElemType::LeftEighthBankToOrthogonalDown25
-    { TRACK_CURVE_RIGHT_LARGE, TRACK_CURVE_RIGHT_LARGE }, // TrackElemType::RightEighthBankToOrthogonalDown25     
+    { RideConstructionSpecialPieceSelected | TrackElemType::RightLargeCorkscrewDown, EnumValue(TrackCurve::None) }, // TrackElemType::LeftLargeCorkscrewUp
+    { RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeCorkscrewDown, EnumValue(TrackCurve::None) },  // TrackElemType::RightLargeCorkscrewUp
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightLargeCorkscrewUp },   // TrackElemType::LeftLargeCorkscrewDown
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeCorkscrewUp },    // TrackElemType::RightCorkscrewDown
+    { RideConstructionSpecialPieceSelected | TrackElemType::RightMediumHalfLoopDown, EnumValue(TrackCurve::None) }, // TrackElemType::LeftMediumHalfLoopUp
+    { RideConstructionSpecialPieceSelected | TrackElemType::LeftMediumHalfLoopDown, EnumValue(TrackCurve::None) },  // TrackElemType::RightMediumHalfLoopUp
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightMediumHalfLoopUp },   // TrackElemType::LeftMediumHalfLoopDown
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftMediumHalfLoopUp },    // TrackElemType::RightMediumHalfLoopDown
+    { RideConstructionSpecialPieceSelected | TrackElemType::LeftZeroGRollDown, EnumValue(TrackCurve::None) },       // TrackElemType::LeftZeroGRollUp
+    { RideConstructionSpecialPieceSelected | TrackElemType::RightZeroGRollDown, EnumValue(TrackCurve::None) },      // TrackElemType::RightZeroGRollUp
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftZeroGRollUp },         // TrackElemType::LeftZeroGRollDown
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightZeroGRollUp },        // TrackElemType::RightZeroGRollDown
+    { RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeZeroGRollDown, EnumValue(TrackCurve::None) },  // TrackElemType::LeftLargeZeroGRollUp
+    { RideConstructionSpecialPieceSelected | TrackElemType::RightLargeZeroGRollDown, EnumValue(TrackCurve::None) }, // TrackElemType::RightLargeZeroGRollUp
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftLargeZeroGRollUp },    // TrackElemType::LeftLargeZeroGRollDown
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightLargeZeroGRollUp },   // TrackElemType::RightLargeZeroGRollDown
+    { RideConstructionSpecialPieceSelected | TrackElemType::RightFlyerLargeHalfLoopInvertedDown, EnumValue(TrackCurve::None) },   // LeftFlyerLargeHalfLoopUninvertedUp
+    { RideConstructionSpecialPieceSelected | TrackElemType::LeftFlyerLargeHalfLoopInvertedDown, EnumValue(TrackCurve::None) },    // RightFlyerLargeHalfLoopUninvertedUp
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightFlyerLargeHalfLoopUninvertedUp },   // LeftFlyerLargeHalfLoopInvertedDown
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp },    // RightFlyerLargeHalfLoopInvertedDown
+    { RideConstructionSpecialPieceSelected | TrackElemType::RightFlyerLargeHalfLoopUninvertedDown, EnumValue(TrackCurve::None) },  // LeftFlyerLargeHalfLoopInvertedUp
+    { RideConstructionSpecialPieceSelected | TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown, EnumValue(TrackCurve::None) },  // RightFlyerLargeHalfLoopInvertedUp
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::RightFlyerLargeHalfLoopInvertedUp },     // LeftFlyerLargeHalfLoopUninvertedDown
+    { EnumValue(TrackCurve::None), RideConstructionSpecialPieceSelected | TrackElemType::LeftFlyerLargeHalfLoopInvertedUp },      // RightFlyerLargeHalfLoopUninvertedDown
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) }, // FlyerHalfLoopInvertedUp
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) }, // FlyerHalfLoopUninvertedUp
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::LeftEighthToDiagUp25         
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::RightEighthToDiagUp25        
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::LeftEighthToDiagDown25       
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::RightEighthToDiagDown25      
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::LeftEighthToOrthogonalUp25   
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::RightEighthToOrthogonalUp25  
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::LeftEighthToOrthogonalDown25 
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::RightEighthToOrthogonalDown25
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagUp25ToLeftBankedUp25
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagUp25ToRightBankedUp25
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },               // TrackElemType::DiagLeftBankedUp25ToUp25
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },               // TrackElemType::DiagRightBankedUp25ToUp25
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagDown25ToLeftBankedDown25
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagDown25ToRightBankedDown25
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },               // TrackElemType::DiagLeftBankedDown25ToDown25
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },               // TrackElemType::DiagRightBankedDown25ToDown25
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagLeftBankedFlatToLeftBankedUp25
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagRightBankedFlatToRightBankedUp25
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagRightBankedUp25ToRightBankedFlat
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagLeftBankedFlatToLeftBankedDown25
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagRightBankedFlatToRightBankedDown25
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagRightBankedDown25ToRightBankedFlat
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagFlatToLeftBankedUp25
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagFlatToRightBankedUp25
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },               // TrackElemType::DiagLeftBankedUp25ToFlat
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },               // TrackElemType::DiagRightBankedUp25ToFlat
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagFlatToLeftBankedDown25
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagFlatToRightBankedDown25
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },               // TrackElemType::DiagLeftBankedDown25ToFlat
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) },               // TrackElemType::DiagRightBankedDown25ToFlat
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagUp25LeftBanked
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagUp25RightBanked 
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::DiagDown25LeftBanked
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::DiagDown25RightBanked
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::LeftEighthBankToDiagUp25
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::RightEighthBankToDiagUp25
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::LeftEighthBankToDiagDown25
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::RightEighthBankToDiagDown25
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::LeftEighthBankToOrthogonalUp25
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::RightEighthBankToOrthogonalUp25 
+    { EnumValue(TrackCurve::LeftLarge), EnumValue(TrackCurve::LeftLarge) },   // TrackElemType::LeftEighthBankToOrthogonalDown25
+    { EnumValue(TrackCurve::RightLarge), EnumValue(TrackCurve::RightLarge) }, // TrackElemType::RightEighthBankToOrthogonalDown25     
     { RideConstructionSpecialPieceSelected | TrackElemType::DiagBrakes, RideConstructionSpecialPieceSelected | TrackElemType::DiagBrakes }, // TrackElemType::DiagBrakes
-    { TRACK_CURVE_NONE, TRACK_CURVE_NONE }, // TrackElemType::DiagBlockBrakes
+    { EnumValue(TrackCurve::None), EnumValue(TrackCurve::None) }, // TrackElemType::DiagBlockBrakes
 };
 static_assert(std::size(gTrackCurveChain) == TrackElemType::Count);
 
 const TrackDescriptor gTrackDescriptors[186] = {
-    {   true,   TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TrackElemType::DiagDown60                                     },
-    {   true,   TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::DiagDown60ToDown25                      },
-    {   true,   TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::DiagDown60ToFlat                             },
-    {   true,   TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TrackElemType::DiagDown25ToDown60                      },
-    {   true,   TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::DiagDown25                                     },
-    {   true,   TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TrackElemType::DiagDown25ToLeftBank                        },
-    {   true,   TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::DiagDown25ToFlat                             },
-    {   true,   TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TrackElemType::DiagDown25ToRightBank                       },
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TRACK_CURVE_LEFT_LARGE,         TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TrackElemType::LeftEighthBankToOrthogonal                       },
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::DiagLeftBankToDown25                        },
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TrackElemType::DiagLeftBank                                       },
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::DiagLeftBankToFlat                               },
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::DiagLeftBankToUp25                          },
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_LEFT_LARGE,         TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::LeftEighthToOrthogonal                            },
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TrackElemType::DiagFlatToDown60                             },
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::DiagFlatToDown25                             },
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TrackElemType::DiagFlatToLeftBank                               },
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::DiagFlat                                            },
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TrackElemType::DiagFlatToRightBank                              },
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::DiagFlatToUp25                               },
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_60,      TRACK_BANK_NONE,    TrackElemType::DiagFlatToUp60                               },
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_RIGHT_LARGE,        TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::RightEighthToOrthogonal                           },
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::DiagRightBankToDown25                       },
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::DiagRightBankToFlat                              },
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TrackElemType::DiagRightBank                                      },
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::DiagRightBankToUp25                         },
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TRACK_CURVE_RIGHT_LARGE,        TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TrackElemType::RightEighthBankToOrthogonal                      },
-    {   true,   TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TrackElemType::DiagUp25ToLeftBank                          },
-    {   true,   TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::DiagUp25ToFlat                               },
-    {   true,   TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TrackElemType::DiagUp25ToRightBank                         },
-    {   true,   TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::DiagUp25                                       },
-    {   true,   TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_60,      TRACK_BANK_NONE,    TrackElemType::DiagUp25ToUp60                          },
-    {   true,   TRACK_SLOPE_UP_60,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::DiagUp60ToFlat                               },
-    {   true,   TRACK_SLOPE_UP_60,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::DiagUp60ToUp25                          },
-    {   true,   TRACK_SLOPE_UP_60,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_60,      TRACK_BANK_NONE,    TrackElemType::DiagUp60                                       },
-    {   false,  TRACK_SLOPE_DOWN_90,    TRACK_BANK_NONE,    TRACK_CURVE_LEFT_SMALL,         TRACK_SLOPE_DOWN_90,    TRACK_BANK_NONE,    TrackElemType::LeftQuarterTurn1TileDown90                 },
-    {   false,  TRACK_SLOPE_DOWN_90,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_90,    TRACK_BANK_NONE,    TrackElemType::Down90                                          },
-    {   false,  TRACK_SLOPE_DOWN_90,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TrackElemType::Down90ToDown60                           },
-    {   false,  TRACK_SLOPE_DOWN_90,    TRACK_BANK_NONE,    TRACK_CURVE_RIGHT_SMALL,        TRACK_SLOPE_DOWN_90,    TRACK_BANK_NONE,    TrackElemType::RightQuarterTurn1TileDown90                },
-    {   false,  TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TRACK_CURVE_LEFT_SMALL,         TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TrackElemType::LeftQuarterTurn1TileDown60                 },
-    {   false,  TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_90,    TRACK_BANK_NONE,    TrackElemType::Down60ToDown90                           },
-    {   false,  TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TrackElemType::Down60                                          },
-    {   false,  TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::Down60ToDown25                           },
-    {   false,  TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::Down60ToFlat                                  },
-    {   false,  TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TRACK_CURVE_RIGHT_SMALL,        TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TrackElemType::RightQuarterTurn1TileDown60                },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TRACK_CURVE_LEFT_SMALL,         TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TrackElemType::LeftBankedQuarterTurn3TileDown25          },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TRACK_CURVE_LEFT,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TrackElemType::LeftBankedQuarterTurn5TileDown25          },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TrackElemType::Down25LeftBanked                              },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::LeftBankedDown25ToDown25               },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TrackElemType::LeftBankedDown25ToLeftBankedFlat          },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::LeftBankedDown25ToFlat                      },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_LEFT_SMALL,         TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::LeftQuarterTurn3TilesDown25                },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_LEFT_SMALL,         TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank   },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_LEFT,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::LeftQuarterTurn5TilesDown25                },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TrackElemType::Down25ToDown60                           },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TrackElemType::Down25ToLeftBankedDown25               },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::Down25                                          },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TrackElemType::Down25ToRightBankedDown25              },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TrackElemType::Down25ToLeftBank                             },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::Down25ToFlat                                  },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TrackElemType::Down25ToRightBank                            },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_RIGHT,              TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::RightQuarterTurn5TilesDown25               },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_RIGHT_SMALL,        TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TrackElemType::RightQuarterTurn3TilesDown25ToRightBank },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_RIGHT_SMALL,        TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::RightQuarterTurn3TilesDown25               },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::RightBankedDown25ToDown25              },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TrackElemType::Down25RightBanked                             },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::RightBankedDown25ToFlat                     },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TrackElemType::RightBankedDown25ToRightBankedFlat        },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TRACK_CURVE_RIGHT,              TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TrackElemType::RightBankedQuarterTurn5TileDown25         },
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TRACK_CURVE_RIGHT_SMALL,        TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TrackElemType::RightBankedQuarterTurn3TileDown25         },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TRACK_CURVE_LEFT_SMALL,         TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TrackElemType::LeftBankedQuarterTurn3Tiles                       },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TRACK_CURVE_LEFT_SMALL,         TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25     },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TRACK_CURVE_LEFT,               TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TrackElemType::BankedLeftQuarterTurn5Tiles                     },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TRACK_CURVE_LEFT_LARGE,         TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TrackElemType::LeftEighthBankToDiag                             },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TrackElemType::LeftBankedFlatToLeftBankedDown25          },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::LeftBankToDown25                             },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TrackElemType::LeftBank                                            },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::LeftBankToFlat                                    },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TrackElemType::LeftBankedFlatToLeftBankedUp25            },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::LeftBankToUp25                               },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_LEFT_SMALL,         TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::LeftQuarterTurn3Tiles                            },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_LEFT,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::LeftQuarterTurn5Tiles                            },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_LEFT_LARGE,         TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::LeftEighthToDiag                                  },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_60,    TRACK_BANK_NONE,    TrackElemType::FlatToDown60                                  },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TrackElemType::FlatToLeftBankedDown25                      },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::FlatToDown25                                  },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TrackElemType::FlatToRightBankedDown25                     },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TrackElemType::FlatToLeftBank                                    },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::Flat                                                 },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_LEFT_VERY_SMALL,    TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::LeftQuarterTurn1Tile                             },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_RIGHT_VERY_SMALL,   TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::RightQuarterTurn1Tile                            },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TrackElemType::FlatToRightBank                                   },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TrackElemType::FlatToLeftBankedUp25                        },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::FlatToUp25                                    },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TrackElemType::FlatToRightBankedUp25                       },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_60,      TRACK_BANK_NONE,    TrackElemType::FlatToUp60                                    },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_RIGHT_LARGE,        TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::RightEighthToDiag                                 },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_RIGHT,              TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::RightQuarterTurn5Tiles                           },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_RIGHT_SMALL,        TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::RightQuarterTurn3Tiles                           },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::RightBankToDown25                            },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TrackElemType::RightBankedFlatToRightBankedDown25        },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::RightBankToFlat                                   },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TrackElemType::RightBank                                           },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::RightBankToUp25                              },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TrackElemType::RightBankedFlatToRightBankedUp25          },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TRACK_CURVE_RIGHT_LARGE,        TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TrackElemType::RightEighthBankToDiag                            },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TRACK_CURVE_RIGHT,              TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TrackElemType::BankedRightQuarterTurn5Tiles                    },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TRACK_CURVE_RIGHT_SMALL,        TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TrackElemType::RightBankedQuarterTurn3Tiles                      },
-    {   false,  TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TRACK_CURVE_RIGHT_SMALL,        TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::RightBankToRightQuarterTurn3TilesUp25   },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TRACK_CURVE_LEFT_SMALL,         TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TrackElemType::LeftBankedQuarterTurn3TileUp25            },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TRACK_CURVE_LEFT,               TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TrackElemType::LeftBankedQuarterTurn5TileUp25            },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TrackElemType::LeftBankedUp25ToLeftBankedFlat            },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::LeftBankedUp25ToFlat                        },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TrackElemType::Up25LeftBanked                                },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::LeftBankedUp25ToUp25                   },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_LEFT_SMALL,         TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::LeftQuarterTurn3TilesUp25                  },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_LEFT,               TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::LeftQuarterTurn5TilesUp25                  },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TrackElemType::Up25ToLeftBank                               },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::Up25ToFlat                                    },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TrackElemType::Up25ToRightBank                              },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TrackElemType::Up25ToLeftBankedUp25                   },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::Up25                                            },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TrackElemType::Up25ToRightBankedUp25                  },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_60,      TRACK_BANK_NONE,    TrackElemType::Up25ToUp60                               },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_RIGHT,              TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::RightQuarterTurn5TilesUp25                 },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_RIGHT_SMALL,        TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::RightQuarterTurn3TilesUp25                 },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::RightBankedUp25ToFlat                       },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TrackElemType::RightBankedUp25ToRightBankedFlat          },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::RightBankedUp25ToUp25                  },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TrackElemType::Up25RightBanked                               },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TRACK_CURVE_RIGHT,              TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TrackElemType::RightBankedQuarterTurn5TileUp25           },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TRACK_CURVE_RIGHT_SMALL,        TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TrackElemType::RightBankedQuarterTurn3TileUp25           },
-    {   false,  TRACK_SLOPE_UP_60,      TRACK_BANK_NONE,    TRACK_CURVE_LEFT_SMALL,         TRACK_SLOPE_UP_60,      TRACK_BANK_NONE,    TrackElemType::LeftQuarterTurn1TileUp60                   },
-    {   false,  TRACK_SLOPE_UP_60,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::Up60ToFlat                                    },
-    {   false,  TRACK_SLOPE_UP_60,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::Up60ToUp25                               },
-    {   false,  TRACK_SLOPE_UP_60,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_60,      TRACK_BANK_NONE,    TrackElemType::Up60                                            },
-    {   false,  TRACK_SLOPE_UP_60,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_90,      TRACK_BANK_NONE,    TrackElemType::Up60ToUp90                               },
-    {   false,  TRACK_SLOPE_UP_60,      TRACK_BANK_NONE,    TRACK_CURVE_RIGHT_SMALL,        TRACK_SLOPE_UP_60,      TRACK_BANK_NONE,    TrackElemType::RightQuarterTurn1TileUp60                  },
-    {   false,  TRACK_SLOPE_UP_90,      TRACK_BANK_NONE,    TRACK_CURVE_LEFT_SMALL,         TRACK_SLOPE_UP_90,      TRACK_BANK_NONE,    TrackElemType::LeftQuarterTurn1TileUp90                   },
-    {   false,  TRACK_SLOPE_UP_90,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_60,      TRACK_BANK_NONE,    TrackElemType::Up90ToUp60                               },
-    {   false,  TRACK_SLOPE_UP_90,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_90,      TRACK_BANK_NONE,    TrackElemType::Up90                                            },
-    {   false,  TRACK_SLOPE_UP_90,      TRACK_BANK_NONE,    TRACK_CURVE_RIGHT_SMALL,        TRACK_SLOPE_UP_90,      TRACK_BANK_NONE,    TrackElemType::RightQuarterTurn1TileUp90                  },
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_LEFT_LARGE,         TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::LeftEighthToDiagUp25          },  // TrackElemType::LeftEighthToDiagUp25         
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_RIGHT_LARGE,        TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::RightEighthToDiagUp25         },  // TrackElemType::RightEighthToDiagUp25        
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_LEFT_LARGE,         TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::LeftEighthToDiagDown25        },  // TrackElemType::LeftEighthToDiagDown25       
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_RIGHT_LARGE,        TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::RightEighthToDiagDown25       },  // TrackElemType::RightEighthToDiagDown25      
-    {   true,   TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_LEFT_LARGE,         TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::LeftEighthToOrthogonalUp25    },  // TrackElemType::LeftEighthToOrthogonalUp25   
-    {   true,   TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_RIGHT_LARGE,        TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::RightEighthToOrthogonalUp25   },  // TrackElemType::RightEighthToOrthogonalUp25  
-    {   true,   TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_LEFT_LARGE,         TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::LeftEighthToOrthogonalDown25  },  // TrackElemType::LeftEighthToOrthogonalDown25 
-    {   true,   TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_RIGHT_LARGE,        TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::RightEighthToOrthogonalDown25 },  // TrackElemType::RightEighthToOrthogonalDown25
-    {   true,   TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TrackElemType::DiagUp25ToLeftBankedUp25               }, // TrackElemType::DiagUp25ToLeftBankedUp25
-    {   true,   TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TrackElemType::DiagUp25ToRightBankedUp25              }, // TrackElemType::DiagUp25ToRightBankedUp25
-    {   true,   TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::DiagLeftBankedUp25ToUp25               }, // TrackElemType::DiagLeftBankedUp25ToUp25
-    {   true,   TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_NONE,    TrackElemType::DiagRightBankedUp25ToUp25              }, // TrackElemType::DiagRightBankedUp25ToUp25
-    {   true,   TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TrackElemType::DiagDown25ToLeftBankedDown25           }, // TrackElemType::DiagDown25ToLeftBankedDown25
-    {   true,   TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TrackElemType::DiagDown25ToRightBankedDown25          }, // TrackElemType::DiagDown25ToRightBankedDown25
-    {   true,   TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::DiagLeftBankedDown25ToDown25           }, // TrackElemType::DiagLeftBankedDown25ToDown25
-    {   true,   TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_NONE,    TrackElemType::DiagRightBankedDown25ToDown25          }, // TrackElemType::DiagRightBankedDown25ToDown25
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TrackElemType::DiagLeftBankedFlatToLeftBankedUp25     }, // TrackElemType::DiagLeftBankedFlatToLeftBankedUp25
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TrackElemType::DiagRightBankedFlatToRightBankedUp25   }, // TrackElemType::DiagRightBankedFlatToRightBankedUp25
-    {   true,   TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat     }, // TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat
-    {   true,   TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TrackElemType::DiagRightBankedUp25ToRightBankedFlat   }, // TrackElemType::DiagRightBankedUp25ToRightBankedFlat
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TrackElemType::DiagLeftBankedFlatToLeftBankedDown25   }, // TrackElemType::DiagLeftBankedFlatToLeftBankedDown25
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TrackElemType::DiagRightBankedFlatToRightBankedDown25 }, // TrackElemType::DiagRightBankedFlatToRightBankedDown25
-    {   true,   TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_LEFT,    TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat   }, // TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat
-    {   true,   TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_RIGHT,   TrackElemType::DiagRightBankedDown25ToRightBankedFlat }, // TrackElemType::DiagRightBankedDown25ToRightBankedFlat
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TrackElemType::DiagFlatToLeftBankedUp25               }, // TrackElemType::DiagFlatToLeftBankedUp25
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TrackElemType::DiagFlatToRightBankedUp25              }, // TrackElemType::DiagFlatToRightBankedUp25
-    {   true,   TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::DiagLeftBankedUp25ToFlat               }, // TrackElemType::DiagLeftBankedUp25ToFlat
-    {   true,   TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::DiagRightBankedUp25ToFlat              }, // TrackElemType::DiagRightBankedUp25ToFlat
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TrackElemType::DiagFlatToLeftBankedDown25             }, // TrackElemType::DiagFlatToLeftBankedDown25
-    {   true,   TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TrackElemType::DiagFlatToRightBankedDown25            }, // TrackElemType::DiagFlatToRightBankedDown25
-    {   true,   TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::DiagLeftBankedDown25ToFlat             }, // TrackElemType::DiagLeftBankedDown25ToFlat
-    {   true,   TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_NONE,       TRACK_BANK_NONE,    TrackElemType::DiagRightBankedDown25ToFlat            }, // TrackElemType::DiagRightBankedDown25ToFlat
-    {   true,   TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TrackElemType::DiagUp25LeftBanked                         }, // TrackElemType::Up25LeftBanked
-    {   true,   TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TrackElemType::DiagUp25RightBanked                        }, // TrackElemType::Up25RightBanked 
-    {   true,   TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TrackElemType::DiagDown25LeftBanked                       }, // TrackElemType::Down25LeftBanked
-    {   true,   TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TRACK_CURVE_NONE,               TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TrackElemType::DiagDown25RightBanked                      }, // TrackElemType::Down25RightBanked
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TRACK_CURVE_LEFT_LARGE,         TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TrackElemType::LeftEighthBankToDiagUp25               }, // TrackElemType::LeftEighthBankToDiagUp25
-    {   false,  TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TRACK_CURVE_RIGHT_LARGE,        TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TrackElemType::RightEighthBankToDiagUp25              }, // TrackElemType::RightEighthBankToDiagUp25
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TRACK_CURVE_LEFT_LARGE,         TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TrackElemType::LeftEighthBankToDiagDown25             }, // TrackElemType::LeftEighthBankToDiagDown25
-    {   false,  TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TRACK_CURVE_RIGHT_LARGE,        TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TrackElemType::RightEighthBankToDiagDown25            }, // TrackElemType::RightEighthBankToDiagDown25
-    {   true,   TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TRACK_CURVE_LEFT_LARGE,         TRACK_SLOPE_UP_25,      TRACK_BANK_LEFT,    TrackElemType::LeftEighthBankToOrthogonalUp25         }, // TrackElemType::LeftEighthBankToOrthogonalUp25
-    {   true,   TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TRACK_CURVE_RIGHT_LARGE,        TRACK_SLOPE_UP_25,      TRACK_BANK_RIGHT,   TrackElemType::RightEighthBankToOrthogonalUp25        }, // TrackElemType::RightEighthBankToOrthogonalUp25 
-    {   true,   TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TRACK_CURVE_LEFT_LARGE,         TRACK_SLOPE_DOWN_25,    TRACK_BANK_LEFT,    TrackElemType::LeftEighthBankToOrthogonalDown25       }, // TrackElemType::LeftEighthBankToOrthogonalDown25
-    {   true,   TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TRACK_CURVE_RIGHT_LARGE,        TRACK_SLOPE_DOWN_25,    TRACK_BANK_RIGHT,   TrackElemType::RightEighthBankToOrthogonalDown25      }, // TrackElemType::RightEighthBankToOrthogonalDown25     
+    {   true,   TrackPitch::Down60,    TrackRoll::None,    TrackCurve::None,               TrackPitch::Down60,    TrackRoll::None,    TrackElemType::DiagDown60                                     },
+    {   true,   TrackPitch::Down60,    TrackRoll::None,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::None,    TrackElemType::DiagDown60ToDown25                      },
+    {   true,   TrackPitch::Down60,    TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::DiagDown60ToFlat                             },
+    {   true,   TrackPitch::Down25,    TrackRoll::None,    TrackCurve::None,               TrackPitch::Down60,    TrackRoll::None,    TrackElemType::DiagDown25ToDown60                      },
+    {   true,   TrackPitch::Down25,    TrackRoll::None,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::None,    TrackElemType::DiagDown25                                     },
+    {   true,   TrackPitch::Down25,    TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::Left,    TrackElemType::DiagDown25ToLeftBank                        },
+    {   true,   TrackPitch::Down25,    TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::DiagDown25ToFlat                             },
+    {   true,   TrackPitch::Down25,    TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::Right,   TrackElemType::DiagDown25ToRightBank                       },
+    {   true,   TrackPitch::None,       TrackRoll::Left,    TrackCurve::LeftLarge,         TrackPitch::None,       TrackRoll::Left,    TrackElemType::LeftEighthBankToOrthogonal                       },
+    {   true,   TrackPitch::None,       TrackRoll::Left,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::None,    TrackElemType::DiagLeftBankToDown25                        },
+    {   true,   TrackPitch::None,       TrackRoll::Left,    TrackCurve::None,               TrackPitch::None,       TrackRoll::Left,    TrackElemType::DiagLeftBank                                       },
+    {   true,   TrackPitch::None,       TrackRoll::Left,    TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::DiagLeftBankToFlat                               },
+    {   true,   TrackPitch::None,       TrackRoll::Left,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::None,    TrackElemType::DiagLeftBankToUp25                          },
+    {   true,   TrackPitch::None,       TrackRoll::None,    TrackCurve::LeftLarge,         TrackPitch::None,       TrackRoll::None,    TrackElemType::LeftEighthToOrthogonal                            },
+    {   true,   TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::Down60,    TrackRoll::None,    TrackElemType::DiagFlatToDown60                             },
+    {   true,   TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::None,    TrackElemType::DiagFlatToDown25                             },
+    {   true,   TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::Left,    TrackElemType::DiagFlatToLeftBank                               },
+    {   true,   TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::DiagFlat                                            },
+    {   true,   TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::Right,   TrackElemType::DiagFlatToRightBank                              },
+    {   true,   TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::None,    TrackElemType::DiagFlatToUp25                               },
+    {   true,   TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::Up60,      TrackRoll::None,    TrackElemType::DiagFlatToUp60                               },
+    {   true,   TrackPitch::None,       TrackRoll::None,    TrackCurve::RightLarge,        TrackPitch::None,       TrackRoll::None,    TrackElemType::RightEighthToOrthogonal                           },
+    {   true,   TrackPitch::None,       TrackRoll::Right,   TrackCurve::None,               TrackPitch::Down25,    TrackRoll::None,    TrackElemType::DiagRightBankToDown25                       },
+    {   true,   TrackPitch::None,       TrackRoll::Right,   TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::DiagRightBankToFlat                              },
+    {   true,   TrackPitch::None,       TrackRoll::Right,   TrackCurve::None,               TrackPitch::None,       TrackRoll::Right,   TrackElemType::DiagRightBank                                      },
+    {   true,   TrackPitch::None,       TrackRoll::Right,   TrackCurve::None,               TrackPitch::Up25,      TrackRoll::None,    TrackElemType::DiagRightBankToUp25                         },
+    {   true,   TrackPitch::None,       TrackRoll::Right,   TrackCurve::RightLarge,        TrackPitch::None,       TrackRoll::Right,   TrackElemType::RightEighthBankToOrthogonal                      },
+    {   true,   TrackPitch::Up25,      TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::Left,    TrackElemType::DiagUp25ToLeftBank                          },
+    {   true,   TrackPitch::Up25,      TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::DiagUp25ToFlat                               },
+    {   true,   TrackPitch::Up25,      TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::Right,   TrackElemType::DiagUp25ToRightBank                         },
+    {   true,   TrackPitch::Up25,      TrackRoll::None,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::None,    TrackElemType::DiagUp25                                       },
+    {   true,   TrackPitch::Up25,      TrackRoll::None,    TrackCurve::None,               TrackPitch::Up60,      TrackRoll::None,    TrackElemType::DiagUp25ToUp60                          },
+    {   true,   TrackPitch::Up60,      TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::DiagUp60ToFlat                               },
+    {   true,   TrackPitch::Up60,      TrackRoll::None,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::None,    TrackElemType::DiagUp60ToUp25                          },
+    {   true,   TrackPitch::Up60,      TrackRoll::None,    TrackCurve::None,               TrackPitch::Up60,      TrackRoll::None,    TrackElemType::DiagUp60                                       },
+    {   false,  TrackPitch::Down90,    TrackRoll::None,    TrackCurve::LeftSmall,         TrackPitch::Down90,    TrackRoll::None,    TrackElemType::LeftQuarterTurn1TileDown90                 },
+    {   false,  TrackPitch::Down90,    TrackRoll::None,    TrackCurve::None,               TrackPitch::Down90,    TrackRoll::None,    TrackElemType::Down90                                          },
+    {   false,  TrackPitch::Down90,    TrackRoll::None,    TrackCurve::None,               TrackPitch::Down60,    TrackRoll::None,    TrackElemType::Down90ToDown60                           },
+    {   false,  TrackPitch::Down90,    TrackRoll::None,    TrackCurve::RightSmall,        TrackPitch::Down90,    TrackRoll::None,    TrackElemType::RightQuarterTurn1TileDown90                },
+    {   false,  TrackPitch::Down60,    TrackRoll::None,    TrackCurve::LeftSmall,         TrackPitch::Down60,    TrackRoll::None,    TrackElemType::LeftQuarterTurn1TileDown60                 },
+    {   false,  TrackPitch::Down60,    TrackRoll::None,    TrackCurve::None,               TrackPitch::Down90,    TrackRoll::None,    TrackElemType::Down60ToDown90                           },
+    {   false,  TrackPitch::Down60,    TrackRoll::None,    TrackCurve::None,               TrackPitch::Down60,    TrackRoll::None,    TrackElemType::Down60                                          },
+    {   false,  TrackPitch::Down60,    TrackRoll::None,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::None,    TrackElemType::Down60ToDown25                           },
+    {   false,  TrackPitch::Down60,    TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::Down60ToFlat                                  },
+    {   false,  TrackPitch::Down60,    TrackRoll::None,    TrackCurve::RightSmall,        TrackPitch::Down60,    TrackRoll::None,    TrackElemType::RightQuarterTurn1TileDown60                },
+    {   false,  TrackPitch::Down25,    TrackRoll::Left,    TrackCurve::LeftSmall,         TrackPitch::Down25,    TrackRoll::Left,    TrackElemType::LeftBankedQuarterTurn3TileDown25          },
+    {   false,  TrackPitch::Down25,    TrackRoll::Left,    TrackCurve::Left,               TrackPitch::Down25,    TrackRoll::Left,    TrackElemType::LeftBankedQuarterTurn5TileDown25          },
+    {   false,  TrackPitch::Down25,    TrackRoll::Left,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::Left,    TrackElemType::Down25LeftBanked                              },
+    {   false,  TrackPitch::Down25,    TrackRoll::Left,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::None,    TrackElemType::LeftBankedDown25ToDown25               },
+    {   false,  TrackPitch::Down25,    TrackRoll::Left,    TrackCurve::None,               TrackPitch::None,       TrackRoll::Left,    TrackElemType::LeftBankedDown25ToLeftBankedFlat          },
+    {   false,  TrackPitch::Down25,    TrackRoll::Left,    TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::LeftBankedDown25ToFlat                      },
+    {   false,  TrackPitch::Down25,    TrackRoll::None,    TrackCurve::LeftSmall,         TrackPitch::Down25,    TrackRoll::None,    TrackElemType::LeftQuarterTurn3TilesDown25                },
+    {   false,  TrackPitch::Down25,    TrackRoll::None,    TrackCurve::LeftSmall,         TrackPitch::None,       TrackRoll::Left,    TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank   },
+    {   false,  TrackPitch::Down25,    TrackRoll::None,    TrackCurve::Left,               TrackPitch::Down25,    TrackRoll::None,    TrackElemType::LeftQuarterTurn5TilesDown25                },
+    {   false,  TrackPitch::Down25,    TrackRoll::None,    TrackCurve::None,               TrackPitch::Down60,    TrackRoll::None,    TrackElemType::Down25ToDown60                           },
+    {   false,  TrackPitch::Down25,    TrackRoll::None,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::Left,    TrackElemType::Down25ToLeftBankedDown25               },
+    {   false,  TrackPitch::Down25,    TrackRoll::None,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::None,    TrackElemType::Down25                                          },
+    {   false,  TrackPitch::Down25,    TrackRoll::None,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::Right,   TrackElemType::Down25ToRightBankedDown25              },
+    {   false,  TrackPitch::Down25,    TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::Left,    TrackElemType::Down25ToLeftBank                             },
+    {   false,  TrackPitch::Down25,    TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::Down25ToFlat                                  },
+    {   false,  TrackPitch::Down25,    TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::Right,   TrackElemType::Down25ToRightBank                            },
+    {   false,  TrackPitch::Down25,    TrackRoll::None,    TrackCurve::Right,              TrackPitch::Down25,    TrackRoll::None,    TrackElemType::RightQuarterTurn5TilesDown25               },
+    {   false,  TrackPitch::Down25,    TrackRoll::None,    TrackCurve::RightSmall,        TrackPitch::None,       TrackRoll::Right,   TrackElemType::RightQuarterTurn3TilesDown25ToRightBank },
+    {   false,  TrackPitch::Down25,    TrackRoll::None,    TrackCurve::RightSmall,        TrackPitch::Down25,    TrackRoll::None,    TrackElemType::RightQuarterTurn3TilesDown25               },
+    {   false,  TrackPitch::Down25,    TrackRoll::Right,   TrackCurve::None,               TrackPitch::Down25,    TrackRoll::None,    TrackElemType::RightBankedDown25ToDown25              },
+    {   false,  TrackPitch::Down25,    TrackRoll::Right,   TrackCurve::None,               TrackPitch::Down25,    TrackRoll::Right,   TrackElemType::Down25RightBanked                             },
+    {   false,  TrackPitch::Down25,    TrackRoll::Right,   TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::RightBankedDown25ToFlat                     },
+    {   false,  TrackPitch::Down25,    TrackRoll::Right,   TrackCurve::None,               TrackPitch::None,       TrackRoll::Right,   TrackElemType::RightBankedDown25ToRightBankedFlat        },
+    {   false,  TrackPitch::Down25,    TrackRoll::Right,   TrackCurve::Right,              TrackPitch::Down25,    TrackRoll::Right,   TrackElemType::RightBankedQuarterTurn5TileDown25         },
+    {   false,  TrackPitch::Down25,    TrackRoll::Right,   TrackCurve::RightSmall,        TrackPitch::Down25,    TrackRoll::Right,   TrackElemType::RightBankedQuarterTurn3TileDown25         },
+    {   false,  TrackPitch::None,       TrackRoll::Left,    TrackCurve::LeftSmall,         TrackPitch::None,       TrackRoll::Left,    TrackElemType::LeftBankedQuarterTurn3Tiles                       },
+    {   false,  TrackPitch::None,       TrackRoll::Left,    TrackCurve::LeftSmall,         TrackPitch::Up25,      TrackRoll::None,    TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25     },
+    {   false,  TrackPitch::None,       TrackRoll::Left,    TrackCurve::Left,               TrackPitch::None,       TrackRoll::Left,    TrackElemType::BankedLeftQuarterTurn5Tiles                     },
+    {   false,  TrackPitch::None,       TrackRoll::Left,    TrackCurve::LeftLarge,         TrackPitch::None,       TrackRoll::Left,    TrackElemType::LeftEighthBankToDiag                             },
+    {   false,  TrackPitch::None,       TrackRoll::Left,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::Left,    TrackElemType::LeftBankedFlatToLeftBankedDown25          },
+    {   false,  TrackPitch::None,       TrackRoll::Left,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::None,    TrackElemType::LeftBankToDown25                             },
+    {   false,  TrackPitch::None,       TrackRoll::Left,    TrackCurve::None,               TrackPitch::None,       TrackRoll::Left,    TrackElemType::LeftBank                                            },
+    {   false,  TrackPitch::None,       TrackRoll::Left,    TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::LeftBankToFlat                                    },
+    {   false,  TrackPitch::None,       TrackRoll::Left,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::Left,    TrackElemType::LeftBankedFlatToLeftBankedUp25            },
+    {   false,  TrackPitch::None,       TrackRoll::Left,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::None,    TrackElemType::LeftBankToUp25                               },
+    {   false,  TrackPitch::None,       TrackRoll::None,    TrackCurve::LeftSmall,         TrackPitch::None,       TrackRoll::None,    TrackElemType::LeftQuarterTurn3Tiles                            },
+    {   false,  TrackPitch::None,       TrackRoll::None,    TrackCurve::Left,               TrackPitch::None,       TrackRoll::None,    TrackElemType::LeftQuarterTurn5Tiles                            },
+    {   false,  TrackPitch::None,       TrackRoll::None,    TrackCurve::LeftLarge,         TrackPitch::None,       TrackRoll::None,    TrackElemType::LeftEighthToDiag                                  },
+    {   false,  TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::Down60,    TrackRoll::None,    TrackElemType::FlatToDown60                                  },
+    {   false,  TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::Left,    TrackElemType::FlatToLeftBankedDown25                      },
+    {   false,  TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::None,    TrackElemType::FlatToDown25                                  },
+    {   false,  TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::Right,   TrackElemType::FlatToRightBankedDown25                     },
+    {   false,  TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::Left,    TrackElemType::FlatToLeftBank                                    },
+    {   false,  TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::Flat                                                 },
+    {   false,  TrackPitch::None,       TrackRoll::None,    TrackCurve::LeftVerySmall,    TrackPitch::None,       TrackRoll::None,    TrackElemType::LeftQuarterTurn1Tile                             },
+    {   false,  TrackPitch::None,       TrackRoll::None,    TrackCurve::RightVerySmall,   TrackPitch::None,       TrackRoll::None,    TrackElemType::RightQuarterTurn1Tile                            },
+    {   false,  TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::Right,   TrackElemType::FlatToRightBank                                   },
+    {   false,  TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::Left,    TrackElemType::FlatToLeftBankedUp25                        },
+    {   false,  TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::None,    TrackElemType::FlatToUp25                                    },
+    {   false,  TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::Right,   TrackElemType::FlatToRightBankedUp25                       },
+    {   false,  TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::Up60,      TrackRoll::None,    TrackElemType::FlatToUp60                                    },
+    {   false,  TrackPitch::None,       TrackRoll::None,    TrackCurve::RightLarge,        TrackPitch::None,       TrackRoll::None,    TrackElemType::RightEighthToDiag                                 },
+    {   false,  TrackPitch::None,       TrackRoll::None,    TrackCurve::Right,              TrackPitch::None,       TrackRoll::None,    TrackElemType::RightQuarterTurn5Tiles                           },
+    {   false,  TrackPitch::None,       TrackRoll::None,    TrackCurve::RightSmall,        TrackPitch::None,       TrackRoll::None,    TrackElemType::RightQuarterTurn3Tiles                           },
+    {   false,  TrackPitch::None,       TrackRoll::Right,   TrackCurve::None,               TrackPitch::Down25,    TrackRoll::None,    TrackElemType::RightBankToDown25                            },
+    {   false,  TrackPitch::None,       TrackRoll::Right,   TrackCurve::None,               TrackPitch::Down25,    TrackRoll::Right,   TrackElemType::RightBankedFlatToRightBankedDown25        },
+    {   false,  TrackPitch::None,       TrackRoll::Right,   TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::RightBankToFlat                                   },
+    {   false,  TrackPitch::None,       TrackRoll::Right,   TrackCurve::None,               TrackPitch::None,       TrackRoll::Right,   TrackElemType::RightBank                                           },
+    {   false,  TrackPitch::None,       TrackRoll::Right,   TrackCurve::None,               TrackPitch::Up25,      TrackRoll::None,    TrackElemType::RightBankToUp25                              },
+    {   false,  TrackPitch::None,       TrackRoll::Right,   TrackCurve::None,               TrackPitch::Up25,      TrackRoll::Right,   TrackElemType::RightBankedFlatToRightBankedUp25          },
+    {   false,  TrackPitch::None,       TrackRoll::Right,   TrackCurve::RightLarge,        TrackPitch::None,       TrackRoll::Right,   TrackElemType::RightEighthBankToDiag                            },
+    {   false,  TrackPitch::None,       TrackRoll::Right,   TrackCurve::Right,              TrackPitch::None,       TrackRoll::Right,   TrackElemType::BankedRightQuarterTurn5Tiles                    },
+    {   false,  TrackPitch::None,       TrackRoll::Right,   TrackCurve::RightSmall,        TrackPitch::None,       TrackRoll::Right,   TrackElemType::RightBankedQuarterTurn3Tiles                      },
+    {   false,  TrackPitch::None,       TrackRoll::Right,   TrackCurve::RightSmall,        TrackPitch::Up25,      TrackRoll::None,    TrackElemType::RightBankToRightQuarterTurn3TilesUp25   },
+    {   false,  TrackPitch::Up25,      TrackRoll::Left,    TrackCurve::LeftSmall,         TrackPitch::Up25,      TrackRoll::Left,    TrackElemType::LeftBankedQuarterTurn3TileUp25            },
+    {   false,  TrackPitch::Up25,      TrackRoll::Left,    TrackCurve::Left,               TrackPitch::Up25,      TrackRoll::Left,    TrackElemType::LeftBankedQuarterTurn5TileUp25            },
+    {   false,  TrackPitch::Up25,      TrackRoll::Left,    TrackCurve::None,               TrackPitch::None,       TrackRoll::Left,    TrackElemType::LeftBankedUp25ToLeftBankedFlat            },
+    {   false,  TrackPitch::Up25,      TrackRoll::Left,    TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::LeftBankedUp25ToFlat                        },
+    {   false,  TrackPitch::Up25,      TrackRoll::Left,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::Left,    TrackElemType::Up25LeftBanked                                },
+    {   false,  TrackPitch::Up25,      TrackRoll::Left,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::None,    TrackElemType::LeftBankedUp25ToUp25                   },
+    {   false,  TrackPitch::Up25,      TrackRoll::None,    TrackCurve::LeftSmall,         TrackPitch::Up25,      TrackRoll::None,    TrackElemType::LeftQuarterTurn3TilesUp25                  },
+    {   false,  TrackPitch::Up25,      TrackRoll::None,    TrackCurve::Left,               TrackPitch::Up25,      TrackRoll::None,    TrackElemType::LeftQuarterTurn5TilesUp25                  },
+    {   false,  TrackPitch::Up25,      TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::Left,    TrackElemType::Up25ToLeftBank                               },
+    {   false,  TrackPitch::Up25,      TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::Up25ToFlat                                    },
+    {   false,  TrackPitch::Up25,      TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::Right,   TrackElemType::Up25ToRightBank                              },
+    {   false,  TrackPitch::Up25,      TrackRoll::None,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::Left,    TrackElemType::Up25ToLeftBankedUp25                   },
+    {   false,  TrackPitch::Up25,      TrackRoll::None,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::None,    TrackElemType::Up25                                            },
+    {   false,  TrackPitch::Up25,      TrackRoll::None,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::Right,   TrackElemType::Up25ToRightBankedUp25                  },
+    {   false,  TrackPitch::Up25,      TrackRoll::None,    TrackCurve::None,               TrackPitch::Up60,      TrackRoll::None,    TrackElemType::Up25ToUp60                               },
+    {   false,  TrackPitch::Up25,      TrackRoll::None,    TrackCurve::Right,              TrackPitch::Up25,      TrackRoll::None,    TrackElemType::RightQuarterTurn5TilesUp25                 },
+    {   false,  TrackPitch::Up25,      TrackRoll::None,    TrackCurve::RightSmall,        TrackPitch::Up25,      TrackRoll::None,    TrackElemType::RightQuarterTurn3TilesUp25                 },
+    {   false,  TrackPitch::Up25,      TrackRoll::Right,   TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::RightBankedUp25ToFlat                       },
+    {   false,  TrackPitch::Up25,      TrackRoll::Right,   TrackCurve::None,               TrackPitch::None,       TrackRoll::Right,   TrackElemType::RightBankedUp25ToRightBankedFlat          },
+    {   false,  TrackPitch::Up25,      TrackRoll::Right,   TrackCurve::None,               TrackPitch::Up25,      TrackRoll::None,    TrackElemType::RightBankedUp25ToUp25                  },
+    {   false,  TrackPitch::Up25,      TrackRoll::Right,   TrackCurve::None,               TrackPitch::Up25,      TrackRoll::Right,   TrackElemType::Up25RightBanked                               },
+    {   false,  TrackPitch::Up25,      TrackRoll::Right,   TrackCurve::Right,              TrackPitch::Up25,      TrackRoll::Right,   TrackElemType::RightBankedQuarterTurn5TileUp25           },
+    {   false,  TrackPitch::Up25,      TrackRoll::Right,   TrackCurve::RightSmall,        TrackPitch::Up25,      TrackRoll::Right,   TrackElemType::RightBankedQuarterTurn3TileUp25           },
+    {   false,  TrackPitch::Up60,      TrackRoll::None,    TrackCurve::LeftSmall,         TrackPitch::Up60,      TrackRoll::None,    TrackElemType::LeftQuarterTurn1TileUp60                   },
+    {   false,  TrackPitch::Up60,      TrackRoll::None,    TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::Up60ToFlat                                    },
+    {   false,  TrackPitch::Up60,      TrackRoll::None,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::None,    TrackElemType::Up60ToUp25                               },
+    {   false,  TrackPitch::Up60,      TrackRoll::None,    TrackCurve::None,               TrackPitch::Up60,      TrackRoll::None,    TrackElemType::Up60                                            },
+    {   false,  TrackPitch::Up60,      TrackRoll::None,    TrackCurve::None,               TrackPitch::Up90,      TrackRoll::None,    TrackElemType::Up60ToUp90                               },
+    {   false,  TrackPitch::Up60,      TrackRoll::None,    TrackCurve::RightSmall,        TrackPitch::Up60,      TrackRoll::None,    TrackElemType::RightQuarterTurn1TileUp60                  },
+    {   false,  TrackPitch::Up90,      TrackRoll::None,    TrackCurve::LeftSmall,         TrackPitch::Up90,      TrackRoll::None,    TrackElemType::LeftQuarterTurn1TileUp90                   },
+    {   false,  TrackPitch::Up90,      TrackRoll::None,    TrackCurve::None,               TrackPitch::Up60,      TrackRoll::None,    TrackElemType::Up90ToUp60                               },
+    {   false,  TrackPitch::Up90,      TrackRoll::None,    TrackCurve::None,               TrackPitch::Up90,      TrackRoll::None,    TrackElemType::Up90                                            },
+    {   false,  TrackPitch::Up90,      TrackRoll::None,    TrackCurve::RightSmall,        TrackPitch::Up90,      TrackRoll::None,    TrackElemType::RightQuarterTurn1TileUp90                  },
+    {   false,  TrackPitch::Up25,      TrackRoll::None,    TrackCurve::LeftLarge,         TrackPitch::Up25,      TrackRoll::None,    TrackElemType::LeftEighthToDiagUp25          },  // TrackElemType::LeftEighthToDiagUp25         
+    {   false,  TrackPitch::Up25,      TrackRoll::None,    TrackCurve::RightLarge,        TrackPitch::Up25,      TrackRoll::None,    TrackElemType::RightEighthToDiagUp25         },  // TrackElemType::RightEighthToDiagUp25        
+    {   false,  TrackPitch::Down25,    TrackRoll::None,    TrackCurve::LeftLarge,         TrackPitch::Down25,    TrackRoll::None,    TrackElemType::LeftEighthToDiagDown25        },  // TrackElemType::LeftEighthToDiagDown25       
+    {   false,  TrackPitch::Down25,    TrackRoll::None,    TrackCurve::RightLarge,        TrackPitch::Down25,    TrackRoll::None,    TrackElemType::RightEighthToDiagDown25       },  // TrackElemType::RightEighthToDiagDown25      
+    {   true,   TrackPitch::Up25,      TrackRoll::None,    TrackCurve::LeftLarge,         TrackPitch::Up25,      TrackRoll::None,    TrackElemType::LeftEighthToOrthogonalUp25    },  // TrackElemType::LeftEighthToOrthogonalUp25   
+    {   true,   TrackPitch::Up25,      TrackRoll::None,    TrackCurve::RightLarge,        TrackPitch::Up25,      TrackRoll::None,    TrackElemType::RightEighthToOrthogonalUp25   },  // TrackElemType::RightEighthToOrthogonalUp25  
+    {   true,   TrackPitch::Down25,    TrackRoll::None,    TrackCurve::LeftLarge,         TrackPitch::Down25,    TrackRoll::None,    TrackElemType::LeftEighthToOrthogonalDown25  },  // TrackElemType::LeftEighthToOrthogonalDown25 
+    {   true,   TrackPitch::Down25,    TrackRoll::None,    TrackCurve::RightLarge,        TrackPitch::Down25,    TrackRoll::None,    TrackElemType::RightEighthToOrthogonalDown25 },  // TrackElemType::RightEighthToOrthogonalDown25
+    {   true,   TrackPitch::Up25,      TrackRoll::None,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::Left,    TrackElemType::DiagUp25ToLeftBankedUp25               }, // TrackElemType::DiagUp25ToLeftBankedUp25
+    {   true,   TrackPitch::Up25,      TrackRoll::None,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::Right,   TrackElemType::DiagUp25ToRightBankedUp25              }, // TrackElemType::DiagUp25ToRightBankedUp25
+    {   true,   TrackPitch::Up25,      TrackRoll::Left,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::None,    TrackElemType::DiagLeftBankedUp25ToUp25               }, // TrackElemType::DiagLeftBankedUp25ToUp25
+    {   true,   TrackPitch::Up25,      TrackRoll::Right,   TrackCurve::None,               TrackPitch::Up25,      TrackRoll::None,    TrackElemType::DiagRightBankedUp25ToUp25              }, // TrackElemType::DiagRightBankedUp25ToUp25
+    {   true,   TrackPitch::Down25,    TrackRoll::None,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::Left,    TrackElemType::DiagDown25ToLeftBankedDown25           }, // TrackElemType::DiagDown25ToLeftBankedDown25
+    {   true,   TrackPitch::Down25,    TrackRoll::None,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::Right,   TrackElemType::DiagDown25ToRightBankedDown25          }, // TrackElemType::DiagDown25ToRightBankedDown25
+    {   true,   TrackPitch::Down25,    TrackRoll::Left,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::None,    TrackElemType::DiagLeftBankedDown25ToDown25           }, // TrackElemType::DiagLeftBankedDown25ToDown25
+    {   true,   TrackPitch::Down25,    TrackRoll::Right,   TrackCurve::None,               TrackPitch::Down25,    TrackRoll::None,    TrackElemType::DiagRightBankedDown25ToDown25          }, // TrackElemType::DiagRightBankedDown25ToDown25
+    {   true,   TrackPitch::None,       TrackRoll::Left,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::Left,    TrackElemType::DiagLeftBankedFlatToLeftBankedUp25     }, // TrackElemType::DiagLeftBankedFlatToLeftBankedUp25
+    {   true,   TrackPitch::None,       TrackRoll::Right,   TrackCurve::None,               TrackPitch::Up25,      TrackRoll::Right,   TrackElemType::DiagRightBankedFlatToRightBankedUp25   }, // TrackElemType::DiagRightBankedFlatToRightBankedUp25
+    {   true,   TrackPitch::Up25,      TrackRoll::Left,    TrackCurve::None,               TrackPitch::None,       TrackRoll::Left,    TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat     }, // TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat
+    {   true,   TrackPitch::Up25,      TrackRoll::Right,   TrackCurve::None,               TrackPitch::None,       TrackRoll::Right,   TrackElemType::DiagRightBankedUp25ToRightBankedFlat   }, // TrackElemType::DiagRightBankedUp25ToRightBankedFlat
+    {   true,   TrackPitch::None,       TrackRoll::Left,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::Left,    TrackElemType::DiagLeftBankedFlatToLeftBankedDown25   }, // TrackElemType::DiagLeftBankedFlatToLeftBankedDown25
+    {   true,   TrackPitch::None,       TrackRoll::Right,   TrackCurve::None,               TrackPitch::Down25,    TrackRoll::Right,   TrackElemType::DiagRightBankedFlatToRightBankedDown25 }, // TrackElemType::DiagRightBankedFlatToRightBankedDown25
+    {   true,   TrackPitch::Down25,    TrackRoll::Left,    TrackCurve::None,               TrackPitch::None,       TrackRoll::Left,    TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat   }, // TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat
+    {   true,   TrackPitch::Down25,    TrackRoll::Right,   TrackCurve::None,               TrackPitch::None,       TrackRoll::Right,   TrackElemType::DiagRightBankedDown25ToRightBankedFlat }, // TrackElemType::DiagRightBankedDown25ToRightBankedFlat
+    {   true,   TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::Left,    TrackElemType::DiagFlatToLeftBankedUp25               }, // TrackElemType::DiagFlatToLeftBankedUp25
+    {   true,   TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::Right,   TrackElemType::DiagFlatToRightBankedUp25              }, // TrackElemType::DiagFlatToRightBankedUp25
+    {   true,   TrackPitch::Up25,      TrackRoll::Left,    TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::DiagLeftBankedUp25ToFlat               }, // TrackElemType::DiagLeftBankedUp25ToFlat
+    {   true,   TrackPitch::Up25,      TrackRoll::Right,   TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::DiagRightBankedUp25ToFlat              }, // TrackElemType::DiagRightBankedUp25ToFlat
+    {   true,   TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::Left,    TrackElemType::DiagFlatToLeftBankedDown25             }, // TrackElemType::DiagFlatToLeftBankedDown25
+    {   true,   TrackPitch::None,       TrackRoll::None,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::Right,   TrackElemType::DiagFlatToRightBankedDown25            }, // TrackElemType::DiagFlatToRightBankedDown25
+    {   true,   TrackPitch::Down25,    TrackRoll::Left,    TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::DiagLeftBankedDown25ToFlat             }, // TrackElemType::DiagLeftBankedDown25ToFlat
+    {   true,   TrackPitch::Down25,    TrackRoll::Right,   TrackCurve::None,               TrackPitch::None,       TrackRoll::None,    TrackElemType::DiagRightBankedDown25ToFlat            }, // TrackElemType::DiagRightBankedDown25ToFlat
+    {   true,   TrackPitch::Up25,      TrackRoll::Left,    TrackCurve::None,               TrackPitch::Up25,      TrackRoll::Left,    TrackElemType::DiagUp25LeftBanked                         }, // TrackElemType::Up25LeftBanked
+    {   true,   TrackPitch::Up25,      TrackRoll::Right,   TrackCurve::None,               TrackPitch::Up25,      TrackRoll::Right,   TrackElemType::DiagUp25RightBanked                        }, // TrackElemType::Up25RightBanked 
+    {   true,   TrackPitch::Down25,    TrackRoll::Left,    TrackCurve::None,               TrackPitch::Down25,    TrackRoll::Left,    TrackElemType::DiagDown25LeftBanked                       }, // TrackElemType::Down25LeftBanked
+    {   true,   TrackPitch::Down25,    TrackRoll::Right,   TrackCurve::None,               TrackPitch::Down25,    TrackRoll::Right,   TrackElemType::DiagDown25RightBanked                      }, // TrackElemType::Down25RightBanked
+    {   false,  TrackPitch::Up25,      TrackRoll::Left,    TrackCurve::LeftLarge,         TrackPitch::Up25,      TrackRoll::Left,    TrackElemType::LeftEighthBankToDiagUp25               }, // TrackElemType::LeftEighthBankToDiagUp25
+    {   false,  TrackPitch::Up25,      TrackRoll::Right,   TrackCurve::RightLarge,        TrackPitch::Up25,      TrackRoll::Right,   TrackElemType::RightEighthBankToDiagUp25              }, // TrackElemType::RightEighthBankToDiagUp25
+    {   false,  TrackPitch::Down25,    TrackRoll::Left,    TrackCurve::LeftLarge,         TrackPitch::Down25,    TrackRoll::Left,    TrackElemType::LeftEighthBankToDiagDown25             }, // TrackElemType::LeftEighthBankToDiagDown25
+    {   false,  TrackPitch::Down25,    TrackRoll::Right,   TrackCurve::RightLarge,        TrackPitch::Down25,    TrackRoll::Right,   TrackElemType::RightEighthBankToDiagDown25            }, // TrackElemType::RightEighthBankToDiagDown25
+    {   true,   TrackPitch::Up25,      TrackRoll::Left,    TrackCurve::LeftLarge,         TrackPitch::Up25,      TrackRoll::Left,    TrackElemType::LeftEighthBankToOrthogonalUp25         }, // TrackElemType::LeftEighthBankToOrthogonalUp25
+    {   true,   TrackPitch::Up25,      TrackRoll::Right,   TrackCurve::RightLarge,        TrackPitch::Up25,      TrackRoll::Right,   TrackElemType::RightEighthBankToOrthogonalUp25        }, // TrackElemType::RightEighthBankToOrthogonalUp25 
+    {   true,   TrackPitch::Down25,    TrackRoll::Left,    TrackCurve::LeftLarge,         TrackPitch::Down25,    TrackRoll::Left,    TrackElemType::LeftEighthBankToOrthogonalDown25       }, // TrackElemType::LeftEighthBankToOrthogonalDown25
+    {   true,   TrackPitch::Down25,    TrackRoll::Right,   TrackCurve::RightLarge,        TrackPitch::Down25,    TrackRoll::Right,   TrackElemType::RightEighthBankToOrthogonalDown25      }, // TrackElemType::RightEighthBankToOrthogonalDown25     
 };
 
 /** rct2: 0x00993D1C */
@@ -6305,345 +6305,345 @@ static_assert(std::size(TrackFlags) == TrackElemType::Count);
 static constexpr TrackDefinition TrackDefinitions[] =
 {
     // TYPE                         VANGLE END                  VANGLE START                BANK END                BANK START              PREVIEW Z OFFSET
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_FLAT
-    { TRACK_STATION_END,            TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_END_STATION
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_BEGIN_STATION
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_MIDDLE_STATION
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_60,          TRACK_SLOPE_UP_60,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_60_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_FLAT_TO_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_60,          TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_UP_TO_60_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_60,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_60_DEG_UP_TO_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_UP_TO_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_60,        TRACK_SLOPE_DOWN_60,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_60_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_FLAT_TO_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_60,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_60,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_DOWN_25,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_DOWN_TO_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_QUARTER_TURN_5_TILES
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_QUARTER_TURN_5_TILES
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_LEFT,        TRACK_BANK_NONE,        0                  },  // ELEM_FLAT_TO_LEFT_BANK
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_RIGHT,       TRACK_BANK_NONE,        0                  },  // ELEM_FLAT_TO_RIGHT_BANK
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_BANK_TO_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_BANK_TO_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_BANK_TO_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_BANK_TO_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_LEFT,        TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_UP_TO_LEFT_BANK
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_RIGHT,       TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_UP_TO_RIGHT_BANK
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_DOWN_25,        TRACK_BANK_LEFT,        TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_DOWN_25,        TRACK_BANK_RIGHT,       TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_BANK
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_BANK
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    { TRACK_S_BEND,                 TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_S_BEND_LEFT
-    { TRACK_S_BEND,                 TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_S_BEND_RIGHT
-    { TRACK_VERTICAL_LOOP,          TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        -48                },  // ELEM_LEFT_VERTICAL_LOOP
-    { TRACK_VERTICAL_LOOP,          TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        -48                },  // ELEM_RIGHT_VERTICAL_LOOP
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_QUARTER_TURN_3_TILES
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_QUARTER_TURN_3_TILES
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_QUARTER_TURN_1_TILE
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_QUARTER_TURN_1_TILE
-    { TRACK_TWIST,                  TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_TWIST_DOWN_TO_UP
-    { TRACK_TWIST,                  TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_TWIST_DOWN_TO_UP
-    { TRACK_TWIST,                  TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, 0                  },  // ELEM_LEFT_TWIST_UP_TO_DOWN
-    { TRACK_TWIST,                  TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, 0                  },  // ELEM_RIGHT_TWIST_UP_TO_DOWN
-    { TRACK_HALF_LOOP,              TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        64                 },  // ELEM_HALF_LOOP_UP
-    { TRACK_HALF_LOOP,              TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, -64                },  // ELEM_HALF_LOOP_DOWN
-    { TRACK_CORKSCREW,              TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_CORKSCREW_UP
-    { TRACK_CORKSCREW,              TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_CORKSCREW_UP
-    { TRACK_CORKSCREW,              TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, -32                },  // ELEM_LEFT_CORKSCREW_DOWN
-    { TRACK_CORKSCREW,              TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, -32                },  // ELEM_RIGHT_CORKSCREW_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_60,          TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_FLAT_TO_60_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_60,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_60_DEG_UP_TO_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_60,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_FLAT_TO_60_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_DOWN_60,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_60_DEG_DOWN_TO_FLAT
-    { TRACK_TOWER_BASE,             TRACK_VANGLE_TOWER,         TRACK_VANGLE_TOWER,         TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_TOWER_BASE
-    { TRACK_TOWER_BASE,             TRACK_VANGLE_TOWER,         TRACK_VANGLE_TOWER,         TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_TOWER_SECTION
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_FLAT_COVERED
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_UP_COVERED
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_60,          TRACK_SLOPE_UP_60,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_60_DEG_UP_COVERED
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_FLAT_TO_25_DEG_UP_COVERED
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_60,          TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_UP_TO_60_DEG_UP_COVERED
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_60,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_60_DEG_UP_TO_25_DEG_UP_COVERED
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_UP_TO_FLAT_COVERED
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_DOWN_COVERED
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_60,        TRACK_SLOPE_DOWN_60,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_60_DEG_DOWN_COVERED
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_FLAT_TO_25_DEG_DOWN_COVERED
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_60,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_DOWN_TO_60_DEG_DOWN_COVERED
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_60,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_60_DEG_DOWN_TO_25_DEG_DOWN_COVERED
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_DOWN_25,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_DOWN_TO_FLAT_COVERED
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_QUARTER_TURN_5_TILES_COVERED
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_QUARTER_TURN_5_TILES_COVERED
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_S_BEND_LEFT_COVERED
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_S_BEND_RIGHT_COVERED
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_QUARTER_TURN_3_TILES_COVERED
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_QUARTER_TURN_3_TILES_COVERED
-    { TRACK_HELIX_UP_BANKED_HALF,   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
-    { TRACK_HELIX_UP_BANKED_HALF,   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
-    { TRACK_HELIX_DOWN_BANKED_HALF, TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
-    { TRACK_HELIX_DOWN_BANKED_HALF, TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
-    { TRACK_HELIX_UP_BANKED_HALF,   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
-    { TRACK_HELIX_UP_BANKED_HALF,   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
-    { TRACK_HELIX_DOWN_BANKED_HALF, TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
-    { TRACK_HELIX_DOWN_BANKED_HALF, TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_60,          TRACK_SLOPE_UP_60,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_60,          TRACK_SLOPE_UP_60,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_60,        TRACK_SLOPE_DOWN_60,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_60,        TRACK_SLOPE_DOWN_60,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    { TRACK_BRAKES,                 TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_BRAKES
-    { TRACK_BOOSTER,                TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_BOOSTER
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::Maze
-    { TRACK_HELIX_UP_BANKED_QUARTER,     TRACK_SLOPE_NONE,      TRACK_SLOPE_NONE,           TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_UP
-    { TRACK_HELIX_UP_BANKED_QUARTER,     TRACK_SLOPE_NONE,      TRACK_SLOPE_NONE,           TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_UP
-    { TRACK_HELIX_DOWN_BANKED_QUARTER,   TRACK_SLOPE_NONE,      TRACK_SLOPE_NONE,           TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_DOWN
-    { TRACK_HELIX_DOWN_BANKED_QUARTER,   TRACK_SLOPE_NONE,      TRACK_SLOPE_NONE,           TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_DOWN
-    { TRACK_HELIX_UP_UNBANKED_QUARTER,   TRACK_SLOPE_NONE,      TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_QUARTER_HELIX_LARGE_UP
-    { TRACK_HELIX_UP_UNBANKED_QUARTER,   TRACK_SLOPE_NONE,      TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_QUARTER_HELIX_LARGE_UP
-    { TRACK_HELIX_DOWN_UNBANKED_QUARTER, TRACK_SLOPE_NONE,      TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_QUARTER_HELIX_LARGE_DOWN
-    { TRACK_HELIX_DOWN_UNBANKED_QUARTER, TRACK_SLOPE_NONE,      TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_QUARTER_HELIX_LARGE_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_25,          TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_25_DEG_UP_LEFT_BANKED
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_25,          TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_25_DEG_UP_RIGHT_BANKED
-    { TRACK_WATERFALL,              TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_WATERFALL
-    { TRACK_RAPIDS,                 TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RAPIDS
-    { TRACK_ON_RIDE_PHOTO,          TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_ON_RIDE_PHOTO
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_25_DEG_DOWN_LEFT_BANKED
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_25_DEG_DOWN_RIGHT_BANKED
-    { TRACK_WATER_SPLASH,           TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_WATER_SPLASH
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_60,          TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_FLAT_TO_60_DEG_UP_LONG_BASE
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_60,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_60_DEG_UP_TO_FLAT_LONG_BASE
-    { TRACK_WHIRLPOOL,              TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_WHIRLPOOL
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_DOWN_60,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_FLAT_TO_60_DEG_DOWN_LONG_BASE
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_60,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_60_DEG_UP_TO_FLAT_LONG_BASE_122
-    { TRACK_LIFT_HILL_CABLE,        TRACK_SLOPE_DOWN_60,        TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_CABLE_LIFT_HILL
-    { TRACK_REVERSE_FREEFALL,       TRACK_VANGLE_REVERSE_FREEFALL,  TRACK_SLOPE_NONE,       TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_REVERSE_FREEFALL_SLOPE
-    { TRACK_REVERSE_FREEFALL,       TRACK_VANGLE_REVERSE_FREEFALL,  TRACK_VANGLE_REVERSE_FREEFALL,  TRACK_BANK_NONE,TRACK_BANK_NONE,        0                  },  // ELEM_REVERSE_FREEFALL_VERTICAL
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_90,          TRACK_SLOPE_UP_90,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_90_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_90,        TRACK_SLOPE_DOWN_90,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_90_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_90,          TRACK_SLOPE_UP_60,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_60_DEG_UP_TO_90_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_60,        TRACK_SLOPE_DOWN_90,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_90_DEG_DOWN_TO_60_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_60,          TRACK_SLOPE_UP_90,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_90_DEG_UP_TO_60_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_90,        TRACK_SLOPE_DOWN_60,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_60_DEG_DOWN_TO_90_DEG_DOWN
-    { TRACK_BRAKE_FOR_DROP,         TRACK_SLOPE_DOWN_60,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_BRAKE_FOR_DROP
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_EIGHTH_TO_DIAG
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_EIGHTH_TO_DIAG
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_60,          TRACK_SLOPE_UP_60,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_60_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_FLAT_TO_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_60,          TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_60,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_25_DEG_UP_TO_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_60,        TRACK_SLOPE_DOWN_60,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_60_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_FLAT_TO_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_60,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_60,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_DOWN_25,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_25_DEG_DOWN_TO_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_60,          TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_FLAT_TO_60_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_60,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_60_DEG_UP_TO_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_60,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_FLAT_TO_60_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_DOWN_60,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_60_DEG_DOWN_TO_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_LEFT,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_FLAT_TO_LEFT_BANK
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_RIGHT,       TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_LEFT,        0                  },  // ELEM_DIAG_LEFT_BANK_TO_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_RIGHT,       0                  },  // ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_LEFT,        0                  },  // ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_RIGHT,       0                  },  // ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_LEFT,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_RIGHT,       TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_LEFT,        0                  },  // ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_RIGHT,       0                  },  // ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_DOWN_25,        TRACK_BANK_LEFT,        TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_DOWN_25,        TRACK_BANK_RIGHT,       TRACK_BANK_NONE,        0                  },  // ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_DIAG_LEFT_BANK
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_DIAG_RIGHT_BANK
-    { TRACK_LOG_FLUME_REVERSER,     TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LOG_FLUME_REVERSER
-    { TRACK_SPINNING_TUNNEL,        TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_SPINNING_TUNNEL
-    { TRACK_BARREL_ROLL,            TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_BARREL_ROLL_UP_TO_DOWN
-    { TRACK_BARREL_ROLL,            TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_BARREL_ROLL_UP_TO_DOWN
-    { TRACK_BARREL_ROLL,            TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, 0                  },  // ELEM_LEFT_BARREL_ROLL_DOWN_TO_UP
-    { TRACK_BARREL_ROLL,            TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, 0                  },  // ELEM_RIGHT_BARREL_ROLL_DOWN_TO_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_BANK_TO_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_DOWN_25,        TRACK_BANK_LEFT,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_LEFT_BANK
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_DOWN_25,        TRACK_BANK_RIGHT,       TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_RIGHT_BANK
-    { TRACK_POWERED_LIFT,           TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_POWERED_LIFT
-    {TRACK_HALF_LOOP_LARGE,         TRACK_SLOPE_NONE,    TRACK_SLOPE_UP_25, TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        64                 },  // ELEM_LEFT_LARGE_HALF_LOOP_UP
-    {TRACK_HALF_LOOP_LARGE,         TRACK_SLOPE_NONE,    TRACK_SLOPE_UP_25, TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        64                 },  // ELEM_RIGHT_LARGE_HALF_LOOP_UP
-    {TRACK_HALF_LOOP_LARGE,         TRACK_SLOPE_DOWN_25, TRACK_SLOPE_NONE,  TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, -64                },  // ELEM_RIGHT_LARGE_HALF_LOOP_DOWN
-    {TRACK_HALF_LOOP_LARGE,         TRACK_SLOPE_DOWN_25, TRACK_SLOPE_NONE,  TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, -64                },  // ELEM_LEFT_LARGE_HALF_LOOP_DOWN
-    {TRACK_INLINE_TWIST_UNINVERTED, TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE,  TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_FLYER_TWIST_UP
-    {TRACK_INLINE_TWIST_UNINVERTED, TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE,  TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_FLYER_TWIST_UP
-    {TRACK_INLINE_TWIST_INVERTED,   TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE,  TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_FLYER_TWIST_DOWN
-    {TRACK_INLINE_TWIST_INVERTED,   TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE,  TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_FLYER_TWIST_DOWN
-    {TRACK_FLYING_HALF_LOOP_UNINVERTED_UP, TRACK_SLOPE_NONE,    TRACK_SLOPE_UP_25, TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE, 64                 },  // ELEM_FLYER_HALF_LOOP_UP
-    {TRACK_FLYING_HALF_LOOP_INVERTED_DOWN, TRACK_SLOPE_DOWN_25, TRACK_SLOPE_NONE,  TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE, -64                },  // ELEM_FLYER_HALF_LOOP_DOWN
-    {TRACK_CORKSCREW_UNINVERTED,    TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE,  TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_FLYER_CORKSCREW_UP
-    {TRACK_CORKSCREW_UNINVERTED,    TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE,  TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_FLYER_CORKSCREW_UP
-    {TRACK_CORKSCREW_INVERTED,      TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE,  TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        -32                },  // ELEM_LEFT_FLYER_CORKSCREW_DOWN
-    {TRACK_CORKSCREW_INVERTED,      TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE,  TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        -32                },  // ELEM_RIGHT_FLYER_CORKSCREW_DOWN
-    {TRACK_HEARTLINE_TRANSFER,      TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE,  TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_HEARTLINE_TRANSFER_UP
-    {TRACK_HEARTLINE_TRANSFER,      TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE,  TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_HEARTLINE_TRANSFER_DOWN
-    {TRACK_HEARTLINE_ROLL,          TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE,  TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_HEARTLINE_ROLL
-    {TRACK_HEARTLINE_ROLL,          TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE,  TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_HEARTLINE_ROLL
-    {TRACK_MINI_GOLF_HOLE,          TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE,  TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_MINI_GOLF_HOLE_A
-    {TRACK_MINI_GOLF_HOLE,          TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE,  TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_MINI_GOLF_HOLE_B
-    {TRACK_MINI_GOLF_HOLE,          TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE,  TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_MINI_GOLF_HOLE_C
-    {TRACK_MINI_GOLF_HOLE,          TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE,  TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_MINI_GOLF_HOLE_D
-    {TRACK_MINI_GOLF_HOLE,          TRACK_SLOPE_NONE,    TRACK_SLOPE_NONE,  TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_MINI_GOLF_HOLE_E
-    { TRACK_QUARTER_LOOP_INVERTED_DOWN, TRACK_SLOPE_DOWN_90,    TRACK_SLOPE_NONE,           TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // ELEM_MULTIDIM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN
-    { TRACK_QUARTER_LOOP,           TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_90,          TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // ELEM_90_DEG_TO_INVERTED_FLAT_QUARTER_LOOP_UP
-    { TRACK_QUARTER_LOOP,           TRACK_SLOPE_DOWN_90,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, 0                  },  // ELEM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN
-    { TRACK_LIFT_HILL_CURVED,       TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_CURVED_LIFT_HILL
-    { TRACK_LIFT_HILL_CURVED,       TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_CURVED_LIFT_HILL
-    { TRACK_REVERSER,               TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_REVERSER
-    { TRACK_REVERSER,               TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_REVERSER
-    { TRACK_SLOPE_TO_FLAT,          TRACK_SLOPE_DOWN_90,        TRACK_SLOPE_UP_90,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_AIR_THRUST_TOP_CAP
-    { TRACK_SLOPE_TO_FLAT,          TRACK_SLOPE_DOWN_90,        TRACK_SLOPE_DOWN_90,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_AIR_THRUST_VERTICAL_DOWN
-    { TRACK_SLOPE_TO_FLAT,          TRACK_SLOPE_NONE,           TRACK_SLOPE_DOWN_90,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_AIR_THRUST_VERTICAL_DOWN_TO_LEVEL
-    { TRACK_BLOCK_BRAKES,           TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_BLOCK_BRAKES
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_25,          TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_25,          TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_25,          TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_25,          TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_25,          TRACK_BANK_LEFT,        TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_25,          TRACK_BANK_RIGHT,       TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_LEFT,        TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_RIGHT,       TRACK_BANK_NONE,        0                  },  // ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_NONE,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_DOWN_25,        TRACK_BANK_NONE,        TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_NONE,           TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_NONE,           TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_DOWN_25,        TRACK_BANK_LEFT,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_DOWN_25,        TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_NONE,           TRACK_BANK_LEFT,        TRACK_BANK_NONE,        0                  },  // ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_25,          TRACK_SLOPE_NONE,           TRACK_BANK_RIGHT,       TRACK_BANK_NONE,        0                  },  // ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_BANKED_25_DEG_UP_TO_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_NONE,        TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_LEFT,        TRACK_BANK_NONE,        0                  },  // ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_RIGHT,       TRACK_BANK_NONE,        0                  },  // ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_DOWN_25,        TRACK_BANK_NONE,        TRACK_BANK_LEFT,        0                  },  // ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_DOWN_25,        TRACK_BANK_NONE,        TRACK_BANK_RIGHT,       0                  },  // ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_90,          TRACK_SLOPE_UP_90,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_UP_90,          TRACK_SLOPE_UP_90,          TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_UP
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_90,        TRACK_SLOPE_DOWN_90,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_DOWN
-    { TRACK_FLAT,                   TRACK_SLOPE_DOWN_90,        TRACK_SLOPE_DOWN_90,        TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN
-    { TRACK_QUARTER_LOOP_UNINVERTED_UP, TRACK_SLOPE_NONE,       TRACK_SLOPE_UP_90,          TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // ELEM_MULTIDIM_90_DEG_UP_TO_INVERTED_FLAT_QUARTER_LOOP
-    { TRACK_QUARTER_LOOP_UNINVERTED_DOWN, TRACK_SLOPE_DOWN_90,  TRACK_SLOPE_NONE,           TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // ELEM_MULTIDIM_FLAT_TO_90_DEG_DOWN_QUARTER_LOOP
-    { TRACK_QUARTER_LOOP_INVERTED_UP,     TRACK_SLOPE_NONE,     TRACK_SLOPE_UP_90,          TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  }, // ELEM_MULTIDIM_INVERTED_FLAT_TO_90_DEG_UP_QUARTER_LOOP
-    { TRACK_ROTATION_CONTROL_TOGGLE,TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_ROTATION_CONTROL_TOGGLE
-    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack1x4A
-    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack2x2
-    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack4x4
-    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack2x4
-    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack1x5
-    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack1x1A
-    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack1x4B
-    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack1x1B
-    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        -40                },  // TrackElemType::FlatTrack1x4C
-    { TRACK_FLAT_RIDE_BASE,         TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // TrackElemType::FlatTrack3x3
-    { TRACK_CORKSCREW_LARGE,        TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        32                 },  // TrackElemType::LeftLargeCorkscrewUp
-    { TRACK_CORKSCREW_LARGE,        TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        32                 },  // TrackElemType::RightLargeCorkscrewUp
-    { TRACK_CORKSCREW_LARGE,        TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, -32                },  // TrackElemType::LeftLargeCorkscrewDown
-    { TRACK_CORKSCREW_LARGE,        TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, -32                },  // TrackElemType::RightLargeCorkscrewDown
-    { TRACK_HALF_LOOP_MEDIUM,       TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        64                 },  // TrackElemType::LeftMediumHalfLoopUp
-    { TRACK_HALF_LOOP_MEDIUM,       TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        64                 },  // TrackElemType::RightMediumHalfLoopUp
-    { TRACK_HALF_LOOP_MEDIUM,       TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, -64                },  // TrackElemType::LeftMediumHalfLoopDown
-    { TRACK_HALF_LOOP_MEDIUM,       TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, -64                },  // TrackElemType::RightMediumHalfLoopDown
-    { TRACK_ZERO_G_ROLL,            TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // TrackElemType::LeftZeroGRollUp
-    { TRACK_ZERO_G_ROLL,            TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_25,          TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                  },  // TrackElemType::RightZeroGRollUp
-    { TRACK_ZERO_G_ROLL,            TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, 0                  },  // TrackElemType::LeftZeroGRollDown
-    { TRACK_ZERO_G_ROLL,            TRACK_SLOPE_DOWN_25,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, 0                  },  // TrackElemType::RightZeroGRollDown
-    { TRACK_ZERO_G_ROLL_LARGE,      TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_60,          TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        64                 },  // TrackElemType::LeftLargeZeroGRollUp
-    { TRACK_ZERO_G_ROLL_LARGE,      TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_60,          TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        64                 },  // TrackElemType::RightLargeZeroGRollUp
-    { TRACK_ZERO_G_ROLL_LARGE,      TRACK_SLOPE_DOWN_60,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, -64                },  // TrackElemType::LeftLargeZeroGRollDown
-    { TRACK_ZERO_G_ROLL_LARGE,      TRACK_SLOPE_DOWN_60,        TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_UPSIDE_DOWN, -64                },  // TrackElemType::RightLargeZeroGRollDown
-    { TRACK_FLYING_LARGE_HALF_LOOP_UNINVERTED_UP,   TRACK_SLOPE_NONE,    TRACK_SLOPE_UP_25, TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        64                 },  // TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp
-    { TRACK_FLYING_LARGE_HALF_LOOP_UNINVERTED_UP,   TRACK_SLOPE_NONE,    TRACK_SLOPE_UP_25, TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        64                 },  // TrackElemType::RightFlyerLargeHalfLoopUninvertedUp                                                                                                       
-    { TRACK_FLYING_LARGE_HALF_LOOP_INVERTED_DOWN,   TRACK_SLOPE_DOWN_25, TRACK_SLOPE_NONE,  TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,       -64                 },  // TrackElemType::LeftFlyerLargeHalfLoopInvertedDown                                                                                                       
-    { TRACK_FLYING_LARGE_HALF_LOOP_INVERTED_DOWN,   TRACK_SLOPE_DOWN_25, TRACK_SLOPE_NONE,  TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,       -64                 },  // TrackElemType::RightFlyerLargeHalfLoopInvertedDown
-    { TRACK_FLYING_LARGE_HALF_LOOP_INVERTED_UP,     TRACK_SLOPE_NONE,    TRACK_SLOPE_UP_25, TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        64                 }, // TrackElemType::LeftFlyerLargeHalfLoopInvertedUp
-    { TRACK_FLYING_LARGE_HALF_LOOP_INVERTED_UP,     TRACK_SLOPE_NONE,    TRACK_SLOPE_UP_25, TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        64                 }, // TrackElemType::RightFlyerLargeHalfLoopInvertedUp
-    { TRACK_FLYING_LARGE_HALF_LOOP_UNINVERTED_DOWN, TRACK_SLOPE_DOWN_25, TRACK_SLOPE_NONE,  TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,       -64                 },  // TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown
-    { TRACK_FLYING_LARGE_HALF_LOOP_UNINVERTED_DOWN, TRACK_SLOPE_DOWN_25, TRACK_SLOPE_NONE,  TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,       -64                 },  // TrackElemType::RightFlyerLargeHalfLoopUninvertedDown
-    { TRACK_FLYING_HALF_LOOP_INVERTED_UP,           TRACK_SLOPE_NONE,    TRACK_SLOPE_UP_25, TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        64                 },  // TrackElemType::FlyerHalfLoopInvertedUp
-    { TRACK_FLYING_HALF_LOOP_UNINVERTED_DOWN,       TRACK_SLOPE_DOWN_25, TRACK_SLOPE_NONE,  TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,       -64                 },  // TrackElemType::FlyerHalfLoopUninvertedDown
-    { TRACK_SLOPE_CURVE_LARGE,                      TRACK_SLOPE_UP_25,   TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,        TRACK_BANK_NONE,      16                 },  // TrackElemType::LeftEighthToDiagUp25
-    { TRACK_SLOPE_CURVE_LARGE,                      TRACK_SLOPE_UP_25,   TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,        TRACK_BANK_NONE,      16                 },  // TrackElemType::RightEighthToDiagUp25
-    { TRACK_SLOPE_CURVE_LARGE,                      TRACK_SLOPE_DOWN_25, TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,        TRACK_BANK_NONE,     -16                 },  // TrackElemType::LeftEighthToDiagDown25
-    { TRACK_SLOPE_CURVE_LARGE,                      TRACK_SLOPE_DOWN_25, TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,        TRACK_BANK_NONE,     -16                 },  // TrackElemType::RightEighthToDiagDown25
-    { TRACK_SLOPE_CURVE_LARGE,                      TRACK_SLOPE_UP_25,   TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,        TRACK_BANK_NONE,      16                 },  // TrackElemType::LeftEighthToOrthogonalUp25
-    { TRACK_SLOPE_CURVE_LARGE,                      TRACK_SLOPE_UP_25,   TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,        TRACK_BANK_NONE,      16                 },  // TrackElemType::RightEighthToOrthogonalUp25
-    { TRACK_SLOPE_CURVE_LARGE,                      TRACK_SLOPE_DOWN_25, TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,        TRACK_BANK_NONE,     -16                 },  // TrackElemType::LeftEighthToOrthogonalDown25
-    { TRACK_SLOPE_CURVE_LARGE,                      TRACK_SLOPE_DOWN_25, TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,        TRACK_BANK_NONE,     -16                 },  // TrackElemType::RightEighthToOrthogonalDown25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_UP_25,   TRACK_SLOPE_UP_25,   TRACK_BANK_LEFT,        TRACK_BANK_NONE,       0 }, // TrackElemType::DiagUp25ToLeftBankedUp25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_UP_25,   TRACK_SLOPE_UP_25,   TRACK_BANK_RIGHT,       TRACK_BANK_NONE,       0 }, // TrackElemType::DiagUp25ToRightBankedUp25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_UP_25,   TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,        TRACK_BANK_LEFT,       0 }, // TrackElemType::DiagLeftBankedUp25ToUp25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_UP_25,   TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,        TRACK_BANK_RIGHT,      0 }, // TrackElemType::DiagRightBankedUp25ToUp25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_DOWN_25, TRACK_SLOPE_DOWN_25, TRACK_BANK_LEFT,        TRACK_BANK_NONE,       0 }, // TrackElemType::DiagDown25ToLeftBankedDown25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_DOWN_25, TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT,       TRACK_BANK_NONE,       0 }, // TrackElemType::DiagDown25ToRightBankedDown25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_DOWN_25, TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,        TRACK_BANK_LEFT,       0 }, // TrackElemType::DiagLeftBankedDown25ToDown25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_DOWN_25, TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,        TRACK_BANK_RIGHT,      0 }, // TrackElemType::DiagRightBankedDown25ToDown25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_UP_25,   TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,        TRACK_BANK_LEFT,       0 }, // TrackElemType::DiagLeftBankedFlatToLeftBankedUp25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_UP_25,   TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,      0 }, // TrackElemType::DiagRightBankedFlatToRightBankedUp25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_NONE,    TRACK_SLOPE_UP_25,   TRACK_BANK_LEFT,        TRACK_BANK_LEFT,       0 }, // TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_NONE,    TRACK_SLOPE_UP_25,   TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,      0 }, // TrackElemType::DiagRightBankedUp25ToRightBankedFlat
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_DOWN_25, TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,        TRACK_BANK_LEFT,       0 }, // TrackElemType::DiagLeftBankedFlatToLeftBankedDown25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_DOWN_25, TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,      0 }, // TrackElemType::DiagRightBankedFlatToRightBankedDown25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_NONE,    TRACK_SLOPE_DOWN_25, TRACK_BANK_LEFT,        TRACK_BANK_LEFT,       0 }, // TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_NONE,    TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,      0 }, // TrackElemType::DiagRightBankedDown25ToRightBankedFlat
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_UP_25,   TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,        TRACK_BANK_NONE,       0 }, // TrackElemType::DiagFlatToLeftBankedUp25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_UP_25,   TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT,       TRACK_BANK_NONE,       0 }, // TrackElemType::DiagFlatToRightBankedUp25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_NONE,    TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,        TRACK_BANK_LEFT,       0 }, // TrackElemType::DiagLeftBankedUp25ToFlat
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_NONE,    TRACK_SLOPE_UP_25,   TRACK_BANK_NONE,        TRACK_BANK_RIGHT,      0 }, // TrackElemType::DiagRightBankedUp25ToFlat
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_DOWN_25, TRACK_SLOPE_NONE,    TRACK_BANK_LEFT,        TRACK_BANK_NONE,       0 }, // TrackElemType::DiagFlatToLeftBankedDown25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_DOWN_25, TRACK_SLOPE_NONE,    TRACK_BANK_RIGHT,       TRACK_BANK_NONE,       0 }, // TrackElemType::DiagFlatToRightBankedDown25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_NONE,    TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,        TRACK_BANK_LEFT,       0 }, // TrackElemType::DiagLeftBankedDown25ToFlat
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_NONE,    TRACK_SLOPE_DOWN_25, TRACK_BANK_NONE,        TRACK_BANK_RIGHT,      0 }, // TrackElemType::DiagRightBankedDown25ToFlat
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_UP_25,   TRACK_SLOPE_UP_25,   TRACK_BANK_LEFT,        TRACK_BANK_LEFT,       0 }, // TrackElemType::Up25LeftBanked
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_UP_25,   TRACK_SLOPE_UP_25,   TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,      0 }, // TrackElemType::Up25RightBanked 
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_DOWN_25, TRACK_SLOPE_DOWN_25, TRACK_BANK_LEFT,        TRACK_BANK_LEFT,       0 }, // TrackElemType::Down25LeftBanked
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_DOWN_25, TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,      0 }, // TrackElemType::Down25RightBanked
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_UP_25,   TRACK_SLOPE_UP_25,   TRACK_BANK_LEFT,        TRACK_BANK_LEFT,      16 }, // TrackElemType::LeftEighthBankToDiagUp25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_UP_25,   TRACK_SLOPE_UP_25,   TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,     16 }, // TrackElemType::RightEighthBankToDiagUp25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_DOWN_25, TRACK_SLOPE_DOWN_25, TRACK_BANK_LEFT,        TRACK_BANK_LEFT,     -16 }, // TrackElemType::LeftEighthBankToDiagDown25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_DOWN_25, TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,    -16 }, // TrackElemType::RightEighthBankToDiagDown25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_UP_25,   TRACK_SLOPE_UP_25,   TRACK_BANK_LEFT,        TRACK_BANK_LEFT,      16 }, // TrackElemType::LeftEighthBankToOrthogonalUp25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_UP_25,   TRACK_SLOPE_UP_25,   TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,     16 }, // TrackElemType::RightEighthBankToOrthogonalUp25 
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_DOWN_25, TRACK_SLOPE_DOWN_25, TRACK_BANK_LEFT,        TRACK_BANK_LEFT,     -16 }, // TrackElemType::LeftEighthBankToOrthogonalDown25
-    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TRACK_SLOPE_DOWN_25, TRACK_SLOPE_DOWN_25, TRACK_BANK_RIGHT,       TRACK_BANK_RIGHT,    -16 }, // TrackElemType::RightEighthBankToOrthogonalDown25
-    { TRACK_DIAG_BRAKES,            TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0  }, // TrackElemType::DiagBrakes
-    { TRACK_DIAG_BLOCK_BRAKES,      TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0  }, // TrackElemType::DiagBlockBrakes
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_FLAT
+    { TRACK_STATION_END,            TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_END_STATION
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_BEGIN_STATION
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_MIDDLE_STATION
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up25,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up60,          TrackPitch::Up60,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_60_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_FLAT_TO_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up60,          TrackPitch::Up25,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_25_DEG_UP_TO_60_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up60,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_60_DEG_UP_TO_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Up25,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_25_DEG_UP_TO_FLAT
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down25,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down60,        TrackPitch::Down60,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_60_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_FLAT_TO_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down60,        TrackPitch::Down25,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down60,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Down25,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_25_DEG_DOWN_TO_FLAT
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_QUARTER_TURN_5_TILES
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_QUARTER_TURN_5_TILES
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::Left,        TrackRoll::None,        0                  },  // ELEM_FLAT_TO_LEFT_BANK
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::Right,       TrackRoll::None,        0                  },  // ELEM_FLAT_TO_RIGHT_BANK
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::Left,        0                  },  // ELEM_LEFT_BANK_TO_FLAT
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::Right,       0                  },  // ELEM_RIGHT_BANK_TO_FLAT
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::None,           TrackRoll::None,        TrackRoll::Left,        0                  },  // ELEM_LEFT_BANK_TO_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::None,           TrackRoll::None,        TrackRoll::Right,       0                  },  // ELEM_RIGHT_BANK_TO_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Up25,          TrackRoll::Left,        TrackRoll::None,        0                  },  // ELEM_25_DEG_UP_TO_LEFT_BANK
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Up25,          TrackRoll::Right,       TrackRoll::None,        0                  },  // ELEM_25_DEG_UP_TO_RIGHT_BANK
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::None,           TrackRoll::None,        TrackRoll::Left,        0                  },  // ELEM_LEFT_BANK_TO_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::None,           TrackRoll::None,        TrackRoll::Right,       0                  },  // ELEM_RIGHT_BANK_TO_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Down25,        TrackRoll::Left,        TrackRoll::None,        0                  },  // ELEM_25_DEG_DOWN_TO_LEFT_BANK
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Down25,        TrackRoll::Right,       TrackRoll::None,        0                  },  // ELEM_25_DEG_DOWN_TO_RIGHT_BANK
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_LEFT_BANK
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_RIGHT_BANK
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up25,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up25,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down25,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down25,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
+    { TRACK_S_BEND,                 TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_S_BEND_LEFT
+    { TRACK_S_BEND,                 TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_S_BEND_RIGHT
+    { TRACK_VERTICAL_LOOP,          TrackPitch::Down25,        TrackPitch::Up25,          TrackRoll::None,        TrackRoll::None,        -48                },  // ELEM_LEFT_VERTICAL_LOOP
+    { TRACK_VERTICAL_LOOP,          TrackPitch::Down25,        TrackPitch::Up25,          TrackRoll::None,        TrackRoll::None,        -48                },  // ELEM_RIGHT_VERTICAL_LOOP
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_QUARTER_TURN_3_TILES
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_QUARTER_TURN_3_TILES
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up25,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up25,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down25,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down25,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_QUARTER_TURN_1_TILE
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_QUARTER_TURN_1_TILE
+    { TRACK_TWIST,                  TrackPitch::None,           TrackPitch::None,           TrackRoll::UpsideDown, TrackRoll::None,        0                  },  // ELEM_LEFT_TWIST_DOWN_TO_UP
+    { TRACK_TWIST,                  TrackPitch::None,           TrackPitch::None,           TrackRoll::UpsideDown, TrackRoll::None,        0                  },  // ELEM_RIGHT_TWIST_DOWN_TO_UP
+    { TRACK_TWIST,                  TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown, 0                  },  // ELEM_LEFT_TWIST_UP_TO_DOWN
+    { TRACK_TWIST,                  TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown, 0                  },  // ELEM_RIGHT_TWIST_UP_TO_DOWN
+    { TRACK_HALF_LOOP,              TrackPitch::None,           TrackPitch::Up25,          TrackRoll::UpsideDown, TrackRoll::None,        64                 },  // ELEM_HALF_LOOP_UP
+    { TRACK_HALF_LOOP,              TrackPitch::Down25,        TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown, -64                },  // ELEM_HALF_LOOP_DOWN
+    { TRACK_CORKSCREW,              TrackPitch::None,           TrackPitch::None,           TrackRoll::UpsideDown, TrackRoll::None,        0                  },  // ELEM_LEFT_CORKSCREW_UP
+    { TRACK_CORKSCREW,              TrackPitch::None,           TrackPitch::None,           TrackRoll::UpsideDown, TrackRoll::None,        0                  },  // ELEM_RIGHT_CORKSCREW_UP
+    { TRACK_CORKSCREW,              TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown, -32                },  // ELEM_LEFT_CORKSCREW_DOWN
+    { TRACK_CORKSCREW,              TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown, -32                },  // ELEM_RIGHT_CORKSCREW_DOWN
+    { TRACK_FLAT,                   TrackPitch::Up60,          TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_FLAT_TO_60_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Up60,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_60_DEG_UP_TO_FLAT
+    { TRACK_FLAT,                   TrackPitch::Down60,        TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_FLAT_TO_60_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Down60,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_60_DEG_DOWN_TO_FLAT
+    { TRACK_TOWER_BASE,             TrackPitch::Tower,         TrackPitch::Tower,         TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_TOWER_BASE
+    { TRACK_TOWER_BASE,             TrackPitch::Tower,         TrackPitch::Tower,         TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_TOWER_SECTION
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_FLAT_COVERED
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up25,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_25_DEG_UP_COVERED
+    { TRACK_FLAT,                   TrackPitch::Up60,          TrackPitch::Up60,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_60_DEG_UP_COVERED
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_FLAT_TO_25_DEG_UP_COVERED
+    { TRACK_FLAT,                   TrackPitch::Up60,          TrackPitch::Up25,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_25_DEG_UP_TO_60_DEG_UP_COVERED
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up60,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_60_DEG_UP_TO_25_DEG_UP_COVERED
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Up25,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_25_DEG_UP_TO_FLAT_COVERED
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down25,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_25_DEG_DOWN_COVERED
+    { TRACK_FLAT,                   TrackPitch::Down60,        TrackPitch::Down60,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_60_DEG_DOWN_COVERED
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_FLAT_TO_25_DEG_DOWN_COVERED
+    { TRACK_FLAT,                   TrackPitch::Down60,        TrackPitch::Down25,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_25_DEG_DOWN_TO_60_DEG_DOWN_COVERED
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down60,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_60_DEG_DOWN_TO_25_DEG_DOWN_COVERED
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Down25,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_25_DEG_DOWN_TO_FLAT_COVERED
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_QUARTER_TURN_5_TILES_COVERED
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_QUARTER_TURN_5_TILES_COVERED
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_S_BEND_LEFT_COVERED
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_S_BEND_RIGHT_COVERED
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_QUARTER_TURN_3_TILES_COVERED
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_QUARTER_TURN_3_TILES_COVERED
+    { TRACK_HELIX_UP_BANKED_HALF,   TrackPitch::None,           TrackPitch::None,           TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
+    { TRACK_HELIX_UP_BANKED_HALF,   TrackPitch::None,           TrackPitch::None,           TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
+    { TRACK_HELIX_DOWN_BANKED_HALF, TrackPitch::None,           TrackPitch::None,           TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
+    { TRACK_HELIX_DOWN_BANKED_HALF, TrackPitch::None,           TrackPitch::None,           TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
+    { TRACK_HELIX_UP_BANKED_HALF,   TrackPitch::None,           TrackPitch::None,           TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
+    { TRACK_HELIX_UP_BANKED_HALF,   TrackPitch::None,           TrackPitch::None,           TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
+    { TRACK_HELIX_DOWN_BANKED_HALF, TrackPitch::None,           TrackPitch::None,           TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
+    { TRACK_HELIX_DOWN_BANKED_HALF, TrackPitch::None,           TrackPitch::None,           TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
+    { TRACK_FLAT,                   TrackPitch::Up60,          TrackPitch::Up60,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up60,          TrackPitch::Up60,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Down60,        TrackPitch::Down60,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down60,        TrackPitch::Down60,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN
+    { TRACK_BRAKES,                 TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_BRAKES
+    { TRACK_BOOSTER,                TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_BOOSTER
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // TrackElemType::Maze
+    { TRACK_HELIX_UP_BANKED_QUARTER,     TrackPitch::None,      TrackPitch::None,           TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_UP
+    { TRACK_HELIX_UP_BANKED_QUARTER,     TrackPitch::None,      TrackPitch::None,           TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_UP
+    { TRACK_HELIX_DOWN_BANKED_QUARTER,   TrackPitch::None,      TrackPitch::None,           TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_DOWN
+    { TRACK_HELIX_DOWN_BANKED_QUARTER,   TrackPitch::None,      TrackPitch::None,           TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_DOWN
+    { TRACK_HELIX_UP_UNBANKED_QUARTER,   TrackPitch::None,      TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_QUARTER_HELIX_LARGE_UP
+    { TRACK_HELIX_UP_UNBANKED_QUARTER,   TrackPitch::None,      TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_QUARTER_HELIX_LARGE_UP
+    { TRACK_HELIX_DOWN_UNBANKED_QUARTER, TrackPitch::None,      TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_QUARTER_HELIX_LARGE_DOWN
+    { TRACK_HELIX_DOWN_UNBANKED_QUARTER, TrackPitch::None,      TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_QUARTER_HELIX_LARGE_DOWN
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up25,          TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_25_DEG_UP_LEFT_BANKED
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up25,          TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_25_DEG_UP_RIGHT_BANKED
+    { TRACK_WATERFALL,              TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_WATERFALL
+    { TRACK_RAPIDS,                 TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RAPIDS
+    { TRACK_ON_RIDE_PHOTO,          TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_ON_RIDE_PHOTO
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down25,        TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_25_DEG_DOWN_LEFT_BANKED
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down25,        TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_25_DEG_DOWN_RIGHT_BANKED
+    { TRACK_WATER_SPLASH,           TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_WATER_SPLASH
+    { TRACK_FLAT,                   TrackPitch::Up60,          TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_FLAT_TO_60_DEG_UP_LONG_BASE
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Up60,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_60_DEG_UP_TO_FLAT_LONG_BASE
+    { TRACK_WHIRLPOOL,              TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_WHIRLPOOL
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Down60,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_FLAT_TO_60_DEG_DOWN_LONG_BASE
+    { TRACK_FLAT,                   TrackPitch::Down60,        TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_60_DEG_UP_TO_FLAT_LONG_BASE_122
+    { TRACK_LIFT_HILL_CABLE,        TrackPitch::Down60,        TrackPitch::Up25,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_CABLE_LIFT_HILL
+    { TRACK_REVERSE_FREEFALL,       TrackPitch::ReverseFreefall,  TrackPitch::None,       TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_REVERSE_FREEFALL_SLOPE
+    { TRACK_REVERSE_FREEFALL,       TrackPitch::ReverseFreefall,  TrackPitch::ReverseFreefall,  TrackRoll::None,TrackRoll::None,        0                  },  // ELEM_REVERSE_FREEFALL_VERTICAL
+    { TRACK_FLAT,                   TrackPitch::Up90,          TrackPitch::Up90,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_90_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Down90,        TrackPitch::Down90,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_90_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Up90,          TrackPitch::Up60,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_60_DEG_UP_TO_90_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Down60,        TrackPitch::Down90,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_90_DEG_DOWN_TO_60_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Up60,          TrackPitch::Up90,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_90_DEG_UP_TO_60_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Down90,        TrackPitch::Down60,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_60_DEG_DOWN_TO_90_DEG_DOWN
+    { TRACK_BRAKE_FOR_DROP,         TrackPitch::Down60,        TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_BRAKE_FOR_DROP
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_EIGHTH_TO_DIAG
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_EIGHTH_TO_DIAG
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_LEFT_EIGHTH_BANK_TO_DIAG
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_DIAG_FLAT
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up25,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_DIAG_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up60,          TrackPitch::Up60,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_DIAG_60_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_DIAG_FLAT_TO_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up60,          TrackPitch::Up25,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up60,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Up25,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_DIAG_25_DEG_UP_TO_FLAT
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down25,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_DIAG_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down60,        TrackPitch::Down60,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_DIAG_60_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_DIAG_FLAT_TO_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down60,        TrackPitch::Down25,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down60,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Down25,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    { TRACK_FLAT,                   TrackPitch::Up60,          TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_DIAG_FLAT_TO_60_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Up60,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_DIAG_60_DEG_UP_TO_FLAT
+    { TRACK_FLAT,                   TrackPitch::Down60,        TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_DIAG_FLAT_TO_60_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Down60,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_DIAG_60_DEG_DOWN_TO_FLAT
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::Left,        TrackRoll::None,        0                  },  // ELEM_DIAG_FLAT_TO_LEFT_BANK
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::Right,       TrackRoll::None,        0                  },  // ELEM_DIAG_FLAT_TO_RIGHT_BANK
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::Left,        0                  },  // ELEM_DIAG_LEFT_BANK_TO_FLAT
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::Right,       0                  },  // ELEM_DIAG_RIGHT_BANK_TO_FLAT
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::None,           TrackRoll::None,        TrackRoll::Left,        0                  },  // ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::None,           TrackRoll::None,        TrackRoll::Right,       0                  },  // ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Up25,          TrackRoll::Left,        TrackRoll::None,        0                  },  // ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Up25,          TrackRoll::Right,       TrackRoll::None,        0                  },  // ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::None,           TrackRoll::None,        TrackRoll::Left,        0                  },  // ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::None,           TrackRoll::None,        TrackRoll::Right,       0                  },  // ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Down25,        TrackRoll::Left,        TrackRoll::None,        0                  },  // ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Down25,        TrackRoll::Right,       TrackRoll::None,        0                  },  // ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_DIAG_LEFT_BANK
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::None,           TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_DIAG_RIGHT_BANK
+    { TRACK_LOG_FLUME_REVERSER,     TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LOG_FLUME_REVERSER
+    { TRACK_SPINNING_TUNNEL,        TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_SPINNING_TUNNEL
+    { TRACK_BARREL_ROLL,            TrackPitch::None,           TrackPitch::None,           TrackRoll::UpsideDown, TrackRoll::None,        0                  },  // ELEM_LEFT_BARREL_ROLL_UP_TO_DOWN
+    { TRACK_BARREL_ROLL,            TrackPitch::None,           TrackPitch::None,           TrackRoll::UpsideDown, TrackRoll::None,        0                  },  // ELEM_RIGHT_BARREL_ROLL_UP_TO_DOWN
+    { TRACK_BARREL_ROLL,            TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown, 0                  },  // ELEM_LEFT_BARREL_ROLL_DOWN_TO_UP
+    { TRACK_BARREL_ROLL,            TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown, 0                  },  // ELEM_RIGHT_BARREL_ROLL_DOWN_TO_UP
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::None,           TrackRoll::None,        TrackRoll::Left,        0                  },  // ELEM_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::None,           TrackRoll::None,        TrackRoll::Right,       0                  },  // ELEM_RIGHT_BANK_TO_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Down25,        TrackRoll::Left,        TrackRoll::None,        0                  },  // ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_LEFT_BANK
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Down25,        TrackRoll::Right,       TrackRoll::None,        0                  },  // ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_RIGHT_BANK
+    { TRACK_POWERED_LIFT,           TrackPitch::Up25,          TrackPitch::Up25,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_POWERED_LIFT
+    {TRACK_HALF_LOOP_LARGE,         TrackPitch::None,    TrackPitch::Up25, TrackRoll::UpsideDown, TrackRoll::None,        64                 },  // ELEM_LEFT_LARGE_HALF_LOOP_UP
+    {TRACK_HALF_LOOP_LARGE,         TrackPitch::None,    TrackPitch::Up25, TrackRoll::UpsideDown, TrackRoll::None,        64                 },  // ELEM_RIGHT_LARGE_HALF_LOOP_UP
+    {TRACK_HALF_LOOP_LARGE,         TrackPitch::Down25, TrackPitch::None,  TrackRoll::None,        TrackRoll::UpsideDown, -64                },  // ELEM_RIGHT_LARGE_HALF_LOOP_DOWN
+    {TRACK_HALF_LOOP_LARGE,         TrackPitch::Down25, TrackPitch::None,  TrackRoll::None,        TrackRoll::UpsideDown, -64                },  // ELEM_LEFT_LARGE_HALF_LOOP_DOWN
+    {TRACK_INLINE_TWIST_UNINVERTED, TrackPitch::None,    TrackPitch::None,  TrackRoll::UpsideDown, TrackRoll::None,        0                  },  // ELEM_LEFT_FLYER_TWIST_UP
+    {TRACK_INLINE_TWIST_UNINVERTED, TrackPitch::None,    TrackPitch::None,  TrackRoll::UpsideDown, TrackRoll::None,        0                  },  // ELEM_RIGHT_FLYER_TWIST_UP
+    {TRACK_INLINE_TWIST_INVERTED,   TrackPitch::None,    TrackPitch::None,  TrackRoll::UpsideDown, TrackRoll::None,        0                  },  // ELEM_LEFT_FLYER_TWIST_DOWN
+    {TRACK_INLINE_TWIST_INVERTED,   TrackPitch::None,    TrackPitch::None,  TrackRoll::UpsideDown, TrackRoll::None,        0                  },  // ELEM_RIGHT_FLYER_TWIST_DOWN
+    {TRACK_FLYING_HALF_LOOP_UNINVERTED_UP, TrackPitch::None,    TrackPitch::Up25, TrackRoll::UpsideDown, TrackRoll::None, 64                 },  // ELEM_FLYER_HALF_LOOP_UP
+    {TRACK_FLYING_HALF_LOOP_INVERTED_DOWN, TrackPitch::Down25, TrackPitch::None,  TrackRoll::UpsideDown, TrackRoll::None, -64                },  // ELEM_FLYER_HALF_LOOP_DOWN
+    {TRACK_CORKSCREW_UNINVERTED,    TrackPitch::None,    TrackPitch::None,  TrackRoll::UpsideDown, TrackRoll::None,        0                  },  // ELEM_LEFT_FLYER_CORKSCREW_UP
+    {TRACK_CORKSCREW_UNINVERTED,    TrackPitch::None,    TrackPitch::None,  TrackRoll::UpsideDown, TrackRoll::None,        0                  },  // ELEM_RIGHT_FLYER_CORKSCREW_UP
+    {TRACK_CORKSCREW_INVERTED,      TrackPitch::None,    TrackPitch::None,  TrackRoll::UpsideDown, TrackRoll::None,        -32                },  // ELEM_LEFT_FLYER_CORKSCREW_DOWN
+    {TRACK_CORKSCREW_INVERTED,      TrackPitch::None,    TrackPitch::None,  TrackRoll::UpsideDown, TrackRoll::None,        -32                },  // ELEM_RIGHT_FLYER_CORKSCREW_DOWN
+    {TRACK_HEARTLINE_TRANSFER,      TrackPitch::None,    TrackPitch::None,  TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_HEARTLINE_TRANSFER_UP
+    {TRACK_HEARTLINE_TRANSFER,      TrackPitch::None,    TrackPitch::None,  TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_HEARTLINE_TRANSFER_DOWN
+    {TRACK_HEARTLINE_ROLL,          TrackPitch::None,    TrackPitch::None,  TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_HEARTLINE_ROLL
+    {TRACK_HEARTLINE_ROLL,          TrackPitch::None,    TrackPitch::None,  TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_HEARTLINE_ROLL
+    {TRACK_MINI_GOLF_HOLE,          TrackPitch::None,    TrackPitch::None,  TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_MINI_GOLF_HOLE_A
+    {TRACK_MINI_GOLF_HOLE,          TrackPitch::None,    TrackPitch::None,  TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_MINI_GOLF_HOLE_B
+    {TRACK_MINI_GOLF_HOLE,          TrackPitch::None,    TrackPitch::None,  TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_MINI_GOLF_HOLE_C
+    {TRACK_MINI_GOLF_HOLE,          TrackPitch::None,    TrackPitch::None,  TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_MINI_GOLF_HOLE_D
+    {TRACK_MINI_GOLF_HOLE,          TrackPitch::None,    TrackPitch::None,  TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_MINI_GOLF_HOLE_E
+    { TRACK_QUARTER_LOOP_INVERTED_DOWN, TrackPitch::Down90,    TrackPitch::None,           TrackRoll::UpsideDown, TrackRoll::None,        0                  },  // ELEM_MULTIDIM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN
+    { TRACK_QUARTER_LOOP,           TrackPitch::None,           TrackPitch::Up90,          TrackRoll::UpsideDown, TrackRoll::None,        0                  },  // ELEM_90_DEG_TO_INVERTED_FLAT_QUARTER_LOOP_UP
+    { TRACK_QUARTER_LOOP,           TrackPitch::Down90,        TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown, 0                  },  // ELEM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN
+    { TRACK_LIFT_HILL_CURVED,       TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_CURVED_LIFT_HILL
+    { TRACK_LIFT_HILL_CURVED,       TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_CURVED_LIFT_HILL
+    { TRACK_REVERSER,               TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_REVERSER
+    { TRACK_REVERSER,               TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_REVERSER
+    { TRACK_SLOPE_TO_FLAT,          TrackPitch::Down90,        TrackPitch::Up90,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_AIR_THRUST_TOP_CAP
+    { TRACK_SLOPE_TO_FLAT,          TrackPitch::Down90,        TrackPitch::Down90,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_AIR_THRUST_VERTICAL_DOWN
+    { TRACK_SLOPE_TO_FLAT,          TrackPitch::None,           TrackPitch::Down90,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_AIR_THRUST_VERTICAL_DOWN_TO_LEVEL
+    { TRACK_BLOCK_BRAKES,           TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_BLOCK_BRAKES
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up25,          TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up25,          TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down25,        TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down25,        TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up25,          TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up25,          TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down25,        TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down25,        TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up25,          TrackRoll::Left,        TrackRoll::None,        0                  },  // ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up25,          TrackRoll::Right,       TrackRoll::None,        0                  },  // ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up25,          TrackRoll::None,        TrackRoll::Left,        0                  },  // ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::Up25,          TrackRoll::None,        TrackRoll::Right,       0                  },  // ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down25,        TrackRoll::Left,        TrackRoll::None,        0                  },  // ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down25,        TrackRoll::Right,       TrackRoll::None,        0                  },  // ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down25,        TrackRoll::None,        TrackRoll::Left,        0                  },  // ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::Down25,        TrackRoll::None,        TrackRoll::Right,       0                  },  // ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::None,           TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::None,           TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Up25,          TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Up25,          TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::None,           TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::None,           TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Down25,        TrackRoll::Left,        TrackRoll::Left,        0                  },  // ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Down25,        TrackRoll::Right,       TrackRoll::Right,       0                  },  // ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::None,           TrackRoll::Left,        TrackRoll::None,        0                  },  // ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up25,          TrackPitch::None,           TrackRoll::Right,       TrackRoll::None,        0                  },  // ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Up25,          TrackRoll::None,        TrackRoll::Left,        0                  },  // ELEM_LEFT_BANKED_25_DEG_UP_TO_FLAT
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Up25,          TrackRoll::None,        TrackRoll::Right,       0                  },  // ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::None,           TrackRoll::Left,        TrackRoll::None,        0                  },  // ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down25,        TrackPitch::None,           TrackRoll::Right,       TrackRoll::None,        0                  },  // ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Down25,        TrackRoll::None,        TrackRoll::Left,        0                  },  // ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT
+    { TRACK_FLAT,                   TrackPitch::None,           TrackPitch::Down25,        TrackRoll::None,        TrackRoll::Right,       0                  },  // ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT
+    { TRACK_FLAT,                   TrackPitch::Up90,          TrackPitch::Up90,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Up90,          TrackPitch::Up90,          TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_UP
+    { TRACK_FLAT,                   TrackPitch::Down90,        TrackPitch::Down90,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_DOWN
+    { TRACK_FLAT,                   TrackPitch::Down90,        TrackPitch::Down90,        TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN
+    { TRACK_QUARTER_LOOP_UNINVERTED_UP, TrackPitch::None,       TrackPitch::Up90,          TrackRoll::UpsideDown, TrackRoll::None,        0                  },  // ELEM_MULTIDIM_90_DEG_UP_TO_INVERTED_FLAT_QUARTER_LOOP
+    { TRACK_QUARTER_LOOP_UNINVERTED_DOWN, TrackPitch::Down90,  TrackPitch::None,           TrackRoll::UpsideDown, TrackRoll::None,        0                  },  // ELEM_MULTIDIM_FLAT_TO_90_DEG_DOWN_QUARTER_LOOP
+    { TRACK_QUARTER_LOOP_INVERTED_UP,     TrackPitch::None,     TrackPitch::Up90,          TrackRoll::UpsideDown, TrackRoll::None,        0                  }, // ELEM_MULTIDIM_INVERTED_FLAT_TO_90_DEG_UP_QUARTER_LOOP
+    { TRACK_ROTATION_CONTROL_TOGGLE,TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // ELEM_ROTATION_CONTROL_TOGGLE
+    { TRACK_FLAT_RIDE_BASE,         TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // TrackElemType::FlatTrack1x4A
+    { TRACK_FLAT_RIDE_BASE,         TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // TrackElemType::FlatTrack2x2
+    { TRACK_FLAT_RIDE_BASE,         TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // TrackElemType::FlatTrack4x4
+    { TRACK_FLAT_RIDE_BASE,         TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // TrackElemType::FlatTrack2x4
+    { TRACK_FLAT_RIDE_BASE,         TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // TrackElemType::FlatTrack1x5
+    { TRACK_FLAT_RIDE_BASE,         TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // TrackElemType::FlatTrack1x1A
+    { TRACK_FLAT_RIDE_BASE,         TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // TrackElemType::FlatTrack1x4B
+    { TRACK_FLAT_RIDE_BASE,         TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // TrackElemType::FlatTrack1x1B
+    { TRACK_FLAT_RIDE_BASE,         TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        -40                },  // TrackElemType::FlatTrack1x4C
+    { TRACK_FLAT_RIDE_BASE,         TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0                  },  // TrackElemType::FlatTrack3x3
+    { TRACK_CORKSCREW_LARGE,        TrackPitch::None,           TrackPitch::None,           TrackRoll::UpsideDown, TrackRoll::None,        32                 },  // TrackElemType::LeftLargeCorkscrewUp
+    { TRACK_CORKSCREW_LARGE,        TrackPitch::None,           TrackPitch::None,           TrackRoll::UpsideDown, TrackRoll::None,        32                 },  // TrackElemType::RightLargeCorkscrewUp
+    { TRACK_CORKSCREW_LARGE,        TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown, -32                },  // TrackElemType::LeftLargeCorkscrewDown
+    { TRACK_CORKSCREW_LARGE,        TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown, -32                },  // TrackElemType::RightLargeCorkscrewDown
+    { TRACK_HALF_LOOP_MEDIUM,       TrackPitch::None,           TrackPitch::Up25,          TrackRoll::UpsideDown, TrackRoll::None,        64                 },  // TrackElemType::LeftMediumHalfLoopUp
+    { TRACK_HALF_LOOP_MEDIUM,       TrackPitch::None,           TrackPitch::Up25,          TrackRoll::UpsideDown, TrackRoll::None,        64                 },  // TrackElemType::RightMediumHalfLoopUp
+    { TRACK_HALF_LOOP_MEDIUM,       TrackPitch::Down25,        TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown, -64                },  // TrackElemType::LeftMediumHalfLoopDown
+    { TRACK_HALF_LOOP_MEDIUM,       TrackPitch::Down25,        TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown, -64                },  // TrackElemType::RightMediumHalfLoopDown
+    { TRACK_ZERO_G_ROLL,            TrackPitch::None,           TrackPitch::Up25,          TrackRoll::UpsideDown, TrackRoll::None,        0                  },  // TrackElemType::LeftZeroGRollUp
+    { TRACK_ZERO_G_ROLL,            TrackPitch::None,           TrackPitch::Up25,          TrackRoll::UpsideDown, TrackRoll::None,        0                  },  // TrackElemType::RightZeroGRollUp
+    { TRACK_ZERO_G_ROLL,            TrackPitch::Down25,        TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown, 0                  },  // TrackElemType::LeftZeroGRollDown
+    { TRACK_ZERO_G_ROLL,            TrackPitch::Down25,        TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown, 0                  },  // TrackElemType::RightZeroGRollDown
+    { TRACK_ZERO_G_ROLL_LARGE,      TrackPitch::None,           TrackPitch::Up60,          TrackRoll::UpsideDown, TrackRoll::None,        64                 },  // TrackElemType::LeftLargeZeroGRollUp
+    { TRACK_ZERO_G_ROLL_LARGE,      TrackPitch::None,           TrackPitch::Up60,          TrackRoll::UpsideDown, TrackRoll::None,        64                 },  // TrackElemType::RightLargeZeroGRollUp
+    { TRACK_ZERO_G_ROLL_LARGE,      TrackPitch::Down60,        TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown, -64                },  // TrackElemType::LeftLargeZeroGRollDown
+    { TRACK_ZERO_G_ROLL_LARGE,      TrackPitch::Down60,        TrackPitch::None,           TrackRoll::None,        TrackRoll::UpsideDown, -64                },  // TrackElemType::RightLargeZeroGRollDown
+    { TRACK_FLYING_LARGE_HALF_LOOP_UNINVERTED_UP,   TrackPitch::None,    TrackPitch::Up25, TrackRoll::UpsideDown, TrackRoll::None,        64                 },  // TrackElemType::LeftFlyerLargeHalfLoopUninvertedUp
+    { TRACK_FLYING_LARGE_HALF_LOOP_UNINVERTED_UP,   TrackPitch::None,    TrackPitch::Up25, TrackRoll::UpsideDown, TrackRoll::None,        64                 },  // TrackElemType::RightFlyerLargeHalfLoopUninvertedUp                                                                                                       
+    { TRACK_FLYING_LARGE_HALF_LOOP_INVERTED_DOWN,   TrackPitch::Down25, TrackPitch::None,  TrackRoll::UpsideDown, TrackRoll::None,       -64                 },  // TrackElemType::LeftFlyerLargeHalfLoopInvertedDown                                                                                                       
+    { TRACK_FLYING_LARGE_HALF_LOOP_INVERTED_DOWN,   TrackPitch::Down25, TrackPitch::None,  TrackRoll::UpsideDown, TrackRoll::None,       -64                 },  // TrackElemType::RightFlyerLargeHalfLoopInvertedDown
+    { TRACK_FLYING_LARGE_HALF_LOOP_INVERTED_UP,     TrackPitch::None,    TrackPitch::Up25, TrackRoll::UpsideDown, TrackRoll::None,        64                 }, // TrackElemType::LeftFlyerLargeHalfLoopInvertedUp
+    { TRACK_FLYING_LARGE_HALF_LOOP_INVERTED_UP,     TrackPitch::None,    TrackPitch::Up25, TrackRoll::UpsideDown, TrackRoll::None,        64                 }, // TrackElemType::RightFlyerLargeHalfLoopInvertedUp
+    { TRACK_FLYING_LARGE_HALF_LOOP_UNINVERTED_DOWN, TrackPitch::Down25, TrackPitch::None,  TrackRoll::UpsideDown, TrackRoll::None,       -64                 },  // TrackElemType::LeftFlyerLargeHalfLoopUninvertedDown
+    { TRACK_FLYING_LARGE_HALF_LOOP_UNINVERTED_DOWN, TrackPitch::Down25, TrackPitch::None,  TrackRoll::UpsideDown, TrackRoll::None,       -64                 },  // TrackElemType::RightFlyerLargeHalfLoopUninvertedDown
+    { TRACK_FLYING_HALF_LOOP_INVERTED_UP,           TrackPitch::None,    TrackPitch::Up25, TrackRoll::UpsideDown, TrackRoll::None,        64                 },  // TrackElemType::FlyerHalfLoopInvertedUp
+    { TRACK_FLYING_HALF_LOOP_UNINVERTED_DOWN,       TrackPitch::Down25, TrackPitch::None,  TrackRoll::UpsideDown, TrackRoll::None,       -64                 },  // TrackElemType::FlyerHalfLoopUninvertedDown
+    { TRACK_SLOPE_CURVE_LARGE,                      TrackPitch::Up25,   TrackPitch::Up25,   TrackRoll::None,        TrackRoll::None,      16                 },  // TrackElemType::LeftEighthToDiagUp25
+    { TRACK_SLOPE_CURVE_LARGE,                      TrackPitch::Up25,   TrackPitch::Up25,   TrackRoll::None,        TrackRoll::None,      16                 },  // TrackElemType::RightEighthToDiagUp25
+    { TRACK_SLOPE_CURVE_LARGE,                      TrackPitch::Down25, TrackPitch::Down25, TrackRoll::None,        TrackRoll::None,     -16                 },  // TrackElemType::LeftEighthToDiagDown25
+    { TRACK_SLOPE_CURVE_LARGE,                      TrackPitch::Down25, TrackPitch::Down25, TrackRoll::None,        TrackRoll::None,     -16                 },  // TrackElemType::RightEighthToDiagDown25
+    { TRACK_SLOPE_CURVE_LARGE,                      TrackPitch::Up25,   TrackPitch::Up25,   TrackRoll::None,        TrackRoll::None,      16                 },  // TrackElemType::LeftEighthToOrthogonalUp25
+    { TRACK_SLOPE_CURVE_LARGE,                      TrackPitch::Up25,   TrackPitch::Up25,   TrackRoll::None,        TrackRoll::None,      16                 },  // TrackElemType::RightEighthToOrthogonalUp25
+    { TRACK_SLOPE_CURVE_LARGE,                      TrackPitch::Down25, TrackPitch::Down25, TrackRoll::None,        TrackRoll::None,     -16                 },  // TrackElemType::LeftEighthToOrthogonalDown25
+    { TRACK_SLOPE_CURVE_LARGE,                      TrackPitch::Down25, TrackPitch::Down25, TrackRoll::None,        TrackRoll::None,     -16                 },  // TrackElemType::RightEighthToOrthogonalDown25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Up25,   TrackPitch::Up25,   TrackRoll::Left,        TrackRoll::None,       0 }, // TrackElemType::DiagUp25ToLeftBankedUp25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Up25,   TrackPitch::Up25,   TrackRoll::Right,       TrackRoll::None,       0 }, // TrackElemType::DiagUp25ToRightBankedUp25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Up25,   TrackPitch::Up25,   TrackRoll::None,        TrackRoll::Left,       0 }, // TrackElemType::DiagLeftBankedUp25ToUp25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Up25,   TrackPitch::Up25,   TrackRoll::None,        TrackRoll::Right,      0 }, // TrackElemType::DiagRightBankedUp25ToUp25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Down25, TrackPitch::Down25, TrackRoll::Left,        TrackRoll::None,       0 }, // TrackElemType::DiagDown25ToLeftBankedDown25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Down25, TrackPitch::Down25, TrackRoll::Right,       TrackRoll::None,       0 }, // TrackElemType::DiagDown25ToRightBankedDown25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Down25, TrackPitch::Down25, TrackRoll::None,        TrackRoll::Left,       0 }, // TrackElemType::DiagLeftBankedDown25ToDown25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Down25, TrackPitch::Down25, TrackRoll::None,        TrackRoll::Right,      0 }, // TrackElemType::DiagRightBankedDown25ToDown25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Up25,   TrackPitch::None,    TrackRoll::Left,        TrackRoll::Left,       0 }, // TrackElemType::DiagLeftBankedFlatToLeftBankedUp25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Up25,   TrackPitch::None,    TrackRoll::Right,       TrackRoll::Right,      0 }, // TrackElemType::DiagRightBankedFlatToRightBankedUp25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::None,    TrackPitch::Up25,   TrackRoll::Left,        TrackRoll::Left,       0 }, // TrackElemType::DiagLeftBankedUp25ToLeftBankedFlat
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::None,    TrackPitch::Up25,   TrackRoll::Right,       TrackRoll::Right,      0 }, // TrackElemType::DiagRightBankedUp25ToRightBankedFlat
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Down25, TrackPitch::None,    TrackRoll::Left,        TrackRoll::Left,       0 }, // TrackElemType::DiagLeftBankedFlatToLeftBankedDown25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Down25, TrackPitch::None,    TrackRoll::Right,       TrackRoll::Right,      0 }, // TrackElemType::DiagRightBankedFlatToRightBankedDown25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::None,    TrackPitch::Down25, TrackRoll::Left,        TrackRoll::Left,       0 }, // TrackElemType::DiagLeftBankedDown25ToLeftBankedFlat
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::None,    TrackPitch::Down25, TrackRoll::Right,       TrackRoll::Right,      0 }, // TrackElemType::DiagRightBankedDown25ToRightBankedFlat
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Up25,   TrackPitch::None,    TrackRoll::Left,        TrackRoll::None,       0 }, // TrackElemType::DiagFlatToLeftBankedUp25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Up25,   TrackPitch::None,    TrackRoll::Right,       TrackRoll::None,       0 }, // TrackElemType::DiagFlatToRightBankedUp25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::None,    TrackPitch::Up25,   TrackRoll::None,        TrackRoll::Left,       0 }, // TrackElemType::DiagLeftBankedUp25ToFlat
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::None,    TrackPitch::Up25,   TrackRoll::None,        TrackRoll::Right,      0 }, // TrackElemType::DiagRightBankedUp25ToFlat
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Down25, TrackPitch::None,    TrackRoll::Left,        TrackRoll::None,       0 }, // TrackElemType::DiagFlatToLeftBankedDown25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Down25, TrackPitch::None,    TrackRoll::Right,       TrackRoll::None,       0 }, // TrackElemType::DiagFlatToRightBankedDown25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::None,    TrackPitch::Down25, TrackRoll::None,        TrackRoll::Left,       0 }, // TrackElemType::DiagLeftBankedDown25ToFlat
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::None,    TrackPitch::Down25, TrackRoll::None,        TrackRoll::Right,      0 }, // TrackElemType::DiagRightBankedDown25ToFlat
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Up25,   TrackPitch::Up25,   TrackRoll::Left,        TrackRoll::Left,       0 }, // TrackElemType::Up25LeftBanked
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Up25,   TrackPitch::Up25,   TrackRoll::Right,       TrackRoll::Right,      0 }, // TrackElemType::Up25RightBanked 
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Down25, TrackPitch::Down25, TrackRoll::Left,        TrackRoll::Left,       0 }, // TrackElemType::Down25LeftBanked
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Down25, TrackPitch::Down25, TrackRoll::Right,       TrackRoll::Right,      0 }, // TrackElemType::Down25RightBanked
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Up25,   TrackPitch::Up25,   TrackRoll::Left,        TrackRoll::Left,      16 }, // TrackElemType::LeftEighthBankToDiagUp25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Up25,   TrackPitch::Up25,   TrackRoll::Right,       TrackRoll::Right,     16 }, // TrackElemType::RightEighthBankToDiagUp25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Down25, TrackPitch::Down25, TrackRoll::Left,        TrackRoll::Left,     -16 }, // TrackElemType::LeftEighthBankToDiagDown25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Down25, TrackPitch::Down25, TrackRoll::Right,       TrackRoll::Right,    -16 }, // TrackElemType::RightEighthBankToDiagDown25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Up25,   TrackPitch::Up25,   TrackRoll::Left,        TrackRoll::Left,      16 }, // TrackElemType::LeftEighthBankToOrthogonalUp25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Up25,   TrackPitch::Up25,   TrackRoll::Right,       TrackRoll::Right,     16 }, // TrackElemType::RightEighthBankToOrthogonalUp25 
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Down25, TrackPitch::Down25, TrackRoll::Left,        TrackRoll::Left,     -16 }, // TrackElemType::LeftEighthBankToOrthogonalDown25
+    { TRACK_SLOPE_CURVE_LARGE_BANKED,               TrackPitch::Down25, TrackPitch::Down25, TrackRoll::Right,       TrackRoll::Right,    -16 }, // TrackElemType::RightEighthBankToOrthogonalDown25
+    { TRACK_DIAG_BRAKES,            TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0  }, // TrackElemType::DiagBrakes
+    { TRACK_DIAG_BLOCK_BRAKES,      TrackPitch::None,           TrackPitch::None,           TrackRoll::None,        TrackRoll::None,        0  }, // TrackElemType::DiagBlockBrakes
 };
 static_assert(std::size(TrackDefinitions) == TrackElemType::Count);
 

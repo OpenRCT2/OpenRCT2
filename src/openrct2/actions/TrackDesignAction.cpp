@@ -58,7 +58,7 @@ GameActions::Result TrackDesignAction::Query() const
     if (!LocationValid(_loc))
     {
         return GameActions::Result(
-            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();

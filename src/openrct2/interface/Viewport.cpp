@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
@@ -1018,7 +1019,7 @@ void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const ScreenRec
 
 static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi)
 {
-    auto paletteId = ClimateGetWeatherGloomPaletteId(gClimateCurrent);
+    auto paletteId = ClimateGetWeatherGloomPaletteId(GetGameState().ClimateCurrent);
     if (paletteId != FilterPaletteID::PaletteNull)
     {
         // Only scale width if zoomed in more than 1:1

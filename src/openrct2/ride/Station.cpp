@@ -10,12 +10,15 @@
 #include "Station.h"
 
 #include "../Game.h"
+#include "../GameState.h"
 #include "../entity/Guest.h"
 #include "../scenario/Scenario.h"
 #include "../world/Location.hpp"
 #include "RideEntry.h"
 #include "Track.h"
 #include "Vehicle.h"
+
+using namespace OpenRCT2;
 
 static void RideUpdateStationBlockSection(Ride& ride, StationIndex stationIndex);
 static void RideUpdateStationDodgems(Ride& ride, StationIndex stationIndex);
@@ -151,10 +154,11 @@ static void RideUpdateStationNormal(Ride& ride, StationIndex stationIndex)
 {
     auto& station = ride.GetStation(stationIndex);
     int32_t time = station.Depart & STATION_DEPART_MASK;
+    const auto currentTicks = GetGameState().CurrentTicks;
     if ((ride.lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
         || (ride.status == RideStatus::Closed && ride.num_riders == 0))
     {
-        if (time != 0 && time != 127 && !(gCurrentTicks & 7))
+        if (time != 0 && time != 127 && !(currentTicks & 7))
             time--;
 
         station.Depart = time;
@@ -169,7 +173,7 @@ static void RideUpdateStationNormal(Ride& ride, StationIndex stationIndex)
         }
         else
         {
-            if (time != 127 && !(gCurrentTicks & 31))
+            if (time != 127 && !(currentTicks & 31))
                 time--;
 
             station.Depart = time;

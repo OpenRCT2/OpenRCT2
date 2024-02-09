@@ -10,6 +10,7 @@
 #include "LandSetHeightAction.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
@@ -54,7 +55,8 @@ void LandSetHeightAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result LandSetHeightAction::Query() const
 {
-    if (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
+    auto& gameState = GetGameState();
+    if (gameState.ParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY, STR_NONE);
     }
@@ -76,7 +78,7 @@ GameActions::Result LandSetHeightAction::Query() const
     money64 sceneryRemovalCost = 0;
     if (!gCheatsDisableClearanceChecks)
     {
-        if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
+        if (gameState.ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
         {
             // Check for obstructing large trees
             TileElement* tileElement = CheckTreeObstructions();
@@ -102,7 +104,8 @@ GameActions::Result LandSetHeightAction::Query() const
 
     auto* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
-        return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
 
     // We need to check if there is _currently_ a level crossing on the tile.
     // For that, we need the old height, so we can't use the _height variable.
@@ -163,7 +166,8 @@ GameActions::Result LandSetHeightAction::Execute() const
 
     auto* surfaceElement = MapGetSurfaceElementAt(_coords);
     if (surfaceElement == nullptr)
-        return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
 
     cost += GetSurfaceHeightChangeCost(surfaceElement);
     SetSurfaceHeight(reinterpret_cast<TileElement*>(surfaceElement));

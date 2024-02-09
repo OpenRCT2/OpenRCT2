@@ -36,6 +36,8 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
+using namespace OpenRCT2;
+
 static constexpr StringId WINDOW_TITLE = STR_STRINGID;
 static constexpr int32_t WH = 157;
 static constexpr int32_t WW = 192;
@@ -466,7 +468,7 @@ private:
             if (!WidgetIsDisabled(*this, WIDX_PICKUP))
                 Invalidate();
         }
-        if (gParkFlags & PARK_FLAGS_NO_MONEY)
+        if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
         {
             newDisabledWidgets |= (1uLL << WIDX_TAB_4); // Disable finance tab if no money
         }
@@ -1146,7 +1148,7 @@ private:
         int32_t guestEntryTime = peep->GetParkEntryTime();
         if (guestEntryTime != -1)
         {
-            int32_t timeInPark = (gCurrentTicks - guestEntryTime) >> 11;
+            int32_t timeInPark = (GetGameState().CurrentTicks - guestEntryTime) >> 11;
             auto ft = Formatter();
             ft.Add<uint16_t>(timeInPark & 0xFFFF);
             DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_TIME_IN_PARK, ft);
@@ -1233,7 +1235,7 @@ private:
         }
 
         // Every 2048 ticks do a full window_invalidate
-        int32_t numTicks = gCurrentTicks - guest->GetParkEntryTime();
+        int32_t numTicks = GetGameState().CurrentTicks - guest->GetParkEntryTime();
         if (!(numTicks & 0x7FF))
             Invalidate();
 

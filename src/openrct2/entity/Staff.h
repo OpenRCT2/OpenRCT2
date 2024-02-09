@@ -144,10 +144,6 @@ enum class EntertainerCostume : uint8_t
 
 extern const StringId StaffCostumeNames[static_cast<uint8_t>(EntertainerCostume::Count)];
 
-extern colour_t gStaffHandymanColour;
-extern colour_t gStaffMechanicColour;
-extern colour_t gStaffSecurityColour;
-
 colour_t StaffGetColour(StaffType staffType);
 bool StaffSetColour(StaffType staffType, colour_t value);
 uint32_t StaffGetAvailableEntertainerCostumes();

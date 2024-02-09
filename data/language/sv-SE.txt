@@ -97,6 +97,8 @@ STR_0091    :Okänd åktur (59)
 STR_0092    :Induktionsberg- och dalbana
 STR_0093    :Hybridberg- och dalbana
 STR_0094    :Enkelspårig berg- och dalbana
+STR_0095    :Alpin berg- och dalbana
+STR_0096    :Klassisk berg- och dalbana i trä
 STR_0512    :En kompakt berg- och dalbana med en spiralvriden kedjelift och mjuka, vridna stup.
 STR_0513    :En ringlande berg- och dalbana där passagerarna åker stående
 STR_0514    :Tåg hängande under banan som svingar ut åt sidan i kurvorna
@@ -161,7 +163,7 @@ STR_0578    :Vagnar åker runt en bana omgiven av ringar utför branta nedförsb
 STR_0579    :En stillsam runda minigolf
 STR_0580    :En gigantisk berg- och dalbana i stål som kan ge mjuka fall och höjder på över 100 meter
 STR_0581    :En ring med säten dras upp till toppen av ett högt torn medan det sakta roterar, för att sedan falla fritt och stoppas mjukt vid botten med hjälp av magnetbromsar
-STR_0582    :Gäster styr svävarfarkoster
+STR_0582    :Gästerna åker i svävare som de styr fritt
 STR_0583    :Byggnad med förvrängda rum och vinklade korridorer för att förvilla människorna som går igenom den
 STR_0584    :Speciella cyklar som passagerarna själva trampar fram längs en stålskensbana
 STR_0585    :Passagerarna sitter i par med ansiktena antingen bakåt eller framåt då de åker genom loopar och skruvar med snabba omkastningar
@@ -177,7 +179,9 @@ STR_0599    :En kompakt berg- och dalbana med individuella vagnar och mjukt vrid
 STR_0600    :Motordrivna gruvtåg rusar längs en mjuk och kurvig spårlayout
 STR_0602    :Berg- och dalbanetågen accelereras ut från stationen med induktionsmotorer för att fara genom tvinnande inversioner
 STR_0603    :En berg- och dalbana i trästil med stålspår, som möjliggör branta stup och inversioner
-STR_0604    :Passagerare åker i singelled längs en stålbalk, som tar dem genom tighta inversioner och krökar.
+STR_0604    :Passagerare åker i singelled längs en stålbalk, som tar dem genom tighta inversioner och krökar
+STR_0605    :Passagerare åker släde nerför ett slingrande stålspår och bromsar för att reglera hastigheten
+STR_0606    :Den här berg- och dalbanan i trä är i äldre stil. Den är snabb, tuff, högljudd och ger en känsla av att förlora kontrollen. Dessutom spenderar man mycket tid flygandes över topparna
 STR_0767    :Besökare {INT32}
 STR_0768    :Vaktmästare {INT32}
 STR_0769    :Mekaniker {INT32}
@@ -3597,6 +3601,109 @@ STR_6490    :Varning: Halvkompatibel parkversion
 STR_6491    :Denna park sparades i en nyare version av OpenRCT2. Parken är v{INT32} och kräver åtminstone v{INT32}.
 STR_6492    :Denna park sparades i en äldre version av OpenRCT2, och kan inte öppnas med denna version av OpenRCT2. Parken är v{INT32}.
 STR_6493    :Denna park sparades i en nyare version av OpenRCT2, viss data kan gå förlorad. Parken är v{INT32} och kräver åtminstone v{INT32}.
+STR_6494    :Gruppera efter färdtyp
+STR_6495    :Gruppera turer efter färdtyp istället för att visa varje fordon separat.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Klicka på en ruta för att visa dess rutelement.{NEWLINE}Ctrl + klicka på ett rutelement för att välja det direkt.
+STR_6498    :Aktivera för att behålla kvadratisk kartform.
+STR_6499    :Fordonstyp stöds inte av spårdesignformatet
+STR_6500    :Spårelement stöds inte av spårdesignformatet
+STR_6501    :Slumpvis färg
+STR_6502    :Ange ett värde mellan {COMMA16} och {COMMA16}
+STR_6503    :Minst ett stationsobjekt måste väljas
+STR_6504    :Minst en terrängyta måste väljas
+STR_6505    :Minst en terrängkant måste väljas
+STR_6506    :Stor halvkorkskruv (vänster)
+STR_6507    :Stor halvkorkskruv (höger)
+STR_6508    :Medium halvloop (vänster)
+STR_6509    :Medium halvloop (höger)
+STR_6510    :Noll-G roll (vänster)
+STR_6511    :Noll-G roll (höger)
+STR_6512    :Stor noll-G roll (vänster)
+STR_6513    :Stor noll-G roll (höger)
+STR_6514    :Ogiltig höjd!
+STR_6515    :{BLACK}RollerCoaster Tycoon 1 är inte länkad. Reservbilder används.
+STR_6516    :Ett eller flera objekt som läggs till kräver RollerCoaster Tycoon 1 länkad för korrekt visning. Reservbilder används.
+STR_6517    :Ett eller flera objekt i den här parken kräver RollerCoaster Tycoon 1 länkad för korrekt visning. Reservbilder används.
+STR_6518    :{BLACK}Håll muspekaren över ett scenario för att se dess beskrivning och mål. Klicka för att börja spela.
+STR_6519    :Extra
+STR_6520    :Resurspaket
+STR_6521    :Låg prioritet
+STR_6522    :Hög prioritet
+STR_6523    :Minska prioriteten för det valda resurspaketet.
+STR_6524    :Öka prioriteten för det valda resurspaketet.
+STR_6525    :Ladda om alla resurspaket i spelet med resurspaket aktiverade.
+STR_6526    :(grundläggande grafik, musik och ljudeffekter)
+STR_6527    :Tävlingar
+STR_6528    :Ogiltiga spårparametrar!
+STR_6529    :Ogiltig färgschemaparameter!
+STR_6530    :User Created Expansion Set
+STR_6531    :Tidsmaskinen
+STR_6532    :Katys drömvärld
+STR_6533    :{WINDOW_COLOUR_2}Spänningsfaktor: {BLACK}-{COMMA16}%
+STR_6534    :{WINDOW_COLOUR_2}Intensitetsfaktor: {BLACK}-{COMMA16} %
+STR_6535    :{WINDOW_COLOUR_2}Illamåendefaktor: {BLACK}-{COMMA16}%
+STR_6536    :Denna park sparades i en senare version av OpenRCT2. Parken sparades i v{INT32}, du använder för närvarande v{INT32}.
+STR_6537    :Tillåt normala gångvägar som köer
+STR_6538    :Visar normala gångvägar i kölistan i gångvägsfönstret
+STR_6539    :Bromsen stängd
+STR_6540    :{WINDOW_COLOUR_2}Särskilt tack till följande företag för att de tillåter oss att använda deras likhet:
+STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6542    :Medverkande
+STR_6543    :Medverkande ...
+STR_6544    :Lånet kan inte vara negativt!
+STR_6545    :Använd RCT1-ränteberäkning
+STR_6546    :Använd RollerCoaster Tycoon 1:s ränteberäkningsalgoritm, som använder en fast procentsats på cirka 1,33 %.
+STR_6547    :Allt landskap
+STR_6548    :Visa räcken vid korsning
+STR_6549    :Kompatibilitetsobjekt kan inte väljas!
+STR_6550    :Denna post ingår för bakåtkompatibilitet med gamla eller skadade objekt. Den kan inte väljas, bara avmarkeras.
+STR_6551    :Armégrönt
+STR_6552    :Honungsmelon
+STR_6553    :Gulbrun
+STR_6554    :Rödbrun
+STR_6555    :Korallrosa
+STR_6556    :Skogsgrön
+STR_6557    :Chartreusegrön
+STR_6558    :Jaktgrön
+STR_6559    :Celadongrön
+STR_6560    :Limegrön
+STR_6561    :Sepia
+STR_6562    :Persikorosa
+STR_6563    :Ljus lavendel
+STR_6564    :Blågrön
+STR_6565    :Havsskumsgrön
+STR_6566    :Violett
+STR_6567    :Lavendel
+STR_6568    :Pastellorange
+STR_6569    :Djupt vatten
+STR_6570    :Pastellrosa
+STR_6571    :Umbra
+STR_6572    :Beige
+STR_6573    :Osynlig
+STR_6574    :Tomhet
+STR_6575    :Tillåt speciella färgscheman
+STR_6576    :Lägger till speciella färger till färgpaletten
+STR_6577    :Blockbromshastighet
+STR_6578    :Ställ in hastighetsgräns för blockbromsar. I blockområdesläge kopplas intilliggande bromsar med en lägre hastighet till blockbromsen.
+STR_6579    :Blockbromsar ställs in på standardhastighet när de sparas som bandesign
+STR_6580    :Återställa
+STR_6581    :Är du säker på att du vill återställa alla kortkommandon på den här fliken?
+STR_6582    :Öppna fönstret för kortkommandon
+STR_6583    :{WINDOW_COLOUR_2}Bakvända tåg
+STR_6584    :Välj att köra tåg baklänges
+STR_6585    :Ändringar kan inte göras...
+STR_6586    :OpenRCT2
+STR_6587    :OpenRCT2:s omslagstema är ett verk av Allister Brimble,{NEWLINE}licensierat under CC BY-SA 4.0.
+STR_6588    :Tack till Herman Riddering för att vi fick spela in 35er Voigt.
+STR_6589    :Visa fönsterknappar till vänster
+STR_6590    :Visa fönsterknapparna (t.ex. för att stänga fönstret) till vänster om titelraden istället för till höger.
+STR_6591    :Den här personen reparerar just nu en åktur och kan därför inte avskedas.
+STR_6592    :Den här personen inspekterar just nu en åktur och kan därför inte avskedas.
+STR_6593    :Ta bort parkstängsel
+STR_6594    :Rutinspekteraren: Växla vägglutning
+STR_6595    :{WINDOW_COLOUR_2}Författare: {BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}Författare: {BLACK}{STRING}
 
 #############
 # Scenarion #

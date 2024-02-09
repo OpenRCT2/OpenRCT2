@@ -24,7 +24,8 @@ struct IObjectRepository;
 namespace OpenRCT2
 {
     struct IStream;
-}
+    struct GameState_t;
+} // namespace OpenRCT2
 
 struct ScenarioIndexEntry;
 
@@ -56,7 +57,7 @@ public:
     virtual ParkLoadResult LoadFromStream(
         OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, const u8string& path = {}) abstract;
 
-    virtual void Import() abstract;
+    virtual void Import(OpenRCT2::GameState_t& gameState) abstract;
     virtual bool GetDetails(ScenarioIndexEntry* dst) abstract;
 };
 

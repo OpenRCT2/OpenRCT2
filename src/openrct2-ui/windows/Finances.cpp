@@ -28,6 +28,8 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 
+using namespace OpenRCT2;
+
 enum
 {
     WINDOW_FINANCES_PAGE_SUMMARY,
@@ -228,7 +230,7 @@ private:
 
     void SetDisabledTabs()
     {
-        disabled_widgets = (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
+        disabled_widgets = (GetGameState().ParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) ? (1uLL << WIDX_TAB_5) : 0;
     }
 
 public:
@@ -534,6 +536,7 @@ public:
     void OnDrawSummary(DrawPixelInfo& dpi)
     {
         auto screenCoords = windowPos + ScreenCoordsXY{ 8, 51 };
+        auto& gameState = GetGameState();
 
         // Expenditure / Income heading
         DrawTextBasic(
@@ -562,7 +565,7 @@ public:
 
         // Loan and interest rate
         DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, 279 }, STR_FINANCES_SUMMARY_LOAN);
-        if (!(gParkFlags & PARK_FLAGS_RCT1_INTEREST))
+        if (!(gameState.ParkFlags & PARK_FLAGS_RCT1_INTEREST))
         {
             auto ft = Formatter();
             ft.Add<uint16_t>(gBankLoanInterestRate);
@@ -571,12 +574,12 @@ public:
 
         // Current cash
         auto ft = Formatter();
-        ft.Add<money64>(gCash);
-        StringId stringId = gCash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
+        ft.Add<money64>(gameState.Cash);
+        StringId stringId = gameState.Cash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
         DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 8, 294 }, stringId, ft);
 
         // Objective related financial information
-        if (gScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
+        if (gameState.ScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
         {
             auto lastMonthProfit = FinanceGetLastMonthShopProfit();
             ft = Formatter();
@@ -588,7 +591,7 @@ public:
         {
             // Park value and company value
             ft = Formatter();
-            ft.Add<money64>(gParkValue);
+            ft.Add<money64>(gameState.ParkValue);
             DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, 279 }, STR_PARK_VALUE_LABEL, ft);
             ft = Formatter();
             ft.Add<money64>(gCompanyValue);
@@ -612,7 +615,7 @@ public:
         auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
 
         // Cash (less loan)
-        auto cashLessLoan = gCash - gBankLoan;
+        auto cashLessLoan = GetGameState().Cash - gBankLoan;
         auto ft = Formatter();
         ft.Add<money64>(cashLessLoan);
 
@@ -674,9 +677,11 @@ public:
         auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
         auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
 
+        const auto& gameState = GetGameState();
+
         // Park value
         auto ft = Formatter();
-        ft.Add<money64>(gParkValue);
+        ft.Add<money64>(gameState.ParkValue);
         DrawTextBasic(dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 }, STR_FINANCES_PARK_VALUE, ft);
 
         // Graph
@@ -686,7 +691,7 @@ public:
         int32_t yAxisScale = 0;
         for (int32_t i = 0; i < 64; i++)
         {
-            auto balance = gParkValueHistory[i];
+            auto balance = gameState.ParkValueHistory[i];
             if (balance == MONEY64_UNDEFINED)
                 continue;
 
@@ -718,7 +723,7 @@ public:
 
         // X axis labels and values
         coords = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-        Graph::Draw(dpi, gParkValueHistory, 64, coords, yAxisScale, 0);
+        Graph::Draw(dpi, gameState.ParkValueHistory, 64, coords, yAxisScale, 0);
     }
 
 #pragma endregion
@@ -727,6 +732,7 @@ public:
 
     void OnDrawProfitGraph(DrawPixelInfo& dpi)
     {
+        auto& gameState = GetGameState();
         Widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
         auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
         auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
@@ -745,7 +751,7 @@ public:
         int32_t yAxisScale = 0;
         for (int32_t i = 0; i < 64; i++)
         {
-            auto balance = gWeeklyProfitHistory[i];
+            auto balance = gameState.WeeklyProfitHistory[i];
             if (balance == MONEY64_UNDEFINED)
                 continue;
 
@@ -777,7 +783,7 @@ public:
 
         // X axis labels and values
         screenPos = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-        Graph::Draw(dpi, gWeeklyProfitHistory, 64, screenPos, yAxisScale, 128);
+        Graph::Draw(dpi, gameState.WeeklyProfitHistory, 64, screenPos, yAxisScale, 128);
     }
 
 #pragma endregion

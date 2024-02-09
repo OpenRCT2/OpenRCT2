@@ -12,10 +12,13 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/GameState.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
+
+using namespace OpenRCT2;
 
 enum WindowClearSceneryWidgetIdx
 {
@@ -186,7 +189,8 @@ public:
         }
 
         // Draw cost amount
-        if (gClearSceneryCost != MONEY64_UNDEFINED && gClearSceneryCost != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (gClearSceneryCost != MONEY64_UNDEFINED && gClearSceneryCost != 0
+            && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto ft = Formatter();
             ft.Add<money64>(gClearSceneryCost);

@@ -14,6 +14,7 @@
 #include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/TrackDesignAction.h>
 #include <openrct2/audio/audio.h>
@@ -304,7 +305,7 @@ public:
         }
 
         // Price
-        if (_placementCost != MONEY64_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (_placementCost != MONEY64_UNDEFINED && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             ft = Formatter();
             ft.Add<money64>(_placementCost);

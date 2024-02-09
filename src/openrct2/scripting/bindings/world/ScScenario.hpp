@@ -44,20 +44,22 @@ namespace OpenRCT2::Scripting
     private:
         std::string type_get()
         {
-            return std::string(ScenarioObjectiveTypeMap[gScenarioObjective.Type]);
+            return std::string(ScenarioObjectiveTypeMap[GetGameState().ScenarioObjective.Type]);
         }
 
         void type_set(const std::string& value)
         {
             ThrowIfGameStateNotMutable();
-            gScenarioObjective.Type = ScenarioObjectiveTypeMap[value];
+            GetGameState().ScenarioObjective.Type = ScenarioObjectiveTypeMap[value];
         }
 
         uint16_t guests_get()
         {
-            if (gScenarioObjective.Type == OBJECTIVE_GUESTS_BY || gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
+            auto& gameState = GetGameState();
+            if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_BY
+                || gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
             {
-                return gScenarioObjective.NumGuests;
+                return gameState.ScenarioObjective.NumGuests;
             }
             return 0;
         }
@@ -65,35 +67,42 @@ namespace OpenRCT2::Scripting
         void guests_set(uint16_t value)
         {
             ThrowIfGameStateNotMutable();
-            if (gScenarioObjective.Type == OBJECTIVE_GUESTS_BY || gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
+            auto& gameState = GetGameState();
+            if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_BY
+                || gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
             {
-                gScenarioObjective.NumGuests = value;
+                gameState.ScenarioObjective.NumGuests = value;
             }
         }
 
         uint8_t year_get()
         {
-            if (gScenarioObjective.Type == OBJECTIVE_GUESTS_BY || gScenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY)
+            const auto& gameState = GetGameState();
+            if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_BY
+                || gameState.ScenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY)
             {
-                return gScenarioObjective.Year;
+                return gameState.ScenarioObjective.Year;
             }
             return 0;
         }
 
         void year_set(uint8_t value)
         {
+            auto& gameState = GetGameState();
             ThrowIfGameStateNotMutable();
-            if (gScenarioObjective.Type == OBJECTIVE_GUESTS_BY || gScenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY)
+            if (gameState.ScenarioObjective.Type == OBJECTIVE_GUESTS_BY
+                || gameState.ScenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY)
             {
-                gScenarioObjective.Year = value;
+                gameState.ScenarioObjective.Year = value;
             }
         }
 
         uint16_t length_get()
         {
-            if (gScenarioObjective.Type == OBJECTIVE_10_ROLLERCOASTERS_LENGTH)
+            const auto& gameState = GetGameState();
+            if (gameState.ScenarioObjective.Type == OBJECTIVE_10_ROLLERCOASTERS_LENGTH)
             {
-                return gScenarioObjective.NumGuests;
+                return gameState.ScenarioObjective.NumGuests;
             }
             return 0;
         }
@@ -101,17 +110,19 @@ namespace OpenRCT2::Scripting
         void length_set(uint16_t value)
         {
             ThrowIfGameStateNotMutable();
-            if (gScenarioObjective.Type == OBJECTIVE_10_ROLLERCOASTERS_LENGTH)
+            auto& gameState = GetGameState();
+            if (gameState.ScenarioObjective.Type == OBJECTIVE_10_ROLLERCOASTERS_LENGTH)
             {
-                gScenarioObjective.NumGuests = value;
+                gameState.ScenarioObjective.NumGuests = value;
             }
         }
 
         money64 excitement_get()
         {
-            if (gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
+            const auto& gameState = GetGameState();
+            if (gameState.ScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
             {
-                return gScenarioObjective.Currency;
+                return gameState.ScenarioObjective.Currency;
             }
             return 0;
         }
@@ -119,18 +130,20 @@ namespace OpenRCT2::Scripting
         void excitement_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
-            if (gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
+            auto& gameState = GetGameState();
+            if (gameState.ScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
             {
-                gScenarioObjective.Currency = value;
+                gameState.ScenarioObjective.Currency = value;
             }
         }
 
         money64 parkValue_get()
         {
-            if (gScenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY
-                || gScenarioObjective.Type == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
+            const auto& gameState = GetGameState();
+            if (gameState.ScenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY
+                || gameState.ScenarioObjective.Type == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
             {
-                return gScenarioObjective.Currency;
+                return gameState.ScenarioObjective.Currency;
             }
             return 0;
         }
@@ -138,19 +151,21 @@ namespace OpenRCT2::Scripting
         void parkValue_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
-            if (gScenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY
-                || gScenarioObjective.Type == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
+            auto& gameState = GetGameState();
+            if (gameState.ScenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY
+                || gameState.ScenarioObjective.Type == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
             {
-                gScenarioObjective.Currency = value;
+                gameState.ScenarioObjective.Currency = value;
             }
         }
 
         money64 monthlyIncome_get()
         {
-            if (gScenarioObjective.Type == OBJECTIVE_MONTHLY_RIDE_INCOME
-                || gScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
+            const auto& gameState = GetGameState();
+            if (gameState.ScenarioObjective.Type == OBJECTIVE_MONTHLY_RIDE_INCOME
+                || gameState.ScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
             {
-                return gScenarioObjective.Currency;
+                return gameState.ScenarioObjective.Currency;
             }
             return 0;
         }
@@ -158,10 +173,11 @@ namespace OpenRCT2::Scripting
         void monthlyIncome_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
-            if (gScenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY
-                || gScenarioObjective.Type == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
+            auto& gameState = GetGameState();
+            if (gameState.ScenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY
+                || gameState.ScenarioObjective.Type == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
             {
-                gScenarioObjective.Currency = value;
+                gameState.ScenarioObjective.Currency = value;
             }
         }
 
@@ -185,35 +201,35 @@ namespace OpenRCT2::Scripting
     public:
         std::string name_get()
         {
-            return gScenarioName;
+            return GetGameState().ScenarioName;
         }
 
         void name_set(const std::string& value)
         {
             ThrowIfGameStateNotMutable();
-            gScenarioName = value;
+            GetGameState().ScenarioName = value;
         }
 
         std::string details_get()
         {
-            return gScenarioDetails;
+            return GetGameState().ScenarioDetails;
         }
 
         void details_set(const std::string& value)
         {
             ThrowIfGameStateNotMutable();
-            gScenarioDetails = value;
+            GetGameState().ScenarioDetails = value;
         }
 
         std::string completedBy_get()
         {
-            return gScenarioCompletedBy;
+            return GetGameState().ScenarioCompletedBy;
         }
 
         void completedBy_set(const std::string& value)
         {
             ThrowIfGameStateNotMutable();
-            gScenarioCompletedBy = value;
+            GetGameState().ScenarioCompletedBy = value;
         }
 
         std::string filename_get()
@@ -234,58 +250,61 @@ namespace OpenRCT2::Scripting
 
         uint16_t parkRatingWarningDays_get() const
         {
-            return gScenarioParkRatingWarningDays;
+            return GetGameState().ScenarioParkRatingWarningDays;
         }
 
         void parkRatingWarningDays_set(uint16_t value)
         {
             ThrowIfGameStateNotMutable();
-            gScenarioParkRatingWarningDays = value;
+            GetGameState().ScenarioParkRatingWarningDays = value;
         }
 
         DukValue completedCompanyValue_get() const
         {
+            const auto& gameState = GetGameState();
             auto ctx = GetContext()->GetScriptEngine().GetContext();
-            if (gScenarioCompletedCompanyValue == MONEY64_UNDEFINED
-                || gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+            if (gameState.ScenarioCompletedCompanyValue == MONEY64_UNDEFINED
+                || gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
             {
                 return ToDuk(ctx, nullptr);
             }
-            return ToDuk(ctx, gScenarioCompletedCompanyValue);
+            return ToDuk(ctx, gameState.ScenarioCompletedCompanyValue);
         }
         void completedCompanyValue_set(int32_t value)
         {
             ThrowIfGameStateNotMutable();
-            gScenarioCompletedCompanyValue = value;
+            GetGameState().ScenarioCompletedCompanyValue = value;
         }
 
         std::string status_get() const
         {
-            if (gScenarioCompletedCompanyValue == MONEY64_UNDEFINED)
+            const auto& gameState = GetGameState();
+            if (gameState.ScenarioCompletedCompanyValue == MONEY64_UNDEFINED)
                 return "inProgress";
-            if (gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+            if (gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
                 return "failed";
             return "completed";
         }
         void status_set(const std::string& value)
         {
             ThrowIfGameStateNotMutable();
+            auto& gameState = GetGameState();
             if (value == "inProgress")
-                gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
+                gameState.ScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
             else if (value == "failed")
-                gScenarioCompletedCompanyValue = COMPANY_VALUE_ON_FAILED_OBJECTIVE;
+                gameState.ScenarioCompletedCompanyValue = COMPANY_VALUE_ON_FAILED_OBJECTIVE;
             else if (value == "completed")
-                gScenarioCompletedCompanyValue = gCompanyValue;
+                gameState.ScenarioCompletedCompanyValue = gCompanyValue;
         }
 
         money64 companyValueRecord_get() const
         {
-            return gScenarioCompanyValueRecord;
+            return GetGameState().ScenarioCompanyValueRecord;
         }
         void companyValueRecord_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
-            gScenarioCompanyValueRecord = value;
+            GetGameState().ScenarioCompanyValueRecord = value;
         }
 
     public:

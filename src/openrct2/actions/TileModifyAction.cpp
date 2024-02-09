@@ -61,7 +61,7 @@ GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
 {
     if (!LocationValid(_loc))
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_LAND_NOT_OWNED_BY_PARK, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS, STR_OFF_EDGE_OF_MAP);
     }
     auto res = GameActions::Result();
     switch (_setting)
@@ -231,7 +231,8 @@ GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
         }
         default:
             LOG_ERROR("invalid instruction");
-            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_VALUE_OUT_OF_RANGE);
     }
 
     res.Position.x = _loc.x;

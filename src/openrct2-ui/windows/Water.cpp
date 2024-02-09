@@ -12,10 +12,13 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/GameState.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
+
+using namespace OpenRCT2;
 
 static constexpr StringId WINDOW_TITLE = STR_WATER;
 static constexpr int32_t WH = 77;
@@ -152,7 +155,7 @@ public:
             DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
         }
 
-        if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             // Draw raise cost amount
             screenCoords = { widgets[WIDX_PREVIEW].midX() + windowPos.x, widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 };

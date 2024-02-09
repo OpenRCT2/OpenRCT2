@@ -483,6 +483,14 @@ void FinishObjectSelection()
     {
         SetEveryRideTypeInvented();
         SetEveryRideEntryInvented();
+
+        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+        gLastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
+        if (gLastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
+        {
+            gLastEntranceStyle = 0;
+        }
+
         gEditorStep = EditorStep::RollercoasterDesigner;
         GfxInvalidateScreen();
     }

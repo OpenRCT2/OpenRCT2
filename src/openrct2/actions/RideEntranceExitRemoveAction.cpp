@@ -70,7 +70,7 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
     if (ride == nullptr)
     {
         LOG_WARNING("Invalid ride id %u for entrance/exit removal", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
     }
 
     if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
@@ -85,7 +85,7 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
 
     if (!LocationValid(_loc))
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_LAND_NOT_OWNED_BY_PARK, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
     }
 
     auto* entranceElement = FindEntranceElement(
@@ -94,14 +94,16 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
     // If we are trying to remove a ghost and the element we found is real, return an error, but don't log a warning
     if (entranceElement != nullptr && (GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(entranceElement->IsGhost()))
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_GHOST_ELEMENT_NOT_FOUND);
     }
     else if (entranceElement == nullptr)
     {
         LOG_WARNING(
-            "Track Element not found. x = %d, y = %d, ride = %u, station = %u", _loc.x, _loc.y, _rideIndex.ToUnderlying(),
+            "Entrance element not found. x = %d, y = %d, ride = %u, station = %u", _loc.x, _loc.y, _rideIndex.ToUnderlying(),
             _stationNum.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ENTRANCE_ELEMENT_NOT_FOUND);
     }
 
     return GameActions::Result();
@@ -113,7 +115,7 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
     if (ride == nullptr)
     {
         LOG_WARNING("Invalid ride id %u for entrance/exit removal", _rideIndex.ToUnderlying());
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_RIDE_NOT_FOUND);
     }
 
     const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
@@ -130,14 +132,16 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
     // If we are trying to remove a ghost and the element we found is real, return an error, but don't log a warning
     if (entranceElement != nullptr && isGhost && !(entranceElement->IsGhost()))
     {
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_GHOST_ELEMENT_NOT_FOUND);
     }
     else if (entranceElement == nullptr)
     {
         LOG_WARNING(
-            "Track Element not found. x = %d, y = %d, ride = %u, station = %d", _loc.x, _loc.y, _rideIndex.ToUnderlying(),
+            "Entrance element not found. x = %d, y = %d, ride = %u, station = %d", _loc.x, _loc.y, _rideIndex.ToUnderlying(),
             _stationNum);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ENTRANCE_ELEMENT_NOT_FOUND);
     }
 
     auto res = GameActions::Result();

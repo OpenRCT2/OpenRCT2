@@ -29,6 +29,8 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 
+using namespace OpenRCT2;
+
 static constexpr StringId WINDOW_TITLE = STR_OBJECTIVE_SELECTION;
 static constexpr int32_t WH = 229;
 static constexpr int32_t WW = 450;
@@ -388,7 +390,8 @@ private:
      */
     void SetObjective(int32_t objective)
     {
-        gScenarioObjective.Type = objective;
+        auto& gameState = GetGameState();
+        gameState.ScenarioObjective.Type = objective;
         Invalidate();
 
         // Set default objective arguments
@@ -400,49 +403,49 @@ private:
             case OBJECTIVE_10_ROLLERCOASTERS:
                 break;
             case OBJECTIVE_GUESTS_BY:
-                gScenarioObjective.Year = 3;
-                gScenarioObjective.NumGuests = 1500;
+                gameState.ScenarioObjective.Year = 3;
+                gameState.ScenarioObjective.NumGuests = 1500;
                 break;
             case OBJECTIVE_PARK_VALUE_BY:
-                gScenarioObjective.Year = 3;
-                gScenarioObjective.Currency = 50000.00_GBP;
+                gameState.ScenarioObjective.Year = 3;
+                gameState.ScenarioObjective.Currency = 50000.00_GBP;
                 break;
             case OBJECTIVE_GUESTS_AND_RATING:
-                gScenarioObjective.NumGuests = 2000;
+                gameState.ScenarioObjective.NumGuests = 2000;
                 break;
             case OBJECTIVE_MONTHLY_RIDE_INCOME:
-                gScenarioObjective.Currency = 10000.00_GBP;
+                gameState.ScenarioObjective.Currency = 10000.00_GBP;
                 break;
             case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-                gScenarioObjective.MinimumLength = 1200;
+                gameState.ScenarioObjective.MinimumLength = 1200;
                 break;
             case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-                gScenarioObjective.MinimumExcitement = FIXED_2DP(6, 70);
+                gameState.ScenarioObjective.MinimumExcitement = FIXED_2DP(6, 70);
                 break;
             case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-                gScenarioObjective.Currency = 50000.00_GBP;
+                gameState.ScenarioObjective.Currency = 50000.00_GBP;
                 break;
             case OBJECTIVE_MONTHLY_FOOD_INCOME:
-                gScenarioObjective.Currency = 1000.00_GBP;
+                gameState.ScenarioObjective.Currency = 1000.00_GBP;
                 break;
         }
     }
 
     void ShowObjectiveDropdown()
     {
+        const auto& gameState = GetGameState();
         int32_t numItems = 0, objectiveType;
         Widget* dropdownWidget;
-        uint32_t parkFlags;
 
         dropdownWidget = &widgets[WIDX_OBJECTIVE];
-        parkFlags = gParkFlags;
 
         for (auto i = 0; i < OBJECTIVE_COUNT; i++)
         {
             if (i == OBJECTIVE_NONE || i == OBJECTIVE_BUILD_THE_BEST)
                 continue;
 
-            const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY) || !ObjectiveNeedsMoney(i);
+            const bool objectiveAllowedByMoneyUsage = !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+                || !ObjectiveNeedsMoney(i);
             // This objective can only work if the player can ask money for rides.
             const bool objectiveAllowedByPaymentSettings = (i != OBJECTIVE_MONTHLY_RIDE_INCOME) || ParkRidePricesUnlocked();
             if (objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings)
@@ -457,7 +460,7 @@ private:
             { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1, colours[1],
             0, Dropdown::Flag::StayOpen, numItems, dropdownWidget->width() - 3);
 
-        objectiveType = gScenarioObjective.Type;
+        objectiveType = gameState.ScenarioObjective.Type;
         for (int32_t j = 0; j < numItems; j++)
         {
             if (gDropdownItems[j].Args - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType)
@@ -483,67 +486,68 @@ private:
         WindowDropdownShowTextCustomWidth(
             { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1, colours[1],
             0, Dropdown::Flag::StayOpen, 5, dropdownWidget->width() - 3);
-        Dropdown::SetChecked(gScenarioCategory, true);
+        Dropdown::SetChecked(GetGameState().ScenarioCategory, true);
     }
 
     void Arg1Increase()
     {
-        switch (gScenarioObjective.Type)
+        auto& gameState = GetGameState();
+        switch (gameState.ScenarioObjective.Type)
         {
             case OBJECTIVE_PARK_VALUE_BY:
             case OBJECTIVE_MONTHLY_RIDE_INCOME:
             case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-                if (gScenarioObjective.Currency >= ObjectiveCurrencyLoanAndValueMax)
+                if (gameState.ScenarioObjective.Currency >= ObjectiveCurrencyLoanAndValueMax)
                 {
                     ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.Currency += ObjectiveCurrencyLoanAndValueAdjustment;
+                    gameState.ScenarioObjective.Currency += ObjectiveCurrencyLoanAndValueAdjustment;
                     Invalidate();
                 }
                 break;
             case OBJECTIVE_MONTHLY_FOOD_INCOME:
-                if (gScenarioObjective.Currency >= ObjectiveCurrencyFoodMax)
+                if (gameState.ScenarioObjective.Currency >= ObjectiveCurrencyFoodMax)
                 {
                     ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.Currency += ObjectiveCurrencyFoodAdjustment;
+                    gameState.ScenarioObjective.Currency += ObjectiveCurrencyFoodAdjustment;
                     Invalidate();
                 }
                 break;
             case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-                if (gScenarioObjective.MinimumLength >= ObjectiveLengthMax)
+                if (gameState.ScenarioObjective.MinimumLength >= ObjectiveLengthMax)
                 {
                     ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.MinimumLength += ObjectiveLengthAdjustment;
+                    gameState.ScenarioObjective.MinimumLength += ObjectiveLengthAdjustment;
                     Invalidate();
                 }
                 break;
             case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-                if (gScenarioObjective.MinimumExcitement >= ObjectiveExcitementMax)
+                if (gameState.ScenarioObjective.MinimumExcitement >= ObjectiveExcitementMax)
                 {
                     ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.MinimumExcitement += ObjectiveExcitementAdjustment;
+                    gameState.ScenarioObjective.MinimumExcitement += ObjectiveExcitementAdjustment;
                     Invalidate();
                 }
                 break;
             default:
-                if (gScenarioObjective.NumGuests >= ObjectiveGuestsMax)
+                if (gameState.ScenarioObjective.NumGuests >= ObjectiveGuestsMax)
                 {
                     ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.NumGuests += ObjectiveGuestsAdjustment;
+                    gameState.ScenarioObjective.NumGuests += ObjectiveGuestsAdjustment;
                     Invalidate();
                 }
                 break;
@@ -552,62 +556,63 @@ private:
 
     void Arg1Decrease()
     {
-        switch (gScenarioObjective.Type)
+        auto& gameState = GetGameState();
+        switch (gameState.ScenarioObjective.Type)
         {
             case OBJECTIVE_PARK_VALUE_BY:
             case OBJECTIVE_MONTHLY_RIDE_INCOME:
             case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-                if (gScenarioObjective.Currency <= ObjectiveCurrencyLoanAndValueMin)
+                if (gameState.ScenarioObjective.Currency <= ObjectiveCurrencyLoanAndValueMin)
                 {
                     ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.Currency -= ObjectiveCurrencyLoanAndValueAdjustment;
+                    gameState.ScenarioObjective.Currency -= ObjectiveCurrencyLoanAndValueAdjustment;
                     Invalidate();
                 }
                 break;
             case OBJECTIVE_MONTHLY_FOOD_INCOME:
-                if (gScenarioObjective.Currency <= ObjectiveCurrencyFoodMin)
+                if (gameState.ScenarioObjective.Currency <= ObjectiveCurrencyFoodMin)
                 {
                     ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.Currency -= ObjectiveCurrencyFoodAdjustment;
+                    gameState.ScenarioObjective.Currency -= ObjectiveCurrencyFoodAdjustment;
                     Invalidate();
                 }
                 break;
             case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-                if (gScenarioObjective.MinimumLength <= ObjectiveLengthMin)
+                if (gameState.ScenarioObjective.MinimumLength <= ObjectiveLengthMin)
                 {
                     ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.MinimumLength -= ObjectiveLengthAdjustment;
+                    gameState.ScenarioObjective.MinimumLength -= ObjectiveLengthAdjustment;
                     Invalidate();
                 }
                 break;
             case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-                if (gScenarioObjective.MinimumExcitement <= ObjectiveExcitementMin)
+                if (gameState.ScenarioObjective.MinimumExcitement <= ObjectiveExcitementMin)
                 {
                     ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.MinimumExcitement -= ObjectiveExcitementAdjustment;
+                    gameState.ScenarioObjective.MinimumExcitement -= ObjectiveExcitementAdjustment;
                     Invalidate();
                 }
                 break;
             default:
-                if (gScenarioObjective.NumGuests <= ObjectiveGuestsMin)
+                if (gameState.ScenarioObjective.NumGuests <= ObjectiveGuestsMin)
                 {
                     ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
                 }
                 else
                 {
-                    gScenarioObjective.NumGuests -= ObjectiveGuestsAdjustment;
+                    gameState.ScenarioObjective.NumGuests -= ObjectiveGuestsAdjustment;
                     Invalidate();
                 }
                 break;
@@ -616,26 +621,28 @@ private:
 
     void Arg2Increase()
     {
-        if (gScenarioObjective.Year >= ObjectiveYearMax)
+        auto& gameState = GetGameState();
+        if (gameState.ScenarioObjective.Year >= ObjectiveYearMax)
         {
             ContextShowError(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
         }
         else
         {
-            gScenarioObjective.Year += ObjectiveYearAdjustment;
+            gameState.ScenarioObjective.Year += ObjectiveYearAdjustment;
             Invalidate();
         }
     }
 
     void Arg2Decrease()
     {
-        if (gScenarioObjective.Year <= ObjectiveYearMin)
+        auto& gameState = GetGameState();
+        if (gameState.ScenarioObjective.Year <= ObjectiveYearMin)
         {
             ContextShowError(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
         }
         else
         {
-            gScenarioObjective.Year -= ObjectiveYearAdjustment;
+            gameState.ScenarioObjective.Year -= ObjectiveYearAdjustment;
             Invalidate();
         }
     }
@@ -648,6 +655,7 @@ private:
      */
     void OnMouseUpMain(WidgetIndex widgetIndex)
     {
+        const auto& gameState = GetGameState();
         switch (widgetIndex)
         {
             case WIDX_PARK_NAME:
@@ -659,13 +667,13 @@ private:
             }
             case WIDX_SCENARIO_NAME:
                 WindowTextInputRawOpen(
-                    this, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, {}, gScenarioName.c_str(),
+                    this, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, {}, gameState.ScenarioName.c_str(),
                     ScenarioNameMaxLength);
                 break;
             case WIDX_DETAILS:
                 WindowTextInputRawOpen(
-                    this, WIDX_DETAILS, STR_PARK_SCENARIO_DETAILS, STR_ENTER_SCENARIO_DESCRIPTION, {}, gScenarioDetails.c_str(),
-                    ScenarioDetailsNameMaxLength);
+                    this, WIDX_DETAILS, STR_PARK_SCENARIO_DETAILS, STR_ENTER_SCENARIO_DESCRIPTION, {},
+                    gameState.ScenarioDetails.c_str(), ScenarioDetailsNameMaxLength);
                 break;
         }
     }
@@ -714,6 +722,7 @@ private:
      */
     void OnDropdownMain(WidgetIndex widgetIndex, int32_t dropdownIndex)
     {
+        auto& gameState = GetGameState();
         uint8_t newObjectiveType;
 
         if (dropdownIndex == -1)
@@ -724,13 +733,13 @@ private:
             case WIDX_OBJECTIVE_DROPDOWN:
                 // TODO: Don't rely on string ID order
                 newObjectiveType = static_cast<uint8_t>(gDropdownItems[dropdownIndex].Args - STR_OBJECTIVE_DROPDOWN_NONE);
-                if (gScenarioObjective.Type != newObjectiveType)
+                if (gameState.ScenarioObjective.Type != newObjectiveType)
                     SetObjective(newObjectiveType);
                 break;
             case WIDX_CATEGORY_DROPDOWN:
-                if (gScenarioCategory != static_cast<uint8_t>(dropdownIndex))
+                if (gameState.ScenarioCategory != static_cast<uint8_t>(dropdownIndex))
                 {
-                    gScenarioCategory = static_cast<SCENARIO_CATEGORY>(dropdownIndex);
+                    gameState.ScenarioCategory = static_cast<SCENARIO_CATEGORY>(dropdownIndex);
                     Invalidate();
                 }
                 break;
@@ -743,18 +752,17 @@ private:
      */
     void OnUpdateMain()
     {
-        uint32_t parkFlags;
         uint8_t objectiveType;
 
         frame_no++;
         OnPrepareDraw();
         InvalidateWidget(WIDX_TAB_1);
 
-        parkFlags = gParkFlags;
-        objectiveType = gScenarioObjective.Type;
+        objectiveType = GetGameState().ScenarioObjective.Type;
 
         // Check if objective is allowed by money and pay-per-ride settings.
-        const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY) || !ObjectiveNeedsMoney(objectiveType);
+        const bool objectiveAllowedByMoneyUsage = !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+            || !ObjectiveNeedsMoney(objectiveType);
         // This objective can only work if the player can ask money for rides.
         const bool objectiveAllowedByPaymentSettings = (objectiveType != OBJECTIVE_MONTHLY_RIDE_INCOME)
             || ParkRidePricesUnlocked();
@@ -774,6 +782,7 @@ private:
         if (text.empty())
             return;
 
+        auto& gameState = GetGameState();
         switch (widgetIndex)
         {
             case WIDX_PARK_NAME:
@@ -781,19 +790,19 @@ private:
                 auto action = ParkSetNameAction(std::string(text));
                 GameActions::Execute(&action);
 
-                if (gScenarioName.empty())
+                if (gameState.ScenarioName.empty())
                 {
                     auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-                    gScenarioName = park.Name;
+                    gameState.ScenarioName = park.Name;
                 }
                 break;
             }
             case WIDX_SCENARIO_NAME:
-                gScenarioName = text;
+                gameState.ScenarioName = text;
                 Invalidate();
                 break;
             case WIDX_DETAILS:
-                gScenarioDetails = text;
+                gameState.ScenarioDetails = text;
                 Invalidate();
                 break;
         }
@@ -805,6 +814,7 @@ private:
      */
     void OnPrepareDrawMain()
     {
+        auto& gameState = GetGameState();
         auto widgetsToSet = window_editor_objective_options_widgets[page];
         if (widgets != widgetsToSet)
         {
@@ -814,7 +824,7 @@ private:
 
         SetPressedTab();
 
-        switch (gScenarioObjective.Type)
+        switch (gameState.ScenarioObjective.Type)
         {
             case OBJECTIVE_GUESTS_BY:
             case OBJECTIVE_PARK_VALUE_BY:
@@ -861,6 +871,7 @@ private:
      */
     void OnDrawMain(DrawPixelInfo& dpi)
     {
+        const auto& gameState = GetGameState();
         int32_t widthToSet;
         StringId stringId;
 
@@ -874,14 +885,14 @@ private:
         // Objective value
         screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_OBJECTIVE].left + 1, widgets[WIDX_OBJECTIVE].top };
         auto ft = Formatter();
-        ft.Add<StringId>(ObjectiveDropdownOptionNames[gScenarioObjective.Type]);
+        ft.Add<StringId>(ObjectiveDropdownOptionNames[gameState.ScenarioObjective.Type]);
         DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
 
         if (widgets[WIDX_OBJECTIVE_ARG_1].type != WindowWidgetType::Empty)
         {
             // Objective argument 1 label
             screenCoords = windowPos + ScreenCoordsXY{ 28, widgets[WIDX_OBJECTIVE_ARG_1].top };
-            switch (gScenarioObjective.Type)
+            switch (gameState.ScenarioObjective.Type)
             {
                 case OBJECTIVE_GUESTS_BY:
                 case OBJECTIVE_GUESTS_AND_RATING:
@@ -910,31 +921,31 @@ private:
             screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_OBJECTIVE_ARG_1].left + 1, widgets[WIDX_OBJECTIVE_ARG_1].top };
             ft = Formatter();
-            switch (gScenarioObjective.Type)
+            switch (gameState.ScenarioObjective.Type)
             {
                 case OBJECTIVE_GUESTS_BY:
                 case OBJECTIVE_GUESTS_AND_RATING:
                     stringId = STR_WINDOW_COLOUR_2_COMMA16;
-                    ft.Add<uint16_t>(gScenarioObjective.NumGuests);
+                    ft.Add<uint16_t>(gameState.ScenarioObjective.NumGuests);
                     break;
                 case OBJECTIVE_PARK_VALUE_BY:
                 case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
                 case OBJECTIVE_MONTHLY_RIDE_INCOME:
                 case OBJECTIVE_MONTHLY_FOOD_INCOME:
                     stringId = STR_CURRENCY_FORMAT_LABEL;
-                    ft.Add<money64>(gScenarioObjective.Currency);
+                    ft.Add<money64>(gameState.ScenarioObjective.Currency);
                     break;
                 case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
                     stringId = STR_WINDOW_COLOUR_2_LENGTH;
-                    ft.Add<uint16_t>(gScenarioObjective.MinimumLength);
+                    ft.Add<uint16_t>(gameState.ScenarioObjective.MinimumLength);
                     break;
                 case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
                     stringId = STR_WINDOW_COLOUR_2_COMMA2DP32;
-                    ft.Add<uint16_t>(gScenarioObjective.MinimumExcitement);
+                    ft.Add<uint16_t>(gameState.ScenarioObjective.MinimumExcitement);
                     break;
                 default:
                     stringId = STR_WINDOW_COLOUR_2_COMMA2DP32;
-                    ft.Add<money64>(gScenarioObjective.Currency);
+                    ft.Add<money64>(gameState.ScenarioObjective.Currency);
                     break;
             }
             DrawTextBasic(dpi, screenCoords, stringId, ft, COLOUR_BLACK);
@@ -950,7 +961,7 @@ private:
             screenCoords = windowPos
                 + ScreenCoordsXY{ widgets[WIDX_OBJECTIVE_ARG_2].left + 1, widgets[WIDX_OBJECTIVE_ARG_2].top };
             ft = Formatter();
-            ft.Add<uint16_t>((gScenarioObjective.Year * MONTH_COUNT) - 1);
+            ft.Add<uint16_t>((gameState.ScenarioObjective.Year * MONTH_COUNT) - 1);
             DrawTextBasic(dpi, screenCoords, STR_WINDOW_OBJECTIVE_VALUE_DATE, ft);
         }
 
@@ -974,7 +985,7 @@ private:
 
         ft = Formatter();
         ft.Add<StringId>(STR_STRING);
-        ft.Add<const char*>(gScenarioName.c_str());
+        ft.Add<const char*>(gameState.ScenarioName.c_str());
         DrawTextEllipsised(dpi, screenCoords, widthToSet, STR_WINDOW_SCENARIO_NAME, ft);
 
         // Scenario details label
@@ -987,7 +998,7 @@ private:
 
         ft = Formatter();
         ft.Add<StringId>(STR_STRING);
-        ft.Add<const char*>(gScenarioDetails.c_str());
+        ft.Add<const char*>(gameState.ScenarioDetails.c_str());
         DrawTextWrapped(dpi, screenCoords, widthToSet, STR_BLACK_STRING, ft);
 
         // Scenario category label
@@ -997,7 +1008,7 @@ private:
         // Scenario category value
         screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_CATEGORY].left + 1, widgets[WIDX_CATEGORY].top };
         ft = Formatter();
-        ft.Add<StringId>(ScenarioCategoryStringIds[gScenarioCategory]);
+        ft.Add<StringId>(ScenarioCategoryStringIds[gameState.ScenarioCategory]);
         DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
     }
 

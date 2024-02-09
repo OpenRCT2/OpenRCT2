@@ -3698,6 +3698,22 @@ STR_6593    :Remover cercas do parque
 STR_6594    :Inspetor de azulejo: Mudar inclinação da parede
 STR_6595    :{WINDOW_COLOUR_2}Autor: {BLACK}{STRING}
 STR_6596    :{WINDOW_COLOUR_2}Autores: {BLACK}{STRING}
+STR_6597    :Parâmetro inválido
+STR_6598    :Valor fora do intervalo
+STR_6599    :Elemento fantasma não encontrado
+STR_6600    :Balão não encontrado
+STR_6601    :Funcionário não encontrado
+STR_6602    :Atração não encontrada
+STR_6603    :Objeto de entrada de atração não encontrado
+STR_6604    :Jogador não encontrado
+STR_6605    :Elemento de entrada não encontrado
+STR_6606    :Elemento de superfície não encontrado
+STR_6607    :Elemento de azulejo não encontrado
+STR_6608    :Elemento de pista não encontrado
+STR_6609    :Bloco de pista não encontrado
+STR_6610    :Elemento de caminho não encontrado
+STR_6611    :Elemento de muro não encontrado
+STR_6612    :Elemento de banner não encontrado
 
 #############
 # Scenarios #

@@ -14,6 +14,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/core/Guard.hpp>
@@ -781,7 +782,7 @@ public:
         }
 
         auto [name, price] = GetNameAndPrice(selectedSceneryEntry);
-        if (price != MONEY64_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (price != MONEY64_UNDEFINED && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto ft = Formatter();
             ft.Add<money64>(price);

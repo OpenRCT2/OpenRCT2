@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <SDL.h>
 #include <SDL_keycode.h>
 #include <algorithm>
 #include <iterator>
@@ -291,7 +292,7 @@ public:
         // IME composition
         if (!String::IsNullOrEmpty(gTextInput->ImeBuffer))
         {
-            DrawIMEComposition(dpi, cursorX, cursorY);
+            IMEComposition(cursorX, cursorY);
         }
     }
 
@@ -316,18 +317,10 @@ public:
     }
 
 private:
-    static void DrawIMEComposition(DrawPixelInfo& dpi, int32_t cursorX, int32_t cursorY)
+    static void IMEComposition(int32_t cursorX, int32_t cursorY)
     {
-        int compositionWidth = GfxGetStringWidth(gTextInput->ImeBuffer, FontStyle::Medium);
-        ScreenCoordsXY screenCoords(cursorX - (compositionWidth / 2), cursorY + 13);
-        int width = compositionWidth;
-        int height = 10;
-
-        GfxFillRect(
-            dpi, { screenCoords - ScreenCoordsXY{ 1, 1 }, screenCoords + ScreenCoordsXY{ width + 1, height + 1 } },
-            PALETTE_INDEX_12);
-        GfxFillRect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ width, height } }, PALETTE_INDEX_0);
-        GfxDrawString(dpi, screenCoords, static_cast<const char*>(gTextInput->ImeBuffer), { COLOUR_DARK_GREEN });
+        SDL_Rect rect = { cursorX, cursorY, 100, 100 };
+        SDL_SetTextInputRect(&rect);
     }
 
     void ExecuteCallback(bool hasValue)

@@ -12,6 +12,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
@@ -19,6 +20,8 @@
 #include <openrct2/network/network.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/windows/Intent.h>
+
+using namespace OpenRCT2;
 
 static constexpr int32_t WH_SAVE = 54;
 static constexpr int32_t WW_SAVE = 260;
@@ -99,7 +102,7 @@ public:
         if (NetworkGetMode() == NETWORK_MODE_NONE)
         {
             gGamePaused |= GAME_PAUSED_MODAL;
-            OpenRCT2::Audio::StopAll();
+            Audio::StopAll();
         }
 
         WindowInvalidateByClass(WindowClass::TopToolbar);
@@ -126,7 +129,7 @@ public:
         if (NetworkGetMode() == NETWORK_MODE_NONE)
         {
             gGamePaused &= ~GAME_PAUSED_MODAL;
-            OpenRCT2::Audio::Resume();
+            Audio::Resume();
         }
 
         WindowInvalidateByClass(WindowClass::TopToolbar);
@@ -159,7 +162,7 @@ public:
                 {
                     intent = std::make_unique<Intent>(WindowClass::Loadsave);
                     intent->PutExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-                    intent->PutExtra(INTENT_EXTRA_PATH, gScenarioName);
+                    intent->PutExtra(INTENT_EXTRA_PATH, GetGameState().ScenarioName);
                 }
                 else
                 {

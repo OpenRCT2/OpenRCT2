@@ -9,6 +9,7 @@
 
 #include "GuestPathfinding.h"
 
+#include "../GameState.h"
 #include "../core/Guard.hpp"
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"
@@ -1643,7 +1644,7 @@ static std::optional<CoordsXYZ> GetNearestParkEntrance(const CoordsXY& loc)
 {
     std::optional<CoordsXYZ> chosenEntrance = std::nullopt;
     uint16_t nearestDist = 0xFFFF;
-    for (const auto& parkEntrance : gParkEntrances)
+    for (const auto& parkEntrance : GetGameState().ParkEntrances)
     {
         auto dist = abs(parkEntrance.x - loc.x) + abs(parkEntrance.y - loc.y);
         if (dist < nearestDist)

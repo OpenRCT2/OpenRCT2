@@ -14,6 +14,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/LandBuyRightsAction.h>
 #include <openrct2/core/String.hpp>
@@ -21,6 +22,8 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
+
+using namespace OpenRCT2;
 
 static constexpr StringId WINDOW_TITLE = STR_LAND_RIGHTS;
 static constexpr int32_t WH = 94;
@@ -225,7 +228,7 @@ public:
         }
 
         // Draw cost amount
-        if (_landRightsCost != MONEY64_UNDEFINED && _landRightsCost != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (_landRightsCost != MONEY64_UNDEFINED && _landRightsCost != 0 && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto ft = Formatter();
             ft.Add<money64>(_landRightsCost);

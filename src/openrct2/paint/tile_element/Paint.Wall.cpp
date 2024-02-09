@@ -10,6 +10,7 @@
 #include "../Paint.h"
 
 #include "../../Game.h"
+#include "../../GameState.h"
 #include "../../common.h"
 #include "../../config/Config.h"
 #include "../../drawing/Drawing.h"
@@ -27,6 +28,8 @@
 #include "../../world/TileInspector.h"
 #include "../../world/Wall.h"
 #include "Paint.TileElement.h"
+
+using namespace OpenRCT2;
 
 static constexpr uint8_t DirectionToDoorImageOffset0[] = {
     2, 2, 22, 26, 30, 34, 34, 34, 34, 34, 30, 26, 22, 2, 6, 2, 2, 2, 6, 10, 14, 18, 18, 18, 18, 18, 14, 10, 6, 2, 22, 2,
@@ -137,7 +140,7 @@ static void PaintWallWall(
 {
     PROFILED_FUNCTION();
 
-    auto frameNum = (wallEntry.flags2 & WALL_SCENERY_2_ANIMATED) ? (gCurrentTicks & 7) * 2 : 0;
+    auto frameNum = (wallEntry.flags2 & WALL_SCENERY_2_ANIMATED) ? (GetGameState().CurrentTicks & 7) * 2 : 0;
     auto imageIndex = wallEntry.image + imageOffset + frameNum;
     PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), offset, boundBox);
     if ((wallEntry.flags & WALL_SCENERY_HAS_GLASS) && !isGhost)
@@ -184,7 +187,7 @@ static void PaintWallScrollingText(
     }
 
     auto stringWidth = GfxGetStringWidth(signString, FontStyle::Tiny);
-    auto scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
+    auto scroll = stringWidth > 0 ? (GetGameState().CurrentTicks / 2) % stringWidth : 0;
     auto imageId = ScrollingTextSetup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollingMode, textPaletteIndex);
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 8 }, { boundsOffset, { 1, 1, 13 } });
 }

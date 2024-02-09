@@ -3697,6 +3697,22 @@ STR_6593    :Parkafscheiding verwijderen
 STR_6594    :Vakinspecteur: Helling muur instellen
 STR_6595    :{WINDOW_COLOUR_2}Auteur: {BLACK}{STRING}
 STR_6596    :{WINDOW_COLOUR_2}Auteurs: {BLACK}{STRING}
+STR_6597    :Ongeldige parameter.
+STR_6598    :Waarde valt buiten bereik.
+STR_6599    :Spookelement niet gevonden.
+STR_6600    :Ballon niet gevonden.
+STR_6601    :Personeelslid niet gevonden.
+STR_6602    :Attractie niet gevonden.
+STR_6603    :Attractie-object niet gevonden.
+STR_6604    :Speler niet gevonden.
+STR_6605    :Ingangselement niet gevonden.
+STR_6606    :Oppervlakte-element niet gevonden.
+STR_6607    :Kaartelement niet gevonden.
+STR_6608    :Baanelement niet gevonden.
+STR_6609    :Baanblok niet gevonden.
+STR_6610    :Padelement niet gevonden.
+STR_6611    :Muurelement niet gevonden.
+STR_6612    :Lichtkrantelement niet gevonden.
 
 #############
 # Scenarios #
@@ -4345,7 +4361,7 @@ STR_DTLS    :Je bent een succesvol zakenman op een lange sabbatical. Die wil je 
 <South America - Inca Lost City>
 STR_SCNR    :Zuid-Amerika - Verloren Incastad
 STR_PARK    :Lost City Founder
-STR_DTLS    :Om nog meer toeristen te trekken moet je een park bouwen dat past bij de omgeving. Dat betekent ook dat er hoogtebeperkingen zijn.
+STR_DTLS    :Om nog meer toeristen te trekken moet je een park bouwen dat past bij de omgeving.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :Zuid-Amerika - Regenwoudplateau

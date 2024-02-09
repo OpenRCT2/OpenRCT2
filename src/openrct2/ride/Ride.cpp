@@ -13,6 +13,7 @@
 #include "../Context.h"
 #include "../Editor.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../actions/ResultWithMessage.h"
@@ -1128,7 +1129,7 @@ void Ride::Update()
         // Breakdown updates originally were performed when (id == (gCurrentTicks / 2) & 0xFF)
         // with the increased MAX_RIDES the update is tied to the first byte of the id this allows
         // for identical balance with vanilla.
-        const auto updatingRideByte = static_cast<uint8_t>((gCurrentTicks / 2) & 0xFF);
+        const auto updatingRideByte = static_cast<uint8_t>((GetGameState().CurrentTicks / 2) & 0xFF);
         if (updatingRideByte == static_cast<uint8_t>(id.ToUnderlying()))
             RideBreakdownStatusUpdate(*this);
     }
@@ -1252,7 +1253,7 @@ static constexpr CoordsXY ride_spiral_slide_main_tile_offset[][4] = {
 
 void UpdateSpiralSlide(Ride& ride)
 {
-    if (gCurrentTicks & 3)
+    if (GetGameState().CurrentTicks & 3)
         return;
     if (ride.slide_in_use == 0)
         return;
@@ -1312,7 +1313,7 @@ static uint8_t _breakdownProblemProbabilities[] = {
  */
 static void RideInspectionUpdate(Ride& ride)
 {
-    if (gCurrentTicks & 2047)
+    if (GetGameState().CurrentTicks & 2047)
         return;
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
         return;
@@ -1377,7 +1378,8 @@ static int32_t GetAgePenalty(const Ride& ride)
  */
 static void RideBreakdownUpdate(Ride& ride)
 {
-    if (gCurrentTicks & 255)
+    const auto currentTicks = GetGameState().CurrentTicks;
+    if (currentTicks & 255)
         return;
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
@@ -1386,7 +1388,7 @@ static void RideBreakdownUpdate(Ride& ride)
     if (ride.lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
         ride.downtime_history[0]++;
 
-    if (!(gCurrentTicks & 8191))
+    if (!(currentTicks & 8191))
     {
         int32_t totalDowntime = 0;
 
@@ -1889,7 +1891,7 @@ static bool RideMusicBreakdownEffect(Ride& ride)
     {
         if (ride.breakdown_reason_pending == BREAKDOWN_CONTROL_FAILURE)
         {
-            if (!(gCurrentTicks & 7))
+            if (!(GetGameState().CurrentTicks & 7))
                 if (ride.breakdown_sound_modifier != 255)
                     ride.breakdown_sound_modifier++;
         }
@@ -2029,13 +2031,15 @@ static void RideMeasurementUpdate(Ride& ride, RideMeasurement& measurement)
     if (measurement.current_item >= RideMeasurement::MAX_ITEMS)
         return;
 
+    const auto currentTicks = GetGameState().CurrentTicks;
+
     if (measurement.flags & RIDE_MEASUREMENT_FLAG_G_FORCES)
     {
         auto gForces = vehicle->GetGForces();
         gForces.VerticalG = std::clamp(gForces.VerticalG / 8, -127, 127);
         gForces.LateralG = std::clamp(gForces.LateralG / 8, -127, 127);
 
-        if (gCurrentTicks & 1)
+        if (currentTicks & 1)
         {
             gForces.VerticalG = (gForces.VerticalG + measurement.vertical[measurement.current_item]) / 2;
             gForces.LateralG = (gForces.LateralG + measurement.lateral[measurement.current_item]) / 2;
@@ -2048,7 +2052,7 @@ static void RideMeasurementUpdate(Ride& ride, RideMeasurement& measurement)
     auto velocity = std::min(std::abs((vehicle->velocity * 5) >> 16), 255);
     auto altitude = std::min(vehicle->z / 8, 255);
 
-    if (gCurrentTicks & 1)
+    if (currentTicks & 1)
     {
         velocity = (velocity + measurement.velocity[measurement.current_item]) / 2;
         altitude = (altitude + measurement.altitude[measurement.current_item]) / 2;
@@ -2057,7 +2061,7 @@ static void RideMeasurementUpdate(Ride& ride, RideMeasurement& measurement)
     measurement.velocity[measurement.current_item] = velocity & 0xFF;
     measurement.altitude[measurement.current_item] = altitude & 0xFF;
 
-    if (gCurrentTicks & 1)
+    if (currentTicks & 1)
     {
         measurement.current_item++;
         measurement.num_items = std::max(measurement.num_items, measurement.current_item);
@@ -2162,7 +2166,7 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
         assert(measurement != nullptr);
     }
 
-    measurement->last_use_tick = gCurrentTicks;
+    measurement->last_use_tick = GetGameState().CurrentTicks;
     if (measurement->flags & 1)
     {
         return { measurement.get(), { STR_EMPTY, {} } };
@@ -5309,7 +5313,7 @@ bool Ride::IsRide() const
 
 money64 RideGetPrice(const Ride& ride)
 {
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
         return 0;
     if (ride.IsRide())
     {
