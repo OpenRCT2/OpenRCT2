@@ -99,7 +99,8 @@ namespace OpenRCT2::Ui
                     HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", 0, KEY_READ, &hKey)
                 == ERROR_SUCCESS)
             {
-                if (RegQueryValueExW(hKey, L"AppsUseLightTheme", 0, &dwType, reinterpret_cast<LPBYTE>(&value), &length) == ERROR_SUCCESS)
+                if (RegQueryValueExW(hKey, L"AppsUseLightTheme", 0, &dwType, reinterpret_cast<LPBYTE>(&value), &length)
+                    == ERROR_SUCCESS)
                 {
                     if (value == 0)
                     {
