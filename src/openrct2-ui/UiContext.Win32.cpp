@@ -15,7 +15,7 @@
 #    include <shellapi.h>
 #    include <basetsd.h>
 #    include <commctrl.h>
-#    pragma comment(lib, "Comctl32.lib")
+#    pragma comment(lib, "comctl32.lib")
 #    include <dwmapi.h>
 #    pragma comment(lib, "dwmapi.lib")
 // clang-format on
@@ -85,8 +85,7 @@ namespace OpenRCT2::Ui
 
         bool AppsUseDarkTheme()
         {
-            // This implementation was taken from SDL 3.x; future versions of SDL will handle this automacially (see
-            // WIN_UpdateDarkModeForHWND(HWND))
+            // This implementation was taken from SDL 3.x
             // https://github.com/libsdl-org/SDL/blob/1269590dfc24144a67777ad11c8e41a60c837026/src/video/windows/SDL_windowsvideo.c#L693C1-L711C2
             bool isDarkTheme = false;
             HKEY hKey;
@@ -145,16 +144,6 @@ namespace OpenRCT2::Ui
             _win32module = GetModuleHandle(nullptr);
         }
 
-        void Initialize(SDL_Window* window) override
-        {
-            // listen for the window message queue (WndProc) and react to system color changes
-            // in SDL the messages can be read with SDL_SYSWMEVENT and SDL_EventState()
-            // but this would be too late as lParam will point into nothing
-            // so instead we subclass the window to access the message queue before SDL does
-            SetWindowSubclass(GetHWND(window), &SubclassWndProc, 1, reinterpret_cast<DWORD_PTR>(this));
-            SetWindowTheme(GetHWND(window));
-        }
-
         void SetWindowIcon(SDL_Window* window) override
         {
             if (_win32module != nullptr)
@@ -169,6 +158,16 @@ namespace OpenRCT2::Ui
                     }
                 }
             }
+
+            // this code applies dark theming to the main window
+            // future versions of SDL will handle this automacially (see SDL 3.2.0 and WIN_UpdateDarkModeForHWND(HWND))
+
+            // listen for the window message queue (WndProc) and react to system color changes
+            // in SDL the messages can be read with SDL_SYSWMEVENT and SDL_EventState()
+            // but this would be too late as lParam will point into nothingness
+            // so instead we subclass the window to access the message queue before SDL does
+            SetWindowSubclass(GetHWND(window), &SubclassWndProc, 1, reinterpret_cast<DWORD_PTR>(this));
+            SetWindowTheme(GetHWND(window));
         }
 
         bool IsSteamOverlayAttached() override

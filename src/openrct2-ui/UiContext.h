@@ -30,7 +30,6 @@ namespace OpenRCT2
         struct IPlatformUiContext
         {
             virtual ~IPlatformUiContext() = default;
-            virtual void Initialize(SDL_Window* window) abstract;
             virtual void SetWindowIcon(SDL_Window* window) abstract;
             virtual bool IsSteamOverlayAttached() abstract;
 

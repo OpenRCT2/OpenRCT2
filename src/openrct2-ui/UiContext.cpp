@@ -752,8 +752,6 @@ private:
             SDLException::Throw("SDL_CreateWindow(...)");
         }
 
-        _platformUiContext->Initialize(_window);
-
         ApplyScreenSaverLockSetting();
 
         SDL_SetWindowMinimumSize(_window, 720, 480);
