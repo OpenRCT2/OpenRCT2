@@ -13,6 +13,7 @@
 // clang-format off
 #    include <windows.h>
 #    include <shellapi.h>
+#    include <basetsd.h>
 #    include <commctrl.h>
 #    pragma comment(lib, "Comctl32.lib")
 #    include <dwmapi.h>
@@ -98,7 +99,7 @@ namespace OpenRCT2::Ui
                     HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", 0, KEY_READ, &hKey)
                 == ERROR_SUCCESS)
             {
-                if (RegQueryValueExW(hKey, L"AppsUseLightTheme", 0, &dwType, (LPBYTE)&value, &length) == ERROR_SUCCESS)
+                if (RegQueryValueExW(hKey, L"AppsUseLightTheme", 0, &dwType, reinterpret_cast<LPBYTE>(&value), &length) == ERROR_SUCCESS)
                 {
                     if (value == 0)
                     {
@@ -113,13 +114,13 @@ namespace OpenRCT2::Ui
         static LRESULT CALLBACK
             SubclassWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData)
         {
-            auto pThis = (Win32Context*)dwRefData;
+            auto pThis = reinterpret_cast<Win32Context*>(dwRefData);
 
             switch (uMsg)
             {
                 case WM_SETTINGCHANGE:
                     // settings for system colors have changed; indicates that the prefered app theme might have changed
-                    if (wParam == 0 && lParam != 0 && SDL_wcscmp((wchar_t*)lParam, L"ImmersiveColorSet") == 0)
+                    if (wParam == 0 && lParam != 0 && SDL_wcscmp(reinterpret_cast<wchar_t*>(lParam), L"ImmersiveColorSet") == 0)
                     {
                         pThis->SetWindowTheme(hWnd);
                         return 0;
@@ -149,7 +150,7 @@ namespace OpenRCT2::Ui
             // in SDL the messages can be read with SDL_SYSWMEVENT and SDL_EventState()
             // but this would be too late as lParam will point into nothing
             // so instead we subclass the window to access the message queue before SDL does
-            SetWindowSubclass(GetHWND(window), &SubclassWndProc, 1, (DWORD_PTR)this);
+            SetWindowSubclass(GetHWND(window), &SubclassWndProc, 1, reinterpret_cast<DWORD_PTR>(this));
             SetWindowTheme(GetHWND(window));
         }
 
