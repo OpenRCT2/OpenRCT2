@@ -46,3 +46,5 @@ ResultWithMessage WindowEditorObjectSelectionSelectObject(
  * @return The number of removed objects.
  */
 int32_t EditorRemoveUnusedObjects();
+
+bool CheckObjectSelection();

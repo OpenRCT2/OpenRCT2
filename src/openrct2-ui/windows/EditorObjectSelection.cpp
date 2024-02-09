@@ -357,6 +357,9 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
+                    if (!CheckObjectSelection())
+                        return;
+
                     WindowClose(*this);
                     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
                     {
