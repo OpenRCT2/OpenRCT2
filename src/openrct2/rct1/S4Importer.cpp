@@ -2093,9 +2093,11 @@ namespace RCT1
         void InsertResearchVehicle(const ResearchItem& researchItem, bool researched)
         {
             uint8_t vehicle = researchItem.Item;
+            // RCT1 research sometimes contain vehicles that aren’t actually researched.
+            // In such cases, `_vehicleTypeToRideEntryMap` will return OBJECT_ENTRY_INDEX_NULL. This is expected.
             auto rideEntryIndex = _vehicleTypeToRideEntryMap[vehicle];
 
-            if (!_researchRideEntryUsed[rideEntryIndex])
+            if (rideEntryIndex < std::size(_researchRideEntryUsed) && !_researchRideEntryUsed[rideEntryIndex])
             {
                 _researchRideEntryUsed[rideEntryIndex] = true;
                 ResearchInsertRideEntry(rideEntryIndex, researched);
