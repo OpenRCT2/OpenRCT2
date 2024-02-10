@@ -10,8 +10,8 @@
 #include "Paint.Surface.h"
 
 #include "../../Cheats.h"
-#include "../../GameState.h"
 #include "../../Context.h"
+#include "../../GameState.h"
 #include "../../OpenRCT2.h"
 #include "../../config/Config.h"
 #include "../../core/Guard.hpp"
