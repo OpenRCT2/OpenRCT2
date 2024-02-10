@@ -1500,7 +1500,7 @@ namespace RCT1
 
         void ImportTileElements()
         {
-            gMapBaseZ = 7;
+            GetGameState().MapBaseZ = 7;
 
             // Build tile pointer cache (needed to get the first element at a certain location)
             auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(

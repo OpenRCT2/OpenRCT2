@@ -410,7 +410,7 @@ namespace RCT2
             // rct1_water_colour
             // Pad01358842
             ImportResearchList(gameState);
-            gMapBaseZ = _s6.MapBaseZ;
+            gameState.MapBaseZ = _s6.MapBaseZ;
             gBankLoanInterestRate = _s6.CurrentInterestRate;
             // Pad0135934B
             // Preserve compatibility with vanilla RCT2's save format.
@@ -875,8 +875,8 @@ namespace RCT2
                     OWNERSHIP_OWNED);
                   FixLandOwnershipTilesWithOwnership(
                     {
-                        {  140, 58 }, {  141, 58 }, {  142, 58 }, { 143, 58 }, { 144, 58 }, { 145, 58 }, { 146, 58 }, { 147, 58 }, 
-                        {  140, 74 }, {  141, 74 }, {  142, 74 }, { 143, 74 }, { 144, 74 }, { 145, 74 }, { 146, 74 }, { 147, 74 }, 
+                        {  140, 58 }, {  141, 58 }, {  142, 58 }, { 143, 58 }, { 144, 58 }, { 145, 58 }, { 146, 58 }, { 147, 58 },
+                        {  140, 74 }, {  141, 74 }, {  142, 74 }, { 143, 74 }, { 144, 74 }, { 145, 74 }, { 146, 74 }, { 147, 74 },
                     },
                     OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED, true);
                 // clang-format on

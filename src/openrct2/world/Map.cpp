@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../actions/BannerRemoveAction.h"
@@ -91,7 +92,6 @@ TileCoordsXY gWidePathTileLoopPosition;
 uint16_t gGrassSceneryTileLoopPosition;
 
 TileCoordsXY gMapSize;
-int32_t gMapBaseZ;
 
 std::vector<CoordsXY> gMapSelectionTiles;
 std::vector<PeepSpawn> gPeepSpawns;
@@ -445,10 +445,12 @@ void MapInit(const TileCoordsXY& size)
     auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
     SetTileElements(std::vector<TileElement>(numTiles, GetDefaultSurfaceElement()));
 
+    auto& gameState = GetGameState();
+
     gGrassSceneryTileLoopPosition = 0;
     gWidePathTileLoopPosition = {};
     gMapSize = size;
-    gMapBaseZ = 7;
+    gameState.MapBaseZ = 7;
     MapRemoveOutOfRangeElements();
     MapAnimationAutoCreate();
 
