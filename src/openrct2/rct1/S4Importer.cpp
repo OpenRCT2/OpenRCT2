@@ -831,6 +831,10 @@ namespace RCT1
                 dst->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE;
                 dst->lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
             }
+            if (VehicleTypeIsReversed(src->VehicleType))
+            {
+                dst->lifecycle_flags |= RIDE_LIFECYCLE_REVERSED_TRAINS;
+            }
 
             // Station
             if (src->OverallView.IsNull())
@@ -2903,6 +2907,11 @@ namespace RCT1
             dst->SetFlag(VehicleFlags::Crashed);
         }
         dst->BlockBrakeSpeed = kRCT2DefaultBlockBrakeSpeed;
+
+        if (VehicleTypeIsReversed(rct1Ride.VehicleType))
+        {
+            dst->SetFlag(VehicleFlags::CarIsReversed);
+        }
     }
 
     template<> void S4Importer::ImportEntity<Guest>(const RCT12EntityBase& srcBase)

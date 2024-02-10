@@ -53,4 +53,6 @@ namespace RCT1
     std::string_view GetTerrainEdgeObject(uint8_t terrainEdge);
 
     const std::vector<const char*> GetSceneryObjects(uint8_t sceneryType);
+
+    bool VehicleTypeIsReversed(const VehicleType vehicleType);
 } // namespace RCT1

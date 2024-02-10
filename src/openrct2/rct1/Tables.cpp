@@ -802,7 +802,7 @@ namespace RCT1
         static constexpr const char * map[] =
         {
             "rct1.ride.steel_rc_trains",                   //  VehicleType::SteelRollerCoasterTrain
-            "rct1.ride.steel_rc_trains_reversed",          //  VehicleType::SteelRollerCoasterTrainBackwards
+            "rct1.ride.steel_rc_trains",                   //  VehicleType::SteelRollerCoasterTrainBackwards
             "rct1.ride.wooden_rc_trains",                  //  VehicleType::WoodenRollerCoasterTrain
             "rct1.ride.inverted_trains",                   //  VehicleType::InvertedCoasterTrain//NotinRCT2
             "rct1.ride.suspended_swinging_cars",           //  VehicleType::SuspendedSwingingCars
@@ -817,7 +817,7 @@ namespace RCT1
             "rct1.ride.steam_trains",                      //  VehicleType::SteamTrain
             "rct1.ride.mouse_cars",                        //  VehicleType::WoodenMouseCars
             "rct1.ride.bumper_boats",                      //  VehicleType::BumperBoats
-            "rct1.ride.wooden_rc_trains_reversed",         //  VehicleType::WoodenRollerCoasterTrainBackwards
+            "rct1.ride.wooden_rc_trains",                  //  VehicleType::WoodenRollerCoasterTrainBackwards
             "rct1.ride.rocket_cars",                       //  VehicleType::RocketCars
             "rct1.ride.horses",                            //  VehicleType::Horses//Steeplechase
             "rct1.ride.sports_cars",                       //  VehicleType::Sportscars
@@ -874,7 +874,7 @@ namespace RCT1
             "rct2.ride.vekst",                             //  VehicleType::FlyingRollerCoasterTrain
             "rct1aa.ride.hyper_twister_trains",            //  VehicleType::NonLoopingSteelTwisterRollerCoasterTrain
             "rct1aa.ride.heartline_twister_cars",          //  VehicleType::HeartlineTwisterCars
-            "rct2.ride.utcarr",                            //  VehicleType::HeartlineTwisterCarsReversed
+            "rct1aa.ride.heartline_twister_cars",          //  VehicleType::HeartlineTwisterCarsReversed
             "",                                            //  VehicleType::Reserved
             "rct2.ride.gdrop1",                            //  VehicleType::RotodropCar
             "rct1aa.ride.flying_saucers",                  //  VehicleType::FlyingSaucers
@@ -1486,5 +1486,18 @@ namespace RCT1
             return RCT12FlatTrackTypeToOpenRCT2(origTrackType);
 
         return origTrackType;
+    }
+
+    bool VehicleTypeIsReversed(const VehicleType vehicleType)
+    {
+        switch (vehicleType)
+        {
+            case VehicleType::SteelRollerCoasterTrainBackwards:
+            case VehicleType::WoodenRollerCoasterTrainBackwards:
+            case VehicleType::HeartlineTwisterCarsReversed:
+                return true;
+            default:
+                return false;
+        }
     }
 } // namespace RCT1
