@@ -3715,6 +3715,7 @@ STR_6609    :Track block not found
 STR_6610    :Path element not found
 STR_6611    :Wall element not found
 STR_6612    :Banner element not found
+STR_6613    :Reload object
 
 #############
 # Scenarios #
