@@ -44,6 +44,7 @@ namespace RCT1
      */
     int32_t MapSlopedWall(uint8_t wallType);
     std::string_view GetWallObject(uint8_t wallType);
+    std::string_view GetBannerObject(BannerType bannerType);
     std::string_view GetPathSurfaceObject(uint8_t pathType);
     std::string_view GetPathAddtionObject(uint8_t pathAdditionType);
     std::string_view GetFootpathRailingsObject(uint8_t footpathRailingsType);

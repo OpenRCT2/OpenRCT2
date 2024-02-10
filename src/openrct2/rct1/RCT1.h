@@ -204,6 +204,21 @@ namespace RCT1
         Count,
     };
 
+    enum class BannerType : uint8_t
+    {
+        Plain = 0,
+        Jungle,
+        Roman,
+        Egyptian,
+        Mine,
+        Jurassic,
+        Oriental,
+        Snow,
+        Space,
+
+        Null = 255,
+    };
+
 #pragma pack(push, 1)
     struct Entrance
     {

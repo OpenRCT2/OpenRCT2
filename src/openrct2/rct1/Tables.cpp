@@ -1322,6 +1322,23 @@ namespace RCT1
         return map[0];
     }
 
+    std::string_view GetBannerObject(BannerType bannerType)
+    {
+        static constexpr const char * map[] =
+        {
+            "rct2.footpath_banner.bn1", // BannerType::Plain
+            "rct2.footpath_banner.bn2", // BannerType::Jungle
+            "rct2.footpath_banner.bn3", // BannerType::Roman
+            "rct2.footpath_banner.bn4", // BannerType::Egyptian
+            "rct2.footpath_banner.bn5", // BannerType::Mine
+            "rct2.footpath_banner.bn6", // BannerType::Jurassic
+            "rct2.footpath_banner.bn7", // BannerType::Oriental
+            "rct2.footpath_banner.bn8", // BannerType::Snow
+            "rct2.footpath_banner.bn9", // BannerType::Space
+        };
+        return map[EnumValue(bannerType)];
+    }
+
     std::string_view GetPathSurfaceObject(uint8_t pathType)
     {
         static constexpr const char * map[] =

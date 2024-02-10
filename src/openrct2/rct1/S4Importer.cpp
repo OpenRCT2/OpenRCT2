@@ -95,6 +95,7 @@ namespace RCT1
         RCT12::EntryList _smallSceneryEntries;
         RCT12::EntryList _largeSceneryEntries;
         RCT12::EntryList _wallEntries;
+        RCT12::EntryList _bannerEntries;
         RCT12::EntryList _pathEntries;
         RCT12::EntryList _pathAdditionEntries;
         RCT12::EntryList _sceneryGroupEntries;
@@ -110,6 +111,7 @@ namespace RCT1
         ObjectEntryIndex _smallSceneryTypeToEntryMap[256]{};
         ObjectEntryIndex _largeSceneryTypeToEntryMap[256]{};
         ObjectEntryIndex _wallTypeToEntryMap[256]{};
+        ObjectEntryIndex _bannerTypeToEntryMap[9]{};
         ObjectEntryIndex _pathTypeToEntryMap[24]{};
         ObjectEntryIndex _pathAdditionTypeToEntryMap[16]{};
         ObjectEntryIndex _sceneryThemeTypeToEntryMap[24]{};
@@ -349,6 +351,7 @@ namespace RCT1
             std::fill(std::begin(_smallSceneryTypeToEntryMap), std::end(_smallSceneryTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
             std::fill(std::begin(_largeSceneryTypeToEntryMap), std::end(_largeSceneryTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
             std::fill(std::begin(_wallTypeToEntryMap), std::end(_wallTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
+            std::fill(std::begin(_bannerTypeToEntryMap), std::end(_bannerTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
             std::fill(std::begin(_pathTypeToEntryMap), std::end(_pathTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
             std::fill(std::begin(_pathAdditionTypeToEntryMap), std::end(_pathAdditionTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
             std::fill(std::begin(_sceneryThemeTypeToEntryMap), std::end(_sceneryThemeTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
@@ -373,6 +376,7 @@ namespace RCT1
             AddAvailableEntriesFromMap();
             AddAvailableEntriesFromRides();
             AddAvailableEntriesFromSceneryGroups();
+            AddAvailableEntriesFromBannerList();
             AddEntryForWater();
         }
 
@@ -560,7 +564,7 @@ namespace RCT1
                             case ObjectType::SmallScenery:
                             case ObjectType::LargeScenery:
                             case ObjectType::Walls:
-                            case ObjectType::Paths:
+                            case ObjectType::Banners:
                             case ObjectType::PathAdditions:
                             {
                                 RCT12::EntryList* entries = GetEntryList(objectType);
@@ -583,6 +587,19 @@ namespace RCT1
                         LOG_ERROR("Cannot find object %s", objectName);
                     }
                 }
+            }
+        }
+
+        void AddAvailableEntriesFromBannerList()
+        {
+            for (size_t i = 0; i < std::size(_s4.Banners); i++)
+            {
+                auto& banner = _s4.Banners[i];
+                auto type = static_cast<BannerType>(banner.Type);
+                if (type == BannerType::Null)
+                    continue;
+
+                AddEntryForBanner(type);
             }
         }
 
@@ -666,6 +683,18 @@ namespace RCT1
                 auto entryIndex = _wallEntries.GetOrAddEntry(entryName);
 
                 _wallTypeToEntryMap[wallType] = entryIndex;
+            }
+        }
+
+        void AddEntryForBanner(BannerType bannerType)
+        {
+            assert(EnumValue(bannerType) < std::size(_bannerTypeToEntryMap));
+            if (_bannerTypeToEntryMap[EnumValue(bannerType)] == OBJECT_ENTRY_INDEX_NULL)
+            {
+                auto entryName = RCT1::GetBannerObject(bannerType);
+                auto entryIndex = _bannerEntries.GetOrAddEntry(entryName);
+
+                _bannerTypeToEntryMap[EnumValue(bannerType)] = entryIndex;
             }
         }
 
@@ -1479,19 +1508,7 @@ namespace RCT1
             AppendRequiredObjects(result, ObjectType::Paths, _pathEntries);
             AppendRequiredObjects(result, ObjectType::PathAdditions, _pathAdditionEntries);
             AppendRequiredObjects(result, ObjectType::SceneryGroup, _sceneryGroupEntries);
-            AppendRequiredObjects(
-                result, ObjectType::Banners,
-                std::vector<std::string>({
-                    "rct2.footpath_banner.bn1",
-                    "rct2.footpath_banner.bn2",
-                    "rct2.footpath_banner.bn3",
-                    "rct2.footpath_banner.bn4",
-                    "rct2.footpath_banner.bn5",
-                    "rct2.footpath_banner.bn6",
-                    "rct2.footpath_banner.bn7",
-                    "rct2.footpath_banner.bn8",
-                    "rct2.footpath_banner.bn9",
-                }));
+            AppendRequiredObjects(result, ObjectType::Banners, _bannerEntries);
             AppendRequiredObjects(result, ObjectType::ParkEntrance, std::vector<std::string>({ "rct2.park_entrance.pkent1" }));
             AppendRequiredObjects(result, ObjectType::Water, _waterEntry);
             AppendRequiredObjects(result, ObjectType::TerrainSurface, _terrainSurfaceEntries);
@@ -2400,7 +2417,12 @@ namespace RCT1
 
             *dst = {};
             dst->id = id;
-            dst->type = RCTEntryIndexToOpenRCT2EntryIndex(src->Type);
+            auto type = RCTEntryIndexToOpenRCT2EntryIndex(src->Type);
+            if (type < std::size(_bannerTypeToEntryMap))
+                type = _bannerTypeToEntryMap[type];
+            else
+                type = OBJECT_ENTRY_INDEX_NULL;
+            dst->type = type;
 
             dst->flags = 0;
             if (src->Flags & BANNER_FLAG_NO_ENTRY)
@@ -2453,6 +2475,8 @@ namespace RCT1
                     return &_largeSceneryEntries;
                 case ObjectType::Walls:
                     return &_wallEntries;
+                case ObjectType::Banners:
+                    return &_bannerEntries;
                 case ObjectType::Paths:
                     return &_pathEntries;
                 case ObjectType::PathAdditions:
