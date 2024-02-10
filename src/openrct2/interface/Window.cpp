@@ -328,6 +328,7 @@ WindowBase* WindowFindByNumber(WindowClass cls, EntityId id)
 void WindowCloseTop()
 {
     WindowCloseByClass(WindowClass::Dropdown);
+    WindowCloseByClass(WindowClass::Loadsave);
 
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
     {
@@ -347,6 +348,7 @@ void WindowCloseTop()
 void WindowCloseAll()
 {
     WindowCloseByClass(WindowClass::Dropdown);
+    WindowCloseByClass(WindowClass::Loadsave);
     WindowCloseByCondition([](WindowBase* w) -> bool { return !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)); });
 }
 
