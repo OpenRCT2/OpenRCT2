@@ -487,7 +487,7 @@ public:
                 SetCheckboxValue(WIDX_NEVERENDING_MARKETING, gCheatsNeverendingMarketing);
                 SetCheckboxValue(WIDX_DISABLE_PLANT_AGING, gCheatsDisablePlantAging);
                 SetCheckboxValue(WIDX_ALLOW_REGULAR_PATH_AS_QUEUE, gCheatsAllowRegularPathAsQueue);
-                SetCheckboxValue(WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES, gCheatsAllowSpecialColourSchemes);
+                SetCheckboxValue(WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES, gCheatsState.AllowSpecialColourSchemes);
                 break;
             case WINDOW_CHEATS_PAGE_RIDES:
                 SetCheckboxValue(WIDX_UNLOCK_OPERATING_LIMITS, gCheatsUnlockOperatingLimits);
@@ -918,7 +918,7 @@ private:
                 CheatsSet(CheatType::AllowRegularPathAsQueue, !gCheatsAllowRegularPathAsQueue);
                 break;
             case WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES:
-                CheatsSet(CheatType::AllowSpecialColourSchemes, !gCheatsAllowSpecialColourSchemes);
+                CheatsSet(CheatType::AllowSpecialColourSchemes, !gCheatsState.AllowSpecialColourSchemes);
                 break;
         }
     }

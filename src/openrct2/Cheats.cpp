@@ -53,10 +53,12 @@ bool gCheatsIgnoreResearchStatus = false;
 bool gCheatsEnableAllDrawableTrackPieces = false;
 bool gCheatsAllowTrackPlaceInvalidHeights = false;
 bool gCheatsAllowRegularPathAsQueue = false;
-bool gCheatsAllowSpecialColourSchemes = false;
 
-CheatsState gCheatsState = { /* MakeAllDestructible */ false,
-                             /* SelectedStaffSpeed */ StaffSpeedCheat::None };
+CheatsState gCheatsState = {
+    /* AllowSpecialColourSchemes */ false,
+    /* MakeAllDestructible */ false,
+    /* SelectedStaffSpeed */ StaffSpeedCheat::None,
+};
 
 void CheatsReset()
 {
@@ -83,7 +85,7 @@ void CheatsReset()
     gCheatsEnableAllDrawableTrackPieces = false;
     gCheatsAllowTrackPlaceInvalidHeights = false;
     gCheatsAllowRegularPathAsQueue = false;
-    gCheatsAllowSpecialColourSchemes = false;
+    gCheatsState.AllowSpecialColourSchemes = false;
     gCheatsState.MakeAllDestructible = false;
     gCheatsState.SelectedStaffSpeed = StaffSpeedCheat::None;
 }
@@ -135,7 +137,7 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::EnableAllDrawableTrackPieces, gCheatsEnableAllDrawableTrackPieces, count);
         CheatEntrySerialise(ds, CheatType::AllowTrackPlaceInvalidHeights, gCheatsAllowTrackPlaceInvalidHeights, count);
         CheatEntrySerialise(ds, CheatType::AllowRegularPathAsQueue, gCheatsAllowRegularPathAsQueue, count);
-        CheatEntrySerialise(ds, CheatType::AllowSpecialColourSchemes, gCheatsAllowSpecialColourSchemes, count);
+        CheatEntrySerialise(ds, CheatType::AllowSpecialColourSchemes, gCheatsState.AllowSpecialColourSchemes, count);
         CheatEntrySerialise(ds, CheatType::MakeDestructible, gCheatsState.MakeAllDestructible, count);
         CheatEntrySerialise(ds, CheatType::SetStaffSpeed, gCheatsState.SelectedStaffSpeed, count);
 
@@ -234,7 +236,7 @@ void CheatsSerialise(DataSerialiser& ds)
                     ds << gCheatsAllowRegularPathAsQueue;
                     break;
                 case CheatType::AllowSpecialColourSchemes:
-                    ds << gCheatsAllowSpecialColourSchemes;
+                    ds << gCheatsState.AllowSpecialColourSchemes;
                     break;
                 case CheatType::MakeDestructible:
                     ds << gCheatsState.MakeAllDestructible;

@@ -177,13 +177,13 @@ namespace OpenRCT2::Scripting
 
         bool allowSpecialColourSchemes_get()
         {
-            return gCheatsAllowSpecialColourSchemes;
+            return gCheatsState.AllowSpecialColourSchemes;
         }
 
         void allowSpecialColourSchemes_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            gCheatsAllowSpecialColourSchemes = value;
+            gCheatsState.AllowSpecialColourSchemes = value;
         }
 
         bool disableRideValueAging_get()

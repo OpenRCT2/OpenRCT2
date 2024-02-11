@@ -252,7 +252,7 @@ GameActions::Result CheatSetAction::Execute() const
             gCheatsAllowRegularPathAsQueue = _param1 != 0;
             break;
         case CheatType::AllowSpecialColourSchemes:
-            gCheatsAllowSpecialColourSchemes = static_cast<bool>(_param1);
+            gCheatsState.AllowSpecialColourSchemes = static_cast<bool>(_param1);
             break;
         case CheatType::RemoveParkFences:
             RemoveParkFences();
