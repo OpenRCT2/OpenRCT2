@@ -189,7 +189,7 @@ GameActions::Result CheatSetAction::Execute() const
             RenewRides();
             break;
         case CheatType::MakeDestructible:
-            gCheatsMakeAllDestructible = _param1 != 0;
+            gCheatsState.MakeAllDestructible = _param1 != 0;
             WindowInvalidateByClass(WindowClass::Ride);
             break;
         case CheatType::FixRides:

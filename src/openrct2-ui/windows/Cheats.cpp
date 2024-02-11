@@ -503,7 +503,7 @@ public:
                 SetCheckboxValue(WIDX_IGNORE_RESEARCH_STATUS, gCheatsIgnoreResearchStatus);
                 SetCheckboxValue(WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES, gCheatsEnableAllDrawableTrackPieces);
                 SetCheckboxValue(WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, gCheatsAllowTrackPlaceInvalidHeights);
-                SetCheckboxValue(WIDX_MAKE_DESTRUCTIBLE, gCheatsMakeAllDestructible);
+                SetCheckboxValue(WIDX_MAKE_DESTRUCTIBLE, gCheatsState.MakeAllDestructible);
                 break;
         }
 
@@ -1047,7 +1047,7 @@ private:
                 CheatsSet(CheatType::RenewRides);
                 break;
             case WIDX_MAKE_DESTRUCTIBLE:
-                CheatsSet(CheatType::MakeDestructible, !gCheatsMakeAllDestructible);
+                CheatsSet(CheatType::MakeDestructible, !gCheatsState.MakeAllDestructible);
                 break;
             case WIDX_FIX_ALL:
                 CheatsSet(CheatType::FixRides);

@@ -54,9 +54,9 @@ bool gCheatsEnableAllDrawableTrackPieces = false;
 bool gCheatsAllowTrackPlaceInvalidHeights = false;
 bool gCheatsAllowRegularPathAsQueue = false;
 bool gCheatsAllowSpecialColourSchemes = false;
-bool gCheatsMakeAllDestructible = false;
 
-CheatsState gCheatsState = { /* SelectedStaffSpeed */ StaffSpeedCheat::None };
+CheatsState gCheatsState = { /* MakeAllDestructible */ false,
+                             /* SelectedStaffSpeed */ StaffSpeedCheat::None };
 
 void CheatsReset()
 {
@@ -84,7 +84,7 @@ void CheatsReset()
     gCheatsAllowTrackPlaceInvalidHeights = false;
     gCheatsAllowRegularPathAsQueue = false;
     gCheatsAllowSpecialColourSchemes = false;
-    gCheatsMakeAllDestructible = false;
+    gCheatsState.MakeAllDestructible = false;
     gCheatsState.SelectedStaffSpeed = StaffSpeedCheat::None;
 }
 
@@ -136,7 +136,7 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::AllowTrackPlaceInvalidHeights, gCheatsAllowTrackPlaceInvalidHeights, count);
         CheatEntrySerialise(ds, CheatType::AllowRegularPathAsQueue, gCheatsAllowRegularPathAsQueue, count);
         CheatEntrySerialise(ds, CheatType::AllowSpecialColourSchemes, gCheatsAllowSpecialColourSchemes, count);
-        CheatEntrySerialise(ds, CheatType::MakeDestructible, gCheatsMakeAllDestructible, count);
+        CheatEntrySerialise(ds, CheatType::MakeDestructible, gCheatsState.MakeAllDestructible, count);
         CheatEntrySerialise(ds, CheatType::SetStaffSpeed, gCheatsState.SelectedStaffSpeed, count);
 
         // Remember current position and update count.
@@ -237,7 +237,7 @@ void CheatsSerialise(DataSerialiser& ds)
                     ds << gCheatsAllowSpecialColourSchemes;
                     break;
                 case CheatType::MakeDestructible:
-                    ds << gCheatsMakeAllDestructible;
+                    ds << gCheatsState.MakeAllDestructible;
                     break;
                 case CheatType::SetStaffSpeed:
                     ds << gCheatsState.SelectedStaffSpeed;

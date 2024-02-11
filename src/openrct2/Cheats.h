@@ -42,10 +42,10 @@ extern bool gCheatsEnableAllDrawableTrackPieces;
 extern bool gCheatsAllowTrackPlaceInvalidHeights;
 extern bool gCheatsAllowRegularPathAsQueue;
 extern bool gCheatsAllowSpecialColourSchemes;
-extern bool gCheatsMakeAllDestructible;
 
 struct CheatsState
 {
+    bool MakeAllDestructible;
     StaffSpeedCheat SelectedStaffSpeed;
 };
 
