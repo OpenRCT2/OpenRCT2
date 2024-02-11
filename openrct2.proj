@@ -107,8 +107,10 @@
   </Target>
 
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
+  <!-- Only Arm64 machines will build g2.dat for Arm64 -->
+  <!-- Note: Arm64 machines can build for x86, x64 and Arm64 -->
   <Target Name="g2" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)"
-          Condition="'$(TestConfig)'!='true' and '$(Platform)'!='ARM64'">
+          Condition="'$(TestConfig)'!='true' and ('$(Platform)'!='ARM64' or '$(PROCESSOR_ARCHITECTURE)'=='ARM64')">
     <Message Text="Building g2.dat..." Importance="high" />
     <Exec Command="&quot;$(OutputExe)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(RootDir)resources\g2\sprites.json&quot;"
           StandardOutputImportance="normal" />
