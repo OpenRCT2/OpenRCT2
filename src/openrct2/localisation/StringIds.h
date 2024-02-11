@@ -4024,6 +4024,8 @@ enum : uint16_t
     STR_ERR_WALL_ELEMENT_NOT_FOUND = 6611,
     STR_ERR_BANNER_ELEMENT_NOT_FOUND = 6612,
 
+    STR_RELOAD_OBJECT_TIP = 6613,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

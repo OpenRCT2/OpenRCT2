@@ -1,5 +1,6 @@
 0.4.9 (in development)
 ------------------------------------------------------------------------
+- Feature: [#21376] Add option to reload an object (for object developers).
 - Improved: [#21356] Resize the title bar when moving between displays with different scaling factors on Windows systems.
 - Fix: [#18963] Research table in parks from Loopy Landscapes is imported incorrectly.
 - Fix: [#20907] RCT1/AA scenarios use the 4-across train for the Inverted Roller Coaster.
