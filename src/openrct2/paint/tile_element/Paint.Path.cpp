@@ -761,7 +761,7 @@ static void PaintHeightMarkers(PaintSession& session, const PathElement& pathEl)
         uint32_t baseImageIndex = SPR_HEIGHT_MARKER_BASE;
         baseImageIndex += heightMarkerBaseZ / 16;
         baseImageIndex += GetHeightMarkerOffset();
-        baseImageIndex -= gMapBaseZ;
+        baseImageIndex -= GetGameState().MapBaseZ;
         auto imageId = ImageId(baseImageIndex, COLOUR_GREY);
         PaintAddImageAsParent(session, imageId, { 16, 16, heightMarkerBaseZ }, { 1, 1, 0 });
     }

@@ -107,7 +107,6 @@ extern TileCoordsXY gWidePathTileLoopPosition;
 extern uint16_t gGrassSceneryTileLoopPosition;
 
 extern TileCoordsXY gMapSize;
-extern int32_t gMapBaseZ;
 
 inline CoordsXY GetMapSizeUnits()
 {

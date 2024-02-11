@@ -62,6 +62,7 @@ namespace OpenRCT2
         money64 ScenarioCompletedCompanyValue;
         money64 ScenarioCompanyValueRecord;
         random_engine_t ScenarioRand;
+        int32_t MapBaseZ;
 
         SCENARIO_CATEGORY ScenarioCategory;
         std::string ScenarioName;

@@ -2234,7 +2234,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
                 uint16_t ax = ride->GetRideTypeDescriptor().Heights.VehicleZOffset;
                 // 0x1689 represents 0 height there are -127 to 128 heights above and below it
                 // There are 3 arrays of 256 heights (units, m, ft) chosen with the GetHeightMarkerOffset()
-                auto heightNum = (height + 8) / 16 - gMapBaseZ;
+                auto heightNum = (height + 8) / 16 - GetGameState().MapBaseZ;
                 auto imageId = ImageId(SPR_HEIGHT_MARKER_BASE + GetHeightMarkerOffset() + heightNum, COLOUR_LIGHT_BLUE);
 
                 PaintAddImageAsParent(session, imageId, { 16, 16, height + ax + 3 }, { { 1000, 1000, 2047 }, { 1, 1, 0 } });
