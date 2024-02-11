@@ -52,9 +52,9 @@ bool gCheatsDisableRideValueAging = false;
 bool gCheatsIgnoreResearchStatus = false;
 bool gCheatsEnableAllDrawableTrackPieces = false;
 bool gCheatsAllowTrackPlaceInvalidHeights = false;
-bool gCheatsAllowRegularPathAsQueue = false;
 
 CheatsState gCheatsState = {
+    /* AllowRegularPathAsQueue */ false,
     /* AllowSpecialColourSchemes */ false,
     /* MakeAllDestructible */ false,
     /* SelectedStaffSpeed */ StaffSpeedCheat::None,
@@ -84,7 +84,7 @@ void CheatsReset()
     gCheatsIgnoreResearchStatus = false;
     gCheatsEnableAllDrawableTrackPieces = false;
     gCheatsAllowTrackPlaceInvalidHeights = false;
-    gCheatsAllowRegularPathAsQueue = false;
+    gCheatsState.AllowRegularPathAsQueue = false;
     gCheatsState.AllowSpecialColourSchemes = false;
     gCheatsState.MakeAllDestructible = false;
     gCheatsState.SelectedStaffSpeed = StaffSpeedCheat::None;
@@ -136,7 +136,7 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::IgnoreResearchStatus, gCheatsIgnoreResearchStatus, count);
         CheatEntrySerialise(ds, CheatType::EnableAllDrawableTrackPieces, gCheatsEnableAllDrawableTrackPieces, count);
         CheatEntrySerialise(ds, CheatType::AllowTrackPlaceInvalidHeights, gCheatsAllowTrackPlaceInvalidHeights, count);
-        CheatEntrySerialise(ds, CheatType::AllowRegularPathAsQueue, gCheatsAllowRegularPathAsQueue, count);
+        CheatEntrySerialise(ds, CheatType::AllowRegularPathAsQueue, gCheatsState.AllowRegularPathAsQueue, count);
         CheatEntrySerialise(ds, CheatType::AllowSpecialColourSchemes, gCheatsState.AllowSpecialColourSchemes, count);
         CheatEntrySerialise(ds, CheatType::MakeDestructible, gCheatsState.MakeAllDestructible, count);
         CheatEntrySerialise(ds, CheatType::SetStaffSpeed, gCheatsState.SelectedStaffSpeed, count);
@@ -233,7 +233,7 @@ void CheatsSerialise(DataSerialiser& ds)
                     ds << dummyBool;
                     break;
                 case CheatType::AllowRegularPathAsQueue:
-                    ds << gCheatsAllowRegularPathAsQueue;
+                    ds << gCheatsState.AllowRegularPathAsQueue;
                     break;
                 case CheatType::AllowSpecialColourSchemes:
                     ds << gCheatsState.AllowSpecialColourSchemes;

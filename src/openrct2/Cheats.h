@@ -40,10 +40,10 @@ extern bool gCheatsAllowArbitraryRideTypeChanges;
 extern bool gCheatsIgnoreResearchStatus;
 extern bool gCheatsEnableAllDrawableTrackPieces;
 extern bool gCheatsAllowTrackPlaceInvalidHeights;
-extern bool gCheatsAllowRegularPathAsQueue;
 
 struct CheatsState
 {
+    bool AllowRegularPathAsQueue;
     bool AllowSpecialColourSchemes;
     bool MakeAllDestructible;
     StaffSpeedCheat SelectedStaffSpeed;

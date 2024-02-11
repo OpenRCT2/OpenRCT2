@@ -249,7 +249,7 @@ GameActions::Result CheatSetAction::Execute() const
             gCheatsAllowTrackPlaceInvalidHeights = _param1 != 0;
             break;
         case CheatType::AllowRegularPathAsQueue:
-            gCheatsAllowRegularPathAsQueue = _param1 != 0;
+            gCheatsState.AllowRegularPathAsQueue = _param1 != 0;
             break;
         case CheatType::AllowSpecialColourSchemes:
             gCheatsState.AllowSpecialColourSchemes = static_cast<bool>(_param1);

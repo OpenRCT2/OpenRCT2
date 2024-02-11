@@ -166,13 +166,13 @@ namespace OpenRCT2::Scripting
 
         bool allowRegularPathAsQueue_get()
         {
-            return gCheatsAllowRegularPathAsQueue;
+            return gCheatsState.AllowRegularPathAsQueue;
         }
 
         void allowRegularPathAsQueue_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            gCheatsAllowRegularPathAsQueue = value;
+            gCheatsState.AllowRegularPathAsQueue = value;
         }
 
         bool allowSpecialColourSchemes_get()
