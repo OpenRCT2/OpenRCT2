@@ -502,7 +502,7 @@ public:
                 SetCheckboxValue(WIDX_DISABLE_RIDE_VALUE_AGING, gCheatsDisableRideValueAging);
                 SetCheckboxValue(WIDX_IGNORE_RESEARCH_STATUS, gCheatsIgnoreResearchStatus);
                 SetCheckboxValue(WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES, gCheatsEnableAllDrawableTrackPieces);
-                SetCheckboxValue(WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, gCheatsAllowTrackPlaceInvalidHeights);
+                SetCheckboxValue(WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, gCheatsState.AllowTrackPlaceInvalidHeights);
                 SetCheckboxValue(WIDX_MAKE_DESTRUCTIBLE, gCheatsState.MakeAllDestructible);
                 break;
         }
@@ -1120,11 +1120,11 @@ private:
                 break;
             case WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS:
             {
-                if (!gCheatsAllowTrackPlaceInvalidHeights)
+                if (!gCheatsState.AllowTrackPlaceInvalidHeights)
                 {
                     ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                 }
-                CheatsSet(CheatType::AllowTrackPlaceInvalidHeights, !gCheatsAllowTrackPlaceInvalidHeights);
+                CheatsSet(CheatType::AllowTrackPlaceInvalidHeights, !gCheatsState.AllowTrackPlaceInvalidHeights);
             }
             break;
         }

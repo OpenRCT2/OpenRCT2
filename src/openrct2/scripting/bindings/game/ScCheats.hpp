@@ -89,13 +89,13 @@ namespace OpenRCT2::Scripting
 
         bool allowTrackPlaceInvalidHeights_get()
         {
-            return gCheatsAllowTrackPlaceInvalidHeights;
+            return gCheatsState.AllowTrackPlaceInvalidHeights;
         }
 
         void allowTrackPlaceInvalidHeights_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            gCheatsAllowTrackPlaceInvalidHeights = value;
+            gCheatsState.AllowTrackPlaceInvalidHeights = value;
         }
 
         bool buildInPauseMode_get()

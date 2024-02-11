@@ -246,7 +246,7 @@ GameActions::Result CheatSetAction::Execute() const
             Duck::RemoveAll();
             break;
         case CheatType::AllowTrackPlaceInvalidHeights:
-            gCheatsAllowTrackPlaceInvalidHeights = _param1 != 0;
+            gCheatsState.AllowTrackPlaceInvalidHeights = _param1 != 0;
             break;
         case CheatType::AllowRegularPathAsQueue:
             gCheatsState.AllowRegularPathAsQueue = _param1 != 0;

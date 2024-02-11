@@ -192,7 +192,7 @@ GameActions::Result TrackPlaceAction::Query() const
             STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
-    if (!gCheatsAllowTrackPlaceInvalidHeights)
+    if (!gCheatsState.AllowTrackPlaceInvalidHeights)
     {
         if (ted.Flags & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT)
         {

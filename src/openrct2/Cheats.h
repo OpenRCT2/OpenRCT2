@@ -39,10 +39,10 @@ extern bool gCheatsEnableChainLiftOnAllTrack;
 extern bool gCheatsAllowArbitraryRideTypeChanges;
 extern bool gCheatsIgnoreResearchStatus;
 extern bool gCheatsEnableAllDrawableTrackPieces;
-extern bool gCheatsAllowTrackPlaceInvalidHeights;
 
 struct CheatsState
 {
+    bool AllowTrackPlaceInvalidHeights;
     bool AllowRegularPathAsQueue;
     bool AllowSpecialColourSchemes;
     bool MakeAllDestructible;

@@ -51,9 +51,9 @@ bool gCheatsAllowArbitraryRideTypeChanges = false;
 bool gCheatsDisableRideValueAging = false;
 bool gCheatsIgnoreResearchStatus = false;
 bool gCheatsEnableAllDrawableTrackPieces = false;
-bool gCheatsAllowTrackPlaceInvalidHeights = false;
 
 CheatsState gCheatsState = {
+    /* AllowTrackPlaceInvalidHeights */ false,
     /* AllowRegularPathAsQueue */ false,
     /* AllowSpecialColourSchemes */ false,
     /* MakeAllDestructible */ false,
@@ -83,7 +83,7 @@ void CheatsReset()
     gCheatsDisableRideValueAging = false;
     gCheatsIgnoreResearchStatus = false;
     gCheatsEnableAllDrawableTrackPieces = false;
-    gCheatsAllowTrackPlaceInvalidHeights = false;
+    gCheatsState.AllowTrackPlaceInvalidHeights = false;
     gCheatsState.AllowRegularPathAsQueue = false;
     gCheatsState.AllowSpecialColourSchemes = false;
     gCheatsState.MakeAllDestructible = false;
@@ -135,7 +135,7 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::DisableRideValueAging, gCheatsDisableRideValueAging, count);
         CheatEntrySerialise(ds, CheatType::IgnoreResearchStatus, gCheatsIgnoreResearchStatus, count);
         CheatEntrySerialise(ds, CheatType::EnableAllDrawableTrackPieces, gCheatsEnableAllDrawableTrackPieces, count);
-        CheatEntrySerialise(ds, CheatType::AllowTrackPlaceInvalidHeights, gCheatsAllowTrackPlaceInvalidHeights, count);
+        CheatEntrySerialise(ds, CheatType::AllowTrackPlaceInvalidHeights, gCheatsState.AllowTrackPlaceInvalidHeights, count);
         CheatEntrySerialise(ds, CheatType::AllowRegularPathAsQueue, gCheatsState.AllowRegularPathAsQueue, count);
         CheatEntrySerialise(ds, CheatType::AllowSpecialColourSchemes, gCheatsState.AllowSpecialColourSchemes, count);
         CheatEntrySerialise(ds, CheatType::MakeDestructible, gCheatsState.MakeAllDestructible, count);
@@ -227,7 +227,7 @@ void CheatsSerialise(DataSerialiser& ds)
                     ds << gCheatsEnableAllDrawableTrackPieces;
                     break;
                 case CheatType::AllowTrackPlaceInvalidHeights:
-                    ds << gCheatsAllowTrackPlaceInvalidHeights;
+                    ds << gCheatsState.AllowTrackPlaceInvalidHeights;
                     break;
                 case CheatType::NoCapOnQueueLengthDummy:
                     ds << dummyBool;
