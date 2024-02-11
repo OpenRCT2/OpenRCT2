@@ -2297,6 +2297,7 @@ namespace RCT1
         void ImportScenarioNameDetails(GameState_t& gameState)
         {
             std::string name = String::ToStd(_s4.ScenarioName);
+            std::string parkName;
             std::string details;
 
             int32_t scNumber = _s4.ScenarioSlotIndex;
@@ -2312,6 +2313,10 @@ namespace RCT1
                         {
                             name = String::ToStd(LanguageGetString(localisedStringIds[0]));
                         }
+                        if (localisedStringIds[1] != STR_NONE)
+                        {
+                            parkName = String::ToStd(LanguageGetString(localisedStringIds[1]));
+                        }
                         if (localisedStringIds[2] != STR_NONE)
                         {
                             details = String::ToStd(LanguageGetString(localisedStringIds[2]));
@@ -2322,6 +2327,11 @@ namespace RCT1
 
             gameState.ScenarioName = std::move(name);
             gameState.ScenarioDetails = std::move(details);
+            if (_isScenario && !parkName.empty())
+            {
+                auto& park = GetContext()->GetGameState()->GetPark();
+                park.Name = std::move(parkName);
+            }
         }
 
         void ImportScenarioObjective(GameState_t& gameState)
