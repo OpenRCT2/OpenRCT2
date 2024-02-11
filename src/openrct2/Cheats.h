@@ -43,7 +43,13 @@ extern bool gCheatsAllowTrackPlaceInvalidHeights;
 extern bool gCheatsAllowRegularPathAsQueue;
 extern bool gCheatsAllowSpecialColourSchemes;
 extern bool gCheatsMakeAllDestructible;
-extern StaffSpeedCheat gCheatsSelectedStaffSpeed;
+
+struct CheatsState
+{
+    StaffSpeedCheat SelectedStaffSpeed;
+};
+
+extern CheatsState gCheatsState;
 
 enum class CheatType : int32_t
 {

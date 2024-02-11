@@ -511,7 +511,7 @@ public:
         window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(
             OpenRCT2::GetGameState().ClimateCurrent.Weather)];
         // Staff speed
-        window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(gCheatsSelectedStaffSpeed)];
+        window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(gCheatsState.SelectedStaffSpeed)];
 
         if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         {
@@ -853,7 +853,7 @@ private:
                 WindowDropdownShowTextCustomWidth(
                     { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                     colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
-                Dropdown::SetChecked(EnumValue(gCheatsSelectedStaffSpeed), true);
+                Dropdown::SetChecked(EnumValue(gCheatsState.SelectedStaffSpeed), true);
             }
         }
     }
@@ -940,18 +940,18 @@ private:
             switch (dropdownIndex)
             {
                 case 0:
-                    gCheatsSelectedStaffSpeed = StaffSpeedCheat::None;
+                    gCheatsState.SelectedStaffSpeed = StaffSpeedCheat::None;
                     speed = kCheatsStaffNormalSpeed;
                     break;
 
                 case 1:
-                    gCheatsSelectedStaffSpeed = StaffSpeedCheat::Frozen;
+                    gCheatsState.SelectedStaffSpeed = StaffSpeedCheat::Frozen;
                     speed = kCheatsStaffFreezeSpeed;
                     break;
 
                 case 2:
-                    gCheatsSelectedStaffSpeed = StaffSpeedCheat::Fast;
-                    speed = kCheatsStaffFastSpeed;
+                    gCheatsState.SelectedStaffSpeed = StaffSpeedCheat::Fast;
+                    speed = kCheatsStaffNormalSpeed;
             }
             CheatsSet(CheatType::SetStaffSpeed, speed);
         }
