@@ -39,6 +39,8 @@
 #include <openrct2/world/Surface.h>
 #include <vector>
 
+using namespace OpenRCT2;
+
 static constexpr uint16_t MapColour2(uint8_t colourA, uint8_t colourB)
 {
     return (colourA << 8) | colourB;
@@ -163,7 +165,7 @@ public:
         CentreMapOnViewPoint();
         FootpathSelectDefault();
 
-        auto& gameState = OpenRCT2::GetGameState();
+        auto& gameState = GetGameState();
         _mapWidthAndHeightLinked = gameState.MapSize.x == gameState.MapSize.y;
 
         // Reset land rights tool size
@@ -632,7 +634,7 @@ public:
                     size += 2;
                     size = std::clamp(size, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
 
-                    TileCoordsXY newMapSize = OpenRCT2::GetGameState().MapSize;
+                    TileCoordsXY newMapSize = GetGameState().MapSize;
                     if (_resizeDirection != ResizeDirection::X)
                         newMapSize.y = size;
                     if (_resizeDirection != ResizeDirection::Y)
@@ -757,7 +759,7 @@ public:
             pressed_widgets |= (1uLL << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
 
         // Set disabled widgets
-        auto& gameState = OpenRCT2::GetGameState();
+        auto& gameState = GetGameState();
         SetWidgetDisabled(WIDX_MAP_SIZE_LINK, gameState.MapSize.x != gameState.MapSize.y);
 
         // Resize widgets to window size
@@ -974,7 +976,7 @@ private:
 
     void IncreaseMapSize()
     {
-        auto newMapSize = OpenRCT2::GetGameState().MapSize;
+        auto newMapSize = GetGameState().MapSize;
         if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::Y)
             newMapSize.y++;
         if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
@@ -986,7 +988,7 @@ private:
 
     void DecreaseMapSize()
     {
-        auto newMapSize = OpenRCT2::GetGameState().MapSize;
+        auto newMapSize = GetGameState().MapSize;
         if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::Y)
             newMapSize.y--;
         if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
@@ -1315,7 +1317,7 @@ private:
             widgets[WIDX_MAP_GENERATOR].type = WindowWidgetType::Button;
 
         // Push width (Y) and height (X) to the common formatter arguments for the map size spinners to use
-        auto& gameState = OpenRCT2::GetGameState();
+        auto& gameState = GetGameState();
         auto ft = Formatter::Common();
         ft.Add<uint16_t>(gameState.MapSize.y - 2);
         ft.Add<uint16_t>(gameState.MapSize.x - 2);
