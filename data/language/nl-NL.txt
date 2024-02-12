@@ -3713,6 +3713,7 @@ STR_6609    :Baanblok niet gevonden.
 STR_6610    :Padelement niet gevonden.
 STR_6611    :Muurelement niet gevonden.
 STR_6612    :Lichtkrantelement niet gevonden.
+STR_6613    :Object opnieuw laden
 
 #############
 # Scenarios #
