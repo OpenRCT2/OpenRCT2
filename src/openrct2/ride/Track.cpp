@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
@@ -943,7 +944,8 @@ void TrackElement::SetBrakeClosed(bool isClosed)
 
 bool TrackElement::IsIndestructible() const
 {
-    return (Flags2 & TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE) != 0 && !gCheatsState.MakeAllDestructible;
+    return (Flags2 & TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE) != 0
+        && !OpenRCT2::GetGameState().Cheats.MakeAllDestructible;
 }
 
 void TrackElement::SetIsIndestructible(bool isIndestructible)

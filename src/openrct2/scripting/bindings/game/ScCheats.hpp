@@ -13,6 +13,7 @@
 
 #    include "../../../Cheats.h"
 #    include "../../Duktape.hpp"
+#    include "../../GameState.h"
 #    include "../../ScriptEngine.h"
 
 namespace OpenRCT2::Scripting
@@ -89,13 +90,13 @@ namespace OpenRCT2::Scripting
 
         bool allowTrackPlaceInvalidHeights_get()
         {
-            return gCheatsState.AllowTrackPlaceInvalidHeights;
+            return GetGameState().Cheats.AllowTrackPlaceInvalidHeights;
         }
 
         void allowTrackPlaceInvalidHeights_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            gCheatsState.AllowTrackPlaceInvalidHeights = value;
+            GetGameState().Cheats.AllowTrackPlaceInvalidHeights = value;
         }
 
         bool buildInPauseMode_get()
@@ -166,24 +167,24 @@ namespace OpenRCT2::Scripting
 
         bool allowRegularPathAsQueue_get()
         {
-            return gCheatsState.AllowRegularPathAsQueue;
+            return GetGameState().Cheats.AllowRegularPathAsQueue;
         }
 
         void allowRegularPathAsQueue_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            gCheatsState.AllowRegularPathAsQueue = value;
+            GetGameState().Cheats.AllowRegularPathAsQueue = value;
         }
 
         bool allowSpecialColourSchemes_get()
         {
-            return gCheatsState.AllowSpecialColourSchemes;
+            return GetGameState().Cheats.AllowSpecialColourSchemes;
         }
 
         void allowSpecialColourSchemes_set(bool value)
         {
             ThrowIfGameStateNotMutable();
-            gCheatsState.AllowSpecialColourSchemes = value;
+            GetGameState().Cheats.AllowSpecialColourSchemes = value;
         }
 
         bool disableRideValueAging_get()

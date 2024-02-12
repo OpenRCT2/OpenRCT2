@@ -486,8 +486,8 @@ public:
                 SetCheckboxValue(WIDX_FREEZE_WEATHER, gCheatsFreezeWeather);
                 SetCheckboxValue(WIDX_NEVERENDING_MARKETING, gCheatsNeverendingMarketing);
                 SetCheckboxValue(WIDX_DISABLE_PLANT_AGING, gCheatsDisablePlantAging);
-                SetCheckboxValue(WIDX_ALLOW_REGULAR_PATH_AS_QUEUE, gCheatsState.AllowRegularPathAsQueue);
-                SetCheckboxValue(WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES, gCheatsState.AllowSpecialColourSchemes);
+                SetCheckboxValue(WIDX_ALLOW_REGULAR_PATH_AS_QUEUE, GetGameState().Cheats.AllowRegularPathAsQueue);
+                SetCheckboxValue(WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES, GetGameState().Cheats.AllowSpecialColourSchemes);
                 break;
             case WINDOW_CHEATS_PAGE_RIDES:
                 SetCheckboxValue(WIDX_UNLOCK_OPERATING_LIMITS, gCheatsUnlockOperatingLimits);
@@ -502,8 +502,8 @@ public:
                 SetCheckboxValue(WIDX_DISABLE_RIDE_VALUE_AGING, gCheatsDisableRideValueAging);
                 SetCheckboxValue(WIDX_IGNORE_RESEARCH_STATUS, gCheatsIgnoreResearchStatus);
                 SetCheckboxValue(WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES, gCheatsEnableAllDrawableTrackPieces);
-                SetCheckboxValue(WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, gCheatsState.AllowTrackPlaceInvalidHeights);
-                SetCheckboxValue(WIDX_MAKE_DESTRUCTIBLE, gCheatsState.MakeAllDestructible);
+                SetCheckboxValue(WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, GetGameState().Cheats.AllowTrackPlaceInvalidHeights);
+                SetCheckboxValue(WIDX_MAKE_DESTRUCTIBLE, GetGameState().Cheats.MakeAllDestructible);
                 break;
         }
 
@@ -511,7 +511,7 @@ public:
         window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(
             OpenRCT2::GetGameState().ClimateCurrent.Weather)];
         // Staff speed
-        window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(gCheatsState.SelectedStaffSpeed)];
+        window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(GetGameState().Cheats.SelectedStaffSpeed)];
 
         if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         {
@@ -853,7 +853,7 @@ private:
                 WindowDropdownShowTextCustomWidth(
                     { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
                     colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
-                Dropdown::SetChecked(EnumValue(gCheatsState.SelectedStaffSpeed), true);
+                Dropdown::SetChecked(EnumValue(GetGameState().Cheats.SelectedStaffSpeed), true);
             }
         }
     }
@@ -915,10 +915,10 @@ private:
                 }
                 break;
             case WIDX_ALLOW_REGULAR_PATH_AS_QUEUE:
-                CheatsSet(CheatType::AllowRegularPathAsQueue, !gCheatsState.AllowRegularPathAsQueue);
+                CheatsSet(CheatType::AllowRegularPathAsQueue, !GetGameState().Cheats.AllowRegularPathAsQueue);
                 break;
             case WIDX_ALLOW_SPECIAL_COLOUR_SCHEMES:
-                CheatsSet(CheatType::AllowSpecialColourSchemes, !gCheatsState.AllowSpecialColourSchemes);
+                CheatsSet(CheatType::AllowSpecialColourSchemes, !GetGameState().Cheats.AllowSpecialColourSchemes);
                 break;
         }
     }
@@ -940,18 +940,18 @@ private:
             switch (dropdownIndex)
             {
                 case 0:
-                    gCheatsState.SelectedStaffSpeed = StaffSpeedCheat::None;
+                    GetGameState().Cheats.SelectedStaffSpeed = StaffSpeedCheat::None;
                     speed = kCheatsStaffNormalSpeed;
                     break;
 
                 case 1:
-                    gCheatsState.SelectedStaffSpeed = StaffSpeedCheat::Frozen;
+                    GetGameState().Cheats.SelectedStaffSpeed = StaffSpeedCheat::Frozen;
                     speed = kCheatsStaffFreezeSpeed;
                     break;
 
                 case 2:
-                    gCheatsState.SelectedStaffSpeed = StaffSpeedCheat::Fast;
-                    speed = kCheatsStaffNormalSpeed;
+                    GetGameState().Cheats.SelectedStaffSpeed = StaffSpeedCheat::Fast;
+                    speed = kCheatsStaffFastSpeed;
             }
             CheatsSet(CheatType::SetStaffSpeed, speed);
         }
@@ -1047,7 +1047,7 @@ private:
                 CheatsSet(CheatType::RenewRides);
                 break;
             case WIDX_MAKE_DESTRUCTIBLE:
-                CheatsSet(CheatType::MakeDestructible, !gCheatsState.MakeAllDestructible);
+                CheatsSet(CheatType::MakeDestructible, !GetGameState().Cheats.MakeAllDestructible);
                 break;
             case WIDX_FIX_ALL:
                 CheatsSet(CheatType::FixRides);
@@ -1120,11 +1120,11 @@ private:
                 break;
             case WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS:
             {
-                if (!gCheatsState.AllowTrackPlaceInvalidHeights)
+                if (!GetGameState().Cheats.AllowTrackPlaceInvalidHeights)
                 {
                     ContextShowError(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
                 }
-                CheatsSet(CheatType::AllowTrackPlaceInvalidHeights, !gCheatsState.AllowTrackPlaceInvalidHeights);
+                CheatsSet(CheatType::AllowTrackPlaceInvalidHeights, !GetGameState().Cheats.AllowTrackPlaceInvalidHeights);
             }
             break;
         }

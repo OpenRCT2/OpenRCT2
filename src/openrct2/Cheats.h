@@ -11,12 +11,6 @@
 
 #include "common.h"
 
-enum class StaffSpeedCheat
-{
-    None,
-    Frozen,
-    Fast,
-};
 
 extern bool gCheatsSandboxMode;
 extern bool gCheatsDisableClearanceChecks;
@@ -39,17 +33,6 @@ extern bool gCheatsEnableChainLiftOnAllTrack;
 extern bool gCheatsAllowArbitraryRideTypeChanges;
 extern bool gCheatsIgnoreResearchStatus;
 extern bool gCheatsEnableAllDrawableTrackPieces;
-
-struct CheatsState
-{
-    bool AllowTrackPlaceInvalidHeights;
-    bool AllowRegularPathAsQueue;
-    bool AllowSpecialColourSchemes;
-    bool MakeAllDestructible;
-    StaffSpeedCheat SelectedStaffSpeed;
-};
-
-extern CheatsState gCheatsState;
 
 enum class CheatType : int32_t
 {

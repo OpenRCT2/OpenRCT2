@@ -204,7 +204,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->TrousersColour = colour;
 
         // Staff energy determines their walking speed
-        switch (gCheatsState.SelectedStaffSpeed)
+        switch (GetGameState().Cheats.SelectedStaffSpeed)
         {
             case StaffSpeedCheat::None:
                 newPeep->Energy = kCheatsStaffNormalSpeed;

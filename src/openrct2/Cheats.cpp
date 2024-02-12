@@ -52,14 +52,6 @@ bool gCheatsDisableRideValueAging = false;
 bool gCheatsIgnoreResearchStatus = false;
 bool gCheatsEnableAllDrawableTrackPieces = false;
 
-CheatsState gCheatsState = {
-    /* AllowTrackPlaceInvalidHeights */ false,
-    /* AllowRegularPathAsQueue */ false,
-    /* AllowSpecialColourSchemes */ false,
-    /* MakeAllDestructible */ false,
-    /* SelectedStaffSpeed */ StaffSpeedCheat::None,
-};
-
 void CheatsReset()
 {
     gCheatsSandboxMode = false;
@@ -83,11 +75,11 @@ void CheatsReset()
     gCheatsDisableRideValueAging = false;
     gCheatsIgnoreResearchStatus = false;
     gCheatsEnableAllDrawableTrackPieces = false;
-    gCheatsState.AllowTrackPlaceInvalidHeights = false;
-    gCheatsState.AllowRegularPathAsQueue = false;
-    gCheatsState.AllowSpecialColourSchemes = false;
-    gCheatsState.MakeAllDestructible = false;
-    gCheatsState.SelectedStaffSpeed = StaffSpeedCheat::None;
+    GetGameState().Cheats.AllowTrackPlaceInvalidHeights = false;
+    GetGameState().Cheats.AllowRegularPathAsQueue = false;
+    GetGameState().Cheats.AllowSpecialColourSchemes = false;
+    GetGameState().Cheats.MakeAllDestructible = false;
+    GetGameState().Cheats.SelectedStaffSpeed = StaffSpeedCheat::None;
 }
 
 void CheatsSet(CheatType cheatType, int64_t param1 /* = 0*/, int64_t param2 /* = 0*/)
@@ -135,11 +127,12 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::DisableRideValueAging, gCheatsDisableRideValueAging, count);
         CheatEntrySerialise(ds, CheatType::IgnoreResearchStatus, gCheatsIgnoreResearchStatus, count);
         CheatEntrySerialise(ds, CheatType::EnableAllDrawableTrackPieces, gCheatsEnableAllDrawableTrackPieces, count);
-        CheatEntrySerialise(ds, CheatType::AllowTrackPlaceInvalidHeights, gCheatsState.AllowTrackPlaceInvalidHeights, count);
-        CheatEntrySerialise(ds, CheatType::AllowRegularPathAsQueue, gCheatsState.AllowRegularPathAsQueue, count);
-        CheatEntrySerialise(ds, CheatType::AllowSpecialColourSchemes, gCheatsState.AllowSpecialColourSchemes, count);
-        CheatEntrySerialise(ds, CheatType::MakeDestructible, gCheatsState.MakeAllDestructible, count);
-        CheatEntrySerialise(ds, CheatType::SetStaffSpeed, gCheatsState.SelectedStaffSpeed, count);
+        CheatEntrySerialise(
+            ds, CheatType::AllowTrackPlaceInvalidHeights, GetGameState().Cheats.AllowTrackPlaceInvalidHeights, count);
+        CheatEntrySerialise(ds, CheatType::AllowRegularPathAsQueue, GetGameState().Cheats.AllowRegularPathAsQueue, count);
+        CheatEntrySerialise(ds, CheatType::AllowSpecialColourSchemes, GetGameState().Cheats.AllowSpecialColourSchemes, count);
+        CheatEntrySerialise(ds, CheatType::MakeDestructible, GetGameState().Cheats.MakeAllDestructible, count);
+        CheatEntrySerialise(ds, CheatType::SetStaffSpeed, GetGameState().Cheats.SelectedStaffSpeed, count);
 
         // Remember current position and update count.
         uint64_t endOffset = stream.GetPosition();
@@ -227,22 +220,22 @@ void CheatsSerialise(DataSerialiser& ds)
                     ds << gCheatsEnableAllDrawableTrackPieces;
                     break;
                 case CheatType::AllowTrackPlaceInvalidHeights:
-                    ds << gCheatsState.AllowTrackPlaceInvalidHeights;
+                    ds << GetGameState().Cheats.AllowTrackPlaceInvalidHeights;
                     break;
                 case CheatType::NoCapOnQueueLengthDummy:
                     ds << dummyBool;
                     break;
                 case CheatType::AllowRegularPathAsQueue:
-                    ds << gCheatsState.AllowRegularPathAsQueue;
+                    ds << GetGameState().Cheats.AllowRegularPathAsQueue;
                     break;
                 case CheatType::AllowSpecialColourSchemes:
-                    ds << gCheatsState.AllowSpecialColourSchemes;
+                    ds << GetGameState().Cheats.AllowSpecialColourSchemes;
                     break;
                 case CheatType::MakeDestructible:
-                    ds << gCheatsState.MakeAllDestructible;
+                    ds << GetGameState().Cheats.MakeAllDestructible;
                     break;
                 case CheatType::SetStaffSpeed:
-                    ds << gCheatsState.SelectedStaffSpeed;
+                    ds << GetGameState().Cheats.SelectedStaffSpeed;
                     break;
                 default:
                     break;

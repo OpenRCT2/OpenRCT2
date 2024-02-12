@@ -189,7 +189,7 @@ GameActions::Result CheatSetAction::Execute() const
             RenewRides();
             break;
         case CheatType::MakeDestructible:
-            gCheatsState.MakeAllDestructible = _param1 != 0;
+            GetGameState().Cheats.MakeAllDestructible = _param1 != 0;
             WindowInvalidateByClass(WindowClass::Ride);
             break;
         case CheatType::FixRides:
@@ -246,13 +246,13 @@ GameActions::Result CheatSetAction::Execute() const
             Duck::RemoveAll();
             break;
         case CheatType::AllowTrackPlaceInvalidHeights:
-            gCheatsState.AllowTrackPlaceInvalidHeights = _param1 != 0;
+            GetGameState().Cheats.AllowTrackPlaceInvalidHeights = _param1 != 0;
             break;
         case CheatType::AllowRegularPathAsQueue:
-            gCheatsState.AllowRegularPathAsQueue = _param1 != 0;
+            GetGameState().Cheats.AllowRegularPathAsQueue = _param1 != 0;
             break;
         case CheatType::AllowSpecialColourSchemes:
-            gCheatsState.AllowSpecialColourSchemes = static_cast<bool>(_param1);
+            GetGameState().Cheats.AllowSpecialColourSchemes = static_cast<bool>(_param1);
             break;
         case CheatType::RemoveParkFences:
             RemoveParkFences();

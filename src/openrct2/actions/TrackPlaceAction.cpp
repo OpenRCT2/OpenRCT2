@@ -9,6 +9,7 @@
 
 #include "TrackPlaceAction.h"
 
+#include "../GameState.h"
 #include "../core/Numerics.hpp"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
@@ -192,7 +193,7 @@ GameActions::Result TrackPlaceAction::Query() const
             STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
-    if (!gCheatsState.AllowTrackPlaceInvalidHeights)
+    if (!OpenRCT2::GetGameState().Cheats.AllowTrackPlaceInvalidHeights)
     {
         if (ted.Flags & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT)
         {

@@ -13,6 +13,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/Context.h>
+#include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/core/BitSet.hpp>
 #include <openrct2/drawing/Drawing.h>
@@ -525,7 +526,8 @@ void WindowDropdownShowColour(WindowBase* w, Widget* widget, uint8_t dropdownCol
 {
     int32_t defaultIndex = -1;
 
-    auto numColours = (gCheatsState.AllowSpecialColourSchemes) ? static_cast<uint8_t>(COLOUR_COUNT) : COLOUR_NUM_NORMAL;
+    auto numColours = (GetGameState().Cheats.AllowSpecialColourSchemes) ? static_cast<uint8_t>(COLOUR_COUNT)
+                                                                        : COLOUR_NUM_NORMAL;
     // Set items
     for (uint64_t i = 0; i < numColours; i++)
     {

@@ -31,6 +31,22 @@ namespace OpenRCT2
 {
     class Park;
 
+    enum class StaffSpeedCheat
+    {
+        None,
+        Frozen,
+        Fast,
+    };
+
+    struct CheatsState
+    {
+        bool AllowTrackPlaceInvalidHeights;
+        bool AllowRegularPathAsQueue;
+        bool AllowSpecialColourSchemes;
+        bool MakeAllDestructible;
+        StaffSpeedCheat SelectedStaffSpeed;
+    };
+
     struct GameState_t
     {
         uint32_t CurrentTicks{};
@@ -124,6 +140,8 @@ namespace OpenRCT2
          * In a difficult guest generation scenario, no guests will be generated if over this value.
          */
         uint32_t SuggestedGuestMaximum;
+
+        CheatsState Cheats;
     };
 
     GameState_t& GetGameState();
