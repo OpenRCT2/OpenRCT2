@@ -106,21 +106,9 @@ extern const TileCoordsXY TileDirectionDelta[];
 extern TileCoordsXY gWidePathTileLoopPosition;
 extern uint16_t gGrassSceneryTileLoopPosition;
 
-extern TileCoordsXY gMapSize;
-
-inline CoordsXY GetMapSizeUnits()
-{
-    return { (gMapSize.x - 1) * COORDS_XY_STEP, (gMapSize.y - 1) * COORDS_XY_STEP };
-}
-inline CoordsXY GetMapSizeMinus2()
-{
-    return { (gMapSize.x * COORDS_XY_STEP) + (8 * COORDS_XY_STEP - 2),
-             (gMapSize.y * COORDS_XY_STEP) + (8 * COORDS_XY_STEP - 2) };
-}
-inline CoordsXY GetMapSizeMaxXY()
-{
-    return GetMapSizeUnits() - CoordsXY{ 1, 1 };
-}
+CoordsXY GetMapSizeUnits();
+CoordsXY GetMapSizeMinus2();
+CoordsXY GetMapSizeMaxXY();
 
 extern uint16_t gMapSelectFlags;
 extern uint16_t gMapSelectType;
