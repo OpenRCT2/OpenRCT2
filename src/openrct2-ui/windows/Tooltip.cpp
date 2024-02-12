@@ -156,10 +156,6 @@ void WindowTooltipReset(const ScreenCoordsXY& screenCoords)
 
 void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoords)
 {
-    auto* w = WindowFindByClass(WindowClass::Error);
-    if (w != nullptr)
-        return;
-
     auto tooltipWindow = std::make_unique<TooltipWindow>(message, screenCoords);
     auto windowPos = tooltipWindow->windowPos;
     auto width = tooltipWindow->width;
