@@ -7,6 +7,7 @@
 - Fix: [#21208] Error message will stay open only for a brief moment when the game has been running a while.
 - Fix: [#21220] When creating a new park from a SC4 file, the localised park name is not applied.
 - Fix: [#21286] Cannot build unbanking turns with RCT1 vehicles.
+- Fix: [#21288] Text overlaps in the “About ‘OpenRCT2’” window for Arabic, Chinese, Japanese, Korean and Vietnamese.
 - Fix: [#21318] Virtual Floor for building scenery is not properly invalidated.
 - Fix: [#21330] Tooltips from dropdown widgets have the wrong position.
 - Fix: [#21332] Mini Helicopters and Monorail Cycles ride types are swapped in research within RCT1 scenarios.
