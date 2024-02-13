@@ -69,6 +69,28 @@ jobs:
         uses: actions/checkout@v4
       - name: Run check-changelog-formatting
         run: scripts/check-changelog-formatting
+  g2dat:
+    name: g2.dat
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout OpenRCT2
+        uses: actions/checkout@v4
+        with:
+          path: OpenRCT2
+      - name: Download gxc
+        run: |
+          curl -Lo tools.tar.gz https://github.com/IntelOrca/libsawyer/releases/download/v1.3.0/libsawyer-tools-linux-x64.tar.gz
+          mkdir -p "$GITHUB_WORKSPACE/bin"
+          tar -C "$GITHUB_WORKSPACE/bin" -xf tools.tar.gz
+          echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
+      - name: Build g2.dat
+        run: |
+          gxc build g2.dat OpenRCT2/resources/g2/sprites.json
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: g2.dat
+          path: g2.dat
   windows:
     name: Windows
     runs-on: windows-latest
