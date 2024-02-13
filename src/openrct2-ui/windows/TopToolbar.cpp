@@ -3536,7 +3536,6 @@ void TopToolbar::InitMapMenu(Widget& widget)
 {
     auto i = 0;
     gDropdownItems[i++].Format = STR_SHORTCUT_SHOW_MAP;
-    gDropdownItems[i++].Format = STR_EXTRA_VIEWPORT;
     if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gEditorStep == EditorStep::LandscapeEditor)
     {
         gDropdownItems[i++].Format = STR_MAPGEN_WINDOW_TITLE;
@@ -3581,9 +3580,6 @@ void TopToolbar::MapMenuDropdown(int16_t dropdownIndex)
                 ContextOpenWindow(WindowClass::Map);
                 break;
             case 1:
-                ContextOpenWindow(WindowClass::Viewport);
-                break;
-            case 2:
                 ContextOpenWindow(WindowClass::Mapgen);
                 break;
         }

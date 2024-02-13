@@ -130,8 +130,6 @@ public:
                 return WindowTopToolbarOpen();
             case WindowClass::ViewClipping:
                 return WindowViewClippingOpen();
-            case WindowClass::Viewport:
-                return WindowViewportOpen();
             case WindowClass::Water:
                 return WindowWaterOpen();
             case WindowClass::Transparency:

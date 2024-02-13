@@ -529,8 +529,7 @@ void WindowAllWheelInput()
         WindowBase* w = WindowFindFromPoint(cursorState->position);
         if (w != nullptr)
         {
-            // Check if main window
-            if (w->classification == WindowClass::MainWindow || w->classification == WindowClass::Viewport)
+            if (w->classification == WindowClass::MainWindow)
             {
                 WindowViewportWheelInput(*w, relative_wheel);
                 return;

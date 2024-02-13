@@ -152,7 +152,6 @@ static WindowClass window_themes_tab_2_classes[] = {
     WindowClass::NewCampaign,
     WindowClass::Research,
     WindowClass::Map,
-    WindowClass::Viewport,
     WindowClass::RecentNews,
 };
 

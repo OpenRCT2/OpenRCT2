@@ -70,7 +70,6 @@ WindowBase* WindowTitleExitOpen();
 WindowBase* WindowTitleLogoOpen();
 WindowBase* WindowTitleMenuOpen();
 WindowBase* WindowTitleOptionsOpen();
-WindowBase* WindowViewportOpen();
 WindowBase* WindowWaterOpen();
 WindowBase* WindowViewClippingOpen();
 WindowBase* WindowTransparencyOpen();

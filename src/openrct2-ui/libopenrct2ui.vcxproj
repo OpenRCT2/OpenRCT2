@@ -218,7 +218,6 @@
     <ClCompile Include="windows\TrackList.cpp" />
     <ClCompile Include="windows\Transparency.cpp" />
     <ClCompile Include="windows\ViewClipping.cpp" />
-    <ClCompile Include="windows\Viewport.cpp" />
     <ClCompile Include="windows\Water.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

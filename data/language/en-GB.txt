@@ -1976,8 +1976,6 @@ STR_2775    :Fullscreen (borderless window)
 STR_2776    :Language:
 STR_2777    :{MOVE_X}{10}{STRING}
 STR_2778    :»{MOVE_X}{10}{STRING}
-STR_2779    :Viewport #{COMMA16}
-STR_2780    :Extra viewport
 # End of new strings
 STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
