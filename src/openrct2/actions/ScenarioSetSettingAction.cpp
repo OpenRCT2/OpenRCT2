@@ -91,12 +91,12 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             break;
         case ScenarioSetSetting::InitialLoan:
             gBankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
-            gMaxBankLoan = std::max(gBankLoan, gMaxBankLoan);
+            gameState.MaxBankLoan = std::max(gBankLoan, gameState.MaxBankLoan);
             WindowInvalidateByClass(WindowClass::Finances);
             break;
         case ScenarioSetSetting::MaximumLoanSize:
-            gMaxBankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
-            gBankLoan = std::min(gBankLoan, gMaxBankLoan);
+            gameState.MaxBankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
+            gBankLoan = std::min(gBankLoan, gameState.MaxBankLoan);
             WindowInvalidateByClass(WindowClass::Finances);
             break;
         case ScenarioSetSetting::AnnualInterestRate:

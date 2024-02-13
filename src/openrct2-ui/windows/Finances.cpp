@@ -484,6 +484,7 @@ public:
 
     void OnMouseDownSummary(WidgetIndex widgetIndex)
     {
+        auto& gameState = GetGameState();
         switch (widgetIndex)
         {
             case WIDX_LOAN_INCREASE:
@@ -491,9 +492,9 @@ public:
                 // If loan can be increased, do so.
                 // If not, action shows error message.
                 auto newLoan = gBankLoan + 1000.00_GBP;
-                if (gBankLoan < gMaxBankLoan)
+                if (gBankLoan < gameState.MaxBankLoan)
                 {
-                    newLoan = std::min(gMaxBankLoan, newLoan);
+                    newLoan = std::min(gameState.MaxBankLoan, newLoan);
                 }
                 auto gameAction = ParkSetLoanAction(newLoan);
                 GameActions::Execute(&gameAction);

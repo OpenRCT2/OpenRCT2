@@ -491,10 +491,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_MAXIMUM_LOAN_INCREASE:
-                if (gMaxBankLoan < 5000000.00_GBP)
+                if (gameState.MaxBankLoan < 5000000.00_GBP)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::MaximumLoanSize, gMaxBankLoan + 1000.00_GBP);
+                        ScenarioSetSetting::MaximumLoanSize, gameState.MaxBankLoan + 1000.00_GBP);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -504,10 +504,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_MAXIMUM_LOAN_DECREASE:
-                if (gMaxBankLoan > 0.00_GBP)
+                if (gameState.MaxBankLoan > 0.00_GBP)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::MaximumLoanSize, gMaxBankLoan - 1000.00_GBP);
+                        ScenarioSetSetting::MaximumLoanSize, gameState.MaxBankLoan - 1000.00_GBP);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -654,7 +654,7 @@ private:
 
             screenCoords = windowPos + ScreenCoordsXY{ maximumLoanWidget.left + 1, maximumLoanWidget.top };
             auto ft = Formatter();
-            ft.Add<money64>(gMaxBankLoan);
+            ft.Add<money64>(GetGameState().MaxBankLoan);
             DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
         }
 

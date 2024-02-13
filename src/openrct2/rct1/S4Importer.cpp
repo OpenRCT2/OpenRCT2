@@ -1397,7 +1397,7 @@ namespace RCT1
 
             gameState.Cash = ToMoney64(_s4.Cash);
             gBankLoan = ToMoney64(_s4.Loan);
-            gMaxBankLoan = ToMoney64(_s4.MaxLoan);
+            gameState.MaxBankLoan = ToMoney64(_s4.MaxLoan);
             // It's more like 1.33%, but we can only use integers. Can be fixed once we have our own save format.
             gBankLoanInterestRate = 1;
             gameState.InitialCash = ToMoney64(_s4.Cash);

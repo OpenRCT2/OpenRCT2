@@ -41,7 +41,6 @@ static constexpr int32_t dword_988E60[static_cast<int32_t>(ExpenditureType::Coun
 
 money64 gBankLoan;
 uint8_t gBankLoanInterestRate;
-money64 gMaxBankLoan;
 money64 gCurrentExpenditure;
 money64 gCurrentProfit;
 money64 gHistoricalProfit;
@@ -231,7 +230,7 @@ void FinanceInit()
 
     gameState.Cash = 10000.00_GBP;
     gBankLoan = 10000.00_GBP;
-    gMaxBankLoan = 20000.00_GBP;
+    gameState.MaxBankLoan = 20000.00_GBP;
 
     gHistoricalProfit = 0;
 
@@ -308,7 +307,7 @@ money64 FinanceGetCurrentLoan()
 
 money64 FinanceGetMaximumLoan()
 {
-    return gMaxBankLoan;
+    return GetGameState().MaxBankLoan;
 }
 
 money64 FinanceGetCurrentCash()

@@ -340,7 +340,7 @@ namespace RCT2
             gameState.ParkSize = _s6.ParkSize;
             gameState.GuestGenerationProbability = _s6.GuestGenerationProbability;
             gameState.TotalRideValueForMoney = _s6.TotalRideValueForMoney;
-            gMaxBankLoan = ToMoney64(_s6.MaximumLoan);
+            gameState.MaxBankLoan = ToMoney64(_s6.MaximumLoan);
             gameState.GuestInitialCash = ToMoney64(_s6.GuestInitialCash);
             gameState.GuestInitialHunger = _s6.GuestInitialHunger;
             gameState.GuestInitialThirst = _s6.GuestInitialThirst;

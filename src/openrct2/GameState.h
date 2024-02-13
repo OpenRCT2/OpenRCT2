@@ -61,6 +61,7 @@ namespace OpenRCT2
         uint16_t ScenarioParkRatingWarningDays;
         money64 ScenarioCompletedCompanyValue;
         money64 ScenarioCompanyValueRecord;
+        money64 MaxBankLoan;
         random_engine_t ScenarioRand;
         int32_t MapBaseZ;
         TileCoordsXY MapSize;
