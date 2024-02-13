@@ -480,7 +480,7 @@ using close_callback = void (*)();
 
 extern WindowBase* gWindowAudioExclusive;
 
-extern uint16_t gWindowUpdateTicks;
+extern uint32_t gWindowUpdateTicks;
 namespace MapFlashingFlags
 {
     constexpr uint16_t GuestListOpen = (1 << 0);
