@@ -5599,9 +5599,10 @@ void DetermineRideEntranceAndExitLocations()
             // Search the map to find it. Skip the outer ring of invisible tiles.
             bool alreadyFoundEntrance = false;
             bool alreadyFoundExit = false;
-            for (int32_t y = 1; y < gMapSize.y - 1; y++)
+            auto& gameState = GetGameState();
+            for (int32_t y = 1; y < gameState.MapSize.y - 1; y++)
             {
-                for (int32_t x = 1; x < gMapSize.x - 1; x++)
+                for (int32_t x = 1; x < gameState.MapSize.x - 1; x++)
                 {
                     TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
 
@@ -5685,9 +5686,10 @@ void DetermineRideEntranceAndExitLocations()
 
 void RideClearLeftoverEntrances(const Ride& ride)
 {
-    for (TileCoordsXY tilePos = {}; tilePos.x < gMapSize.x; ++tilePos.x)
+    auto& gameState = GetGameState();
+    for (TileCoordsXY tilePos = {}; tilePos.x < gameState.MapSize.x; ++tilePos.x)
     {
-        for (tilePos.y = 0; tilePos.y < gMapSize.y; ++tilePos.y)
+        for (tilePos.y = 0; tilePos.y < gameState.MapSize.y; ++tilePos.y)
         {
             for (auto* entrance : TileElementsView<EntranceElement>(tilePos.ToCoordsXY()))
             {
@@ -5764,9 +5766,10 @@ void Ride::IncreaseNumShelteredSections()
 
 void Ride::UpdateRideTypeForAllPieces()
 {
-    for (int32_t y = 0; y < gMapSize.y; y++)
+    auto& gameState = GetGameState();
+    for (int32_t y = 0; y < gameState.MapSize.y; y++)
     {
-        for (int32_t x = 0; x < gMapSize.x; x++)
+        for (int32_t x = 0; x < gameState.MapSize.x; x++)
         {
             auto* tileElement = MapGetFirstElementAt(TileCoordsXY(x, y));
             if (tileElement == nullptr)

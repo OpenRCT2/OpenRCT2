@@ -419,9 +419,10 @@ ParametersRange CheatSetAction::GetParameterRange(CheatType cheatType) const
 
 void CheatSetAction::SetGrassLength(int32_t length) const
 {
-    for (int32_t y = 0; y < gMapSize.y; y++)
+    auto& gameState = GetGameState();
+    for (int32_t y = 0; y < gameState.MapSize.y; y++)
     {
-        for (int32_t x = 0; x < gMapSize.x; x++)
+        for (int32_t x = 0; x < gameState.MapSize.x; x++)
         {
             auto surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             if (surfaceElement == nullptr)

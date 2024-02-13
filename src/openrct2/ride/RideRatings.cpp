@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
@@ -1793,9 +1794,10 @@ static int32_t ride_ratings_get_scenery_score(const Ride& ride)
     // Count surrounding scenery items
     int32_t numSceneryItems = 0;
     auto tileLocation = TileCoordsXY(location);
-    for (int32_t yy = std::max(tileLocation.y - 5, 0); yy <= std::min(tileLocation.y + 5, gMapSize.y - 1); yy++)
+    auto& gameState = GetGameState();
+    for (int32_t yy = std::max(tileLocation.y - 5, 0); yy <= std::min(tileLocation.y + 5, gameState.MapSize.y - 1); yy++)
     {
-        for (int32_t xx = std::max(tileLocation.x - 5, 0); xx <= std::min(tileLocation.x + 5, gMapSize.x - 1); xx++)
+        for (int32_t xx = std::max(tileLocation.x - 5, 0); xx <= std::min(tileLocation.x + 5, gameState.MapSize.x - 1); xx++)
         {
             // Count scenery items on this tile
             TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ xx, yy });

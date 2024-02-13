@@ -1944,7 +1944,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     uint8_t backup_rotation = _currentTrackPieceDirection;
     uint32_t backup_park_flags = gameState.ParkFlags;
     gameState.ParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
-    auto mapSize = TileCoordsXY{ gMapSize.x * 16, gMapSize.y * 16 };
+    auto mapSize = TileCoordsXY{ gameState.MapSize.x * 16, gameState.MapSize.y * 16 };
 
     _currentTrackPieceDirection = 0;
     int32_t z = TrackDesignGetZPlacement(
@@ -2101,7 +2101,7 @@ static void TrackDesignPreviewClearMap()
 {
     auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
 
-    gMapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
+    GetGameState().MapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
 
     // Reserve ~8 elements per tile
     std::vector<TileElement> tileElements;

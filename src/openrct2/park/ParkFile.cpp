@@ -1062,14 +1062,14 @@ namespace OpenRCT2
 
             auto found = os.ReadWriteChunk(
                 ParkFileChunkType::TILES,
-                [pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, &os](OrcaStream::ChunkStream& cs) {
-                    cs.ReadWrite(gMapSize.x);
-                    cs.ReadWrite(gMapSize.y);
+                [pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, &os, &gameState](OrcaStream::ChunkStream& cs) {
+                    cs.ReadWrite(gameState.MapSize.x);
+                    cs.ReadWrite(gameState.MapSize.y);
 
                     if (cs.GetMode() == OrcaStream::Mode::READING)
                     {
                         // TODO: Use the passed gameState instead of the global one.
-                        OpenRCT2::GetContext()->GetGameState()->InitAll(gMapSize);
+                        OpenRCT2::GetContext()->GetGameState()->InitAll(gameState.MapSize);
 
                         auto numElements = cs.Read<uint32_t>();
 
@@ -1151,9 +1151,10 @@ namespace OpenRCT2
 
         void UpdateTrackElementsRideType()
         {
-            for (int32_t y = 0; y < gMapSize.y; y++)
+            auto& gameState = GetGameState();
+            for (int32_t y = 0; y < gameState.MapSize.y; y++)
             {
-                for (int32_t x = 0; x < gMapSize.x; x++)
+                for (int32_t x = 0; x < gameState.MapSize.x; x++)
                 {
                     TileElement* tileElement = MapGetFirstElementAt(TileCoordsXY{ x, y });
                     if (tileElement == nullptr)

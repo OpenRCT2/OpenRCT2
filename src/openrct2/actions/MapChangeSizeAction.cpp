@@ -10,6 +10,7 @@
 #include "MapChangeSizeAction.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../drawing/IDrawingEngine.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
@@ -47,22 +48,23 @@ GameActions::Result MapChangeSizeAction::Query() const
 
 GameActions::Result MapChangeSizeAction::Execute() const
 {
+    auto& gameState = OpenRCT2::GetGameState();
     // Expand map
-    while (_targetSize.x > gMapSize.x)
+    while (_targetSize.x > gameState.MapSize.x)
     {
-        gMapSize.x++;
+        gameState.MapSize.x++;
         MapExtendBoundarySurfaceX();
     }
-    while (_targetSize.y > gMapSize.y)
+    while (_targetSize.y > gameState.MapSize.y)
     {
-        gMapSize.y++;
+        gameState.MapSize.y++;
         MapExtendBoundarySurfaceY();
     }
 
     // Shrink map
-    if (_targetSize.x < gMapSize.x || _targetSize.y < gMapSize.y)
+    if (_targetSize.x < gameState.MapSize.x || _targetSize.y < gameState.MapSize.y)
     {
-        gMapSize = _targetSize;
+        gameState.MapSize = _targetSize;
         MapRemoveOutOfRangeElements();
     }
 

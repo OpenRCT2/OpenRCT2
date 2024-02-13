@@ -402,7 +402,7 @@ namespace RCT2
             gameState.Cash = ToMoney64(DECRYPT_MONEY(_s6.Cash));
             // Pad013587FC
             gParkRatingCasualtyPenalty = _s6.ParkRatingCasualtyPenalty;
-            gMapSize = { _s6.MapSize, _s6.MapSize };
+            gameState.MapSize = { _s6.MapSize, _s6.MapSize };
             gSamePriceThroughoutPark = _s6.SamePriceThroughout | (static_cast<uint64_t>(_s6.SamePriceThroughoutExtended) << 32);
             gameState.SuggestedGuestMaximum = _s6.SuggestedMaxGuests;
             gameState.ScenarioParkRatingWarningDays = _s6.ParkRatingWarningDays;

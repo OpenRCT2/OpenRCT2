@@ -469,7 +469,8 @@ static void FixInvalidSurfaces()
 
             // Fix the invisible border tiles.
             // At this point, we can be sure that surfaceElement is not NULL.
-            if (x == 0 || x == gMapSize.x - 1 || y == 0 || y == gMapSize.y - 1)
+            auto& gameState = GetGameState();
+            if (x == 0 || x == gameState.MapSize.x - 1 || y == 0 || y == gameState.MapSize.y - 1)
             {
                 surfaceElement->SetBaseZ(MINIMUM_LAND_HEIGHT_BIG);
                 surfaceElement->SetClearanceZ(MINIMUM_LAND_HEIGHT_BIG);
