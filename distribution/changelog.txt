@@ -4,6 +4,7 @@
 - Improved: [#21356] Resize the title bar when moving between displays with different scaling factors on Windows systems.
 - Fix: [#18963] Research table in parks from Loopy Landscapes is imported incorrectly.
 - Fix: [#20907] RCT1/AA scenarios use the 4-across train for the Inverted Roller Coaster.
+- Fix: [#21208] Error message will stay open only for a brief moment when the game has been running a while.
 - Fix: [#21220] When creating a new park from a SC4 file, the localised park name is not applied.
 - Fix: [#21286] Cannot build unbanking turns with RCT1 vehicles.
 - Fix: [#21330] Tooltips from dropdown widgets have the wrong position.
