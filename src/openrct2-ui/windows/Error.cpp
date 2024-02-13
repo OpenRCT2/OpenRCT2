@@ -111,8 +111,6 @@ public:
 
 WindowBase* WindowErrorOpen(std::string_view title, std::string_view message)
 {
-    WindowCloseByClass(WindowClass::Error);
-
     std::string buffer = "{BLACK}";
     buffer.append(title);
 
@@ -136,6 +134,9 @@ WindowBase* WindowErrorOpen(std::string_view title, std::string_view message)
     {
         return nullptr;
     }
+
+    // Close any existing error windows if they exist.
+    WindowCloseByClass(WindowClass::Error);
 
     int32_t width = GfxGetStringWidthNewLined(buffer.data(), FontStyle::Medium);
     width = std::clamp(width, 64, 196);
