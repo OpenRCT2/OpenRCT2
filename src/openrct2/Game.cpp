@@ -542,6 +542,7 @@ void GameLoadInit()
     ContextBroadcastIntent(&intent);
 
     gWindowUpdateTicks = 0;
+    gCurrentRealTimeTicks = 0;
 
     LoadPalette();
 
