@@ -17,7 +17,7 @@
 - Fix: [#910] Extra viewport does not preserve the location when rotating.
 - Fix: [#18413] Crash when mouse over a hacked train.
 - Fix: [#20338] Cannot select Scenery Picker or Scatter Tool when the scenery recolouring tool is active.
-- Fix: [#21317] Track designer allow proceeding without an object selected.
+- Fix: [#21317] Track designer allows proceeding without an object selected.
 - Fix: [#21419] Cannot place walls underground beneath sloped tiles with clearance checks disabled.
 - Fix: [#21434] Number of guests overflows in objective text.
 - Fix: [#21543] Crash with creating a TrackIterator with invalid arguments.
