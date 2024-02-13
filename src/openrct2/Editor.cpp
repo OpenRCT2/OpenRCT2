@@ -346,7 +346,7 @@ namespace Editor
 
             gBankLoan = std::clamp<money64>(gBankLoan, 0.00_GBP, 5000000.00_GBP);
 
-            gMaxBankLoan = std::clamp<money64>(gMaxBankLoan, 0.00_GBP, 5000000.00_GBP);
+            gameState.MaxBankLoan = std::clamp<money64>(gameState.MaxBankLoan, 0.00_GBP, 5000000.00_GBP);
 
             gBankLoanInterestRate = std::clamp<uint8_t>(gBankLoanInterestRate, 5, MaxBankLoanInterestRate);
         }

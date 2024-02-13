@@ -581,7 +581,7 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "max_loan")
         {
-            console.WriteFormatLine("max_loan %d", gMaxBankLoan / 10);
+            console.WriteFormatLine("max_loan %d", gameState.MaxBankLoan / 10);
         }
         else if (argv[0] == "guest_initial_cash")
         {
@@ -812,7 +812,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         else if (argv[0] == "current_loan" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             auto amount = std::clamp(
-                ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, gMaxBankLoan);
+                ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, gameState.MaxBankLoan);
             auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::InitialLoan, amount);
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)

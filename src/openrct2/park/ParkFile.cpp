@@ -804,7 +804,7 @@ namespace OpenRCT2
                     cs.ReadWrite(park.Name);
                     cs.ReadWrite(gameState.Cash);
                     cs.ReadWrite(gBankLoan);
-                    cs.ReadWrite(gMaxBankLoan);
+                    cs.ReadWrite(gameState.MaxBankLoan);
                     cs.ReadWrite(gBankLoanInterestRate);
                     cs.ReadWrite(gameState.ParkFlags);
                     if (version <= 18)
