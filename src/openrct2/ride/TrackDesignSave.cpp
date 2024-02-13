@@ -63,10 +63,8 @@ struct TrackDesignAddStatus
 
 static bool TrackDesignSaveShouldSelectSceneryAround(RideId rideIndex, TileElement* tileElement);
 static void TrackDesignSaveShouldSelectNearbySceneryForTile(RideId rideIndex, int32_t cx, int32_t cy);
-static TrackDesignAddStatus TrackDesignSaveAddTileElement(
-    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement);
-static void TrackDesignSaveRemoveTileElement(
-    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement);
+static TrackDesignAddStatus TrackDesignSaveAddTileElement(const CoordsXY& loc, TileElement* tileElement);
+static void TrackDesignSaveRemoveTileElement(const CoordsXY& loc, TileElement* tileElement);
 
 void TrackDesignSaveInit()
 {
@@ -85,14 +83,14 @@ void TrackDesignSaveSelectTileElement(
     {
         if (!collect)
         {
-            TrackDesignSaveRemoveTileElement(interactionType, loc, tileElement);
+            TrackDesignSaveRemoveTileElement(loc, tileElement);
         }
     }
     else
     {
         if (collect)
         {
-            auto result = TrackDesignSaveAddTileElement(interactionType, loc, tileElement);
+            auto result = TrackDesignSaveAddTileElement(loc, tileElement);
             if (!result.IsSuccess)
             {
                 ContextShowError(STR_SAVE_TRACK_SCENERY_UNABLE_TO_SELECT_ADDITIONAL_ITEM_OF_SCENERY, result.Message, {});
@@ -384,23 +382,22 @@ static TrackDesignAddStatus TrackDesignSaveAddFootpath(const CoordsXY& loc, Path
  *
  *  rct2: 0x006D2B3C
  */
-static TrackDesignAddStatus TrackDesignSaveAddTileElement(
-    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement)
+static TrackDesignAddStatus TrackDesignSaveAddTileElement(const CoordsXY& loc, TileElement* tileElement)
 {
     if (!TrackDesignSaveCanAddTileElement(tileElement))
     {
         return TrackDesignAddStatus::Fail(STR_SAVE_TRACK_SCENERY_TOO_MANY_ITEMS_SELECTED);
     }
 
-    switch (interactionType)
+    switch (tileElement->GetType())
     {
-        case ViewportInteractionItem::Scenery:
+        case TileElementType::SmallScenery:
             return TrackDesignSaveAddSmallScenery(loc, tileElement->AsSmallScenery());
-        case ViewportInteractionItem::LargeScenery:
+        case TileElementType::LargeScenery:
             return TrackDesignSaveAddLargeScenery(loc, tileElement->AsLargeScenery());
-        case ViewportInteractionItem::Wall:
+        case TileElementType::Wall:
             return TrackDesignSaveAddWall(loc, tileElement->AsWall());
-        case ViewportInteractionItem::Footpath:
+        case TileElementType::Path:
             return TrackDesignSaveAddFootpath(loc, tileElement->AsPath());
         default:
             return TrackDesignAddStatus::Fail(STR_UNKNOWN_OBJECT_TYPE);
@@ -559,21 +556,20 @@ static void TrackDesignSaveRemoveFootpath(const CoordsXY& loc, PathElement* path
  *
  *  rct2: 0x006D2B3C
  */
-static void TrackDesignSaveRemoveTileElement(
-    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement)
+static void TrackDesignSaveRemoveTileElement(const CoordsXY& loc, TileElement* tileElement)
 {
-    switch (interactionType)
+    switch (tileElement->GetType())
     {
-        case ViewportInteractionItem::Scenery:
+        case TileElementType::SmallScenery:
             TrackDesignSaveRemoveSmallScenery(loc, tileElement->AsSmallScenery());
             break;
-        case ViewportInteractionItem::LargeScenery:
+        case TileElementType::LargeScenery:
             TrackDesignSaveRemoveLargeScenery(loc, tileElement->AsLargeScenery());
             break;
-        case ViewportInteractionItem::Wall:
+        case TileElementType::Wall:
             TrackDesignSaveRemoveWall(loc, tileElement->AsWall());
             break;
-        case ViewportInteractionItem::Footpath:
+        case TileElementType::Path:
             TrackDesignSaveRemoveFootpath(loc, tileElement->AsPath());
             break;
         default:
@@ -647,7 +643,7 @@ static void TrackDesignSaveShouldSelectNearbySceneryForTile(RideId rideIndex, in
                 {
                     if (!TrackDesignSaveContainsTileElement(tileElement))
                     {
-                        TrackDesignSaveAddTileElement(interactionType, TileCoordsXY(x, y).ToCoordsXY(), tileElement);
+                        TrackDesignSaveAddTileElement(TileCoordsXY(x, y).ToCoordsXY(), tileElement);
                     }
                 }
             } while (!(tileElement++)->IsLastForTile());
