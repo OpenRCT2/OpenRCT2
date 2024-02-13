@@ -3697,6 +3697,25 @@ STR_6591    :Medarbejder er i øjeblikket ved at ordne en tur og kan ikke fyres.
 STR_6592    :Medarbejder inspicerer i øjeblikket en forlystelse og kan ikke fyres.
 STR_6593    :Fjern parkhegn
 STR_6594    :Fliseinspektør: Skift væghældning
+STR_6595    :{WINDOW_COLOUR_2}Forfatter: {BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}Forfattere: {BLACK}{STRING}
+STR_6597    :Ugyldig parameter
+STR_6598    :Værdi uden for grænseområde
+STR_6599    :Spøgelse element ikke fundet
+STR_6600    :Ballon ikke fundet
+STR_6601    :Ansat ikke fundet
+STR_6602    :Forlystelse ikke fundet
+STR_6603    :Forlystes objekt enhed ikke fundet
+STR_6604    :Spiller ikke fundet
+STR_6605    :Indgangs element ikke fundet
+STR_6606    :Overflade element ikke fundet
+STR_6607    :Flise element ikke fundet
+STR_6608    :Spor element ikke fundet
+STR_6609    :Spor blok ikke fundet
+STR_6610    :Sti element ikke fundet
+STR_6611    :Væg element ikke fundet
+STR_6612    :Banner element ikke fundet
+STR_6613    :Genindlæs objekt
 
 #############
 # Scenarios #
@@ -4349,7 +4368,7 @@ STR_DTLS    :Du er en succesfuld forretningsmagnat igang med flere sabbatår, de
 <South America - Inca Lost City>
 STR_SCNR    :Sydamerika - Inka-rigets fortabte by
 STR_PARK    :Lost City Founder
-STR_DTLS    :For yderligere at øge den lokale turisme skal du konstruere en park, der er i harmoni med sine omgivelser, og har højdebegrænsninger.
+STR_DTLS    :For yderligere at øge den lokale turisme skal du konstruere en park, der er i harmoni med sine omgivelser.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :Sydamerica - Regnskovs Plateau

@@ -115,33 +115,33 @@ STR_0528    :Passagiers glijden in opblaasboten door een kronkelende halfopen of
 STR_0529    :Achtbaantreinen in de vorm van een mijntrein razen over stalen achtbaanrails die er uitziet als een oude spoorbaan.
 STR_0530    :Stoeltjes hangen aan een continu draaiende stalen kabel die van het ene uiteinde van de baan naar het andere loopt, en daarna weer terug.
 STR_0531    :Een compacte stalen achtbaan waar de trein door schroeven en loopings gaat.
-STR_0532    :
-STR_0533    :
+STR_0532    :Bezoekers lopen door een doolhof van 1,8m hoge heggen of muren, en kunnen er pas uit wanneer ze de uitgang vinden.
+STR_0533    :Houten gebouw met van binnen een trap en van buiten een spiraalglijbaan voor glijmatten.
 STR_0534    :Bezoekers racen tegen elkaar in go-karts op een asfaltbaan.
 STR_0535    :Bezoekers varen in bootjes door een waterbak, waarbij ze van steile hellingen afdalen en doorweekt raken.
 STR_0536    :Ronde boten varen door een brede waterbak, waarbij ze de passagiers opwinden door watervallen en schuimende stroomversnellingen.
 STR_0537    :Bezoekers botsen tegen elkaar in elektrisch aangedreven botsauto’s die ze zelf kunnen besturen.
-STR_0538    :
-STR_0539    :
-STR_0540    :
-STR_0542    :
-STR_0544    :
-STR_0545    :
-STR_0547    :
-STR_0548    :
-STR_0549    :
-STR_0550    :
-STR_0551    :
-STR_0552    :
-STR_0553    :
+STR_0538    :Groot schommelend piratenschip.
+STR_0539    :Schip dat is bevestigd aan een arm met een contragewicht, en 360 graden kan draaien.
+STR_0540    :Een kraampje waar de bezoekers eten kunnen kopen.
+STR_0542    :Een kraampje waar de bezoekers drinken kunnen kopen.
+STR_0544    :Een kraampje dat souvenirs verkoopt.
+STR_0545    :Traditionele draaimolen met uit hout gesneden paarden.
+STR_0547    :Een kraam waar bezoekers kaarten van het park en paraplu’s kunnen kopen.
+STR_0548    :Een toiletgebouw.
+STR_0549    :Groot draaiend rad met open stoeltjes.
+STR_0550    :Passagiers bekijken een film in de cabine van een bewegingssimulator die wordt gedraaid en bewogen door een hydraulische arm.
+STR_0551    :Bioscoop in een bolvormig gebouw waarin 3D-films worden getoond.
+STR_0552    :Passagiers zitten in een gondel die is opgehangen aan grote roterende armen, en worden halsoverkop vooruit en achteruit gedraaid.
+STR_0553    :Concentrische draaiende ringen waarmee de passagiers vrij kunnen draaien in alle richtingen.
 STR_0554    :Het karretje wordt het station uitgelanceerd over een lange rechte baan door middel van lineaire inductiemotoren, om daarna recht omhoog te gaan en weer terug te vallen richting het station.
 STR_0555    :Bezoekers gaan in een lift in een toren omhoog of omlaag om naar een ander hoogteniveau te komen.
 STR_0556    :Extra brede karretjes rijden over een compleet verticale baan voor de ultieme vrijevalbeleving.
-STR_0557    :
-STR_0558    :
-STR_0559    :
-STR_0560    :
-STR_0561    :
+STR_0557    :Een geldautomaat die de bezoekers kunnen gebruiken als ze bijna door hun contante geld heen zijn.
+STR_0558    :Passagiers zitten per twee in stoelen die ronddraaien aan de uiteinden van drie lange draaiarmen.
+STR_0559    :Groot gethematiseerd gebouw met enge gangen en spookachtige kamers.
+STR_0560    :Een gebouw waar misselijke bezoekers sneller kunnen opknappen.
+STR_0561    :Een dierennummer in een circustent.
 STR_0562    :Aangedreven karretjes rijden langs eng decor en special effects over een baan met hoogteverschillen.
 STR_0563    :Bezoekers zitten in comfortabele treinen met enkel een schootbeugel en gaan soepel door grote afdalingen en kronkelende stukken baan, met veel ‘airtime’ in de heuvels.
 STR_0564    :Deze over een houten baan lopende achtbaan is snel, ruw, luidruchtig en geeft het gevoel van controleverlies met veel ‘airtime’.
@@ -156,20 +156,20 @@ STR_0574    :Passagiers worden door middel van een speciale beugel in een liggen
 STR_0575    :Aangedreven treinen hangen aan een enkele rail en vervoeren mensen door het park heen.
 STR_0577    :Karretjes met draaistellen rijden op een houten baan en kunnen omkeren op speciale stukken baan.
 STR_0578    :Karretjes rijden in een baan omgeven door hoepels en gaan door steile afdalingen en heartline-twists.
-STR_0579    :
+STR_0579    :Een rustig spelletje minigolf.
 STR_0580    :Een gigantische stalen achtbaan die in staat is tot soepele afdalingen en heuvels die hoger zijn dan 90 meter.
 STR_0581    :Een ring van stoelen wordt naar de bovenkant van een hoge toren getrokken terwijl hij rustig ronddraait, waarna hij losgelaten wordt in een vrije val, waarna hij beneden rustig wordt afgeremd door middel van magnetische remmen.
 STR_0582    :Bezoekers botsen tegen elkaar in hovercrafts die ze zelf kunnen besturen.
-STR_0583    :
+STR_0583    :Gebouw met scheve kamers en gangen die de bezoekers desoriënteren.
 STR_0584    :Speciale fietsen rijden over een stalen monorail, voortbewogen door het trappen van de passagiers.
 STR_0585    :Passagiers zitten in stoelparen die onder de baan hangen terwijl ze door kronkelende en scherpe omkeringen gaan.
 STR_0586    :Bootvormige karretjes rijden over achtbaanrails, waardoor ze hellende bochten en diepe afdalingen kunnen maken, waarna ze in bakken water neerplonzen en rustig een stukje kunnen varen.
 STR_0587    :Na een enerverende pneumatische lancering rijdt de trein met hogere snelheid over een verticale baan, over de top, en vervolgens over de andere kant weer naar beneden om terug te keren naar het station.
 STR_0588    :Losse karretjes hangen onder een zigzaggende baan met haarspeldbochten en scherpe afdalingen.
-STR_0589    :
+STR_0589    :Een grote wagen in de vorm van een vliegend tapijt draait rond aan de uiteinden van vier draaiarmen.
 STR_0590    :Passagiers rijden over een onderwaterparcours in onderzeeërs.
 STR_0591    :Boten in de vorm van een vlot varen rustig door een waterbak.
-STR_0593    :
+STR_0593    :Draaiend wiel met hangende passagierscabines, dat eerst gaat draaien en vervolgens wordt opgetild door een steunarm.
 STR_0598    :Een omgekeerde achtbaantrein wordt het station uit gelanceerd en gaat een verticale kronkelende baan op, waarna deze terugzakt, door het station heengaat en achteruit een ander stuk verticale baan opgaat.
 STR_0599    :Een compacte achtbaan met individuele karretjes en steile, kronkelende afdalingen.
 STR_0600    :Aangedreven mijntreinen rijden over een soepele en kronkelende baan.

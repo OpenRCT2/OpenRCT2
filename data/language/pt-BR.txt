@@ -3714,6 +3714,7 @@ STR_6609    :Bloco de pista não encontrado
 STR_6610    :Elemento de caminho não encontrado
 STR_6611    :Elemento de muro não encontrado
 STR_6612    :Elemento de banner não encontrado
+STR_6613    :Recarregar objeto
 
 #############
 # Scenarios #

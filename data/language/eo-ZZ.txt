@@ -3714,6 +3714,7 @@ STR_6609    :Blokparto de trako ne troviĝis
 STR_6610    :Trotuaro-elemento ne troviĝis
 STR_6611    :Muro-elemento ne troviĝis
 STR_6612    :Rubando-elemento ne troviĝis
+STR_6613    :Reŝargi objekton
 
 #############
 # Scenarios #
