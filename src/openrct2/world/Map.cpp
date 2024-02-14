@@ -464,7 +464,6 @@ void MapInit(const TileCoordsXY& size)
     gGrassSceneryTileLoopPosition = 0;
     gWidePathTileLoopPosition = {};
     gameState.MapSize = size;
-    gameState.MapBaseZ = 7;
     MapRemoveOutOfRangeElements();
     MapAnimationAutoCreate();
 

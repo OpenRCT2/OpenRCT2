@@ -410,7 +410,6 @@ namespace RCT2
             // rct1_water_colour
             // Pad01358842
             ImportResearchList(gameState);
-            gameState.MapBaseZ = _s6.MapBaseZ;
             gBankLoanInterestRate = _s6.CurrentInterestRate;
             // Pad0135934B
             // Preserve compatibility with vanilla RCT2's save format.

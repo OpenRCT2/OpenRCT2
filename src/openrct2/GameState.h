@@ -63,7 +63,6 @@ namespace OpenRCT2
         money64 ScenarioCompanyValueRecord;
         money64 MaxBankLoan;
         random_engine_t ScenarioRand;
-        int32_t MapBaseZ;
         TileCoordsXY MapSize;
 
         SCENARIO_CATEGORY ScenarioCategory;
