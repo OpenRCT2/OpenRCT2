@@ -1000,16 +1000,16 @@ namespace OpenRCT2
 
         void ReadWriteNotificationsChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::NOTIFICATIONS, [](OrcaStream::ChunkStream& cs) {
+            os.ReadWriteChunk(ParkFileChunkType::NOTIFICATIONS, [&gameState](OrcaStream::ChunkStream& cs) {
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
-                    gNewsItems.Clear();
+                    gameState.NewsItems.Clear();
 
                     std::vector<News::Item> recent;
                     cs.ReadWriteVector(recent, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
                     for (size_t i = 0; i < std::min<size_t>(recent.size(), News::ItemHistoryStart); i++)
                     {
-                        gNewsItems[i] = recent[i];
+                        gameState.NewsItems[i] = recent[i];
                     }
 
                     std::vector<News::Item> archived;
@@ -1017,19 +1017,21 @@ namespace OpenRCT2
                     size_t offset = News::ItemHistoryStart;
                     for (size_t i = 0; i < std::min<size_t>(archived.size(), News::MaxItemsArchive); i++)
                     {
-                        gNewsItems[offset + i] = archived[i];
+                        gameState.NewsItems[offset + i] = archived[i];
                     }
 
                     // Still need to set the correct type to properly terminate the queue
                     if (archived.size() < News::MaxItemsArchive)
-                        gNewsItems[offset + archived.size()].Type = News::ItemType::Null;
+                        gameState.NewsItems[offset + archived.size()].Type = News::ItemType::Null;
                 }
                 else
                 {
-                    std::vector<News::Item> recent(std::begin(gNewsItems.GetRecent()), std::end(gNewsItems.GetRecent()));
+                    std::vector<News::Item> recent(
+                        std::begin(gameState.NewsItems.GetRecent()), std::end(gameState.NewsItems.GetRecent()));
                     cs.ReadWriteVector(recent, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
 
-                    std::vector<News::Item> archived(std::begin(gNewsItems.GetArchived()), std::end(gNewsItems.GetArchived()));
+                    std::vector<News::Item> archived(
+                        std::begin(gameState.NewsItems.GetArchived()), std::end(gameState.NewsItems.GetArchived()));
                     cs.ReadWriteVector(archived, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
                 }
             });

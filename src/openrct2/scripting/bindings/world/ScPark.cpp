@@ -315,11 +315,12 @@ namespace OpenRCT2::Scripting
     std::vector<std::shared_ptr<ScParkMessage>> ScPark::messages_get() const
     {
         std::vector<std::shared_ptr<ScParkMessage>> result;
-        for (size_t i = 0, newsSize = gNewsItems.GetRecent().size(); i < newsSize; i++)
+        auto& gameState = GetGameState();
+        for (size_t i = 0, newsSize = gameState.NewsItems.GetRecent().size(); i < newsSize; i++)
         {
             result.push_back(std::make_shared<ScParkMessage>(i));
         }
-        for (size_t i = 0, newsSize = gNewsItems.GetArchived().size(); i < newsSize; i++)
+        for (size_t i = 0, newsSize = gameState.NewsItems.GetArchived().size(); i < newsSize; i++)
         {
             result.push_back(std::make_shared<ScParkMessage>(i + News::ItemHistoryStart));
         }
@@ -330,6 +331,7 @@ namespace OpenRCT2::Scripting
     {
         int32_t index = 0;
         int32_t archiveIndex = News::ItemHistoryStart;
+        auto& gameState = GetGameState();
         for (const auto& item : value)
         {
             auto isArchived = item["isArchived"].as_bool();
@@ -338,7 +340,7 @@ namespace OpenRCT2::Scripting
             {
                 if (archiveIndex < News::MaxItems)
                 {
-                    gNewsItems[archiveIndex] = newsItem;
+                    gameState.NewsItems[archiveIndex] = newsItem;
                     archiveIndex++;
                 }
             }
@@ -346,7 +348,7 @@ namespace OpenRCT2::Scripting
             {
                 if (index < News::ItemHistoryStart)
                 {
-                    gNewsItems[index] = newsItem;
+                    gameState.NewsItems[index] = newsItem;
                     index++;
                 }
             }
@@ -355,11 +357,11 @@ namespace OpenRCT2::Scripting
         // End the lists by setting next item to null
         if (index < News::ItemHistoryStart)
         {
-            gNewsItems[index].Type = News::ItemType::Null;
+            gameState.NewsItems[index].Type = News::ItemType::Null;
         }
         if (archiveIndex < News::MaxItems)
         {
-            gNewsItems[archiveIndex].Type = News::ItemType::Null;
+            gameState.NewsItems[archiveIndex].Type = News::ItemType::Null;
         }
     }
 
