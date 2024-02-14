@@ -595,27 +595,27 @@ void ViewportUpdatePosition(WindowBase* window)
 
     // Clamp to the map minimum value
     int32_t at_map_edge = 0;
-    if (mapCoord.x < MAP_MINIMUM_X_Y)
+    if (mapCoord.x < MAP_MINIMUM_X_Y - MAP_Z_PARALAX_OFFSET)
     {
-        mapCoord.x = MAP_MINIMUM_X_Y;
+        mapCoord.x = MAP_MINIMUM_X_Y - MAP_Z_PARALAX_OFFSET;
         at_map_edge = 1;
     }
-    if (mapCoord.y < MAP_MINIMUM_X_Y)
+    if (mapCoord.y < MAP_MINIMUM_X_Y - MAP_Z_PARALAX_OFFSET)
     {
-        mapCoord.y = MAP_MINIMUM_X_Y;
+        mapCoord.y = MAP_MINIMUM_X_Y - MAP_Z_PARALAX_OFFSET;
         at_map_edge = 1;
     }
 
     // Clamp to the map maximum value (scenario specific)
     auto mapSizeMinus2 = GetMapSizeMinus2();
-    if (mapCoord.x > mapSizeMinus2.x)
+    if (mapCoord.x > mapSizeMinus2.x + MAP_Z_PARALAX_OFFSET)
     {
-        mapCoord.x = mapSizeMinus2.x;
+        mapCoord.x = mapSizeMinus2.x + MAP_Z_PARALAX_OFFSET;
         at_map_edge = 1;
     }
-    if (mapCoord.y > mapSizeMinus2.y)
+    if (mapCoord.y > mapSizeMinus2.y + MAP_Z_PARALAX_OFFSET)
     {
-        mapCoord.y = mapSizeMinus2.y;
+        mapCoord.y = mapSizeMinus2.y + MAP_Z_PARALAX_OFFSET;
         at_map_edge = 1;
     }
 

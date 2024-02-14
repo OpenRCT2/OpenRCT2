@@ -14,6 +14,7 @@
 - Fix: [#21330] Tooltips from dropdown widgets have the wrong position.
 - Fix: [#21332] Mini Helicopters and Monorail Cycles ride types are swapped in research within RCT1 scenarios.
 - Fix: [#21347] Too many options are hidden if the platform has no file picker.
+- Fix: [#21417] Cannot zoom in to items at high altitude near map edge.
 - Fix: [OpenSFX#18] B&M Roar sound effect not looping correctly.
 
 0.4.8 (2024-02-04)

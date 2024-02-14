@@ -37,6 +37,7 @@ constexpr uint8_t ConstructionRightsClearanceSmall = 3;
 constexpr const uint8_t ConstructionRightsClearanceBig = 3 * COORDS_Z_STEP;
 
 #define MAP_MINIMUM_X_Y (-MAXIMUM_MAP_SIZE_TECHNICAL)
+constexpr int32_t MAP_Z_PARALAX_OFFSET = 1800;
 
 constexpr uint32_t MAX_TILE_ELEMENTS_WITH_SPARE_ROOM = 0x1000000;
 constexpr uint32_t MAX_TILE_ELEMENTS = MAX_TILE_ELEMENTS_WITH_SPARE_ROOM - 512;
