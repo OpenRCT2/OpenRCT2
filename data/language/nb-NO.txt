@@ -1277,8 +1277,8 @@ STR_1891    :Ingen {STRINGID} i parken enda!
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} solgt: {BLACK}{COMMA32}
 STR_1895    :Bygg ny attraksjon
 STR_1896    :{WINDOW_COLOUR_2}Utgifter/Inntekt
-STR_1897    :{WINDOW_COLOUR_2}Bygging av attraksjoner
-STR_1898    :{WINDOW_COLOUR_2}Kostnad av attraksjoner
+STR_1897    :{WINDOW_COLOUR_2}Attraksjons-bygging
+STR_1898    :{WINDOW_COLOUR_2}Attraksjons-kostnader
 STR_1899    :{WINDOW_COLOUR_2}Kjøp av land
 STR_1900    :{WINDOW_COLOUR_2}Landskapsarbeid
 STR_1901    :{WINDOW_COLOUR_2}Billetter til parken
@@ -1679,10 +1679,10 @@ STR_2313    :{WINDOW_COLOUR_2}Kvalmenivå: {BLACK}{COMMA2DP32} (approx.)
 STR_2314    :{WINDOW_COLOUR_2}Banelengde: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kostnad: {BLACK}around {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Plass trengt: {BLACK}{COMMA16} × {COMMA16} blokker
-STR_2321    :{WINDOW_COLOUR_2}Number of rides/attractions: {BLACK}{COMMA16}
+STR_2321    :{WINDOW_COLOUR_2}Antall attraksjoner: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Personale: {BLACK}{COMMA32}
-STR_2323    :{WINDOW_COLOUR_2}Park størrelse: {BLACK}{COMMA32}m²
-STR_2324    :{WINDOW_COLOUR_2}Park størrelse: {BLACK}{COMMA32}sq.ft.
+STR_2323    :{WINDOW_COLOUR_2}Parkstørrelse: {BLACK}{COMMA32}m²
+STR_2324    :{WINDOW_COLOUR_2}Parkstørrelse: {BLACK}{COMMA32}sq.ft.
 STR_2325    :Kjøp land for å utvide park
 STR_2326    :Kjøp rettigheter for å tillate konstruksjon over eller under bakken utenfor parken
 STR_2327    :Alternativer
@@ -3437,7 +3437,7 @@ STR_6357    :{SMALLFONT}{BLACK}Fjerner alle ender fra parken
 STR_6358    :Side {UINT16}
 STR_6359    :{POP16}{POP16}Side {UINT16}
 STR_6360    :{BLACK}{COMMA32}
-STR_6361    :Aktiver attraksjons-lyseffekter (eksperimentelt)	     
+STR_6361    :Aktiver attraksjonlyseffekter (eksperimentelt)	     
 STR_6362    :Hvis aktivert vil det være lys på vognene til attraksjoner som går på bane.
 STR_6363    :Tekst kopiert til utklippstavlen
 STR_6364    :{RED}{COMMA16} person har omkommet i en ulykke på {STRINGID}

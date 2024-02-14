@@ -2100,39 +2100,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :El fitxer no s’ha pogut carregar…
 STR_3011    :El fitxer conté dades no vàlides.
-STR_3012    :Estil cotxes de xoc
-STR_3013    :Estil orgue de fira
-STR_3014    :Estil fanfàrria romana
-STR_3015    :Estil oriental
-STR_3016    :Estil marcià
-STR_3017    :Estil tambors de la jungla
-STR_3018    :Estil egipci
-STR_3019    :Estil de joguines
-STR_3020    :
-STR_3021    :Estil espacial
-STR_3022    :Estil de pel·lícula de por
-STR_3023    :Estil tecno
-STR_3024    :Estil suau
-STR_3025    :Estil estival
-STR_3026    :Estil aquàtic
-STR_3027    :Estil salvatge oest
-STR_3028    :Estil juràssic
-STR_3029    :Estil rock
-STR_3030    :Estil ragtime
-STR_3031    :Estil fantàstic
-STR_3032    :Estil rock 2
-STR_3033    :Estil gèlid
-STR_3034    :Estil nevat
-STR_3035    :Peça personalitzada 1
-STR_3036    :Peça personalitzada 2
-STR_3037    :Estil medieval
-STR_3038    :Estil urbà
-STR_3039    :Estil orgue
-STR_3040    :Estil mecànic
-STR_3041    :Estil modern
-STR_3042    :Estil pirata
-STR_3043    :Estil rock 3
-STR_3044    :Estil caramel
 STR_3045    :Trieu l’estil de música que ha de reproduir.
 STR_3047    :Les autoritats pertinents no permeten enderrocar o modificar aquesta atracció.
 STR_3048    :Les autoritats pertinents no permeten realitzar campanyes de màrqueting.

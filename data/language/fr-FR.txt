@@ -2104,39 +2104,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Impossible de charger le fichier…
 STR_3011    :Le fichier contient des données non valides
-STR_3012    :Auto-tamponneuse
-STR_3013    :Orgue champ de foire
-STR_3014    :Fanfare romaine
-STR_3015    :Oriental
-STR_3016    :Alien
-STR_3017    :Tambours de la jungle
-STR_3018    :Egyptien
-STR_3019    :Jouets par milliers
-STR_3020    :
-STR_3021    :Espace
-STR_3022    :Horreur
-STR_3023    :Techno
-STR_3024    :Tranquille
-STR_3025    :Estival
-STR_3026    :Aquatique
-STR_3027    :Western
-STR_3028    :Jurassique
-STR_3029    :Rock
-STR_3030    :Ragtime
-STR_3031    :Imaginaire
-STR_3032    :Rock 2
-STR_3033    :Glace
-STR_3034    :Neige
-STR_3035    :Musique perso 1
-STR_3036    :Musique perso 2
-STR_3037    :Médiéval
-STR_3038    :Urbain
-STR_3039    :Orgue
-STR_3040    :Mécanique
-STR_3041    :Moderne
-STR_3042    :Pirates
-STR_3043    :Rock 3
-STR_3044    :Bonbon-ville
 STR_3045    :Choisit le style de musique
 STR_3047    :Les autorités locales interdisent la démolition ou modification de cette attraction
 STR_3048    :Les autorités locales interdisent toute campagne marketing

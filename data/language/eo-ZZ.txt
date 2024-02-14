@@ -2097,39 +2097,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Ne eblas ŝargi dosieron…
 STR_3011    :Doserio enhavas nevalidajn datumojn
-STR_3012    :Doĝemotakto-stilo
-STR_3013    :Foirejo-orgeno-stilo
-STR_3014    :Roma-fanfaro-stilo
-STR_3015    :Orienta stilo
-STR_3016    :Marsa stilo
-STR_3017    :Ĝangalotamburoj-stilo
-STR_3018    :Egipta stilo
-STR_3019    :Ludilejo-stilo
-STR_3020    :
-STR_3021    :Spaco-stilo
-STR_3022    :Horora stilo
-STR_3023    :Tekno-stilo
-STR_3024    :Milda stilo
-STR_3025    :Somero-stilo
-STR_3026    :Akvo-stilo
-STR_3027    :Sovaĝa-okcidento-stilo
-STR_3028    :Ĵurasa stilo
-STR_3029    :Rokmuziko-stilo
-STR_3030    :Ragtimo-stilo
-STR_3031    :Fantasto-stilo
-STR_3032    :Rokmuziko-stilo 2
-STR_3033    :Glacio-stilo
-STR_3034    :Neĝo-stilo
-STR_3035    :Propra muziko 1
-STR_3036    :Propra muziko 2
-STR_3037    :Mezepoka stilo
-STR_3038    :Urba stilo
-STR_3039    :Orgeno-stilo
-STR_3040    :Mekanika stilo
-STR_3041    :Moderna stilo
-STR_3042    :Piratoj-stilo
-STR_3043    :Rokmuziko-stilo 3
-STR_3044    :Dolĉaĵo-stilo
 STR_3045    :Elekti stilon de muziko por ludi
 STR_3047    :Loka aŭtoritato malpermesas malkonstruon aŭ redaktojn de ĉi tiu atrakcio
 STR_3048    :Loka aŭtoritato malpermesas kampanjojn surmerkatigajn

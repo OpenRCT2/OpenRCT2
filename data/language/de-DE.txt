@@ -2099,39 +2099,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Datei kann nicht geladen werden …
 STR_3011    :Datei enthält ungültige Daten
-STR_3012    :Autoscooter-Beat-Stil
-STR_3013    :Jahrmarktsorgelstil
-STR_3014    :Römischer Fanfarenstil
-STR_3015    :Orientstil
-STR_3016    :Mars-Stil
-STR_3017    :Dschungeltrommelnstil
-STR_3018    :Ägyptischer Stil
-STR_3019    :Spielzeuglandstil
-STR_3020    :
-STR_3021    :Weltraumstil
-STR_3022    :Horrorstil
-STR_3023    :Techno-Stil
-STR_3024    :Gemäßigter Stil
-STR_3025    :Sommerstil
-STR_3026    :Wasserstil
-STR_3027    :Wildwest-Stil
-STR_3028    :Jurassic-Stil
-STR_3029    :Rock-Stil
-STR_3030    :Ragtime-Stil
-STR_3031    :Fantasy-Stil
-STR_3032    :Rock-Stil 2
-STR_3033    :Eis-Stil
-STR_3034    :Schnee-Stil
-STR_3035    :Eigene Musik 1
-STR_3036    :Eigene Musik 2
-STR_3037    :Mittelalterstil
-STR_3038    :Stadtstil
-STR_3039    :Orgelstil
-STR_3040    :Maschinenstil
-STR_3041    :Moderner Stil
-STR_3042    :Piratenstil
-STR_3043    :Rock-Stil 3
-STR_3044    :Candyland-Stil
 STR_3045    :Wählen Sie den Musikstil aus
 STR_3047    :Die örtlichen Behörden verbieten den Abriss oder Änderungen an dieser Bahn
 STR_3048    :Marketingkampagnen von den örtlichen Behörden verboten

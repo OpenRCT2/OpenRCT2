@@ -2097,39 +2097,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Incapaz de carregar arquivo…
 STR_3011    :Arquivo contém dados inválidos
-STR_3012    :Estilo Carrinho de Bate-Bate
-STR_3013    :Estilo Órgão de Parque de Diversões
-STR_3014    :Estilo Fanfarra Romana
-STR_3015    :Estilo Oriental
-STR_3016    :Estilo Marciano
-STR_3017    :Estilo Bateria da Selva
-STR_3018    :Estilo Egípcio
-STR_3019    :Estilo Brinquedolândia
-STR_3020    :
-STR_3021    :Estilo Espaço
-STR_3022    :Estilo Horror
-STR_3023    :Estilo Techno
-STR_3024    :Estilo Suave/Calmo
-STR_3025    :Estilo Verão
-STR_3026    :Estilo Água
-STR_3027    :Estilo Oeste Selvagem
-STR_3028    :Estilo Jurássico
-STR_3029    :Estilo Rock
-STR_3030    :Estilo Ragtime
-STR_3031    :Estilo Fantasia
-STR_3032    :Estilo Rock 2
-STR_3033    :Estilo Gelo
-STR_3034    :Estilo Neve
-STR_3035    :Música Personalizada 1
-STR_3036    :Música Personalizada 2
-STR_3037    :Estilo Medieval
-STR_3038    :Estilo Urbano
-STR_3039    :Estilo Órgão
-STR_3040    :Estilo Mecânico
-STR_3041    :Estilo Moderno
-STR_3042    :Estilo Piratas
-STR_3043    :Estilo Rock 3
-STR_3044    :Estilo Doce
 STR_3045    :Selecione o estilo de música para tocar
 STR_3047    :Autoridades locais proíbem a demolição ou modificações nesta atração
 STR_3048    :Campanhas de marketing proibidas pelas autoridades locais
