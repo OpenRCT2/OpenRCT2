@@ -83,22 +83,21 @@ static constexpr BoundBoxXY stru_98D804[] = {
 };
 
 static constexpr WoodenSupportSubType PathSupportOrientation[] = {
+    WoodenSupportSubType::NeSw, 
+    WoodenSupportSubType::NeSw, 
+    WoodenSupportSubType::NwSe, 
     WoodenSupportSubType::NeSw,
+    WoodenSupportSubType::NeSw, 
+    WoodenSupportSubType::NeSw, 
+    WoodenSupportSubType::NwSe, 
     WoodenSupportSubType::NeSw,
+    WoodenSupportSubType::NwSe, 
+    WoodenSupportSubType::NwSe, 
+    WoodenSupportSubType::NwSe, 
     WoodenSupportSubType::NwSe,
-    WoodenSupportSubType::NeSw,
-    WoodenSupportSubType::NeSw,
-    WoodenSupportSubType::NeSw,
-    WoodenSupportSubType::NwSe,
-    WoodenSupportSubType::NeSw,
-    WoodenSupportSubType::NwSe,
-    WoodenSupportSubType::NwSe,
-    WoodenSupportSubType::NwSe,
-    WoodenSupportSubType::NwSe,
-    WoodenSupportSubType::NeSw,
-    WoodenSupportSubType::NeSw,
-    WoodenSupportSubType::NwSe,
-    WoodenSupportSubType::NeSw,
+    WoodenSupportSubType::NeSw, 
+    WoodenSupportSubType::NeSw, 
+    WoodenSupportSubType::NwSe, 
 };
 // clang-format on
 
