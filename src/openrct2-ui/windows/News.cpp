@@ -22,6 +22,8 @@
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/sprites.h>
 
+using namespace OpenRCT2;
+
 static constexpr StringId WINDOW_TITLE = STR_RECENT_MESSAGES;
 static constexpr int32_t WH = 300;
 static constexpr int32_t WW = 400;
@@ -93,7 +95,7 @@ public:
 
         size_t j = _pressedNewsItemIndex;
         _pressedNewsItemIndex = -1;
-        auto& gameState = OpenRCT2::GetGameState();
+        auto& gameState = GetGameState();
 
         if (j >= gameState.NewsItems.GetArchived().size())
         {
@@ -123,7 +125,7 @@ public:
 
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override
     {
-        int32_t scrollHeight = static_cast<int32_t>(OpenRCT2::GetGameState().NewsItems.GetArchived().size())
+        int32_t scrollHeight = static_cast<int32_t>(GetGameState().NewsItems.GetArchived().size())
             * CalculateItemHeight();
         return { WW, scrollHeight };
     }
@@ -134,7 +136,7 @@ public:
         int32_t i = 0;
         int32_t buttonIndex = 0;
         auto mutableScreenCoords = screenCoords;
-        for (const auto& newsItem : OpenRCT2::GetGameState().NewsItems.GetArchived())
+        for (const auto& newsItem : GetGameState().NewsItems.GetArchived())
         {
             if (mutableScreenCoords.y < itemHeight)
             {
@@ -181,7 +183,7 @@ public:
         int32_t y = 0;
         int32_t i = 0;
 
-        for (const auto& newsItem : OpenRCT2::GetGameState().NewsItems.GetArchived())
+        for (const auto& newsItem : GetGameState().NewsItems.GetArchived())
         {
             if (y >= dpi.y + dpi.height)
                 break;
