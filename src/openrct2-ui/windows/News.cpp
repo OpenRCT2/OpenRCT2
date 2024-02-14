@@ -125,8 +125,7 @@ public:
 
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override
     {
-        int32_t scrollHeight = static_cast<int32_t>(GetGameState().NewsItems.GetArchived().size())
-            * CalculateItemHeight();
+        int32_t scrollHeight = static_cast<int32_t>(GetGameState().NewsItems.GetArchived().size()) * CalculateItemHeight();
         return { WW, scrollHeight };
     }
 
