@@ -30,8 +30,6 @@ RideId gPeepPathFindQueueRideIndex;
 
 namespace OpenRCT2::PathFinding
 {
-
-    static bool _peepPathFindIsStaff;
     static int8_t _peepPathFindNumJunctions;
     static int8_t _peepPathFindMaxJunctions;
     static int32_t _peepPathFindTilesChecked;
@@ -97,9 +95,9 @@ namespace OpenRCT2::PathFinding
         return nullptr;
     }
 
-    static int32_t BannerClearPathEdges(PathElement* pathElement, int32_t edges)
+    static int32_t BannerClearPathEdges(bool ignoreBanners, PathElement* pathElement, int32_t edges)
     {
-        if (_peepPathFindIsStaff)
+        if (ignoreBanners)
             return edges;
         TileElement* bannerElement = GetBannerOnPath(reinterpret_cast<TileElement*>(pathElement));
         if (bannerElement != nullptr)
@@ -115,9 +113,9 @@ namespace OpenRCT2::PathFinding
     /**
      * Gets the connected edges of a path that are permitted (i.e. no 'no entry' signs)
      */
-    static int32_t PathGetPermittedEdges(PathElement* pathElement)
+    static int32_t PathGetPermittedEdges(bool ignoreBanners, PathElement* pathElement)
     {
-        return BannerClearPathEdges(pathElement, pathElement->GetEdgesAndCorners()) & 0x0F;
+        return BannerClearPathEdges(ignoreBanners, pathElement, pathElement->GetEdgesAndCorners()) & 0x0F;
     }
 
     /**
@@ -321,7 +319,8 @@ namespace OpenRCT2::PathFinding
      *
      * This is the recursive portion of FootpathElementDestinationInDirection().
      */
-    static uint8_t FootpathElementDestInDir(TileCoordsXYZ loc, Direction chosenDirection, RideId* outRideIndex, int32_t level)
+    static uint8_t FootpathElementDestInDir(
+        bool ignoreBanners, TileCoordsXYZ loc, Direction chosenDirection, RideId* outRideIndex, int32_t level)
     {
         TileElement* tileElement;
         Direction direction;
@@ -387,7 +386,7 @@ namespace OpenRCT2::PathFinding
                     if (tileElement->AsPath()->IsWide())
                         return PATH_SEARCH_WIDE;
 
-                    uint8_t edges = PathGetPermittedEdges(tileElement->AsPath());
+                    uint8_t edges = PathGetPermittedEdges(ignoreBanners, tileElement->AsPath());
                     edges &= ~(1 << DirectionReverse(chosenDirection));
                     loc.z = tileElement->BaseHeight;
 
@@ -407,7 +406,7 @@ namespace OpenRCT2::PathFinding
                                 loc.z += 2;
                             }
                         }
-                        return FootpathElementDestInDir(loc, dir, outRideIndex, level + 1);
+                        return FootpathElementDestInDir(ignoreBanners, loc, dir, outRideIndex, level + 1);
                     }
                     return PATH_SEARCH_DEAD_END;
                 }
@@ -453,7 +452,7 @@ namespace OpenRCT2::PathFinding
             }
         }
 
-        return FootpathElementDestInDir(loc, chosenDirection, outRideIndex, 0);
+        return FootpathElementDestInDir(false, loc, chosenDirection, outRideIndex, 0);
     }
 
     /**
@@ -545,7 +544,8 @@ namespace OpenRCT2::PathFinding
             /* Ignore non-paths (e.g. ride entrances, shops), wide paths
              * and ride queues (per ignoreQueues) when counting
              * neighbouring tiles. */
-            if (fp_result != PATH_SEARCH_FAILED && fp_result != PATH_SEARCH_WIDE && fp_result != PATH_SEARCH_RIDE_QUEUE)
+            if (fp_result != PATH_SEARCH_FAILED && fp_result != PATH_SEARCH_WIDE
+                && fp_result != PATH_SEARCH_RIDE_QUEUE)
             {
                 thin_count++;
             }
@@ -993,7 +993,7 @@ namespace OpenRCT2::PathFinding
 
             /* Get all the permitted_edges of the map element. */
             Guard::Assert(tileElement->AsPath() != nullptr);
-            uint8_t edges = PathGetPermittedEdges(tileElement->AsPath());
+            uint8_t edges = PathGetPermittedEdges(staff != nullptr, tileElement->AsPath());
 
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
@@ -1272,8 +1272,6 @@ namespace OpenRCT2::PathFinding
         /* The max number of tiles to check - a whole-search limit.
          * Mainly to limit the performance impact of the path finding. */
         int32_t maxTilesChecked = (peep.Is<Staff>()) ? 50000 : 15000;
-        // Used to allow walking through no entry banners
-        _peepPathFindIsStaff = peep.Is<Staff>();
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (_pathFindDebug)
@@ -1329,7 +1327,7 @@ namespace OpenRCT2::PathFinding
             isThin = isThin || PathIsThinJunction(dest_tile_element->AsPath(), loc);
 
             // Collect the permitted edges of ALL matching path elements at this location.
-            permitted_edges |= PathGetPermittedEdges(dest_tile_element->AsPath());
+            permitted_edges |= PathGetPermittedEdges(peep.Is<Staff>(), dest_tile_element->AsPath());
         } while (!(dest_tile_element++)->IsLastForTile());
         // Peep is not on a path.
         if (!found)
@@ -1992,8 +1990,7 @@ namespace OpenRCT2::PathFinding
             return 1;
         }
 
-        _peepPathFindIsStaff = false;
-        uint8_t edges = PathGetPermittedEdges(pathElement);
+        uint8_t edges = PathGetPermittedEdges(false, pathElement);
 
         if (edges == 0)
         {
