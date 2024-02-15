@@ -53,7 +53,6 @@ import android.widget.Toast;
 import java.util.Hashtable;
 import java.util.Locale;
 
-import org.libsdl.app.SDLSurface;
 
 /**
     SDL Activity
@@ -2115,3 +2114,4 @@ class SDLClipboardHandler implements
         SDLActivity.onNativeClipboardChanged();
     }
 }
+
