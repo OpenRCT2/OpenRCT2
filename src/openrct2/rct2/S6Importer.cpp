@@ -474,7 +474,7 @@ namespace RCT2
             for (size_t i = 0; i < Limits::MaxNewsItems; i++)
             {
                 const RCT12NewsItem* src = &_s6.NewsItems[i];
-                News::Item* dst = &gNewsItems[i];
+                News::Item* dst = &gameState.NewsItems[i];
                 if (src->Type < News::ItemTypeCount)
                 {
                     dst->Type = static_cast<News::ItemType>(src->Type);

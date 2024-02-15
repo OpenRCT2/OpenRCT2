@@ -11,6 +11,7 @@
 
 #include "Date.h"
 #include "management/Finance.h"
+#include "management/NewsItem.h"
 #include "scenario/Scenario.h"
 #include "world/Banner.h"
 #include "world/Climate.h"
@@ -72,6 +73,8 @@ namespace OpenRCT2
         std::string ScenarioCompletedBy;
 
         std::vector<Banner> Banners;
+
+        News::ItemQueues NewsItems;
 
         colour_t StaffHandymanColour;
         colour_t StaffMechanicColour;
