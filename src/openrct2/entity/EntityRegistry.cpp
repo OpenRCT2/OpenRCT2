@@ -10,6 +10,7 @@
 #include "EntityRegistry.h"
 
 #include "../Game.h"
+#include "../GameState.h"
 #include "../core/Algorithm.hpp"
 #include "../core/ChecksumStream.h"
 #include "../core/Crypt.h"
@@ -171,7 +172,7 @@ const std::list<EntityId>& GetEntityList(const EntityType id)
  */
 void ResetAllEntities()
 {
-    gSavedAge = 0;
+    OpenRCT2::GetGameState().SavedAge = 0;
 
     // Free all associated Entity pointers prior to zeroing memory
     for (int32_t i = 0; i < MAX_ENTITIES; ++i)

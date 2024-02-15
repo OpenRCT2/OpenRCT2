@@ -369,7 +369,7 @@ void GameState::UpdateLogic()
     NetworkFlush();
 
     gameState.CurrentTicks++;
-    gSavedAge++;
+    gameState.SavedAge++;
 
 #ifdef ENABLE_SCRIPTING
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
