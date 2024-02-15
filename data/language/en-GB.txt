@@ -3696,6 +3696,9 @@ STR_6622    :240FPS
 STR_6623    :Vsync
 STR_6624    :No limit
 
+STR_6625    :Display Settings
+STR_6626    :Change your display settings
+
 #############
 # Scenarios #
 ################
