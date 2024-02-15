@@ -713,10 +713,6 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
             }
         }
 
-        gPeepPathFindGoalPosition.x = location.x;
-        gPeepPathFindGoalPosition.y = location.y;
-        gPeepPathFindGoalPosition.z = location.z;
-
         gPeepPathFindIgnoreForeignQueues = false;
         gPeepPathFindQueueRideIndex = RideId::GetNull();
 
@@ -724,7 +720,8 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
         PathfindLoggingEnable(*this);
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-        Direction pathfindDirection = PathFinding::ChooseDirection(TileCoordsXYZ{ NextLoc }, *this);
+        const auto goalPos = TileCoordsXYZ{ location.x, location.y, location.z };
+        Direction pathfindDirection = PathFinding::ChooseDirection(TileCoordsXYZ{ NextLoc }, goalPos, * this);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         PathfindLoggingDisable();

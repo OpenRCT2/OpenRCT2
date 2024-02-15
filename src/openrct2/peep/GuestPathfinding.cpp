@@ -1264,9 +1264,12 @@ namespace OpenRCT2::PathFinding
      *
      *  rct2: 0x0069A5F0
      */
-    Direction ChooseDirection(const TileCoordsXYZ& loc, Peep& peep)
+    Direction ChooseDirection(const TileCoordsXYZ& loc, const TileCoordsXYZ& goal, Peep& peep)
     {
         PROFILED_FUNCTION();
+
+        // Temporarily set this until the rest is refactored.
+        gPeepPathFindGoalPosition = goal;
 
         // The max number of thin junctions searched - a per-search-path limit.
         _peepPathFindMaxJunctions = PeepPathfindGetMaxNumberJunctions(peep);
@@ -1276,8 +1279,6 @@ namespace OpenRCT2::PathFinding
         int32_t maxTilesChecked = (peep.Is<Staff>()) ? 50000 : 15000;
         // Used to allow walking through no entry banners
         _peepPathFindIsStaff = peep.Is<Staff>();
-
-        TileCoordsXYZ goal = gPeepPathFindGoalPosition;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (_pathFindDebug)
@@ -1672,11 +1673,11 @@ namespace OpenRCT2::PathFinding
         if (!chosenEntrance.has_value())
             return GuestPathfindAimless(peep, edges);
 
-        gPeepPathFindGoalPosition = TileCoordsXYZ(chosenEntrance.value());
         gPeepPathFindIgnoreForeignQueues = true;
         gPeepPathFindQueueRideIndex = RideId::GetNull();
 
-        Direction chosenDirection = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, peep);
+        const auto goalPos = TileCoordsXYZ(chosenEntrance.value());
+        Direction chosenDirection = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, goalPos, peep);
 
         if (chosenDirection == INVALID_DIRECTION)
             return GuestPathfindAimless(peep, edges);
@@ -1724,7 +1725,6 @@ namespace OpenRCT2::PathFinding
         const auto peepSpawnLoc = gPeepSpawns[chosenSpawn].ToTileStart();
         Direction direction = peepSpawnLoc.direction;
 
-        gPeepPathFindGoalPosition = TileCoordsXYZ(peepSpawnLoc);
         if (peepSpawnLoc.x == peep.NextLoc.x && peepSpawnLoc.y == peep.NextLoc.y)
         {
             return PeepMoveOneTile(direction, peep);
@@ -1732,7 +1732,9 @@ namespace OpenRCT2::PathFinding
 
         gPeepPathFindIgnoreForeignQueues = true;
         gPeepPathFindQueueRideIndex = RideId::GetNull();
-        direction = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, peep);
+
+        const auto goalPos = TileCoordsXYZ(peepSpawnLoc);
+        direction = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, goalPos, peep);
         if (direction == INVALID_DIRECTION)
             return GuestPathfindAimless(peep, edges);
 
@@ -1768,7 +1770,6 @@ namespace OpenRCT2::PathFinding
             entranceGoal = TileCoordsXYZ(*chosenEntrance);
         }
 
-        gPeepPathFindGoalPosition = entranceGoal;
         gPeepPathFindIgnoreForeignQueues = true;
         gPeepPathFindQueueRideIndex = RideId::GetNull();
 
@@ -1776,7 +1777,7 @@ namespace OpenRCT2::PathFinding
         PathfindLoggingEnable(peep);
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-        Direction chosenDirection = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, peep);
+        Direction chosenDirection = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, entranceGoal, peep);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         PathfindLoggingDisable();
@@ -2234,10 +2235,9 @@ namespace OpenRCT2::PathFinding
 
         GetRideQueueEnd(loc);
 
-        gPeepPathFindGoalPosition = loc;
         gPeepPathFindIgnoreForeignQueues = true;
 
-        direction = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, peep);
+        direction = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, loc, peep);
 
         if (direction == INVALID_DIRECTION)
         {

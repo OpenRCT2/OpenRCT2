@@ -41,7 +41,7 @@ extern bool gPeepPathFindIgnoreForeignQueues;
 
 namespace OpenRCT2::PathFinding
 {
-    Direction ChooseDirection(const TileCoordsXYZ& loc, Peep& peep);
+    Direction ChooseDirection(const TileCoordsXYZ& loc, const TileCoordsXYZ& goal, Peep& peep);
 
     int32_t CalculateNextDestination(Guest& peep);
 
