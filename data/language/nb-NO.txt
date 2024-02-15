@@ -3437,7 +3437,7 @@ STR_6357    :{SMALLFONT}{BLACK}Fjerner alle ender fra parken
 STR_6358    :Side {UINT16}
 STR_6359    :{POP16}{POP16}Side {UINT16}
 STR_6360    :{BLACK}{COMMA32}
-STR_6361    :Aktiver attraksjonlyseffekter (eksperimentelt)	     
+STR_6361    :Aktiver attraksjonlyseffekter (eksperimentelt)
 STR_6362    :Hvis aktivert vil det være lys på vognene til attraksjoner som går på bane.
 STR_6363    :Tekst kopiert til utklippstavlen
 STR_6364    :{RED}{COMMA16} person har omkommet i en ulykke på {STRINGID}
