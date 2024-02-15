@@ -202,9 +202,8 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     }
 
     if (!OpenRCT2::GetGameState().Cheats.DisableClearanceChecks
-        && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE))
-        && !supportsRequired && !isOnWater && surfaceElement != nullptr
-        && (surfaceElement->GetSlope() != TILE_ELEMENT_SLOPE_FLAT))
+        && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE)) && !supportsRequired && !isOnWater
+        && surfaceElement != nullptr && (surfaceElement->GetSlope() != TILE_ELEMENT_SLOPE_FLAT))
     {
         return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
     }

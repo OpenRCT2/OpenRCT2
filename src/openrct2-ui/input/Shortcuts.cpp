@@ -619,7 +619,8 @@ static void ShortcutDecreaseElementHeight()
 
 static void ShortcutToggleClearanceChecks()
 {
-    auto cheatSetAction = CheatSetAction(CheatType::DisableClearanceChecks, GetGameState().Cheats.DisableClearanceChecks ? 0 : 1);
+    auto cheatSetAction = CheatSetAction(
+        CheatType::DisableClearanceChecks, GetGameState().Cheats.DisableClearanceChecks ? 0 : 1);
     GameActions::Execute(&cheatSetAction);
 }
 

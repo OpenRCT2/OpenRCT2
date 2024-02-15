@@ -656,13 +656,15 @@ private:
             }
             // If regular paths can be used as queue, only hide the path if we’re _not_ looking at a queue,
             // but the path surface is one.
-            if (GetGameState().Cheats.AllowRegularPathAsQueue && !showQueues && ((pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
+            if (GetGameState().Cheats.AllowRegularPathAsQueue && !showQueues
+                && ((pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
             {
                 continue;
             }
             // If the cheat is disabled, hide queues from the regular path view and vice versa.
             else if (
-                !GetGameState().Cheats.AllowRegularPathAsQueue && showQueues != ((pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
+                !GetGameState().Cheats.AllowRegularPathAsQueue
+                && showQueues != ((pathType->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
             {
                 continue;
             }

@@ -89,7 +89,8 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::DisableClearanceChecks, GetGameState().Cheats.DisableClearanceChecks, count);
         CheatEntrySerialise(ds, CheatType::DisableSupportLimits, GetGameState().Cheats.DisableSupportLimits, count);
         CheatEntrySerialise(ds, CheatType::ShowAllOperatingModes, GetGameState().Cheats.ShowAllOperatingModes, count);
-        CheatEntrySerialise(ds, CheatType::ShowVehiclesFromOtherTrackTypes, GetGameState().Cheats.ShowVehiclesFromOtherTrackTypes, count);
+        CheatEntrySerialise(
+            ds, CheatType::ShowVehiclesFromOtherTrackTypes, GetGameState().Cheats.ShowVehiclesFromOtherTrackTypes, count);
         CheatEntrySerialise(ds, CheatType::FastLiftHill, GetGameState().Cheats.UnlockOperatingLimits, count);
         CheatEntrySerialise(ds, CheatType::DisableBrakesFailure, GetGameState().Cheats.DisableBrakesFailure, count);
         CheatEntrySerialise(ds, CheatType::DisableAllBreakdowns, GetGameState().Cheats.DisableAllBreakdowns, count);
@@ -102,10 +103,12 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::DisableTrainLengthLimit, GetGameState().Cheats.DisableTrainLengthLimit, count);
         CheatEntrySerialise(ds, CheatType::DisablePlantAging, GetGameState().Cheats.DisablePlantAging, count);
         CheatEntrySerialise(ds, CheatType::EnableChainLiftOnAllTrack, GetGameState().Cheats.EnableChainLiftOnAllTrack, count);
-        CheatEntrySerialise(ds, CheatType::AllowArbitraryRideTypeChanges, GetGameState().Cheats.AllowArbitraryRideTypeChanges, count);
+        CheatEntrySerialise(
+            ds, CheatType::AllowArbitraryRideTypeChanges, GetGameState().Cheats.AllowArbitraryRideTypeChanges, count);
         CheatEntrySerialise(ds, CheatType::DisableRideValueAging, GetGameState().Cheats.DisableRideValueAging, count);
         CheatEntrySerialise(ds, CheatType::IgnoreResearchStatus, GetGameState().Cheats.IgnoreResearchStatus, count);
-        CheatEntrySerialise(ds, CheatType::EnableAllDrawableTrackPieces, GetGameState().Cheats.EnableAllDrawableTrackPieces, count);
+        CheatEntrySerialise(
+            ds, CheatType::EnableAllDrawableTrackPieces, GetGameState().Cheats.EnableAllDrawableTrackPieces, count);
         CheatEntrySerialise(
             ds, CheatType::AllowTrackPlaceInvalidHeights, GetGameState().Cheats.AllowTrackPlaceInvalidHeights, count);
         CheatEntrySerialise(ds, CheatType::AllowRegularPathAsQueue, GetGameState().Cheats.AllowRegularPathAsQueue, count);

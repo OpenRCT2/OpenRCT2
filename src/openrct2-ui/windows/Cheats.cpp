@@ -495,7 +495,8 @@ public:
                 SetCheckboxValue(WIDX_DISABLE_ALL_BREAKDOWNS, GetGameState().Cheats.DisableAllBreakdowns);
                 SetCheckboxValue(WIDX_BUILD_IN_PAUSE_MODE, GetGameState().Cheats.BuildInPauseMode);
                 SetCheckboxValue(WIDX_SHOW_ALL_OPERATING_MODES, GetGameState().Cheats.ShowAllOperatingModes);
-                SetCheckboxValue(WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES, GetGameState().Cheats.ShowVehiclesFromOtherTrackTypes);
+                SetCheckboxValue(
+                    WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES, GetGameState().Cheats.ShowVehiclesFromOtherTrackTypes);
                 SetCheckboxValue(WIDX_DISABLE_TRAIN_LENGTH_LIMITS, GetGameState().Cheats.DisableTrainLengthLimit);
                 SetCheckboxValue(WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK, GetGameState().Cheats.EnableChainLiftOnAllTrack);
                 SetCheckboxValue(WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES, GetGameState().Cheats.AllowArbitraryRideTypeChanges);
@@ -511,7 +512,8 @@ public:
         window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(
             OpenRCT2::GetGameState().ClimateCurrent.Weather)];
         // Staff speed
-        window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(GetGameState().Cheats.SelectedStaffSpeed)];
+        window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[EnumValue(
+            GetGameState().Cheats.SelectedStaffSpeed)];
 
         if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         {
