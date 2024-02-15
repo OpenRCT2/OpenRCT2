@@ -42,6 +42,7 @@ struct GeneralConfiguration
     bool UncapFPS;
     bool UseVSync;
     bool ShowFPS;
+    int32_t MaxFPS;
     bool MultiThreading;
     bool MinimizeFullscreenFocusLoss;
     bool DisableScreensaver;

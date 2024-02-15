@@ -179,6 +179,7 @@ namespace Config
                 "drawing_engine", DrawingEngine::Software, Enum_DrawingEngine);
             model->UncapFPS = reader->GetBoolean("uncap_fps", false);
             model->UseVSync = reader->GetBoolean("use_vsync", true);
+            model->MaxFPS = reader->GetInt32("fps_limit", 40);
             model->VirtualFloorStyle = reader->GetEnum<VirtualFloorStyles>(
                 "virtual_floor_style", VirtualFloorStyles::Glassy, Enum_VirtualFloorStyle);
             model->DateFormat = reader->GetEnum<int32_t>("date_format", Platform::GetLocaleDateFormat(), Enum_DateFormat);
@@ -274,6 +275,7 @@ namespace Config
         writer->WriteEnum<DrawingEngine>("drawing_engine", model->DrawingEngine, Enum_DrawingEngine);
         writer->WriteBoolean("uncap_fps", model->UncapFPS);
         writer->WriteBoolean("use_vsync", model->UseVSync);
+        writer->WriteInt32("fps_limit", model->MaxFPS);
         writer->WriteEnum<int32_t>("date_format", model->DateFormat, Enum_DateFormat);
         writer->WriteBoolean("auto_staff", model->AutoStaffPlacement);
         writer->WriteBoolean("handymen_mow_default", model->HandymenMowByDefault);

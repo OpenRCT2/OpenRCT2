@@ -95,6 +95,9 @@ enum WindowOptionsWidgetIdx {
     WIDX_DRAWING_ENGINE,
     WIDX_DRAWING_ENGINE_DROPDOWN,
     WIDX_STEAM_OVERLAY_PAUSE,
+    WIDX_DISPLAY_SETTINGS_LABEL,
+    WIDX_DISPLAY_SETTINGS,
+    WIDX_DISPLAY_SETTINGS_DROPDOWN,
     WIDX_UNCAP_FPS_CHECKBOX,
     WIDX_SHOW_FPS_CHECKBOX,
     WIDX_MULTITHREADING_CHECKBOX,
@@ -795,6 +798,18 @@ private:
                 Dropdown::SetChecked(EnumValue(gConfigGeneral.DrawingEngine), true);
                 break;
             }
+            case WIDX_DISPLAY_SETTINGS_DROPDOWN:
+            {
+                int32_t numItems = 11;
+
+                for (int32_t i = 0; i< numItems; i++)
+                {
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[i].Args = DisplaySettingsStringIds[i];
+                }
+                ShowDropdown(widget, numItems);
+                break;
+            }
             case WIDX_SCALE_UP:
                 gConfigGeneral.WindowScale += 0.25f;
                 ConfigSaveDefault();
@@ -858,6 +873,13 @@ private:
                     Invalidate();
                 }
                 break;
+            case WIDX_DISPLAY_SETTINGS_DROPDOWN:
+                if (dropdownIndex != gConfigGeneral.MaxFPS)
+                {
+                    gConfigGeneral.MaxFPS = static_cast<uint32_t>(dropdownIndex);
+                    ConfigSaveDefault();
+                }
+                break;
         }
     }
 
@@ -914,6 +936,7 @@ private:
         // Dropdown captions for straightforward strings.
         widgets[WIDX_FULLSCREEN].text = FullscreenModeNames[gConfigGeneral.FullscreenMode];
         widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(gConfigGeneral.DrawingEngine)];
+        widgets[WIDX_DISPLAY_SETTINGS].text = DisplaySettingsStringIds[gConfigGeneral.MaxFPS];
     }
 
     void DisplayDraw(DrawPixelInfo& dpi)

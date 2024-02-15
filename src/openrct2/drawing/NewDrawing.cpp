@@ -34,6 +34,20 @@ StringId DrawingEngineStringIds[] = {
     STR_DRAWING_ENGINE_OPENGL,
 };
 
+StringId DisplaySettingsStringIds[] = {
+    STR_30FPS,
+    STR_40FPS,
+    STR_60FPS,
+    STR_75FPS,
+    STR_100FPS,
+    STR_120FPS,
+    STR_144FPS,
+    STR_165FPS,
+    STR_240FPS,
+    STR_VSYNC,
+    STR_NO_LIMIT,
+};
+
 DrawingEngine drawing_engine_get_type()
 {
     auto context = GetContext();
