@@ -70,14 +70,14 @@ namespace OpenRCT2::PathFinding
         PATH_SEARCH_FAILED
     };
 
-    static TileElement* GetBannerOnPath(TileElement* path_element)
+    static TileElement* GetBannerOnPath(TileElement* pathElement)
     {
         // This is an improved version of original.
         // That only checked for one fence in the way.
-        if (path_element->IsLastForTile())
+        if (pathElement->IsLastForTile())
             return nullptr;
 
-        TileElement* bannerElement = path_element + 1;
+        TileElement* bannerElement = pathElement + 1;
         do
         {
             // Path on top, so no banners
@@ -531,33 +531,33 @@ namespace OpenRCT2::PathFinding
 
         uint8_t edges = path->GetEdges();
 
-        int32_t test_edge = UtilBitScanForward(edges);
-        if (test_edge == -1)
+        int32_t testEdge = UtilBitScanForward(edges);
+        if (testEdge == -1)
             return false;
 
-        bool thin_junction = false;
-        int32_t thin_count = 0;
+        bool isThinJunction = false;
+        int32_t thinCount = 0;
         do
         {
-            int32_t fp_result = FootpathElementNextInDirection(loc, path, test_edge);
+            auto nextFootpathResult = FootpathElementNextInDirection(loc, path, testEdge);
 
             /* Ignore non-paths (e.g. ride entrances, shops), wide paths
              * and ride queues (per ignoreQueues) when counting
              * neighbouring tiles. */
-            if (fp_result != PATH_SEARCH_FAILED && fp_result != PATH_SEARCH_WIDE
-                && fp_result != PATH_SEARCH_RIDE_QUEUE)
+            if (nextFootpathResult != PATH_SEARCH_FAILED && nextFootpathResult != PATH_SEARCH_WIDE
+                && nextFootpathResult != PATH_SEARCH_RIDE_QUEUE)
             {
-                thin_count++;
+                thinCount++;
             }
 
-            if (thin_count > 2)
+            if (thinCount > 2)
             {
-                thin_junction = true;
+                isThinJunction = true;
                 break;
             }
-            edges &= ~(1 << test_edge);
-        } while ((test_edge = UtilBitScanForward(edges)) != -1);
-        return thin_junction;
+            edges &= ~(1 << testEdge);
+        } while ((testEdge = UtilBitScanForward(edges)) != -1);
+        return isThinJunction;
     }
 
     static int32_t CalculateHeuristicPathingScore(const TileCoordsXYZ& loc1, const TileCoordsXYZ& loc2)
@@ -688,7 +688,7 @@ namespace OpenRCT2::PathFinding
      */
     static void PeepPathfindHeuristicSearch(
         TileCoordsXYZ loc, const TileCoordsXYZ& goal, const Peep& peep, TileElement* currentTileElement,
-        const bool inPatrolArea, uint8_t counter, uint16_t* endScore, Direction test_edge, uint8_t* endJunctions,
+        const bool inPatrolArea, uint8_t steps, uint16_t* endScore, Direction testEdge, uint8_t* endJunctions,
         TileCoordsXYZ junctionList[16], uint8_t directionList[16], TileCoordsXYZ* endXYZ, uint8_t* endSteps)
     {
         uint8_t searchResult = PATH_SEARCH_FAILED;
@@ -701,9 +701,9 @@ namespace OpenRCT2::PathFinding
                 currentElementIsWide = false;
         }
 
-        loc += TileDirectionDelta[test_edge];
+        loc += TileDirectionDelta[testEdge];
 
-        ++counter;
+        ++steps;
         _peepPathFindTilesChecked--;
 
         /* If this is where the search started this is a search loop and the
@@ -714,7 +714,7 @@ namespace OpenRCT2::PathFinding
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                LOG_INFO("[%03d] Return from %d,%d,%d; At start", counter, loc.x >> 5, loc.y >> 5, loc.z);
+                LOG_INFO("[%03d] Return from %d,%d,%d; At start", steps, loc.x >> 5, loc.y >> 5, loc.z);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             return;
@@ -727,20 +727,20 @@ namespace OpenRCT2::PathFinding
             nextInPatrolArea = staff->IsLocationInPatrol(loc.ToCoordsXY());
             if (inPatrolArea && !nextInPatrolArea)
             {
-/* The mechanic will leave his patrol area by taking
- * the test_edge so the current search path ends here.
- * Return without updating the parameters (best result so far). */
+                /* The mechanic will leave his patrol area by taking
+                 * the test_edge so the current search path ends here.
+                 * Return without updating the parameters (best result so far). */
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                 if (gPathFindDebug)
                 {
-                    LOG_INFO("[%03d] Return from %d,%d,%d; Left patrol area", counter, loc.x >> 5, loc.y >> 5, loc.z);
+                    LOG_INFO("[%03d] Return from %d,%d,%d; Left patrol area", steps, loc.x >> 5, loc.y >> 5, loc.z);
                 }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                 return;
             }
         }
 
-        /* Get the next map element of interest in the direction of test_edge. */
+        /* Get the next map element of interest in the direction of testEdge. */
         bool found = false;
         TileElement* tileElement = MapGetFirstElementAt(loc);
         if (tileElement == nullptr)
@@ -787,7 +787,7 @@ namespace OpenRCT2::PathFinding
                              * (in the case when the station has no exit),
                              * the goal is the ride entrance tile. */
                             direction = tileElement->GetDirection();
-                            if (direction == test_edge)
+                            if (direction == testEdge)
                             {
                                 /* The rideIndex will be useful for
                                  * adding transport rides later. */
@@ -807,7 +807,7 @@ namespace OpenRCT2::PathFinding
                             /* For mechanics heading for the ride exit, the
                              * goal is the ride exit tile. */
                             direction = tileElement->GetDirection();
-                            if (direction == test_edge)
+                            if (direction == testEdge)
                             {
                                 searchResult = PATH_SEARCH_RIDE_EXIT;
                                 found = true;
@@ -824,7 +824,7 @@ namespace OpenRCT2::PathFinding
                      * queue path.
                      * Otherwise, peeps walk on path tiles to get to the goal. */
 
-                    if (!IsValidPathZAndDirection(tileElement, loc.z, test_edge))
+                    if (!IsValidPathZAndDirection(tileElement, loc.z, testEdge))
                         continue;
 
                     // Path may be sloped, so set z to path base height.
@@ -880,7 +880,7 @@ namespace OpenRCT2::PathFinding
             if (gPathFindDebug)
             {
                 LOG_INFO(
-                    "[%03d] Checking map element at %d,%d,%d; Type: %s", counter, loc.x >> 5, loc.y >> 5, loc.z,
+                    "[%03d] Checking map element at %d,%d,%d; Type: %s", steps, loc.x >> 5, loc.y >> 5, loc.z,
                     PathSearchToString(searchResult));
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -893,18 +893,18 @@ namespace OpenRCT2::PathFinding
              * Ignore for now. */
 
             // Calculate the heuristic score of this map element.
-            uint16_t new_score = CalculateHeuristicPathingScore(loc, goal);
+            uint16_t newScore = CalculateHeuristicPathingScore(loc, goal);
 
             /* If this map element is the search goal the current search path ends here. */
-            if (new_score == 0)
+            if (newScore == 0)
             {
                 /* If the search result is better than the best so far (in the parameters),
                  * then update the parameters with this search before continuing to the next map element. */
-                if (new_score < *endScore || (new_score == *endScore && counter < *endSteps))
+                if (newScore < *endScore || (newScore == *endScore && steps < *endSteps))
                 {
                     // Update the search results
-                    *endScore = new_score;
-                    *endSteps = counter;
+                    *endScore = newScore;
+                    *endSteps = steps;
                     // Update the end x,y,z
                     *endXYZ = loc;
                     // Update the telemetry
@@ -922,8 +922,8 @@ namespace OpenRCT2::PathFinding
                 if (gPathFindDebug)
                 {
                     LOG_INFO(
-                        "[%03d] Search path ends at %d,%d,%d; At goal; Score: %d", counter, loc.x >> 5, loc.y >> 5, loc.z,
-                        new_score);
+                        "[%03d] Search path ends at %d,%d,%d; At goal; Score: %d", steps, loc.x >> 5, loc.y >> 5, loc.z,
+                        newScore);
                 }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                 continue;
@@ -939,7 +939,7 @@ namespace OpenRCT2::PathFinding
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                 if (gPathFindDebug)
                 {
-                    LOG_INFO("[%03d] Search path ends at %d,%d,%d; Not a path", counter, loc.x >> 5, loc.y >> 5, loc.z);
+                    LOG_INFO("[%03d] Search path ends at %d,%d,%d; Not a path", steps, loc.x >> 5, loc.y >> 5, loc.z);
                 }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                 continue;
@@ -960,11 +960,11 @@ namespace OpenRCT2::PathFinding
                  * If the search result is better than the best so far
                  * (in the parameters), then update the parameters with
                  * this search before continuing to the next map element. */
-                if (currentElementIsWide && (new_score < *endScore || (new_score == *endScore && counter < *endSteps)))
+                if (currentElementIsWide && (newScore < *endScore || (newScore == *endScore && steps < *endSteps)))
                 {
                     // Update the search results
-                    *endScore = new_score;
-                    *endSteps = counter;
+                    *endScore = newScore;
+                    *endSteps = steps;
                     // Update the end x,y,z
                     *endXYZ = loc;
                     // Update the telemetry
@@ -982,8 +982,8 @@ namespace OpenRCT2::PathFinding
                 if (gPathFindDebug)
                 {
                     LOG_INFO(
-                        "[%03d] Search path ends at %d,%d,%d; Wide path; Score: %d", counter, loc.x >> 5, loc.y >> 5, loc.z,
-                        new_score);
+                        "[%03d] Search path ends at %d,%d,%d; Wide path; Score: %d", steps, loc.x >> 5, loc.y >> 5, loc.z,
+                        newScore);
                 }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                 continue;
@@ -999,25 +999,25 @@ namespace OpenRCT2::PathFinding
             if (gPathFindDebug)
             {
                 LOG_INFO(
-                    "[%03d] Path element at %d,%d,%d; Edges (0123):%d%d%d%d; Reverse: %d", counter, loc.x >> 5, loc.y >> 5, loc.z,
-                    edges & 1, (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, test_edge ^ 2);
+                    "[%03d] Path element at %d,%d,%d; Edges (0123):%d%d%d%d; Reverse: %d", steps, loc.x >> 5, loc.y >> 5, loc.z,
+                    edges & 1, (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, testEdge ^ 2);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
             /* Remove the reverse edge (i.e. the edge back to the previous map element.) */
-            edges &= ~(1 << DirectionReverse(test_edge));
+            edges &= ~(1 << DirectionReverse(testEdge));
 
-            int32_t next_test_edge = UtilBitScanForward(edges);
+            int32_t nextTestEdge = UtilBitScanForward(edges);
 
             /* If there are no other edges the current search ends here.
              * Continue to the next map element without updating the parameters (best result so far). */
-            if (next_test_edge == -1)
+            if (nextTestEdge == -1)
             {
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                 if (gPathFindDebug)
                 {
                     LOG_INFO(
-                        "[%03d] Search path ends at %d,%d,%d; No more edges/dead end", counter, loc.x >> 5, loc.y >> 5, loc.z);
+                        "[%03d] Search path ends at %d,%d,%d; No more edges/dead end", steps, loc.x >> 5, loc.y >> 5, loc.z);
                 }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                 continue;
@@ -1025,17 +1025,17 @@ namespace OpenRCT2::PathFinding
 
             /* Check if either of the search limits has been reached:
              * - max number of steps or max tiles checked. */
-            if (counter >= 200 || _peepPathFindTilesChecked <= 0)
+            if (steps >= 200 || _peepPathFindTilesChecked <= 0)
             {
                 /* The current search ends here.
                  * The path continues, so the goal could still be reachable from here.
                  * If the search result is better than the best so far (in the parameters),
                  * then update the parameters with this search before continuing to the next map element. */
-                if (new_score < *endScore || (new_score == *endScore && counter < *endSteps))
+                if (newScore < *endScore || (newScore == *endScore && steps < *endSteps))
                 {
                     // Update the search results
-                    *endScore = new_score;
-                    *endSteps = counter;
+                    *endScore = newScore;
+                    *endSteps = steps;
                     // Update the end x,y,z
                     *endXYZ = loc;
                     // Update the telemetry
@@ -1053,21 +1053,21 @@ namespace OpenRCT2::PathFinding
                 if (gPathFindDebug)
                 {
                     LOG_INFO(
-                        "[%03d] Search path ends at %d,%d,%d; Search limit reached; Score: %d", counter, loc.x >> 5, loc.y >> 5,
-                        loc.z, new_score);
+                        "[%03d] Search path ends at %d,%d,%d; Search limit reached; Score: %d", steps, loc.x >> 5, loc.y >> 5,
+                        loc.z, newScore);
                 }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                 continue;
             }
 
-            bool thin_junction = false;
+            bool isThinJunction = false;
             if (searchResult == PATH_SEARCH_JUNCTION)
             {
                 /* Check if this is a thin junction. And perform additional
                  * necessary checks. */
-                thin_junction = PathIsThinJunction(tileElement->AsPath(), loc);
+                isThinJunction = PathIsThinJunction(tileElement->AsPath(), loc);
 
-                if (thin_junction)
+                if (isThinJunction)
                 {
                     /* The current search path is passing through a thin
                      * junction on this map element. Only 'thin' junctions
@@ -1126,7 +1126,7 @@ namespace OpenRCT2::PathFinding
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                         if (gPathFindDebug)
                         {
-                            LOG_INFO("[%03d] Search path ends at %d,%d,%d; Loop", counter, loc.x >> 5, loc.y >> 5, loc.z);
+                            LOG_INFO("[%03d] Search path ends at %d,%d,%d; Loop", steps, loc.x >> 5, loc.y >> 5, loc.z);
                         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                         continue;
@@ -1139,11 +1139,11 @@ namespace OpenRCT2::PathFinding
                      * then update the parameters with this search before continuing to the next map element. */
                     if (_peepPathFindNumJunctions <= 0)
                     {
-                        if (new_score < *endScore || (new_score == *endScore && counter < *endSteps))
+                        if (newScore < *endScore || (newScore == *endScore && steps < *endSteps))
                         {
                             // Update the search results
-                            *endScore = new_score;
-                            *endSteps = counter;
+                            *endScore = newScore;
+                            *endSteps = steps;
                             // Update the end x,y,z
                             *endXYZ = loc;
                             // Update the telemetry
@@ -1159,8 +1159,8 @@ namespace OpenRCT2::PathFinding
                         if (gPathFindDebug)
                         {
                             LOG_INFO(
-                                "[%03d] Search path ends at %d,%d,%d; NumJunctions < 0; Score: %d", counter, loc.x >> 5,
-                                loc.y >> 5, loc.z, new_score);
+                                "[%03d] Search path ends at %d,%d,%d; NumJunctions < 0; Score: %d", steps, loc.x >> 5,
+                                loc.y >> 5, loc.z, newScore);
                         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                         continue;
@@ -1179,11 +1179,11 @@ namespace OpenRCT2::PathFinding
              * (recursive call). */
             do
             {
-                edges &= ~(1 << next_test_edge);
+                edges &= ~(1 << nextTestEdge);
                 uint8_t savedNumJunctions = _peepPathFindNumJunctions;
 
                 uint8_t height = loc.z;
-                if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() == next_test_edge)
+                if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() == nextTestEdge)
                 {
                     height += 2;
                 }
@@ -1192,32 +1192,32 @@ namespace OpenRCT2::PathFinding
                 {
                     if (searchResult == PATH_SEARCH_JUNCTION)
                     {
-                        if (thin_junction)
+                        if (isThinJunction)
                             LOG_INFO(
-                                "[%03d] Recurse from %d,%d,%d edge: %d; Thin-Junction", counter, loc.x >> 5, loc.y >> 5, loc.z,
-                                next_test_edge);
+                                "[%03d] Recurse from %d,%d,%d edge: %d; Thin-Junction", steps, loc.x >> 5, loc.y >> 5, loc.z,
+                                nextTestEdge);
                         else
                             LOG_INFO(
-                                "[%03d] Recurse from %d,%d,%d edge: %d; Wide-Junction", counter, loc.x >> 5, loc.y >> 5, loc.z,
-                                next_test_edge);
+                                "[%03d] Recurse from %d,%d,%d edge: %d; Wide-Junction", steps, loc.x >> 5, loc.y >> 5, loc.z,
+                                nextTestEdge);
                     }
                     else
                     {
                         LOG_INFO(
-                            "[%03d] Recurse from %d,%d,%d edge: %d; Segment", counter, loc.x >> 5, loc.y >> 5, loc.z,
-                            next_test_edge);
+                            "[%03d] Recurse from %d,%d,%d edge: %d; Segment", steps, loc.x >> 5, loc.y >> 5, loc.z,
+                            nextTestEdge);
                     }
                 }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
-                if (thin_junction)
+                if (isThinJunction)
                 {
                     /* Add the current test_edge to the history. */
-                    _peepPathFindHistory[_peepPathFindNumJunctions + 1].direction = next_test_edge;
+                    _peepPathFindHistory[_peepPathFindNumJunctions + 1].direction = nextTestEdge;
                 }
 
                 PeepPathfindHeuristicSearch(
-                    { loc.x, loc.y, height }, goal, peep, tileElement, nextInPatrolArea, counter, endScore, next_test_edge,
+                    { loc.x, loc.y, height }, goal, peep, tileElement, nextInPatrolArea, steps, endScore, nextTestEdge,
                     endJunctions, junctionList, directionList, endXYZ, endSteps);
                 _peepPathFindNumJunctions = savedNumJunctions;
 
@@ -1225,11 +1225,11 @@ namespace OpenRCT2::PathFinding
                 if (gPathFindDebug)
                 {
                     LOG_INFO(
-                        "[%03d] Returned to %d,%d,%d edge: %d; Score: %d", counter, loc.x >> 5, loc.y >> 5, loc.z, next_test_edge,
+                        "[%03d] Returned to %d,%d,%d edge: %d; Score: %d", steps, loc.x >> 5, loc.y >> 5, loc.z, nextTestEdge,
                         *endScore);
                 }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-            } while ((next_test_edge = UtilBitScanForward(edges)) != -1);
+            } while ((nextTestEdge = UtilBitScanForward(edges)) != -1);
 
         } while (!(tileElement++)->IsLastForTile());
 
@@ -1240,7 +1240,7 @@ namespace OpenRCT2::PathFinding
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                LOG_INFO("[%03d] Returning from %d,%d,%d; No relevant map element found", counter, loc.x >> 5, loc.y >> 5, loc.z);
+                LOG_INFO("[%03d] Returning from %d,%d,%d; No relevant map element found", steps, loc.x >> 5, loc.y >> 5, loc.z);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         }
@@ -1249,7 +1249,7 @@ namespace OpenRCT2::PathFinding
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                LOG_INFO("[%03d] Returning from %d,%d,%d; All map elements checked", counter, loc.x >> 5, loc.y >> 5, loc.z);
+                LOG_INFO("[%03d] Returning from %d,%d,%d; All map elements checked", steps, loc.x >> 5, loc.y >> 5, loc.z);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         }
@@ -1283,7 +1283,7 @@ namespace OpenRCT2::PathFinding
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
         // Get the path element at this location
-        TileElement* dest_tile_element = MapGetFirstElementAt(loc);
+        TileElement* destTileElement = MapGetFirstElementAt(loc);
         /* Where there are multiple matching map elements placed with zero
          * clearance, save the first one for later use to determine the path
          * slope - this maintains the original behaviour (which only processes
@@ -1299,23 +1299,23 @@ namespace OpenRCT2::PathFinding
          * EXPECT to experience path finding irregularities due to those paths!
          * In particular common edges at different heights will not work
          * in a useful way. Simply do not do it! :-) */
-        TileElement* first_tile_element = nullptr;
+        TileElement* firstTileElement = nullptr;
 
         bool found = false;
-        uint8_t permitted_edges = 0;
+        uint8_t permittedEdges = 0;
         bool isThin = false;
         do
         {
-            if (dest_tile_element == nullptr)
+            if (destTileElement == nullptr)
                 break;
-            if (dest_tile_element->BaseHeight != loc.z)
+            if (destTileElement->BaseHeight != loc.z)
                 continue;
-            if (dest_tile_element->GetType() != TileElementType::Path)
+            if (destTileElement->GetType() != TileElementType::Path)
                 continue;
             found = true;
-            if (first_tile_element == nullptr)
+            if (firstTileElement == nullptr)
             {
-                first_tile_element = dest_tile_element;
+                firstTileElement = destTileElement;
             }
 
             /* Check if this path element is a thin junction.
@@ -1324,17 +1324,17 @@ namespace OpenRCT2::PathFinding
              * check if the combination is 'thin'!
              * The junction is considered 'thin' simply if any of the
              * overlaid path elements there is a 'thin junction'. */
-            isThin = isThin || PathIsThinJunction(dest_tile_element->AsPath(), loc);
+            isThin = isThin || PathIsThinJunction(destTileElement->AsPath(), loc);
 
             // Collect the permitted edges of ALL matching path elements at this location.
-            permitted_edges |= PathGetPermittedEdges(peep.Is<Staff>(), dest_tile_element->AsPath());
-        } while (!(dest_tile_element++)->IsLastForTile());
+            permittedEdges |= PathGetPermittedEdges(peep.Is<Staff>(), destTileElement->AsPath());
+        } while (!(destTileElement++)->IsLastForTile());
         // Peep is not on a path.
         if (!found)
             return INVALID_DIRECTION;
 
-        permitted_edges &= 0xF;
-        uint8_t edges = permitted_edges;
+        permittedEdges &= 0xF;
+        uint8_t edges = permittedEdges;
         if (isThin && peep.PathfindGoal == goal)
         {
             /* Use of peep.PathfindHistory[]:
@@ -1362,7 +1362,7 @@ namespace OpenRCT2::PathFinding
                      * changes or in earlier code .directions was
                      * initialised to 0xF rather than the permitted
                      * edges. */
-                    pathfindHistory.direction &= permitted_edges;
+                    pathfindHistory.direction &= permittedEdges;
 
                     edges = pathfindHistory.direction;
 
@@ -1385,7 +1385,7 @@ namespace OpenRCT2::PathFinding
                          * the paths or the pathfinding itself
                          * has changed (been fixed) since
                          * the game was saved. */
-                        pathfindHistory.direction = permitted_edges;
+                        pathfindHistory.direction = permittedEdges;
                         edges = pathfindHistory.direction;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -1423,13 +1423,13 @@ namespace OpenRCT2::PathFinding
         if (edges == 0)
             return INVALID_DIRECTION;
 
-        int32_t chosen_edge = UtilBitScanForward(edges);
+        int32_t chosenEdge = UtilBitScanForward(edges);
 
         // Peep has multiple edges still to try.
-        if (edges & ~(1 << chosen_edge))
+        if (edges & ~(1 << chosenEdge))
         {
-            uint16_t best_score = 0xFFFF;
-            uint8_t best_sub = 0xFF;
+            uint16_t bestScore = 0xFFFF;
+            uint8_t bestSub = 0xFF;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
             uint8_t bestJunctions = 0;
@@ -1448,12 +1448,12 @@ namespace OpenRCT2::PathFinding
              * or for different edges with equal value, the edge with the
              * least steps (best_sub). */
             int32_t numEdges = BitCount(edges);
-            for (int32_t test_edge = chosen_edge; test_edge != -1; test_edge = UtilBitScanForward(edges))
+            for (int32_t testEdge = chosenEdge; testEdge != -1; testEdge = UtilBitScanForward(edges))
             {
-                edges &= ~(1 << test_edge);
+                edges &= ~(1 << testEdge);
                 uint8_t height = loc.z;
 
-                if (first_tile_element->AsPath()->IsSloped() && first_tile_element->AsPath()->GetSlopeDirection() == test_edge)
+                if (firstTileElement->AsPath()->IsSloped() && firstTileElement->AsPath()->GetSlopeDirection() == testEdge)
                 {
                     height += 0x2;
                 }
@@ -1512,19 +1512,19 @@ namespace OpenRCT2::PathFinding
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                 if (gPathFindDebug)
                 {
-                    LOG_VERBOSE("Pathfind searching in direction: %d from %d,%d,%d", test_edge, loc.x >> 5, loc.y >> 5, loc.z);
+                    LOG_VERBOSE("Pathfind searching in direction: %d from %d,%d,%d", testEdge, loc.x >> 5, loc.y >> 5, loc.z);
                 }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
                 PeepPathfindHeuristicSearch(
-                    { loc.x, loc.y, height }, goal, peep, first_tile_element, inPatrolArea, 0, &score, test_edge, &endJunctions,
+                    { loc.x, loc.y, height }, goal, peep, firstTileElement, inPatrolArea, 0, &score, testEdge, &endJunctions,
                     endJunctionList, endDirectionList, &endXYZ, &endSteps);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                 if (_pathFindDebug)
                 {
                     LOG_VERBOSE(
-                        "Pathfind test edge: %d score: %d steps: %d end: %d,%d,%d junctions: %d", test_edge, score, endSteps,
+                        "Pathfind test edge: %d score: %d steps: %d end: %d,%d,%d junctions: %d", testEdge, score, endSteps,
                         endXYZ.x, endXYZ.y, endXYZ.z, endJunctions);
                     for (uint8_t listIdx = 0; listIdx < endJunctions; listIdx++)
                     {
@@ -1535,11 +1535,11 @@ namespace OpenRCT2::PathFinding
                 }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-                if (score < best_score || (score == best_score && endSteps < best_sub))
+                if (score < bestScore || (score == bestScore && endSteps < bestSub))
                 {
-                    chosen_edge = test_edge;
-                    best_score = score;
-                    best_sub = endSteps;
+                    chosenEdge = testEdge;
+                    bestScore = score;
+                    bestSub = endSteps;
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                     bestJunctions = endJunctions;
                     for (uint8_t index = 0; index < endJunctions; index++)
@@ -1559,7 +1559,7 @@ namespace OpenRCT2::PathFinding
             /* Check if the heuristic search failed. e.g. all connected
              * paths are within the search limits and none reaches the
              * goal. */
-            if (best_score == 0xFFFF)
+            if (bestScore == 0xFFFF)
             {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                 if (_pathFindDebug)
@@ -1572,7 +1572,7 @@ namespace OpenRCT2::PathFinding
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
             if (_pathFindDebug)
             {
-                LOG_VERBOSE("Pathfind best edge %d with score %d steps %d", chosen_edge, best_score, best_sub);
+                LOG_VERBOSE("Pathfind best edge %d with score %d steps %d", chosenEdge, bestScore, bestSub);
                 for (uint8_t listIdx = 0; listIdx < bestJunctions; listIdx++)
                 {
                     LOG_VERBOSE(
@@ -1592,7 +1592,7 @@ namespace OpenRCT2::PathFinding
                 {
                     /* Peep remembers this junction, so remove the
                      * chosen_edge from those left to try. */
-                    peep.PathfindHistory[i].direction &= ~(1 << chosen_edge);
+                    peep.PathfindHistory[i].direction &= ~(1 << chosenEdge);
                     /* Also remove the edge through which the peep
                      * entered the junction from those left to try. */
                     peep.PathfindHistory[i].direction &= ~(1 << DirectionReverse(peep.PeepDirection));
@@ -1601,10 +1601,10 @@ namespace OpenRCT2::PathFinding
                     {
                         LOG_VERBOSE(
                             "Updating existing pf_history (in index: %u) for %d,%d,%d without entry edge %d & exit edge %d.", i,
-                            loc.x, loc.y, loc.z, DirectionReverse(peep.PeepDirection), chosen_edge);
+                            loc.x, loc.y, loc.z, DirectionReverse(peep.PeepDirection), chosenEdge);
                     }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-                    return chosen_edge;
+                    return chosenEdge;
                 }
             }
 
@@ -1612,9 +1612,9 @@ namespace OpenRCT2::PathFinding
              * and remember this junction. */
             int32_t i = peep.PathfindGoal.direction++;
             peep.PathfindGoal.direction &= 3;
-            peep.PathfindHistory[i] = { loc, permitted_edges };
+            peep.PathfindHistory[i] = { loc, permittedEdges };
             /* Remove the chosen_edge from those left to try. */
-            peep.PathfindHistory[i].direction &= ~(1 << chosen_edge);
+            peep.PathfindHistory[i].direction &= ~(1 << chosenEdge);
             /* Also remove the edge through which the peep
              * entered the junction from those left to try. */
             peep.PathfindHistory[i].direction &= ~(1 << DirectionReverse(peep.PeepDirection));
@@ -1623,12 +1623,12 @@ namespace OpenRCT2::PathFinding
             {
                 LOG_VERBOSE(
                     "Storing new pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.", i, loc.x, loc.y,
-                    loc.z, DirectionReverse(peep.PeepDirection), chosen_edge);
+                    loc.z, DirectionReverse(peep.PeepDirection), chosenEdge);
             }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         }
 
-        return chosen_edge;
+        return chosenEdge;
     }
 
     /**
