@@ -721,7 +721,7 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
         const auto goalPos = TileCoordsXYZ{ location.x, location.y, location.z };
-        Direction pathfindDirection = PathFinding::ChooseDirection(TileCoordsXYZ{ NextLoc }, goalPos, * this);
+        Direction pathfindDirection = PathFinding::ChooseDirection(TileCoordsXYZ{ NextLoc }, goalPos, *this);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         PathfindLoggingDisable();
