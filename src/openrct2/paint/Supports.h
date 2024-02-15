@@ -31,6 +31,8 @@ enum class WoodenSupportSubType : uint8_t
     Corner1 = 3,
     Corner2 = 4,
     Corner3 = 5,
+
+    Null,
 };
 
 enum class WoodenSupportTransitionType : uint8_t

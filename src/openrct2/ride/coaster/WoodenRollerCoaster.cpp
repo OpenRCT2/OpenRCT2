@@ -1446,25 +1446,25 @@ static void WoodenRCTrackRightQuarterTurn5(
             },
         },
     };
-    static std::optional<WoodenSupportSubType> supportType[NumOrthogonalDirections][7] = {
-        { WoodenSupportSubType::NeSw, std::nullopt, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0, std::nullopt,
-          WoodenSupportSubType::Corner2, WoodenSupportSubType::NwSe },
-        { WoodenSupportSubType::NwSe, std::nullopt, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1, std::nullopt,
-          WoodenSupportSubType::Corner3, WoodenSupportSubType::NeSw },
-        { WoodenSupportSubType::NeSw, std::nullopt, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2, std::nullopt,
-          WoodenSupportSubType::Corner0, WoodenSupportSubType::NwSe },
-        { WoodenSupportSubType::NwSe, std::nullopt, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3, std::nullopt,
-          WoodenSupportSubType::Corner1, WoodenSupportSubType::NeSw },
+    static WoodenSupportSubType supportType[NumOrthogonalDirections][7] = {
+        { WoodenSupportSubType::NeSw, WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
+          WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::NwSe },
+        { WoodenSupportSubType::NwSe, WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1,
+          WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::NeSw },
+        { WoodenSupportSubType::NeSw, WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2,
+          WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::NwSe },
+        { WoodenSupportSubType::NwSe, WoodenSupportSubType::Null, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3,
+          WoodenSupportSubType::Null, WoodenSupportSubType::Corner1, WoodenSupportSubType::NeSw },
     };
 
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[0][direction][trackSequence], height);
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[1][direction][trackSequence], height);
     TrackPaintUtilRightQuarterTurn5TilesTunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
 
-    if (supportType[direction][trackSequence].has_value())
+    if (supportType[direction][trackSequence] != WoodenSupportSubType::Null)
     {
         WoodenASupportsPaintSetup(
-            session, WoodenSupportType::Truss, supportType[direction][trackSequence].value(), height, session.SupportColours);
+            session, WoodenSupportType::Truss, supportType[direction][trackSequence], height, session.SupportColours);
     }
 
     int32_t blockedSegments = 0;
@@ -1916,25 +1916,25 @@ static void WoodenRCTrackBankedRightQuarterTurn5(
             },
         },
     };
-    static std::optional<WoodenSupportSubType> supportType[NumOrthogonalDirections][7] = {
-        { WoodenSupportSubType::NeSw, std::nullopt, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0, std::nullopt,
-          WoodenSupportSubType::Corner2, WoodenSupportSubType::NwSe },
-        { WoodenSupportSubType::NwSe, std::nullopt, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1, std::nullopt,
-          WoodenSupportSubType::Corner3, WoodenSupportSubType::NeSw },
-        { WoodenSupportSubType::NeSw, std::nullopt, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2, std::nullopt,
-          WoodenSupportSubType::Corner0, WoodenSupportSubType::NwSe },
-        { WoodenSupportSubType::NwSe, std::nullopt, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3, std::nullopt,
-          WoodenSupportSubType::Corner1, WoodenSupportSubType::NeSw },
+    static WoodenSupportSubType supportType[NumOrthogonalDirections][7] = {
+        { WoodenSupportSubType::NeSw, WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
+          WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::NwSe },
+        { WoodenSupportSubType::NwSe, WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1,
+          WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::NeSw },
+        { WoodenSupportSubType::NeSw, WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2,
+          WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::NwSe },
+        { WoodenSupportSubType::NwSe, WoodenSupportSubType::Null, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3,
+          WoodenSupportSubType::Null, WoodenSupportSubType::Corner1, WoodenSupportSubType::NeSw },
     };
 
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[0][direction][trackSequence], height);
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[1][direction][trackSequence], height);
     TrackPaintUtilRightQuarterTurn5TilesTunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
 
-    if (supportType[direction][trackSequence].has_value())
+    if (supportType[direction][trackSequence] != WoodenSupportSubType::Null)
     {
         WoodenASupportsPaintSetup(
-            session, WoodenSupportType::Truss, supportType[direction][trackSequence].value(), height, session.SupportColours);
+            session, WoodenSupportType::Truss, supportType[direction][trackSequence], height, session.SupportColours);
     }
 
     int32_t blockedSegments = 0;
@@ -9318,10 +9318,10 @@ static void WoodenRCTrackDiagBrakes(
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackSequence][direction][0], height);
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackSequence][direction][0], height);
 
-    if (WoodenRCDiagonalSupports[trackSequence][direction].has_value())
+    if (WoodenRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::Null)
     {
         WoodenASupportsPaintSetup(
-            session, WoodenSupportType::Truss, WoodenRCDiagonalSupports[trackSequence][direction].value(), height,
+            session, WoodenSupportType::Truss, WoodenRCDiagonalSupports[trackSequence][direction], height,
             session.SupportColours);
     }
 
@@ -9589,10 +9589,10 @@ static void WoodenRCTrackDiagBlockBrakes(
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackElement.IsBrakeClosed()][trackSequence][direction][0], height);
     WoodenRCTrackPaintBb<isClassic>(session, &imageIds[trackElement.IsBrakeClosed()][trackSequence][direction][0], height);
 
-    if (WoodenRCDiagonalSupports[trackSequence][direction].has_value())
+    if (WoodenRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::Null)
     {
         WoodenASupportsPaintSetup(
-            session, WoodenSupportType::Truss, WoodenRCDiagonalSupports[trackSequence][direction].value(), height,
+            session, WoodenSupportType::Truss, WoodenRCDiagonalSupports[trackSequence][direction], height,
             session.SupportColours);
     }
 

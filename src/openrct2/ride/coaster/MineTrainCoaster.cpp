@@ -53,13 +53,13 @@ static constexpr const uint32_t MinetrainRCDiagBlockBrakeImages[2][NumOrthogonal
 };
 
 // Magic number 4 refers to the number of track blocks in a diagonal track element
-static constexpr const std::optional<WoodenSupportSubType> MineTrainRCDiagonalSupports[4][NumOrthogonalDirections] = {
-    { std::nullopt, std::nullopt, std::nullopt, std::nullopt },
+static constexpr const WoodenSupportSubType MineTrainRCDiagonalSupports[4][NumOrthogonalDirections] = {
+    { WoodenSupportSubType::Null, WoodenSupportSubType::Null, WoodenSupportSubType::Null, WoodenSupportSubType::Null },
     { WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner2,
       WoodenSupportSubType::Corner3 },
     { WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner0,
       WoodenSupportSubType::Corner1 },
-    { std::nullopt, std::nullopt, std::nullopt, std::nullopt },
+    { WoodenSupportSubType::Null, WoodenSupportSubType::Null, WoodenSupportSubType::Null, WoodenSupportSubType::Null },
 };
 
 /** rct2: 0x0071BFA4 */
@@ -5091,11 +5091,10 @@ static void MineTrainRCTrackDiagBrakes(
         session, 1, height, direction, trackSequence, session.TrackColours, MinetrainRCDiagBrakeImages, defaultDiagTileOffsets,
         defaultDiagBoundLengths, nullptr);
 
-    if (MineTrainRCDiagonalSupports[trackSequence][direction].has_value())
+    if (MineTrainRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::Null)
     {
         WoodenASupportsPaintSetup(
-            session, WoodenSupportType::Mine, MineTrainRCDiagonalSupports[trackSequence][0].value(), height,
-            session.SupportColours);
+            session, WoodenSupportType::Mine, MineTrainRCDiagonalSupports[trackSequence][0], height, session.SupportColours);
     }
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -5111,10 +5110,10 @@ static void MineTrainRCTrackDiagBlockBrakes(
         MinetrainRCDiagBlockBrakeImages[trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths,
         nullptr);
 
-    if (MineTrainRCDiagonalSupports[trackSequence][direction].has_value())
+    if (MineTrainRCDiagonalSupports[trackSequence][direction] != WoodenSupportSubType::Null)
     {
         WoodenASupportsPaintSetup(
-            session, WoodenSupportType::Mine, MineTrainRCDiagonalSupports[trackSequence][0].value(), height,
+            session, WoodenSupportType::Mine, MineTrainRCDiagonalSupports[trackSequence][direction], height,
             session.SupportColours);
     }
 

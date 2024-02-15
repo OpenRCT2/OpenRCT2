@@ -704,6 +704,7 @@ bool WoodenASupportsPaintSetup(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
     WoodenSupportTransitionType transitionType, Direction direction)
 {
+    assert(subType != WoodenSupportSubType::Null);
     int32_t oldSupportType = (EnumValue(supportType) * 6) + EnumValue(subType);
     int32_t special = GetSpecialOffsetForTransitionType(transitionType, direction);
 
@@ -714,6 +715,7 @@ bool WoodenASupportsPaintSetupRotated(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, Direction direction, int32_t height,
     ImageId imageTemplate, WoodenSupportTransitionType transitionType)
 {
+    assert(subType != WoodenSupportSubType::Null);
     subType = rotatedWoodenSupportSubTypes[EnumValue(subType)][direction];
     return WoodenASupportsPaintSetup(session, supportType, subType, height, imageTemplate, transitionType, direction);
 }
@@ -844,6 +846,7 @@ bool WoodenBSupportsPaintSetup(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
     WoodenSupportTransitionType transitionType, Direction direction)
 {
+    assert(subType != WoodenSupportSubType::Null);
     int32_t oldSupportType = (EnumValue(supportType) * 6) + EnumValue(subType);
     int32_t special = GetSpecialOffsetForTransitionType(transitionType, direction);
 
@@ -854,6 +857,7 @@ bool WoodenBSupportsPaintSetupRotated(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, Direction direction, int32_t height,
     ImageId imageTemplate, WoodenSupportTransitionType transitionType)
 {
+    assert(subType != WoodenSupportSubType::Null);
     subType = rotatedWoodenSupportSubTypes[EnumValue(subType)][direction];
     return WoodenBSupportsPaintSetup(session, supportType, subType, height, imageTemplate, transitionType, direction);
 }
