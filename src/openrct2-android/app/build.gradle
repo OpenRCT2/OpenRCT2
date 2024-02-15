@@ -29,6 +29,9 @@ android {
 
     sourceSets.main {
         jniLibs.srcDir 'libs'
+        java {
+            srcDir 'src/main/java'
+        }
     }
     externalNativeBuild {
         cmake {
