@@ -34,6 +34,22 @@ extern bool gCheatsAllowArbitraryRideTypeChanges;
 extern bool gCheatsIgnoreResearchStatus;
 extern bool gCheatsEnableAllDrawableTrackPieces;
 
+enum class StaffSpeedCheat
+{
+    None,
+    Frozen,
+    Fast,
+};
+
+struct CheatsState
+{
+    bool AllowTrackPlaceInvalidHeights;
+    bool AllowRegularPathAsQueue;
+    bool AllowSpecialColourSchemes;
+    bool MakeAllDestructible;
+    StaffSpeedCheat SelectedStaffSpeed;
+};
+
 enum class CheatType : int32_t
 {
     SandboxMode,

@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "Cheats.h"
 #include "Date.h"
 #include "Editor.h"
 #include "Limits.h"
@@ -30,22 +31,6 @@
 namespace OpenRCT2
 {
     class Park;
-
-    enum class StaffSpeedCheat
-    {
-        None,
-        Frozen,
-        Fast,
-    };
-
-    struct CheatsState
-    {
-        bool AllowTrackPlaceInvalidHeights;
-        bool AllowRegularPathAsQueue;
-        bool AllowSpecialColourSchemes;
-        bool MakeAllDestructible;
-        StaffSpeedCheat SelectedStaffSpeed;
-    };
 
     struct GameState_t
     {
