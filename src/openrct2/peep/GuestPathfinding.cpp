@@ -25,7 +25,6 @@
 #include <bitset>
 #include <cstring>
 
-TileCoordsXYZ gPeepPathFindGoalPosition;
 bool gPeepPathFindIgnoreForeignQueues;
 RideId gPeepPathFindQueueRideIndex;
 
@@ -688,9 +687,9 @@ namespace OpenRCT2::PathFinding
      *  rct2: 0x0069A997
      */
     static void PeepPathfindHeuristicSearch(
-        TileCoordsXYZ loc, Peep& peep, TileElement* currentTileElement, bool inPatrolArea, uint8_t counter, uint16_t* endScore,
-        Direction test_edge, uint8_t* endJunctions, TileCoordsXYZ junctionList[16], uint8_t directionList[16],
-        TileCoordsXYZ* endXYZ, uint8_t* endSteps)
+        TileCoordsXYZ loc, const TileCoordsXYZ& goal, const Peep& peep, TileElement* currentTileElement,
+        const bool inPatrolArea, uint8_t counter, uint16_t* endScore, Direction test_edge, uint8_t* endJunctions,
+        TileCoordsXYZ junctionList[16], uint8_t directionList[16], TileCoordsXYZ* endXYZ, uint8_t* endSteps)
     {
         uint8_t searchResult = PATH_SEARCH_FAILED;
 
@@ -894,7 +893,7 @@ namespace OpenRCT2::PathFinding
              * Ignore for now. */
 
             // Calculate the heuristic score of this map element.
-            uint16_t new_score = CalculateHeuristicPathingScore(loc, gPeepPathFindGoalPosition);
+            uint16_t new_score = CalculateHeuristicPathingScore(loc, goal);
 
             /* If this map element is the search goal the current search path ends here. */
             if (new_score == 0)
@@ -1000,8 +999,8 @@ namespace OpenRCT2::PathFinding
             if (gPathFindDebug)
             {
                 LOG_INFO(
-                    "[%03d] Path element at %d,%d,%d; Edges (0123):%d%d%d%d; Reverse: %d", counter, loc.x >> 5, loc.y >> 5,
-                    loc.z, edges & 1, (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, test_edge ^ 2);
+                    "[%03d] Path element at %d,%d,%d; Edges (0123):%d%d%d%d; Reverse: %d", counter, loc.x >> 5, loc.y >> 5, loc.z,
+                    edges & 1, (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, test_edge ^ 2);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
@@ -1218,7 +1217,7 @@ namespace OpenRCT2::PathFinding
                 }
 
                 PeepPathfindHeuristicSearch(
-                    { loc.x, loc.y, height }, peep, tileElement, nextInPatrolArea, counter, endScore, next_test_edge,
+                    { loc.x, loc.y, height }, goal, peep, tileElement, nextInPatrolArea, counter, endScore, next_test_edge,
                     endJunctions, junctionList, directionList, endXYZ, endSteps);
                 _peepPathFindNumJunctions = savedNumJunctions;
 
@@ -1226,8 +1225,8 @@ namespace OpenRCT2::PathFinding
                 if (gPathFindDebug)
                 {
                     LOG_INFO(
-                        "[%03d] Returned to %d,%d,%d edge: %d; Score: %d", counter, loc.x >> 5, loc.y >> 5, loc.z,
-                        next_test_edge, *endScore);
+                        "[%03d] Returned to %d,%d,%d edge: %d; Score: %d", counter, loc.x >> 5, loc.y >> 5, loc.z, next_test_edge,
+                        *endScore);
                 }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             } while ((next_test_edge = UtilBitScanForward(edges)) != -1);
@@ -1241,8 +1240,7 @@ namespace OpenRCT2::PathFinding
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                LOG_INFO(
-                    "[%03d] Returning from %d,%d,%d; No relevant map element found", counter, loc.x >> 5, loc.y >> 5, loc.z);
+                LOG_INFO("[%03d] Returning from %d,%d,%d; No relevant map element found", counter, loc.x >> 5, loc.y >> 5, loc.z);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         }
@@ -1267,9 +1265,6 @@ namespace OpenRCT2::PathFinding
     Direction ChooseDirection(const TileCoordsXYZ& loc, const TileCoordsXYZ& goal, Peep& peep)
     {
         PROFILED_FUNCTION();
-
-        // Temporarily set this until the rest is refactored.
-        gPeepPathFindGoalPosition = goal;
 
         // The max number of thin junctions searched - a per-search-path limit.
         _peepPathFindMaxJunctions = PeepPathfindGetMaxNumberJunctions(peep);
@@ -1524,7 +1519,7 @@ namespace OpenRCT2::PathFinding
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
                 PeepPathfindHeuristicSearch(
-                    { loc.x, loc.y, height }, peep, first_tile_element, inPatrolArea, 0, &score, test_edge, &endJunctions,
+                    { loc.x, loc.y, height }, goal, peep, first_tile_element, inPatrolArea, 0, &score, test_edge, &endJunctions,
                     endJunctionList, endDirectionList, &endXYZ, &endSteps);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1

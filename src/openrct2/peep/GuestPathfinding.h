@@ -19,13 +19,6 @@ struct Peep;
 struct Guest;
 struct TileElement;
 
-// The tile position of the place the peep is trying to get to (park entrance/exit, ride
-// entrance/exit, or the end of the queue line for a ride).
-//
-// This gets copied into Peep::PathfindGoal. The two separate variables are needed because
-// when the goal changes the peep's pathfind history needs to be reset.
-extern TileCoordsXYZ gPeepPathFindGoalPosition;
-
 // When the heuristic pathfinder is examining neighboring tiles, one possibility is that it finds a
 // queue tile; furthermore, this queue tile may or may not be for the ride that the peep is trying
 // to get to, if any. This first var is used to store the ride that the peep is currently headed to.
