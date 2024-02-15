@@ -1142,7 +1142,7 @@ static void RideRatingsCalculateValue(Ride& ride)
         + (((ride.nausea * ratingsMultipliers.Nausea) * 32) >> 15);
 
     int32_t monthsOld = 0;
-    if (!gCheatsDisableRideValueAging)
+    if (!GetGameState().Cheats.DisableRideValueAging)
     {
         monthsOld = ride.GetAge();
     }

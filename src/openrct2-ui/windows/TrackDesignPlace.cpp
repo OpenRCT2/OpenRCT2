@@ -174,7 +174,7 @@ public:
         mapZ = GetBaseZ(mapCoords);
         CoordsXYZD trackLoc = { mapCoords, mapZ, _currentTrackPieceDirection };
 
-        if (GameIsNotPaused() || gCheatsBuildInPauseMode)
+        if (GameIsNotPaused() || GetGameState().Cheats.BuildInPauseMode)
         {
             ClearProvisional();
             auto res = FindValidTrackDesignPlaceHeight(trackLoc, GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);

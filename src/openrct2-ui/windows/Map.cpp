@@ -816,7 +816,7 @@ public:
             widgets[i].type = WindowWidgetType::Empty;
         }
 
-        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
+        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || OpenRCT2::GetGameState().Cheats.SandboxMode)
         {
             // scenario editor: build park entrance selected, show rotate button
             if ((InputTestFlag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WindowClass::Map
@@ -882,7 +882,7 @@ public:
             GfxDrawSprite(dpi, ImageId(SPR_6410, COLOUR_BRIGHT_RED, COLOUR_LIGHT_BROWN), screenCoords);
         }
 
-        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !OpenRCT2::GetGameState().Cheats.SandboxMode)
         {
             // Render the map legend
             if (selected_tab == PAGE_RIDES)
@@ -1396,7 +1396,7 @@ private:
     {
         widgets[WIDX_MAP].right = width - 4;
 
-        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
+        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || OpenRCT2::GetGameState().Cheats.SandboxMode)
             widgets[WIDX_MAP].bottom = height - 1 - 72;
         else if (selected_tab == PAGE_RIDES)
             widgets[WIDX_MAP].bottom = height - 1 - (4 * LIST_ROW_HEIGHT + 4);

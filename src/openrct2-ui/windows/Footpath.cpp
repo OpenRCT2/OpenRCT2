@@ -638,7 +638,7 @@ private:
 
         uint32_t numPathTypes = 0;
         // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor
-        bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
+        bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || GetGameState().Cheats.SandboxMode);
 
         _dropdownEntries.clear();
         std::optional<size_t> defaultIndex;
@@ -1394,7 +1394,7 @@ public:
     void KeyboardShortcutDemolishCurrent()
     {
         if (IsWidgetDisabled(WIDX_REMOVE) || widgets[WIDX_REMOVE].type == WindowWidgetType::Empty
-            || (!gCheatsBuildInPauseMode && GameIsPaused()))
+            || (!GetGameState().Cheats.BuildInPauseMode && GameIsPaused()))
         {
             return;
         }

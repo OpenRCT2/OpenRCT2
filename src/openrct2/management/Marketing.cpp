@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../config/Config.h"
 #include "../entity/Guest.h"
 #include "../interface/Window.h"
@@ -100,7 +101,7 @@ void MarketingUpdate()
 {
     PROFILED_FUNCTION();
 
-    if (gCheatsNeverendingMarketing)
+    if (OpenRCT2::GetGameState().Cheats.NeverendingMarketing)
         return;
 
     for (auto it = gMarketingCampaigns.begin(); it != gMarketingCampaigns.end();)

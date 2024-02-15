@@ -137,7 +137,7 @@ GameActions::Result MapCanConstructWithClearAt(
         return res;
     }
 
-    if (gCheatsDisableClearanceChecks)
+    if (GetGameState().Cheats.DisableClearanceChecks)
     {
         res.SetData(ConstructClearResult{ groundFlags });
         return res;

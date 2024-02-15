@@ -74,7 +74,7 @@ GameActions::Result SmallSceneryRemoveAction::Query() const
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position = _loc;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsSandboxMode)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !GetGameState().Cheats.SandboxMode)
     {
         // Check if allowed to remove item
         if (GetGameState().ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)

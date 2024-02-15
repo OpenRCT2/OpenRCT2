@@ -11,29 +11,6 @@
 
 #include "common.h"
 
-
-extern bool gCheatsSandboxMode;
-extern bool gCheatsDisableClearanceChecks;
-extern bool gCheatsDisableSupportLimits;
-extern bool gCheatsShowAllOperatingModes;
-extern bool gCheatsShowVehiclesFromOtherTrackTypes;
-extern bool gCheatsUnlockOperatingLimits;
-extern bool gCheatsDisableBrakesFailure;
-extern bool gCheatsDisableAllBreakdowns;
-extern bool gCheatsBuildInPauseMode;
-extern bool gCheatsIgnoreRideIntensity;
-extern bool gCheatsDisableVandalism;
-extern bool gCheatsDisableLittering;
-extern bool gCheatsNeverendingMarketing;
-extern bool gCheatsFreezeWeather;
-extern bool gCheatsDisableTrainLengthLimit;
-extern bool gCheatsDisablePlantAging;
-extern bool gCheatsDisableRideValueAging;
-extern bool gCheatsEnableChainLiftOnAllTrack;
-extern bool gCheatsAllowArbitraryRideTypeChanges;
-extern bool gCheatsIgnoreResearchStatus;
-extern bool gCheatsEnableAllDrawableTrackPieces;
-
 enum class StaffSpeedCheat
 {
     None,
@@ -43,6 +20,27 @@ enum class StaffSpeedCheat
 
 struct CheatsState
 {
+    bool SandboxMode;
+    bool DisableClearanceChecks;
+    bool DisableSupportLimits;
+    bool ShowAllOperatingModes;
+    bool ShowVehiclesFromOtherTrackTypes;
+    bool UnlockOperatingLimits;
+    bool DisableBrakesFailure;
+    bool DisableAllBreakdowns;
+    bool BuildInPauseMode;
+    bool IgnoreRideIntensity;
+    bool DisableVandalism;
+    bool DisableLittering;
+    bool NeverendingMarketing;
+    bool FreezeWeather;
+    bool DisableTrainLengthLimit;
+    bool DisablePlantAging;
+    bool DisableRideValueAging;
+    bool EnableChainLiftOnAllTrack;
+    bool AllowArbitraryRideTypeChanges;
+    bool IgnoreResearchStatus;
+    bool EnableAllDrawableTrackPieces;
     bool AllowTrackPlaceInvalidHeights;
     bool AllowRegularPathAsQueue;
     bool AllowSpecialColourSchemes;

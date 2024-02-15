@@ -615,7 +615,7 @@ private:
             auto currentRideEntry = GetRideEntryByIndex(rideEntryIndex);
 
             // Skip if vehicle type is not invented yet
-            if (!RideEntryIsInvented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
+            if (!RideEntryIsInvented(rideEntryIndex) && !GetGameState().Cheats.IgnoreResearchStatus)
             {
                 continue;
             }
@@ -677,7 +677,7 @@ private:
         for (auto rideEntryIndex : rideEntries)
         {
             // Skip if vehicle type is not invented yet
-            if (!RideEntryIsInvented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
+            if (!RideEntryIsInvented(rideEntryIndex) && !GetGameState().Cheats.IgnoreResearchStatus)
                 continue;
 
             // Ride entries

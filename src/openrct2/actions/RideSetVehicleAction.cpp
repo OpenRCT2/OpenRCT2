@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../GameState.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Window.h"
@@ -156,7 +157,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
             }
             uint8_t clampValue = _value;
             static_assert(sizeof(clampValue) == sizeof(ride->proposed_num_cars_per_train));
-            if (!gCheatsDisableTrainLengthLimit)
+            if (!OpenRCT2::GetGameState().Cheats.DisableTrainLengthLimit)
             {
                 clampValue = std::clamp(clampValue, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
             }
@@ -179,7 +180,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
             }
 
             RideSetVehicleColoursToRandomPreset(*ride, _colour);
-            if (!gCheatsDisableTrainLengthLimit)
+            if (!OpenRCT2::GetGameState().Cheats.DisableTrainLengthLimit)
             {
                 ride->proposed_num_cars_per_train = std::clamp(
                     ride->proposed_num_cars_per_train, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
@@ -226,7 +227,7 @@ bool RideSetVehicleAction::RideIsVehicleTypeValid(const Ride& ride) const
 
     {
         const auto& rtd = ride.GetRideTypeDescriptor();
-        if (gCheatsShowVehiclesFromOtherTrackTypes
+        if (OpenRCT2::GetGameState().Cheats.ShowVehiclesFromOtherTrackTypes
             && !(
                 ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) || rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE)
                 || ride.type == RIDE_TYPE_MINI_GOLF))
@@ -261,7 +262,7 @@ bool RideSetVehicleAction::RideIsVehicleTypeValid(const Ride& ride) const
         {
             if (rideEntryIndex == _value)
             {
-                if (!RideEntryIsInvented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
+                if (!RideEntryIsInvented(rideEntryIndex) && !OpenRCT2::GetGameState().Cheats.IgnoreResearchStatus)
                 {
                     return false;
                 }

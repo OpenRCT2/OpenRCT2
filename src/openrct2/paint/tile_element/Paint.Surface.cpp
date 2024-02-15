@@ -1188,7 +1188,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
     PaintPatrolArea(session, tileElement, height, surfaceShape);
 
     // Draw Peep Spawns
-    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
+    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || OpenRCT2::GetGameState().Cheats.SandboxMode)
         && session.ViewFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
     {
         const CoordsXY& pos = session.MapPosition;

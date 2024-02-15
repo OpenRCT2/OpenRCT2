@@ -10,6 +10,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../Input.h"
 #include "../actions/MazeSetTrackAction.h"
 #include "../actions/TrackPlaceAction.h"
@@ -307,7 +308,7 @@ bool WindowRideConstructionUpdateState(
         if (alternativeType != TrackElemType::None && (availablePieces.get(trackType)))
         {
             trackType = alternativeType;
-            if (!gCheatsEnableChainLiftOnAllTrack)
+            if (!OpenRCT2::GetGameState().Cheats.EnableChainLiftOnAllTrack)
                 liftHillAndInvertedState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
         }
     }
@@ -357,7 +358,7 @@ bool WindowRideConstructionUpdateState(
         turnOffLiftHill = true;
     }
 
-    if (turnOffLiftHill && !gCheatsEnableChainLiftOnAllTrack)
+    if (turnOffLiftHill && !OpenRCT2::GetGameState().Cheats.EnableChainLiftOnAllTrack)
     {
         liftHillAndInvertedState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
         _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;

@@ -67,7 +67,7 @@ GameActions::Result LandSetHeightAction::Query() const
         return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, errorMessage);
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
     {
         if (!MapIsLocationInPark(_coords))
         {
@@ -76,7 +76,7 @@ GameActions::Result LandSetHeightAction::Query() const
     }
 
     money64 sceneryRemovalCost = 0;
-    if (!gCheatsDisableClearanceChecks)
+    if (!GetGameState().Cheats.DisableClearanceChecks)
     {
         if (gameState.ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
         {
@@ -93,7 +93,7 @@ GameActions::Result LandSetHeightAction::Query() const
     }
 
     // Check for ride support limits
-    if (!gCheatsDisableSupportLimits)
+    if (!GetGameState().Cheats.DisableSupportLimits)
     {
         errorMessage = CheckRideSupports();
         if (errorMessage != STR_NONE)
@@ -124,7 +124,7 @@ GameActions::Result LandSetHeightAction::Query() const
         return res;
     }
 
-    if (!gCheatsDisableClearanceChecks)
+    if (!GetGameState().Cheats.DisableClearanceChecks)
     {
         uint8_t zCorner = _height;
         if (_style & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK)
@@ -157,7 +157,7 @@ GameActions::Result LandSetHeightAction::Execute() const
     auto surfaceHeight = TileElementHeight(_coords);
     FootpathRemoveLitter({ _coords, surfaceHeight });
 
-    if (!gCheatsDisableClearanceChecks)
+    if (!GetGameState().Cheats.DisableClearanceChecks)
     {
         WallRemoveAt({ _coords, _height * 8 - 16, _height * 8 + 32 });
         cost += GetSmallSceneryRemovalCost();

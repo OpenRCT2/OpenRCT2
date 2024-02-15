@@ -9,6 +9,7 @@
 
 #include "RideEntranceExitPlaceAction.h"
 
+#include "../GameState.h"
 #include "../actions/RideEntranceExitRemoveAction.h"
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
@@ -96,7 +97,7 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_OFF_EDGE_OF_MAP);
     }
-    if (!gCheatsSandboxMode && !MapIsLocationOwned({ _loc, z }))
+    if (!OpenRCT2::GetGameState().Cheats.SandboxMode && !MapIsLocationOwned({ _loc, z }))
     {
         return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
     }
@@ -167,7 +168,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
 
     auto z = station.GetBaseZ();
     if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST)
-        && !gCheatsDisableClearanceChecks)
+        && !OpenRCT2::GetGameState().Cheats.DisableClearanceChecks)
     {
         FootpathRemoveLitter({ _loc, z });
         WallRemoveAtZ({ _loc, z });
@@ -230,7 +231,7 @@ GameActions::Result RideEntranceExitPlaceAction::TrackPlaceQuery(const CoordsXYZ
     const auto errorTitle = isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                                    : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
 
-    if (!gCheatsSandboxMode && !MapIsLocationOwned(loc))
+    if (!OpenRCT2::GetGameState().Cheats.SandboxMode && !MapIsLocationOwned(loc))
     {
         return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
     }

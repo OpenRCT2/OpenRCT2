@@ -20,6 +20,7 @@
 #include "RideData.h"
 
 #include "../Cheats.h"
+#include "../GameState.h"
 #include "../audio/audio.h"
 #include "../interface/Colour.h"
 #include "../localisation/Localisation.h"
@@ -358,13 +359,14 @@ bool RideTypeDescriptor::HasFlag(uint64_t flag) const
 void RideTypeDescriptor::GetAvailableTrackPieces(RideTrackGroup& res) const
 {
     res = EnabledTrackPieces;
-    if (gCheatsEnableAllDrawableTrackPieces)
+    if (OpenRCT2::GetGameState().Cheats.EnableAllDrawableTrackPieces)
         res |= ExtraTrackPieces;
 }
 
 bool RideTypeDescriptor::SupportsTrackPiece(const uint64_t trackPiece) const
 {
-    return EnabledTrackPieces.get(trackPiece) || (gCheatsEnableAllDrawableTrackPieces && ExtraTrackPieces.get(trackPiece));
+    return EnabledTrackPieces.get(trackPiece)
+        || (OpenRCT2::GetGameState().Cheats.EnableAllDrawableTrackPieces && ExtraTrackPieces.get(trackPiece));
 }
 
 ResearchCategory RideTypeDescriptor::GetResearchCategory() const
@@ -407,7 +409,7 @@ void UpdateEnabledRidePieces(ride_type_t rideType)
 {
     GetRideTypeDescriptor(rideType).GetAvailableTrackPieces(_enabledRidePieces);
 
-    if (!gCheatsEnableAllDrawableTrackPieces)
+    if (!OpenRCT2::GetGameState().Cheats.EnableAllDrawableTrackPieces)
     {
         _enabledRidePieces &= ~_disabledRidePieces;
     }

@@ -43,7 +43,7 @@ void PeepSpawnPlaceAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result PeepSpawnPlaceAction::Query() const
 {
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
+    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !OpenRCT2::GetGameState().Cheats.SandboxMode)
     {
         return GameActions::Result(GameActions::Status::NotInEditorMode, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
     }

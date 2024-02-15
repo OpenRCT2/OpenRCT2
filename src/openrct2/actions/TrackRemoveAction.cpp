@@ -9,6 +9,7 @@
 
 #include "TrackRemoveAction.h"
 
+#include "../GameState.h"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
@@ -440,7 +441,7 @@ GameActions::Result TrackRemoveAction::Execute() const
 
         InvalidateTestResults(*ride);
         FootpathQueueChainReset();
-        if (!gCheatsDisableClearanceChecks || !(tileElement->IsGhost()))
+        if (!OpenRCT2::GetGameState().Cheats.DisableClearanceChecks || !(tileElement->IsGhost()))
         {
             FootpathRemoveEdgesAt(mapLoc, tileElement);
         }

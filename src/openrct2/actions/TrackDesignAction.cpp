@@ -10,6 +10,7 @@
 #include "TrackDesignAction.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../management/Finance.h"
 #include "../management/Research.h"
 #include "../object/ObjectManager.h"
@@ -67,7 +68,7 @@ GameActions::Result TrackDesignAction::Query() const
     {
         // Force a fallback if the entry is not invented yet a td6 of it is selected,
         // which can happen in select-by-track-type mode
-        if (!RideEntryIsInvented(entryIndex) && !gCheatsIgnoreResearchStatus)
+        if (!RideEntryIsInvented(entryIndex) && !OpenRCT2::GetGameState().Cheats.IgnoreResearchStatus)
         {
             entryIndex = OBJECT_ENTRY_INDEX_NULL;
         }
@@ -139,7 +140,7 @@ GameActions::Result TrackDesignAction::Execute() const
     {
         // Force a fallback if the entry is not invented yet a track design using it is selected.
         // This can happen on rides with multiple vehicles where some have been invented and some haven’t.
-        if (!RideEntryIsInvented(entryIndex) && !gCheatsIgnoreResearchStatus)
+        if (!RideEntryIsInvented(entryIndex) && !OpenRCT2::GetGameState().Cheats.IgnoreResearchStatus)
         {
             entryIndex = OBJECT_ENTRY_INDEX_NULL;
         }
