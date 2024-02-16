@@ -49,6 +49,37 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
+enum class FPSValues : int {
+    FPS_30 = 30,
+    FPS_40 = 40,
+    FPS_60 = 60,
+    FPS_75 = 75,
+    FPS_100 = 100,
+    FPS_120 = 120,
+    FPS_144 = 144,
+    FPS_165 = 165,
+    FPS_240 = 240,
+    FPS_VSYNC = -1,
+    FPS_NO_LIMIT = -2,
+};
+
+static FPSValues fpsValues[] = {    FPSValues::FPS_30,
+   FPSValues::FPS_40,    FPSValues::FPS_60,
+   FPSValues::FPS_75,    FPSValues::FPS_100,
+   FPSValues::FPS_120,   FPSValues::FPS_144,
+   FPSValues::FPS_165,   FPSValues::FPS_240,
+   FPSValues::FPS_VSYNC,FPSValues::FPS_NO_LIMIT
+};
+
+size_t findFPSIndex(int32_t fps) {
+    for (size_t i = 0; i < sizeof(fpsValues) / sizeof(fpsValues[0]); i++) {
+        if (static_cast<int32_t>(fpsValues[i]) == fps) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 // clang-format off
 enum WindowOptionsPage {
     WINDOW_OPTIONS_PAGE_DISPLAY,
@@ -877,12 +908,13 @@ private:
                 }
                 break;
             case WIDX_DISPLAY_SETTINGS_DROPDOWN:
-                if (dropdownIndex != gConfigGeneral.MaxFPS)
+                if (dropdownIndex != static_cast<int>(gConfigGeneral.MaxFPS))
                 {
-                    gConfigGeneral.MaxFPS = static_cast<uint32_t>(dropdownIndex);
-                    ConfigSaveDefault();
+                        FPSValues selectedFPS = fpsValues[dropdownIndex];
+                        gConfigGeneral.MaxFPS = static_cast<int32_t>(selectedFPS);
+                        ConfigSaveDefault();
+                        Invalidate();
                 }
-                break;
         }
     }
 
@@ -939,7 +971,7 @@ private:
         // Dropdown captions for straightforward strings.
         widgets[WIDX_FULLSCREEN].text = FullscreenModeNames[gConfigGeneral.FullscreenMode];
         widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(gConfigGeneral.DrawingEngine)];
-        widgets[WIDX_DISPLAY_SETTINGS].text = DisplaySettingsStringIds[gConfigGeneral.MaxFPS];
+        widgets[WIDX_DISPLAY_SETTINGS].text = DisplaySettingsStringIds[findFPSIndex(gConfigGeneral.MaxFPS)];
     }
 
     void DisplayDraw(DrawPixelInfo& dpi)
