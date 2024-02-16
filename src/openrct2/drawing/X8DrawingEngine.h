@@ -100,6 +100,7 @@ namespace OpenRCT2
             void Resize(uint32_t width, uint32_t height) override;
             void SetPalette(const GamePalette& palette) override;
             void SetVSync(bool vsync) override;
+            void SetFpsLimit(int32_t fps) override;
             void Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) override;
             void BeginDraw() override;
             void EndDraw() override;

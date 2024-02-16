@@ -82,6 +82,19 @@ public:
             Resize(_uiContext->GetWidth(), _uiContext->GetHeight());
         }
     }
+    
+    void SetFpsLimit(int32_t fps) override
+    {
+        if (fps == 0)
+        {
+            SetVSync(true);
+        }
+        else
+        {
+            SetVSync(false);
+            SDL_GL_SetSwapInterval(fps);
+        }
+    }
 
     void Resize(uint32_t width, uint32_t height) override
     {

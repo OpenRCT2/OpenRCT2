@@ -729,12 +729,6 @@ private:
     {
         switch (widgetIndex)
         {
-            case WIDX_USE_VSYNC_CHECKBOX:
-                gConfigGeneral.UseVSync ^= 1;
-                DrawingEngineSetVSync(gConfigGeneral.UseVSync);
-                ConfigSaveDefault();
-                Invalidate();
-                break;
             case WIDX_SHOW_FPS_CHECKBOX:
                 gConfigGeneral.ShowFPS ^= 1;
                 ConfigSaveDefault();
@@ -932,8 +926,10 @@ private:
                     FPSValues selectedFPS = fpsValues[dropdownIndex];
                     gConfigGeneral.MaxFPS = static_cast<int32_t>(selectedFPS);
                     gConfigGeneral.UncapFPS = 0;
+                    DrawingEngineSetFPS(static_cast<int32_t>(selectedFPS));
                     ConfigSaveDefault();
                     Invalidate();
+                    break;
                 }
         }
     }

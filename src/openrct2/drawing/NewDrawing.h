@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "IDrawingEngine.h"
 
 struct DrawPixelInfo;
 struct GamePalette;
@@ -30,3 +31,4 @@ DrawPixelInfo& DrawingEngineGetDpi();
 bool DrawingEngineHasDirtyOptimisations();
 void DrawingEngineInvalidateImage(uint32_t image);
 void DrawingEngineSetVSync(bool vsync);
+void DrawingEngineSetFPS(uint32_t fps);

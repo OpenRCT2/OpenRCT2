@@ -62,6 +62,7 @@ namespace OpenRCT2::Drawing
         virtual void SetPalette(const GamePalette& colours) abstract;
 
         virtual void SetVSync(bool vsync) abstract;
+        virtual void SetFpsLimit(int32_t fps) abstract;
 
         virtual void Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) abstract;
         virtual void BeginDraw() abstract;

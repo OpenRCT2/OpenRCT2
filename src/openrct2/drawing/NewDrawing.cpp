@@ -165,6 +165,15 @@ void DrawingEngineSetVSync(bool vsync)
     }
 }
 
+void DrawingEngineSetFPS(int32_t fps)
+{
+    auto drawingEngine = GetDrawingEngine();
+    if (drawingEngine != nullptr)
+    {
+        drawingEngine->SetFpsLimit(fps);
+    }
+}
+
 void GfxSetDirtyBlocks(const ScreenRect& rect)
 {
     auto drawingEngine = GetDrawingEngine();
