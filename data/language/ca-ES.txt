@@ -3278,7 +3278,6 @@ STR_6161    :Mostra les línies de la quadrícula
 STR_6162    :«Wild Mouse» giratori
 STR_6163    :Vagons amb forma de ratolí que es mouen a tota velocitat per giravolts i petits descensos, girant suaument que desorienten els passatgers.
 STR_6164    :{WHITE}❌
-STR_6165    :Sincronització vertical
 STR_6166    :Sincronitza cada fotograma amb la freqüència del monitor, evitant l’efecte de pantalla partida.
 STR_6167    :Avançat
 STR_6168    :Seqüència inicial

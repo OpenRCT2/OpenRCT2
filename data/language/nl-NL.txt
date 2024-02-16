@@ -3272,7 +3272,6 @@ STR_6161    :Rasterlijnen tonen
 STR_6162    :Draaiende wilde muis
 STR_6163    :Muisvormige karretjes rijden snel door scherpe bochten en korte afdalingen, en draaien daarbij zachtjes rond om de passagiers te desoriënteren.
 STR_6164    :{WHITE}❌
-STR_6165    :Verticale synchronisatie
 STR_6166    :Synchroniseert het aantal frames per seconde met de frequentie van de monitor. Dit voorkomt tearing en zorgt zo voor een beter beeld.
 STR_6167    :Geavanceerd
 STR_6168    :Titelpresentatie

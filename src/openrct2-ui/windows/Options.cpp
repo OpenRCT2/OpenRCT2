@@ -77,7 +77,15 @@ size_t findFPSIndex(int32_t fps) {
             return i;
         }
     }
-    return -1;
+
+    // check if vsync or no limit
+    if (fps == 0) {
+        return 10;
+    }
+    if (fps == -1) {
+        return 11;
+    }
+    return 0;
 }
 
 // clang-format off
@@ -281,8 +289,7 @@ static Widget window_options_display_widgets[] = {
     MakeWidget        ({288, 129}, { 11,   10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DISPLAY_TIP                          ), 
     MakeWidget        ({11 , 161}, {143,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
     MakeWidget        ({155, 176}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
-    MakeWidget        ({ 11, 176}, {143,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_USE_VSYNC,                         STR_USE_VSYNC_TIP                        ), // Use vsync
-    MakeWidget        ({ 11, 191}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
+    MakeWidget        ({ 11, 176}, {143,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
     MakeWidget        ({ 11, 206}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              ), // Disable screensaver
     WIDGETS_END,
 };
@@ -900,7 +907,16 @@ private:
                 }
                 break;
             case WIDX_DISPLAY_SETTINGS_DROPDOWN:
-                // check if uncapped fps is selected
+                if (dropdownIndex == 9)
+                {
+                    gConfigGeneral.MaxFPS = -1;
+                    gConfigGeneral.UseVSync ^= 1;
+                    gConfigGeneral.UncapFPS = 0;
+                    DrawingEngineSetVSync(gConfigGeneral.UseVSync);
+                    ConfigSaveDefault();
+                    Invalidate();
+                    break;
+                }
                 if (dropdownIndex == 10)
                 {
                     gConfigGeneral.MaxFPS = 0;

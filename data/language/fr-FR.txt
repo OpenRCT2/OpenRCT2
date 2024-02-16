@@ -3282,7 +3282,6 @@ STR_6161    :Afficher/masquer les lignes de quadrillage
 STR_6162    :Souris folle tournante
 STR_6163    :Des voitures en forme de souris se faufilent dans des virages serrés et de petites chutes en tournant doucement pour désorienter les passagers
 STR_6164    :{WHITE}❌
-STR_6165    :Synchro. verticale
 STR_6166    :Synchronise chaque image affichée sur la fréquence de rafraîchissement du moniteur, ce qui empêche un décalage visuel.
 STR_6167    :Paramètres avancés
 STR_6168    :Séquence titre

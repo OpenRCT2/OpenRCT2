@@ -3266,7 +3266,6 @@ STR_6161    :Zemin çizgisi
 STR_6162    :Rotasyonlu Vahşi Fare
 STR_6163    :Tekli vagonlar zig zag bir şeritde keskin virajlardan döner ve dik eğilimlerden iner. Ayrıyeten koltuklar heyecanı artdırmak için rotasyon yapar
 STR_6164    :{WHITE}❌
-STR_6165    :Vertical sync aç/kapat
 STR_6166    :Ekranın yırtılmasını önleyerek monitörün yenileme hızına göre her kareyi senkronize eder.
 STR_6167    :Gelişmiş
 STR_6168    :Başlık dizisi

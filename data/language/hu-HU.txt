@@ -3273,7 +3273,6 @@ STR_6161    :Rácsok megjelenítése be/ki
 STR_6162    :Forgó vadegér
 STR_6163    :Egér alakú kocsik száguldanak éles kanyarokon és rövid eséseken keresztül, miközben szelíden forognak, hogy összezavarják az utasokat
 STR_6164    :{WHITE}❌
-STR_6165    :Vertikális szinkron
 STR_6166    :A megjelenített képkockákat a kijelző frissítési gyakoriságához igazítja, így megakadályozza a kép szétcsúszását.
 STR_6167    :Haladó
 STR_6168    :Címképernyős jelenetek
