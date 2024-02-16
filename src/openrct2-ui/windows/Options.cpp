@@ -129,7 +129,6 @@ enum WindowOptionsWidgetIdx {
     WIDX_DISPLAY_SETTINGS_LABEL,
     WIDX_DISPLAY_SETTINGS,
     WIDX_DISPLAY_SETTINGS_DROPDOWN,
-    WIDX_UNCAP_FPS_CHECKBOX,
     WIDX_SHOW_FPS_CHECKBOX,
     WIDX_MULTITHREADING_CHECKBOX,
     WIDX_USE_VSYNC_CHECKBOX,
@@ -280,8 +279,7 @@ static Widget window_options_display_widgets[] = {
     MakeWidget        ({ 10, 128}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DISPLAY,                           STR_DISPLAY_TIP                          ), // Display options
     MakeWidget        ({155, 128}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ),
     MakeWidget        ({288, 129}, { 11,   10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DISPLAY_TIP                          ), 
-    MakeWidget        ({ 11, 161}, {143,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_UNCAP_FPS,                         STR_UNCAP_FPS_TIP                        ), // Uncap fps
-    MakeWidget        ({155, 161}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
+    MakeWidget        ({11 , 161}, {143,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
     MakeWidget        ({155, 176}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
     MakeWidget        ({ 11, 176}, {143,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_USE_VSYNC,                         STR_USE_VSYNC_TIP                        ), // Use vsync
     MakeWidget        ({ 11, 191}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
@@ -724,12 +722,6 @@ private:
     {
         switch (widgetIndex)
         {
-            case WIDX_UNCAP_FPS_CHECKBOX:
-                gConfigGeneral.UncapFPS ^= 1;
-                DrawingEngineSetVSync(gConfigGeneral.UseVSync);
-                ConfigSaveDefault();
-                Invalidate();
-                break;
             case WIDX_USE_VSYNC_CHECKBOX:
                 gConfigGeneral.UseVSync ^= 1;
                 DrawingEngineSetVSync(gConfigGeneral.UseVSync);
@@ -908,12 +900,24 @@ private:
                 }
                 break;
             case WIDX_DISPLAY_SETTINGS_DROPDOWN:
+                // check if uncapped fps is selected
+                if (dropdownIndex == 10)
+                {
+                    gConfigGeneral.MaxFPS = 0;
+                    gConfigGeneral.UncapFPS ^= 1;
+                    DrawingEngineSetVSync(gConfigGeneral.UseVSync);
+                    ConfigSaveDefault();
+                    Invalidate();
+                    break;
+                }
+
                 if (dropdownIndex != static_cast<int>(gConfigGeneral.MaxFPS))
                 {
-                        FPSValues selectedFPS = fpsValues[dropdownIndex];
-                        gConfigGeneral.MaxFPS = static_cast<int32_t>(selectedFPS);
-                        ConfigSaveDefault();
-                        Invalidate();
+                    FPSValues selectedFPS = fpsValues[dropdownIndex];
+                    gConfigGeneral.MaxFPS = static_cast<int32_t>(selectedFPS);
+                    gConfigGeneral.UncapFPS = 0;
+                    ConfigSaveDefault();
+                    Invalidate();
                 }
         }
     }
@@ -960,7 +964,6 @@ private:
             disabled_widgets &= ~(1uLL << WIDX_USE_VSYNC_CHECKBOX);
         }
 
-        SetCheckboxValue(WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.UncapFPS);
         SetCheckboxValue(WIDX_USE_VSYNC_CHECKBOX, gConfigGeneral.UseVSync);
         SetCheckboxValue(WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.ShowFPS);
         SetCheckboxValue(WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.MultiThreading);
