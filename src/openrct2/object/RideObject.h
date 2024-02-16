@@ -11,6 +11,7 @@
 
 #include "../core/IStream.hpp"
 #include "../drawing/ImageId.hpp"
+#include "../ride/RideData.h"
 #include "../ride/RideEntry.h"
 #include "../ride/RideTypes.h"
 #include "Object.h"
@@ -41,6 +42,7 @@ public:
     std::string GetDescription() const;
     std::string GetCapacity() const;
     ImageIndex GetPreviewImage(ride_type_t type);
+    RideRatingsDescriptor GetRatingsDescriptor() const;
 
     void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 

@@ -369,6 +369,14 @@ std::string RideObject::GetDescription() const
     return GetString(ObjectStringID::DESCRIPTION);
 }
 
+RideRatingsDescriptor RideObject::GetRatingsDescriptor() const
+{
+    auto rideType = _legacyType.GetFirstNonNullRideType();
+    const auto& ratingsData = GetRideTypeDescriptor(rideType).RatingsData;
+
+    return ratingsData;
+}
+
 std::string RideObject::GetCapacity() const
 {
     return GetString(ObjectStringID::CAPACITY);

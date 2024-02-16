@@ -11,6 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
+#    include "../../../core/EnumMap.hpp"
 #    include "../../../Context.h"
 #    include "../../../common.h"
 #    include "../../../object/ObjectManager.h"
@@ -20,6 +21,7 @@
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
 #    include "ScInstalledObject.hpp"
+#    include "../../../ride/RideData.h"
 
 #    include <memory>
 #    include <optional>
@@ -509,6 +511,86 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    class ScRideRatings
+    {
+    private:
+        RideRatingsDescriptor _descriptor;
+
+    public:
+
+        ScRideRatings(RideRatingsDescriptor descriptor)
+            : _descriptor(descriptor)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_register_property(ctx, &ScRideRatings::calculationType_get, nullptr, "calculationType");
+            dukglue_register_property(ctx, &ScRideRatings::baseExcitement_get, nullptr, "baseExcitement");
+            dukglue_register_property(ctx, &ScRideRatings::baseIntensity_get, nullptr, "baseIntensity");
+            dukglue_register_property(ctx, &ScRideRatings::baseNausea_get, nullptr, "baseNausea");
+            dukglue_register_property(ctx, &ScRideRatings::baseUnreliability_get, nullptr, "baseUnreliability");
+            dukglue_register_property(ctx, &ScRideRatings::modifiers_get, nullptr, "modifiers");
+        }
+
+    private:
+        std::string calculationType_get() const
+        {
+            std::string calculationType;
+            switch (_descriptor.Type)
+            {
+            case RatingsCalculationType::Normal:
+                calculationType = "normal";
+                break;
+            case RatingsCalculationType::FlatRide:
+                calculationType = "flatRide";
+                break;
+            case RatingsCalculationType::Stall:
+                calculationType = "stall";
+                break;
+            default:
+                calculationType = "unknown";
+                break;
+            }
+            return calculationType;
+        }
+
+        int32_t baseExcitement_get() const
+        {
+            return _descriptor.BaseRatings.Excitement;
+        }
+
+        int32_t baseIntensity_get() const
+        {
+            return _descriptor.BaseRatings.Intensity;
+        }
+
+        int32_t baseNausea_get() const
+        {
+            return _descriptor.BaseRatings.Nausea;
+        }
+
+        uint8_t baseUnreliability_get() const
+        {
+            return _descriptor.Unreliability;
+        }
+
+        std::vector<DukValue> modifiers_get() const
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            auto* ctx = scriptEngine.GetContext();
+
+            std::vector<DukValue> modifiers;
+            for (auto modifier : _descriptor.Modifiers)
+            {
+                modifiers.push_back(ToDuk<RatingsModifier>(ctx, modifier));
+            }
+
+            return modifiers;
+        }
+
+    };
+
     class ScRideObject : public ScObject
     {
     public:
@@ -542,6 +624,8 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScRideObject::maxHeight_get, nullptr, "maxHeight");
             dukglue_register_property(ctx, &ScRideObject::shopItem_get, nullptr, "shopItem");
             dukglue_register_property(ctx, &ScRideObject::shopItemSecondary_get, nullptr, "shopItemSecondary");
+            dukglue_register_property(ctx, &ScRideObject::ratingsModifiers_get, nullptr, "ratingsModifiers");
+            dukglue_register_property(ctx, &ScRideObject::ratings_get, nullptr, "ratings");
         }
 
     private:
@@ -711,6 +795,18 @@ namespace OpenRCT2::Scripting
                 }
             }
             return result;
+        }
+
+        std::shared_ptr<ScRideRatings> ratings_get() const
+        {
+            std::shared_ptr<ScRideRatings> rideRatings;
+            auto entry = GetObject();
+            if (entry != nullptr)
+            {
+                auto descriptor = entry->GetRatingsDescriptor();
+                rideRatings = std::make_shared<ScRideRatings>(descriptor);
+            }
+            return rideRatings;
         }
 
         int8_t excitementMultiplier_get() const
