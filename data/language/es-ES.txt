@@ -3277,6 +3277,7 @@ STR_6161    :Alternar líneas de cuadrícula
 STR_6162    :Ratón Giratorio Salvaje
 STR_6163    :Carros con forma de ratón atraviesan giros cerrados y caídas cortas, mientras giran gentilmente para desorientar a los pasajeros.
 STR_6164    :{WHITE}❌
+STR_6165    :Usar sincronización vertical
 STR_6166    :Sincroniza cada cuadro mostrado a la tasa de refresco del monitor, evitando la imagen distorsionada.
 STR_6167    :Avanzado
 STR_6168    :Secuencia de la pantalla de inicio

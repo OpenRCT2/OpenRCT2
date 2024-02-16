@@ -3276,6 +3276,7 @@ STR_6161    :Přepnout vykreslování mřížky
 STR_6162    :Točící se divoká myš
 STR_6163    :Vozy ve tvaru myší jedou po dřevěné trati a pro dezorientaci návštěvníků se točí, zatímco se naklání v ostrých zatáčkách a drsných pádech
 STR_6164    :{WHITE}❌
+STR_6165    :Vertikální synchronizace obrazu
 STR_6166    :Synchonizuje každý zobrazený snímek dle obnovovací frekvence monitoru. Zamezuje trhání obrazu.
 STR_6167    :Pokročilé
 STR_6168    :Úvodní herní sekvence

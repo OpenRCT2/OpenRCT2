@@ -49,41 +49,27 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 
-enum class FPSValues : int {
-    FPS_30 = 30,
-    FPS_40 = 40,
-    FPS_60 = 60,
-    FPS_75 = 75,
-    FPS_100 = 100,
-    FPS_120 = 120,
-    FPS_144 = 144,
-    FPS_165 = 165,
-    FPS_240 = 240,
-    FPS_VSYNC = -1,
-    FPS_NO_LIMIT = -2,
-};
+static int fpsValues[] = { 40, 60, 75, 100, 120, 144, 165, 240, -1, -2 };
 
-static FPSValues fpsValues[] = {    FPSValues::FPS_30,
-   FPSValues::FPS_40,    FPSValues::FPS_60,
-   FPSValues::FPS_75,    FPSValues::FPS_100,
-   FPSValues::FPS_120,   FPSValues::FPS_144,
-   FPSValues::FPS_165,   FPSValues::FPS_240,
-   FPSValues::FPS_VSYNC,FPSValues::FPS_NO_LIMIT
-};
-
-size_t findFPSIndex(int32_t fps) {
-    for (size_t i = 0; i < sizeof(fpsValues) / sizeof(fpsValues[0]); i++) {
-        if (static_cast<int32_t>(fpsValues[i]) == fps) {
+size_t findFPSIndex(int32_t fps);
+size_t findFPSIndex(int32_t fps)
+{
+    for (size_t i = 0; i < sizeof(fpsValues) / sizeof(fpsValues[0]); i++)
+    {
+        if (static_cast<int32_t>(fpsValues[i]) == fps)
+        {
             return i;
         }
     }
 
     // check if vsync or no limit
-    if (fps == 0) {
-        return 10;
+    if (fps == 0)
+    {
+        return 9;
     }
-    if (fps == -1) {
-        return 11;
+    if (fps == -1)
+    {
+        return 10;
     }
     return 0;
 }
@@ -139,7 +125,6 @@ enum WindowOptionsWidgetIdx {
     WIDX_DISPLAY_SETTINGS_DROPDOWN,
     WIDX_SHOW_FPS_CHECKBOX,
     WIDX_MULTITHREADING_CHECKBOX,
-    WIDX_USE_VSYNC_CHECKBOX,
     WIDX_MINIMIZE_FOCUS_LOSS,
     WIDX_DISABLE_SCREENSAVER_LOCK,
 
@@ -286,10 +271,10 @@ static Widget window_options_display_widgets[] = {
     MakeWidget        ({ 11, 144}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_STEAM_OVERLAY_PAUSE,               STR_STEAM_OVERLAY_PAUSE_TIP              ), // Pause on steam overlay
     MakeWidget        ({ 10, 128}, {145,  12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DISPLAY,                           STR_DISPLAY_TIP                          ), // Display options
     MakeWidget        ({155, 128}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ),
-    MakeWidget        ({288, 129}, { 11,   10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DISPLAY_TIP                          ), 
+    MakeWidget        ({288, 129}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DISPLAY_TIP                          ),
     MakeWidget        ({11 , 161}, {143,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
-    MakeWidget        ({155, 176}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
-    MakeWidget        ({ 11, 176}, {143,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
+    MakeWidget        ({ 11, 176}, {136,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
+    MakeWidget        ({ 11, 191}, {143,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
     MakeWidget        ({ 11, 206}, {280,  12}, WindowWidgetType::Checkbox,     WindowColour::Secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              ), // Disable screensaver
     WIDGETS_END,
 };
@@ -827,9 +812,9 @@ private:
             }
             case WIDX_DISPLAY_SETTINGS_DROPDOWN:
             {
-                int32_t numItems = 11;
+                int32_t numItems = 10;
 
-                for (int32_t i = 0; i< numItems; i++)
+                for (int32_t i = 0; i < numItems; i++)
                 {
                     gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
                     gDropdownItems[i].Args = DisplaySettingsStringIds[i];
@@ -901,32 +886,27 @@ private:
                 }
                 break;
             case WIDX_DISPLAY_SETTINGS_DROPDOWN:
-                if (dropdownIndex == 9)
+                if (dropdownIndex == 8)
                 {
                     gConfigGeneral.MaxFPS = -1;
-                    gConfigGeneral.UseVSync ^= 1;
-                    gConfigGeneral.UncapFPS = 0;
-                    DrawingEngineSetVSync(gConfigGeneral.UseVSync);
+                    DrawingEngineSetVSync(true);
                     ConfigSaveDefault();
                     Invalidate();
                     break;
                 }
-                if (dropdownIndex == 10)
+                if (dropdownIndex == 9)
                 {
                     gConfigGeneral.MaxFPS = 0;
-                    gConfigGeneral.UncapFPS ^= 1;
-                    DrawingEngineSetVSync(gConfigGeneral.UseVSync);
+                    DrawingEngineSetVSync(false);
                     ConfigSaveDefault();
                     Invalidate();
                     break;
                 }
 
-                if (dropdownIndex != static_cast<int>(gConfigGeneral.MaxFPS))
+                if (static_cast<int>(fpsValues[dropdownIndex]) != static_cast<int>(gConfigGeneral.MaxFPS))
                 {
-                    FPSValues selectedFPS = fpsValues[dropdownIndex];
+                    int selectedFPS = fpsValues[dropdownIndex];
                     gConfigGeneral.MaxFPS = static_cast<int32_t>(selectedFPS);
-                    gConfigGeneral.UncapFPS = 0;
-                    DrawingEngineSetFPS(static_cast<int32_t>(selectedFPS));
                     ConfigSaveDefault();
                     Invalidate();
                     break;
@@ -966,17 +946,6 @@ private:
             disabled_widgets &= ~(1uLL << WIDX_STEAM_OVERLAY_PAUSE);
         }
 
-        // Disable changing VSync for Software engine, as we can't control its use of VSync
-        if (gConfigGeneral.DrawingEngine == DrawingEngine::Software)
-        {
-            disabled_widgets |= (1uLL << WIDX_USE_VSYNC_CHECKBOX);
-        }
-        else
-        {
-            disabled_widgets &= ~(1uLL << WIDX_USE_VSYNC_CHECKBOX);
-        }
-
-        SetCheckboxValue(WIDX_USE_VSYNC_CHECKBOX, gConfigGeneral.UseVSync);
         SetCheckboxValue(WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.ShowFPS);
         SetCheckboxValue(WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.MultiThreading);
         SetCheckboxValue(WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.MinimizeFullscreenFocusLoss);

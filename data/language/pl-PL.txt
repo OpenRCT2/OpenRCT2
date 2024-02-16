@@ -3271,6 +3271,7 @@ STR_6161    :Przełącz widok siatki
 STR_6162    :Spinning Wild Mouse
 STR_6163    :Pojazdy wyglądające jak myszki, szybko jeżdżą po ciasnych zakrętach i krótkich zjazdach, dodatkowo łagodnie się kręcą przez co dezorientują gości
 STR_6164    :{WHITE}❌
+STR_6165    :Synchronizacja pionowa
 STR_6166    :Synchronizuje każdą wyświetlaną klatkę z częstotliwością odświeżania monitora, zapobiegając rozrywaniu ekranu.
 STR_6167    :Zaawansowane
 STR_6168    :Sekwencja tytułowa

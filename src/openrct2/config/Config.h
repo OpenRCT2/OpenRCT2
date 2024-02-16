@@ -39,8 +39,6 @@ struct GeneralConfiguration
     int32_t FullscreenHeight;
     float WindowScale;
     ::DrawingEngine DrawingEngine;
-    bool UncapFPS;
-    bool UseVSync;
     bool ShowFPS;
     int32_t MaxFPS;
     bool MultiThreading;

@@ -152,11 +152,6 @@ void X8DrawingEngine::SetVSync([[maybe_unused]] bool vsync)
     // Not applicable for this engine
 }
 
-void X8DrawingEngine::SetFpsLimit([[maybe_unused]] int32_t fps)
-{
-    // Not applicable for this engine
-}
-
 void X8DrawingEngine::Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     left = std::max(left, 0);

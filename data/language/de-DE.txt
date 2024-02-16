@@ -3270,6 +3270,7 @@ STR_6161    :Gitternetzlinien ein-/ausblenden
 STR_6162    :Rotierende Wilde Maus
 STR_6163    :Mausförmige Wagen rasen um enge Kurven und kurze Gefälle herunter, wobei sie sich sanft drehen, um die Fahrgäste zu desorientieren
 STR_6164    :{WHITE}❌
+STR_6165    :Vertikale Synchr.
 STR_6166    :Synchronisiert die angezeigten Frames mit der Bildwiederholrate des Monitors, dies verhindert Screen-Tearing
 STR_6167    :Erweitert
 STR_6168    :Titelsequenz

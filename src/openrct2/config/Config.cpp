@@ -177,8 +177,6 @@ namespace Config
             model->DefaultDisplay = reader->GetInt32("default_display", 0);
             model->DrawingEngine = reader->GetEnum<DrawingEngine>(
                 "drawing_engine", DrawingEngine::Software, Enum_DrawingEngine);
-            model->UncapFPS = reader->GetBoolean("uncap_fps", false);
-            model->UseVSync = reader->GetBoolean("use_vsync", true);
             model->MaxFPS = reader->GetInt32("fps_limit", 40);
             model->VirtualFloorStyle = reader->GetEnum<VirtualFloorStyles>(
                 "virtual_floor_style", VirtualFloorStyles::Glassy, Enum_VirtualFloorStyle);
@@ -273,8 +271,6 @@ namespace Config
         writer->WriteInt32("window_width", model->WindowWidth);
         writer->WriteInt32("default_display", model->DefaultDisplay);
         writer->WriteEnum<DrawingEngine>("drawing_engine", model->DrawingEngine, Enum_DrawingEngine);
-        writer->WriteBoolean("uncap_fps", model->UncapFPS);
-        writer->WriteBoolean("use_vsync", model->UseVSync);
         writer->WriteInt32("fps_limit", model->MaxFPS);
         writer->WriteEnum<int32_t>("date_format", model->DateFormat, Enum_DateFormat);
         writer->WriteBoolean("auto_staff", model->AutoStaffPlacement);

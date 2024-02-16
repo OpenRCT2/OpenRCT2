@@ -276,11 +276,6 @@ public:
         SDL_GL_SetSwapInterval(vsync);
     }
 
-    void SetFpsLimit(int32_t fps) override
-    {
-        SDL_GL_SetSwapInterval(fps);
-    }
-
     void Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) override
     {
     }

@@ -76,6 +76,7 @@
 #include "world/Park.h"
 
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <exception>
 #include <future>
@@ -522,7 +523,7 @@ namespace OpenRCT2
                 try
                 {
                     drawingEngine->Initialise();
-                    drawingEngine->SetVSync(gConfigGeneral.UseVSync);
+                    drawingEngine->SetVSync(gConfigGeneral.MaxFPS == -1 ? true : false);
                     _drawingEngine = std::move(drawingEngine);
                 }
                 catch (const std::exception& ex)
@@ -1020,7 +1021,9 @@ namespace OpenRCT2
         {
             if (!ShouldDraw())
                 return false;
-            if (!gConfigGeneral.UncapFPS)
+            if (gConfigGeneral.MaxFPS < 0)
+                return false;
+            if (gConfigGeneral.MaxFPS == 40)
                 return false;
             if (gGameSpeed > 4)
                 return false;
@@ -1136,6 +1139,8 @@ namespace OpenRCT2
             const bool shouldDraw = ShouldDraw();
             auto& tweener = EntityTweener::Get();
 
+            auto frameStartTime = std::chrono::high_resolution_clock::now();
+
             _uiContext->ProcessMessages();
 
             while (_ticksAccumulator >= GAME_UPDATE_TIME_MS)
@@ -1162,6 +1167,23 @@ namespace OpenRCT2
                 tweener.Tween(alpha);
 
                 Draw();
+            }
+
+            if (gConfigGeneral.MaxFPS > 40)
+            {
+                float timePerFrame = 1.0f / gConfigGeneral.MaxFPS;
+                auto frameEndTime = std::chrono::high_resolution_clock::now();
+                std::chrono::duration<float> frameTime = frameEndTime - frameStartTime;
+                if (frameTime.count() < timePerFrame)
+                {
+                    std::this_thread::sleep_for(std::chrono::duration<float>(timePerFrame - frameTime.count() - 0.001f));
+
+                    do
+                    {
+                        frameEndTime = std::chrono::high_resolution_clock::now();
+                        frameTime = frameEndTime - frameStartTime;
+                    } while (frameTime.count() < timePerFrame);
+                }
             }
         }
 

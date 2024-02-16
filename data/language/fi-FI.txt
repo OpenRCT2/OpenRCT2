@@ -3278,6 +3278,7 @@ STR_6161    :Maastoruudukko -kytkin
 STR_6162    :Pyörivä villihiiri
 STR_6163    :Hiiren muotoiset vaunut kiitävät tiukkojen mutkien ja lyhyiden pudotusten läpi, lempeästi pyörien matkustajien hämmennykseksi
 STR_6164    :{WHITE}❌
+STR_6165    :Pystytahdistus
 STR_6166    :Tahdista jokaisen kuvan piirto näytön virkistystaajuuteen, estäen screen tearing -ilmiön
 STR_6167    :Lisäasetukset
 STR_6168    :Päävalikon tausta

@@ -3683,20 +3683,19 @@ STR_6611    :Wall element not found
 STR_6612    :Banner element not found
 STR_6613    :Reload object
 
-STR_6614    :30FPS
-STR_6615    :40FPS
-STR_6616    :60FPS
-STR_6617    :75FPS
-STR_6618    :100FPS
-STR_6619    :120FPS
-STR_6620    :144FPS
-STR_6621    :165FPS
-STR_6622    :240FPS
-STR_6623    :Vsync
-STR_6624    :No limit
+STR_6614    :40FPS
+STR_6615    :60FPS
+STR_6616    :75FPS
+STR_6617    :100FPS
+STR_6618    :120FPS
+STR_6619    :144FPS
+STR_6620    :165FPS
+STR_6621    :240FPS
+STR_6622    :Vsync
+STR_6623    :No limit
 
-STR_6625    :Display Settings
-STR_6626    :Change your display settings
+STR_6624    :Frame Rate Limiting
+STR_6625    :Change your frame rate
 
 #############
 # Scenarios #

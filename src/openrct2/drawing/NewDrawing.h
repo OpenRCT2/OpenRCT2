@@ -10,14 +10,13 @@
 #pragma once
 
 #include "../common.h"
-#include "IDrawingEngine.h"
 
 struct DrawPixelInfo;
 struct GamePalette;
 enum class DrawingEngine : int32_t;
 
 extern StringId DrawingEngineStringIds[3];
-extern StringId DisplaySettingsStringIds[11];
+extern StringId DisplaySettingsStringIds[10];
 
 DrawingEngine drawing_engine_get_type();
 bool DrawingEngineRequiresNewWindow(DrawingEngine srcEngine, DrawingEngine dstEngine);
@@ -31,4 +30,3 @@ DrawPixelInfo& DrawingEngineGetDpi();
 bool DrawingEngineHasDirtyOptimisations();
 void DrawingEngineInvalidateImage(uint32_t image);
 void DrawingEngineSetVSync(bool vsync);
-void DrawingEngineSetFPS(uint32_t fps);

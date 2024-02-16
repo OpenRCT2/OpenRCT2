@@ -3279,6 +3279,7 @@ STR_6161    :Mostra/nascondi griglia
 STR_6162    :Topo tutto matto rotante
 STR_6163    :Carrelli a forma di topo corrono lungo curve strette e brevi cadute, ruotando per disorientare i passeggeri
 STR_6164    :{WHITE}❌
+STR_6165    :Usa sincronizz. verticale
 STR_6166    :Sincronizza i frame alla frequenza di aggiornamento dello schermo, per prevenire gli artefatti grafici (tearing).
 STR_6167    :Avanzate
 STR_6168    :Sequenza del titolo

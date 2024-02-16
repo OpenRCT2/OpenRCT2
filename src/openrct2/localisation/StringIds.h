@@ -4023,20 +4023,19 @@ enum : uint16_t
 
     STR_RELOAD_OBJECT_TIP = 6613,
 
-    STR_30FPS = 6614,
-    STR_40FPS = 6615,
-    STR_60FPS = 6616,
-    STR_75FPS = 6617,
-    STR_100FPS = 6618,
-    STR_120FPS = 6619,
-    STR_144FPS = 6620,
-    STR_165FPS = 6621,
-    STR_240FPS = 6622,
-    STR_VSYNC = 6623,
-    STR_NO_LIMIT = 6624,
+    STR_40FPS = 6614,
+    STR_60FPS = 6615,
+    STR_75FPS = 6616,
+    STR_100FPS = 6617,
+    STR_120FPS = 6618,
+    STR_144FPS = 6619,
+    STR_165FPS = 6620,
+    STR_240FPS = 6621,
+    STR_VSYNC = 6622,
+    STR_NO_LIMIT = 6623,
 
-    STR_DISPLAY = 6625,
-    STR_DISPLAY_TIP = 6626,
+    STR_DISPLAY = 6624,
+    STR_DISPLAY_TIP = 6625,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
