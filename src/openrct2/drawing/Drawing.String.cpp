@@ -572,20 +572,20 @@ static void TTFDrawStringRawTTF(DrawPixelInfo& dpi, std::string_view text, TextD
     auto src = static_cast<const uint8_t*>(surface->pixels);
     uint8_t* dst = dpi.bits;
 
-    int32_t srcX_start = 0;
-    int32_t srcY_start = 0;
+    int32_t srcXStart = 0;
+    int32_t srcYStart = 0;
     if (skipX < 0)
     {
         width += skipX;
         src += -skipX;
-        srcX_start += -skipX;
+        srcXStart += -skipX;
         skipX = 0;
     }
     if (skipY < 0)
     {
         height += skipY;
         src += (-skipY * surface->pitch);
-        srcY_start += -skipY;
+        srcYStart += -skipY;
         skipY = 0;
     }
 
@@ -605,17 +605,17 @@ static void TTFDrawStringRawTTF(DrawPixelInfo& dpi, std::string_view text, TextD
             {
                 if (info->flags & TEXT_DRAW_FLAG_OUTLINE)
                 {
-                    if (surface->GetPixel(xx + srcX_start + 1, yy + srcY_start)
-                        || surface->GetPixel(xx + srcX_start - 1, yy + srcY_start)
-                        || surface->GetPixel(xx + srcX_start, yy + srcY_start + 1)
-                        || surface->GetPixel(xx + srcX_start, yy + srcY_start - 1))
+                    if (GetPixel(*surface, xx + srcXStart + 1, yy + srcYStart)
+                        || GetPixel(*surface, xx + srcXStart - 1, yy + srcYStart)
+                        || GetPixel(*surface, xx + srcXStart, yy + srcYStart + 1)
+                        || GetPixel(*surface, xx + srcXStart, yy + srcYStart - 1))
                     {
                         *dst = info->palette[3];
                     }
                 }
                 if (info->flags & TEXT_DRAW_FLAG_INSET)
                 {
-                    if (surface->GetPixel(xx + srcX_start - 1, yy + srcY_start - 1))
+                    if (GetPixel(*surface, xx + srcXStart - 1, yy + srcYStart - 1))
                     {
                         *dst = info->palette[3];
                     }

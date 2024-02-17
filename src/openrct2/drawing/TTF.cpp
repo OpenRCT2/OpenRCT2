@@ -374,11 +374,11 @@ void TTFFreeSurface(TTFSurface* surface)
     free(surface);
 }
 
-uint8_t TTFSurface::GetPixel(int32_t x, int32_t y)
+uint8_t GetPixel(const TTFSurface& surface, int32_t x, int32_t y)
 {
-    if (x < 0 || y < 0 || x >= w || y >= h)
+    if (x < 0 || y < 0 || x >= surface.w || y >= surface.h)
         return 0;
-    return static_cast<const uint8_t*>(pixels)[y * pitch + x];
+    return static_cast<const uint8_t*>(surface.pixels)[y * surface.pitch + x];
 }
 
 #else

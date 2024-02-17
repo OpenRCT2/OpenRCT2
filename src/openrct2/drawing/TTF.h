@@ -24,7 +24,6 @@ struct TTFSurface
     int32_t w;
     int32_t h;
     int32_t pitch;
-    uint8_t GetPixel(int32_t x, int32_t y);
 };
 
 TTFFontDescriptor* TTFGetFontFromSpriteBase(FontStyle fontStyle);
@@ -44,5 +43,6 @@ void TTF_CloseFont(TTF_Font* font);
 void TTF_SetFontHinting(TTF_Font* font, int hinting);
 int TTF_GetFontHinting(const TTF_Font* font);
 void TTF_Quit(void);
+uint8_t GetPixel(const TTFSurface& surface, int32_t x, int32_t y);
 
 #endif // NO_TTF
