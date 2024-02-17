@@ -635,7 +635,8 @@ static void PaintMiniatureRailwayTrackFlat(
         paintGrooved = true;
     }
 
-    bool isSupported = WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
+    bool isSupported = WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
     ImageId imageId, imageIdAlt;
 
     // In the following 3 calls to PaintAddImageAsParentRotated/PaintAddImageAsChildRotated, we add 1 to the
@@ -705,7 +706,8 @@ static void PaintMiniatureRailwayStation(
 {
     ImageId imageId;
 
-    WoodenASupportsPaintSetup(session, direction & 1, 0, height, session.SupportColours);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours);
 
     imageId = GetStationColourScheme(session, trackElement).WithIndex(miniature_railway_station_floor[direction]);
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height - 2 }, { { 0, 2, height }, { 32, 28, 2 } });
@@ -747,7 +749,9 @@ static void PaintMiniatureRailwayTrack25DegUp(
             break;
     }
 
-    WoodenASupportsPaintSetup(session, direction & 1, 45 + direction, height, session.SupportColours);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        WoodenSupportTransitionType::Up25DegRailway);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 56, 0x20);
@@ -778,7 +782,9 @@ static void PaintMiniatureRailwayTrackFlatTo25DegUp(
             break;
     }
 
-    WoodenASupportsPaintSetup(session, direction & 1, 37 + direction, height, session.SupportColours);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        WoodenSupportTransitionType::FlatToUp25DegRailway);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 48, 0x20);
@@ -809,7 +815,9 @@ static void PaintMiniatureRailwayTrack25DegUpToFlat(
             break;
     }
 
-    WoodenASupportsPaintSetup(session, direction & 1, 41 + direction, height, session.SupportColours);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, session.SupportColours,
+        WoodenSupportTransitionType::Up25DegToFlatRailway);
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL, 0xFFFF, 0);
     PaintUtilSetGeneralSupportHeight(session, height + 40, 0x20);
@@ -963,15 +971,20 @@ static constexpr uint32_t miniature_railway_right_quarter_turn_5_tiles_track_flo
     },
 };
 
-static constexpr int8_t right_quarter_turn_5_supports_type[4][7] = {
-    { 0, -1, 4, 2, -1, 4, 1 },
-    { 1, -1, 5, 3, -1, 5, 0 },
-    { 0, -1, 2, 4, -1, 2, 1 },
-    { 1, -1, 3, 5, -1, 3, 0 },
+static constexpr WoodenSupportSubType right_quarter_turn_5_supports_type[4][7] = {
+    { WoodenSupportSubType::NeSw, WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
+      WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::NwSe },
+    { WoodenSupportSubType::NwSe, WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1,
+      WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::NeSw },
+    { WoodenSupportSubType::NeSw, WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2,
+      WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::NwSe },
+    { WoodenSupportSubType::NwSe, WoodenSupportSubType::Null, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3,
+      WoodenSupportSubType::Null, WoodenSupportSubType::Corner1, WoodenSupportSubType::NeSw },
 };
 
-static constexpr int8_t miniature_railway_right_quarter_turn_5_tiles_sprite_map[] = {
-    0, -1, 1, 2, -1, 3, 4,
+static constexpr WoodenSupportSubType miniature_railway_right_quarter_turn_5_tiles_sprite_map[] = {
+    WoodenSupportSubType::NeSw, WoodenSupportSubType::Null,    WoodenSupportSubType::NwSe,    WoodenSupportSubType::Corner0,
+    WoodenSupportSubType::Null, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner2,
 };
 
 /** rct2: 0x008AD140 */
@@ -979,10 +992,11 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn5Tiles(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    if (right_quarter_turn_5_supports_type[direction][trackSequence] != -1)
+    if (right_quarter_turn_5_supports_type[direction][trackSequence] != WoodenSupportSubType::Null)
     {
         bool isSupported = WoodenASupportsPaintSetup(
-            session, right_quarter_turn_5_supports_type[direction][trackSequence], 0, height, session.SupportColours);
+            session, WoodenSupportType::Truss, right_quarter_turn_5_supports_type[direction][trackSequence], height,
+            session.SupportColours);
 
         if (!isSupported || (trackSequence == 3 && direction == 2))
         {
@@ -999,7 +1013,7 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn5Tiles(
                 miniature_railway_right_quarter_turn_5_tiles_bound_lengths,
                 miniature_railway_right_quarter_turn_5_tiles_bound_offsets);
 
-            int32_t index = miniature_railway_right_quarter_turn_5_tiles_sprite_map[trackSequence];
+            auto index = EnumValue(miniature_railway_right_quarter_turn_5_tiles_sprite_map[trackSequence]);
             auto imageId = session.TrackColours.WithIndex(
                 miniature_railway_track_pieces_flat_quarter_turn_5_tiles[direction][index]);
             CoordsXY offset = miniature_railway_right_quarter_turn_5_tiles_offsets[direction][index];
@@ -1071,11 +1085,11 @@ static void PaintMiniatureRailwayTrackLeftQuarterTurn5Tiles(
     PaintMiniatureRailwayTrackRightQuarterTurn5Tiles(session, ride, trackSequence, (direction + 1) % 4, height, trackElement);
 }
 
-static constexpr int8_t s_bend_left_supports_type[4][4] = {
-    { 0, 5, 3, 0 },
-    { 1, 2, 4, 1 },
-    { 0, 5, 3, 0 },
-    { 1, 2, 4, 1 },
+static constexpr WoodenSupportSubType s_bend_left_supports_type[NumOrthogonalDirections][4] = {
+    { WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1, WoodenSupportSubType::NeSw },
+    { WoodenSupportSubType::NwSe, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2, WoodenSupportSubType::NwSe },
+    { WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1, WoodenSupportSubType::NeSw },
+    { WoodenSupportSubType::NwSe, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2, WoodenSupportSubType::NwSe },
 };
 
 static constexpr uint32_t miniature_railway_s_bend_left_tiles_track_floor[2][4] = {
@@ -1104,7 +1118,7 @@ static void PaintMiniatureRailwayTrackSBendLeft(
     }
 
     bool isSupported = WoodenASupportsPaintSetup(
-        session, s_bend_left_supports_type[direction][trackSequence], 0, height, session.SupportColours);
+        session, WoodenSupportType::Truss, s_bend_left_supports_type[direction][trackSequence], height, session.SupportColours);
 
     static constexpr CoordsXY offsetList[] = {
         { 0, 2 },
@@ -1178,11 +1192,11 @@ static void PaintMiniatureRailwayTrackSBendLeft(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
-static constexpr int8_t s_bend_right_supports_type[4][4] = {
-    { 0, 4, 2, 0 },
-    { 1, 5, 3, 1 },
-    { 0, 4, 2, 0 },
-    { 1, 5, 3, 1 },
+static constexpr WoodenSupportSubType s_bend_right_supports_type[NumOrthogonalDirections][4] = {
+    { WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0, WoodenSupportSubType::NeSw },
+    { WoodenSupportSubType::NwSe, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1, WoodenSupportSubType::NwSe },
+    { WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0, WoodenSupportSubType::NeSw },
+    { WoodenSupportSubType::NwSe, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1, WoodenSupportSubType::NwSe },
 };
 
 static constexpr uint32_t miniature_railway_s_bend_right_tiles_track_floor[2][4] = {
@@ -1211,7 +1225,8 @@ static void PaintMiniatureRailwayTrackSBendRight(
     }
 
     bool isSupported = WoodenASupportsPaintSetup(
-        session, s_bend_right_supports_type[direction][trackSequence], 0, height, session.SupportColours);
+        session, WoodenSupportType::Truss, s_bend_right_supports_type[direction][trackSequence], height,
+        session.SupportColours);
 
     static constexpr CoordsXY offsetList[] = {
         { 0, 2 },
@@ -1339,8 +1354,8 @@ static void PaintMiniatureRailwayTrackRightQuarterTurn3Tiles(
     bool isSupported = false;
     if (trackSequence != 1 && trackSequence != 2)
     {
-        static constexpr uint8_t supportType[] = { 4, 5, 2, 3 };
-        isSupported = WoodenASupportsPaintSetup(session, supportType[direction], 0, height, session.SupportColours);
+        isSupported = WoodenASupportsPaintSetupRotated(
+            session, WoodenSupportType::Truss, WoodenSupportSubType::Corner2, direction, height, session.SupportColours);
     }
     if (!isSupported)
     {
@@ -1507,11 +1522,15 @@ static void PaintMiniatureRailwayTrackLeftEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr uint8_t supportType[4][5] = {
-        { 0, 0, 3, 5, 1 },
-        { 1, 1, 4, 2, 0 },
-        { 0, 0, 5, 3, 1 },
-        { 1, 1, 2, 4, 0 },
+    static constexpr WoodenSupportSubType supportType[NumOrthogonalDirections][5] = {
+        { WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3,
+          WoodenSupportSubType::NwSe },
+        { WoodenSupportSubType::NwSe, WoodenSupportSubType::NwSe, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
+          WoodenSupportSubType::NeSw },
+        { WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1,
+          WoodenSupportSubType::NwSe },
+        { WoodenSupportSubType::NwSe, WoodenSupportSubType::NwSe, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2,
+          WoodenSupportSubType::NeSw },
     };
 
     bool isSupported = false;
@@ -1521,7 +1540,7 @@ static void PaintMiniatureRailwayTrackLeftEighthToDiag(
     if (trackSequence != 4 || !isRightEighthToOrthog)
     {
         isSupported = WoodenASupportsPaintSetup(
-            session, supportType[direction][trackSequence], 0, height, session.SupportColours);
+            session, WoodenSupportType::Truss, supportType[direction][trackSequence], height, session.SupportColours);
     }
     ImageId imageId;
     if (!isSupported)
@@ -1669,11 +1688,15 @@ static void PaintMiniatureRailwayTrackRightEighthToDiag(
     PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    static constexpr uint8_t supportType[4][5] = {
-        { 0, 0, 2, 4, 1 },
-        { 1, 1, 3, 5, 0 },
-        { 0, 0, 4, 2, 1 },
-        { 1, 1, 5, 3, 0 },
+    static constexpr WoodenSupportSubType supportType[NumOrthogonalDirections][5] = {
+        { WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2,
+          WoodenSupportSubType::NwSe },
+        { WoodenSupportSubType::NwSe, WoodenSupportSubType::NwSe, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3,
+          WoodenSupportSubType::NeSw },
+        { WoodenSupportSubType::NeSw, WoodenSupportSubType::NeSw, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
+          WoodenSupportSubType::NwSe },
+        { WoodenSupportSubType::NwSe, WoodenSupportSubType::NwSe, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1,
+          WoodenSupportSubType::NeSw },
     };
 
     bool isSupported = false;
@@ -1683,7 +1706,7 @@ static void PaintMiniatureRailwayTrackRightEighthToDiag(
     if (trackSequence != 4 || !isLeftEighthToOrthog)
     {
         isSupported = WoodenASupportsPaintSetup(
-            session, supportType[direction][trackSequence], 0, height, session.SupportColours);
+            session, WoodenSupportType::Truss, supportType[direction][trackSequence], height, session.SupportColours);
     }
 
     ImageId imageId;
@@ -1759,11 +1782,11 @@ static constexpr bool miniature_railway_diag_image_segment[][4] = {
     { true, false, false, false },
 };
 
-static constexpr std::optional<WoodenSupportSubType> _diagSupportTypes[NumOrthogonalDirections][4] = {
-    { std::nullopt, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2, WoodenSupportSubType::NeSw },
-    { std::nullopt, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3, WoodenSupportSubType::NwSe },
-    { std::nullopt, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0, WoodenSupportSubType::NeSw },
-    { std::nullopt, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1, WoodenSupportSubType::NwSe },
+static constexpr WoodenSupportSubType _diagSupportTypes[NumOrthogonalDirections][4] = {
+    { WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2, WoodenSupportSubType::NeSw },
+    { WoodenSupportSubType::Null, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3, WoodenSupportSubType::NwSe },
+    { WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0, WoodenSupportSubType::NeSw },
+    { WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1, WoodenSupportSubType::NwSe },
 };
 
 struct FloorDescriptor
@@ -1794,14 +1817,13 @@ static void MiniatureRailwayTrackDiagFlat(
     CoordsXY floorBoundSize;
     CoordsXY floorBoundOffset;
 
-    if (supportType.has_value())
+    if (supportType != WoodenSupportSubType::Null)
     {
-        const auto enumValue = EnumValue(supportType.value());
+        const auto enumValue = EnumValue(supportType);
         floorImage = floors[enumValue].image_id;
         floorBoundSize = floors[enumValue].bound_size;
         floorBoundOffset = floors[enumValue].bound_offset;
-        isSupported = WoodenASupportsPaintSetup(
-            session, WoodenSupportType::Truss, supportType.value(), height, session.SupportColours);
+        isSupported = WoodenASupportsPaintSetup(session, WoodenSupportType::Truss, supportType, height, session.SupportColours);
     }
 
     if (direction == 1 && trackSequence == 3)
@@ -1853,21 +1875,22 @@ static void MiniatureRailwayTrackDiag25DegUp(
     CoordsXY floorBoundOffset;
 
     auto supportType = _diagSupportTypes[direction][trackSequence];
-    if (supportType.has_value())
+    if (supportType != WoodenSupportSubType::Null)
     {
-        const auto enumValue = EnumValue(supportType.value());
+        const auto enumValue = EnumValue(supportType);
         floorImage = floors[enumValue].image_id;
         floorBoundSize = floors[enumValue].bound_size;
         floorBoundOffset = floors[enumValue].bound_offset;
 
         if (trackSequence == 3)
         {
-            hasSupports = WoodenASupportsPaintSetup(session, enumValue, 0, height + heightDiff, session.SupportColours);
+            hasSupports = WoodenASupportsPaintSetup(
+                session, WoodenSupportType::Truss, supportType, height + heightDiff, session.SupportColours);
         }
         else
         {
             hasSupports = WoodenBSupportsPaintSetup(
-                session, WoodenSupportType::Truss, supportType.value(), height + heightDiff, session.SupportColours);
+                session, WoodenSupportType::Truss, supportType, height + heightDiff, session.SupportColours);
         }
     }
 
@@ -1926,14 +1949,13 @@ static void MiniatureRailwayTrackDiagFlatTo25DegUp(
     CoordsXY floorBoundOffset;
 
     auto supportType = _diagSupportTypes[direction][trackSequence];
-    if (supportType.has_value())
+    if (supportType != WoodenSupportSubType::Null)
     {
-        const auto enumValue = EnumValue(supportType.value());
+        const auto enumValue = EnumValue(supportType);
         floorImage = floors[enumValue].image_id;
         floorBoundSize = floors[enumValue].bound_size;
         floorBoundOffset = floors[enumValue].bound_offset;
-        hasSupports = WoodenASupportsPaintSetup(
-            session, WoodenSupportType::Truss, supportType.value(), height, session.SupportColours);
+        hasSupports = WoodenASupportsPaintSetup(session, WoodenSupportType::Truss, supportType, height, session.SupportColours);
     }
 
     if (direction == 1 && trackSequence == 3)
@@ -1985,21 +2007,22 @@ static void MiniatureRailwayTrackDiag25DegUpToFlat(
     CoordsXY floorBoundSize;
     CoordsXY floorBoundOffset;
 
-    if (supportType.has_value())
+    if (supportType != WoodenSupportSubType::Null)
     {
-        const auto enumValue = EnumValue(supportType.value());
+        const auto enumValue = EnumValue(supportType);
         floorImage = floors[enumValue].image_id;
         floorBoundSize = floors[enumValue].bound_size;
         floorBoundOffset = floors[enumValue].bound_offset;
         if (trackSequence == 3)
         {
             hasSupports = WoodenASupportsPaintSetup(
-                session, enumValue, 0, height + supportOffsets[direction][trackSequence], session.SupportColours);
+                session, WoodenSupportType::Truss, supportType, height + supportOffsets[direction][trackSequence],
+                session.SupportColours);
         }
         else
         {
             hasSupports = WoodenBSupportsPaintSetup(
-                session, WoodenSupportType::Truss, supportType.value(), height + supportOffsets[direction][trackSequence],
+                session, WoodenSupportType::Truss, supportType, height + supportOffsets[direction][trackSequence],
                 session.SupportColours);
         }
     }
@@ -2063,21 +2086,22 @@ static void MiniatureRailwayTrackDiag25DegDown(
     CoordsXY floorBoundOffset;
     auto supportType = _diagSupportTypes[direction][trackSequence];
 
-    if (supportType.has_value())
+    if (supportType != WoodenSupportSubType::Null)
     {
-        const auto enumValue = EnumValue(supportType.value());
+        const auto enumValue = EnumValue(supportType);
         floorImage = floors[enumValue].image_id;
         floorBoundSize = floors[enumValue].bound_size;
         floorBoundOffset = floors[enumValue].bound_offset;
         if (trackSequence == 3)
         {
             hasSupports = WoodenASupportsPaintSetup(
-                session, enumValue, 0, height + supportOffsets[direction][trackSequence], session.SupportColours);
+                session, WoodenSupportType::Truss, supportType, height + supportOffsets[direction][trackSequence],
+                session.SupportColours);
         }
         else
         {
             hasSupports = WoodenBSupportsPaintSetup(
-                session, WoodenSupportType::Truss, supportType.value(), height + supportOffsets[direction][trackSequence],
+                session, WoodenSupportType::Truss, supportType, height + supportOffsets[direction][trackSequence],
                 session.SupportColours);
         }
     }
@@ -2139,21 +2163,22 @@ static void MiniatureRailwayTrackDiagFlatTo25DegDown(
     CoordsXY floorBoundOffset;
     auto supportType = _diagSupportTypes[direction][trackSequence];
 
-    if (supportType.has_value())
+    if (supportType != WoodenSupportSubType::Null)
     {
-        const auto enumValue = EnumValue(supportType.value());
+        const auto enumValue = EnumValue(supportType);
         floorImage = floors[enumValue].image_id;
         floorBoundSize = floors[enumValue].bound_size;
         floorBoundOffset = floors[enumValue].bound_offset;
         if (trackSequence == 3)
         {
             hasSupports = WoodenASupportsPaintSetup(
-                session, enumValue, 0, height + supportOffsets[direction][trackSequence], session.SupportColours);
+                session, WoodenSupportType::Truss, supportType, height + supportOffsets[direction][trackSequence],
+                session.SupportColours);
         }
         else
         {
             hasSupports = WoodenBSupportsPaintSetup(
-                session, WoodenSupportType::Truss, supportType.value(), height + supportOffsets[direction][trackSequence],
+                session, WoodenSupportType::Truss, supportType, height + supportOffsets[direction][trackSequence],
                 session.SupportColours);
         }
     }
@@ -2207,14 +2232,13 @@ static void MiniatureRailwayTrackDiag25DegDownToFlat(
     CoordsXY floorBoundOffset;
     auto supportType = _diagSupportTypes[direction][trackSequence];
 
-    if (supportType.has_value())
+    if (supportType != WoodenSupportSubType::Null)
     {
-        const auto enumValue = EnumValue(supportType.value());
+        const auto enumValue = EnumValue(supportType);
         floorImage = floors[enumValue].image_id;
         floorBoundSize = floors[enumValue].bound_size;
         floorBoundOffset = floors[enumValue].bound_offset;
-        hasSupports = WoodenASupportsPaintSetup(
-            session, WoodenSupportType::Truss, supportType.value(), height, session.SupportColours);
+        hasSupports = WoodenASupportsPaintSetup(session, WoodenSupportType::Truss, supportType, height, session.SupportColours);
     }
 
     if (direction == 1 && trackSequence == 3)

@@ -64,7 +64,9 @@ static void MazePaintSetup(
     auto imageId = GetStationColourScheme(session, trackElement).WithIndex(SPR_TERRAIN_DIRT);
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 0 });
 
-    WoodenASupportsPaintSetup(session, (rotation & 1) ? 0 : 1, 0, height, GetShopSupportColourScheme(session, trackElement));
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NwSe, rotation, height,
+        GetShopSupportColourScheme(session, trackElement));
 
     PaintUtilSetSegmentSupportHeight(session, SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
 

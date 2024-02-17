@@ -95,7 +95,8 @@ static void PaintSpaceRings(
     ImageId imageId;
 
     auto stationColour = GetStationColourScheme(session, trackElement);
-    WoodenASupportsPaintSetup(session, (direction & 1), 0, height, stationColour);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
 
     const StationObject* stationObject = ride.GetStationObject();
     TrackPaintUtilPaintFloor(session, edges, session.TrackColours, height, floorSpritesCork, stationObject);
