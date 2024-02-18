@@ -237,6 +237,44 @@ Viewport* ViewportGetMain()
     return mainWindow->viewport;
 }
 
+void ViewportsInvalidate(int32_t x, int32_t y, int32_t z0, int32_t z1, ZoomLevel maxZoom)
+{
+    for (auto& vp : _viewports)
+    {
+        if (maxZoom == ZoomLevel{ -1 } || vp.zoom <= ZoomLevel{ maxZoom })
+        {
+            int32_t x1, y1, x2, y2;
+
+            x += 16;
+            y += 16;
+            auto screenCoord = Translate3DTo2DWithZ(vp.rotation, CoordsXYZ{ x, y, 0 });
+
+            x1 = screenCoord.x - 32;
+            y1 = screenCoord.y - 32 - z1;
+            x2 = screenCoord.x + 32;
+            y2 = screenCoord.y + 32 - z0;
+
+            ViewportInvalidate(&vp, ScreenRect{ { x1, y1 }, { x2, y2 } });
+        }
+    }
+}
+
+void ViewportsInvalidate(const CoordsXYZ& pos, int32_t width, int32_t minHeight, int32_t maxHeight, ZoomLevel maxZoom)
+{
+    for (auto& vp : _viewports)
+    {
+        if (maxZoom == ZoomLevel{ -1 } || vp.zoom <= ZoomLevel{ maxZoom })
+        {
+            auto screenCoords = Translate3DTo2DWithZ(vp.rotation, pos);
+            auto screenPos = ScreenRect(
+                screenCoords - ScreenCoordsXY{ width, minHeight },
+                screenCoords + ScreenCoordsXY{ width, maxHeight });
+
+            ViewportInvalidate(&vp, screenPos);
+        }
+    }
+}
+
 void ViewportsInvalidate(const ScreenRect& screenRect, ZoomLevel maxZoom)
 {
     for (auto& vp : _viewports)
