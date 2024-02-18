@@ -6,6 +6,7 @@
   <name>OpenRCT2</name>
   <summary>Amusement park simulation</summary>
   <developer_name>The OpenRCT2 Team</developer_name>
+  <launchable type="desktop-id">openrct2.desktop</launchable>
   <description>
     <p>
       OpenRCT2 is an open-source re-implementation of RollerCoaster Tycoon 2 (RCT2).
