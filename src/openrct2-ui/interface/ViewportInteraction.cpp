@@ -718,7 +718,7 @@ struct PeepDistance
 };
 
 template<typename T>
-PeepDistance GetClosestPeep(const ScreenCoordsXY& viewportCoords, const int32_t maxDistance, PeepDistance goal)
+static PeepDistance GetClosestPeep(const ScreenCoordsXY& viewportCoords, const int32_t maxDistance, PeepDistance goal)
 {
     for (auto peep : EntityList<T>())
     {
