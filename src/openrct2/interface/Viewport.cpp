@@ -254,11 +254,10 @@ void ViewportsInvalidate(const ScreenRect& screenRect, ZoomLevel maxZoom)
  * edx is assumed to be (and always is) the current rotation, so it is not
  * needed as parameter.
  */
-CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords)
+CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords, uint8_t rotation)
 {
     int32_t height = 0;
 
-    uint32_t rotation = GetCurrentRotation();
     CoordsXY pos{};
     for (int32_t i = 0; i < 6; i++)
     {

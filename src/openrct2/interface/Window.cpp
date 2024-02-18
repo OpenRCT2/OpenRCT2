@@ -924,7 +924,7 @@ void WindowRotateCamera(WindowBase& w, int32_t direction)
     {
         auto viewPos = ScreenCoordsXY{ (viewport->view_width >> 1), (viewport->view_height >> 1) } + viewport->viewPos;
 
-        coords = ViewportAdjustForMapHeight(viewPos);
+        coords = ViewportAdjustForMapHeight(viewPos, viewport->rotation);
     }
     else
     {
@@ -957,7 +957,7 @@ void WindowViewportGetMapCoordsByCursor(
 
     // Compute map coordinate by mouse position.
     auto viewportPos = w.viewport->ScreenToViewportCoord(mouseCoords);
-    auto coordsXYZ = ViewportAdjustForMapHeight(viewportPos);
+    auto coordsXYZ = ViewportAdjustForMapHeight(viewportPos, w.viewport->rotation);
     auto mapCoords = ViewportPosToMapPos(viewportPos, coordsXYZ.z);
     *map_x = mapCoords.x;
     *map_y = mapCoords.y;

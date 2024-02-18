@@ -137,7 +137,7 @@ void ViewportUpdateSmartFollowStaff(WindowBase* window, const Staff* peep);
 void ViewportUpdateSmartFollowVehicle(WindowBase* window);
 void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport, const ScreenRect& screenRect);
 
-CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords);
+CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords, uint8_t rotation);
 
 CoordsXY ViewportPosToMapPos(const ScreenCoordsXY& coords, int32_t z);
 std::optional<CoordsXY> ScreenPosToMapPos(const ScreenCoordsXY& screenCoords, int32_t* direction);
