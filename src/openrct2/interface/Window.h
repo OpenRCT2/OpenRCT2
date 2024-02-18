@@ -148,16 +148,16 @@ struct Widget
  */
 struct Viewport
 {
-    int32_t width;
-    int32_t height;
-    ScreenCoordsXY pos;
-    ScreenCoordsXY viewPos;
-    int32_t view_width;
-    int32_t view_height;
-    uint32_t flags;
-    ZoomLevel zoom;
-    uint8_t var_11;
-    VisibilityCache visibility;
+    int32_t width{};
+    int32_t height{};
+    ScreenCoordsXY pos{};
+    ScreenCoordsXY viewPos{};
+    int32_t view_width{};
+    int32_t view_height{};
+    uint32_t flags{};
+    ZoomLevel zoom{};
+    uint8_t rotation{};
+    VisibilityCache visibility{};
 
     // Use this function on coordinates that are relative to the viewport zoom i.e. a peeps x, y position after transforming
     // from its x, y, z
