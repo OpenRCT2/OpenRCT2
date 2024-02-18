@@ -579,7 +579,6 @@ void WindowPushOthersBelow(WindowBase& w1);
 WindowBase* WindowGetMain();
 
 void WindowScrollToLocation(WindowBase& w, const CoordsXYZ& coords);
-void WindowRotateCamera(WindowBase& w, int32_t direction);
 void WindowViewportGetMapCoordsByCursor(
     const WindowBase& w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y);
 void WindowViewportCentreTileAroundCursor(WindowBase& w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y);
