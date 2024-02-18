@@ -94,10 +94,15 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
             }
         }
 
-        if (session.DPI.y + session.DPI.height <= spr->SpriteData.SpriteRect.GetTop()
-            || spr->SpriteData.SpriteRect.GetBottom() <= session.DPI.y
-            || session.DPI.x + session.DPI.width <= spr->SpriteData.SpriteRect.GetLeft()
-            || spr->SpriteData.SpriteRect.GetRight() <= session.DPI.x)
+        auto screenCoords = Translate3DTo2DWithZ(session.CurrentRotation, spr->GetLocation());
+        auto spriteRect = ScreenRect(
+            screenCoords - ScreenCoordsXY{ spr->SpriteData.Width, spr->SpriteData.HeightMin },
+            screenCoords + ScreenCoordsXY{ spr->SpriteData.Width, spr->SpriteData.HeightMax });
+
+        if (session.DPI.y + session.DPI.height <= spriteRect.GetTop()
+            || spriteRect.GetBottom() <= session.DPI.y
+            || session.DPI.x + session.DPI.width <= spriteRect.GetLeft()
+            || spriteRect.GetRight() <= session.DPI.x)
         {
             continue;
         }
