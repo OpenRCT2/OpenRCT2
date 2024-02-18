@@ -13,6 +13,7 @@
 #include "../Date.h"
 #include "../EditorObjectSelectionSession.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../ReplayManager.h"
@@ -77,6 +78,8 @@
 #ifndef NO_TTF
 #    include "../drawing/TTF.h"
 #endif
+
+using namespace OpenRCT2;
 
 using arguments_t = std::vector<std::string>;
 using OpenRCT2::Date;
@@ -548,15 +551,17 @@ static int32_t ConsoleCommandStaff(InteractiveConsole& console, const arguments_
 
 static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t& argv)
 {
+    auto& gameState = GetGameState();
+
     if (!argv.empty())
     {
         if (argv[0] == "park_rating")
         {
-            console.WriteFormatLine("park_rating %d", gParkRating);
+            console.WriteFormatLine("park_rating %d", gameState.ParkRating);
         }
         else if (argv[0] == "park_value")
         {
-            console.WriteFormatLine("park_value %d", gParkValue / 10);
+            console.WriteFormatLine("park_value %d", gameState.ParkValue / 10);
         }
         else if (argv[0] == "company_value")
         {
@@ -564,11 +569,11 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "money")
         {
-            console.WriteFormatLine("money %d.%d0", gCash / 10, gCash % 10);
+            console.WriteFormatLine("money %d.%d0", gameState.Cash / 10, gameState.Cash % 10);
         }
         else if (argv[0] == "scenario_initial_cash")
         {
-            console.WriteFormatLine("scenario_initial_cash %d", gInitialCash / 10);
+            console.WriteFormatLine("scenario_initial_cash %d", gameState.InitialCash / 10);
         }
         else if (argv[0] == "current_loan")
         {
@@ -576,24 +581,25 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "max_loan")
         {
-            console.WriteFormatLine("max_loan %d", gMaxBankLoan / 10);
+            console.WriteFormatLine("max_loan %d", gameState.MaxBankLoan / 10);
         }
         else if (argv[0] == "guest_initial_cash")
         {
-            console.WriteFormatLine("guest_initial_cash %d.%d0", gGuestInitialCash / 10, gGuestInitialCash % 10);
+            console.WriteFormatLine(
+                "guest_initial_cash %d.%d0", gameState.GuestInitialCash / 10, gameState.GuestInitialCash % 10);
         }
         else if (argv[0] == "guest_initial_happiness")
         {
-            uint32_t current_happiness = gGuestInitialHappiness;
+            uint32_t current_happiness = gameState.GuestInitialHappiness;
             for (int32_t i = 15; i <= 99; i++)
             {
                 if (i == 99)
                 {
-                    console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", 15, gGuestInitialHappiness);
+                    console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", 15, gameState.GuestInitialHappiness);
                 }
                 else if (current_happiness == CalculateGuestInitialHappiness(i))
                 {
-                    console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", i, gGuestInitialHappiness);
+                    console.WriteFormatLine("guest_initial_happiness %d%%  (%d)", i, gameState.GuestInitialHappiness);
                     break;
                 }
             }
@@ -601,58 +607,64 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         else if (argv[0] == "guest_initial_hunger")
         {
             console.WriteFormatLine(
-                "guest_initial_hunger %d%%  (%d)", ((255 - gGuestInitialHunger) * 100) / 255, gGuestInitialHunger);
+                "guest_initial_hunger %d%%  (%d)", ((255 - gameState.GuestInitialHunger) * 100) / 255,
+                gameState.GuestInitialHunger);
         }
         else if (argv[0] == "guest_initial_thirst")
         {
             console.WriteFormatLine(
-                "guest_initial_thirst %d%%  (%d)", ((255 - gGuestInitialThirst) * 100) / 255, gGuestInitialThirst);
+                "guest_initial_thirst %d%%  (%d)", ((255 - gameState.GuestInitialThirst) * 100) / 255,
+                gameState.GuestInitialThirst);
         }
         else if (argv[0] == "guest_prefer_less_intense_rides")
         {
             console.WriteFormatLine(
-                "guest_prefer_less_intense_rides %d", (gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) != 0);
+                "guest_prefer_less_intense_rides %d", (gameState.ParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES) != 0);
         }
         else if (argv[0] == "guest_prefer_more_intense_rides")
         {
             console.WriteFormatLine(
-                "guest_prefer_more_intense_rides %d", (gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES) != 0);
+                "guest_prefer_more_intense_rides %d", (gameState.ParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES) != 0);
         }
         else if (argv[0] == "forbid_marketing_campaigns")
         {
-            console.WriteFormatLine("forbid_marketing_campaigns %d", (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) != 0);
+            console.WriteFormatLine(
+                "forbid_marketing_campaigns %d", (gameState.ParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN) != 0);
         }
         else if (argv[0] == "forbid_landscape_changes")
         {
-            console.WriteFormatLine("forbid_landscape_changes %d", (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) != 0);
+            console.WriteFormatLine(
+                "forbid_landscape_changes %d", (gameState.ParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES) != 0);
         }
         else if (argv[0] == "forbid_tree_removal")
         {
-            console.WriteFormatLine("forbid_tree_removal %d", (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL) != 0);
+            console.WriteFormatLine("forbid_tree_removal %d", (gameState.ParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL) != 0);
         }
         else if (argv[0] == "forbid_high_construction")
         {
-            console.WriteFormatLine("forbid_high_construction %d", (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION) != 0);
+            console.WriteFormatLine(
+                "forbid_high_construction %d", (gameState.ParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION) != 0);
         }
         else if (argv[0] == "pay_for_rides")
         {
-            console.WriteFormatLine("pay_for_rides %d", (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) != 0);
+            console.WriteFormatLine("pay_for_rides %d", (gameState.ParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) != 0);
         }
         else if (argv[0] == "no_money")
         {
-            console.WriteFormatLine("no_money %d", (gParkFlags & PARK_FLAGS_NO_MONEY) != 0);
+            console.WriteFormatLine("no_money %d", (gameState.ParkFlags & PARK_FLAGS_NO_MONEY) != 0);
         }
         else if (argv[0] == "difficult_park_rating")
         {
-            console.WriteFormatLine("difficult_park_rating %d", (gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING) != 0);
+            console.WriteFormatLine("difficult_park_rating %d", (gameState.ParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING) != 0);
         }
         else if (argv[0] == "difficult_guest_generation")
         {
-            console.WriteFormatLine("difficult_guest_generation %d", (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0);
+            console.WriteFormatLine(
+                "difficult_guest_generation %d", (gameState.ParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0);
         }
         else if (argv[0] == "park_open")
         {
-            console.WriteFormatLine("park_open %d", (gParkFlags & PARK_FLAGS_PARK_OPEN) != 0);
+            console.WriteFormatLine("park_open %d", (gameState.ParkFlags & PARK_FLAGS_PARK_OPEN) != 0);
         }
         else if (argv[0] == "land_rights_cost")
         {
@@ -666,7 +678,8 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         else if (argv[0] == "climate")
         {
             console.WriteFormatLine(
-                "climate %s  (%d)", ClimateNames[static_cast<uint8_t>(gClimate)], static_cast<uint8_t>(gClimate));
+                "climate %s  (%d)", ClimateNames[static_cast<uint8_t>(gameState.Climate)],
+                static_cast<uint8_t>(gameState.Climate));
         }
         else if (argv[0] == "game_speed")
         {
@@ -764,10 +777,11 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
             }
         }
 
+        auto& gameState = GetGameState();
         if (argv[0] == "money" && InvalidArguments(&invalidArgs, double_valid[0]))
         {
             money64 money = ToMoney64FromGBP(double_val[0]);
-            if (gCash != money)
+            if (gameState.Cash != money)
             {
                 auto cheatSetAction = CheatSetAction(CheatType::SetMoney, money);
                 cheatSetAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
@@ -798,7 +812,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         else if (argv[0] == "current_loan" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             auto amount = std::clamp(
-                ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, gMaxBankLoan);
+                ToMoney64FromGBP(int_val[0]) - ToMoney64FromGBP(int_val[0] % 1000), 0.00_GBP, gameState.MaxBankLoan);
             auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::InitialLoan, amount);
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
@@ -937,7 +951,7 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "pay_for_rides" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
-            SET_FLAG(gParkFlags, PARK_FLAGS_PARK_FREE_ENTRY, int_val[0]);
+            SET_FLAG(gameState.ParkFlags, PARK_FLAGS_PARK_FREE_ENTRY, int_val[0]);
             console.Execute("get pay_for_rides");
         }
         else if (argv[0] == "no_money" && InvalidArguments(&invalidArgs, int_valid[0]))

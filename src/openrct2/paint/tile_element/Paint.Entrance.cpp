@@ -71,7 +71,7 @@ static void PaintRideEntranceExitScrollingText(
         FormatStringLegacy(text, sizeof(text), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
     auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
-    auto scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
+    auto scroll = stringWidth > 0 ? (GetGameState().CurrentTicks / 2) % stringWidth : 0;
 
     PaintAddImageAsChild(
         session, ScrollingTextSetup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, stationObj.ScrollingMode, COLOUR_BLACK),
@@ -220,7 +220,7 @@ static void PaintParkEntranceScrollingText(
         return;
 
     auto ft = Formatter();
-    if (gParkFlags & PARK_FLAGS_PARK_OPEN)
+    if (GetGameState().ParkFlags & PARK_FLAGS_PARK_OPEN)
     {
         const auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
         auto name = park.Name.c_str();
@@ -244,7 +244,7 @@ static void PaintParkEntranceScrollingText(
     }
 
     auto stringWidth = GfxGetStringWidth(text, FontStyle::Tiny);
-    auto scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
+    auto scroll = stringWidth > 0 ? (GetGameState().CurrentTicks / 2) % stringWidth : 0;
     auto imageIndex = ScrollingTextSetup(
         session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode + direction / 2, COLOUR_BLACK);
     auto textHeight = height + entrance.GetTextHeight();
@@ -347,7 +347,7 @@ static void PaintHeightMarkers(PaintSession& session, const EntranceElement& ent
             ImageIndex baseImageIndex = SPR_HEIGHT_MARKER_BASE;
             baseImageIndex += heightMarkerBaseZ / 16;
             baseImageIndex += GetHeightMarkerOffset();
-            baseImageIndex -= gMapBaseZ;
+            baseImageIndex -= GetGameState().MapBaseZ;
             auto imageId = ImageId(baseImageIndex, COLOUR_GREY);
             PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 31, 31, heightMarkerBaseZ + 64 }, { 1, 1, 0 } });
         }

@@ -573,7 +573,7 @@ static bool WoodenABSupportPaintSetupPaintSpecial(
  * @param[out] underground (Carry flag) true if underground.
  * @returns (al) true if any supports have been drawn, otherwise false.
  */
-bool WoodenASupportsPaintSetup(
+static bool WoodenASupportsPaintSetup(
     PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate)
 {
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
@@ -704,6 +704,7 @@ bool WoodenASupportsPaintSetup(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
     WoodenSupportTransitionType transitionType, Direction direction)
 {
+    assert(subType != WoodenSupportSubType::Null);
     int32_t oldSupportType = (EnumValue(supportType) * 6) + EnumValue(subType);
     int32_t special = GetSpecialOffsetForTransitionType(transitionType, direction);
 
@@ -714,6 +715,7 @@ bool WoodenASupportsPaintSetupRotated(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, Direction direction, int32_t height,
     ImageId imageTemplate, WoodenSupportTransitionType transitionType)
 {
+    assert(subType != WoodenSupportSubType::Null);
     subType = rotatedWoodenSupportSubTypes[EnumValue(subType)][direction];
     return WoodenASupportsPaintSetup(session, supportType, subType, height, imageTemplate, transitionType, direction);
 }
@@ -844,6 +846,7 @@ bool WoodenBSupportsPaintSetup(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
     WoodenSupportTransitionType transitionType, Direction direction)
 {
+    assert(subType != WoodenSupportSubType::Null);
     int32_t oldSupportType = (EnumValue(supportType) * 6) + EnumValue(subType);
     int32_t special = GetSpecialOffsetForTransitionType(transitionType, direction);
 
@@ -854,6 +857,7 @@ bool WoodenBSupportsPaintSetupRotated(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, Direction direction, int32_t height,
     ImageId imageTemplate, WoodenSupportTransitionType transitionType)
 {
+    assert(subType != WoodenSupportSubType::Null);
     subType = rotatedWoodenSupportSubTypes[EnumValue(subType)][direction];
     return WoodenBSupportsPaintSetup(session, supportType, subType, height, imageTemplate, transitionType, direction);
 }
@@ -1251,14 +1255,11 @@ bool MetalBSupportsPaintSetup(
  *
  * @return Whether supports were drawn
  */
-bool PathASupportsPaintSetup(
-    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
-    const FootpathPaintInfo& pathPaintInfo, bool* underground)
+bool PathBoxSupportsPaintSetup(
+    PaintSession& session, WoodenSupportSubType supportType, bool isSloped, Direction slopeRotation, int32_t height,
+    ImageId imageTemplate, const FootpathPaintInfo& pathPaintInfo)
 {
-    if (underground != nullptr)
-    {
-        *underground = false; // AND
-    }
+    auto supportOrientationOffset = (supportType == WoodenSupportSubType::NwSe) ? 24 : 0;
 
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
@@ -1278,8 +1279,6 @@ bool PathASupportsPaintSetup(
     int32_t supportLength = height - baseHeight;
     if (supportLength < 0)
     {
-        if (underground != nullptr)
-            *underground = true; // STC
         return false;
     }
 
@@ -1299,12 +1298,10 @@ bool PathASupportsPaintSetup(
         heightSteps -= 2;
         if (heightSteps < 0)
         {
-            if (underground != nullptr)
-                *underground = true; // STC
             return false;
         }
 
-        uint32_t imageId = (supportType * 24) + word_97B3C4[session.Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]
+        uint32_t imageId = supportOrientationOffset + word_97B3C4[session.Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]
             + pathPaintInfo.BridgeImageId;
 
         PaintAddImageAsParent(
@@ -1322,12 +1319,10 @@ bool PathASupportsPaintSetup(
         heightSteps -= 1;
         if (heightSteps < 0)
         {
-            if (underground != nullptr)
-                *underground = true; // STC
             return false;
         }
 
-        uint32_t ebx = (supportType * 24) + word_97B3C4[session.Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]
+        uint32_t ebx = supportOrientationOffset + word_97B3C4[session.Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]
             + pathPaintInfo.BridgeImageId;
 
         PaintAddImageAsParent(
@@ -1341,7 +1336,7 @@ bool PathASupportsPaintSetup(
     {
         if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + WATER_HEIGHT_STEP == session.WaterHeight)
         {
-            uint32_t imageId = (supportType * 24) + pathPaintInfo.BridgeImageId + 23;
+            uint32_t imageId = supportOrientationOffset + pathPaintInfo.BridgeImageId + 23;
 
             PaintAddImageAsParent(
                 session, imageTemplate.WithIndex(imageId), { 0, 0, baseHeight }, { 32, 32, ((heightSteps == 1) ? 7 : 12) });
@@ -1351,7 +1346,7 @@ bool PathASupportsPaintSetup(
         }
         else
         {
-            uint32_t imageId = (supportType * 24) + pathPaintInfo.BridgeImageId + 22;
+            uint32_t imageId = supportOrientationOffset + pathPaintInfo.BridgeImageId + 22;
 
             PaintAddImageAsParent(
                 session, imageTemplate.WithIndex(imageId), { 0, 0, baseHeight }, { 32, 32, ((heightSteps == 2) ? 23 : 28) });
@@ -1361,13 +1356,11 @@ bool PathASupportsPaintSetup(
         }
     }
 
-    if (special != 0)
+    if (isSloped)
     {
-        uint16_t specialIndex = (special - 1) & 0xFFFF;
+        ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 55 + slopeRotation;
 
-        ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 55 + specialIndex;
-
-        const UnkSupportsDescriptor& supportsDesc = Byte98D8D4[specialIndex];
+        const UnkSupportsDescriptor& supportsDesc = Byte98D8D4[slopeRotation];
         auto boundBox = supportsDesc.bounding_box;
         boundBox.offset.z += baseHeight;
 
@@ -1388,9 +1381,6 @@ bool PathASupportsPaintSetup(
         }
     }
 
-    if (underground != nullptr)
-        *underground = false; // AND
-
     return hasSupports;
 }
 
@@ -1406,10 +1396,12 @@ bool PathASupportsPaintSetup(
  *
  * @return Whether supports were drawn
  */
-bool PathBSupportsPaintSetup(
-    PaintSession& session, int32_t segment, int32_t special, int32_t height, ImageId imageTemplate,
+bool PathPoleSupportsPaintSetup(
+    PaintSession& session, MetalSupportPlace supportPlace, bool isSloped, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo)
 {
+    auto segment = EnumValue(supportPlace);
+
     SupportHeight* supportSegments = session.SupportSegments;
 
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
@@ -1523,13 +1515,13 @@ bool PathBSupportsPaintSetup(
     supportSegments[segment].height = 0xFFFF;
     supportSegments[segment].slope = 0x20;
 
-    if (special != 0)
+    if (isSloped)
     {
-        int16_t si = special + baseHeight;
+        int16_t si = baseHeight + COORDS_Z_STEP;
 
         while (true)
         {
-            int16_t z = baseHeight + 16;
+            int16_t z = baseHeight + (2 * COORDS_Z_STEP);
             if (z > si)
             {
                 z = si;

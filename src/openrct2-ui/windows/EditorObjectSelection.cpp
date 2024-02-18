@@ -183,6 +183,7 @@ enum WINDOW_EDITOR_OBJECT_SELECTION_WIDGET_IDX
     WIDX_FILTER_RIDE_TAB_STALL,
     WIDX_LIST_SORT_TYPE,
     WIDX_LIST_SORT_RIDE,
+    WIDX_RELOAD_OBJECT,
     WIDX_TAB_1,
 };
 
@@ -211,7 +212,7 @@ static std::vector<Widget> _window_editor_object_selection_widgets = {
     MakeTab   ({189, 47},                                                                                       STR_SHOPS_STALLS_TIP             ),
     MakeWidget({  4, 80}, {145,  14}, WindowWidgetType::TableHeader, WindowColour::Secondary                                                                  ),
     MakeWidget({149, 80}, {143,  14}, WindowWidgetType::TableHeader, WindowColour::Secondary                                                                  ),
-
+    MakeWidget({700, 50}, { 24,  24}, WindowWidgetType::ImgBtn,      WindowColour::Primary,   SPR_G2_RELOAD,    STR_RELOAD_OBJECT_TIP ),
     MakeTab   ({  3, 17},                                                                                       STR_STRING_DEFINED_TOOLTIP       ),
     // Copied object type times...
 
@@ -448,6 +449,19 @@ public:
                     _listSortDescending = false;
                 }
                 VisibleListRefresh();
+                break;
+            case WIDX_RELOAD_OBJECT:
+                if (_loadedObject != nullptr)
+                {
+                    auto descriptor = _loadedObject->GetDescriptor();
+                    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+                    auto entryIndex = objectManager.GetLoadedObjectEntryIndex(descriptor);
+                    if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
+                    {
+                        objectManager.UnloadObjects({ descriptor });
+                        objectManager.LoadObject(descriptor, entryIndex);
+                    }
+                }
                 break;
             default:
                 if (widgetIndex >= WIDX_TAB_1
@@ -833,6 +847,8 @@ public:
         widgets[WIDX_INSTALL_TRACK].right = width - 9;
         widgets[WIDX_FILTER_DROPDOWN].left = width - 250;
         widgets[WIDX_FILTER_DROPDOWN].right = width - 137;
+        widgets[WIDX_RELOAD_OBJECT].left = width - 9 - 24;
+        widgets[WIDX_RELOAD_OBJECT].right = width - 9;
 
         // Set pressed widgets
         pressed_widgets |= 1uLL << WIDX_PREVIEW;
@@ -882,6 +898,11 @@ public:
                 x += 31;
             }
         }
+
+        if (gConfigGeneral.DebuggingTools)
+            widgets[WIDX_RELOAD_OBJECT].type = WindowWidgetType::ImgBtn;
+        else
+            widgets[WIDX_RELOAD_OBJECT].type = WindowWidgetType::Empty;
 
         if (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TRACK_DESIGNER))
         {

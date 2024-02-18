@@ -49,7 +49,7 @@ int32_t gTextBoxFrameNo = 0;
 bool gUsingWidgetTextBox = false;
 TextInputSession* gTextInput;
 
-uint16_t gWindowUpdateTicks;
+uint32_t gWindowUpdateTicks;
 uint16_t gWindowMapFlashingFlags;
 colour_t gCurrentWindowColours[4];
 

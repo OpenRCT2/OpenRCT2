@@ -11,6 +11,7 @@
 
 #    include "NetworkServerAdvertiser.h"
 
+#    include "../GameState.h"
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"
 #    include "../core/Guard.hpp"
@@ -32,6 +33,8 @@
 #    include <memory>
 #    include <random>
 #    include <string>
+
+using namespace OpenRCT2;
 
 enum class MasterServerStatus
 {
@@ -298,15 +301,20 @@ private:
             { "players", numPlayers },
         };
 
-        auto& date = GetDate();
-        json_t mapSize = { { "x", gMapSize.x - 2 }, { "y", gMapSize.y - 2 } };
+        const auto& gameState = GetGameState();
+        const auto& date = GetDate();
+        json_t mapSize = { { "x", gameState.MapSize.x - 2 }, { "y", gameState.MapSize.y - 2 } };
         json_t gameInfo = {
-            { "mapSize", mapSize },         { "day", date.GetMonthTicks() }, { "month", date.GetMonthsElapsed() },
-            { "guests", gNumGuestsInPark }, { "parkValue", gParkValue },
+            { "mapSize", mapSize },
+            { "day", date.GetMonthTicks() },
+            { "month", date.GetMonthsElapsed() },
+            { "guests", gameState.NumGuestsInPark },
+            { "parkValue", gameState.ParkValue },
         };
-        if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+
+        if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
         {
-            gameInfo["cash"] = gCash;
+            gameInfo["cash"] = gameState.Cash;
         }
 
         root["gameInfo"] = gameInfo;

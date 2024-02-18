@@ -572,16 +572,20 @@ static void TTFDrawStringRawTTF(DrawPixelInfo& dpi, std::string_view text, TextD
     auto src = static_cast<const uint8_t*>(surface->pixels);
     uint8_t* dst = dpi.bits;
 
+    int32_t srcXStart = 0;
+    int32_t srcYStart = 0;
     if (skipX < 0)
     {
         width += skipX;
         src += -skipX;
+        srcXStart += -skipX;
         skipX = 0;
     }
     if (skipY < 0)
     {
         height += skipY;
         src += (-skipY * surface->pitch);
+        srcYStart += -skipY;
         skipY = 0;
     }
 
@@ -591,60 +595,44 @@ static void TTFDrawStringRawTTF(DrawPixelInfo& dpi, std::string_view text, TextD
     int32_t srcScanSkip = surface->pitch - width;
     int32_t dstScanSkip = dpi.width + dpi.pitch - width;
     uint8_t* dst_orig = dst;
-    const uint8_t* src_orig = src;
 
     // Draw shadow/outline
-    if (info->flags & TEXT_DRAW_FLAG_OUTLINE)
+    if (info->flags & (TEXT_DRAW_FLAG_OUTLINE | TEXT_DRAW_FLAG_INSET))
     {
-        for (int32_t yy = 0; yy < height - 0; yy++)
+        for (int32_t yy = 0; yy < height; yy++)
         {
-            for (int32_t xx = 0; xx < width - 0; xx++)
+            for (int32_t xx = 0; xx < width; xx++)
             {
-                if (*src != 0)
+                if (info->flags & TEXT_DRAW_FLAG_OUTLINE)
                 {
-                    // right
-                    if (xx + skipX < dpi.width + dpi.pitch - 1)
+                    if (GetPixel(*surface, xx + srcXStart + 1, yy + srcYStart)
+                        || GetPixel(*surface, xx + srcXStart - 1, yy + srcYStart)
+                        || GetPixel(*surface, xx + srcXStart, yy + srcYStart + 1)
+                        || GetPixel(*surface, xx + srcXStart, yy + srcYStart - 1))
                     {
-                        *(dst + 1) = info->palette[3];
-                    }
-                    // left
-                    if (xx + skipX > 1)
-                    {
-                        *(dst - 1) = info->palette[3];
-                    }
-                    // top
-                    if (yy + skipY > 1)
-                    {
-                        *(dst - width - dstScanSkip) = info->palette[3];
-                    }
-                    // bottom
-                    if (yy + skipY < dpi.height - 1)
-                    {
-                        *(dst + width + dstScanSkip) = info->palette[3];
+                        *dst = info->palette[3];
                     }
                 }
-                src++;
+                if (info->flags & TEXT_DRAW_FLAG_INSET)
+                {
+                    if (GetPixel(*surface, xx + srcXStart - 1, yy + srcYStart - 1))
+                    {
+                        *dst = info->palette[3];
+                    }
+                }
                 dst++;
             }
             // Skip any remaining bits
-            src += srcScanSkip;
             dst += dstScanSkip;
         }
     }
-
     dst = dst_orig;
-    src = src_orig;
     for (int32_t yy = 0; yy < height; yy++)
     {
         for (int32_t xx = 0; xx < width; xx++)
         {
             if (*src != 0)
             {
-                if (info->flags & TEXT_DRAW_FLAG_INSET)
-                {
-                    *(dst + width + dstScanSkip + 1) = info->palette[3];
-                }
-
                 if (*src > 180 || !use_hinting)
                 {
                     // Centre of the glyph: use full colour.

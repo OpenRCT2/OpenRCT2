@@ -192,7 +192,8 @@ static void ChairliftPaintStationNeSw(
 
     const auto* stationObj = ride.GetStationObject();
     auto stationColour = GetStationColourScheme(session, trackElement);
-    WoodenASupportsPaintSetup(session, 0, 0, height, stationColour);
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height, stationColour);
 
     if (!isStart && !isEnd)
     {
@@ -283,7 +284,9 @@ static void ChairliftPaintStationSeNw(
     const auto* stationObj = ride.GetStationObject();
     auto stationColour = GetStationColourScheme(session, trackElement);
 
-    WoodenASupportsPaintSetup(session, 1, 0, height, GetStationColourScheme(session, trackElement));
+    WoodenASupportsPaintSetupRotated(
+        session, WoodenSupportType::Truss, WoodenSupportSubType::NeSw, direction, height,
+        GetStationColourScheme(session, trackElement));
 
     if (!isStart && !isEnd)
     {

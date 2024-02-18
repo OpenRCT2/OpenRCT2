@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../../Game.h"
+#include "../../GameState.h"
 #include "../../config/Config.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
@@ -18,6 +19,8 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 #include "../VehiclePaint.h"
+
+using namespace OpenRCT2;
 
 #ifndef NO_VEHICLES
 // 0x0099279E:
@@ -690,7 +693,7 @@ static void PaintRiverRapidsTrackWaterfall(
 {
     ImageId imageId;
 
-    uint16_t frameNum = (gCurrentTicks / 2) & 7;
+    uint16_t frameNum = (GetGameState().CurrentTicks / 2) & 7;
 
     if (direction & 1)
     {
@@ -761,7 +764,7 @@ static void PaintRiverRapidsTrackRapids(
 {
     ImageId imageId;
 
-    uint16_t frameNum = (gCurrentTicks / 2) & 7;
+    uint16_t frameNum = (GetGameState().CurrentTicks / 2) & 7;
 
     if (direction & 1)
     {
@@ -813,7 +816,7 @@ static void PaintRiverRapidsTrackWhirlpool(
 {
     ImageId imageId;
 
-    uint8_t frameNum = (gCurrentTicks / 4) % 16;
+    uint8_t frameNum = (GetGameState().CurrentTicks / 4) % 16;
 
     if (direction & 1)
     {

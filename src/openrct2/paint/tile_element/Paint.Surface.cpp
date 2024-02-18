@@ -11,6 +11,7 @@
 
 #include "../../Cheats.h"
 #include "../../Context.h"
+#include "../../GameState.h"
 #include "../../OpenRCT2.h"
 #include "../../config/Config.h"
 #include "../../core/Guard.hpp"
@@ -38,6 +39,9 @@
 #include <algorithm>
 #include <cstring>
 #include <iterator>
+
+// Needed to make the sign appear above footpaths.
+static constexpr int16_t ForSaleSignZOffset = 3;
 
 static constexpr uint8_t Byte97B444[] = {
     0, 2, 1, 3, 8, 10, 9, 11, 4, 6, 5, 7, 12, 14, 13, 15, 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 16, 0, 18, 15, 0,
@@ -1007,7 +1011,7 @@ static void PaintSurfaceLandOwnership(
     else if (tileElement.GetOwnership() & OWNERSHIP_AVAILABLE)
     {
         const auto pos = CoordsXYZ(session.MapPosition.x + 16, session.MapPosition.y + 16, aboveWaterHeight);
-        const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape);
+        const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape) + ForSaleSignZOffset;
 
         PaintStruct* backup = session.LastPS;
         PaintAddImageAsParent(session, ImageId(SPR_LAND_OWNERSHIP_AVAILABLE), { 16, 16, height2 }, { 1, 1, 0 });
@@ -1041,7 +1045,7 @@ static void PaintSurfaceConstructionRights(
     else if (tileElement.GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
     {
         const auto pos = CoordsXYZ(session.MapPosition.x + 16, session.MapPosition.y + 16, aboveWaterHeight);
-        const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape);
+        const auto height2 = TileElementHeight(pos, aboveWaterSurfaceShape) + ForSaleSignZOffset;
 
         PaintStruct* backup = session.LastPS;
         PaintAddImageAsParent(session, ImageId(SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE), { 16, 16, height2 }, { 1, 1, 0 });
@@ -1128,7 +1132,7 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
         int32_t image_id = (SPR_HEIGHT_MARKER_BASE + dx / 16);
         image_id += GetHeightMarkerOffset();
-        image_id -= gMapBaseZ;
+        image_id -= OpenRCT2::GetGameState().MapBaseZ;
 
         PaintAddImageAsParent(session, ImageId(image_id, COLOUR_OLIVE_GREEN), { 16, 16, surfaceHeight }, { 1, 1, 0 });
     }
@@ -1308,6 +1312,17 @@ void PaintSurface(PaintSession& session, uint8_t direction, uint16_t height, con
 
             const auto image_id = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[surfaceShape], fpId);
             PaintAttachToPreviousPS(session, image_id, 0, 0);
+
+            auto [waterHeight, waterSurfaceShape] = SurfaceGetHeightAboveWater(tileElement, height, surfaceShape);
+            const bool isUnderWater = (surfaceShape != waterSurfaceShape || height != waterHeight);
+            if (isUnderWater)
+            {
+                const auto imageId2 = ImageId(SPR_TERRAIN_SELECTION_CORNER + Byte97B444[waterSurfaceShape], fpId);
+                PaintStruct* backup = session.LastPS;
+                PaintAddImageAsParent(session, imageId2, { 0, 0, waterHeight }, { 32, 32, 0 });
+                session.LastPS = backup;
+            }
+
             break;
         }
     }

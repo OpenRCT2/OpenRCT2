@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../TrackImporter.h"
 #include "../actions/FootpathLayoutPlaceAction.h"
@@ -1370,7 +1371,8 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                     TileElement* tile_element = MapGetFirstElementAt(tile);
                     if (tile_element == nullptr)
                     {
-                        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+                        return GameActions::Result(
+                            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_TILE_ELEMENT_NOT_FOUND);
                     }
 
                     do
@@ -1682,7 +1684,9 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
                     auto surfaceElement = MapGetSurfaceElementAt(tile);
                     if (surfaceElement == nullptr)
                     {
-                        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+                        return GameActions::Result(
+                            GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER,
+                            STR_ERR_SURFACE_ELEMENT_NOT_FOUND);
                     }
 
                     int32_t surfaceZ = surfaceElement->GetBaseZ();
@@ -1935,11 +1939,12 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
         }
     }
 
+    auto& gameState = GetGameState();
     _trackDesignDrawingPreview = true;
     uint8_t backup_rotation = _currentTrackPieceDirection;
-    uint32_t backup_park_flags = gParkFlags;
-    gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
-    auto mapSize = TileCoordsXY{ gMapSize.x * 16, gMapSize.y * 16 };
+    uint32_t backup_park_flags = gameState.ParkFlags;
+    gameState.ParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
+    auto mapSize = TileCoordsXY{ gameState.MapSize.x * 16, gameState.MapSize.y * 16 };
 
     _currentTrackPieceDirection = 0;
     int32_t z = TrackDesignGetZPlacement(
@@ -1962,7 +1967,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     auto res = TrackDesignPlaceVirtual(
         tds, td6, PTD_OPERATION_PLACE_TRACK_PREVIEW, placeScenery, *ride,
         { mapSize.x, mapSize.y, z, _currentTrackPieceDirection });
-    gParkFlags = backup_park_flags;
+    gameState.ParkFlags = backup_park_flags;
 
     if (res.Error == GameActions::Status::Ok)
     {
@@ -2096,7 +2101,7 @@ static void TrackDesignPreviewClearMap()
 {
     auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
 
-    gMapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
+    GetGameState().MapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
 
     // Reserve ~8 elements per tile
     std::vector<TileElement> tileElements;

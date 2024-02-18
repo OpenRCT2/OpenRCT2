@@ -2099,39 +2099,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Impossibile caricare il file…
 STR_3011    :Il file contiene dati non validi
-STR_3012    :Stile auto da scontro
-STR_3013    :Stile organo da fiera
-STR_3014    :Stile fanfara romana
-STR_3015    :Stile orientale
-STR_3016    :Stile marziano
-STR_3017    :Stile tamburi nella giungla
-STR_3018    :Stile egiziano
-STR_3019    :Stile giocattolo
-STR_3020    :
-STR_3021    :Stile spaziale
-STR_3022    :Stile horror
-STR_3023    :Stile techno
-STR_3024    :Stile tranquillo
-STR_3025    :Stile estivo
-STR_3026    :Stile acquatico
-STR_3027    :Stile far west
-STR_3028    :Stile giurassico
-STR_3029    :Stile rock
-STR_3030    :Stile ragtime
-STR_3031    :Stile fantastico
-STR_3032    :Stile rock 2
-STR_3033    :Stile ghiacciato
-STR_3034    :Stile nevoso
-STR_3035    :Musica personalizzata 1
-STR_3036    :Musica personalizzata 2
-STR_3037    :Stile medievale
-STR_3038    :Stile urbano
-STR_3039    :Stile organo
-STR_3040    :Stile meccanico
-STR_3041    :Stile moderno
-STR_3042    :Stile piratesco
-STR_3043    :Stile rock 3
-STR_3044    :Stile dolciumi
 STR_3045    :Seleziona uno stile musicale da suonare
 STR_3047    :Le autorità locali vietano la demolizione o la modifica di quest’attrazione
 STR_3048    :Campagne di marketing vietate dalle autorità locali
@@ -3657,7 +3624,7 @@ STR_6546    :Usa l’algoritmo di calcolo dell’interesse di RollerCoaster Tyco
 STR_6547    :Tutto lo scenario
 STR_6548    :Mostra le ringhiere agli incroci
 STR_6549    :Gli oggetti per la compatibilità non possono essere selezionati!
-STR_6550    :Questa voce è inclusa per retrocompatibilità con oggetti vecchi o danneggiati. Non può essere selezionata, solo deselezionata.
+STR_6550    :Questa voce è inclusa per retrocompatibilità con oggetti vecchi o danneggiati. Non può essere selezionata, ma solo deselezionata.
 
 STR_6551    :Verde militare
 STR_6552    :Verde pallido
@@ -3705,6 +3672,23 @@ STR_6593    :Rimuovi recinto del parco
 STR_6594    :Analizzatore celle: Attiva/disattiva inclinazione muro
 STR_6595    :{WINDOW_COLOUR_2}Autore: {BLACK}{STRING}
 STR_6596    :{WINDOW_COLOUR_2}Autori: {BLACK}{STRING}
+STR_6597    :Parametro non valido
+STR_6598    :Valore fuori scala
+STR_6599    :Elemento fantasma non trovato
+STR_6600    :Palloncino non trovato
+STR_6601    :Membro dello staff non trovato
+STR_6602    :Attrazione non trovata
+STR_6603    :Elemento oggetto dell'attrazione non trovata
+STR_6604    :Giocatore non trovato
+STR_6605    :Elemento d’ingresso non trovato
+STR_6606    :Elemento di superficie non trovato
+STR_6607    :Elemento cella non trovato
+STR_6608    :Elemento percorso non trovato
+STR_6609    :Blocco di tracciato non trovato
+STR_6610    :Elemento di sentiero non trovato
+STR_6611    :Elemento di muro non trovato
+STR_6612    :Elemento cartello non trovato
+STR_6613    :Ricarica oggetto
 
 
 #############
@@ -4369,7 +4353,7 @@ STR_DTLS    :Sei un magnate della finanza di grande successo, che si è preso 4 
 <South America - Inca Lost City>
 STR_SCNR    :Sudamerica - Città perduta Inca
 STR_PARK    :Il fondatore della città perduta
-STR_DTLS    :Per potenziare il turismo, devi creare un parco intonato all’ambiente, rispettando dei limiti di altezza.
+STR_DTLS    :Per potenziare il turismo, devi creare un parco intonato all’ambiente.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :Sudamerica - La foresta pluviale

@@ -738,8 +738,8 @@ namespace RCT1
         uint8_t Unk199C96[3];
         uint8_t WaterColour;
         uint16_t Unk199C9A;
-        ResearchItem ResearchItemsLL[180];
-        uint8_t Unk19A020[5468];
+        ResearchItem ResearchItemsLL[250];
+        uint8_t Unk19A0D9[5118];
         RCT12Banner Banners[Limits::MaxBanners];
         char StringTable[Limits::MaxUserStrings][Limits::MaxUserStringLength];
         uint32_t GameTimeCounter;

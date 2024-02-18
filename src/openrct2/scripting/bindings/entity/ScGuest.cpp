@@ -173,6 +173,11 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScGuest::isLost_get, nullptr, "isLost");
         dukglue_register_property(ctx, &ScGuest::lostCountdown_get, &ScGuest::lostCountdown_set, "lostCountdown");
         dukglue_register_property(ctx, &ScGuest::thoughts_get, nullptr, "thoughts");
+        dukglue_register_property(ctx, &ScGuest::items_get, nullptr, "items");
+        dukglue_register_method(ctx, &ScGuest::has_item, "hasItem");
+        dukglue_register_method(ctx, &ScGuest::give_item, "giveItem");
+        dukglue_register_method(ctx, &ScGuest::remove_item, "removeItem");
+        dukglue_register_method(ctx, &ScGuest::remove_all_items, "removeAllItems");
     }
 
     Guest* ScGuest::GetGuest() const
@@ -492,6 +497,298 @@ namespace OpenRCT2::Scripting
         }
 
         return DukValue::take_from_stack(ctx, -1);
+    }
+
+    DukValue ScGuest::items_get() const
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+
+        duk_push_array(ctx);
+
+        auto peep = GetGuest();
+        if (peep != nullptr)
+        {
+            duk_uarridx_t index = 0;
+            for (const auto& itemEnumPair : ShopItemMap)
+            {
+                auto shopItem = itemEnumPair.second;
+                if (!peep->HasItem(shopItem))
+                {
+                    continue;
+                }
+
+                // GuestItem
+                auto obj = OpenRCT2::Scripting::DukObject(ctx);
+                obj.Set("type", itemEnumPair.first);
+
+                if (shopItem == ShopItem::Voucher)
+                {
+                    // Voucher
+                    obj.Set("voucherType", VoucherTypeMap[peep->VoucherType]);
+                    if (peep->VoucherType == VOUCHER_TYPE_RIDE_FREE)
+                    {
+                        // RideVoucher
+                        obj.Set("rideId", peep->VoucherRideId.ToUnderlying());
+                    }
+                    else if (peep->VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
+                    {
+                        // FoodDrinkVoucher
+                        obj.Set("item", ShopItemMap[peep->VoucherShopItem]);
+                    }
+                }
+                else if (GetShopItemDescriptor(shopItem).IsPhoto())
+                {
+                    // GuestPhoto
+                    switch (shopItem)
+                    {
+                        case ShopItem::Photo:
+                            obj.Set("rideId", peep->Photo1RideRef.ToUnderlying());
+                            break;
+                        case ShopItem::Photo2:
+                            obj.Set("rideId", peep->Photo2RideRef.ToUnderlying());
+                            break;
+                        case ShopItem::Photo3:
+                            obj.Set("rideId", peep->Photo3RideRef.ToUnderlying());
+                            break;
+                        case ShopItem::Photo4:
+                            obj.Set("rideId", peep->Photo4RideRef.ToUnderlying());
+                            break;
+                        default:
+                            // This should not be possible
+                            duk_error(ctx, DUK_ERR_TYPE_ERROR, "Item is photo without a ride ref.");
+                    }
+                }
+
+                auto dukItem = obj.Take();
+                dukItem.push();
+                duk_put_prop_index(ctx, -2, index);
+                index++;
+            }
+        }
+
+        return DukValue::take_from_stack(ctx, -1);
+    }
+
+    bool ScGuest::has_item(const DukValue& item) const
+    {
+        auto peep = GetGuest();
+        if (peep == nullptr)
+        {
+            return false;
+        }
+
+        if (item["type"].type() != DukValue::Type::STRING)
+        {
+            return false;
+        }
+
+        // GuestItem
+        auto shopItem = ShopItemMap.TryGet(item["type"].as_string());
+        if (!shopItem || !peep->HasItem(*shopItem))
+        {
+            return false;
+        }
+
+        if (*shopItem == ShopItem::Voucher)
+        {
+            if (item["voucherType"].type() == DukValue::Type::STRING)
+            {
+                // Voucher
+                auto voucher = VoucherTypeMap.TryGet(item["voucherType"].as_string());
+                if (!voucher || *voucher != peep->VoucherType)
+                {
+                    return false;
+                }
+
+                if (*voucher == VOUCHER_TYPE_RIDE_FREE)
+                {
+                    if (item["rideId"].type() == DukValue::Type::NUMBER)
+                    {
+                        // RideVoucher
+                        if (item["rideId"].as_uint() != peep->VoucherRideId.ToUnderlying())
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else if (*voucher == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
+                {
+                    if (item["item"].type() == DukValue::Type::STRING)
+                    {
+                        // FoodDrinkVoucher
+                        auto voucherItem = ShopItemMap.TryGet(item["item"].as_string());
+                        if (!voucherItem || *voucherItem != peep->VoucherShopItem)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        else if (GetShopItemDescriptor(*shopItem).IsPhoto())
+        {
+            // GuestPhoto
+            if (item["rideId"].type() == DukValue::Type::NUMBER)
+            {
+                switch (*shopItem)
+                {
+                    case ShopItem::Photo:
+                        if (item["rideId"].as_uint() != peep->Photo1RideRef.ToUnderlying())
+                        {
+                            return false;
+                        }
+                        break;
+                    case ShopItem::Photo2:
+                        if (item["rideId"].as_uint() != peep->Photo2RideRef.ToUnderlying())
+                        {
+                            return false;
+                        }
+                        break;
+                    case ShopItem::Photo3:
+                        if (item["rideId"].as_uint() != peep->Photo3RideRef.ToUnderlying())
+                        {
+                            return false;
+                        }
+                        break;
+                    case ShopItem::Photo4:
+                        if (item["rideId"].as_uint() != peep->Photo4RideRef.ToUnderlying())
+                        {
+                            return false;
+                        }
+                        break;
+                    default:
+                        return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    void ScGuest::give_item(const DukValue& item) const
+    {
+        ThrowIfGameStateNotMutable();
+        auto peep = GetGuest();
+        if (peep == nullptr)
+        {
+            return;
+        }
+
+        // GuestItem
+        if (item["type"].type() != DukValue::Type::STRING)
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            duk_error(ctx, DUK_ERR_ERROR, "Invalid 'type'.");
+        }
+
+        auto shopItem = ShopItemMap.TryGet(item["type"].as_string());
+        if (!shopItem)
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            duk_error(ctx, DUK_ERR_ERROR, "Invalid 'type'.");
+        }
+
+        if (*shopItem == ShopItem::Voucher)
+        {
+            // Voucher
+            if (item["voucherType"].type() != DukValue::Type::STRING)
+            {
+                auto ctx = GetContext()->GetScriptEngine().GetContext();
+                duk_error(ctx, DUK_ERR_ERROR, "Invalid 'voucherType'.");
+            }
+
+            auto voucherType = VoucherTypeMap.TryGet(item["voucherType"].as_string());
+            if (!voucherType)
+            {
+                auto ctx = GetContext()->GetScriptEngine().GetContext();
+                duk_error(ctx, DUK_ERR_ERROR, "Invalid 'voucherType'.");
+            }
+
+            if (*voucherType == VOUCHER_TYPE_RIDE_FREE)
+            {
+                // RideVoucher
+                if (item["rideId"].type() != DukValue::Type::NUMBER)
+                {
+                    auto ctx = GetContext()->GetScriptEngine().GetContext();
+                    duk_error(ctx, DUK_ERR_ERROR, "Invalid 'rideId'.");
+                }
+
+                peep->VoucherRideId = RideId::FromUnderlying(item["rideId"].as_uint());
+            }
+            else if (*voucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
+            {
+                // FoodDrinkVoucher
+                if (item["item"].type() != DukValue::Type::STRING)
+                {
+                    auto ctx = GetContext()->GetScriptEngine().GetContext();
+                    duk_error(ctx, DUK_ERR_ERROR, "Invalid 'item' (for food/drink voucher).");
+                }
+
+                auto voucherItem = ShopItemMap.TryGet(item["item"].as_string());
+                if (!voucherItem)
+                {
+                    auto ctx = GetContext()->GetScriptEngine().GetContext();
+                    duk_error(ctx, DUK_ERR_ERROR, "Invalid 'item' (for food/drink voucher).");
+                }
+
+                peep->VoucherShopItem = *voucherItem;
+            }
+
+            peep->VoucherType = *voucherType;
+        }
+        else if (GetShopItemDescriptor(*shopItem).IsPhoto())
+        {
+            // GuestPhoto
+            if (item["rideId"].type() != DukValue::Type::NUMBER)
+            {
+                auto ctx = GetContext()->GetScriptEngine().GetContext();
+                duk_error(ctx, DUK_ERR_ERROR, "Invalid 'rideId'.");
+            }
+
+            switch (*shopItem)
+            {
+                case ShopItem::Photo:
+                    peep->Photo1RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
+                    break;
+                case ShopItem::Photo2:
+                    peep->Photo2RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
+                    break;
+                case ShopItem::Photo3:
+                    peep->Photo3RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
+                    break;
+                case ShopItem::Photo4:
+                    peep->Photo4RideRef = RideId::FromUnderlying(item["rideId"].as_uint());
+                    break;
+                default:
+                    return;
+            }
+        }
+
+        peep->GiveItem(*shopItem);
+        peep->UpdateSpriteType();
+    }
+
+    void ScGuest::remove_item(const DukValue& item) const
+    {
+        ThrowIfGameStateNotMutable();
+        if (has_item(item))
+        {
+            // Since guests can only have one item of a type and this item matches, remove it.
+            auto peep = GetGuest();
+            peep->RemoveItem(ShopItemMap[item["type"].as_string()]);
+            peep->UpdateSpriteType();
+        }
+    }
+
+    void ScGuest::remove_all_items() const
+    {
+        ThrowIfGameStateNotMutable();
+        auto peep = GetGuest();
+        if (peep != nullptr)
+        {
+            peep->RemoveAllItems();
+            peep->UpdateSpriteType();
+        }
     }
 
     ScThought::ScThought(PeepThought backing)

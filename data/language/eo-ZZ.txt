@@ -2097,39 +2097,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Ne eblas ŝargi dosieron…
 STR_3011    :Doserio enhavas nevalidajn datumojn
-STR_3012    :Doĝemotakto-stilo
-STR_3013    :Foirejo-orgeno-stilo
-STR_3014    :Roma-fanfaro-stilo
-STR_3015    :Orienta stilo
-STR_3016    :Marsa stilo
-STR_3017    :Ĝangalotamburoj-stilo
-STR_3018    :Egipta stilo
-STR_3019    :Ludilejo-stilo
-STR_3020    :
-STR_3021    :Spaco-stilo
-STR_3022    :Horora stilo
-STR_3023    :Tekno-stilo
-STR_3024    :Milda stilo
-STR_3025    :Somero-stilo
-STR_3026    :Akvo-stilo
-STR_3027    :Sovaĝa-okcidento-stilo
-STR_3028    :Ĵurasa stilo
-STR_3029    :Rokmuziko-stilo
-STR_3030    :Ragtimo-stilo
-STR_3031    :Fantasto-stilo
-STR_3032    :Rokmuziko-stilo 2
-STR_3033    :Glacio-stilo
-STR_3034    :Neĝo-stilo
-STR_3035    :Propra muziko 1
-STR_3036    :Propra muziko 2
-STR_3037    :Mezepoka stilo
-STR_3038    :Urba stilo
-STR_3039    :Orgeno-stilo
-STR_3040    :Mekanika stilo
-STR_3041    :Moderna stilo
-STR_3042    :Piratoj-stilo
-STR_3043    :Rokmuziko-stilo 3
-STR_3044    :Dolĉaĵo-stilo
 STR_3045    :Elekti stilon de muziko por ludi
 STR_3047    :Loka aŭtoritato malpermesas malkonstruon aŭ redaktojn de ĉi tiu atrakcio
 STR_3048    :Loka aŭtoritato malpermesas kampanjojn surmerkatigajn
@@ -3579,7 +3546,7 @@ STR_6474    :Nevideblaj Gastoj
 STR_6475    :Nevidebla Dungitaro
 STR_6476    :Nevideba Vegetaĵaro
 STR_6477    :Nevideba Pejzaĝo
-STR_6478    :Nevidebaj Trotruaroj
+STR_6478    :Nevidebaj Trotuaroj
 STR_6479    :Nevidebaj Atrakcioj
 STR_6480    :Nevidebaj Veturiloj
 STR_6481    :Agordoj de Travidebleco
@@ -3698,6 +3665,23 @@ STR_6593    :Forigi parkobarilojn
 STR_6594    :Inspektilo de Bloko: Baskuligi deklivecon de muro
 STR_6595    :{WINDOW_COLOUR_2}Aŭtoro: {BLACK}{STRING}
 STR_6596    :{WINDOW_COLOUR_2}Aŭtoroj: {BLACK}{STRING}
+STR_6597    :Nevalida parametro
+STR_6598    :Valoro estas ekstervarieja
+STR_6599    :Fantomo-elemento ne troviĝis
+STR_6600    :Balono ne troviĝis
+STR_6601    :Dungitaro ne troviĝis
+STR_6602    :Atrakcio ne troviĝis
+STR_6603    :Enigo de atrakcio-objekto ne troviĝis
+STR_6604    :Ludanto ne troviĝis
+STR_6605    :Enirejo-elemento ne troviĝis
+STR_6606    :Surfaco-elemento ne troviĝis
+STR_6607    :Blokelemento ne troviĝis
+STR_6608    :Trakelemento ne troviĝis
+STR_6609    :Blokparto de trako ne troviĝis
+STR_6610    :Trotuaro-elemento ne troviĝis
+STR_6611    :Muro-elemento ne troviĝis
+STR_6612    :Rubando-elemento ne troviĝis
+STR_6613    :Reŝargi objekton
 
 #############
 # Scenarios #
@@ -4359,7 +4343,7 @@ STR_DTLS    :Vi estas sukcesa komerca magnato prenanta longan libertempon, kiu d
 <South America - Inca Lost City>
 STR_SCNR    :Sudameriko - La Perdita Inkaa Urbo
 STR_PARK    :Fondinto de la Perdita Urbo
-STR_DTLS    :Por plue akceli lokan turismon, vi devas konstrui parkon, kiu kaj akordas kun sia ĉirkaŭaĵo, kaj observas limigojn de alteco.
+STR_DTLS    :Por plue akceli lokan turismon, vi devas konstrui parkon, kiu akordas kun sia ĉirkaŭaĵo.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :Sudameriko - Pluvarbaro-Altebenaĵo

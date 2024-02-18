@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../actions/BannerRemoveAction.h"
@@ -90,9 +91,6 @@ uint8_t gMapSelectArrowDirection;
 TileCoordsXY gWidePathTileLoopPosition;
 uint16_t gGrassSceneryTileLoopPosition;
 
-TileCoordsXY gMapSize;
-int32_t gMapBaseZ;
-
 std::vector<CoordsXY> gMapSelectionTiles;
 std::vector<PeepSpawn> gPeepSpawns;
 
@@ -120,7 +118,7 @@ void StashMap()
 {
     _tileIndexStash = std::move(_tileIndex);
     _tileElementsStash = std::move(_tileElements);
-    _mapSizeStash = gMapSize;
+    _mapSizeStash = GetGameState().MapSize;
     _currentRotationStash = gCurrentRotation;
     _tileElementsInUseStash = _tileElementsInUse;
 }
@@ -129,9 +127,25 @@ void UnstashMap()
 {
     _tileIndex = std::move(_tileIndexStash);
     _tileElements = std::move(_tileElementsStash);
-    gMapSize = _mapSizeStash;
+    GetGameState().MapSize = _mapSizeStash;
     gCurrentRotation = _currentRotationStash;
     _tileElementsInUse = _tileElementsInUseStash;
+}
+
+CoordsXY GetMapSizeUnits()
+{
+    auto& gameState = OpenRCT2::GetGameState();
+    return { (gameState.MapSize.x - 1) * COORDS_XY_STEP, (gameState.MapSize.y - 1) * COORDS_XY_STEP };
+}
+CoordsXY GetMapSizeMinus2()
+{
+    auto& gameState = OpenRCT2::GetGameState();
+    return { (gameState.MapSize.x * COORDS_XY_STEP) + (8 * COORDS_XY_STEP - 2),
+             (gameState.MapSize.y * COORDS_XY_STEP) + (8 * COORDS_XY_STEP - 2) };
+}
+CoordsXY GetMapSizeMaxXY()
+{
+    return GetMapSizeUnits() - CoordsXY{ 1, 1 };
 }
 
 const std::vector<TileElement>& GetTileElements()
@@ -445,10 +459,12 @@ void MapInit(const TileCoordsXY& size)
     auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
     SetTileElements(std::vector<TileElement>(numTiles, GetDefaultSurfaceElement()));
 
+    auto& gameState = GetGameState();
+
     gGrassSceneryTileLoopPosition = 0;
     gWidePathTileLoopPosition = {};
-    gMapSize = size;
-    gMapBaseZ = 7;
+    gameState.MapSize = size;
+    gameState.MapBaseZ = 7;
     MapRemoveOutOfRangeElements();
     MapAnimationAutoCreate();
 
@@ -465,10 +481,11 @@ void MapCountRemainingLandRights()
 {
     gLandRemainingOwnershipSales = 0;
     gLandRemainingConstructionSales = 0;
+    auto& gameState = GetGameState();
 
-    for (int32_t y = 0; y < gMapSize.y; y++)
+    for (int32_t y = 0; y < gameState.MapSize.y; y++)
     {
-        for (int32_t x = 0; x < gMapSize.x; x++)
+        for (int32_t x = 0; x < gameState.MapSize.x; x++)
         {
             auto* surfaceElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y });
             // Surface elements are sometimes hacked out to save some space for other map elements
@@ -1238,6 +1255,8 @@ void MapUpdateTiles()
     if (gScreenFlags & ignoreScreenFlags)
         return;
 
+    auto& gameState = GetGameState();
+
     // Update 43 more tiles (for each 256x256 block)
     for (int32_t j = 0; j < 43; j++)
     {
@@ -1254,9 +1273,9 @@ void MapUpdateTiles()
         }
 
         // Repeat for each 256x256 block on the map
-        for (int32_t blockY = 0; blockY < gMapSize.y; blockY += 256)
+        for (int32_t blockY = 0; blockY < gameState.MapSize.y; blockY += 256)
         {
-            for (int32_t blockX = 0; blockX < gMapSize.x; blockX += 256)
+            for (int32_t blockX = 0; blockX < gameState.MapSize.x; blockX += 256)
             {
                 auto mapPos = TileCoordsXY{ blockX + x, blockY + y }.ToCoordsXY();
                 if (MapIsEdge(mapPos))
@@ -1403,7 +1422,7 @@ static void MapExtendBoundarySurfaceExtendTile(const SurfaceElement& sourceTile,
  */
 void MapExtendBoundarySurfaceY()
 {
-    auto y = gMapSize.y - 2;
+    auto y = GetGameState().MapSize.y - 2;
     for (auto x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
     {
         auto existingTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x, y - 1 });
@@ -1423,7 +1442,7 @@ void MapExtendBoundarySurfaceY()
  */
 void MapExtendBoundarySurfaceX()
 {
-    auto x = gMapSize.x - 2;
+    auto x = GetGameState().MapSize.x - 2;
     for (auto y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
         auto existingTileElement = MapGetSurfaceElementAt(TileCoordsXY{ x - 1, y });

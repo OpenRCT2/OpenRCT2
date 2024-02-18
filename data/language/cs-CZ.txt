@@ -2102,39 +2102,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Nepodařilo se načíst soubor…
 STR_3011    :Soubor obsahuje neplatná data
-STR_3012    :Autodrom
-STR_3013    :Tržnice
-STR_3014    :Římská fanfára
-STR_3015    :Orient
-STR_3016    :Marťan
-STR_3017    :Jungle bubny
-STR_3018    :Egypt
-STR_3019    :Země hraček
-STR_3020    :
-STR_3021    :Vesmír
-STR_3022    :Horor
-STR_3023    :Techno
-STR_3024    :Mírná hudba
-STR_3025    :Letní hudba
-STR_3026    :Vodní
-STR_3027    :Divoký západ
-STR_3028    :Jurský styl
-STR_3029    :Rock
-STR_3030    :Ragtime
-STR_3031    :Fantasy
-STR_3032    :Rock 2
-STR_3033    :Led
-STR_3034    :Sníh
-STR_3035    :Vlastní hudba 1
-STR_3036    :Vlastní hudba 2
-STR_3037    :Středověk
-STR_3038    :Urban
-STR_3039    :Varhany
-STR_3040    :Mechanika
-STR_3041    :Moderní
-STR_3042    :Piráti
-STR_3043    :Rock 3
-STR_3044    :Sladkosti
 STR_3045    :Vyberte styl muziky, která bude hrát
 STR_3047    :Místní správa zakazuje úpravy a zrušení této atrakce
 STR_3048    :Reklamní kampaně zakázány místní správou

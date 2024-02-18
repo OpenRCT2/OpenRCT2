@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../Editor.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/RideSetStatusAction.h"
 #include "../audio/AudioChannel.h"
@@ -55,6 +56,7 @@
 #include <algorithm>
 #include <iterator>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::TrackMetaData;
 using namespace OpenRCT2::Math::Trigonometry;
@@ -1069,7 +1071,7 @@ static void UpdateSound(
         sound.Pan = sound_params->pan_x;
         sound.Channel->SetPan(DStoMixerPan(sound_params->pan_x));
     }
-    if (!(gCurrentTicks & 3) && sound_params->frequency != sound.Frequency)
+    if (!(GetGameState().CurrentTicks & 3) && sound_params->frequency != sound.Frequency)
     {
         sound.Frequency = sound_params->frequency;
         if (ShouldUpdateChannelRate<type>(id))
@@ -4909,7 +4911,7 @@ void Vehicle::UpdateHauntedHouseOperating()
 
     if (Pitch != 0)
     {
-        if (gCurrentTicks & 1)
+        if (GetGameState().CurrentTicks & 1)
         {
             Pitch++;
             Invalidate();
@@ -5422,11 +5424,12 @@ void Vehicle::UpdateSound()
         frictionSound.volume = std::min(208 + (ecx & 0xFF), 255);
     }
 
+    const auto currentTicks = GetGameState().CurrentTicks;
     switch (carEntry.sound_range)
     {
         case SOUND_RANGE_WHISTLE:
             screamSound.id = scream_sound_id;
-            if (!(gCurrentTicks & 0x7F))
+            if (!(currentTicks & 0x7F))
             {
                 if (velocity < 4.0_mph || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
                 {
@@ -5448,7 +5451,7 @@ void Vehicle::UpdateSound()
 
         case SOUND_RANGE_BELL:
             screamSound.id = scream_sound_id;
-            if (!(gCurrentTicks & 0x7F))
+            if (!(currentTicks & 0x7F))
             {
                 if (velocity < 4.0_mph || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
                 {
@@ -5724,7 +5727,7 @@ int32_t Vehicle::UpdateMotionDodgems()
     if (!(curRide->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN))
         || curRide->breakdown_reason_pending != BREAKDOWN_SAFETY_CUT_OUT)
     {
-        if (gCurrentTicks & 1 && var_34 != 0)
+        if ((GetGameState().CurrentTicks & 1) && var_34 != 0)
         {
             if (var_34 > 0)
             {
@@ -6931,7 +6934,7 @@ static PitchAndRoll PitchAndRollStart(bool useInvertedSprites, TileElement* tile
 {
     auto trackType = tileElement->AsTrack()->GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    return PitchAndRoll{ ted.Definition.vangle_start, TrackGetActualBank3(useInvertedSprites, tileElement) };
+    return PitchAndRoll{ ted.Definition.PitchStart, TrackGetActualBank3(useInvertedSprites, tileElement) };
 }
 
 void Vehicle::UpdateGoKartAttemptSwitchLanes()
@@ -7669,7 +7672,7 @@ Loc6DAEB9:
             {
                 acceleration = -_vehicleVelocityF64E08 * 16;
             }
-            else if (!(gCurrentTicks & 0x0F))
+            else if (!(GetGameState().CurrentTicks & 0x0F))
             {
                 if (_vehicleF64E2C == 0)
                 {
@@ -7873,7 +7876,7 @@ static PitchAndRoll PitchAndRollEnd(const Ride& curRide, bool useInvertedSprites
 {
     bool isInverted = useInvertedSprites ^ tileElement->AsTrack()->IsInverted();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    return { ted.Definition.vangle_end, TrackGetActualBank2(curRide.type, isInverted, ted.Definition.bank_end) };
+    return { ted.Definition.PitchEnd, TrackGetActualBank2(curRide.type, isInverted, ted.Definition.RollEnd) };
 }
 
 /**
@@ -8211,21 +8214,45 @@ void Vehicle::UpdateTrackMotionMiniGolfVehicle(const Ride& curRide, const RideOb
         goto Loc6DCA9A;
 
 Loc6DC462:
-    if (var_D3 == 0)
+    if (var_D3 != 0)
     {
-        goto Loc6DC476;
-    }
-    var_D3--;
-    goto Loc6DC985;
+        var_D3--;
+        remaining_distance -= 0x368A;
+        if (remaining_distance < 0)
+        {
+            remaining_distance = 0;
+        }
 
-Loc6DC476:
+        if (remaining_distance < 0x368A)
+        {
+            Loc6DCDE4(curRide);
+            return;
+        }
+        acceleration = AccelerationFromPitch[Pitch];
+        _vehicleUnkF64E10++;
+        goto Loc6DC462;
+    }
+
     if (mini_golf_flags & MiniGolfFlag::Flag2)
     {
         uint8_t nextFrame = animation_frame + 1;
         if (nextFrame < MiniGolfPeepAnimationLengths[EnumValue(mini_golf_current_animation)])
         {
             animation_frame = nextFrame;
-            goto Loc6DC985;
+            remaining_distance -= 0x368A;
+            if (remaining_distance < 0)
+            {
+                remaining_distance = 0;
+            }
+
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(curRide);
+                return;
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            goto Loc6DC462;
         }
         mini_golf_flags &= ~MiniGolfFlag::Flag2;
     }
@@ -8240,11 +8267,37 @@ Loc6DC476:
         }
         if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag0) || (vEDI->mini_golf_flags & MiniGolfFlag::Flag2))
         {
-            goto Loc6DC985;
+            remaining_distance -= 0x368A;
+            if (remaining_distance < 0)
+            {
+                remaining_distance = 0;
+            }
+
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(curRide);
+                return;
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            goto Loc6DC462;
         }
         if (vEDI->var_D3 != 0)
         {
-            goto Loc6DC985;
+            remaining_distance -= 0x368A;
+            if (remaining_distance < 0)
+            {
+                remaining_distance = 0;
+            }
+
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(curRide);
+                return;
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            goto Loc6DC462;
         }
         vEDI->mini_golf_flags &= ~MiniGolfFlag::Flag0;
         mini_golf_flags &= ~MiniGolfFlag::Flag0;
@@ -8260,11 +8313,37 @@ Loc6DC476:
         }
         if (!(vEDI->mini_golf_flags & MiniGolfFlag::Flag1) || (vEDI->mini_golf_flags & MiniGolfFlag::Flag2))
         {
-            goto Loc6DC985;
+            remaining_distance -= 0x368A;
+            if (remaining_distance < 0)
+            {
+                remaining_distance = 0;
+            }
+
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(curRide);
+                return;
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            goto Loc6DC462;
         }
         if (vEDI->var_D3 != 0)
         {
-            goto Loc6DC985;
+            remaining_distance -= 0x368A;
+            if (remaining_distance < 0)
+            {
+                remaining_distance = 0;
+            }
+
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(curRide);
+                return;
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            goto Loc6DC462;
         }
         vEDI->mini_golf_flags &= ~MiniGolfFlag::Flag1;
         mini_golf_flags &= ~MiniGolfFlag::Flag1;
@@ -8287,77 +8366,108 @@ Loc6DC476:
                 continue;
             if (vEDI->TrackLocation != TrackLocation)
                 continue;
-            goto Loc6DC985;
+            remaining_distance -= 0x368A;
+            if (remaining_distance < 0)
+            {
+                remaining_distance = 0;
+            }
+
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(curRide);
+                return;
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            goto Loc6DC462;
         }
 
         mini_golf_flags |= MiniGolfFlag::Flag4;
         mini_golf_flags &= ~MiniGolfFlag::Flag3;
     }
 
-    // There are two bytes before the move info list
     {
         uint16_t trackTotalProgress = GetTrackProgress();
-        if (track_progress + 1 < trackTotalProgress)
+        if (track_progress + 1 >= trackTotalProgress)
+        {
+            tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
+            {
+                CoordsXYE output;
+                int32_t outZ{};
+                int32_t outDirection{};
+                CoordsXYE input = { TrackLocation, tileElement };
+                if (!TrackBlockGetNext(&input, &output, &outZ, &outDirection))
+                {
+                    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+                    _vehicleVelocityF64E0C -= remaining_distance + 1;
+                    remaining_distance = -1;
+                    if (remaining_distance >= 0)
+                    {
+                        Loc6DCDE4(curRide);
+                    }
+                    acceleration += AccelerationFromPitch[Pitch];
+                    _vehicleUnkF64E10++;
+                    goto Loc6DCA9A;
+                }
+                tileElement = output.element;
+                trackPos = { output.x, output.y, outZ };
+                direction = outDirection;
+            }
+
+            if (PitchAndRollStart(HasFlag(VehicleFlags::CarIsInverted), tileElement) != TrackPitchAndRollEnd(GetTrackType()))
+            {
+                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+                _vehicleVelocityF64E0C -= remaining_distance + 1;
+                remaining_distance = -1;
+                if (remaining_distance >= 0)
+                {
+                    Loc6DCDE4(curRide);
+                }
+                acceleration += AccelerationFromPitch[Pitch];
+                _vehicleUnkF64E10++;
+                goto Loc6DCA9A;
+            }
+
+            {
+                int32_t rideType = ::GetRide(tileElement->AsTrack()->GetRideIndex())->type;
+                ClearFlag(VehicleFlags::CarIsInverted);
+                if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
+                {
+                    if (tileElement->AsTrack()->IsInverted())
+                    {
+                        SetFlag(VehicleFlags::CarIsInverted);
+                    }
+                }
+            }
+
+            TrackLocation = trackPos;
+
+            if (!IsHead())
+            {
+                Vehicle* prevVehicle = GetEntity<Vehicle>(prev_vehicle_on_ride);
+                if (prevVehicle != nullptr)
+                {
+                    TrackSubposition = prevVehicle->TrackSubposition;
+                }
+                if (TrackSubposition != VehicleTrackSubposition::MiniGolfStart9)
+                {
+                    TrackSubposition = VehicleTrackSubposition{ static_cast<uint8_t>(
+                        static_cast<uint8_t>(TrackSubposition) - 1u) };
+                }
+            }
+
+            ClearFlag(VehicleFlags::OnLiftHill);
+            SetTrackType(tileElement->AsTrack()->GetTrackType());
+            SetTrackDirection(direction);
+            brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+            track_progress = 0;
+        }
+        else
         {
             track_progress += 1;
-            goto Loc6DC743;
         }
     }
 
-    tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
-    {
-        CoordsXYE output;
-        int32_t outZ{};
-        int32_t outDirection{};
-        CoordsXYE input = { TrackLocation, tileElement };
-        if (!TrackBlockGetNext(&input, &output, &outZ, &outDirection))
-        {
-            goto Loc6DC9BC;
-        }
-        tileElement = output.element;
-        trackPos = { output.x, output.y, outZ };
-        direction = outDirection;
-    }
-
-    if (PitchAndRollStart(HasFlag(VehicleFlags::CarIsInverted), tileElement) != TrackPitchAndRollEnd(GetTrackType()))
-    {
-        goto Loc6DC9BC;
-    }
-
-    {
-        int32_t rideType = ::GetRide(tileElement->AsTrack()->GetRideIndex())->type;
-        ClearFlag(VehicleFlags::CarIsInverted);
-        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
-        {
-            if (tileElement->AsTrack()->IsInverted())
-            {
-                SetFlag(VehicleFlags::CarIsInverted);
-            }
-        }
-    }
-
-    TrackLocation = trackPos;
-
-    if (!IsHead())
-    {
-        Vehicle* prevVehicle = GetEntity<Vehicle>(prev_vehicle_on_ride);
-        if (prevVehicle != nullptr)
-        {
-            TrackSubposition = prevVehicle->TrackSubposition;
-        }
-        if (TrackSubposition != VehicleTrackSubposition::MiniGolfStart9)
-        {
-            TrackSubposition = VehicleTrackSubposition{ static_cast<uint8_t>(static_cast<uint8_t>(TrackSubposition) - 1u) };
-        }
-    }
-
-    ClearFlag(VehicleFlags::OnLiftHill);
-    SetTrackType(tileElement->AsTrack()->GetTrackType());
-    SetTrackDirection(direction);
-    brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
-    track_progress = 0;
-
-Loc6DC743:
     if (!IsHead())
     {
         animation_frame++;
@@ -8489,88 +8599,92 @@ Loc6DC743:
             UpdateMotionCollisionDetection(trackPos, &otherVehicleIndex);
         }
     }
-    goto Loc6DC99A;
-
-Loc6DC985:
-    remaining_distance -= 0x368A;
-    if (remaining_distance < 0)
-    {
-        remaining_distance = 0;
-    }
-
-Loc6DC99A:
     if (remaining_distance < 0x368A)
     {
-        goto Loc6DCDE4;
+        Loc6DCDE4(curRide);
+        return;
     }
     acceleration = AccelerationFromPitch[Pitch];
     _vehicleUnkF64E10++;
     goto Loc6DC462;
 
-Loc6DC9BC:
-    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-    _vehicleVelocityF64E0C -= remaining_distance + 1;
-    remaining_distance = -1;
-    goto Loc6DCD2B;
-
 Loc6DCA9A:
-    if (track_progress != 0)
+    if (track_progress == 0)
+    {
+        tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
+        {
+            TrackBeginEnd trackBeginEnd;
+            if (!TrackBlockGetPrevious({ TrackLocation, tileElement }, &trackBeginEnd))
+            {
+                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+                _vehicleVelocityF64E0C -= remaining_distance + 1;
+                remaining_distance = -1;
+                if (remaining_distance >= 0)
+                {
+                    Loc6DCDE4(curRide);
+                }
+                acceleration += AccelerationFromPitch[Pitch];
+                _vehicleUnkF64E10++;
+                goto Loc6DCA9A;
+            }
+            trackPos = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
+            direction = trackBeginEnd.begin_direction;
+            tileElement = trackBeginEnd.begin_element;
+        }
+
+        if (PitchAndRollStart(HasFlag(VehicleFlags::CarIsInverted), tileElement) != TrackPitchAndRollEnd(GetTrackType()))
+        {
+            _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+            _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
+            remaining_distance = 0x368A;
+            if (remaining_distance < 0x368A)
+            {
+                Loc6DCDE4(curRide);
+                return;
+            }
+            acceleration = AccelerationFromPitch[Pitch];
+            _vehicleUnkF64E10++;
+            goto Loc6DC462;
+        }
+
+        {
+            int32_t rideType = ::GetRide(tileElement->AsTrack()->GetRideIndex())->type;
+            ClearFlag(VehicleFlags::CarIsInverted);
+            if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
+            {
+                if (tileElement->AsTrack()->IsInverted())
+                {
+                    SetFlag(VehicleFlags::CarIsInverted);
+                }
+            }
+        }
+
+        TrackLocation = trackPos;
+
+        if (HasFlag(VehicleFlags::OnLiftHill))
+        {
+            ClearFlag(VehicleFlags::OnLiftHill);
+            if (next_vehicle_on_train.IsNull())
+            {
+                if (_vehicleVelocityF64E08 < 0)
+                {
+                    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_8;
+                }
+            }
+        }
+
+        SetTrackType(tileElement->AsTrack()->GetTrackType());
+        SetTrackDirection(direction);
+        brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+
+        // There are two bytes before the move info list
+        track_progress = GetTrackProgress();
+    }
+    else
     {
         track_progress -= 1;
-        goto Loc6DCC2C;
     }
 
-    tileElement = MapGetTrackElementAtOfTypeSeq(TrackLocation, GetTrackType(), 0);
-    {
-        TrackBeginEnd trackBeginEnd;
-        if (!TrackBlockGetPrevious({ TrackLocation, tileElement }, &trackBeginEnd))
-        {
-            goto Loc6DC9BC;
-        }
-        trackPos = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
-        direction = trackBeginEnd.begin_direction;
-        tileElement = trackBeginEnd.begin_element;
-    }
-
-    if (PitchAndRollStart(HasFlag(VehicleFlags::CarIsInverted), tileElement) != TrackPitchAndRollEnd(GetTrackType()))
-    {
-        goto Loc6DCD4A;
-    }
-
-    {
-        int32_t rideType = ::GetRide(tileElement->AsTrack()->GetRideIndex())->type;
-        ClearFlag(VehicleFlags::CarIsInverted);
-        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
-        {
-            if (tileElement->AsTrack()->IsInverted())
-            {
-                SetFlag(VehicleFlags::CarIsInverted);
-            }
-        }
-    }
-
-    TrackLocation = trackPos;
-
-    if (HasFlag(VehicleFlags::OnLiftHill))
-    {
-        ClearFlag(VehicleFlags::OnLiftHill);
-        if (next_vehicle_on_train.IsNull())
-        {
-            if (_vehicleVelocityF64E08 < 0)
-            {
-                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_8;
-            }
-        }
-    }
-
-    SetTrackType(tileElement->AsTrack()->GetTrackType());
-    SetTrackDirection(direction);
-    brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
-
-    // There are two bytes before the move info list
-    track_progress = GetTrackProgress();
-
-Loc6DCC2C:
     moveInfo = GetMoveInfo();
     trackPos = { TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y,
                  TrackLocation.z + moveInfo->z + GetRideTypeDescriptor(curRide.type).Heights.VehicleZOffset };
@@ -8603,50 +8717,50 @@ Loc6DCC2C:
             otherVehicleIndex = EntityId::FromUnderlying(var_44); // Possibly wrong?.
             if (UpdateMotionCollisionDetection(trackPos, &otherVehicleIndex))
             {
-                goto Loc6DCD6B;
+                _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
+                remaining_distance = 0x368A;
+                {
+                    Vehicle* vEBP = GetEntity<Vehicle>(otherVehicleIndex);
+                    if (vEBP == nullptr)
+                    {
+                        return;
+                    }
+                    Vehicle* vEDI = gCurrentVehicle;
+                    if (abs(vEDI->velocity - vEBP->velocity) > 14.0_mph)
+                    {
+                        if (!(carEntry->flags & CAR_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
+                        {
+                            _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
+                        }
+                    }
+                    vEDI->velocity = vEBP->velocity >> 1;
+                    vEBP->velocity = vEDI->velocity >> 1;
+                }
+                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
+                if (remaining_distance < 0x368A)
+                {
+                    Loc6DCDE4(curRide);
+                    return;
+                }
+                acceleration = AccelerationFromPitch[Pitch];
+                _vehicleUnkF64E10++;
+                goto Loc6DC462;
             }
         }
     }
 
-Loc6DCD2B:
     if (remaining_distance >= 0)
     {
-        goto Loc6DCDE4;
+        Loc6DCDE4(curRide);
+        return;
     }
     acceleration += AccelerationFromPitch[Pitch];
     _vehicleUnkF64E10++;
     goto Loc6DCA9A;
+}
 
-Loc6DCD4A:
-    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-    _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
-    remaining_distance = 0x368A;
-    goto Loc6DC99A;
-
-Loc6DCD6B:
-    _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
-    remaining_distance = 0x368A;
-    {
-        Vehicle* vEBP = GetEntity<Vehicle>(otherVehicleIndex);
-        if (vEBP == nullptr)
-        {
-            return;
-        }
-        Vehicle* vEDI = gCurrentVehicle;
-        if (abs(vEDI->velocity - vEBP->velocity) > 14.0_mph)
-        {
-            if (!(carEntry->flags & CAR_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
-            {
-                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
-            }
-        }
-        vEDI->velocity = vEBP->velocity >> 1;
-        vEBP->velocity = vEDI->velocity >> 1;
-    }
-    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
-    goto Loc6DC99A;
-
-Loc6DCDE4:
+void Vehicle::Loc6DCDE4(const Ride& curRide)
+{
     MoveTo(_vehicleCurPosition);
 
     Loc6DCE02(curRide);

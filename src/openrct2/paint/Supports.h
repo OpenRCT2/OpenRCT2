@@ -31,6 +31,8 @@ enum class WoodenSupportSubType : uint8_t
     Corner1 = 3,
     Corner2 = 4,
     Corner3 = 5,
+
+    Null,
 };
 
 enum class WoodenSupportTransitionType : uint8_t
@@ -48,6 +50,14 @@ enum class WoodenSupportTransitionType : uint8_t
     Up25DegToFlatRailway = 10,
     Up25DegRailway = 11,
     Scenery = 12,
+    FlatToUp60DegLongBaseSeq0 = 13,
+    FlatToUp60DegLongBaseSeq1 = 14,
+    FlatToUp60DegLongBaseSeq2 = 15,
+    FlatToUp60DegLongBaseSeq3 = 16,
+    Up60DegToFlatLongBaseSeq0 = 17,
+    Up60DegToFlatLongBaseSeq1 = 18,
+    Up60DegToFlatLongBaseSeq2 = 19,
+    Up60DegToFlatLongBaseSeq3 = 20,
 };
 
 // There are 13 types of metal supports. A graphic showing all of them is available here:
@@ -126,8 +136,6 @@ enum class MetalSupportPlace : uint8_t
 };
 
 bool WoodenASupportsPaintSetup(
-    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
-bool WoodenASupportsPaintSetup(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
     WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None, Direction direction = 0);
 bool WoodenASupportsPaintSetupRotated(
@@ -145,11 +153,11 @@ bool MetalASupportsPaintSetup(
 bool MetalBSupportsPaintSetup(
     PaintSession& session, MetalSupportType supportTypeMember, MetalSupportPlace placement, int32_t special, int32_t height,
     ImageId imageTemplate);
-bool PathASupportsPaintSetup(
-    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
-    const FootpathPaintInfo& pathPaintInfo, bool* underground);
-bool PathBSupportsPaintSetup(
-    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
+bool PathBoxSupportsPaintSetup(
+    PaintSession& session, WoodenSupportSubType supportType, bool isSloped, Direction slopeRotation, int32_t height,
+    ImageId imageTemplate, const FootpathPaintInfo& pathPaintInfo);
+bool PathPoleSupportsPaintSetup(
+    PaintSession& session, MetalSupportPlace supportPlace, bool isSloped, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo);
 void DrawSupportsSideBySide(
     PaintSession& session, Direction direction, uint16_t height, ImageId colour, MetalSupportType type, int32_t special = 0);

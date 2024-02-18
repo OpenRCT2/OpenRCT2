@@ -2104,39 +2104,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Impossible de charger le fichier…
 STR_3011    :Le fichier contient des données non valides
-STR_3012    :Auto-tamponneuse
-STR_3013    :Orgue champ de foire
-STR_3014    :Fanfare romaine
-STR_3015    :Oriental
-STR_3016    :Alien
-STR_3017    :Tambours de la jungle
-STR_3018    :Egyptien
-STR_3019    :Jouets par milliers
-STR_3020    :
-STR_3021    :Espace
-STR_3022    :Horreur
-STR_3023    :Techno
-STR_3024    :Tranquille
-STR_3025    :Estival
-STR_3026    :Aquatique
-STR_3027    :Western
-STR_3028    :Jurassique
-STR_3029    :Rock
-STR_3030    :Ragtime
-STR_3031    :Imaginaire
-STR_3032    :Rock 2
-STR_3033    :Glace
-STR_3034    :Neige
-STR_3035    :Musique perso 1
-STR_3036    :Musique perso 2
-STR_3037    :Médiéval
-STR_3038    :Urbain
-STR_3039    :Orgue
-STR_3040    :Mécanique
-STR_3041    :Moderne
-STR_3042    :Pirates
-STR_3043    :Rock 3
-STR_3044    :Bonbon-ville
 STR_3045    :Choisit le style de musique
 STR_3047    :Les autorités locales interdisent la démolition ou modification de cette attraction
 STR_3048    :Les autorités locales interdisent toute campagne marketing
@@ -3703,6 +3670,26 @@ STR_6589    :Placer les boutons de fenêtre à gauche
 STR_6590    :Place les boutons de fenêtre (par exemple pour fermer la fenêtre) sur la gauche de la barre de titre au lieu de la droite
 STR_6591    :L’employé est en train de réparer une attraction et ne peut pas être licencié.
 STR_6592    :L’employé est en train d’inspecter une attraction et ne peut pas être licencié.
+STR_6593    :Retirer les clôtures du parc
+STR_6594    :Inspecteur de cases: Permuter la pente des murs
+STR_6595    :{WINDOW_COLOUR_2}Créé par : {BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}Créé par : {BLACK}{STRING}
+STR_6597    :Paramètre invalide
+STR_6598    :Valeur hors plage
+STR_6599    :Élément fantôme introuvable
+STR_6600    :Ballon introuvable
+STR_6601    :Employé introuvable
+STR_6602    :Attraction introuvable
+STR_6603    :Entrée d’objet d’attraction introuvable
+STR_6604    :Joueur/joueuse introuvable
+STR_6605    :Élément d’entrée introuvable
+STR_6606    :Élément de surface introuvable
+STR_6607    :Élément de case introuvable
+STR_6608    :Élément de voie introuvable
+STR_6609    :Bloc de voie introuvable
+STR_6610    :Élément de chemin introuvable
+STR_6611    :Élément de mur introuvable
+STR_6612    :Élément de bannière introuvable
 
 #############
 # Scenarios #
@@ -4355,7 +4342,7 @@ STR_DTLS    :Vous êtes un businessman accompli en période sabbatique de 4 ans,
 <South America - Inca Lost City>
 STR_SCNR    :Amérique du Sud — La cité inca
 STR_PARK    :Les aventuriers de la cité perdue
-STR_DTLS    :Pour dynamiser encore plus le tourisme local vous devez construire un parc en harmonie avec son environnement, avec des restrictions de hauteur.
+STR_DTLS    :Pour dynamiser encore plus le tourisme local vous devez construire un parc en harmonie avec son environnement.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :Amérique du Sud — La forêt équatoriale

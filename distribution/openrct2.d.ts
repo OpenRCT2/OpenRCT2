@@ -56,7 +56,10 @@ declare global {
      * Plugin writers should check if ui is available using `typeof ui !== 'undefined'`.
      */
     var ui: Ui;
-
+    /**
+     * APIs for managing the installed plugins
+     */
+    var pluginManager: PluginManager;
     /**
      * Registers the plugin. This may only be called once.
      * @param metadata Information about the plugin and the entry point.
@@ -2767,6 +2770,35 @@ declare global {
          * The list of thoughts this guest has.
          */
         readonly thoughts: Thought[];
+
+        /**
+         * The list of items this guest has.
+         */
+        readonly items: GuestItem[];
+
+        /**
+         * Checks whether this guest has a certain item.
+         * @param item The item to check.
+         */
+        hasItem(item: GuestItem): boolean;
+
+        /**
+         * Gives an item to the guest. Guests can only have one item of a given type.
+         * If this guest already has an item of the same type, this will override the current item.
+         * @param item The item to give.
+         */
+        giveItem(item: GuestItem): void;
+
+        /**
+         * Removes an item from the guest's possession.
+         * @param item The item to remove.
+         */
+        removeItem(item: GuestItem): void;
+
+        /**
+         * Removes all items from the guest's possession.
+         */
+        removeAllItems(): void;
     }
 
     /**
@@ -2928,6 +2960,120 @@ declare global {
         "nice_ride_deprecated" |
         "excited_deprecated" |
         "here_we_are";
+
+    type GuestItemType =
+        "balloon" |
+        "hat" |
+        "map" |
+        "sunglasses" |
+        "toy" |
+        "tshirt" |
+        "umbrella" |
+        "photo1" |
+        "photo2" |
+        "photo3" |
+        "photo4" |
+        "voucher" |
+        "beef_noodles" |
+        "burger" |
+        "candyfloss" |
+        "chicken" |
+        "chips" |
+        "chocolate" |
+        "cookie" |
+        "doughnut" |
+        "hot_dog" |
+        "fried_rice_noodles" |
+        "funnel_cake" |
+        "ice_cream" |
+        "meatball_soup" |
+        "pizza" |
+        "popcorn" |
+        "pretzel" |
+        "roast_sausage" |
+        "sub_sandwich" |
+        "tentacle" |
+        "toffee_apple" |
+        "wonton_soup" |
+        "coffee" |
+        "drink" |
+        "fruit_juice" |
+        "iced_tea" |
+        "lemonade" |
+        "soybean_milk" |
+        "sujeonggwa" |
+        "empty_bottle" |
+        "empty_bowl_blue" |
+        "empty_bowl_red" |
+        "empty_box" |
+        "empty_burger_box" |
+        "empty_can" |
+        "empty_cup" |
+        "empty_drink_carton" |
+        "empty_juice_cup" |
+        "rubbish";
+
+    type VoucherType =
+        "entry_free" |
+        "entry_half_price" |
+        "ride_free" |
+        "food_drink_free";
+
+    /**
+     * Represents an item in a guest's possession.
+     * If giving a guest a photo or voucher, use the other interfaces instead.
+     */
+    interface GuestItem {
+        /**
+         * The type of item.
+         */
+        readonly type: GuestItemType;
+    }
+
+    /**
+     * Represents an on-ride photo in a guest's possession.
+     */
+    interface GuestPhoto extends GuestItem {
+        readonly type: "photo1" | "photo2" | "photo3" | "photo4";
+        /**
+         * The id of the ride the on-ride photo is for.
+         */
+        readonly rideId: number;
+    }
+
+    /**
+     * Represents a voucher in a guest's possession. If giving a guest a voucher for free rides
+     * or free food/drink, use the other interfaces instead.
+     */
+    interface Voucher extends GuestItem {
+        readonly type: "voucher";
+        /**
+         * The type of voucher.
+         */
+        readonly voucherType: VoucherType;
+    }
+
+    /**
+     * Represents a voucher for a free ride in a guest's possession.
+     */
+    interface RideVoucher extends Voucher {
+        readonly voucherType: "ride_free";
+        /**
+         * The id of the ride the voucher is for.
+         */
+        readonly rideId: number;
+    }
+
+    /**
+     * Represents a voucher for free food or drink in a guest's possession.
+     */
+    interface FoodDrinkVoucher extends Voucher {
+        readonly voucherType: "food_drink_free";
+        /**
+         * The type of food or drink the voucher is for.
+         */
+        readonly item: GuestItemType;
+    }
 
     /**
      * Represents a staff member.
@@ -4804,5 +4950,12 @@ declare global {
         getAllObjects(type: "banner"): BannerObject[];
         getAllObjects(type: "scenery_group"): SceneryGroupObject[];
         getAllObjects(type: "music"): LoadedObject[];
+    }
+
+    /**
+     * Interface to handle the plugin manager
+     */
+    interface PluginManager {
+        readonly plugins: PluginMetadata[];
     }
 }

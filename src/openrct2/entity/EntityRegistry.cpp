@@ -275,7 +275,8 @@ static void EntityReset(EntityBase* entity)
     entity->Type = EntityType::Null;
 }
 
-static constexpr uint16_t MAX_MISC_SPRITES = 300;
+static constexpr uint16_t MAX_MISC_SPRITES = 1600;
+
 static void AddToEntityList(EntityBase* entity)
 {
     auto& list = gEntityLists[EnumValue(entity->Type)];

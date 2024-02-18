@@ -696,8 +696,12 @@ namespace RCT1
         return map[vehicleSubEntry];
     }
 
-    std::string_view GetRideTypeObject(RideType rideType)
+    std::string_view GetRideTypeObject(RideType rideType, bool isLL)
     {
+        if (rideType == RideType::InvertedRollerCoaster && !isLL) {
+            return "rct1.ride.inverted_trains";
+        }
+
         static constexpr const char * map[] =
         {
             "rct1.ride.wooden_rc_trains",            // RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER
@@ -761,7 +765,7 @@ namespace RCT1
             "rct2.ride.toffs",                       // RCT1_RIDE_TYPE_TOFFEE_APPLE_STALL
             "rct2.ride.vreel",                       // RCT1_RIDE_TYPE_VIRGINIA_REEL
             "rct2.ride.spboat",                      // RCT1_RIDE_TYPE_RIVER_RIDE
-            "rct2.ride.monbk",                       // RCT1_RIDE_TYPE_CYCLE_MONORAIL
+            "rct2.ride.helicar",                     // RCT1_RIDE_TYPE_CYCLE_MONORAIL
             "rct2.ride.vekst",                       // RCT1_RIDE_TYPE_FLYING_ROLLER_COASTER
             "rct2.ride.smono",                       // RCT1_RIDE_TYPE_SUSPENDED_MONORAIL
             "",                                      // RCT1_RIDE_TYPE_40
@@ -772,7 +776,7 @@ namespace RCT1
             "rct2.ride.gdrop1",                      // RCT1_RIDE_TYPE_ROTO_DROP
             "rct2.ride.fsauc",                       // RCT1_RIDE_TYPE_FLYING_SAUCERS
             "rct2.ride.chbuild",                     // RCT1_RIDE_TYPE_CROOKED_HOUSE
-            "rct2.ride.helicar",                     // RCT1_RIDE_TYPE_CYCLE_RAILWAY
+            "rct2.ride.monbk",                       // RCT1_RIDE_TYPE_CYCLE_RAILWAY
             "rct1.ride.inverted_trains",             // RCT1_RIDE_TYPE_SUSPENDED_LOOPING_ROLLER_COASTER
             "rct2.ride.cstboat",                     // RCT1_RIDE_TYPE_WATER_COASTER
             "rct2.ride.thcar",                       // RCT1_RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER
@@ -1189,6 +1193,70 @@ namespace RCT1
             "rct2.scenery_large.ssig4",
         };
         return map[largeSceneryType];
+    }
+
+    int32_t MapSlopedWall(uint8_t wallType)
+    {
+        static constexpr uint8_t map[] =
+        {
+            RCT1_WALL_TYPE_MESH_FENCE,                   // RCT1_WALL_TYPE_MESH_FENCE,
+            RCT1_WALL_TYPE_MESH_FENCE,                   // RCT1_WALL_TYPE_MESH_FENCE_WITH_GATE,
+            RCT1_WALL_TYPE_ROMAN,                        // RCT1_WALL_TYPE_ROMAN,
+            RCT1_WALL_TYPE_EGYPTIAN,                     // RCT1_WALL_TYPE_EGYPTIAN,
+            RCT1_WALL_TYPE_HEDGE,                        // RCT1_WALL_TYPE_HEDGE,
+            RCT1_WALL_TYPE_HEDGE,                        // RCT1_WALL_TYPE_HEDGE_WITH_GATE,
+            RCT1_WALL_TYPE_BLUE_PLAYING_CARDS,           // RCT1_WALL_TYPE_BLUE_PLAYING_CARDS,
+            RCT1_WALL_TYPE_RED_PLAYING_CARDS,            // RCT1_WALL_TYPE_RED_PLAYING_CARDS,
+            RCT1_WALL_TYPE_WHITE_RAILING,                // RCT1_WALL_TYPE_WHITE_RAILING,
+            RCT1_WALL_TYPE_WHITE_RAILING,                // RCT1_WALL_TYPE_WHITE_RAILING_WITH_GATE,
+            RCT1_WALL_TYPE_MARTIAN,                      // RCT1_WALL_TYPE_MARTIAN,
+            RCT1_WALL_TYPE_GLASS_SMOOTH,                 // RCT1_WALL_TYPE_GLASS_SMOOTH,
+            RCT1_WALL_TYPE_WOODEN_PANEL_FENCE,           // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE,
+            RCT1_WALL_TYPE_WOODEN_PANEL_FENCE,           // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_GATE,
+            RCT1_WALL_TYPE_WOODEN_POST_FENCE,            // RCT1_WALL_TYPE_WOODEN_POST_FENCE,
+            RCT1_WALL_TYPE_RED_WOODEN_POST_FENCE,        // RCT1_WALL_TYPE_RED_WOODEN_POST_FENCE,
+            RCT1_WALL_TYPE_BARBED_WIRE,                  // RCT1_WALL_TYPE_BARBED_WIRE,
+            RCT1_WALL_TYPE_BARBED_WIRE,                  // RCT1_WALL_TYPE_BARBED_WIRE_WITH_GATE,
+            RCT1_WALL_TYPE_PRIMITIVE_TALL_WOOD_FENCE,    // RCT1_WALL_TYPE_PRIMITIVE_TALL_WOOD_FENCE,
+            RCT1_WALL_TYPE_PRIMITIVE_SHORT_WOOD_FENCE,   // RCT1_WALL_TYPE_PRIMITIVE_SHORT_WOOD_FENCE,
+            RCT1_WALL_TYPE_IRON_RAILING,                 // RCT1_WALL_TYPE_IRON_RAILING,
+            RCT1_WALL_TYPE_IRON_RAILING,                 // RCT1_WALL_TYPE_IRON_RAILING_WITH_GATE,
+            RCT1_WALL_TYPE_GLASS_PANELS,                 // RCT1_WALL_TYPE_GLASS_PANELS,
+            RCT1_WALL_TYPE_BONE_FENCE,                   // RCT1_WALL_TYPE_BONE_FENCE,
+            RCT1_WALL_TYPE_BRICK,                        // RCT1_WALL_TYPE_BRICK,
+            RCT1_WALL_TYPE_BRICK,                        // RCT1_WALL_TYPE_BRICK_WITH_GATE,
+            RCT1_WALL_TYPE_WHITE_WOODEN_PANEL_FENCE,     // RCT1_WALL_TYPE_WHITE_WOODEN_PANEL_FENCE,
+            RCT1_WALL_TYPE_RED_WOODEN_PANEL_FENCE,       // RCT1_WALL_TYPE_RED_WOODEN_PANEL_FENCE,
+            RCT1_WALL_TYPE_STONE,                        // RCT1_WALL_TYPE_STONE,
+            RCT1_WALL_TYPE_STONE,                        // RCT1_WALL_TYPE_STONE_WITH_GATE,
+            RCT1_WALL_TYPE_WOODEN_FENCE,                 // RCT1_WALL_TYPE_WOODEN_FENCE,
+            RCT1_WALL_TYPE_JUNGLE,                       // RCT1_WALL_TYPE_JUNGLE,
+            RCT1_WALL_TYPE_CONIFER_HEDGE,                // RCT1_WALL_TYPE_CONIFER_HEDGE,
+            RCT1_WALL_TYPE_CONIFER_HEDGE,                // RCT1_WALL_TYPE_CONIFER_HEDGE_WITH_GATE,
+            RCT1_WALL_TYPE_SMALL_BROWN_CASTLE,           // RCT1_WALL_TYPE_SMALL_BROWN_CASTLE,
+            RCT1_WALL_TYPE_SMALL_GREY_CASTLE,            // RCT1_WALL_TYPE_SMALL_GREY_CASTLE,
+            RCT1_WALL_TYPE_ROMAN_COLUMN,                 // RCT1_WALL_TYPE_ROMAN_COLUMN,
+            RCT1_WALL_TYPE_LARGE_BROWN_CASTLE,           // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE,
+            RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_CROSS,     // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_CROSS,
+            RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_GATE,      // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_GATE,
+            RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_WINDOW,    // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_WINDOW,
+            RCT1_WALL_TYPE_MEDIUM_BROWN_CASTLE,          // RCT1_WALL_TYPE_MEDIUM_BROWN_CASTLE,
+            RCT1_WALL_TYPE_LARGE_GREY_CASTLE,            // RCT1_WALL_TYPE_LARGE_GREY_CASTLE,
+            RCT1_WALL_TYPE_LARGE_GREY_CASTLE_CROSS,      // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_CROSS,
+            RCT1_WALL_TYPE_LARGE_GREY_CASTLE_GATE,       // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_GATE,
+            RCT1_WALL_TYPE_LARGE_GREY_CASTLE_WINDOW,     // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_WINDOW,
+            RCT1_WALL_TYPE_MEDIUM_GREY_CASTLE,           // RCT1_WALL_TYPE_MEDIUM_GREY_CASTLE,
+            RCT1_WALL_TYPE_CREEPY,                       // RCT1_WALL_TYPE_CREEPY,
+            RCT1_WALL_TYPE_CREEPY_GATE,                  // RCT1_WALL_TYPE_CREEPY_GATE,
+            RCT1_WALL_TYPE_BARBED_WIRE_WITH_SNOW,        // RCT1_WALL_TYPE_BARBED_WIRE_WITH_SNOW,
+            RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_SNOW, // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_SNOW,
+            RCT1_WALL_TYPE_WOODEN_POST_FENCE_WITH_SNOW,  // RCT1_WALL_TYPE_WOODEN_POST_FENCE_WITH_SNOW,
+        };
+
+        if (wallType < std::size(map))
+            return map[wallType];
+        
+        return -1;
     }
 
     std::string_view GetWallObject(uint8_t wallType)

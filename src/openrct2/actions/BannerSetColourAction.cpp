@@ -61,7 +61,7 @@ GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
     if (!LocationValid(_loc))
     {
         LOG_ERROR("Invalid x / y coordinates: x = %d, y = %d", _loc.x, _loc.y);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_OFF_EDGE_OF_MAP);
     }
 
     if (_primaryColour > 31)

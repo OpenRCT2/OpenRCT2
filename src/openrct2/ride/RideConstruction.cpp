@@ -10,6 +10,7 @@
 #include "RideConstruction.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../Input.h"
 #include "../actions/MazeSetTrackAction.h"
 #include "../actions/RideEntranceExitRemoveAction.h"
@@ -50,8 +51,6 @@
 
 using namespace OpenRCT2::TrackMetaData;
 
-money64 gTotalRideValueForMoney;
-
 money64 _currentTrackPrice;
 
 uint32_t _currentTrackCurve;
@@ -64,14 +63,14 @@ uint8_t _currentTrackPieceDirection;
 track_type_t _currentTrackPieceType;
 uint8_t _currentTrackSelectionFlags;
 uint32_t _rideConstructionNextArrowPulse = 0;
-uint8_t _currentTrackSlopeEnd;
-uint8_t _currentTrackBankEnd;
+TrackPitch _currentTrackPitchEnd;
+TrackRoll _currentTrackRollEnd;
 uint8_t _currentTrackLiftHill;
 uint8_t _currentTrackAlternative;
 track_type_t _selectedTrackType;
 
-uint8_t _previousTrackBankEnd;
-uint8_t _previousTrackSlopeEnd;
+TrackRoll _previousTrackRollEnd;
+TrackPitch _previousTrackPitchEnd;
 
 CoordsXYZ _previousTrackPiece;
 
@@ -342,9 +341,10 @@ void Ride::RemovePeeps()
 
 void RideClearBlockedTiles(const Ride& ride)
 {
-    for (TileCoordsXY tilePos = {}; tilePos.x < gMapSize.x; ++tilePos.x)
+    auto& gameState = GetGameState();
+    for (TileCoordsXY tilePos = {}; tilePos.x < gameState.MapSize.x; ++tilePos.x)
     {
-        for (tilePos.y = 0; tilePos.y < gMapSize.y; ++tilePos.y)
+        for (tilePos.y = 0; tilePos.y < gameState.MapSize.y; ++tilePos.y)
         {
             for (auto* trackElement : TileElementsView<TrackElement>(tilePos.ToCoordsXY()))
             {
@@ -606,16 +606,16 @@ static void ride_construction_reset_current_piece()
     if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK) || ride->num_stations == 0)
     {
         _currentTrackCurve = rtd.StartTrackPiece | RideConstructionSpecialPieceSelected;
-        _currentTrackSlopeEnd = 0;
-        _currentTrackBankEnd = 0;
+        _currentTrackPitchEnd = TrackPitch::None;
+        _currentTrackRollEnd = TrackRoll::None;
         _currentTrackLiftHill = 0;
         _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
         if (rtd.HasFlag(RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED))
         {
             _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
         }
-        _previousTrackSlopeEnd = 0;
-        _previousTrackBankEnd = 0;
+        _previousTrackPitchEnd = TrackPitch::None;
+        _previousTrackRollEnd = TrackRoll::None;
     }
     else
     {
@@ -637,7 +637,7 @@ void RideConstructionSetDefaultNextPiece()
 
     const auto& rtd = ride->GetRideTypeDescriptor();
 
-    int32_t z, direction, trackType, curve, bank, slope;
+    int32_t z, direction, trackType, curve;
     TrackBeginEnd trackBeginEnd;
     CoordsXYE xyElement;
     TileElement* tileElement;
@@ -647,6 +647,7 @@ void RideConstructionSetDefaultNextPiece()
     switch (_rideConstructionState)
     {
         case RideConstructionState::Front:
+        {
             direction = _currentTrackPieceDirection;
             if (!TrackBlockGetPreviousFromZero(_currentTrackBegin, *ride, direction, &trackBeginEnd))
             {
@@ -674,8 +675,8 @@ void RideConstructionSetDefaultNextPiece()
 
             ted = &GetTrackElementDescriptor(trackType);
             curve = ted->CurveChain.next;
-            bank = ted->Definition.bank_end;
-            slope = ted->Definition.vangle_end;
+            auto bank = ted->Definition.RollEnd;
+            auto slope = ted->Definition.PitchEnd;
 
             // Set track curve
             _currentTrackCurve = curve;
@@ -683,22 +684,24 @@ void RideConstructionSetDefaultNextPiece()
             // Set track banking
             if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
             {
-                if (bank == TRACK_BANK_UPSIDE_DOWN)
+                if (bank == TrackRoll::UpsideDown)
                 {
-                    bank = TRACK_BANK_NONE;
+                    bank = TrackRoll::None;
                     _currentTrackAlternative ^= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
                 }
             }
-            _currentTrackBankEnd = bank;
-            _previousTrackBankEnd = bank;
+            _currentTrackRollEnd = bank;
+            _previousTrackRollEnd = bank;
 
             // Set track slope and lift hill
-            _currentTrackSlopeEnd = slope;
-            _previousTrackSlopeEnd = slope;
+            _currentTrackPitchEnd = slope;
+            _previousTrackPitchEnd = slope;
             _currentTrackLiftHill = tileElement->AsTrack()->HasChain()
-                && ((slope != TRACK_SLOPE_DOWN_25 && slope != TRACK_SLOPE_DOWN_60) || gCheatsEnableChainLiftOnAllTrack);
+                && ((slope != TrackPitch::Down25 && slope != TrackPitch::Down60) || gCheatsEnableChainLiftOnAllTrack);
             break;
+        }
         case RideConstructionState::Back:
+        {
             direction = DirectionReverse(_currentTrackPieceDirection);
             if (!TrackBlockGetNextFromZero(_currentTrackBegin, *ride, direction, &xyElement, &z, &direction, false))
             {
@@ -720,8 +723,8 @@ void RideConstructionSetDefaultNextPiece()
 
             ted = &GetTrackElementDescriptor(trackType);
             curve = ted->CurveChain.previous;
-            bank = ted->Definition.bank_start;
-            slope = ted->Definition.vangle_start;
+            auto bank = ted->Definition.RollStart;
+            auto slope = ted->Definition.PitchStart;
 
             // Set track curve
             _currentTrackCurve = curve;
@@ -729,23 +732,24 @@ void RideConstructionSetDefaultNextPiece()
             // Set track banking
             if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
             {
-                if (bank == TRACK_BANK_UPSIDE_DOWN)
+                if (bank == TrackRoll::UpsideDown)
                 {
-                    bank = TRACK_BANK_NONE;
+                    bank = TrackRoll::None;
                     _currentTrackAlternative ^= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
                 }
             }
-            _currentTrackBankEnd = bank;
-            _previousTrackBankEnd = bank;
+            _currentTrackRollEnd = bank;
+            _previousTrackRollEnd = bank;
 
             // Set track slope and lift hill
-            _currentTrackSlopeEnd = slope;
-            _previousTrackSlopeEnd = slope;
+            _currentTrackPitchEnd = slope;
+            _previousTrackPitchEnd = slope;
             if (!gCheatsEnableChainLiftOnAllTrack)
             {
                 _currentTrackLiftHill = tileElement->AsTrack()->HasChain();
             }
             break;
+        }
         default:
             break;
     }
@@ -1119,16 +1123,16 @@ int32_t RideInitialiseConstructionWindow(Ride& ride)
     InputSetFlag(INPUT_FLAG_6, true);
 
     _currentTrackCurve = ride.GetRideTypeDescriptor().StartTrackPiece | RideConstructionSpecialPieceSelected;
-    _currentTrackSlopeEnd = 0;
-    _currentTrackBankEnd = 0;
+    _currentTrackPitchEnd = TrackPitch::None;
+    _currentTrackRollEnd = TrackRoll::None;
     _currentTrackLiftHill = 0;
     _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
 
     if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED))
         _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
 
-    _previousTrackBankEnd = 0;
-    _previousTrackSlopeEnd = 0;
+    _previousTrackRollEnd = TrackRoll::None;
+    _previousTrackPitchEnd = TrackPitch::None;
 
     _currentTrackPieceDirection = 0;
     _rideConstructionState = RideConstructionState::Place;

@@ -2101,39 +2101,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Tiedoston lataus ei onnistunut…
 STR_3011    :Tiedosto sisältää virheellistä tietoa
-STR_3012    :Törmäysautobiitin tyylinen
-STR_3013    :Karusellimusiikin tyylinen
-STR_3014    :Roomalaisfanfaarin tyylinen
-STR_3015    :Itämaisen tyylinen
-STR_3016    :Marsilaisen tyylinen
-STR_3017    :Viidakkorumputyylinen
-STR_3018    :Egyptiläisen tyylinen
-STR_3019    :Lelumaatyylinen
-STR_3020    :
-STR_3021    :Avaruustyylinen
-STR_3022    :Kauhutyylinen
-STR_3023    :Teknotyylinen
-STR_3024    :Hempeän tyylinen
-STR_3025    :Kesätyylinen
-STR_3026    :Vesityylinen
-STR_3027    :Villin lännen tyylinen
-STR_3028    :Jurassisen tyylinen
-STR_3029    :Rokkityylinen
-STR_3030    :Ragtime-tyylinen
-STR_3031    :Fantasiatyylinen
-STR_3032    :Rokkityylinen 2
-STR_3033    :Jäätyylinen
-STR_3034    :Lumityylinen
-STR_3035    :Mukautettu musiikki 1
-STR_3036    :Mukautettu musiikki 2
-STR_3037    :Keskiaikaisen tyylinen
-STR_3038    :Kaupunkimaisen tyylinen
-STR_3039    :Urkutyylinen
-STR_3040    :Mekaanisen tyylinen
-STR_3041    :Modernintyylinen
-STR_3042    :Merirosvotyylinen
-STR_3043    :Rokkityylinen 3
-STR_3044    :Karkkityylinen
 STR_3045    :Valitse toistettavan musiikin tyyli
 STR_3047    :Paikallisviranomaiset eivät salli tämän laitteen muuttelua tai romuttamista
 STR_3048    :Paikallisviranomaiset eivät salli markkinointikampanjoita

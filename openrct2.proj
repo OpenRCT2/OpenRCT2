@@ -47,8 +47,8 @@
     <TitleSequencesSha1>80fefc6ebbabc42a6f4703412daa5c62f661420d</TitleSequencesSha1>
     <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.3.13/objects.zip</ObjectsUrl>
     <ObjectsSha1>15a60424d5f4f0b94ac07763b6967ba0e6ae3a7d</ObjectsSha1>
-    <OpenSFXUrl>https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.3/opensound.zip</OpenSFXUrl>
-    <OpenSFXSha1>ffec5a97bd5035860c4c9a43fe32cf51886478e3</OpenSFXSha1>
+    <OpenSFXUrl>https://github.com/OpenRCT2/OpenSoundEffects/releases/download/v1.0.4/opensound.zip</OpenSFXUrl>
+    <OpenSFXSha1>95e71b3684c9eb84c642563dd2cbf2f6e099a8a5</OpenSFXSha1>
     <OpenMSXUrl>https://github.com/OpenRCT2/OpenMusic/releases/download/v1.5/openmusic.zip</OpenMSXUrl>
     <OpenMSXSha1>f3c707e576281758637598ce68880416891fe5f9</OpenMSXSha1>
     <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.78/replays.zip</ReplaysUrl>
@@ -107,8 +107,10 @@
   </Target>
 
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
+  <!-- Only Arm64 machines will build g2.dat for Arm64 -->
+  <!-- Note: Arm64 machines can build for x86, x64 and Arm64 -->
   <Target Name="g2" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)"
-          Condition="'$(TestConfig)'!='true' and '$(Platform)'!='ARM64'">
+          Condition="'$(TestConfig)'!='true' and ('$(Platform)'!='ARM64' or '$(PROCESSOR_ARCHITECTURE)'=='ARM64')">
     <Message Text="Building g2.dat..." Importance="high" />
     <Exec Command="&quot;$(OutputExe)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(RootDir)resources\g2\sprites.json&quot;"
           StandardOutputImportance="normal" />

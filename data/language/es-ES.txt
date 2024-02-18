@@ -2098,39 +2098,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :No se pudo cargar el archivo…
 STR_3011    :El archivo contiene datos no válidos
-STR_3012    :Estilo coches de choque
-STR_3013    :Estilo Órgano de feria
-STR_3014    :Estilo fanfarria romana
-STR_3015    :Estilo oriental
-STR_3016    :Estilo marciano
-STR_3017    :Estilo tambores jungla
-STR_3018    :Estilo egipcio
-STR_3019    :Estilo juguete
-STR_3020    :
-STR_3021    :Estilo espacio
-STR_3022    :Estilo terror
-STR_3023    :Estilo tecno
-STR_3024    :Estilo suave
-STR_3025    :Estilo verano
-STR_3026    :Estilo acuático
-STR_3027    :Estilo salvaje oeste
-STR_3028    :Estilo jurásico
-STR_3029    :Estilo rock
-STR_3030    :Estilo ragtime
-STR_3031    :Estilo fantasía
-STR_3032    :Estilo rock 2
-STR_3033    :Estilo hielo
-STR_3034    :Estilo nieve
-STR_3035    :Música personalizada 1
-STR_3036    :Música personalizada 2
-STR_3037    :Estilo medieval
-STR_3038    :Estilo urbano
-STR_3039    :Estilo órgano
-STR_3040    :Estilo mecánico
-STR_3041    :Estilo moderno
-STR_3042    :Estilo pirata
-STR_3043    :Estilo rock 3
-STR_3044    :Estilo caramelo
 STR_3045    :Selecciona el estilo de música a reproducir
 STR_3047    :La autoridad local no permite demoler o modificar esta atracción
 STR_3048    :Campañas de marketing prohibidas por la autoridad local
@@ -3700,6 +3667,25 @@ STR_6591    :El empleado está reparando una atracción y no puede ser despedido
 STR_6592    :El empleado está inspeccionando una atracción y no puede ser despedido.
 STR_6593    :Eliminar vallas del parque
 STR_6594    :Inspector de cuadricula: Alternar inclinación del muro
+STR_6595    :{WINDOW_COLOUR_2}Autor: {BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}Autores: {BLACK}{STRING}
+STR_6597    :Parámetro no válido
+STR_6598    :Valor fuera de rango
+STR_6599    :Elemento fantasma no encontrado
+STR_6600    :Globo no encontrado
+STR_6601    :Empleado no encontrado
+STR_6602    :Atracción no encontrada
+STR_6603    :Entrada de objeto de atracción no encontrada
+STR_6604    :Jugador no encontrado
+STR_6605    :Elemento de entrada no encontrado
+STR_6606    :Elemento de superficie no encontrado
+STR_6607    :Elemento de casilla no encontrado
+STR_6608    :Elemento de vía no encontrado
+STR_6609    :Bloque de vía no encontrado
+STR_6610    :Elemento de camino no encontrado
+STR_6611    :Elemento de muro no encontrado
+STR_6612    :Elemento de banner no encontrado
+STR_6613    :Recargar objeto
 
 ##############
 # Escenarios #
@@ -4364,7 +4350,7 @@ STR_DTLS    :Eres un exitoso magnate de los negocios que se ha tomado cuatro añ
 <South America - Inca Lost City>
 STR_SCNR    :Sudamérica; Ciudad perdida inca
 STR_PARK    :Fundador de la ciudad perdida
-STR_DTLS    :Para impulsar aún más el turismo local, tienes que construir un parque que esté a tono con el entorno que lo rodea, y respetando las restricciones de altura.
+STR_DTLS    :Para impulsar aún más el turismo local, tienes que construir un parque que esté en sintonía con el entorno que lo rodea.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :Sudamérica - Meseta selvática

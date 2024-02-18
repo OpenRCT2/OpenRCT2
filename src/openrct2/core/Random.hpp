@@ -118,7 +118,9 @@ namespace Random
             return std::numeric_limits<result_type>::max();
         }
 
-        explicit RotateEngine(result_type seed_value = default_seed)
+        RotateEngine() = default;
+
+        explicit RotateEngine(result_type seed_value)
         {
             seed(seed_value);
         }

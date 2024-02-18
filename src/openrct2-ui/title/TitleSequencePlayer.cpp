@@ -304,7 +304,9 @@ namespace OpenRCT2::Title
                     auto& objectManager = GetContext()->GetObjectManager();
                     objectManager.LoadObjects(result.RequiredObjects);
 
-                    parkImporter->Import();
+                    // TODO: Have a separate GameState and exchange once loaded.
+                    auto& gameState = GetGameState();
+                    parkImporter->Import(gameState);
                     MapAnimationAutoCreate();
                 }
                 PrepareParkForPlayback();
@@ -343,7 +345,10 @@ namespace OpenRCT2::Title
                     auto& objectManager = GetContext()->GetObjectManager();
                     objectManager.LoadObjects(result.RequiredObjects);
 
-                    parkImporter->Import();
+                    // TODO: Have a separate GameState and exchange once loaded.
+                    auto& gameState = GetGameState();
+
+                    parkImporter->Import(gameState);
                 }
                 PrepareParkForPlayback();
                 success = true;

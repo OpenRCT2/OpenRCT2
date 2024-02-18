@@ -359,7 +359,7 @@ enum WindowDetail
 #define WC_TRACK_DESIGN_LIST__WIDX_ROTATE 8
 #define WC_TRACK_DESIGN_PLACE__WIDX_ROTATE 3
 #define WC_MAP__WIDX_ROTATE_90 24
-#define WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 21
+#define WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 22
 #define WC_STAFF__WIDX_PICKUP 9
 #define WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE 13
 #define WC_TILE_INSPECTOR__WIDX_BUTTON_COPY 16
@@ -480,7 +480,7 @@ using close_callback = void (*)();
 
 extern WindowBase* gWindowAudioExclusive;
 
-extern uint16_t gWindowUpdateTicks;
+extern uint32_t gWindowUpdateTicks;
 namespace MapFlashingFlags
 {
     constexpr uint16_t GuestListOpen = (1 << 0);

@@ -92,24 +92,13 @@ namespace OpenRCT2
     };
 } // namespace OpenRCT2
 
-extern uint64_t gParkFlags;
-extern uint16_t gParkRating;
-extern money64 gParkEntranceFee;
-extern uint32_t gParkSize;
 extern money64 gLandPrice;
 extern money64 gConstructionRightsPrice;
 
-extern uint64_t gTotalAdmissions;
-extern money64 gTotalIncomeFromAdmissions;
-
-extern money64 gParkValue;
 extern money64 gCompanyValue;
 
 extern int16_t gParkRatingCasualtyPenalty;
-extern uint8_t gParkRatingHistory[32];
 extern uint32_t gGuestsInParkHistory[32];
-extern int32_t _guestGenerationProbability;
-extern uint32_t _suggestedGuestMaximum;
 
 void ParkSetForcedRating(int32_t rating);
 int32_t ParkGetForcedRating();

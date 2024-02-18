@@ -822,47 +822,47 @@ static void PaintSplashBoatsTrackLeftQuarterTurn5Tiles(
     TrackPaintUtilRightQuarterTurn5TilesPaint2(
         session, height, direction, trackSequence, session.TrackColours, RiverRaftsLeftQuarterTurn5_Side);
 
-    if (trackSequence != 1 && trackSequence != 4)
-    {
-        static constexpr WoodenSupportSubType supportTypes[NumOrthogonalDirections][7] = {
-            {
-                WoodenSupportSubType::NeSw,
-                WoodenSupportSubType::NeSw, // Unused
-                WoodenSupportSubType::Corner3,
-                WoodenSupportSubType::Corner1,
-                WoodenSupportSubType::NeSw, // Unused
-                WoodenSupportSubType::Corner3,
-                WoodenSupportSubType::NwSe,
-            },
-            {
-                WoodenSupportSubType::NwSe,
-                WoodenSupportSubType::NeSw, // Unused
-                WoodenSupportSubType::Corner0,
-                WoodenSupportSubType::Corner2,
-                WoodenSupportSubType::NeSw, // Unused
-                WoodenSupportSubType::Corner0,
-                WoodenSupportSubType::NeSw,
-            },
-            {
-                WoodenSupportSubType::NeSw,
-                WoodenSupportSubType::NeSw, // Unused
-                WoodenSupportSubType::Corner1,
-                WoodenSupportSubType::Corner3,
-                WoodenSupportSubType::NeSw, // Unused
-                WoodenSupportSubType::Corner1,
-                WoodenSupportSubType::NwSe,
-            },
-            {
-                WoodenSupportSubType::NwSe,
-                WoodenSupportSubType::NeSw, // Unused
-                WoodenSupportSubType::Corner2,
-                WoodenSupportSubType::Corner0,
-                WoodenSupportSubType::NeSw, // Unused
-                WoodenSupportSubType::Corner2,
-                WoodenSupportSubType::NeSw,
-            },
-        };
+    static constexpr WoodenSupportSubType supportTypes[NumOrthogonalDirections][7] = {
+        {
+            WoodenSupportSubType::NeSw,
+            WoodenSupportSubType::Null,
+            WoodenSupportSubType::Corner3,
+            WoodenSupportSubType::Corner1,
+            WoodenSupportSubType::Null,
+            WoodenSupportSubType::Corner3,
+            WoodenSupportSubType::NwSe,
+        },
+        {
+            WoodenSupportSubType::NwSe,
+            WoodenSupportSubType::Null,
+            WoodenSupportSubType::Corner0,
+            WoodenSupportSubType::Corner2,
+            WoodenSupportSubType::Null,
+            WoodenSupportSubType::Corner0,
+            WoodenSupportSubType::NeSw,
+        },
+        {
+            WoodenSupportSubType::NeSw,
+            WoodenSupportSubType::Null,
+            WoodenSupportSubType::Corner1,
+            WoodenSupportSubType::Corner3,
+            WoodenSupportSubType::Null,
+            WoodenSupportSubType::Corner1,
+            WoodenSupportSubType::NwSe,
+        },
+        {
+            WoodenSupportSubType::NwSe,
+            WoodenSupportSubType::Null,
+            WoodenSupportSubType::Corner2,
+            WoodenSupportSubType::Corner0,
+            WoodenSupportSubType::Null,
+            WoodenSupportSubType::Corner2,
+            WoodenSupportSubType::NeSw,
+        },
+    };
 
+    if (supportTypes[direction][trackSequence] != WoodenSupportSubType::Null)
+    {
         WoodenASupportsPaintSetup(
             session, WoodenSupportType::Truss, supportTypes[direction][trackSequence], height, session.SupportColours);
     }
@@ -934,47 +934,47 @@ static void PaintSplashBoatsTrackRightQuarterTurn5Tiles(
     TrackPaintUtilRightQuarterTurn5TilesPaint2(
         session, height, direction, trackSequence, session.TrackColours, RiverRaftsRightQuarterTurn5_Side);
 
-    if (trackSequence != 1 && trackSequence != 4)
-    {
-        static constexpr WoodenSupportSubType supportTypes[][7] = {
-            {
-                WoodenSupportSubType::NeSw,
-                WoodenSupportSubType::NeSw, // Unused
-                WoodenSupportSubType::Corner2,
-                WoodenSupportSubType::Corner0,
-                WoodenSupportSubType::NeSw, // Unused
-                WoodenSupportSubType::Corner2,
-                WoodenSupportSubType::NwSe,
-            },
-            {
-                WoodenSupportSubType::NwSe,
-                WoodenSupportSubType::NeSw, // Unused
-                WoodenSupportSubType::Corner3,
-                WoodenSupportSubType::Corner1,
-                WoodenSupportSubType::NeSw, // Unused
-                WoodenSupportSubType::Corner3,
-                WoodenSupportSubType::NeSw,
-            },
-            {
-                WoodenSupportSubType::NeSw,
-                WoodenSupportSubType::NeSw, // Unused
-                WoodenSupportSubType::Corner0,
-                WoodenSupportSubType::Corner2,
-                WoodenSupportSubType::NeSw, // Unused
-                WoodenSupportSubType::Corner0,
-                WoodenSupportSubType::NwSe,
-            },
-            {
-                WoodenSupportSubType::NwSe,
-                WoodenSupportSubType::NeSw, // Unused
-                WoodenSupportSubType::Corner1,
-                WoodenSupportSubType::Corner3,
-                WoodenSupportSubType::NeSw, // Unused
-                WoodenSupportSubType::Corner1,
-                WoodenSupportSubType::NeSw,
-            },
-        };
+    static constexpr WoodenSupportSubType supportTypes[][7] = {
+        {
+            WoodenSupportSubType::NeSw,
+            WoodenSupportSubType::Null,
+            WoodenSupportSubType::Corner2,
+            WoodenSupportSubType::Corner0,
+            WoodenSupportSubType::Null,
+            WoodenSupportSubType::Corner2,
+            WoodenSupportSubType::NwSe,
+        },
+        {
+            WoodenSupportSubType::NwSe,
+            WoodenSupportSubType::Null,
+            WoodenSupportSubType::Corner3,
+            WoodenSupportSubType::Corner1,
+            WoodenSupportSubType::Null,
+            WoodenSupportSubType::Corner3,
+            WoodenSupportSubType::NeSw,
+        },
+        {
+            WoodenSupportSubType::NeSw,
+            WoodenSupportSubType::Null,
+            WoodenSupportSubType::Corner0,
+            WoodenSupportSubType::Corner2,
+            WoodenSupportSubType::Null,
+            WoodenSupportSubType::Corner0,
+            WoodenSupportSubType::NwSe,
+        },
+        {
+            WoodenSupportSubType::NwSe,
+            WoodenSupportSubType::Null,
+            WoodenSupportSubType::Corner1,
+            WoodenSupportSubType::Corner3,
+            WoodenSupportSubType::Null,
+            WoodenSupportSubType::Corner1,
+            WoodenSupportSubType::NeSw,
+        },
+    };
 
+    if (supportTypes[direction][trackSequence] != WoodenSupportSubType::Null)
+    {
         WoodenASupportsPaintSetup(
             session, WoodenSupportType::Truss, supportTypes[direction][trackSequence], height, session.SupportColours);
     }

@@ -598,7 +598,7 @@ STR_1207    :{WINDOW_COLOUR_2}Távozzon, ha másik vonat érkezik az állomásra
 STR_1208    :{WINDOW_COLOUR_2}Távozzon, ha másik csónak érkezik az állomásra
 STR_1209    :Válaszd ki, hogy várakozzon-e utasokra indulás előtt
 STR_1210    :Válaszd ki, hogy távozzon-e, ha egy másik jármű érkezik ugyanarra az állomásra
-STR_1211    :{WINDOW_COLOUR_2}Minimum várakozási idő
+STR_1211    :{WINDOW_COLOUR_2}Minimum várakozási idő:
 STR_1212    :{WINDOW_COLOUR_2}Maximum várakozási idő:
 STR_1213    :Az indulás előtti minimum várakozási idő kiválasztása
 STR_1214    :Az indulás előtti maximum várakozási idő kiválasztása
@@ -1100,7 +1100,7 @@ STR_1711    :{WINDOW_COLOUR_1}Biztos, hogy ki akarod rúgni őt: {STRINGID}?
 STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Utak takarítása
 STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Kertek öntözése
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Kukák ürítése
-STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Fűnyírás
+STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Fű lenyírása
 STR_1716    :Érvénytelen parknév
 STR_1717    :Nem nevezhető át a park…
 STR_1718    :Park neve
@@ -1112,7 +1112,7 @@ STR_1723    :Nem nyitható meg a park…
 STR_1724    :Nem zárható be a park…
 STR_1725    :Nem vásárolható meg a terület…
 STR_1726    :A terület nem eladó!
-STR_1727    :Az építési jogok nem eladók!
+STR_1727    :Az építési jogok nem eladóak!
 STR_1728    :Itt nem lehet építési jogokat vásárolni…
 STR_1729    :A terület nem a park tulajdona!
 STR_1730    :{RED}Zárva
@@ -1648,7 +1648,7 @@ STR_2286    :Tervezés
 STR_2287    :Terv véglegesítése
 STR_2288    :Ismeretlen
 STR_2289    :{POP16}{STRINGID} {PUSH16}{PUSH16}{STRINGID}
-STR_2291    :Válaszd ki az új játék pályáját
+STR_2291    :Válassz pályát az új játékhoz
 STR_2292    :{WINDOW_COLOUR_2}Az alábbi játékokon volt:
 STR_2293    :{BLACK} Semmi
 STR_2294    :A talajtípus megváltoztatása
@@ -2097,39 +2097,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :A fájl betöltése sikertelen…
 STR_3011    :A fájl érvénytelen adatod tartalmaz
-STR_3012    :Dodzsem stílus
-STR_3013    :Vásári orgona stílus
-STR_3014    :Római harsona stílus
-STR_3015    :Keleti stílus
-STR_3016    :Marsi stílus
-STR_3017    :Dzsungel dob stílus
-STR_3018    :Egyiptomi stílus
-STR_3019    :Játékország stílus
-STR_3020    :
-STR_3021    :Űrbéli stílus
-STR_3022    :Rémisztő stílus
-STR_3023    :Techno stílus
-STR_3024    :Könnyed stílus
-STR_3025    :Nyári stílus
-STR_3026    :Vizes stílus
-STR_3027    :Vadnyugati stílus
-STR_3028    :Jura kori stílus
-STR_3029    :Rock stílus
-STR_3030    :Ragtime stílus
-STR_3031    :Fantázia stílus
-STR_3032    :Rock stílus 2
-STR_3033    :Jeges stílus
-STR_3034    :Havas stílus
-STR_3035    :Egyedi stílus 1
-STR_3036    :Egyedi stílus 2
-STR_3037    :Középkori stílus
-STR_3038    :Városi stílus
-STR_3039    :Orgona stílus
-STR_3040    :Gépi stílus
-STR_3041    :Modern stílus
-STR_3042    :Kalóz stílus
-STR_3043    :Rock stílus 3
-STR_3044    :Cukorka stílus
 STR_3045    :Válaszd ki, hogy milyen stílusú zenét játsszon
 STR_3047    :A helyi önkormányzat nem engedélyezi a játék lerombolását vagy módosítását
 STR_3048    :A helyi önkormányzat nem engedélyezi marketingkampányok indítását
@@ -2632,7 +2599,7 @@ STR_5355    :{BLACK}Szomjúság:
 STR_5356    :{BLACK}Émelygés:
 STR_5357    :{BLACK}Émelygéstűrés:
 STR_5358    :{BLACK}WC:
-STR_5359    :Vendégek eltávolítása
+STR_5359    :Vendégek törlése
 STR_5360    :Eltávolít minden vendéget a térképről
 STR_5361    :Minden vendég kapjon:
 STR_5362    :{BLACK}A vendégek preferált játékintenzitása:
@@ -2826,7 +2793,7 @@ STR_5626    :Egyéb parkok
 STR_5627    :Pályák csoportosítása:
 STR_5628    :Forrásjáték
 STR_5629    :Nehézségi szint
-STR_5630    :Progresszív feloldás bekapcsolása
+STR_5630    :Fokozatos feloldás bekapcsolása
 STR_5631    :Eredeti DLC parkok
 STR_5632    :Építsd meg a saját…
 STR_5633    :CMD +
@@ -2951,7 +2918,7 @@ STR_5790    :Az RCT1-stílusú árazás ki- és bekapcsolása{NEWLINE}(például
 STR_5791    :Az összes játék megbízhatóságát 100%-ra{NEWLINE}állítja és visszaállítja az építési idejüket „idén”-re
 STR_5792    :Megjavítja az összes meghibásodott játékot
 STR_5793    :Törli a játék ütközési előzményeit,{NEWLINE}így a vendégek nem fognak panaszkodni, hogy nem biztonságos
-STR_5794    :Néhány pálya nem engedélyezi pár játék{NEWLINE}szerkesztését, melyek már a parkban vannak{NEWLINE}Ez a csalás feloldja a korlátozást
+STR_5794    :Néhány pálya nem engedélyezi pár játék{NEWLINE}szerkesztését, melyek már a parkban vannak.{NEWLINE}Ez a csalás feloldja a korlátozást
 STR_5795    :A vendégek a park összes játékára felülnek,{NEWLINE}még az extrém magas intenzitásúakra is
 STR_5796    :Kényszeríti a parkot, hogy kinyisson vagy bezárjon
 STR_5797    :Letiltja az időjárás-változásokat{NEWLINE}és befagyasztja a jelenlegi időjárást
@@ -3003,7 +2970,7 @@ STR_5843    :A pályák fokozatos feloldásának engedélyezése (RCT1-beli vise
 STR_5844    :Tartsa fenn a kapcsolatot a többjátékos{NEWLINE}szerverrel akkor is, ha szinkronizációs vagy egyéb hiba jelentkezik
 STR_5845    :Hozzáadja a hibakereső{NEWLINE}eszközök gombját az eszköztárhoz.{NEWLINE}Engedélyezi a fejlesztői konzol gyorsbillentyűjét
 STR_5846    :Az OpenRCT2 milyen gyakran mentsen automatikusan
-STR_5847    :A címképernyőn használt parkszekvencia kiválasztása.{NEWLINE}Az RCT1/2-ből származó címszekvenciák működéséhez importált pályák szükségesek
+STR_5847    :A címképernyőn használt parkjelenetek kiválasztása.{NEWLINE}Az RCT1/2-ből származó címképernyős jelenetek működéséhez importált pályák szükségesek
 STR_5849    :Az újonnan felvett alkalmazottak{NEWLINE}automatikus lerakása
 STR_5851    :Az alapértelmezett vizsgálati időköz megadása{NEWLINE}újonnan épített játékokhoz
 STR_5853    :A hanghatások be- és kikapcsolása
@@ -3055,7 +3022,7 @@ STR_5899    :Festési hibakeresés ablak be/ki
 STR_5900    :Eredeti rajzolókód használata
 STR_5901    :Szegmensek magasságának mutatása
 STR_5902    :Határolókeretek mutatása
-STR_5903    :Festési hibakeresés ablak mutatása
+STR_5903    :Festési hibakeresés ablak
 STR_5904    :Dátum vissza
 STR_5905    :Térképgeneráló eszköz, amely automatikusan létrehoz egy egyedi tájat
 STR_5906    :Nagyítás a mutató helyzetére 
@@ -3309,7 +3276,7 @@ STR_6164    :{WHITE}❌
 STR_6165    :Vertikális szinkron
 STR_6166    :A megjelenített képkockákat a kijelző frissítési gyakoriságához igazítja, így megakadályozza a kép szétcsúszását.
 STR_6167    :Haladó
-STR_6168    :Főcím
+STR_6168    :Címképernyős jelenetek
 STR_6169    :Pályaválasztás
 STR_6170    :Felület finomhangolása
 STR_6171    :Keresés
@@ -3685,7 +3652,7 @@ STR_6580    :Visszaállítás
 STR_6581    :Biztosan vissza szeretnéd állítani az összes gyorsbillentyűt ezen a fülön?
 STR_6582    :Gyorsbillentyűk ablak megnyitása
 STR_6583    :{WINDOW_COLOUR_2}Fordított vonatok
-STR_6584    :Válassza ki, hogy a vonatok fordítva közlekedjenek
+STR_6584    :A vonatok visszafelé történő közlekedésének kiválasztása
 STR_6585    :Nem lehet a változtatásokat végrehajtani…
 STR_6586    :OpenRCT2
 STR_6587    :Az OpenRCT2 főcímzenéje Allister Brimble műve,{NEWLINE}CC BY-SA 4.0 licenccel.
@@ -3698,6 +3665,23 @@ STR_6593    :Park kerítések eltávolítása
 STR_6594    :Mezővizsgáló: Fal lejtésének változtatása
 STR_6595    :{WINDOW_COLOUR_2}Szerző: {BLACK}{STRING}
 STR_6596    :{WINDOW_COLOUR_2}Szerzők: {BLACK}{STRING}
+STR_6597    :Érvénytelen paraméter
+STR_6598    :Érték kívül esik a tartományon
+STR_6599    :Szellemelem nem található
+STR_6600    :Lufi nem található
+STR_6601    :Alkalmazott nem található
+STR_6602    :Játék nem található
+STR_6603    :Játék objektumbejegyzése nem található
+STR_6604    :Játékos nem található
+STR_6605    :Bejárati elem nem található
+STR_6606    :Felszíni elem nem található
+STR_6607    :Mezőelem nem találhatő
+STR_6608    :Pályaelem nem található
+STR_6609    :Pályablokk nem található
+STR_6610    :Útelem nem található
+STR_6611    :Falelem nem található
+STR_6612    :Hirdetőtábla-elem nem található
+STR_6613    :Objektum újratöltése
 
 #############
 # Scenarios #
@@ -4426,7 +4410,7 @@ STR_PARK    :Metropolisz
 STR_DTLS    :Egy üres telek tulajdonosa vagy a város alacsonyabb részéhez közel. Hogy a legtöbbet hozd ki városi ingatlanodból, építs egy felhőkarcoló témájú parkot, amelyet a húszas évek szárnyaló art deco építészete ihletett.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock ‘n’ Roll - Flower Power
+STR_SCNR    :Rock ‘n’ Roll - Virágbéke
 STR_PARK    :Woodstock
 STR_DTLS    :Évente megrendezésre kerül egy nagyszabású zenei fesztivál a területeden. Építs egy menő vidámparkot, hogy szórakoztasd a szabad szellemű közönséget.
 
@@ -4470,7 +4454,7 @@ STR_DTLS    :Amilyen a megnyitó napján volt - 1905. május 18-án.{NEWLINE}Sze
 <Mount Vesuvius 1700 A.D. by Katatude for UCES>
 STR_SCNR    :Vezúv
 STR_PARK    :Vezúv
-STR_DTLS    :Pompejit és Herculaneumot a Vezúv temette maga alá Kr.u. 79-ben. Látogass el az ásatásokra és építs egy parkot!{NEWLINE}{NEWLINE}Szerző: Katatude
+STR_DTLS    :Pompejit és Herculaneumot a Vezúv temette maga alá Kr.u. 79-ben. Látogass el az ásatásokra és építs egy parkot!{NEWLINE}Szerző: Katatude
 
 <The Sandbox by Katatude for UCES>
 STR_SCNR    :A Homokozó
@@ -4544,4 +4528,4 @@ STR_DTLS    :Hé, gyerekek! Érezzük jól magunkat!{NEWLINE}Szerzők: Piehead &
 <Sand Dune>
 STR_SCNR    :Homokdűne
 STR_PARK    :Homokdűne
-STR_DTLS    :Egy kis park tulajdonosaként vásároltál egy nagy darab földet a tengerparton, hogy bővíts és még több vendéget vonzz a gyönyörű homokdűnékre, de vigyázz: nem bolygathatod az ökológiailag érzékeny homokdűnéket.{NEWLINE}Szerző: rbarclay
+STR_DTLS    :Egy kis park tulajdonosaként vásároltál egy nagy darab földet a tengerparton, hogy bővíts és még több vendéget vonzz a gyönyörű homokdűnékhez, de vigyázz: nem bolygathatod az ökológiailag érzékeny homokdűnéket.{NEWLINE}Szerző: rbarclay

@@ -22,7 +22,7 @@
 using namespace OpenRCT2;
 
 static constexpr int32_t WW = 400;
-static constexpr int32_t WH = 400;
+static constexpr int32_t WH = 450;
 static constexpr StringId WINDOW_TITLE = STR_ABOUT;
 static constexpr int32_t TABHEIGHT = 50;
 
@@ -51,10 +51,6 @@ enum WindowAboutWidgetIdx {
     WIDX_NEW_VERSION,
     WIDX_CHANGELOG,
     WIDX_JOIN_DISCORD,
-    WIDX_CONTRIBUTORS,
-    WIDX_COPYRIGHT,
-    WIDX_SPECIAL_THANKS,
-    WIDX_COMPANY_NAMES,
     WIDX_CONTRIBUTORS_BUTTON,
 };
 
@@ -73,13 +69,7 @@ static Widget _windowAboutOpenRCT2Widgets[] = {
     MakeWidget({168, 115 + 20}, {200, 14},     WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_UPDATE_AVAILABLE  ), // "new version" button
     MakeWidget({168, 115 + 40}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
     MakeWidget({168, 115 + 60}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
-    MakeWidget({10, 250},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION_2), // More info
-    MakeWidget({10, 280},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION_3), // Copyright
-    MakeWidget({10, 360},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_SPECIAL_THANKS_1), // Special Thanks
-    MakeWidget({10, 375},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_SPECIAL_THANKS_2), // Company names
     MakeWidget({168, 115 + 80}, {200, 14},     WindowWidgetType::Button,       WindowColour::Secondary, STR_CONTRIBUTORS_WINDOW_BUTTON), // "contributors" button
-    MakeWidget({10, 310},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_TITLE), // Title Theme
-    MakeWidget({10, 338},       {WW - 20, 50}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_FAIRGROUND_ORGAN), // Fairground organ
     WIDGETS_END,
 };
 
@@ -224,6 +214,25 @@ private:
             widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
             _windowAboutOpenRCT2Widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
         }
+
+        // Draw the rest of the text
+        Formatter ft2{};
+        TextPaint tp{ colours[1], TextAlignment::CENTRE };
+        auto textCoords = windowPos + ScreenCoordsXY((width / 2) - 1, 240);
+        auto textWidth = WW - 20;
+
+        textCoords += ScreenCoordsXY(
+            0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_OPENRCT2_DESCRIPTION_2, ft2, tp) + 5); // More info
+        textCoords += ScreenCoordsXY(
+            0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_OPENRCT2_DESCRIPTION_3, ft2, tp) + 5); // Copyright
+        textCoords += ScreenCoordsXY(
+            0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_OPENRCT2_TITLE, ft2, tp) + 5); // Title Theme
+        textCoords += ScreenCoordsXY(
+            0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_FAIRGROUND_ORGAN, ft2, tp) + 5); // Fairground organ
+        textCoords += ScreenCoordsXY(
+            0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_SPECIAL_THANKS_1, ft2, tp)); // Special Thanks
+        textCoords += ScreenCoordsXY(
+            0, DrawTextWrapped(dpi, textCoords, textWidth, STR_ABOUT_SPECIAL_THANKS_2, ft2, tp)); // Company names
     }
 
     /**

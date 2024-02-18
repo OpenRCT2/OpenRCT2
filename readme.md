@@ -19,7 +19,7 @@
 ### Download
 | Latest release                                                                                                        | Latest development build |
 |-----------------------------------------------------------------------------------------------------------------------|--------------------------|
-| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.4.7-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/github/last-commit/OpenRCT2/OpenRCT2/develop)](https://openrct2.org/downloads/develop/latest) |
+| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.4.8-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/github/last-commit/OpenRCT2/OpenRCT2/develop)](https://openrct2.org/downloads/develop/latest) |
 
 ---
 
@@ -165,12 +165,14 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
   1. Check out the repository, this can be done using [GitHub Desktop](https://desktop.github.com) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use)
   2. Open a new Developer Command Prompt for VS 2022
   3. Navigate to the repository (e.g. `cd C:\GitHub\OpenRCT2`)
-  4. To build the 64-bit version, use `msbuild openrct2.proj /t:build /p:platform=x64`
-
-     To build the 32-bit version, use `msbuild openrct2.proj /t:build /p:platform=Win32`
+  4. To build the x64 version, use `msbuild openrct2.proj /t:build /p:platform=x64`
+     To build the x86 version, use `msbuild openrct2.proj /t:build /p:platform=Win32`
+     To build the Arm64 version, use `msbuild openrct2.proj /t:build /p:platform=arm64`
+   
+     **Note:** The file `g2.dat` may not be generated on cross-compilation (e.g. building for Arm64 on a x64 machine). In this case `g2.dat` must be copied from a x86/x64 build.
   5. Run the game, `bin\openrct2`
 
-  Once you have ran msbuild once, further development can be done within Visual Studio by opening `openrct2.sln`. Make sure to select the correct target platform for which you ran the build in point #3 (`Win32` for the 32-bit version, `x64` for the 64-bit version), otherwise the build will fail in Visual Studio.
+  Once you have ran msbuild once, further development can be done within Visual Studio by opening `openrct2.sln`. Make sure to select the correct target platform for which you ran the build in point #3 (`Win32` for the x86 version, `x64` for the x64 version, `arm64` for the Arm64 version), otherwise the build will fail in Visual Studio.
 
   Other examples:
   ```
