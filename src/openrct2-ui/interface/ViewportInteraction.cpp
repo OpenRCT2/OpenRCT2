@@ -718,16 +718,21 @@ struct PeepDistance
 };
 
 template<typename T>
-static PeepDistance GetClosestPeep(const ScreenCoordsXY& viewportCoords, const int32_t maxDistance, PeepDistance goal)
+static PeepDistance GetClosestPeep(
+    const ScreenCoordsXY& viewportCoords, uint8_t rotation, const int32_t maxDistance, PeepDistance goal)
 {
     for (auto peep : EntityList<T>())
     {
         if (peep->x == LOCATION_NULL)
             continue;
 
-        auto distance = abs(((peep->SpriteData.SpriteRect.GetLeft() + peep->SpriteData.SpriteRect.GetRight()) / 2)
-                            - viewportCoords.x)
-            + abs(((peep->SpriteData.SpriteRect.GetTop() + peep->SpriteData.SpriteRect.GetBottom()) / 2) - viewportCoords.y);
+        auto screenCoords = Translate3DTo2DWithZ(rotation, peep->GetLocation());
+        auto spriteRect = ScreenRect(
+            screenCoords - ScreenCoordsXY{ peep->SpriteData.Width, peep->SpriteData.HeightMin },
+            screenCoords + ScreenCoordsXY{ peep->SpriteData.Width, peep->SpriteData.HeightMax });
+
+        auto distance = abs(((spriteRect.GetLeft() + spriteRect.GetRight()) / 2) - viewportCoords.x)
+            + abs(((spriteRect.GetTop() + spriteRect.GetBottom()) / 2) - viewportCoords.y);
         if (distance > maxDistance)
             continue;
 
@@ -754,9 +759,9 @@ static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int3
 
     PeepDistance goal;
     if (!(viewport->flags & VIEWPORT_FLAG_HIDE_GUESTS))
-        goal = GetClosestPeep<Guest>(viewportCoords, maxDistance, goal);
+        goal = GetClosestPeep<Guest>(viewportCoords, viewport->rotation, maxDistance, goal);
     if (!(viewport->flags & VIEWPORT_FLAG_HIDE_STAFF))
-        goal = GetClosestPeep<Staff>(viewportCoords, maxDistance, goal);
+        goal = GetClosestPeep<Staff>(viewportCoords, viewport->rotation, maxDistance, goal);
     return goal.peep;
 }
 
