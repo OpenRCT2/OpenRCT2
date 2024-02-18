@@ -261,7 +261,7 @@ CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords, uint8_t 
     CoordsXY pos{};
     for (int32_t i = 0; i < 6; i++)
     {
-        pos = ViewportPosToMapPos(startCoords, height);
+        pos = ViewportPosToMapPos(startCoords, height, rotation);
         height = TileElementHeight(pos);
 
         // HACK: This is to prevent the x and y values being set to values outside
@@ -596,7 +596,7 @@ void ViewportUpdatePosition(WindowBase* window)
     auto viewportMidPoint = ScreenCoordsXY{ window->savedViewPos.x + viewport->view_width / 2,
                                             window->savedViewPos.y + viewport->view_height / 2 };
 
-    auto mapCoord = ViewportPosToMapPos(viewportMidPoint, 0);
+    auto mapCoord = ViewportPosToMapPos(viewportMidPoint, 0, viewport->rotation);
 
     // Clamp to the map minimum value
     int32_t at_map_edge = 0;
@@ -1100,11 +1100,11 @@ void Viewport::Invalidate() const
     ViewportInvalidate(this, { viewPos, viewPos + ScreenCoordsXY{ view_width, view_height } });
 }
 
-CoordsXY ViewportPosToMapPos(const ScreenCoordsXY& coords, int32_t z)
+CoordsXY ViewportPosToMapPos(const ScreenCoordsXY& coords, int32_t z, uint8_t rotation)
 {
     // Reverse of Translate3DTo2DWithZ
     CoordsXY ret = { coords.y - coords.x / 2 + z, coords.y + coords.x / 2 + z };
-    auto inverseRotation = DirectionFlipXAxis(GetCurrentRotation());
+    auto inverseRotation = DirectionFlipXAxis(rotation);
     return ret.Rotate(inverseRotation);
 }
 
@@ -1953,7 +1953,7 @@ std::optional<CoordsXY> ScreenGetMapXY(const ScreenCoordsXY& screenCoords, Viewp
     for (int32_t i = 0; i < 5; i++)
     {
         int32_t z = TileElementHeight(cursorMapPos);
-        cursorMapPos = ViewportPosToMapPos(start_vp_pos, z);
+        cursorMapPos = ViewportPosToMapPos(start_vp_pos, z, myViewport->rotation);
         cursorMapPos.x = std::clamp(cursorMapPos.x, info.Loc.x, info.Loc.x + 31);
         cursorMapPos.y = std::clamp(cursorMapPos.y, info.Loc.y, info.Loc.y + 31);
     }

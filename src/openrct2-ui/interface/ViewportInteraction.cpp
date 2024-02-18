@@ -805,7 +805,7 @@ CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoo
         {
             z = TileElementHeight(mapPos);
         }
-        mapPos = ViewportPosToMapPos(initialVPPos, z);
+        mapPos = ViewportPosToMapPos(initialVPPos, z, viewport->rotation);
         mapPos.x = std::clamp(mapPos.x, initialPos.x, initialPos.x + 31);
         mapPos.y = std::clamp(mapPos.y, initialPos.y, initialPos.y + 31);
     }

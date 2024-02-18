@@ -139,7 +139,7 @@ void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport, const ScreenRe
 
 CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords, uint8_t rotation);
 
-CoordsXY ViewportPosToMapPos(const ScreenCoordsXY& coords, int32_t z);
+CoordsXY ViewportPosToMapPos(const ScreenCoordsXY& coords, int32_t z, uint8_t rotation);
 std::optional<CoordsXY> ScreenPosToMapPos(const ScreenCoordsXY& screenCoords, int32_t* direction);
 
 void ShowGridlines();

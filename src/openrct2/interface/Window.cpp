@@ -958,7 +958,7 @@ void WindowViewportGetMapCoordsByCursor(
     // Compute map coordinate by mouse position.
     auto viewportPos = w.viewport->ScreenToViewportCoord(mouseCoords);
     auto coordsXYZ = ViewportAdjustForMapHeight(viewportPos, w.viewport->rotation);
-    auto mapCoords = ViewportPosToMapPos(viewportPos, coordsXYZ.z);
+    auto mapCoords = ViewportPosToMapPos(viewportPos, coordsXYZ.z, w.viewport->rotation);
     *map_x = mapCoords.x;
     *map_y = mapCoords.y;
 

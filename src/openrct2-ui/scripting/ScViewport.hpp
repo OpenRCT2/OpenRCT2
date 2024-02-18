@@ -184,7 +184,7 @@ namespace OpenRCT2::Scripting
             if (viewport != nullptr)
             {
                 auto centre = viewport->viewPos + ScreenCoordsXY{ viewport->view_width / 2, viewport->view_height / 2 };
-                auto coords = ViewportPosToMapPos(centre, 24);
+                auto coords = ViewportPosToMapPos(centre, 24, viewport->rotation);
 
                 auto ctx = GetContext()->GetScriptEngine().GetContext();
                 auto obj = duk_push_object(ctx);
