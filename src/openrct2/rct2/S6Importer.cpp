@@ -889,8 +889,14 @@ namespace RCT2
                 || String::Equals(_s6.ScenarioFilename, "Asia - Japanese Coastal Reclaim.SC6", true))
             {
                 // clang-format off
+                 FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 7, 29 },
+                    },
+                    OWNERSHIP_OWNED);
                 FixLandOwnershipTilesWithOwnership(
                     {
+                        { 2, 30 }, { 3, 30 }, { 4, 30 },
                         { 25, 23 },
                     },
                     OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED, true);
