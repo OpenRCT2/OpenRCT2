@@ -62,11 +62,7 @@ static void RotateCamera(int32_t direction)
 {
     if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
     {
-        auto window = WindowGetMain();
-        if (window != nullptr)
-        {
-            WindowRotateCamera(*window, direction);
-        }
+        ViewportRotateAll(direction);
     }
 }
 

@@ -1166,15 +1166,14 @@ static int32_t ConsoleCommandSet(InteractiveConsole& console, const arguments_t&
         else if (argv[0] == "current_rotation" && InvalidArguments(&invalidArgs, int_valid[0]))
         {
             uint8_t currentRotation = GetCurrentRotation();
-            WindowBase* mainWindow = WindowGetMain();
             int32_t newRotation = int_val[0];
             if (newRotation < 0 || newRotation > 3)
             {
                 console.WriteLineError("Invalid argument. Valid rotations are 0-3.");
             }
-            else if (newRotation != currentRotation && mainWindow != nullptr)
+            else if (newRotation != currentRotation)
             {
-                WindowRotateCamera(*mainWindow, newRotation - currentRotation);
+                ViewportRotateAll(newRotation - currentRotation);
             }
             console.Execute("get current_rotation");
         }

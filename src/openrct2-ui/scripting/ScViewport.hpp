@@ -127,7 +127,7 @@ namespace OpenRCT2::Scripting
                 {
                     while (w->viewport->rotation != value)
                     {
-                        WindowRotateCamera(*w, 1);
+                        ViewportRotateSingle(w, 1);
                     }
                 }
             }

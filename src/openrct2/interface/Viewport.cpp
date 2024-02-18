@@ -802,6 +802,60 @@ void ViewportUpdateSmartFollowVehicle(WindowBase* window)
     window->viewport_target_sprite = window->viewport_smart_follow_sprite;
 }
 
+static void ViewportRotateSingleInternal(WindowBase& w, int32_t direction)
+{
+    auto* viewport = w.viewport;
+    if (viewport == nullptr)
+        return;
+
+    auto windowPos = ScreenCoordsXY{ (viewport->width >> 1), (viewport->height >> 1) } + viewport->pos;
+
+    // has something to do with checking if middle of the viewport is obstructed
+    Viewport* other;
+    auto mapXYCoords = ScreenGetMapXY(windowPos, &other);
+    CoordsXYZ coords{};
+
+    // other != viewport probably triggers on viewports in ride or guest window?
+    // naoXYCoords is nullopt if middle of viewport is obstructed by another window?
+    if (!mapXYCoords.has_value() || other != viewport)
+    {
+        auto viewPos = ScreenCoordsXY{ (viewport->view_width >> 1), (viewport->view_height >> 1) } + viewport->viewPos;
+
+        coords = ViewportAdjustForMapHeight(viewPos, viewport->rotation);
+    }
+    else
+    {
+        coords.x = mapXYCoords->x;
+        coords.y = mapXYCoords->y;
+        coords.z = TileElementHeight(coords);
+    }
+
+    viewport->rotation = (viewport->rotation + direction) & 3;
+
+    auto centreLoc = centre_2d_coordinates(coords, viewport);
+
+    if (centreLoc.has_value())
+    {
+        w.savedViewPos = centreLoc.value();
+        viewport->viewPos = *centreLoc;
+    }
+
+    w.Invalidate();
+    WindowEventViewportRotateCall(&w);
+}
+
+void ViewportRotateSingle(WindowBase* window, int32_t direction)
+{
+    ViewportRotateSingleInternal(*window, direction);
+    ResetAllSpriteQuadrantPlacements();
+}
+
+void ViewportRotateAll(int32_t direction)
+{
+    WindowVisitEach([direction](WindowBase* w) { ViewportRotateSingleInternal(*w, direction); });
+    ResetAllSpriteQuadrantPlacements();
+}
+
 /**
  *
  *  rct2: 0x00685C02
@@ -1977,7 +2031,7 @@ std::optional<CoordsXY> ScreenGetMapXYWithZ(const ScreenCoordsXY& screenCoords, 
     }
 
     auto vpCoords = viewport->ScreenToViewportCoord(screenCoords);
-    auto mapPosition = ViewportPosToMapPos(vpCoords, z);
+    auto mapPosition = ViewportPosToMapPos(vpCoords, z, viewport->rotation);
     if (!MapIsLocationValid(mapPosition))
     {
         return std::nullopt;
