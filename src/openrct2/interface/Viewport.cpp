@@ -75,7 +75,9 @@ InteractionInfo::InteractionInfo(const PaintStruct* ps)
     , SpriteType(ps->InteractionItem)
 {
 }
+
 static void ViewportPaintWeatherGloom(DrawPixelInfo& dpi);
+static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const ScreenRect& screenRect);
 
 /**
  * This is not a viewport function. It is used to setup many variables for
@@ -891,7 +893,7 @@ static void ViewportPaintColumn(PaintSession& session)
  *  edi: dpi
  *  ebp: bottom
  */
-void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const ScreenRect& screenRect)
+static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const ScreenRect& screenRect)
 {
     PROFILED_FUNCTION();
 

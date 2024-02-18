@@ -137,7 +137,6 @@ void ViewportUpdateSmartFollowGuest(WindowBase* window, const Guest* peep);
 void ViewportUpdateSmartFollowStaff(WindowBase* window, const Staff* peep);
 void ViewportUpdateSmartFollowVehicle(WindowBase* window);
 void ViewportRender(DrawPixelInfo& dpi, const Viewport* viewport, const ScreenRect& screenRect);
-void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const ScreenRect& screenRect);
 
 CoordsXYZ ViewportAdjustForMapHeight(const ScreenCoordsXY& startCoords);
 
