@@ -208,7 +208,7 @@ namespace OpenRCT2::Scripting
                     auto coords = GetCoordsFromObject(position);
                     if (coords)
                     {
-                        auto screenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), *coords);
+                        auto screenCoords = Translate3DTo2DWithZ(viewport->rotation, *coords);
                         auto left = screenCoords.x - (viewport->view_width / 2);
                         auto top = screenCoords.y - (viewport->view_height / 2);
                         SetViewLeftTop(left, top);
