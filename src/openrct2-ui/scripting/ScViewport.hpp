@@ -111,7 +111,12 @@ namespace OpenRCT2::Scripting
 
         int32_t rotation_get() const
         {
-            return GetCurrentRotation();
+            auto viewport = GetViewport();
+            if (viewport != nullptr)
+            {
+                return viewport->rotation;
+            }
+            return 0;
         }
         void rotation_set(int32_t value)
         {
@@ -120,7 +125,7 @@ namespace OpenRCT2::Scripting
                 auto w = GetWindow();
                 if (w != nullptr)
                 {
-                    while (GetCurrentRotation() != value)
+                    while (w->viewport->rotation != value)
                     {
                         WindowRotateCamera(*w, 1);
                     }

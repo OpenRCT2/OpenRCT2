@@ -836,7 +836,7 @@ void WindowScrollToLocation(WindowBase& w, const CoordsXYZ& coords)
             }
         }
 
-        auto screenCoords = Translate3DTo2DWithZ(GetCurrentRotation(), coords);
+        auto screenCoords = Translate3DTo2DWithZ(w.viewport->rotation, coords);
 
         int32_t i = 0;
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))

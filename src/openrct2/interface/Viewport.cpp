@@ -122,7 +122,7 @@ std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, Viewpo
         return std::nullopt;
     }
 
-    auto screenCoord = Translate3DTo2DWithZ(GetCurrentRotation(), loc);
+    auto screenCoord = Translate3DTo2DWithZ(viewport->rotation, loc);
     screenCoord.x -= viewport->view_width / 2;
     screenCoord.y -= viewport->view_height / 2;
     return { screenCoord };
@@ -962,7 +962,7 @@ static void ViewportPaint(const Viewport* viewport, DrawPixelInfo& dpi, const Sc
     // Generate and sort columns.
     for (x = alignedX; x < rightBorder; x += 32)
     {
-        PaintSession* session = PaintSessionAlloc(dpi1, viewFlags);
+        PaintSession* session = PaintSessionAlloc(dpi1, viewFlags, viewport->rotation);
         _paintColumns.push_back(session);
 
         DrawPixelInfo& dpi2 = session->DPI;
@@ -1829,31 +1829,31 @@ InteractionInfo GetMapCoordinatesFromPosWindow(WindowBase* window, const ScreenC
         return info;
     }
 
-    Viewport* myviewport = window->viewport;
+    Viewport* viewport = window->viewport;
     auto viewLoc = screenCoords;
-    viewLoc -= myviewport->pos;
-    if (viewLoc.x >= 0 && viewLoc.x < static_cast<int32_t>(myviewport->width) && viewLoc.y >= 0
-        && viewLoc.y < static_cast<int32_t>(myviewport->height))
+    viewLoc -= viewport->pos;
+    if (viewLoc.x >= 0 && viewLoc.x < static_cast<int32_t>(viewport->width) && viewLoc.y >= 0
+        && viewLoc.y < static_cast<int32_t>(viewport->height))
     {
-        viewLoc.x = myviewport->zoom.ApplyTo(viewLoc.x);
-        viewLoc.y = myviewport->zoom.ApplyTo(viewLoc.y);
-        viewLoc += myviewport->viewPos;
-        if (myviewport->zoom > ZoomLevel{ 0 })
+        viewLoc.x = viewport->zoom.ApplyTo(viewLoc.x);
+        viewLoc.y = viewport->zoom.ApplyTo(viewLoc.y);
+        viewLoc += viewport->viewPos;
+        if (viewport->zoom > ZoomLevel{ 0 })
         {
-            viewLoc.x &= myviewport->zoom.ApplyTo(0xFFFFFFFF) & 0xFFFFFFFF;
-            viewLoc.y &= myviewport->zoom.ApplyTo(0xFFFFFFFF) & 0xFFFFFFFF;
+            viewLoc.x &= viewport->zoom.ApplyTo(0xFFFFFFFF) & 0xFFFFFFFF;
+            viewLoc.y &= viewport->zoom.ApplyTo(0xFFFFFFFF) & 0xFFFFFFFF;
         }
         DrawPixelInfo dpi;
         dpi.x = viewLoc.x;
         dpi.y = viewLoc.y;
         dpi.height = 1;
-        dpi.zoom_level = myviewport->zoom;
+        dpi.zoom_level = viewport->zoom;
         dpi.width = 1;
 
-        PaintSession* session = PaintSessionAlloc(dpi, myviewport->flags);
+        PaintSession* session = PaintSessionAlloc(dpi, viewport->flags, viewport->rotation);
         PaintSessionGenerate(*session);
         PaintSessionArrange(*session);
-        info = SetInteractionInfoFromPaintSession(session, myviewport->flags, flags & 0xFFFF);
+        info = SetInteractionInfoFromPaintSession(session, viewport->flags, flags & 0xFFFF);
         PaintSessionFree(session);
     }
     return info;
@@ -2097,7 +2097,7 @@ void ViewportSetSavedView()
         gameState.SavedView = ScreenCoordsXY{ viewport->view_width / 2, viewport->view_height / 2 } + viewport->viewPos;
 
         gameState.SavedViewZoom = viewport->zoom;
-        gameState.SavedViewRotation = GetCurrentRotation();
+        gameState.SavedViewRotation = viewport->rotation;
     }
 }
 
