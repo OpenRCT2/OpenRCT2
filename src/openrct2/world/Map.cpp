@@ -111,7 +111,6 @@ static std::vector<TileElement> _tileElementsStash;
 static size_t _tileElementsInUse;
 static size_t _tileElementsInUseStash;
 static TileCoordsXY _mapSizeStash;
-static int32_t _currentRotationStash;
 
 void StashMap()
 {
@@ -119,7 +118,6 @@ void StashMap()
     _tileIndexStash = std::move(_tileIndex);
     _tileElementsStash = std::move(gameState.TileElements);
     _mapSizeStash = GetGameState().MapSize;
-    _currentRotationStash = gCurrentRotation;
     _tileElementsInUseStash = _tileElementsInUse;
 }
 
@@ -129,7 +127,6 @@ void UnstashMap()
     _tileIndex = std::move(_tileIndexStash);
     gameState.TileElements = std::move(_tileElementsStash);
     GetGameState().MapSize = _mapSizeStash;
-    gCurrentRotation = _currentRotationStash;
     _tileElementsInUse = _tileElementsInUseStash;
 }
 

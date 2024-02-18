@@ -123,8 +123,6 @@ extern uint8_t gShowConstructionRightsRefCount;
 // rct2: 0x014234BC
 extern Viewport* g_music_tracking_viewport;
 
-extern uint8_t gCurrentRotation;
-
 void ViewportInitAll();
 std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, Viewport* viewport);
 void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus);

@@ -65,8 +65,6 @@ Viewport* g_music_tracking_viewport;
 static std::unique_ptr<JobPool> _paintJobs;
 static std::vector<PaintSession*> _paintColumns;
 
-uint8_t gCurrentRotation;
-
 static uint32_t _currentImageType;
 InteractionInfo::InteractionInfo(const PaintStruct* ps)
     : Loc(ps->MapPos)
@@ -2055,7 +2053,13 @@ std::optional<CoordsXY> ScreenGetMapXYSideWithZ(const ScreenCoordsXY& screenCoor
  */
 uint8_t GetCurrentRotation()
 {
-    uint8_t rotation = gCurrentRotation;
+    auto* viewport = ViewportGetMain();
+    if (viewport == nullptr)
+    {
+        LOG_ERROR("No viewport found! Will return 0.");
+        return 0;
+    }
+    uint8_t rotation = viewport->rotation;
     uint8_t rotation_masked = rotation & 3;
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     if (rotation != rotation_masked)

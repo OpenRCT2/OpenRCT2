@@ -933,7 +933,7 @@ void WindowRotateCamera(WindowBase& w, int32_t direction)
         coords.z = TileElementHeight(coords);
     }
 
-    gCurrentRotation = (GetCurrentRotation() + direction) & 3;
+    viewport->rotation = (viewport->rotation + direction) & 3;
 
     auto centreLoc = centre_2d_coordinates(coords, viewport);
 
