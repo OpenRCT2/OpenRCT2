@@ -129,6 +129,7 @@ void ViewportInitAll();
 std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, Viewport* viewport);
 void ViewportCreate(WindowBase* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, const Focus& focus);
 void ViewportRemove(Viewport* viewport);
+Viewport* ViewportGetMain();
 void ViewportsInvalidate(const ScreenRect& screenRect, ZoomLevel maxZoom = ZoomLevel{ -1 });
 void ViewportUpdatePosition(WindowBase* window);
 void ViewportUpdateFollowSprite(WindowBase* window);

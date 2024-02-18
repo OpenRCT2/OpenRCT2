@@ -229,6 +229,16 @@ void ViewportRemove(Viewport* viewport)
     _viewports.erase(it);
 }
 
+Viewport* ViewportGetMain()
+{
+    auto mainWindow = WindowGetMain();
+    if (mainWindow == nullptr)
+    {
+        return nullptr;
+    }
+    return mainWindow->viewport;
+}
+
 void ViewportsInvalidate(const ScreenRect& screenRect, ZoomLevel maxZoom)
 {
     for (auto& vp : _viewports)
