@@ -590,7 +590,7 @@ static void PaintAttachedPS(DrawPixelInfo& dpi, PaintStruct* ps, uint32_t viewFl
 static void PaintPSImageWithBoundingBoxes(PaintSession& session, PaintStruct* ps, ImageId imageId, int32_t x, int32_t y)
 {
     auto& dpi = session.DPI;
-    
+
     const uint8_t colour = BoundBoxDebugColours[EnumValue(ps->InteractionItem)];
     const uint8_t rotation = session.CurrentRotation;
 

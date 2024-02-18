@@ -267,8 +267,7 @@ void ViewportsInvalidate(const CoordsXYZ& pos, int32_t width, int32_t minHeight,
         {
             auto screenCoords = Translate3DTo2DWithZ(vp.rotation, pos);
             auto screenPos = ScreenRect(
-                screenCoords - ScreenCoordsXY{ width, minHeight },
-                screenCoords + ScreenCoordsXY{ width, maxHeight });
+                screenCoords - ScreenCoordsXY{ width, minHeight }, screenCoords + ScreenCoordsXY{ width, maxHeight });
 
             ViewportInvalidate(&vp, screenPos);
         }

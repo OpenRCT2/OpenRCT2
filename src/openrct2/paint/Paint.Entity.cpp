@@ -99,10 +99,8 @@ void EntityPaintSetup(PaintSession& session, const CoordsXY& pos)
             screenCoords - ScreenCoordsXY{ spr->SpriteData.Width, spr->SpriteData.HeightMin },
             screenCoords + ScreenCoordsXY{ spr->SpriteData.Width, spr->SpriteData.HeightMax });
 
-        if (session.DPI.y + session.DPI.height <= spriteRect.GetTop()
-            || spriteRect.GetBottom() <= session.DPI.y
-            || session.DPI.x + session.DPI.width <= spriteRect.GetLeft()
-            || spriteRect.GetRight() <= session.DPI.x)
+        if (session.DPI.y + session.DPI.height <= spriteRect.GetTop() || spriteRect.GetBottom() <= session.DPI.y
+            || session.DPI.x + session.DPI.width <= spriteRect.GetLeft() || spriteRect.GetRight() <= session.DPI.x)
         {
             continue;
         }
