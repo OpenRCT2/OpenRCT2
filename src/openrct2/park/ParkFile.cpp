@@ -803,9 +803,9 @@ namespace OpenRCT2
                     auto& park = GetContext()->GetGameState()->GetPark();
                     cs.ReadWrite(park.Name);
                     cs.ReadWrite(gameState.Cash);
-                    cs.ReadWrite(gBankLoan);
+                    cs.ReadWrite(gameState.BankLoan);
                     cs.ReadWrite(gameState.MaxBankLoan);
-                    cs.ReadWrite(gBankLoanInterestRate);
+                    cs.ReadWrite(gameState.BankLoanInterestRate);
                     cs.ReadWrite(gameState.ParkFlags);
                     if (version <= 18)
                     {

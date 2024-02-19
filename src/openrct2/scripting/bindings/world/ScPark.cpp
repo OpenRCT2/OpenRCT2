@@ -86,15 +86,17 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::bankLoan_get() const
     {
-        return gBankLoan;
+        return GetGameState().BankLoan;
     }
     void ScPark::bankLoan_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
 
-        if (gBankLoan != value)
+        auto& gameState = GetGameState();
+
+        if (gameState.BankLoan != value)
         {
-            gBankLoan = value;
+            gameState.BankLoan = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             ContextBroadcastIntent(&intent);
         }

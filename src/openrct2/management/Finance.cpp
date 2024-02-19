@@ -39,8 +39,6 @@ static constexpr int32_t dword_988E60[static_cast<int32_t>(ExpenditureType::Coun
     1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0,
 };
 
-money64 gBankLoan;
-uint8_t gBankLoanInterestRate;
 money64 gCurrentExpenditure;
 money64 gCurrentProfit;
 money64 gHistoricalProfit;
@@ -138,16 +136,18 @@ void FinancePayResearch()
  */
 void FinancePayInterest()
 {
-    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+    const auto& gameState = GetGameState();
+
+    if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
 
     // This variable uses the 64-bit type as the computation below can involve multiplying very large numbers
     // that will overflow money64 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
-    const money64 current_loan = gBankLoan;
-    const auto current_interest_rate = gBankLoanInterestRate;
-    const money64 interest_to_pay = (GetGameState().ParkFlags & PARK_FLAGS_RCT1_INTEREST)
+    const money64 current_loan = gameState.BankLoan;
+    const auto current_interest_rate = gameState.BankLoanInterestRate;
+    const money64 interest_to_pay = (gameState.ParkFlags & PARK_FLAGS_RCT1_INTEREST)
         ? (current_loan / 2400)
         : (current_loan * 5 * current_interest_rate) >> 14;
 
@@ -229,12 +229,12 @@ void FinanceInit()
     gameState.InitialCash = 10000.00_GBP; // Cheat detection
 
     gameState.Cash = 10000.00_GBP;
-    gBankLoan = 10000.00_GBP;
+    gameState.BankLoan = 10000.00_GBP;
     gameState.MaxBankLoan = 20000.00_GBP;
 
     gHistoricalProfit = 0;
 
-    gBankLoanInterestRate = 10;
+    gameState.BankLoanInterestRate = 10;
     gameState.ParkValue = 0;
     gCompanyValue = 0;
     gameState.ScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
@@ -270,7 +270,7 @@ void FinanceUpdateDailyProfit()
         current_profit -= research_cost_table[level];
 
         // Loan costs
-        auto current_loan = gBankLoan;
+        auto current_loan = gameState.BankLoan;
         current_profit -= current_loan / 600;
 
         // Ride costs
@@ -302,7 +302,7 @@ money64 FinanceGetInitialCash()
 
 money64 FinanceGetCurrentLoan()
 {
-    return gBankLoan;
+    return GetGameState().BankLoan;
 }
 
 money64 FinanceGetMaximumLoan()
