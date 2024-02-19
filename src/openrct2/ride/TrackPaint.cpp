@@ -1523,19 +1523,20 @@ void TrackPaintUtilRightQuarterTurn5TilesTunnel(
 void TrackPaintUtilRightQuarterTurn5TilesWoodenSupports(
     PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence)
 {
-    if (trackSequence != 1 && trackSequence != 4)
+    static constexpr WoodenSupportSubType supportTypes[NumOrthogonalDirections][7] = {
+        { WoodenSupportSubType::NeSw, WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
+          WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::NwSe },
+        { WoodenSupportSubType::NwSe, WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1,
+          WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::NeSw },
+        { WoodenSupportSubType::NeSw, WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2,
+          WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::NwSe },
+        { WoodenSupportSubType::NwSe, WoodenSupportSubType::Null, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3,
+          WoodenSupportSubType::Null, WoodenSupportSubType::Corner1, WoodenSupportSubType::NeSw },
+    };
+
+    const auto supportType = supportTypes[direction][trackSequence];
+    if (supportType != WoodenSupportSubType::Null)
     {
-        static constexpr std::optional<WoodenSupportSubType> supportTypes[][7] = {
-            { WoodenSupportSubType::NeSw, std::nullopt, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
-              std::nullopt, WoodenSupportSubType::Corner2, WoodenSupportSubType::NwSe },
-            { WoodenSupportSubType::NwSe, std::nullopt, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1,
-              std::nullopt, WoodenSupportSubType::Corner3, WoodenSupportSubType::NeSw },
-            { WoodenSupportSubType::NeSw, std::nullopt, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2,
-              std::nullopt, WoodenSupportSubType::Corner0, WoodenSupportSubType::NwSe },
-            { WoodenSupportSubType::NwSe, std::nullopt, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3,
-              std::nullopt, WoodenSupportSubType::Corner1, WoodenSupportSubType::NeSw },
-        };
-        auto supportType = supportTypes[direction][trackSequence].value();
         WoodenASupportsPaintSetup(session, WoodenSupportType::Truss, supportType, height, session.SupportColours);
     }
 }

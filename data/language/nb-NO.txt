@@ -98,7 +98,6 @@ STR_0093    :Hybrid berg-og-dal-bane
 STR_0094    :Enkeltspor berg-og-dal-bane
 STR_0095    :Alpin berg-og-dal-bane
 STR_0096    :Klassisk tre-berg-og-dal-bane
-
 STR_0512    :En kompakt berg-og-dal-bane med spiraltrekk og myke fall med vridninger
 STR_0513    :En loopende berg-og-dal-bane hvor passasjerene kjører stående
 STR_0514    :Tog som henger under berg-og-dal-banesporet svinger utover i svingene
@@ -119,33 +118,33 @@ STR_0528    :Passasjerer sitter på oppblåsbare gummibåter mens de suser nedov
 STR_0529    :Gruvetog-liknende berg-og-dal-banetog raser langs en stålbane som etterlikner gamle togskinner
 STR_0530    :Vogner henger fra en stålkabel som går mellom begge endene av attraksjonen
 STR_0531    :En kompakt berg-og-dal-bane i stål hvor togene går gjennom korketrekkere og looper
-STR_0532    :
-STR_0533    :
+STR_0532    :Labyrinten er laget av 2 meter høye hekker eller vegger, og gjester vandrer rundt i labyrinten helt til de finner utgangen
+STR_0533    :Bygning av treverk som rommer en trapp og en utvendig spiralsklie som brukes med sklimatter
 STR_0534    :Gjester konkurrerer mot hverandre i gokarter på en asfaltbane
 STR_0535    :Tømmerbåter ledes i vannkanaler og suser ned bratte fall for å dynke passasjerene 
 STR_0536    :Sirkulære båter flyter rolig langs en bred kanal, og må traversere brusende stryk og fossefall
 STR_0537    :Gjester kjører elektriske radiobiler de kan bumpe i hverandre
-STR_0538    :
-STR_0539    :
-STR_0540    :
-STR_0542    :
-STR_0544    :
-STR_0545    :
-STR_0547    :
-STR_0548    :
-STR_0549    :
-STR_0550    :
-STR_0551    :
-STR_0552    :
-STR_0553    :
+STR_0538    :Stort svingende piratskip
+STR_0539    :Skip er festet til en arm med en motvekt på den andre enden, og svinger rundt 360 grader
+STR_0540    :En bod hvor gjester kan kjøpe mat
+STR_0542    :En bod hvor gjester kan kjøpe drikke
+STR_0544    :En bod som selger suvenirer
+STR_0545    :Tradisjonell roterende karusell med utskårne trehester
+STR_0547    :En bod hvor gjester kan skaffe parkkart og kjøpe paraplyer
+STR_0548    :En toalettbygning
+STR_0549    :Roterende stort hjul med åpne seter
+STR_0550    :Passasjerer ser en film inne i bevegelsessimulator-kapselen mens den blir vridd og beveget rundt av en hydraulisk arm
+STR_0551    :Kino som viser 3D-filmer inne i en kuleformet bygning
+STR_0552    :Passasjerer sitter i en gondol som henger i store roterende armer, roterer hodestups forover og bakover
+STR_0553    :Konsentrisk dreiende ringer tillater rytterne fri rotasjon i alle retninger
 STR_0554    :Vognen blir skutt ut av stasjonen langs en rett strekning ved hjelp av lineære induksjonsmotorer, for så å bli ledet rett opp et høyt tårn, hvor den faller fritt baklengs tilbake til stasjonen
 STR_0555    :Gjester reiser opp eller ned et vertikalt tårn for å komme fra ett nivå til et annet
 STR_0556    :Ekstra vide vogner kjører ned vertikale fall for en ultimat fritt fall-opplevelse
-STR_0557    :
-STR_0558    :
-STR_0559    :
-STR_0560    :
-STR_0561    :
+STR_0557    :En minibank (bankautomat) som gjester kan bruke hvis de begynner å gå tom for penger
+STR_0558    :Passasjerer sitter i par på seter som roterer rundt endene på tre lange, roterende armer
+STR_0559    :Stor tematisert bygning som inneholder skumle korridorer og skremmende rom
+STR_0560    :Et sted hvor kvalme gjester kan besøke for å raskere hente seg inn
+STR_0561    :Forestilling med dyr inne i et stort sirkustelt
 STR_0562    :Motoriserte biler reiser forbi skumle kulisser og spesialeffekter over flere etasjer
 STR_0563    :I komfortable vogner nyter passasjerene gigantiske myke fall og langvarig vektløshet over bakketoppene
 STR_0564    :Denne berg-og-dal-banen er laget i tre og er rask, røff og bråkete på en måte som gjør at toget føles som det er ute av kontroll
@@ -160,20 +159,20 @@ STR_0574    :Passasjerer ligger i spesielle seler mens de raser gjennom vridde b
 STR_0575    :Motoriserte tog hengende fra en skinne transporterer gjester rundt i parken
 STR_0577    :Vogner kjører på trebaner hvor de blir snudd rundt av spesielle baneseksjoner
 STR_0578    :Vogner kjører langs en bane lukket av ringer, hvor de blir ledet ned bratte bakker og gjennom vridninger
-STR_0579    :
+STR_0579    :Et rolig minigolf spill
 STR_0580    :En gigantisk stålberg-og-dal-bane med mulighet for myke fall og høyder på over 100 m
 STR_0581    :En ring med seter blir dratt til toppen av et høyt tårn mens den spinner rolig, for så å falle fritt ned til bakken hvor den blir stoppet av magnetiske bremser
 STR_0582    :Gjester rir på luftputefartøy som de får styre selv
-STR_0583    :
+STR_0583    :Bygning med forskrudde rom og vinklede korridorer for å desorientere folk som vandrer gjennom det
 STR_0584    :Spesielle sykler kjører langs en stålskinne, drevet av pedalkraft
 STR_0585    :Passasjerer sitter i par, hengende under banen mens de looper og vrir gjennom skarpe inversjoner
 STR_0586    :Båtformede vogner kjører på berg-og-dal-banespor som tillater vridde kurver og skarpe fall, men også muligheten for å plaske ned i rolige elveseksjoner
 STR_0587    :Etter en spennende utskytning skyter toget opp en vertikal bakke, over toppen, og vertikalt ned og tilbake
 STR_0588    :Individuelle vogner kjører under en sikksakkbane med hårnålssvinger og skarpe fall
-STR_0589    :
+STR_0589    :Et stort kjøretøy tematisert til flyvende teppe som beveger seg opp og ned i sykluser på endene av 4 armer
 STR_0590    :Passasjerer kjører i en undervannsbåt gjennom en undervannsbane
 STR_0591    :Raftformede båter flyter rolig langs en elvebane
-STR_0593    :
+STR_0593    :Roterende hjul med hengende kapsler, som først starter å spinne og deretter blir heist opp av en støttearm
 STR_0598    :Inverterte berg-og-dal-banetog blir akselerert ut fra stasjonen for å reise opp en ‘pigg’, for så å falle ned igjen, gjennom stasjonen, og opp en pigg på andre siden
 STR_0599    :En kompakt berg-og-dal-bane med indivuelle vogner og myke, vridde fall
 STR_0600    :Motoriserte minetog ruller langs et mykt og vridd spor
@@ -181,8 +180,7 @@ STR_0602    :Berg-og-dal-banetog blir akselerert ut av stasjonen med lineære in
 STR_0603    :En berg-og-dal-bane i tre, med solid bane av stål som tillater bratte fall og inversjoner
 STR_0604    :Gjester sitter i én kolonne på en smal monorail mens de suser gjennom skarpe inversjoner og svinger
 STR_0605    :Gjester kontrollerer selv farten på kjelker ned en vandrende stålbane
-STR_0606    :En tre-berg-og-dal-bane i eldre stil designet for å føles “ute av kontroll”; den er rask og røff, med mye vektløshet og harde svinger 
-
+STR_0606    :En tre-berg-og-dal-bane i eldre stil designet for å føles “ute av kontroll”; den er rask og røff, med mye vektløshet og harde svinger
 STR_0767    :Gjest {INT32}
 STR_0768    :Vaktmester {INT32}
 STR_0769    :Mekaniker {INT32}
@@ -248,7 +246,6 @@ STR_0833    :Pause spillet
 STR_0834    :Disk- og spillinnstillinger
 STR_0839    :{UINT16} × {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
-# The following six strings were used for display resolutions, but have been replaced.
 STR_0847    :Om ‘OpenRCT2’
 STR_0850    :{WINDOW_COLOUR_2}Opphavsrett © 2002 Chris Sawyer, alle rettigheter forbeholdt
 STR_0851    :{WINDOW_COLOUR_2}Designet og programmert av Chris Sawyer
@@ -1046,9 +1043,9 @@ STR_1654    :{WINDOW_COLOUR_2}Nylige tanker:
 STR_1655    :Bygg gangsti på bakken
 STR_1656    :Bygg bro eller tunnel for gangsti
 STR_1657    :{WINDOW_COLOUR_2}Foretrukket attraksjon
-STR_1658    :{WINDOW_COLOUR_2}intensitet: {BLACK}mindre enn {COMMA16}
-STR_1659    :{WINDOW_COLOUR_2}intensitet: {BLACK}mellom {COMMA16} og {COMMA16}
-STR_1660    :{WINDOW_COLOUR_2}intensitet: {BLACK}mer enn {COMMA16}
+STR_1658    :{WINDOW_COLOUR_2}Intensitet: {BLACK}mindre enn {COMMA16}
+STR_1659    :{WINDOW_COLOUR_2}Intensitet: {BLACK}mellom {COMMA16} og {COMMA16}
+STR_1660    :{WINDOW_COLOUR_2}Intensitet: {BLACK}mer enn {COMMA16}
 STR_1661    :{WINDOW_COLOUR_2}Kvalme toleranse: {BLACK}{STRINGID}
 STR_1662    :{WINDOW_COLOUR_2}Spenning:
 STR_1663    :{WINDOW_COLOUR_2}Kvalme:
@@ -1071,20 +1068,20 @@ STR_1679    :Heliks opp (venstre)
 STR_1680    :Heliks opp (høyre)
 STR_1681    :Heliks ned (venstre)
 STR_1682    :Heliks ned (høyre)
-STR_1683    :Base størrelse 2 × 2
-STR_1684    :Base størrelse 4 × 4
-STR_1685    :Base størrelse 2 × 4
-STR_1686    :Base størrelse 5 × 1
+STR_1683    :Grunnstørrelse 2 × 2
+STR_1684    :Grunnstørrelse 4 × 4
+STR_1685    :Grunnstørrelse 2 × 4
+STR_1686    :Grunnstørrelse 5 × 1
 STR_1687    :Vannsprut
-STR_1688    :Base størrelse 4 × 1
+STR_1688    :Grunnstørrelse 4 × 1
 STR_1689    :Blokkbremser
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Kostnad: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Kostnad: {BLACK}from {CURRENCY}
 STR_1693    :Gjester
-STR_1694    :personale
+STR_1694    :Personale
 STR_1695    :Inntekt og kostnad
-STR_1696    :Kunde informasjon
+STR_1696    :Kunde-informasjon
 STR_1697    :Kan ikke plassere disse på kø-område
 STR_1698    :Kan bare plassere disse på kø-område
 STR_1699    :For mange folk i spillet
@@ -1093,10 +1090,10 @@ STR_1701    :Ansett ny Mekaniker
 STR_1702    :Ansett ny Sikkerhetsvakt
 STR_1703    :Ansett ny Underholder
 STR_1704    :Kan ikke ansette nytt personal…
-STR_1705    :Spark denne personale
+STR_1705    :Spark dette personalet
 STR_1706    :Flytt denne personen til nytt område
-STR_1707    :For mange personale i spillet
-STR_1708    :Sett patruljeområde for denne personale
+STR_1707    :For mange personaler i spillet
+STR_1708    :Sett patruljeområde for dette personalet
 STR_1709    :Spark personale
 STR_1710    :Ja
 STR_1711    :{WINDOW_COLOUR_1}Er du sikker på du vil sparke {STRINGID}?
@@ -1129,7 +1126,7 @@ STR_1738    :Kan ikke endre antall runder…
 STR_1739    :Løp vunnet av gjest {INT32}
 STR_1740    :Løp vunnet av {STRINGID}
 STR_1741    :Ikke bygget enda !
-STR_1742    :{WINDOW_COLOUR_2}Max. folk på attraksjon:
+STR_1742    :{WINDOW_COLOUR_2}Maks. folk på attraksjon:
 STR_1743    :Maksimal mengde folk tillatt på denne attraksjon
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :Kan ikke endre dette…
@@ -1149,7 +1146,7 @@ STR_1760    :Fyllmodus
 STR_1761    :Bygg labyrint i denne retningen
 STR_1762    :Fosser
 STR_1763    :Stryk
-STR_1764    :Tømmerdump
+STR_1764    :Tømmerhump
 STR_1765    :Fotoseksjon
 STR_1766    :Reverserer dreieskive
 STR_1767    :Spinnende tunnel
@@ -1161,17 +1158,17 @@ STR_1773    :Kun én fotoseksjon tillatt per bane
 STR_1774    :Kun ett kabeltrekk tillatt per bane
 STR_1777    :Attraksjonsmusikk
 STR_1778    :{STRINGID} - - 
-STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda kostyme
-STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger kostyme
-STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elefant kostyme
-STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Romer kostyme
-STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilla kostyme
-STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Snømann kostyme
-STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Ridder kostyme
-STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronaut kostyme
-STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Banditt kostyme
-STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriff kostyme
-STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Pirat kostyme
+STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda-kostyme
+STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger-kostyme
+STR_1781    :{INLINE_SPRITE}{00}{20}{00}{00} Elefant-kostyme
+STR_1782    :{INLINE_SPRITE}{01}{20}{00}{00} Romer-kostyme
+STR_1783    :{INLINE_SPRITE}{02}{20}{00}{00} Gorilla-kostyme
+STR_1784    :{INLINE_SPRITE}{03}{20}{00}{00} Snømann-kostyme
+STR_1785    :{INLINE_SPRITE}{04}{20}{00}{00} Ridder-kostyme
+STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronaut-kostyme
+STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Banditt-kostyme
+STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriff-kostyme
+STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Pirat-kostyme
 STR_1790    :Velg uniform-farge for denne typen personale
 STR_1791    :{WINDOW_COLOUR_2}Uniform-farge:
 STR_1792    :Svarer på {STRINGID} beskjed om sammenbrudd
@@ -1179,7 +1176,7 @@ STR_1793    :På vei til {STRINGID} for en inspeksjon
 STR_1794    :Fikser {STRINGID}
 STR_1795    :Svarer på radiobeskjed
 STR_1796    :Har brutt sammen og trenger fiksing
-STR_1798    :Strømvirvel
+STR_1798    :Malstrøm
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Sikkerhetsstopp
 STR_1801    :Sikringer sitter fast lukket
@@ -1272,8 +1269,6 @@ STR_1888    :{WINDOW_COLOUR_2}Tid siden siste inspeksjon: {BLACK}mer enn 4 timer
 STR_1889    :{WINDOW_COLOUR_2}Nedetid: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :Velg hvor ofte en mekaniker skal sjekke denne attraksjonen
 STR_1891    :Ingen {STRINGID} i parken enda!
-# The following two strings were used to display an error when the disc was missing.
-# This has been replaced in OpenRCT2.
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} solgt: {BLACK}{COMMA32}
 STR_1895    :Bygg ny attraksjon
 STR_1896    :{WINDOW_COLOUR_2}Utgifter/Inntekt
@@ -1329,8 +1324,8 @@ STR_1947    :Vis områder patruljert av valgt type personal, og finn det nærmes
 STR_1948    :Ansett et nytt personale of valgt type
 STR_1949    :Økonomisk Sammendrag
 STR_1950    :Økonomisk Graf
-STR_1951    :Park Verdi Graf
-STR_1952    :Profitt Graf
+STR_1951    :Park Verdi-Graf
+STR_1952    :Profitt-Graf
 STR_1953    :Markedsføring
 STR_1954    :Finansiering av forskning
 STR_1955    :{WINDOW_COLOUR_2}Antall kretser:
@@ -1512,7 +1507,7 @@ STR_2136    :Sujongkwa
 STR_2137    :Smørbrød
 STR_2138    :Kjeks
 STR_2139    :Tom Bolle
-STR_2140    :Tomm Drikkekartong
+STR_2140    :Tom Drikkekartong
 STR_2141    :Tom Juicekopp
 STR_2142    :Stekt Pølse
 STR_2143    :Tom Bolle
@@ -1665,8 +1660,8 @@ STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} brukt på {BLACK}{COMMA16} ma
 STR_2300    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} brukt på {BLACK}{COMMA16} matvarer
 STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} brukt på {BLACK}{COMMA16} drikke
 STR_2302    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} brukt på {BLACK}{COMMA16} drikker
-STR_2303    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} brukt på {BLACK}{COMMA16} souvenir
-STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} brukt på {BLACK}{COMMA16} souvenirer
+STR_2303    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} brukt på {BLACK}{COMMA16} suvenir
+STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} brukt på {BLACK}{COMMA16} suvenirer
 STR_2305    :Spordesignfiler
 STR_2306    :Lagre spordesign
 STR_2307    :Velg {STRINGID} design
@@ -1996,7 +1991,7 @@ STR_2789    :{WINDOW_COLOUR_2}Du har feilet ditt oppdrag !
 STR_2790    :Skriv navn inn i scenariolisten
 STR_2791    :Skriv navn
 STR_2792    :Vennligst skriv ditt navn for scenariolisten:
-STR_2793    :(Completed by {STRINGID})
+STR_2793    :(Fullført av {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Fullført av: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} med en bedriftsverdi av: {BLACK}{CURRENCY}
 STR_2795    :Sorter
 STR_2796    :Sorter attraksjonslisten med den viste informasjonstypen
@@ -2105,11 +2100,11 @@ STR_3011    :Fil inneholder invalid data
 STR_3045    :Velg musikkstil å spille
 STR_3047    :Lokale myndigheter forbyr rivning eller modifisering av denne attraksjonen
 STR_3048    :Markedsføringskampanjer forbudt av lokale myndigheter
-STR_3049    :Golf hull A
-STR_3050    :Golf hull B
-STR_3051    :Golf hull C
-STR_3052    :Golf hull D
-STR_3053    :Golf hull E
+STR_3049    :Golfhull A
+STR_3050    :Golfhull B
+STR_3051    :Golfhull C
+STR_3052    :Golfhull D
+STR_3053    :Golfhull E
 STR_3054    :Laster…
 STR_3058    :Murvegger
 STR_3059    :Hekker
@@ -2126,11 +2121,11 @@ STR_3069    :Toppseksjon
 STR_3070    :Helning til Vannrett
 STR_3071    :{WINDOW_COLOUR_2}Samme pris i hele parken
 STR_3072    :Velg om denne prisen blir brukt gjennom hele parken
-STR_3073    :{RED}WARNING: Din parkvurdering har falt under 700 !{NEWLINE}Hvis du ikke har økt parkvurderingen innen 4 uker, vil parken din bli stengt
-STR_3074    :{RED}WARNING: Parkvurderingen din er fortsatt under 700 !{NEWLINE}Du har 3 uker på å øke parkvurderingen
-STR_3075    :{RED}WARNING: Parkvurderingen din er fortsatt under 700 !{NEWLINE}Du har kun 2 uker på å øke parkvurderingen, ellers vil parken din bli stengt
-STR_3076    :{RED}FINAL WARNING: Parkvurderingen din er fortsatt under 700 !{NEWLINE}Om bare 7 dager vil parken din bli stengt hvis du ikke kan øke vurderingen
-STR_3077    :{RED}CLOSURE NOTICE: Parken din har blitt stengt !
+STR_3073    :{RED}ADVARSEL: Din parkvurdering har falt under 700 !{NEWLINE}Hvis du ikke har økt parkvurderingen innen 4 uker, vil parken din bli stengt
+STR_3074    :{RED}ADVARSEL: Parkvurderingen din er fortsatt under 700 !{NEWLINE}Du har 3 uker på å øke parkvurderingen
+STR_3075    :{RED}ADVARSEL: Parkvurderingen din er fortsatt under 700 !{NEWLINE}Du har kun 2 uker på å øke parkvurderingen, ellers vil parken din bli stengt
+STR_3076    :{RED}SISTE ADVARSEL: Parkvurderingen din er fortsatt under 700 !{NEWLINE}Om bare 7 dager vil parken din bli stengt hvis du ikke kan øke vurderingen
+STR_3077    :{RED}STENGINGSVARSEL: Parken din har blitt stengt !
 STR_3090    :Velg stil på inngang, utgang og stasjon
 STR_3091    :Du har ikke tillattelse til å fjerne denne seksjonen!
 STR_3092    :Du har ikke tillattelse til å flytte eller modifisere stasjonen til denne banen!
@@ -2164,7 +2159,7 @@ STR_3120    :Finn nærmest tilgjengelige mekaniker, eller mekaniker som fikser e
 STR_3121    :Kan ikke finne mekaniker, eller alle mekanikere er opptatt
 STR_3122    :{WINDOW_COLOUR_2}Favorittattraksjon til: {BLACK}{COMMA32} gjest
 STR_3123    :{WINDOW_COLOUR_2}Favorittattraksjon til: {BLACK}{COMMA32} gjester
-STR_3124    :Ødelagt {STRINGID}
+STR_3124    :Brutt ned {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Spenningsfaktor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensitetsfaktor: {BLACK}+{COMMA16}%
 STR_3127    :{WINDOW_COLOUR_2}Kvalmefaktor: {BLACK}+{COMMA16}%
@@ -2188,7 +2183,7 @@ STR_3144    :Vis attraksjoner og boder på kart
 STR_3160    :Velg nummer av kretser per tur
 STR_3162    :Kan ikke tildele nok minne
 STR_3163    :Installerer ny data: 
-STR_3164    :{BLACK}{COMMA16} valgt (maximum {COMMA16})
+STR_3164    :{BLACK}{COMMA16} valgt (maksimalt {COMMA16})
 STR_3167    :{WINDOW_COLOUR_2}Inkluderer: {BLACK}{COMMA16} objekter
 STR_3169    :Data for følgende objekt ikke funnet: 
 STR_3170    :Ikke nok plass for grafikk
@@ -2400,8 +2395,6 @@ STR_3383    :Velg nytt navn for spordesign
 STR_3384    :Et eksisterende spordesign har allerede dette navnet - Vennligst velg et nytt navn for dette designet:
 STR_3389    :Kan ikke velge ytterligere dekorasjonsgjenstander…
 STR_3390    :For mange gjenstander valgt
-# Start of tutorial strings. Not used at the moment, so not necessary to translate.
-# End of tutorial strings
 STR_3437    :Fjern store områder av dekorasjoner fra landskap
 STR_3438    :Kan ikke fjerne all dekorasjon herfra…
 STR_3439    :Fjern dekor
@@ -2587,7 +2580,7 @@ STR_5314    :Ruteinspektør
 STR_5335    :Attraksjonsinngang
 STR_5336    :Attraksjonsutgang
 STR_5337    :Parkinngang
-STR_5338    :Element type
+STR_5338    :Element-type
 STR_5339    :Grunnhøyde
 STR_5340    :Klaringshøyde
 STR_5343    :Plasser personale automatisk
@@ -3024,7 +3017,7 @@ STR_5893    :Valutakurs
 STR_5894    :Skriv inn valutakurs
 STR_5895    :Lagre bane
 STR_5896    :Klarte ikke lagre bane!
-STR_5898    :{BLACK}Kunne ikke laste inn spor, filen kan være{newline}korruptert, ødelagt eller manglende!
+STR_5898    :{BLACK}Kunne ikke laste inn spor, filen kan være{newline}korrupt, ødelagt eller manglende!
 STR_5899    :Vis/skjul ‘grafikk-feilsøking’-vindu
 STR_5900    :Bruk original grafikk-kode
 STR_5901    :Vis segmenthøyder
@@ -3437,7 +3430,7 @@ STR_6357    :{SMALLFONT}{BLACK}Fjerner alle ender fra parken
 STR_6358    :Side {UINT16}
 STR_6359    :{POP16}{POP16}Side {UINT16}
 STR_6360    :{BLACK}{COMMA32}
-STR_6361    :Aktiver attraksjonlyseffekter (eksperimentelt)	     
+STR_6361    :Aktiver attraksjonlyseffekter (eksperimentelt)
 STR_6362    :Hvis aktivert vil det være lys på vognene til attraksjoner som går på bane.
 STR_6363    :Tekst kopiert til utklippstavlen
 STR_6364    :{RED}{COMMA16} person har omkommet i en ulykke på {STRINGID}

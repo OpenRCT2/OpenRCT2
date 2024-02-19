@@ -3669,6 +3669,23 @@ STR_6593    :Eliminar vallas del parque
 STR_6594    :Inspector de cuadricula: Alternar inclinación del muro
 STR_6595    :{WINDOW_COLOUR_2}Autor: {BLACK}{STRING}
 STR_6596    :{WINDOW_COLOUR_2}Autores: {BLACK}{STRING}
+STR_6597    :Parámetro no válido
+STR_6598    :Valor fuera de rango
+STR_6599    :Elemento fantasma no encontrado
+STR_6600    :Globo no encontrado
+STR_6601    :Empleado no encontrado
+STR_6602    :Atracción no encontrada
+STR_6603    :Entrada de objeto de atracción no encontrada
+STR_6604    :Jugador no encontrado
+STR_6605    :Elemento de entrada no encontrado
+STR_6606    :Elemento de superficie no encontrado
+STR_6607    :Elemento de casilla no encontrado
+STR_6608    :Elemento de vía no encontrado
+STR_6609    :Bloque de vía no encontrado
+STR_6610    :Elemento de camino no encontrado
+STR_6611    :Elemento de muro no encontrado
+STR_6612    :Elemento de banner no encontrado
+STR_6613    :Recargar objeto
 
 ##############
 # Escenarios #

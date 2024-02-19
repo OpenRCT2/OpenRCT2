@@ -3665,7 +3665,28 @@ STR_6588    :Gràcies al Herman Riddering per permetre’ns gravar el 35er Voigt
 STR_6589    :Mostra els botons de les finestres a l’esquerra
 STR_6590    :Mostra els botons de les finestres (com ara el de tancar la finestra) a l’esquerra en lloc de mostrar-los a la dreta.
 STR_6591    :L’empleat ara mateix arregla una atracció i no se’l pot acomiadar.
-STR_6592    :L’empleat ara mateix fa una inspecció i no se’l pot acomidiar.
+STR_6592    :L’empleat ara mateix fa una inspecció i no se’l pot acomiadar.
+STR_6593    :Trau les tanques del parc
+STR_6594    :Inspecció de casella: Commuta la inclinació del mur
+STR_6595    :{WINDOW_COLOUR_2}Autor: {BLACK}{STRING}
+STR_6596    :{WINDOW_COLOUR_2}Autors: {BLACK}{STRING}
+STR_6597    :Paràmetre no vàlid
+STR_6598    :Valor fora del rang
+STR_6599    :L’element fantasma no s’ha trobat
+STR_6600    :El globus no s’ha trobat
+STR_6601    :L’empleat no s’ha trobat
+STR_6602    :L’atracció no s’ha trobat
+STR_6603    :L’objecte d’atracció no s’ha trobat
+STR_6604    :El jugador no s’ha trobat
+STR_6605    :L’element d’entrada no s’ha trobat
+STR_6606    :L’element de superfície no s’ha trobat
+STR_6607    :L’element de casella no s’ha trobat
+STR_6608    :L’element de via no s’ha trobat
+STR_6609    :El bloc de via no s’ha trobat
+STR_6610    :L’element de camí no s’ha trobat
+STR_6611    :L’element de mur no s’ha trobat
+STR_6612    :L’element de text de cartell no s’ha trobat
+STR_6613    :Recarrega l’objecte
 
 #############
 # Scenarios #
@@ -4327,7 +4348,7 @@ STR_DTLS    :Sou un magnat de les finances competent en període sabàtic que de
 <South America - Inca Lost City>
 STR_SCNR    :Sud-amèrica - La ciutat inca perduda
 STR_PARK    :La fundació de la ciutat perduda
-STR_DTLS    :Per a augmentar el turisme local heu de construir un parc que s’adigui amb els seus voltants i que compleixi amb les restriccions d’alçada.
+STR_DTLS    :Per a augmentar el turisme local heu de construir un parc que s’adigui amb els seus voltants.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :Sud-amèrica - L’altiplà de la selva tropical

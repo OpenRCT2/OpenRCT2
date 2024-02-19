@@ -31,6 +31,8 @@ enum class WoodenSupportSubType : uint8_t
     Corner1 = 3,
     Corner2 = 4,
     Corner3 = 5,
+
+    Null,
 };
 
 enum class WoodenSupportTransitionType : uint8_t
@@ -133,8 +135,6 @@ enum class MetalSupportPlace : uint8_t
     BottomRightSide = 8,
 };
 
-bool WoodenASupportsPaintSetup(
-    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate);
 bool WoodenASupportsPaintSetup(
     PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
     WoodenSupportTransitionType transitionType = WoodenSupportTransitionType::None, Direction direction = 0);

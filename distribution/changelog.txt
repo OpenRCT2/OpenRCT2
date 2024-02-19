@@ -1,7 +1,9 @@
 0.4.9 (in development)
 ------------------------------------------------------------------------
+- Feature: [#20709] [Plugin] Plugins can now check metadata from all registered plugins.
 - Feature: [#21376] Add option to reload an object (for object developers).
 - Improved: [#21356] Resize the title bar when moving between displays with different scaling factors on Windows systems.
+- Improved: [#21388] Tooltips will now show even when an error message is present.
 - Fix: [#18963] Research table in parks from Loopy Landscapes is imported incorrectly.
 - Fix: [#20907] RCT1/AA scenarios use the 4-across train for the Inverted Roller Coaster.
 - Fix: [#21208] Error message will stay open only for a brief moment when the game has been running a while.
@@ -31,6 +33,7 @@
 - Fix: [#20628] Moving caret using Ctrl+left can move too far when using a multibyte grapheme.
 - Fix: [#20631] IME window not positioned correctly.
 - Fix: [#20845] Trying to save under a folder with no write permissions causes a crash.
+- Fix: [#21039] Text rendering bleeds pixels through windows.
 - Fix: [#21054] “No entrance” style is selected by default in the track designer.
 - Fix: [#21145] [Plugin] setInterval/setTimeout handle conflict.
 - Fix: [#21157] [Plugin] Widgets do not redraw correctly when updating disabled or visibility state. 

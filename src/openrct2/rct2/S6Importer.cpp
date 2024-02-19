@@ -261,7 +261,7 @@ namespace RCT2
             ImportEntities();
 
             gameState.InitialCash = ToMoney64(_s6.InitialCash);
-            gBankLoan = ToMoney64(_s6.CurrentLoan);
+            gameState.BankLoan = ToMoney64(_s6.CurrentLoan);
 
             gameState.ParkFlags = _s6.ParkFlags & ~PARK_FLAGS_NO_MONEY_SCENARIO;
 
@@ -410,7 +410,7 @@ namespace RCT2
             // rct1_water_colour
             // Pad01358842
             ImportResearchList(gameState);
-            gBankLoanInterestRate = _s6.CurrentInterestRate;
+            gameState.BankLoanInterestRate = _s6.CurrentInterestRate;
             // Pad0135934B
             // Preserve compatibility with vanilla RCT2's save format.
             gameState.ParkEntrances.clear();
@@ -473,7 +473,7 @@ namespace RCT2
             for (size_t i = 0; i < Limits::MaxNewsItems; i++)
             {
                 const RCT12NewsItem* src = &_s6.NewsItems[i];
-                News::Item* dst = &gNewsItems[i];
+                News::Item* dst = &gameState.NewsItems[i];
                 if (src->Type < News::ItemTypeCount)
                 {
                     dst->Type = static_cast<News::ItemType>(src->Type);

@@ -3688,6 +3688,7 @@ STR_6609    :Blocco di tracciato non trovato
 STR_6610    :Elemento di sentiero non trovato
 STR_6611    :Elemento di muro non trovato
 STR_6612    :Elemento cartello non trovato
+STR_6613    :Ricarica oggetto
 
 
 #############

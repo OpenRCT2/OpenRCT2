@@ -3690,6 +3690,7 @@ STR_6609    :Bloc de voie introuvable
 STR_6610    :Élément de chemin introuvable
 STR_6611    :Élément de mur introuvable
 STR_6612    :Élément de bannière introuvable
+STR_6613    :Recharger l’objet
 
 #############
 # Scenarios #

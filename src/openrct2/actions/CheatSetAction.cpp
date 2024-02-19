@@ -591,7 +591,7 @@ void CheatSetAction::AddMoney(money64 amount) const
 void CheatSetAction::ClearLoan() const
 {
     // First give money
-    AddMoney(gBankLoan);
+    AddMoney(GetGameState().BankLoan);
 
     // Then pay the loan
     auto gameAction = ParkSetLoanAction(0.00_GBP);

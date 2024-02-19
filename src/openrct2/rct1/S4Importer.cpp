@@ -1396,10 +1396,10 @@ namespace RCT1
             gConstructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
 
             gameState.Cash = ToMoney64(_s4.Cash);
-            gBankLoan = ToMoney64(_s4.Loan);
+            gameState.BankLoan = ToMoney64(_s4.Loan);
             gameState.MaxBankLoan = ToMoney64(_s4.MaxLoan);
             // It's more like 1.33%, but we can only use integers. Can be fixed once we have our own save format.
-            gBankLoanInterestRate = 1;
+            gameState.BankLoanInterestRate = 1;
             gameState.InitialCash = ToMoney64(_s4.Cash);
 
             gCompanyValue = ToMoney64(_s4.CompanyValue);
@@ -2163,7 +2163,7 @@ namespace RCT1
             for (size_t i = 0; i < Limits::MaxNewsItems; i++)
             {
                 const RCT12NewsItem* src = &_s4.Messages[i];
-                News::Item* dst = &gNewsItems[i];
+                News::Item* dst = &gameState.NewsItems[i];
 
                 dst->Type = static_cast<News::ItemType>(src->Type);
                 dst->Flags = src->Flags;

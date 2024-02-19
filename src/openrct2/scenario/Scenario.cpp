@@ -105,7 +105,7 @@ void ScenarioReset(GameState_t& gameState)
     gameState.ParkRating = park.CalculateParkRating();
     gameState.ParkValue = park.CalculateParkValue();
     gCompanyValue = park.CalculateCompanyValue();
-    gHistoricalProfit = gameState.InitialCash - gBankLoan;
+    gHistoricalProfit = gameState.InitialCash - gameState.BankLoan;
     gameState.Cash = gameState.InitialCash;
 
     {
@@ -820,7 +820,7 @@ ObjectiveStatus Objective::CheckRepayLoanAndParkValue() const
 {
     const auto& gameState = GetGameState();
     money64 parkValue = gameState.ParkValue;
-    money64 currentLoan = gBankLoan;
+    money64 currentLoan = gameState.BankLoan;
 
     if (currentLoan <= 0 && parkValue >= Currency)
     {
