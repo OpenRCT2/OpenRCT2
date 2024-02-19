@@ -17,135 +17,123 @@
 #include "../Paint.h"
 #include "Generic.h"
 
+constexpr auto kNumWoodenSupportTypes = 2;
+constexpr auto kNumWoodenSupportSubTypes = 6;
+
 struct SupportsIdDescriptor
 {
-    uint16_t full;
-    uint16_t half;
-    uint16_t flat;
-    uint16_t slope;
+    ImageIndex Full;
+    ImageIndex Half;
+    ImageIndex Flat;
+    ImageIndex Slope;
 };
+
+/* 0x0097B1C4 */
+static constexpr SupportsIdDescriptor WoodenSupportImageIds[kNumWoodenSupportTypes][kNumWoodenSupportSubTypes] = {
+    // WoodenSupportType::Truss
+    {
+        { 3392, 3393, 3394, 3536 }, // WoodenSupportSubType::NeSw
+        { 3390, 3391, 3394, 3514 }, // WoodenSupportSubType::NwSe
+        { 3558, 3559, 3560, 3570 }, // WoodenSupportSubType::Corner0
+        { 3561, 3562, 3563, 3592 }, // WoodenSupportSubType::Corner1
+        { 3564, 3565, 3566, 3614 }, // WoodenSupportSubType::Corner2
+        { 3567, 3568, 3569, 3636 }, // WoodenSupportSubType::Corner3
+    },
+    // WoodenSupportType::Mine
+    {
+        { 3677, 3678, 3680, 3739 }, // WoodenSupportSubType::NeSw
+        { 3675, 3676, 3679, 3717 }, // WoodenSupportSubType::NwSe
+        { 3761, 3762, 3763, 3773 }, // WoodenSupportSubType::Corner0
+        { 3764, 3765, 3766, 3795 }, // WoodenSupportSubType::Corner1
+        { 3767, 3768, 3769, 3817 }, // WoodenSupportSubType::Corner2
+        { 3770, 3771, 3772, 3839 }, // WoodenSupportSubType::Corner3
+    },
+};
+
+constexpr SupportsIdDescriptor GetWoodenSupportIds(WoodenSupportType supportType, WoodenSupportSubType subType)
+{
+    return WoodenSupportImageIds[EnumValue(supportType)][EnumValue(subType)];
+}
+
+using ImagesByTransitionTypeArray = std::array<std::array<ImageIndex, NumOrthogonalDirections>, 21>;
+
+static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds0 = { {
+    { 3465, 3466, 3467, 3468 }, // Flat to gentle
+    { 3469, 3470, 3471, 3472 }, // Gentle to flat
+    { 3473, 3474, 3475, 3476 }, // Gentle slope
+    { 3477, 3478, 3479, 3480 }, // Gentle to steep
+    { 3481, 3482, 3483, 3484 }, // Steep to gentle
+    { 3485, 3486, 3487, 3488 }, // Steep slope
+    { 3489, 3490, 3491, 3492 }, // Slope
+    { 3493, 3494, 3495, 3496 }, // Flat to steep small
+    { 3497, 3498, 3499, 3500 }, // Steep to flat small
+    { 3501, 3502, 3503, 3504 }, // ?
+    { 3505, 3506, 3507, 3508 }, // ?
+    { 3509, 3510, 3511, 3512 }, // ?
+    { 3513, 3513, 3513, 3513 }, // Large scenery
+    { SPR_G2_SUPPORT_BEGIN, SPR_G2_SUPPORT_BEGIN + 1, SPR_G2_SUPPORT_BEGIN + 2,
+      SPR_G2_SUPPORT_BEGIN + 3 }, // Flat to steep large 1
+    { SPR_G2_SUPPORT_BEGIN + 4, SPR_G2_SUPPORT_BEGIN + 5, SPR_G2_SUPPORT_BEGIN + 6,
+      SPR_G2_SUPPORT_BEGIN + 7 }, // Flat to steep large 2
+    { SPR_G2_SUPPORT_BEGIN + 8, SPR_G2_SUPPORT_BEGIN + 9, SPR_G2_SUPPORT_BEGIN + 10,
+      SPR_G2_SUPPORT_BEGIN + 11 }, // Flat to steep large 3
+    { SPR_G2_SUPPORT_BEGIN + 12, SPR_G2_SUPPORT_BEGIN + 13, SPR_G2_SUPPORT_BEGIN + 14,
+      SPR_G2_SUPPORT_BEGIN + 15 }, // Flat to steep large 4
+    { SPR_G2_SUPPORT_BEGIN + 16, SPR_G2_SUPPORT_BEGIN + 17, SPR_G2_SUPPORT_BEGIN + 18,
+      SPR_G2_SUPPORT_BEGIN + 19 }, // Steep to flat large 1
+    { SPR_G2_SUPPORT_BEGIN + 20, SPR_G2_SUPPORT_BEGIN + 21, SPR_G2_SUPPORT_BEGIN + 22,
+      SPR_G2_SUPPORT_BEGIN + 23 }, // Steep to flat large 2
+    { SPR_G2_SUPPORT_BEGIN + 24, SPR_G2_SUPPORT_BEGIN + 25, SPR_G2_SUPPORT_BEGIN + 26,
+      SPR_G2_SUPPORT_BEGIN + 27 }, // Steep to flat large 3
+    { SPR_G2_SUPPORT_BEGIN + 28, SPR_G2_SUPPORT_BEGIN + 29, SPR_G2_SUPPORT_BEGIN + 30,
+      SPR_G2_SUPPORT_BEGIN + 31 }, // Steep to flat large 4
+} };
+
+static constexpr ImagesByTransitionTypeArray WoodenCurveSupportImageIds1 = { {
+    { 3681, 3682, 3683, 3684 }, // Flat to gentle
+    { 3685, 3686, 3687, 3688 }, // Gentle to flat
+    { 3689, 3690, 3691, 3692 }, // Gentle slope
+    { 3693, 3694, 3695, 3696 }, // Gentle to steep
+    { 3697, 3698, 3699, 3700 }, // Steep to gentle
+    { 3701, 3702, 3703, 3704 }, // Steep slope
+    { 3705, 3706, 3707, 3708 }, // Slope
+    { 3709, 3710, 3711, 3712 }, // Flat to steep small
+    { 3713, 3714, 3715, 3716 }, // Steep to flat small
+    { 3717, 3718, 3719, 3720 }, // ?
+    { 3721, 3722, 3723, 3724 }, // ?
+    { 3725, 3726, 3727, 3728 }, // ?
+    { 3729, 3729, 3729, 3729 }, // Large scenery
+    { 0, 0, 0, 0 },             // Flat to steep large 1
+    { 0, 0, 0, 0 },             // Flat to steep large 2
+    { 0, 0, 0, 0 },             // Flat to steep large 3
+    { 0, 0, 0, 0 },             // Flat to steep large 4
+    { 0, 0, 0, 0 },             // Steep to flat large 1
+    { 0, 0, 0, 0 },             // Steep to flat large 2
+    { 0, 0, 0, 0 },             // Steep to flat large 3
+    { 0, 0, 0, 0 },             // Steep to flat large 4
+} };
 
 // clang-format off
-/* 0x0097B1C4 */
-static constexpr SupportsIdDescriptor WoodenSupportImageIds[] = {
-    { 3392, 3393, 3394, 3536 },
-    { 3390, 3391, 3394, 3514 },
-    { 3558, 3559, 3560, 3570 },
-    { 3561, 3562, 3563, 3592 },
-    { 3564, 3565, 3566, 3614 },
-    { 3567, 3568, 3569, 3636 },
-    { 3677, 3678, 3680, 3739 },
-    { 3675, 3676, 3679, 3717 },
-    { 3761, 3762, 3763, 3773 },
-    { 3764, 3765, 3766, 3795 },
-    { 3767, 3768, 3769, 3817 },
-    { 3770, 3771, 3772, 3839 },
-};
-
-static constexpr uint16_t WoodenCurveSupportImageIds0[81] = {
-    3465,
-    3466,
-    3467,
-    3468,
-    3469,
-    3470,
-    3471,
-    3472,
-    3473,
-    3474,
-    3475,
-    3476,
-    3477,
-    3478,
-    3479,
-    3480,
-    3481,
-    3482,
-    3483,
-    3484,
-    3485,
-    3486,
-    3487,
-    3488,
-    3489,
-    3490,
-    3491,
-    3492,
-    3493,
-    3494,
-    3495,
-    3496,
-    3497,
-    3498,
-    3499,
-    3500,
-    3501,
-    3502,
-    3503,
-    3504,
-    3505,
-    3506,
-    3507,
-    3508,
-    3509,
-    3510,
-    3511,
-    3512,
-    3513,
-    SPR_G2_SUPPORT_BEGIN,
-    SPR_G2_SUPPORT_BEGIN + 1,
-    SPR_G2_SUPPORT_BEGIN + 2,
-    SPR_G2_SUPPORT_BEGIN + 3,
-    SPR_G2_SUPPORT_BEGIN + 4,
-    SPR_G2_SUPPORT_BEGIN + 5,
-    SPR_G2_SUPPORT_BEGIN + 6,
-    SPR_G2_SUPPORT_BEGIN + 7,
-    SPR_G2_SUPPORT_BEGIN + 8,
-    SPR_G2_SUPPORT_BEGIN + 9,
-    SPR_G2_SUPPORT_BEGIN + 10,
-    SPR_G2_SUPPORT_BEGIN + 11,
-    SPR_G2_SUPPORT_BEGIN + 12,
-    SPR_G2_SUPPORT_BEGIN + 13,
-    SPR_G2_SUPPORT_BEGIN + 14,
-    SPR_G2_SUPPORT_BEGIN + 15,
-    SPR_G2_SUPPORT_BEGIN + 16,
-    SPR_G2_SUPPORT_BEGIN + 17,
-    SPR_G2_SUPPORT_BEGIN + 18,
-    SPR_G2_SUPPORT_BEGIN + 19,
-    SPR_G2_SUPPORT_BEGIN + 20,
-    SPR_G2_SUPPORT_BEGIN + 21,
-    SPR_G2_SUPPORT_BEGIN + 22,
-    SPR_G2_SUPPORT_BEGIN + 23,
-    SPR_G2_SUPPORT_BEGIN + 24,
-    SPR_G2_SUPPORT_BEGIN + 25,
-    SPR_G2_SUPPORT_BEGIN + 26,
-    SPR_G2_SUPPORT_BEGIN + 27,
-    SPR_G2_SUPPORT_BEGIN + 28,
-    SPR_G2_SUPPORT_BEGIN + 29,
-    SPR_G2_SUPPORT_BEGIN + 30,
-    SPR_G2_SUPPORT_BEGIN + 31,
-};
-
-static constexpr uint16_t WoodenCurveSupportImageIds1[81] = {
-    3681, 3682, 3683, 3684, 3685, 3686, 3687, 3688, 3689, 3690, 3691, 3692, 3693, 3694, 3695, 3696, 3697,
-    3698, 3699, 3700, 3701, 3702, 3703, 3704, 3705, 3706, 3707, 3708, 3709, 3710, 3711, 3712, 3713, 3714,
-    3715, 3716, 3717, 3718, 3719, 3720, 3721, 3722, 3723, 3724, 3725, 3726, 3727, 3728, 3729,
-};
-
 /* 0x0097B224 */
-static constexpr const uint16_t* WoodenCurveSupportImageIds[12] = {
-    WoodenCurveSupportImageIds0,
-    WoodenCurveSupportImageIds0,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    WoodenCurveSupportImageIds1,
-    WoodenCurveSupportImageIds1,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
+static constexpr const ImagesByTransitionTypeArray::const_pointer WoodenCurveSupportImageIds[kNumWoodenSupportTypes][kNumWoodenSupportSubTypes] = {
+    // WoodenSupportType::Truss
+    { 
+        WoodenCurveSupportImageIds0.data(), // WoodenSupportSubType::NeSw
+        WoodenCurveSupportImageIds0.data(), // WoodenSupportSubType::NwSe
+        nullptr,                            // WoodenSupportSubType::Corner0
+        nullptr,                            // WoodenSupportSubType::Corner1
+        nullptr,                            // WoodenSupportSubType::Corner2
+        nullptr,                            // WoodenSupportSubType::Corner3
+    }, 
+    // WoodenSupportType::Mine
+    { 
+        WoodenCurveSupportImageIds1.data(), // WoodenSupportSubType::NeSw
+        WoodenCurveSupportImageIds1.data(), // WoodenSupportSubType::NwSe
+        nullptr,                            // WoodenSupportSubType::Corner0
+        nullptr,                            // WoodenSupportSubType::Corner1
+        nullptr,                            // WoodenSupportSubType::Corner2
+        nullptr,                            // WoodenSupportSubType::Corner3
+    }, 
 };
 
 
@@ -156,7 +144,7 @@ struct UnkSupportsDescriptor {
 };
 
 /* 0x0097B23C */
-static constexpr UnkSupportsDescriptor Byte97B23C[] = {
+static constexpr UnkSupportsDescriptor SupportsDescriptors[] = {
     {{{0,  0,  0}, {1,  1,  8}},  0, 1}, // Flat to gentle
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
@@ -205,7 +193,10 @@ static constexpr UnkSupportsDescriptor Byte97B23C[] = {
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
-    {{{2,  2,  1}, {28, 28, 2}},  0, 1}, // Large scenery (all directions)
+    {{{2,  2,  1}, {28, 28, 2}},  0, 1}, // Large scenery
+    {{{2,  2,  1}, {28, 28, 2}},  0, 1},
+    {{{2,  2,  1}, {28, 28, 2}},  0, 1},
+    {{{2,  2,  1}, {28, 28, 2}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1}, // Flat to steep large 1
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
@@ -285,7 +276,7 @@ static constexpr uint16_t word_97B3C4[] = {
 };
 // clang-format on
 
-static WoodenSupportSubType rotatedWoodenSupportSubTypes[6][NumOrthogonalDirections] = {
+static WoodenSupportSubType rotatedWoodenSupportSubTypes[kNumWoodenSupportSubTypes][NumOrthogonalDirections] = {
     {
         WoodenSupportSubType::NeSw,
         WoodenSupportSubType::NwSe,
@@ -324,38 +315,12 @@ static WoodenSupportSubType rotatedWoodenSupportSubTypes[6][NumOrthogonalDirecti
     },
 };
 
-static int32_t GetSpecialOffsetForTransitionType(WoodenSupportTransitionType transitionType, Direction direction)
-{
-    assert(transitionType != WoodenSupportTransitionType::None);
-
-    // "Special" values are an offset into tables like Byte97B23C.
-    // Save for WoodenSupportTransitionType::LargeScenery, there are four entries (one per direction) for every
-    // transition type. While these tables will have to be refactored in due course, we can only do so once all
-    // drawing functions use WoodenSupportTransitionType instead of passing the "special" value directly.
-    int32_t specialOffset = 0;
-    if (transitionType < WoodenSupportTransitionType::Scenery)
-        specialOffset = (EnumValue(transitionType) * NumOrthogonalDirections) + direction;
-    else if (transitionType == WoodenSupportTransitionType::Scenery)
-        specialOffset = (EnumValue(transitionType) * NumOrthogonalDirections);
-    else
-        specialOffset = (EnumValue(transitionType) * NumOrthogonalDirections) + direction - 3;
-
-    return specialOffset;
-}
-
 /**
  * Draw repeated supports for left over space
- *
- * @param supportType
- * @param imageTemplate
- * @param heightSteps
- * @param session
- * @param baseHeight
- * @param hasSupports
  */
 static void WoodenABPaintRepeatedSupports(
-    int32_t supportType, const ImageId& imageTemplate, int16_t heightSteps, PaintSession& session, uint16_t& baseHeight,
-    bool& hasSupports)
+    WoodenSupportType supportType, WoodenSupportSubType subType, const ImageId& imageTemplate, int16_t heightSteps,
+    PaintSession& session, uint16_t& baseHeight, bool& hasSupports)
 {
     while (heightSteps > 0)
     {
@@ -363,7 +328,7 @@ static void WoodenABPaintRepeatedSupports(
         if (isHalf)
         {
             // Half support
-            auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].half);
+            auto imageId = imageTemplate.WithIndex(GetWoodenSupportIds(supportType, subType).Half);
             uint8_t boundBoxHeight = (heightSteps == 1) ? 7 : 12;
             PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
             baseHeight += 16;
@@ -372,7 +337,7 @@ static void WoodenABPaintRepeatedSupports(
         else
         {
             // Full support
-            auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].full);
+            auto imageId = imageTemplate.WithIndex(GetWoodenSupportIds(supportType, subType).Full);
             uint8_t boundBoxHeight = (heightSteps == 2) ? 23 : 28;
             PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, boundBoxHeight });
             baseHeight += 32;
@@ -387,39 +352,36 @@ static void WoodenABPaintRepeatedSupports(
  * Draw special pieces, e.g. curved supports.
  */
 static bool WoodenABSupportPaintSetupPaintSpecial(
-    PaintSession& session, int32_t supportType, WoodenSupportTransitionType transitionType, Direction direction,
-    const ImageId& imageTemplate, uint16_t baseHeight)
+    PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType,
+    WoodenSupportTransitionType transitionType, Direction direction, const ImageId& imageTemplate, uint16_t baseHeight)
 {
-    uint16_t specialIndex = GetSpecialOffsetForTransitionType(transitionType, direction);
+    const uint16_t supportsDescriptorIndex = (EnumValue(transitionType) * NumOrthogonalDirections) + direction;
+    const UnkSupportsDescriptor& supportsDesc = SupportsDescriptors[supportsDescriptorIndex];
+    const auto* imageIds = WoodenCurveSupportImageIds[EnumValue(supportType)][EnumValue(subType)];
 
-    bool hasSupports = false;
-    const UnkSupportsDescriptor& supportsDesc = Byte97B23C[specialIndex];
+    // TODO: SupportsDescriptors[supportsDescriptorIndex].var_7 is never 0
+    if (imageIds == nullptr || imageIds[EnumValue(transitionType)][direction] == 0 || supportsDesc.var_7 == 0)
+        return false;
 
-    // TODO: Byte97B23C[specialIndex].var_7 is never 0
-    if (WoodenCurveSupportImageIds[supportType] != nullptr && WoodenCurveSupportImageIds[supportType][specialIndex] != 0
-        && supportsDesc.var_7 != 0)
+    auto imageId = imageTemplate.WithIndex(imageIds[EnumValue(transitionType)][direction]);
+
+    auto boundBox = supportsDesc.bounding_box;
+    boundBox.offset.z += baseHeight;
+
+    if (supportsDesc.var_6 == 0 || session.WoodenSupportsPrependTo == nullptr)
     {
-        hasSupports = true;
-        auto imageId = imageTemplate.WithIndex(WoodenCurveSupportImageIds[supportType][specialIndex]);
-
-        auto boundBox = supportsDesc.bounding_box;
-        boundBox.offset.z += baseHeight;
-
-        if (supportsDesc.var_6 == 0 || session.WoodenSupportsPrependTo == nullptr)
+        PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, boundBox);
+    }
+    else
+    {
+        auto* paintStruct = PaintAddImageAsOrphan(session, imageId, { 0, 0, baseHeight }, boundBox);
+        if (paintStruct != nullptr)
         {
-            PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, boundBox);
-        }
-        else
-        {
-            auto* paintStruct = PaintAddImageAsOrphan(session, imageId, { 0, 0, baseHeight }, boundBox);
-            if (paintStruct != nullptr)
-            {
-                session.WoodenSupportsPrependTo->Children = paintStruct;
-            }
+            session.WoodenSupportsPrependTo->Children = paintStruct;
         }
     }
 
-    return hasSupports;
+    return true;
 }
 
 /**
@@ -437,7 +399,6 @@ bool WoodenASupportsPaintSetup(
     WoodenSupportTransitionType transitionType, Direction direction)
 {
     assert(subType != WoodenSupportSubType::Null);
-    int32_t oldSupportType = (EnumValue(supportType) * 6) + EnumValue(subType);
 
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
@@ -482,7 +443,7 @@ bool WoodenASupportsPaintSetup(
             return false;
         }
 
-        auto imageIndex = WoodenSupportImageIds[oldSupportType].slope;
+        auto imageIndex = GetWoodenSupportIds(supportType, subType).Slope;
         if (imageIndex == 0)
         {
             drawFlatPiece = true;
@@ -510,7 +471,7 @@ bool WoodenASupportsPaintSetup(
             return false;
         }
 
-        auto imageIndex = WoodenSupportImageIds[oldSupportType].slope;
+        auto imageIndex = GetWoodenSupportIds(supportType, subType).Slope;
         if (imageIndex == 0)
         {
             drawFlatPiece = true;
@@ -528,17 +489,17 @@ bool WoodenASupportsPaintSetup(
     // Draw flat base support
     if (drawFlatPiece)
     {
-        auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[oldSupportType].flat);
+        auto imageId = imageTemplate.WithIndex(GetWoodenSupportIds(supportType, subType).Flat);
         PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight - 2 }, { 32, 32, 0 });
         hasSupports = true;
     }
 
-    WoodenABPaintRepeatedSupports(oldSupportType, imageTemplate, heightSteps, session, baseHeight, hasSupports);
+    WoodenABPaintRepeatedSupports(supportType, subType, imageTemplate, heightSteps, session, baseHeight, hasSupports);
 
     if (transitionType != WoodenSupportTransitionType::None)
     {
         hasSupports = WoodenABSupportPaintSetupPaintSpecial(
-            session, oldSupportType, transitionType, direction, imageTemplate, baseHeight);
+            session, supportType, subType, transitionType, direction, imageTemplate, baseHeight);
     }
 
     return hasSupports;
@@ -570,7 +531,6 @@ bool WoodenBSupportsPaintSetup(
     WoodenSupportTransitionType transitionType, Direction direction)
 {
     assert(subType != WoodenSupportSubType::Null);
-    int32_t oldSupportType = (EnumValue(supportType) * 6) + EnumValue(subType);
 
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
@@ -615,7 +575,7 @@ bool WoodenBSupportsPaintSetup(
             return false;
         }
 
-        auto imageIndex = WoodenSupportImageIds[oldSupportType].slope;
+        auto imageIndex = GetWoodenSupportIds(supportType, subType).Slope;
         if (imageIndex == 0)
         {
             drawFlatPiece = true;
@@ -643,7 +603,7 @@ bool WoodenBSupportsPaintSetup(
             return false;
         }
 
-        auto imageIndex = WoodenSupportImageIds[oldSupportType].slope;
+        auto imageIndex = GetWoodenSupportIds(supportType, subType).Slope;
         if (imageIndex == 0)
         {
             drawFlatPiece = true;
@@ -663,18 +623,18 @@ bool WoodenBSupportsPaintSetup(
     {
         if (heightSteps > 0)
         {
-            auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[oldSupportType].flat);
+            auto imageId = imageTemplate.WithIndex(GetWoodenSupportIds(supportType, subType).Flat);
             PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight - 2 }, { 32, 32, 0 });
             hasSupports = true;
         }
     }
 
-    WoodenABPaintRepeatedSupports(oldSupportType, imageTemplate, heightSteps, session, baseHeight, hasSupports);
+    WoodenABPaintRepeatedSupports(supportType, subType, imageTemplate, heightSteps, session, baseHeight, hasSupports);
 
     if (transitionType != WoodenSupportTransitionType::None)
     {
         hasSupports = WoodenABSupportPaintSetupPaintSpecial(
-            session, oldSupportType, transitionType, direction, imageTemplate, baseHeight);
+            session, supportType, subType, transitionType, direction, imageTemplate, baseHeight);
     }
 
     return hasSupports;
