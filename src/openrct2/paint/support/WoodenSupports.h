@@ -14,8 +14,6 @@
 
 #include <cstdint>
 
-constexpr uint8_t NumVanillaWoodenSupportTypes = 49;
-
 enum class WoodenSupportType : uint8_t
 {
     Truss = 0,
