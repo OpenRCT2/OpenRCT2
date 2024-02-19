@@ -10,7 +10,7 @@
 #include "../../interface/Viewport.h"
 #include "../../object/StationObject.h"
 #include "../../paint/Paint.h"
-#include "../../paint/Supports.h"
+#include "../../paint/support/WoodenSupports.h"
 #include "../../util/Util.h"
 #include "../Ride.h"
 #include "../Track.h"

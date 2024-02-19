@@ -12,7 +12,7 @@
 #include "../../localisation/Localisation.h"
 #include "../../object/StationObject.h"
 #include "../../paint/Paint.h"
-#include "../../paint/Supports.h"
+#include "../../paint/support/MetalSupports.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../RideData.h"
