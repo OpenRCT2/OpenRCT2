@@ -136,106 +136,105 @@ static constexpr const ImagesByTransitionTypeArray::const_pointer WoodenCurveSup
     }, 
 };
 
-
 struct UnkSupportsDescriptor {
-    BoundBoxXYZ bounding_box;
-    uint8_t var_6;
+    BoundBoxXYZ BoundingBox;
+    bool AsOrphan;
 };
 
 /* 0x0097B23C */
 static constexpr UnkSupportsDescriptor SupportsDescriptors[] = {
-    {{{0,  0,  0}, {1,  1,  8}},  0}, // Flat to gentle
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0}, // Gentle to flat
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0}, // Gentle slope
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0}, // Gentle to steep
-    {{{10, 0,  0}, {10, 32, 44}}, 1},
-    {{{0,  10, 0}, {32, 10, 44}}, 1},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0}, // Steep to gentle
-    {{{10, 0,  0}, {10, 32, 44}}, 1},
-    {{{0,  10, 0}, {32, 10, 44}}, 1},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0}, // Steep slope
-    {{{10, 0,  2}, {10, 32, 76}}, 1},
-    {{{0,  10, 2}, {32, 10, 76}}, 1},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  4}},  0}, // Slope
-    {{{0,  0,  0}, {1,  1,  4}},  0},
-    {{{0,  0,  0}, {1,  1,  4}},  0},
-    {{{0,  0,  0}, {1,  1,  4}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0}, // Flat to steep small
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0}, // Steep to flat small
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0}, // ?
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0}, // ?
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0}, // ?
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{2,  2,  1}, {28, 28, 2}},  0}, // Large scenery
-    {{{2,  2,  1}, {28, 28, 2}},  0},
-    {{{2,  2,  1}, {28, 28, 2}},  0},
-    {{{2,  2,  1}, {28, 28, 2}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0}, // Flat to steep large 1
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0}, // Flat to steep large 2
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0}, // Flat to steep large 3
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0}, // Flat to steep large 4
-    {{{10, 0,  2}, {10, 32, 52}}, 1},
-    {{{0,  10, 2}, {32, 10, 52}}, 1},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0}, // Steep to flat large 1
-    {{{10, 0,  2}, {10, 32, 76}}, 1},
-    {{{0,  10, 2}, {32, 10, 76}}, 1},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0}, // Steep to flat large 2
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0}, // Steep to flat large 3
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0}, // Steep to flat large 4
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
-    {{{0,  0,  0}, {1,  1,  8}},  0},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // Flat to gentle
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // Gentle to flat
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // Gentle slope
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // Gentle to steep
+    {{{10, 0,  0}, {10, 32, 44}}, true},
+    {{{0,  10, 0}, {32, 10, 44}}, true},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // Steep to gentle
+    {{{10, 0,  0}, {10, 32, 44}}, true},
+    {{{0,  10, 0}, {32, 10, 44}}, true},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // Steep slope
+    {{{10, 0,  2}, {10, 32, 76}}, true},
+    {{{0,  10, 2}, {32, 10, 76}}, true},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  4}},  false}, // Slope
+    {{{0,  0,  0}, {1,  1,  4}},  false},
+    {{{0,  0,  0}, {1,  1,  4}},  false},
+    {{{0,  0,  0}, {1,  1,  4}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // Flat to steep small
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // Steep to flat small
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // ?
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // ?
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // ?
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{2,  2,  1}, {28, 28, 2}},  false}, // Large scenery
+    {{{2,  2,  1}, {28, 28, 2}},  false},
+    {{{2,  2,  1}, {28, 28, 2}},  false},
+    {{{2,  2,  1}, {28, 28, 2}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // Flat to steep large 1
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // Flat to steep large 2
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // Flat to steep large 3
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // Flat to steep large 4
+    {{{10, 0,  2}, {10, 32, 52}}, true},
+    {{{0,  10, 2}, {32, 10, 52}}, true},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // Steep to flat large 1
+    {{{10, 0,  2}, {10, 32, 76}}, true},
+    {{{0,  10, 2}, {32, 10, 76}}, true},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // Steep to flat large 2
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // Steep to flat large 3
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false}, // Steep to flat large 4
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
+    {{{0,  0,  0}, {1,  1,  8}},  false},
 };
 
 /* 0x0098D8D4 */
 static constexpr UnkSupportsDescriptor Byte98D8D4[] = {
-    {{{0, 0, 0}, {1, 1, 4}}, 0},
-    {{{0, 0, 0}, {1, 1, 4}}, 0},
-    {{{0, 0, 0}, {1, 1, 4}}, 0},
-    {{{0, 0, 0}, {1, 1, 4}}, 0},
+    {{{0, 0, 0}, {1, 1, 4}}, false},
+    {{{0, 0, 0}, {1, 1, 4}}, false},
+    {{{0, 0, 0}, {1, 1, 4}}, false},
+    {{{0, 0, 0}, {1, 1, 4}}, false},
 };
 
 /* 0x0097B3C4 */
@@ -363,10 +362,10 @@ static bool WoodenABSupportPaintSetupPaintSpecial(
 
     auto imageId = imageTemplate.WithIndex(imageIds[EnumValue(transitionType)][direction]);
 
-    auto boundBox = supportsDesc.bounding_box;
+    auto boundBox = supportsDesc.BoundingBox;
     boundBox.offset.z += baseHeight;
 
-    if (supportsDesc.var_6 == 0 || session.WoodenSupportsPrependTo == nullptr)
+    if (supportsDesc.AsOrphan == false || session.WoodenSupportsPrependTo == nullptr)
     {
         PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, boundBox);
     }
@@ -765,10 +764,10 @@ bool PathBoxSupportsPaintSetup(
         ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 55 + slopeRotation;
 
         const UnkSupportsDescriptor& supportsDesc = Byte98D8D4[slopeRotation];
-        auto boundBox = supportsDesc.bounding_box;
+        auto boundBox = supportsDesc.BoundingBox;
         boundBox.offset.z += baseHeight;
 
-        if (supportsDesc.var_6 == 0 || session.WoodenSupportsPrependTo == nullptr)
+        if (supportsDesc.AsOrphan == false || session.WoodenSupportsPrependTo == nullptr)
         {
             PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), { 0, 0, baseHeight }, boundBox);
             hasSupports = true;
