@@ -1007,7 +1007,7 @@ colour_t StaffGetColour(StaffType staffType)
     }
 }
 
-bool StaffSetColour(StaffType staffType, colour_t value)
+GameActions::Result StaffSetColour(StaffType staffType, colour_t value)
 {
     auto& gameState = GetGameState();
     switch (staffType)
@@ -1022,9 +1022,10 @@ bool StaffSetColour(StaffType staffType, colour_t value)
             gameState.StaffSecurityColour = value;
             break;
         default:
-            return false;
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_ACTION_INVALID_FOR_THAT_STAFF_TYPE);
     }
-    return true;
+    return GameActions::Result();
 }
 
 uint32_t StaffGetAvailableEntertainerCostumes()

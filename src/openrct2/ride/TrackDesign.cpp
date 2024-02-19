@@ -1428,7 +1428,7 @@ static std::optional<GameActions::Result> TrackDesignPlaceEntrances(
                     auto res = RideEntranceExitPlaceAction::TrackPlaceQuery(newCoords, false);
                     if (res.Error != GameActions::Status::Ok)
                     {
-                        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+                        return res;
                     }
 
                     totalCost += res.Cost;
@@ -1742,7 +1742,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
         ride.Delete();
     }
 
-    auto res = GameActions::Result(GameActions::Status::Ok, STR_NONE, STR_NONE);
+    auto res = GameActions::Result();
     res.Cost = totalCost;
 
     return res;

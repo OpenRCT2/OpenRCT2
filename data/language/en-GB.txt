@@ -3683,6 +3683,10 @@ STR_6610    :Path element not found
 STR_6611    :Wall element not found
 STR_6612    :Banner element not found
 STR_6613    :Reload object
+STR_6614    :Can’t change park entrance fee
+STR_6615    :Track on this tile needs water
+STR_6616    :Action invalid for that staff type
+STR_6617    :Can’t swap tile element with itself
 
 #############
 # Scenarios #

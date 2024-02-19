@@ -100,7 +100,8 @@ GameActions::Result WaterSetHeightAction::Query() const
     }
     if (surfaceElement->HasTrackThatNeedsWater())
     {
-        return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::Disallowed, STR_ERR_INVALID_PARAMETER, STR_ERR_TRACK_ON_THIS_TILE_NEEDS_WATER);
     }
 
     res.Cost = 250;
