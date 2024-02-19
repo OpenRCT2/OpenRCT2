@@ -1396,10 +1396,10 @@ namespace RCT1
             gConstructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
 
             gameState.Cash = ToMoney64(_s4.Cash);
-            gBankLoan = ToMoney64(_s4.Loan);
+            gameState.BankLoan = ToMoney64(_s4.Loan);
             gameState.MaxBankLoan = ToMoney64(_s4.MaxLoan);
             // It's more like 1.33%, but we can only use integers. Can be fixed once we have our own save format.
-            gBankLoanInterestRate = 1;
+            gameState.BankLoanInterestRate = 1;
             gameState.InitialCash = ToMoney64(_s4.Cash);
 
             gCompanyValue = ToMoney64(_s4.CompanyValue);

@@ -491,8 +491,8 @@ public:
             {
                 // If loan can be increased, do so.
                 // If not, action shows error message.
-                auto newLoan = gBankLoan + 1000.00_GBP;
-                if (gBankLoan < gameState.MaxBankLoan)
+                auto newLoan = gameState.BankLoan + 1000.00_GBP;
+                if (gameState.BankLoan < gameState.MaxBankLoan)
                 {
                     newLoan = std::min(gameState.MaxBankLoan, newLoan);
                 }
@@ -505,10 +505,10 @@ public:
                 // If loan is positive, decrease it.
                 // If loan is negative, action shows error message.
                 // If loan is exactly 0, prevent error message.
-                if (gBankLoan != 0)
+                if (gameState.BankLoan != 0)
                 {
-                    auto newLoan = gBankLoan - 1000.00_GBP;
-                    if (gBankLoan > 0)
+                    auto newLoan = gameState.BankLoan - 1000.00_GBP;
+                    if (gameState.BankLoan > 0)
                     {
                         newLoan = std::max(static_cast<money64>(0LL), newLoan);
                     }
@@ -527,7 +527,7 @@ public:
         // drawing has completed.
         auto ft = Formatter::Common();
         ft.Increment(6);
-        ft.Add<money64>(gBankLoan);
+        ft.Add<money64>(GetGameState().BankLoan);
 
         // Keep up with new months being added in the first two years.
         if (GetDate().GetMonthsElapsed() != _lastPaintedMonth)
@@ -569,7 +569,7 @@ public:
         if (!(gameState.ParkFlags & PARK_FLAGS_RCT1_INTEREST))
         {
             auto ft = Formatter();
-            ft.Add<uint16_t>(gBankLoanInterestRate);
+            ft.Add<uint16_t>(gameState.BankLoanInterestRate);
             DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 167, 279 }, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, ft);
         }
 
@@ -615,8 +615,10 @@ public:
         auto graphTopLeft = windowPos + ScreenCoordsXY{ pageWidget->left + 4, pageWidget->top + 15 };
         auto graphBottomRight = windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
 
+        const auto& gameState = GetGameState();
+
         // Cash (less loan)
-        auto cashLessLoan = GetGameState().Cash - gBankLoan;
+        auto cashLessLoan = gameState.Cash - gameState.BankLoan;
         auto ft = Formatter();
         ft.Add<money64>(cashLessLoan);
 

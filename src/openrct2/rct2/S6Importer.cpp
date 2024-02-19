@@ -261,7 +261,7 @@ namespace RCT2
             ImportEntities();
 
             gameState.InitialCash = ToMoney64(_s6.InitialCash);
-            gBankLoan = ToMoney64(_s6.CurrentLoan);
+            gameState.BankLoan = ToMoney64(_s6.CurrentLoan);
 
             gameState.ParkFlags = _s6.ParkFlags & ~PARK_FLAGS_NO_MONEY_SCENARIO;
 
@@ -411,7 +411,7 @@ namespace RCT2
             // Pad01358842
             ImportResearchList(gameState);
             gameState.MapBaseZ = _s6.MapBaseZ;
-            gBankLoanInterestRate = _s6.CurrentInterestRate;
+            gameState.BankLoanInterestRate = _s6.CurrentInterestRate;
             // Pad0135934B
             // Preserve compatibility with vanilla RCT2's save format.
             gameState.ParkEntrances.clear();
