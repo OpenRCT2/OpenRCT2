@@ -402,6 +402,26 @@ static bool WoodenABSupportPaintSetupPaintSpecial(
     return hasSupports;
 }
 
+static int32_t GetSpecialOffsetForTransitionType(WoodenSupportTransitionType transitionType, Direction direction)
+{
+    if (transitionType == WoodenSupportTransitionType::None)
+        return 0;
+
+    // "Special" values are an offset into tables like Byte97B23C, plus 1.
+    // Save for WoodenSupportTransitionType::LargeScenery, there are four entries (one per direction) for every
+    // transition type. While these tables will have to be refactored in due course, we can only do so once all
+    // drawing functions use WoodenSupportTransitionType instead of passing the "special" value directly.
+    int32_t specialOffset = 0;
+    if (transitionType < WoodenSupportTransitionType::Scenery)
+        specialOffset = (EnumValue(transitionType) * NumOrthogonalDirections) + direction;
+    else if (transitionType == WoodenSupportTransitionType::Scenery)
+        specialOffset = (EnumValue(transitionType) * NumOrthogonalDirections);
+    else
+        specialOffset = (EnumValue(transitionType) * NumOrthogonalDirections) + direction - 3;
+
+    return specialOffset + 1;
+}
+
 /**
  * Adds paint structs for wooden supports.
  *  rct2: 0x006629BC
@@ -412,9 +432,14 @@ static bool WoodenABSupportPaintSetupPaintSpecial(
  * @param[out] underground (Carry flag) true if underground.
  * @returns (al) true if any supports have been drawn, otherwise false.
  */
-static bool WoodenASupportsPaintSetup(
-    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate)
+bool WoodenASupportsPaintSetup(
+    PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
+    WoodenSupportTransitionType transitionType, Direction direction)
 {
+    assert(subType != WoodenSupportSubType::Null);
+    int32_t oldSupportType = (EnumValue(supportType) * 6) + EnumValue(subType);
+    int32_t special = GetSpecialOffsetForTransitionType(transitionType, direction);
+
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
         return false;
@@ -458,7 +483,7 @@ static bool WoodenASupportsPaintSetup(
             return false;
         }
 
-        auto imageIndex = WoodenSupportImageIds[supportType].slope;
+        auto imageIndex = WoodenSupportImageIds[oldSupportType].slope;
         if (imageIndex == 0)
         {
             drawFlatPiece = true;
@@ -486,7 +511,7 @@ static bool WoodenASupportsPaintSetup(
             return false;
         }
 
-        auto imageIndex = WoodenSupportImageIds[supportType].slope;
+        auto imageIndex = WoodenSupportImageIds[oldSupportType].slope;
         if (imageIndex == 0)
         {
             drawFlatPiece = true;
@@ -504,50 +529,19 @@ static bool WoodenASupportsPaintSetup(
     // Draw flat base support
     if (drawFlatPiece)
     {
-        auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].flat);
+        auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[oldSupportType].flat);
         PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight - 2 }, { 32, 32, 0 });
         hasSupports = true;
     }
 
-    WoodenABPaintRepeatedSupports(supportType, imageTemplate, heightSteps, session, baseHeight, hasSupports);
+    WoodenABPaintRepeatedSupports(oldSupportType, imageTemplate, heightSteps, session, baseHeight, hasSupports);
 
     if (special != 0)
     {
-        hasSupports = WoodenABSupportPaintSetupPaintSpecial(session, supportType, special, imageTemplate, baseHeight, false);
+        hasSupports = WoodenABSupportPaintSetupPaintSpecial(session, oldSupportType, special, imageTemplate, baseHeight, false);
     }
 
     return hasSupports;
-}
-
-static int32_t GetSpecialOffsetForTransitionType(WoodenSupportTransitionType transitionType, Direction direction)
-{
-    if (transitionType == WoodenSupportTransitionType::None)
-        return 0;
-
-    // "Special" values are an offset into tables like Byte97B23C, plus 1.
-    // Save for WoodenSupportTransitionType::LargeScenery, there are four entries (one per direction) for every
-    // transition type. While these tables will have to be refactored in due course, we can only do so once all
-    // drawing functions use WoodenSupportTransitionType instead of passing the "special" value directly.
-    int32_t specialOffset = 0;
-    if (transitionType < WoodenSupportTransitionType::Scenery)
-        specialOffset = (EnumValue(transitionType) * NumOrthogonalDirections) + direction;
-    else if (transitionType == WoodenSupportTransitionType::Scenery)
-        specialOffset = (EnumValue(transitionType) * NumOrthogonalDirections);
-    else
-        specialOffset = (EnumValue(transitionType) * NumOrthogonalDirections) + direction - 3;
-
-    return specialOffset + 1;
-}
-
-bool WoodenASupportsPaintSetup(
-    PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
-    WoodenSupportTransitionType transitionType, Direction direction)
-{
-    assert(subType != WoodenSupportSubType::Null);
-    int32_t oldSupportType = (EnumValue(supportType) * 6) + EnumValue(subType);
-    int32_t special = GetSpecialOffsetForTransitionType(transitionType, direction);
-
-    return WoodenASupportsPaintSetup(session, oldSupportType, special, height, imageTemplate);
 }
 
 bool WoodenASupportsPaintSetupRotated(
@@ -571,9 +565,14 @@ bool WoodenASupportsPaintSetupRotated(
  *
  * @return (al) whether supports have been drawn
  */
-static bool WoodenBSupportsPaintSetup(
-    PaintSession& session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate)
+bool WoodenBSupportsPaintSetup(
+    PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
+    WoodenSupportTransitionType transitionType, Direction direction)
 {
+    assert(subType != WoodenSupportSubType::Null);
+    int32_t oldSupportType = (EnumValue(supportType) * 6) + EnumValue(subType);
+    int32_t special = GetSpecialOffsetForTransitionType(transitionType, direction);
+
     if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
         return false;
@@ -617,7 +616,7 @@ static bool WoodenBSupportsPaintSetup(
             return false;
         }
 
-        auto imageIndex = WoodenSupportImageIds[supportType].slope;
+        auto imageIndex = WoodenSupportImageIds[oldSupportType].slope;
         if (imageIndex == 0)
         {
             drawFlatPiece = true;
@@ -645,7 +644,7 @@ static bool WoodenBSupportsPaintSetup(
             return false;
         }
 
-        auto imageIndex = WoodenSupportImageIds[supportType].slope;
+        auto imageIndex = WoodenSupportImageIds[oldSupportType].slope;
         if (imageIndex == 0)
         {
             drawFlatPiece = true;
@@ -665,31 +664,20 @@ static bool WoodenBSupportsPaintSetup(
     {
         if (heightSteps > 0)
         {
-            auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].flat);
+            auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[oldSupportType].flat);
             PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight - 2 }, { 32, 32, 0 });
             hasSupports = true;
         }
     }
 
-    WoodenABPaintRepeatedSupports(supportType, imageTemplate, heightSteps, session, baseHeight, hasSupports);
+    WoodenABPaintRepeatedSupports(oldSupportType, imageTemplate, heightSteps, session, baseHeight, hasSupports);
 
     if (special != 0)
     {
-        hasSupports = WoodenABSupportPaintSetupPaintSpecial(session, supportType, special, imageTemplate, baseHeight, false);
+        hasSupports = WoodenABSupportPaintSetupPaintSpecial(session, oldSupportType, special, imageTemplate, baseHeight, false);
     }
 
     return hasSupports;
-}
-
-bool WoodenBSupportsPaintSetup(
-    PaintSession& session, WoodenSupportType supportType, WoodenSupportSubType subType, int32_t height, ImageId imageTemplate,
-    WoodenSupportTransitionType transitionType, Direction direction)
-{
-    assert(subType != WoodenSupportSubType::Null);
-    int32_t oldSupportType = (EnumValue(supportType) * 6) + EnumValue(subType);
-    int32_t special = GetSpecialOffsetForTransitionType(transitionType, direction);
-
-    return WoodenBSupportsPaintSetup(session, oldSupportType, special, height, imageTemplate);
 }
 
 bool WoodenBSupportsPaintSetupRotated(
