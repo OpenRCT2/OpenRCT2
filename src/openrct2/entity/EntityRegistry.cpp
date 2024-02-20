@@ -10,7 +10,6 @@
 #include "EntityRegistry.h"
 
 #include "../Game.h"
-#include "../GameState.h"
 #include "../core/Algorithm.hpp"
 #include "../core/ChecksumStream.h"
 #include "../core/Crypt.h"
