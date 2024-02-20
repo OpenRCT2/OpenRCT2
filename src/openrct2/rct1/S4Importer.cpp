@@ -1500,8 +1500,6 @@ namespace RCT1
 
         void ImportTileElements()
         {
-            GetGameState().MapBaseZ = 7;
-
             // Build tile pointer cache (needed to get the first element at a certain location)
             auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(
                 Limits::MaxMapSize, _s4.TileElements, std::size(_s4.TileElements));

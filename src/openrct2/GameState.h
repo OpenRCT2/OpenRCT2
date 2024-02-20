@@ -66,7 +66,6 @@ namespace OpenRCT2
         uint8_t BankLoanInterestRate;
         money64 MaxBankLoan;
         random_engine_t ScenarioRand;
-        int32_t MapBaseZ;
         TileCoordsXY MapSize;
 
         SCENARIO_CATEGORY ScenarioCategory;

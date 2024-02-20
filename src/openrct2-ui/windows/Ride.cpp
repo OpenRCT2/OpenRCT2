@@ -5788,7 +5788,7 @@ private:
         // Scale modifier
         if (listType == GRAPH_ALTITUDE)
         {
-            yUnit -= GetGameState().MapBaseZ * 3;
+            yUnit -= kMapBaseZ * 3;
         }
 
         for (int32_t y = widget->height() - 13; y >= 8; y -= yInterval, yUnit += yUnitInterval)

@@ -20,6 +20,10 @@ constexpr uint8_t MINIMUM_LAND_HEIGHT = 2;
 constexpr uint8_t MAXIMUM_LAND_HEIGHT = 254;
 constexpr uint8_t MINIMUM_WATER_HEIGHT = 2;
 constexpr uint8_t MAXIMUM_WATER_HEIGHT = 254;
+/**
+ * The land height that counts as 0 metres/feet for the land height labels and altitude graphs.
+ */
+constexpr uint8_t kMapBaseZ = 7;
 
 #define MINIMUM_MAP_SIZE_TECHNICAL 5
 #define MAXIMUM_MAP_SIZE_TECHNICAL 1001
