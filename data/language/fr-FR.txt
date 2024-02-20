@@ -20,7 +20,7 @@ STR_0013    :Balade en voiture
 STR_0014    :Chute libre lancée
 STR_0015    :Bobsleigh
 STR_0016    :Tour d’observation
-STR_0017    :Montagnes russe looping
+STR_0017    :Montagnes russes looping
 STR_0018    :Canotube
 STR_0019    :Train de la mine
 STR_0020    :Télésiège
@@ -49,7 +49,7 @@ STR_0042    :Vrille
 STR_0043    :Anneaux de l’espace
 STR_0044    :Chute libre renversée
 STR_0045    :Ascenseur
-STR_0046    :Montagnes russes en chute vert.
+STR_0046    :Montagnes russes à chute verticale
 STR_0047    :Distributeur de monnaie
 STR_0048    :Twist
 STR_0049    :Maison hantée
@@ -67,7 +67,7 @@ STR_0060    :Manège Inconnu (3A)
 STR_0061    :Virginia Reel
 STR_0062    :Bateaux éclabousseurs
 STR_0063    :Mini hélicoptères
-STR_0064    :Mont. russes — posit. couchée
+STR_0064    :Montagnes russes en position couchée
 STR_0065    :Monorail suspendu
 STR_0066    :Manège Inconnu (40)
 STR_0067    :Inverseur
@@ -80,7 +80,7 @@ STR_0073    :Maison biscornue
 STR_0074    :Vélos monorail
 STR_0075    :Montagnes compactes inversées
 STR_0076    :Montagnes aquatiques
-STR_0077    :Voiture propulsée dans les airs
+STR_0077    :Montagnes russes verticales à air comprimé
 STR_0078    :Epingle à cheveux inversée
 STR_0079    :Tapis volant
 STR_0080    :Balade sous-marine
@@ -989,7 +989,7 @@ STR_1594    :« Cette soupe aux raviolis de {STRINGID} est vraiment une bonne a
 STR_1595    :« Cette soupe aux boulettes de viande de {STRINGID} est vraiment une bonne affaire »
 STR_1596    :« Ce jus de fruits de {STRINGID} est vraiment une bonne affaire »
 STR_1597    :« Ce lait de soja de {STRINGID} est vraiment une bonne affaire »
-STR_1598    :« Ce sujongkwa de {STRINGID} est vraiment une bonne affaire »
+STR_1598    :« Ce Sujeonggwa de {STRINGID} est vraiment une bonne affaire »
 STR_1599    :« Ce sandwich de {STRINGID} est vraiment une bonne affaire »
 STR_1600    :« Ce cookie de {STRINGID} est vraiment une bonne affaire »
 STR_1601    :
@@ -1021,7 +1021,7 @@ STR_1626    :« Je ne paierai pas si cher pour une soupe aux raviolis de {STRIN
 STR_1627    :« Je ne paierai pas si cher pour une soupe aux boulettes de viandes de {STRINGID} »
 STR_1628    :« Je ne paierai pas si cher pour un jus de fruits de {STRINGID} »
 STR_1629    :« Je ne paierai pas si cher pour du lait de soja de {STRINGID} »
-STR_1630    :« Je ne paierai pas si cher pour un sujongkwa de {STRINGID} »
+STR_1630    :« Je ne paierai pas si cher pour un Sujeonggwa de {STRINGID} »
 STR_1631    :« Je ne paierai pas si cher pour un sandwich de {STRINGID} »
 STR_1632    :« Je ne paierai pas si cher pour un cookie de {STRINGID} »
 STR_1633    :
@@ -1491,7 +1491,7 @@ STR_2110    :{WINDOW_COLOUR_2}Prix de la soupe aux raviolis :
 STR_2111    :{WINDOW_COLOUR_2}Prix de la soupe aux boulettes de viande :
 STR_2112    :{WINDOW_COLOUR_2}Prix d’un jus de fruits :
 STR_2113    :{WINDOW_COLOUR_2}Prix d’un lait de soja :
-STR_2114    :{WINDOW_COLOUR_2}Prix d’un sujongkwa :
+STR_2114    :{WINDOW_COLOUR_2}Prix d’un Sujeonggwa :
 STR_2115    :{WINDOW_COLOUR_2}Prix d’un sandwich :
 STR_2116    :{WINDOW_COLOUR_2}Prix d’un cookie :
 STR_2117    :{WINDOW_COLOUR_2}
@@ -1510,7 +1510,7 @@ STR_2132    :Soupe aux raviolis
 STR_2133    :Soupe aux boulettes de viande
 STR_2134    :Jus de fruits
 STR_2135    :Lait de soja
-STR_2136    :Sujongkwa
+STR_2136    :Sujeonggwa
 STR_2137    :Sandwich
 STR_2138    :Cookie
 STR_2139    :Bol vide
@@ -1529,7 +1529,7 @@ STR_2154    :Soupes aux raviolis
 STR_2155    :Soupes aux boulettes de viande
 STR_2156    :Jus de fruits
 STR_2157    :Laits de soja
-STR_2158    :Sujongkwa
+STR_2158    :Sujeonggwa
 STR_2159    :Sandwichs
 STR_2160    :Cookies
 STR_2161    :Bols vides
@@ -1548,7 +1548,7 @@ STR_2176    :de la soupe aux raviolis
 STR_2177    :de la soupe aux boulettes de viande
 STR_2178    :un jus de fruits
 STR_2179    :du lait de soja
-STR_2180    :du Sujongkwa
+STR_2180    :du Sujeonggwa
 STR_2181    :un sandwich
 STR_2182    :un cookie
 STR_2183    :un bol vide
@@ -1567,7 +1567,7 @@ STR_2198    :Soupe aux raviolis
 STR_2199    :Soupe aux boulettes de viande
 STR_2200    :Jus de fruits
 STR_2201    :Lait de soja
-STR_2202    :Sujongkwa
+STR_2202    :Sujeonggwa
 STR_2203    :Sandwich
 STR_2204    :Cookie
 STR_2205    :Bol vide
