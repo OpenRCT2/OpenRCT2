@@ -988,7 +988,7 @@ namespace RCT2
         char CustomStrings[Limits::MaxUserStrings][Limits::MaxUserStringLength];
         uint32_t GameTicks1;
         Ride Rides[Limits::MaxRidesInPark];
-        uint16_t SavedAge;
+        uint16_t SavedAge; // unused
         int16_t SavedViewX;
         int16_t SavedViewY;
         uint8_t SavedViewZoom;

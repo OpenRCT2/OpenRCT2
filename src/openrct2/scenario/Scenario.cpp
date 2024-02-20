@@ -69,7 +69,6 @@ const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
 
 std::string gScenarioSavePath;
 bool gFirstTimeSaving = true;
-uint16_t gSavedAge;
 uint32_t gLastAutoSaveUpdate = 0;
 
 bool gAllowEarlyCompletionInNetworkPlay;
