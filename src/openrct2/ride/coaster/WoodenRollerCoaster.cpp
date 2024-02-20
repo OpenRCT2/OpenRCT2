@@ -14,7 +14,7 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
-#include "../../paint/Supports.h"
+#include "../../paint/support/WoodenSupports.h"
 #include "../../paint/tile_element/Paint.Surface.h"
 #include "../../paint/tile_element/Paint.TileElement.h"
 #include "../../sprites.h"

@@ -12,6 +12,7 @@
 #include "../../drawing/ImageId.hpp"
 #include "../../paint/Boundbox.h"
 #include "../../paint/Paint.h"
+#include "../../paint/support/WoodenSupports.h"
 #include "../../world/Location.hpp"
 #include "../TrackPaint.h"
 

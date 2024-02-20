@@ -9,7 +9,8 @@
 
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
-#include "../../paint/Supports.h"
+#include "../../paint/support/MetalSupports.h"
+#include "../../paint/support/WoodenSupports.h"
 #include "../../world/Map.h"
 #include "../RideData.h"
 #include "../Track.h"

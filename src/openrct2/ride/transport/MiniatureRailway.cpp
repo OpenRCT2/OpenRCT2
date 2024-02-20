@@ -10,7 +10,7 @@
 #include "../../common.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
-#include "../../paint/Supports.h"
+#include "../../paint/support/WoodenSupports.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../RideData.h"

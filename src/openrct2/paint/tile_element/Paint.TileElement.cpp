@@ -29,8 +29,8 @@
 #include "../../world/Surface.h"
 #include "../Paint.SessionFlags.h"
 #include "../Paint.h"
-#include "../Supports.h"
 #include "../VirtualFloor.h"
+#include "../support/WoodenSupports.h"
 #include "Paint.Surface.h"
 
 #include <algorithm>

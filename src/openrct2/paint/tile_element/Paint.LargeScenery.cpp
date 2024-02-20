@@ -28,7 +28,7 @@
 #include "../../world/Scenery.h"
 #include "../../world/TileInspector.h"
 #include "../Boundbox.h"
-#include "../Supports.h"
+#include "../support/WoodenSupports.h"
 #include "Paint.TileElement.h"
 
 using namespace OpenRCT2;
