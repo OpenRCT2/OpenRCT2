@@ -259,6 +259,7 @@ enum
     TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT = (1 << 13),
     TRACK_ELEM_FLAG_INVERSION_TO_NORMAL = (1 << 14),
     TRACK_ELEM_FLAG_BANKED = (1 << 15), // Also set on Spinning Tunnel and Log Flume reverser, probably to save a flag.
+    TRACK_ELEM_FLAG_CAN_BE_PARTLY_UNDERGROUND = (1 << 16),
 };
 
 namespace TrackElemType
