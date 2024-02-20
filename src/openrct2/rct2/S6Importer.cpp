@@ -441,7 +441,6 @@ namespace RCT2
 
             ImportRides();
 
-            gameState.SavedAge = _s6.SavedAge;
             gSavedView = ScreenCoordsXY{ _s6.SavedViewX, _s6.SavedViewY };
             gSavedViewZoom = ZoomLevel{ static_cast<int8_t>(_s6.SavedViewZoom) };
             gSavedViewRotation = _s6.SavedViewRotation;

@@ -172,8 +172,6 @@ const std::list<EntityId>& GetEntityList(const EntityType id)
  */
 void ResetAllEntities()
 {
-    OpenRCT2::GetGameState().SavedAge = 0;
-
     // Free all associated Entity pointers prior to zeroing memory
     for (int32_t i = 0; i < MAX_ENTITIES; ++i)
     {

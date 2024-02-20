@@ -184,8 +184,6 @@ void TitleScreen::Tick()
     ContextUpdateMapTooltip();
     WindowDispatchUpdateAll();
 
-    GetGameState().SavedAge++;
-
     ContextHandleInput();
 
     gInUpdateCode = false;
