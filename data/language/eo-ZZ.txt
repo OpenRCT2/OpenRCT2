@@ -2011,7 +2011,7 @@ STR_2809    :{RED}Gastoj malsatas, kaj ne eblas trovi ie ajn por aĉeti manĝaĵ
 STR_2810    :{RED}Gastoj soifas, kaj ne eblas trovi ie ajn por aĉeti trinkaĵon
 STR_2811    :{RED}Gastoj plendas, ĉar ili ne eblas trovi la necesejojn en via parko
 STR_2812    :{RED}Gastoj perdiĝas{NEWLINE}Kontrolu ĉu la aranĝo de viaj trotuaroj bezonas plibonigon, por helpi la gastojn tiel, kiel ili ne perdiĝas
-STR_2813    :{RED}Via kosto de parkeniro estas tro alta!{NEWLINE}Malaltigi ĝin, aŭ plibonigi la parkvaloron por allogi pli da gastoj
+STR_2813    :{RED}Via enirpago de parko estas tro alta!{NEWLINE}Malaltigi ĝin, aŭ plibonigi la parkvaloron por allogi pli da gastoj
 STR_2814    :{WINDOW_COLOUR_2}Premio por la plej negliĝa parko
 STR_2815    :{WINDOW_COLOUR_2}Premio por la plej orda parko
 STR_2816    :{WINDOW_COLOUR_2}Premio por la parko kun la plej bonaj ondaj fervojoj
@@ -3682,6 +3682,10 @@ STR_6610    :Trotuaro-elemento ne troviĝis
 STR_6611    :Muro-elemento ne troviĝis
 STR_6612    :Rubando-elemento ne troviĝis
 STR_6613    :Reŝargi objekton
+STR_6614    :Ne povas ŝanĝi enirpagon de parko
+STR_6615    :Trako sur ĉi tiu bloko bezonas akvon
+STR_6616    :Ago estas nevalida por tiu dungitotipo
+STR_6617    :Ne povas permuti blokelementon kun si mem
 
 #############
 # Scenarios #

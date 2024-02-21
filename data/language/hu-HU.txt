@@ -3682,6 +3682,10 @@ STR_6610    :Útelem nem található
 STR_6611    :Falelem nem található
 STR_6612    :Hirdetőtábla-elem nem található
 STR_6613    :Objektum újratöltése
+STR_6614    :Nem változtatható meg a park belépési díja
+STR_6615    :A pályának ezen a mezőn vízre van szüksége
+STR_6616    :Az adott személyzettípus számára érvénytelen akció
+STR_6617    :Nem lehet önmagával cserélni mezőelemet
 
 #############
 # Scenarios #

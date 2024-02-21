@@ -3682,6 +3682,10 @@ STR_6610    :Elemento de caminho não encontrado
 STR_6611    :Elemento de muro não encontrado
 STR_6612    :Elemento de banner não encontrado
 STR_6613    :Recarregar objeto
+STR_6614    :Não é possível mudar o preço de entrada do parque
+STR_6615    :A pista nesse azulejo precisa de água
+STR_6616    :Ação inválida para esse tipo de funcionário
+STR_6617    :Não é possível trocar o elemento do azulejo com ele mesmo
 
 #############
 # Scenarios #

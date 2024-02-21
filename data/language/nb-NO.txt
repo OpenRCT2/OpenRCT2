@@ -3683,6 +3683,10 @@ STR_6610    :Gangsti-element ikke funnet
 STR_6611    :Vegg-element ikke funnet
 STR_6612    :Banner-element ikke funnet
 STR_6613    :Last inn objekt på nytt
+STR_6614    :Kan ikke endre inngangsavgift til parken
+STR_6615    :Spor på denne ruten trenger vann
+STR_6616    :Handling ugyldig for denne personaltypen
+STR_6617    :Kan ikke bytte ut rute-element med seg selv
 
 #############
 # Scenarios #
