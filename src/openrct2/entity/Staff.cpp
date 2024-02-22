@@ -720,7 +720,7 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
         PathfindLoggingEnable(*this);
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-        const auto goalPos = TileCoordsXYZ{ location.x, location.y, location.z };
+        const auto goalPos = TileCoordsXYZ{ location };
         Direction pathfindDirection = PathFinding::ChooseDirection(TileCoordsXYZ{ NextLoc }, goalPos, *this);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1

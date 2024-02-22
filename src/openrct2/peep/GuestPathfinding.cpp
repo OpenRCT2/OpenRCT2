@@ -689,7 +689,7 @@ namespace OpenRCT2::PathFinding
      */
     static void PeepPathfindHeuristicSearch(
         TileCoordsXYZ loc, const TileCoordsXYZ& goal, const Peep& peep, TileElement* currentTileElement,
-        const bool inPatrolArea, uint8_t steps, uint16_t* endScore, Direction testEdge, uint8_t* endJunctions,
+        const bool inPatrolArea, uint8_t numSteps, uint16_t* endScore, Direction testEdge, uint8_t* endJunctions,
         TileCoordsXYZ junctionList[16], uint8_t directionList[16], TileCoordsXYZ* endXYZ, uint8_t* endSteps)
     {
         uint8_t searchResult = PATH_SEARCH_FAILED;
@@ -704,7 +704,7 @@ namespace OpenRCT2::PathFinding
 
         loc += TileDirectionDelta[testEdge];
 
-        ++steps;
+        ++numSteps;
         _peepPathFindTilesChecked--;
 
         /* If this is where the search started this is a search loop and the
@@ -715,7 +715,7 @@ namespace OpenRCT2::PathFinding
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                LOG_INFO("[%03d] Return from %d,%d,%d; At start", steps, loc.x >> 5, loc.y >> 5, loc.z);
+                LOG_INFO("[%03d] Return from %d,%d,%d; At start", numSteps, loc.x >> 5, loc.y >> 5, loc.z);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             return;
@@ -734,7 +734,7 @@ namespace OpenRCT2::PathFinding
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                 if (gPathFindDebug)
                 {
-                    LOG_INFO("[%03d] Return from %d,%d,%d; Left patrol area", steps, loc.x >> 5, loc.y >> 5, loc.z);
+                    LOG_INFO("[%03d] Return from %d,%d,%d; Left patrol area", numSteps, loc.x >> 5, loc.y >> 5, loc.z);
                 }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                 return;
@@ -881,7 +881,7 @@ namespace OpenRCT2::PathFinding
             if (gPathFindDebug)
             {
                 LOG_INFO(
-                    "[%03d] Checking map element at %d,%d,%d; Type: %s", steps, loc.x >> 5, loc.y >> 5, loc.z,
+                    "[%03d] Checking map element at %d,%d,%d; Type: %s", numSteps, loc.x >> 5, loc.y >> 5, loc.z,
                     PathSearchToString(searchResult));
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -901,11 +901,11 @@ namespace OpenRCT2::PathFinding
             {
                 /* If the search result is better than the best so far (in the parameters),
                  * then update the parameters with this search before continuing to the next map element. */
-                if (newScore < *endScore || (newScore == *endScore && steps < *endSteps))
+                if (newScore < *endScore || (newScore == *endScore && numSteps < *endSteps))
                 {
                     // Update the search results
                     *endScore = newScore;
-                    *endSteps = steps;
+                    *endSteps = numSteps;
                     // Update the end x,y,z
                     *endXYZ = loc;
                     // Update the telemetry
@@ -923,7 +923,7 @@ namespace OpenRCT2::PathFinding
                 if (gPathFindDebug)
                 {
                     LOG_INFO(
-                        "[%03d] Search path ends at %d,%d,%d; At goal; Score: %d", steps, loc.x >> 5, loc.y >> 5, loc.z,
+                        "[%03d] Search path ends at %d,%d,%d; At goal; Score: %d", numSteps, loc.x >> 5, loc.y >> 5, loc.z,
                         newScore);
                 }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -940,7 +940,7 @@ namespace OpenRCT2::PathFinding
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                 if (gPathFindDebug)
                 {
-                    LOG_INFO("[%03d] Search path ends at %d,%d,%d; Not a path", steps, loc.x >> 5, loc.y >> 5, loc.z);
+                    LOG_INFO("[%03d] Search path ends at %d,%d,%d; Not a path", numSteps, loc.x >> 5, loc.y >> 5, loc.z);
                 }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                 continue;
@@ -961,11 +961,11 @@ namespace OpenRCT2::PathFinding
                  * If the search result is better than the best so far
                  * (in the parameters), then update the parameters with
                  * this search before continuing to the next map element. */
-                if (currentElementIsWide && (newScore < *endScore || (newScore == *endScore && steps < *endSteps)))
+                if (currentElementIsWide && (newScore < *endScore || (newScore == *endScore && numSteps < *endSteps)))
                 {
                     // Update the search results
                     *endScore = newScore;
-                    *endSteps = steps;
+                    *endSteps = numSteps;
                     // Update the end x,y,z
                     *endXYZ = loc;
                     // Update the telemetry
@@ -983,7 +983,7 @@ namespace OpenRCT2::PathFinding
                 if (gPathFindDebug)
                 {
                     LOG_INFO(
-                        "[%03d] Search path ends at %d,%d,%d; Wide path; Score: %d", steps, loc.x >> 5, loc.y >> 5, loc.z,
+                        "[%03d] Search path ends at %d,%d,%d; Wide path; Score: %d", numSteps, loc.x >> 5, loc.y >> 5, loc.z,
                         newScore);
                 }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -1000,8 +1000,8 @@ namespace OpenRCT2::PathFinding
             if (gPathFindDebug)
             {
                 LOG_INFO(
-                    "[%03d] Path element at %d,%d,%d; Edges (0123):%d%d%d%d; Reverse: %d", steps, loc.x >> 5, loc.y >> 5, loc.z,
-                    edges & 1, (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, testEdge ^ 2);
+                    "[%03d] Path element at %d,%d,%d; Edges (0123):%d%d%d%d; Reverse: %d", numSteps, loc.x >> 5, loc.y >> 5,
+                    loc.z, edges & 1, (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, testEdge ^ 2);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
@@ -1018,7 +1018,7 @@ namespace OpenRCT2::PathFinding
                 if (gPathFindDebug)
                 {
                     LOG_INFO(
-                        "[%03d] Search path ends at %d,%d,%d; No more edges/dead end", steps, loc.x >> 5, loc.y >> 5, loc.z);
+                        "[%03d] Search path ends at %d,%d,%d; No more edges/dead end", numSteps, loc.x >> 5, loc.y >> 5, loc.z);
                 }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                 continue;
@@ -1026,17 +1026,17 @@ namespace OpenRCT2::PathFinding
 
             /* Check if either of the search limits has been reached:
              * - max number of steps or max tiles checked. */
-            if (steps >= 200 || _peepPathFindTilesChecked <= 0)
+            if (numSteps >= 200 || _peepPathFindTilesChecked <= 0)
             {
                 /* The current search ends here.
                  * The path continues, so the goal could still be reachable from here.
                  * If the search result is better than the best so far (in the parameters),
                  * then update the parameters with this search before continuing to the next map element. */
-                if (newScore < *endScore || (newScore == *endScore && steps < *endSteps))
+                if (newScore < *endScore || (newScore == *endScore && numSteps < *endSteps))
                 {
                     // Update the search results
                     *endScore = newScore;
-                    *endSteps = steps;
+                    *endSteps = numSteps;
                     // Update the end x,y,z
                     *endXYZ = loc;
                     // Update the telemetry
@@ -1054,8 +1054,8 @@ namespace OpenRCT2::PathFinding
                 if (gPathFindDebug)
                 {
                     LOG_INFO(
-                        "[%03d] Search path ends at %d,%d,%d; Search limit reached; Score: %d", steps, loc.x >> 5, loc.y >> 5,
-                        loc.z, newScore);
+                        "[%03d] Search path ends at %d,%d,%d; Search limit reached; Score: %d", numSteps, loc.x >> 5,
+                        loc.y >> 5, loc.z, newScore);
                 }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                 continue;
@@ -1127,7 +1127,7 @@ namespace OpenRCT2::PathFinding
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                         if (gPathFindDebug)
                         {
-                            LOG_INFO("[%03d] Search path ends at %d,%d,%d; Loop", steps, loc.x >> 5, loc.y >> 5, loc.z);
+                            LOG_INFO("[%03d] Search path ends at %d,%d,%d; Loop", numSteps, loc.x >> 5, loc.y >> 5, loc.z);
                         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                         continue;
@@ -1140,11 +1140,11 @@ namespace OpenRCT2::PathFinding
                      * then update the parameters with this search before continuing to the next map element. */
                     if (_peepPathFindNumJunctions <= 0)
                     {
-                        if (newScore < *endScore || (newScore == *endScore && steps < *endSteps))
+                        if (newScore < *endScore || (newScore == *endScore && numSteps < *endSteps))
                         {
                             // Update the search results
                             *endScore = newScore;
-                            *endSteps = steps;
+                            *endSteps = numSteps;
                             // Update the end x,y,z
                             *endXYZ = loc;
                             // Update the telemetry
@@ -1160,7 +1160,7 @@ namespace OpenRCT2::PathFinding
                         if (gPathFindDebug)
                         {
                             LOG_INFO(
-                                "[%03d] Search path ends at %d,%d,%d; NumJunctions < 0; Score: %d", steps, loc.x >> 5,
+                                "[%03d] Search path ends at %d,%d,%d; NumJunctions < 0; Score: %d", numSteps, loc.x >> 5,
                                 loc.y >> 5, loc.z, newScore);
                         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -1195,17 +1195,17 @@ namespace OpenRCT2::PathFinding
                     {
                         if (isThinJunction)
                             LOG_INFO(
-                                "[%03d] Recurse from %d,%d,%d edge: %d; Thin-Junction", steps, loc.x >> 5, loc.y >> 5, loc.z,
+                                "[%03d] Recurse from %d,%d,%d edge: %d; Thin-Junction", numSteps, loc.x >> 5, loc.y >> 5, loc.z,
                                 nextTestEdge);
                         else
                             LOG_INFO(
-                                "[%03d] Recurse from %d,%d,%d edge: %d; Wide-Junction", steps, loc.x >> 5, loc.y >> 5, loc.z,
+                                "[%03d] Recurse from %d,%d,%d edge: %d; Wide-Junction", numSteps, loc.x >> 5, loc.y >> 5, loc.z,
                                 nextTestEdge);
                     }
                     else
                     {
                         LOG_INFO(
-                            "[%03d] Recurse from %d,%d,%d edge: %d; Segment", steps, loc.x >> 5, loc.y >> 5, loc.z,
+                            "[%03d] Recurse from %d,%d,%d edge: %d; Segment", numSteps, loc.x >> 5, loc.y >> 5, loc.z,
                             nextTestEdge);
                     }
                 }
@@ -1218,7 +1218,7 @@ namespace OpenRCT2::PathFinding
                 }
 
                 PeepPathfindHeuristicSearch(
-                    { loc.x, loc.y, height }, goal, peep, tileElement, nextInPatrolArea, steps, endScore, nextTestEdge,
+                    { loc.x, loc.y, height }, goal, peep, tileElement, nextInPatrolArea, numSteps, endScore, nextTestEdge,
                     endJunctions, junctionList, directionList, endXYZ, endSteps);
                 _peepPathFindNumJunctions = savedNumJunctions;
 
@@ -1226,8 +1226,8 @@ namespace OpenRCT2::PathFinding
                 if (gPathFindDebug)
                 {
                     LOG_INFO(
-                        "[%03d] Returned to %d,%d,%d edge: %d; Score: %d", steps, loc.x >> 5, loc.y >> 5, loc.z, nextTestEdge,
-                        *endScore);
+                        "[%03d] Returned to %d,%d,%d edge: %d; Score: %d", numSteps, loc.x >> 5, loc.y >> 5, loc.z,
+                        nextTestEdge, *endScore);
                 }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             } while ((nextTestEdge = UtilBitScanForward(edges)) != -1);
@@ -1241,7 +1241,8 @@ namespace OpenRCT2::PathFinding
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                LOG_INFO("[%03d] Returning from %d,%d,%d; No relevant map element found", steps, loc.x >> 5, loc.y >> 5, loc.z);
+                LOG_INFO(
+                    "[%03d] Returning from %d,%d,%d; No relevant map element found", numSteps, loc.x >> 5, loc.y >> 5, loc.z);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         }
@@ -1250,7 +1251,7 @@ namespace OpenRCT2::PathFinding
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                LOG_INFO("[%03d] Returning from %d,%d,%d; All map elements checked", steps, loc.x >> 5, loc.y >> 5, loc.z);
+                LOG_INFO("[%03d] Returning from %d,%d,%d; All map elements checked", numSteps, loc.x >> 5, loc.y >> 5, loc.z);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         }
