@@ -64,13 +64,17 @@ namespace OpenRCT2::PathFinding
     };
 
 #pragma region Pathfinding Logging
-    // In case this is set to true it will enable code paths that log path finding.
+    // In case this is set to true it will enable code paths that log path finding. The peep will additionally
+    // require to have PEEP_FLAGS_DEBUG_PATHFINDING set in PeepFlags in order to activate logging.
     static constexpr bool kLogPathfinding = false;
 
     template<typename... TArgs> static void LogPathfinding(const Peep* peep, const char* format, TArgs&&... args)
     {
         if constexpr (kLogPathfinding)
         {
+            if ((peep->PeepFlags & PEEP_FLAGS_DEBUG_PATHFINDING) == 0)
+                return;
+
             char buffer[256];
             snprintf(buffer, sizeof(buffer), format, std::forward<TArgs>(args)...);
 
