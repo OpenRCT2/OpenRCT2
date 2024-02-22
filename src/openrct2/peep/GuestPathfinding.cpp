@@ -452,6 +452,7 @@ namespace OpenRCT2::PathFinding
             }
         }
 
+        // This function is only called for guests, never ignore the banners.
         return FootpathElementDestInDir(false, loc, chosenDirection, outRideIndex, 0);
     }
 
@@ -1990,6 +1991,7 @@ namespace OpenRCT2::PathFinding
             return 1;
         }
 
+        // Because this function is called for guests only, never ignore banners.
         uint8_t edges = PathGetPermittedEdges(false, pathElement);
 
         if (edges == 0)
