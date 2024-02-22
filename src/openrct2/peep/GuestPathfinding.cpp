@@ -46,7 +46,6 @@ namespace OpenRCT2::PathFinding
         Direction direction;
     } _peepPathFindHistory[16];
 
-
     enum class PathSearchResult
     {
         DeadEnd,      // Path is a dead end, i.e. < 2 edges.
