@@ -46,17 +46,4 @@ namespace OpenRCT2::PathFinding
 
     bool IsValidPathZAndDirection(TileElement* tileElement, int32_t currentZ, int32_t currentDirection);
 
-#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-#    define PATHFIND_DEBUG                                                                                                     \
-        0 // Set to 0 to disable pathfinding debugging;
-          // Set to 1 to enable pathfinding debugging.
-
-    // When PATHFIND_DEBUG is 1 (nonzero):
-    // The following calls configure debug logging for the given peep
-    // If they're a guest, pathfinding will be logged if they have PEEP_FLAGS_TRACKING set
-    // If they're staff, pathfinding will be logged if their name is "Mechanic Debug"
-    void PathfindLoggingEnable(Peep& peep);
-    void PathfindLoggingDisable();
-#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-
 }; // namespace OpenRCT2::PathFinding
