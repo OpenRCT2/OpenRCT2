@@ -183,7 +183,7 @@ bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) cons
             }
 
             /* test_element is a path */
-            if (!GuestPathfinding::IsValidPathZAndDirection(test_element, adjacPos.z / COORDS_Z_STEP, adjac_dir))
+            if (!PathFinding::IsValidPathZAndDirection(test_element, adjacPos.z / COORDS_Z_STEP, adjac_dir))
                 continue;
 
             /* test_element is a connected path */
@@ -713,10 +713,6 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
             }
         }
 
-        gPeepPathFindGoalPosition.x = location.x;
-        gPeepPathFindGoalPosition.y = location.y;
-        gPeepPathFindGoalPosition.z = location.z;
-
         gPeepPathFindIgnoreForeignQueues = false;
         gPeepPathFindQueueRideIndex = RideId::GetNull();
 
@@ -724,7 +720,8 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
         PathfindLoggingEnable(*this);
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-        Direction pathfindDirection = gGuestPathfinder->ChooseDirection(TileCoordsXYZ{ NextLoc }, *this);
+        const auto goalPos = TileCoordsXYZ{ location };
+        Direction pathfindDirection = PathFinding::ChooseDirection(TileCoordsXYZ{ NextLoc }, goalPos, *this);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         PathfindLoggingDisable();
