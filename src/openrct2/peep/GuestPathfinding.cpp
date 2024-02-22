@@ -115,6 +115,8 @@ namespace OpenRCT2::PathFinding
                 return "LimitReached";
             case PathSearchResult::Other:
                 return "Other";
+            case PathSearchResult::Loop:
+                return "Loop";
             case PathSearchResult::Failed:
                 return "Failed";
                 // The default case is omitted intentionally.
@@ -1976,6 +1978,8 @@ namespace OpenRCT2::PathFinding
                     case PathSearchResult::RideExit:
                     case PathSearchResult::Wide:
                         adjustedEdges &= ~(1 << chosenDirection);
+                        break;
+                    default:
                         break;
                 }
             }
