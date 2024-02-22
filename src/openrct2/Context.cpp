@@ -1089,14 +1089,14 @@ namespace OpenRCT2
         {
             // Ticks
             float scaledDeltaTime = deltaTime * _timeScale;
-            _ticksAccumulator = std::min(_ticksAccumulator + scaledDeltaTime, GAME_UPDATE_MAX_THRESHOLD);
+            _ticksAccumulator = std::min(_ticksAccumulator + scaledDeltaTime, kGameUpdateMaxThreshold);
 
             // Real Time.
-            _realtimeAccumulator = std::min(_realtimeAccumulator + deltaTime, GAME_UPDATE_MAX_THRESHOLD);
-            while (_realtimeAccumulator >= GAME_UPDATE_TIME_MS)
+            _realtimeAccumulator = std::min(_realtimeAccumulator + deltaTime, kGameUpdateMaxThreshold);
+            while (_realtimeAccumulator >= kGameUpdateTimeMS)
             {
                 gCurrentRealTimeTicks++;
-                _realtimeAccumulator -= GAME_UPDATE_TIME_MS;
+                _realtimeAccumulator -= kGameUpdateTimeMS;
             }
         }
 
@@ -1106,18 +1106,18 @@ namespace OpenRCT2
 
             _uiContext->ProcessMessages();
 
-            if (_ticksAccumulator < GAME_UPDATE_TIME_MS)
+            if (_ticksAccumulator < kGameUpdateTimeMS)
             {
-                const auto sleepTimeSec = (GAME_UPDATE_TIME_MS - _ticksAccumulator);
+                const auto sleepTimeSec = (kGameUpdateTimeMS - _ticksAccumulator);
                 Platform::Sleep(static_cast<uint32_t>(sleepTimeSec * 1000.f));
                 return;
             }
 
-            while (_ticksAccumulator >= GAME_UPDATE_TIME_MS)
+            while (_ticksAccumulator >= kGameUpdateTimeMS)
             {
                 Tick();
 
-                _ticksAccumulator -= GAME_UPDATE_TIME_MS;
+                _ticksAccumulator -= kGameUpdateTimeMS;
             }
 
             ContextHandleInput();
@@ -1138,7 +1138,7 @@ namespace OpenRCT2
 
             _uiContext->ProcessMessages();
 
-            while (_ticksAccumulator >= GAME_UPDATE_TIME_MS)
+            while (_ticksAccumulator >= kGameUpdateTimeMS)
             {
                 // Get the original position of each sprite
                 if (shouldDraw)
@@ -1146,7 +1146,7 @@ namespace OpenRCT2
 
                 Tick();
 
-                _ticksAccumulator -= GAME_UPDATE_TIME_MS;
+                _ticksAccumulator -= kGameUpdateTimeMS;
 
                 // Get the next position of each sprite
                 if (shouldDraw)
@@ -1158,7 +1158,7 @@ namespace OpenRCT2
 
             if (shouldDraw)
             {
-                const float alpha = std::min(_ticksAccumulator / GAME_UPDATE_TIME_MS, 1.0f);
+                const float alpha = std::min(_ticksAccumulator / kGameUpdateTimeMS, 1.0f);
                 tweener.Tween(alpha);
 
                 Draw();
@@ -1180,7 +1180,7 @@ namespace OpenRCT2
 
             // TODO: This variable has been never "variable" in time, some code expects
             // this to be 40Hz (25 ms). Refactor this once the UI is decoupled.
-            gCurrentDeltaTime = static_cast<uint16_t>(GAME_UPDATE_TIME_MS * 1000.0f);
+            gCurrentDeltaTime = static_cast<uint16_t>(kGameUpdateTimeMS * 1000.0f);
 
             if (GameIsNotPaused())
             {
@@ -1337,7 +1337,7 @@ namespace OpenRCT2
 
         void SetTimeScale(float newScale) override
         {
-            _timeScale = std::clamp(newScale, GAME_MIN_TIME_SCALE, GAME_MAX_TIME_SCALE);
+            _timeScale = std::clamp(newScale, kGameMinTimeScale, kGameMaxTimeScale);
         }
 
         float GetTimeScale() const override

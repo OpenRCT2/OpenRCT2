@@ -1113,7 +1113,7 @@ void Ride::Update()
         income_per_hour = CalculateIncomePerHour();
         window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-        if (upkeep_cost != MONEY64_UNDEFINED)
+        if (upkeep_cost != kMoney64Undefined)
             profit = income_per_hour - (upkeep_cost * 16);
     }
 
@@ -4330,7 +4330,7 @@ money64 RideGetCommonPrice(const Ride& forRide)
         }
     }
 
-    return MONEY64_UNDEFINED;
+    return kMoney64Undefined;
 }
 
 void Ride::SetNameToDefault()

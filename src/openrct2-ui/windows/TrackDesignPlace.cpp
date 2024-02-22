@@ -85,7 +85,7 @@ public:
         WindowPushOthersRight(*this);
         ShowGridlines();
         _miniPreview.resize(TRACK_MINI_PREVIEW_SIZE);
-        _placementCost = MONEY64_UNDEFINED;
+        _placementCost = kMoney64Undefined;
         _placementLoc.SetNull();
         _currentTrackPieceDirection = (2 - GetCurrentRotation()) & 3;
     }
@@ -168,7 +168,7 @@ public:
             return;
         }
 
-        money64 cost = MONEY64_UNDEFINED;
+        money64 cost = kMoney64Undefined;
 
         // Get base Z position
         mapZ = GetBaseZ(mapCoords);
@@ -193,7 +193,7 @@ public:
                     }
                 });
                 res = GameActions::Execute(&tdAction);
-                cost = res.Error == GameActions::Status::Ok ? res.Cost : MONEY64_UNDEFINED;
+                cost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
             }
         }
 
@@ -305,7 +305,7 @@ public:
         }
 
         // Price
-        if (_placementCost != MONEY64_UNDEFINED && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+        if (_placementCost != kMoney64Undefined && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             ft = Formatter();
             ft.Add<money64>(_placementCost);

@@ -209,7 +209,7 @@ static int32_t ConsoleCommandRides(InteractiveConsole& console, const arguments_
                 else
                 {
                     auto res = SetOperatingSetting(RideId::FromUnderlying(ride_index), RideSetSetting::RideType, type);
-                    if (res == MONEY64_UNDEFINED)
+                    if (res == kMoney64Undefined)
                     {
                         if (!gCheatsAllowArbitraryRideTypeChanges)
                         {
@@ -1452,7 +1452,7 @@ static int32_t ConsoleCommandForceDate([[maybe_unused]] InteractiveConsole& cons
 
     // All cases involve providing a year, so grab that first
     year = atoi(argv[0].c_str());
-    if (year < 1 || year > MAX_YEAR)
+    if (year < 1 || year > kMaxYear)
     {
         return -1;
     }

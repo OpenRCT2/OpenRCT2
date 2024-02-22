@@ -72,7 +72,7 @@ public:
         WindowPushOthersBelow(*this);
 
         gLandToolSize = 2;
-        gClearSceneryCost = MONEY64_UNDEFINED;
+        gClearSceneryCost = kMoney64Undefined;
 
         gClearSmallScenery = true;
         gClearLargeScenery = false;
@@ -189,7 +189,7 @@ public:
         }
 
         // Draw cost amount
-        if (gClearSceneryCost != MONEY64_UNDEFINED && gClearSceneryCost != 0
+        if (gClearSceneryCost != kMoney64Undefined && gClearSceneryCost != 0
             && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto ft = Formatter();

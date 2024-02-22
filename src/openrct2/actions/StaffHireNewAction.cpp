@@ -207,18 +207,18 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         switch (gCheatsSelectedStaffSpeed)
         {
             case StaffSpeedCheat::None:
-                newPeep->Energy = CHEATS_STAFF_NORMAL_SPEED;
-                newPeep->EnergyTarget = CHEATS_STAFF_NORMAL_SPEED;
+                newPeep->Energy = kCheatsStaffNormalSpeed;
+                newPeep->EnergyTarget = kCheatsStaffNormalSpeed;
                 break;
 
             case StaffSpeedCheat::Frozen:
-                newPeep->Energy = CHEATS_STAFF_FREEZE_SPEED;
-                newPeep->EnergyTarget = CHEATS_STAFF_FREEZE_SPEED;
+                newPeep->Energy = kCheatsStaffFreezeSpeed;
+                newPeep->EnergyTarget = kCheatsStaffFreezeSpeed;
                 break;
 
             case StaffSpeedCheat::Fast:
-                newPeep->Energy = CHEATS_STAFF_FAST_SPEED;
-                newPeep->EnergyTarget = CHEATS_STAFF_FAST_SPEED;
+                newPeep->Energy = kCheatsStaffFastSpeed;
+                newPeep->EnergyTarget = kCheatsStaffFastSpeed;
                 break;
         }
 

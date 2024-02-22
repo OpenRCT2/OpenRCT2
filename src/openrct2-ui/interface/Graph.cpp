@@ -140,7 +140,7 @@ static const FinancialTooltipInfo FinanceTooltipInfoFromMoney(
 {
     if (!chartFrame.Contains(cursorPosition))
     {
-        return { {}, MONEY64_UNDEFINED };
+        return { {}, kMoney64Undefined };
     }
 
     const auto historyIndex = IndexForCursorAndHistory(historyCount, cursorPosition.x, chartFrame.GetLeft());
@@ -161,7 +161,7 @@ namespace Graph
         auto screenCoords = origCoords;
         for (int32_t i = count - 1; i >= 0; i--)
         {
-            if (history[i] != MONEY64_UNDEFINED && yearOver32 % 4 == 0)
+            if (history[i] != kMoney64Undefined && yearOver32 % 4 == 0)
             {
                 // Draw month text
                 auto ft = Formatter();
@@ -187,7 +187,7 @@ namespace Graph
         auto coords = origCoords;
         for (int32_t i = count - 1; i >= 0; i--)
         {
-            if (history[i] != MONEY64_UNDEFINED)
+            if (history[i] != kMoney64Undefined)
             {
                 coords.y = origCoords.y + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
 
@@ -217,7 +217,7 @@ namespace Graph
         auto coords = origCoords;
         for (int32_t i = count - 1; i >= 0; i--)
         {
-            if (history[i] != MONEY64_UNDEFINED)
+            if (history[i] != kMoney64Undefined)
             {
                 coords.y = origCoords.y + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
 
@@ -250,7 +250,7 @@ namespace Graph
 
         const auto info = FinanceTooltipInfoFromMoney(history, ChartMaxDataCount, modifier, offset, chartFrame, cursorPosition);
 
-        if (info.money == MONEY64_UNDEFINED)
+        if (info.money == kMoney64Undefined)
         {
             return;
         }

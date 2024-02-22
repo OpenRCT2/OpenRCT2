@@ -54,8 +54,8 @@ public:
         WindowPushOthersBelow(*this);
 
         gLandToolSize = 1;
-        gWaterToolRaiseCost = MONEY64_UNDEFINED;
-        gWaterToolLowerCost = MONEY64_UNDEFINED;
+        gWaterToolRaiseCost = kMoney64Undefined;
+        gWaterToolLowerCost = kMoney64Undefined;
     }
 
     void OnClose() override
@@ -159,7 +159,7 @@ public:
         {
             // Draw raise cost amount
             screenCoords = { widgets[WIDX_PREVIEW].midX() + windowPos.x, widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 };
-            if (gWaterToolRaiseCost != MONEY64_UNDEFINED && gWaterToolRaiseCost != 0)
+            if (gWaterToolRaiseCost != kMoney64Undefined && gWaterToolRaiseCost != 0)
             {
                 auto ft = Formatter();
                 ft.Add<money64>(gWaterToolRaiseCost);
@@ -168,7 +168,7 @@ public:
             screenCoords.y += 10;
 
             // Draw lower cost amount
-            if (gWaterToolLowerCost != MONEY64_UNDEFINED && gWaterToolLowerCost != 0)
+            if (gWaterToolLowerCost != kMoney64Undefined && gWaterToolLowerCost != 0)
             {
                 auto ft = Formatter();
                 ft.Add<money64>(gWaterToolLowerCost);

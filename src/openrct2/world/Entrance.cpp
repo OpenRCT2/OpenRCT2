@@ -49,7 +49,7 @@ static money64 RideEntranceExitPlaceGhost(
     rideEntranceExitPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
     auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
 
-    return res.Error == GameActions::Status::Ok ? res.Cost : MONEY64_UNDEFINED;
+    return res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
 }
 
 /**
@@ -119,7 +119,7 @@ money64 RideEntranceExitPlaceGhost(
     RideConstructionRemoveGhosts();
     money64 result = RideEntranceExitPlaceGhost(ride.id, entranceExitCoords, direction, placeType, stationNum);
 
-    if (result != MONEY64_UNDEFINED)
+    if (result != kMoney64Undefined)
     {
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT;
         gRideEntranceExitGhostPosition.x = entranceExitCoords.x;

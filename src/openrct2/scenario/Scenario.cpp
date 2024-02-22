@@ -142,7 +142,7 @@ void ScenarioReset(GameState_t& gameState)
     gameState.TotalIncomeFromAdmissions = 0;
 
     gameState.ParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
-    gameState.ScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
+    gameState.ScenarioCompletedCompanyValue = kMoney64Undefined;
     gameState.ScenarioCompletedBy = "?";
 
     park.ResetHistories();
@@ -361,7 +361,7 @@ static void ScenarioUpdateDayNightCycle()
 
     if (gScreenFlags == SCREEN_FLAGS_PLAYING && gConfigGeneral.DayNightCycle)
     {
-        float monthFraction = GetDate().GetMonthTicks() / static_cast<float>(TICKS_PER_MONTH);
+        float monthFraction = GetDate().GetMonthTicks() / static_cast<float>(kTicksPerMonth);
         if (monthFraction < (1 / 8.0f))
         {
             gDayNightCycle = 0.0f;
@@ -881,7 +881,7 @@ static void ScenarioCheckObjective(GameState_t& gameState)
  */
 ObjectiveStatus Objective::Check(GameState_t& gameState) const
 {
-    if (gameState.ScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
+    if (gameState.ScenarioCompletedCompanyValue != kMoney64Undefined)
     {
         return ObjectiveStatus::Undecided;
     }

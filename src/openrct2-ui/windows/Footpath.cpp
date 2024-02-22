@@ -292,7 +292,7 @@ public:
                     break;
                 }
 
-                _windowFootpathCost = MONEY64_UNDEFINED;
+                _windowFootpathCost = kMoney64Undefined;
                 ToolCancel();
                 FootpathProvisionalUpdate();
                 MapInvalidateMapSelectionTiles();
@@ -309,7 +309,7 @@ public:
                     break;
                 }
 
-                _windowFootpathCost = MONEY64_UNDEFINED;
+                _windowFootpathCost = kMoney64Undefined;
                 ToolCancel();
                 FootpathProvisionalUpdate();
                 MapInvalidateMapSelectionTiles();
@@ -365,7 +365,7 @@ public:
         }
 
         FootpathProvisionalUpdate();
-        _windowFootpathCost = MONEY64_UNDEFINED;
+        _windowFootpathCost = kMoney64Undefined;
         Invalidate();
     }
 
@@ -498,7 +498,7 @@ public:
         screenCoords = this->windowPos
             + ScreenCoordsXY{ window_footpath_widgets[WIDX_CONSTRUCT].midX(),
                               window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12 };
-        if (_windowFootpathCost != MONEY64_UNDEFINED)
+        if (_windowFootpathCost != kMoney64Undefined)
         {
             if (!(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
             {
@@ -753,7 +753,7 @@ private:
     {
         FootpathProvisionalUpdate();
         _footpathConstructDirection = (direction - GetCurrentRotation()) & 3;
-        _windowFootpathCost = MONEY64_UNDEFINED;
+        _windowFootpathCost = kMoney64Undefined;
         WindowFootpathSetEnabledAndPressedWidgets();
     }
 
@@ -765,7 +765,7 @@ private:
     {
         FootpathProvisionalUpdate();
         gFootpathConstructSlope = slope;
-        _windowFootpathCost = MONEY64_UNDEFINED;
+        _windowFootpathCost = kMoney64Undefined;
         WindowFootpathSetEnabledAndPressedWidgets();
     }
 
@@ -1022,7 +1022,7 @@ private:
      */
     void WindowFootpathConstruct()
     {
-        _windowFootpathCost = MONEY64_UNDEFINED;
+        _windowFootpathCost = kMoney64Undefined;
         FootpathProvisionalUpdate();
 
         ObjectEntryIndex type;
@@ -1178,7 +1178,7 @@ private:
     {
         TileElement* tileElement;
 
-        _windowFootpathCost = MONEY64_UNDEFINED;
+        _windowFootpathCost = kMoney64Undefined;
         FootpathProvisionalUpdate();
 
         tileElement = FootpathGetTileElementToRemove();

@@ -44,7 +44,7 @@ money64 PlaceProvisionalTrackPiece(
 {
     auto ride = GetRide(rideIndex);
     if (ride == nullptr)
-        return MONEY64_UNDEFINED;
+        return kMoney64Undefined;
 
     RideConstructionRemoveGhosts();
     const auto& rtd = ride->GetRideTypeDescriptor();
@@ -56,7 +56,7 @@ money64 PlaceProvisionalTrackPiece(
         auto result = GameActions::Execute(&gameAction);
 
         if (result.Error != GameActions::Status::Ok)
-            return MONEY64_UNDEFINED;
+            return kMoney64Undefined;
 
         _unkF440C5 = { trackPos, static_cast<Direction>(trackDirection) };
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
@@ -83,7 +83,7 @@ money64 PlaceProvisionalTrackPiece(
     // This command must not be sent over the network
     auto res = GameActions::Execute(&trackPlaceAction);
     if (res.Error != GameActions::Status::Ok)
-        return MONEY64_UNDEFINED;
+        return kMoney64Undefined;
 
     int16_t z_begin, z_end;
     const auto& ted = GetTrackElementDescriptor(trackType);

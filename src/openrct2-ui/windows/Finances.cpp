@@ -636,7 +636,7 @@ public:
         for (int32_t i = 0; i < 64; i++)
         {
             auto balance = gCashHistory[i];
-            if (balance == MONEY64_UNDEFINED)
+            if (balance == kMoney64Undefined)
                 continue;
 
             // Modifier balance then keep halving until less than 127 pixels
@@ -695,7 +695,7 @@ public:
         for (int32_t i = 0; i < 64; i++)
         {
             auto balance = gameState.ParkValueHistory[i];
-            if (balance == MONEY64_UNDEFINED)
+            if (balance == kMoney64Undefined)
                 continue;
 
             // Modifier balance then keep halving until less than 255 pixels
@@ -755,7 +755,7 @@ public:
         for (int32_t i = 0; i < 64; i++)
         {
             auto balance = gameState.WeeklyProfitHistory[i];
-            if (balance == MONEY64_UNDEFINED)
+            if (balance == kMoney64Undefined)
                 continue;
 
             // Modifier balance then keep halving until less than 127 pixels

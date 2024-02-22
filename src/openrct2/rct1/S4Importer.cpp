@@ -262,9 +262,9 @@ namespace RCT1
 
         money64 CorrectRCT1ParkValue(money32 oldParkValue)
         {
-            if (oldParkValue == MONEY32_UNDEFINED)
+            if (oldParkValue == kMoney32Undefined)
             {
-                return MONEY64_UNDEFINED;
+                return kMoney64Undefined;
             }
 
             if (_parkValueConversionFactor == 0)

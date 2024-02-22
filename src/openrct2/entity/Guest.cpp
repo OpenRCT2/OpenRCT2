@@ -7196,7 +7196,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
         cash = 0;
     }
 
-    if (gameState.GuestInitialCash == MONEY64_UNDEFINED)
+    if (gameState.GuestInitialCash == kMoney64Undefined)
     {
         cash = 0;
     }
