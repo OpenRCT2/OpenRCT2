@@ -68,7 +68,8 @@ namespace OpenRCT2::PathFinding
     // require to have PEEP_FLAGS_DEBUG_PATHFINDING set in PeepFlags in order to activate logging.
     static constexpr bool kLogPathfinding = false;
 
-    template<typename... TArgs> static void LogPathfinding(const Peep* peep, const char* format, TArgs&&... args)
+    template<typename... TArgs>
+    static void LogPathfinding([[maybe_unused]] const Peep* peep, [[maybe_unused]] const char* format, TArgs&&... args)
     {
         if constexpr (kLogPathfinding)
         {
