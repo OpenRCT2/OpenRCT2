@@ -2858,13 +2858,6 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
  */
 void Peep::ResetPathfindGoal()
 {
-#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-    if (_pathFindDebug)
-    {
-        LOG_INFO("Resetting PathfindGoal for %s", _pathFindDebugPeepName);
-    }
-#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-
     PathfindGoal.SetNull();
     PathfindGoal.direction = INVALID_DIRECTION;
 }
