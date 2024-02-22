@@ -541,15 +541,6 @@ namespace OpenRCT2::PathFinding
         if (peep.Is<Staff>())
             return 8;
 
-        // PEEP_FLAGS_2? It's cleared here but not set anywhere!
-        if ((peep.PeepFlags & PEEP_FLAGS_2))
-        {
-            if ((ScenarioRand() & 0xFFFF) <= 7281)
-                peep.PeepFlags &= ~PEEP_FLAGS_2;
-
-            return 8;
-        }
-
         auto* guest = peep.As<Guest>();
         if (guest == nullptr)
             return 8;
