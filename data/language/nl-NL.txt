@@ -3681,6 +3681,10 @@ STR_6610    :Padelement niet gevonden.
 STR_6611    :Muurelement niet gevonden.
 STR_6612    :Lichtkrantelement niet gevonden.
 STR_6613    :Object opnieuw laden
+STR_6614    :Kan de toegangsprijs niet aanpassen
+STR_6615    :Dit baantype vereist water
+STR_6616    :Ongeldige actie voor dit type werknemer
+STR_6617    :Kan een kaartelement niet met zichzelf verwisselen
 
 #############
 # Scenarios #

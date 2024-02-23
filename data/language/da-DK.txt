@@ -3683,6 +3683,10 @@ STR_6610    :Sti element ikke fundet
 STR_6611    :Væg element ikke fundet
 STR_6612    :Banner element ikke fundet
 STR_6613    :Genindlæs objekt
+STR_6614    :Kan ikke ændre parkens entré pris
+STR_6615    :Spor på dette felt kræver vand
+STR_6616    :Handlingen er ugyldig for denne medarbejdertype
+STR_6617    :Kan ikke bytte felt element med sig selv
 
 #############
 # Scenarios #
