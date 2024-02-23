@@ -628,7 +628,7 @@ namespace OpenRCT2
                 {
                     parkImporter = ParkImporter::CreateParkFile(*_objectRepository);
                 }
-                else if (info.Version <= FILE_TYPE_S4_CUTOFF)
+                else if (info.Version <= kFileTypeS4Cutoff)
                 {
                     // Save is an S4 (RCT1 format)
                     parkImporter = ParkImporter::CreateS4();
