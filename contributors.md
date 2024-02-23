@@ -283,6 +283,7 @@ Appreciation for contributors who have provided substantial work, but are no lon
 * Russian - (Soosisya)
 * Spanish - Josué Acevedo (Wirlie), Diego Mateos (dimateos), (frenchiveruti), (mdtrooper), Daniel Trujillo Viedma (gDanix); small fixes: (teapartycthulu)
 * Swedish - (Jinxit), (mharrys), (Slimeyo), Matte Andersson (Nubbie)
+* Ukrainian - (CsyeCokTheSolly), (Veydzher), (Saba4ara)
 
 ## Graphics
 * Yannic Geurts (xzbobzx) - OpenRCT2 Logo

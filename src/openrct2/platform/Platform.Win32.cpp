@@ -604,6 +604,7 @@ namespace Platform
             { L"fi", LANGUAGE_FINNISH },
             { L"sv", LANGUAGE_SWEDISH },
             { L"tr", LANGUAGE_TURKISH },
+            { L"uk", LANGUAGE_UKRAINIAN },
             { L"vi", LANGUAGE_VIETNAMESE },
         };
         static_assert(
