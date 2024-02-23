@@ -172,7 +172,7 @@ void FinancePayRideUpkeep()
         if (ride.status != RideStatus::Closed && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto upkeep = ride.upkeep_cost;
-            if (upkeep != MONEY64_UNDEFINED)
+            if (upkeep != kMoney64Undefined)
             {
                 ride.total_profit -= upkeep;
                 ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
@@ -192,9 +192,9 @@ void FinanceResetHistory()
     auto& gameState = GetGameState();
     for (int32_t i = 0; i < FINANCE_GRAPH_SIZE; i++)
     {
-        gCashHistory[i] = MONEY64_UNDEFINED;
-        gameState.WeeklyProfitHistory[i] = MONEY64_UNDEFINED;
-        gameState.ParkValueHistory[i] = MONEY64_UNDEFINED;
+        gCashHistory[i] = kMoney64Undefined;
+        gameState.WeeklyProfitHistory[i] = kMoney64Undefined;
+        gameState.ParkValueHistory[i] = kMoney64Undefined;
     }
 
     for (uint32_t i = 0; i < EXPENDITURE_TABLE_MONTH_COUNT; ++i)
@@ -237,7 +237,7 @@ void FinanceInit()
     gameState.BankLoanInterestRate = 10;
     gameState.ParkValue = 0;
     gCompanyValue = 0;
-    gameState.ScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
+    gameState.ScenarioCompletedCompanyValue = kMoney64Undefined;
     gameState.TotalAdmissions = 0;
     gameState.TotalIncomeFromAdmissions = 0;
     gameState.ScenarioCompletedBy = "?";
@@ -276,7 +276,7 @@ void FinanceUpdateDailyProfit()
         // Ride costs
         for (auto& ride : GetRideManager())
         {
-            if (ride.status != RideStatus::Closed && ride.upkeep_cost != MONEY64_UNDEFINED)
+            if (ride.status != RideStatus::Closed && ride.upkeep_cost != kMoney64Undefined)
             {
                 current_profit -= 2 * ride.upkeep_cost;
             }

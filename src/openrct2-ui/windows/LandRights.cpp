@@ -228,7 +228,7 @@ public:
         }
 
         // Draw cost amount
-        if (_landRightsCost != MONEY64_UNDEFINED && _landRightsCost != 0 && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+        if (_landRightsCost != kMoney64Undefined && _landRightsCost != 0 && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto ft = Formatter();
             ft.Add<money64>(_landRightsCost);
@@ -247,9 +247,9 @@ public:
             screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
         if (info.SpriteType == ViewportInteractionItem::None)
         {
-            if (_landRightsCost != MONEY64_UNDEFINED)
+            if (_landRightsCost != kMoney64Undefined)
             {
-                _landRightsCost = MONEY64_UNDEFINED;
+                _landRightsCost = kMoney64Undefined;
                 WindowInvalidateByClass(WindowClass::ClearScenery);
             }
             return;
@@ -318,7 +318,7 @@ public:
                                                            : LandBuyRightSetting::BuyConstructionRights);
         auto res = GameActions::Query(&landBuyRightsAction);
 
-        _landRightsCost = res.Error == GameActions::Status::Ok ? res.Cost : MONEY64_UNDEFINED;
+        _landRightsCost = res.Error == GameActions::Status::Ok ? res.Cost : kMoney64Undefined;
     }
 
     void OnToolAbort(WidgetIndex widgetIndex) override

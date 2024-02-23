@@ -263,7 +263,7 @@ namespace OpenRCT2::Scripting
         {
             const auto& gameState = GetGameState();
             auto ctx = GetContext()->GetScriptEngine().GetContext();
-            if (gameState.ScenarioCompletedCompanyValue == MONEY64_UNDEFINED
+            if (gameState.ScenarioCompletedCompanyValue == kMoney64Undefined
                 || gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
             {
                 return ToDuk(ctx, nullptr);
@@ -279,7 +279,7 @@ namespace OpenRCT2::Scripting
         std::string status_get() const
         {
             const auto& gameState = GetGameState();
-            if (gameState.ScenarioCompletedCompanyValue == MONEY64_UNDEFINED)
+            if (gameState.ScenarioCompletedCompanyValue == kMoney64Undefined)
                 return "inProgress";
             if (gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
                 return "failed";
@@ -290,7 +290,7 @@ namespace OpenRCT2::Scripting
             ThrowIfGameStateNotMutable();
             auto& gameState = GetGameState();
             if (value == "inProgress")
-                gameState.ScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
+                gameState.ScenarioCompletedCompanyValue = kMoney64Undefined;
             else if (value == "failed")
                 gameState.ScenarioCompletedCompanyValue = COMPANY_VALUE_ON_FAILED_OBJECTIVE;
             else if (value == "completed")

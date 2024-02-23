@@ -6168,7 +6168,7 @@ private:
 
         std::string strText{ text };
         money64 price = StringToMoney(strText.c_str());
-        if (price == MONEY64_UNDEFINED)
+        if (price == kMoney64Undefined)
         {
             return;
         }
@@ -6360,7 +6360,7 @@ private:
         screenCoords.y += 18;
 
         // Income per hour
-        if (ride->income_per_hour != MONEY64_UNDEFINED)
+        if (ride->income_per_hour != kMoney64Undefined)
         {
             auto ft = Formatter();
             ft.Add<money64>(ride->income_per_hour);
@@ -6371,14 +6371,14 @@ private:
 
         // Running cost per hour
         money64 costPerHour = ride->upkeep_cost * 16;
-        stringId = ride->upkeep_cost == MONEY64_UNDEFINED ? STR_RUNNING_COST_UNKNOWN : STR_RUNNING_COST_PER_HOUR;
+        stringId = ride->upkeep_cost == kMoney64Undefined ? STR_RUNNING_COST_UNKNOWN : STR_RUNNING_COST_PER_HOUR;
         auto ft = Formatter();
         ft.Add<money64>(costPerHour);
         DrawTextBasic(dpi, screenCoords, stringId, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
 
         // Profit per hour
-        if (ride->profit != MONEY64_UNDEFINED)
+        if (ride->profit != kMoney64Undefined)
         {
             ft = Formatter();
             ft.Add<money64>(ride->profit);

@@ -193,7 +193,7 @@ public:
         _selectedScenery = {};
         _hoverCounter = 0;
         gSceneryGhostType = 0;
-        gSceneryPlaceCost = MONEY64_UNDEFINED;
+        gSceneryPlaceCost = kMoney64Undefined;
         gSceneryPlaceRotation = 0;
         gWindowSceneryPaintEnabled = 0; // repaint coloured scenery tool state
         gWindowSceneryEyedropperEnabled = false;
@@ -341,7 +341,7 @@ public:
         {
             _activeTabIndex = widgetIndex - WIDX_SCENERY_TAB_1;
             Invalidate();
-            gSceneryPlaceCost = MONEY64_UNDEFINED;
+            gSceneryPlaceCost = kMoney64Undefined;
 
             ContentUpdateScroll();
         }
@@ -782,7 +782,7 @@ public:
         }
 
         auto [name, price] = GetNameAndPrice(selectedSceneryEntry);
-        if (price != MONEY64_UNDEFINED && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+        if (price != kMoney64Undefined && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto ft = Formatter();
             ft.Add<money64>(price);
@@ -858,7 +858,7 @@ public:
         gWindowSceneryEyedropperEnabled = false;
         OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, ContextGetWidth() / 2);
         _hoverCounter = -16;
-        gSceneryPlaceCost = MONEY64_UNDEFINED;
+        gSceneryPlaceCost = kMoney64Undefined;
         Invalidate();
     }
 
@@ -1395,7 +1395,7 @@ private:
         gWindowSceneryEyedropperEnabled = false;
         OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
         _hoverCounter = -16;
-        gSceneryPlaceCost = MONEY64_UNDEFINED;
+        gSceneryPlaceCost = kMoney64Undefined;
         Invalidate();
     }
 
@@ -1412,8 +1412,8 @@ private:
     std::pair<StringId, money64> GetNameAndPrice(ScenerySelection selectedScenery)
     {
         StringId name = STR_UNKNOWN_OBJECT_TYPE;
-        money64 price = MONEY64_UNDEFINED;
-        if (selectedScenery.IsUndefined() && gSceneryPlaceCost != MONEY64_UNDEFINED)
+        money64 price = kMoney64Undefined;
+        if (selectedScenery.IsUndefined() && gSceneryPlaceCost != kMoney64Undefined)
         {
             price = gSceneryPlaceCost;
         }

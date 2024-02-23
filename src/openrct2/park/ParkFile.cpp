@@ -435,7 +435,7 @@ namespace OpenRCT2
                 cs.ReadWrite(gameState.ScenarioParkRatingWarningDays);
 
                 cs.ReadWrite(gameState.ScenarioCompletedCompanyValue);
-                if (gameState.ScenarioCompletedCompanyValue == MONEY64_UNDEFINED
+                if (gameState.ScenarioCompletedCompanyValue == kMoney64Undefined
                     || gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
                 {
                     cs.Write("");

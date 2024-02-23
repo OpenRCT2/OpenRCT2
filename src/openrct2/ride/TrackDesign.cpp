@@ -1878,10 +1878,10 @@ static money64 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flag
 
     auto res = GameActions::ExecuteNested(&gameAction);
 
-    // Callee's of this function expect MONEY64_UNDEFINED in case of failure.
+    // Callee's of this function expect kMoney64Undefined in case of failure.
     if (res.Error != GameActions::Status::Ok)
     {
-        return MONEY64_UNDEFINED;
+        return kMoney64Undefined;
     }
 
     *outRideIndex = res.GetData<RideId>();
@@ -1905,7 +1905,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
 
     RideId rideIndex;
     uint8_t rideCreateFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
-    if (TrackDesignCreateRide(td6->type, entry_index, rideCreateFlags, &rideIndex) == MONEY64_UNDEFINED)
+    if (TrackDesignCreateRide(td6->type, entry_index, rideCreateFlags, &rideIndex) == kMoney64Undefined)
     {
         return false;
     }

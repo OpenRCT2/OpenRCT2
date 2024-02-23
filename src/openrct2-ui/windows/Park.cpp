@@ -1111,7 +1111,7 @@ private:
         screenCoords.y += 5;
 
         // Objective outcome
-        if (gameState.ScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
+        if (gameState.ScenarioCompletedCompanyValue != kMoney64Undefined)
         {
             if (gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
             {
