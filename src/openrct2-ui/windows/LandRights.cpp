@@ -131,14 +131,14 @@ public:
         {
             case WIDX_DECREMENT:
                 // Decrement land rights tool size
-                gLandToolSize = std::max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
+                gLandToolSize = std::max<uint16_t>(kLandToolMinimumSize, gLandToolSize - 1);
 
                 // Invalidate the window
                 Invalidate();
                 break;
             case WIDX_INCREMENT:
                 // Decrement land rights tool size
-                gLandToolSize = std::min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
+                gLandToolSize = std::min<uint16_t>(kLandToolMaximumSize, gLandToolSize + 1);
 
                 // Invalidate the window
                 Invalidate();
@@ -157,10 +157,10 @@ public:
         const auto res = String::Parse<int32_t>(text);
         if (res.has_value())
         {
-            int32_t size;
+            uint16_t size;
             size = res.value();
-            size = std::max(MINIMUM_TOOL_SIZE, size);
-            size = std::min(MAXIMUM_TOOL_SIZE, size);
+            size = std::max(kLandToolMinimumSize, size);
+            size = std::min(kLandToolMaximumSize, size);
             gLandToolSize = size;
             Invalidate();
         }
@@ -220,7 +220,7 @@ public:
 
         DrawWidgets(dpi);
         // Draw number for tool sizes bigger than 7
-        if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
+        if (gLandToolSize > kLandToolMaximumSizeWithSprite)
         {
             auto ft = Formatter();
             ft.Add<uint16_t>(gLandToolSize);
@@ -393,8 +393,8 @@ private:
     void InputSize()
     {
         Formatter ft;
-        ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
-        ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
+        ft.Add<uint16_t>(kLandToolMinimumSize);
+        ft.Add<uint16_t>(kLandToolMaximumSize);
         WindowTextInputOpen(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
     }
 
