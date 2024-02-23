@@ -2622,7 +2622,7 @@ private:
             CoordsXY coords = originCoords + offsets.Rotate(trackDirection);
 
             int32_t baseZ = originZ + trackBlock->z;
-            int32_t clearanceZ = trackBlock->var_07 + clearanceHeight + baseZ + (4 * COORDS_Z_STEP);
+            int32_t clearanceZ = trackBlock->ClearanceZ + clearanceHeight + baseZ + (4 * COORDS_Z_STEP);
 
             auto centreTileCoords = TileCoordsXY{ coords };
             auto eastTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_EAST];
