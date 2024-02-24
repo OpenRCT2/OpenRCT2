@@ -630,8 +630,9 @@ namespace OpenRCT2::TrackElemType
 
     constexpr track_type_t DiagBrakes = 337;
     constexpr track_type_t DiagBlockBrakes = 338;
+    constexpr track_type_t SlopedBrakes = 339;
 
-    constexpr track_type_t Count = 339;
+    constexpr track_type_t Count = 340;
     constexpr track_type_t None = 65535;
 
 }; // namespace OpenRCT2::TrackElemType
