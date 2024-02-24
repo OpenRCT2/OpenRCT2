@@ -43,7 +43,7 @@ struct ResultWithMessage;
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
 constexpr uint8_t TUNE_ID_NULL = 0xFF;
 
-constexpr uint16_t const MAX_STATION_LOCATIONS = OpenRCT2::Limits::MaxStationsPerRide * 2; // Entrance and exit per station
+constexpr uint16_t const MAX_STATION_LOCATIONS = OpenRCT2::Limits::kMaxStationsPerRide * 2; // Entrance and exit per station
 
 constexpr uint16_t const MAZE_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 
@@ -284,13 +284,13 @@ struct Ride
     friend void UpdateChairlift(Ride& ride);
 
 private:
-    std::array<RideStation, OpenRCT2::Limits::MaxStationsPerRide> stations;
+    std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide> stations;
 
 public:
     RideStation& GetStation(StationIndex stationIndex = StationIndex::FromUnderlying(0));
     const RideStation& GetStation(StationIndex stationIndex = StationIndex::FromUnderlying(0)) const;
-    std::array<RideStation, OpenRCT2::Limits::MaxStationsPerRide>& GetStations();
-    const std::array<RideStation, OpenRCT2::Limits::MaxStationsPerRide>& GetStations() const;
+    std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide>& GetStations();
+    const std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide>& GetStations() const;
     StationIndex GetStationIndex(const RideStation* station) const;
 
     // Returns the logical station number from the given station. Index 0 = station 1, index 1 = station 2. It accounts for gaps

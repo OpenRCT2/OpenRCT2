@@ -199,7 +199,7 @@ void Ride::RemoveVehicles()
             vehicles[i] = EntityId::GetNull();
         }
 
-        for (size_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+        for (size_t i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
             stations[i].TrainAtStation = RideStation::NO_TRAIN;
 
         // Also clean up orphaned vehicles for good measure.

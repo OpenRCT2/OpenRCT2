@@ -841,7 +841,7 @@ namespace RCT1
                 dst->overall_view = TileCoordsXY{ src->OverallView.x, src->OverallView.y }.ToCoordsXY();
             }
 
-            for (StationIndex::UnderlyingType i = 0; i < Limits::MaxStationsPerRide; i++)
+            for (StationIndex::UnderlyingType i = 0; i < Limits::kMaxStationsPerRide; i++)
             {
                 auto& dstStation = dst->GetStation(StationIndex::FromUnderlying(i));
                 if (src->StationStarts[i].IsNull())
@@ -878,7 +878,7 @@ namespace RCT1
                 dstStation.SegmentLength = src->Length[i];
             }
             // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
-            for (int32_t i = Limits::MaxStationsPerRide; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+            for (int32_t i = Limits::kMaxStationsPerRide; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
             {
                 auto& dstStation = dst->GetStation(StationIndex::FromUnderlying(i));
                 dstStation.Start.SetNull();

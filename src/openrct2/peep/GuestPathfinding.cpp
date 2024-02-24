@@ -1940,12 +1940,12 @@ namespace OpenRCT2::PathFinding
      * appropriate.
      */
     static StationIndex GuestPathfindingSelectRandomStation(
-        const Guest& guest, int32_t numEntranceStations, BitSet<OpenRCT2::Limits::MaxStationsPerRide>& entranceStations)
+        const Guest& guest, int32_t numEntranceStations, BitSet<OpenRCT2::Limits::kMaxStationsPerRide>& entranceStations)
     {
         int32_t select = guest.GuestNumRides % numEntranceStations;
         while (select > 0)
         {
-            for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+            for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
             {
                 if (entranceStations[i])
                 {
@@ -1955,7 +1955,7 @@ namespace OpenRCT2::PathFinding
                 }
             }
         }
-        for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+        for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
         {
             if (entranceStations[i])
             {
@@ -2179,7 +2179,7 @@ namespace OpenRCT2::PathFinding
         StationIndex closestStationNum = StationIndex::FromUnderlying(0);
 
         int32_t numEntranceStations = 0;
-        BitSet<OpenRCT2::Limits::MaxStationsPerRide> entranceStations = {};
+        BitSet<OpenRCT2::Limits::kMaxStationsPerRide> entranceStations = {};
 
         for (const auto& station : ride->GetStations())
         {

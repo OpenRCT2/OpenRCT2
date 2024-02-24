@@ -121,7 +121,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32
 
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
     {
-        if (ride->num_stations >= OpenRCT2::Limits::MaxStationsPerRide)
+        if (ride->num_stations >= OpenRCT2::Limits::kMaxStationsPerRide)
         {
             return { false, STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE };
         }
@@ -190,7 +190,7 @@ ResultWithMessage TrackAddStationElement(CoordsXYZD loc, RideId rideIndex, int32
     // When attempting to place a track design, it sometimes happens that the front and back of station 0 are built,
     // but the middle is not. Allow this, so the track place function can actually finish building all 4 stations.
     // This _might_ cause issues if the track designs is bugged and actually has 5.
-    if (stationBackLoc == stationFrontLoc && ride->num_stations >= OpenRCT2::Limits::MaxStationsPerRide && !fromTrackDesign)
+    if (stationBackLoc == stationFrontLoc && ride->num_stations >= OpenRCT2::Limits::kMaxStationsPerRide && !fromTrackDesign)
     {
         return { false, STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE };
     }
@@ -328,7 +328,7 @@ ResultWithMessage TrackRemoveStationElement(const CoordsXYZD& loc, RideId rideIn
     if (!(flags & GAME_COMMAND_FLAG_APPLY))
     {
         if ((removeLoc != stationBackLoc) && (removeLoc != stationFrontLoc)
-            && ride->num_stations >= OpenRCT2::Limits::MaxStationsPerRide)
+            && ride->num_stations >= OpenRCT2::Limits::kMaxStationsPerRide)
         {
             return { false, STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE };
         }

@@ -1327,7 +1327,7 @@ namespace RCT2
                 dst->overall_view = tileLoc.ToCoordsXY();
             }
 
-            for (StationIndex::UnderlyingType i = 0; i < Limits::MaxStationsPerRide; i++)
+            for (StationIndex::UnderlyingType i = 0; i < Limits::kMaxStationsPerRide; i++)
             {
                 StationIndex stationIndex = StationIndex::FromUnderlying(i);
                 auto& destStation = dst->GetStation(stationIndex);
@@ -1367,7 +1367,7 @@ namespace RCT2
                 destStation.QueueLength = src->QueueLength[i];
             }
             // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
-            for (int32_t i = Limits::MaxStationsPerRide; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+            for (int32_t i = Limits::kMaxStationsPerRide; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
             {
                 StationIndex stationIndex = StationIndex::FromUnderlying(i);
                 auto& destStation = dst->GetStation(stationIndex);

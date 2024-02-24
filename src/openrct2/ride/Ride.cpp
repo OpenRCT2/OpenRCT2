@@ -358,7 +358,7 @@ void Ride::UpdateQueueLength(StationIndex stationIndex)
 
 void Ride::QueueInsertGuestAtFront(StationIndex stationIndex, Guest* peep)
 {
-    assert(stationIndex.ToUnderlying() < OpenRCT2::Limits::MaxStationsPerRide);
+    assert(stationIndex.ToUnderlying() < OpenRCT2::Limits::kMaxStationsPerRide);
     assert(peep != nullptr);
 
     peep->GuestNextInQueue = EntityId::GetNull();
@@ -1058,12 +1058,12 @@ const RideStation& Ride::GetStation(StationIndex stationIndex) const
     return stations[stationIndex.ToUnderlying()];
 }
 
-std::array<RideStation, OpenRCT2::Limits::MaxStationsPerRide>& Ride::GetStations()
+std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide>& Ride::GetStations()
 {
     return stations;
 }
 
-const std::array<RideStation, OpenRCT2::Limits::MaxStationsPerRide>& Ride::GetStations() const
+const std::array<RideStation, OpenRCT2::Limits::kMaxStationsPerRide>& Ride::GetStations() const
 {
     return stations;
 }
@@ -1089,7 +1089,7 @@ void Ride::Update()
     // Update stations
     const auto& rtd = GetRideTypeDescriptor();
     if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_MAZE))
-        for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+        for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
             RideUpdateStation(*this, StationIndex::FromUnderlying(i));
 
     // Update financial statistics
@@ -1274,7 +1274,7 @@ void UpdateSpiralSlide(Ride& ride)
 
     const uint8_t current_rotation = GetCurrentRotation();
     // Invalidate something related to station start
-    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
     {
         if (ride.stations[i].Start.IsNull())
             continue;
@@ -3010,7 +3010,7 @@ static void RideSetBoatHireReturnPoint(Ride& ride, const CoordsXYE& startElement
 static void RideSetMazeEntranceExitPoints(Ride& ride)
 {
     // Needs room for an entrance and an exit per station, plus one position for the list terminator.
-    TileCoordsXYZD positions[(OpenRCT2::Limits::MaxStationsPerRide * 2) + 1];
+    TileCoordsXYZD positions[(OpenRCT2::Limits::kMaxStationsPerRide * 2) + 1];
 
     // Create a list of all the entrance and exit positions
     TileCoordsXYZD* position = positions;
@@ -3627,7 +3627,7 @@ ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying
     // Initialise station departs
     // 006DDDD0:
     lifecycle_flags |= RIDE_LIFECYCLE_ON_TRACK;
-    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::kMaxStationsPerRide; i++)
     {
         stations[i].Depart = (stations[i].Depart & STATION_DEPART_FLAG) | 1;
     }

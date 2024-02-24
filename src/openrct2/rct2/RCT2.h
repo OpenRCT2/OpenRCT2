@@ -90,21 +90,21 @@ namespace RCT2
                 uint16_t NameArgumentsNumber;   // 0x04E
             };
         };
-        RCT12xy8 OverallView;                               // 0x050
-        RCT12xy8 StationStarts[Limits::MaxStationsPerRide]; // 0x052
-        uint8_t StationHeights[Limits::MaxStationsPerRide]; // 0x05A
-        uint8_t StationLength[Limits::MaxStationsPerRide];  // 0x05E
-        uint8_t StationDepart[Limits::MaxStationsPerRide];  // 0x062
+        RCT12xy8 OverallView;                                // 0x050
+        RCT12xy8 StationStarts[Limits::kMaxStationsPerRide]; // 0x052
+        uint8_t StationHeights[Limits::kMaxStationsPerRide]; // 0x05A
+        uint8_t StationLength[Limits::kMaxStationsPerRide];  // 0x05E
+        uint8_t StationDepart[Limits::kMaxStationsPerRide];  // 0x062
         // ride->vehicle index for current train waiting for passengers
         // at station
-        uint8_t TrainAtStation[Limits::MaxStationsPerRide];   // 0x066
-        RCT12xy8 Entrances[Limits::MaxStationsPerRide];       // 0x06A
-        RCT12xy8 Exits[Limits::MaxStationsPerRide];           // 0x072
-        uint16_t LastPeepInQueue[Limits::MaxStationsPerRide]; // 0x07A
-        uint8_t Pad082[Limits::MaxStationsPerRide];           // 0x082, Used to be number of peeps in queue in RCT1, but this
-                                                              // has moved.
-        uint16_t Vehicles[Limits::MaxTrainsPerRide];          // 0x086, Points to the first car in the train
-        uint8_t DepartFlags;                                  // 0x0C6
+        uint8_t TrainAtStation[Limits::kMaxStationsPerRide];   // 0x066
+        RCT12xy8 Entrances[Limits::kMaxStationsPerRide];       // 0x06A
+        RCT12xy8 Exits[Limits::kMaxStationsPerRide];           // 0x072
+        uint16_t LastPeepInQueue[Limits::kMaxStationsPerRide]; // 0x07A
+        uint8_t Pad082[Limits::kMaxStationsPerRide];           // 0x082, Used to be number of peeps in queue in RCT1, but this
+                                                               // has moved.
+        uint16_t Vehicles[Limits::MaxTrainsPerRide];           // 0x086, Points to the first car in the train
+        uint8_t DepartFlags;                                   // 0x0C6
 
         // Not sure if these should be uint or sint.
         uint8_t NumStations;             // 0x0C7
@@ -137,20 +137,20 @@ namespace RCT2
         uint8_t Pad0D6[2];            // 0x0D6
         // Divide this value by 29127 to get the human-readable max speed
         // (in RCT2, display_speed = (max_speed * 9) >> 18)
-        int32_t MaxSpeed;                           // 0x0D8
-        int32_t AverageSpeed;                       // 0x0DC
-        uint8_t CurrentTestSegment;                 // 0x0E0
-        uint8_t AverageSpeedTestTimeout;            // 0x0E1
-        uint8_t Pad0E2[0x2];                        // 0x0E2
-        int32_t Length[Limits::MaxStationsPerRide]; // 0x0E4
-        uint16_t Time[Limits::MaxStationsPerRide];  // 0x0F4
-        fixed16_2dp MaxPositiveVerticalG;           // 0x0FC
-        fixed16_2dp MaxNegativeVerticalG;           // 0x0FE
-        fixed16_2dp MaxLateralG;                    // 0x100
-        fixed16_2dp PreviousVerticalG;              // 0x102
-        fixed16_2dp PreviousLateralG;               // 0x104
-        uint8_t Pad106[0x2];                        // 0x106
-        uint32_t TestingFlags;                      // 0x108
+        int32_t MaxSpeed;                            // 0x0D8
+        int32_t AverageSpeed;                        // 0x0DC
+        uint8_t CurrentTestSegment;                  // 0x0E0
+        uint8_t AverageSpeedTestTimeout;             // 0x0E1
+        uint8_t Pad0E2[0x2];                         // 0x0E2
+        int32_t Length[Limits::kMaxStationsPerRide]; // 0x0E4
+        uint16_t Time[Limits::kMaxStationsPerRide];  // 0x0F4
+        fixed16_2dp MaxPositiveVerticalG;            // 0x0FC
+        fixed16_2dp MaxNegativeVerticalG;            // 0x0FE
+        fixed16_2dp MaxLateralG;                     // 0x100
+        fixed16_2dp PreviousVerticalG;               // 0x102
+        fixed16_2dp PreviousLateralG;                // 0x104
+        uint8_t Pad106[0x2];                         // 0x106
+        uint32_t TestingFlags;                       // 0x108
         // x y map location of the current track piece during a test
         // this is to prevent counting special tracks multiple times
         RCT12xy8 CurTestTrackLocation; // 0x10C
@@ -261,7 +261,7 @@ namespace RCT2
         uint8_t ConnectedMessageThrottle;                          // 0x1AF
         money32 IncomePerHour;                                     // 0x1B0
         money32 Profit;                                            // 0x1B4
-        uint8_t QueueTime[Limits::MaxStationsPerRide];             // 0x1B8
+        uint8_t QueueTime[Limits::kMaxStationsPerRide];            // 0x1B8
         uint8_t TrackColourMain[Limits::NumColourSchemes];         // 0x1BC
         uint8_t TrackColourAdditional[Limits::NumColourSchemes];   // 0x1C0
         uint8_t TrackColourSupports[Limits::NumColourSchemes];     // 0x1C4
@@ -281,7 +281,7 @@ namespace RCT2
         uint8_t CableLiftZ;                                        // 0x1FC
         uint8_t Pad1FD;                                            // 0x1FD
         uint16_t CableLift;                                        // 0x1FE
-        uint16_t QueueLength[Limits::MaxStationsPerRide];          // 0x200
+        uint16_t QueueLength[Limits::kMaxStationsPerRide];         // 0x200
         uint8_t Pad208[0x58];                                      // 0x208
 
         uint8_t GetMinCarsPerTrain() const;
