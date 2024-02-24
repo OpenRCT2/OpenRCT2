@@ -743,7 +743,7 @@ namespace RCT1
         RCT12Banner Banners[Limits::MaxBanners];
         char StringTable[Limits::MaxUserStrings][Limits::MaxUserStringLength];
         uint32_t GameTimeCounter;
-        Ride Rides[Limits::MaxRidesInPark];
+        Ride Rides[Limits::kMaxRidesInPark];
         uint16_t UnkGameTimeCounter;
         int16_t ViewX;
         int16_t ViewY;

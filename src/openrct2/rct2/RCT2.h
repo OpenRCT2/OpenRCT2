@@ -987,7 +987,7 @@ namespace RCT2
         RCT12Banner Banners[Limits::MaxBanners];
         char CustomStrings[Limits::MaxUserStrings][Limits::MaxUserStringLength];
         uint32_t GameTicks1;
-        Ride Rides[Limits::MaxRidesInPark];
+        Ride Rides[Limits::kMaxRidesInPark];
         uint16_t SavedAge; // unused
         int16_t SavedViewX;
         int16_t SavedViewY;

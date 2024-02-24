@@ -97,7 +97,7 @@ static constexpr int32_t RideInspectionInterval[] = {
 };
 
 // Ride storage for all the rides in the park, rides with RideId::Null are considered free.
-static std::array<Ride, OpenRCT2::Limits::MaxRidesInPark> _rides{};
+static std::array<Ride, OpenRCT2::Limits::kMaxRidesInPark> _rides{};
 
 // This is the highest used index + 1 of the _rides array.
 static size_t _endOfUsedRange = 0;

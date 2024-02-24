@@ -770,7 +770,7 @@ namespace RCT1
 
         void ImportRides()
         {
-            for (int32_t i = 0; i < Limits::MaxRidesInPark; i++)
+            for (int32_t i = 0; i < Limits::kMaxRidesInPark; i++)
             {
                 if (_s4.Rides[i].Type != RideType::Null)
                 {

@@ -1625,7 +1625,7 @@ namespace OpenRCT2
         static std::vector<RideId> LegacyGetRidesBeenOn(const std::array<uint8_t, 32>& srcArray)
         {
             std::vector<RideId> ridesBeenOn;
-            for (uint16_t i = 0; i < RCT2::Limits::MaxRidesInPark; i++)
+            for (uint16_t i = 0; i < RCT2::Limits::kMaxRidesInPark; i++)
             {
                 if (srcArray[i / 8] & (1 << (i % 8)))
                 {

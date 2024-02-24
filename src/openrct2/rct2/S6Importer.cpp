@@ -96,7 +96,7 @@ namespace RCT2
         uint8_t _gameVersion = 0;
         bool _isSV7 = false;
         bool _isScenario = false;
-        OpenRCT2::BitSet<Limits::MaxRidesInPark> _isFlatRide{};
+        OpenRCT2::BitSet<Limits::kMaxRidesInPark> _isFlatRide{};
         ObjectEntryIndex _pathToSurfaceMap[16];
         ObjectEntryIndex _pathToQueueSurfaceMap[16];
         ObjectEntryIndex _pathToRailingMap[16];
@@ -1211,7 +1211,7 @@ namespace RCT2
 
         void ImportRides()
         {
-            for (uint8_t index = 0; index < Limits::MaxRidesInPark; index++)
+            for (uint8_t index = 0; index < Limits::kMaxRidesInPark; index++)
             {
                 auto src = &_s6.Rides[index];
                 if (src->Type != RIDE_TYPE_NULL)
@@ -1237,7 +1237,7 @@ namespace RCT2
          */
         void DetermineFlatRideStatus()
         {
-            for (uint8_t index = 0; index < Limits::MaxRidesInPark; index++)
+            for (uint8_t index = 0; index < Limits::kMaxRidesInPark; index++)
             {
                 auto src = &_s6.Rides[index];
                 if (src->Type == RIDE_TYPE_NULL)
@@ -1595,7 +1595,7 @@ namespace RCT2
             dst.ProximityStart = { src.ProximityStartX, src.ProximityStartY, src.ProximityStartZ };
             dst.CurrentRide = RCT12RideIdToOpenRCT2RideId(src.CurrentRide);
             dst.State = src.State;
-            if (src.CurrentRide < Limits::MaxRidesInPark && _s6.Rides[src.CurrentRide].Type < std::size(RideTypeDescriptors))
+            if (src.CurrentRide < Limits::kMaxRidesInPark && _s6.Rides[src.CurrentRide].Type < std::size(RideTypeDescriptors))
                 dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(
                     src.ProximityTrackType, _s6.Rides[src.CurrentRide].Type, IsFlatRide(src.CurrentRide));
             else
