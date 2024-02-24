@@ -716,17 +716,8 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
         gPeepPathFindIgnoreForeignQueues = false;
         gPeepPathFindQueueRideIndex = RideId::GetNull();
 
-#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        PathfindLoggingEnable(*this);
-#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-
         const auto goalPos = TileCoordsXYZ{ location };
         Direction pathfindDirection = PathFinding::ChooseDirection(TileCoordsXYZ{ NextLoc }, goalPos, *this);
-
-#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        PathfindLoggingDisable();
-#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-
         if (pathfindDirection == INVALID_DIRECTION)
         {
             /* Heuristic search failed for all directions.

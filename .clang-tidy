@@ -1,6 +1,6 @@
 ---
 Checks: >
-    *-,
+    -*,
     cppcoreguidelines-macro-usage,
     modernize-use-nullptr,
     modernize-use-override
