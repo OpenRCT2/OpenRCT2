@@ -120,13 +120,21 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunkTrack()
         }
 
         auto buffer = static_cast<uint8_t*>(AllocateLargeTempBuffer());
-        SawyerCodingChunkHeader header{ CHUNK_ENCODING_RLE, compressedDataLength };
-        size_t uncompressedLength = DecodeChunk(buffer, MAX_UNCOMPRESSED_CHUNK_SIZE, compressedData.get(), header);
-        if (uncompressedLength == 0)
+        try
         {
-            throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
+            SawyerCodingChunkHeader header{ CHUNK_ENCODING_RLE, compressedDataLength };
+            size_t uncompressedLength = DecodeChunk(buffer, MAX_UNCOMPRESSED_CHUNK_SIZE, compressedData.get(), header);
+            if (uncompressedLength == 0)
+            {
+                throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
+            }
+            return std::make_shared<SawyerChunk>(SAWYER_ENCODING::RLE, buffer, uncompressedLength);
         }
-        return std::make_shared<SawyerChunk>(SAWYER_ENCODING::RLE, buffer, uncompressedLength);
+        catch (const std::exception&)
+        {
+            FreeLargeTempBuffer(buffer);
+            throw;
+        }
     }
     catch (const std::exception&)
     {
