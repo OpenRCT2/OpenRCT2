@@ -96,10 +96,7 @@ static constexpr int32_t RideInspectionInterval[] = {
     10, 20, 30, 45, 60, 120, 0, 0,
 };
 
-// Ride storage for all the rides in the park, rides with RideId::Null are considered free.
-static std::array<Ride, OpenRCT2::Limits::MaxRidesInPark> _rides{};
-
-// This is the highest used index + 1 of the _rides array.
+// This is the highest used index + 1 of the GameState_t::Rides array.
 static size_t _endOfUsedRange = 0;
 
 // A special instance of Ride that is used to draw previews such as the track designs.
@@ -131,10 +128,11 @@ RideManager GetRideManager()
 
 size_t RideManager::size() const
 {
+    auto& gameState = GetGameState();
     size_t count = 0;
     for (size_t i = 0; i < _endOfUsedRange; i++)
     {
-        if (!_rides[i].id.IsNull())
+        if (!gameState.Rides[i].id.IsNull())
         {
             count++;
         }
@@ -159,9 +157,10 @@ RideManager::Iterator RideManager::get(RideId rideId)
 
 RideId GetNextFreeRideId()
 {
-    for (RideId::UnderlyingType i = 0; i < _rides.size(); i++)
+    auto& gameState = GetGameState();
+    for (RideId::UnderlyingType i = 0; i < gameState.Rides.size(); i++)
     {
-        if (_rides[i].id.IsNull())
+        if (gameState.Rides[i].id.IsNull())
         {
             return RideId::FromUnderlying(i);
         }
@@ -174,7 +173,7 @@ Ride* RideAllocateAtIndex(RideId index)
     const auto idx = index.ToUnderlying();
     _endOfUsedRange = std::max<size_t>(idx + 1, _endOfUsedRange);
 
-    auto result = &_rides[idx];
+    auto result = &GetGameState().Rides[idx];
     assert(result->id == RideId::GetNull());
 
     result->id = index;
@@ -196,16 +195,17 @@ static void RideReset(Ride& ride)
 
 void RideDelete(RideId id)
 {
+    auto& gameState = GetGameState();
     const auto idx = id.ToUnderlying();
 
-    assert(idx < _rides.size());
-    assert(_rides[idx].type != RIDE_TYPE_NULL);
+    assert(idx < gameState.Rides.size());
+    assert(gameState.Rides[idx].type != RIDE_TYPE_NULL);
 
-    auto& ride = _rides[idx];
+    auto& ride = gameState.Rides[idx];
     RideReset(ride);
 
     // Shrink maximum ride size.
-    while (_endOfUsedRange > 0 && _rides[_endOfUsedRange - 1].id.IsNull())
+    while (_endOfUsedRange > 0 && gameState.Rides[_endOfUsedRange - 1].id.IsNull())
     {
         _endOfUsedRange--;
     }
@@ -218,14 +218,15 @@ Ride* GetRide(RideId index)
         return nullptr;
     }
 
+    auto& gameState = GetGameState();
     const auto idx = index.ToUnderlying();
-    assert(idx < _rides.size());
-    if (idx >= _rides.size())
+    assert(idx < gameState.Rides.size());
+    if (idx >= gameState.Rides.size())
     {
         return nullptr;
     }
 
-    auto& ride = _rides[idx];
+    auto& ride = gameState.Rides[idx];
     if (ride.type != RIDE_TYPE_NULL)
     {
         assert(ride.id == index);
@@ -942,7 +943,8 @@ bool Ride::SupportsStatus(RideStatus s) const
  */
 void RideInitAll()
 {
-    std::for_each(std::begin(_rides), std::end(_rides), RideReset);
+    auto& gameState = GetGameState();
+    std::for_each(std::begin(gameState.Rides), std::end(gameState.Rides), RideReset);
     _endOfUsedRange = 0;
 }
 
