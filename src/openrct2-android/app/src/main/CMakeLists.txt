@@ -19,9 +19,8 @@ elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "i686.*|i386.*|x86.*|amd64.*|AMD64.*")
 endif()
 
 include(ExternalProject)
-# TODO(janisozaur): Update the url below
 ExternalProject_Add(libs
-    URL https://github.com/OpenRCT2/openrct2-dependencies-android/releases/download/v0.9/openrct2-libs-android-${ANDROID_ABI}.tar.gz
+    URL https://github.com/OpenRCT2/openrct2-dependencies-android/releases/download/v10/${ANDROID_ABI}-android-dynamic.tar.zst
 
     SOURCE_DIR "${CMAKE_BINARY_DIR}/libs"
 
