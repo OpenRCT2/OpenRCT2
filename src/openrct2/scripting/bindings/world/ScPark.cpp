@@ -189,15 +189,16 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::companyValue_get() const
     {
-        return gCompanyValue;
+        return GetGameState().CompanyValue;
     }
     void ScPark::companyValue_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
+        auto& gameState = GetGameState();
 
-        if (gCompanyValue != value)
+        if (gameState.CompanyValue != value)
         {
-            gCompanyValue = value;
+            gameState.CompanyValue = value;
             auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
             ContextBroadcastIntent(&intent);
         }

@@ -1402,7 +1402,7 @@ namespace RCT1
             gameState.BankLoanInterestRate = 1;
             gameState.InitialCash = ToMoney64(_s4.Cash);
 
-            gCompanyValue = ToMoney64(_s4.CompanyValue);
+            gameState.CompanyValue = ToMoney64(_s4.CompanyValue);
             gameState.ParkValue = CorrectRCT1ParkValue(_s4.ParkValue);
             gCurrentProfit = ToMoney64(_s4.Profit);
 
