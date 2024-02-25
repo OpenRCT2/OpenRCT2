@@ -82,6 +82,8 @@ namespace OpenRCT2
         std::array<Ride, OpenRCT2::Limits::MaxRidesInPark> Rides{};
         std::vector<TileElement> TileElements;
 
+        std::vector<ScenerySelection> RestrictedScenery;
+
         News::ItemQueues NewsItems;
 
         colour_t StaffHandymanColour;
