@@ -528,7 +528,8 @@ void GameLoadInit()
     }
 
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-    windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
+    auto& gameState = GetGameState();
+    windowManager->SetMainView(gameState.SavedView, gameState.SavedViewZoom, gameState.SavedViewRotation);
 
     if (NetworkGetMode() != NETWORK_MODE_CLIENT)
     {
