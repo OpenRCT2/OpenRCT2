@@ -424,7 +424,7 @@ namespace Editor
     {
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
         auto& gameState = GetGameState();
-        windowManager->SetMainView(gameState.SavedView, gSavedViewZoom, gameState.SavedViewRotation);
+        windowManager->SetMainView(gameState.SavedView, gameState.SavedViewZoom, gameState.SavedViewRotation);
 
         ResetAllSpriteQuadrantPlacements();
         ScenerySetDefaultPlacementConfiguration();

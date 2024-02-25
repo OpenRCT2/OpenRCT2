@@ -65,8 +65,6 @@ Viewport* g_music_tracking_viewport;
 static std::unique_ptr<JobPool> _paintJobs;
 static std::vector<PaintSession*> _paintColumns;
 
-ZoomLevel gSavedViewZoom;
-
 uint8_t gCurrentRotation;
 
 static uint32_t _currentImageType;
@@ -2082,7 +2080,7 @@ void ViewportSetSavedView()
 
         gameState.SavedView = ScreenCoordsXY{ viewport->view_width / 2, viewport->view_height / 2 } + viewport->viewPos;
 
-        gSavedViewZoom = viewport->zoom;
+        gameState.SavedViewZoom = viewport->zoom;
         gameState.SavedViewRotation = GetCurrentRotation();
     }
 }

@@ -610,11 +610,11 @@ namespace OpenRCT2
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
                     auto savedZoomlevel = static_cast<ZoomLevel>(cs.Read<int8_t>());
-                    gSavedViewZoom = std::clamp(savedZoomlevel, ZoomLevel::min(), ZoomLevel::max());
+                    gameState.SavedViewZoom = std::clamp(savedZoomlevel, ZoomLevel::min(), ZoomLevel::max());
                 }
                 else
                 {
-                    cs.Write(static_cast<int8_t>(gSavedViewZoom));
+                    cs.Write(static_cast<int8_t>(gameState.SavedViewZoom));
                 }
                 cs.ReadWrite(gameState.SavedViewRotation);
                 cs.ReadWrite(gLastEntranceStyle);

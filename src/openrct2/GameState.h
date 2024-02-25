@@ -10,6 +10,7 @@
 #pragma once
 
 #include "Date.h"
+#include "interface/ZoomLevel.h"
 #include "management/Finance.h"
 #include "management/NewsItem.h"
 #include "scenario/Scenario.h"
@@ -96,6 +97,7 @@ namespace OpenRCT2
 
         ScreenCoordsXY SavedView;
         uint8_t SavedViewRotation;
+        ZoomLevel SavedViewZoom;
 
         /**
          * Probability out of 65535, of gaining a new guest per game tick.
