@@ -191,8 +191,7 @@ namespace RCT1
             ImportSavedView();
 
             // TODO: investigate why Katie's Dreamland.s4 and .sea have different patches
-            // TODO: s4 patch system is broken since .s4 files do not use scenario name, but rather slot
-            RCT12::FetchAndApplyScenarioPatch(_s4.ScenarioName, _isScenario);
+            RCT12::FetchAndApplyScenarioPatch(_s4Path, _isScenario);
             FixNextGuestNumber(gameState);
             CountBlockSections();
             SetDefaultNames();

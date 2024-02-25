@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Leafy Lake",
+    "sha256": "83bd798a9755acf3ba8b9fe1ccad5dee3816a5d595ca53ff566882c357dcf733",
+    "land_ownership": {
+        "available": {
+            "coordinates": [
+                [ 49, 66 ], [ 74, 96 ]
+            ]
+        }
+    }
+}
