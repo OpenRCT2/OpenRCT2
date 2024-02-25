@@ -48,7 +48,7 @@ struct ClassifiedFileInfo
     uint32_t Version = 0;
 };
 
-#define FILE_TYPE_S4_CUTOFF 2
+constexpr uint32_t kFileTypeS4Cutoff = 2;
 bool TryClassifyFile(const std::string& path, ClassifiedFileInfo* result);
 bool TryClassifyFile(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 

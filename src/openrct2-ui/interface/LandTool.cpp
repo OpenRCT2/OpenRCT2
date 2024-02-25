@@ -47,7 +47,7 @@ money64 gWaterToolLowerCost;
 
 uint32_t LandTool::SizeToSpriteIndex(uint16_t size)
 {
-    if (size <= MAX_TOOL_SIZE_WITH_SPRITE)
+    if (size <= kLandToolMaximumSizeWithSprite)
     {
         return toolSizeSpriteIndices[size];
     }
