@@ -364,7 +364,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             else
             {
                 // FIXME: Why does it *2 the value?
-                if (!OpenRCT2::GetGameState().Cheats.SandboxMode
+                if (!GetGameState().Cheats.SandboxMode
                     && !MapIsLocationOwned({ info.Loc, tileElement->GetBaseZ() * 2 }))
                 {
                     info.SpriteType = ViewportInteractionItem::None;
@@ -495,7 +495,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             return info;
         }
         case ViewportInteractionItem::ParkEntrance:
-            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !OpenRCT2::GetGameState().Cheats.SandboxMode)
+            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !GetGameState().Cheats.SandboxMode)
                 break;
 
             if (tileElement->GetType() != TileElementType::Entrance)
