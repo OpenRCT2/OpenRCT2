@@ -4,10 +4,6 @@ project(openrct2-android CXX)
 
 set(CMAKE_VERBOSE_MAKEFILE on)
 
-set(lib_src_DIR ${CMAKE_SOURCE_DIR}/../../../libs)
-set(lib_build_DIR $ENV{HOME}/tmp)
-file(MAKE_DIRECTORY ${lib_build_DIR})
-
 set(DEBUG_LEVEL 0 CACHE STRING "Select debug level for compilation. Use value in range 0–3.")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 
@@ -24,7 +20,7 @@ endif()
 
 include(ExternalProject)
 ExternalProject_Add(libs
-    URL https://github.com/OpenRCT2/openrct2-dependencies-android/releases/download/v0.9/openrct2-libs-android-${ANDROID_ABI}.tar.gz
+    URL https://github.com/OpenRCT2/openrct2-dependencies-android/releases/download/v10/${ANDROID_ABI}-android-dynamic.tar.zst
 
     SOURCE_DIR "${CMAKE_BINARY_DIR}/libs"
 
@@ -35,14 +31,14 @@ ExternalProject_Add(libs
     BUILD_BYPRODUCTS
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}freetype${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}png16${CMAKE_SHARED_LIBRARY_SUFFIX}
-        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}SDL2-2.0${CMAKE_SHARED_LIBRARY_SUFFIX}
-        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}SDL2main${CMAKE_STATIC_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}SDL2${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}speexdsp${CMAKE_SHARED_LIBRARY_SUFFIX}
-        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}icui18n${CMAKE_STATIC_LIBRARY_SUFFIX}
-        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}icuuc${CMAKE_STATIC_LIBRARY_SUFFIX}
-        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}icudata${CMAKE_STATIC_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}ssl${CMAKE_SHARED_LIBRARY_SUFFIX}
-        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}crypto${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}icudata${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}icui18n${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}icuuc${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}z${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}SDL2main${CMAKE_STATIC_LIBRARY_SUFFIX}
 
     LOG_DOWNLOAD 1
     LOG_UPDATE 1
@@ -57,12 +53,15 @@ ExternalProject_Add(libs
 add_custom_command(TARGET libs POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 #    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/*.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
-    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libcrypto.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libicudata.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libicuuc.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libicui18n.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libfreetype.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libpng16.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
-    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libSDL2-2.0.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libSDL2.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libspeexdsp.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libssl.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libz.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
 )
 
 add_library(freetype SHARED IMPORTED)
@@ -77,9 +76,15 @@ set_target_properties(png PROPERTIES IMPORTED_LOCATION
 )
 add_dependencies(png libs)
 
+add_library(z SHARED IMPORTED)
+set_target_properties(z PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}z${CMAKE_SHARED_LIBRARY_SUFFIX}
+)
+add_dependencies(z libs)
+
 add_library(SDL2 SHARED IMPORTED)
 set_target_properties(SDL2 PROPERTIES IMPORTED_LOCATION
-    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}SDL2-2.0${CMAKE_SHARED_LIBRARY_SUFFIX}
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}SDL2${CMAKE_SHARED_LIBRARY_SUFFIX}
 )
 add_dependencies(SDL2 libs)
 
@@ -97,19 +102,19 @@ add_dependencies(speexdsp libs)
 
 add_library(icu STATIC IMPORTED)
 set_target_properties(icu PROPERTIES IMPORTED_LOCATION
-    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}icui18n${CMAKE_STATIC_LIBRARY_SUFFIX}
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}icui18n${CMAKE_SHARED_LIBRARY_SUFFIX}
 )
 add_dependencies(icu libs)
 
 add_library(icuuc STATIC IMPORTED)
 set_target_properties(icuuc PROPERTIES IMPORTED_LOCATION
-    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}icuuc${CMAKE_STATIC_LIBRARY_SUFFIX}
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}icuuc${CMAKE_SHARED_LIBRARY_SUFFIX}
 )
 add_dependencies(icuuc libs)
 
 add_library(icudata STATIC IMPORTED)
 set_target_properties(icudata PROPERTIES IMPORTED_LOCATION
-    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}icudata${CMAKE_STATIC_LIBRARY_SUFFIX}
+    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}icudata${CMAKE_SHARED_LIBRARY_SUFFIX}
 )
 add_dependencies(icudata libs)
 
@@ -118,12 +123,6 @@ set_target_properties(ssl PROPERTIES IMPORTED_LOCATION
     ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}ssl${CMAKE_SHARED_LIBRARY_SUFFIX}
 )
 add_dependencies(ssl libs)
-
-add_library(crypto SHARED IMPORTED)
-set_target_properties(crypto PROPERTIES IMPORTED_LOCATION
-    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}crypto${CMAKE_SHARED_LIBRARY_SUFFIX}
-)
-add_dependencies(crypto libs)
 
 
 include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include")
@@ -180,7 +179,7 @@ file(GLOB_RECURSE OPENRCT2_CLI_SOURCES
     "${ORCT2_ROOT}/src/openrct2-cli/*.hpp")
 
 add_library(openrct2 SHARED ${LIBOPENRCT2_SOURCES})
-target_link_libraries(openrct2 android stdc++ log dl z SDL2 png icu icuuc icudata)# ssl crypto)
+target_link_libraries(openrct2 android stdc++ log dl SDL2 png z icu icuuc icudata)
 
 add_library(openrct2-ui SHARED ${OPENRCT2_GUI_SOURCES})
 target_link_libraries(openrct2-ui openrct2 android stdc++ GLESv1_CM GLESv2 SDL2main speexdsp)
