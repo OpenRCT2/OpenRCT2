@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Grand Glacier",
+    "sha256": "92f4b50037a2f85d3fb05ce6a07e27d73c6e61ab2cb5f8b00f5c2f98e95b356c",
+    "land_ownership": {
+        "owned": {
+            "coordinates": [
+                [ 99, 58 ]
+            ]
+        }
+    }
+}

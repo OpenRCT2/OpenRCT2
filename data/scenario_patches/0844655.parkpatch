@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Rotting Heights",
+    "sha256": "0844655d058e2f4cb3a8ead6c2a44d0c1b6512a36f36f2c2cbb3a7f313c1ad63",
+    "land_ownership": {
+        "owned": {
+            "coordinates": [
+                [ 35, 20 ]
+            ]
+        }
+    }
+}

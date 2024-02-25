@@ -13,5 +13,5 @@
 
 namespace RCT12
 {
-    void FetchAndApplyScenarioPatch(u8string_view scenarioName, bool isScenario);
+    void FetchAndApplyScenarioPatch(u8string_view scenarioPath, bool isScenario);
 }
