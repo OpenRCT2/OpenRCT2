@@ -122,7 +122,6 @@ extern uint8_t gShowConstructionRightsRefCount;
 
 // rct2: 0x014234BC
 extern Viewport* g_music_tracking_viewport;
-extern ScreenCoordsXY gSavedView;
 extern ZoomLevel gSavedViewZoom;
 extern uint8_t gSavedViewRotation;
 

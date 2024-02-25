@@ -2353,7 +2353,8 @@ namespace RCT1
 
         void ImportSavedView()
         {
-            gSavedView = ScreenCoordsXY{ _s4.ViewX, _s4.ViewY };
+            auto& gameState = GetGameState();
+            gameState.SavedView = ScreenCoordsXY{ _s4.ViewX, _s4.ViewY };
             gSavedViewZoom = ZoomLevel{ static_cast<int8_t>(_s4.ViewZoom) };
             gSavedViewRotation = _s4.ViewRotation;
         }

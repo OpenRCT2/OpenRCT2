@@ -604,9 +604,9 @@ namespace OpenRCT2
 
         void ReadWriteInterfaceChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::INTERFACE, [](OrcaStream::ChunkStream& cs) {
-                cs.ReadWrite(gSavedView.x);
-                cs.ReadWrite(gSavedView.y);
+            os.ReadWriteChunk(ParkFileChunkType::INTERFACE, [&gameState](OrcaStream::ChunkStream& cs) {
+                cs.ReadWrite(gameState.SavedView.x);
+                cs.ReadWrite(gameState.SavedView.y);
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
                     auto savedZoomlevel = static_cast<ZoomLevel>(cs.Read<int8_t>());

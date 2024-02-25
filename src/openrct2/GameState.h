@@ -94,6 +94,8 @@ namespace OpenRCT2
         std::vector<ResearchItem> ResearchItemsInvented;
         uint8_t ResearchUncompletedCategories;
 
+        ScreenCoordsXY SavedView;
+
         /**
          * Probability out of 65535, of gaining a new guest per game tick.
          * new guests per second = 40 * (probability / 65535)

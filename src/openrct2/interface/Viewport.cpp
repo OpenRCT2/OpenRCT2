@@ -65,7 +65,6 @@ Viewport* g_music_tracking_viewport;
 static std::unique_ptr<JobPool> _paintJobs;
 static std::vector<PaintSession*> _paintColumns;
 
-ScreenCoordsXY gSavedView;
 ZoomLevel gSavedViewZoom;
 uint8_t gSavedViewRotation;
 
@@ -2080,8 +2079,9 @@ void ViewportSetSavedView()
     if (w != nullptr)
     {
         Viewport* viewport = w->viewport;
+        auto& gameState = GetGameState();
 
-        gSavedView = ScreenCoordsXY{ viewport->view_width / 2, viewport->view_height / 2 } + viewport->viewPos;
+        gameState.SavedView = ScreenCoordsXY{ viewport->view_width / 2, viewport->view_height / 2 } + viewport->viewPos;
 
         gSavedViewZoom = viewport->zoom;
         gSavedViewRotation = GetCurrentRotation();

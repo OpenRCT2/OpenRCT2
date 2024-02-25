@@ -388,7 +388,8 @@ namespace OpenRCT2::Title
         void PrepareParkForPlayback()
         {
             auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-            windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
+            auto& gameState = GetGameState();
+            windowManager->SetMainView(gameState.SavedView, gSavedViewZoom, gSavedViewRotation);
             ResetEntitySpatialIndices();
             ResetAllSpriteQuadrantPlacements();
             auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);

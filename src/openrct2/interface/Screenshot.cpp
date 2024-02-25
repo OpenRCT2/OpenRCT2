@@ -558,7 +558,9 @@ int32_t CommandLineForScreenshot(const char** argv, int32_t argc, ScreenshotOpti
             }
             else
             {
-                viewport.viewPos = { gSavedView - ScreenCoordsXY{ (viewport.view_width / 2), (viewport.view_height / 2) } };
+                auto& gameState = GetGameState();
+                viewport.viewPos = { gameState.SavedView
+                                     - ScreenCoordsXY{ (viewport.view_width / 2), (viewport.view_height / 2) } };
                 viewport.zoom = gSavedViewZoom;
                 gCurrentRotation = gSavedViewRotation;
             }
