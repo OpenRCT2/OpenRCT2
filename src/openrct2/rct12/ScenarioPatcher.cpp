@@ -30,6 +30,8 @@
 
 #include <iostream>
 
+static bool s_dryRun = false;
+
 // Generic keys
 static const std::string s_scenarioNameKey = "scenario_name";
 static const std::string s_fullSHAKey = "sha256";
@@ -129,6 +131,10 @@ static void ApplyLandOwnershipFixes(const json_t& landOwnershipFixes, int owners
         ? Json::GetBoolean(ownershipParameters[s_cannotDowngradeKey], false)
         : false;
     auto coordinatesVector = getCoordinates(ownershipParameters);
+    if (s_dryRun)
+    {
+        return;
+    }
     FixLandOwnershipTilesWithOwnership(coordinatesVector, ownershipType, cannotDowngrade);
 }
 
@@ -173,6 +179,10 @@ static void ApplyWaterFixes(const json_t& scenarioPatch)
         {
             Guard::Assert(0, "Water fix sub-array should set a height");
             return;
+        }
+        if (s_dryRun)
+        {
+            continue;
         }
 
         auto waterHeight = waterFixes[i][s_heightKey];
@@ -236,6 +246,11 @@ static void ApplyTrackTypeFixes(const json_t& trackTilesFixes)
         auto fromTrackType = toTrackType(Json::GetString(fixOperations[i][s_fromKey]));
         auto destinationTrackType = toTrackType(Json::GetString(fixOperations[i][s_toKey]));
         auto coordinatesVector = getCoordinates(fixOperations[i]);
+
+        if (s_dryRun)
+        {
+            continue;
+        }
 
         for (const auto& tile : coordinatesVector)
         {
@@ -370,6 +385,12 @@ static void ApplyRideFixes(const json_t& scenarioPatch)
 
         RideId rideId = RideId::FromUnderlying(Json::GetNumber<uint16_t>(rideFixes[i][s_rideIdKey]));
         auto operation = Json::GetString(rideFixes[i][s_operationKey]);
+
+        if (s_dryRun)
+        {
+            continue;
+        }
+
         if (operation == "swap_entrance_exit")
         {
             SwapRideEntranceAndExit(rideId);
@@ -401,6 +422,11 @@ static u8string GetPatchFileName(u8string_view scenarioHash)
 
 static bool ValidateSHA256(const json_t& scenarioPatch, u8string_view scenarioHash)
 {
+    if (s_dryRun)
+    {
+        return true;
+    }
+
     if (!scenarioPatch.contains(s_scenarioNameKey))
     {
         Guard::Assert(0, "All .parkpatch files should contain the name of the original scenario");
@@ -420,6 +446,24 @@ static bool ValidateSHA256(const json_t& scenarioPatch, u8string_view scenarioHa
     return scenarioSHA == scenarioHash;
 }
 
+void RCT12::ApplyScenarioPatch(u8string_view scenarioPatchFile, u8string scenarioSHA, bool isScenario)
+{
+    auto scenarioPatch = Json::ReadFromFile(scenarioPatchFile);
+    if (!ValidateSHA256(scenarioPatch, scenarioSHA))
+    {
+        Guard::Assert(0, "Invalid full SHA256. Check for shortened SHA collision");
+        return;
+    }
+    // TODO: Land ownership is applied even when loading saved scenario. Should it?
+    ApplyLandOwnershipFixes(scenarioPatch);
+    if (isScenario)
+    {
+        ApplyWaterFixes(scenarioPatch);
+        ApplyTileFixes(scenarioPatch);
+        ApplyRideFixes(scenarioPatch);
+    }
+}
+
 void RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioPath, bool isScenario)
 {
     auto scenarioSHA = getScenarioSHA256(scenarioPath);
@@ -427,19 +471,11 @@ void RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioPath, bool isScenar
     std::cout << "Patch is: " << patchPath << " full SHA" << scenarioSHA << std::endl;
     if (File::Exists(patchPath))
     {
-        auto scenarioPatch = Json::ReadFromFile(patchPath);
-        if (!ValidateSHA256(scenarioPatch, scenarioSHA))
-        {
-            Guard::Assert(0, "Invalid full SHA256. Check for shortened SHA collision");
-            return;
-        }
-        // TODO: Land ownership is applied even when loading saved scenario. Should it?
-        ApplyLandOwnershipFixes(scenarioPatch);
-        if (isScenario)
-        {
-            ApplyWaterFixes(scenarioPatch);
-            ApplyTileFixes(scenarioPatch);
-            ApplyRideFixes(scenarioPatch);
-        }
+        ApplyScenarioPatch(patchPath, scenarioSHA, isScenario);
     }
+}
+
+void RCT12::SetDryRun(bool enable)
+{
+    s_dryRun = enable;
 }
