@@ -466,6 +466,11 @@ void RCT12::ApplyScenarioPatch(u8string_view scenarioPatchFile, u8string scenari
 
 void RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioPath, bool isScenario)
 {
+    if (scenarioPath.empty())
+    {
+        return;
+    }
+
     auto scenarioSHA = getScenarioSHA256(scenarioPath);
     auto patchPath = GetPatchFileName(scenarioSHA);
     std::cout << "Patch is: " << patchPath << " full SHA" << scenarioSHA << std::endl;
