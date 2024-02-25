@@ -28,6 +28,7 @@
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Language.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
@@ -155,8 +156,15 @@ public:
             | (1uLL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_X_DOWN) | (1uLL << WIDX_LAND_TOOL_LARGER)
             | (1uLL << WIDX_LAND_TOOL_SMALLER);
 
+        flags |= WF_RESIZABLE;
+        min_width = WW;
+        max_width = 800;
+        min_height = WH;
+        max_height = 560;
+
         ResizeMap();
         InitScrollWidgets();
+        CalculateTextLayout();
 
         _rotation = GetCurrentRotation();
 
@@ -181,15 +189,6 @@ public:
         {
             ToolCancel();
         }
-    }
-
-    void OnResize() override
-    {
-        flags |= WF_RESIZABLE;
-        min_width = 245;
-        max_width = 800;
-        min_height = 259;
-        max_height = 560;
     }
 
     void OnMouseUp(WidgetIndex widgetIndex) override
@@ -287,6 +286,7 @@ public:
 
                     selected_tab = widgetIndex;
                     list_information_type = 0;
+                    _recalculateScrollbars = true;
                 }
         }
     }
@@ -854,6 +854,11 @@ public:
                 ShowDefaultScenarioEditorButtons();
             }
         }
+        if (_recalculateScrollbars)
+        {
+            WidgetScrollUpdateThumbs(*this, WIDX_MAP);
+            _recalculateScrollbars = false;
+        }
     }
 
     void OnDraw(DrawPixelInfo& dpi) override
@@ -889,22 +894,18 @@ public:
             {
                 screenCoords = windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP].bottom + 2 };
 
-                static constexpr StringId _mapLabels[] = {
-                    STR_MAP_RIDE,       STR_MAP_FOOD_STALL, STR_MAP_DRINK_STALL,  STR_MAP_SOUVENIR_STALL,
-                    STR_MAP_INFO_KIOSK, STR_MAP_FIRST_AID,  STR_MAP_CASH_MACHINE, STR_MAP_TOILET,
-                };
-                static_assert(std::size(RideKeyColours) == std::size(_mapLabels));
+                static_assert(std::size(RideKeyColours) == std::size(MapLabels));
 
                 for (uint32_t i = 0; i < std::size(RideKeyColours); i++)
                 {
                     GfxFillRect(
                         dpi, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } },
                         RideKeyColours[i]);
-                    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 }, _mapLabels[i], {});
+                    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 }, MapLabels[i], {});
                     screenCoords.y += LIST_ROW_HEIGHT;
                     if (i == 3)
                     {
-                        screenCoords += { 118, -(LIST_ROW_HEIGHT * 4) };
+                        screenCoords += { _firstColumnWidth, -(LIST_ROW_HEIGHT * 4) };
                     }
                 }
             }
@@ -915,6 +916,11 @@ public:
                 dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP_SIZE_SPINNER_Y].top + 1 }, STR_MAP_SIZE, {},
                 { colours[1] });
         }
+    }
+
+    void OnLanguageChange() override
+    {
+        CalculateTextLayout();
     }
 
     void ResetMap()
@@ -1404,17 +1410,45 @@ private:
             widgets[WIDX_MAP].bottom = height - 1 - 14;
     }
 
+    void CalculateTextLayout()
+    {
+        int32_t textOffset = 4 + LIST_ROW_HEIGHT;
+        _firstColumnWidth = 118;
+        for (uint32_t i = 0; i < 4; i++)
+        {
+            const auto* labelStr = LanguageGetString(MapLabels[i]);
+            _firstColumnWidth = std::max(textOffset + GfxGetStringWidth(labelStr, FontStyle::Medium), _firstColumnWidth);
+        }
+
+        textOffset += _firstColumnWidth + 4;
+        min_width = WW;
+        for (uint32_t i = 4; i < std::size(MapLabels); i++)
+        {
+            const auto* labelStr = LanguageGetString(MapLabels[i]);
+            min_width = std::max(static_cast<int16_t>(textOffset + GfxGetStringWidth(labelStr, FontStyle::Medium)), min_width);
+        }
+        width = std::max(min_width, width);
+        _recalculateScrollbars = true;
+    }
+
     uint8_t _activeTool;
     uint32_t _currentLine;
     uint16_t _landRightsToolSize;
+    int32_t _firstColumnWidth;
     std::vector<uint8_t> _mapImageData;
     bool _mapWidthAndHeightLinked{ true };
+    bool _recalculateScrollbars = false;
     enum class ResizeDirection
     {
         Both,
         X,
         Y,
     } _resizeDirection{ ResizeDirection::Both };
+
+    static constexpr StringId MapLabels[] = {
+        STR_MAP_RIDE,       STR_MAP_FOOD_STALL, STR_MAP_DRINK_STALL,  STR_MAP_SOUVENIR_STALL,
+        STR_MAP_INFO_KIOSK, STR_MAP_FIRST_AID,  STR_MAP_CASH_MACHINE, STR_MAP_TOILET,
+    };
 
     static constexpr uint16_t RideKeyColours[] = {
         MapColour(PALETTE_INDEX_61),  // COLOUR_KEY_RIDE

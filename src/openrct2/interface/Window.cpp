@@ -156,6 +156,11 @@ void WindowUpdateAll()
     windowManager->UpdateMouseWheel();
 }
 
+void WindowNotifyLanguageChange()
+{
+    WindowVisitEach([&](WindowBase* w) { w->OnLanguageChange(); });
+}
+
 static void WindowCloseSurplus(int32_t cap, WindowClass avoid_classification)
 {
     // find the amount of windows that are currently open
