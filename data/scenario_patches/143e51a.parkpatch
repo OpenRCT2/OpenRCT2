@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Pleasure Island (.sea)",
+    "sha256": "143e51ac96ee8250884b1c1d5f98e8621e8ee9ef59e2075da18e4beb6abaf344",
+    "land_ownership": {
+        "construction_rights_owned": {
+            "coordinates": [
+                [ 37, 66 ]
+            ]
+        }
+    }
+}

@@ -195,7 +195,6 @@ namespace RCT1
             ImportScenarioObjective(gameState);
             ImportSavedView();
 
-            // TODO: investigate why Katie's Dreamland.s4 and .sea have different patches
             RCT12::FetchAndApplyScenarioPatch(_s4Path, _isScenario);
             FixNextGuestNumber(gameState);
             CountBlockSections();

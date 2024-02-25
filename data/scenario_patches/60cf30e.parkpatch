@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Coaster Canyon (.sea)",
+    "sha256": "60cf30e881a5b43b696ace9c07597c21b55cec137e3b268621a7ec46312de538",
+    "land_ownership": {
+        "owned": {
+            "coordinates": [
+                [ 21, 55 ]
+            ]
+        }
+    }
+}
