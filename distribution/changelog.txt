@@ -17,6 +17,7 @@
 - Fix: [#21330] Tooltips from dropdown widgets have the wrong position.
 - Fix: [#21332] Mini Helicopters and Monorail Cycles ride types are swapped in research within RCT1 scenarios.
 - Fix: [#21347] Too many options are hidden if the platform has no file picker.
+- Fix: [#21425] Additional missing/misplaced land & construction rights tiles in Japanese Coastal Reclaim.
 - Fix: [OpenSFX#18] B&M Roar sound effect not looping correctly.
 
 0.4.8 (2024-02-04)
