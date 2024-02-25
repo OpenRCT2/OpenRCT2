@@ -11,6 +11,7 @@
 
 #include <gtest/gtest.h>
 #include <openrct2/Context.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/Guard.hpp>
@@ -22,6 +23,9 @@
 */
 TEST(FetchAndApplyScenarioPatch, expected_json_format)
 {
+    // Needs to be headless and without graphics not to prompt for RCT2 path
+    gOpenRCT2Headless = true;
+    gOpenRCT2NoGraphics = true;
     auto context = OpenRCT2::CreateContext();
     bool initialised = context->Initialise();
     ASSERT_TRUE(initialised);
