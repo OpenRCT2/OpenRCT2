@@ -2356,7 +2356,7 @@ namespace RCT1
             auto& gameState = GetGameState();
             gameState.SavedView = ScreenCoordsXY{ _s4.ViewX, _s4.ViewY };
             gSavedViewZoom = ZoomLevel{ static_cast<int8_t>(_s4.ViewZoom) };
-            gSavedViewRotation = _s4.ViewRotation;
+            gameState.SavedViewRotation = _s4.ViewRotation;
         }
 
         void ConvertWall(const int32_t& type, colour_t* colourA, colour_t* colourB)

@@ -389,7 +389,7 @@ namespace OpenRCT2::Title
         {
             auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
             auto& gameState = GetGameState();
-            windowManager->SetMainView(gameState.SavedView, gSavedViewZoom, gSavedViewRotation);
+            windowManager->SetMainView(gameState.SavedView, gSavedViewZoom, gameState.SavedViewRotation);
             ResetEntitySpatialIndices();
             ResetAllSpriteQuadrantPlacements();
             auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);

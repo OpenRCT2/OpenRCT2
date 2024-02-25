@@ -66,7 +66,6 @@ static std::unique_ptr<JobPool> _paintJobs;
 static std::vector<PaintSession*> _paintColumns;
 
 ZoomLevel gSavedViewZoom;
-uint8_t gSavedViewRotation;
 
 uint8_t gCurrentRotation;
 
@@ -2084,7 +2083,7 @@ void ViewportSetSavedView()
         gameState.SavedView = ScreenCoordsXY{ viewport->view_width / 2, viewport->view_height / 2 } + viewport->viewPos;
 
         gSavedViewZoom = viewport->zoom;
-        gSavedViewRotation = GetCurrentRotation();
+        gameState.SavedViewRotation = GetCurrentRotation();
     }
 }
 

@@ -616,7 +616,7 @@ namespace OpenRCT2
                 {
                     cs.Write(static_cast<int8_t>(gSavedViewZoom));
                 }
-                cs.ReadWrite(gSavedViewRotation);
+                cs.ReadWrite(gameState.SavedViewRotation);
                 cs.ReadWrite(gLastEntranceStyle);
                 cs.ReadWrite(gEditorStep);
             });

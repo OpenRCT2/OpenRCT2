@@ -95,6 +95,7 @@ namespace OpenRCT2
         uint8_t ResearchUncompletedCategories;
 
         ScreenCoordsXY SavedView;
+        uint8_t SavedViewRotation;
 
         /**
          * Probability out of 65535, of gaining a new guest per game tick.
