@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../PlatformEnvironment.h"
+#include "../core/Crypt.h"
 #include "../core/File.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
@@ -29,6 +30,9 @@
 
 #include <iostream>
 
+// Generic keys
+static const std::string s_scenarioNameKey = "scenario_name";
+static const std::string s_fullSHAKey = "sha256";
 static const std::string s_coordinatesKey = "coordinates";
 
 // Land Ownership Keys
@@ -377,22 +381,58 @@ static void ApplyRideFixes(const json_t& scenarioPatch)
     }
 }
 
-static u8string GetPatchFileName(u8string_view scenarioName)
+static u8string getScenarioSHA256(u8string_view scenarioPath)
+{
+    auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
+    std::cout << "Scenario path is: " << scenarioPath << std::endl;
+    auto scenarioData = File::ReadAllBytes(scenarioPath);
+    auto scenarioHash = Crypt::SHA256(scenarioData.data(), scenarioData.size());
+    std::cout << "ScenarioHash is: " << String::StringFromHex(scenarioHash) << std::endl;
+    return String::StringFromHex(scenarioHash);
+}
+
+static u8string GetPatchFileName(u8string_view scenarioHash)
 {
     auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
     auto scenarioPatches = env->GetDirectoryPath(OpenRCT2::DIRBASE::OPENRCT2, OpenRCT2::DIRID::SCENARIO_PATCHES);
-    auto scenarioPatchFile = Path::WithExtension(Path::GetFileNameWithoutExtension(scenarioName), ".json");
+    auto scenarioPatchFile = Path::WithExtension(scenarioHash.substr(0, 7), ".parkpatch");
     return Path::Combine(scenarioPatches, scenarioPatchFile);
 }
 
-void RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioName, bool isScenario)
+static bool ValidateSHA256(const json_t& scenarioPatch, u8string_view scenarioHash)
 {
-    auto patchPath = GetPatchFileName(scenarioName);
-    std::cout << "Path is: " << patchPath << std::endl;
-    // TODO: Check if case sensitive, some scenario names have all lowercase variations
+    if (!scenarioPatch.contains(s_scenarioNameKey))
+    {
+        Guard::Assert(0, "All .parkpatch files should contain the name of the original scenario");
+        return false;
+    }
+
+    if (!scenarioPatch.contains(s_fullSHAKey))
+    {
+        Guard::Assert(0, "All .parkpatch files should contain the sha256 of the original scenario");
+        return false;
+    }
+
+    auto scenarioName = Json::GetString(scenarioPatch[s_scenarioNameKey]);
+    auto scenarioSHA = Json::GetString(scenarioPatch[s_fullSHAKey]);
+    std::cout << "Validating Scenario '" << scenarioName << "' with SHA256 '" << scenarioSHA << "'" << std::endl;
+
+    return scenarioSHA == scenarioHash;
+}
+
+void RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioPath, bool isScenario)
+{
+    auto scenarioSHA = getScenarioSHA256(scenarioPath);
+    auto patchPath = GetPatchFileName(scenarioSHA);
+    std::cout << "Patch is: " << patchPath << " full SHA" << scenarioSHA << std::endl;
     if (File::Exists(patchPath))
     {
         auto scenarioPatch = Json::ReadFromFile(patchPath);
+        if (!ValidateSHA256(scenarioPatch, scenarioSHA))
+        {
+            Guard::Assert(0, "Invalid full SHA256. Check for shortened SHA collision");
+            return;
+        }
         // TODO: Land ownership is applied even when loading saved scenario. Should it?
         ApplyLandOwnershipFixes(scenarioPatch);
         if (isScenario)

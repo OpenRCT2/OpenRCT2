@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Alton Towers",
+    "sha256": "5c95a4ec28579851972547dce4f4f1ca4bb241808baacf33e57c3076d6a40a69",
+    "land_ownership": {
+        "available": {
+            "coordinates": [
+                [ 11, 31 ], [ 68, 112 ], [ 72, 118 ]
+            ]
+        }
+    }
+}

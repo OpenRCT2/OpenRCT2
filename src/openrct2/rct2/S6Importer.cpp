@@ -506,11 +506,7 @@ namespace OpenRCT2::RCT2
 
             gameState.Park.Name = GetUserString(_s6.ParkName);
 
-            // Checking _s6.ScenarioFilename is generally more reliable as it survives renaming.
-            // However, some WW/TT scenarios have this incorrectly set to "Six Flags Magic Mountain.SC6",
-            // so for those cases (as well as for SFMM proper, we’ll have to check the filename.
-            RCT12::FetchAndApplyScenarioPatch(
-                _s6.ScenarioFilename != gScenarioFileName ? gScenarioFileName : _s6.ScenarioFilename, _isScenario);
+            RCT12::FetchAndApplyScenarioPatch(_s6Path, _isScenario);
 
             ResearchDetermineFirstOfType();
             UpdateConsolidatedPatrolAreas();

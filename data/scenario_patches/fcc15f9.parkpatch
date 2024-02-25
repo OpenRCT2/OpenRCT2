@@ -1,0 +1,12 @@
+{
+    "scenario_name": "Infernal Views",
+    "sha256": "fcc15f9c9b42bdd4aa8761c3a6df17c1293aa616780bc4aadd348d191e275112",
+    "water": [
+        {
+            "height": 96,
+            "coordinates": [
+                [ 45, 62 ]
+            ]
+        }
+    ]
+}

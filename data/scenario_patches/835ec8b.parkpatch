@@ -1,0 +1,22 @@
+{
+    "scenario_name": "Urban Park",
+    "sha256": "835ec8bdba3dc4086906126907c022cf42fa0f9cd6ee06221f36aac526ac4ec4",
+    "land_ownership": {
+        "owned": {
+            "coordinates": [
+                [ 64, 77 ], [ 61, 66 ], [ 61, 67 ], [ 39, 20 ]
+            ]
+        },
+        "construction_rights_available": {
+            "coordinates": [
+                [ 46, 47 ]
+            ]
+        }
+    },
+    "rides": [
+        {
+            "id": 0,
+            "operation": "swap_entrance_exit"
+        }
+    ]
+}

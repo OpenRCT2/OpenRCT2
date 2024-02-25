@@ -1,0 +1,11 @@
+{
+    "scenario_name": "Mel's World",
+    "sha256": "3767ef3e2a8524e16cebe29e18148499dd8c91abe049e5f39011037ba41a8065",
+    "land_ownership": {
+        "owned": {
+            "coordinates": [
+                [ 93, 76 ], [ 93, 77 ]
+            ]
+        }
+    }
+}

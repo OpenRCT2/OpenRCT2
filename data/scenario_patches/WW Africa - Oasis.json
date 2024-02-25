@@ -1,4 +1,6 @@
 {
+    "scenario_name": "WW Africa - Oasis",
+    "sha256": "2696a059c2c1b23c60cbfcc293fd29cfec45d7e3da7f3b38bc2b52aff834fd34",
     "land_ownership": {
         "unowned": {
             "coordinates": [
