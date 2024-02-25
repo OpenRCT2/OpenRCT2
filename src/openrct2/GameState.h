@@ -80,6 +80,7 @@ namespace OpenRCT2
         std::vector<Banner> Banners;
         // Ride storage for all the rides in the park, rides with RideId::Null are considered free.
         std::array<Ride, OpenRCT2::Limits::MaxRidesInPark> Rides{};
+        std::vector<TileElement> TileElements;
 
         News::ItemQueues NewsItems;
 
