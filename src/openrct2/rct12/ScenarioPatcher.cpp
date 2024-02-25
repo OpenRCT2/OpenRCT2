@@ -405,10 +405,9 @@ static void ApplyRideFixes(const json_t& scenarioPatch)
 static u8string getScenarioSHA256(u8string_view scenarioPath)
 {
     auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
-    std::cout << "Scenario path is: " << scenarioPath << std::endl;
     auto scenarioData = File::ReadAllBytes(scenarioPath);
     auto scenarioHash = Crypt::SHA256(scenarioData.data(), scenarioData.size());
-    std::cout << "ScenarioHash is: " << String::StringFromHex(scenarioHash) << std::endl;
+    LOG_INFO("Fetching patch\n  Scenario: '%s'\n  SHA '%s'", scenarioPath.data(), String::StringFromHex(scenarioHash).c_str());
     return String::StringFromHex(scenarioHash);
 }
 
@@ -441,7 +440,9 @@ static bool ValidateSHA256(const json_t& scenarioPatch, u8string_view scenarioHa
 
     auto scenarioName = Json::GetString(scenarioPatch[s_scenarioNameKey]);
     auto scenarioSHA = Json::GetString(scenarioPatch[s_fullSHAKey]);
-    std::cout << "Validating Scenario '" << scenarioName << "' with SHA256 '" << scenarioSHA << "'" << std::endl;
+    LOG_INFO(
+        "\n  Scenario '%s'\n  SHA '%s'\n  SHA Valid: %d", scenarioName.c_str(), scenarioSHA.c_str(),
+        (scenarioHash == scenarioSHA));
 
     return scenarioSHA == scenarioHash;
 }
@@ -473,7 +474,6 @@ void RCT12::FetchAndApplyScenarioPatch(u8string_view scenarioPath, bool isScenar
 
     auto scenarioSHA = getScenarioSHA256(scenarioPath);
     auto patchPath = GetPatchFileName(scenarioSHA);
-    std::cout << "Patch is: " << patchPath << " full SHA" << scenarioSHA << std::endl;
     if (File::Exists(patchPath))
     {
         ApplyScenarioPatch(patchPath, scenarioSHA, isScenario);
