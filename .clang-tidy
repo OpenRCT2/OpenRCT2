@@ -4,5 +4,8 @@ Checks: >
     cppcoreguidelines-macro-usage,
     modernize-use-nullptr,
     modernize-use-override
+CheckOptions:
+    - key: cppcoreguidelines-macro-usage.AllowedRegexp
+      value: 'validate_global_widx'
 WarningsAsErrors: true
 FormatStyle: 'file'
