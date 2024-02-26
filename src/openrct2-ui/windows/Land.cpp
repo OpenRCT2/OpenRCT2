@@ -80,8 +80,8 @@ public:
         gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
         gLandMountainMode = false;
         gLandPaintMode = false;
-        _selectedFloorTexture = 0;
-        _selectedWallTexture = 0;
+        _selectedFloorTexture = LandTool::GetSurfaceStyleFromDropdownIndex(0);
+        _selectedWallTexture = LandTool::GetEdgeStyleFromDropdownIndex(0);
         gLandToolRaiseCost = MONEY64_UNDEFINED;
         gLandToolLowerCost = MONEY64_UNDEFINED;
     }
