@@ -223,7 +223,7 @@ public:
         WindowPushOthersRight(*this);
         ShowGridlines();
 
-        _currentTrackPrice = MONEY64_UNDEFINED;
+        _currentTrackPrice = kMoney64Undefined;
         _currentBrakeSpeed2 = 8;
         _currentSeatRotationAngle = 4;
 
@@ -1014,49 +1014,49 @@ public:
             case WIDX_LEFT_CURVE:
                 RideConstructionInvalidateCurrentTrack();
                 _currentTrackCurve = EnumValue(TrackCurve::Left);
-                _currentTrackPrice = MONEY64_UNDEFINED;
+                _currentTrackPrice = kMoney64Undefined;
                 WindowRideConstructionUpdateActiveElements();
                 break;
             case WIDX_RIGHT_CURVE:
                 RideConstructionInvalidateCurrentTrack();
                 _currentTrackCurve = EnumValue(TrackCurve::Right);
-                _currentTrackPrice = MONEY64_UNDEFINED;
+                _currentTrackPrice = kMoney64Undefined;
                 WindowRideConstructionUpdateActiveElements();
                 break;
             case WIDX_LEFT_CURVE_SMALL:
                 RideConstructionInvalidateCurrentTrack();
                 _currentTrackCurve = EnumValue(TrackCurve::LeftSmall);
-                _currentTrackPrice = MONEY64_UNDEFINED;
+                _currentTrackPrice = kMoney64Undefined;
                 WindowRideConstructionUpdateActiveElements();
                 break;
             case WIDX_RIGHT_CURVE_SMALL:
                 RideConstructionInvalidateCurrentTrack();
                 _currentTrackCurve = EnumValue(TrackCurve::RightSmall);
-                _currentTrackPrice = MONEY64_UNDEFINED;
+                _currentTrackPrice = kMoney64Undefined;
                 WindowRideConstructionUpdateActiveElements();
                 break;
             case WIDX_LEFT_CURVE_VERY_SMALL:
                 RideConstructionInvalidateCurrentTrack();
                 _currentTrackCurve = EnumValue(TrackCurve::LeftVerySmall);
-                _currentTrackPrice = MONEY64_UNDEFINED;
+                _currentTrackPrice = kMoney64Undefined;
                 WindowRideConstructionUpdateActiveElements();
                 break;
             case WIDX_RIGHT_CURVE_VERY_SMALL:
                 RideConstructionInvalidateCurrentTrack();
                 _currentTrackCurve = EnumValue(TrackCurve::RightVerySmall);
-                _currentTrackPrice = MONEY64_UNDEFINED;
+                _currentTrackPrice = kMoney64Undefined;
                 WindowRideConstructionUpdateActiveElements();
                 break;
             case WIDX_LEFT_CURVE_LARGE:
                 RideConstructionInvalidateCurrentTrack();
                 _currentTrackCurve = EnumValue(TrackCurve::LeftLarge);
-                _currentTrackPrice = MONEY64_UNDEFINED;
+                _currentTrackPrice = kMoney64Undefined;
                 WindowRideConstructionUpdateActiveElements();
                 break;
             case WIDX_RIGHT_CURVE_LARGE:
                 RideConstructionInvalidateCurrentTrack();
                 _currentTrackCurve = EnumValue(TrackCurve::RightLarge);
-                _currentTrackPrice = MONEY64_UNDEFINED;
+                _currentTrackPrice = kMoney64Undefined;
                 WindowRideConstructionUpdateActiveElements();
                 break;
             case WIDX_STRAIGHT:
@@ -1064,7 +1064,7 @@ public:
                 if (_currentTrackCurve != EnumValue(TrackCurve::None))
                     _currentTrackRollEnd = TrackRoll::None;
                 _currentTrackCurve = EnumValue(TrackCurve::None);
-                _currentTrackPrice = MONEY64_UNDEFINED;
+                _currentTrackPrice = kMoney64Undefined;
                 WindowRideConstructionUpdateActiveElements();
                 break;
             case WIDX_SLOPE_DOWN_STEEP:
@@ -1074,7 +1074,7 @@ public:
                     if (_currentTrackCurve == EnumValue(TrackCurve::Left) && _currentTrackRollEnd == TrackRoll::Left)
                     {
                         _currentTrackCurve = TrackElemType::LeftHalfBankedHelixDownLarge | RideConstructionSpecialPieceSelected;
-                        _currentTrackPrice = MONEY64_UNDEFINED;
+                        _currentTrackPrice = kMoney64Undefined;
                         WindowRideConstructionUpdateActiveElements();
                         break;
                     }
@@ -1082,14 +1082,14 @@ public:
                     {
                         _currentTrackCurve = TrackElemType::RightHalfBankedHelixDownLarge
                             | RideConstructionSpecialPieceSelected;
-                        _currentTrackPrice = MONEY64_UNDEFINED;
+                        _currentTrackPrice = kMoney64Undefined;
                         WindowRideConstructionUpdateActiveElements();
                         break;
                     }
                     if (_currentTrackCurve == EnumValue(TrackCurve::LeftSmall) && _currentTrackRollEnd == TrackRoll::Left)
                     {
                         _currentTrackCurve = TrackElemType::LeftHalfBankedHelixDownSmall | RideConstructionSpecialPieceSelected;
-                        _currentTrackPrice = MONEY64_UNDEFINED;
+                        _currentTrackPrice = kMoney64Undefined;
                         WindowRideConstructionUpdateActiveElements();
                         break;
                     }
@@ -1097,7 +1097,7 @@ public:
                     {
                         _currentTrackCurve = TrackElemType::RightHalfBankedHelixDownSmall
                             | RideConstructionSpecialPieceSelected;
-                        _currentTrackPrice = MONEY64_UNDEFINED;
+                        _currentTrackPrice = kMoney64Undefined;
                         WindowRideConstructionUpdateActiveElements();
                         break;
                     }
@@ -1108,7 +1108,7 @@ public:
                     {
                         _currentTrackCurve = TrackElemType::LeftQuarterBankedHelixLargeDown
                             | RideConstructionSpecialPieceSelected;
-                        _currentTrackPrice = MONEY64_UNDEFINED;
+                        _currentTrackPrice = kMoney64Undefined;
                         WindowRideConstructionUpdateActiveElements();
                         break;
                     }
@@ -1116,7 +1116,7 @@ public:
                     {
                         _currentTrackCurve = TrackElemType::RightQuarterBankedHelixLargeDown
                             | RideConstructionSpecialPieceSelected;
-                        _currentTrackPrice = MONEY64_UNDEFINED;
+                        _currentTrackPrice = kMoney64Undefined;
                         WindowRideConstructionUpdateActiveElements();
                         break;
                     }
@@ -1129,7 +1129,7 @@ public:
                         {
                             _currentTrackCurve = TrackElemType::LeftQuarterHelixLargeDown
                                 | RideConstructionSpecialPieceSelected;
-                            _currentTrackPrice = MONEY64_UNDEFINED;
+                            _currentTrackPrice = kMoney64Undefined;
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
@@ -1137,7 +1137,7 @@ public:
                         {
                             _currentTrackCurve = TrackElemType::RightQuarterHelixLargeDown
                                 | RideConstructionSpecialPieceSelected;
-                            _currentTrackPrice = MONEY64_UNDEFINED;
+                            _currentTrackPrice = kMoney64Undefined;
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
@@ -1213,28 +1213,28 @@ public:
                     if (_currentTrackCurve == EnumValue(TrackCurve::Left) && _currentTrackRollEnd == TrackRoll::Left)
                     {
                         _currentTrackCurve = TrackElemType::LeftHalfBankedHelixUpLarge | RideConstructionSpecialPieceSelected;
-                        _currentTrackPrice = MONEY64_UNDEFINED;
+                        _currentTrackPrice = kMoney64Undefined;
                         WindowRideConstructionUpdateActiveElements();
                         break;
                     }
                     if (_currentTrackCurve == EnumValue(TrackCurve::Right) && _currentTrackRollEnd == TrackRoll::Right)
                     {
                         _currentTrackCurve = TrackElemType::RightHalfBankedHelixUpLarge | RideConstructionSpecialPieceSelected;
-                        _currentTrackPrice = MONEY64_UNDEFINED;
+                        _currentTrackPrice = kMoney64Undefined;
                         WindowRideConstructionUpdateActiveElements();
                         break;
                     }
                     if (_currentTrackCurve == EnumValue(TrackCurve::LeftSmall) && _currentTrackRollEnd == TrackRoll::Left)
                     {
                         _currentTrackCurve = TrackElemType::LeftHalfBankedHelixUpSmall | RideConstructionSpecialPieceSelected;
-                        _currentTrackPrice = MONEY64_UNDEFINED;
+                        _currentTrackPrice = kMoney64Undefined;
                         WindowRideConstructionUpdateActiveElements();
                         break;
                     }
                     if (_currentTrackCurve == EnumValue(TrackCurve::RightSmall) && _currentTrackRollEnd == TrackRoll::Right)
                     {
                         _currentTrackCurve = TrackElemType::RightHalfBankedHelixUpSmall | RideConstructionSpecialPieceSelected;
-                        _currentTrackPrice = MONEY64_UNDEFINED;
+                        _currentTrackPrice = kMoney64Undefined;
                         WindowRideConstructionUpdateActiveElements();
                         break;
                     }
@@ -1245,7 +1245,7 @@ public:
                     {
                         _currentTrackCurve = TrackElemType::LeftQuarterBankedHelixLargeUp
                             | RideConstructionSpecialPieceSelected;
-                        _currentTrackPrice = MONEY64_UNDEFINED;
+                        _currentTrackPrice = kMoney64Undefined;
                         WindowRideConstructionUpdateActiveElements();
                         break;
                     }
@@ -1253,7 +1253,7 @@ public:
                     {
                         _currentTrackCurve = TrackElemType::RightQuarterBankedHelixLargeUp
                             | RideConstructionSpecialPieceSelected;
-                        _currentTrackPrice = MONEY64_UNDEFINED;
+                        _currentTrackPrice = kMoney64Undefined;
                         WindowRideConstructionUpdateActiveElements();
                         break;
                     }
@@ -1265,14 +1265,14 @@ public:
                         if (_currentTrackCurve == EnumValue(TrackCurve::Left))
                         {
                             _currentTrackCurve = TrackElemType::LeftQuarterHelixLargeUp | RideConstructionSpecialPieceSelected;
-                            _currentTrackPrice = MONEY64_UNDEFINED;
+                            _currentTrackPrice = kMoney64Undefined;
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
                         if (_currentTrackCurve == EnumValue(TrackCurve::Right))
                         {
                             _currentTrackCurve = TrackElemType::RightQuarterHelixLargeUp | RideConstructionSpecialPieceSelected;
-                            _currentTrackPrice = MONEY64_UNDEFINED;
+                            _currentTrackPrice = kMoney64Undefined;
                             WindowRideConstructionUpdateActiveElements();
                             break;
                         }
@@ -1292,7 +1292,7 @@ public:
                 _currentTrackLiftHill ^= CONSTRUCTION_LIFT_HILL_SELECTED;
                 if ((_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED) && !gCheatsEnableChainLiftOnAllTrack)
                     _currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
-                _currentTrackPrice = MONEY64_UNDEFINED;
+                _currentTrackPrice = kMoney64Undefined;
                 WindowRideConstructionUpdateActiveElements();
                 break;
             case WIDX_BANK_LEFT:
@@ -1300,7 +1300,7 @@ public:
                 if (!_currentlyShowingBrakeOrBoosterSpeed)
                 {
                     _currentTrackRollEnd = TrackRoll::Left;
-                    _currentTrackPrice = MONEY64_UNDEFINED;
+                    _currentTrackPrice = kMoney64Undefined;
                     WindowRideConstructionUpdateActiveElements();
                 }
                 break;
@@ -1309,7 +1309,7 @@ public:
                 if (!_currentlyShowingBrakeOrBoosterSpeed)
                 {
                     _currentTrackRollEnd = TrackRoll::None;
-                    _currentTrackPrice = MONEY64_UNDEFINED;
+                    _currentTrackPrice = kMoney64Undefined;
                     WindowRideConstructionUpdateActiveElements();
                 }
                 else
@@ -1336,7 +1336,7 @@ public:
                 if (!_currentlyShowingBrakeOrBoosterSpeed)
                 {
                     _currentTrackRollEnd = TrackRoll::Right;
-                    _currentTrackPrice = MONEY64_UNDEFINED;
+                    _currentTrackPrice = kMoney64Undefined;
                     WindowRideConstructionUpdateActiveElements();
                 }
                 else
@@ -1363,7 +1363,7 @@ public:
             case WIDX_U_TRACK:
                 RideConstructionInvalidateCurrentTrack();
                 _currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
-                _currentTrackPrice = MONEY64_UNDEFINED;
+                _currentTrackPrice = kMoney64Undefined;
                 WindowRideConstructionUpdateActiveElements();
                 break;
             case WIDX_O_TRACK:
@@ -1371,7 +1371,7 @@ public:
                 _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_PIECES;
                 if (!gCheatsEnableChainLiftOnAllTrack)
                     _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
-                _currentTrackPrice = MONEY64_UNDEFINED;
+                _currentTrackPrice = kMoney64Undefined;
                 WindowRideConstructionUpdateActiveElements();
                 break;
             case WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP:
@@ -1413,7 +1413,7 @@ public:
             return;
 
         RideConstructionInvalidateCurrentTrack();
-        _currentTrackPrice = MONEY64_UNDEFINED;
+        _currentTrackPrice = kMoney64Undefined;
         track_type_t trackPiece = _specialElementDropdownState.Elements[selectedIndex].TrackType;
         switch (trackPiece)
         {
@@ -1553,7 +1553,7 @@ public:
             DrawTextBasic(dpi, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
 
         screenCoords.y += 11;
-        if (_currentTrackPrice != MONEY64_UNDEFINED && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
+        if (_currentTrackPrice != kMoney64Undefined && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto ft = Formatter();
             ft.Add<money64>(_currentTrackPrice);
@@ -2172,8 +2172,8 @@ private:
         int32_t trackType, trackDirection, liftHillAndAlternativeState, properties;
         CoordsXYZ trackPos{};
 
-        _currentTrackPrice = MONEY64_UNDEFINED;
-        _trackPlaceCost = MONEY64_UNDEFINED;
+        _currentTrackPrice = kMoney64Undefined;
+        _trackPlaceCost = kMoney64Undefined;
         _trackPlaceErrorMessage = STR_NONE;
         RideConstructionInvalidateCurrentTrack();
         if (WindowRideConstructionUpdateState(
@@ -2204,7 +2204,7 @@ private:
         // Used by some functions
         if (res.Error != GameActions::Status::Ok)
         {
-            _trackPlaceCost = MONEY64_UNDEFINED;
+            _trackPlaceCost = kMoney64Undefined;
             _trackPlaceErrorMessage = std::get<StringId>(res.ErrorMessage);
         }
         else
@@ -2245,7 +2245,7 @@ private:
         CoordsXYE inputElement, outputElement;
         TrackBeginEnd trackBeginEnd;
 
-        _currentTrackPrice = MONEY64_UNDEFINED;
+        _currentTrackPrice = kMoney64Undefined;
         RideConstructionInvalidateCurrentTrack();
 
         // Select the track element that is to be deleted
@@ -2354,7 +2354,7 @@ private:
         _autoRotatingShop = false;
         _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
         RideConstructionInvalidateCurrentTrack();
-        _currentTrackPrice = MONEY64_UNDEFINED;
+        _currentTrackPrice = kMoney64Undefined;
         WindowRideConstructionUpdateActiveElements();
     }
 
@@ -2413,7 +2413,7 @@ private:
     void UpdateLiftHillSelected(TrackPitch slope)
     {
         _currentTrackPitchEnd = slope;
-        _currentTrackPrice = MONEY64_UNDEFINED;
+        _currentTrackPrice = kMoney64Undefined;
         if (_rideConstructionState == RideConstructionState::Front && !gCheatsEnableChainLiftOnAllTrack)
         {
             switch (slope)
@@ -2622,7 +2622,7 @@ private:
             CoordsXY coords = originCoords + offsets.Rotate(trackDirection);
 
             int32_t baseZ = originZ + trackBlock->z;
-            int32_t clearanceZ = trackBlock->var_07 + clearanceHeight + baseZ + (4 * COORDS_Z_STEP);
+            int32_t clearanceZ = trackBlock->ClearanceZ + clearanceHeight + baseZ + (4 * COORDS_Z_STEP);
 
             auto centreTileCoords = TileCoordsXY{ coords };
             auto eastTileCoords = centreTileCoords + TileDirectionDelta[TILE_ELEMENT_DIRECTION_EAST];
@@ -3273,7 +3273,7 @@ void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords)
                 &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &trackPos, nullptr);
             _currentTrackPrice = PlaceProvisionalTrackPiece(
                 rideIndex, trackType, trackDirection, liftHillAndAlternativeState, trackPos);
-            if (_currentTrackPrice != MONEY64_UNDEFINED)
+            if (_currentTrackPrice != kMoney64Undefined)
                 break;
 
             _currentTrackBegin.z -= 8;
@@ -3298,7 +3298,7 @@ void RideConstructionToolupdateConstruct(const ScreenCoordsXY& screenCoords)
             rideIndex, trackType, trackDirection, liftHillAndAlternativeState, trackPos);
         mapCoords = trackPos;
         z = trackPos.z;
-        if (_currentTrackPrice != MONEY64_UNDEFINED)
+        if (_currentTrackPrice != kMoney64Undefined)
             break;
 
         _currentTrackBegin.z -= 8;
@@ -3528,7 +3528,7 @@ void RideConstructionTooldownConstruct(const ScreenCoordsXY& screenCoords)
             }
             else
             {
-                _trackPlaceCost = MONEY64_UNDEFINED;
+                _trackPlaceCost = kMoney64Undefined;
                 _trackPlaceErrorMessage = std::get<StringId>(mazeSetTrackResult.ErrorMessage);
             }
 
@@ -3585,7 +3585,7 @@ void RideConstructionTooldownConstruct(const ScreenCoordsXY& screenCoords)
         WindowEventMouseUpCall(w, WIDX_CONSTRUCT);
         gDisableErrorWindowSound = false;
 
-        if (_trackPlaceCost == MONEY64_UNDEFINED)
+        if (_trackPlaceCost == kMoney64Undefined)
         {
             StringId errorText = _trackPlaceErrorMessage;
             z -= 8;

@@ -38,9 +38,6 @@ constexpr uint8_t MaxBankLoanInterestRate = 255;
 
 extern const money64 research_cost_table[RESEARCH_FUNDING_COUNT];
 
-extern money64 gBankLoan;
-extern uint8_t gBankLoanInterestRate;
-extern money64 gMaxBankLoan;
 extern money64 gCurrentExpenditure;
 extern money64 gCurrentProfit;
 

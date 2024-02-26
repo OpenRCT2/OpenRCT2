@@ -262,9 +262,9 @@ namespace RCT1
 
         money64 CorrectRCT1ParkValue(money32 oldParkValue)
         {
-            if (oldParkValue == MONEY32_UNDEFINED)
+            if (oldParkValue == kMoney32Undefined)
             {
-                return MONEY64_UNDEFINED;
+                return kMoney64Undefined;
             }
 
             if (_parkValueConversionFactor == 0)
@@ -1396,10 +1396,10 @@ namespace RCT1
             gConstructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
 
             gameState.Cash = ToMoney64(_s4.Cash);
-            gBankLoan = ToMoney64(_s4.Loan);
-            gMaxBankLoan = ToMoney64(_s4.MaxLoan);
+            gameState.BankLoan = ToMoney64(_s4.Loan);
+            gameState.MaxBankLoan = ToMoney64(_s4.MaxLoan);
             // It's more like 1.33%, but we can only use integers. Can be fixed once we have our own save format.
-            gBankLoanInterestRate = 1;
+            gameState.BankLoanInterestRate = 1;
             gameState.InitialCash = ToMoney64(_s4.Cash);
 
             gCompanyValue = ToMoney64(_s4.CompanyValue);
@@ -1500,8 +1500,6 @@ namespace RCT1
 
         void ImportTileElements()
         {
-            GetGameState().MapBaseZ = 7;
-
             // Build tile pointer cache (needed to get the first element at a certain location)
             auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(
                 Limits::MaxMapSize, _s4.TileElements, std::size(_s4.TileElements));
@@ -2165,7 +2163,7 @@ namespace RCT1
             for (size_t i = 0; i < Limits::MaxNewsItems; i++)
             {
                 const RCT12NewsItem* src = &_s4.Messages[i];
-                News::Item* dst = &gNewsItems[i];
+                News::Item* dst = &gameState.NewsItems[i];
 
                 dst->Type = static_cast<News::ItemType>(src->Type);
                 dst->Flags = src->Flags;
@@ -2355,9 +2353,10 @@ namespace RCT1
 
         void ImportSavedView()
         {
-            gSavedView = ScreenCoordsXY{ _s4.ViewX, _s4.ViewY };
-            gSavedViewZoom = ZoomLevel{ static_cast<int8_t>(_s4.ViewZoom) };
-            gSavedViewRotation = _s4.ViewRotation;
+            auto& gameState = GetGameState();
+            gameState.SavedView = ScreenCoordsXY{ _s4.ViewX, _s4.ViewY };
+            gameState.SavedViewZoom = ZoomLevel{ static_cast<int8_t>(_s4.ViewZoom) };
+            gameState.SavedViewRotation = _s4.ViewRotation;
         }
 
         void ConvertWall(const int32_t& type, colour_t* colourA, colour_t* colourB)

@@ -205,7 +205,7 @@ public:
                     break;
                 _activeTool = 2;
                 // Prevent mountain tool size.
-                _landRightsToolSize = std::max<uint16_t>(MINIMUM_TOOL_SIZE, _landRightsToolSize);
+                _landRightsToolSize = std::max<uint16_t>(kLandToolMinimumSize, _landRightsToolSize);
                 ShowGridlines();
                 ShowLandRights();
                 ShowConstructionRights();
@@ -313,13 +313,13 @@ public:
                 break;
             case WIDX_LAND_TOOL_SMALLER:
                 // Decrement land rights tool size
-                _landRightsToolSize = std::max(MINIMUM_TOOL_SIZE, _landRightsToolSize - 1);
+                _landRightsToolSize = std::max<uint16_t>(kLandToolMinimumSize, _landRightsToolSize - 1);
 
                 Invalidate();
                 break;
             case WIDX_LAND_TOOL_LARGER:
                 // Increment land rights tool size
-                _landRightsToolSize = std::min(MAXIMUM_TOOL_SIZE, _landRightsToolSize + 1);
+                _landRightsToolSize = std::min<uint16_t>(kLandToolMaximumSize, _landRightsToolSize + 1);
 
                 Invalidate();
                 break;
@@ -616,7 +616,7 @@ public:
                 int32_t size = strtol(textStr.c_str(), &end, 10);
                 if (*end == '\0')
                 {
-                    size = std::clamp(size, MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
+                    size = std::clamp<uint16_t>(size, kLandToolMinimumSize, kLandToolMaximumSize);
                     _landRightsToolSize = size;
                     Invalidate();
                 }
@@ -865,7 +865,7 @@ public:
             + ScreenCoordsXY{ window_map_widgets[WIDX_LAND_TOOL].midX(), window_map_widgets[WIDX_LAND_TOOL].midY() };
 
         // Draw land tool size
-        if (WidgetIsActiveTool(*this, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
+        if (WidgetIsActiveTool(*this, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > kLandToolMaximumSizeWithSprite)
         {
             auto ft = Formatter();
             ft.Add<uint16_t>(_landRightsToolSize);
@@ -1326,8 +1326,8 @@ private:
     void InputLandSize()
     {
         Formatter ft;
-        ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
-        ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
+        ft.Add<uint16_t>(kLandToolMinimumSize);
+        ft.Add<uint16_t>(kLandToolMaximumSize);
         TextInputOpen(WIDX_LAND_TOOL, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
     }
 

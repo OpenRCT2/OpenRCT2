@@ -35,7 +35,8 @@
 #include "../../world/TileInspector.h"
 #include "../Boundbox.h"
 #include "../Paint.SessionFlags.h"
-#include "../Supports.h"
+#include "../support/MetalSupports.h"
+#include "../support/WoodenSupports.h"
 #include "Paint.PathAddition.h"
 #include "Paint.Surface.h"
 #include "Paint.TileElement.h"
@@ -761,7 +762,7 @@ static void PaintHeightMarkers(PaintSession& session, const PathElement& pathEl)
         uint32_t baseImageIndex = SPR_HEIGHT_MARKER_BASE;
         baseImageIndex += heightMarkerBaseZ / 16;
         baseImageIndex += GetHeightMarkerOffset();
-        baseImageIndex -= GetGameState().MapBaseZ;
+        baseImageIndex -= kMapBaseZ;
         auto imageId = ImageId(baseImageIndex, COLOUR_GREY);
         PaintAddImageAsParent(session, imageId, { 16, 16, heightMarkerBaseZ }, { 1, 1, 0 });
     }

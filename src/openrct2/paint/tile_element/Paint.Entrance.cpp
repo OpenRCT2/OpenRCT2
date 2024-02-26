@@ -29,7 +29,7 @@
 #include "../../world/Footpath.h"
 #include "../../world/Park.h"
 #include "../../world/TileInspector.h"
-#include "../Supports.h"
+#include "../support/WoodenSupports.h"
 #include "Paint.TileElement.h"
 
 using namespace OpenRCT2;
@@ -347,7 +347,7 @@ static void PaintHeightMarkers(PaintSession& session, const EntranceElement& ent
             ImageIndex baseImageIndex = SPR_HEIGHT_MARKER_BASE;
             baseImageIndex += heightMarkerBaseZ / 16;
             baseImageIndex += GetHeightMarkerOffset();
-            baseImageIndex -= GetGameState().MapBaseZ;
+            baseImageIndex -= kMapBaseZ;
             auto imageId = ImageId(baseImageIndex, COLOUR_GREY);
             PaintAddImageAsParent(session, imageId, { 16, 16, height }, { { 31, 31, heightMarkerBaseZ + 64 }, { 1, 1, 0 } });
         }

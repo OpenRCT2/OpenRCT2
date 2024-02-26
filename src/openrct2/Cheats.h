@@ -123,12 +123,12 @@ enum
     OBJECT_UMBRELLA
 };
 
-constexpr auto CHEATS_GIVE_GUESTS_MONEY = 1000.00_GBP;
-#define CHEATS_TRAM_INCREMENT 250
-#define CHEATS_DUCK_INCREMENT 20
-#define CHEATS_STAFF_FAST_SPEED 0xFF
-#define CHEATS_STAFF_NORMAL_SPEED 0x60
-#define CHEATS_STAFF_FREEZE_SPEED 0
+constexpr auto kCheatsGiveGuestsMoney = 1000.00_GBP;
+constexpr int kCheatsTramIncrement = 250;
+constexpr int kCheatsDuckIncrement = 20;
+constexpr int kCheatsStaffFastSpeed = 0xFF;
+constexpr int kCheatsStaffNormalSpeed = 0x60;
+constexpr int kCheatsStaffFreezeSpeed = 0;
 
 void CheatsReset();
 const char* CheatsGetName(CheatType cheatType);

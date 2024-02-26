@@ -2097,39 +2097,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Kan ikke indlæse fil…
 STR_3011    :Filen indeholder ugyldige data
-STR_3012    :Radiobil musik stil
-STR_3013    :Karnevalsmusik stil
-STR_3014    :Romersk fanfare stil
-STR_3015    :Orientalsk stil
-STR_3016    :Maritim stil
-STR_3017    :Jungletrommer stil
-STR_3018    :Egyptisk stil
-STR_3019    :Legetøjs land stil
-STR_3020    :
-STR_3021    :Rum stil
-STR_3022    :Gyser stil
-STR_3023    :Techno stil
-STR_3024    :Rolig stil
-STR_3025    :Sommer stil
-STR_3026    :Vand stil
-STR_3027    :Western stil
-STR_3028    :Jurassic stil
-STR_3029    :Rock stil
-STR_3030    :Ragtime stil
-STR_3031    :Fantasy stil
-STR_3032    :Rock stil 2
-STR_3033    :Is stil
-STR_3034    :Sne stil
-STR_3035    :Valgfrit musik 1
-STR_3036    :Valgfrit musik 2
-STR_3037    :Middelalder stil
-STR_3038    :Undergrunds stil
-STR_3039    :Orgel stil
-STR_3040    :Mekanisk stil
-STR_3041    :Moderne stil
-STR_3042    :Pirat stil
-STR_3043    :Rock stil 3
-STR_3044    :Slik stil
 STR_3045    :Vælg musikstilen der skal spilles
 STR_3047    :Lokal myndigheder forbyder nedrivning eller ændringer af denne forlystelse
 STR_3048    :Marketingkampagner forbydes af de lokale myndigheder
@@ -3716,6 +3683,10 @@ STR_6610    :Sti element ikke fundet
 STR_6611    :Væg element ikke fundet
 STR_6612    :Banner element ikke fundet
 STR_6613    :Genindlæs objekt
+STR_6614    :Kan ikke ændre parkens entré pris
+STR_6615    :Spor på dette felt kræver vand
+STR_6616    :Handlingen er ugyldig for denne medarbejdertype
+STR_6617    :Kan ikke bytte felt element med sig selv
 
 #############
 # Scenarios #

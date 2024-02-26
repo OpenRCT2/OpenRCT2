@@ -90,17 +90,17 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             WindowInvalidateByClass(WindowClass::BottomToolbar);
             break;
         case ScenarioSetSetting::InitialLoan:
-            gBankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
-            gMaxBankLoan = std::max(gBankLoan, gMaxBankLoan);
+            gameState.BankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
+            gameState.MaxBankLoan = std::max(gameState.BankLoan, gameState.MaxBankLoan);
             WindowInvalidateByClass(WindowClass::Finances);
             break;
         case ScenarioSetSetting::MaximumLoanSize:
-            gMaxBankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
-            gBankLoan = std::min(gBankLoan, gMaxBankLoan);
+            gameState.MaxBankLoan = std::clamp<money64>(_value, 0.00_GBP, 5000000.00_GBP);
+            gameState.BankLoan = std::min(gameState.BankLoan, gameState.MaxBankLoan);
             WindowInvalidateByClass(WindowClass::Finances);
             break;
         case ScenarioSetSetting::AnnualInterestRate:
-            gBankLoanInterestRate = std::clamp<uint8_t>(_value, 0, MaxBankLoanInterestRate);
+            gameState.BankLoanInterestRate = std::clamp<uint8_t>(_value, 0, MaxBankLoanInterestRate);
             WindowInvalidateByClass(WindowClass::Finances);
             break;
         case ScenarioSetSetting::ForbidMarketingCampaigns:

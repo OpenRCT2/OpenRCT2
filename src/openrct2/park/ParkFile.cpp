@@ -435,7 +435,7 @@ namespace OpenRCT2
                 cs.ReadWrite(gameState.ScenarioParkRatingWarningDays);
 
                 cs.ReadWrite(gameState.ScenarioCompletedCompanyValue);
-                if (gameState.ScenarioCompletedCompanyValue == MONEY64_UNDEFINED
+                if (gameState.ScenarioCompletedCompanyValue == kMoney64Undefined
                     || gameState.ScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
                 {
                     cs.Write("");
@@ -604,19 +604,19 @@ namespace OpenRCT2
 
         void ReadWriteInterfaceChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::INTERFACE, [](OrcaStream::ChunkStream& cs) {
-                cs.ReadWrite(gSavedView.x);
-                cs.ReadWrite(gSavedView.y);
+            os.ReadWriteChunk(ParkFileChunkType::INTERFACE, [&gameState](OrcaStream::ChunkStream& cs) {
+                cs.ReadWrite(gameState.SavedView.x);
+                cs.ReadWrite(gameState.SavedView.y);
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
                     auto savedZoomlevel = static_cast<ZoomLevel>(cs.Read<int8_t>());
-                    gSavedViewZoom = std::clamp(savedZoomlevel, ZoomLevel::min(), ZoomLevel::max());
+                    gameState.SavedViewZoom = std::clamp(savedZoomlevel, ZoomLevel::min(), ZoomLevel::max());
                 }
                 else
                 {
-                    cs.Write(static_cast<int8_t>(gSavedViewZoom));
+                    cs.Write(static_cast<int8_t>(gameState.SavedViewZoom));
                 }
-                cs.ReadWrite(gSavedViewRotation);
+                cs.ReadWrite(gameState.SavedViewRotation);
                 cs.ReadWrite(gLastEntranceStyle);
                 cs.ReadWrite(gEditorStep);
             });
@@ -803,9 +803,9 @@ namespace OpenRCT2
                     auto& park = GetContext()->GetGameState()->GetPark();
                     cs.ReadWrite(park.Name);
                     cs.ReadWrite(gameState.Cash);
-                    cs.ReadWrite(gBankLoan);
-                    cs.ReadWrite(gMaxBankLoan);
-                    cs.ReadWrite(gBankLoanInterestRate);
+                    cs.ReadWrite(gameState.BankLoan);
+                    cs.ReadWrite(gameState.MaxBankLoan);
+                    cs.ReadWrite(gameState.BankLoanInterestRate);
                     cs.ReadWrite(gameState.ParkFlags);
                     if (version <= 18)
                     {
@@ -1000,16 +1000,16 @@ namespace OpenRCT2
 
         void ReadWriteNotificationsChunk(GameState_t& gameState, OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::NOTIFICATIONS, [](OrcaStream::ChunkStream& cs) {
+            os.ReadWriteChunk(ParkFileChunkType::NOTIFICATIONS, [&gameState](OrcaStream::ChunkStream& cs) {
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
-                    gNewsItems.Clear();
+                    gameState.NewsItems.Clear();
 
                     std::vector<News::Item> recent;
                     cs.ReadWriteVector(recent, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
                     for (size_t i = 0; i < std::min<size_t>(recent.size(), News::ItemHistoryStart); i++)
                     {
-                        gNewsItems[i] = recent[i];
+                        gameState.NewsItems[i] = recent[i];
                     }
 
                     std::vector<News::Item> archived;
@@ -1017,19 +1017,21 @@ namespace OpenRCT2
                     size_t offset = News::ItemHistoryStart;
                     for (size_t i = 0; i < std::min<size_t>(archived.size(), News::MaxItemsArchive); i++)
                     {
-                        gNewsItems[offset + i] = archived[i];
+                        gameState.NewsItems[offset + i] = archived[i];
                     }
 
                     // Still need to set the correct type to properly terminate the queue
                     if (archived.size() < News::MaxItemsArchive)
-                        gNewsItems[offset + archived.size()].Type = News::ItemType::Null;
+                        gameState.NewsItems[offset + archived.size()].Type = News::ItemType::Null;
                 }
                 else
                 {
-                    std::vector<News::Item> recent(std::begin(gNewsItems.GetRecent()), std::end(gNewsItems.GetRecent()));
+                    std::vector<News::Item> recent(
+                        std::begin(gameState.NewsItems.GetRecent()), std::end(gameState.NewsItems.GetRecent()));
                     cs.ReadWriteVector(recent, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
 
-                    std::vector<News::Item> archived(std::begin(gNewsItems.GetArchived()), std::end(gNewsItems.GetArchived()));
+                    std::vector<News::Item> archived(
+                        std::begin(gameState.NewsItems.GetArchived()), std::end(gameState.NewsItems.GetArchived()));
                     cs.ReadWriteVector(archived, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
                 }
             });

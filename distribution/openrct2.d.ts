@@ -56,7 +56,10 @@ declare global {
      * Plugin writers should check if ui is available using `typeof ui !== 'undefined'`.
      */
     var ui: Ui;
-
+    /**
+     * APIs for managing the installed plugins
+     */
+    var pluginManager: PluginManager;
     /**
      * Registers the plugin. This may only be called once.
      * @param metadata Information about the plugin and the entry point.
@@ -4947,5 +4950,12 @@ declare global {
         getAllObjects(type: "banner"): BannerObject[];
         getAllObjects(type: "scenery_group"): SceneryGroupObject[];
         getAllObjects(type: "music"): LoadedObject[];
+    }
+
+    /**
+     * Interface to handle the plugin manager
+     */
+    interface PluginManager {
+        readonly plugins: PluginMetadata[];
     }
 }

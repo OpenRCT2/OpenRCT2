@@ -496,7 +496,9 @@ money64 Park::CalculateRideValue(const Ride& ride) const
 
 money64 Park::CalculateCompanyValue() const
 {
-    auto result = GetGameState().ParkValue - gBankLoan;
+    const auto& gameState = GetGameState();
+
+    auto result = gameState.ParkValue - gameState.BankLoan;
 
     // Clamp addition to prevent overflow
     result = AddClamp_money64(result, FinanceGetCurrentCash());
@@ -753,7 +755,7 @@ void Park::UpdateHistories()
     // Update park rating, guests in park and current cash history
     HistoryPushRecord<uint8_t, 32>(gameState.ParkRatingHistory, gameState.ParkRating / 4);
     HistoryPushRecord<uint32_t, 32>(gGuestsInParkHistory, gameState.NumGuestsInPark);
-    HistoryPushRecord<money64, std::size(gCashHistory)>(gCashHistory, FinanceGetCurrentCash() - gBankLoan);
+    HistoryPushRecord<money64, std::size(gCashHistory)>(gCashHistory, FinanceGetCurrentCash() - gameState.BankLoan);
 
     // Update weekly profit history
     auto currentWeeklyProfit = gameState.WeeklyProfitAverageDividend;

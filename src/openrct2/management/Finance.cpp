@@ -39,9 +39,6 @@ static constexpr int32_t dword_988E60[static_cast<int32_t>(ExpenditureType::Coun
     1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0,
 };
 
-money64 gBankLoan;
-uint8_t gBankLoanInterestRate;
-money64 gMaxBankLoan;
 money64 gCurrentExpenditure;
 money64 gCurrentProfit;
 money64 gHistoricalProfit;
@@ -139,16 +136,18 @@ void FinancePayResearch()
  */
 void FinancePayInterest()
 {
-    if (GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY)
+    const auto& gameState = GetGameState();
+
+    if (gameState.ParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
 
     // This variable uses the 64-bit type as the computation below can involve multiplying very large numbers
     // that will overflow money64 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
-    const money64 current_loan = gBankLoan;
-    const auto current_interest_rate = gBankLoanInterestRate;
-    const money64 interest_to_pay = (GetGameState().ParkFlags & PARK_FLAGS_RCT1_INTEREST)
+    const money64 current_loan = gameState.BankLoan;
+    const auto current_interest_rate = gameState.BankLoanInterestRate;
+    const money64 interest_to_pay = (gameState.ParkFlags & PARK_FLAGS_RCT1_INTEREST)
         ? (current_loan / 2400)
         : (current_loan * 5 * current_interest_rate) >> 14;
 
@@ -173,7 +172,7 @@ void FinancePayRideUpkeep()
         if (ride.status != RideStatus::Closed && !(GetGameState().ParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto upkeep = ride.upkeep_cost;
-            if (upkeep != MONEY64_UNDEFINED)
+            if (upkeep != kMoney64Undefined)
             {
                 ride.total_profit -= upkeep;
                 ride.window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
@@ -193,9 +192,9 @@ void FinanceResetHistory()
     auto& gameState = GetGameState();
     for (int32_t i = 0; i < FINANCE_GRAPH_SIZE; i++)
     {
-        gCashHistory[i] = MONEY64_UNDEFINED;
-        gameState.WeeklyProfitHistory[i] = MONEY64_UNDEFINED;
-        gameState.ParkValueHistory[i] = MONEY64_UNDEFINED;
+        gCashHistory[i] = kMoney64Undefined;
+        gameState.WeeklyProfitHistory[i] = kMoney64Undefined;
+        gameState.ParkValueHistory[i] = kMoney64Undefined;
     }
 
     for (uint32_t i = 0; i < EXPENDITURE_TABLE_MONTH_COUNT; ++i)
@@ -230,15 +229,15 @@ void FinanceInit()
     gameState.InitialCash = 10000.00_GBP; // Cheat detection
 
     gameState.Cash = 10000.00_GBP;
-    gBankLoan = 10000.00_GBP;
-    gMaxBankLoan = 20000.00_GBP;
+    gameState.BankLoan = 10000.00_GBP;
+    gameState.MaxBankLoan = 20000.00_GBP;
 
     gHistoricalProfit = 0;
 
-    gBankLoanInterestRate = 10;
+    gameState.BankLoanInterestRate = 10;
     gameState.ParkValue = 0;
     gCompanyValue = 0;
-    gameState.ScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
+    gameState.ScenarioCompletedCompanyValue = kMoney64Undefined;
     gameState.TotalAdmissions = 0;
     gameState.TotalIncomeFromAdmissions = 0;
     gameState.ScenarioCompletedBy = "?";
@@ -271,13 +270,13 @@ void FinanceUpdateDailyProfit()
         current_profit -= research_cost_table[level];
 
         // Loan costs
-        auto current_loan = gBankLoan;
+        auto current_loan = gameState.BankLoan;
         current_profit -= current_loan / 600;
 
         // Ride costs
         for (auto& ride : GetRideManager())
         {
-            if (ride.status != RideStatus::Closed && ride.upkeep_cost != MONEY64_UNDEFINED)
+            if (ride.status != RideStatus::Closed && ride.upkeep_cost != kMoney64Undefined)
             {
                 current_profit -= 2 * ride.upkeep_cost;
             }
@@ -303,12 +302,12 @@ money64 FinanceGetInitialCash()
 
 money64 FinanceGetCurrentLoan()
 {
-    return gBankLoan;
+    return GetGameState().BankLoan;
 }
 
 money64 FinanceGetMaximumLoan()
 {
-    return gMaxBankLoan;
+    return GetGameState().MaxBankLoan;
 }
 
 money64 FinanceGetCurrentCash()

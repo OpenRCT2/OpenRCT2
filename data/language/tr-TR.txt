@@ -2091,39 +2091,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Dosya yüklenemiyor…
 STR_3011    :Dosya geçersiz veri içeriyor
-STR_3012    :Çarpışan araba tarzı
-STR_3013    :Atlıkarınca tarzı
-STR_3014    :Roma tarzi
-STR_3015    :Oryantal tarzı
-STR_3016    :Marslı tarzı
-STR_3017    :Cengel tarzı
-STR_3018    :Mısırlı tarzı
-STR_3019    :Oyuncak dünyası tarzı
-STR_3020    :
-STR_3021    :Uzay tarzı
-STR_3022    :Korku tarzı
-STR_3023    :Tekno tarzı
-STR_3024    :Sakin tarz
-STR_3025    :Yaz tarzı
-STR_3026    :Su tarzı
-STR_3027    :Vahşi batı tarzı
-STR_3028    :Dinozor tarzı
-STR_3029    :Rock tarzı
-STR_3030    :Ragtime tarzı
-STR_3031    :Fantazi tarzı
-STR_3032    :Rock tarzı 2
-STR_3033    :Buz tarzı
-STR_3034    :Kar tarzı
-STR_3035    :Özel müzik 1
-STR_3036    :Özel müzik 2
-STR_3037    :Ortaçağ tarzı
-STR_3038    :Şehir tarzı
-STR_3039    :Kilise tarzı
-STR_3040    :Mekanik tarz
-STR_3041    :Modern tarz
-STR_3042    :Korsan tarzı
-STR_3043    :Rock tarzı 3
-STR_3044    :Şeker dünyası tarzı
 STR_3045    :Bu aletde çalınacak müzik tarzını seçiniz
 STR_3047    :Yerel makam tarafından bu aletin değiştirilmesi yasaklandı
 STR_3048    :Yerel makam tarafından pazarlama kampanyaları yasaklandı

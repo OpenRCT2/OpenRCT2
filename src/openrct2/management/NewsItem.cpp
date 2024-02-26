@@ -10,6 +10,7 @@
 #include "NewsItem.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../audio/audio.h"
@@ -29,7 +30,7 @@
 #include "../windows/Intent.h"
 #include "../world/Location.hpp"
 
-News::ItemQueues gNewsItems;
+using namespace OpenRCT2;
 
 News::Item& News::ItemQueues::Current()
 {
@@ -53,7 +54,7 @@ bool News::IsValidIndex(int32_t index)
 
 News::Item* News::GetItem(int32_t index)
 {
-    return gNewsItems.At(index);
+    return GetGameState().NewsItems.At(index);
 }
 
 News::Item& News::ItemQueues::operator[](size_t index)
@@ -86,7 +87,7 @@ const News::Item* News::ItemQueues::At(int32_t index) const
 
 bool News::IsQueueEmpty()
 {
-    return gNewsItems.IsEmpty();
+    return GetGameState().NewsItems.IsEmpty();
 }
 
 bool News::ItemQueues::IsEmpty() const
@@ -106,8 +107,9 @@ void News::ItemQueues::Clear()
 
 void News::InitQueue()
 {
-    gNewsItems.Clear();
-    assert(gNewsItems.IsEmpty());
+    auto& gameState = GetGameState();
+    gameState.NewsItems.Clear();
+    assert(gameState.NewsItems.IsEmpty());
 
     // Throttles for warning types (PEEP_*_WARNING)
     for (auto& warningThrottle : gPeepWarningThrottle)
@@ -126,7 +128,7 @@ uint16_t News::ItemQueues::IncrementTicks()
 
 static void TickCurrent()
 {
-    int32_t ticks = gNewsItems.IncrementTicks();
+    int32_t ticks = GetGameState().NewsItems.IncrementTicks();
     // Only play news item sound when in normal playing mode
     if (ticks == 1 && (gScreenFlags == SCREEN_FLAGS_PLAYING))
     {
@@ -157,8 +159,9 @@ void News::UpdateCurrentItem()
 {
     PROFILED_FUNCTION();
 
+    auto& gameState = GetGameState();
     // Check if there is a current news item
-    if (gNewsItems.IsEmpty())
+    if (gameState.NewsItems.IsEmpty())
         return;
 
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
@@ -168,8 +171,8 @@ void News::UpdateCurrentItem()
     TickCurrent();
 
     // Removal of current news item
-    if (gNewsItems.CurrentShouldBeArchived())
-        gNewsItems.ArchiveCurrent();
+    if (gameState.NewsItems.CurrentShouldBeArchived())
+        gameState.NewsItems.ArchiveCurrent();
 }
 
 /**
@@ -178,7 +181,7 @@ void News::UpdateCurrentItem()
  */
 void News::CloseCurrentItem()
 {
-    gNewsItems.ArchiveCurrent();
+    GetGameState().NewsItems.ArchiveCurrent();
 }
 
 void News::ItemQueues::ArchiveCurrent()
@@ -324,7 +327,7 @@ News::Item* News::AddItemToQueue(ItemType type, StringId string_id, EntityId ass
 News::Item* News::AddItemToQueue(News::ItemType type, const utf8* text, uint32_t assoc)
 {
     auto& date = GetDate();
-    News::Item* newsItem = gNewsItems.FirstOpenOrNewSlot();
+    News::Item* newsItem = GetGameState().NewsItems.FirstOpenOrNewSlot();
     newsItem->Type = type;
     newsItem->Flags = 0;
     newsItem->Assoc = assoc; // Make optional for Award, Money, Graph and Null
@@ -434,12 +437,13 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
  */
 void News::DisableNewsItems(News::ItemType type, uint32_t assoc)
 {
+    auto& gameState = GetGameState();
     // TODO: write test invalidating windows
-    gNewsItems.ForeachRecentNews([type, assoc](auto& newsItem) {
+    gameState.NewsItems.ForeachRecentNews([type, assoc, gameState](auto& newsItem) {
         if (type == newsItem.Type && assoc == newsItem.Assoc)
         {
             newsItem.SetFlags(News::ItemFlags::HasButton);
-            if (&newsItem == &gNewsItems.Current())
+            if (&newsItem == &gameState.NewsItems.Current())
             {
                 auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
                 ContextBroadcastIntent(&intent);
@@ -447,7 +451,7 @@ void News::DisableNewsItems(News::ItemType type, uint32_t assoc)
         }
     });
 
-    gNewsItems.ForeachArchivedNews([type, assoc](auto& newsItem) {
+    gameState.NewsItems.ForeachArchivedNews([type, assoc](auto& newsItem) {
         if (type == newsItem.Type && assoc == newsItem.Assoc)
         {
             newsItem.SetFlags(News::ItemFlags::HasButton);
@@ -458,7 +462,7 @@ void News::DisableNewsItems(News::ItemType type, uint32_t assoc)
 
 void News::AddItemToQueue(News::Item* newNewsItem)
 {
-    News::Item* newsItem = gNewsItems.FirstOpenOrNewSlot();
+    News::Item* newsItem = GetGameState().NewsItems.FirstOpenOrNewSlot();
     *newsItem = *newNewsItem;
 }
 
@@ -467,14 +471,15 @@ void News::RemoveItem(int32_t index)
     if (index < 0 || index >= News::MaxItems)
         return;
 
+    auto& gameState = GetGameState();
     // News item is already null, no need to remove it
-    if (gNewsItems[index].Type == News::ItemType::Null)
+    if (gameState.NewsItems[index].Type == News::ItemType::Null)
         return;
 
     size_t newsBoundary = index < News::ItemHistoryStart ? News::ItemHistoryStart : News::MaxItems;
     for (size_t i = index; i < newsBoundary - 1; i++)
     {
-        gNewsItems[i] = gNewsItems[i + 1];
+        gameState.NewsItems[i] = gameState.NewsItems[i + 1];
     }
-    gNewsItems[newsBoundary - 1].Type = News::ItemType::Null;
+    gameState.NewsItems[newsBoundary - 1].Type = News::ItemType::Null;
 }

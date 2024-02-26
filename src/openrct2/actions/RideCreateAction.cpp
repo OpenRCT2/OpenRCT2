@@ -244,7 +244,7 @@ GameActions::Result RideCreateAction::Execute() const
             if (ShopItemHasCommonPrice(ShopItem::Admission))
             {
                 auto price = RideGetCommonPrice(*ride);
-                if (price != MONEY64_UNDEFINED)
+                if (price != kMoney64Undefined)
                 {
                     ride->price[0] = price;
                 }
@@ -258,7 +258,7 @@ GameActions::Result RideCreateAction::Execute() const
                 if (ShopItemHasCommonPrice(rideEntry->shop_item[i]))
                 {
                     auto price = ShopItemGetCommonPrice(ride, rideEntry->shop_item[i]);
-                    if (price != MONEY64_UNDEFINED)
+                    if (price != kMoney64Undefined)
                     {
                         ride->price[i] = price;
                     }
@@ -270,7 +270,7 @@ GameActions::Result RideCreateAction::Execute() const
         if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP_OR_FACILITY) && ShopItemHasCommonPrice(ShopItem::Photo))
         {
             auto price = ShopItemGetCommonPrice(ride, ShopItem::Photo);
-            if (price != MONEY64_UNDEFINED)
+            if (price != kMoney64Undefined)
             {
                 ride->price[1] = price;
             }
@@ -295,7 +295,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->music_tune_id = TUNE_ID_NULL;
 
     ride->breakdown_reason = 255;
-    ride->upkeep_cost = MONEY64_UNDEFINED;
+    ride->upkeep_cost = kMoney64Undefined;
     ride->reliability = RIDE_INITIAL_RELIABILITY;
     ride->unreliability_factor = 1;
     ride->inspection_interval = RIDE_INSPECTION_EVERY_30_MINUTES;
@@ -305,8 +305,8 @@ GameActions::Result RideCreateAction::Execute() const
     ride->no_primary_items_sold = 0;
     ride->no_secondary_items_sold = 0;
     ride->last_crash_type = RIDE_CRASH_TYPE_NONE;
-    ride->income_per_hour = MONEY64_UNDEFINED;
-    ride->profit = MONEY64_UNDEFINED;
+    ride->income_per_hour = kMoney64Undefined;
+    ride->profit = kMoney64Undefined;
     ride->connected_message_throttle = 0;
 
     ride->entrance_style = OBJECT_ENTRY_INDEX_NULL;

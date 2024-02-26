@@ -2097,39 +2097,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :A fájl betöltése sikertelen…
 STR_3011    :A fájl érvénytelen adatod tartalmaz
-STR_3012    :Dodzsem stílus
-STR_3013    :Vásári orgona stílus
-STR_3014    :Római harsona stílus
-STR_3015    :Keleti stílus
-STR_3016    :Marsi stílus
-STR_3017    :Dzsungel dob stílus
-STR_3018    :Egyiptomi stílus
-STR_3019    :Játékország stílus
-STR_3020    :
-STR_3021    :Űrbéli stílus
-STR_3022    :Rémisztő stílus
-STR_3023    :Techno stílus
-STR_3024    :Könnyed stílus
-STR_3025    :Nyári stílus
-STR_3026    :Vizes stílus
-STR_3027    :Vadnyugati stílus
-STR_3028    :Jura kori stílus
-STR_3029    :Rock stílus
-STR_3030    :Ragtime stílus
-STR_3031    :Fantázia stílus
-STR_3032    :Rock stílus 2
-STR_3033    :Jeges stílus
-STR_3034    :Havas stílus
-STR_3035    :Egyedi stílus 1
-STR_3036    :Egyedi stílus 2
-STR_3037    :Középkori stílus
-STR_3038    :Városi stílus
-STR_3039    :Orgona stílus
-STR_3040    :Gépi stílus
-STR_3041    :Modern stílus
-STR_3042    :Kalóz stílus
-STR_3043    :Rock stílus 3
-STR_3044    :Cukorka stílus
 STR_3045    :Válaszd ki, hogy milyen stílusú zenét játsszon
 STR_3047    :A helyi önkormányzat nem engedélyezi a játék lerombolását vagy módosítását
 STR_3048    :A helyi önkormányzat nem engedélyezi marketingkampányok indítását
@@ -2632,7 +2599,7 @@ STR_5355    :{BLACK}Szomjúság:
 STR_5356    :{BLACK}Émelygés:
 STR_5357    :{BLACK}Émelygéstűrés:
 STR_5358    :{BLACK}WC:
-STR_5359    :Vendégek eltávolítása
+STR_5359    :Vendégek törlése
 STR_5360    :Eltávolít minden vendéget a térképről
 STR_5361    :Minden vendég kapjon:
 STR_5362    :{BLACK}A vendégek preferált játékintenzitása:
@@ -2951,7 +2918,7 @@ STR_5790    :Az RCT1-stílusú árazás ki- és bekapcsolása{NEWLINE}(például
 STR_5791    :Az összes játék megbízhatóságát 100%-ra{NEWLINE}állítja és visszaállítja az építési idejüket „idén”-re
 STR_5792    :Megjavítja az összes meghibásodott játékot
 STR_5793    :Törli a játék ütközési előzményeit,{NEWLINE}így a vendégek nem fognak panaszkodni, hogy nem biztonságos
-STR_5794    :Néhány pálya nem engedélyezi pár játék{NEWLINE}szerkesztését, melyek már a parkban vannak{NEWLINE}Ez a csalás feloldja a korlátozást
+STR_5794    :Néhány pálya nem engedélyezi pár játék{NEWLINE}szerkesztését, melyek már a parkban vannak.{NEWLINE}Ez a csalás feloldja a korlátozást
 STR_5795    :A vendégek a park összes játékára felülnek,{NEWLINE}még az extrém magas intenzitásúakra is
 STR_5796    :Kényszeríti a parkot, hogy kinyisson vagy bezárjon
 STR_5797    :Letiltja az időjárás-változásokat{NEWLINE}és befagyasztja a jelenlegi időjárást
@@ -3055,7 +3022,7 @@ STR_5899    :Festési hibakeresés ablak be/ki
 STR_5900    :Eredeti rajzolókód használata
 STR_5901    :Szegmensek magasságának mutatása
 STR_5902    :Határolókeretek mutatása
-STR_5903    :Festési hibakeresés ablak mutatása
+STR_5903    :Festési hibakeresés ablak
 STR_5904    :Dátum vissza
 STR_5905    :Térképgeneráló eszköz, amely automatikusan létrehoz egy egyedi tájat
 STR_5906    :Nagyítás a mutató helyzetére 
@@ -3714,6 +3681,11 @@ STR_6609    :Pályablokk nem található
 STR_6610    :Útelem nem található
 STR_6611    :Falelem nem található
 STR_6612    :Hirdetőtábla-elem nem található
+STR_6613    :Objektum újratöltése
+STR_6614    :Nem változtatható meg a park belépési díja
+STR_6615    :A pályának ezen a mezőn vízre van szüksége
+STR_6616    :Az adott személyzettípus számára érvénytelen akció
+STR_6617    :Nem lehet önmagával cserélni mezőelemet
 
 #############
 # Scenarios #
@@ -4486,7 +4458,7 @@ STR_DTLS    :Amilyen a megnyitó napján volt - 1905. május 18-án.{NEWLINE}Sze
 <Mount Vesuvius 1700 A.D. by Katatude for UCES>
 STR_SCNR    :Vezúv
 STR_PARK    :Vezúv
-STR_DTLS    :Pompejit és Herculaneumot a Vezúv temette maga alá Kr.u. 79-ben. Látogass el az ásatásokra és építs egy parkot!{NEWLINE}{NEWLINE}Szerző: Katatude
+STR_DTLS    :Pompejit és Herculaneumot a Vezúv temette maga alá Kr.u. 79-ben. Látogass el az ásatásokra és építs egy parkot!{NEWLINE}Szerző: Katatude
 
 <The Sandbox by Katatude for UCES>
 STR_SCNR    :A Homokozó

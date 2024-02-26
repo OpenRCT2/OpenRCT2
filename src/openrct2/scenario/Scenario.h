@@ -162,7 +162,6 @@ extern bool gAllowEarlyCompletionInNetworkPlay;
 
 extern std::string gScenarioSavePath;
 extern bool gFirstTimeSaving;
-extern uint16_t gSavedAge;
 extern uint32_t gLastAutoSaveUpdate;
 
 extern std::string gScenarioFileName;

@@ -42,7 +42,7 @@ int32_t windowTileInspectorSelectedIndex = -1;
 using namespace OpenRCT2::TrackMetaData;
 namespace OpenRCT2::TileInspector
 {
-    static bool SwapTileElements(const CoordsXY& loc, int16_t first, int16_t second)
+    static GameActions::Result SwapTileElements(const CoordsXY& loc, int16_t first, int16_t second)
     {
         TileElement* const firstElement = MapGetNthElementAt(loc, first);
         TileElement* const secondElement = MapGetNthElementAt(loc, second);
@@ -50,17 +50,20 @@ namespace OpenRCT2::TileInspector
         if (firstElement == nullptr)
         {
             LOG_ERROR("First element is out of range for the tile");
-            return false;
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_TILE_ELEMENT_NOT_FOUND);
         }
         if (secondElement == nullptr)
         {
             LOG_ERROR("Second element is out of range for the tile");
-            return false;
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_TILE_ELEMENT_NOT_FOUND);
         }
         if (firstElement == secondElement)
         {
             LOG_ERROR("Can't swap the element with itself");
-            return false;
+            return GameActions::Result(
+                GameActions::Status::InvalidParameters, STR_ERR_INVALID_PARAMETER, STR_ERR_CANT_SWAP_TILE_ELEMENT_WITH_ITSELF);
         }
 
         // Swap their memory
@@ -73,7 +76,7 @@ namespace OpenRCT2::TileInspector
             secondElement->SetLastForTile(!secondElement->IsLastForTile());
         }
 
-        return true;
+        return GameActions::Result();
     }
 
     static bool IsTileSelected(const CoordsXY& loc)
@@ -181,9 +184,10 @@ namespace OpenRCT2::TileInspector
     {
         if (isExecuting)
         {
-            if (!SwapTileElements(loc, first, second))
+            auto res = SwapTileElements(loc, first, second);
+            if (res.Error != GameActions::Status::Ok)
             {
-                return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+                return res;
             }
 
             if (IsTileSelected(loc))
@@ -393,7 +397,8 @@ namespace OpenRCT2::TileInspector
                            || (otherElement->BaseHeight == currentElement->BaseHeight
                                && otherElement->ClearanceHeight > currentElement->ClearanceHeight)))
                 {
-                    if (!SwapTileElements(loc, currentId - 1, currentId))
+                    auto res = SwapTileElements(loc, currentId - 1, currentId);
+                    if (res.Error != GameActions::Status::Ok)
                     {
                         // don't return error here, we've already ran some actions
                         // and moved things as far as we could, the only sensible

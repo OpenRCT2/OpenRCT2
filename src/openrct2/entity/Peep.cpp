@@ -70,8 +70,6 @@ uint8_t gGuestChangeModifier;
 
 uint8_t gPeepWarningThrottle[16];
 
-std::unique_ptr<GuestPathfinding> gGuestPathfinder = std::make_unique<OriginalPathfinding>();
-
 static uint8_t _unk_F1AEF0;
 static TileElement* _peepRideEntranceExitElement;
 
@@ -2393,7 +2391,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
         if (guest != nullptr)
         {
-            result = gGuestPathfinder->CalculateNextDestination(*guest);
+            result = PathFinding::CalculateNextDestination(*guest);
         }
         else
         {
@@ -2852,4 +2850,14 @@ void Peep::Paint(PaintSession& session, int32_t imageDirection) const
             return;
         }
     }
+}
+
+/**
+ *
+ *  rct2: 0x0069A98C
+ */
+void Peep::ResetPathfindGoal()
+{
+    PathfindGoal.SetNull();
+    PathfindGoal.direction = INVALID_DIRECTION;
 }

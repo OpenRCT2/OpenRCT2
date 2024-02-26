@@ -69,7 +69,6 @@ const StringId ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
 
 std::string gScenarioSavePath;
 bool gFirstTimeSaving = true;
-uint16_t gSavedAge;
 uint32_t gLastAutoSaveUpdate = 0;
 
 bool gAllowEarlyCompletionInNetworkPlay;
@@ -105,7 +104,7 @@ void ScenarioReset(GameState_t& gameState)
     gameState.ParkRating = park.CalculateParkRating();
     gameState.ParkValue = park.CalculateParkValue();
     gCompanyValue = park.CalculateCompanyValue();
-    gHistoricalProfit = gameState.InitialCash - gBankLoan;
+    gHistoricalProfit = gameState.InitialCash - gameState.BankLoan;
     gameState.Cash = gameState.InitialCash;
 
     {
@@ -143,7 +142,7 @@ void ScenarioReset(GameState_t& gameState)
     gameState.TotalIncomeFromAdmissions = 0;
 
     gameState.ParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
-    gameState.ScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
+    gameState.ScenarioCompletedCompanyValue = kMoney64Undefined;
     gameState.ScenarioCompletedBy = "?";
 
     park.ResetHistories();
@@ -362,7 +361,7 @@ static void ScenarioUpdateDayNightCycle()
 
     if (gScreenFlags == SCREEN_FLAGS_PLAYING && gConfigGeneral.DayNightCycle)
     {
-        float monthFraction = GetDate().GetMonthTicks() / static_cast<float>(TICKS_PER_MONTH);
+        float monthFraction = GetDate().GetMonthTicks() / static_cast<float>(kTicksPerMonth);
         if (monthFraction < (1 / 8.0f))
         {
             gDayNightCycle = 0.0f;
@@ -820,7 +819,7 @@ ObjectiveStatus Objective::CheckRepayLoanAndParkValue() const
 {
     const auto& gameState = GetGameState();
     money64 parkValue = gameState.ParkValue;
-    money64 currentLoan = gBankLoan;
+    money64 currentLoan = gameState.BankLoan;
 
     if (currentLoan <= 0 && parkValue >= Currency)
     {
@@ -882,7 +881,7 @@ static void ScenarioCheckObjective(GameState_t& gameState)
  */
 ObjectiveStatus Objective::Check(GameState_t& gameState) const
 {
-    if (gameState.ScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
+    if (gameState.ScenarioCompletedCompanyValue != kMoney64Undefined)
     {
         return ObjectiveStatus::Undecided;
     }

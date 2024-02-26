@@ -465,10 +465,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_INITIAL_LOAN_INCREASE:
-                if (gBankLoan < 5000000.00_GBP)
+                if (gameState.BankLoan < 5000000.00_GBP)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::InitialLoan, gBankLoan + 1000.00_GBP);
+                        ScenarioSetSetting::InitialLoan, gameState.BankLoan + 1000.00_GBP);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -478,10 +478,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_INITIAL_LOAN_DECREASE:
-                if (gBankLoan > 0.00_GBP)
+                if (gameState.BankLoan > 0.00_GBP)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::InitialLoan, gBankLoan - 1000.00_GBP);
+                        ScenarioSetSetting::InitialLoan, gameState.BankLoan - 1000.00_GBP);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -491,10 +491,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_MAXIMUM_LOAN_INCREASE:
-                if (gMaxBankLoan < 5000000.00_GBP)
+                if (gameState.MaxBankLoan < 5000000.00_GBP)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::MaximumLoanSize, gMaxBankLoan + 1000.00_GBP);
+                        ScenarioSetSetting::MaximumLoanSize, gameState.MaxBankLoan + 1000.00_GBP);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -504,10 +504,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_MAXIMUM_LOAN_DECREASE:
-                if (gMaxBankLoan > 0.00_GBP)
+                if (gameState.MaxBankLoan > 0.00_GBP)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::MaximumLoanSize, gMaxBankLoan - 1000.00_GBP);
+                        ScenarioSetSetting::MaximumLoanSize, gameState.MaxBankLoan - 1000.00_GBP);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -517,10 +517,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_INTEREST_RATE_INCREASE:
-                if (gBankLoanInterestRate < MaxBankLoanInterestRate)
+                if (gameState.BankLoanInterestRate < MaxBankLoanInterestRate)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::AnnualInterestRate, gBankLoanInterestRate + 1);
+                        ScenarioSetSetting::AnnualInterestRate, gameState.BankLoanInterestRate + 1);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -530,9 +530,9 @@ private:
                 Invalidate();
                 break;
             case WIDX_INTEREST_RATE_DECREASE:
-                if (gBankLoanInterestRate > 0)
+                if (gameState.BankLoanInterestRate > 0)
                 {
-                    auto interest = std::min<uint8_t>(MaxBankLoanInterestRate, gBankLoanInterestRate - 1);
+                    auto interest = std::min<uint8_t>(MaxBankLoanInterestRate, gameState.BankLoanInterestRate - 1);
                     auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::AnnualInterestRate, interest);
                     GameActions::Execute(&scenarioSetSetting);
                 }
@@ -622,6 +622,8 @@ private:
         WindowDrawWidgets(*this, dpi);
         DrawTabImages(dpi);
 
+        auto& gameState = GetGameState();
+
         const auto& initialCashWidget = widgets[WIDX_INITIAL_CASH];
         if (initialCashWidget.type != WindowWidgetType::Empty)
         {
@@ -642,7 +644,7 @@ private:
 
             screenCoords = windowPos + ScreenCoordsXY{ initialLoanWidget.left + 1, initialLoanWidget.top };
             auto ft = Formatter();
-            ft.Add<money64>(gBankLoan);
+            ft.Add<money64>(gameState.BankLoan);
             DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
         }
 
@@ -654,7 +656,7 @@ private:
 
             screenCoords = windowPos + ScreenCoordsXY{ maximumLoanWidget.left + 1, maximumLoanWidget.top };
             auto ft = Formatter();
-            ft.Add<money64>(gMaxBankLoan);
+            ft.Add<money64>(GetGameState().MaxBankLoan);
             DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
         }
 
@@ -667,7 +669,7 @@ private:
             screenCoords = windowPos + ScreenCoordsXY{ interestRateWidget.left + 1, interestRateWidget.top };
 
             auto ft = Formatter();
-            ft.Add<int16_t>(std::clamp<int16_t>(static_cast<int16_t>(gBankLoanInterestRate), INT16_MIN, INT16_MAX));
+            ft.Add<int16_t>(std::clamp<int16_t>(static_cast<int16_t>(gameState.BankLoanInterestRate), INT16_MIN, INT16_MAX));
             DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, ft);
         }
     }

@@ -11,6 +11,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/GameState.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityRegistry.h>
@@ -20,6 +21,8 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/sprites.h>
+
+using namespace OpenRCT2;
 
 static constexpr StringId WINDOW_TITLE = STR_RECENT_MESSAGES;
 static constexpr int32_t WH = 300;
@@ -92,13 +95,14 @@ public:
 
         size_t j = _pressedNewsItemIndex;
         _pressedNewsItemIndex = -1;
+        auto& gameState = GetGameState();
 
-        if (j >= gNewsItems.GetArchived().size())
+        if (j >= gameState.NewsItems.GetArchived().size())
         {
             return;
         }
 
-        const auto& newsItem = gNewsItems.GetArchived()[j];
+        const auto& newsItem = gameState.NewsItems.GetArchived()[j];
         if (newsItem.HasButton())
         {
             return;
@@ -121,7 +125,7 @@ public:
 
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override
     {
-        int32_t scrollHeight = static_cast<int32_t>(gNewsItems.GetArchived().size()) * CalculateItemHeight();
+        int32_t scrollHeight = static_cast<int32_t>(GetGameState().NewsItems.GetArchived().size()) * CalculateItemHeight();
         return { WW, scrollHeight };
     }
 
@@ -131,7 +135,7 @@ public:
         int32_t i = 0;
         int32_t buttonIndex = 0;
         auto mutableScreenCoords = screenCoords;
-        for (const auto& newsItem : gNewsItems.GetArchived())
+        for (const auto& newsItem : GetGameState().NewsItems.GetArchived())
         {
             if (mutableScreenCoords.y < itemHeight)
             {
@@ -178,7 +182,7 @@ public:
         int32_t y = 0;
         int32_t i = 0;
 
-        for (const auto& newsItem : gNewsItems.GetArchived())
+        for (const auto& newsItem : GetGameState().NewsItems.GetArchived())
         {
             if (y >= dpi.y + dpi.height)
                 break;

@@ -186,7 +186,7 @@ money64 RideDemolishAction::MazeRemoveTrack(const CoordsXYZD& coords) const
         return execRes.Cost;
     }
 
-    return MONEY64_UNDEFINED;
+    return kMoney64Undefined;
 }
 
 money64 RideDemolishAction::DemolishTracks() const
@@ -250,7 +250,7 @@ money64 RideDemolishAction::DemolishTracks() const
                     {
                         const CoordsXYZ off = { DirOffsets[dir], 0 };
                         money64 removePrice = MazeRemoveTrack({ location + off, dir });
-                        if (removePrice != MONEY64_UNDEFINED)
+                        if (removePrice != kMoney64Undefined)
                         {
                             refundPrice += removePrice;
                         }

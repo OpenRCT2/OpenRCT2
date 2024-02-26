@@ -261,7 +261,7 @@ namespace RCT2
             ImportEntities();
 
             gameState.InitialCash = ToMoney64(_s6.InitialCash);
-            gBankLoan = ToMoney64(_s6.CurrentLoan);
+            gameState.BankLoan = ToMoney64(_s6.CurrentLoan);
 
             gameState.ParkFlags = _s6.ParkFlags & ~PARK_FLAGS_NO_MONEY_SCENARIO;
 
@@ -340,7 +340,7 @@ namespace RCT2
             gameState.ParkSize = _s6.ParkSize;
             gameState.GuestGenerationProbability = _s6.GuestGenerationProbability;
             gameState.TotalRideValueForMoney = _s6.TotalRideValueForMoney;
-            gMaxBankLoan = ToMoney64(_s6.MaximumLoan);
+            gameState.MaxBankLoan = ToMoney64(_s6.MaximumLoan);
             gameState.GuestInitialCash = ToMoney64(_s6.GuestInitialCash);
             gameState.GuestInitialHunger = _s6.GuestInitialHunger;
             gameState.GuestInitialThirst = _s6.GuestInitialThirst;
@@ -410,8 +410,7 @@ namespace RCT2
             // rct1_water_colour
             // Pad01358842
             ImportResearchList(gameState);
-            gameState.MapBaseZ = _s6.MapBaseZ;
-            gBankLoanInterestRate = _s6.CurrentInterestRate;
+            gameState.BankLoanInterestRate = _s6.CurrentInterestRate;
             // Pad0135934B
             // Preserve compatibility with vanilla RCT2's save format.
             gameState.ParkEntrances.clear();
@@ -441,10 +440,9 @@ namespace RCT2
 
             ImportRides();
 
-            gSavedAge = _s6.SavedAge;
-            gSavedView = ScreenCoordsXY{ _s6.SavedViewX, _s6.SavedViewY };
-            gSavedViewZoom = ZoomLevel{ static_cast<int8_t>(_s6.SavedViewZoom) };
-            gSavedViewRotation = _s6.SavedViewRotation;
+            gameState.SavedView = ScreenCoordsXY{ _s6.SavedViewX, _s6.SavedViewY };
+            gameState.SavedViewZoom = ZoomLevel{ static_cast<int8_t>(_s6.SavedViewZoom) };
+            gameState.SavedViewRotation = _s6.SavedViewRotation;
 
             ImportRideRatingsCalcData();
             ImportRideMeasurements();
@@ -474,7 +472,7 @@ namespace RCT2
             for (size_t i = 0; i < Limits::MaxNewsItems; i++)
             {
                 const RCT12NewsItem* src = &_s6.NewsItems[i];
-                News::Item* dst = &gNewsItems[i];
+                News::Item* dst = &gameState.NewsItems[i];
                 if (src->Type < News::ItemTypeCount)
                 {
                     dst->Type = static_cast<News::ItemType>(src->Type);
@@ -908,8 +906,26 @@ namespace RCT2
                 || String::Equals(_s6.ScenarioFilename, "Asia - Japanese Coastal Reclaim.SC6", true))
             {
                 // clang-format off
+                 FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 7, 29 },
+                        { 24, 14 }, { 24, 15 }, { 24, 16 },
+                        { 25, 13 }, { 25, 14 }, { 25, 15 }, { 25, 16 }, { 25, 17 },
+                        { 26, 12 }, { 26, 13 }, { 26, 14 }, { 26, 15 }, { 26, 16 }, { 26, 17 }, { 26, 18 }, { 26, 19 }, { 26, 20 },
+                        { 27, 11 }, { 27, 12 }, { 27, 13 }, { 27, 14 }, { 27, 15 }, { 27, 16 }, { 27, 17 }, { 27, 18 }, { 27, 19 }, { 27, 20 }, { 27, 21 },
+                        { 28, 8 }, { 28, 9 }, { 28, 10 }, { 28, 11 }, { 28, 12 }, { 28, 13 }, { 28, 14 }, { 28, 15 }, { 28, 16 }, { 28, 17 }, { 28, 18 }, { 28, 19 }, { 28, 20 }, { 28, 21 },
+                        { 29, 6 }, { 29, 7 }, { 29, 8 }, { 29, 9 }, { 29, 10 }, { 29, 11 }, { 29, 12 }, { 29, 13 }, { 29, 14 }, { 29, 15 }, { 29, 16 }, { 29, 17 }, { 29, 18 }, { 29, 19 }, { 29, 20 }, { 29, 21 },
+                        { 30, 2 }, { 30, 3 }, { 30, 4 }, { 30, 5 }, { 30, 6 }, { 30, 7 }, { 30, 8 }, { 30, 9 }, { 30, 10 }, { 30, 11 }, { 30, 12 }, { 30, 17 }, { 30, 18 }, { 30, 19 }, { 30, 20 }, { 30, 21 },
+                        { 31, 2 }, { 31, 3 }, { 31, 4 }, { 31, 5 }, { 31, 6 }, { 31, 7 }, { 31, 8 }, { 31, 9 }, { 31, 10 }, { 31, 11 }, { 31, 19 }, { 31, 20 }, { 31, 21 },
+                        { 32, 2 }, { 32, 3 }, { 32, 4 }, { 32, 5 }, { 32, 6 }, { 32, 7 }, { 32, 8 }, { 32, 20 }, { 32, 21 },
+                        { 33, 2 }, { 33, 3 }, { 33, 4 }, { 33, 5 }, { 33, 6 }, { 33, 7 }, { 33, 20 }, { 33, 21 },
+                        { 34, 2 }, { 34, 3 }, { 34, 4 }, { 34, 20 }, { 34, 21 },
+                        { 35, 21 },
+                    },
+                    OWNERSHIP_OWNED);
                 FixLandOwnershipTilesWithOwnership(
                     {
+                        { 2, 30 }, { 3, 30 }, { 4, 30 },
                         { 25, 23 },
                     },
                     OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED, true);
@@ -922,6 +938,12 @@ namespace RCT2
                     OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE, true);
                   FixLandOwnershipTilesWithOwnership(
                     {
+                        { 6, 100 }, { 7, 100 }, { 8, 100 }, { 9, 100 }, { 10, 100 }, { 15, 100 }, { 16, 100 },
+                        { 6, 101 }, { 7, 101 }, { 8, 101 }, { 9, 101 }, { 10, 101 }, { 15, 101 }, { 16, 101 },
+                        { 6, 102 }, { 7, 102 }, { 8, 102 }, { 9, 102 }, { 10, 102 }, { 14, 102 }, { 15, 102 }, { 16, 102 },
+                        { 6, 103 }, { 7, 103 }, { 8, 103 }, { 9, 103 }, { 10, 103 }, { 12, 103 }, { 14, 103 }, { 15, 103 }, { 16, 103 },
+                        { 6, 104 }, { 7, 104 }, { 8, 104 }, { 9, 104 }, { 10, 104 }, { 14, 104 }, { 15, 104 }, { 16, 104 },
+                        { 6, 105 }, { 7, 105 }, { 8, 105 }, { 9, 105 }, { 10, 105 }, { 11, 105 }, { 12, 105 }, { 13, 105 }, { 14, 105 }, { 15, 105 }, { 16, 105 },
                         { 122, 78 }, { 122, 79 },
                         { 111, 122 }, { 112, 122 }, { 113, 122 },
                         { 120, 15 }, { 121, 15 }, { 122, 15 },

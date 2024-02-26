@@ -2096,39 +2096,6 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Kan dit bestand niet laden…
 STR_3011    :Bestand bevat ongeldige gegevens
-STR_3012    :Botsautostijl
-STR_3013    :Kermisorgelstijl
-STR_3014    :Romeinsefanfarestijl
-STR_3015    :Oosterse stijl
-STR_3016    :Marsstijl
-STR_3017    :Jungledrumsstijl
-STR_3018    :Egyptische stijl
-STR_3019    :Speelgoedlandstijl
-STR_3020    :
-STR_3021    :Ruimtestijl
-STR_3022    :Horrorstijl
-STR_3023    :Technostijl
-STR_3024    :Rustige stijl
-STR_3025    :Zomerstijl
-STR_3026    :Waterstijl
-STR_3027    :Wildweststijl
-STR_3028    :Jurastijl
-STR_3029    :Rockstijl
-STR_3030    :Ragtimestijl
-STR_3031    :Fantasiestijl
-STR_3032    :Rockstijl 2
-STR_3033    :IJsstijl
-STR_3034    :Sneeuwstijl
-STR_3035    :Extra muziek 1
-STR_3036    :Extra muziek 2
-STR_3037    :Middeleeuwse stijl
-STR_3038    :Stadsstijl
-STR_3039    :Orgelstijl
-STR_3040    :Mechanische stijl
-STR_3041    :Moderne stijl
-STR_3042    :Piratenstijl
-STR_3043    :Rockstijl 3
-STR_3044    :Snoepstijl
 STR_3045    :Selecteer welke muziekstijl er moet worden gedraaid
 STR_3047    :De gemeente staat de sloop van en wijzigingen aan deze attractie niet toe
 STR_3048    :Marketingcampagnes worden niet toegestaan door de gemeente
@@ -3714,6 +3681,10 @@ STR_6610    :Padelement niet gevonden.
 STR_6611    :Muurelement niet gevonden.
 STR_6612    :Lichtkrantelement niet gevonden.
 STR_6613    :Object opnieuw laden
+STR_6614    :Kan de toegangsprijs niet aanpassen
+STR_6615    :Dit baantype vereist water
+STR_6616    :Ongeldige actie voor dit type werknemer
+STR_6617    :Kan een kaartelement niet met zichzelf verwisselen
 
 #############
 # Scenarios #

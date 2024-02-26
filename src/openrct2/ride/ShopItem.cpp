@@ -141,7 +141,7 @@ money64 ShopItemGetCommonPrice(Ride* forRide, const ShopItem shopItem)
         }
     }
 
-    return MONEY64_UNDEFINED;
+    return kMoney64Undefined;
 }
 
 bool ShopItemHasCommonPrice(const ShopItem shopItem)

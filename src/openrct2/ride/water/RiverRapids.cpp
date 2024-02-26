@@ -12,7 +12,7 @@
 #include "../../config/Config.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
-#include "../../paint/Supports.h"
+#include "../../paint/support/WoodenSupports.h"
 #include "../../scenario/Scenario.h"
 #include "../../world/Map.h"
 #include "../Track.h"

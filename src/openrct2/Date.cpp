@@ -19,10 +19,10 @@
 
 using namespace OpenRCT2;
 
-constexpr int32_t MONTH_TICKS_INCREMENT = 4;
-constexpr int32_t MASK_WEEK_TICKS = 0x3FFF;
-constexpr int32_t MASK_FORTNIGHT_TICKS = 0x7FFF;
-constexpr int32_t MASK_MONTH_TICKS = 0xFFFF;
+constexpr int32_t kMonthTicksIncrement = 4;
+constexpr int32_t kMaskWeekTicks = 0x3FFF;
+constexpr int32_t kMaskFortnightTicks = 0x7FFF;
+constexpr int32_t kMaskMonthTicks = 0xFFFF;
 
 // rct2: 0x00993988
 static const int16_t days_in_month[MONTH_COUNT] = {
@@ -39,7 +39,7 @@ Date::Date(uint32_t monthsElapsed, uint16_t monthTicks)
 
 Date Date::FromYMD(int32_t year, int32_t month, int32_t day)
 {
-    year = std::clamp(year, 0, MAX_YEAR - 1);
+    year = std::clamp(year, 0, kMaxYear - 1);
     month = std::clamp(month, 0, static_cast<int>(MONTH_COUNT) - 1);
     auto daysInMonth = days_in_month[month];
     day = std::clamp(day, 0, daysInMonth - 1);
@@ -49,7 +49,7 @@ Date Date::FromYMD(int32_t year, int32_t month, int32_t day)
     int32_t monthTicks = 0;
     if (day != 0)
     {
-        monthTicks = ((day << 16) / daysInMonth) + MONTH_TICKS_INCREMENT;
+        monthTicks = ((day << 16) / daysInMonth) + kMonthTicksIncrement;
     }
 
     return Date(monthsElapsed, monthTicks);
@@ -57,8 +57,8 @@ Date Date::FromYMD(int32_t year, int32_t month, int32_t day)
 
 void Date::Update()
 {
-    int32_t monthTicks = _monthTicks + MONTH_TICKS_INCREMENT;
-    if (monthTicks > MASK_MONTH_TICKS)
+    int32_t monthTicks = _monthTicks + kMonthTicksIncrement;
+    if (monthTicks > kMaskMonthTicks)
     {
         _monthTicks = 0;
         _monthsElapsed++;
@@ -110,12 +110,12 @@ bool Date::IsDayStart() const
 
 bool Date::IsWeekStart() const
 {
-    return (_monthTicks & MASK_WEEK_TICKS) == 0;
+    return (_monthTicks & kMaskWeekTicks) == 0;
 }
 
 bool Date::IsFortnightStart() const
 {
-    return (_monthTicks & MASK_FORTNIGHT_TICKS) == 0;
+    return (_monthTicks & kMaskFortnightTicks) == 0;
 }
 
 bool Date::IsMonthStart() const

@@ -20,7 +20,8 @@
 #include "../object/StationObject.h"
 #include "../paint/Paint.SessionFlags.h"
 #include "../paint/Paint.h"
-#include "../paint/Supports.h"
+#include "../paint/support/MetalSupports.h"
+#include "../paint/support/WoodenSupports.h"
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
@@ -1523,19 +1524,20 @@ void TrackPaintUtilRightQuarterTurn5TilesTunnel(
 void TrackPaintUtilRightQuarterTurn5TilesWoodenSupports(
     PaintSession& session, int16_t height, Direction direction, uint8_t trackSequence)
 {
-    if (trackSequence != 1 && trackSequence != 4)
+    static constexpr WoodenSupportSubType supportTypes[NumOrthogonalDirections][7] = {
+        { WoodenSupportSubType::NeSw, WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
+          WoodenSupportSubType::Null, WoodenSupportSubType::Corner2, WoodenSupportSubType::NwSe },
+        { WoodenSupportSubType::NwSe, WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1,
+          WoodenSupportSubType::Null, WoodenSupportSubType::Corner3, WoodenSupportSubType::NeSw },
+        { WoodenSupportSubType::NeSw, WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2,
+          WoodenSupportSubType::Null, WoodenSupportSubType::Corner0, WoodenSupportSubType::NwSe },
+        { WoodenSupportSubType::NwSe, WoodenSupportSubType::Null, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3,
+          WoodenSupportSubType::Null, WoodenSupportSubType::Corner1, WoodenSupportSubType::NeSw },
+    };
+
+    const auto supportType = supportTypes[direction][trackSequence];
+    if (supportType != WoodenSupportSubType::Null)
     {
-        static constexpr std::optional<WoodenSupportSubType> supportTypes[][7] = {
-            { WoodenSupportSubType::NeSw, std::nullopt, WoodenSupportSubType::Corner2, WoodenSupportSubType::Corner0,
-              std::nullopt, WoodenSupportSubType::Corner2, WoodenSupportSubType::NwSe },
-            { WoodenSupportSubType::NwSe, std::nullopt, WoodenSupportSubType::Corner3, WoodenSupportSubType::Corner1,
-              std::nullopt, WoodenSupportSubType::Corner3, WoodenSupportSubType::NeSw },
-            { WoodenSupportSubType::NeSw, std::nullopt, WoodenSupportSubType::Corner0, WoodenSupportSubType::Corner2,
-              std::nullopt, WoodenSupportSubType::Corner0, WoodenSupportSubType::NwSe },
-            { WoodenSupportSubType::NwSe, std::nullopt, WoodenSupportSubType::Corner1, WoodenSupportSubType::Corner3,
-              std::nullopt, WoodenSupportSubType::Corner1, WoodenSupportSubType::NeSw },
-        };
-        auto supportType = supportTypes[direction][trackSequence].value();
         WoodenASupportsPaintSetup(session, WoodenSupportType::Truss, supportType, height, session.SupportColours);
     }
 }
@@ -2234,7 +2236,7 @@ void PaintTrack(PaintSession& session, Direction direction, int32_t height, cons
                 uint16_t ax = ride->GetRideTypeDescriptor().Heights.VehicleZOffset;
                 // 0x1689 represents 0 height there are -127 to 128 heights above and below it
                 // There are 3 arrays of 256 heights (units, m, ft) chosen with the GetHeightMarkerOffset()
-                auto heightNum = (height + 8) / 16 - GetGameState().MapBaseZ;
+                auto heightNum = (height + 8) / 16 - kMapBaseZ;
                 auto imageId = ImageId(SPR_HEIGHT_MARKER_BASE + GetHeightMarkerOffset() + heightNum, COLOUR_LIGHT_BLUE);
 
                 PaintAddImageAsParent(session, imageId, { 16, 16, height + ax + 3 }, { { 1000, 1000, 2047 }, { 1, 1, 0 } });
