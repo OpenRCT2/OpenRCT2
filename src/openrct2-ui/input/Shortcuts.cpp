@@ -549,7 +549,7 @@ static void ShortcutIncreaseElementHeight()
     if (w != nullptr)
     {
         int action = -1;
-        switch (w->tileInspectorPage)
+        switch (EnumValue(w->tileInspectorPage))
         {
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SURFACE:
                 action = WC_TILE_INSPECTOR__WIDX_SURFACE_SPINNER_HEIGHT_INCREASE;
@@ -575,8 +575,6 @@ static void ShortcutIncreaseElementHeight()
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_BANNER:
                 action = WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_INCREASE;
                 break;
-            case TileInspectorPage::Default:
-                break;
         }
         if (action != -1 && !WidgetIsDisabled(*w, action) && w->widgets[action].type != WindowWidgetType::Empty)
             WindowEventMouseDownCall(w, action);
@@ -590,7 +588,7 @@ static void ShortcutDecreaseElementHeight()
     if (w != nullptr)
     {
         int action = -1;
-        switch (w->tileInspectorPage)
+        switch (EnumValue(w->tileInspectorPage))
         {
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SURFACE:
                 action = WC_TILE_INSPECTOR__WIDX_SURFACE_SPINNER_HEIGHT_DECREASE;
@@ -615,8 +613,6 @@ static void ShortcutDecreaseElementHeight()
                 break;
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_BANNER:
                 action = WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_DECREASE;
-                break;
-            case TileInspectorPage::Default:
                 break;
         }
         if (action != -1 && !WidgetIsDisabled(*w, action) && w->widgets[action].type != WindowWidgetType::Empty)

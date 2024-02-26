@@ -9,8 +9,9 @@
 
 #pragma once
 
-#include "../common.h"
-#include "../interface/Window.h"
+#include <cstdint>
+
+struct TileCoordsXY;
 
 enum class TileInspectorPage : int16_t
 {
