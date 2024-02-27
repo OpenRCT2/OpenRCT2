@@ -104,11 +104,11 @@ private:
             return firstStrId;
         }
 
-        bool operator==(const FilterArguments& other)
+        bool operator==(const FilterArguments& other) const
         {
             return std::memcmp(args, other.args, sizeof(args)) == 0;
         }
-        bool operator!=(const FilterArguments& other)
+        bool operator!=(const FilterArguments& other) const
         {
             return !(*this == other);
         }
