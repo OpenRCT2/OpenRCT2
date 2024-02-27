@@ -15,13 +15,6 @@ jobs:
     container: openrct2/openrct2-build:13-jammy
     steps:
     - uses: actions/checkout@v4
-    - name: ccache
-      uses: hendrikmuhs/ccache-action@v1
-      with:
-          key: linux-clang
-    - name: Setup CCache environment
-      run: |
-        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
     - uses: ZehMatt/clang-tidy-annotations@v1
       with:
         build_dir: 'build'
