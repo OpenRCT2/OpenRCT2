@@ -25,6 +25,8 @@
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
 
+using namespace OpenRCT2;
+
 LandBuyRightsAction::LandBuyRightsAction(const MapRange& range, LandBuyRightSetting setting)
     : _range(range)
     , _setting(setting)
@@ -164,7 +166,7 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                 uint16_t baseZ = surfaceElement->GetBaseZ();
                 MapInvalidateTile({ loc, baseZ, baseZ + 16 });
             }
-            res.Cost = OpenRCT2::GetGameState().ConstructionRightsPrice;
+            res.Cost = GetGameState().ConstructionRightsPrice;
             return res;
 
         default:
