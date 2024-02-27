@@ -886,7 +886,7 @@ private:
                 }
                 break;
             case WIDX_DISPLAY_SETTINGS_DROPDOWN:
-                if (dropdownIndex == 8)
+                if (dropdownIndex == 8 && gConfigGeneral.MaxFPS != -1)
                 {
                     gConfigGeneral.MaxFPS = -1;
                     DrawingEngineSetVSync(true);
@@ -894,7 +894,7 @@ private:
                     Invalidate();
                     break;
                 }
-                if (dropdownIndex == 9)
+                if (dropdownIndex == 9 && gConfigGeneral.MaxFPS != 0)
                 {
                     gConfigGeneral.MaxFPS = 0;
                     DrawingEngineSetVSync(false);
