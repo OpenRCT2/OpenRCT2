@@ -40,6 +40,7 @@ namespace OpenRCT2
         uint32_t ParkSize;
         money64 ParkValue;
         money64 ParkValueHistory[FINANCE_GRAPH_SIZE];
+        money64 CompanyValue;
         uint8_t ParkRatingHistory[32];
         ClimateType Climate;
         ClimateState ClimateCurrent;
@@ -79,6 +80,9 @@ namespace OpenRCT2
         std::vector<Banner> Banners;
         // Ride storage for all the rides in the park, rides with RideId::Null are considered free.
         std::array<Ride, OpenRCT2::Limits::kMaxRidesInPark> Rides{};
+        std::vector<TileElement> TileElements;
+
+        std::vector<ScenerySelection> RestrictedScenery;
 
         News::ItemQueues NewsItems;
 
@@ -98,6 +102,10 @@ namespace OpenRCT2
         std::vector<ResearchItem> ResearchItemsUninvented;
         std::vector<ResearchItem> ResearchItemsInvented;
         uint8_t ResearchUncompletedCategories;
+
+        ScreenCoordsXY SavedView;
+        uint8_t SavedViewRotation;
+        ZoomLevel SavedViewZoom;
 
         /**
          * Probability out of 65535, of gaining a new guest per game tick.
