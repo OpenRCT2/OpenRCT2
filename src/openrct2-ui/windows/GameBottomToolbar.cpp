@@ -480,7 +480,7 @@ public:
                 break;
             case WIDX_PARK_RATING:
                 ft.Add<int16_t>(gameState.ParkRating);
-                ft.Add<money64>(gCompanyValue);
+                ft.Add<money64>(gameState.CompanyValue);
                 break;
         }
         return { fallback, ft };
