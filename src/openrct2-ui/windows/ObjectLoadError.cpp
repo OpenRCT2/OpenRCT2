@@ -42,11 +42,11 @@ private:
         size_t Count{};
         size_t Total{};
 
-        bool operator==(const DownloadStatusInfo& rhs)
+        bool operator==(const DownloadStatusInfo& rhs) const
         {
             return Name == rhs.Name && Source == rhs.Source && Count == rhs.Count && Total == rhs.Total;
         }
-        bool operator!=(const DownloadStatusInfo& rhs)
+        bool operator!=(const DownloadStatusInfo& rhs) const
         {
             return !(*this == rhs);
         }
