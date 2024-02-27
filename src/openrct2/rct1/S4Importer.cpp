@@ -1393,7 +1393,7 @@ namespace RCT1
         {
             gameState.ParkEntranceFee = _s4.ParkEntranceFee;
             gLandPrice = ToMoney64(_s4.LandPrice);
-            gConstructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
+            gameState.ConstructionRightsPrice = ToMoney64(_s4.ConstructionRightsPrice);
 
             gameState.Cash = ToMoney64(_s4.Cash);
             gameState.BankLoan = ToMoney64(_s4.Loan);

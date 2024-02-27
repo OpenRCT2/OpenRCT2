@@ -673,7 +673,8 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         else if (argv[0] == "construction_rights_cost")
         {
             console.WriteFormatLine(
-                "construction_rights_cost %d.%d0", gConstructionRightsPrice / 10, gConstructionRightsPrice % 10);
+                "construction_rights_cost %d.%d0", gameState.ConstructionRightsPrice / 10,
+                gameState.ConstructionRightsPrice % 10);
         }
         else if (argv[0] == "climate")
         {

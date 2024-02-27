@@ -542,12 +542,12 @@ namespace OpenRCT2
                     cs.ReadWrite(tempLandPrice);
                     cs.ReadWrite(tempConstructionRightPrice);
                     gLandPrice = ToMoney64(tempLandPrice);
-                    gConstructionRightsPrice = ToMoney64(tempConstructionRightPrice);
+                    gameState.ConstructionRightsPrice = ToMoney64(tempConstructionRightPrice);
                 }
                 else
                 {
                     cs.ReadWrite(gLandPrice);
-                    cs.ReadWrite(gConstructionRightsPrice);
+                    cs.ReadWrite(gameState.ConstructionRightsPrice);
                 }
                 cs.ReadWrite(gGrassSceneryTileLoopPosition);
                 cs.ReadWrite(gWidePathTileLoopPosition);

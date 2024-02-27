@@ -253,12 +253,12 @@ namespace OpenRCT2::Scripting
 
     money64 ScPark::constructionRightsPrice_get() const
     {
-        return gConstructionRightsPrice;
+        return GetGameState().ConstructionRightsPrice;
     }
     void ScPark::constructionRightsPrice_set(money64 value)
     {
         ThrowIfGameStateNotMutable();
-        gConstructionRightsPrice = value;
+        GetGameState().ConstructionRightsPrice = value;
     }
 
     int16_t ScPark::casualtyPenalty_get() const

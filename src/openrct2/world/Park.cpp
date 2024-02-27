@@ -48,7 +48,6 @@
 using namespace OpenRCT2;
 
 money64 gLandPrice;
-money64 gConstructionRightsPrice;
 
 int16_t gParkRatingCasualtyPenalty;
 uint32_t gGuestsInParkHistory[32];
@@ -275,7 +274,7 @@ void Park::Initialise()
     gameState.ScenarioObjective.Year = 4;
     gameState.ScenarioObjective.NumGuests = 1000;
     gLandPrice = 90.00_GBP;
-    gConstructionRightsPrice = 40.00_GBP;
+    gameState.ConstructionRightsPrice = 40.00_GBP;
     gameState.ParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
     ResetHistories();
     FinanceResetHistory();

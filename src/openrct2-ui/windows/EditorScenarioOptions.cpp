@@ -1031,10 +1031,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE:
-                if (gConstructionRightsPrice < 200.00_GBP)
+                if (gameState.ConstructionRightsPrice < 200.00_GBP)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::CostToBuyConstructionRights, gConstructionRightsPrice + 1.00_GBP);
+                        ScenarioSetSetting::CostToBuyConstructionRights, gameState.ConstructionRightsPrice + 1.00_GBP);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -1044,10 +1044,10 @@ private:
                 Invalidate();
                 break;
             case WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE:
-                if (gConstructionRightsPrice > 5.00_GBP)
+                if (gameState.ConstructionRightsPrice > 5.00_GBP)
                 {
                     auto scenarioSetSetting = ScenarioSetSettingAction(
-                        ScenarioSetSetting::CostToBuyConstructionRights, gConstructionRightsPrice - 1.00_GBP);
+                        ScenarioSetSetting::CostToBuyConstructionRights, gameState.ConstructionRightsPrice - 1.00_GBP);
                     GameActions::Execute(&scenarioSetSetting);
                 }
                 else
@@ -1230,7 +1230,7 @@ private:
             screenCoords = windowPos
                 + ScreenCoordsXY{ constructionRightsCostWidget.left + 1, constructionRightsCostWidget.top };
             auto ft = Formatter();
-            ft.Add<money64>(gConstructionRightsPrice);
+            ft.Add<money64>(gameState.ConstructionRightsPrice);
             DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, ft);
         }
 
