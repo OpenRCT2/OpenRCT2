@@ -60,7 +60,7 @@ int16_t gSceneryCtrlPressZ;
 
 money64 gClearSceneryCost;
 
-static std::vector<ScenerySelection> _restrictedScenery;
+using namespace OpenRCT2;
 
 // rct2: 0x009A3E74
 const CoordsXY SceneryQuadrantOffsets[] = {
@@ -373,17 +373,19 @@ static bool IsSceneryEntryValid(const ScenerySelection& item)
 
 bool IsSceneryItemRestricted(const ScenerySelection& item)
 {
-    return std::find(std::begin(_restrictedScenery), std::end(_restrictedScenery), item) != std::end(_restrictedScenery);
+    auto& gameState = GetGameState();
+    return std::find(std::begin(gameState.RestrictedScenery), std::end(gameState.RestrictedScenery), item)
+        != std::end(gameState.RestrictedScenery);
 }
 
 void ClearRestrictedScenery()
 {
-    _restrictedScenery.clear();
+    GetGameState().RestrictedScenery.clear();
 }
 
 std::vector<ScenerySelection>& GetRestrictedScenery()
 {
-    return _restrictedScenery;
+    return GetGameState().RestrictedScenery;
 }
 
 static std::vector<ScenerySelection> GetAllMiscScenery()
@@ -418,16 +420,19 @@ static std::vector<ScenerySelection> GetAllMiscScenery()
 
 void RestrictAllMiscScenery()
 {
+    auto& gameState = GetGameState();
     auto miscScenery = GetAllMiscScenery();
-    _restrictedScenery.insert(_restrictedScenery.begin(), miscScenery.begin(), miscScenery.end());
+    gameState.RestrictedScenery.insert(gameState.RestrictedScenery.begin(), miscScenery.begin(), miscScenery.end());
 }
 
 void MarkAllUnrestrictedSceneryAsInvented()
 {
+    auto& gameState = GetGameState();
     auto miscScenery = GetAllMiscScenery();
     for (const auto& sceneryItem : miscScenery)
     {
-        if (std::find(_restrictedScenery.begin(), _restrictedScenery.end(), sceneryItem) == _restrictedScenery.end())
+        if (std::find(gameState.RestrictedScenery.begin(), gameState.RestrictedScenery.end(), sceneryItem)
+            == gameState.RestrictedScenery.end())
         {
             ScenerySetInvented(sceneryItem);
         }

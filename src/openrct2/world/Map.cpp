@@ -106,7 +106,6 @@ uint32_t gLandRemainingConstructionSales;
 bool gMapLandRightsUpdateSuccess;
 
 static TilePointerIndex<TileElement> _tileIndex;
-static std::vector<TileElement> _tileElements;
 static TilePointerIndex<TileElement> _tileIndexStash;
 static std::vector<TileElement> _tileElementsStash;
 static size_t _tileElementsInUse;
@@ -116,8 +115,9 @@ static int32_t _currentRotationStash;
 
 void StashMap()
 {
+    auto& gameState = GetGameState();
     _tileIndexStash = std::move(_tileIndex);
-    _tileElementsStash = std::move(_tileElements);
+    _tileElementsStash = std::move(gameState.TileElements);
     _mapSizeStash = GetGameState().MapSize;
     _currentRotationStash = gCurrentRotation;
     _tileElementsInUseStash = _tileElementsInUse;
@@ -125,8 +125,9 @@ void StashMap()
 
 void UnstashMap()
 {
+    auto& gameState = GetGameState();
     _tileIndex = std::move(_tileIndexStash);
-    _tileElements = std::move(_tileElementsStash);
+    gameState.TileElements = std::move(_tileElementsStash);
     GetGameState().MapSize = _mapSizeStash;
     gCurrentRotation = _currentRotationStash;
     _tileElementsInUse = _tileElementsInUseStash;
@@ -150,14 +151,16 @@ CoordsXY GetMapSizeMaxXY()
 
 const std::vector<TileElement>& GetTileElements()
 {
-    return _tileElements;
+    return GetGameState().TileElements;
 }
 
 void SetTileElements(std::vector<TileElement>&& tileElements)
 {
-    _tileElements = std::move(tileElements);
-    _tileIndex = TilePointerIndex<TileElement>(MAXIMUM_MAP_SIZE_TECHNICAL, _tileElements.data(), _tileElements.size());
-    _tileElementsInUse = _tileElements.size();
+    auto& gameState = GetGameState();
+    gameState.TileElements = std::move(tileElements);
+    _tileIndex = TilePointerIndex<TileElement>(
+        MAXIMUM_MAP_SIZE_TECHNICAL, gameState.TileElements.data(), gameState.TileElements.size());
+    _tileElementsInUse = gameState.TileElements.size();
 }
 
 static TileElement GetDefaultSurfaceElement()
@@ -180,7 +183,7 @@ static TileElement GetDefaultSurfaceElement()
 std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts()
 {
     std::vector<TileElement> newElements;
-    newElements.reserve(std::max(MIN_TILE_ELEMENTS, _tileElements.size()));
+    newElements.reserve(std::max(MIN_TILE_ELEMENTS, GetGameState().TileElements.size()));
     for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
@@ -245,7 +248,7 @@ static void ReorganiseTileElements(size_t capacity)
 
 void ReorganiseTileElements()
 {
-    ReorganiseTileElements(_tileElements.size());
+    ReorganiseTileElements(GetGameState().TileElements.size());
 }
 
 static bool MapCheckFreeElementsAndReorganise(size_t numElementsOnTile, size_t numNewElements)
@@ -256,19 +259,20 @@ static bool MapCheckFreeElementsAndReorganise(size_t numElementsOnTile, size_t n
         return false;
     }
 
+    auto& gameState = GetGameState();
     auto totalElementsRequired = numElementsOnTile + numNewElements;
-    auto freeElements = _tileElements.capacity() - _tileElements.size();
+    auto freeElements = gameState.TileElements.capacity() - gameState.TileElements.size();
     if (freeElements >= totalElementsRequired)
     {
         return true;
     }
 
     // if space issue is due to fragmentation then Reorg Tiles without increasing capacity
-    if (_tileElements.size() > totalElementsRequired + _tileElementsInUse)
+    if (gameState.TileElements.size() > totalElementsRequired + _tileElementsInUse)
     {
         ReorganiseTileElements();
         // This check is not expected to fail
-        freeElements = _tileElements.capacity() - _tileElements.size();
+        freeElements = gameState.TileElements.capacity() - gameState.TileElements.size();
         if (freeElements >= totalElementsRequired)
         {
             return true;
@@ -276,7 +280,7 @@ static bool MapCheckFreeElementsAndReorganise(size_t numElementsOnTile, size_t n
     }
 
     // Capacity must increase to handle the space (Note capacity can go above MAX_TILE_ELEMENTS)
-    auto newCapacity = _tileElements.capacity() * 2;
+    auto newCapacity = gameState.TileElements.capacity() * 2;
     ReorganiseTileElements(newCapacity);
     return true;
 }
@@ -524,7 +528,8 @@ void MapCountRemainingLandRights()
  */
 void MapStripGhostFlagFromElements()
 {
-    for (auto& element : _tileElements)
+    auto& gameState = GetGameState();
+    for (auto& element : gameState.TileElements)
     {
         element.SetGhost(false);
     }
@@ -1033,9 +1038,10 @@ void TileElementRemove(TileElement* tileElement)
     (tileElement - 1)->SetLastForTile(true);
     tileElement->BaseHeight = MAX_ELEMENT_HEIGHT;
     _tileElementsInUse--;
-    if (tileElement == &_tileElements.back())
+    auto& gameState = GetGameState();
+    if (tileElement == &gameState.TileElements.back())
     {
-        _tileElements.pop_back();
+        gameState.TileElements.pop_back();
     }
 }
 
@@ -1160,10 +1166,11 @@ static TileElement* AllocateTileElements(size_t numElementsOnTile, size_t numNew
         return nullptr;
     }
 
-    auto oldSize = _tileElements.size();
-    _tileElements.resize(_tileElements.size() + numElementsOnTile + numNewElements);
+    auto& gameState = GetGameState();
+    auto oldSize = gameState.TileElements.size();
+    gameState.TileElements.resize(gameState.TileElements.size() + numElementsOnTile + numNewElements);
     _tileElementsInUse += numNewElements;
-    return &_tileElements[oldSize];
+    return &gameState.TileElements[oldSize];
 }
 
 /**
