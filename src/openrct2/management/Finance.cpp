@@ -236,7 +236,7 @@ void FinanceInit()
 
     gameState.BankLoanInterestRate = 10;
     gameState.ParkValue = 0;
-    gCompanyValue = 0;
+    gameState.CompanyValue = 0;
     gameState.ScenarioCompletedCompanyValue = kMoney64Undefined;
     gameState.TotalAdmissions = 0;
     gameState.TotalIncomeFromAdmissions = 0;

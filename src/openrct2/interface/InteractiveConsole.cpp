@@ -565,7 +565,7 @@ static int32_t ConsoleCommandGet(InteractiveConsole& console, const arguments_t&
         }
         else if (argv[0] == "company_value")
         {
-            console.WriteFormatLine("company_value %d", gCompanyValue / 10);
+            console.WriteFormatLine("company_value %d", gameState.CompanyValue / 10);
         }
         else if (argv[0] == "money")
         {

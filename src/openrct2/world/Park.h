@@ -95,8 +95,6 @@ namespace OpenRCT2
 extern money64 gLandPrice;
 extern money64 gConstructionRightsPrice;
 
-extern money64 gCompanyValue;
-
 extern int16_t gParkRatingCasualtyPenalty;
 extern uint32_t gGuestsInParkHistory[32];
 

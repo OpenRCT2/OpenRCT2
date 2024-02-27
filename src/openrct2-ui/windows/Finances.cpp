@@ -595,7 +595,7 @@ public:
             ft.Add<money64>(gameState.ParkValue);
             DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, 279 }, STR_PARK_VALUE_LABEL, ft);
             ft = Formatter();
-            ft.Add<money64>(gCompanyValue);
+            ft.Add<money64>(gameState.CompanyValue);
             DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 280, 294 }, STR_COMPANY_VALUE_LABEL, ft);
         }
     }
