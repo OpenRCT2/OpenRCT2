@@ -10,6 +10,7 @@
 #include "LandBuyRightsAction.h"
 
 #include "../Context.h"
+#include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../actions/LandSetHeightAction.h"
 #include "../audio/audio.h"
@@ -163,7 +164,7 @@ GameActions::Result LandBuyRightsAction::MapBuyLandRightsForTile(const CoordsXY&
                 uint16_t baseZ = surfaceElement->GetBaseZ();
                 MapInvalidateTile({ loc, baseZ, baseZ + 16 });
             }
-            res.Cost = gConstructionRightsPrice;
+            res.Cost = OpenRCT2::GetGameState().ConstructionRightsPrice;
             return res;
 
         default:
