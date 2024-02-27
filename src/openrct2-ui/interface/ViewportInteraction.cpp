@@ -364,8 +364,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             else
             {
                 // FIXME: Why does it *2 the value?
-                if (!GetGameState().Cheats.SandboxMode
-                    && !MapIsLocationOwned({ info.Loc, tileElement->GetBaseZ() * 2 }))
+                if (!GetGameState().Cheats.SandboxMode && !MapIsLocationOwned({ info.Loc, tileElement->GetBaseZ() * 2 }))
                 {
                     info.SpriteType = ViewportInteractionItem::None;
                     return info;
