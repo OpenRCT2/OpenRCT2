@@ -12,7 +12,7 @@ on:
 jobs:
   clang-tidy-check:
     runs-on: ubuntu-latest
-    container: openrct2/openrct2-build:12-jammy
+    container: openrct2/openrct2-build:13-jammy
     steps:
     - uses: actions/checkout@v4
     - name: ccache
@@ -22,10 +22,6 @@ jobs:
     - name: Setup CCache environment
       run: |
         export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
-    - name: Get clang-tidy
-      run: |
-        apt-get update
-        apt-get install -y clang-tidy
     - uses: ZehMatt/clang-tidy-annotations@v1
       with:
         build_dir: 'build'
