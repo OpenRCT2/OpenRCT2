@@ -42,6 +42,7 @@ namespace OpenRCT2
         money64 ParkValueHistory[FINANCE_GRAPH_SIZE];
         money64 CompanyValue;
         money64 ConstructionRightsPrice;
+        money64 CurrentExpenditure;
         uint8_t ParkRatingHistory[32];
         ClimateType Climate;
         ClimateState ClimateCurrent;

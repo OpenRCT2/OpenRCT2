@@ -1420,7 +1420,7 @@ namespace RCT1
                     gExpenditureTable[i][j] = ToMoney64(_s4.Expenditure[i][j]);
                 }
             }
-            gCurrentExpenditure = ToMoney64(_s4.TotalExpenditure);
+            gameState.CurrentExpenditure = ToMoney64(_s4.TotalExpenditure);
 
             gameState.ScenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s4.CompletedCompanyValue);
             gameState.TotalAdmissions = _s4.NumAdmissions;
