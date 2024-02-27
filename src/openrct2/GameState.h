@@ -11,6 +11,7 @@
 
 #include "Date.h"
 #include "Limits.h"
+#include "interface/ZoomLevel.h"
 #include "management/Finance.h"
 #include "management/NewsItem.h"
 #include "ride/Ride.h"
