@@ -1036,6 +1036,11 @@ private:
             footpathLoc, slope, type, gFootpathSelection.Railings, _footpathConstructDirection, constructFlags);
 
         footpathPlaceAction.SetCallback([footpathLoc](const GameAction* ga, const GameActions::Result* result) {
+            if (result->Error == GameActions::Status::Ok)
+            {
+                Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+            }
+
             auto* self = static_cast<FootpathWindow*>(WindowFindByClass(WindowClass::Footpath));
             if (self == nullptr)
             {
@@ -1044,8 +1049,6 @@ private:
 
             if (result->Error == GameActions::Status::Ok)
             {
-                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
-
                 if (gFootpathConstructSlope == 0)
                 {
                     self->_footpathConstructValidDirections = INVALID_DIRECTION;
