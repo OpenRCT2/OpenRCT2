@@ -212,12 +212,11 @@ constexpr uint8_t COLOUR_NUM_NORMAL = 54;
 #define TEXT_COLOUR_254 (254)
 #define TEXT_COLOUR_255 (255)
 
-enum
+enum : colour_t
 {
     COLOUR_FLAG_OUTLINE = (1 << 5),
     COLOUR_FLAG_INSET = (1 << 6), // 64, 0x40
     COLOUR_FLAG_TRANSLUCENT = (1 << 7),
-    COLOUR_FLAG_8 = (1 << 8)
 };
 
 #define TRANSLUCENT(x) ((x) | static_cast<uint8_t>(COLOUR_FLAG_TRANSLUCENT))
