@@ -10,8 +10,10 @@
 #pragma once
 
 #include "Date.h"
+#include "Limits.h"
 #include "management/Finance.h"
 #include "management/NewsItem.h"
+#include "ride/Ride.h"
 #include "scenario/Scenario.h"
 #include "world/Banner.h"
 #include "world/Climate.h"
@@ -74,6 +76,8 @@ namespace OpenRCT2
         std::string ScenarioCompletedBy;
 
         std::vector<Banner> Banners;
+        // Ride storage for all the rides in the park, rides with RideId::Null are considered free.
+        std::array<Ride, OpenRCT2::Limits::kMaxRidesInPark> Rides{};
 
         News::ItemQueues NewsItems;
 
