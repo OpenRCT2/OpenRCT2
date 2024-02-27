@@ -3230,9 +3230,10 @@ public:
             // Draw an overlay if clearance checks are disabled
             if (gCheatsDisableClearanceChecks)
             {
+                auto colour = static_cast<colour_t>(EnumValue(COLOUR_DARK_ORANGE) | EnumValue(COLOUR_FLAG_OUTLINE));
                 DrawTextBasic(
                     dpi, screenPos + ScreenCoordsXY{ 26, 2 }, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, {},
-                    { COLOUR_DARK_ORANGE | COLOUR_FLAG_OUTLINE, TextAlignment::RIGHT });
+                    { colour, TextAlignment::RIGHT });
             }
         }
 
@@ -3295,9 +3296,8 @@ public:
             // Draw number of players.
             auto ft = Formatter();
             ft.Add<int32_t>(NetworkGetNumVisiblePlayers());
-            DrawTextBasic(
-                dpi, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft,
-                { COLOUR_WHITE | COLOUR_FLAG_OUTLINE, TextAlignment::RIGHT });
+            auto colour = static_cast<colour_t>(EnumValue(COLOUR_WHITE) | EnumValue(COLOUR_FLAG_OUTLINE));
+            DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, { colour, TextAlignment::RIGHT });
         }
     }
 };
