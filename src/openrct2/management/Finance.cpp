@@ -39,7 +39,6 @@ static constexpr int32_t dword_988E60[static_cast<int32_t>(ExpenditureType::Coun
     1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0,
 };
 
-money64 gCurrentExpenditure;
 money64 gCurrentProfit;
 money64 gHistoricalProfit;
 money64 gCashHistory[FINANCE_GRAPH_SIZE];
@@ -88,7 +87,7 @@ void FinancePayment(money64 amount, ExpenditureType type)
     if (dword_988E60[static_cast<int32_t>(type)] & 1)
     {
         // Cumulative amount of money spent this day
-        gCurrentExpenditure -= amount;
+        gameState.CurrentExpenditure -= amount;
     }
 
     auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
@@ -220,7 +219,7 @@ void FinanceInit()
         gExpenditureTable[0][i] = 0;
     }
 
-    gCurrentExpenditure = 0;
+    gameState.CurrentExpenditure = 0;
     gCurrentProfit = 0;
 
     gameState.WeeklyProfitAverageDividend = 0;
@@ -250,12 +249,12 @@ void FinanceInit()
 void FinanceUpdateDailyProfit()
 {
     PROFILED_FUNCTION();
+    auto& gameState = GetGameState();
 
-    gCurrentProfit = 7 * gCurrentExpenditure;
-    gCurrentExpenditure = 0; // Reset daily expenditure
+    gCurrentProfit = 7 * gameState.CurrentExpenditure;
+    gameState.CurrentExpenditure = 0; // Reset daily expenditure
 
     money64 current_profit = 0;
-    auto& gameState = GetGameState();
 
     if (!(gameState.ParkFlags & PARK_FLAGS_NO_MONEY))
     {
