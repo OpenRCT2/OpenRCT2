@@ -364,12 +364,6 @@ struct RideTypeDescriptor
     bool SupportsRideMode(RideMode rideMode) const;
 };
 
-#ifdef _WIN32
-#    define SET_FIELD(fieldname, ...) __VA_ARGS__
-#else
-#    define SET_FIELD(fieldname, ...) .fieldname = __VA_ARGS__
-#endif
-
 extern const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT];
 
 enum
@@ -523,36 +517,36 @@ extern const StringId RideModeNames[static_cast<uint8_t>(RideMode::Count)];
 // clang-format off
 constexpr RideTypeDescriptor DummyRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
-    SET_FIELD(Category, RIDE_CATEGORY_NONE),
-    SET_FIELD(EnabledTrackPieces, {}),
-    SET_FIELD(ExtraTrackPieces, {}),
-    SET_FIELD(CoveredTrackPieces, {}),
-    SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunctions, TrackDrawerDescriptor(nullptr)),
-    SET_FIELD(Flags, 0),
-    SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
-    SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
-    SET_FIELD(Naming, { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN }),
-    SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
-    SET_FIELD(EnumName, "(INVALID)"),
-    SET_FIELD(AvailableBreakdowns, 0),
-    SET_FIELD(Heights, { 12, 64, 0, 0, }),
-    SET_FIELD(MaxMass, 255),
-    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsMultipliers, { 0, 0, 0 }),
-    SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 0.00_GBP, 0.00_GBP, 1 }),
-    SET_FIELD(DefaultPrices, { 20, 20 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
-    SET_FIELD(PhotoItem, ShopItem::Photo),
-    SET_FIELD(BonusValue, 0),
-    SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
-    SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
-    SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(Name, "invalid"),
-	SET_FIELD(RatingsData,
+    .AlternateType = RIDE_TYPE_NULL,
+    .Category = RIDE_CATEGORY_NONE,
+    .EnabledTrackPieces = {},
+    .ExtraTrackPieces = {},
+    .CoveredTrackPieces = {},
+    .StartTrackPiece = TrackElemType::EndStation,
+    .TrackPaintFunctions = TrackDrawerDescriptor(nullptr),
+    .Flags = 0,
+    .RideModes = EnumsToFlags(RideMode::ContinuousCircuit),
+    .DefaultMode = RideMode::ContinuousCircuit,
+    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
+    .Naming = { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN },
+    .NameConvention = { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station },
+    .EnumName = "(INVALID)",
+    .AvailableBreakdowns = 0,
+    .Heights = { 12, 64, 0, 0, },
+    .MaxMass = 255,
+    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .RatingsMultipliers = { 0, 0, 0 },
+    .UpkeepCosts = { 50, 1, 0, 0, 0, 0 },
+    .BuildCosts = { 0.00_GBP, 0.00_GBP, 1 },
+    .DefaultPrices = { 20, 20 },
+    .DefaultMusic = MUSIC_OBJECT_GENTLE,
+    .PhotoItem = ShopItem::Photo,
+    .BonusValue = 0,
+    .ColourPresets = DEFAULT_FLAT_RIDE_COLOUR_PRESET,
+    .ColourPreview = { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) },
+    .ColourKey = RideColourKey::Ride,
+    .Name = "invalid",
+	.RatingsData = 
     {
         RatingsCalculationType::FlatRide,
         { RIDE_RATING(1, 00), RIDE_RATING(1, 00), RIDE_RATING(1, 00) },
@@ -562,14 +556,14 @@ constexpr RideTypeDescriptor DummyRTD =
         {
             { RatingsModifierType::NoModifier, 0, 0, 0, 0 },
         },
-    }),
-    SET_FIELD(UpdateRotating, UpdateRotatingDefault),
-    SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
-    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
-    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
-    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
-    SET_FIELD(Classification, RideClassification::Ride),
-    SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceDefault),
+    },
+    .UpdateRotating = UpdateRotatingDefault,
+    .LightFXAddLightsMagicVehicle = nullptr,
+    .StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel,
+    .DesignCreateMode = TrackDesignCreateMode::Default,
+    .MusicUpdateFunction = DefaultMusicUpdate,
+    .Classification = RideClassification::Ride,
+    .UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault,
 };
 // clang-format on
 

@@ -17,43 +17,43 @@
 // clang-format off
 constexpr RideTypeDescriptor RotoDropRTD =
 {
-    SET_FIELD(AlternateType, RIDE_TYPE_NULL),
-    SET_FIELD(Category, RIDE_CATEGORY_THRILL),
-    SET_FIELD(EnabledTrackPieces, {TRACK_TOWER_BASE}),
-    SET_FIELD(ExtraTrackPieces, {}),
-    SET_FIELD(CoveredTrackPieces, {}),
-    SET_FIELD(StartTrackPiece, TrackElemType::TowerBase),
-    SET_FIELD(TrackPaintFunctions, TrackDrawerDescriptor(GetTrackPaintFunctionRotoDrop)),
-    SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
+    .AlternateType = RIDE_TYPE_NULL,
+    .Category = RIDE_CATEGORY_THRILL,
+    .EnabledTrackPieces = {TRACK_TOWER_BASE},
+    .ExtraTrackPieces = {},
+    .CoveredTrackPieces = {},
+    .StartTrackPiece = TrackElemType::TowerBase,
+    .TrackPaintFunctions = TrackDrawerDescriptor(GetTrackPaintFunctionRotoDrop),
+    .Flags = RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
                      RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
                      RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
                      RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
-                     RIDE_TYPE_FLAG_SINGLE_SESSION | RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT),
-    SET_FIELD(RideModes, EnumsToFlags(RideMode::FreefallDrop)),
-    SET_FIELD(DefaultMode, RideMode::FreefallDrop),
-    SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
-    SET_FIELD(Naming, { STR_RIDE_NAME_ROTO_DROP, STR_RIDE_DESCRIPTION_ROTO_DROP }),
-    SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_ROTO_DROP)),
-    SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
-    SET_FIELD(Heights, { 255, 32, 3, 2, }),
-    SET_FIELD(MaxMass, 15),
-    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
-    SET_FIELD(RatingsMultipliers, { 50, 50, 10 }),
-    SET_FIELD(UpkeepCosts, { 50, 20, 0, 10, 0, 0 }),
-    SET_FIELD(BuildCosts, { 22.50_GBP, 0.00_GBP, 4, }),
-    SET_FIELD(DefaultPrices, { 20, 0 }),
-    SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
-    SET_FIELD(PhotoItem, ShopItem::Photo),
-    SET_FIELD(BonusValue, 45),
-    SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
+                     RIDE_TYPE_FLAG_SINGLE_SESSION | RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT,
+    .RideModes = EnumsToFlags(RideMode::FreefallDrop),
+    .DefaultMode = RideMode::FreefallDrop,
+    .OperatingSettings = { 0, 0, 0, 0, 0, 0 },
+    .Naming = { STR_RIDE_NAME_ROTO_DROP, STR_RIDE_DESCRIPTION_ROTO_DROP },
+    .NameConvention = { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station },
+    .EnumName = nameof(RIDE_TYPE_ROTO_DROP),
+    .AvailableBreakdowns = (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),
+    .Heights = { 255, 32, 3, 2, },
+    .MaxMass = 15,
+    .LiftData = { OpenRCT2::Audio::SoundId::Null, 5, 5 },
+    .RatingsMultipliers = { 50, 50, 10 },
+    .UpkeepCosts = { 50, 20, 0, 10, 0, 0 },
+    .BuildCosts = { 22.50_GBP, 0.00_GBP, 4, },
+    .DefaultPrices = { 20, 0 },
+    .DefaultMusic = MUSIC_OBJECT_ROCK_1,
+    .PhotoItem = ShopItem::Photo,
+    .BonusValue = 45,
+    .ColourPresets = TRACK_COLOUR_PRESETS(
         { COLOUR_BORDEAUX_RED, COLOUR_YELLOW, COLOUR_GREY },
         { COLOUR_BLACK, COLOUR_LIGHT_BLUE, COLOUR_GREY },
-    )),
-    SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_TRACK, SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_SUPPORTS }),
-    SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(Name, "roto_drop"),
-    SET_FIELD(RatingsData,
+    ),
+    .ColourPreview = { SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_TRACK, SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_SUPPORTS },
+    .ColourKey = RideColourKey::Ride,
+    .Name = "roto_drop",
+    .RatingsData = 
     {
         RatingsCalculationType::Normal,
         { RIDE_RATING(2, 80), RIDE_RATING(3, 50), RIDE_RATING(3, 50) },
@@ -65,6 +65,6 @@ constexpr RideTypeDescriptor RotoDropRTD =
             { RatingsModifierType::BonusScenery,     0, 25098, 0, 0 },
             { RatingsModifierType::BonusRotoDrop,    0, 0, 0, 0 },
         },
-    }),
+    },
 };
 // clang-format on
