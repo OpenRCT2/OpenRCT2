@@ -193,8 +193,10 @@ const CarEntry CableLiftVehicle = {
     .peep_loading_waypoint_segments = 0,
     .AnimationSpeed = 0,
     .AnimationFrames = 0,
-    .SteamEffect.Longitudinal = 0,
-    .SteamEffect.Vertical = 0
+    .SteamEffect = {
+        .Longitudinal = 0,
+        .Vertical = 0,
+    },
 };
 
 /* rct2: 0x009A0AA0 */
