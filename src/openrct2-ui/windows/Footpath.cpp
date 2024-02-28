@@ -1034,18 +1034,28 @@ private:
 
         auto footpathPlaceAction = FootpathPlaceAction(
             footpathLoc, slope, type, gFootpathSelection.Railings, _footpathConstructDirection, constructFlags);
-        footpathPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+
+        footpathPlaceAction.SetCallback([footpathLoc](const GameAction* ga, const GameActions::Result* result) {
             if (result->Error == GameActions::Status::Ok)
             {
-                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+                Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+            }
 
+            auto* self = static_cast<FootpathWindow*>(WindowFindByClass(WindowClass::Footpath));
+            if (self == nullptr)
+            {
+                return;
+            }
+
+            if (result->Error == GameActions::Status::Ok)
+            {
                 if (gFootpathConstructSlope == 0)
                 {
-                    _footpathConstructValidDirections = INVALID_DIRECTION;
+                    self->_footpathConstructValidDirections = INVALID_DIRECTION;
                 }
                 else
                 {
-                    _footpathConstructValidDirections = _footpathConstructDirection;
+                    self->_footpathConstructValidDirections = self->_footpathConstructDirection;
                 }
 
                 if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
@@ -1062,7 +1072,7 @@ private:
                     gFootpathConstructFromPosition.z += PATH_HEIGHT_STEP;
                 }
             }
-            WindowFootpathSetEnabledAndPressedWidgets();
+            self->WindowFootpathSetEnabledAndPressedWidgets();
         });
         GameActions::Execute(&footpathPlaceAction);
     }

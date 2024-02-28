@@ -135,7 +135,7 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 <details>
   <summary>Linux prerequisites</summary>
 
-  - gcc (>= 7.1) or clang (>= 8.0.0) (for C++17 support)
+  - gcc (>= 8.0) or clang (>= 10.0) (for C++20 support)
   - sdl2 (only for UI client)
   - freetype (can be disabled)
   - fontconfig (can be disabled)
