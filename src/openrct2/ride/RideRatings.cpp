@@ -1694,9 +1694,9 @@ static RatingTuple ride_ratings_get_sheltered_ratings(const Ride& ride)
 static RatingTuple ride_ratings_get_gforce_ratings(const Ride& ride)
 {
     RatingTuple result = {
-        /* .excitement = */ 0,
-        /* .intensity = */ 0,
-        /* .nausea = */ 0,
+        .Excitement = 0,
+        .Intensity = 0,
+        .Nausea = 0,
     };
 
     // Apply maximum positive G force factor
