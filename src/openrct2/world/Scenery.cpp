@@ -31,6 +31,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/PathAdditionEntry.h"
 #include "../object/SceneryGroupEntry.h"
+#include "../object/SceneryGroupObject.h"
 #include "../object/SmallSceneryEntry.h"
 #include "../object/WallSceneryEntry.h"
 #include "../scenario/Scenario.h"
@@ -386,6 +387,42 @@ void ClearRestrictedScenery()
 std::vector<ScenerySelection>& GetRestrictedScenery()
 {
     return GetGameState().RestrictedScenery;
+}
+
+void SetSceneryItemRestricted(const ScenerySelection& item, bool on)
+{
+    auto& gameState = GetGameState();
+    auto existingItem = std::find(std::begin(gameState.RestrictedScenery), std::end(gameState.RestrictedScenery), item);
+    const bool existingItemIsPresent = existingItem != std::end(gameState.RestrictedScenery);
+    if (on)
+    {
+        if (!existingItemIsPresent)
+        {
+            gameState.RestrictedScenery.push_back(item);
+        }
+    }
+    else
+    {
+        if (existingItemIsPresent)
+        {
+            gameState.RestrictedScenery.erase(existingItem);
+        }
+    }
+}
+
+bool ObjectTypeCanBeRestricted(ObjectType objectType)
+{
+    switch (objectType)
+    {
+        case ObjectType::SmallScenery:
+        case ObjectType::LargeScenery:
+        case ObjectType::Walls:
+        case ObjectType::Banners:
+        case ObjectType::PathAdditions:
+            return true;
+        default:
+            return false;
+    }
 }
 
 static std::vector<ScenerySelection> GetAllMiscScenery()
