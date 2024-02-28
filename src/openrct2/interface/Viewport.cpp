@@ -1595,8 +1595,8 @@ static bool IsSpriteInteractedWithPaletteSet(
                 .bits = dpi.bits,
                 .x = dpi.x >> 1,
                 .y = dpi.y >> 1,
-                .height = dpi.height,
                 .width = dpi.width,
+                .height = dpi.height,
                 .pitch = dpi.pitch,
                 .zoom_level = dpi.zoom_level - 1,
             };
