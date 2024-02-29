@@ -547,14 +547,14 @@ int16_t TileElementHeight(const CoordsXY& loc)
 {
     // Off the map
     if (!MapIsLocationValid(loc))
-        return kMinimumLandHeight_BIG;
+        return kMinimumLandZ;
 
     // Get the surface element for the tile
     auto surfaceElement = MapGetSurfaceElementAt(loc);
 
     if (surfaceElement == nullptr)
     {
-        return kMinimumLandHeight_BIG;
+        return kMinimumLandZ;
     }
 
     auto height = surfaceElement->GetBaseZ();
@@ -567,7 +567,7 @@ int16_t TileElementHeight(const CoordsXYZ& loc, uint8_t slope)
 {
     // Off the map
     if (!MapIsLocationValid(loc))
-        return kMinimumLandHeight_BIG;
+        return kMinimumLandZ;
 
     auto height = loc.z;
 
