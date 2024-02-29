@@ -1592,13 +1592,13 @@ static bool IsSpriteInteractedWithPaletteSet(
         {
             // TODO: SAR in dpi done with `>> 1`, in coordinates with `/ 2`
             DrawPixelInfo zoomed_dpi = {
-                /* .bits = */ dpi.bits,
-                /* .x = */ dpi.x >> 1,
-                /* .y = */ dpi.y >> 1,
-                /* .height = */ dpi.height,
-                /* .width = */ dpi.width,
-                /* .pitch = */ dpi.pitch,
-                /* .zoom_level = */ dpi.zoom_level - 1,
+                .bits = dpi.bits,
+                .x = dpi.x >> 1,
+                .y = dpi.y >> 1,
+                .width = dpi.width,
+                .height = dpi.height,
+                .pitch = dpi.pitch,
+                .zoom_level = dpi.zoom_level - 1,
             };
 
             auto zoomImageId = imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset);
