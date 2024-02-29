@@ -306,7 +306,7 @@ void VirtualFloorPaint(PaintSession& session)
         { 0, -COORDS_XY_STEP },
     };
 
-    if (_virtualFloorHeight < MINIMUM_LAND_HEIGHT)
+    if (_virtualFloorHeight < kMinimumLandHeight)
         return;
 
     uint8_t direction = session.CurrentRotation;

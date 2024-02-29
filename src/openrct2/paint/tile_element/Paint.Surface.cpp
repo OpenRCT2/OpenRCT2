@@ -593,8 +593,8 @@ static void ViewportSurfaceDrawTileSideBottom(
     if (neighbour.tile_element == nullptr || neighbourIsClippedAway)
     {
         // The neighbour tile doesn't exist or isn't drawn - assume minimum height to draw full edges
-        neighbourCornerHeight2 = MINIMUM_LAND_HEIGHT / 2;
-        neighbourCornerHeight1 = MINIMUM_LAND_HEIGHT / 2;
+        neighbourCornerHeight2 = kMinimumLandHeight / 2;
+        neighbourCornerHeight1 = kMinimumLandHeight / 2;
     }
 
     if (isWater && neighbour.tile_element != nullptr)

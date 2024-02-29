@@ -151,12 +151,12 @@ StringId WaterSetHeightAction::CheckParameters() const
         return STR_OFF_EDGE_OF_MAP;
     }
 
-    if (_height < MINIMUM_WATER_HEIGHT)
+    if (_height < kMinimumWaterHeight)
     {
         return STR_TOO_LOW;
     }
 
-    if (_height > MAXIMUM_WATER_HEIGHT)
+    if (_height > kMaximumWaterHeight)
     {
         return STR_TOO_HIGH;
     }
