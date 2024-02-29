@@ -475,7 +475,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_MONEY:
-                ft.Add<money64>(gCurrentProfit);
+                ft.Add<money64>(gameState.CurrentProfit);
                 ft.Add<money64>(gameState.ParkValue);
                 break;
             case WIDX_PARK_RATING:

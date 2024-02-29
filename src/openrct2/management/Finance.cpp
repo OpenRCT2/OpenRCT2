@@ -39,7 +39,6 @@ static constexpr int32_t dword_988E60[static_cast<int32_t>(ExpenditureType::Coun
     1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0,
 };
 
-money64 gCurrentProfit;
 money64 gHistoricalProfit;
 money64 gCashHistory[FINANCE_GRAPH_SIZE];
 money64 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
@@ -220,7 +219,7 @@ void FinanceInit()
     }
 
     gameState.CurrentExpenditure = 0;
-    gCurrentProfit = 0;
+    gameState.CurrentProfit = 0;
 
     gameState.WeeklyProfitAverageDividend = 0;
     gameState.WeeklyProfitAverageDivisor = 0;
@@ -251,7 +250,7 @@ void FinanceUpdateDailyProfit()
     PROFILED_FUNCTION();
     auto& gameState = GetGameState();
 
-    gCurrentProfit = 7 * gameState.CurrentExpenditure;
+    gameState.CurrentProfit = 7 * gameState.CurrentExpenditure;
     gameState.CurrentExpenditure = 0; // Reset daily expenditure
 
     money64 current_profit = 0;
@@ -285,10 +284,10 @@ void FinanceUpdateDailyProfit()
     // This is not equivalent to / 4 due to rounding of negative numbers
     current_profit = current_profit >> 2;
 
-    gCurrentProfit += current_profit;
+    gameState.CurrentProfit += current_profit;
 
     // These are related to weekly profit graph
-    gameState.WeeklyProfitAverageDividend += gCurrentProfit;
+    gameState.WeeklyProfitAverageDividend += gameState.CurrentProfit;
     gameState.WeeklyProfitAverageDivisor += 1;
 
     WindowInvalidateByClass(WindowClass::Finances);

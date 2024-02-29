@@ -1404,7 +1404,7 @@ namespace RCT1
 
             gameState.CompanyValue = ToMoney64(_s4.CompanyValue);
             gameState.ParkValue = CorrectRCT1ParkValue(_s4.ParkValue);
-            gCurrentProfit = ToMoney64(_s4.Profit);
+            gameState.CurrentProfit = ToMoney64(_s4.Profit);
 
             for (size_t i = 0; i < Limits::FinanceGraphSize; i++)
             {

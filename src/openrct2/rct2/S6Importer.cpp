@@ -357,7 +357,7 @@ namespace RCT2
             ImportMarketingCampaigns();
 
             gameState.CurrentExpenditure = ToMoney64(_s6.CurrentExpenditure);
-            gCurrentProfit = ToMoney64(_s6.CurrentProfit);
+            gameState.CurrentProfit = ToMoney64(_s6.CurrentProfit);
             gameState.WeeklyProfitAverageDividend = ToMoney64(_s6.WeeklyProfitAverageDividend);
             gameState.WeeklyProfitAverageDivisor = _s6.WeeklyProfitAverageDivisor;
             // Pad0135833A

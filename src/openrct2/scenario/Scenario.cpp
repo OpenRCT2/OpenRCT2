@@ -135,7 +135,7 @@ void ScenarioReset(GameState_t& gameState)
     gScenarioSavePath = Path::Combine(savePath, park.Name + u8".park");
 
     gameState.CurrentExpenditure = 0;
-    gCurrentProfit = 0;
+    gameState.CurrentProfit = 0;
     gameState.WeeklyProfitAverageDividend = 0;
     gameState.WeeklyProfitAverageDivisor = 0;
     gameState.TotalAdmissions = 0;
