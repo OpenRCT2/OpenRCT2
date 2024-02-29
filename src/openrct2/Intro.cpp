@@ -98,7 +98,7 @@ void IntroUpdate()
                 }
 
                 // Play the track friction sound
-                _soundChannel = CreateAudioChannel(SoundId::TrackFrictionBM, true, MIXER_VOLUME_MAX, 0.25f, 0.75);
+                _soundChannel = CreateAudioChannel(SoundId::TrackFrictionBM, true, kMixerVolumeMax, 0.25f, 0.75);
             }
 
             // Check if logo is off the screen...ish

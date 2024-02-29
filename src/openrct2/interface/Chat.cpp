@@ -232,7 +232,7 @@ void ChatAddHistory(std::string_view s)
     // Log to file (src only as logging does its own timestamp)
     NetworkAppendChatLog(s);
 
-    CreateAudioChannel(SoundId::NewsItem, 0, MIXER_VOLUME_MAX, 0.5f, 1.5f, true);
+    CreateAudioChannel(SoundId::NewsItem, 0, kMixerVolumeMax, 0.5f, 1.5f, true);
 }
 
 void ChatInput(enum ChatInput input)
