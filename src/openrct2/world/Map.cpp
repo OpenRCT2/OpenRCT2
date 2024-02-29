@@ -313,14 +313,15 @@ int32_t TileElementIteratorNext(TileElementIterator* it)
         return 1;
     }
 
-    if (it->y < (GetGameState().MapSize.y - 2))
+    auto& gameState = GetGameState();
+    if (it->y < (gameState.MapSize.y - 2))
     {
         it->y++;
         it->element = MapGetFirstElementAt(TileCoordsXY{ it->x, it->y });
         return 1;
     }
 
-    if (it->x < (GetGameState().MapSize.x - 2))
+    if (it->x < (gameState.MapSize.x - 2))
     {
         it->y = 1;
         it->x++;
