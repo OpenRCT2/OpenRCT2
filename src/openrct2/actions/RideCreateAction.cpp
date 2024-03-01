@@ -148,6 +148,10 @@ GameActions::Result RideCreateAction::Execute() const
         station.Exit.SetNull();
         station.TrainAtStation = RideStation::NO_TRAIN;
         station.QueueTime = 0;
+        station.SegmentLength = 0;
+        station.QueueLength = 0;
+        station.Length = 0;
+        station.Height = 0;
     }
 
     std::fill(std::begin(ride->vehicles), std::end(ride->vehicles), EntityId::GetNull());
