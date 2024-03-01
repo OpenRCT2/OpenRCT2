@@ -3689,6 +3689,10 @@ STR_6610    :Elemento di sentiero non trovato
 STR_6611    :Elemento di muro non trovato
 STR_6612    :Elemento cartello non trovato
 STR_6613    :Ricarica oggetto
+STR_6614    :Non è possibile modificare il prezzo di ingresso
+STR_6615    :Il tracciato su questa cella necessita acqua
+STR_6616    :Azione non valida per quel tipo di staff
+STR_6617    :Non è possibile scambiare l’elemento della cella con sé stesso
 
 
 #############
