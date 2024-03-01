@@ -3,6 +3,7 @@
 - Feature: [#20376] Add Ukrainian language.
 - Feature: [#20709] [Plugin] Plugins can now check metadata from all registered plugins.
 - Feature: [#21376] Add option to reload an object (for object developers).
+- Feature: [#21413, OpenSFX#19] Add log flume lift sound effect (when “chainlift” is enabled).
 - Feature: [#21455] Add option to control hidden scenery.
 - Improved: [#21356] Resize the title bar when moving between displays with different scaling factors on Windows systems.
 - Improved: [#21388] Tooltips will now show even when an error message is present.

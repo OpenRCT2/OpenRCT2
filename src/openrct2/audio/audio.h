@@ -130,6 +130,7 @@ namespace OpenRCT2::Audio
         CrowdAmbience,
         LiftRMC,
         TrackFrictionRMC,
+        LiftFlume,
         NoScream = 254,
         Null = 255
     };
