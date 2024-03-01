@@ -231,7 +231,7 @@ namespace RCT2
         {
             Initialise();
 
-            gEditorStep = _s6.Info.EditorStep;
+            gameState.EditorStep = _s6.Info.EditorStep;
             gameState.ScenarioCategory = static_cast<SCENARIO_CATEGORY>(_s6.Info.Category);
 
             // Some scenarios have their scenario details in UTF-8, due to earlier bugs in OpenRCT2.

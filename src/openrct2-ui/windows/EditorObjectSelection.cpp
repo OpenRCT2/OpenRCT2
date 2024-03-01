@@ -16,6 +16,7 @@
 #include <openrct2/Editor.h>
 #include <openrct2/EditorObjectSelectionSession.h>
 #include <openrct2/Game.h>
+#include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
 #include <openrct2/audio/audio.h>
@@ -40,6 +41,8 @@
 #include <openrct2/windows/Intent.h>
 #include <string>
 #include <vector>
+
+using namespace OpenRCT2;
 
 enum
 {
@@ -454,7 +457,7 @@ public:
                 if (_loadedObject != nullptr)
                 {
                     auto descriptor = _loadedObject->GetDescriptor();
-                    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+                    auto& objectManager = GetContext()->GetObjectManager();
                     auto entryIndex = objectManager.GetLoadedObjectEntryIndex(descriptor);
                     if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
                     {
@@ -604,7 +607,7 @@ public:
         Invalidate();
 
         const CursorState* state = ContextGetCursorState();
-        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, state->position.x);
+        Audio::Play(Audio::SoundId::Click1, 0, state->position.x);
 
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
@@ -619,9 +622,9 @@ public:
                 _loadedObject = nullptr;
             }
 
-            auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
+            auto& objRepository = GetContext()->GetObjectRepository();
             _loadedObject = objRepository.LoadObject(listItem->repositoryItem);
-            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+            auto& objManager = GetContext()->GetObjectManager();
             objManager.LoadObject(_loadedObject.get()->GetIdentifier());
 
             // This function calls window_track_list_open
@@ -698,7 +701,7 @@ public:
             if (selectedObject != -1)
             {
                 auto listItem = &_listItems[selectedObject];
-                auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
+                auto& objRepository = GetContext()->GetObjectRepository();
                 _loadedObject = objRepository.LoadObject(listItem->repositoryItem);
                 if (_loadedObject != nullptr)
                 {
@@ -1544,7 +1547,7 @@ private:
         SetEveryRideTypeInvented();
         SetEveryRideEntryInvented();
 
-        gEditorStep = EditorStep::DesignsManager;
+        GetGameState().EditorStep = EditorStep::DesignsManager;
 
         int32_t entry_index = 0;
         for (; ObjectEntryGetChunk(ObjectType::Ride, entry_index) == nullptr; entry_index++)
@@ -1606,7 +1609,7 @@ static StringId GetRideTypeStringId(const ObjectRepositoryItem* item)
  */
 void EditorLoadSelectedObjects()
 {
-    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objManager = GetContext()->GetObjectManager();
     int32_t numItems = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
     const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
     bool showFallbackWarning = false;
