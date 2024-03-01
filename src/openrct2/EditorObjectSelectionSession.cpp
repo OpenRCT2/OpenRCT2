@@ -12,6 +12,7 @@
 #include "Context.h"
 #include "Editor.h"
 #include "Game.h"
+#include "GameState.h"
 #include "OpenRCT2.h"
 #include "drawing/Drawing.h"
 #include "localisation/Formatter.h"
@@ -479,6 +480,7 @@ void ResetSelectedObjectCountAndSize()
 
 void FinishObjectSelection()
 {
+    auto& gameState = OpenRCT2::GetGameState();
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
     {
         SetEveryRideTypeInvented();
@@ -491,14 +493,14 @@ void FinishObjectSelection()
             gLastEntranceStyle = 0;
         }
 
-        gEditorStep = EditorStep::RollercoasterDesigner;
+        gameState.EditorStep = EditorStep::RollercoasterDesigner;
         GfxInvalidateScreen();
     }
     else
     {
         SetAllSceneryItemsInvented();
         ScenerySetDefaultPlacementConfiguration();
-        gEditorStep = EditorStep::LandscapeEditor;
+        gameState.EditorStep = EditorStep::LandscapeEditor;
         GfxInvalidateScreen();
     }
 }

@@ -345,7 +345,7 @@ static void Select(const char* path)
             SetAndSaveConfigPath(gConfigGeneral.LastSaveScenarioDirectory, pathBuffer);
             int32_t parkFlagsBackup = gameState.ParkFlags;
             gameState.ParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
-            gEditorStep = EditorStep::Invalid;
+            gameState.EditorStep = EditorStep::Invalid;
             gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
             int32_t success = ScenarioSave(gameState, pathBuffer, gConfigGeneral.SavePluginData ? 3 : 2);
             gameState.ParkFlags = parkFlagsBackup;
@@ -359,7 +359,7 @@ static void Select(const char* path)
             else
             {
                 ContextShowError(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED, {});
-                gEditorStep = EditorStep::ObjectiveSelection;
+                gameState.EditorStep = EditorStep::ObjectiveSelection;
                 InvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
             }
             break;

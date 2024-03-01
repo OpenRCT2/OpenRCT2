@@ -54,8 +54,6 @@
 
 using namespace OpenRCT2;
 
-EditorStep gEditorStep;
-
 namespace Editor
 {
     static std::array<std::vector<uint8_t>, EnumValue(ObjectType::Count)> _editorSelectedObjectFlags;
@@ -105,11 +103,11 @@ namespace Editor
     void Load()
     {
         auto& gameState = GetGameState();
-        OpenRCT2::Audio::StopAll();
+        Audio::StopAll();
         ObjectListLoad();
-        OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
+        GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-        gEditorStep = EditorStep::ObjectSelection;
+        gameState.EditorStep = EditorStep::ObjectSelection;
         gameState.ParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
         ViewportInitAll();
@@ -149,7 +147,7 @@ namespace Editor
         ScenarioReset(gameState);
 
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-        gEditorStep = EditorStep::ObjectiveSelection;
+        gameState.EditorStep = EditorStep::ObjectiveSelection;
         gameState.ScenarioCategory = SCENARIO_CATEGORY_OTHER;
         ViewportInitAll();
         OpenEditorWindows();
@@ -163,15 +161,15 @@ namespace Editor
      */
     void LoadTrackDesigner()
     {
-        OpenRCT2::Audio::StopAll();
+        Audio::StopAll();
         gScreenFlags = SCREEN_FLAGS_TRACK_DESIGNER;
         gScreenAge = 0;
 
         ObjectManagerUnloadAllObjects();
         ObjectListLoad();
-        OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
+        GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         SetAllLandOwned();
-        gEditorStep = EditorStep::ObjectSelection;
+        GetGameState().EditorStep = EditorStep::ObjectSelection;
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -184,15 +182,15 @@ namespace Editor
      */
     void LoadTrackManager()
     {
-        OpenRCT2::Audio::StopAll();
+        Audio::StopAll();
         gScreenFlags = SCREEN_FLAGS_TRACK_MANAGER;
         gScreenAge = 0;
 
         ObjectManagerUnloadAllObjects();
         ObjectListLoad();
-        OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
+        GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         SetAllLandOwned();
-        gEditorStep = EditorStep::ObjectSelection;
+        GetGameState().EditorStep = EditorStep::ObjectSelection;
         ViewportInitAll();
         WindowBase* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -246,7 +244,7 @@ namespace Editor
     {
         ClearMapForEditing(loadedFromSave);
 
-        gEditorStep = EditorStep::LandscapeEditor;
+        GetGameState().EditorStep = EditorStep::LandscapeEditor;
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         ViewportInitAll();
@@ -367,7 +365,7 @@ namespace Editor
             return;
         }
 
-        switch (gEditorStep)
+        switch (GetGameState().EditorStep)
         {
             case EditorStep::ObjectSelection:
                 if (WindowFindByClass(WindowClass::EditorObjectSelection) != nullptr)

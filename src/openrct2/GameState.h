@@ -10,6 +10,7 @@
 #pragma once
 
 #include "Date.h"
+#include "Editor.h"
 #include "Limits.h"
 #include "interface/ZoomLevel.h"
 #include "management/Finance.h"
@@ -74,6 +75,8 @@ namespace OpenRCT2
         money64 MaxBankLoan;
         random_engine_t ScenarioRand;
         TileCoordsXY MapSize;
+
+        EditorStep EditorStep;
 
         SCENARIO_CATEGORY ScenarioCategory;
         std::string ScenarioName;

@@ -3047,20 +3047,22 @@ public:
             widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
             widgets[WIDX_NETWORK].type = WindowWidgetType::Empty;
 
-            if (gEditorStep != EditorStep::LandscapeEditor)
+            auto& gameState = GetGameState();
+            if (gameState.EditorStep != EditorStep::LandscapeEditor)
             {
                 widgets[WIDX_LAND].type = WindowWidgetType::Empty;
                 widgets[WIDX_WATER].type = WindowWidgetType::Empty;
             }
 
-            if (gEditorStep != EditorStep::RollercoasterDesigner)
+            if (gameState.EditorStep != EditorStep::RollercoasterDesigner)
             {
                 widgets[WIDX_RIDES].type = WindowWidgetType::Empty;
                 widgets[WIDX_CONSTRUCT_RIDE].type = WindowWidgetType::Empty;
                 widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
             }
 
-            if (gEditorStep != EditorStep::LandscapeEditor && gEditorStep != EditorStep::RollercoasterDesigner)
+            if (gameState.EditorStep != EditorStep::LandscapeEditor
+                && gameState.EditorStep != EditorStep::RollercoasterDesigner)
             {
                 widgets[WIDX_MAP].type = WindowWidgetType::Empty;
                 widgets[WIDX_SCENERY].type = WindowWidgetType::Empty;
@@ -3537,7 +3539,7 @@ void TopToolbar::InitMapMenu(Widget& widget)
     auto i = 0;
     gDropdownItems[i++].Format = STR_SHORTCUT_SHOW_MAP;
     gDropdownItems[i++].Format = STR_EXTRA_VIEWPORT;
-    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gEditorStep == EditorStep::LandscapeEditor)
+    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && GetGameState().EditorStep == EditorStep::LandscapeEditor)
     {
         gDropdownItems[i++].Format = STR_MAPGEN_WINDOW_TITLE;
     }
@@ -3568,7 +3570,7 @@ void TopToolbar::InitMapMenu(Widget& widget)
 void TopToolbar::MapMenuDropdown(int16_t dropdownIndex)
 {
     int32_t customStartIndex = 3;
-    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gEditorStep == EditorStep::LandscapeEditor)
+    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && GetGameState().EditorStep == EditorStep::LandscapeEditor)
     {
         customStartIndex++;
     }
