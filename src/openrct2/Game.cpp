@@ -472,8 +472,8 @@ static void FixInvalidSurfaces()
             auto& gameState = GetGameState();
             if (x == 0 || x == gameState.MapSize.x - 1 || y == 0 || y == gameState.MapSize.y - 1)
             {
-                surfaceElement->SetBaseZ(MINIMUM_LAND_HEIGHT_BIG);
-                surfaceElement->SetClearanceZ(MINIMUM_LAND_HEIGHT_BIG);
+                surfaceElement->SetBaseZ(kMinimumLandZ);
+                surfaceElement->SetClearanceZ(kMinimumLandZ);
                 surfaceElement->SetSlope(0);
                 surfaceElement->SetWaterHeight(0);
             }
