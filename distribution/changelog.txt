@@ -9,8 +9,8 @@
 - Improved: [#21356] Resize the title bar when moving between displays with different scaling factors on Windows systems.
 - Improved: [#21388] Tooltips will now show even when an error message is present.
 - Improved: [#21423] Add mechanism to allow building partly underground.
-- Improved: [objects#272, objects#276, objects#277, objects#278, objects#279, objects#280, objects#281] Add missing RCT1 ride and vehicle objects.
-- Improved: [objects#275, objects#284, objects#286] Add missing RCT1 walls.
+- Improved: [objects#272, objects#276, objects#277, objects#278, objects#279, objects#280, objects#281] Add most remaining ports of RCT1 ride and vehicle objects (for import only).
+- Improved: [objects#275, objects#284, objects#286] Add remaining RCT1 walls (for import only).
 - Change: [#21350] Group Dodgems and Flying Saucers vehicles.
 - Change: [#21453] Reintroduce lost RCT1 Jet skis colour presets to the boat hire.
 - Change: [objects#285] Mark old reversed train objects as compatibility objects.
