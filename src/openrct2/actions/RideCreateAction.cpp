@@ -308,6 +308,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->income_per_hour = kMoney64Undefined;
     ride->profit = kMoney64Undefined;
     ride->connected_message_throttle = 0;
+    ride->drops = 0;
 
     ride->entrance_style = OBJECT_ENTRY_INDEX_NULL;
     if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
