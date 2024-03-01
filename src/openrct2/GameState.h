@@ -76,7 +76,7 @@ namespace OpenRCT2
         random_engine_t ScenarioRand;
         TileCoordsXY MapSize;
 
-        EditorStep EditorStep;
+        ::EditorStep EditorStep;
 
         SCENARIO_CATEGORY ScenarioCategory;
         std::string ScenarioName;
