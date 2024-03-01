@@ -51,7 +51,7 @@ void Banner::FormatTextTo(Formatter& ft, bool addColour) const
     if (addColour)
     {
         auto formatToken = FormatTokenFromTextColour(text_colour);
-        auto tokenText = FormatTokenToString(formatToken, true);
+        auto tokenText = FormatTokenToStringWithBraces(formatToken);
         ft.Add<StringId>(STR_STRING_STRINGID);
         ft.Add<const char*>(tokenText.data());
     }

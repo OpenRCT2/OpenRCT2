@@ -9,8 +9,7 @@
 
 #pragma once
 
-#include "../common.h"
-
+#include <cstdint>
 #include <string_view>
 
 enum class FormatToken
@@ -75,9 +74,9 @@ enum class FormatToken
     OutlineDisable,
 };
 
-std::string_view GetFormatTokenStringWithBraces(FormatToken token);
 FormatToken FormatTokenFromString(std::string_view token);
-std::string_view FormatTokenToString(FormatToken token, bool withBraces = false);
+std::string FormatTokenToString(FormatToken token);
+std::string FormatTokenToStringWithBraces(FormatToken token);
 bool FormatTokenTakesArgument(FormatToken token);
 bool FormatTokenIsColour(FormatToken token);
 size_t FormatTokenGetTextColourIndex(FormatToken token);

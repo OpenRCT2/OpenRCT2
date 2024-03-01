@@ -27,7 +27,6 @@
 
 #include "../common.h"
 #include "../localisation/ConversionTables.h"
-#include "../localisation/FormatCodes.h"
 #include "../localisation/Language.h"
 #include "../util/Util.h"
 #include "Memory.hpp"
