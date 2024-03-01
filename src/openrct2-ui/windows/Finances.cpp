@@ -742,10 +742,10 @@ public:
 
         // Weekly profit
         auto ft = Formatter();
-        ft.Add<money64>(gCurrentProfit);
+        ft.Add<money64>(gameState.CurrentProfit);
         DrawTextBasic(
             dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 },
-            gCurrentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS, ft);
+            gameState.CurrentProfit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS, ft);
 
         // Graph
         GfxFillRectInset(dpi, { graphTopLeft, graphBottomRight }, colours[1], INSET_RECT_F_30);
