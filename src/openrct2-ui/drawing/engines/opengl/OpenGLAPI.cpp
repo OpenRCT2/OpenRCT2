@@ -38,7 +38,9 @@ static const char* TryLoadAllProcAddresses()
 
 #    endif /* #if OPENGL_NO_LINK */
 
-namespace OpenGLState
+using namespace OpenRCT2::Ui;
+
+namespace OpenRCT2::Ui::OpenGLState
 {
     uint16_t ActiveTexture;
     GLuint CurrentProgram;
