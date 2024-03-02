@@ -503,6 +503,7 @@ void WindowVisitEach(std::function<void(WindowBase*)> func);
 void WindowDispatchUpdateAll();
 void WindowUpdateAllViewports();
 void WindowUpdateAll();
+void WindowNotifyLanguageChange();
 
 void WindowSetWindowLimit(int32_t value);
 

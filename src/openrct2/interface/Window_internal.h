@@ -167,6 +167,9 @@ struct WindowBase
     {
     }
     virtual CursorID OnCursor(WidgetIndex, const ScreenCoordsXY&, CursorID);
+    virtual void OnLanguageChange()
+    {
+    }
 
     void ResizeFrame();
     void ResizeFrameWithPage();

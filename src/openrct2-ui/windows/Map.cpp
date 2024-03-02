@@ -28,6 +28,7 @@
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/localisation/Language.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
@@ -137,9 +138,68 @@ static constexpr ScreenCoordsXY MiniMapOffsets[] = {
 };
 // clang-format on
 
+static constexpr StringId MapLabels[] = {
+    STR_MAP_RIDE,       STR_MAP_FOOD_STALL, STR_MAP_DRINK_STALL,  STR_MAP_SOUVENIR_STALL,
+    STR_MAP_INFO_KIOSK, STR_MAP_FIRST_AID,  STR_MAP_CASH_MACHINE, STR_MAP_TOILET,
+};
+
+static constexpr uint16_t RideKeyColours[] = {
+    MapColour(PALETTE_INDEX_61),  // COLOUR_KEY_RIDE
+    MapColour(PALETTE_INDEX_42),  // COLOUR_KEY_FOOD
+    MapColour(PALETTE_INDEX_20),  // COLOUR_KEY_DRINK
+    MapColour(PALETTE_INDEX_209), // COLOUR_KEY_SOUVENIR
+    MapColour(PALETTE_INDEX_136), // COLOUR_KEY_KIOSK
+    MapColour(PALETTE_INDEX_102), // COLOUR_KEY_FIRST_AID
+    MapColour(PALETTE_INDEX_55),  // COLOUR_KEY_CASH_MACHINE
+    MapColour(PALETTE_INDEX_161), // COLOUR_KEY_TOILETS
+};
+
+static constexpr uint8_t DefaultPeepMapColour = PALETTE_INDEX_20;
+static constexpr uint8_t GuestMapColour = PALETTE_INDEX_172;
+static constexpr uint8_t GuestMapColourAlternate = PALETTE_INDEX_21;
+static constexpr uint8_t StaffMapColour = PALETTE_INDEX_138;
+static constexpr uint8_t StaffMapColourAlternate = PALETTE_INDEX_10;
+
+static constexpr uint16_t WaterColour = MapColour(PALETTE_INDEX_195);
+
+static constexpr uint16_t ElementTypeMaskColour[] = {
+    0xFFFF, // TILE_ELEMENT_TYPE_SURFACE
+    0x0000, // TILE_ELEMENT_TYPE_PATH
+    0x00FF, // TILE_ELEMENT_TYPE_TRACK
+    0xFF00, // TILE_ELEMENT_TYPE_SMALL_SCENERY
+    0x0000, // TILE_ELEMENT_TYPE_ENTRANCE
+    0xFFFF, // TILE_ELEMENT_TYPE_WALL
+    0x0000, // TILE_ELEMENT_TYPE_LARGE_SCENERY
+    0xFFFF, // TILE_ELEMENT_TYPE_BANNER
+};
+
+static constexpr uint16_t ElementTypeAddColour[] = {
+    MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_SURFACE
+    MapColour(PALETTE_INDEX_17),                    // TILE_ELEMENT_TYPE_PATH
+    MapColour2(PALETTE_INDEX_183, PALETTE_INDEX_0), // TILE_ELEMENT_TYPE_TRACK
+    MapColour2(PALETTE_INDEX_0, PALETTE_INDEX_99),  // TILE_ELEMENT_TYPE_SMALL_SCENERY
+    MapColour(PALETTE_INDEX_186),                   // TILE_ELEMENT_TYPE_ENTRANCE
+    MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_WALL
+    MapColour(PALETTE_INDEX_99),                    // TILE_ELEMENT_TYPE_LARGE_SCENERY
+    MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_BANNER
+};
+
 class MapWindow final : public Window
 {
     uint8_t _rotation;
+    uint8_t _activeTool;
+    uint32_t _currentLine;
+    uint16_t _landRightsToolSize;
+    int32_t _firstColumnWidth;
+    std::vector<uint8_t> _mapImageData;
+    bool _mapWidthAndHeightLinked{ true };
+    bool _recalculateScrollbars = false;
+    enum class ResizeDirection
+    {
+        Both,
+        X,
+        Y,
+    } _resizeDirection{ ResizeDirection::Both };
 
 public:
     MapWindow()
@@ -155,8 +215,15 @@ public:
             | (1uLL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1uLL << WIDX_MAP_SIZE_SPINNER_X_DOWN) | (1uLL << WIDX_LAND_TOOL_LARGER)
             | (1uLL << WIDX_LAND_TOOL_SMALLER);
 
+        flags |= WF_RESIZABLE;
+        min_width = WW;
+        max_width = 800;
+        min_height = WH;
+        max_height = 560;
+
         ResizeMap();
         InitScrollWidgets();
+        CalculateTextLayout();
 
         _rotation = GetCurrentRotation();
 
@@ -181,15 +248,6 @@ public:
         {
             ToolCancel();
         }
-    }
-
-    void OnResize() override
-    {
-        flags |= WF_RESIZABLE;
-        min_width = 245;
-        max_width = 800;
-        min_height = 259;
-        max_height = 560;
     }
 
     void OnMouseUp(WidgetIndex widgetIndex) override
@@ -287,6 +345,7 @@ public:
 
                     selected_tab = widgetIndex;
                     list_information_type = 0;
+                    _recalculateScrollbars = true;
                 }
         }
     }
@@ -854,6 +913,11 @@ public:
                 ShowDefaultScenarioEditorButtons();
             }
         }
+        if (_recalculateScrollbars)
+        {
+            WidgetScrollUpdateThumbs(*this, WIDX_MAP);
+            _recalculateScrollbars = false;
+        }
     }
 
     void OnDraw(DrawPixelInfo& dpi) override
@@ -889,22 +953,18 @@ public:
             {
                 screenCoords = windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP].bottom + 2 };
 
-                static constexpr StringId _mapLabels[] = {
-                    STR_MAP_RIDE,       STR_MAP_FOOD_STALL, STR_MAP_DRINK_STALL,  STR_MAP_SOUVENIR_STALL,
-                    STR_MAP_INFO_KIOSK, STR_MAP_FIRST_AID,  STR_MAP_CASH_MACHINE, STR_MAP_TOILET,
-                };
-                static_assert(std::size(RideKeyColours) == std::size(_mapLabels));
+                static_assert(std::size(RideKeyColours) == std::size(MapLabels));
 
                 for (uint32_t i = 0; i < std::size(RideKeyColours); i++)
                 {
                     GfxFillRect(
                         dpi, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } },
                         RideKeyColours[i]);
-                    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 }, _mapLabels[i], {});
+                    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 }, MapLabels[i], {});
                     screenCoords.y += LIST_ROW_HEIGHT;
                     if (i == 3)
                     {
-                        screenCoords += { 118, -(LIST_ROW_HEIGHT * 4) };
+                        screenCoords += { _firstColumnWidth, -(LIST_ROW_HEIGHT * 4) };
                     }
                 }
             }
@@ -915,6 +975,11 @@ public:
                 dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP_SIZE_SPINNER_Y].top + 1 }, STR_MAP_SIZE, {},
                 { colours[1] });
         }
+    }
+
+    void OnLanguageChange() override
+    {
+        CalculateTextLayout();
     }
 
     void ResetMap()
@@ -1404,58 +1469,26 @@ private:
             widgets[WIDX_MAP].bottom = height - 1 - 14;
     }
 
-    uint8_t _activeTool;
-    uint32_t _currentLine;
-    uint16_t _landRightsToolSize;
-    std::vector<uint8_t> _mapImageData;
-    bool _mapWidthAndHeightLinked{ true };
-    enum class ResizeDirection
+    void CalculateTextLayout()
     {
-        Both,
-        X,
-        Y,
-    } _resizeDirection{ ResizeDirection::Both };
+        int32_t textOffset = 4 + LIST_ROW_HEIGHT;
+        _firstColumnWidth = 118;
+        for (uint32_t i = 0; i < 4; i++)
+        {
+            const auto* labelStr = LanguageGetString(MapLabels[i]);
+            _firstColumnWidth = std::max(textOffset + GfxGetStringWidth(labelStr, FontStyle::Medium), _firstColumnWidth);
+        }
 
-    static constexpr uint16_t RideKeyColours[] = {
-        MapColour(PALETTE_INDEX_61),  // COLOUR_KEY_RIDE
-        MapColour(PALETTE_INDEX_42),  // COLOUR_KEY_FOOD
-        MapColour(PALETTE_INDEX_20),  // COLOUR_KEY_DRINK
-        MapColour(PALETTE_INDEX_209), // COLOUR_KEY_SOUVENIR
-        MapColour(PALETTE_INDEX_136), // COLOUR_KEY_KIOSK
-        MapColour(PALETTE_INDEX_102), // COLOUR_KEY_FIRST_AID
-        MapColour(PALETTE_INDEX_55),  // COLOUR_KEY_CASH_MACHINE
-        MapColour(PALETTE_INDEX_161), // COLOUR_KEY_TOILETS
-    };
-
-    static constexpr uint8_t DefaultPeepMapColour = PALETTE_INDEX_20;
-    static constexpr uint8_t GuestMapColour = PALETTE_INDEX_172;
-    static constexpr uint8_t GuestMapColourAlternate = PALETTE_INDEX_21;
-    static constexpr uint8_t StaffMapColour = PALETTE_INDEX_138;
-    static constexpr uint8_t StaffMapColourAlternate = PALETTE_INDEX_10;
-
-    static constexpr uint16_t WaterColour = MapColour(PALETTE_INDEX_195);
-
-    static constexpr uint16_t ElementTypeMaskColour[] = {
-        0xFFFF, // TILE_ELEMENT_TYPE_SURFACE
-        0x0000, // TILE_ELEMENT_TYPE_PATH
-        0x00FF, // TILE_ELEMENT_TYPE_TRACK
-        0xFF00, // TILE_ELEMENT_TYPE_SMALL_SCENERY
-        0x0000, // TILE_ELEMENT_TYPE_ENTRANCE
-        0xFFFF, // TILE_ELEMENT_TYPE_WALL
-        0x0000, // TILE_ELEMENT_TYPE_LARGE_SCENERY
-        0xFFFF, // TILE_ELEMENT_TYPE_BANNER
-    };
-
-    static constexpr uint16_t ElementTypeAddColour[] = {
-        MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_SURFACE
-        MapColour(PALETTE_INDEX_17),                    // TILE_ELEMENT_TYPE_PATH
-        MapColour2(PALETTE_INDEX_183, PALETTE_INDEX_0), // TILE_ELEMENT_TYPE_TRACK
-        MapColour2(PALETTE_INDEX_0, PALETTE_INDEX_99),  // TILE_ELEMENT_TYPE_SMALL_SCENERY
-        MapColour(PALETTE_INDEX_186),                   // TILE_ELEMENT_TYPE_ENTRANCE
-        MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_WALL
-        MapColour(PALETTE_INDEX_99),                    // TILE_ELEMENT_TYPE_LARGE_SCENERY
-        MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_BANNER
-    };
+        textOffset += _firstColumnWidth + 4;
+        min_width = WW;
+        for (uint32_t i = 4; i < std::size(MapLabels); i++)
+        {
+            const auto* labelStr = LanguageGetString(MapLabels[i]);
+            min_width = std::max(static_cast<int16_t>(textOffset + GfxGetStringWidth(labelStr, FontStyle::Medium)), min_width);
+        }
+        width = std::max(min_width, width);
+        _recalculateScrollbars = true;
+    }
 };
 
 WindowBase* WindowMapOpen()
